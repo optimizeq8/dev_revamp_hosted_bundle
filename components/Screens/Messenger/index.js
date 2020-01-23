@@ -37,6 +37,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
+import { showMessage } from "react-native-flash-message";
 
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
@@ -149,21 +150,30 @@ class Messenger extends Component {
   };
 
   pick = async screenProps => {
-    await this.askForPermssion(screenProps);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "Images",
-      base64: false,
-      exif: false,
-      quality: 0.8
-    });
-    if (!result.cancelled)
-      this.setState({ media: result }, () =>
-        this.props.navigation.push("ImagePreview", {
-          image: this.state.media.uri,
-          id: "upload",
-          upload: this.formatMedia.bind(this)
-        })
-      );
+    try {
+      await this.askForPermssion(screenProps);
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "Images",
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+
+      if (!result.cancelled)
+        this.setState({ media: result }, () =>
+          this.props.navigation.push("ImagePreview", {
+            image: this.state.media.uri,
+            id: "upload",
+            upload: this.formatMedia.bind(this)
+          })
+        );
+    } catch (error) {
+      showMessage({
+        message: translate("Something went wrong!"),
+        position: "top",
+        type: "danger"
+      });
+    }
   };
 
   askForPermssion = async screenProps => {
