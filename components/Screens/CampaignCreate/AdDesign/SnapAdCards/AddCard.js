@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, I18nManager } from "react-native";
-import { Button, Icon } from "native-base";
+import { Icon } from "native-base";
+import GradientButton from "../../../../MiniComponents/GradientButton";
+
 import * as actionCreators from "../../../../../store/actions";
 
 import { connect } from "react-redux";
@@ -20,9 +22,9 @@ class AddCard extends Component {
               justifyContent: "center"
             }}
           >
-            <Button
+            <GradientButton
               style={styles.addButtonStyle}
-              onPress={() => {
+              onPressAction={() => {
                 segmentEventTrack("Button clicked to add snap story ad card");
                 this.props.addSnapCard();
               }}
@@ -30,12 +32,12 @@ class AddCard extends Component {
               <Icon
                 style={{
                   alignSelf: "center",
-                  right: I18nManager.isRTL ? -2 : 2
+                  color: "#FFF"
                 }}
                 name="plus"
                 type="MaterialCommunityIcons"
               />
-            </Button>
+            </GradientButton>
             <Text style={styles.addButtonText}>{translate("Add More")}</Text>
           </View>
         )}

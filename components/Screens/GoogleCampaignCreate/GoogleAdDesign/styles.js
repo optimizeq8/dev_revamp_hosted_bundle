@@ -1,8 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 55,
     height: 55,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",

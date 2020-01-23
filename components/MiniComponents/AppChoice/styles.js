@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 65,
     height: 65,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",

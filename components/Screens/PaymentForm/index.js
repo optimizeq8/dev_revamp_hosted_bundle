@@ -571,8 +571,9 @@ class PaymentForm extends Component {
                       "Are you sure you want to go back? This will reset your wallet"
                     )}
                   </Text>
-                  <Button
-                    onPress={() => {
+                  <GradientButton
+                    uppercase={true}
+                    onPressAction={() => {
                       segmentEventTrack(
                         "Button clicked to CONFIRM remove wallet amount and go back to ad payment review screen"
                       );
@@ -580,22 +581,23 @@ class PaymentForm extends Component {
                       this.removeWalletAmountAndGoBack();
                     }}
                     style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>
-                      {translate("Confirm")}
-                    </Text>
-                  </Button>
-                  <Button
-                    onPress={() => {
+                    text={translate("Confirm")}
+                    textStyle={styles.colorWhite}
+                  />
+
+                  <GradientButton
+                    uppercase={true}
+                    transparent={true}
+                    onPressAction={() => {
                       segmentEventTrack(
                         "Cancel Button clicked to close remove wallet amount modal"
                       );
                       this.showRemoveAmountModal();
                     }}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
-                  </Button>
+                    style={[styles.walletButton, styles.transaprentButton]}
+                    text={translate("Cancel")}
+                    textStyle={styles.colorWhite}
+                  />
                 </>
               )}
             </View>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { View, TouchableOpacity } from "react-native";
+import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
@@ -71,12 +71,12 @@ export default class AgeOption extends Component {
               />
             </View>
           </View>
-          <Button
+          <TouchableOpacity
             style={styles.button}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />
-          </Button>
+          </TouchableOpacity>
         </Container>
       </SafeAreaView>
     );

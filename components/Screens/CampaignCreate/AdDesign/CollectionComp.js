@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Button } from "native-base";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import PenIcon from "../../../../assets/SVGs/Pen";
 import PlusCircle from "../../../../assets/SVGs/PlusCircle";
@@ -54,7 +53,7 @@ class CollectionComp extends Component {
               }
             />
           ) : (
-            <Button
+            <TouchableOpacity
               style={styles.addButton}
               onPress={() => {
                 segmentEventTrack("Button clicked to go to Collection Media");
@@ -69,7 +68,7 @@ class CollectionComp extends Component {
                 width={hp(5) < 30 ? 20 : 30}
                 height={hp(5) < 30 ? 35 : 30}
               />
-            </Button>
+            </TouchableOpacity>
           )}
           {collectionAdMedia[collIdx] && (
             <View style={styles.penView}>
