@@ -160,12 +160,12 @@ class MultiSelectList extends Component {
             </View>
           </View>
 
-          <Button
+          <TouchableOpacity
             style={styles.button}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />
-          </Button>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );

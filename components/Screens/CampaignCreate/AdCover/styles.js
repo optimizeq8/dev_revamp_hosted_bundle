@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     top: 15
   },
   proceedButtonRTL: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     width: wp(13),
     height: hp(6),
     borderRadius: 26,

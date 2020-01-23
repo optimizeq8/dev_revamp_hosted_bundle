@@ -6,7 +6,8 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
+  TouchableOpacity
 } from "react-native";
 import {
   Content,
@@ -532,8 +533,7 @@ class AdObjective extends Component {
                     {translate("Where are you taking the user ?")}
                   </Text>
                   <View style={styles.topContainer}>
-                    <Button
-                      block
+                    <TouchableOpacity
                       style={[
                         this.state.collectionAdLinkForm === 1
                           ? styles.activeButton
@@ -567,9 +567,8 @@ class AdObjective extends Component {
                       >
                         {translate("Links to your site")}
                       </Text>
-                    </Button>
-                    <Button
-                      block
+                    </TouchableOpacity>
+                    <TouchableOpacity
                       style={[
                         this.state.collectionAdLinkForm === 2
                           ? styles.activeButton
@@ -603,7 +602,7 @@ class AdObjective extends Component {
                       >
                         {translate("Links to your App")}
                       </Text>
-                    </Button>
+                    </TouchableOpacity>
                   </View>
                   {/* <Text style={styles.minBudget}>
                     Collection Ads only work on iOS

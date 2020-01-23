@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -157,10 +158,9 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   reachBarLowerButton: {
-    backgroundColor: "#ff9d00",
+    backgroundColor: globalColors.orange,
     borderRadius: 50,
     paddingLeft: 5,
-    // padding: 5,
     width: 55,
     height: 55,
     display: "flex",

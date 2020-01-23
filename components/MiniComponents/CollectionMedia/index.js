@@ -702,7 +702,7 @@ class CollectionMedia extends Component {
       );
     } else {
       return (
-        <Button
+        <TouchableOpacity
           style={styles.inputMiddleButton}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
@@ -710,12 +710,8 @@ class CollectionMedia extends Component {
           }}
         >
           <Icon style={styles.icon} name="camera" />
-          <Text style={styles.mediaButtonMsg}>
-            {this.state.collection.collection_media
-              ? translate("Edit Image")
-              : translate("Add Image")}
-          </Text>
-        </Button>
+          <Text style={styles.mediaButtonMsg}>{translate("Add Image")}</Text>
+        </TouchableOpacity>
       );
     }
   };

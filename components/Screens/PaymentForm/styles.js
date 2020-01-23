@@ -151,18 +151,17 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   walletButton: {
-    backgroundColor: globalColors.orange,
     marginTop: 15,
-    borderRadius: 10,
-    paddingHorizontal: 20,
 
+    width: 250,
+    height: 50,
     alignSelf: "center",
     justifyContent: "center"
   },
   buttontext: {
     color: "#fff",
     fontSize: 12,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-bold"
   },
   whitebutton: {
     marginHorizontal: 0,
@@ -261,7 +260,8 @@ const styles = StyleSheet.create({
   },
   colorWhite: {
     fontFamily: "montserrat-regular",
-    color: "#FFFF"
+    color: "#FFFF",
+    fontSize: 14
   },
   walltetAmountText: {
     fontSize: 25
@@ -271,6 +271,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-bold",
     paddingRight: 2
+  },
+  transaprentButton: {
+    borderColor: globalColors.white,
+    borderWidth: 1
   }
 });
 

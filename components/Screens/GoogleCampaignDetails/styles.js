@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 20
   },
   chart: {

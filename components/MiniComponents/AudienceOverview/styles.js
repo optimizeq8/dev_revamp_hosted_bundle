@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   categories: {
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 30
   }
 });
