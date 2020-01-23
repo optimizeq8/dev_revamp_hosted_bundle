@@ -161,7 +161,6 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.orange,
     borderRadius: 50,
     paddingLeft: 5,
-    // padding: 5,
     width: 55,
     height: 55,
     display: "flex",

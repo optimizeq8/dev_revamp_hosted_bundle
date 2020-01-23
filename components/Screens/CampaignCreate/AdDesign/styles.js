@@ -375,7 +375,6 @@ const styles = StyleSheet.create({
     margin: 10
   },
   addButtonStyle: {
-    // backgroundColor: globalColors.orange,
     borderRadius: 50,
     display: "flex",
     width: 50,
