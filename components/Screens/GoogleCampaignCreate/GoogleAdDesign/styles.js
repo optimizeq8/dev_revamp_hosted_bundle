@@ -1,6 +1,10 @@
 import { StyleSheet, PixelRatio } from "react-native";
 
 import { globalColors } from "../../../../GlobalStyles";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   safeAreaView: {
