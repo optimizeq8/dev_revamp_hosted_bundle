@@ -48,7 +48,7 @@ export default class EmptyCampaigns extends Component {
         <View style={styles.mainButtonView}>
           {mainBusiness.user_role === "3" ? (
             <Text style={styles.mainText}>
-              {translate("This account doesn't have campaigns yet")}
+              {translate("This business doesn't have campaigns yet")}
             </Text>
           ) : !mainBusiness.hasOwnProperty("businessid") ? (
             <Text style={styles.mainText}>
