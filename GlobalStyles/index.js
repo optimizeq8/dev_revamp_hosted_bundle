@@ -12,7 +12,8 @@ export const globalColors = {
   white: "#FFFFFF",
   red: "#EA514B",
   black: "#000000",
-  transparent: "#0000"
+  transparent: "#0000",
+  lightGray: "#C6C6C6"
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
@@ -22,7 +23,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#6268FF"
   },
   orangeTextColor: {
-    color: "#FF9D00"
+    color: "#FF790A"
   },
   orangeBorderColor: {
     borderColor: "#FF9D00"
@@ -73,7 +74,7 @@ const globalStyles = StyleSheet.create({
     borderColor: "#A0A0A0"
   },
   redTextColor: {
-    color: "red"
+    color: "#EA514B"
   },
   redBorderColor: {
     borderColor: "red"

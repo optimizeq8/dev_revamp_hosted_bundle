@@ -22,7 +22,8 @@ export default GoogleSEAPreview = props => {
     inputH3,
     inputD,
     inputD2,
-    inputURL
+    inputURL,
+    details = true
   } = props;
   const { translate } = screenProps;
 
@@ -31,20 +32,22 @@ export default GoogleSEAPreview = props => {
 
   return (
     <View style={styles.previewBlock}>
-      <View style={styles.headersCol}>
+      <View style={[styles.headersCol, !details && { marginTop: 10 }]}>
         <View style={GlobalStyles.row}>
           <View style={styles.headerContent}>
-            <Text
-              uppercase
-              style={[
-                styles.headline,
-                inputH1
-                  ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.lightGrayTextColor
-              ]}
-            >
-              {translate("Headline")} {translate("1")}
-            </Text>
+            {details && (
+              <Text
+                uppercase
+                style={[
+                  styles.headline,
+                  inputH1
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate("1")}
+              </Text>
+            )}
             {headline1 ? (
               <Text style={[styles.headlineText]}>{headline1}</Text>
             ) : (
@@ -57,18 +60,20 @@ export default GoogleSEAPreview = props => {
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
           <View style={[GlobalStyles.column]}>
-            <Text
-              uppercase
-              style={[
-                styles.headline,
-                { paddingLeft: 6 },
-                inputH2
-                  ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.lightGrayTextColor
-              ]}
-            >
-              {translate("Headline")} {translate("2")}
-            </Text>
+            {details && (
+              <Text
+                uppercase
+                style={[
+                  styles.headline,
+                  { paddingLeft: 6 },
+                  inputH2
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate("2")}
+              </Text>
+            )}
             {headline2 ? (
               <Text style={[styles.headlineText, { paddingLeft: 6 }]}>
                 {headline2}
@@ -83,18 +88,20 @@ export default GoogleSEAPreview = props => {
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
           <View style={[GlobalStyles.column]}>
-            <Text
-              uppercase
-              style={[
-                styles.headline,
-                { paddingLeft: 6 },
-                inputH3
-                  ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.lightGrayTextColor
-              ]}
-            >
-              {translate("Headline")} {translate("3")}
-            </Text>
+            {details && (
+              <Text
+                uppercase
+                style={[
+                  styles.headline,
+                  { paddingLeft: 6 },
+                  inputH3
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate("3")}
+              </Text>
+            )}
             {headline3 ? (
               <Text style={[styles.headlineText, { paddingLeft: 6 }]}>
                 {headline3}
@@ -108,21 +115,23 @@ export default GoogleSEAPreview = props => {
         </View>
       </View>
       <View style={styles.headersCol}>
-        <Text
-          uppercase
-          style={[
-            styles.headline,
-            inputURL
-              ? GlobalStyles.orangeTextColor
-              : GlobalStyles.lightGrayTextColor
-          ]}
-        >
-          {translate("Website")} {translate("url")}
-        </Text>
+        {details && (
+          <Text
+            uppercase
+            style={[
+              styles.headline,
+              inputURL
+                ? GlobalStyles.orangeTextColor
+                : GlobalStyles.lightGrayTextColor
+            ]}
+          >
+            {translate("Website")} {translate("url")}
+          </Text>
+        )}
         <View style={GlobalStyles.row}>
           <ADIcon style={styles.adIcon} />
           {finalurl ? (
-            <Text style={[styles.headlineText, styles.linkText]}>
+            <Text uppercase style={[styles.headlineText, styles.linkText]}>
               {finalurl}
             </Text>
           ) : (
@@ -133,19 +142,27 @@ export default GoogleSEAPreview = props => {
         </View>
       </View>
       <View style={styles.descriptionGrayLine} />
-      <View style={styles.headersCol}>
+      <View style={[styles.headersCol, !details && { marginTop: 10 }]}>
+        {details && (
+          <Text
+            uppercase
+            style={[
+              styles.headline,
+              inputD || inputD2
+                ? GlobalStyles.orangeTextColor
+                : GlobalStyles.darkGrayTextColor
+            ]}
+          >
+            {translate("Description")}
+          </Text>
+        )}
         <Text
-          uppercase
           style={[
-            styles.headline,
-            inputD || inputD2
-              ? GlobalStyles.orangeTextColor
-              : GlobalStyles.darkGrayTextColor
+            styles.headlineText,
+            styles.descriptionText,
+            !details && { color: "#909090" }
           ]}
         >
-          {translate("Description")}
-        </Text>
-        <Text style={[styles.headlineText, styles.descriptionText]}>
           {description ||
             translate("Add") +
               " " +
@@ -153,7 +170,13 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("1")}
         </Text>
-        <Text style={[styles.headlineText, styles.descriptionText]}>
+        <Text
+          style={[
+            styles.headlineText,
+            styles.descriptionText,
+            !details && { color: "#909090" }
+          ]}
+        >
           {description2 ||
             translate("Add") +
               " " +

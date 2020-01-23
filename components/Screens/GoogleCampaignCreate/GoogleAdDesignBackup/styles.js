@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#0000",
+    display: "flex",
     justifyContent: "space-between"
   },
   mainContent: {
@@ -93,18 +94,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 4
     // padding: 20
-  },
-  button: {
-    alignSelf: "center",
-    width: wp(10),
-    height: hp(7.5),
-    bottom: hp(3),
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginHorizontal: wp(10)
   }
 });
 

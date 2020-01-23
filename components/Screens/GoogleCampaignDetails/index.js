@@ -58,6 +58,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
 import CSVModal from "../CampaignDetails/CSVModal";
+import { Transition } from "react-navigation-fluid-transitions";
 
 class GoogleCampaignDetails extends Component {
   static navigationOptions = {
@@ -410,17 +411,27 @@ class GoogleCampaignDetails extends Component {
                           {translate("Ad Details")}
                         </Text>
                       </View>
-                      <GoogleSEAPreview
-                        screenProps={this.props.screenProps}
-                        headline1={selectedCampaign.ad.headline1}
-                        headline2={selectedCampaign.ad.headline2}
-                        headline3={selectedCampaign.ad.headline3}
-                        finalurl={selectedCampaign.ad.finalurl}
-                        path1={selectedCampaign.ad.path1}
-                        path2={selectedCampaign.ad.path2}
-                        description={selectedCampaign.ad.description}
-                        description2={selectedCampaign.ad.description2}
-                      />
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.push("GoogleSEAPreviewScreen", {
+                            campaign: selectedCampaign.ad
+                          })
+                        }
+                      >
+                        <Transition shared="preview">
+                          <GoogleSEAPreview
+                            screenProps={this.props.screenProps}
+                            headline1={selectedCampaign.ad.headline1}
+                            headline2={selectedCampaign.ad.headline2}
+                            headline3={selectedCampaign.ad.headline3}
+                            finalurl={selectedCampaign.ad.finalurl}
+                            path1={selectedCampaign.ad.path1}
+                            path2={selectedCampaign.ad.path2}
+                            description={selectedCampaign.ad.description}
+                            description2={selectedCampaign.ad.description2}
+                          />
+                        </Transition>
+                      </TouchableOpacity>
                     </View>
                   )
                 )}

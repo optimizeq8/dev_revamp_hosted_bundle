@@ -9,16 +9,20 @@ import {
   TouchableOpacity,
   I18nManager
 } from "react-native";
+import { Transition } from "react-navigation-fluid-transitions";
 import { Text, Item, Input, Container, Textarea } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-import GoogleSEAPreview from "../../../MiniComponents/GoogleSEAPreview";
+import GoogleSEABox from "./GoogleSEABox";
 import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
+
+//Icons
+import EyeIcon from "../../../../assets/SVGs/Eye";
+
 // Style
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
@@ -33,9 +37,9 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
-import split from "lodash/split";
 import segmentEventTrack from "../../../segmentEventTrack";
-
+import { showMessage } from "react-native-flash-message";
+import isEqual from "react-fast-compare";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null
@@ -60,13 +64,16 @@ class GoogleAdDesign extends Component {
       headline3Error: "",
       descriptionError: "",
       description2Error: "",
-      urlError: "",
-      networkString: "http://",
+      finalurlError: "",
       modalVisible: false
     };
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
@@ -81,15 +88,13 @@ class GoogleAdDesign extends Component {
           [key]: rejectedCampaign[key]
         };
       }, {});
-      if (rejectedCampaign.finalurl) {
-        const url = split(rejectedCampaign.finalurl, "://");
 
-        this.setState({
-          ...data,
-          networkString: url[0] + "://",
-          finalurl: url[1]
-        });
-      }
+      if (rejectedCampaign.path1)
+        data.finalurl = data.finalurl + "/" + rejectedCampaign.path1;
+      if (rejectedCampaign.path2) data.finalurl += "/" + rejectedCampaign.path2;
+      this.setState({
+        ...data
+      });
     } else {
       let keys = Object.keys(this.state).filter(key => {
         if (this.props.campaign.hasOwnProperty(key)) return key;
@@ -101,15 +106,13 @@ class GoogleAdDesign extends Component {
           [key]: this.props.campaign[key]
         };
       }, {});
-      if (this.props.campaign.finalurl) {
-        const url = split(this.props.campaign.finalurl, "://");
-
-        this.setState({
-          ...data,
-          networkString: url[0] + "://",
-          finalurl: url[1]
-        });
-      }
+      if (this.props.campaign.path1)
+        data.finalurl = data.finalurl + "/" + this.props.campaign.path1;
+      if (this.props.campaign.path2)
+        data.finalurl += "/" + this.props.campaign.path2;
+      this.setState({
+        ...data
+      });
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -132,7 +135,7 @@ class GoogleAdDesign extends Component {
       "mandatory",
       this.state.description2
     );
-    const urlError = validateWrapper("website", this.state.finalurl);
+    const finalurlError = validateWrapper("website", this.state.finalurl);
 
     this.setState({
       headline1Error,
@@ -140,24 +143,28 @@ class GoogleAdDesign extends Component {
       headline3Error,
       descriptionError,
       description2Error,
-      urlError
+      finalurlError
     });
+    let { correctPathsLength, onlyTwoPaths } = this.validatePaths();
     // set segment track for error
     if (
       headline1Error ||
       headline2Error ||
       headline3Error ||
       descriptionError ||
-      description2Error ||
-      urlError
+      description2Error
     ) {
+      showMessage({
+        message: "Please complete all of the feilds",
+        type: "warning"
+      });
       segmentEventTrack("Error occured on ad design screen sumbit button", {
         campaign_error_headline1: headline1Error,
         campaign_error_headline2: headline2Error,
         campaign_error_headline3: headline3Error,
         campaign_error_description: descriptionError,
         campaign_error_description2: description2Error,
-        campaign_error_url: urlError
+        campaign_error_finalurl: finalurlError
       });
     }
     if (
@@ -166,7 +173,9 @@ class GoogleAdDesign extends Component {
       !headline3Error &&
       !description2Error &&
       !descriptionError &&
-      !urlError
+      !finalurlError &&
+      correctPathsLength &&
+      onlyTwoPaths
     ) {
       let data = {
         headline1: this.state.headline1,
@@ -174,7 +183,10 @@ class GoogleAdDesign extends Component {
         headline3: this.state.headline3,
         description: this.state.description,
         description2: this.state.description2,
-        finalurl: this.state.networkString + this.state.finalurl
+        finalurl:
+          this.state.finalurl[this.state.finalurl.length - 1] === "/" //gets rid of a trailing /
+            ? this.state.finalurl.slice(0, -1)
+            : this.state.finalurl
       };
       const segmentInfo = {
         step: 3,
@@ -241,8 +253,99 @@ class GoogleAdDesign extends Component {
   };
   inputs = {};
 
+  handleBlur = (value, booleanKey) => {
+    campaign_ = "campaign_" + value;
+    error = value + "Error";
+    campaign_error_ = "campaign_error_" + value;
+    segmentEventTrack([value] + "Field on Blur", {
+      [campaign_]: this.state[value]
+    });
+    this.setState({ [booleanKey]: false });
+    this.setState(
+      {
+        [error]: validateWrapper(
+          value === "finalurl" ? "website" : "mandatory",
+          this.state[value]
+        )
+      },
+      () => {
+        if (this.state[error]) {
+          segmentEventTrack("Error at" + [value] + "field on blur", {
+            [campaign_error_]: this.state[error]
+          });
+        }
+        if (value === "finalurl") this.validatePaths();
+      }
+    );
+  };
+  setValue = (value, dontSave = false) => {
+    this.setState(value);
+    if (!this.props.navigation.getParam("rejected", false) && !dontSave)
+      this.props.save_google_campaign_data(value);
+  };
+
+  handleInputRefs = (value, input) => {
+    this.inputs[value] = input;
+  };
+
+  handleDidFocus = () => {
+    if (!this.props.navigation.getParam("rejected", false))
+      this.props.save_google_campaign_steps([
+        "Dashboard",
+        "GoogleAdInfo",
+        "GoogleAdDesign"
+      ]);
+    Segment.screenWithProperties("Google SE Design AD", {
+      category: "Campaign Creation",
+      channel: "google"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 3,
+      business_name: this.props.mainBusiness.businessname
+    });
+    this.setState({ unmounted: false });
+  };
+
+  /**
+   * checks whether the url is vaild in terms of paths and validity
+   */
+  validatePaths = () => {
+    let seperatedUrl =
+      this.state.finalurl[this.state.finalurl.length - 1] === "/" //gets rid of a trailing slash so it doesn't affect the split function
+        ? //eg. (http://example.com/).split("/") returns [http:,"",example.com,""]
+          this.state.finalurl.slice(0, -1).split("/")
+        : this.state.finalurl.split("/");
+    let correctPathsLength = true;
+    let onlyTwoPaths = true;
+    if (seperatedUrl.slice(3).length > 0) {
+      //check if the url has paths
+      let path1 = seperatedUrl[seperatedUrl.length - 2];
+      let path2 = seperatedUrl[seperatedUrl.length - 1];
+      correctPathsLength = path1.length <= 15 && path2.length <= 15;
+      onlyTwoPaths = seperatedUrl.slice(3).length <= 2;
+    }
+    if (this.state.finalurlError)
+      showMessage({
+        message:
+          "Invalid link url. make sure to include (http://) or (https://).",
+        type: "warning",
+        description: "Eg.'https://url.com/path1/path2'"
+      });
+    else if (!correctPathsLength || !onlyTwoPaths) {
+      this.setState({ finalurlError: true });
+      showMessage({
+        message: `Website url issue, ${
+          !onlyTwoPaths ? "Only  2 paths are allowed" : "Paths length excceded"
+        }`,
+        description:
+          "The max length of the url paths are 15 characters each. Eg. 'https://www.example.com/path1/path2'",
+        type: "warning",
+        duration: 6000
+      });
+    }
+    return { correctPathsLength, onlyTwoPaths };
+  };
   render() {
-    const { translate } = this.props.screenProps;
     const rejected = this.props.navigation.getParam("rejected", false);
 
     return (
@@ -251,25 +354,13 @@ class GoogleAdDesign extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
-          onDidFocus={() => {
-            if (!rejected)
-              this.props.save_google_campaign_steps([
-                "Dashboard",
-                "GoogleAdInfo",
-                "GoogleAdDesign"
-              ]);
-            Segment.screenWithProperties("Google SE Design AD", {
-              category: "Campaign Creation",
-              channel: "google"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 3,
-              business_name: this.props.mainBusiness.businessname
-            });
+          onWillBlur={() => {
+            this.setState({ unmounted: true });
           }}
+          onDidFocus={this.handleDidFocus}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <Container style={styles.container}>
+          <View style={styles.container}>
             <CustomHeader
               closeButton={false}
               segment={{
@@ -282,23 +373,7 @@ class GoogleAdDesign extends Component {
               screenProps={this.props.screenProps}
               disabled={this.props.campaign.uploading}
             />
-            <View style={{ zIndex: 10000 }}>
-              <GoogleSEAPreview
-                screenProps={this.props.screenProps}
-                headline1={this.state.headline1}
-                headline2={this.state.headline2}
-                headline3={this.state.headline3}
-                finalurl={this.state.finalurl}
-                description={this.state.description}
-                description2={this.state.description2}
-                inputH1={this.state.inputH1}
-                inputH2={this.state.inputH2}
-                inputH3={this.state.inputH3}
-                inputD={this.state.inputD}
-                inputD2={this.state.inputD2}
-                inputURL={this.state.inputURL}
-              />
-            </View>
+
             <InputScrollView
               keyboardAvoidingViewProps={{ behavior: "padding" }}
               {...ScrollView.props}
@@ -307,531 +382,73 @@ class GoogleAdDesign extends Component {
                 { paddingBottom: "80%" }
               ]}
             >
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ headline1Error: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.headline1Error ? "" : "shake"}
-              >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputH1
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Headline")} {translate("1")}
-                  </Text>
-                </View>
-                <Item style={[styles.input]}>
-                  <Input
-                    autoFocus={true}
-                    placeholder={translate("Input headline text")}
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.headline1}
-                    style={[styles.inputText]}
-                    autoCorrect={true}
-                    maxLength={30}
-                    onChangeText={value => {
-                      this.setState({
-                        headline1: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          headline1: value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputH1: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("headline1 Field on Blur", {
-                        campaign_headline1: this.state.headline1
-                      });
-                      this.setState({ inputH1: false });
-                      this.setState(
-                        {
-                          headline1Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline1
-                          )
-                        },
-                        () => {
-                          if (this.state.headline1Error) {
-                            segmentEventTrack(
-                              "Error at headline1 field on blur",
-                              {
-                                campaign_error_headline1: this.state
-                                  .headline1Error
-                              }
-                            );
-                          }
-                        }
-                      );
-                    }}
-                    onSubmitEditing={() => {
-                      this.focusTheField("inputH2");
-                    }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
+              <View style={{ marginBottom: 35 }}>
+                <Transition shared="preview">
+                  <GoogleSEABox
+                    screenProps={this.props.screenProps}
+                    parentState={this.state}
+                    inputH1={this.state.inputH1}
+                    inputH2={this.state.inputH2}
+                    inputH3={this.state.inputH3}
+                    inputD={this.state.inputD}
+                    inputD2={this.state.inputD2}
+                    inputURL={this.state.inputURL}
+                    setVal={this.setValue}
+                    focus={this.setValue}
+                    blur={this.handleBlur}
+                    submitEditing={this.focusTheField}
+                    reference={this.handleInputRefs}
+                    disable={this.props.campaign.uploading}
                   />
-                </Item>
-              </Animatable.View>
-
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ headline2Error: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.headline2Error ? "" : "shake"}
+                </Transition>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  alignSelf: "flex-end",
+                  marginHorizontal: 25,
+                  flexDirection: "row"
+                }}
               >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputH2
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Headline")} {translate("2")}
-                  </Text>
-                </View>
-                <Item style={[styles.input]}>
-                  <Input
-                    placeholder={translate("Input headline text")}
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.headline2}
-                    style={[styles.inputText]}
-                    autoCorrect={true}
-                    maxLength={30}
-                    onChangeText={value => {
-                      this.setState({
-                        headline2: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          headline2: value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputH2: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("headline2 Field on Blur", {
-                        campaign_headline2: this.state.headline2
-                      });
-                      this.setState({ inputH2: false });
-                      this.setState(
-                        {
-                          headline2Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline2
-                          )
-                        },
-                        () => {
-                          if (this.state.headline2Error) {
-                            segmentEventTrack(
-                              "Error at headline2 field on blur",
-                              {
-                                campaign_error_headline2: this.state
-                                  .headline2Error
-                              }
-                            );
-                          }
-                        }
-                      );
-                    }}
-                    ref={input => {
-                      this.inputs["inputH2"] = input;
-                    }}
-                    onSubmitEditing={() => {
-                      this.focusTheField("inputH3");
-                    }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
-                  />
-                </Item>
-              </Animatable.View>
-
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ headline3Error: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.headline3Error ? "" : "shake"}
-              >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputH3
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Headline")} {translate("3")}
-                  </Text>
-                </View>
-                <Item style={[styles.input]}>
-                  <Input
-                    placeholder={translate("Input headline text")}
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.headline3}
-                    style={[styles.inputText]}
-                    autoCorrect={true}
-                    maxLength={30}
-                    onChangeText={value => {
-                      this.setState({
-                        headline3: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          headline3: value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputH3: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("headline3 Field on Blur", {
-                        campaign_headline3: this.state.headline3
-                      });
-                      this.setState({ inputH3: false });
-                      this.setState(
-                        {
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline3
-                          )
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error at headline3 Field on Blur",
-                              {
-                                campaign_error_headline3: this.state
-                                  .headline3Error
-                              }
-                            );
-                          }
-                        }
-                      );
-                    }}
-                    onSubmitEditing={() => {
-                      this.focusTheField("inputURL");
-                    }}
-                    ref={input => {
-                      this.inputs["inputH3"] = input;
-                    }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
-                  />
-                </Item>
-              </Animatable.View>
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ urlError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.urlError ? "" : "shake"}
-              >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputURL
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Landing Page")}
-                  </Text>
-                </View>
-                <Item style={[styles.input]}>
-                  <TouchableOpacity
-                    style={[
-                      GlobalStyles.orangeBackgroundColor,
-                      {
-                        borderRadius: 30,
-                        width: 54,
-                        height: 54,
-                        alignItems: "center",
-                        justifyContent: "center"
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    segmentEventTrack(
+                      "Button clicked to preview Google Ad Design"
+                    );
+                    this.props.navigation.push("GoogleSEAPreviewScreen", {
+                      campaign: {
+                        headline1: this.state.headline1,
+                        headline2: this.state.headline2,
+                        headline3: this.state.headline3,
+                        finalurl: this.state.finalurl,
+                        description: this.state.description,
+                        description2: this.state.description2
                       }
-                    ]}
-                    onPress={() => {
-                      if (this.state.networkString === "https://") {
-                        this.setState({
-                          networkString: "http://"
-                        });
-                      } else {
-                        this.setState({
-                          networkString: "https://"
-                        });
-                      }
-                    }}
-                  >
-                    <Text uppercase style={styles.networkLabel}>
-                      {this.state.networkString === "https://"
-                        ? "https"
-                        : "http"}
-                    </Text>
-                    <Text uppercase style={styles.networkLabel}>
-                      {`< >`}
-                    </Text>
-                  </TouchableOpacity>
-                  <Input
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.finalurl}
-                    style={[
-                      styles.inputText,
-                      this.state.finalurl
-                        ? { textAlign: "left" }
-                        : { right: wp(6) }
-                    ]}
-                    autoCorrect={false}
-                    maxLength={34}
-                    autoCapitalize="none"
-                    placeholder={translate("Input landing page url")}
-                    onChangeText={value => {
-                      this.setState({
-                        finalurl: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          finalurl: this.state.networkString + value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputURL: true });
-                    }}
-                    onBlur={() => {
-                      this.setState({ inputURL: false });
-                      this.setState({
-                        urlError: validateWrapper(
-                          "mandatory",
-                          this.state.networkString + this.state.finalurl
-                        )
-                      });
-                    }}
-                    onSubmitEditing={() => {
-                      this.focusTheField("inputD");
-                    }}
-                    ref={input => {
-                      this.inputs["inputURL"] = input;
-                    }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
-                  />
-                </Item>
-              </Animatable.View>
-
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ descriptionError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.descriptionError ? "" : "shake"}
-              >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputD
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Description")}
-                  </Text>
-                </View>
-                <Item
-                  style={[
-                    styles.input,
-                    {
-                      paddingVertical: 20,
-                      paddingHorizontal: 5
-                    }
-                  ]}
+                    });
+                  }}
                 >
-                  <Textarea
-                    rowSpan={3}
-                    multiline={true}
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.description}
-                    style={[styles.inputTextarea, { textAlignVertical: "top" }]}
-                    autoCorrect={true}
-                    numberOfLines={6}
-                    maxLength={90}
-                    placeholder={
-                      this.state.inputD
-                        ? null
-                        : translate("Input Description 1 text")
-                    }
-                    onChangeText={value => {
-                      this.setState({
-                        description: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          description: value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputD: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("description Field on Blur", {
-                        campaign_description: this.state.description
-                      });
-                      this.setState({ inputD: false });
-                      this.setState(
-                        {
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.description
-                          )
-                        },
-                        () => {
-                          if (this.state.descriptionError) {
-                            segmentEventTrack(
-                              "Error description Field on Blur",
-                              {
-                                campaign_error_description: this.state
-                                  .descriptionError
-                              }
-                            );
-                          }
-                        }
-                      );
-                    }}
-                    onSubmitEditing={() => {
-                      this.focusTheField("inputD2");
-                    }}
-                    ref={input => {
-                      this.inputs["inputD"] = input;
-                    }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
+                  <EyeIcon width={hp(10)} height={hp(10)} />
+                </TouchableOpacity>
+                {this.props.campaign.uploading ? (
+                  <ForwardLoading
+                    mainViewStyle={{ width: wp(8), height: hp(8) }}
+                    bottom={hp(3)}
+                    style={{ width: wp(8), height: hp(8) }}
                   />
-                </Item>
-              </Animatable.View>
-
-              <Animatable.View
-                onAnimationEnd={() =>
-                  this.setState({ description2Error: null })
-                }
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.description2Error ? "" : "shake"}
-              >
-                <View style={[styles.inputView]}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputD2
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Description")} {translate("2")}
-                  </Text>
-                </View>
-                <Item
-                  style={[
-                    styles.input,
-                    { paddingVertical: 20, paddingHorizontal: 5 }
-                  ]}
-                >
-                  <Textarea
-                    rowSpan={3}
-                    multiline={true}
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.description2}
-                    style={[styles.inputTextarea]}
-                    autoCorrect={true}
-                    numberOfLines={6}
-                    maxLength={90}
-                    placeholder={
-                      this.state.inputD2
-                        ? null
-                        : translate("Input Description 2 text")
-                    }
-                    onChangeText={value => {
-                      this.setState({
-                        description2: value
-                      });
-                      if (!rejected)
-                        this.props.save_google_campaign_data({
-                          description2: value
-                        });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputD2: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("description2 Field on Blur", {
-                        campaign_description2: this.state.description2
-                      });
-                      this.setState({ inputD2: false });
-                      this.setState(
-                        {
-                          description2Error: validateWrapper(
-                            "mandatory",
-                            this.state.description2
-                          )
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error description2 Field on Blur",
-                              {
-                                campaign_error_description2: this.state
-                                  .description2Error
-                              }
-                            );
-                          }
-                        }
-                      );
-                    }}
-                    ref={input => {
-                      this.inputs["inputD2"] = input;
-                    }}
-                    blurOnSubmit={true}
-                    returnKeyType={"done"}
+                ) : (
+                  <LowerButton
+                    isRTL={I18nManager.isRTL}
+                    style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                    width={I18nManager.isRTL ? 25 : hp(9)}
+                    height={I18nManager.isRTL ? 25 : hp(9)}
+                    bottom={2}
+                    function={this._handleSubmission}
                   />
-                </Item>
-              </Animatable.View>
-
-              {this.props.campaign.uploading ? (
-                <ForwardLoading
-                  mainViewStyle={{ width: wp(8), height: hp(8) }}
-                  bottom={hp(3)}
-                  style={{ width: wp(8), height: hp(8) }}
-                />
-              ) : (
-                <LowerButton
-                  isRTL={I18nManager.isRTL}
-                  style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                  width={I18nManager.isRTL ? 25 : 70}
-                  height={I18nManager.isRTL ? 25 : 70}
-                  bottom={2}
-                  function={this._handleSubmission}
-                />
-              )}
+                )}
+              </View>
             </InputScrollView>
-          </Container>
+          </View>
         </TouchableWithoutFeedback>
         {this.state.modalVisible && (
           <EditModal

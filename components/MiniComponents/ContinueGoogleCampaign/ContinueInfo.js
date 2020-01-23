@@ -68,6 +68,8 @@ ContinueInfo = props => {
             headline2={campaign.headline2}
             headline3={campaign.headline3}
             finalurl={campaign.finalurl}
+            path1={campaign.path1}
+            path2={campaign.path2}
             description={campaign.description}
             description2={campaign.description2}
           />
