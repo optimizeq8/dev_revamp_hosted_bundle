@@ -47,6 +47,13 @@ class BusinessCard extends Component {
       }
     }
   ];
+  handleSwitchBusiness = () => {
+    if (!this.props.manageTeam) {
+      this.props.changeBusiness(this.props.business);
+      this.props.resetCampaignInfo();
+      this.props.rest_google_campaign_data();
+    } else this.props.selectAccount();
+  };
   render() {
     //this.props.manageTeam was to be used in BusinessModal to choose multiple businesses but
     //it's not being used anymore until further notice
@@ -70,12 +77,7 @@ class BusinessCard extends Component {
         right={this.swipeoutBtns}
       >
         <TouchableOpacity
-          onPress={() => {
-            if (!this.props.manageTeam) {
-              this.props.changeBusiness(this.props.business);
-              this.props.resetCampaignInfo();
-            } else this.props.selectAccount();
-          }}
+          onPress={this.handleSwitchBusiness}
           style={[
             styles.businessButton,
             { backgroundColor: changeState.backgroundColor }
@@ -123,6 +125,8 @@ const mapDispatchToProps = dispatch => ({
   changeBusiness: business => dispatch(actionCreators.changeBusiness(business)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   deleteBusinessAccount: business_id =>
-    dispatch(actionCreators.deleteBusinessAccount(business_id))
+    dispatch(actionCreators.deleteBusinessAccount(business_id)),
+  rest_google_campaign_data: () =>
+    dispatch(actionCreators.rest_google_campaign_data())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessCard);

@@ -26,7 +26,11 @@ import segmentEventTrack from "../../segmentEventTrack";
 class ContinueCampaign extends Component {
   constructor(props) {
     super(props);
-    this.state = { isVisible: false, resumeLoading: false };
+    this.state = {
+      isVisible: false,
+      resumeLoading: false,
+      outdatedDates: false
+    };
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
@@ -103,7 +107,8 @@ class ContinueCampaign extends Component {
         type: "warning"
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.props.dateField.showModal();
+      this.setState({ outdatedDates: true });
+      this.props.dateField.showModal(true);
       this.handleSubmition(false, false);
     } else {
       this.setState({ resumeLoading: true });

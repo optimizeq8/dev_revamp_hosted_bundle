@@ -39,7 +39,8 @@ class DateFields extends Component {
       start_timeError: "",
       end_date: "",
       start_date: "",
-      resumeLoading: false
+      resumeLoading: false,
+      outdatedDate: false
     };
   }
 
@@ -77,10 +78,11 @@ class DateFields extends Component {
     });
   };
 
-  showModal = () => {
+  showModal = (outdatedDate = false) => {
     Segment.screen("Date Modal");
     this.setState({
-      modalVisible: true
+      modalVisible: true,
+      outdatedDate
     });
   };
 
@@ -102,7 +104,8 @@ class DateFields extends Component {
       //the dateField modal shows up and handles to resume campaign or not with new dates
       if (
         this.props.incompleteCampaign && //pass as a props
-        !this.props.campaignProgressStarted //pass as a props
+        !this.props.campaignProgressStarted && //pass as a props
+        this.state.outdatedDate
       ) {
         //the app actually freezes for a few seconds when navigateToContinue runs so i delay
         //it's exectution to desiplay a loader because if i don't the loader doesn't show up
@@ -378,7 +381,9 @@ class DateFields extends Component {
               </View>
 
               {this.state.end_choice ||
-              (this.props.start_time && !this.state.reset) ? (
+              (this.state.end_choice &&
+                this.props.start_time &&
+                !this.state.reset) ? (
                 <Button style={styles.button} onPress={() => this.handleDate()}>
                   <CheckmarkIcon
                     width={hp(5) < 30 ? 40 : 53}

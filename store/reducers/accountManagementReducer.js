@@ -55,8 +55,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       let main = {};
-      let setNewBusinessAccounts = action.payload.data.business_accounts;
-      if (action.payload.data.business_accounts.length > 0) {
+      let setNewBusinessAccounts = action.payload.data.business_accounts || [];
+      if (setNewBusinessAccounts && setNewBusinessAccounts.length > 0) {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
