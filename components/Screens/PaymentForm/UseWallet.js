@@ -8,7 +8,7 @@ import * as actionCreators from "../../../store/actions";
 
 import styles from "./styles";
 import GlobalStyles from "../../../GlobalStyles";
-import { Button } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import segmentEventTrack from "../../segmentEventTrack";
@@ -79,15 +79,13 @@ class UseWallet extends Component {
           {translate("Use your wallet to activate your Ad")}
         </Text>
         {this.props.walletUsed && (
-          <Button
-            full
+          <GradientButton
+            uppercase
             style={styles.walletButton}
-            onPress={() => this._handleRemoveAmount()}
-          >
-            <Text style={styles.buttontext}>
-              {translate("Remove Wallet Amount")}
-            </Text>
-          </Button>
+            onPressAction={() => this._handleRemoveAmount()}
+            text={translate("Remove Wallet Amount")}
+            textStyle={styles.buttontext}
+          />
         )}
         {/* <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
@@ -121,26 +119,29 @@ class UseWallet extends Component {
                     {translate("New Budget Total:")}{" "}
                     {this.props.campaign_balance_amount}
                   </Text>
-                  <Button
-                    onPress={() => this._handleConfirm()}
+                  <GradientButton
+                    onPressAction={() => this._handleConfirm()}
                     style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>
-                      {translate("Confirm")}
-                    </Text>
-                  </Button>
-                  <Button
-                    onPress={() => {
+                    textStyle={styles.colorWhite}
+                    text={translate("Confirm")}
+                    uppercase={true}
+                    radius={50}
+                  />
+                  <GradientButton
+                    onPressAction={() => {
                       segmentEventTrack(
                         "Button Clicked to CANCEL payment throught wallet"
                       );
                       this._handleRemoveAmount();
                       this.props.setShowWalletModal(false);
                     }}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
-                  </Button>
+                    style={[styles.walletButton, styles.transaprentButton]}
+                    textStyle={styles.colorWhite}
+                    text={translate("Cancel")}
+                    transparent={true}
+                    uppercase={true}
+                    radius={50}
+                  />
                 </>
               )}
             </View>

@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   mainCard: {
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 65,
     height: 65,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",

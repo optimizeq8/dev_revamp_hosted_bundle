@@ -375,8 +375,8 @@ const styles = StyleSheet.create({
     margin: 10
   },
   addButtonStyle: {
-    backgroundColor: globalColors.orange,
     borderRadius: 50,
+    display: "flex",
     width: 50,
     height: 50,
     alignSelf: "center",
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   proceedButtonRTL: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     width: wp(13),
     height: hp(6),
     borderRadius: 26,
