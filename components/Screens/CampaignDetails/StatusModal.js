@@ -46,7 +46,7 @@ export default class StatusModal extends Component {
             height={58}
             style={{ alignSelf: "center", marginBottom: 20 }}
           />
-          <Text style={styles.title}>{translate("Ad Pause")}</Text>
+          <Text style={styles.pauseModalTitle}>{translate("Ad Pause")}</Text>
           <Text style={[styles.subHeadings, styles.pauseDes]}>
             {translate(
               "Your ad will be Paused\nYou will receive the amount remaining from your budget in your"

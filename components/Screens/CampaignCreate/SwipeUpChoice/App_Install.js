@@ -18,6 +18,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import * as actionsCreators from "../../../../store/actions";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class App_Install extends Component {
   static navigationOptions = {
@@ -89,13 +90,23 @@ class App_Install extends Component {
     iosApp_name,
     androidApp_name
   ) => {
+    if (nameError || callActionError) {
+      segmentEventTrack("Error App Install", {
+        campaign_error_app_link: nameError,
+        campaign_error_call_to_action: callActionError
+      });
+    }
     if (!nameError && !callActionError) {
+      segmentEventTrack(`Submitted Selected App Success for ${appChoice}`, {
+        caampaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name
+      });
       this.setState({
         attachment,
         callaction,
         appChoice
       });
-      this.props.save_campaign_info({ iosApp_name, androidApp_name });
+      !this.props.rejCampaign &&
+        this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
   };
 
@@ -113,7 +124,15 @@ class App_Install extends Component {
     this.setState({
       appError
     });
-
+    if (appError) {
+      segmentEventTrack("Error Submit App Install", {
+        campaign_error_app_install: validateWrapper(
+          "mandatory",
+          this.state.attachment.ios_app_id ||
+            this.state.attachment.android_app_url
+        )
+      });
+    }
     if (!appError) {
       this.props._changeDestination(
         "APP_INSTALL",
@@ -121,6 +140,10 @@ class App_Install extends Component {
         this.state.attachment,
         this.state.appChoice
       );
+      segmentEventTrack("Submited App Install SwipeUp Success", {
+        campaign_app_choice: this.state.appChoice,
+        campaign_attachment: this.state.attachment
+      });
       this.props.navigation.navigate("AdDesign");
     }
   };
@@ -176,7 +199,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App_Install);
+export default connect(mapStateToProps, mapDispatchToProps)(App_Install);

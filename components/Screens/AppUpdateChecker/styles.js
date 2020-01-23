@@ -4,7 +4,6 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 export default StyleSheet.create({
   textContainer: {
     alignSelf: "center",
-    top: "20%",
     // backgroundColor: "#0009",
     width: "80%",
     height: "20%",
@@ -23,14 +22,18 @@ export default StyleSheet.create({
     zIndex: 10,
     alignSelf: "center",
     width: widthPercentageToDP(20),
-    height: widthPercentageToDP(20),
-    top: "30%"
+    height: widthPercentageToDP(20)
   },
   updateButton: {
-    backgroundColor: globalColors.orange,
     width: "70%",
     alignSelf: "center",
-    top: "40%",
-    borderRadius: 15
+    height: 50,
+    borderRadius: 40
+  },
+  blurStyle: { height: "100%", justifyContent: "center" },
+  buttonContainer: {
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    height: "20%"
   }
 });

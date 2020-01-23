@@ -10,9 +10,9 @@ import {
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
+import * as Segment from "expo-analytics-segment";
 import findIndex from "lodash/findIndex";
 import find from "lodash/find";
-import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 
 import * as actionCreators from "../../../../../store/actions";
@@ -20,7 +20,8 @@ import * as actionCreators from "../../../../../store/actions";
 import CustomeHeader from "../../../../MiniComponents/Header";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
-import filter from "lodash/filter";
+import segmentEventTrack from "../../../../segmentEventTrack";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 
 class SelectInstagramPost extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class SelectInstagramPost extends React.Component {
   }
   componentDidMount() {
     // console.log("campaignData", this.props.data);
+    Segment.screen("Select Instagram Posts");
     const insta_handle = this.props.navigation.getParam("insta_handle", "");
     this.props.getInstagramPostInitial(insta_handle);
     // console.log("campaign_id", this.props.data.campaign_id);
@@ -104,12 +106,16 @@ class SelectInstagramPost extends React.Component {
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     if (this.state.counter <= 3) {
+      segmentEventTrack("Error Submit Select Instagram Post", {
+        campaign_error_sme_products_list: "Select minimum 3 post"
+      });
       showMessage({
         message: translate("Select minimum 3 post"),
         duration: 2000,
         type: "warning"
       });
     } else {
+      segmentEventTrack("Submitted Select Instagram Post Success");
       // console.log('cartList', this.state.cartList);
       this.props.navigation.navigate("SelectedInstagramProductsList", {
         selectetedItems: this.state.cartList,
@@ -129,6 +135,9 @@ class SelectInstagramPost extends React.Component {
     );
     // console.log('checkifALreadyExist', checkifALreadyExist);
     if (this.state.counter >= 7 && !checkifALreadyExist) {
+      segmentEventTrack("Error adding product to cart", {
+        campaign_error_sme_products_list: "Maximum 6 Selected"
+      });
       showMessage({
         message: translate("Maximum 6 Selected"),
         duration: 2000,
@@ -138,6 +147,9 @@ class SelectInstagramPost extends React.Component {
         errorImage: true
       });
     } else if (!checkifALreadyExist) {
+      segmentEventTrack("Added product to cart", {
+        campaign_sme_products_list_item: { ...item }
+      });
       newCartList.push(item);
       const counterNew = this.state.counter;
       this.setState({
@@ -147,6 +159,9 @@ class SelectInstagramPost extends React.Component {
       });
     } else {
       const index = newCartList.indexOf(checkifALreadyExist);
+      segmentEventTrack("Removed product from cart", {
+        campaign_sme_products_list_item: { ...item }
+      });
       // console.log('index', index);
       const counterNew = this.state.counter;
 
@@ -160,6 +175,7 @@ class SelectInstagramPost extends React.Component {
   };
 
   onScrollHandler = () => {
+    segmentEventTrack("Button clicked to view more instagram post");
     this.props.loadMoreInstagramPost(
       this.props.instaHandleId,
       this.props.instaEndCursor
@@ -172,12 +188,18 @@ class SelectInstagramPost extends React.Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        <NavigationEvents
+          onDidFocus={() => Segment.screen("Select Instagram Posts")}
+        />
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
-            title={"WhatsApp Campaign"}
+            title={["SME Growth", "Campaign"]}
             closeButton={false}
             navigation={this.props.navigation}
+            segment={{
+              str: "Select Instagram Post Back Button"
+            }}
           />
           <Content
             style={{
@@ -187,23 +209,14 @@ class SelectInstagramPost extends React.Component {
               // marginBottom: heightPercentageToDP(30),
             }}
           >
-            <Text
-              style={{
-                color: "#FFF",
-                fontSize: 14,
-                fontFamily: "montserrat-regular",
-                textAlign: "center",
-                lineHeight: 18,
-                paddingHorizontal: 60
-              }}
-            >
+            <Text style={styles.promoteCampaignText}>
               {translate(
                 "Select the products you want to promote on your campaign"
               )}
             </Text>
 
             {this.props.instagramPostLoading && (
-              <ActivityIndicator color="#FF9D00" size="large" />
+              <ActivityIndicator color={globalColors.orange} size="large" />
             )}
             {!this.props.instagramPostLoading && this.props.instagramPostList && (
               <FlatList
@@ -238,56 +251,24 @@ class SelectInstagramPost extends React.Component {
                     return (
                       <TouchableOpacity
                         key={item.imageId}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingVertical: 4,
-                          // marginHorizontal: "auto",
-                          paddingHorizontal: 8,
-                          alignSelf: "flex-start"
-                        }}
+                        style={styles.itemProductView}
                         onPress={() => this.addToList(item)}
                       >
                         {itemFound + 1 >= 1 ? (
                           <View
-                            style={{
-                              width: 40,
-                              backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
+                            style={[
+                              styles.itemView,
+                              {
+                                backgroundColor: globalColors.orange
+                              }
+                            ]}
                           >
-                            <Text
-                              style={{
-                                textAlign: "center",
-
-                                color: "#FFF"
-                              }}
-                            >
+                            <Text style={styles.itemFoundText}>
                               {itemFound + 1}
                             </Text>
                           </View>
                         ) : (
-                          <View
-                            style={{
-                              width: 40,
-                              //   backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          ></View>
+                          <View style={styles.itemView}></View>
                         )}
                         <Image
                           source={{
@@ -300,7 +281,7 @@ class SelectInstagramPost extends React.Component {
                             itemFound + 1 >= 1
                               ? {
                                   borderWidth: 4,
-                                  borderColor: "#FF9D00"
+                                  borderColor: globalColors.orange
                                 }
                               : {}
                           ]}
@@ -312,44 +293,21 @@ class SelectInstagramPost extends React.Component {
               />
             )}
             {this.props.loadingMoreInstaPost && (
-              <ActivityIndicator color="#FF9D00" size="large" />
+              <ActivityIndicator color={globalColors.orange} size="large" />
             )}
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList && (
-                // !isEmpty(this.props.instagramPostList) &&
-                <Text
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#FFF",
-                    fontSize: 14,
-                    lineHeight: 18,
-                    paddingVertical: 10,
-                    textAlign: "center"
-                  }}
-                >
+                <Text style={styles.selectProductText}>
                   {translate("(Select 3-6 Products)")}
                 </Text>
               )}
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList &&
-              // !isEmpty(this.props.instagramPostList) &&
               this.props.instaHasNextPage && (
                 <Text
-                  style={{
-                    fontFamily: "montserrat-bold",
-                    color: "#FFF",
-                    fontSize: 14,
-                    lineHeight: 18,
-                    paddingVertical: 10,
-                    textAlign: "center",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    borderRadius: 20,
-                    marginHorizontal: 60,
-                    marginBottom: 20
-                  }}
+                  style={styles.viewMoreText}
                   onPress={this.onScrollHandler}
                 >
                   {translate("VIEW MORE")}
@@ -358,7 +316,6 @@ class SelectInstagramPost extends React.Component {
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList && (
-                // !isEmpty(this.props.instagramPostList) &&
                 <View style={styles.bottonViewWebsite}>
                   <LowerButton
                     checkmark={true}

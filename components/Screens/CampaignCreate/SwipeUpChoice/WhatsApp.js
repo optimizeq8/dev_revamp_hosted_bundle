@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
-  Modal
+  Modal,
+  I18nManager
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button, Container } from "native-base";
@@ -42,6 +43,8 @@ import * as actionCreators from "../../../../store/actions";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isStringArabic from "../../../isStringArabic";
+import segmentEventTrack from "../../../segmentEventTrack";
+
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 class WhatsApp extends Component {
@@ -272,6 +275,13 @@ class WhatsApp extends Component {
       this.setState({
         submissionLoading: false
       });
+      segmentEventTrack("Error submit SME Growth swipeup", {
+        camapign_error_insta_handle: this.props.errorInstaHandleMessage,
+        campaign_error_weburl: this.state.weburlError,
+        campaign_error_whatsappnumber: this.state.validWhatsAppNumber,
+        campaign_error_googlemaplink: this.state.googleMapLinkError,
+        campaign_error_callnumber: this.state.validCallNumber
+      });
     }
     if (validate && weburlAvalible && !this.props.errorInstaHandle) {
       let whatsAppCampaign = {
@@ -314,7 +324,14 @@ class WhatsApp extends Component {
       if (this.state.showChangeInstaHandle) {
         this.setState({ showChangeInstaHandle: false });
       }
-
+      segmentEventTrack("Submitted Sme Growth Success", {
+        campaign_call_to_action: this.state.campaignInfo.callaction.label,
+        campaign_whatsappnumber: this.state.campaignInfo.whatsappnumber,
+        campaign_callnumber: this.state.campaignInfo.callnumber,
+        campaign_insta_handle: this.state.campaignInfo.insta_handle,
+        campaign_weburl: this.state.campaignInfo.weburl,
+        campaign_googlemaplink: this.state.campaignInfo.googlemaplink
+      });
       this.setState({
         submissionLoading: false
       });
@@ -326,6 +343,9 @@ class WhatsApp extends Component {
   };
   onSelectedCallToActionChange = value => {
     if (value && !isEmpty(value)) {
+      segmentEventTrack("Selected SME Growth Call to Action", {
+        campaign_call_to_action: value[0].label
+      });
       this.setState(
         {
           campaignInfo: {
@@ -501,7 +521,16 @@ class WhatsApp extends Component {
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value => this.changeWebUrl(value)}
-                    onBlur={() => {
+                    onBlur={async () => {
+                      segmentEventTrack("Changed SME Growth Web URL", {
+                        campaign_weburl: this.state.campaignInfo.weburl
+                      });
+                      const valid = await this.validate();
+                      if (!valid) {
+                        segmentEventTrack("Error on blur sme growth weburl", {
+                          campaign_error_weburl: this.state.weburlError
+                        });
+                      }
                       if (!this.props.mainBusiness.weburl) {
                         this.props.verifyBusinessUrl(
                           this.state.campaignInfo.weburl
@@ -516,6 +545,7 @@ class WhatsApp extends Component {
             <View style={styles.marginVertical}>
               {/* <Text style={[styles.subTitle]}>Call to action</Text> */}
               <Picker
+                showIcon={true}
                 screenProps={this.props.screenProps}
                 searchPlaceholderText={translate("Search Call To Action")}
                 data={this.state.callactions}
@@ -538,6 +568,9 @@ class WhatsApp extends Component {
                 rounded
                 style={[styles.input]}
                 onPress={() => {
+                  segmentEventTrack(
+                    "Button Clicked to open Call to action Modal"
+                  );
                   this.setState({ inputCallToAction: true }, () => {
                     if (this.state.inputCallToAction) {
                       Segment.screen("Call to Action Modal");
@@ -595,9 +628,23 @@ class WhatsApp extends Component {
                   autoCapitalize="none"
                   onChangeText={value => this.changeInstaHandle(value)}
                   onBlur={async () => {
+                    segmentEventTrack("Changed SME Growth Instagram Handle", {
+                      campaign_insta_handle: this.state.campaignInfo
+                        .insta_handle
+                    });
+                    this.validate();
                     await this.props.verifyInstagramHandle(
                       this.state.campaignInfo.insta_handle
                     );
+                    if (this.props.errorInstaHandle) {
+                      segmentEventTrack(
+                        "Error on blur sme growth insta handle",
+                        {
+                          campaign_error_insta_handle: this.props
+                            .errorInstaHandleMessage
+                        }
+                      );
+                    }
                   }}
                 />
                 {this.props.errorInstaHandle && (
@@ -713,6 +760,24 @@ class WhatsApp extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={value => this.changeGoogleMapLocation(value)}
+                  onBlur={async () => {
+                    segmentEventTrack(
+                      "Changed SME Growth Google Map Location",
+                      {
+                        campaign_googlemaplink: this.state.googleMapLinkError
+                      }
+                    );
+                    await this.validateUrl();
+                    if (this.state.googleMapLinkError) {
+                      segmentEventTrack(
+                        "Error on blur sme growth google map location",
+                        {
+                          campaign_error_googlemaplink: this.state
+                            .googleMapLinkError
+                        }
+                      );
+                    }
+                  }}
                 />
               </Item>
             </View>
@@ -722,8 +787,12 @@ class WhatsApp extends Component {
               <ForwardLoading bottom={-5} />
             ) : (
               <LowerButton
+                isRTL={I18nManager.isRTL}
+                style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                width={I18nManager.isRTL ? 25 : null}
+                height={I18nManager.isRTL ? 25 : null}
+                bottom={I18nManager.isRTL ? 0 : 0}
                 // checkmark={true}
-                bottom={0}
                 function={this.checkInstaAccountChange}
               />
             )}

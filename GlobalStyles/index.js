@@ -4,13 +4,16 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 export const globalColors = {
-  orange: "#FF9D00",
+  orange: "#FF790A",
+  darkOrange: "#FF790A",
   purple: "#751AFF",
   green: "#66D072",
+  yellow: "#FFFC00",
   white: "#FFFFFF",
   red: "#EA514B",
   black: "#000000",
-  transparent: "#0000"
+  transparent: "#0000",
+  lightGray: "#C6C6C6"
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
@@ -20,7 +23,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#6268FF"
   },
   orangeTextColor: {
-    color: "#FF9D00"
+    color: "#FF790A"
   },
   orangeBorderColor: {
     borderColor: "#FF9D00"
@@ -71,13 +74,16 @@ const globalStyles = StyleSheet.create({
     borderColor: "#A0A0A0"
   },
   redTextColor: {
-    color: "red"
+    color: "#EA514B"
   },
   redBorderColor: {
     borderColor: "red"
   },
   transparentBorderColor: {
     borderColor: "#0000"
+  },
+  lightGrayTextColor: {
+    color: "#C6C6C6"
   },
   lightGrayBorderColor: {
     borderColor: "#D9D9D9"
@@ -96,12 +102,16 @@ const globalStyles = StyleSheet.create({
     flexDirection: "column"
   },
   title: {
-    fontSize: 24 / PixelRatio.getFontScale(),
+    fontSize: 20 / PixelRatio.getFontScale(),
+    color: "#fff",
+    paddingVertical: 10,
+    fontFamily: "montserrat-bold"
+  },
+  buttonText: {
+    fontSize: 16 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
-    paddingTop: 10,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-bold"
   },
   numbers: {
     textAlign: "center",
@@ -127,6 +137,12 @@ const globalStyles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.4,
+    top: "25%",
+    alignSelf: "center"
   }
 });
 export default globalStyles;

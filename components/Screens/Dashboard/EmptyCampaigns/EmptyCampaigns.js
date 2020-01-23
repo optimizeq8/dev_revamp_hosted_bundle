@@ -1,28 +1,18 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import Logo from "../../../../assets/SVGs/Optimize";
-import Background from "../../../../assets/SVGs/Background";
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import * as Animatable from "react-native-animatable";
 import * as Segment from "expo-analytics-segment";
 import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import { Button } from "native-base";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { Bold } from "../../../MiniComponents/StyledComponents";
+import GradientButton from "../../../MiniComponents/GradientButton";
 export default class EmptyCampaigns extends Component {
   render() {
     let { mainBusiness, translate } = this.props;
-    const B = props => (
-      <Text style={{ fontFamily: "montserrat-bold" }}>{props.children}</Text>
-    );
-
     return (
       <View>
-        {/* <BackdropIcon style={styles.backDrop} /> */}
-        {/* <Background style={styles.background} /> */}
         <Logo
           style={{ alignSelf: "center" }}
           width={heightPercentageToDP(10)}
@@ -56,40 +46,52 @@ export default class EmptyCampaigns extends Component {
           {mainBusiness.businessname}
         </Text>
         <View style={styles.mainButtonView}>
-          <Text style={styles.mainText}>
-            {translate("Tap the button below to")} <B>{translate("launch")} </B>
-            {translate("Your first Campaign")}
-          </Text>
-          <Animatable.View
-            animation="swing"
-            duration={1200}
-            iterationDelay={1000}
-            iterationCount="infinite"
-          >
-            <Button
-              onPress={() => {
-                if (!this.props.mainBusiness.snap_ad_account_id) {
-                  Segment.trackWithProperties("Create SnapAd Acount", {
-                    category: "Ad Account",
-                    label: "New SnapAd Account",
-                    business_name: this.props.mainBusiness.businessname,
-                    business_id: this.props.mainBusiness.businessid
-                  });
-                  this.props.navigation.navigate("SnapchatCreateAdAcc");
-                } else {
-                  Segment.trackWithProperties("Create Campaign", {
-                    category: "Campaign Creation"
-                  });
-                  this.props.navigation.navigate("AdType");
-                }
-              }}
-              style={styles.campaignButton}
+          {mainBusiness.user_role === "3" ? (
+            <Text style={styles.mainText}>
+              {translate("This business doesn't have campaigns yet")}
+            </Text>
+          ) : !mainBusiness.hasOwnProperty("businessid") ? (
+            <Text style={styles.mainText}>
+              {translate("Tap the button below to")}{" "}
+              <Bold>{translate("create")} </Bold>
+              {translate("Your first business")}
+            </Text>
+          ) : (
+            <Text style={styles.mainText}>
+              {translate("Tap the button below to")}{" "}
+              <Bold>{translate("launch")} </Bold>
+              {translate("Your first Campaign")}
+            </Text>
+          )}
+          {mainBusiness.user_role !== "3" && (
+            <Animatable.View
+              animation="swing"
+              duration={1200}
+              iterationDelay={1000}
+              iterationCount="infinite"
             >
-              <Text style={styles.campaignButtonText}>
-                {translate(`New\nCampaign`)}
-              </Text>
-            </Button>
-          </Animatable.View>
+              <GradientButton
+                onPressAction={() => {
+                  if (this.props.mainBusiness.hasOwnProperty("businessid")) {
+                    Segment.trackWithProperties("Create Campaign", {
+                      category: "Campaign Creation"
+                    });
+                    this.props.navigation.navigate("AdType");
+                  } else {
+                    this.props.navigation.navigate("CreateBusinessAccount");
+                  }
+                }}
+                uppercase={true}
+                style={styles.campaignButton}
+                textStyle={styles.campaignButtonText}
+                text={
+                  mainBusiness.hasOwnProperty("businessid")
+                    ? translate(`New\nCampaign`)
+                    : translate(`Create new business`)
+                }
+              />
+            </Animatable.View>
+          )}
         </View>
       </View>
     );

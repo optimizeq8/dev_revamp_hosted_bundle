@@ -3,21 +3,20 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Modal,
   Platform,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import CustomHeader from "../../MiniComponents/Header";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
-import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text, Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
+
+import { Modal, ActivityIndicator } from "react-native-paper";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
-import CloseIcon from "../../../assets/SVGs/Close";
 
 // Style
 import styles from "./styles";
@@ -30,7 +29,12 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import formatNumber from "../../formatNumber";
-import { ActivityIndicator } from "react-native-paper";
+
+//compnents
+import CustomHeader from "../../MiniComponents/Header";
+import GradientButton from "../../MiniComponents/GradientButton";
+import WalletCard from "../../MiniComponents/WalletTopUpCard";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -48,6 +52,7 @@ class Wallet extends Component {
   }
   componentDidMount() {
     this.props.wallet === 0 && this.props.getWalletAmount();
+    this.props.getWalletTransactionsHistory();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   componentWillUnmount() {
@@ -77,7 +82,11 @@ class Wallet extends Component {
     }
   };
   handleModalVisibility = () => {
-    this.setState({ modalVisible: !this.state.modalVisible });
+    this.setState({ modalVisible: !this.state.modalVisible }, () => {
+      if (this.state.modalVisible) {
+        Segment.screen("Wallet Top Up Modal");
+      }
+    });
   };
 
   render() {
@@ -109,8 +118,7 @@ class Wallet extends Component {
             title={"Wallet"}
             navigation={this.props.navigation}
           />
-
-          <WalletIcon style={styles.walletIcon} width={85} height={85} />
+          <WalletIcon style={styles.walletIcon} width={60} height={60} />
           <View
             style={{
               flexDirection: "row",
@@ -138,22 +146,21 @@ class Wallet extends Component {
           </View>
           <Text style={styles.text}>{translate("Available Balance")}</Text>
           {!this.state.modalVisible && (
-            <View style={[styles.mainCard]}>
+            <View>
               <Text style={[styles.mainText]}>
                 {translate(
                   "Your wallet can be used to purchase ads or to resume paused ads immediately"
                 )}
               </Text>
-
-              <Button
-                full
+              <GradientButton
                 style={styles.button}
-                onPress={this.handleModalVisibility}
-              >
-                <Text style={styles.buttontext}>
-                  {translate("Top up wallet")}{" "}
-                </Text>
-              </Button>
+                onPressAction={this.handleModalVisibility}
+                text={translate("Top up wallet")}
+                textStyle={styles.buttontext}
+                uppercase={true}
+                gradientDirection={"vertical"}
+                orangeDark={true}
+              />
               {/* <Button
                 full
                 style={styles.button}
@@ -165,104 +172,144 @@ class Wallet extends Component {
               </Button> */}
             </View>
           )}
-          <Modal
-            animationType={"fade"}
-            transparent
-            onRequestClose={this.handleModalVisibility}
-            visible={this.state.modalVisible}
-          >
-            <BlurView tint="dark" intensity={100} style={styles.BlurView}>
-              <Button transparent onPress={this.handleModalVisibility}>
-                <CloseIcon width={20} height={20} />
-              </Button>
-              <KeyboardAwareScrollView
-                contentContainerStyle={styles.keyboardContainer}
-              >
-                <TouchableWithoutFeedback
-                  onPress={Keyboard.dismiss}
-                  accessible={false}
-                >
-                  <View style={styles.midContainer}>
-                    <WalletIcon
-                      style={styles.walletIcon}
-                      width={85}
-                      height={85}
+          {this.props.walletTransactionListLoading && (
+            <ActivityIndicator
+              size="large"
+              color={globalColors.orange}
+              style={styles.listLoader}
+            />
+          )}
+          {!this.props.walletTransactionListLoading &&
+            this.props.walletTransactionList &&
+            this.props.walletTransactionList.length > 0 && (
+              <Text uppercase style={styles.topUpHistory}>
+                {translate("Top-Up History")}
+              </Text>
+            )}
+          {!this.props.walletTransactionListLoading &&
+            this.props.walletTransactionList &&
+            this.props.walletTransactionList.length > 0 && (
+              <ScrollView contentContainerStyle={styles.contentScrollView}>
+                {this.props.walletTransactionList.map(transaction => {
+                  return (
+                    <WalletCard
+                      key={transaction.id}
+                      screenProps={this.props.screenProps}
+                      transaction={transaction}
                     />
-                    <Text style={styles.title}>
-                      {translate("Wallet")} {"\n"}
-                      {translate("Top Up")}
-                    </Text>
-                    <Text style={[styles.subHeading]}>
+                  );
+                })}
+              </ScrollView>
+            )}
+        </Container>
+        <Modal
+          animationType={"fade"}
+          transparent={Platform.OS === "ios"}
+          onDismiss={this.handleModalVisibility}
+          visible={this.state.modalVisible}
+        >
+          <BlurView tint="dark" intensity={95} style={styles.BlurView}>
+            <SafeAreaView
+              style={[styles.safeAreaContainer]}
+              forceInset={{ bottom: "always", top: "always" }}
+            >
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                title={"Top up wallet"}
+                actionButton={this.handleModalVisibility}
+              />
+
+              <TouchableWithoutFeedback
+                onPress={Keyboard.dismiss}
+                accessible={false}
+              >
+                <View style={styles.midContainer}>
+                  <WalletIcon
+                    style={[styles.walletIcon, styles.modalWalletIcon]}
+                    width={82}
+                    height={65}
+                  />
+                  {/* <Text style={[styles.subHeading]}>
                       {translate(
                         "Please input the amount You’d like to add to your wallet"
                       )}
-                    </Text>
+                    </Text> */}
+                  <Animatable.View
+                    animation={!this.state.amountError ? "" : "shake"}
+                    duration={200}
+                    style={styles.inputAnimatableView}
+                    onAnimationEnd={() => this.setState({ amountError: null })}
+                  >
+                    <View style={styles.amountLabelView}>
+                      <Text uppercase style={styles.amountLabelText}>
+                        {translate("Amount")}
+                      </Text>
+                    </View>
 
-                    <Animatable.View
-                      animation={!this.state.amountError ? "" : "shake"}
-                      duration={200}
-                      style={styles.inputAnimatableView}
-                      onAnimationEnd={() =>
-                        this.setState({ amountError: null })
-                      }
+                    <Item
+                      style={[
+                        styles.input,
+                        globalStyles.transparentBorderColor
+                        // this.state.inputA
+                        //   ? globalStyles.purpleBorderColor
+                        //   : this.state.amountError
+                        //   ? globalStyles.redBorderColor
+                        //   : globalStyles.lightGrayBorderColor
+                      ]}
                     >
-                      <Item
-                        style={[
-                          styles.input,
-                          this.state.inputA
-                            ? globalStyles.purpleBorderColor
-                            : this.state.amountError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
-                        ]}
-                      >
-                        <Label style={[styles.labeltext]}>$</Label>
-                        <Input
-                          placeholder="0.00"
-                          placeholderTextColor="#fff"
-                          maxLength={6}
-                          keyboardType="number-pad"
-                          style={styles.inputtext}
-                          value={`${
-                            isNaN(this.state.amount) ? "" : this.state.amount
-                          }`}
-                          onChangeText={amount =>
-                            this.setState({
-                              amount: parseFloat(amount)
-                            })
-                          }
-                          onFocus={() => this.setState({ inputA: true })}
-                          onBlur={() =>
-                            this.setState({
-                              inputA: false,
-                              amountError: validateWrapper(
-                                "Budget",
-                                this.state.amount
-                              )
-                            })
-                          }
-                        />
-                        <Button
-                          transparent
-                          style={styles.sendButton}
-                          onPress={() => this._handleSubmission()}
-                        >
-                          <Icon
-                            type="MaterialIcons"
-                            name="send"
-                            style={{
-                              color: globalColors.orange
-                            }}
-                          />
-                        </Button>
-                      </Item>
-                    </Animatable.View>
-                  </View>
-                </TouchableWithoutFeedback>
-              </KeyboardAwareScrollView>
-            </BlurView>
-          </Modal>
-        </Container>
+                      <Label style={[styles.labeltext]}>$</Label>
+                      <Input
+                        placeholder="0.00"
+                        placeholderTextColor="#fff"
+                        maxLength={6}
+                        keyboardType="number-pad"
+                        style={styles.inputtext}
+                        value={`${
+                          isNaN(this.state.amount) ? "" : this.state.amount
+                        }`}
+                        onChangeText={amount =>
+                          this.setState({
+                            amount: parseFloat(amount)
+                          })
+                        }
+                        onFocus={() => this.setState({ inputA: true })}
+                        onBlur={() =>
+                          this.setState({
+                            inputA: false,
+                            amountError: validateWrapper(
+                              "Budget",
+                              this.state.amount
+                            )
+                          })
+                        }
+                      />
+                    </Item>
+                  </Animatable.View>
+                  <GradientButton
+                    style={styles.button}
+                    onPressAction={this._handleSubmission}
+                    text={translate("Top up wallet")}
+                    textStyle={styles.buttontext}
+                    uppercase={true}
+                    gradientDirection={"vertical"}
+                  />
+                  <GradientButton
+                    style={[
+                      styles.buttonTransparent,
+                      globalStyles.whiteBorderColor
+                    ]}
+                    onPressAction={() => this.handleModalVisibility()}
+                    text={translate("Cancel")}
+                    textStyle={styles.buttontext}
+                    uppercase={true}
+                    gradientDirection={"vertical"}
+                    transparent={true}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            </SafeAreaView>
+          </BlurView>
+        </Modal>
       </SafeAreaView>
     );
   }
@@ -270,16 +317,17 @@ class Wallet extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   wallet: state.transA.wallet,
-  loading: state.transA.loading
+  loading: state.transA.loading,
+  walletTransactionList: state.transA.walletTransactionList,
+  walletTransactionListLoading: state.transA.walletTransactionListLoading
 });
 
 const mapDispatchToProps = dispatch => ({
   getWalletAmountInKwd: amount =>
     dispatch(actionCreators.getWalletAmountInKwd(amount)),
-  getWalletAmount: () => dispatch(actionCreators.getWalletAmount())
+  getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
+  getWalletTransactionsHistory: () =>
+    dispatch(actionCreators.getWalletTransactionsHistory())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

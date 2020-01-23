@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    paddingHorizontal: widthPercentageToDP(20)
+    paddingHorizontal: widthPercentageToDP(20),
+    marginRight: 15
   },
   input: {
     marginTop: 10,
@@ -121,15 +122,8 @@ const styles = StyleSheet.create({
   },
   background: {
     position: "absolute",
-    top: heightPercentageToDP(20),
-    transform: [
-      {
-        translateX: 0
-      },
-      {
-        translateY: 0
-      }
-    ],
+    top: "10%",
+
     opacity: 0.3,
     alignSelf: "center",
     zIndex: 0
@@ -138,16 +132,27 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   createOneText: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    color: globalColors.orange,
-    textAlign: "center"
+    fontFamily: "montserrat-bold-english",
+    fontSize: 18,
+    color: globalColors.darkOrange,
+    textAlign: "center",
+    lineHeight: 22
   },
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    position: "absolute",
+    // position: "absolute",
     color: "#FFF"
+  },
+  proceedButtonRTL: {
+    width: 55,
+    height: 55,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

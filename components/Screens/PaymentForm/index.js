@@ -23,6 +23,7 @@ import UseWallet from "./UseWallet";
 import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //terms&conditions
 import { openTerms } from "../../Terms&Conditions";
@@ -35,6 +36,7 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -98,9 +100,16 @@ class PaymentForm extends Component {
     //   this.reviewPurchase();
   };
   showRemoveAmountModal = () => {
-    this.setState({
-      showRemoveWalletAmount: !this.state.showRemoveWalletAmount
-    });
+    this.setState(
+      {
+        showRemoveWalletAmount: !this.state.showRemoveWalletAmount
+      },
+      () => {
+        if (this.state.showRemoveWalletAmount) {
+          Segment.screen("Remove Wallet Amount");
+        }
+      }
+    );
   };
   _openWebBrowserAsync = async () => {
     try {
@@ -215,7 +224,8 @@ class PaymentForm extends Component {
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
-          this.props.navigation
+          this.props.navigation,
+          this.closeBrowserLoading
         );
       } else if (this.state.choice === 3) {
         Segment.trackWithProperties("Completed Checkout Step", {
@@ -227,7 +237,8 @@ class PaymentForm extends Component {
         this.props.payment_request_credit_card(
           this.props.campaign_id,
           this._openWebBrowserAsync,
-          this.props.navigation
+          this.props.navigation,
+          this.closeBrowserLoading
         );
       }
     }
@@ -276,18 +287,22 @@ class PaymentForm extends Component {
   };
 
   _handleChoice = choice => {
+    segmentEventTrack("Selected Payment Type", {
+      payment_type:
+        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD"
+    });
     this.setState({
       choice,
       payment_type: choice === 3 ? 2 : 1
     });
   };
   _handleAgencyFee = () => {
-    if (this.props.data.lifetime_budget_micro < 3000) {
-      return this.props.data.lifetime_budget_micro * 0.15;
-    } else if (this.props.data.lifetime_budget_micro < 10000) {
-      return this.props.data.lifetime_budget_micro * 0.1;
+    if (this.props.campaign_budget < 3000) {
+      return this.props.campaign_budget * 0.15;
+    } else if (this.props.campaign_budget < 10000) {
+      return this.props.campaign_budget * 0.1;
     } else {
-      return this.props.data.lifetime_budget_micro * 0.05;
+      return this.props.campaign_budget * 0.05;
     }
   };
   closeBrowserLoading = () => {
@@ -295,6 +310,9 @@ class PaymentForm extends Component {
   };
 
   setShowWalletModal = value => {
+    if (value) {
+      Segment.screen("Payment through WALLET");
+    }
     this.setState({
       showWalletModal: value
     });
@@ -308,7 +326,7 @@ class PaymentForm extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            if (this.props.navigation.getParam("addingCredits") === true) {
+            if (this.state.addingCredits) {
               Segment.screenWithProperties("Payment Selection", {
                 category: "Wallet Top Up"
               });
@@ -328,7 +346,7 @@ class PaymentForm extends Component {
         />
 
         <Container style={[styles.container]}>
-          <BackDrop style={styles.backDrop} />
+          {/* <BackDrop style={styles.backDrop} /> */}
           <CustomHeader
             screenProps={this.props.screenProps}
             closeButton={false}
@@ -339,7 +357,7 @@ class PaymentForm extends Component {
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
             // paymentForm={true}
-            title={"Payment"}
+            title={this.state.addingCredits ? "Top up wallet" : "Payment"}
           />
           <Content
             padder
@@ -348,76 +366,46 @@ class PaymentForm extends Component {
           >
             <View style={styles.buttonGroupBlock}>
               {!this.state.addingCredits && (
-                <Button
-                  style={[
-                    styles.whitebutton,
-                    this.state.choice === 1
-                      ? globalStyles.orangeBackgroundColor
-                      : globalStyles.whiteBackgroundColor
+                <GradientButton
+                  radius={35}
+                  transparent={this.state.choice !== 1}
+                  style={[styles.whitebutton]}
+                  textStyle={[
+                    styles.whitebuttontext,
+                    this.state.choice === 1 && globalStyles.whiteTextColor
                   ]}
-                  onPress={() => this._handleChoice(1)}
-                >
-                  <Text
-                    style={[
-                      styles.whitebuttontext,
-                      this.state.choice === 1
-                        ? globalStyles.whiteTextColor
-                        : globalStyles.purpleTextColor
-                    ]}
-                    uppercase
-                  >
-                    {translate("Wallet")}
-                  </Text>
-                </Button>
+                  onPressAction={() => this._handleChoice(1)}
+                  text={translate("Wallet")}
+                  uppercase={true}
+                />
               )}
 
               {this.showKnet && (
-                <Button
-                  style={[
-                    styles.whitebutton2,
-                    this.state.choice === 2
-                      ? globalStyles.orangeBackgroundColor
-                      : globalStyles.whiteBackgroundColor,
-                    {
-                      borderTopStartRadius: this.state.addingCredits ? 15 : 0,
-                      borderBottomStartRadius: this.state.addingCredits ? 15 : 0
-                    }
-                  ]}
-                  onPress={() => this._handleChoice(2)}
-                >
-                  <Text
-                    style={[
-                      styles.whitebuttontext,
-                      this.state.choice === 2
-                        ? globalStyles.whiteTextColor
-                        : globalStyles.purpleTextColor
-                    ]}
-                  >
-                    {translate("KNET")}
-                  </Text>
-                </Button>
-              )}
-              <Button
-                style={[
-                  styles.whitebutton3,
-                  this.state.choice === 3
-                    ? globalStyles.orangeBackgroundColor
-                    : globalStyles.whiteBackgroundColor
-                ]}
-                onPress={() => this._handleChoice(3)}
-              >
-                <Text
-                  style={[
+                <GradientButton
+                  radius={35}
+                  transparent={this.state.choice !== 2}
+                  style={[styles.whitebutton2]}
+                  textStyle={[
                     styles.whitebuttontext,
-                    this.state.choice === 3
-                      ? globalStyles.whiteTextColor
-                      : globalStyles.purpleTextColor
+                    this.state.choice === 2 && globalStyles.whiteTextColor
                   ]}
-                  uppercase
-                >
-                  {translate("Credit Card")}
-                </Text>
-              </Button>
+                  onPressAction={() => this._handleChoice(2)}
+                  text={translate("KNET")}
+                  uppercase={true}
+                />
+              )}
+              <GradientButton
+                transparent={this.state.choice !== 3}
+                radius={35}
+                style={[styles.whitebutton3]}
+                textStyle={[
+                  styles.whitebuttontext,
+                  this.state.choice === 3 && globalStyles.whiteTextColor
+                ]}
+                onPressAction={() => this._handleChoice(3)}
+                text={translate("Credit Card")}
+                uppercase={true}
+              />
             </View>
 
             {this.state.choice === 1 && (
@@ -478,11 +466,8 @@ class PaymentForm extends Component {
                       ? formatNumber(this.state.amount, true)
                       : this.props.walletUsed
                       ? formatNumber(this.props.campaign_balance_amount, true)
-                      : this.props.data &&
-                        formatNumber(
-                          this.props.data.campaignInfo.lifetime_budget_micro,
-                          true
-                        )}
+                      : this.props.campaign_budget &&
+                        formatNumber(this.props.campaign_budget, true)}
                   </Text>
                 </View>
                 <View style={styles.kdAmountContainer}>
@@ -496,7 +481,7 @@ class PaymentForm extends Component {
                       ? this.props.campaign_balance_amount_kwd
                       : this.props.navigation.getParam(
                           "kdamount",
-                          this.props.kdamount
+                          this.props.campaign_budget_kdamount
                         )}
                   </Text>
                 </View>
@@ -509,22 +494,24 @@ class PaymentForm extends Component {
                   </View>
                 )}
               </View>
-              <TouchableOpacity
-                onPress={() => this._handleSubmission()}
+
+              <GradientButton
+                onPressAction={this._handleSubmission}
                 style={[
-                  styles.mainCard,
-                  { opacity: this.props.loadingTrans ? 0.5 : 1 }
+                  styles.mainCard
+                  // { opacity: this.props.loadingTrans ? 0.5 : 1 }
                 ]}
                 disabled={this.props.loadingTrans}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                >
-                  <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
+                <View style={styles.flexBoxRow}>
+                  <Text
+                    uppercase={this.state.addingCredits}
+                    style={styles.payNowText}
+                  >
+                    {this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")}
+                  </Text>
                   {this.props.loadingTrans && (
                     <ActivityIndicator
                       color={globalColors.red}
@@ -532,7 +519,7 @@ class PaymentForm extends Component {
                     />
                   )}
                 </View>
-              </TouchableOpacity>
+              </GradientButton>
             </View>
 
             <TouchableOpacity
@@ -548,11 +535,11 @@ class PaymentForm extends Component {
                 <Text
                   allowFontScaling={false}
                   onPress={() => {
-                    // this.setState({ browserLoading: true });
                     this.props.navigation.push("WebView", {
                       url: "https://www.optimizeapp.com/terms_conditions",
                       title: "Terms & Conditions"
                     });
+                    // this.setState({ browserLoading: true });
                     // openTerms(this.closeBrowserLoading);
                   }}
                   style={[styles.link, styles.tNcText]}
@@ -584,20 +571,33 @@ class PaymentForm extends Component {
                       "Are you sure you want to go back? This will reset your wallet"
                     )}
                   </Text>
-                  <Button
-                    onPress={() => this.removeWalletAmountAndGoBack()}
+                  <GradientButton
+                    uppercase={true}
+                    onPressAction={() => {
+                      segmentEventTrack(
+                        "Button clicked to CONFIRM remove wallet amount and go back to ad payment review screen"
+                      );
+
+                      this.removeWalletAmountAndGoBack();
+                    }}
                     style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>
-                      {translate("Confirm")}
-                    </Text>
-                  </Button>
-                  <Button
-                    onPress={() => this.showRemoveAmountModal()}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
-                  </Button>
+                    text={translate("Confirm")}
+                    textStyle={styles.colorWhite}
+                  />
+
+                  <GradientButton
+                    uppercase={true}
+                    transparent={true}
+                    onPressAction={() => {
+                      segmentEventTrack(
+                        "Cancel Button clicked to close remove wallet amount modal"
+                      );
+                      this.showRemoveAmountModal();
+                    }}
+                    style={[styles.walletButton, styles.transaprentButton]}
+                    text={translate("Cancel")}
+                    textStyle={styles.colorWhite}
+                  />
                 </>
               )}
             </View>
@@ -613,11 +613,11 @@ class PaymentForm extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data,
+  campaign_budget: state.transA.campaign_budget,
   mainBusiness: state.account.mainBusiness,
-  campaign_id: state.campaignC.campaign_id,
-  kdamount: state.campaignC.kdamount,
-  payment_data: state.campaignC.payment_data,
+  campaign_id: state.transA.campaign_id,
+  campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
+  payment_data: state.transA.campaign_payment_data,
   payment_data_wallet: state.transA.payment_data,
   wallet_amount_applied: state.transA.wallet_amount_applied,
   wallet_balance_amount: state.transA.wallet_balance_amount,
@@ -625,16 +625,26 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   walletUsed: state.transA.walletUsed,
   walletAmountInKwd: state.transA.walletAmountInKwd,
-  loading: state.campaignC.loading,
+  loading: state.transA.loading_transaction,
   loadingTrans: state.transA.loading,
   wallet: state.transA.wallet
 });
 const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
 
-  payment_request_knet: (campaign_id, openBrowser, navigation) =>
+  payment_request_knet: (
+    campaign_id,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
     dispatch(
-      actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
+      actionCreators.payment_request_knet(
+        campaign_id,
+        openBrowser,
+        navigation,
+        closeBrowserLoading
+      )
     ),
   removeWalletAmount: (info, naviagtion, names, goBack) =>
     dispatch(
@@ -642,12 +652,18 @@ const mapDispatchToProps = dispatch => ({
     ),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser)),
-  payment_request_credit_card: (campaign_id, openBrowser, navigation) =>
+  payment_request_credit_card: (
+    campaign_id,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
     dispatch(
       actionCreators.payment_request_credit_card(
         campaign_id,
         openBrowser,
-        navigation
+        navigation,
+        closeBrowserLoading
       )
     )
 });

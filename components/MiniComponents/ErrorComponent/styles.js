@@ -2,8 +2,8 @@ import { StyleSheet } from "react-native";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
+  background2: "#9300FF",
+  background1: "#5600CB"
 };
 const styles = StyleSheet.create({
   gradient: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     textAlign: "center"
   },
   header: {
@@ -54,8 +54,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 25,
-    backgroundColor: "#FF9D00",
-    borderRadius: 15,
     width: 250,
     height: 50,
     alignSelf: "center",
@@ -63,8 +61,9 @@ const styles = StyleSheet.create({
   },
   whitebutton: {
     marginTop: 15,
-    backgroundColor: "#fff",
-    borderRadius: 15,
+    borderColor: "#FFF",
+    borderWidth: 1,
+    borderRadius: 25,
     width: 250,
     height: 50,
     alignSelf: "center",
@@ -73,12 +72,12 @@ const styles = StyleSheet.create({
   buttontext: {
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-bold"
   },
   whitebuttontext: {
-    color: "#751AFF",
+    color: "#FFF",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-bold"
   },
   title: {
     marginTop: 15,

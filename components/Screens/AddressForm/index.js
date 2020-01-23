@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, BackHandler } from "react-native";
+import { BackHandler } from "react-native";
 import * as Segment from "expo-analytics-segment";
-import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
+
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
 import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
@@ -21,7 +21,7 @@ import Countries from "../../Data/countries.billingAddress";
 //Functions
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
-import isEqual from "lodash/isEqual";
+import isEqual from "react-fast-compare";
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -42,10 +42,7 @@ class AddressForm extends Component {
       addressId: null,
       country_code: "",
       region_id: [],
-
-      sidemenustate: false,
       sidemenu: "",
-
       inputC: false,
       inputA: false,
       inputBL: false,
@@ -74,8 +71,7 @@ class AddressForm extends Component {
     this.setState(
       {
         from: this.props.navigation.getParam("from", null),
-        kdamount: this.props.navigation.getParam("kdamount", null),
-        interestNames: this.props.navigation.getParam("interestNames", null)
+        kdamount: this.props.navigation.getParam("kdamount", null)
       },
       () => {
         if (this.state.from === "creditCard")
@@ -96,14 +92,7 @@ class AddressForm extends Component {
     if (
       prevProps.address &&
       this.props.address &&
-      (!isEqual(prevProps.address, this.props.address) ||
-        (prevState.address.country === "" &&
-          prevState.address.area === "" &&
-          prevState.address.block === "" &&
-          prevState.address.street === "" &&
-          prevState.address.building === "" &&
-          prevState.address.avenue === "" &&
-          prevState.address.office === ""))
+      !isEqual(prevProps.address, this.props.address)
     ) {
       const bsn_address = {
         country: this.props.address.country,
@@ -133,15 +122,15 @@ class AddressForm extends Component {
       });
     } else {
       this.setState({
-        address: { ...this.state.address, [key]: value },
-        country_code
+        address: {
+          ...this.state.address,
+          [key]: value
+        }
+        // country_code
       });
     }
   };
 
-  _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {});
-  };
   _handleSubmission = () => {
     this.props.addressForm(
       this.state.address,
@@ -156,35 +145,30 @@ class AddressForm extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Container style={styles.container}>
-          <View style={styles.dataContainer}>
-            {/* TODO: When user selects CC display this */}
-            {this.state.from === "creditCard" &&
-            !isUndefined(this.state.addressId) &&
-            !isNull(this.state.addressId) ? (
-              <SelectBillingAddressCard
-                address={this.state.address}
-                addressId={this.state.addressId}
-                navigation={this.props.navigation}
-                kdamount={this.state.kdamount}
-              />
-            ) : (
-              <BillingAddressCard
-                screenProps={this.props.screenProps}
-                address={this.state.address}
-                _handleSubmission={this._handleSubmission}
-                _handleAddressChange={this._handleAddressChange}
-                country_code={this.state.country_code}
-                _handleSideMenuState={this._handleSideMenuState}
-                sidemenustate={this.state.sidemenustate}
-                errorLoading={this.props.errorLoading}
-                navigation={this.props.navigation}
-                saving={this.props.saving}
-                progressSaving={this.props.progressSaving}
-              />
-            )}
-          </View>
-        </Container>
+        {/* TODO: When user selects CC display this */}
+        {this.state.from === "creditCard" &&
+        !isUndefined(this.state.addressId) &&
+        !isNull(this.state.addressId) ? (
+          <SelectBillingAddressCard
+            address={this.state.address}
+            addressId={this.state.addressId}
+            navigation={this.props.navigation}
+            kdamount={this.state.kdamount}
+          />
+        ) : (
+          <BillingAddressCard
+            screenProps={this.props.screenProps}
+            address={this.state.address}
+            _handleSubmission={this._handleSubmission}
+            _handleAddressChange={this._handleAddressChange}
+            country_code={this.state.country_code}
+            errorLoading={this.props.errorLoading}
+            navigation={this.props.navigation}
+            saving={this.props.saving}
+            progressSaving={this.props.progressSaving}
+          />
+        )}
+
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -205,7 +189,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.addressForm(address, navigation, addressId)),
   getAddressDetail: () => dispatch(actionCreators.getAddressForm())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddressForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

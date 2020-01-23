@@ -1,14 +1,21 @@
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler, Text, I18nManager } from "react-native";
-import { Button, Container } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import {
+  View,
+  BackHandler,
+  Text,
+  I18nManager,
+  TouchableOpacity
+} from "react-native";
+
+import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import * as Segment from "expo-analytics-segment";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import CustomHeader from "../../MiniComponents/Header";
-import FilterMenu from "../../MiniComponents/FilterMenu";
+// import FilterMenu from "../../MiniComponents/FilterMenu";
+let FilterMenu = null;
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //Redux
@@ -41,8 +48,19 @@ class Transactions extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {});
+    this.setState({ sidemenustate: status });
+    if (!FilterMenu) {
+      FilterMenu = require("../../MiniComponents/FilterMenu").default;
+    } else FilterMenu = null;
   };
+
+  renderTransactionCard = ({ item }) => (
+    <TransactionCard
+      key={item.payment_id}
+      transaction={item}
+      screenProps={this.props.screenProps}
+    />
+  );
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.errorTransactionList) {
@@ -54,78 +72,77 @@ class Transactions extends Component {
       );
     } else if (this.props.loading) return <LoadingScreen dash={true} top={0} />;
     else {
-      let menu = (
+      let menu = FilterMenu ? (
         <FilterMenu
           screenProps={this.props.screenProps}
           transactionFilter={true}
           _handleSideMenuState={this._handleSideMenuState}
           open={this.state.sidemenustate}
         />
-      );
-      let transList = this.props.filteredTransactions.map(transaction => (
-        <TransactionCard
-          key={transaction.id}
-          transaction={transaction}
-          screenProps={this.props.screenProps}
-        />
-      ));
+      ) : null;
       return (
-        <SafeAreaView
-          style={styles.safeAreaContainer}
-          forceInset={{ bottom: "never", top: "always" }}
+        <Sidemenu
+          onChange={isOpen => {
+            if (isOpen === false) this._handleSideMenuState(isOpen);
+          }}
+          disableGestures={true}
+          menu={this.state.sidemenustate ? menu : null}
+          menuPosition={I18nManager.isRTL ? "left" : "right"}
+          openMenuOffset={widthPercentageToDP("85%")}
+          isOpen={this.state.sidemenustate}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              Segment.screenWithProperties("Transactions List", {
-                category: "User Menu"
-              });
-            }}
-          />
-          <Container style={styles.container}>
-            <Sidemenu
-              onChange={isOpen => {
-                if (isOpen === false) this._handleSideMenuState(isOpen);
+          <SafeAreaView
+            style={styles.safeAreaContainer}
+            forceInset={{ bottom: "never", top: "always" }}
+          >
+            <NavigationEvents
+              onDidFocus={() => {
+                Segment.screenWithProperties("Transactions List", {
+                  category: "User Menu"
+                });
               }}
-              disableGestures={true}
-              menu={this.state.sidemenustate ? menu : null}
-              menuPosition={I18nManager.isRTL ? "left" : "right"}
-              openMenuOffset={widthPercentageToDP("85%")}
-              isOpen={this.state.sidemenustate}
-            >
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                title={"Transactions"}
-                navigation={this.props.navigation}
-              />
-              <View style={styles.mainContainer}>
-                <View style={styles.headerBlock}>
-                  <View style={styles.searchContainer}>
-                    <SearchBar
-                      screenProps={this.props.screenProps}
-                      transactionSearch={true}
-                    />
-                  </View>
-                  <Button
+            />
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              title={"Transactions"}
+              navigation={this.props.navigation}
+            />
+            <View style={styles.mainContainer}>
+              <View style={styles.headerBlock}>
+                <View style={styles.searchContainer}>
+                  <SearchBar
+                    screenProps={this.props.screenProps}
+                    transactionSearch={true}
+                    customInputStyle={{
+                      backgroundColor: "#0004"
+                    }}
+                  />
+                </View>
+                {this.props.filteredTransactions.length !== 0 && (
+                  <TouchableOpacity
                     style={styles.activebutton}
                     onPress={() => {
                       this._handleSideMenuState(true);
                     }}
                   >
-                    <FilterIcon width={23} height={23} fill="#575757" />
-                  </Button>
-                </View>
-                {transList.length === 0 && (
-                  <Text style={styles.noTranText}>
-                    {translate("No transactions available")}
-                  </Text>
+                    <FilterIcon width={30} height={30} fill="#FFF" />
+                  </TouchableOpacity>
                 )}
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                  {transList}
-                </ScrollView>
               </View>
-            </Sidemenu>
-          </Container>
-        </SafeAreaView>
+              {this.props.filteredTransactions.length === 0 && (
+                <Text style={styles.noTranText}>
+                  {translate("No transactions available")}
+                </Text>
+              )}
+              <FlatList
+                renderItem={this.renderTransactionCard}
+                data={this.props.filteredTransactions}
+                contentContainerStyle={styles.contentContainer}
+                keyExtractor={item => item.payment_id}
+              />
+            </View>
+          </SafeAreaView>
+        </Sidemenu>
       );
     }
   }
@@ -143,7 +160,4 @@ const mapDispatchToProps = dispatch => ({
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
   getTransactions: () => dispatch(actionCreators.getTransactions())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Transactions);
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions);

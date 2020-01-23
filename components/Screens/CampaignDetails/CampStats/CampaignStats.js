@@ -1,115 +1,128 @@
-import React, { Component } from "react";
-import { Text, View } from "react-native";
+import React, { Component, PureComponent } from "react";
+import { View } from "react-native";
 import { connect } from "react-redux";
-import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
-import BoxStats from "./BoxStats";
 
-//styles
-import styles from "../styles";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import formatNumber from "../../../formatNumber";
+//icons
+import SingleMetric from "./SingleMetric";
 
-class CampaignStats extends Component {
-  render() {
-    let selectedCampaign = this.props.selectedCampaign;
+class CampaignStats extends PureComponent {
+  renderMetrics = item => {
     const { translate } = this.props.screenProps;
+
     return (
-      <>
-        <View
-          style={{
-            width: 200,
-            top: 35,
-            borderBottomWidth: 1,
-            borderBottomColor: "rgba(255,255,255,0.4)",
-            alignSelf: "center",
-            zIndex: 3
-          }}
+      <View key={item[0].metric}>
+        <SingleMetric
+          translate={translate}
+          loadingCampaignStats={this.props.loadingCampaignStats}
+          {...item[0]}
         />
+        {item.length > 1 && (
+          <SingleMetric
+            key={item[1].metric}
+            translate={translate}
+            loadingCampaignStats={this.props.loadingCampaignStats}
+            {...item[1]}
+          />
+        )}
+        {item.length > 2 && (
+          <SingleMetric
+            key={item[2].metric}
+            translate={translate}
+            loadingCampaignStats={this.props.loadingCampaignStats}
+            {...item[2]}
+          />
+        )}
+      </View>
+    );
+  };
 
-        <View style={styles.mainMetrics}>
-          {!this.props.loadingCampaignStats ? (
-            <Text
-              style={[
-                styles.title,
-                {
-                  fontSize: 13
-                }
-              ]}
-            >
-              {translate("Impressions")}
-              {"\n "}
-              <Text style={globalStyles.numbers}>
-                {selectedCampaign &&
-                  formatNumber(selectedCampaign.impressions, true)}
-              </Text>
-            </Text>
-          ) : (
-            <PlaceholderLine width={70} />
-          )}
-          {!this.props.loadingCampaignStats ? (
-            <Text
-              style={[
-                styles.title,
-                {
-                  fontSize: 13
-                }
-              ]}
-            >
-              {translate("Reach")}
-              {" \n"}
-              <Text style={globalStyles.numbers}>
-                {selectedCampaign && formatNumber(selectedCampaign.reach, true)}
-              </Text>
-            </Text>
-          ) : (
-            <PlaceholderLine width={70} />
-          )}
-          {!this.props.loadingCampaignStats ? (
-            <Text
-              style={[
-                styles.title,
-                {
-                  fontSize: 13
-                }
-              ]}
-            >
-              {translate("Paid Frequency")}
-              {" \n"}
-              <Text style={globalStyles.numbers}>
-                {selectedCampaign && selectedCampaign.paid_frequency}
-              </Text>
-            </Text>
-          ) : (
-            <PlaceholderLine width={70} />
-          )}
-        </View>
-        <BoxStats
-          screenProps={this.props.screenProps}
-          selectedCampaign={selectedCampaign}
-        />
-        <View style={[styles.boxStats, styles.wideBoxStat]}>
-          <Text style={[styles.stats, { width: 130 }]}>
-            {translate("Total Spend")}
-          </Text>
+  render() {
+    let { selectedCampaign, campaignMetrics } = this.props;
 
-          {this.props.loadingCampaignStats ? (
-            <PlaceholderLine />
-          ) : (
-            <Text style={[globalStyles.numbers, { fontSize: 25 }]}>
-              $ {selectedCampaign && selectedCampaign.spends.toFixed(2)}
-            </Text>
-          )}
-        </View>
-      </>
+    let metrics = [];
+    let objectiveMetric = [];
+    // filters out the unrelated metrics based on each objective
+    switch (selectedCampaign.objective) {
+      case "BRAND_AWARENESS":
+        objectiveMetric = campaignMetrics.filter(
+          metric =>
+            ![
+              "video views",
+              "swipes",
+              "eCPSU",
+              "eCPV",
+              "swipeup rate",
+              "impressions",
+              "spend"
+            ].includes(metric.metric)
+        );
+        break;
+
+      case "TRAFFIC":
+        objectiveMetric = campaignMetrics.filter(
+          metric =>
+            ![
+              "video views",
+              "eCPV",
+              "swipeup rate",
+              "spend",
+              "swipes"
+            ].includes(metric.metric)
+        );
+        break;
+      case "WEB_CONVERSION":
+        objectiveMetric = campaignMetrics.filter(
+          metric =>
+            ![
+              "video views",
+              "eCPV",
+              "swipeup rate",
+              "spend",
+              "swipes"
+            ].includes(metric.metric)
+        );
+        break;
+      case "APP_INSTALLS":
+        objectiveMetric = campaignMetrics.filter(
+          metric =>
+            ![
+              "video views",
+              "eCPV",
+              "swipeup rate",
+              "spend",
+              "swipes"
+            ].includes(metric.metric)
+        );
+        break;
+      case "VIDEO_VIEWS":
+        objectiveMetric = campaignMetrics.filter(
+          metric =>
+            !["eCPSU", "swipeup rate", "spend", "swipes"].includes(
+              metric.metric
+            )
+        );
+        break;
+      default:
+        break;
+    }
+    while (objectiveMetric.length > 0)
+      metrics.push(objectiveMetric.splice(0, 3));
+
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 5
+        }}
+      >
+        {metrics.map(metric => this.renderMetrics(metric))}
+      </View>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  loadingCampaignStats: state.dashboard.loadingCampaignStats
+  loadingCampaignStats: state.dashboard.loadingCampaignStats,
+  campaignMetrics: state.dashboard.campaignMetrics
 });
-export default connect(
-  mapStateToProps,
-  null
-)(CampaignStats);
+export default connect(mapStateToProps, null)(CampaignStats);

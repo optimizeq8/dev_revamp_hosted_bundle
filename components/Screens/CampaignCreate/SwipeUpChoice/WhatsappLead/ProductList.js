@@ -17,6 +17,8 @@ import {
 } from "react-native-responsive-screen";
 import PenIcon from "../../../../../assets/SVGs/Pen";
 import isStringArabic from "../../../../isStringArabic";
+import * as Segment from "expo-analytics-segment";
+import segmentEventTrack from "../../../../segmentEventTrack";
 
 class ProductList extends React.Component {
   constructor(props) {
@@ -27,8 +29,9 @@ class ProductList extends React.Component {
     };
   }
   componentDidMount() {
+    Segment.screen("Selected Products List");
     const list = this.props.navigation.getParam("selectetedItems", []);
-    // console.log('list', list);
+    // console.log("list", list);
     this.setState({
       cartList: list
     });
@@ -45,34 +48,29 @@ class ProductList extends React.Component {
   };
 
   editItem = item => {
+    segmentEventTrack("Clicked on edit item details", {
+      campaign_sme_product_item: {
+        ...item
+      }
+    });
     this.props.navigation.navigate("EditProductDetailInstagramPost", {
       cartList: this.state.cartList,
       item: item
     });
   };
   _handleSubmission = () => {
-    if (this.state.disable) {
-      showMessage({
-        message: this.props.screenProps.translate(
-          "Enter product names and price for all the selected products"
-        ),
-        duration: 2000,
-        type: "warning"
-      });
-    } else {
-      this.props.navigation.getParam("_changeDestination")();
-      this.props.saveWebProducts(
-        this.state.cartList,
-        //added checking for a rejected campaign to send the campaign id
-        this.props.rejCampaign
-          ? this.props.rejCampaign.campaign_id
-          : this.props.data.campaign_id,
-        this.props.productInfoId,
-        this.props.navigation,
-        this.props.businessLogo,
-        "fromUpdateProductList"
-      );
-    }
+    this.props.navigation.getParam("_changeDestination")();
+    this.props.saveWebProducts(
+      this.state.cartList,
+      //added checking for a rejected campaign to send the campaign id
+      this.props.rejCampaign
+        ? this.props.rejCampaign.campaign_id
+        : this.props.data.campaign_id,
+      this.props.productInfoId,
+      this.props.navigation,
+      this.props.businessLogo,
+      "fromUpdateProductList"
+    );
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -83,175 +81,82 @@ class ProductList extends React.Component {
       >
         <NavigationEvents
           onDidFocus={() => {
+            Segment.screen("Selected Products List");
             const list = this.props.navigation.getParam("selectetedItems", []);
-            const checkIfHasKeyProductName = list.map(item =>
-              item.hasOwnProperty("productName")
-            );
-            // console.log('checkIfHasKeyProductName', checkIfHasKeyProductName);
-            // console.log(' disable', includes(checkIfHasKeyProductName, false));
+            // const checkIfHasKeyProductName = list.map(item =>
+            //   item.hasOwnProperty("productName")
+            // );
+            // // console.log('checkIfHasKeyProductName', checkIfHasKeyProductName);
+            // // console.log(' disable', includes(checkIfHasKeyProductName, false));
 
             this.setState({
-              cartList: list,
-              disable: includes(checkIfHasKeyProductName, false)
+              cartList: list
+              // disable: includes(checkIfHasKeyProductName, false)
             });
           }}
         />
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
-            title={"WhatsApp Campaign"}
+            title={["SME Growth", "Campaign"]}
             closeButton={false}
             navigation={this.props.navigation}
-          />
-          <Content
-            style={{
-              paddingTop: 20,
-              // paddingHorizontal: 20,
-              flexGrow: 1
-              // marginBottom: heightPercentageToDP(30),
+            segment={{
+              str: "Products List Back Button"
             }}
-          >
-            <Text
-              style={{
-                color: "#FFF",
-                fontSize: 14,
-                fontFamily: "montserrat-regular",
-                textAlign: "center",
-                lineHeight: 18,
-                paddingHorizontal: 40
-              }}
-            >
+          />
+          <Content style={styles.contentStyle}>
+            <Text style={styles.addProductPriceText}>
               {translate("Add product names and prices for each product")}
             </Text>
-            <Content
-              contentContainerStyle={{
-                flex: 1,
-                paddingHorizontal: 40,
-                paddingTop: 20,
-                flexDirection: "row",
-                flexWrap: "wrap",
-                flexGrow: 1
-                // justifyContent: "space-around"
-              }}
-            >
+            <Content contentContainerStyle={styles.contentContainerStyle}>
               {this.state.cartList.map(item => {
                 // const itemFound = findIndex(this.state.cartList, it => it.id === item.id);
                 // console.log('itemFound', itemFound);
 
                 return (
-                  <View
-                    key={item.imageId}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      // paddingVertical: 12,
-                      marginVertical: 5,
-                      width: "43%",
-                      borderRadius: 20,
-                      marginHorizontal: 10,
-                      backgroundColor: "rgba(0,0,0,0.3)"
-                    }}
-                  >
-                    <View
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
+                  <View key={item.imageId} style={styles.productView}>
+                    <View style={styles.productImageView}>
                       <Image
                         source={{
                           uri: item.imageUrl
                         }}
                         width={"100%"}
                         height={"100%"}
-                        style={[
-                          {
-                            width: 144,
-                            height: 135,
-                            borderRadius: 20,
-                            // backgroundColor: "rgba(0,0,0,0.2)",
-                            opacity: 0.9
-                          }
-                        ]}
+                        style={[styles.imageView]}
                       />
                     </View>
                     <Text
                       uppercase
-                      style={{
-                        fontFamily: isStringArabic(
-                          item.productName
-                            ? item.productName
-                            : translate("Product Name")
-                        )
-                          ? "montserrat-semibold"
-                          : "montserrat-bold-english",
-                        color: "#fff",
-                        fontSize: 14,
-                        lineHeight: 17,
-                        paddingTop: 15,
-                        textAlign: "left",
-                        alignSelf: "flex-start",
-                        marginLeft: 12
-                      }}
+                      style={[
+                        {
+                          fontFamily: isStringArabic(
+                            item.productName
+                              ? item.productName
+                              : translate("Product Name")
+                          )
+                            ? "montserrat-semibold"
+                            : "montserrat-bold-english"
+                        },
+                        styles.productNameText
+                      ]}
                     >
                       {item.productName
                         ? item.productName
                         : translate("Product Name")}
                     </Text>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "flex-end",
-                        alignSelf: "flex-start",
-                        marginLeft: 12
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "montserrat-bold-english",
-                          color: "#FF9D00",
-                          fontSize: 12,
-                          lineHeight: 22,
-                          paddingBottom: 5
-                        }}
-                      >
-                        KD
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: "montserrat-bold-english",
-                          color: "#FF9D00",
-                          fontSize: 17,
-                          lineHeight: 22,
-                          paddingBottom: 5
-                        }}
-                      >
+                    <View style={styles.priceView}>
+                      <Text style={styles.kdText}>KD</Text>
+                      <Text style={styles.priceText}>
                         {" "}
                         {item.price ? item.price : "0"}
                       </Text>
                     </View>
                     <TouchableOpacity
-                      style={{
-                        width: 20,
-                        height: 20,
-                        alignSelf: "flex-end",
-                        marginRight: 10,
-                        marginBottom: 10
-                      }}
+                      style={styles.editTouchView}
                       onPress={() => this.editItem(item)}
                     >
-                      <PenIcon
-                        style={{
-                          width: 20,
-                          height: 20
-                        }}
-                        width={20}
-                        height={20}
-                      />
+                      <PenIcon style={styles.penIcon} width={20} height={20} />
                     </TouchableOpacity>
                   </View>
                 );

@@ -18,7 +18,7 @@ export default class AdTypeCard extends Component {
             business_name: this.props.mainBusiness.businessname,
             campaign_type: this.props.campaign_type
           });
-          this.props.navigationHandler(adType.rout);
+          this.props.navigationHandler(adType);
         }}
       >
         <View style={styles.typeCardContainer}>
@@ -34,13 +34,22 @@ export default class AdTypeCard extends Component {
           >
             {translate(adType.title)}{" "}
           </Text>
-          <View style={styles.placeholder}>
+          <View
+            style={[
+              styles.placeholder,
+              {
+                width: adType.mediaType === "google" ? "140%" : "100%",
+                backgroundColor:
+                  adType.mediaType === "google" ? "#0000" : "#fff"
+              }
+            ]}
+          >
             <Image
               loadingIndicatorSource={
                 <ActivityIndicator color={globalColors.white} />
               }
               style={styles.media}
-              resizeMode={"stretch"}
+              resizeMode={adType.mediaType === "google" ? "contain" : "stretch"}
               source={adType.media}
             />
           </View>

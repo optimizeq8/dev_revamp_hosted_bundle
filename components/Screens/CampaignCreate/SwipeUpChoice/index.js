@@ -3,12 +3,11 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Content, Container, View } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import CustomeHeader from "../../../MiniComponents/Header";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
 import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
 import Deep_Link from "./Deep_Link";
-import Instagram from "./Instagram";
 
 // Style
 import styles from "./styles";
@@ -22,13 +21,16 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null
   };
-
+  componentDidMount() {
+    this.segment();
+  }
   segment = () => {
     {
       switch (this.props.navigation.getParam("objective")) {
         case "LEAD_GENERATION":
           Segment.screenWithProperties("Snap Ad Website SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "Lead Generation Objective"
           });
           // Segment.trackWithProperties(
@@ -41,24 +43,21 @@ class SwipeUpChoice extends Component {
         case "VIDEO_VIEWS":
           Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "Video Views Objective"
           });
           break;
         case "WEB_CONVERSION":
-          Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
+          Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
             category: "Campaign Creation",
-            label: "Whatsapp Campaign Objective"
-          });
-          break;
-        case "WEB_CONVERSION_INSTAGRAM":
-          Segment.screenWithProperties("Snap Ad Instagram SwipeUp", {
-            category: "Campaign Creation",
-            label: "Instagram Traffic Objective"
+            channel: "snapchat",
+            label: "SME Growth Campaign Objective"
           });
           break;
         default:
           Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "App Install Objective"
           });
       }
@@ -139,14 +138,6 @@ class SwipeUpChoice extends Component {
             screenProps={this.props.screenProps}
           />
         );
-      } else if (objective === "WEB_CONVERSION_INSTAGRAM") {
-        menu = (
-          <Instagram
-            _changeDestination={_changeDestination}
-            navigation={this.props.navigation}
-            screenProps={this.props.screenProps}
-          />
-        );
       }
     }
 
@@ -165,13 +156,13 @@ class SwipeUpChoice extends Component {
               navigation={this.props.navigation}
             />
             <Content contentContainerStyle={styles.contentContainer}>
-              <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                scrollEnabled={false}
-                contentContainerStyle={styles.contentContainer}
+              <KeyBoardShift
+                // resetScrollToCoords={{ x: 0, y: 0 }}
+                // scrollEnabled={false}
+                style={styles.contentContainer}
               >
-                {menu}
-              </KeyboardAwareScrollView>
+                {() => menu}
+              </KeyBoardShift>
             </Content>
           </Container>
         </SafeAreaView>
@@ -184,7 +175,4 @@ const mapStateToProps = state => ({
   adType: state.campaignC.adType
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(SwipeUpChoice);
+export default connect(mapStateToProps, null)(SwipeUpChoice);

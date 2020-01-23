@@ -2,17 +2,24 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-import store from "../index";
-import Axios from "axios";
+import createBaseUrl from "./createBaseUrl";
 
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+export const setCampaignInfoForTransaction = data => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION,
+      payload: data
+    });
+  };
+};
+
+export const reset_transaction_reducer = () => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.RESET_TRANSACTION_DATA
+    });
+  };
+};
 
 export const getTransactions = () => {
   return (dispatch, getState) => {
@@ -26,6 +33,8 @@ export const getTransactions = () => {
         return res.data;
       })
       .then(data => {
+        // console.log("payment list:", data);
+
         return dispatch({
           type: actionTypes.SET_TRANSACTION_LIST,
           payload: data
@@ -197,13 +206,16 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
   };
 };
 export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
-      .post(`useWallet`, { campaign_id }, { timeout: 10000 })
+      .post(`useWallet`, info, { timeout: 10000 })
       .then(res => {
         return res.data;
       })
@@ -260,13 +272,17 @@ export const removeWalletAmount = (
   goBack,
   retries = 3
 ) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
+
     createBaseUrl()
-      .post(`removeWallet`, { campaign_id })
+      .post(`removeWallet`, info)
       .then(res => {
         return res.data;
       })
@@ -315,13 +331,17 @@ export const removeWalletAmount = (
 };
 
 export const checkoutwithWallet = (campaign_id, retries = 3) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
+
     createBaseUrl()
-      .post(`checkoutwithWallet`, { campaign_id })
+      .post(`checkoutwithWallet`, info)
       .then(res => {
         return res.data;
       })
@@ -337,8 +357,8 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
       .catch(err => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
-        if (reties > 0) {
-          checkoutwithWallet(campaign_id, reties - 1);
+        if (retries > 0) {
+          checkoutwithWallet(campaign_id, retries - 1);
           return;
         }
         showMessage({
@@ -366,4 +386,167 @@ export const filterTransactions = query => {
       type: actionTypes.FILTER_TRANSACTION,
       payload: query
     });
+};
+
+export const payment_request_knet = (
+  campaign_id,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+    var url =
+      getState().transA.channel === ""
+        ? `makeknetpayment/${campaign_id}`
+        : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
+
+    createBaseUrl()
+      .get(url)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.knet_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.knet_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        // console.log("payment_request_knet", err || err);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
+  };
+};
+
+export const payment_request_credit_card = (
+  campaign_id,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+
+    var url =
+      getState().transA.channel === ""
+        ? `makeccpayment/${campaign_id}`
+        : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
+
+    createBaseUrl()
+      .post(url)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.cc_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.cc_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        // console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
+  };
+};
+/**
+ * Get wallet transaction list for the current business id
+ *
+ *
+ *
+ */
+export const getWalletTransactionsHistory = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_TRAN_WALLET_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .get(`walletpaymentHistory/${getState().account.mainBusiness.businessid}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        // console.log("payment list:", data);
+        return dispatch({
+          type: actionTypes.SET_WALLET_TRANSACTION_LIST,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST
+        });
+      });
+  };
 };

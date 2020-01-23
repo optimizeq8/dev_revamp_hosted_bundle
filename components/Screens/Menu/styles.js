@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   switchArrowIcon: {
     marginLeft: 5,
-    right: 20,
+    // right: 20,
     top: 1
   },
   scrollViewContainer: {
@@ -48,14 +48,15 @@ const styles = StyleSheet.create({
   },
   button: {
     top: heightPercentageToDP("2"),
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
     marginBottom: heightPercentageToDP(3),
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     borderRadius: 30,
+    width: 150,
+    height: 50,
     alignSelf: "center",
-    zIndex: 2
+    zIndex: 2,
+    flexDirection: "column",
+    justifyContent: "center"
   },
   buttonText: {
     fontFamily: "montserrat-bold",
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
   },
   CloseIcon: {
     position: "absolute",
-    top: heightPercentageToDP("5"),
-    left: widthPercentageToDP("6%"),
+    top: "2%",
+    left: "3%",
     zIndex: 15,
     padding: 10
   },
@@ -130,6 +131,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "montserrat-medium-english",
     marginBottom: "5%"
+  },
+  backDrop: {
+    position: "absolute",
+    top: heightPercentageToDP(5) < 40 ? -240 : -210,
+    alignSelf: "center",
+    zIndex: -1,
+    elevation: -2
+  },
+  businessListContainer: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 30
   }
 });
 

@@ -93,14 +93,10 @@ const styles = StyleSheet.create({
     paddingTop: 30
   },
   input2: {
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
     paddingHorizontal: 50,
     borderRadius: 30,
     alignSelf: "center",
-    width: 300,
-    height: 50,
-    // marginTop: 10,
-    marginBottom: 20,
+    top: 20,
     borderColor: "transparent"
   },
   label: {
@@ -250,6 +246,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-bold",
     textAlign: "center"
+  },
+  proceedButtonRTL: {
+    width: 65,
+    height: 65,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

@@ -6,17 +6,13 @@ import { AsyncStorage } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-  });
+import createBaseUrl from "./createBaseUrl";
+
 export const setAuthToken = token => {
   if (token) {
     return SecureStore.setItemAsync("token", token)
       .then(
-        () => (axios.defaults.headers.common.Authorization = `jwt ${token}`)
+        () => (axios.defaults.headers.common.Authorization = `Bearer ${token}`)
       )
       .catch(err => {
         //  console.log("setAuthToken setItem token", err.message || err.response )
@@ -72,7 +68,6 @@ export const checkForUpdate = (retries = 3) => {
       });
   };
 };
-
 export const update_app_status_chat_notification = app_state => {
   return (dispatch, getState) => {
     axios
@@ -103,6 +98,69 @@ export const update_app_status_chat_notification = app_state => {
         //   "sendChatNotificationbySMS err",
         //   err.message || err.response
         // );
+      });
+  };
+};
+
+export const getBusinessAccounts = () => {
+  return (dispatch, getState) => {
+    dispatch(getBusinessInvites());
+    dispatch({
+      type: actionTypes.SET_LOADING_BUSINESS_LIST,
+      payload: true
+    });
+    createBaseUrl()
+      .get(`businessaccounts`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        // showMessage({
+        //   message: data.message,
+        //   type: response.data.success ? "success" : "warning"
+        // })
+        AsyncStorage.getItem("indexOfMainBusiness").then(value => {
+          return dispatch({
+            type: actionTypes.SET_BUSINESS_ACCOUNTS,
+            payload: {
+              data: data,
+              index: value ? value : 0,
+              userid: getState().auth.userInfo.userid
+            }
+          });
+        });
+        return;
+      })
+
+      .catch(err => {
+        // console.log("getBusinessAccountsError", err.message || err.response);
+        // errorMessageHandler(err);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+
+        return dispatch({
+          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
+        });
+      });
+  };
+};
+
+export const getBusinessInvites = () => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
+      .then(res => res.data)
+      .then(data => {
+        dispatch({
+          payload: data.data,
+          type: actionTypes.SET_BUSINESS_INVITES
+        });
       });
   };
 };

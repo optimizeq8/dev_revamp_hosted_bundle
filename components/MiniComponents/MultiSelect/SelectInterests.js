@@ -3,7 +3,7 @@ import { View, ScrollView, ActivityIndicator } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import isNull from "lodash/isNull";
-
+import * as Segment from "expo-analytics-segment";
 //Icons
 import BackButton from "../../MiniComponents/BackButton";
 import InterestsIcon from "../../../assets/SVGs/Interests";
@@ -22,6 +22,7 @@ import Picker from "../Picker";
 class SelectInterests extends Component {
   state = { interests: null, open: false };
   componentDidMount() {
+    Segment.screen("Interests Options");
     !this.props.addressForm &&
       this.props.get_interests(this.props.country_code);
     this.setState({
@@ -92,6 +93,7 @@ class SelectInterests extends Component {
               </Button>
               <ScrollView style={styles.scrollContainer}>
                 <Picker
+                  showIcon={true}
                   screenProps={this.props.screenProps}
                   searchPlaceholderText={translate("Search Interests")}
                   data={this.state.interests}
@@ -130,7 +132,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   get_interests: info => dispatch(actionCreators.get_interests(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectInterests);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectInterests);

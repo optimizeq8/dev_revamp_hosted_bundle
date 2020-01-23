@@ -4,9 +4,10 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity
+  TouchableOpacity,
+  I18nManager
 } from "react-native";
-import { Button, Text, Item, Input, Container } from "native-base";
+import { Button, Text, Item, Input, Container, Content } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -21,7 +22,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
 import ForwardLoading from "../../MiniComponents/ForwardLoading";
 
@@ -39,7 +39,7 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 import { colors } from "../../GradiantColors/colors";
 
-class MainForm extends Component {
+class Signin extends Component {
   static navigationOptions = {
     header: null
   };
@@ -70,186 +70,183 @@ class MainForm extends Component {
     Segment.screenWithProperties("Sign In", {
       category: "Sign In"
     });
-    // if (
-    //   this.props.navigation &&
-    //   this.props.navigation.getParam("loggedout", false)
-    // ) {
-    // } else {
-    this.props.checkForExpiredToken(this.props.navigation);
-    // }
+    if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
   render() {
-    let invite = this.props.navigation.getParam("invite", false);
     const { translate } = this.props.screenProps;
-
-    return (
-      <SafeAreaView
-        forceInset={{ bottom: "never", top: "always" }}
-        style={styles.safeAreaViewContainer}
-      >
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[1, 0.3]}
-          style={styles.gradient}
-        />
-        <Container style={styles.container}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <View style={[styles.touchableViewContainer]}>
-              <View>
+    if (this.props.userInfo) {
+      return <LoadingScreen dash={true} />;
+    } else
+      return (
+        <SafeAreaView
+          forceInset={{ bottom: "never", top: "always" }}
+          style={styles.safeAreaViewContainer}
+        >
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={styles.gradient}
+          />
+          <Container style={styles.container}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <View style={[styles.touchableViewContainer]}>
                 <Background
-                  style={styles.background}
+                  style={[globalStyles.background]}
                   width={widthPercentageToDP(90)}
                   height={heightPercentageToDP(65)}
                 />
-              </View>
-              <View style={styles.logoContainer}>
-                <Logo
-                  style={styles.logo}
-                  width={heightPercentageToDP(12)}
-                  height={heightPercentageToDP(12)}
-                />
-                <Text style={styles.logoText}>Optimize</Text>
-              </View>
-              <KeyboardShift style={styles.keyboardShiftContainer}>
-                {() => (
-                  <View style={styles.keyboardShiftContainer}>
-                    {/* <Text style={styles.text}>Sign In</Text> */}
-
-                    <View style={styles.mainView}>
-                      <Item
-                        rounded
-                        style={[
-                          styles.input,
-                          this.state.emailError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.transparentBorderColor
-                        ]}
-                      >
-                        <UserProfile style={styles.inputIcon} fill={"#fff"} />
-                        <Input
-                          placeholderTextColor="#fff"
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          style={styles.inputText}
-                          onChangeText={value => {
-                            this.setState({
-                              email: value.trim()
-                            });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              emailError: validateWrapper(
-                                "email",
-                                this.state.email
-                              )
-                            });
-                          }}
-                          placeholder={translate("Email")}
-                        />
-                      </Item>
-
-                      <Item
-                        rounded
-                        style={[
-                          styles.input,
-                          this.state.passwordError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.transparentBorderColor
-                        ]}
-                      >
-                        <PasswordIcon style={styles.inputIcon} fill={"#FFF"} />
-                        <Input
-                          placeholderTextColor="#fff"
-                          secureTextEntry={true}
-                          autoCorrect={false}
-                          textContentType="password"
-                          autoCapitalize="none"
-                          style={styles.inputText}
-                          onChangeText={value => {
-                            this.setState({
-                              password: value
-                            });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              passwordError: validateWrapper(
-                                "password",
-                                this.state.password
-                              )
-                            });
-                          }}
-                          placeholder={translate("Password")}
-                        />
-                      </Item>
-                      {this.props.loading ? (
-                        <ForwardLoading
-                          mainViewStyle={{
-                            width: widthPercentageToDP(9),
-                            height: heightPercentageToDP(9)
-                          }}
-                          bottom={5}
-                          style={{
-                            width: widthPercentageToDP(7),
-                            height: heightPercentageToDP(7)
-                          }}
-                        />
-                      ) : (
-                        <LowerButton
-                          function={() => this._handleSubmission()}
-                        />
-                      )}
-                      {/* <Button
-                        block
-                        style={styles.button}
-                        onPress={() => {
-                          this._handleSubmission();
-                        }}
-                      >
-                        <Text style={styles.buttonText}>
-                          {translate("Sign in")}
-                        </Text>
-                      </Button> */}
-                      <Text
-                        onPress={() => {
-                          Segment.track("Forgot Password Button");
-                          this.props.navigation.push("ForgotPassword");
-                        }}
-                        style={[styles.link, styles.forgotPasswordLink]}
-                      >
-                        {translate("Forgot Password?")}
-                      </Text>
+                {this.props.checkingForToken ? (
+                  <LoadingScreen dash={true} />
+                ) : (
+                  <>
+                    <View style={styles.logoContainer}>
+                      <Logo
+                        style={styles.logo}
+                        width={heightPercentageToDP(12)}
+                        height={heightPercentageToDP(12)}
+                      />
+                      <Text style={styles.logoText}>Optimize</Text>
                     </View>
-                  </View>
-                )}
-              </KeyboardShift>
 
-              <View style={styles.bottomInviteViewContainer}>
-                <Text style={[styles.link, styles.dontHaveAccountText]}>
-                  {translate("Don’t Have an Account?")}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.push("MainForm");
-                  }}
-                >
-                  <Text style={styles.createOneText}>
-                    {translate("Create One!")}
-                  </Text>
-                </TouchableOpacity>
+                    <View style={styles.keyboardShiftContainer}>
+                      {/* <Text style={styles.text}>Sign In</Text> */}
+
+                      <View style={styles.mainView}>
+                        <Item
+                          rounded
+                          style={[
+                            styles.input,
+                            this.state.emailError
+                              ? globalStyles.redBorderColor
+                              : globalStyles.transparentBorderColor
+                          ]}
+                        >
+                          <UserProfile style={styles.inputIcon} fill={"#fff"} />
+                          <Input
+                            placeholderTextColor="#fff"
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            style={styles.inputText}
+                            onChangeText={value => {
+                              this.setState({
+                                email: value.trim()
+                              });
+                            }}
+                            onBlur={() => {
+                              this.setState({
+                                emailError: validateWrapper(
+                                  "email",
+                                  this.state.email
+                                )
+                              });
+                            }}
+                            placeholder={translate("Email")}
+                          />
+                        </Item>
+
+                        <Item
+                          rounded
+                          style={[
+                            styles.input,
+                            this.state.passwordError
+                              ? globalStyles.redBorderColor
+                              : globalStyles.transparentBorderColor
+                          ]}
+                        >
+                          <PasswordIcon
+                            style={styles.inputIcon}
+                            fill={"#FFF"}
+                          />
+                          <Input
+                            placeholderTextColor="#fff"
+                            secureTextEntry={true}
+                            autoCorrect={false}
+                            textContentType="password"
+                            autoCapitalize="none"
+                            style={styles.inputText}
+                            onChangeText={value => {
+                              this.setState({
+                                password: value
+                              });
+                            }}
+                            onBlur={() => {
+                              this.setState({
+                                passwordError: validateWrapper(
+                                  "password",
+                                  this.state.password
+                                )
+                              });
+                            }}
+                            placeholder={translate("Password")}
+                          />
+                        </Item>
+                        {this.props.loading ? (
+                          <ForwardLoading
+                            mainViewStyle={{
+                              width: widthPercentageToDP(9),
+                              height: heightPercentageToDP(9)
+                            }}
+                            bottom={5}
+                            style={{
+                              width: widthPercentageToDP(7),
+                              height: heightPercentageToDP(7)
+                            }}
+                          />
+                        ) : (
+                          <LowerButton
+                            isRTL={I18nManager.isRTL}
+                            style={
+                              I18nManager.isRTL ? styles.proceedButtonRTL : {}
+                            }
+                            width={I18nManager.isRTL ? 25 : null}
+                            height={I18nManager.isRTL ? 25 : null}
+                            bottom={I18nManager.isRTL ? 0 : 0}
+                            function={() => this._handleSubmission()}
+                          />
+                        )}
+
+                        <Text
+                          onPress={() => {
+                            Segment.track("Forgot Password Button");
+                            this.props.navigation.push("ForgotPassword");
+                          }}
+                          style={[styles.link, styles.forgotPasswordLink]}
+                        >
+                          {translate("Forgot Password?")}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.bottomInviteViewContainer}>
+                      <Text style={[styles.link, styles.dontHaveAccountText]}>
+                        {translate("Don’t Have an Account?")}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.props.navigation.push("MainForm");
+                        }}
+                      >
+                        <Text uppercase style={styles.createOneText}>
+                          {translate("SIGN UP")}!
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Container>
-      </SafeAreaView>
-    );
+            </TouchableWithoutFeedback>
+          </Container>
+        </SafeAreaView>
+      );
   }
 }
 
 const mapStateToProps = state => ({
-  loading: state.auth.loading
+  userInfo: state.auth.userInfo,
+  loading: state.auth.loading,
+  checkingForToken: state.login.checkingForToken
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -259,7 +256,4 @@ const mapDispatchToProps = dispatch => ({
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

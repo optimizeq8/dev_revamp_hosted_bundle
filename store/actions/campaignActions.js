@@ -1,124 +1,16 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import store, { persistor } from "../index";
-import filter from "lodash/filter";
+import * as Segment from "expo-analytics-segment";
+import segmentEventTrack from "../../components/segmentEventTrack";
+import { persistor } from "../index";
+import createBaseUrl from "./createBaseUrl";
+import { errorMessageHandler } from "./ErrorActions";
+import { setCampaignInfoForTransaction } from "./transactionActions";
 
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
-
-export const payment_request_credit_card = (
-  campaign_id,
-  openBrowser,
-  navigation
-) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_AD_LOADING,
-      payload: true
-    });
-    createBaseUrl()
-      .post(`makeccpayment/${campaign_id}`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.cc_payment_url) {
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        } else {
-          navigation.navigate("SuccessRedirect", data);
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        }
-      })
-      .then(() => {
-        if (getState().campaignC.payment_data.cc_payment_url) {
-          openBrowser();
-        }
-      })
-      .catch(err => {
-        // console.log("payment_request_cc", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        return dispatch({
-          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
-          payload: {
-            loading: false
-          }
-        });
-      });
-  };
-};
 export const resetCampaignInfo = (resetAdType = false) => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
-  };
-};
-
-export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_AD_LOADING,
-      payload: true
-    });
-    createBaseUrl()
-      .get(`makeknetpayment/${campaign_id}`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.knet_payment_url) {
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        } else {
-          navigation.navigate("SuccessRedirect", data);
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        }
-      })
-      .then(() => {
-        if (getState().campaignC.payment_data.knet_payment_url) {
-          openBrowser();
-        }
-      })
-      .catch(err => {
-        // console.log("payment_request_knet", err || err);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        return dispatch({
-          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
-          payload: {
-            loading: false
-          }
-        });
-      });
   };
 };
 
@@ -138,14 +30,7 @@ export const snap_ad_audience_size = (info, totalReach) => {
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch(err => {
         // console.log("snap_ad_audience_size", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE
         });
@@ -168,14 +53,7 @@ export const get_total_reach = info => {
       })
       .catch(err => {
         // console.log("get_total_reach", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE
         });
@@ -207,14 +85,7 @@ export const verifyBusinessUrl = weburl => {
       })
       .catch(err => {
         // console.log("verifyBusinessName", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
           payload: {
@@ -225,7 +96,7 @@ export const verifyBusinessUrl = weburl => {
   };
 };
 
-export const ad_objective = (info, navigation) => {
+export const ad_objective = (info, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_OBJ,
@@ -237,29 +108,28 @@ export const ad_objective = (info, navigation) => {
         return res.data;
       })
       .then(data => {
-        dispatch({
-          type: actionTypes.SET_AD_OBJECTIVE,
-          payload: data
-        });
+        data.success
+          ? dispatch({
+              type: actionTypes.SET_AD_OBJECTIVE,
+              payload: data
+            })
+          : dispatch({
+              type: actionTypes.SET_AD_LOADING_OBJ,
+              payload: false
+            });
         return data;
       })
       .then(data => {
-        data.success
-          ? navigation.push(
-              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-            )
-          : showMessage({ message: data.message, position: "top" });
+        if (data.success) {
+          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.push(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          );
+        } else showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
         // console.log("ad_objective", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_OBJECTIVE
         });
@@ -321,10 +191,16 @@ export const ad_design = (
             type: data.success ? "success" : "danger",
             position: "top"
           });
-        return dispatch({
-          type: actionTypes.SET_AD_DESIGN,
-          payload: data
-        });
+        if (!rejected)
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN,
+            payload: data
+          });
+        else
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DESIGN,
+            payload: false
+          });
       })
       .then(() => {
         onToggleModal(false);
@@ -335,6 +211,12 @@ export const ad_design = (
         if (!rejected) navigation.push("AdDetails");
         else {
           persistor.purge();
+          dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
+          dispatch({
+            type: actionTypes.RESET_CAMPAING_INFO
+          });
+          navigation.navigate("Dashboard");
+          persistor.purge();
           dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
           navigation.navigate("Dashboard");
         }
@@ -342,15 +224,12 @@ export const ad_design = (
       .catch(err => {
         loading(0);
         onToggleModal(false);
-        // console.log("ad_design error", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN,
+          payload: false
         });
+        // console.log("ad_design error", err.message || err.response);
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
         });
@@ -403,25 +282,14 @@ export const uploadStoryAdCover = (
       })
       .then(() => {
         navigation.push("AdDesign", {
-          rejected,
-          selectedCampaign,
-          //if it's not a rejected campaign selectedCampaign=null, so i  need to check
-          //for it to not throw an error
-          adType: selectedCampaign && selectedCampaign.campaign_type
+          rejected
         });
       })
       .catch(err => {
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_COVER_DESIGN
         });
@@ -512,14 +380,7 @@ export const uploadStoryAdCard = (
           payload: { uploading: false, index: card.index }
         });
         // console.log("ad_design", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
         });
@@ -556,14 +417,7 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
           payload: { deleteing: false, index: card.index }
         });
         // console.log("getVideoUploadUrl", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
       });
   };
 };
@@ -590,14 +444,7 @@ export const getVideoUploadUrl = (campaign_id, openBrowser) => {
       .then(() => openBrowser())
       .catch(err => {
         // console.log("getVideoUploadUrl", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
       });
   };
 };
@@ -623,14 +470,7 @@ export const get_interests = countryCode => {
       })
       .catch(err => {
         // console.log("get_interests", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_INTERESTS
         });
@@ -653,14 +493,7 @@ export const get_device_brands = os => {
       })
       .catch(err => {
         // console.log("get_device_brands", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_DEVICE_MAKES
         });
@@ -683,14 +516,7 @@ export const get_ios_versions = () => {
       })
       .catch(err => {
         // console.log("get_ios_versions", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_IOS_VERSIONS
         });
@@ -713,14 +539,7 @@ export const get_android_versions = () => {
       })
       .catch(err => {
         // console.log("get_android_versions", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_ANDROID_VERSIONS
         });
@@ -728,7 +547,7 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation) => {
+export const ad_details = (info, names, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
@@ -740,24 +559,26 @@ export const ad_details = (info, names, navigation) => {
         return res.data;
       })
       .then(data => {
+        dispatch(
+          setCampaignInfoForTransaction({
+            campaign_id: getState().campaignC.campaign_id,
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_budget_kdamount: data.kdamount,
+            channel: ""
+          })
+        );
         return dispatch({
           type: actionTypes.SET_AD_DETAILS,
           payload: { data, names }
         });
       })
       .then(() => {
+        Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         navigation.navigate("AdPaymentReview");
       })
       .catch(err => {
         // console.log("ad_details", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DETAILS
         });
@@ -774,25 +595,13 @@ export const updateCampaign = (info, businessid, navigation) => {
 
         return res.data;
       })
-      .then(data => {
-        return dispatch({
-          type: actionTypes.UPDATE_CAMPAIGN_DETAILS,
-          payload: data
-        });
-      })
+      .then(data => {})
       .then(() => {
         navigation.navigate("Dashboard");
       })
       .catch(err => {
         // console.log("updateCampaign", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS
         });
@@ -819,14 +628,7 @@ export const updateStatus = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
   };
@@ -850,21 +652,18 @@ export const endCampaign = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
   };
 };
 
 export const get_languages = () => {
-  return (dispatch, getState) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.GET_LANGUAGES_LOADING,
+      payload: true
+    });
     createBaseUrl()
       .get(`language`)
       .then(res => {
@@ -873,19 +672,12 @@ export const get_languages = () => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST,
-          payload: data
+          payload: { data, loading: false }
         });
       })
       .catch(err => {
         // console.log("get_language", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_LANGUAGE_LIST
         });
@@ -961,20 +753,20 @@ export const save_collection_media = (
         onToggleModal(false);
       })
       .then(() => {
+        segmentEventTrack("Submitted Collection Ad media successfully");
         navigation.navigate("AdDesign");
       })
       .catch(err => {
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
-        showMessage({
-          message:
+        segmentEventTrack("Error Submit Collection Ad media", {
+          campaign_error_collection_media_submit:
             err.message ||
             err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
+            "Something went wrong, please try again."
         });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA
         });
@@ -1236,6 +1028,7 @@ export const saveWebProducts = (
         })
         .then(data => {
           if (data.success) {
+            segmentEventTrack("Submitted SME Growth Products List Success");
             navigation.navigate("AdDesign");
           }
           return data;
@@ -1248,6 +1041,10 @@ export const saveWebProducts = (
         })
         .catch(error => {
           // console.log("saveWebProducts error", error.response || error.message);
+          segmentEventTrack("Error Submit SME Growth Products List", {
+            campaign_error_sme_products_list: error.response || error.message
+          });
+
           return dispatch({
             type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
           });
@@ -1615,6 +1412,20 @@ export const setCollectionAdMediaArray = collectionMediaArray => {
     return dispatch({
       type: actionTypes.SET_COLLECTION_AD_ARRAY,
       payload: [...newArray]
+    });
+  };
+};
+
+/**
+ * Overwrites campaign's data with oldTempData plus what ever is specified
+ * @param {Object} value what ever values in campaign's data to overwrite
+ *
+ */
+export const overWriteObjectiveData = value => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.OVERWRITE_OBJ_DATA,
+      payload: value
     });
   };
 };

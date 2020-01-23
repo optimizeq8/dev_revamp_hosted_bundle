@@ -5,7 +5,7 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-navigation";
-
+import * as Segment from "expo-analytics-segment";
 //Icons
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
@@ -30,6 +30,7 @@ class SelectVersions extends Component {
   };
 
   componentDidMount() {
+    Segment.screen("OS Versions");
     this.props.OSType === "iOS"
       ? this.props.get_ios_verisons()
       : this.props.get_android_versions();
@@ -230,7 +231,4 @@ const mapDispatchToProps = dispatch => ({
   get_ios_verisons: () => dispatch(actionCreators.get_ios_versions()),
   get_android_versions: () => dispatch(actionCreators.get_android_versions())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectVersions);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectVersions);

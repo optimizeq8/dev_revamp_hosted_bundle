@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   },
 
   media: {
-    // flex: 1,
     alignSelf: "center",
     height: heightPercentageToDP(20),
     width: "100%",
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     textAlign: "center",
     lineHeight: 18
   },
@@ -52,8 +51,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 25,
-    backgroundColor: "#FF9D00",
-    borderRadius: 15,
+    borderRadius: 25,
     width: 250,
     height: 50,
     alignSelf: "center",
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
   buttontext: {
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-bold"
   },
 
   title: {

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View, Image } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, Text } from "native-base";
+import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
-import LottieView from "lottie-react-native";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //Redux
 import { connect } from "react-redux";
@@ -16,10 +16,7 @@ import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { persistor } from "../../../store";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -62,7 +59,7 @@ class SuccessRedirect extends Component {
       //   paymentMethod: ""
       // });
 
-      if (this.props.data) {
+      if (this.props.data && this.props.channel === "") {
         Segment.trackWithProperties("Order Completed", {
           label: "Campaign Purchase Completed",
           category: "Checkout",
@@ -71,19 +68,28 @@ class SuccessRedirect extends Component {
           currency: "USD",
           label: "Campaign Purchase Completed",
           category: "Checkout",
-          revenue: this.props.data.lifetime_budget_micro,
+          revenue: this.props.campaign_budget,
           products: [
             {
               products_id: 1,
               name: "Snapchat Snap Ad",
-              price: this.props.data.lifetime_budget_micro,
+              price: this.props.campaign_budget,
               quantity: 1,
               category: "Advertisement"
             }
           ]
         });
       }
-      this.props.resetCampaignInfo();
+      if (
+        this.props.channel === "" ||
+        this.props.channel.toLowerCase() === "snapchat"
+      ) {
+        this.props.resetCampaignInfo();
+      }
+      if (this.props.channel === "google") {
+        this.props.rest_google_campaign_data();
+      }
+      this.props.reset_transaction_reducer();
     });
   }
   onLottieEnd = () => {
@@ -126,7 +132,9 @@ class SuccessRedirect extends Component {
             />
           </View> */}
           <SuccessIcon width={80} height={80} />
-          <Text style={styles.title}> {translate("Success!")} </Text>
+          <Text uppercase style={styles.title}>
+            {translate("Success!")}
+          </Text>
           <Text style={styles.errortext}>
             {this.state.isWallet !== "1"
               ? translate("Your Ad is now being processed")
@@ -149,18 +157,18 @@ class SuccessRedirect extends Component {
               {translate("Status:")} {this.state.status}
             </Text>
           </View>
-          <Button
+          <GradientButton
             style={styles.button}
-            onPress={() => {
-              this.props.resetCampaignInfo();
+            onPressAction={() => {
               this.props.navigation.reset(
                 [NavigationActions.navigate({ routeName: "Dashboard" })],
                 0
               );
             }}
-          >
-            <Text style={styles.buttontext}> {translate("Home")} </Text>
-          </Button>
+            textStyle={styles.buttontext}
+            text={translate("Home")}
+            uppercase={true}
+          />
         </View>
       </SafeAreaView>
     );
@@ -168,15 +176,17 @@ class SuccessRedirect extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data,
   mainBusiness: state.account.mainBusiness,
-  campaign_id: state.campaignC.campaign_id,
-  interestsNames: state.campaignC.interestsNames
+  campaign_id: state.transA.campaign_id,
+  campaign_budget: state.transA.campaign_budget,
+  campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
+  channel: state.transA.channel
 });
 const mapDispatchToProps = dispatch => ({
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
+  reset_transaction_reducer: () =>
+    dispatch(actionCreators.reset_transaction_reducer()),
+  rest_google_campaign_data: () =>
+    dispatch(actionCreators.rest_google_campaign_data())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SuccessRedirect);
+export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

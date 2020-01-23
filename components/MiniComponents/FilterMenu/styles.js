@@ -44,10 +44,21 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
+    marginBottom: -10,
+    alignSelf: "center"
+  },
+  labelView: {
     width: 150,
-    paddingTop: 20,
     alignSelf: "center",
-    paddingBottom: 10
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    paddingTop: 0,
+    marginTop: 20,
+    zIndex: 1
   },
   subtext: {
     fontFamily: "montserrat-regular",
@@ -68,8 +79,8 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     marginBottom: 15,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 40,
     alignSelf: "center",
     width: 270,
     height: hp(7.9),

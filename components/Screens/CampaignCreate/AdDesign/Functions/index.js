@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 import { showMessage } from "react-native-flash-message";
+import store from "../../../../../store";
 export const _handleSubmission = async (
   adType,
   storyAdsArray,
@@ -198,7 +199,6 @@ export const _changeDestination = (
   attachment,
   appChoice = null,
   whatsAppCampaign = null,
-  instagramTrafficCampaign = null,
   adType,
   setStoryAdAttachment,
   campaignInfo,
@@ -208,23 +208,16 @@ export const _changeDestination = (
   let newData = {};
   if (adType === "StoryAd") {
     if (whatsAppCampaign) {
-      save_campaign_info({
-        insta_handle: whatsAppCampaign.insta_handle,
-        whatsappnumber: whatsAppCampaign.whatsappnumber,
-        weburl: whatsAppCampaign.weburl,
-        callnumber: whatsAppCampaign.callnumber,
-        source: whatsAppCampaign.source
-      });
+      !store.getState().dashboard.rejCampaign &&
+        save_campaign_info({
+          insta_handle: whatsAppCampaign.insta_handle,
+          whatsappnumber: whatsAppCampaign.whatsappnumber,
+          weburl: whatsAppCampaign.weburl,
+          callnumber: whatsAppCampaign.callnumber,
+          source: whatsAppCampaign.source
+        });
     }
-    if (instagramTrafficCampaign) {
-      save_campaign_info({
-        insta_handle: instagramTrafficCampaign.insta_handle,
-        googlemaplink: instagramTrafficCampaign.googlemaplink,
-        weburl: instagramTrafficCampaign.weburl,
-        callnumber: instagramTrafficCampaign.callnumber,
-        source: instagramTrafficCampaign.source
-      });
-    }
+
     setStoryAdAttachment({
       attachment,
       call_to_action,
@@ -244,11 +237,12 @@ export const _changeDestination = (
     };
     setTheState(newData);
 
-    save_campaign_info({
-      ...newData.campaignInfo,
-      [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-      [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-    });
+    !store.getState().dashboard.rejCampaign &&
+      save_campaign_info({
+        ...newData.campaignInfo,
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      });
   } else {
     newData = {
       campaignInfo: {
@@ -273,42 +267,22 @@ export const _changeDestination = (
           googlemaplink: whatsAppCampaign.googlemaplink
         }
       };
-      save_campaign_info({
-        insta_handle: whatsAppCampaign.insta_handle,
-        whatsappnumber: whatsAppCampaign.whatsappnumber,
-        weburl: whatsAppCampaign.weburl,
-        callnumber: whatsAppCampaign.callnumber,
-        source: whatsAppCampaign.source,
-        googlemaplink: whatsAppCampaign.googlemaplink
-      });
+      !store.getState().dashboard.rejCampaign &&
+        save_campaign_info({
+          insta_handle: whatsAppCampaign.insta_handle,
+          whatsappnumber: whatsAppCampaign.whatsappnumber,
+          weburl: whatsAppCampaign.weburl,
+          callnumber: whatsAppCampaign.callnumber,
+          source: whatsAppCampaign.source,
+          googlemaplink: whatsAppCampaign.googlemaplink
+        });
     }
-    if (instagramTrafficCampaign) {
-      newData = {
-        ...newData,
-        campaignInfo: {
-          ...newData.campaignInfo,
-          whatsappnumber: instagramTrafficCampaign.whatsappnumber,
-          insta_handle: instagramTrafficCampaign.insta_handle,
-          googlemaplink: instagramTrafficCampaign.googlemaplink,
-          weburl: instagramTrafficCampaign.weburl,
-          callnumber: instagramTrafficCampaign.callnumber,
-          source: instagramTrafficCampaign.source
-        }
-      };
 
-      save_campaign_info({
-        whatsappnumber: instagramTrafficCampaign.whatsappnumber,
-        insta_handle: instagramTrafficCampaign.insta_handle,
-        googlemaplink: instagramTrafficCampaign.googlemaplink,
-        weburl: instagramTrafficCampaign.weburl,
-        callnumber: instagramTrafficCampaign.callnumber,
-        source: instagramTrafficCampaign.source
-      });
-    }
     setTheState(newData);
-    save_campaign_info({
-      ...newData.campaignInfo,
-      appChoice
-    });
+    !store.getState().dashboard.rejCampaign &&
+      save_campaign_info({
+        ...newData.campaignInfo,
+        appChoice
+      });
   }
 };

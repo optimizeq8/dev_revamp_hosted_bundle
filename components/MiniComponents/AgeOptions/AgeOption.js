@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { View, TouchableOpacity } from "react-native";
+import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
+import * as Segment from "expo-analytics-segment";
 
 //Styles
 import styles from "./styles";
@@ -17,10 +18,11 @@ import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
 
 export default class AgeOption extends Component {
   state = {
-    values: [13, 35]
+    values: [13, 50]
   };
 
   componentDidMount() {
+    Segment.screen("Age Option");
     this.setState({
       values: [this.props.state.min_age, this.props.state.max_age]
     });
@@ -58,7 +60,7 @@ export default class AgeOption extends Component {
                 customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
                 onValuesChange={this.multiSliderValuesChange}
                 min={13}
-                max={35}
+                max={50}
                 step={1}
                 selectedStyle={styles.selected}
                 unselectedStyle={{
@@ -69,12 +71,12 @@ export default class AgeOption extends Component {
               />
             </View>
           </View>
-          <Button
+          <TouchableOpacity
             style={styles.button}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />
-          </Button>
+          </TouchableOpacity>
         </Container>
       </SafeAreaView>
     );

@@ -6,9 +6,15 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
-import { SafeAreaView } from "react-navigation";
-import dateFormat from "dateformat";
-
+import {
+  SafeAreaView,
+  NavigationActions,
+  StackActions
+} from "react-navigation";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as Segment from "expo-analytics-segment";
+import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 
@@ -20,9 +26,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { showMessage } from "react-native-flash-message";
+import Loading from "../LoadingScreen";
 
-export default class DateFields extends Component {
+class DateFields extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +38,9 @@ export default class DateFields extends Component {
       reset: false,
       start_timeError: "",
       end_date: "",
-      start_date: ""
+      start_date: "",
+      resumeLoading: false,
+      outdatedDate: false
     };
   }
 
@@ -54,7 +62,7 @@ export default class DateFields extends Component {
     });
     return {
       end_timeError: validateWrapper("mandatory", this.props.end_time),
-      start_timeError: validateWrapper("mandatory", this.props.end_time)
+      start_timeError: validateWrapper("mandatory", this.props.start_time)
     };
   };
 
@@ -70,13 +78,16 @@ export default class DateFields extends Component {
     });
   };
 
-  showModal = () => {
+  showModal = (outdatedDate = false) => {
+    Segment.screen("Date Modal");
     this.setState({
-      modalVisible: true
+      modalVisible: true,
+      outdatedDate
     });
   };
 
   handleDate = async () => {
+    //Gets the difference between two dates
     let timeDiff = Math.round(
       Math.abs(
         (new Date(this.state.start_date).getTime() -
@@ -85,20 +96,50 @@ export default class DateFields extends Component {
       )
     );
     if (!this.props.filterMenu && !this.props.chartRange) {
-      await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
+      await this.props.getMinimumCash(timeDiff + 1);
+
+      //if user chooses to resume a campaign and the dates are not appiclble then
+      //the dateField modal shows up and handles to resume campaign or not with new dates
+      if (
+        this.props.incompleteCampaign && //pass as a props
+        !this.props.campaignProgressStarted && //pass as a props
+        this.state.outdatedDate
+      ) {
+        //the app actually freezes for a few seconds when navigateToContinue runs so i delay
+        //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+        this.setState({ resumeLoading: true });
+        setTimeout(() => {
+          this.navigateToContinue();
+          this.setState({
+            modalVisible: false,
+            start_choice: false,
+            end_choice: false
+          });
+        }, 200);
+      } else
+        this.setState({
+          modalVisible: false,
+          start_choice: false,
+          end_choice: false
+        });
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
+      this.setState({
+        modalVisible: false,
+        start_choice: false,
+        end_choice: false
+      });
     } else if (this.props.chartRange) {
       this.props.durationChange(this.state.start_date, this.state.end_date);
+      this.setState({
+        modalVisible: false,
+        start_choice: false,
+        end_choice: false
+      });
     }
-    this.setState({
-      modalVisible: false,
-      start_choice: false,
-      end_choice: false
-    });
   };
 
   handleReset = () => {
@@ -127,6 +168,100 @@ export default class DateFields extends Component {
         end_date: "",
         reset: true
       });
+    }
+  };
+  /**
+   * Same as the navigateToContinue and handleContinue functions in ContinueCampaign modal
+   * except this filters out the AdPaymentReview route from the stack so the budget is recalculated
+   * again in AdDetails
+   */
+  navigateToContinue = async () => {
+    if (this.props.channel === "google") {
+      //Same as if using a map and a filter at the same time
+      let reduceFunction = (newRoutes, route) => {
+        // if (route !== "AdPaymentReview") {
+        // pass as a props lastScreen
+        let correctRoute = NavigationActions.navigate({
+          routeName: route
+        });
+        newRoutes.push(correctRoute);
+        // }
+        return newRoutes;
+      };
+      let continueRoutes = this.props.currentCampaignSteps.reduce(
+        //pass props
+        reduceFunction,
+        []
+      );
+      resetAction = StackActions.reset({
+        index: continueRoutes.length - 1,
+        actions: continueRoutes
+      });
+      this.props.set_google_campaign_resumed(true);
+
+      // //Updates the campaign's date in the back end when resuming with the same data
+      this.setState({ modalVisible: false });
+      await this.props.create_google_SE_campaign_info(
+        {
+          campaign_id: "",
+          id: this.props.googleCampaign.id,
+          businessid: this.props.mainBusiness.businessid,
+          name: this.props.googleCampaign.name,
+          language: this.props.googleCampaign.language,
+          start_time: this.props.googleCampaign.start_time,
+          end_time: this.props.googleCampaign.end_time,
+          location: this.props.googleCampaign.location
+        },
+        //this is as if passing this.props.navigation and calling navigation.push but it does nothing
+        //because i don't want to navigate from within the store after the request is done
+        { push: () => {} }
+      );
+      // this.props.navigation.dispatch(resetAction);
+    } else {
+      //Same as if using a map and a filter at the same time
+      let reduceFunction = (newRoutes, route) => {
+        if (route !== "AdPaymentReview") {
+          // pass as a props lastScreen
+          let correctRoute = NavigationActions.navigate({
+            routeName: route
+          });
+          newRoutes.push(correctRoute);
+        }
+        return newRoutes;
+      };
+      let continueRoutes = this.props.currentCampaignSteps.reduce(
+        //pass props
+        reduceFunction,
+        []
+      );
+      resetAction = StackActions.reset({
+        index: continueRoutes.length - 1,
+        actions: continueRoutes
+      });
+      this.props.setCampaignInProgress(true);
+      this.props.overWriteObjectiveData({
+        start_time: this.state.start_date,
+        end_time: this.state.end_date
+      }); //overwrite this.props.data with the new dates
+      this.props.set_adType(this.props.oldTempAdType);
+      //Updates the campaign's date in the back end when resuming with the same data
+      this.setState({ modalVisible: false });
+      await this.props.ad_objective(
+        {
+          campaign_id: this.props.campaign_id,
+          campaign_type: this.props.adType,
+          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: this.props.data.name,
+          objective: this.props.data.objective,
+          start_time: this.props.data.start_time,
+          end_time: this.props.data.end_time
+        },
+        //this is as if passing this.props.navigation and calling navigation.push but it does nothing
+        //because i don't want to navigate from within the store after the request is done
+        { push: () => {} }
+      );
+      this.props.navigation.dispatch(resetAction);
     }
   };
 
@@ -188,6 +323,8 @@ export default class DateFields extends Component {
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });
+                    this.props.handleClosingContinueModal &&
+                      this.props.handleClosingContinueModal();
                   }}
                   topRightButtonText={translate("Reset")}
                   topRightButtonFunction={this.handleReset}
@@ -236,12 +373,17 @@ export default class DateFields extends Component {
                       reset: false
                     });
                   }}
-                  theme={{ markColor: "#FF9D00", markTextColor: "white" }}
+                  theme={{
+                    markColor: "#FF9D00",
+                    markTextColor: "white"
+                  }}
                 />
               </View>
 
               {this.state.end_choice ||
-              (this.props.start_time && !this.state.reset) ? (
+              (this.state.end_choice &&
+                this.props.start_time &&
+                !this.state.reset) ? (
                 <Button style={styles.button} onPress={() => this.handleDate()}>
                   <CheckmarkIcon
                     width={hp(5) < 30 ? 40 : 53}
@@ -251,8 +393,51 @@ export default class DateFields extends Component {
               ) : null}
             </SafeAreaView>
           </BlurView>
+          {this.state.resumeLoading && <Loading dash />}
         </Modal>
       </View>
     );
   }
 }
+const mapStateToProps = state => ({
+  oldTempAdType: state.campaignC.oldTempAdType,
+  oldTempData: state.campaignC.oldTempData,
+  data: state.campaignC.data,
+  mainBusiness: state.account.mainBusiness,
+  campaign_id: state.campaignC.campaign_id,
+  adType: state.campaignC.adType,
+  channel: state.transA.channel,
+  googleCampaign: state.googleAds
+});
+const mapDispatchToProps = dispatch => ({
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value)),
+  overWriteObjectiveData: value =>
+    dispatch(actionCreators.overWriteObjectiveData(value)),
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  ad_objective: (info, navigation) =>
+    dispatch(actionCreators.ad_objective(info, navigation)),
+  set_google_campaign_resumed: value =>
+    dispatch(actionCreators.set_google_campaign_resumed(value)),
+  save_google_campaign_data: info =>
+    dispatch(actionCreators.save_google_campaign_data(info)),
+  create_google_SE_campaign_info: (info, navigation) =>
+    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
+
+DateFields.propTypes = {
+  getMinimumCash: PropTypes.func, //Gets the minimum budget for a campaign based on dates
+  handleStartDatePicked: PropTypes.func.isRequired,
+  handleEndDatePicked: PropTypes.func.isRequired,
+  start_time: PropTypes.string.isRequired,
+  end_time: PropTypes.string.isRequired,
+  screenProps: PropTypes.object.isRequired,
+  navigation: PropTypes.object,
+  closedContinueModal: PropTypes.bool, //Determines whether navigateToContinue is called when submitting or not
+  handleClosingContinueModal: PropTypes.func, //Sets closedContinueModal to true so that creating a new campaing without choosing wheter to continue or not doesn't cause a conflict
+  open: PropTypes.bool, //Shows the modal if the sideMenu is open
+  filterMenu: PropTypes.bool, //Determines if the DateField is being rendered from the dashborad filter menu or not
+  durationChange: PropTypes.func, //Handles the api call to filter the charts by dates
+  selectedCampaign: PropTypes.object //The campaign from CampaignDetails
+};

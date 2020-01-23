@@ -14,6 +14,7 @@ import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import * as actionCreators from "../../../../store/actions";
 // Style
 import styles from "./styles";
@@ -40,12 +41,14 @@ class AdPaymentReview extends Component {
   };
   componentDidMount() {
     this.props.save_campaign_info({ campaignDateChanged: false });
+    this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
     const { translate } = this.props.screenProps;
     if (
       this.props.loading ||
+      this.props.languagesListLoading ||
       !this.props.data ||
       !this.props.data.campaignInfo.targeting
     ) {
@@ -83,6 +86,19 @@ class AdPaymentReview extends Component {
           ? targeting.devices[0].marketing_name.join(", ")
           : []
         : [];
+
+      let languageNames = [];
+      languageNames =
+        this.props.languages.length > 0 &&
+        targeting &&
+        targeting.demographics[0] &&
+        targeting.demographics[0].languages.map(languageId => {
+          return translate(
+            this.props.languages &&
+              this.props.languages.find(lang => lang.id === languageId).name
+          );
+        });
+
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
         <SafeAreaView
@@ -110,7 +126,8 @@ class AdPaymentReview extends Component {
                     ]
               );
               Segment.screenWithProperties("Snap Ad Payment Review", {
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "snapchat"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 step: 5,
@@ -242,9 +259,7 @@ class AdPaymentReview extends Component {
                         },
                         {
                           title: "Language",
-                          content: targeting.demographics[0].languages.join(
-                            ", "
-                          )
+                          content: languageNames.join(", ")
                         },
                         {
                           title: "Age group",
@@ -318,8 +333,8 @@ class AdPaymentReview extends Component {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => {
+                <GradientButton
+                  onPressAction={() => {
                     Segment.trackWithProperties(
                       "Select Ad Payment Review Button",
                       {
@@ -336,8 +351,11 @@ class AdPaymentReview extends Component {
                     this.props.navigation.navigate("PaymentForm");
                   }}
                   style={[styles.mainCard]}
-                >
-                  {/*
+                  text={translate("Payment Info")}
+                  textStyle={styles.payNowText}
+                />
+
+                {/*
                                                     ----------For future maybe----------
                                                     <Text style={styles.text}>Agency Fee</Text>
                                                     <View style={{ flexDirection: "column", alignSelf: "center" }}>
@@ -347,11 +365,6 @@ class AdPaymentReview extends Component {
                                                     <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
                                                     </View> 
                                                 */}
-
-                  <Text style={styles.payNowText}>
-                    {translate("Payment Info")}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </Footer>
           </Container>
@@ -372,15 +385,15 @@ const mapStateToProps = state => ({
   loading: state.campaignC.loadingDetail,
   kdamount: state.campaignC.kdamount,
   mainBusiness: state.account.mainBusiness,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  languages: state.campaignC.languagesList,
+  languagesListLoading: state.campaignC.languagesListLoading
 });
 
 const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  get_languages: () => dispatch(actionCreators.get_languages())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdPaymentReview);
+export default connect(mapStateToProps, mapDispatchToProps)(AdPaymentReview);

@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Image, AsyncStorage } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Button, Text, Container } from "native-base";
+import { Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Swiper from "../../MiniComponents/Swiper";
-// import Invitation from "../InvitationScreen";
-import Signin from "../Signin";
+import GradientButton from "../../MiniComponents/GradientButton";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 // Style
 import styles from "./styles";
@@ -22,6 +22,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import globalStyles from "../../../GlobalStyles";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -40,9 +41,7 @@ class Tutorial extends Component {
             });
           });
         } else if (value === "true") {
-          this.setState({
-            tutorialOpened: true
-          });
+          this.props.navigation.replace("Signin");
         } else {
           this.setState({
             tutorialOpened: false
@@ -76,9 +75,9 @@ class Tutorial extends Component {
             resizeMode="contain"
           />
           {i === 3 && (
-            <Button
+            <GradientButton
               style={[styles.getStartedButton]}
-              onPress={() => {
+              onPressAction={() => {
                 AsyncStorage.getItem("tutorialOpened")
                   .then(value => {
                     if (value == null) {
@@ -91,32 +90,15 @@ class Tutorial extends Component {
                   })
                   .catch(err => console.log(err));
               }}
-            >
-              <Text style={styles.getStartedText}>
-                {translate("Get Started!")}
-              </Text>
-            </Button>
+              textStyle={styles.getStartedText}
+              text={translate("Get Started!")}
+            />
           )}
         </>
       );
     };
     if (isNull(this.state.tutorialOpened)) {
-      return (
-        <Container style={styles.imageView}>
-          <Image
-            style={{ height: "100%", width: "100%" }}
-            source={require("../../../assets/splash.png")}
-            resizeMode="cover"
-          />
-        </Container>
-      );
-    } else if (this.state.tutorialOpened) {
-      return (
-        <Signin
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-        />
-      );
+      return <LoadingScreen dash={true} />;
     } else {
       Segment.screen("Tutorial");
       return (
@@ -136,7 +118,7 @@ class Tutorial extends Component {
           />
           <Container style={styles.container}>
             <Background
-              style={[styles.background]}
+              style={[globalStyles.background]}
               width={widthPercentageToDP(85)}
               height={heightPercentageToDP(61)}
             />
@@ -173,7 +155,4 @@ class Tutorial extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tutorial);
+export default connect(mapStateToProps, mapDispatchToProps)(Tutorial);

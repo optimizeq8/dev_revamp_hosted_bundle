@@ -35,7 +35,11 @@ export default class OptionalTargets extends Component {
               <Text numberOfLines={2} style={styles.categories}>
                 {translate("Interests") + "\n"}
                 <Text numberOfLines={1} style={[styles.subtext]}>
-                  {this.props.interesetNames.join(", ")}
+                  {
+                    this.props.interesetNames.map(interest => {
+                      return translate(interest.trim()) + ", "
+                    })
+                  }
                 </Text>
               </Text>
             </View>
@@ -72,7 +76,7 @@ export default class OptionalTargets extends Component {
                 <Text style={styles.categories}>
                   {translate("Operating System") + "\n"}
                   <Text numberOfLines={1} style={[styles.subtext]}>
-                    {targeting.devices[0].os_type}
+                    {translate(targeting.devices[0].os_type)}
                   </Text>
                 </Text>
               </View>

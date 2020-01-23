@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler } from "react-native";
+import { View, TouchableOpacity, BackHandler, I18nManager } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
 import { connect } from "react-redux";
 import { ScreenOrientation } from "expo";
@@ -7,6 +7,7 @@ import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";
@@ -27,6 +28,7 @@ import list from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -92,7 +94,7 @@ class Long_Form_Video extends Component {
         this.setState({ videoLoading: true });
         return res;
       })
-      .catch(err => console.log(err));
+      .catch(err => {});
   };
   _pickImage = async () => {
     let result = await this.pick();
@@ -156,7 +158,17 @@ class Long_Form_Video extends Component {
     this.setState({
       videoError
     });
+    if (videoError || this.state.durationError) {
+      segmentEventTrack("Error Submit Longform Video", {
+        campaign_error_longform_video: videoError,
+        campaign_error_longform_video_duration: this.state.durationError
+      });
+    }
     if (!videoError && !this.state.durationError) {
+      segmentEventTrack("Submitted Longform Video Success", {
+        campaign_call_to_action: this.state.callaction,
+        campaign_longform_video_media_type: this.state.longformvideo_media_type
+      });
       this.props._changeDestination("LONGFORM_VIDEO", this.state.callaction, {
         longformvideo_media: this.state.longformvideo_media,
         longformvideo_media_type: this.state.longformvideo_media_type
@@ -177,6 +189,9 @@ class Long_Form_Video extends Component {
 
   onSelectedCallToActionChange = value => {
     if (value && !isEmpty(value)) {
+      segmentEventTrack("Selected Long Form Video Call to Action", {
+        campaign_call_to_action: value[0].label
+      });
       this.setState(
         {
           callaction: {
@@ -271,6 +286,7 @@ class Long_Form_Video extends Component {
             </Text>
           ) : null} */}
           <Picker
+            showIcon={true}
             screenProps={this.props.screenProps}
             searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
@@ -291,7 +307,12 @@ class Long_Form_Video extends Component {
           </View>
           <Item
             onPress={() => {
-              this.setState({ inputCallToAction: true });
+              segmentEventTrack("Button Clicked to open Call to action Modal");
+              this.setState({ inputCallToAction: true }, () => {
+                if (this.state.inputCallToAction) {
+                  Segment.screen("Call to Action Modal");
+                }
+              });
             }}
             rounded
             style={styles.input}
@@ -309,7 +330,14 @@ class Long_Form_Video extends Component {
             <LoadingScreen top={50} />
           </Modal>
         </View>
-        <LowerButton function={this._handleSubmission} />
+        <LowerButton
+          isRTL={I18nManager.isRTL}
+          style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+          width={I18nManager.isRTL ? 25 : null}
+          height={I18nManager.isRTL ? 25 : null}
+          bottom={I18nManager.isRTL ? 1 : 0}
+          function={this._handleSubmission}
+        />
       </View>
     );
   }
@@ -321,7 +349,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Long_Form_Video);
+export default connect(mapStateToProps, mapDispatchToProps)(Long_Form_Video);

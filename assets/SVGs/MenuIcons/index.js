@@ -7,3 +7,5 @@ export { default as TransactionIcon } from "./TransactionIcon.svg";
 export { default as DropDownIcon } from "./DropDownIcon.svg";
 export { default as CloseListIcon } from "./CloseListIcon.svg";
 export { default as LogoutIcon } from "./LogoutIcon.svg";
+export { default as GroupTransparentIcon } from "./GroupTransparent";
+export { default as GroupIcon } from "../Group";

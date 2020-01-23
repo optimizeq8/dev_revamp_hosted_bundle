@@ -1,7 +1,13 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler, Platform, I18nManager } from "react-native";
+import {
+  View,
+  BackHandler,
+  Platform,
+  I18nManager,
+  TouchableOpacity
+} from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
@@ -9,15 +15,12 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
 import CustomHeader from "../../../MiniComponents/Header";
-import { StackActions, NavigationActions } from "react-navigation";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
-import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
 
 //Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -25,13 +28,10 @@ import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
-import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
+import { snapAds, googleAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { from } from "rxjs";
 
-import { BlurView } from "expo-blur";
-import Modal from "react-native-modal";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
 class AdType extends Component {
@@ -42,9 +42,13 @@ class AdType extends Component {
     activeSlide: 0,
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
-        ? snapAds.reverse()
+        ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
         : snapAds,
     isVisible: false,
+    socialMediaPlatforms:
+      Platform.OS === "android" && I18nManager.isRTL
+        ? [...SocialPlatforms].reverse()
+        : SocialPlatforms,
     campaign_type: "SnapAd",
     route: "AdObjective",
     inverted: Platform.OS === "android" && I18nManager.isRTL
@@ -75,7 +79,7 @@ class AdType extends Component {
   navigationRouteHandler = index => {
     let activeSlide = index;
     if (this.state.inverted) {
-      const reversedSnapAds = this.state.media_type.reverse();
+      const reversedSnapAds = [...this.state.media_type].reverse(); //Needed to spread the state array becuase it was reversing the array every time you switch between slides
       // console.log("reversedSnapAds", reversedSnapAds);
       let campaign_type = reversedSnapAds[index].value;
       // console.log("index", index);
@@ -101,19 +105,20 @@ class AdType extends Component {
     switch (index) {
       case 0:
         route = "AdObjective";
-        media_type = StoryAdCards;
+        media_type = this.state.inverted ? [...snapAds].reverse() : snapAds;
         break;
       case 1:
-        media_type = twittwerAds;
+        route = "GoogleAdInfo";
+        media_type = googleAds;
         break;
-      case 2:
-        media_type = instagramAds;
-        break;
+      // case 2:
+      //   media_type = instagramAds;
+      //   break;
     }
     this.setState({ route, media_type, activeSlide: 0 });
   };
 
-  navigationHandler = route => {
+  navigationHandler = adType => {
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
@@ -124,24 +129,52 @@ class AdType extends Component {
       campaign_type: this.state.campaign_type
     });
 
-    if (this.props.adType !== this.state.campaign_type) {
-      this.props.resetCampaignInfo();
+    if (
+      this.props.adType !== this.state.campaign_type &&
+      !this.props.incompleteCampaign
+    ) {
+      this.props.resetCampaignInfo(true);
     }
-    this.props.set_adType(this.state.campaign_type);
-    this.props.navigation.navigate(this.state.route, {
-      tempAdType: this.state.campaign_type
-    });
-    this.props.save_campaign_info({ index: this.state.activeSlide });
+    if (!this.props.incompleteCampaign) {
+      this.props.set_adType(this.state.campaign_type);
+    }
+    if (
+      !this.props.mainBusiness.snap_ad_account_id &&
+      (adType.mediaType === "snapchat" ||
+        this.state.media_type[0].mediaType === "snapchat")
+    ) {
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else if (
+      !this.props.mainBusiness.google_account_id &&
+      (adType.mediaType === "google" ||
+        this.state.media_type[0].mediaType === "google")
+    ) {
+      this.props.navigation.navigate("GoogleCreateAdAcc");
+    } else
+      this.props.navigation.navigate(adType.rout || this.state.route, {
+        tempAdType: this.state.campaign_type
+      });
+    // this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
   _renderItem = ({ item }) => {
     let MediaIcon = item.icon.type;
     const { translate } = this.props.screenProps;
     return (
-      <View style={styles.slide}>
-        <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
+      <TouchableOpacity
+        onPress={() => {
+          this.media_carousel.snapToItem(item.id - 1);
+        }}
+        style={styles.slide}
+      >
+        <MediaIcon
+          fill="#fff"
+          width={"75%"}
+          height={"75%"}
+          style={styles.slideIcon}
+        />
         <Text style={styles.iconTitle}>{translate(item.title)}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -198,13 +231,14 @@ class AdType extends Component {
               ref={c => {
                 this.media_carousel = c;
               }}
+              enableMomentum={true}
               onSnapToItem={indx => this.handleMediaChange(indx)}
               inactiveSlideScale={0.75}
-              data={SocialPlatforms}
+              data={this.state.socialMediaPlatforms}
               renderItem={this._renderItem}
               sliderWidth={widthPercentageToDP(100)}
               itemWidth={110}
-              scrollEndDragDebounceValue={0}
+              inverted={this.state.inverted}
             />
           </View>
           <Carousel
@@ -213,14 +247,16 @@ class AdType extends Component {
               this._carousel = c;
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={
-              this.state.inverted
-                ? this.state.media_type.reverse()
-                : this.state.media_type
-            }
+            data={this.state.media_type}
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
-            itemWidth={250}
+            itemWidth={
+              Platform.OS === "android"
+                ? widthPercentageToDP(
+                    this.state.route === "GoogleAdInfo" ? 80 : 60
+                  )
+                : widthPercentageToDP(70)
+            }
             inactiveSlideScale={0.8}
             inverted={this.state.inverted}
           />
@@ -243,15 +279,15 @@ class AdType extends Component {
           />
           <View style={{ height: 70, marginBottom: 10 }}>
             <Animatable.View animation={"fadeIn"}>
-              <LowerButton function={this.navigationHandler} bottom={1} />
+              <LowerButton
+                isRTL={I18nManager.isRTL}
+                style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                width={I18nManager.isRTL ? 25 : null}
+                height={I18nManager.isRTL ? 25 : null}
+                function={this.navigationHandler}
+                bottom={1}
+              />
             </Animatable.View>
-          </View>
-          <View>
-            <ContinueCampaign
-              tempAdType={this.props.adType}
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-            />
           </View>
         </Container>
       </SafeAreaView>
@@ -273,7 +309,4 @@ const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdType);
+export default connect(mapStateToProps, mapDispatchToProps)(AdType);

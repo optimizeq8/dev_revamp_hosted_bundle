@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   Platform,
   BackHandler,
-  Image as RNImage
+  Image as RNImage,
+  I18nManager
 } from "react-native";
 import { Content, Text, Container, Footer, Button } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -26,6 +27,8 @@ import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -38,6 +41,7 @@ import * as actionCreators from "../../../../store/actions";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
+import BackButton from "../../../../assets/SVGs/BackButton";
 
 // Style
 import styles from "./styles";
@@ -68,6 +72,7 @@ import {
 } from "./Functions/index";
 import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -164,13 +169,26 @@ class AdDesign extends Component {
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }
@@ -287,6 +305,9 @@ class AdDesign extends Component {
   _handleNotification = async uploadMediaNotification => {
     // console.log("uploadMediaNotification", uploadMediaNotification);
     if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
+      segmentEventTrack(
+        "Received Notifcation on successful upload media from different device"
+      );
       this.setState({
         uploadMediaDifferentDeviceModal: false,
         uploadMediaNotification: uploadMediaNotification,
@@ -343,15 +364,19 @@ class AdDesign extends Component {
             ? "VIDEO"
             : "IMAGE"
         });
-        this.props.save_campaign_info({
-          media: this.state.tempType,
-          type: this.state.tempType
-        });
+        !this.rejected &&
+          this.props.save_campaign_info({
+            media: this.state.tempType,
+            type: this.state.tempType
+          });
       });
     });
   };
 
   setMediaModalVisible = visible => {
+    if (visible) {
+      Segment.screen("Upload Media Modal");
+    }
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -365,7 +390,10 @@ class AdDesign extends Component {
         )
       }
     });
-    this.props.save_campaign_info({ brand_name: brand_name.replace("@", "") });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        brand_name: brand_name.replace("@", "")
+      });
   };
   changeHeadline = headline => {
     this.setState({
@@ -377,7 +405,8 @@ class AdDesign extends Component {
         )
       }
     });
-    this.props.save_campaign_info({ headline: headline.replace("@", "") });
+    !this.rejected &&
+      this.props.save_campaign_info({ headline: headline.replace("@", "") });
   };
   adDesignPickImage = mediaTypes =>
     _pickImage(
@@ -389,7 +418,8 @@ class AdDesign extends Component {
       this.onToggleModal,
       this.adType,
       this.setTheState,
-      this.props.screenProps
+      this.props.screenProps,
+      this.rejected
     );
 
   getVideoUploadUrl = () => {
@@ -492,12 +522,13 @@ class AdDesign extends Component {
         type: "VIDEO",
         fileReadyToUpload: true
       });
-      this.props.save_campaign_info({
-        selectedStoryAd: card,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
-      });
+      !this.rejected &&
+        this.props.save_campaign_info({
+          selectedStoryAd: card,
+          iosVideoUploaded: true,
+          type: "VIDEO",
+          fileReadyToUpload: true
+        });
     } else {
       this.setState({
         ...this.state,
@@ -507,12 +538,13 @@ class AdDesign extends Component {
         videoIsLoading: false,
         fileReadyToUpload: true
       });
-      this.props.save_campaign_info({
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
-      });
+      !this.rejected &&
+        this.props.save_campaign_info({
+          media: data.queryParams.media,
+          iosVideoUploaded: true,
+          type: "VIDEO",
+          fileReadyToUpload: true
+        });
     }
   };
 
@@ -713,6 +745,19 @@ class AdDesign extends Component {
   };
   finalSubmission = async () => {
     if (
+      this.state.brand_nameError ||
+      this.state.headlineError ||
+      this.state.mediaError ||
+      this.state.swipeUpError
+    ) {
+      segmentEventTrack("Ad Design Submit Error", {
+        campaign_brand_name_error: this.state.brand_nameError,
+        campaign_headline_error: this.state.headlineError,
+        campaign_media_error: this.state.mediaError,
+        campaign_swipeUp_error: this.state.swipeUpError
+      });
+    }
+    if (
       // !this.props.loadingStoryAdsArray.includes(true) &&
       (!this.state.brand_nameError &&
         !this.state.headlineError &&
@@ -725,7 +770,9 @@ class AdDesign extends Component {
       Segment.trackWithProperties("Completed Checkout Step", {
         checkout_id: this.props.campaign_id,
         step: 3,
-        business_name: this.props.mainBusiness.businessname
+        business_name: this.props.mainBusiness.businessname,
+        campaign_brand_name: this.state.campaignInfo.brand_name,
+        campaign_headline: this.state.campaignInfo.headline
       });
       await formatMedia(
         this.state.iosVideoUploaded,
@@ -793,26 +840,23 @@ class AdDesign extends Component {
    * since they're mostly the same
    */
   toggleAdSelection = () => {
-    if (this.state.storyAdCards.storyAdSelected)
-      this.setState({
-        ...this.state,
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          storyAdSelected: false
-        },
-        type: "",
-        videoIsLoading: false
-      });
-    else {
-      if (this.rejected && this.adType !== "StoryAd") {
-        this.props.resetRejectedCampaignData();
-      }
-      this.props.navigation.goBack();
-    }
-    return true;
+    this.state.storyAdCards.storyAdSelected
+      ? this.setState({
+          ...this.state,
+          storyAdCards: {
+            ...this.state.storyAdCards,
+            storyAdSelected: false
+          },
+          type: "",
+          videoIsLoading: false
+        })
+      : this.props.navigation.goBack();
   };
 
   setUploadFromDifferentDeviceModal = val => {
+    if (val) {
+      Segment.screen(`Upload media from Different Device Modal`);
+    }
     this.setState({
       uploadMediaDifferentDeviceModal: val
     });
@@ -827,6 +871,9 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = val => {
+    if (val) {
+      Segment.screen("Download media from Different Device Modal");
+    }
     this.setState({
       downloadMediaModal: val
     });
@@ -837,10 +884,11 @@ class AdDesign extends Component {
       type: mediaTypeWebLink,
       downloadMediaModal: false
     });
-    this.props.save_campaign_info({
-      media: mediaWebLink,
-      type: mediaTypeWebLink
-    });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: mediaWebLink,
+        type: mediaTypeWebLink
+      });
   };
   handleDownloadMediaStoryAds = async storyAdsArray => {
     // update storyads array
@@ -871,11 +919,12 @@ class AdDesign extends Component {
           //works as normal when uploading ios videos
           fileReadyToUpload: true
         });
-        this.props.save_campaign_info({
-          selectedStoryAd: card,
-          type: storyAdsArray[index].media_type,
-          fileReadyToUpload: true
-        });
+        !this.rejected &&
+          this.props.save_campaign_info({
+            selectedStoryAd: card,
+            type: storyAdsArray[index].media_type,
+            fileReadyToUpload: true
+          });
       }
     });
     this.setState({
@@ -886,7 +935,7 @@ class AdDesign extends Component {
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     this.props.navigation.push("WebView", {
-      url: "https://www.optimizeapp.com/support",
+      url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support"
     });
   };
@@ -901,10 +950,11 @@ class AdDesign extends Component {
       downloadMediaModal: false
     });
     this.props.setCollectionAdMediaArray(collectionAdsArray);
-    this.props.save_campaign_info({
-      media: collectionAdMainMedia,
-      type: collectionAdMainMediaType
-    });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: collectionAdMainMedia,
+        type: collectionAdMainMediaType
+      });
   };
   render() {
     let {
@@ -991,7 +1041,8 @@ class AdDesign extends Component {
               );
             }
             Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "snapchat"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               checkout_id: this.props.campaign_id,
@@ -1080,8 +1131,7 @@ class AdDesign extends Component {
                       call_to_action,
                       attachment,
                       appChoice = null,
-                      whatsAppCampaign,
-                      instagramTrafficCampaign
+                      whatsAppCampaign
                     ) =>
                       _changeDestination(
                         destination,
@@ -1089,7 +1139,6 @@ class AdDesign extends Component {
                         attachment,
                         appChoice,
                         whatsAppCampaign,
-                        instagramTrafficCampaign,
                         this.adType,
                         this.props.setStoryAdAttachment,
                         this.state.campaignInfo,
@@ -1152,7 +1201,12 @@ class AdDesign extends Component {
                       validCards.length >= 3 && (
                         <TouchableOpacity
                           style={styles.button}
-                          onPress={() => this.previewHandler()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to preview Story Ad Design"
+                            );
+                            this.previewHandler();
+                          }}
                         >
                           <EyeIcon width={wp(24)} height={hp(8)} />
                         </TouchableOpacity>
@@ -1160,7 +1214,12 @@ class AdDesign extends Component {
                     ) : (
                       <TouchableOpacity
                         style={styles.button}
-                        onPress={() => this.previewHandler()}
+                        onPress={() => {
+                          segmentEventTrack(
+                            "Button clicked to preview Ad Design"
+                          );
+                          this.previewHandler();
+                        }}
                       >
                         <EyeIcon width={wp(24)} height={hp(8)} />
                       </TouchableOpacity>
@@ -1193,9 +1252,16 @@ class AdDesign extends Component {
                               this.props.screenProps
                             );
                           }}
-                          style={styles.button}
+                          style={[
+                            styles.button,
+                            I18nManager.isRTL && styles.proceedButtonRTL
+                          ]}
                         >
-                          <ForwardButton width={wp(24)} height={hp(8)} />
+                          {I18nManager.isRTL ? (
+                            <BackButton />
+                          ) : (
+                            <ForwardButton width={wp(24)} height={hp(8)} />
+                          )}
                         </TouchableOpacity>
                       ) : (
                         <Text style={styles.footerTextStyle}>
@@ -1393,88 +1459,6 @@ const mapDispatchToProps = dispatch => ({
   updateStoryADS: storyAdsArray =>
     dispatch(actionCreators.updateStoryADS(storyAdsArray)),
   setCollectionAdMediaArray: collectionAdsArray =>
-    dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
-  resetRejectedCampaignData: () =>
-    dispatch(actionCreators.resetRejectedCampaignData())
+    dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);
-
-//for handle redirect for story ads at the bottom of the if statement//
-// FileSystem.downloadAsync(
-//   data.queryParams.media,
-//   FileSystem.cacheDirectory +
-//     data.queryParams.media.split("/")[
-//       data.queryParams.media.split("/").length - 1
-//     ]
-// )
-//   .then(({ uri }) => {
-//     card = {
-//       ...card,
-//       index: this.state.storyAdCards.selectedStoryAd.index,
-//       story_id: data.queryParams.story_id,
-//       media: uri,
-//       iosVideoUploaded: true,
-//       media_type: "VIDEO",
-//       uploaded: true
-//     };
-//     cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-//     this.setState({
-//       storyAdCards: {
-//         ...this.state.storyAdCards,
-//         // storyAdSelected: false,
-//         selectedStoryAd: {
-//           ...card
-//         }
-//       },
-//       videoIsLoading: false,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//     this.props.save_campaign_info({
-//       selectedStoryAd: card,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//   })
-//   .catch(error => {
-//     this.setState({
-//       videoIsLoading: false
-//     });
-//     // console.error(error);
-//     showMessage({
-//       message: "Something went wrong!",
-//       type: "warning",
-//       position: "top",
-//       description: "Please try again later. " + error
-//     });
-//   });
-
-////---Keep just in case we want to download videos on iOS---////
-//for handleRedirect for snap ads at the bottom of the else statement
-// FileSystem.downloadAsync(
-//   data.queryParams.media,
-//   FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
-// )
-//   .then(({ uri }) => {
-//     this.setState({
-//       ...this.state,
-//       media: uri,
-//       iosVideoUploaded: true,
-//       type: "VIDEO",
-//       videoIsLoading: false
-//     });
-//     this.props.save_campaign_info({
-//       media: uri,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//   })
-//   .catch(error => {
-//     console.error(error);
-//     showMessage({
-//       message: "Something went wrong!",
-//       type: "warning",
-//       position: "top",
-//       description: "Please try again later. " + error
-//     });
-//   });

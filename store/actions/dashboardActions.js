@@ -4,15 +4,8 @@ import * as actionTypes from "./actionTypes";
 import * as Segment from "expo-analytics-segment";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
+import { get_languages } from "./campaignActions";
 
 export const filterCampaigns = query => {
   return {
@@ -23,8 +16,9 @@ export const filterCampaigns = query => {
 
 export const getCampaignDetails = (id, navigation) => {
   return dispatch => {
+    dispatch(get_languages());
     dispatch({
-      type: actionTypes.SET_CAMPAIGN,
+      type: actionTypes.SET_CAMPAIGN_LOADING,
       payload: { loading: true, data: {} }
     });
     navigation.push("CampaignDetails");
@@ -149,7 +143,11 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
-      payload: { isListEnd: false, fetching_from_server: false, loading: true }
+      payload: {
+        isListEnd: false,
+        fetching_from_server: false,
+        loadingCampaigns: true
+      }
     });
     createBaseUrl()
       .get(`campaignlist/${id}/${1}`, {
@@ -171,7 +169,9 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
           !err.message.includes("Api") &&
             showMessage({
               message:
-                err.response || "Something went wrong, please try again.",
+                err.message ||
+                err.response ||
+                "Something went wrong, please try again.",
               type: "danger",
               position: "top"
             });
@@ -181,7 +181,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
           payload: {
             isListEnd: false,
             fetching_from_server: false,
-            loading: false
+            loadingCampaigns: false
           }
         });
       });
@@ -251,7 +251,9 @@ export const checkRemainingBudget = campaign_id => {
             position: "top"
           })
       )
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        // console.log(err.response)
+      });
   };
 };
 
@@ -264,5 +266,16 @@ export const setRejectedCampaignData = rejCampaign => {
 export const resetRejectedCampaignData = () => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
+  };
+};
+export const downloadCSV = (campaign_id, email, showModalMessage) => {
+  return dispatch => {
+    createBaseUrl()
+      .post(`exportData`, { campaign_id, email })
+      .then(res => res.data)
+      .then(data => {
+        showModalMessage(data.message, data.success ? "success" : "warning");
+      })
+      .catch(err => showModalMessage(err));
   };
 };

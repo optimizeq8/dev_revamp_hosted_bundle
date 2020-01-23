@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 17,
-    paddingVertical: 10,
-    bottom: 5
+    alignSelf: "center"
   },
   slidTitle: {
     fontSize: 19,
@@ -94,6 +93,29 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#fff"
+  },
+  sections: {
+    marginVertical: 5,
+    justifyContent: "space-evenly",
+    flexDirection: "column",
+    height: "15%"
+  },
+  footerButtons: {
+    flexDirection: "column",
+    alignSelf: "center",
+    width: "100%",
+    top: 20
+  },
+  contentStyle: {
+    width: "85%",
+    alignSelf: "center",
+    backgroundColor: "#0005",
+    borderRadius: 20
+  },
+  mediaContainer: {
+    alignSelf: "center",
+    flexDirection: "row",
+    width: "100%"
   }
 });
 

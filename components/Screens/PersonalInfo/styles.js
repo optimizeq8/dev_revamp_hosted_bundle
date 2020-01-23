@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Platform } from "react-native";
+import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -26,31 +26,15 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   labelMobileNo: {
-    // bottom: 5,
-    alignSelf: "center",
-
     fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
     bottom: 5,
-    alignSelf: "center",
+    // alignSelf: "center",
     fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14
   },
   mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    borderColor: "transparent",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: heightPercentageToDP(5),
-    marginBottom: 0,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    paddingTop: 15
+    flex: 1
   },
   button: {
     alignSelf: "center",
@@ -71,17 +55,53 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-regular-english",
-    textAlign: "center",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     fontSize: 21 / PixelRatio.getFontScale(),
     color: "#4B4B4B"
   },
   input: {
-    bottom: 25,
-    marginBottom: 30,
-    alignSelf: "center",
-    width: "90%",
-    height: 45,
+    // bottom: 25,
+    marginBottom: 10,
+    // alignSelf: "center",
+    // width: "90%",
+    // height: 45,
     borderColor: "#7039FF"
+  },
+  fullNameView: {
+    width: "100%"
+  },
+  phoneInput: {
+    borderRadius: 0,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingBottom: 10,
+    marginTop: 10,
+    width: "100%"
+  },
+  mobileView: {
+    width: "100%",
+    marginBottom: 30
+  },
+  emailItem: { width: "100%", marginTop: 25 },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#FFF",
+    textAlign: "center"
+  },
+  labelView: {
+    height: 15,
+    width: 150,
+    alignSelf: "center",
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    // borderRadius: 25,
+    paddingTop: 2,
+    marginBottom: 0,
+    backgroundColor: "rgba(0,0,0,0.15)"
   }
 });
 

@@ -13,6 +13,7 @@ import rtlStyles from "./rtlStyles";
 import SearchIcon from "../../../assets/SVGs/Search";
 import CloseIcon from "../../../assets/SVGs/Close";
 import isStringArabic from "../../isStringArabic";
+import globalStyles from "../../../GlobalStyles";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -60,15 +61,25 @@ class SearchBar extends Component {
     }
   };
   render() {
-    let { height, businessList } = this.props;
+    let {
+      height,
+      businessList,
+      transactionSearch,
+      customInputStyle,
+      strokeColor
+    } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View
         searchBar
         style={[styles.searchBarView, { height: height ? height : "70%" }]}
       >
-        <Item rounded style={styles.searchBarItem}>
-          <SearchIcon width={18} height={18} stroke="#575757" />
+        <Item rounded style={[styles.searchBarItem, customInputStyle]}>
+          <SearchIcon
+            width={18}
+            height={18}
+            stroke={strokeColor ? strokeColor : "#fff"}
+          />
           <Input
             style={[
               I18nManager.isRTL
@@ -81,17 +92,33 @@ class SearchBar extends Component {
                         fontFamily: "montserrat-light-english"
                       }
                     : {}
-                )
+                ),
+              {
+                color: !businessList ? "#fff" : "#000"
+              }
             ]}
             placeholder={translate(
-              `Search ${businessList ? "businesses" : "ads"}`
+              `Search ${
+                businessList
+                  ? "businesses"
+                  : transactionSearch
+                  ? "transactions"
+                  : "ads"
+              }`
             )}
+            placeholderTextColor={
+              transactionSearch
+                ? "#rgba(255,255,255,0.4)"
+                : !businessList
+                ? "#fff"
+                : globalStyles.darkGrayTextColor.color
+            }
             value={this.state.value}
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());
             }}
           />
-          {!this.props.transactionSearch && (
+          {!transactionSearch && (
             <TouchableOpacity
               onPress={() => {
                 this._handleSubmit(true);
@@ -121,7 +148,4 @@ const mapDispatchToProps = dispatch => ({
   filterTransactions: query =>
     dispatch(actionCreators.filterTransactions(query))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

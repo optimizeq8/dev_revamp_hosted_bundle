@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import styles from "./styles";
 import * as Animatable from "react-native-animatable";
+import segmentEventTrack from "../../segmentEventTrack";
 
 export default class AppCard extends Component {
   render() {
@@ -20,6 +21,13 @@ export default class AppCard extends Component {
       <TouchableOpacity
         onPress={() => {
           showConfirmBtn(true);
+          segmentEventTrack(
+            `Selected App for ${appChoice === "iOS" ? "iOS" : "Android"}`,
+            {
+              campaign_app_name: item.title,
+              campaign_app_id: item.id
+            }
+          );
           appChoice === "iOS" ? _getIosAppIds(item) : _getAndroidAppIds(item);
         }}
         style={[

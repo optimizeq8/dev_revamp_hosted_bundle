@@ -25,6 +25,15 @@ class MainForm extends Component {
     header: null
   };
   state = { verified: false };
+  componentDidMount() {
+    if (this.props.navigation.getParam("b", null) === "0") {
+      this.setState({
+        businessInvite: this.props.navigation.getParam("b", null),
+        tempId: this.props.navigation.getParam("v", null)
+      });
+      this.props.getTempUserInfo(this.props.navigation.getParam("v", null));
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     let invite =
@@ -42,10 +51,17 @@ class MainForm extends Component {
       title = "Verification";
     }
     if (!this.props.registered && this.props.verified) {
-      content = <PersonalInfo screenProps={this.props.screenProps} />;
+      content = (
+        <PersonalInfo
+          businessInvite={this.state.businessInvite}
+          navigation={this.props.navigation}
+          tempId={this.state.tempId}
+          screenProps={this.props.screenProps}
+        />
+      );
       title = "Personal Info";
     }
-    if (this.props.successEmail) {
+    if (this.props.successEmail && !this.state.businessInvite) {
       content = (
         <CreateBusinessAccount
           registering={true}
@@ -204,44 +220,50 @@ class MainForm extends Component {
                   {translate("Personal")}
                 </Text>
               </View>
-              <View
-                style={[
-                  styles.dash,
-                  // { width: 30 },
-                  this.props.successEmail
-                    ? { marginRight: -8 }
-                    : {
-                        marginRight: -4,
-                        marginLeft: -4
-                      }
-                ]}
-              />
-              <View style={styles.badgeView}>
-                <Badge
-                  style={
-                    this.props.successEmail ? styles.activeBadege : styles.badge
-                  }
-                >
-                  <Text
-                    style={
+              {this.state.businessInvite !== "0" && (
+                <>
+                  <View
+                    style={[
+                      styles.dash,
+                      // { width: 30 },
                       this.props.successEmail
-                        ? styles.activeBadegeText
-                        : styles.badgeText
-                    }
-                  >
-                    {translate("4")}
-                  </Text>
-                </Badge>
-                <Text
-                  style={
-                    this.props.successEmail
-                      ? styles.activeTitleText
-                      : styles.titleText
-                  }
-                >
-                  {translate("Business")}
-                </Text>
-              </View>
+                        ? { marginRight: -8 }
+                        : {
+                            marginRight: -4,
+                            marginLeft: -4
+                          }
+                    ]}
+                  />
+                  <View style={styles.badgeView}>
+                    <Badge
+                      style={
+                        this.props.successEmail
+                          ? styles.activeBadege
+                          : styles.badge
+                      }
+                    >
+                      <Text
+                        style={
+                          this.props.successEmail
+                            ? styles.activeBadegeText
+                            : styles.badgeText
+                        }
+                      >
+                        {translate("4")}
+                      </Text>
+                    </Badge>
+                    <Text
+                      style={
+                        this.props.successEmail
+                          ? styles.activeTitleText
+                          : styles.titleText
+                      }
+                    >
+                      {translate("Business")}
+                    </Text>
+                  </View>
+                </>
+              )}
             </View>
           </View>
           <View style={[styles.mainCard]}>{content}</View>
@@ -260,9 +282,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  resetRegister: () => dispatch(actionCreators.resetRegister())
+  resetRegister: () => dispatch(actionCreators.resetRegister()),
+  getTempUserInfo: tempId => dispatch(actionCreators.getTempUserInfo(tempId))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MainForm);

@@ -17,20 +17,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   mainView: {
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     zIndex: 10,
-    height: 10,
-    top: 13,
-    zIndex: 100,
-    elevation: 10,
-    backgroundColor: "#0000",
-    width: "100%"
+    elevation: 5,
+    width: "100%",
+    height: "5%",
+    paddingHorizontal: "3.5%",
+    flexDirection: "row"
   },
   lottieView: {
-    left: 5,
-    // width: wp(5),
-    height: heightPercentageToDP(5),
-    position: "absolute"
+    width: heightPercentageToDP(5),
+    height: heightPercentageToDP(5)
   },
   animateView: {
     zIndex: 1,
@@ -38,8 +36,7 @@ const styles = StyleSheet.create({
   },
   sideMenuCard: {
     flexDirection: "row",
-    alignItems: "flex-end",
-    left: 20,
+    alignItems: "center",
     marginBottom: 5
   },
   sideMenuTop: {
@@ -62,19 +59,21 @@ const styles = StyleSheet.create({
   footerActivityIndicator: { margin: 15 },
   campaignButtonText: {
     textAlign: "center",
-    color: "#C6C6C6",
+    color: globalColors.white,
+
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    top: I18nManager.isRTL ? 3 : 5
+    top: I18nManager.isRTL ? 8 : 5
   },
   adButtonText: {
     textAlign: "center",
-    color: "#C6C6C6",
-    fontFamily: "montserrat-regular-english",
-    fontSize: 16,
-    top: 20
+    color: globalColors.white,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    paddingTop: 0
+    // top: 20
   },
-  container: { backgroundColor: "#0000", bottom: 5 },
+  container: { backgroundColor: "#0000" },
   media: {
     alignSelf: "center",
     height: heightPercentageToDP(10),
@@ -88,11 +87,12 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     backgroundColor: "#F4F4F4",
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
+    borderTopStartRadius: 40,
+    borderTopEndRadius: 40,
     width: "100%",
     height: "100%",
-    bottom: 20
+    paddingTop: 10,
+    bottom: 10
   },
   backDrop: {
     position: "absolute",
@@ -113,33 +113,24 @@ const styles = StyleSheet.create({
     paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
   },
   text: {
-    alignSelf: "center",
-    color: "#5F5F5F",
+    textAlign: "left",
+    color: globalColors.white,
     fontFamily: "montserrat-bold",
-    fontSize: 14
+    fontSize: 20,
+    textTransform: "uppercase"
     // top: 4
   },
   brandStyle: {
-    alignSelf: "center",
+    textAlign: "left",
     maxWidth: "80%",
-    color: "#5F5F5F",
-    textAlign: "center",
+    color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 12
+    fontSize: 14,
+    textTransform: "uppercase"
   },
   nameStyle: {
-    top: 5,
-    alignSelf: "center",
-    maxWidth: "75%",
-    minWidth: "50%",
-    height: 55,
-    color: "#5F5F5F",
     fontFamily: "montserrat-bold",
-    fontSize: 21,
-    backgroundColor: "#F4F4F4",
-    borderRadius: 30,
-    paddingTop: 10,
-    paddingHorizontal: 30
+    fontSize: 21
   },
   buttontext: {
     fontFamily: "montserrat-regular",
@@ -162,18 +153,14 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    // marginBottom: 10,
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: globalColors.orange,
-    // marginHorizontal: 20,
     width: 60,
     height: 60,
-    borderRadius: 33,
+    borderRadius: 50,
     elevation: 0,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 }
+    top: I18nManager.isRTL ? 8 : 0
   },
   link: {
     marginTop: 20,
@@ -242,30 +229,13 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30
   },
-  // checkbutton: {
-  //   backgroundColor: "#FF9D00",
-  //   alignSelf: "center",
-  //   width: 55,
-  //   height: 55,
-  //   borderRadius: 27.5,
-  //   borderColor: "transparent",
-  //   borderWidth: 1,
-  //   alignItems: "center",
-  //   justifyContent: "flex-end",
-  //   shadowColor: "#000",
-  //   shadowOffset: { width: 0, height: 3 },
-  //   shadowRadius: 3,
-  //   shadowOpacity: 0.2,
-  //   marginVertical: 5
-  // },
   activebutton: {
     backgroundColor: "#0000",
     justifyContent: "center",
     width: 55,
     height: 55,
     borderRadius: 33,
-    // top: 30,
-    // marginBottom: 10,
+    alignItems: "center",
     elevation: 0
   },
   dateInput: {
@@ -297,14 +267,11 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("100%"),
     marginTop: 0
   },
-  wallet: {
-    // top: "50%",
-    right: "5%",
-    position: "absolute",
+  headerIcons: {
     alignItems: "center",
     justifyContent: "center",
-    width: 50,
-    height: 50
+    width: "10%",
+    height: "100%"
   },
   placeHolderCardsStyle: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -320,19 +287,51 @@ const styles = StyleSheet.create({
     // elevation: 1
   },
   snapAd: {
-    top: 10,
+    marginTop: 10,
     justifyContent: "center",
-    backgroundColor: globalColors.white,
+    backgroundColor: "#0003",
     marginHorizontal: 10,
     width: 50,
     height: 50,
-    borderRadius: 50
+    borderRadius: 50,
+    elevation: 0,
+    alignItems: "center"
   },
   background: {
     position: "absolute",
     opacity: 0.4,
     top: 230,
     alignSelf: "center"
+  },
+  dashboardHeader: {
+    paddingHorizontal: "5%",
+    marginBottom: 15
+  },
+  searchbarContainer: {
+    flexDirection: "row",
+    height: 50,
+    alignItems: "center"
+  },
+  channelIcon: {
+    position: "absolute",
+    top: -20
+  },
+  adButtonView: {
+    flexDirection: "column",
+    backgroundColor: "#0000",
+    justifyContent: "space-around"
+  },
+  languageText: {
+    color: "#FFF",
+    fontSize: 19,
+    textAlign: "left",
+    fontFamily: !I18nManager.isRTL
+      ? "montserrat-regular-arabic"
+      : "montserrat-regular-english"
+  },
+  languageTouchView: {
+    right: "5%",
+    position: "absolute"
   }
 });
 

@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingBottom: 40,
     height: "50%",
-    marginHorizontal: 40
+    marginHorizontal: 30
   },
   targetTouchable: {
     flexDirection: "row",
@@ -125,55 +126,70 @@ const styles = StyleSheet.create({
   },
 
   chart: {
-    alignItems: "center",
-    alignSelf: "center",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    top: -20,
-    right: 0
+    // bottom: 0,
+    // width: widthPercentageToDP(25)
   },
   bottom: {
-    // display: "flex",
-    // alignItems: "center",
-    justifyContent: "center",
+    display: "flex",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     position: "absolute",
     bottom: 0,
-    alignSelf: "center"
-    // flexDirection: "row"
+    marginLeft: 25,
+    width: "100%",
+    // marginHorizontal: 30
+    paddingBottom: 15
   },
   chartText: {
     color: "#fff",
-    textAlign: "center",
-    fontFamily: "montserrat-regular",
-    fontSize: 12
+    textAlign: "left",
+    fontFamily: "montserrat-bold",
+    fontSize: 17
   },
   chartTextNum: {
     color: "#fff",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-regular",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "left"
   },
   chartItems: {
+    flexDirection: "row"
+  },
+  reachBarLowerButton: {
+    backgroundColor: globalColors.orange,
+    borderRadius: 50,
+    paddingLeft: 5,
+    width: 55,
+    height: 55,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    marginRight: widthPercentageToDP(35),
+    flex: 0
+  },
+  reachPeopleView: {
+    flex: 1,
     flexDirection: "column",
-    paddingVertical: Platform.OS === "android" ? 0 : 10
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingHorizontal: 8
   },
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-bold",
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   menudetails: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     color: "#fff",
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     fontSize: 11,
     textAlign: "left"
   },

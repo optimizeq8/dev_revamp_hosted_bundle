@@ -3,22 +3,15 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage, Animated } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import { getBusinessAccounts } from "./accountManagementActions";
-import { setAuthToken } from "./genericActions";
+import { saveBusinessInvitee } from "./accountManagementActions";
+import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
 import { update_app_status_chat_notification } from "./genericActions";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
+import NavigationService from "../../NavigationService";
 
 export const chanege_base_url = admin => {
   return dispatch => {
@@ -31,52 +24,58 @@ export const chanege_base_url = admin => {
 
 export const send_push_notification = () => {
   return (dispatch, getState) => {
-    Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
-      if (permission.status === "granted") {
-        Notifications.getExpoPushTokenAsync().then(token => {
-          createBaseUrl()
-            .post(`updatepushToken`, {
-              token: token,
-              userid: getState().auth.userInfo.userid
-            })
-            .then(res => {
-              return res.data;
-            })
-            .then(data => {
-              dispatch({
-                type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
-                payload: data
+    Permissions.getAsync(Permissions.NOTIFICATIONS)
+      .then(permission => {
+        if (permission.status === "granted") {
+          Notifications.getExpoPushTokenAsync().then(token => {
+            createBaseUrl()
+              .post(`updatepushToken`, {
+                token: token,
+                userid: getState().auth.userInfo.userid
+              })
+              .then(res => {
+                return res.data;
+              })
+              .then(data => {
+                dispatch({
+                  type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
+                  payload: data
+                });
+              })
+              .catch(err => {
+                // console.log(
+                //   "send_push_notification",
+                //   err.message || err.response
+                // );
+                showMessage({
+                  message:
+                    err.message ||
+                    err.response ||
+                    "Something went wrong, please try again.",
+                  type: "danger",
+                  position: "top"
+                });
+                dispatch({
+                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
+                });
               });
-            })
-            .catch(err => {
-              // console.log(
-              //   "send_push_notification",
-              //   err.message || err.response
-              // );
-              showMessage({
-                message:
-                  err.message ||
-                  err.response ||
-                  "Something went wrong, please try again.",
-                type: "danger",
-                position: "top"
-              });
-              dispatch({
-                type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
-              });
-            });
-        });
-      }
-    });
+          });
+        }
+      })
+      .catch(err => {
+        // console.log("Token Error", err);
+      });
   };
 };
 
 export const checkForExpiredToken = navigation => {
   return (dispatch, getState) => {
+    dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
     return SecureStore.getItemAsync("token").then(token => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
+
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           if (
             [
@@ -89,26 +88,51 @@ export const checkForExpiredToken = navigation => {
             ].includes(user.email)
           )
             dispatch(chanege_base_url(true));
-          setAuthToken(token)
-            .then(() =>
-              dispatch(
-                setCurrentUser({
-                  user: user,
-                  message: "Logged-in Successfully"
-                })
-              )
-            )
-            .then(() => {
-              dispatch(send_push_notification());
-              dispatch(getBusinessAccounts());
+          // check if the local store token is same as in db
+          createBaseUrl()
+            .get("verifyAccessToken", {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            .then(responseToken => {
+              if (responseToken.data.success) {
+                setAuthToken(token)
+                  .then(() =>
+                    dispatch(
+                      setCurrentUser({
+                        user: user,
+                        message: "Logged-in Successfully"
+                      })
+                    )
+                  )
+                  .then(() => {
+                    dispatch(send_push_notification());
+                    dispatch(getBusinessAccounts());
+                  })
+                  .then(() => {
+                    navigation && NavigationService.navigate("Dashboard");
+                  });
+              } else {
+                dispatch(clearPushToken(navigation, user.userid));
+              }
             })
             .then(() => {
-              navigation.navigate("Dashboard");
+              dispatch({
+                type: actionTypes.CHECKING_FOR_TOKEN,
+                payload: false
+              });
+
+              navigation && NavigationService.navigate("Dashboard");
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
         }
-      }
+      } else
+        dispatch({
+          type: actionTypes.CHECKING_FOR_TOKEN,
+          payload: false
+        });
     });
   };
 };
@@ -140,6 +164,7 @@ export const login = (userData, navigation) => {
         let decodedUser = null;
         if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
+
           let promise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
         } else {
@@ -165,9 +190,22 @@ export const login = (userData, navigation) => {
       .then(() => {
         if (getState().auth.userInfo) {
           if (getState().auth.userInfo.tmp_pwd === "1") {
-            navigation.navigate("ChangePassword", { temp_pwd: true });
+            navigation.navigate("ChangePassword", {
+              temp_pwd: true
+            });
           } else {
-            navigation.navigate("Dashboard");
+            dispatch(
+              saveBusinessInvitee({
+                tempInviteId: navigation.getParam("v", ""),
+                businessInvitee: navigation.getParam("business", ""),
+                invitedEmail: navigation.getParam("email", "")
+              })
+            );
+            navigation.navigate("Dashboard", {
+              v: navigation.getParam("v", ""),
+              business: navigation.getParam("business", ""),
+              email: navigation.getParam("email", "")
+            });
           }
 
           dispatch(getBusinessAccounts());
@@ -193,11 +231,23 @@ export const login = (userData, navigation) => {
 };
 
 export const logout = navigation => {
-  return dispatch => {
+  return (dispatch, getState) => {
     setAuthToken()
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
-        navigation.navigate("Signin", { loggedout: true });
+        navigation &&
+          navigation.navigate("SwitchLanguage", {
+            loggedout: true,
+            v:
+              (navigation && navigation.getParam("v", false)) ||
+              getState().account.tempInviteId,
+            business:
+              (navigation && navigation.getParam("business", "")) ||
+              getState().account.businessInvitee,
+            email:
+              (navigation && navigation.getParam("email", "")) ||
+              getState().account.invitedEmail
+          });
       });
   };
 };
@@ -274,7 +324,10 @@ export const setCurrentUser = user => {
         payload: user
       });
     } else {
-      return dispatch({ type: actionTypes.LOGOUT_USER, payload: { user } });
+      return dispatch({
+        type: actionTypes.LOGOUT_USER,
+        payload: { user }
+      });
     }
   };
 };
@@ -316,7 +369,10 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           );
           return dispatch({
             type: actionTypes.CHANGE_PASSWORD,
-            payload: { success: response.data.success, loading: false }
+            payload: {
+              success: response.data.success,
+              loading: false
+            }
           });
         }
         //   let time = new Animated.Value(0);

@@ -57,7 +57,8 @@ class AdDesignReview extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
     Segment.screenWithProperties("Ad Preview", {
-      category: "Campaign Creation"
+      category: "Campaign Creation",
+      channel: "snapchat"
     });
   }
   handleBackButton = () => {
@@ -68,19 +69,17 @@ class AdDesignReview extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  collectionComp = i => {
-    let collections = this.props.navigation.getParam("collectionAdMedia", []);
-    return (
-      <View style={styles.collectionPlaceholder}>
-        {!isUndefined(collections[i]) && (
-          <RNImageOrCacheImage
-            media={collections[i].localUri || collections[i].media}
-            style={styles.collectionImage}
-          />
-        )}
-      </View>
-    );
-  };
+  collectionComp = col => (
+    <View style={styles.collectionPlaceholder}>
+      {!isUndefined(col) && (
+        <RNImageOrCacheImage
+          media={col.localUri || col.media}
+          style={styles.collectionImage}
+        />
+      )}
+    </View>
+  );
+
   render() {
     let adType =
       this.props.navigation.getParam("adType", false) || this.props.adType;
@@ -141,14 +140,12 @@ class AdDesignReview extends Component {
       }
     }
 
-    let collection = (
-      <View style={styles.collectionView}>
-        {this.collectionComp(0)}
-        {this.collectionComp(1)}
-        {this.collectionComp(2)}
-        {this.collectionComp(3)}
-      </View>
-    );
+    let collection = [];
+    if (this.props.navigation.getParam("collectionAdMedia", []))
+      collection = this.props.navigation
+        .getParam("collectionAdMedia", [])
+        .map(col => this.collectionComp(col));
+
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -242,7 +239,8 @@ class AdDesignReview extends Component {
                   >
                     {destination !== "APP_INSTALL" &&
                       adType !== "CollectionAd" &&
-                      destination !== "BLANK" && (
+                      destination !== "BLANK" &&
+                      destination !== "SNAP_AD" && (
                         <View
                           style={[
                             styles.iconArrowUp,
@@ -292,7 +290,7 @@ class AdDesignReview extends Component {
                       globalStyles.transparentBackgroundColor
                     ]}
                   >
-                    {collection}
+                    <View style={styles.collectionView}>{collection}</View>
                   </Animatable.View>
                 )}
                 {destination === "APP_INSTALL" && (
@@ -359,7 +357,4 @@ const mapStateToProps = state => ({
   storyAdsArray: state.campaignC.storyAdsArray,
   storyAdAttachment: state.campaignC.storyAdAttachment
 });
-export default connect(
-  mapStateToProps,
-  null
-)(AdDesignReview);
+export default connect(mapStateToProps, null)(AdDesignReview);

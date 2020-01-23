@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
+import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import { connect } from "react-redux";
@@ -7,9 +8,10 @@ import * as actionCreators from "../../../store/actions";
 
 import styles from "./styles";
 import GlobalStyles from "../../../GlobalStyles";
-import { Button } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import segmentEventTrack from "../../segmentEventTrack";
 class UseWallet extends Component {
   //   state = { showModal: false };
 
@@ -21,8 +23,20 @@ class UseWallet extends Component {
   }
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: "WALLET"
+      });
       this.props.checkoutwithWallet(this.props.campaign_id);
     } else {
+      Segment.trackWithProperties("Pay remaining balance through KNET", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: "KNET"
+      });
       this.props._changeToKnet();
     }
     this.props.setShowWalletModal(false);
@@ -65,15 +79,13 @@ class UseWallet extends Component {
           {translate("Use your wallet to activate your Ad")}
         </Text>
         {this.props.walletUsed && (
-          <Button
-            full
+          <GradientButton
+            uppercase
             style={styles.walletButton}
-            onPress={() => this._handleRemoveAmount()}
-          >
-            <Text style={styles.buttontext}>
-              {translate("Remove Wallet Amount")}
-            </Text>
-          </Button>
+            onPressAction={() => this._handleRemoveAmount()}
+            text={translate("Remove Wallet Amount")}
+            textStyle={styles.buttontext}
+          />
         )}
         {/* <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
@@ -107,23 +119,29 @@ class UseWallet extends Component {
                     {translate("New Budget Total:")}{" "}
                     {this.props.campaign_balance_amount}
                   </Text>
-                  <Button
-                    onPress={() => this._handleConfirm()}
+                  <GradientButton
+                    onPressAction={() => this._handleConfirm()}
                     style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>
-                      {translate("Confirm")}
-                    </Text>
-                  </Button>
-                  <Button
-                    onPress={() => {
+                    textStyle={styles.colorWhite}
+                    text={translate("Confirm")}
+                    uppercase={true}
+                    radius={50}
+                  />
+                  <GradientButton
+                    onPressAction={() => {
+                      segmentEventTrack(
+                        "Button Clicked to CANCEL payment throught wallet"
+                      );
                       this._handleRemoveAmount();
                       this.props.setShowWalletModal(false);
                     }}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
-                  </Button>
+                    style={[styles.walletButton, styles.transaprentButton]}
+                    textStyle={styles.colorWhite}
+                    text={translate("Cancel")}
+                    transparent={true}
+                    uppercase={true}
+                    radius={50}
+                  />
                 </>
               )}
             </View>
@@ -141,7 +159,8 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
   walletUsed: state.transA.walletUsed,
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.transA.campaign_id,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -150,7 +169,4 @@ const mapDispatchToProps = dispatch => ({
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UseWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(UseWallet);

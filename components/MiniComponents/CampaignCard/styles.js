@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import { Dimensions } from "react-native";
 import {
   widthPercentageToDP,
@@ -19,32 +19,34 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: "row",
-    paddingVertical: 0
+    paddingVertical: 0,
+    alignItems: "center"
   },
   textcontainer: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start"
+    flexDirection: "column"
+    // alignItems: "center"
+    // justifyContent: "flex-start"
   },
   titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    width: "70%",
-    left: 5,
+    // left: 5,
     textAlign: "left"
   },
 
   subtext: {
-    paddingTop: 5,
+    // paddingTop: 5,
     fontFamily: "montserrat-bold",
     fontSize: 10,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   campaignButton: {
     flex: 1,
     padding: 20,
-    paddingVertical: 15
+    paddingVertical: 20
   },
   chart: {
     paddingHorizontal: 5,
@@ -78,17 +80,16 @@ const styles = StyleSheet.create({
     padding: 0
   },
   icon: {
-    position: "absolute",
     color: "#fff",
-    left: "88%",
-    fontSize: 40,
-    top: "-3%"
+    fontSize: 40
   },
   reviewText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
+    textAlign: "left",
     fontSize: 13,
-    padding: 3,
-    color: "#fff"
+    paddingHorizontal: 5,
+    color: "#fff",
+    textTransform: "uppercase"
   },
   campaignInfo: {
     flexDirection: "column",
@@ -125,9 +126,9 @@ const styles = StyleSheet.create({
   },
   adStatus: {
     borderRadius: 16,
-    marginBottom: 5,
-    paddingHorizontal: 10,
-    top: 5
+    paddingTop: 3,
+    flexDirection: "row",
+    alignItems: "center"
   },
   circleStyle: {
     width: 17,
@@ -135,10 +136,30 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   chartContainer: {
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignItems: "center"
   },
   iconImpression: {
     bottom: 3
+  },
+  circleIcon: { color: "#fff", fontSize: 16 },
+  cardText: {
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    textAlign: "center"
+  },
+  cardStatusDays: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    alignSelf: "center",
+    paddingLeft: 5
+  },
+  horizontalLineView: {
+    width: 3,
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.05)"
   }
 });
 

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     borderWidth: 3,
-    borderColor: "#FF9D00"
+    borderColor: globalColors.orange
   },
   imagePlaceholder: {
     opacity: 0.5,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   },
   inputMiddleButton: {
     position: "absolute",
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     alignSelf: "center",
     width: 70,
     height: 70,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 14,
     width: 150,
-    color: "#FF9D00"
+    color: globalColors.orange
   },
   mediaButtonMsg1: {
     textAlign: "center",
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 14,
     width: 150,
-    color: "#FF9D00"
+    color: globalColors.orange
   },
   button: {
     alignSelf: "center",
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   imageView: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     width: 125,
     paddingVertical: 10,
     borderRadius: 30,

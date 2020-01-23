@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import isUndefined from "lodash/isUndefined";
 
 const initialState = {
   campaignList: [],
@@ -16,7 +17,12 @@ const initialState = {
   loadingCampaignDetails: false,
   loadingCampaignStats: false,
   campaignError: false,
-  rejCampaign: null
+  rejCampaign: null,
+  campaignMetrics: [],
+  googleCampaignStats: [],
+  googleCampaignOverall: {},
+  smeMetrics: [],
+  loadingCampaigns: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,22 +34,21 @@ const reducer = (state = initialState, action) => {
         filteredCampaigns: action.payload.data,
         fetching_from_server: false,
         isListEnd: false,
-        loading: false
+        loadingCampaigns: false
       };
     case actionTypes.ERROR_SET_CAMPAIGN_LIST:
       return {
         ...state,
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd,
-        loading: action.payload.loading
+        loadingCampaigns: action.payload.loadingCampaigns
       };
-
     case actionTypes.GOT_ALL_CAMPAIGNS:
       return {
         ...state,
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd,
-        loading: action.payload.loading
+        loadingCampaigns: action.payload.loadingCampaigns
       };
 
     case actionTypes.UPDATE_CAMPAIGN_LIST:
@@ -59,12 +64,25 @@ const reducer = (state = initialState, action) => {
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd
       };
-
+    case actionTypes.SET_CAMPAIGN_LOADING:
+      return {
+        ...state,
+        selectedCampaign: action.payload.data,
+        loadingCampaignDetails: action.payload.loading,
+        campaignError: false
+      };
     case actionTypes.SET_CAMPAIGN:
       return {
         ...state,
         selectedCampaign: action.payload.data,
-        loadingCampaignDetails: action.payload.loading
+        googleCampaignStats: isUndefined(action.payload.data.stats)
+          ? []
+          : action.payload.data.stats,
+        googleCampaignOverall: isUndefined(action.payload.data.overall)
+          ? {}
+          : action.payload.data.overall,
+        loadingCampaignDetails: action.payload.loading,
+        campaignError: false
       };
     case actionTypes.ERROR_SET_CAMPAIGN:
       return {
@@ -76,7 +94,51 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CAMPAIGN_STATS:
       let campStats = action.payload.data;
       let err = action.payload.err;
-
+      let campaignMetrics = [];
+      let smeMetrics = [];
+      if (!err) {
+        Object.keys(campStats).map((metric, i) => {
+          if (
+            ![
+              "debug_message",
+              "display_message",
+              "error_code",
+              "request_id",
+              "request_status",
+              "call_clicks",
+              "instagram_clicks",
+              "location_clicks",
+              "whatsapp_clicks",
+              "total_installs",
+              "timeseries_stats"
+            ].includes(metric)
+          ) {
+            campaignMetrics.push({
+              metric: metric.replace("_", " "),
+              metricValue: campStats[metric]
+            });
+          }
+          if (
+            [
+              "call_clicks",
+              "instagram_clicks",
+              "location_clicks",
+              "whatsapp_clicks"
+            ].includes(metric)
+          ) {
+            smeMetrics.push({
+              metric: metric.replace("_", " "),
+              metricValue: campStats[metric]
+            });
+          }
+        });
+        if (state.selectedCampaign.objective === "BRAND_AWARENESS") {
+          campaignMetrics.push({
+            metric: "cpm",
+            metricValue: state.selectedCampaign.cpm
+          });
+        }
+      }
       return {
         ...state,
         selectedCampaign: {
@@ -91,6 +153,8 @@ const reducer = (state = initialState, action) => {
           eCPI: !err ? campStats.eCPI : 0,
           eCPSU: !err ? campStats.eCPSU : 0
         },
+        smeMetrics: smeMetrics,
+        campaignMetrics: campaignMetrics,
         granularity: action.payload.data.hasOwnProperty("timeseries_stats")
           ? action.payload.data.timeseries_stats[0].timeseries_stat.granularity
           : "DAY",
@@ -170,6 +234,25 @@ const reducer = (state = initialState, action) => {
       return { ...state, rejCampaign };
     case actionTypes.RESET_REJECTED_CAMPAIGN:
       return { ...state, rejCampaign: null };
+
+    case actionTypes.SET_GOOGLE_CAMPAIGN_STATS:
+      return {
+        ...state,
+        loadingCampaignStats: action.payload.loading,
+        googleCampaignOverall: action.payload.data.overall,
+        googleCampaignStats: action.payload.data.stats
+      };
+    case actionTypes.UPDATE_GOOGLE_CAMPAIGN_STATUS:
+      return {
+        ...state,
+        selectedCampaign: {
+          ...state.selectedCampaign,
+          campaign: {
+            ...state.selectedCampaign.campaign,
+            status: action.payload.status
+          }
+        }
+      };
     default:
       return state;
   }

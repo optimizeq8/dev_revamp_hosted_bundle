@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Button, Text, Icon } from "native-base";
+import { Text, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import * as Segment from "expo-analytics-segment";
 
 export default class GenderOptions extends Component {
+  componentDidMount() {
+    Segment.screen("Gender Options");
+  }
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -106,12 +110,12 @@ export default class GenderOptions extends Component {
             </View>
           </View>
 
-          <Button
+          <TouchableOpacity
             style={[styles.button]}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />
-          </Button>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );

@@ -24,10 +24,8 @@ const reducer = (state = initialState, action) => {
         loading: false
       };
     case actionTypes.ADD_MESSAGE:
-      // console.log("message add", action.payload);
       const messageArr = state.messages;
       messageArr.unshift(action.payload);
-      // console.log("messageArr len", messageArr.length);
       return {
         ...state,
         messages: [...messageArr],
@@ -42,7 +40,6 @@ const reducer = (state = initialState, action) => {
         loading_con: false
       };
     case actionTypes.SET_CONVERSATION:
-      // console.log("SET_CONVERSATION: ", action.payload);
       const reverseMessages = reverse(action.payload.messages);
       return {
         ...state,

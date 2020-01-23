@@ -76,7 +76,7 @@ export default class PhoneNoField extends Component {
               // this.props.invite
               //   ? globalStyles.whiteTextColor
               // :
-              globalStyles.transparentTextColor
+              globalStyles.whiteTextColor
             ]}
           />
           <PhoneInput

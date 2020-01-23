@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { BackHandler, View, StatusBar } from "react-native";
-
+import * as Segment from "expo-analytics-segment";
 import { ScreenOrientation } from "expo";
 import { Video } from "expo-av";
 import CustomHeader from "../../../MiniComponents/Header";
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 export default class LongFormVideoPreview extends Component {
   componentDidMount() {
+    Segment.screen("Longform Video Preview");
     ScreenOrientation.lockAsync(
       ScreenOrientation.OrientationLock.ALL_BUT_UPSIDE_DOWN
     );
@@ -41,10 +43,16 @@ export default class LongFormVideoPreview extends Component {
           styles.safeAreaViewLongFormVideoPreview
         ]}
       >
+        <NavigationEvents
+          onDidFocus={() => Segment.screen("Longform Video Preview")}
+        />
         <CustomHeader
           screenProps={this.props.screenProps}
           actionButton={this.actionButton}
           closeButton={true}
+          segment={{
+            str: "LongForm Video Preview Back Button"
+          }}
         />
         <View style={styles.videoPreviewView}>
           <Video

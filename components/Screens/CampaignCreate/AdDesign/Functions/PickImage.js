@@ -4,29 +4,49 @@ import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
+import segmentEventTrack from "../../../../segmentEventTrack";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
+import { Linking } from "expo";
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
+    const pkg = Constants.manifest.releaseChannel
+      ? Constants.manifest.android.package // When published, considered as using standalone build
+      : "host.exp.exponent"; // In expo client mode
     showMessage({
       message: translate("Please allow access to the gallery to upload media"),
       position: "top",
-      type: "warning"
+      type: "warning",
+      onPress: () =>
+        Platform.OS === "ios"
+          ? Linking.openURL("app-settings:")
+          : Platform.OS === "android" &&
+            IntentLauncher.startActivityAsync(
+              IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+              { data: "package:" + pkg }
+            ),
+      duration: 5000,
+      description: translate("Press here to open settings")
     });
-    Platform.OS === "ios" && Linking.openURL("app-settings:");
   }
+  return status;
 };
 
 export const pick = async (mediaTypes, screenProps) => {
-  await askForPermssion(screenProps);
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: mediaTypes,
-    //Platform.OS === "ios" ? "Images" : "All",
-    base64: false,
-    exif: false,
-    quality: 0.8
-  });
+  let status = await askForPermssion(screenProps);
+  let result = "";
+  if (status === "granted") {
+    result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: mediaTypes,
+      //Platform.OS === "ios" ? "Images" : "All",
+      base64: false,
+      exif: false,
+      quality: 0.8
+    });
+  }
 
   return result;
 };
@@ -40,18 +60,21 @@ export const _pickImage = async (
   onToggleModal,
   adType,
   setTheState,
-  screenProps
+  screenProps,
+  rejected
 ) => {
   try {
     let result = await pick(mediaTypes, screenProps);
-
-    let file = await FileSystem.getInfoAsync(result.uri, {
-      size: true
-    });
+    let file = {};
+    if (result) {
+      file = await FileSystem.getInfoAsync(result.uri, {
+        size: true
+      });
+      setTheState({ directory: "/ImagePicker/" });
+    }
     const { translate } = screenProps;
     setMediaModalVisible(false);
-    setTheState({ directory: "/ImagePicker/" });
-    if (!result.cancelled) {
+    if (result && !result.cancelled) {
       if (result.type === "image") {
         if (result.width >= 1080 && result.height >= 1920) {
           ImageManipulator.manipulateAsync(
@@ -99,10 +122,11 @@ export const _pickImage = async (
                   image: "//"
                 });
                 onToggleModal(false);
-                save_campaign_info({
-                  media: "//",
-                  type: ""
-                });
+                !rejected &&
+                  save_campaign_info({
+                    media: "//",
+                    type: ""
+                  });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
@@ -112,6 +136,9 @@ export const _pickImage = async (
                   ),
                   position: "top",
                   type: "warning"
+                });
+                segmentEventTrack("Seleeted Image Error", {
+                  campaign_error_image: "Image must be less than 5 MBs"
                 });
                 return Promise.reject("Image must be less than 5 MBs");
               }
@@ -172,17 +199,22 @@ export const _pickImage = async (
                   position: "top",
                   type: "success"
                 });
-                save_campaign_info({
-                  media: result.uri,
-                  type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
-                });
+                segmentEventTrack("Selected Image Successful");
+                !rejected &&
+                  save_campaign_info({
+                    media: result.uri,
+                    type: result.type.toUpperCase(),
+                    fileReadyToUpload: true
+                  });
               }
             })
             .catch(error => {
               // console.log(error);
 
               onToggleModal(false);
+              segmentEventTrack("Seleeted Image Error", {
+                campaign_error_image: "The dimensions are too large"
+              });
               showMessage({
                 message:
                   error ||
@@ -209,11 +241,16 @@ export const _pickImage = async (
             type: ""
             // videoIsLoading: false
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           onToggleModal(false);
+          segmentEventTrack("Seleeted Image Error", {
+            campaign_error_image:
+              "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px"
+          });
           showMessage({
             message: translate(
               "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
@@ -233,15 +270,17 @@ export const _pickImage = async (
             iosVideoUploaded: false
           });
           onToggleModal(false);
+          segmentEventTrack("Selected Image successfully");
           showMessage({
             message: translate("Image has been selected successfully"),
             position: "top",
             type: "success"
           });
-          save_campaign_info({
-            media: result.uri,
-            type: result.type.toUpperCase()
-          });
+          !rejected &&
+            save_campaign_info({
+              media: result.uri,
+              type: result.type.toUpperCase()
+            });
           return;
         }
       } else if (result.type === "video") {
@@ -251,9 +290,13 @@ export const _pickImage = async (
             media: "//",
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video: "Maximum video duration is 10 seconds"
           });
           showMessage({
             message: translate("Maximum video duration is 10 seconds"),
@@ -275,9 +318,13 @@ export const _pickImage = async (
             media: "//",
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video: "Minimum video duration is 3 seconds"
           });
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
@@ -297,9 +344,13 @@ export const _pickImage = async (
             mediaError: "Allowed video size is up to 32 MBs.",
             media: "//"
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
+          segmentEventTrack("Selected Video Error", {
+            videoError: "Allowed video size is up to 32 MBs"
           });
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
@@ -357,16 +408,18 @@ export const _pickImage = async (
               sourceChanging: true
             });
             onToggleModal(false);
+            segmentEventTrack("Selected Video Successfully");
             showMessage({
               message: translate("Video has been selected successfully"),
               position: "top",
               type: "success"
             });
           }
-          save_campaign_info({
-            media: result.uri,
-            type: result.type.toUpperCase()
-          });
+          !rejected &&
+            save_campaign_info({
+              media: result.uri,
+              type: result.type.toUpperCase()
+            });
           setTheState({ sourceChanging: false });
           return;
         } else {
@@ -377,11 +430,17 @@ export const _pickImage = async (
 
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           onToggleModal(false);
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video:
+              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+          });
+
           showMessage({
             message: translate(
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
@@ -395,20 +454,22 @@ export const _pickImage = async (
           return;
         }
       }
-    } else if (!result.cancelled && isNull(media)) {
+    } else if (result && !result.cancelled && isNull(media)) {
       showMessage({
         message: translate("Please choose a media file"),
         position: "top",
         type: "warning"
       });
+      segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//"
       });
-      save_campaign_info({
-        media: "//",
-        type: ""
-      });
+      !rejected &&
+        save_campaign_info({
+          media: "//",
+          type: ""
+        });
       onToggleModal(false);
       return;
     } else {

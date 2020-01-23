@@ -8,7 +8,13 @@ import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Platform,
+  BackHandler,
+  I18nManager
+} from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -16,6 +22,8 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -23,6 +31,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import BackButton from "../../../../assets/SVGs/BackButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 // Style
 import styles from "./styles";
@@ -40,6 +49,7 @@ import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -114,12 +124,26 @@ class AdCover extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }
@@ -163,15 +187,29 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     if (status !== "granted") {
       this.onToggleModal(false);
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package // When published, considered as using standalone build
+        : "host.exp.exponent"; // In expo client mode
+
       showMessage({
         message: translate(
           "Please allow access to the gallery to upload media"
         ),
         position: "top",
-        type: "warning"
+        type: "warning",
+        onPress: () =>
+          Platform.OS === "ios"
+            ? Linking.openURL("app-settings:")
+            : Platform.OS === "android" &&
+              IntentLauncher.startActivityAsync(
+                IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                { data: "package:" + pkg }
+              ),
+        duration: 5000,
+        description: translate("Press here to open settings")
       });
-      Platform.OS === "ios" && Linking.openURL("app-settings:");
     }
+    return status;
   };
 
   setMediaModalVisible = visible => {
@@ -179,30 +217,32 @@ class AdCover extends Component {
   };
 
   changeHeadline = coverHeadline => {
-    this.setState(
-      {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          coverHeadline
-        },
-        coverHeadlineError: validateWrapper("mandatory", coverHeadline),
-        headlineRejectionUpload: true
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        coverHeadline
       },
+      coverHeadlineError: validateWrapper("mandatory", coverHeadline),
+      headlineRejectionUpload: true
+    });
+
+    !this.rejected &&
       this.props.save_campaign_info({
         coverHeadline,
         headlineRejectionUpload: true
-      })
-    );
+      });
   };
   pick = async mediaTypes => {
-    await this.askForPermssion();
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: mediaTypes,
-      base64: false,
-      exif: false,
-      quality: 0.8
-    });
-
+    let status = await this.askForPermssion();
+    let result = "";
+    if (status === "granted") {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: mediaTypes,
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+    }
     // this.onToggleModal(true);
     return result;
   };
@@ -210,7 +250,7 @@ class AdCover extends Component {
   _pickLogo = async () => {
     let logo = await this.pick("Images");
     const { translate } = this.props.screenProps;
-    if (!logo.cancelled) {
+    if (logo && !logo.cancelled) {
       let correctLogo = logo.width === 993 && logo.height === 284;
       let logoFormat =
         logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
@@ -235,11 +275,24 @@ class AdCover extends Component {
         duration: correctLogo ? 2000 : 10000,
         type: correctLogo ? "success" : "warning"
       });
-
-      this.props.save_campaign_info({
-        logo: correctLogo && logoFormat ? logo.uri : "",
-        logoRejectionUpload: correctLogo && logoFormat
-      });
+      segmentEventTrack(
+        `${
+          correctLogo && logoFormat
+            ? "Logo selected successfully"
+            : "Selected Logo Error"
+        }`,
+        {
+          campaign_error_story_ad_logo:
+            correctLogo && logoFormat
+              ? ""
+              : "Logo must be exactly 993px by 284px,In png format and transparent background "
+        }
+      );
+      !this.rejected &&
+        this.props.save_campaign_info({
+          logo: correctLogo && logoFormat ? logo.uri : "",
+          logoRejectionUpload: correctLogo && logoFormat
+        });
     }
   };
 
@@ -247,12 +300,16 @@ class AdCover extends Component {
     try {
       const { translate } = this.props.screenProps;
       let result = await this.pick(mediaTypes);
-      let file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
-      });
+
       this.setMediaModalVisible(false);
-      this.setState({ directory: "/ImagePicker/" });
-      if (!result.cancelled) {
+      let file = {};
+      if (result) {
+        file = await FileSystem.getInfoAsync(result.uri, {
+          size: true
+        });
+        this.setState({ directory: "/ImagePicker/" });
+      }
+      if (result && !result.cancelled) {
         if (result.type === "image") {
           if (result.width > 360 && result.height > 600) {
             ImageManipulator.manipulateAsync(
@@ -314,7 +371,10 @@ class AdCover extends Component {
                     position: "top",
                     type: "warning"
                   });
-
+                  segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                    campaign_error_story_ad_cover_image:
+                      "Image must be less than 2 MBs"
+                  });
                   return;
                 }
                 this.setState({
@@ -325,18 +385,23 @@ class AdCover extends Component {
                   coverRejectionUpload: true
                 });
                 this.onToggleModal(false);
+                segmentEventTrack("Selected Story Ad Cover Media successfully");
                 showMessage({
                   message: translate("Image has been selected successfully"),
                   position: "top",
                   type: "success"
                 });
-                this.props.save_campaign_info({
-                  cover: result.uri,
-                  coverRejectionUpload: true
-                });
+                !this.rejected &&
+                  this.props.save_campaign_info({
+                    cover: result.uri,
+                    coverRejectionUpload: true
+                  });
               })
               .catch(error => {
                 this.onToggleModal(false);
+                segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                  campaign_error_story_ad_cover_image: "Please choose an image"
+                });
                 showMessage({
                   message: translate("Please choose an image"),
                   position: "top",
@@ -355,6 +420,10 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
+            segmentEventTrack("Error in selecting Story Ad Cover Media", {
+              campaign_error_story_ad_cover_image:
+                "Image must be less than 2 MBs"
+            });
             return;
           } else if (
             Math.floor(result.width / 3) !== Math.floor(result.height / 5) ||
@@ -369,6 +438,10 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
+            segmentEventTrack("Error in selecting Story Ad Cover Media", {
+              campaign_error_story_ad_cover_image:
+                "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
+            });
             return;
           } else {
             this.setState({
@@ -379,14 +452,16 @@ class AdCover extends Component {
               result: result.uri
             });
             this.onToggleModal(false);
+            segmentEventTrack("Selected Story Ad Cover Media successfully");
             showMessage({
               message: translate("Image has been selected successfully"),
               position: "top",
               type: "success"
             });
-            this.props.save_campaign_info({
-              cover: result.uri
-            });
+            !this.rejected &&
+              this.props.save_campaign_info({
+                cover: result.uri
+              });
             return;
           }
         } else {
@@ -395,12 +470,19 @@ class AdCover extends Component {
             position: "top",
             type: "warning"
           });
+          segmentEventTrack("Error in selecting Story Ad Cover Media", {
+            campaign_error_story_ad_cover_image:
+              "Please make sure the image is in png format"
+          });
         }
-      } else if (!result.cancelled && isNull(this.state.cover)) {
+      } else if (result && !result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
+        });
+        segmentEventTrack("Error in selecting Story Ad Cover Media", {
+          campaign_error_story_ad_cover_image: "Please choose a media file"
         });
         this.onToggleModal(false);
         return;
@@ -453,6 +535,7 @@ class AdCover extends Component {
     this.rejected &&
       this.selectedCampaign &&
       body.append("preview_media_id", this.selectedCampaign.story_preview_id);
+    console.log(body);
 
     this.setState({
       formattedCover: body
@@ -494,7 +577,17 @@ class AdCover extends Component {
   };
   _handleSubmission = async () => {
     await this.validator();
-
+    if (
+      this.state.coverHeadlineError ||
+      this.state.logoError ||
+      this.state.coverError
+    ) {
+      segmentEventTrack("Error Story Ad Cover screen Submit button", {
+        campaign_error_story_ad_cover_image: this.state.coverError,
+        campaign_error_stoty_ad_cover_headline: this.state.coverHeadlineError,
+        campaign_error_story_ad_logo: this.state.logoError
+      });
+    }
     if (
       !this.state.coverHeadlineError &&
       !this.state.logoError &&
@@ -554,7 +647,7 @@ class AdCover extends Component {
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     this.props.navigation.push("WebView", {
-      url: "https://www.optimizeapp.com/support",
+      url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support"
     });
   };
@@ -585,7 +678,8 @@ class AdCover extends Component {
               ]);
             }
             Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "snapchat"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               checkout_id: this.props.campaign_id,
@@ -624,7 +718,12 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
-                          onPress={() => this._pickLogo()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to select Logo from gallery"
+                            );
+                            this._pickLogo();
+                          }}
                           style={styles.changeLogoStyle}
                         >
                           <RNImageOrCacheImage
@@ -649,7 +748,12 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
-                          onPress={() => this._pickLogo()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to select Logo from gallery"
+                            );
+                            this._pickLogo();
+                          }}
                           style={styles.addLogoStyle}
                         >
                           <View
@@ -730,9 +834,17 @@ class AdCover extends Component {
               <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
                   onPress={this._handleSubmission}
-                  style={styles.button}
+                  style={[
+                    styles.button,
+
+                    I18nManager.isRTL && styles.proceedButtonRTL
+                  ]}
                 >
-                  <ForwardButton width={wp(24)} height={hp(8)} />
+                  {I18nManager.isRTL ? (
+                    <BackButton />
+                  ) : (
+                    <ForwardButton width={wp(24)} height={hp(8)} />
+                  )}
                 </TouchableOpacity>
               </View>
             ) : (

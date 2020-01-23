@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
-import { Button } from "native-base";
+import { Text, Button } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -15,7 +15,14 @@ export default class ChartChoices extends Component {
       selectedCampaign && selectedCampaign.objective === "BRAND_AWARENESS"
         ? "CPM"
         : "Swipe Ups"
-    ].map(choice => (
+    ];
+    if (
+      selectedCampaign &&
+      selectedCampaign.source === "SME GROWTH" &&
+      "website interactions"
+    )
+      choices.push("website interactions");
+    choices = choices.map(choice => (
       <Button
         key={choice}
         onPress={() => {
@@ -29,12 +36,29 @@ export default class ChartChoices extends Component {
               this.state.selectedChoice === choice
                 ? globalColors.orange
                 : "transparent"
-          }
+          },
+          styles.chartChoiceButtons
         ]}
       >
-        <Text style={styles.choiceText}>{translate(choice)}</Text>
+        <Text
+          uppercase
+          style={[
+            styles.choiceText,
+            {
+              color:
+                this.state.selectedChoice !== choice
+                  ? globalColors.orange
+                  : "#fff"
+            },
+            styles.chartChoiceText
+          ]}
+        >
+          {translate(choice)}
+        </Text>
       </Button>
     ));
-    return <View style={styles.choicesStyles}>{choices}</View>;
+    return (
+      <View style={[styles.choicesStyles, styles.chartChoices]}>{choices}</View>
+    );
   }
 }

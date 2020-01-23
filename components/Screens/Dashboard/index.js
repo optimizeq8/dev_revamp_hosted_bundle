@@ -7,44 +7,42 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
+  Linking
 } from "react-native";
 import { Updates } from "expo";
-import i18n from "i18n-js";
 import { Button, Text, Container, Icon } from "native-base";
-import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
+import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
-import Menu from "../Menu";
+// import Menu from "../Menu";
+let Menu = null; //Doing an inline require for big components helps with performance
 import * as Animatable from "react-native-animatable";
-import AdButtions from "./AdButtons";
+import AdButtons from "./AdButtons";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
 import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
-import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
-import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
 
 //data
-import { snapAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
+import slowlog from "react-native-slowlog";
 //Functions
 import {
   widthPercentageToDP as wp,
@@ -53,6 +51,13 @@ import {
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
+import whyDidYouRender from "@welldone-software/why-did-you-render";
+import isEqual from "react-fast-compare";
+import AppUpdateChecker from "../AppUpdateChecker";
+import GradientButton from "../../MiniComponents/GradientButton";
+
+//Logs reasons why a component might be uselessly re-rendering
+whyDidYouRender(React);
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -72,27 +77,41 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true
     };
+    //Logs/gives warnign if a component has any functions that take a while to render
+    slowlog(this, /.*/, {
+      // verbose: true
+    }); //verbose logs all functions and their time
     this.page = 1;
   }
-  componentDidMount() {
-    if (this.props.mainBusiness) {
-      if (!this.props.mainBusiness.snap_ad_account_id) {
-        this.props.navigation.navigate("SnapchatCreateAdAcc");
-      }
-      // this.props.getWalletAmount();
-      this.props.getCampaignList(
-        this.props.mainBusiness.businessid,
-        this.increasePage,
-        this.signal.token
-      );
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
 
-      this.props.getBusinessAccounts();
-      Segment.screen("Dashboard");
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
+  }
+  componentDidMount() {
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("businessid")
+    ) {
+      // this.props.getWalletAmount();
+      if (this.props.campaignList.length === 0) {
+        this.props.getCampaignList(
+          this.props.mainBusiness.businessid,
+          this.increasePage,
+          this.signal.token
+        );
+      }
+      if (this.props.businessAccounts.length === 0) {
+        this.props.getBusinessAccounts();
+      }
     }
+    Segment.screen("Dashboard");
+    this.props.userInfo &&
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
-    this.props.setCampaignInProgress(false);
+    //Reset campaignProgressStarted only if there was a campaing in progress
+    if (this.props.campaignInProgress && this.props.incompleteCampaign)
+      this.props.setCampaignInProgress(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -108,17 +127,11 @@ class Dashboard extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
-      if (
-        this.props.mainBusiness &&
-        !this.props.mainBusiness.snap_ad_account_id
-      ) {
-        this.props.navigation.navigate("SnapchatCreateAdAcc", {
-          closeAnimation: this.closeAnimation
-        });
-      }
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      this.props.userInfo &&
+        this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -126,7 +139,14 @@ class Dashboard extends Component {
         this.signal.token
       );
     }
-
+    if (
+      this.state.open &&
+      this.props.mainBusiness &&
+      prevProps.mainBusiness &&
+      prevProps.mainBusiness.businessid !== this.props.mainBusiness.businessid
+    ) {
+      this.closeAnimation();
+    }
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true
@@ -136,9 +156,13 @@ class Dashboard extends Component {
 
   startAnimation = () => {
     this.setState({ anim: true });
+    if (Menu == null) {
+      Menu = require("../Menu").default; //Doing an inline require for big components helps with performance
+    }
     Animated.timing(this.state.menu, {
       toValue: 1,
-      duration: 350
+      duration: 350,
+      useNativeDriver: true
     }).start(() => {
       this.setState({ open: true });
     });
@@ -146,11 +170,14 @@ class Dashboard extends Component {
   closeAnimation = () => {
     this.setState({ anim: false });
     this.setState({ open: false });
-
     Animated.timing(this.state.menu, {
       toValue: 0,
-      duration: 350
-    }).start(() => {});
+      duration: 350,
+      useNativeDriver: true
+    }).start();
+    if (Menu) {
+      Menu = null;
+    }
   };
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
@@ -175,7 +202,28 @@ class Dashboard extends Component {
     if (!this.props.incompleteCampaign) {
       this.props.set_adType(adType.value);
     }
-    this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
+
+    if (
+      !this.props.mainBusiness.snap_ad_account_id &&
+      adType.mediaType === "snapchat"
+    ) {
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else if (
+      !this.props.mainBusiness.google_account_id &&
+      adType.mediaType === "google"
+    ) {
+      this.props.navigation.navigate("GoogleCreateAdAcc");
+    } else {
+      if (
+        adType.mediaType === "google" &&
+        this.props.mainBusiness.google_suspended === "1"
+      )
+        this.props.navigation.navigate("SuspendedWarning");
+      else
+        this.props.navigation.navigate(adType.rout, {
+          tempAdType: adType.value
+        });
+    }
   };
 
   increasePage = (reset = false) => {
@@ -192,7 +240,7 @@ class Dashboard extends Component {
       );
     }
   };
-  renderFooter() {
+  renderFooter = () => {
     return (
       <View style={styles.footer}>
         {this.props.fetching_from_server ? (
@@ -203,12 +251,11 @@ class Dashboard extends Component {
         ) : null}
       </View>
     );
-  }
+  };
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
-
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -216,8 +263,47 @@ class Dashboard extends Component {
     );
   };
 
+  renderCampaignCards = ({ item, index }) => {
+    if (item.channel === "google") {
+      return (
+        <GoogleCampaignCard
+          channel={"google"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+    } else
+      return (
+        <CampaignCard
+          channel={"snapchat"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+  };
+
+  handleNewCampaign = () => {
+    if (!this.props.mainBusiness.snap_ad_account_id) {
+      Segment.trackWithProperties("Create SnapAd Acount", {
+        category: "Ad Account",
+        label: "New SnapAd Account",
+        business_name: this.props.mainBusiness.businessname,
+        business_id: this.props.mainBusiness.businessid
+      });
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else {
+      Segment.trackWithProperties("Create Campaign", {
+        category: "Campaign Creation"
+      });
+      this.props.navigation.navigate("AdType");
+    }
+  };
+
   render() {
-    //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -246,17 +332,16 @@ class Dashboard extends Component {
         screenProps={this.props.screenProps}
       />
     ) : null;
-
-    let adButtons = snapAds.map(adType => (
-      <AdButtions
+    let adButtons = [...snapAds, ...googleAds].map(adType => (
+      <AdButtons
         translate={this.props.screenProps.translate}
-        key={adType.id}
+        key={adType.id + adType.mediaType}
         navigationHandler={this.navigationHandler}
         ad={adType}
       />
     ));
     if (
-      (!this.props.mainBusiness && this.props.loadingAccountMgmt) ||
+      this.props.loadingAccountMgmt ||
       (!this.props.mainBusiness && this.props.loading)
     ) {
       return (
@@ -269,14 +354,16 @@ class Dashboard extends Component {
           mySlideInUp={mySlideInUp}
         />
       );
-    } else if (this.props.businessLoadError) {
+    } else if (this.props.businessLoadError || !this.props.userInfo) {
       return (
-        <ErrorComponent
-          screenProps={this.props.screenProps}
-          dashboard={true}
-          loading={this.props.loading}
-          navigation={this.props.navigation}
-        />
+        <>
+          <ErrorComponent
+            screenProps={this.props.screenProps}
+            dashboard={true}
+            loading={this.props.loading}
+            navigation={this.props.navigation}
+          />
+        </>
       );
     } else {
       return (
@@ -284,12 +371,6 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <BackdropIcon style={styles.backDrop} />
-          <Background
-            style={[styles.background]}
-            width={wp(85)}
-            height={hp(61)}
-          />
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -299,7 +380,7 @@ class Dashboard extends Component {
                 }
               ]}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => {
                   if (this.state.open === false) {
                     this.startAnimation();
@@ -307,6 +388,7 @@ class Dashboard extends Component {
                     this.closeAnimation();
                   }
                 }}
+                style={styles.headerIcons}
               >
                 <LottieView
                   style={styles.lottieView}
@@ -314,14 +396,14 @@ class Dashboard extends Component {
                   source={require("../../../assets/animation/menu-btn.json")}
                   progress={this.state.menu}
                 />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.push("MessengerLoading")
                     }
-                    style={[styles.wallet]}
+                    style={[styles.headerIcons]}
                   >
                     {this.props.conversation_status ? (
                       <IntercomIcon width={24} height={24} />
@@ -335,35 +417,22 @@ class Dashboard extends Component {
                   </TouchableOpacity>
                 </>
               ) : (
-                <Text
-                  onPress={async () => {
-                    await this.props.getLanguageListPOEdit(
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
                     );
-                    await this.props.screenProps.setLocale(
-                      this.props.appLanguage
-                    );
+                    this.props.screenProps.setLocale(this.props.appLanguage);
+                    this.props.navigation.navigate("SwitchLanguageLoading");
                     // RNRestart.Restart();
-                    Updates.reload();
-                    // i18n.translations = {
-                    //   [this.props.appLanguage]: this.props.terms
-                    // };
+                    // Updates.reload();
                   }}
-                  style={[
-                    {
-                      color: "#FFF",
-                      fontSize: 19,
-                      right: "5%",
-                      position: "absolute",
-                      textAlign: "left",
-                      fontFamily: !I18nManager.isRTL
-                        ? "montserrat-regular-arabic"
-                        : "montserrat-regular-english"
-                    }
-                  ]}
+                  style={[styles.languageTouchView]}
                 >
-                  {!I18nManager.isRTL ? "العربية" : "English"}
-                </Text>
+                  <Text style={[styles.languageText]}>
+                    {!I18nManager.isRTL ? "العربية" : "English"}
+                  </Text>
+                </TouchableOpacity>
               )}
             </View>
           )}
@@ -376,10 +445,12 @@ class Dashboard extends Component {
               animation={
                 !this.props.loadingAccountMgmt
                   ? this.state.anim
-                    ? this.props.campaignList.length === 0
+                    ? this.props.campaignList &&
+                      this.props.campaignList.length === 0
                       ? "fadeOut"
                       : mySlideOutDown
-                    : this.props.campaignList.length === 0
+                    : this.props.campaignList &&
+                      this.props.campaignList.length === 0
                     ? ""
                     : this.state.play
                     ? mySlideInUp
@@ -393,8 +464,9 @@ class Dashboard extends Component {
                 }
               ]}
             >
-              {!this.props.loading &&
+              {!this.props.loadingCampaigns &&
               !this.props.loadingAccountMgmt &&
+              this.props.campaignList &&
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
                   translate={translate}
@@ -416,137 +488,110 @@ class Dashboard extends Component {
                     isOpen={this.state.sidemenustate}
                     screenProps={this.props.screenProps}
                   >
-                    <View style={[styles.nameStyle]}>
-                      <Text
-                        ellipsizeMode="tail"
-                        numberOfLines={1}
-                        style={[
-                          styles.text,
-                          this.props.mainBusiness &&
-                          !isStringArabic(this.props.mainBusiness.businessname)
-                            ? {
-                                fontFamily: "montserrat-bold-english"
-                              }
-                            : {}
-                        ]}
-                      >
-                        {this.props.mainBusiness
-                          ? this.props.mainBusiness.businessname
-                          : ""}
-                      </Text>
-                    </View>
-
-                    <View
-                      padder
-                      style={[
-                        styles.mainCard
-                        // { top: this.state.sidemenustate ? 40 : 0 }
-                      ]}
-                    >
-                      <Text
-                        ellipsizeMode="tail"
-                        numberOfLines={1}
-                        style={[
-                          styles.brandStyle,
-                          this.props.mainBusiness &&
-                          !isStringArabic(this.props.mainBusiness.brandname)
-                            ? {
-                                fontFamily: "montserrat-regular-english"
-                              }
-                            : {}
-                        ]}
-                      >
-                        {this.props.mainBusiness
-                          ? this.props.mainBusiness.brandname
-                          : ""}
-                      </Text>
-                      <View style={styles.sideMenuCard}>
-                        <View
-                          style={{
-                            flexDirection: "column"
-                          }}
+                    <View style={styles.dashboardHeader}>
+                      <View style={[styles.nameStyle]}>
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={[
+                            styles.text,
+                            this.props.mainBusiness &&
+                            !isStringArabic(
+                              this.props.mainBusiness.businessname
+                            )
+                              ? {
+                                  fontFamily: "montserrat-bold-english"
+                                }
+                              : {}
+                          ]}
                         >
-                          <Button
-                            style={styles.button}
-                            onPress={() => {
-                              if (!this.props.mainBusiness.snap_ad_account_id) {
-                                Segment.trackWithProperties(
-                                  "Create SnapAd Acount",
-                                  {
-                                    category: "Ad Account",
-                                    label: "New SnapAd Account",
-                                    business_name: this.props.mainBusiness
-                                      .businessname,
-                                    business_id: this.props.mainBusiness
-                                      .businessid
-                                  }
-                                );
-                                this.props.navigation.navigate(
-                                  "SnapchatCreateAdAcc"
-                                );
-                              } else {
-                                Segment.trackWithProperties("Create Campaign", {
-                                  category: "Campaign Creation"
-                                });
-                                this.props.navigation.navigate("AdType");
-                              }
-                            }}
-                          >
-                            <Icon name="plus" type="MaterialCommunityIcons" />
-                          </Button>
-                          <Text
-                            style={[
-                              styles.campaignButtonText,
-                              styles.newCampaignTitle
-                            ]}
-                          >
-                            {translate("New Ad")}
-                          </Text>
-                        </View>
-                        <ScrollView
-                          style={{
-                            height: 90,
-                            top: I18nManager.isRTL ? 5 : 10
-                          }}
-                          contentContainerStyle={{
-                            flex: 1,
-                            alignItems: "flex-start"
-                          }}
-                          horizontal
+                          {this.props.mainBusiness
+                            ? this.props.mainBusiness.businessname
+                            : ""}
+                        </Text>
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={[
+                            styles.brandStyle,
+                            this.props.mainBusiness &&
+                            !isStringArabic(this.props.mainBusiness.brandname)
+                              ? {
+                                  fontFamily: "montserrat-regular-english"
+                                }
+                              : {}
+                          ]}
                         >
-                          {adButtons}
-                        </ScrollView>
+                          {this.props.mainBusiness
+                            ? this.props.mainBusiness.brandname
+                            : ""}
+                        </Text>
                       </View>
-
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          height: 50,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginBottom: 10
-                        }}
-                      >
+                      <View style={styles.sideMenuCard}>
+                        {this.props.mainBusiness.user_role !== "3" && (
+                          <>
+                            <View
+                              style={{
+                                flexDirection: "column"
+                              }}
+                            >
+                              <GradientButton
+                                style={styles.button}
+                                radius={30}
+                                onPressAction={this.handleNewCampaign}
+                              >
+                                <Icon
+                                  name="plus"
+                                  type="MaterialCommunityIcons"
+                                  style={{ color: "#fff" }}
+                                />
+                              </GradientButton>
+                              <Text
+                                style={[
+                                  styles.campaignButtonText,
+                                  styles.newCampaignTitle
+                                ]}
+                              >
+                                {translate("New Ad")}
+                              </Text>
+                            </View>
+                            <ScrollView
+                              style={{
+                                // height: 90,
+                                top: I18nManager.isRTL ? 5 : 0
+                              }}
+                              horizontal
+                            >
+                              {adButtons}
+                            </ScrollView>
+                          </>
+                        )}
+                      </View>
+                      <View style={styles.searchbarContainer}>
                         <View style={{ width: "80%" }}>
                           <SearchBar
                             screenProps={this.props.screenProps}
+                            customInputStyle={{
+                              backgroundColor: "#0008",
+                              height: "100%"
+                            }}
                             renderSearchBar={this.renderSearchBar}
                           />
                         </View>
-                        <Button
+                        <TouchableOpacity
                           style={styles.activebutton}
                           onPress={() => {
                             this._handleSideMenuState(true);
                           }}
                         >
-                          <FilterIcon width={23} height={23} fill="#575757" />
-                        </Button>
+                          <FilterIcon width={30} height={30} fill="#fff" />
+                        </TouchableOpacity>
                       </View>
-
-                      {this.props.loading ? (
+                    </View>
+                    <View style={[styles.mainCard]}>
+                      {this.props.loadingCampaigns ? (
                         placeHolderCards
                       ) : (
-                        // <ActivityIndicator size="large" />
                         <Animatable.View duration={1000} animation="fadeIn">
                           <FlatList
                             contentContainerStyle={
@@ -554,19 +599,12 @@ class Dashboard extends Component {
                             }
                             keyExtractor={item => item.campaign_id}
                             data={this.props.filteredCampaigns}
-                            onEndReached={() => this.loadMoreData()}
-                            onEndReachedThreshold={0.3}
-                            renderItem={({ item, index }) => (
-                              <CampaignCard
-                                campaign={item}
-                                navigation={this.props.navigation}
-                                key={item.campaign_id}
-                                screenProps={this.props.screenProps}
-                              />
-                            )}
-                            onRefresh={() => this.reloadData()}
+                            onEndReached={this.loadMoreData}
+                            onEndReachedThreshold={0.1}
+                            renderItem={this.renderCampaignCards}
+                            onRefresh={this.reloadData}
                             refreshing={this.state.fetching_from_server}
-                            ListFooterComponent={() => this.renderFooter()}
+                            ListFooterComponent={this.renderFooter}
                           />
                         </Animatable.View>
                       )}
@@ -595,22 +633,30 @@ class Dashboard extends Component {
               }}
               duration={100}
               animation={
-                (this.props.campaignList.length === 0 && this.state.anim) ||
-                (!this.state.sidemenustate &&
-                  this.props.campaignList.length !== 0)
+                (this.props.campaignList &&
+                  this.props.campaignList.length === 0 &&
+                  this.state.anim) ||
+                (this.state.anim &&
+                  !this.state.sidemenustate &&
+                  this.props.campaignList &&
+                  this.props.campaignList.length !== 0) ||
+                this.state.anim
                   ? "fadeIn"
                   : "fadeOut"
               }
               style={styles.menuContainer}
             >
-              <Menu
-                closeAnimation={this.closeAnimation}
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-                open={this.state.open}
-              />
+              {Menu ? (
+                <Menu
+                  closeAnimation={this.closeAnimation}
+                  navigation={this.props.navigation}
+                  screenProps={this.props.screenProps}
+                  open={this.state.open}
+                />
+              ) : null}
             </Animatable.View>
           </>
+          <AppUpdateChecker screenProps={this.props.screenProps} />
         </SafeAreaView>
       );
     }
@@ -619,7 +665,6 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  wallet: state.transA.wallet,
   loading: state.dashboard.loading,
   adType: state.campaignC.adType,
   loadingAccountMgmt: state.account.loading,
@@ -633,7 +678,10 @@ const mapStateToProps = state => ({
   incompleteCampaign: state.campaignC.incompleteCampaign,
   conversation_status: state.messenger.conversation_status,
   appLanguage: state.language.phoneLanguage,
-  terms: state.language.terms
+  terms: state.language.terms,
+  campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  businessAccounts: state.account.businessAccounts,
+  loadingCampaigns: state.dashboard.loadingCampaigns
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -659,3 +707,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+//Initializing whyDidYouRender for dashboard
+Dashboard.whyDidYouRender = false;

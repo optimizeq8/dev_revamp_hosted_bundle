@@ -6,24 +6,34 @@ import { BlurView } from "expo-blur";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
-  VictoryLine,
   VictoryVoronoiContainer,
-  VictoryAxis
+  VictoryAxis,
+  VictoryArea,
+  VictoryScatter
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
 
 class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
-      ? (Math.abs(num) / 1000).toFixed(1) + " k"
-      : Math.abs(num.toFixed(2));
+      ? (this.props.chartChoice === "Spend" ? "$" : "") +
+          (Math.abs(num) / 1000).toFixed(0) +
+          "k"
+      : (this.props.chartChoice === "Spend" ? "$" : "") +
+          Math.abs(num).toFixed(0);
   };
   render() {
     const { translate } = this.props.screenProps;
     let data = chartData;
     let category = [];
+    let tickValues = 0;
+    let independentTickValues = [];
     if (this.props.campaignStats.length > 0) {
       data = this.props.campaignStats.map((stat, i) => {
         let date = new Date(stat.end_time.split("-07:00")[0]);
@@ -35,97 +45,148 @@ class LineGraph extends Component {
 ${day}/${shortMonths[month]}`;
         if (this.props.granularity !== "DAY") category.push(hour);
 
+        tickValues =
+          this.props.chartChoice === "Spend"
+            ? stat.stats.spend / 1000000
+            : this.props.chartChoice === "Impressions"
+            ? stat.stats.impressions
+            : this.props.chartChoice === "Swipe Ups"
+            ? stat.stats.swipes
+            : this.props.chartChoice === "CPM"
+            ? (parseFloat(stat.stats.spend / 1000000) /
+                parseFloat(
+                  stat.stats.impressions !== 0 ? stat.stats.impressions : 1
+                )) *
+              1000
+            : 0;
+        independentTickValues.push(tickValues);
         return {
           x:
             this.props.granularity !== "DAY"
               ? i
               : `${day}/${shortMonths[month]}`,
-          y:
-            this.props.chartChoice === "Spend"
-              ? stat.stats.spend / 1000000
-              : this.props.chartChoice === "Impressions"
-              ? stat.stats.impressions
-              : this.props.chartChoice === "Swipe Ups"
-              ? stat.stats.swipes
-              : this.props.chartChoice === "CPM"
-              ? (parseFloat(stat.stats.spend / 1000000) /
-                  parseFloat(stat.stats.impressions)) *
-                1000
-              : 0
+          y: tickValues
         };
       });
     }
 
     return (
-      <ScrollView
-        scrollEnabled={this.props.campaignStats.length > 1}
-        horizontal
-        style={{ height: 200 }}
-      >
-        {this.props.campaignStats.length < 1 ? (
-          <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
-            <Text style={styles.placeHolderChartText}>
-              {translate("Not enough data to display")}
-            </Text>
-          </BlurView>
-        ) : (
-          <View
-            style={[
-              styles.placeHolderChart,
-              styles.ScrollChartArea,
-              {
-                width: this.props.campaignStats.length < 1 ? wp(90) : wp(150)
-              }
-            ]}
-          />
-        )}
-        <VictoryChart
-          domainPadding={{ y: 10 }}
-          containerComponent={
-            <VictoryVoronoiContainer
-              labels={d =>
-                this.props.chartChoice === "Spend"
-                  ? parseFloat(d.y).toFixed(2)
-                  : parseFloat(d.y).toFixed(0)
-              }
-              labelComponent={
-                <CustomLabel
-                  category={category}
-                  chartChoice={this.props.chartChoice}
-                />
-              }
-            />
-          }
-          padding={{ top: 70, bottom: 20, left: 50, right: 50 }}
-          height={200}
-          width={this.props.campaignStats.length < 1 ? wp(90) : wp(150)}
+      <View style={{ paddingLeft: 30, bottom: 10 }}>
+        <ScrollView
+          scrollEnabled={this.props.campaignStats.length > 1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
         >
-          <VictoryLine
-            categories={{ x: category }}
-            interpolation="cardinal"
-            style={{
-              data: {
-                stroke: "#FFFC00",
-                strokeWidth: 5
-              }
+          {this.props.campaignStats.length < 1 ? (
+            <BlurView
+              intensity={70}
+              tint="dark"
+              style={styles.placeHolderChart}
+            >
+              <Text style={styles.placeHolderChartText}>
+                {translate("Not enough data to display")}
+              </Text>
+            </BlurView>
+          ) : (
+            <View
+              style={[
+                styles.placeHolderChart,
+                styles.ScrollChartArea,
+                {
+                  width:
+                    this.props.campaignStats.length <= 4 ? wp(100) : wp(150)
+                }
+              ]}
+            />
+          )}
+          <VictoryChart
+            domainPadding={{ y: 17 }}
+            containerComponent={
+              <VictoryVoronoiContainer
+                labels={({ datum }) => {
+                  return this.props.chartChoice === "Spend"
+                    ? parseFloat(datum.y).toFixed(2)
+                    : parseFloat(datum.y).toFixed(0);
+                }}
+                labelComponent={
+                  <CustomLabel
+                    category={category}
+                    chartChoice={this.props.chartChoice}
+                  />
+                }
+              />
+            }
+            padding={{
+              top: 60,
+              bottom: this.props.campaignStats.length === 1 ? 50 : 30,
+              left: 60,
+              right: 50
             }}
-            data={data}
-          />
+            width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
+          >
+            <Defs>
+              <LinearGradient x1="0" y1="0" x2="0" y2="180" id="myGradient">
+                <Stop offset="0%" stopColor="#FF7D08" />
+                <Stop offset="5%" stopColor="#f07204" />
+                <Stop offset="60%" stopColor="#000" />
+              </LinearGradient>
+            </Defs>
+            {this.props.campaignStats.length === 1 ? (
+              <VictoryScatter
+                categories={{ x: category }}
+                style={{
+                  data: {
+                    stroke: "#FF7D08",
+                    fill: "url(#myGradient)",
+                    strokeWidth: 5
+                  }
+                }}
+                size={8}
+                data={data}
+              />
+            ) : (
+              <VictoryArea
+                categories={{ x: category }}
+                interpolation="cardinal"
+                style={{
+                  data: {
+                    stroke: "#FF7D08",
+                    fill: "url(#myGradient)",
+                    strokeWidth: 5
+                  }
+                }}
+                data={data}
+              />
+            )}
+            <VictoryAxis
+              tickCount={5}
+              crossAxis
+              offsetY={25}
+              style={tickLabelStyles}
+            />
+          </VictoryChart>
+        </ScrollView>
+        <View style={styles.xAxisStyle}>
           <VictoryAxis
+            domainPadding={{ y: 17 }}
             dependentAxis
             tickFormat={t => this.kFormatter(t)}
-            offsetX={45}
-            tickCount={4}
-            style={tickLabelStyles}
-          />
-          <VictoryAxis
             tickCount={5}
-            crossAxis
-            offsetY={25}
+            padding={{
+              top: 70,
+              bottom: this.props.campaignStats.length === 1 ? 50 : 20,
+              left: 60,
+              right: 60
+            }}
+            domain={
+              independentTickValues.length > 0
+                ? [0, Math.max(...independentTickValues)]
+                : [0, 1]
+            }
             style={tickLabelStyles}
           />
-        </VictoryChart>
-      </ScrollView>
+        </View>
+      </View>
     );
   }
 }
@@ -135,10 +196,12 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 8,
-    padding: 4
+    fontSize: 12,
+    padding: 6,
+    fontFamily: "Helvetica",
+    fontWeight: "100"
   },
-  ticks: { stroke: "#fff", size: 5, padding: 0 }
+  ticks: { stroke: "#fff", size: 6, padding: 0 }
 };
 
 const mapStateToProps = state => ({
@@ -146,7 +209,4 @@ const mapStateToProps = state => ({
   granularity: state.dashboard.granularity
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(LineGraph);
+export default connect(mapStateToProps, null)(LineGraph);

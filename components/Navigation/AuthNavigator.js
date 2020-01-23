@@ -3,6 +3,8 @@ import { Platform, AsyncStorage } from "react-native";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
+import SwitchLanguage from "../Screens/SwitchLanguage";
+import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 
 import Signin from "../Screens/Signin";
 // import Invitation from "../Screens/InvitationScreen";
@@ -13,15 +15,18 @@ import ForgotPassword from "../Screens/ForgotPassword";
 export default FluidNavigator(
   {
     Tutorial: Tutorial,
-    MainForm: MainForm,
+    MainForm: { screen: MainForm, path: "register_team/" },
     AppUpdateChecker: AppUpdateChecker,
 
     Signin: Signin,
-    ForgotPassword: ForgotPassword
+    ForgotPassword: ForgotPassword,
+    SwitchLanguage: SwitchLanguage,
+    SwitchLanguageLoading: SwitchLanguageLoading
+
     // Invitation: Invitation
   },
   {
-    initialRouteName: "AppUpdateChecker",
+    initialRouteName: "SwitchLanguage",
     mode: "card",
     navigationOptions: {
       header: null,

@@ -12,9 +12,11 @@ export default class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
+
     return (
       <SafeAreaView
-        style={styles.mainSafeArea}
+        // style={styles.mainSafeArea}
+        style={{ flex: 1 }}
         forceInset={{ bottom: "never", top: "always" }}
       >
         <LinearGradient
@@ -22,32 +24,33 @@ export default class index extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
+
         <Container style={styles.container}>
           <CustomHeader
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
-            containerStyle={{ height: "3%" }}
-            titelStyle={{ top: 5, left: 0 }}
+            // containerStyle={{ height: "3%" }}
+            // titelStyle={{ top: 5, left: 0 }}
             title={title}
           />
-          <Content
+          {/* <Content
             contentContainerStyle={styles.contentContainer}
             scrollEnabled={false}
-            padder
-          >
-            <WebView
-              startInLoadingState={true}
-              renderLoading={() => (
-                <View style={{ height: "100%", backgroundColor: "#0000" }}>
-                  <Loading top={40} />
-                </View>
-              )}
-              style={{ backgroundColor: "transparent" }}
-              contentContainerStyle={{ backgroundColor: "transparent" }}
-              ref={ref => (this.webview = ref)}
-              source={{ uri: url }}
-            />
-          </Content>
+            // padder
+          > */}
+          <WebView
+            startInLoadingState={true}
+            renderLoading={() => (
+              <View style={{ height: "100%", backgroundColor: "#0000" }}>
+                <Loading top={40} />
+              </View>
+            )}
+            style={{ backgroundColor: "transparent" }}
+            contentContainerStyle={{ backgroundColor: "transparent" }}
+            ref={ref => (this.webview = ref)}
+            source={{ uri: url }}
+          />
+          {/* </Content> */}
         </Container>
       </SafeAreaView>
     );

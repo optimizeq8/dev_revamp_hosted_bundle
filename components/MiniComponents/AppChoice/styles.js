@@ -225,6 +225,16 @@ const styles = StyleSheet.create({
     top: 5,
     width: 120,
     textAlign: "center"
+  },
+  proceedButtonRTL: {
+    width: 65,
+    height: 65,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

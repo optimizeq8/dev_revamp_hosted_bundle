@@ -73,127 +73,136 @@ class FilterMenu extends Component {
       start_time = dateFormat(start_time, "d mmm");
     }
     const { translate } = this.props.screenProps;
-    return (
-      <View
-        style={[
-          { flex: 1 },
-          I18nManager.isRTL && this.props.transactionFilter
-            ? { marginLeft: -25, marginRight: 0 }
-            : {}
-        ]}
-      >
-        <DateFields
-          screenProps={this.props.screenProps}
-          open={this.props.open}
-          filterMenu={true}
-          onRef={ref => (this.dateField = ref)}
-          handleStartDatePicked={this.handleStartDatePicked}
-          handleEndDatePicked={this.handleEndDatePicked}
-          start_time={this.state.start_time}
-          end_time={this.state.end_time}
-        />
-
+    if (!this.props.open) {
+      return null;
+    } else
+      return (
         <View
           style={[
-            styles.container,
+            { flex: 1 },
             I18nManager.isRTL && this.props.transactionFilter
-              ? { marginLeft: 40, marginRight: 0 }
+              ? { marginLeft: -25, marginRight: 0 }
               : {}
           ]}
         >
-          <View style={styles.headerContainer}>
-            <FilterIcon width={hp(7)} height={hp(7)} fill="#fff" />
-            <Text style={styles.title}> {translate("Filter")} </Text>
-          </View>
-          <Text style={styles.subtext}>
-            {this.props.transactionFilter
-              ? translate("Filter transactions by date")
-              : translate("Select which campaigns you’d like to see")}
-          </Text>
-
-          <View style={styles.transactionFilterContainer}>
-            {!this.props.transactionFilter && (
-              <>
-                <Text style={styles.titleStatus}>
-                  {translate("Campaign Status")}
-                </Text>
-                <FilterStatus
-                  screenProps={this.props.screenProps}
-                  selected={
-                    this.props.filterStatus
-                      ? this.props.filterStatus
-                      : this.state.selected
-                  }
-                  _handleSubmission={this._handleSubmission}
-                />
-              </>
-            )}
-            <Text style={styles.titleDate}> {translate("Date")} </Text>
-            <TouchableHighlight
-              underlayColor="rgba(0,0,0,0.2)"
-              style={[
-                styles.dateInput,
-                this.state.start_timeError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.lightGrayBorderColor
-              ]}
-              onPress={() => {
-                this.dateField.showModal();
-              }}
-            >
-              <View style={styles.dateContainer}>
-                <View style={styles.startColumn}>
-                  {this.state.start_time === "" && (
-                    <Text style={styles.categories}>{translate("Start")}</Text>
-                  )}
-                  {this.state.start_time !== "" && (
-                    <Text style={styles.numbers}>
-                      {start_time}
-                      {"\n"}
-                      <Text style={[styles.numbers, styles.fontSize12]}>
-                        {start_year}
-                      </Text>
-                    </Text>
-                  )}
-                </View>
-                <View style={styles.middleColumn}>
-                  <Text style={styles.categories}>{translate("To")}</Text>
-                </View>
-                <View style={styles.endColumn}>
-                  {this.state.end_time === "" && (
-                    <Text style={styles.categories}>{translate("End")}</Text>
-                  )}
-
-                  {this.state.end_time !== "" && (
-                    <Text style={styles.numbers}>
-                      {end_time}
-                      {"\n"}
-                      <Text style={[styles.numbers, styles.fontSize12]}>
-                        {end_year}
-                      </Text>
-                    </Text>
-                  )}
-                </View>
-              </View>
-            </TouchableHighlight>
-          </View>
-        </View>
-
-        <View style={styles.bottomView}>
-          <Text
-            onPress={() => this._resetFilter()}
-            style={styles.clearFilterText}
-          >
-            {translate("Clear filters")}
-          </Text>
-          <LowerButton
-            checkmark={true}
-            bottom={0}
-            function={() => this._handleSubmission(this.state.selected)}
+          <DateFields
+            screenProps={this.props.screenProps}
+            open={this.props.open}
+            filterMenu={true}
+            onRef={ref => (this.dateField = ref)}
+            handleStartDatePicked={this.handleStartDatePicked}
+            handleEndDatePicked={this.handleEndDatePicked}
+            start_time={this.state.start_time}
+            end_time={this.state.end_time}
           />
+
+          <View
+            style={[
+              styles.container,
+              I18nManager.isRTL && this.props.transactionFilter
+                ? { marginLeft: 40, marginRight: 0 }
+                : {}
+            ]}
+          >
+            <View style={styles.headerContainer}>
+              <FilterIcon width={hp(7)} height={hp(7)} fill="#fff" />
+              <Text style={styles.title}> {translate("Filter")} </Text>
+            </View>
+            <Text style={styles.subtext}>
+              {this.props.transactionFilter
+                ? translate("Filter transactions by date")
+                : translate("Select which campaigns you’d like to see")}
+            </Text>
+
+            <View style={styles.transactionFilterContainer}>
+              {!this.props.transactionFilter && (
+                <>
+                  <Text style={styles.titleStatus}>
+                    {translate("Campaign Status")}
+                  </Text>
+                  <FilterStatus
+                    screenProps={this.props.screenProps}
+                    selected={
+                      this.props.filterStatus
+                        ? this.props.filterStatus
+                        : this.state.selected
+                    }
+                    _handleSubmission={this._handleSubmission}
+                  />
+                </>
+              )}
+              <View style={styles.labelView}>
+                <Text style={styles.titleDate}> {translate("Date")} </Text>
+              </View>
+              <TouchableHighlight
+                underlayColor="rgba(0,0,0,0.2)"
+                style={[
+                  styles.dateInput,
+                  this.state.start_timeError
+                    ? globalStyles.redBorderColor
+                    : globalStyles.lightGrayBorderColor
+                ]}
+                onPress={() => {
+                  this.dateField.showModal();
+                }}
+              >
+                <View style={styles.dateContainer}>
+                  <View style={styles.startColumn}>
+                    {this.state.start_time === "" && (
+                      <Text style={styles.categories}>
+                        {translate("Start")}
+                      </Text>
+                    )}
+                    {this.state.start_time !== "" && (
+                      <Text style={styles.numbers}>
+                        {start_time}
+                        {"\n"}
+                        <Text style={[styles.numbers, styles.fontSize12]}>
+                          {start_year}
+                        </Text>
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.middleColumn}>
+                    <Text style={styles.categories}>
+                      {I18nManager.isRTL ? "\t" : translate("To")}
+                    </Text>
+                  </View>
+                  <View style={styles.endColumn}>
+                    {this.state.end_time === "" && (
+                      <Text style={styles.categories}>{translate("End")}</Text>
+                    )}
+
+                    {this.state.end_time !== "" && (
+                      <Text style={styles.numbers}>
+                        {end_time}
+                        {"\n"}
+                        <Text style={[styles.numbers, styles.fontSize12]}>
+                          {end_year}
+                        </Text>
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+
+          <View style={styles.bottomView}>
+            <Text
+              onPress={() => this._resetFilter()}
+              style={styles.clearFilterText}
+            >
+              {translate("Clear filters")}
+            </Text>
+            <LowerButton
+              checkmark={true}
+              bottom={0}
+              function={() => this._handleSubmission(this.state.selected)}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
   }
 }
 const mapStateToProps = state => ({
@@ -210,7 +219,4 @@ const mapDispatchToProps = dispatch => ({
   filterTransactions: query =>
     dispatch(actionCreators.filterTransactions(query))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);

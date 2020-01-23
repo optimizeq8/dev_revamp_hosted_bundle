@@ -3,10 +3,12 @@ import { View, Image, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
-import { NavigationEvents } from "react-navigation";
+import { NavigationEvents, SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";
 import { terms, secondTerms } from "../../Data/snapchatTerms.data";
+import CustomHeader from "../../MiniComponents/Header";
+import Snapchat from "../../../assets/SVGs/Snapchat-Border";
 
 //Redux
 import * as actionCreators from "../../../store/actions";
@@ -37,7 +39,7 @@ class SnapchatCreateAdAcc extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.mainBusiness.snap_ad_account_id) {
-      this.props.navigation.state.params.closeAnimation();
+      this.props.navigation.getParam("closeAnimation", () => {})();
       this.props.navigation.navigate("Dashboard");
     }
   }
@@ -60,7 +62,14 @@ class SnapchatCreateAdAcc extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <Container style={styles.container}>
+      <SafeAreaView
+        style={{
+          height: "100%",
+          flex: 1,
+          backgroundColor: "#0000"
+        }}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
         <NavigationEvents
           onDidFocus={() => {
             Segment.screenWithProperties("Snap Ad Account", {
@@ -68,55 +77,67 @@ class SnapchatCreateAdAcc extends Component {
             });
           }}
         />
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[1, 0.3]}
-          style={styles.gradient}
-        />
-        <Image
-          style={styles.media}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        />
-        <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>{translate("Terms & Conditions")}</Text>
-          <ScrollView
-            onScroll={({ nativeEvent }) => {
-              if (this.isCloseToBottom(nativeEvent)) {
-                this.setState({ accept: true });
+        <Container style={styles.container}>
+          <CustomHeader
+            closeButton={false}
+            segment={{
+              str: "Dashabord",
+              obj: {
+                businessname: this.props.mainBusiness.businessname
               }
             }}
-            scrollEventThrottle={400}
-            contentContainerStyle={styles.scrollViewContentContainer}
-            style={styles.scrollViewContainer}
-          >
-            <View style={styles.htmlContainer}>
-              <HTMLView value={terms} stylesheet={htmlStyles} />
-              <HTMLView value={secondTerms} stylesheet={htmlStyles} />
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            title="Snapchat Ads Policies"
+          />
+
+          <Snapchat style={{ alignSelf: "center", margin: 15 }} />
+          {/* <Image
+            style={styles.media}
+            source={require("../../../assets/images/logo01.png")}
+            resizeMode="contain"
+          /> */}
+
+          <Card padder style={styles.mainCard}>
+            <Text style={styles.text}>{translate("Terms & Conditions")}</Text>
+            <ScrollView
+              onScroll={({ nativeEvent }) => {
+                if (this.isCloseToBottom(nativeEvent)) {
+                  this.setState({ accept: true });
+                }
+              }}
+              scrollEventThrottle={400}
+              contentContainerStyle={styles.scrollViewContentContainer}
+              style={styles.scrollViewContainer}
+            >
+              <View style={styles.htmlContainer}>
+                <HTMLView value={terms} stylesheet={htmlStyles} />
+                <HTMLView value={secondTerms} stylesheet={htmlStyles} />
+              </View>
+            </ScrollView>
+            <View style={styles.bottomContainer}>
+              {this.props.loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <Button
+                  block
+                  dark
+                  // disabled={!this.state.accept}
+                  style={[styles.button]}
+                  onPress={() => {
+                    this.props.create_snapchat_ad_account(
+                      this.props.mainBusiness.businessid,
+                      this.props.navigation
+                    );
+                  }}
+                >
+                  <Text style={styles.buttontext}>{translate("Accept")}</Text>
+                </Button>
+              )}
             </View>
-          </ScrollView>
-          <View style={styles.bottomContainer}>
-            {this.props.loading ? (
-              <ActivityIndicator size="large" />
-            ) : (
-              <Button
-                block
-                dark
-                // disabled={!this.state.accept}
-                style={[styles.button]}
-                onPress={() => {
-                  this.props.create_snapchat_ad_account(
-                    this.props.mainBusiness.businessid,
-                    this.props.navigation
-                  );
-                }}
-              >
-                <Text style={styles.buttontext}>{translate("Accept")}</Text>
-              </Button>
-            )}
-          </View>
-        </Card>
-      </Container>
+          </Card>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

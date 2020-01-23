@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { Text, View, I18nManager } from "react-native";
-import { Button, Icon } from "native-base";
+import { Icon } from "native-base";
+import GradientButton from "../../../../MiniComponents/GradientButton";
+
 import * as actionCreators from "../../../../../store/actions";
 
 import { connect } from "react-redux";
 import styles from "../styles";
+import segmentEventTrack from "../../../../segmentEventTrack";
 
 class AddCard extends Component {
   render() {
@@ -19,19 +22,22 @@ class AddCard extends Component {
               justifyContent: "center"
             }}
           >
-            <Button
+            <GradientButton
               style={styles.addButtonStyle}
-              onPress={() => this.props.addSnapCard()}
+              onPressAction={() => {
+                segmentEventTrack("Button clicked to add snap story ad card");
+                this.props.addSnapCard();
+              }}
             >
               <Icon
                 style={{
                   alignSelf: "center",
-                  right: I18nManager.isRTL ? -2 : 2
+                  color: "#FFF"
                 }}
                 name="plus"
                 type="MaterialCommunityIcons"
               />
-            </Button>
+            </GradientButton>
             <Text style={styles.addButtonText}>{translate("Add More")}</Text>
           </View>
         )}
@@ -45,7 +51,4 @@ const mapDispatchToProps = dispatch => ({
   addSnapCard: () => dispatch(actionCreators.addSnapCard())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddCard);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard);

@@ -4,11 +4,13 @@ import { Text } from "native-base";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
+import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
+import GoogleSE from "../../../assets/SVGs/GoogleAds";
 import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
-
+import ShareIcon from "../../../assets/SVGs/ShareIcon";
 export default class Header extends Component {
   render() {
     let {
@@ -23,20 +25,28 @@ export default class Header extends Component {
       topRightButtonText,
       showTopRightButton,
       containerStyle,
-      titelStyle
+      titelStyle,
+      icon,
+      translateTitle = true,
+      showTopRightButtonIcon,
+      disabled = false
     } = this.props;
     const { translate } = this.props.screenProps;
-    if (title && typeof title === "object") {
-      title = title.map(text => translate(text));
-      if (I18nManager.isRTL) {
-        title = title.reverse();
+    if (translateTitle)
+      if (title && typeof title === "object") {
+        title = title.map(text => translate(text));
+        if (I18nManager.isRTL) {
+          title = title.reverse();
+        }
+      } else if (title && typeof title === "string") {
+        title = translate(title);
       }
-    } else if (title && typeof title === "string") {
-      title = translate(title);
-    }
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View
+        style={[styles.container, { height: 50, padding: 0 }, containerStyle]}
+      >
         <TouchableOpacity
+          disabled={disabled}
           onPress={() => {
             if (!isUndefined(segment))
               Segment.trackWithProperties(segment.str, segment.obj);
@@ -45,30 +55,29 @@ export default class Header extends Component {
           }}
           style={[
             styles.left,
-            I18nManager.isRTL ? { position: "absolute", right: 0, top: 5 } : {}
+            I18nManager.isRTL && {
+              transform: [{ rotateY: "180deg" }, { translateX: -13 }]
+            }
           ]}
         >
           {closeButton ? (
-            <CloseIcon width={17} height={17} />
+            <CloseIcon width={23} height={23} />
           ) : (
             <BackIcon width={24} height={24} />
           )}
         </TouchableOpacity>
+        {icon === "snapchat" && (
+          <View style={{ paddingHorizontal: 5 }}>
+            <SnapchatIcon width={30} height={30} />
+          </View>
+        )}
+        {icon === "google" && (
+          <View style={{ paddingHorizontal: 5 }}>
+            <GoogleSE width={30} style={styles.googleIcon} />
+          </View>
+        )}
         {title && typeof title === "object" ? (
-          <View
-            style={[
-              styles.titleView,
-              I18nManager.isRTL
-                ? {
-                    // left: 15
-                    bottom: 0
-                  }
-                : {
-                    // left: 15,
-                    bottom: 12
-                  }
-            ]}
-          >
+          <View style={[styles.titleView]}>
             {title.map(text => (
               <Text
                 key={text}
@@ -79,7 +88,8 @@ export default class Header extends Component {
                     ? {
                         fontFamily: "montserrat-bold-english"
                       }
-                    : {}
+                    : {},
+                  titelStyle
                 ]}
               >
                 {text}
@@ -87,31 +97,33 @@ export default class Header extends Component {
             ))}
           </View>
         ) : (
-          <Text
-            uppercase
-            style={[
-              styles.title,
-              !isStringArabic(title)
-                ? {
-                    fontFamily: "montserrat-bold-english"
-                  }
-                : {},
-              titelStyle
-            ]}
-          >
-            {title}
-          </Text>
+          <View style={[styles.titleView]}>
+            <Text
+              numberOfLines={2}
+              uppercase
+              style={[
+                styles.titleText,
+                !isStringArabic(title)
+                  ? {
+                      fontFamily: "montserrat-bold-english"
+                    }
+                  : {},
+                titelStyle
+              ]}
+            >
+              {title}
+            </Text>
+          </View>
         )}
-        <View
-          style={[
-            styles.right,
-            I18nManager.isRTL ? { position: "absolute", left: 5 } : {}
-          ]}
-        >
+        <View style={[styles.right]}>
           {showTopRightButton ? (
             <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
               {topRightButtonText}
             </Text>
+          ) : showTopRightButtonIcon ? (
+            <TouchableOpacity onPress={topRightButtonFunction}>
+              <ShareIcon fill="#fff" />
+            </TouchableOpacity>
           ) : null}
         </View>
       </View>

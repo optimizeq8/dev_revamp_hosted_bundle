@@ -1,8 +1,6 @@
 import { StyleSheet } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   container: {
@@ -62,15 +60,12 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold"
   },
   placeholder: {
-    backgroundColor: "#fff",
     borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
     height: "90%",
-    zIndex: 0,
     marginTop: 10,
-    backgroundColor: "black",
     justifyContent: "center"
   },
   slideText: {
@@ -86,14 +81,21 @@ const styles = StyleSheet.create({
     top: "0%",
     width: "100%",
     height: "95%",
-    bottom: "5%",
-    paddingTop: 10,
     alignSelf: "center"
   },
   media: {
     width: "100%",
-    height: "100%",
-    backgroundColor: "#fff"
+    height: "100%"
+  },
+  proceedButtonRTL: {
+    width: 55,
+    height: 55,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

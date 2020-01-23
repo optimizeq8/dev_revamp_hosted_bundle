@@ -1,7 +1,4 @@
-import React from "react";
-import { Platform } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
@@ -36,11 +33,25 @@ import MessengerLoading from "../Screens/Messenger/LoadingChatScreen";
 import SelectInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost";
 import SelectedInstagramProductsList from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList";
 import EditProductDetailInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail";
-
+import ManageTeam from "../Screens/ManageTeam";
+import AddOrEditTeamMember from "../Screens/ManageTeam/AddOrEditTeamMember";
+import TeamInvite from "../Screens/TeamInvite";
+import GoogleAdInfo from "../Screens/GoogleCampaignCreate/GoogleAdInfo";
+import GoogleAdDesign from "../Screens/GoogleCampaignCreate/GoogleAdDesign";
+import GoogleAdTargetting from "../Screens/GoogleCampaignCreate/GoogleAdTargetting";
+import GoogleAdPaymentReview from "../Screens/GoogleCampaignCreate/GoogleAdPaymentReview";
+import GoogleCreateAdAcc from "../Screens/GoogleCreateAdAcc";
+import GoogleCampaignDetails from "../Screens/GoogleCampaignDetails";
+import GoogleKeywordsStats from "../Screens/GoogleCampaignDetails/GoogleKeywordsStats";
+import GoogleAudience from "../Screens/GoogleCampaignDetails/Audience";
+import GoogleEditKeywords from "../Screens/GoogleCampaignDetails/EditKeywords";
+import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
+import SuspendedWarning from "../Screens/SuspendedWarning";
+import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
-    Dashboard: Dashboard,
+    Dashboard: { screen: Dashboard, path: "dashboard/" },
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
@@ -81,7 +92,22 @@ export default FluidNavigator(
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
     SelectedInstagramProductsList: SelectedInstagramProductsList,
-    EditProductDetailInstagramPost: EditProductDetailInstagramPost
+    EditProductDetailInstagramPost: EditProductDetailInstagramPost,
+    ManageTeam: ManageTeam,
+    AddOrEditTeamMember: AddOrEditTeamMember,
+    TeamInvite: { screen: TeamInvite, path: "team_invite/" },
+    GoogleAdInfo: GoogleAdInfo,
+    GoogleAdDesign: GoogleAdDesign,
+    GoogleAdTargetting: GoogleAdTargetting,
+    GoogleAdPaymentReview: GoogleAdPaymentReview,
+    GoogleCreateAdAcc: GoogleCreateAdAcc,
+    GoogleCampaignDetails: GoogleCampaignDetails,
+    GoogleKeywordsStats: GoogleKeywordsStats,
+    GoogleAudience: GoogleAudience,
+    GoogleEditKeywords: GoogleEditKeywords,
+    SwitchLanguageLoading: SwitchLanguageLoading,
+    SuspendedWarning: SuspendedWarning,
+    GoogleSEAPreviewScreen: GoogleSEAPreviewScreen
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
@@ -89,7 +115,6 @@ export default FluidNavigator(
 
   {
     transConfig,
-
     initialRouteName: "Dashboard",
     mode: "card",
     navigationOptions: {

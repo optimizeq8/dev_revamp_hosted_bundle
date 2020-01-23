@@ -4,7 +4,6 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
-
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -96,7 +95,11 @@ const initialState = {
   loadingMoreInstaPost: false,
   collectionMainMediaWebLink: "",
   collectionMainMediaTypeWebLink: "",
-  collectionAdMediaLinks: []
+  collectionAdMediaLinks: [],
+  oldTempAdType: "",
+  oldTempData: null,
+  languagesListLoading: false,
+  languagesListError: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -118,7 +121,10 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
         loadingObj: false,
-        incompleteCampaign: true
+        incompleteCampaign: true,
+        //saves this part just in case anything is changed in AdObjective and not submitting
+        oldTempData: { ...state.data, ...action.payload.data },
+        oldTempAdType: state.adType
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -194,12 +200,17 @@ const reducer = (state = initialState, action) => {
         storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
-            ? state.currentCampaignSteps.splice(
-                0,
-                state.currentCampaignSteps.length - 1
+            ? //If objective is changed then AdDesign should be the current step again to set the swipe ups
+              state.currentCampaignSteps.filter(
+                step => step !== "AdDetails" && step !== "AdPaymentReview"
               )
             : []
-          : state.currentCampaignSteps
+          : state.currentCampaignSteps,
+        oldTempData: {
+          ...state.data,
+          ...action.payload,
+          ...resetSwipeUps
+        }
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {
@@ -292,20 +303,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         total_reach: 0
       };
-
-    case actionTypes.PAYMENT_REQUEST_URL:
-      return {
-        ...state,
-        payment_data: action.payload,
-        loading: !action.payload.success
-      };
-    case actionTypes.ERROR_PAYMENT_REQUEST_URL:
-      return {
-        ...state,
-        payment_data: null,
-        loading: false
-      };
-
     case actionTypes.SET_INTERESTS:
       return {
         ...state,
@@ -315,7 +312,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_DEVICE_MAKES:
       return {
         ...state,
@@ -325,7 +321,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_IOS_VERSIONS:
       return {
         ...state,
@@ -335,7 +330,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_ANDROID_VERSIONS:
       return {
         ...state,
@@ -344,12 +338,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_SET_ANDROID_VERSIONS:
       return {
         ...state
-      };
-
-    case actionTypes.SET_AD_LOADING:
-      return {
-        ...state,
-        loading: action.payload
       };
     case actionTypes.SET_AD_LOADING_OBJ:
       return {
@@ -467,12 +455,15 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LANGUAGE_LIST:
       return {
         ...state,
-        languagesList: action.payload
+        languagesList: action.payload.data,
+        languagesListLoading: action.payload.loading
       };
     case actionTypes.ERROR_SET_LANGUAGE_LIST:
       return {
         ...state,
-        languagesList: []
+        languagesList: [],
+        languagesListLoading: false,
+        languagesListError: true
       };
     case actionTypes.RESET_COLLECTIONS:
       return {
@@ -511,6 +502,10 @@ const reducer = (state = initialState, action) => {
           delete data.formatted;
           delete data.objective;
           delete data.objectiveLabel;
+        }
+        //overwrite any old campaign data with the reseted campaign data if user submits a rejected ad
+        if (state.oldTempData) {
+          data = { ...data, ...state.oldTempData };
         }
       }
 
@@ -589,14 +584,6 @@ const reducer = (state = initialState, action) => {
             atch.url = atch.url.split("?utm_source")[0];
           }
         }
-        oldStoryAdAttachment = {
-          attachment: atch,
-          call_to_action: {
-            label: ad.call_to_action.replace("_", " "),
-            value: ad.call_to_action
-          },
-          destination: ad.destination
-        };
         return {
           ...ad,
           index: ad.story_order,
@@ -608,6 +595,11 @@ const reducer = (state = initialState, action) => {
           attachment: atch
         };
       });
+      oldStoryAdAttachment = {
+        attachment: oldStoryAdsArray[0].attachment,
+        call_to_action: oldStoryAdsArray[0].call_to_action,
+        destination: oldStoryAdsArray[0].destination
+      };
       oldStoryAdsArray = [
         ...oldStoryAdsArray,
         {
@@ -846,6 +838,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         collectionAdMedia: [...action.payload]
+      };
+    }
+    case actionTypes.OVERWRITE_OBJ_DATA:
+      return {
+        ...state,
+        data: { ...state.data, ...state.oldTempData, ...action.payload }
+      };
+    case actionTypes.GET_LANGUAGES_LOADING: {
+      return {
+        ...state,
+        languagesList: [],
+        languagesListLoading: action.payload,
+        languagesListError: false
       };
     }
     default:

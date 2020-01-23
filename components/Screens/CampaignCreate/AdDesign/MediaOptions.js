@@ -4,39 +4,66 @@ import { Text, View, TouchableOpacity, Platform } from "react-native";
 //icons
 import CameraIcon from "../../../../assets/SVGs/Camera";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
+import UploadIcon from "../../../../assets/SVGs/UploadDevice";
+import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
 
 import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 export default class MediaOptions extends Component {
   handleOptionSelect = () => {
     let { title } = this.props;
 
     if (Platform.OS === "ios" && title === "Video") {
+      segmentEventTrack("Option upload Video through URL selected");
       this.props.getVideoUploadUrl();
     } else if (title === "Upload media from a different device") {
+      segmentEventTrack("Option upload media from different device selected");
       this.props.setUploadFromDifferentDeviceModal(true);
       this.props.setMediaModalVisible(false);
     } else if (title === "Download media from a different device") {
+      segmentEventTrack("Option download media from different device selected");
       this.props.setDownloadMediaModal(true);
       this.props.getWebUploadLinkMedia();
     } else {
+      segmentEventTrack(
+        ` ${
+          title === "Image" ? "Image" : "Video"
+        } Picker option selected to open gallery to upload ${
+          title === "Image" ? "Image" : "Video"
+        } `
+      );
       this.props._pickImage(title === "Image" ? "Images" : "Videos");
     }
   };
   render() {
     let { title } = this.props;
     const { translate } = this.props.screenProps;
+    let imageIcon = null;
+    if (title === "Image") {
+      imageIcon = (
+        <CameraIcon width={30} height={25} fill={globalColors.orange} />
+      );
+    } else if (title === "Upload media from a different device") {
+      imageIcon = (
+        <UploadIcon width={35} height={35} fill={globalColors.orange} />
+      );
+    } else if (title === "Download media from a different device") {
+      imageIcon = (
+        <DownloadIcon width={35} height={35} fill={globalColors.orange} />
+      );
+    } else {
+      imageIcon = (
+        <VideoIcon width={30} height={30} fill={globalColors.orange} />
+      );
+    }
     return (
       <TouchableOpacity
         onPress={() => this.handleOptionSelect()}
         style={styles.MediaOptionsStyle}
       >
-        {title === "Image" ? (
-          <CameraIcon width={30} height={25} fill={globalColors.orange} />
-        ) : (
-          <VideoIcon width={30} height={30} fill={globalColors.orange} />
-        )}
+        {imageIcon}
         <View style={{ flexDirection: "column", marginLeft: 30 }}>
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={[styles.MediaOptionsDescription]}>

@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Input, Button, Item, Icon } from "native-base";
+import * as Segment from "expo-analytics-segment";
 import styles from "../MultiSelect/styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class SelectLanguages extends Component {
+  componentDidMount() {
+    Segment.screen("Languages Options");
+  }
   render() {
     const { translate } = this.props.screenProps;
     let languagelist = this.props.filteredLanguages.map(c => (

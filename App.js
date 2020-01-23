@@ -1,3 +1,6 @@
+if (__DEV__) {
+  import("./ReactotronConfig");
+}
 import React from "react";
 import { connect } from "react-redux";
 import * as Localization from "expo-localization";
@@ -12,7 +15,8 @@ import {
   Text as TextReactNative,
   I18nManager,
   AppState,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -34,7 +38,13 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import { AppLoading, Linking, SplashScreen, Notifications } from "expo";
+import {
+  AppLoading,
+  Linking,
+  SplashScreen,
+  Notifications,
+  Updates
+} from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
@@ -64,7 +74,6 @@ import {
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
-import { ActivityIndicator } from "react-native-paper";
 import { REHYDRATE } from "redux-persist";
 
 Sentry.init({
@@ -147,7 +156,7 @@ class App extends React.Component {
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
-
+    store.dispatch(actionCreators.checkForExpiredToken());
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );
@@ -164,7 +173,7 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      console.log("App has come to the foreground!");
+      // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
         store.getState().messenger.conversation_status
@@ -179,7 +188,7 @@ class App extends React.Component {
         );
       }
     } else {
-      console.log("App has come to the background!");
+      // console.log("App has come to the background!");
 
       store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
@@ -187,12 +196,10 @@ class App extends React.Component {
   };
 
   _handleNotification = async handleScreen => {
-    console.log("handleScreen app", handleScreen);
+    // console.log("handleScreen app", handleScreen);
 
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
-        console.log("iniodsfj");
-
         store.dispatch(actionCreators.set_as_seen(false));
 
         if (AppState.currentState !== "active")
@@ -201,7 +208,7 @@ class App extends React.Component {
           // this.state.currentScreen !== "MessengerLoading" ||
           this.state.currentScreen !== "Messenger"
         ) {
-          console.log("currentScreen", this.state.currentScreen);
+          // console.log("currentScreen", this.state.currentScreen);
 
           store.dispatch(actionCreators.set_as_seen(false));
           showMessage({
@@ -353,7 +360,6 @@ class App extends React.Component {
                   }}
                   uriPrefix={prefix}
                   ref={navigatorRef => {
-                    //console.log(navigatorRef);
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                   screenProps={{
@@ -468,6 +474,8 @@ class App extends React.Component {
         this.setState({
           locale: "ar"
         });
+        // for proper RTL direction
+        Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
@@ -506,7 +514,8 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-2.png")]),
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-3.png")]),
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
-
+      Asset.loadAsync([require("./assets/images/GooglePhoneBG.png")]),
+      Asset.loadAsync([require("./assets/images/GoogleSearchBar.png")]),
       Asset.loadAsync([require("./assets/images/MainSplash.png")]),
 
       Asset.loadAsync([require("./assets/images/knet.png")]),
@@ -518,6 +527,7 @@ class App extends React.Component {
 
       Font.loadAsync({
         "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),
+        "changa-bold-arabic": require("./assets/fonts/Arabic/Changa-Bold.ttf"),
         "montserrat-regular-english": require("./assets/fonts/Montserrat-Regular.ttf"),
         "montserrat-medium-english": require("./assets/fonts/Montserrat-Medium.ttf"),
         "montserrat-bold-english": require("./assets/fonts/Montserrat-Bold.ttf"),

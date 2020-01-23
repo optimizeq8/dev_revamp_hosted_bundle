@@ -1,27 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  BackHandler,
-  TextInput
-} from "react-native";
+import { TouchableOpacity, BackHandler, ScrollView } from "react-native";
+import { showMessage } from "react-native-flash-message";
+import InputScrollView from "react-native-input-scroll-view";
+
 import * as Segment from "expo-analytics-segment";
-import { Text, Item, Input, Icon, Label, Container } from "native-base";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
+import InputField from "../../MiniComponents/InputField";
 
 //icons
-import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon";
+import PasswordOutline from "../../../assets/SVGs/PasswordOutline";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
@@ -52,7 +46,6 @@ class ChangePassword extends Component {
       repasswordError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
-    this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
     Segment.screenWithProperties("Change Password", {
@@ -70,10 +63,16 @@ class ChangePassword extends Component {
     return true;
   };
   _passwordVarification = () => {
+    const { translate } = this.props.screenProps;
     if (
       this.state.userInfo.password !== this.state.repassword ||
       this.state.repassword === ""
     ) {
+      showMessage({
+        type: "danger",
+        message: translate("Your Passwords don't match"),
+        position: "top"
+      });
       this.setState({ repasswordError: "Your Passwords don't match." });
       return false;
     } else if (
@@ -107,216 +106,117 @@ class ChangePassword extends Component {
       );
     }
   };
-  render() {
+  setValue = (stateName, value) => {
+    if (stateName === "repassword") {
+      let state = {};
+      state[stateName] = value;
+      this.setState({
+        ...state
+      });
+    } else {
+      this.setState({
+        userInfo: {
+          ...this.state.userInfo,
+          [stateName]: value
+        }
+      });
+    }
+  };
+  getValidInfo = async (stateError, validObj) => {
+    let state = {};
+    state[stateError] = validObj;
+
+    if (
+      stateError === "passwordError" &&
+      validObj &&
+      validObj.includes("8 characters")
+    ) {
+      showMessage({
+        type: "danger",
+        message: this.props.screenProps.translate(validObj),
+        position: "top"
+      });
+    }
+
+    this.setState({
+      ...state
+    });
+  };
+  feildsComponent = () => {
     const tempPassword = this.props.navigation.getParam("temp_pwd", false);
-    const { translate } = this.props.screenProps;
+    const feilds = [
+      {
+        label: tempPassword ? "Current Password" : "Old Password",
+        stateName1: "currentPassword",
+        value: this.state.userInfo.currentPassword,
+        valueError1: this.state.currentPasswordError,
+        incomplete: true,
+        icon: PasswordOutline
+      },
+      {
+        label: "New Password",
+        stateName1: "password",
+        value: this.state.userInfo.password,
+        valueError1: this.state.passwordError,
+        incomplete: true,
+        icon: PasswordOutline
+      },
+      {
+        label: "Re-enter Password",
+        stateName1: "repassword",
+        value: this.state.repassword,
+        valueError1: this.state.repasswordError,
+        incomplete: true
+      }
+    ].map(feild => {
+      return (
+        <InputField
+          icon={feild.icon}
+          key={feild.label}
+          label={feild.label}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          disabled={this.props.loading}
+          stateName1={feild.stateName1}
+          value={feild.value}
+          valueError1={feild.valueError1}
+          autoFocus={false}
+          incomplete={feild.incomplete}
+          translate={this.props.screenProps.translate}
+          secureTextEntry={true}
+        />
+      );
+    });
+    return feilds;
+  };
+  render() {
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Container style={styles.container}>
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            title={"Change Password"}
-            navigation={this.props.navigation}
-          />
-          <ChangePassIcon
-            style={styles.iconChangePassword}
-            fill="#fff"
-            fillOpacity={1}
-            width={100}
-            height={100}
-          />
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <View style={styles.mainCard}>
-              <KeyboardShift>
-                {() => (
-                  <View style={styles.contentContainer}>
-                    <View>
-                      <Item
-                        disabled={this.props.loading}
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          this.state.inputP
-                            ? globalStyles.purpleBorderColor
-                            : this.state.currentPasswordError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
-                        ]}
-                      >
-                        <Label
-                          style={[
-                            styles.label,
-                            this.state.inputF
-                              ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor,
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          title={"Change Password"}
+          navigation={this.props.navigation}
+        />
 
-                            styles.newPasswordLabel
-                          ]}
-                        >
-                          {tempPassword
-                            ? translate("Current Password")
-                            : translate("Old Password")}
-                        </Label>
-                        <Input
-                          disabled={this.props.loading}
-                          // allowFontScaling={true}
-                          style={styles.inputtext}
-                          secureTextEntry={true}
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          onChangeText={value =>
-                            this.setState({
-                              userInfo: {
-                                ...this.state.userInfo,
-                                currentPassword: value
-                              }
-                            })
-                          }
-                          onFocus={() => {
-                            this.setState({ inputF: true });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              inputF: false,
-                              currentPasswordError: validateWrapper(
-                                "mandatory",
-                                this.state.userInfo.currentPassword
-                              )
-                            });
-                          }}
-                        />
-                      </Item>
-
-                      <Item
-                        disabled={this.props.loading}
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          this.state.inputP
-                            ? globalStyles.purpleBorderColor
-                            : this.state.passwordError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
-                        ]}
-                      >
-                        <Label
-                          style={[
-                            styles.label,
-                            this.state.inputP
-                              ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor,
-                            styles.newPasswordLabel
-                          ]}
-                        >
-                          {translate("New Password")}
-                        </Label>
-                        <Input
-                          disabled={this.props.loading}
-                          style={styles.inputtext}
-                          secureTextEntry={true}
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          onChangeText={value =>
-                            this.setState({
-                              userInfo: {
-                                ...this.state.userInfo,
-                                password: value
-                              }
-                            })
-                          }
-                          onFocus={() => {
-                            this.setState({ inputP: true });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              inputP: false,
-                              passwordError: validateWrapper(
-                                "password",
-                                this.state.userInfo.password
-                              )
-                            });
-                          }}
-                        />
-                      </Item>
-                      {this.state.passwordError &&
-                      this.state.passwordError.includes("8 characters") ? (
-                        <Text style={[styles.text, styles.errorText]}>
-                          {this.state.passwordError}
-                        </Text>
-                      ) : null}
-
-                      <Item
-                        disabled={this.props.loading}
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          this.state.inputPR
-                            ? globalStyles.purpleBorderColor
-                            : this.state.repasswordError !== ""
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor,
-                          styles.repasswordItem
-                        ]}
-                      >
-                        <Label
-                          style={[
-                            styles.label,
-                            this.state.inputPR
-                              ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor,
-                            styles.repasswordLabel
-                          ]}
-                        >
-                          {translate("Re-enter Password")}
-                        </Label>
-
-                        <Input
-                          disabled={this.props.loading}
-                          style={styles.inputtext}
-                          secureTextEntry={true}
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          onChangeText={value =>
-                            this.setState({ repassword: value })
-                          }
-                          onFocus={() => {
-                            this.setState({ inputPR: true });
-                          }}
-                          onBlur={() => {
-                            this.setState({ inputPR: false });
-                            this._passwordVarification();
-                          }}
-                        />
-                      </Item>
-                      {this.state.repasswordError !== "" &&
-                      this.state.userInfo.password !== "" ? (
-                        <Text style={[styles.text, styles.repasswordErrorText]}>
-                          {this.state.repasswordError}
-                        </Text>
-                      ) : null}
-                    </View>
-                    {this.props.loading ? (
-                      <CheckMarkLoading progress={this.props.progress} />
-                    ) : (
-                      <TouchableOpacity
-                        onPress={() => this._handleSubmission()}
-                        style={styles.button}
-                      >
-                        <CheckmarkIcon />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </KeyboardShift>
-            </View>
-          </TouchableWithoutFeedback>
-        </Container>
+        <InputScrollView
+          {...ScrollView.props}
+          contentContainerStyle={styles.contentContainer}
+        >
+          {this.feildsComponent()}
+          {this.props.loading ? (
+            <CheckMarkLoading progress={this.props.progress} />
+          ) : (
+            <TouchableOpacity
+              onPress={() => this._handleSubmission()}
+              style={styles.button}
+            >
+              <CheckmarkIcon />
+            </TouchableOpacity>
+          )}
+        </InputScrollView>
       </SafeAreaView>
     );
   }
@@ -336,7 +236,4 @@ const mapStateToProps = state => ({
   progress: state.account.progress
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChangePassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

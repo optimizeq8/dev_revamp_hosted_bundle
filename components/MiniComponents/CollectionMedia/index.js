@@ -26,7 +26,6 @@ import {
   Icon
 } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import { Modal } from "react-native-paper";
@@ -34,7 +33,8 @@ import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
-
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -58,6 +58,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -91,6 +92,7 @@ class CollectionMedia extends Component {
   }
 
   async componentDidMount() {
+    Segment.screen("Collection Media");
     let order = this.props.navigation.getParam("collection_order");
     const { translate } = this.props.screenProps;
     await this.setState({
@@ -108,12 +110,26 @@ class CollectionMedia extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }
@@ -270,14 +286,17 @@ class CollectionMedia extends Component {
   };
 
   pick = async () => {
-    await this.askForPermssion();
+    let status = await this.askForPermssion();
     this.onToggleModal(true);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "Images",
-      base64: false,
-      exif: false,
-      quality: 0.8
-    });
+    let result = "";
+    if (status === "granted") {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "Images",
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+    }
 
     return result;
   };
@@ -287,15 +306,20 @@ class CollectionMedia extends Component {
       const { translate } = this.props.screenProps;
       let result = await this.pick();
 
-      let file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
-      });
-      this.setState({ directory: "/ImagePicker/" });
-      let newWidth = result.width;
-      let newHeight = result.height;
-      await this.validateImage();
+      let file = {};
+      let newWidth = "";
+      let newHeight = "";
+      if (result) {
+        file = await FileSystem.getInfoAsync(result.uri, {
+          size: true
+        });
+        this.setState({ directory: "/ImagePicker/" });
+        newWidth = result.width;
+        newHeight = result.height;
+        await this.validateImage();
+      }
 
-      if (!result.cancelled) {
+      if (result && !result.cancelled) {
         if (result.width >= 160 && result.height >= 160) {
           newWidth = 160;
           newHeight = 160;
@@ -349,6 +373,10 @@ class CollectionMedia extends Component {
                     collection_media: null
                   }
                 });
+                segmentEventTrack("Error Collection Ad Media", {
+                  campaign_error_collection_media_image:
+                    "Image must be less than 2 MBs"
+                });
                 this.onToggleModal(false);
                 showMessage({
                   message: translate(
@@ -371,6 +399,7 @@ class CollectionMedia extends Component {
                   localUri: result.uri,
                   rejectionColUpload: true
                 });
+                segmentEventTrack("Selected Collection Ad Image successfully");
                 this.onToggleModal(false);
                 showMessage({
                   message: translate("Image has been selected successfully"),
@@ -381,7 +410,10 @@ class CollectionMedia extends Component {
             })
             .catch(error => {
               // console.log(error);
-
+              segmentEventTrack("Error Collection Ad Media", {
+                campaign_error_collection_media_image:
+                  "Please choose another image"
+              });
               this.onToggleModal(false);
               showMessage({
                 message: translate("Please choose another image"),
@@ -400,6 +432,10 @@ class CollectionMedia extends Component {
               collection_media: null
             }
           });
+          segmentEventTrack("Error Collection Ad Media", {
+            campaign_error_collection_media_image:
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+          });
           this.onToggleModal(false);
           showMessage({
             message: translate(
@@ -416,6 +452,10 @@ class CollectionMedia extends Component {
               ...this.state.collection,
               collection_media: null
             }
+          });
+          segmentEventTrack("Error Collection Ad Media", {
+            campaign_error_collection_media_image:
+              "Image must be less than 2 MBs"
           });
           this.onToggleModal(false);
           showMessage({
@@ -436,6 +476,7 @@ class CollectionMedia extends Component {
             type: result.type.toUpperCase(),
             imageError: null
           });
+          segmentEventTrack("Selected Collection Ad Image successfully");
           this.onToggleModal(false);
           showMessage({
             message: translate("Image has been selected successfully"),
@@ -445,9 +486,13 @@ class CollectionMedia extends Component {
           return;
         }
       } else if (
+        result &&
         !result.cancelled &&
         isNull(this.state.collection.collection_media)
       ) {
+        segmentEventTrack("Error Collection Ad Media", {
+          campaign_error_collection_media_image: "Please choose a media file"
+        });
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
@@ -477,15 +522,29 @@ class CollectionMedia extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       this.onToggleModal(false);
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package // When published, considered as using standalone build
+        : "host.exp.exponent"; // In expo client mode
+
       showMessage({
         message: translate(
           "Please allow access to the gallery to upload media"
         ),
         position: "top",
-        type: "warning"
+        type: "warning",
+        onPress: () =>
+          Platform.OS === "ios"
+            ? Linking.openURL("app-settings:")
+            : Platform.OS === "android" &&
+              IntentLauncher.startActivityAsync(
+                IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                { data: "package:" + pkg }
+              ),
+        duration: 5000,
+        description: translate("Press here to open settings")
       });
-      Platform.OS === "ios" && Linking.openURL("app-settings:");
     }
+    return status;
   };
 
   formatMedia() {
@@ -553,8 +612,16 @@ class CollectionMedia extends Component {
 
   _handleSubmission = async () => {
     if (this.state.rejectionColUpload) {
+      const validImage = await this.validateImage();
       if (this.props.collectionAdLinkForm === 1) {
-        if (this.validateUrl() && this.validateImage()) {
+        const validUrl = await this.validateUrl();
+        if (!validUrl || !validImage) {
+          segmentEventTrack("Error Collection Media Submit", {
+            campaign_error_collection_media_image: this.state.imageError,
+            campaign_error_collection_ad_website_url: this.state.urlError
+          });
+        }
+        if (validUrl && validImage) {
           await this.formatMedia();
           await this.handleUpload();
           this.props.save_collection_media(
@@ -567,7 +634,15 @@ class CollectionMedia extends Component {
           );
         }
       } else {
-        if (this.validateDeepLinkUrl() && this.validateImage()) {
+        const validDeepLinkURL = await this.validateDeepLinkUrl();
+        if (!validDeepLinkURL || !validImage) {
+          segmentEventTrack("Error Collection Media Submit", {
+            campaign_error_collection_media_image: this.state.imageError,
+            campaign_error_collection_media_deeplink_url: this.state
+              .deep_link_uriError
+          });
+        }
+        if (validDeepLinkURL && validImage) {
           await this.formatMedia();
           await this.handleUpload();
           this.props.save_collection_media(
@@ -617,6 +692,7 @@ class CollectionMedia extends Component {
         <TouchableOpacity
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
+            segmentEventTrack("Opened Gallery to select Collection Ad media");
             this._pickImage();
           }}
         >
@@ -626,19 +702,16 @@ class CollectionMedia extends Component {
       );
     } else {
       return (
-        <Button
+        <TouchableOpacity
           style={styles.inputMiddleButton}
           onPress={() => {
+            segmentEventTrack("Opened Gallery to select Collection Ad media");
             this._pickImage();
           }}
         >
           <Icon style={styles.icon} name="camera" />
-          <Text style={styles.mediaButtonMsg}>
-            {this.state.collection.collection_media
-              ? translate("Edit Image")
-              : translate("Add Image")}
-          </Text>
-        </Button>
+          <Text style={styles.mediaButtonMsg}>{translate("Add Image")}</Text>
+        </TouchableOpacity>
       );
     }
   };
@@ -725,16 +798,32 @@ class CollectionMedia extends Component {
                           placeholderTextColor="white"
                           autoCorrect={false}
                           autoCapitalize="none"
-                          onChangeText={value =>
+                          onChangeText={value => {
                             this.setState({
                               collection: {
                                 ...this.state.collection,
                                 collection_attachment: value
                               }
-                            })
-                          }
-                          onBlur={() => {
-                            this.validateDeepLinkUrl();
+                            });
+                          }}
+                          onBlur={async () => {
+                            segmentEventTrack(
+                              "Changed Collection Media deep link url Attachment",
+                              {
+                                campaign_collection_attachment: this.state
+                                  .collection.collection_attachment
+                              }
+                            );
+                            const valid = await this.validateDeepLinkUrl();
+                            if (!valid) {
+                              segmentEventTrack(
+                                "Error Collection on blur deep link url",
+                                {
+                                  campaign_error_collection_deeplink_url: this
+                                    .state.deep_link_uriError
+                                }
+                              );
+                            }
                           }}
                         />
                       </Item>
@@ -769,10 +858,24 @@ class CollectionMedia extends Component {
                               ]}
                               onPress={() => {
                                 if (this.state.networkString === "https://") {
+                                  segmentEventTrack(
+                                    "Changed Collection Media Website url Network String",
+                                    {
+                                      campaign_collection_ad_website_network_string:
+                                        "http://"
+                                    }
+                                  );
                                   this.setState({
                                     networkString: "http://"
                                   });
                                 } else {
+                                  segmentEventTrack(
+                                    "Changed Collection Media Website url Network String",
+                                    {
+                                      campaign_collection_ad_website_network_string:
+                                        "https://"
+                                    }
+                                  );
                                   this.setState({
                                     networkString: "https://"
                                   });
@@ -813,7 +916,25 @@ class CollectionMedia extends Component {
                                   rejectionColUpload: true
                                 })
                               }
-                              onBlur={() => this.validateUrl()}
+                              onBlur={async () => {
+                                segmentEventTrack(
+                                  "Changed Collection Media Website url",
+                                  {
+                                    campaign_collection_ad_website_url: this
+                                      .state.collection.collection_attachment
+                                  }
+                                );
+                                const valid = await this.validateUrl();
+                                if (!valid) {
+                                  segmentEventTrack(
+                                    "Error on Blur Collection Ad Website URL ",
+                                    {
+                                      campaign_error_collection_ad_website_url: this
+                                        .state.urlError
+                                    }
+                                  );
+                                }
+                              }}
                             />
                           </Item>
                         </View>
@@ -920,7 +1041,4 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CollectionMedia);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionMedia);
