@@ -8,6 +8,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { terms, secondTerms } from "../../Data/terms.google.data";
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleAd from "../../../assets/SVGs/GoogleAds";
+import * as Segment from "expo-analytics-segment";
 
 //Redux
 import * as actionCreators from "../../../store/actions";
