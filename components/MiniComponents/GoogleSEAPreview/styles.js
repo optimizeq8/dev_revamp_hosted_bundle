@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
@@ -54,13 +54,15 @@ const styles = StyleSheet.create({
   adIcon: {
     marginRight: 5,
     alignSelf: "center",
-    marginBottom: 5,
-    marginLeft: 20
+    fontFamily: "montserrat-bold",
+    fontSize: 14
   },
   linkText: {
     fontFamily: "montserrat-regular",
-    color: "#197132",
-    paddingLeft: 0
+    color: "#0009",
+    paddingLeft: 0,
+    fontSize: 10,
+    marginLeft: 20
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",

@@ -53,6 +53,7 @@ class GoogleAdDesign extends Component {
       description: "",
       description2: "",
       finalurl: "",
+      networkString: "http://",
       inputH1: false,
       inputH2: false,
       inputH3: false,
@@ -136,7 +137,12 @@ class GoogleAdDesign extends Component {
       "mandatory",
       this.state.description2
     );
-    const finalurlError = validateWrapper("website", this.state.finalurl);
+    const finalurlError = validateWrapper(
+      "website",
+      (!this.state.finalurl.toLowerCase().includes("http")
+        ? this.state.networkString
+        : "") + this.state.finalurl
+    );
 
     this.setState({
       headline1Error,
@@ -178,6 +184,10 @@ class GoogleAdDesign extends Component {
       correctPathsLength &&
       onlyTwoPaths
     ) {
+      let finalurl =
+        (!this.state.finalurl.toLowerCase().includes("http")
+          ? this.state.networkString
+          : "") + this.state.finalurl;
       let data = {
         headline1: this.state.headline1,
         headline2: this.state.headline2,
@@ -185,9 +195,9 @@ class GoogleAdDesign extends Component {
         description: this.state.description,
         description2: this.state.description2,
         finalurl:
-          this.state.finalurl[this.state.finalurl.length - 1] === "/" //gets rid of a trailing /
-            ? this.state.finalurl.slice(0, -1)
-            : this.state.finalurl
+          finalurl[finalurl.length - 1] === "/" //gets rid of a trailing /
+            ? finalurl.slice(0, -1)
+            : finalurl
       };
       const segmentInfo = {
         step: 3,
@@ -266,7 +276,10 @@ class GoogleAdDesign extends Component {
       {
         [error]: validateWrapper(
           value === "finalurl" ? "website" : "mandatory",
-          this.state[value]
+          (value === "finalurl" &&
+          !this.state.finalurl.toLowerCase().includes("http")
+            ? this.state.networkString
+            : "") + this.state[value]
         )
       },
       () => {
@@ -311,26 +324,33 @@ class GoogleAdDesign extends Component {
    * checks whether the url is vaild in terms of paths and validity
    */
   validatePaths = () => {
+    let finalurl =
+      (!this.state.finalurl.toLowerCase().includes("http")
+        ? this.state.networkString
+        : "") + this.state.finalurl;
+
     let seperatedUrl =
-      this.state.finalurl[this.state.finalurl.length - 1] === "/" //gets rid of a trailing slash so it doesn't affect the split function
+      finalurl[finalurl.length - 1] === "/" //gets rid of a trailing slash so it doesn't affect the split function
         ? //eg. (http://example.com/).split("/") returns [http:,"",example.com,""]
-          this.state.finalurl.slice(0, -1).split("/")
-        : this.state.finalurl.split("/");
+          finalurl.slice(0, -1).split("/")
+        : finalurl.split("/");
     let correctPathsLength = true;
     let onlyTwoPaths = true;
     if (seperatedUrl.slice(3).length > 0) {
       //check if the url has paths
-      let path1 = seperatedUrl[seperatedUrl.length - 2];
-      let path2 = seperatedUrl[seperatedUrl.length - 1];
-      correctPathsLength = path1.length <= 15 && path2.length <= 15;
+      let path1 = "";
+      let path2 = "";
+      path1 = seperatedUrl.slice(3)[0];
+      if (seperatedUrl.slice(3)[1]) path2 = seperatedUrl.slice(3)[1];
+      if (path1 && path2)
+        correctPathsLength = path1.length <= 15 && path2.length <= 15;
+      else if (path1 && !path2) correctPathsLength = path1.length <= 15;
+      else correctPathsLength = path2.length <= 15;
       onlyTwoPaths = seperatedUrl.slice(3).length <= 2;
     }
     if (this.state.finalurlError)
       showMessage({
-        message:
-          this.translate("Please enter a valid URL") +
-          " " +
-          this.translate("Make sure to include (http://) or (https://)"),
+        message: this.translate("Please enter a valid URL"),
         type: "warning",
         description: this.translate("Eg") + "'https://url.com/path1/path2'"
       });
@@ -408,6 +428,7 @@ class GoogleAdDesign extends Component {
                     submitEditing={this.focusTheField}
                     reference={this.handleInputRefs}
                     disable={this.props.campaign.uploading}
+                    campaign={this.props.campaign}
                   />
                 </Transition>
               </View>
