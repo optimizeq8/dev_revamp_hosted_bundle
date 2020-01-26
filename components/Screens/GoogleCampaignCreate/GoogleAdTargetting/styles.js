@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
+import { StyleSheet, PixelRatio, Platform } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
