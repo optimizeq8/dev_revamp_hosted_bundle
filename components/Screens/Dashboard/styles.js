@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   },
   searchbarContainer: {
     flexDirection: "row",
-    height: 50,
+    height: 60,
     alignItems: "center"
   },
   channelIcon: {
