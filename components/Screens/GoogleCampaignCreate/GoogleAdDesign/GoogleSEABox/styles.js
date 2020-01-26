@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
   linkText: {
     fontFamily: "montserrat-regular",
     color: "#197132",
-    paddingLeft: 0
+    paddingLeft: 0,
+    top: "3%"
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",
