@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
@@ -13,8 +13,8 @@ import styles from "./styles";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 //Icon
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
+import LowerButton from "../LowerButton";
 
 export default class AgeOption extends Component {
   state = {
@@ -71,12 +71,11 @@ export default class AgeOption extends Component {
               />
             </View>
           </View>
-          <TouchableOpacity
+          <LowerButton
             style={styles.button}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </TouchableOpacity>
+            checkmark={true}
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </Container>
       </SafeAreaView>
     );
