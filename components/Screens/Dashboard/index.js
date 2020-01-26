@@ -572,7 +572,7 @@ class Dashboard extends Component {
                           <SearchBar
                             screenProps={this.props.screenProps}
                             customInputStyle={{
-                              backgroundColor: "#0008",
+                              backgroundColor: "#0003",
                               height: "100%"
                             }}
                             renderSearchBar={this.renderSearchBar}

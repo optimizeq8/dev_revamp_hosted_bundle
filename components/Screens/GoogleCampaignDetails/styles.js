@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
-    marginTop: 5,
-    width: "30%",
+    top: 35,
+    left: "22%",
     alignItems: "center",
-    alignSelf: "center"
+    position: "absolute",
+    flexDirection: "row"
   },
   mainCard: {
     borderColor: "transparent",
@@ -556,6 +557,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: "100%"
+  },
+  circleIcon: { color: "#fff", fontSize: 14 },
+  reviewText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 11,
+    paddingHorizontal: 5,
+    color: "#fff",
+    textTransform: "uppercase"
+  },
+  campaignStatus: {
+    borderRadius: 16,
+    marginBottom: 5,
+    paddingHorizontal: 10,
+    width: "30%",
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: "#66D072"
   }
 });
 

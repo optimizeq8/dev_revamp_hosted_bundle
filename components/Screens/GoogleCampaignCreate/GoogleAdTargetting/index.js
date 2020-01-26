@@ -453,7 +453,9 @@ class GoogleAdTargetting extends Component {
                 scrollEnabled={false}
                 contentContainerStyle={styles.contentContainer}
               >
-                <Text style={styles.subHeadings}>{translate("Budget")}</Text>
+                <Text style={styles.subHeadings}>
+                  {translate("Set your budget")}
+                </Text>
                 <BudgetCards
                   value={this.state.value}
                   recBudget={this.props.campaign.recommendedBudget}
@@ -490,20 +492,13 @@ class GoogleAdTargetting extends Component {
                     >
                       <PlusCircle width={35} height={35} />
                     </TouchableOpacity>
-                    <Text
-                      style={[
-                        styles.subHeadings,
-                        {
-                          fontSize: 10
-                        }
-                      ]}
-                    >
+                    <Text style={[styles.subHeadings, styles.smallSubHeading]}>
                       {translate("Add Products and Services")}
                     </Text>
                   </>
                 )}
 
-                <Text style={styles.subHeadings}>
+                <Text style={[styles.subHeadings, { width: "60%" }]}>
                   {translate("Who would you like to reach?")}
                 </Text>
                 <ScrollView
@@ -519,7 +514,7 @@ class GoogleAdTargetting extends Component {
                     style={styles.targetTouchable}
                   >
                     <View style={globalStyles.row}>
-                      <GenderIcon width={25} height={25} style={styles.icon} />
+                      <GenderIcon width={30} height={30} style={styles.icon} />
 
                       <View style={globalStyles.column}>
                         <Text style={styles.menutext}>
@@ -537,9 +532,9 @@ class GoogleAdTargetting extends Component {
                     </View>
                     <View style={globalStyles.column}>
                       {this.state.gender ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
+                        <GreenCheckmarkIcon width={30} height={30} />
                       ) : (
-                        <PlusCircleIcon width={25} height={25} />
+                        <PlusCircleIcon width={30} height={30} />
                       )}
                     </View>
                   </TouchableOpacity>
@@ -553,8 +548,8 @@ class GoogleAdTargetting extends Component {
                     <View style={globalStyles.row}>
                       <AgeIcon
                         fill={globalColors.orange}
-                        width={25}
-                        height={25}
+                        width={30}
+                        height={30}
                         style={styles.icon}
                       />
                       <View style={globalStyles.column}>
@@ -568,9 +563,9 @@ class GoogleAdTargetting extends Component {
                     </View>
 
                     {this.state.age.length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
+                      <GreenCheckmarkIcon width={30} height={30} />
                     ) : (
-                      <PlusCircleIcon width={25} height={25} />
+                      <PlusCircleIcon width={30} height={30} />
                     )}
                   </TouchableOpacity>
                 </ScrollView>

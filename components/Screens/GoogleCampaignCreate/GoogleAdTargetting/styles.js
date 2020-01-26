@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Platform } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -26,11 +26,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   subHeadings: {
-    textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 10
+    fontFamily: "montserrat-bold",
+    fontSize: 18,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    textTransform: "uppercase",
+    textAlign: "left"
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -100,15 +102,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 8
   },
-  icon: {
-    alignSelf: "center"
-  },
+  icon: {},
   menutext: {
-    paddingLeft: 15,
+    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
+    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-bold",
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   menudetails: {
     textAlign: "left",
@@ -199,6 +201,12 @@ const styles = StyleSheet.create({
     height: 55
 
     // padding: 20
+  },
+  smallSubHeading: {
+    fontSize: 10,
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
+    textTransform: "none"
   }
 });
 

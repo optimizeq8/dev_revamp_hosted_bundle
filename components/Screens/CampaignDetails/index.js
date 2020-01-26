@@ -192,6 +192,18 @@ class CampaignDetails extends Component {
   showCSVModal = isVisible => {
     this.setState({ CSVModalVisible: isVisible });
   };
+  campaignEndedOrNot = (campaign, endDate) => {
+    endDate.setDate(endDate.getDate() + 2);
+    let campaignEndedOrNot =
+      campaign.review_status.includes("APPROVED") &&
+      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+        new Date().setHours(0, 0, 0, 0) &&
+      new Date(campaign.end_time) >= new Date()
+        ? null
+        : campaign.campaign_end === "1" ||
+          new Date(campaign.end_time) < new Date();
+    return campaignEndedOrNot;
+  };
 
   render() {
     let loading = this.props.loading;
@@ -433,8 +445,89 @@ class CampaignDetails extends Component {
                   flex: 1,
                   alignItems: "center"
                 }}
+                campaignStatus={loading ? null : selectedCampaign.status}
               />
-
+              {loading ? (
+                <View style={{ margin: 5 }}>
+                  <PlaceholderLine />
+                </View>
+              ) : this.campaignEndedOrNot(
+                  selectedCampaign,
+                  new Date(selectedCampaign.end_time)
+                ) ? (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: globalColors.orange
+                      }
+                    ]}
+                    name={"circle"}
+                    type={"FontAwesome"}
+                  />
+                  <Text
+                    style={[styles.reviewText, { color: globalColors.orange }]}
+                  >
+                    {translate("Campaign ended")}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: selectedCampaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : selectedCampaign.status === "LIVE"
+                          ? globalColors.green
+                          : globalColors.orange
+                      }
+                    ]}
+                    name={
+                      selectedCampaign.review_status.includes("REJECTED")
+                        ? "circle-slash"
+                        : "circle"
+                    }
+                    type={
+                      selectedCampaign.review_status.includes("REJECTED")
+                        ? "Octicons"
+                        : "FontAwesome"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.reviewText,
+                      {
+                        color: selectedCampaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : !selectedCampaign.review_status.includes(
+                              "PENDING"
+                            ) && selectedCampaign.status === "LIVE"
+                          ? globalColors.green
+                          : globalColors.orange
+                      }
+                    ]}
+                  >
+                    {translate(
+                      `${
+                        selectedCampaign.review_status.includes("PENDING")
+                          ? "In Review"
+                          : selectedCampaign.review_status.includes("REJECTED")
+                          ? "Ad Rejected"
+                          : selectedCampaign.status === "LIVE"
+                          ? "LIVE"
+                          : "Campaign Paused"
+                      }`
+                    )}
+                  </Text>
+                </View>
+              )}
               <ScrollView
                 contentContainerStyle={{ height: "100%" }}
                 scrollEnabled={!this.state.expand}
@@ -507,19 +600,14 @@ class CampaignDetails extends Component {
                     <View style={{}}>
                       {!this.state.expand && (
                         <View>
-                          {selectedCampaign.review_status === "APPROVED" ? (
-                            selectedCampaign.campaign_end === "0" &&
+                          {selectedCampaign.review_status === "APPROVED" &&
+                            (selectedCampaign.campaign_end === "0" &&
                             !this.props.campaignEnded &&
                             new Date(selectedCampaign.end_time) > new Date() ? (
                               selectedCampaign.review_status === "APPROVED" &&
                               new Date(selectedCampaign.start_time) >
                                 new Date() ? (
-                                <View
-                                  style={[
-                                    styles.adStatus,
-                                    { backgroundColor: "#66D072" }
-                                  ]}
-                                >
+                                <View style={[styles.campaignStatus]}>
                                   <Text style={styles.reviewtext}>
                                     {translate("Scheduled for")} {start_time}
                                   </Text>
@@ -566,43 +654,7 @@ class CampaignDetails extends Component {
                                   </View>
                                 </View>
                               )
-                            ) : (
-                              <View
-                                style={[
-                                  styles.adStatus,
-                                  {
-                                    backgroundColor: globalColors.orange
-                                  }
-                                ]}
-                              >
-                                <Text style={styles.reviewtext}>
-                                  {translate("Campaign ended")}
-                                </Text>
-                              </View>
-                            )
-                          ) : (
-                            <View
-                              style={[
-                                styles.adStatus,
-                                {
-                                  backgroundColor:
-                                    selectedCampaign.review_status === "PENDING"
-                                      ? globalColors.orange
-                                      : globalColors.red
-                                }
-                              ]}
-                            >
-                              <Text style={styles.reviewtext}>
-                                {translate(
-                                  `${
-                                    selectedCampaign.review_status === "PENDING"
-                                      ? "In Review"
-                                      : "Rejected"
-                                  }`
-                                )}
-                              </Text>
-                            </View>
-                          )}
+                            ) : null)}
                         </View>
                       )}
                     </View>

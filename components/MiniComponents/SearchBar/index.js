@@ -76,8 +76,8 @@ class SearchBar extends Component {
       >
         <Item rounded style={[styles.searchBarItem, customInputStyle]}>
           <SearchIcon
-            width={18}
-            height={18}
+            width={20}
+            height={20}
             stroke={strokeColor ? strokeColor : "#fff"}
           />
           <Input
@@ -103,14 +103,14 @@ class SearchBar extends Component {
                   ? "businesses"
                   : transactionSearch
                   ? "transactions"
-                  : "ads"
+                  : "campaigns"
               }`
             )}
             placeholderTextColor={
               transactionSearch
                 ? "#rgba(255,255,255,0.4)"
                 : !businessList
-                ? "#fff"
+                ? "#fff9"
                 : globalStyles.darkGrayTextColor.color
             }
             value={this.state.value}

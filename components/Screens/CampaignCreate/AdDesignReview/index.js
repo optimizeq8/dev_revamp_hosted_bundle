@@ -301,15 +301,16 @@ class AdDesignReview extends Component {
                       globalStyles.whiteBackgroundColor
                     ]}
                   >
-                    <View style={[globalStyles.lightGrayBorderColor]}>
+                    <View style={{}}>
                       <Image
                         {...{ preview, uri: appIcon }}
                         // source={{ uri: appIcon }}
                         style={[
                           globalStyles.grayBorderColor,
-                          styles.appIconBottom
+                          styles.appIconBottom,
+                          { width: 60, height: 60 }
                         ]}
-                        resizeMode="cover"
+                        resizeMode="contain"
                       />
                     </View>
                     <View style={styles.textContainerBottom}>

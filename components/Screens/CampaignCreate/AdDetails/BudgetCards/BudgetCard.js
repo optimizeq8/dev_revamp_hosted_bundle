@@ -34,9 +34,9 @@ export default class BudgetCard extends Component {
         {bud.id === 1 && (
           <View style={styles.recIcon}>
             <Icon
-              name="star"
-              type="AntDesign"
-              style={{ fontSize: 15, color: "#fff" }}
+              name="thumbs-up"
+              type="Feather"
+              style={{ fontSize: 12, color: "#fff" }}
             />
           </View>
         )}
