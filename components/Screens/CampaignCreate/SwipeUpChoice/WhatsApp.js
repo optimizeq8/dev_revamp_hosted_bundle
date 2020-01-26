@@ -787,11 +787,6 @@ class WhatsApp extends Component {
               <ForwardLoading bottom={-5} />
             ) : (
               <LowerButton
-                isRTL={I18nManager.isRTL}
-                style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                width={I18nManager.isRTL ? 25 : null}
-                height={I18nManager.isRTL ? 25 : null}
-                bottom={I18nManager.isRTL ? 0 : 0}
                 // checkmark={true}
                 function={this.checkInstaAccountChange}
               />
@@ -852,8 +847,8 @@ class WhatsApp extends Component {
                     bottom={0}
                     function={() => this.setModalInstagramChangedVisible(false)}
                   />
-                  <TouchableOpacity
-                    onPress={() => {
+                  <LowerButton
+                    function={() => {
                       let whatsAppCampaign = {
                         weburl: this.state.campaignInfo.weburl,
                         whatsappnumber: this.state.campaignInfo.whatsappnumber.replace(
@@ -894,9 +889,7 @@ class WhatsApp extends Component {
                       );
                       this._handleSubmission();
                     }}
-                  >
-                    <ForwardIcon width={80} height={80} />
-                  </TouchableOpacity>
+                  />
                 </View>
               </>
             </View>

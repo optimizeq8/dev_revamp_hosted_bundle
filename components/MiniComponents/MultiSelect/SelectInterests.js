@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, ScrollView, ActivityIndicator } from "react-native";
-import { Button, Text, Icon } from "native-base";
+import { Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import isNull from "lodash/isNull";
 import * as Segment from "expo-analytics-segment";
@@ -18,6 +18,8 @@ import SectionStyle, { colors } from "./SectionStyle";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
+import LowerButton from "../LowerButton";
+import GradientButton from "../GradientButton";
 
 class SelectInterests extends Component {
   state = { interests: null, open: false };
@@ -80,17 +82,17 @@ class SelectInterests extends Component {
             </Text>
 
             <View style={styles.slidercontainer}>
-              <Button
+              <GradientButton
                 style={[
                   styles.toggleSelectorButton,
                   {
                     opacity: this.props.country_code === "" ? 0.5 : 1
                   }
                 ]}
-                onPress={() => this.setState({ open: true })}
+                onPressAction={() => this.setState({ open: true })}
               >
                 <PlusCircle width={53} height={53} />
-              </Button>
+              </GradientButton>
               <ScrollView style={styles.scrollContainer}>
                 <Picker
                   showIcon={true}
@@ -115,9 +117,11 @@ class SelectInterests extends Component {
               </ScrollView>
             </View>
           </View>
-          <Button style={styles.button} onPress={this.handleSideMenu}>
-            <CheckmarkIcon width={53} height={53} />
-          </Button>
+          <LowerButton
+            checkmark={true}
+            style={styles.button}
+            function={() => this.handleSideMenu()}
+          />
         </View>
       </SafeAreaView>
     );

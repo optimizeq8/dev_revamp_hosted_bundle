@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Button, Text, Container, Icon } from "native-base";
+import { Text, Container, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 //Styles
@@ -10,9 +10,9 @@ import styles from "./styles";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 //Icon
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
+import LowerButton from "../LowerButton";
 
 export default class AgeOption extends Component {
   state = {};
@@ -72,12 +72,11 @@ export default class AgeOption extends Component {
               {this.props.children}
             </View>
           </View>
-          <Button
+          <LowerButton
+            checkmark={true}
             style={styles.button}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button>
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </Container>
       </SafeAreaView>
     );

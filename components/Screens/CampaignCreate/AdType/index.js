@@ -280,10 +280,7 @@ class AdType extends Component {
           <View style={{ height: 70, marginBottom: 10 }}>
             <Animatable.View animation={"fadeIn"}>
               <LowerButton
-                isRTL={I18nManager.isRTL}
-                style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                width={I18nManager.isRTL ? 25 : null}
-                height={I18nManager.isRTL ? 25 : null}
+                style={styles.proceedButtonRTL}
                 function={this.navigationHandler}
                 bottom={1}
               />

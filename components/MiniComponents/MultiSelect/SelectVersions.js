@@ -7,7 +7,6 @@ import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 //Icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
 
@@ -20,6 +19,8 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
 import compareVersions from "compare-versions";
+import LowerButton from "../LowerButton";
+import GradientButton from "../GradientButton";
 
 class SelectVersions extends Component {
   state = {
@@ -113,12 +114,12 @@ class SelectVersions extends Component {
 
             <View style={styles.slidercontainer}>
               <View style={styles.choiceContainer}>
-                <Button
+                <GradientButton
                   style={styles.toggleSelectorButton}
-                  onPress={() => this.VersionSection._toggleSelector()}
+                  onPressAction={() => this.VersionSection._toggleSelector()}
                 >
                   <PlusCircle width={53} height={53} />
-                </Button>
+                </GradientButton>
                 <Text style={styles.inputtext}>
                   {translate("Choose Minimum and Maximum versions")}
                 </Text>
@@ -155,12 +156,11 @@ class SelectVersions extends Component {
                   subKey="children"
                   styles={SectionStyle}
                   stickyFooterComponent={
-                    <Button
-                      style={styles.stickyFooterButton}
-                      onPress={() => this.VersionSection._submitSelection()}
-                    >
-                      <CheckmarkIcon width={53} height={53} />
-                    </Button>
+                    <LowerButton
+                      checkmark
+                      style={styles.button}
+                      function={() => this.VersionSection._submitSelection()}
+                    />
                   }
                   modalWithSafeAreaView={true}
                   headerComponent={
@@ -208,12 +208,11 @@ class SelectVersions extends Component {
               </ScrollView>
             </View>
           </View>
-          <Button
+          <LowerButton
             style={[styles.button]}
-            onPress={() => this._handleSubmission()}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button>
+            checkmark={true}
+            function={() => this._handleSubmission()}
+          />
         </View>
       </SafeAreaView>
     );
