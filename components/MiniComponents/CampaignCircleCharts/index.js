@@ -170,7 +170,11 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail
                     ]}
                   >
-                    {campaign ? campaign.cpm : 0}
+                    {campaign
+                      ? campaign.objective === "BRAND_AWARENESS"
+                        ? campaign.cpm
+                        : campaign.swipes
+                      : 0}
                   </Text>
                   <Text
                     uppercase
