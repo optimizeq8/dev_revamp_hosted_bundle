@@ -125,6 +125,8 @@ class CampaignCard extends Component {
                         {
                           color: this.review_status.includes("REJECTED")
                             ? globalColors.red
+                            : this.campaign_status === "LIVE"
+                            ? globalColors.green
                             : globalColors.orange
                         }
                       ]}
