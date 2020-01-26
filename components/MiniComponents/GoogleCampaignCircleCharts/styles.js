@@ -33,7 +33,12 @@ const styles = StyleSheet.create({
   },
   adPerformanceLowerButton: {
     width: 35,
-    height: 35
+    height: 35,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9D00",
+    borderRadius: 30
   },
   subtext: {
     fontFamily: "montserrat-bold",

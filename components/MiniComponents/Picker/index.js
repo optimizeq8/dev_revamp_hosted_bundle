@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Icon, Text } from "native-base";
+import { Icon, Button, Text } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
 import BackButton from "../../MiniComponents/BackButton";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 import styles from "./styles";
 import SectionStyle, { colors } from "../MultiSelect/SectionStyle";
-import LowerButton from "../LowerButton";
 
 export default class Picker extends Component {
   componentDidUpdate(prevProps) {
@@ -68,14 +68,15 @@ export default class Picker extends Component {
         readOnlyHeadings={this.props.readOnlyHeadings}
         styles={SectionStyle}
         stickyFooterComponent={
-          <LowerButton
-            checkmark
-            style={styles.button}
-            function={() => {
+          <Button
+            style={styles.stickyFooterButton}
+            onPress={() => {
               this.Section._submitSelection();
               this.props.closeCategoryModal();
             }}
-          />
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         }
         headerComponent={
           <View style={styles.headerComponent}>

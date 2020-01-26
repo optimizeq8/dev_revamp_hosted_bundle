@@ -52,8 +52,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
   toggleSelectorButton: {
-    width: 50,
-    height: 50
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+    borderRadius: 50,
+    height: 50,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    elevation: -1
   },
   selectVersionIcon: {
     fontSize: 60,
@@ -78,6 +86,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   button: {
+    backgroundColor: "transparent",
+    alignSelf: "center",
+    borderRadius: 50,
+    borderColor: "transparent",
+    borderWidth: 1,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
     marginTop: 10,
     marginBottom: 40
   },

@@ -62,7 +62,13 @@ const styles = StyleSheet.create({
   },
   proceedButtonRTL: {
     width: 65,
-    height: 65
+    height: 65,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

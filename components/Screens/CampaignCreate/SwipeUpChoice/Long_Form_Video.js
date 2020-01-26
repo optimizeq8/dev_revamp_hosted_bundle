@@ -330,7 +330,14 @@ class Long_Form_Video extends Component {
             <LoadingScreen top={50} />
           </Modal>
         </View>
-        <LowerButton function={this._handleSubmission} />
+        <LowerButton
+          isRTL={I18nManager.isRTL}
+          style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+          width={I18nManager.isRTL ? 25 : null}
+          height={I18nManager.isRTL ? 25 : null}
+          bottom={I18nManager.isRTL ? 1 : 0}
+          function={this._handleSubmission}
+        />
       </View>
     );
   }

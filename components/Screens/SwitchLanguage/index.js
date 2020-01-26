@@ -157,6 +157,10 @@ class SwitchLanguage extends Component {
             <LowerButton
               function={() => this.handleSubmitLanguage()}
               bottom={heightPercentageToDP(-1)}
+              isRTL={I18nManager.isRTL}
+              style={I18nManager.isRTL && styles.backRTL}
+              width={I18nManager.isRTL ? 25 : null}
+              height={I18nManager.isRTL ? 25 : null}
             />
           </Container>
         </SafeAreaView>

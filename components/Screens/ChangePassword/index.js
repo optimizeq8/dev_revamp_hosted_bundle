@@ -20,7 +20,6 @@ import styles from "./styles";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import LowerButton from "../../MiniComponents/LowerButton";
 
 class ChangePassword extends Component {
   static navigationOptions = {
@@ -210,11 +209,12 @@ class ChangePassword extends Component {
           {this.props.loading ? (
             <CheckMarkLoading progress={this.props.progress} />
           ) : (
-            <LowerButton
-              checkmark={true}
-              function={() => this._handleSubmission()}
+            <TouchableOpacity
+              onPress={() => this._handleSubmission()}
               style={styles.button}
-            />
+            >
+              <CheckmarkIcon />
+            </TouchableOpacity>
           )}
         </InputScrollView>
       </SafeAreaView>

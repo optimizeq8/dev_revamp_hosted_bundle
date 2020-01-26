@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, I18nManager } from "react-native";
 import Chart from "../CircleChart/Chart";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -42,8 +42,9 @@ class CampaignCircleChart extends Component {
                 </Text>
                 <LowerButton
                   function={() => handleChartToggle()}
-                  width={15}
-                  height={15}
+                  width={I18nManager.isRTL ? 8 : 40}
+                  height={40}
+                  isRTL={I18nManager.isRTL}
                   style={styles.adPerformanceLowerBUtton}
                 />
               </>
