@@ -93,7 +93,6 @@ class GoogleSEAPreviewScreen extends Component {
                     path2={campaign.path2}
                     description={campaign.description}
                     description2={campaign.description2}
-                    campaign={this.props.campaign}
                   />
                 </Transition>
               </View>
