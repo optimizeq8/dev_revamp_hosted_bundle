@@ -103,7 +103,7 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
-                <GenderIcon width={25} height={25} style={styles.icon} />
+                <GenderIcon width={30} height={30} style={styles.icon} />
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
@@ -120,9 +120,9 @@ export class TargetAudience extends Component {
                 {targeting.demographics[0].gender === "" ||
                   (startEditing &&
                     (targeting.demographics[0].gender ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
+                      <GreenCheckmarkIcon width={30} height={30} />
                     ) : (
-                      <PlusCircleIcon width={25} height={25} />
+                      <PlusCircleIcon width={30} height={30} />
                     )))}
               </View>
             </TouchableOpacity>
@@ -149,9 +149,9 @@ export class TargetAudience extends Component {
 
               {startEditing &&
                 (targeting.demographics[0].max_age ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
+                  <GreenCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={25} height={25} />
+                  <PlusCircleIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -161,7 +161,7 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
-                <LocationIcon width={25} height={25} style={styles.icon} />
+                <LocationIcon width={30} height={30} style={styles.icon} />
 
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Country")}</Text>
@@ -174,9 +174,9 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.geos[0].country_code ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
+                  <GreenCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={25} height={25} />
+                  <PlusCircleIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -187,7 +187,7 @@ export class TargetAudience extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
-                  <LocationIcon width={25} height={25} style={styles.icon} />
+                  <LocationIcon width={30} height={30} style={styles.icon} />
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text
                       style={[
@@ -217,9 +217,9 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.geos[0].region_id.length !== 0 ? (
-                    <GreenCheckmarkIcon width={25} height={25} />
+                    <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={25} height={25} />
+                    <PlusCircleIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             )}
@@ -230,7 +230,7 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
-                <LanguageIcon width={25} height={25} style={styles.icon} />
+                <LanguageIcon width={30} height={30} style={styles.icon} />
                 <View style={[globalStyles.column, styles.flex]}>
                   <Text style={styles.menutext}>{translate("Language")}</Text>
                   <Text
@@ -243,9 +243,9 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.demographics[0].languages.length !== 0 ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
+                  <GreenCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={25} height={25} />
+                  <PlusCircleIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -258,7 +258,7 @@ export class TargetAudience extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
-                  <InterestsIcon width={25} height={25} style={styles.icon} />
+                  <InterestsIcon width={30} height={30} style={styles.icon} />
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text style={styles.menutext}>
                       {translate("Interests")}
@@ -274,9 +274,9 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   {startEditing &&
                     (targeting.interests[0].category_id.length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
+                      <GreenCheckmarkIcon width={30} height={30} />
                     ) : (
-                      <PlusCircleIcon width={25} height={25} />
+                      <PlusCircleIcon width={30} height={30} />
                     ))}
                 </View>
               </TouchableOpacity>
@@ -310,9 +310,9 @@ export class TargetAudience extends Component {
               {targeting.devices[0].os_type === "" ||
                 (startEditing &&
                   (targeting.devices[0].os_type ? (
-                    <GreenCheckmarkIcon width={25} height={25} />
+                    <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={25} height={25} />
+                    <PlusCircleIcon width={30} height={30} />
                   )))}
             </TouchableOpacity>
 
@@ -353,9 +353,9 @@ export class TargetAudience extends Component {
 
                     {startEditing &&
                       (targeting.devices[0].os_version_min !== "" ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
+                        <GreenCheckmarkIcon width={30} height={30} />
                       ) : (
-                        <PlusCircleIcon width={25} height={25} />
+                        <PlusCircleIcon width={30} height={30} />
                       ))}
                   </TouchableOpacity>
                 ))}
@@ -393,9 +393,9 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.devices[0].marketing_name.length !== 0 ? (
-                    <GreenCheckmarkIcon width={25} height={25} />
+                    <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={25} height={25} />
+                    <PlusCircleIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             )}

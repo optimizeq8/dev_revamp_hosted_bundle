@@ -1116,7 +1116,7 @@ class AdDetails extends Component {
                 {!this.editCampaign ? (
                   <>
                     <Text uppercase style={styles.subHeadings}>
-                      {translate("Budget")}
+                      {translate("Set your budget")}
                     </Text>
                     <BudgetCards
                       value={this.state.value}
@@ -1174,7 +1174,10 @@ class AdDetails extends Component {
                   )
                 )}
                 {startEditing && (
-                  <Text uppercase style={styles.subHeadings}>
+                  <Text
+                    uppercase
+                    style={[styles.subHeadings, { width: "60%" }]}
+                  >
                     {translate("Who would you like to reach?")}
                   </Text>
                 )}

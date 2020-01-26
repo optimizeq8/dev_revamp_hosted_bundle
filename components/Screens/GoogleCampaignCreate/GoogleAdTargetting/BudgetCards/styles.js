@@ -10,7 +10,7 @@ export default StyleSheet.create({
   budgetCardStyle: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff3",
+    backgroundColor: "#0003",
     borderRadius: 12,
     borderColor: globalColors.orange,
     borderWidth: 2.5,
@@ -35,8 +35,8 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: "45%",
-    bottom: "65%",
+    left: "50%",
+    bottom: "70%",
     backgroundColor: globalColors.green,
     borderRadius: 50,
     width: 20,
