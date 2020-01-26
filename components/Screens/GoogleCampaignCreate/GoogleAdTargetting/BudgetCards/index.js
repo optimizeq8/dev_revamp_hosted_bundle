@@ -60,6 +60,7 @@ export class BudgetCards extends Component {
             horizontal
             style={styles.budgetCardsStyle}
             contentContainerStyle={styles.scrollContainerStyle}
+            showsHorizontalScrollIndicator={false}
           >
             <View
               style={[

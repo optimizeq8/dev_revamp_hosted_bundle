@@ -57,6 +57,7 @@ export class BudgetCards extends Component {
             horizontal
             style={styles.budgetCardsStyle}
             contentContainerStyle={styles.scrollContainerStyle}
+            showsHorizontalScrollIndicator={false}
           >
             <View
               style={[
@@ -137,7 +138,4 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BudgetCards);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetCards);

@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   subHeadings: {
-    textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14,
-    paddingVertical: 10
+    fontSize: 18,
+    paddingVertical: 10,
+    paddingHorizontal: 30
   },
   moneyInputContainer: {
     flexDirection: "column",
