@@ -45,7 +45,17 @@ export default GoogleSEAPreview = props => {
           }
         ]}
       >
-        <View style={[GlobalStyles.row]}>
+        <View
+          style={[
+            GlobalStyles.row,
+            {
+              justifyContent:
+                campaign && campaign.language === "1019"
+                  ? "flex-end"
+                  : "flex-start"
+            }
+          ]}
+        >
           {finalurl ? (
             <Text style={[styles.headlineText, styles.linkText]}>
               <Text
@@ -69,8 +79,18 @@ export default GoogleSEAPreview = props => {
             </Text>
           )}
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={[GlobalStyles.row]}>
+        <View style={styles.headlineRowContainer}>
+          <View
+            style={[
+              styles.headlineRow,
+              {
+                justifyContent:
+                  campaign && campaign.language === "1019"
+                    ? "flex-end"
+                    : "flex-start"
+              }
+            ]}
+          >
             <View style={styles.headerContent}>
               {details && (
                 <Text
@@ -86,7 +106,19 @@ export default GoogleSEAPreview = props => {
                 </Text>
               )}
               {headline1 ? (
-                <Text style={[styles.headlineText]}>{headline1}</Text>
+                <Text
+                  style={[
+                    styles.headlineText,
+                    {
+                      textAlign:
+                        campaign && campaign.language === "1019"
+                          ? "right"
+                          : "left"
+                    }
+                  ]}
+                >
+                  {headline1}
+                </Text>
               ) : (
                 <Text uppercase style={[styles.headlineText]}>
                   {translate("Add")} {translate("Headline")}
@@ -94,7 +126,17 @@ export default GoogleSEAPreview = props => {
               )}
             </View>
           </View>
-          <View style={[GlobalStyles.row]}>
+          <View
+            style={[
+              styles.headlineRow,
+              {
+                justifyContent:
+                  campaign && campaign.language === "1019"
+                    ? "flex-end"
+                    : "flex-start"
+              }
+            ]}
+          >
             <View style={styles.headlineBlueLine} />
             <View style={[GlobalStyles.column]}>
               {details && (
@@ -136,7 +178,17 @@ export default GoogleSEAPreview = props => {
               )}
             </View>
           </View>
-          <View style={[GlobalStyles.row]}>
+          <View
+            style={[
+              styles.headlineRow,
+              {
+                justifyContent:
+                  campaign && campaign.language === "1019"
+                    ? "flex-end"
+                    : "flex-start"
+              }
+            ]}
+          >
             <View style={styles.headlineBlueLine} />
             <View style={[GlobalStyles.column]}>
               {details && (
