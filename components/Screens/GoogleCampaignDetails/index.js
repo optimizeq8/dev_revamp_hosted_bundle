@@ -336,6 +336,93 @@ class GoogleCampaignDetails extends Component {
                   alignItems: "center"
                 }}
               />
+
+              {loading ? (
+                <View style={{ margin: 5 }}>
+                  <PlaceholderLine />
+                </View>
+              ) : selectedCampaign.campaign.status === "REMOVED" ? (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: globalColors.orange
+                      }
+                    ]}
+                    name={"circle"}
+                    type={"FontAwesome"}
+                  />
+                  <Text
+                    style={[styles.reviewText, { color: globalColors.orange }]}
+                  >
+                    {translate("Campaign ended")}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: selectedCampaign.campaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : selectedCampaign.campaign.status === "ENABLED"
+                          ? globalColors.green
+                          : globalColors.orange
+                      }
+                    ]}
+                    name={
+                      selectedCampaign.campaign.review_status.includes(
+                        "REJECTED"
+                      )
+                        ? "circle-slash"
+                        : "circle"
+                    }
+                    type={
+                      selectedCampaign.campaign.review_status.includes(
+                        "REJECTED"
+                      )
+                        ? "Octicons"
+                        : "FontAwesome"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.reviewText,
+                      {
+                        color: selectedCampaign.campaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : !selectedCampaign.campaign.review_status.includes(
+                              "PENDING"
+                            ) && selectedCampaign.campaign.status === "ENABLED"
+                          ? globalColors.green
+                          : globalColors.orange
+                      }
+                    ]}
+                  >
+                    {translate(
+                      `${
+                        !selectedCampaign.campaign.review_status.includes(
+                          "PENDING"
+                        )
+                          ? "In Review"
+                          : selectedCampaign.campaign.review_status.includes(
+                              "REJECTED"
+                            )
+                          ? "Ad Rejected"
+                          : selectedCampaign.campaign.status === "ENABLED"
+                          ? "ENABLED"
+                          : "Campaign Paused"
+                      }`
+                    )}
+                  </Text>
+                </View>
+              )}
               <ScrollView
                 scrollEnabled={!this.state.expand}
                 contentContainerStyle={[styles.mainCard]}
@@ -465,21 +552,15 @@ class GoogleCampaignDetails extends Component {
                 ) : (
                   !this.state.expand && (
                     <View>
-                      {selectedCampaign.campaign.review_status ===
-                      "APPROVED" ? (
-                        selectedCampaign.campaign.status !== "REMOVED" &&
+                      {selectedCampaign.campaign.review_status === "APPROVED" &&
+                        (selectedCampaign.campaign.status !== "REMOVED" &&
                         new Date(selectedCampaign.campaign.end_time) >
                           new Date() ? (
                           selectedCampaign.campaign.review_status ===
                             "APPROVED" &&
                           new Date(selectedCampaign.campaign.start_time) >
                             new Date() ? (
-                            <View
-                              style={[
-                                styles.adStatus,
-                                { backgroundColor: "#66D072" }
-                              ]}
-                            >
+                            <View style={[styles.campaignStatus]}>
                               <Text style={styles.reviewtext}>
                                 {translate("Scheduled for")} {start_time}
                               </Text>
@@ -524,43 +605,7 @@ class GoogleCampaignDetails extends Component {
                               </View>
                             </View>
                           )
-                        ) : (
-                          <View
-                            style={[
-                              styles.adStatus,
-                              { backgroundColor: globalColors.orange }
-                            ]}
-                          >
-                            <Text style={styles.reviewtext}>
-                              {translate("Campaign ended")}
-                            </Text>
-                          </View>
-                        )
-                      ) : (
-                        <View
-                          style={[
-                            styles.adStatus,
-                            {
-                              backgroundColor:
-                                selectedCampaign.campaign.review_status ===
-                                "PENDING"
-                                  ? globalColors.orange
-                                  : globalColors.red
-                            }
-                          ]}
-                        >
-                          <Text style={styles.reviewtext}>
-                            {translate(
-                              `${
-                                selectedCampaign.campaign.review_status ===
-                                "PENDING"
-                                  ? "In Review"
-                                  : "Rejected"
-                              }`
-                            )}
-                          </Text>
-                        </View>
-                      )}
+                        ) : null)}
                     </View>
                   )
                 )}
@@ -584,7 +629,7 @@ class GoogleCampaignDetails extends Component {
             >
               {this.state.expand &&
                 selectedCampaign &&
-                selectedCampaign.review_status !== "REJECTED" && (
+                selectedCampaign.campaign.review_status !== "REJECTED" && (
                   <SlideUpPanel
                     screenProps={this.props.screenProps}
                     start_time={this.state.start_time}

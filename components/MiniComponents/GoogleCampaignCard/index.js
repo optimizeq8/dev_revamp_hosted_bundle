@@ -29,23 +29,6 @@ class GoogleCampaignCard extends Component {
       campaign_id: this.props.campaign.campaign_id
     });
   };
-  campaignEndedOrNot = campaign => {
-    let endDate = new Date(campaign.end_time);
-    endDate.setDate(endDate.getDate() + 2);
-    let campaignEndedOrNot =
-      !this.review_status.includes("APPROVED") &&
-      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= new Date()
-        ? null
-        : new Date(campaign.end_time) < new Date() &&
-          new Date(campaign.start_time).setHours(0, 0, 0, 0) >=
-            new Date().setHours(0, 0, 0, 0) &&
-          new Date(campaign.end_time) <= new Date()
-        ? null
-        : new Date(campaign.end_time) > new Date();
-    return campaignEndedOrNot;
-  };
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
