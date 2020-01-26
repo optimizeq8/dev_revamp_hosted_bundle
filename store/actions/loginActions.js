@@ -63,7 +63,7 @@ export const send_push_notification = () => {
         }
       })
       .catch(err => {
-        console.log("Token Error", err);
+        // console.log("Token Error", err);
       });
   };
 };

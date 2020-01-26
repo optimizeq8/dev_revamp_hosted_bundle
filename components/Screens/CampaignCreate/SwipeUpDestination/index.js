@@ -65,13 +65,23 @@ class SwipeUpDestination extends Component {
     let storyAdAttachment = this.props.storyAdAttachment;
     this.setState({
       media,
+      //Here it checks if there's campaign data,meaning a campaign is in progress
       selected: this.props.data
         ? this.props.data.destination !== "BLANK" &&
+          //if so it well check if the destination of the campaign is not for StoryAds
           this.props.data.destination !== "STORY"
-          ? destination
-          : storyAdAttachment.destination !== "BLANK"
+          ? //then assigns the destination to selected
+            destination
+          : //if not then i do the same for storyAdAttachment
+          storyAdAttachment.destination !== "BLANK"
           ? storyAdAttachment.destination
+          : //else i check if there is data from the rejction process for a campaign
+          this.props.rejCampaign && this.props.rejCampaign.destination
+          ? this.props.rejCampaign.destination
           : destination
+        : //if there is no campaign data then check for rejection process's campaign data
+        this.props.rejCampaign && this.props.rejCampaign.destination
+        ? this.props.rejCampaign.destination
         : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -264,7 +274,8 @@ class SwipeUpDestination extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
+  rejCampaign: state.dashboard.rejCampaign
 });
 
 const mapDispatchToProps = dispatch => ({});

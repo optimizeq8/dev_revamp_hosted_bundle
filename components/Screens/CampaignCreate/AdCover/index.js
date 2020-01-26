@@ -92,7 +92,7 @@ class AdCover extends Component {
   }
 
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    this.props.resetRejectedCampaignData();
     return true;
   };
 
@@ -651,6 +651,13 @@ class AdCover extends Component {
       title: "Support"
     });
   };
+  /**
+   * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
+   */
+  handleRejectionData = () => {
+    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
+    this.props.navigation.goBack();
+  };
   render() {
     let { cover, coverHeadlineError, formattedCover } = this.state;
 
@@ -694,7 +701,7 @@ class AdCover extends Component {
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
-            navigation={this.props.navigation}
+            actionButton={this.handleRejectionData}
             title={"Compose Ad"}
           />
           <Content contentContainerStyle={styles.contentContainer} padder>
@@ -755,20 +762,27 @@ class AdCover extends Component {
                               alignItems: "center"
                             }}
                           >
-                            <PlusAddIcon />
-                            <Text
+                            <View
                               style={{
-                                color: globalColors.orange,
-                                fontFamily: "montserrat-bold"
+                                flexDirection: "column",
+                                alignItems: "center"
                               }}
                             >
-                              {translate("Your Logo")}
-                            </Text>
-                            <Text style={styles.addLogoTextStyle}>
-                              {translate(
-                                "Must be 993px by 284px and transparent"
-                              )}
-                            </Text>
+                              <PlusAddIcon />
+                              <Text
+                                style={{
+                                  color: globalColors.orange,
+                                  fontFamily: "montserrat-bold"
+                                }}
+                              >
+                                {translate("Your Logo")}
+                              </Text>
+                              <Text style={styles.addLogoTextStyle}>
+                                {translate(
+                                  "Must be 993px by 284px and transparent"
+                                )}
+                              </Text>
+                            </View>
                           </View>
                         </TouchableOpacity>
                       )}
@@ -928,6 +942,8 @@ const mapDispatchToProps = dispatch => ({
       )
     ),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  resetRejectedCampaignData: () =>
+    dispatch(actionCreators.resetRejectedCampaignData())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdCover);

@@ -18,7 +18,7 @@ export default () => {
 
   const errorHandler = error => {
     if (error) {
-      console.log("errorHandler", error);
+      // console.log("errorHandler", error);
       return Promise.reject(error);
     }
     return error;

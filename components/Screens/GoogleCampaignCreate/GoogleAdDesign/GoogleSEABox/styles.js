@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#1B10AB",
     alignSelf: "center",
-    textAlign: "left",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     alignSelf: "flex-start",
     paddingBottom: 5,
     paddingHorizontal: 5,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     // width: "100%"
   },
   textArea: {
-    textAlign: "left",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     marginHorizontal: 10,
     paddingRight: 20,
     height: "auto",

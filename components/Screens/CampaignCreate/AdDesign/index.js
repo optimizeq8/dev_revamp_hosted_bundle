@@ -116,7 +116,7 @@ class AdDesign extends Component {
       heightComponent: 0,
       creativeVideoUrl: "",
       sourceChanging: false,
-      rejectionUpload: false,
+      fileReadyToUpload: false,
       tempImage: "",
       tempImageloading: false,
       storyAdAttachChanged: false,
@@ -129,18 +129,12 @@ class AdDesign extends Component {
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
-  handleBackButton = () => {
-    if (this.state.storyAdCards.storyAdSelected) {
-      this.setState({
-        ...this.state,
-        storyAdCards: { ...this.state.storyAdCards, storyAdSelected: false }
-      });
-    } else this.props.navigation.goBack();
-    return true;
-  };
-
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    //Switched handleBackButton to toggleAdSelection
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.toggleAdSelection
+    );
   }
   async componentDidMount() {
     this._notificationSubscription = Notifications.addListener(
@@ -262,7 +256,7 @@ class AdDesign extends Component {
             : "//",
           swipeUpError,
           videoIsLoading: false,
-          type: this.selectedCampaign.campaign_type
+          type: this.selectedCampaign.media_type
         });
         return;
       }
@@ -305,7 +299,7 @@ class AdDesign extends Component {
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
   }
 
   _handleNotification = async uploadMediaNotification => {
@@ -506,15 +500,6 @@ class AdDesign extends Component {
       ];
       let selectedImage = this.state.storyAdCards.selectedStoryAd;
       selectedImage.media = "//";
-      // this.setState({
-      //   videoIsLoading: true,
-      //   media: "//",
-      //   type: "VIDEO",
-      //   storyAdCards: {
-      //     ...this.state.storyAdCards,
-      //     selectedStoryAd: selectedImage
-      //   }
-      // });
       card = {
         ...card,
         index: this.state.storyAdCards.selectedStoryAd.index,
@@ -534,7 +519,8 @@ class AdDesign extends Component {
         },
         videoIsLoading: false,
         iosVideoUploaded: true,
-        type: "VIDEO"
+        type: "VIDEO",
+        fileReadyToUpload: true
       });
       !this.rejected &&
         this.props.save_campaign_info({
@@ -544,13 +530,13 @@ class AdDesign extends Component {
           fileReadyToUpload: true
         });
     } else {
-      // this.setState({ videoIsLoading: true, media: "//", type: "VIDEO" });
       this.setState({
         ...this.state,
         media: data.queryParams.media,
         iosVideoUploaded: true,
         type: "VIDEO",
-        videoIsLoading: false
+        videoIsLoading: false,
+        fileReadyToUpload: true
       });
       !this.rejected &&
         this.props.save_campaign_info({
@@ -800,7 +786,7 @@ class AdDesign extends Component {
         this.state.longformvideo_media_type,
         this.props.mainBusiness,
         this.state.campaignInfo,
-        this.state.rejectionUpload,
+        this.state.fileReadyToUpload,
         this.rejected,
         this.props.data,
         this.setTheState
@@ -844,6 +830,15 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
 
+  /**
+   * if adType is StoryAds then the back button toggles between list view
+   * and detail view else it checkes if it's a rejection process to reset
+   * the rejected campaign data from the store so it doesn't interfere with normal
+   * campaign creation then just goes back in navigation
+   *
+   * @returns {Bool} returns true because it's being used instead of handleBackButton for BackHandler
+   * since they're mostly the same
+   */
   toggleAdSelection = () => {
     this.state.storyAdCards.storyAdSelected
       ? this.setState({
@@ -867,7 +862,12 @@ class AdDesign extends Component {
     });
   };
   getWebUploadLinkMediaURL = () => {
-    this.props.getWebUploadLinkMedia(this.props.campaign_id, this.adType);
+    this.props.getWebUploadLinkMedia(
+      this.rejected
+        ? this.selectedCampaign.campaign_id
+        : this.props.campaign_id,
+      this.adType
+    );
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = val => {
@@ -894,7 +894,6 @@ class AdDesign extends Component {
     // update storyads array
     await this.props.updateStoryADS(storyAdsArray);
     let cards = this.props.storyAdsArray;
-
     cards.map((card, index) => {
       if (storyAdsArray[index]) {
         card = {
@@ -915,8 +914,10 @@ class AdDesign extends Component {
               ...card
             }
           },
-
-          type: storyAdsArray[index].media_type
+          type: storyAdsArray[index].media_type,
+          //Added fileReadyToUpload:true so that normal upload process
+          //works as normal when uploading ios videos
+          fileReadyToUpload: true
         });
         !this.rejected &&
           this.props.save_campaign_info({

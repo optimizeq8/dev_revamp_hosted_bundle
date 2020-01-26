@@ -169,7 +169,9 @@ const reducer = (state = initialState, action) => {
             action.payload.data.attachment !== "BLANK"
               ? JSON.parse(action.payload.data.attachment)
               : action.payload.data.attachment,
-          media: state.data.media
+          //added checking if data is not null becuase it was throwing an error for
+          //re-uploading for rejected ads
+          media: state.data && state.data.media
         },
         message: action.payload.message,
 
@@ -628,10 +630,7 @@ const reducer = (state = initialState, action) => {
         }
       }
       let oldData = state.data;
-      let collCall_to_action = {
-        label: rejColCalltoAction.replace("_", " "),
-        value: rejColCalltoAction
-      };
+      let collCall_to_action = rejColCalltoAction;
 
       oldData = {
         ...oldData,

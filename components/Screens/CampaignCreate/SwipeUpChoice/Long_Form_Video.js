@@ -94,7 +94,7 @@ class Long_Form_Video extends Component {
         this.setState({ videoLoading: true });
         return res;
       })
-      .catch(err => console.log(err));
+      .catch(err => {});
   };
   _pickImage = async () => {
     let result = await this.pick();

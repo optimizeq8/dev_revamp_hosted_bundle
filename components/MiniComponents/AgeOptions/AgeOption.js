@@ -60,7 +60,7 @@ export default class AgeOption extends Component {
                 customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
                 onValuesChange={this.multiSliderValuesChange}
                 min={13}
-                max={50}
+                max={49}
                 step={1}
                 selectedStyle={styles.selected}
                 unselectedStyle={{

@@ -189,8 +189,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   savingWebProducts: state.campaignC.savingWebProducts,
   productInfoId: state.campaignC.productInfoId,
-  businessLogo: state.campaignC.businessLogo
-
+  businessLogo: state.campaignC.businessLogo,
+  rejCampaign: state.dashboard.rejCampaign
   // weburlAvalible: state.campaignC.weburlAvalible,
   // mainBusiness: state.account.mainBusiness,
   // errorInstaHandle: state.campaignC.errorInstaHandle,

@@ -1,5 +1,5 @@
 if (__DEV__) {
-  import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
+  import("./ReactotronConfig");
 }
 import React from "react";
 import { connect } from "react-redux";
@@ -173,7 +173,7 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      console.log("App has come to the foreground!");
+      // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
         store.getState().messenger.conversation_status
@@ -188,7 +188,7 @@ class App extends React.Component {
         );
       }
     } else {
-      console.log("App has come to the background!");
+      // console.log("App has come to the background!");
 
       store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
@@ -196,7 +196,7 @@ class App extends React.Component {
   };
 
   _handleNotification = async handleScreen => {
-    console.log("handleScreen app", handleScreen);
+    // console.log("handleScreen app", handleScreen);
 
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
@@ -208,7 +208,7 @@ class App extends React.Component {
           // this.state.currentScreen !== "MessengerLoading" ||
           this.state.currentScreen !== "Messenger"
         ) {
-          console.log("currentScreen", this.state.currentScreen);
+          // console.log("currentScreen", this.state.currentScreen);
 
           store.dispatch(actionCreators.set_as_seen(false));
           showMessage({

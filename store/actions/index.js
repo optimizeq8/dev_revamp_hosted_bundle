@@ -25,6 +25,7 @@ export {
   updateCampaignList,
   filterCampaigns,
   setRejectedCampaignData,
+  resetRejectedCampaignData,
   downloadCSV
 } from "./dashboardActions";
 

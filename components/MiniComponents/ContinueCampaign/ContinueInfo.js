@@ -57,10 +57,10 @@ ContinueInfo = props => {
         style={styles.contentStyle}
       >
         <Snapchat style={{ alignSelf: "center" }} />
-        {oldTempData.name ? (
+        {oldTempData && oldTempData.name ? (
           <Text style={styles.text}>{oldTempData.name}</Text>
         ) : null}
-        {oldTempData.start_time && (
+        {oldTempData && oldTempData.start_time && (
           <View style={styles.sections}>
             <Text uppercase style={styles.text}>
               Duration
@@ -78,13 +78,13 @@ ContinueInfo = props => {
               ))}
           </View>
         )}
-        {data.media && (
+        {data && data.media && (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
             <Text uppercase style={[styles.text]}>
               Media
             </Text>
             <View style={styles.mediaContainer}>
-              {oldTempAdType === "SnapAd" ? (
+              {data && oldTempAdType === "SnapAd" ? (
                 <MediaBox
                   name={1}
                   disabled={true}
@@ -96,7 +96,7 @@ ContinueInfo = props => {
                     alignItems: "center"
                   }}
                 >
-                  {oldTempAdType === "CollectionAd" && (
+                  {data && oldTempAdType === "CollectionAd" && (
                     <MediaBox
                       name={1}
                       disabled={true}

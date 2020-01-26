@@ -251,7 +251,9 @@ export const checkRemainingBudget = campaign_id => {
             position: "top"
           })
       )
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        // console.log(err.response)
+      });
   };
 };
 
@@ -261,9 +263,12 @@ export const setRejectedCampaignData = rejCampaign => {
   };
 };
 
+export const resetRejectedCampaignData = () => {
+  return dispatch => {
+    dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
+  };
+};
 export const downloadCSV = (campaign_id, email, showModalMessage) => {
-  console.log(campaign_id, email);
-
   return dispatch => {
     createBaseUrl()
       .post(`exportData`, { campaign_id, email })

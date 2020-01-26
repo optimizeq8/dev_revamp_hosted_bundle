@@ -204,7 +204,8 @@ export const ad_design = (
       })
       .then(() => {
         onToggleModal(false);
-        dispatch(save_campaign_info({ formatted: info }));
+        //to not save the formatted data if it's for a rejection
+        !rejected && dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
         if (!rejected) navigation.push("AdDetails");
@@ -216,6 +217,8 @@ export const ad_design = (
           });
           navigation.navigate("Dashboard");
           persistor.purge();
+          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+          navigation.navigate("Dashboard");
         }
       })
       .catch(err => {
