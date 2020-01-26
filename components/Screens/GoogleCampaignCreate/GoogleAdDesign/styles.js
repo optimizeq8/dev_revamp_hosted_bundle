@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   proceedButtonRTL: {
-    width: 55,
-    height: 55,
+    width: 65,
+    height: 65,
     backgroundColor: globalColors.orange,
     borderRadius: 45,
     alignItems: "center",
