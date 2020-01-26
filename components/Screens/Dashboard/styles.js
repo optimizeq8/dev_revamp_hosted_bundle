@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   },
   channelIcon: {
     position: "absolute",
-    top: -20
+    top: -23
   },
   adButtonView: {
     flexDirection: "column",
