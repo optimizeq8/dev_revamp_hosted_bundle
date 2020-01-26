@@ -691,10 +691,7 @@ class GoogleAdTargetting extends Component {
                         />
                       </Content>
                       <LowerButton
-                        isRTL={I18nManager.isRTL}
-                        style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                        width={I18nManager.isRTL ? 25 : null}
-                        height={I18nManager.isRTL ? 25 : null}
+                        style={styles.proceedButtonRTL}
                         bottom={4}
                         function={this.setModalVisible}
                       />
@@ -726,10 +723,7 @@ class GoogleAdTargetting extends Component {
                         />
                       </Content>
                       <LowerButton
-                        isRTL={I18nManager.isRTL}
-                        style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                        width={I18nManager.isRTL ? 25 : null}
-                        height={I18nManager.isRTL ? 25 : null}
+                        style={styles.proceedButtonRTL}
                         bottom={4}
                         function={() => {
                           if (this.state.country) {

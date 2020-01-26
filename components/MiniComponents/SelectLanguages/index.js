@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Input, Button, Item, Icon } from "native-base";
+import { Input, Item, Icon } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import styles from "../MultiSelect/styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import LowerButton from "../LowerButton";
 
 export default class SelectLanguages extends Component {
   componentDidMount() {
@@ -68,13 +68,11 @@ export default class SelectLanguages extends Component {
               </ScrollView>
             </View>
           </View>
-
-          <Button
+          <LowerButton
+            checkmark={true}
             style={[styles.button]}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button>
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </View>
       </SafeAreaView>
     );

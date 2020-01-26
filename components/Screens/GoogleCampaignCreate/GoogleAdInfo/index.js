@@ -560,10 +560,7 @@ class GoogleAdInfo extends Component {
                 />
               ) : (
                 <LowerButton
-                  isRTL={I18nManager.isRTL}
-                  style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                  width={I18nManager.isRTL ? 25 : null}
-                  height={I18nManager.isRTL ? 25 : null}
+                  style={styles.proceedButtonRTL}
                   bottom={-5}
                   function={this._handleSubmission}
                 />
@@ -632,10 +629,7 @@ class GoogleAdInfo extends Component {
                       />
                     </Content>
                     <LowerButton
-                      isRTL={I18nManager.isRTL}
-                      style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                      width={I18nManager.isRTL ? 25 : null}
-                      height={I18nManager.isRTL ? 25 : null}
+                      style={styles.proceedButtonRTL}
                       bottom={4}
                       function={this.setModalVisible}
                     />
@@ -666,10 +660,7 @@ class GoogleAdInfo extends Component {
                     </Content>
                     <LowerButton
                       bottom={4}
-                      isRTL={I18nManager.isRTL}
-                      style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                      width={I18nManager.isRTL ? 25 : null}
-                      height={I18nManager.isRTL ? 25 : null}
+                      style={styles.proceedButtonRTL}
                       function={() => {
                         if (this.state.country) {
                           segmentEventTrack(

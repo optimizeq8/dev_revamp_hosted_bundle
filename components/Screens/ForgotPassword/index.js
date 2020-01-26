@@ -139,10 +139,7 @@ class ForgotPassword extends Component {
                     </Item>
                   </View>
                   <LowerButton
-                    isRTL={I18nManager.isRTL}
-                    style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-                    width={I18nManager.isRTL ? 25 : null}
-                    height={I18nManager.isRTL ? 25 : null}
+                    style={styles.proceedButtonRTL}
                     function={() => this._handleSubmission()}
                     bottom={-heightPercentageToDP(1.8)}
                   />

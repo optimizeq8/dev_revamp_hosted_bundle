@@ -192,13 +192,7 @@ class Signin extends Component {
                           />
                         ) : (
                           <LowerButton
-                            isRTL={I18nManager.isRTL}
-                            style={
-                              I18nManager.isRTL ? styles.proceedButtonRTL : {}
-                            }
-                            width={I18nManager.isRTL ? 25 : null}
-                            height={I18nManager.isRTL ? 25 : null}
-                            bottom={I18nManager.isRTL ? 0 : 0}
+                            style={styles.proceedButtonRTL}
                             function={() => this._handleSubmission()}
                           />
                         )}
