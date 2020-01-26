@@ -109,14 +109,14 @@ class AdCover extends Component {
         coverHeadline: this.rejected
           ? this.selectedCampaign.story_headline
           : !this.props.data
-            ? "Headline"
-            : this.props.data.coverHeadline
+          ? "Headline"
+          : this.props.data.coverHeadline
       },
       objective: this.props.data
         ? this.props.data.objective
         : this.rejected
-          ? this.selectedCampaign.objective
-          : ""
+        ? this.selectedCampaign.objective
+        : ""
     });
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -319,11 +319,11 @@ class AdCover extends Component {
                   resize:
                     result.width >= (result.height / 5) * 3
                       ? {
-                        height: 600
-                      }
+                          height: 600
+                        }
                       : {
-                        width: 360
-                      }
+                          width: 360
+                        }
                 }
               ],
               {
@@ -558,8 +558,8 @@ class AdCover extends Component {
         message: coverError
           ? translate("Please add a cover image")
           : logoError
-            ? translate("Please add a logo")
-            : "",
+          ? translate("Please add a logo")
+          : "",
         type: coverError || logoError ? "warning" : "",
         position: "top"
       });
@@ -612,7 +612,7 @@ class AdCover extends Component {
           this.props.data &&
           (!this.props.data.hasOwnProperty("formattedCover") ||
             JSON.stringify(this.props.data.formattedCover) !==
-            JSON.stringify(this.state.formattedCover)))
+              JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
           await this.props.uploadStoryAdCover(
@@ -783,8 +783,9 @@ class AdCover extends Component {
                                 )}
                               </Text>
                             </View>
-                          </TouchableOpacity>
-                        )}
+                          </View>
+                        </TouchableOpacity>
+                      )}
                       <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                           onPress={this.handleSupportPage}
@@ -854,10 +855,10 @@ class AdCover extends Component {
                 </TouchableOpacity>
               </View>
             ) : (
-                <Text style={styles.footerTextStyle}>
-                  {translate("Please add media to proceed")}
-                </Text>
-              )}
+              <Text style={styles.footerTextStyle}>
+                {translate("Please add media to proceed")}
+              </Text>
+            )}
           </Footer>
         </Container>
 
@@ -945,7 +946,4 @@ const mapDispatchToProps = dispatch => ({
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdCover);
+export default connect(mapStateToProps, mapDispatchToProps)(AdCover);
