@@ -23,7 +23,6 @@ export default class AdButtons extends Component {
             style={{}}
             width={ad.mediaType === "google" ? 20 : 30}
             height={ad.mediaType === "google" ? 20 : 30}
-            stroke="#fff"
           />
           {ChannelIcon && (
             <ChannelIcon
@@ -39,7 +38,7 @@ export default class AdButtons extends Component {
                       left: -20
                     }
               ]}
-              fill="#0000"
+              fill={ad.mediaType === "google" && "#0000"}
             />
           )}
         </TouchableOpacity>
