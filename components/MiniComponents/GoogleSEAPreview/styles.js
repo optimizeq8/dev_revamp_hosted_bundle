@@ -73,6 +73,15 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: "#1B10AB",
     textAlign: "left"
+  },
+  headlineRow: {
+    flexDirection: "row",
+    width: "35%"
+  },
+  headlineRowContainer: {
+    flexDirection: "row",
+    width: "100%",
+    paddingRight: 20
   }
 });
 
