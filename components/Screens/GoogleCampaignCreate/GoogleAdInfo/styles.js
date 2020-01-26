@@ -19,16 +19,8 @@ const styles = StyleSheet.create({
     top: hp(5) < 30 ? -hp("73%") : -hp("63%"),
     alignSelf: "center"
   },
-  iconView: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    width: wp(100),
-    paddingTop: 10
-  },
   googleIcon: {
-    alignSelf: "center",
-    marginTop: 20
+    alignSelf: "center"
   },
   mainContent: {
     paddingBottom: hp(35),

@@ -355,13 +355,11 @@ class GoogleAdInfo extends Component {
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
             />
-            <View style={styles.iconView}>
-              <GoogleSE
-                width={hp(5) < 30 ? 50 : 70}
-                height={hp(5) < 30 ? 50 : 70}
-                style={styles.googleIcon}
-              />
-            </View>
+            <GoogleSE
+              width={hp(5) < 30 ? 50 : 70}
+              height={hp(5) < 30 ? 50 : 70}
+              style={styles.googleIcon}
+            />
             <ScrollView
               contentContainerStyle={styles.mainContent}
               scrollEnabled={true}
