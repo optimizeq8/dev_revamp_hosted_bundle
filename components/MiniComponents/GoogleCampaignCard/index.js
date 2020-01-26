@@ -35,10 +35,10 @@ class GoogleCampaignCard extends Component {
 
     return (
       <LinearGradient
-        colors={["#9300FF", "#9300FF", "#4E00CB"]}
-        locations={[0, 0.3, 1]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={["#9300FF", "#4E00CB"]}
+        locations={[0.3, 1]}
+        start={{ x: 0, y: 0.75 }}
+        end={{ x: 1, y: 0.25 }}
         style={styles.cardStyle}
       >
         <TouchableOpacity

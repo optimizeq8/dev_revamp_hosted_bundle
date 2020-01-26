@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 10 / PixelRatio.getFontScale(),
     color: "#fff",
+    alignSelf: "center",
     textAlign: "center",
     alignSelf: "flex-start",
     paddingBottom: 2,
@@ -56,8 +57,7 @@ const styles = StyleSheet.create({
   linkText: {
     fontFamily: "montserrat-regular",
     color: "#197132",
-    paddingLeft: 0,
-    top: "3%"
+    paddingLeft: 0
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#1B10AB",
+    alignSelf: "center",
     textAlign: I18nManager.isRTL ? "right" : "left",
     alignSelf: "flex-start",
     paddingBottom: 5,
@@ -82,9 +83,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center"
+    width: "100%"
   },
   column: {
     flexDirection: "column",
@@ -105,13 +104,6 @@ const styles = StyleSheet.create({
   smallFont: { fontSize: 8 },
   titlePadding: {
     paddingLeft: 20
-  },
-  networkLabel: {
-    fontFamily: "montserrat-bold",
-    fontSize: 9,
-    textAlign: "center",
-    color: "#fff",
-    textTransform: "uppercase"
   }
 });
 

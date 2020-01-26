@@ -23,8 +23,7 @@ export default GoogleSEAPreview = props => {
     inputD,
     inputD2,
     inputURL,
-    details = true,
-    campaign
+    details = true
   } = props;
   const { translate } = screenProps;
 
@@ -33,151 +32,85 @@ export default GoogleSEAPreview = props => {
 
   return (
     <View style={styles.previewBlock}>
-      <View
-        style={[
-          styles.headersCol,
-          !details && { marginTop: 10 },
-          {
-            alignSelf:
-              campaign && campaign.language === "1019"
-                ? "flex-end"
-                : "flex-start"
-          }
-        ]}
-      >
-        <View style={[GlobalStyles.row]}>
-          {finalurl ? (
-            <Text style={[styles.headlineText, styles.linkText]}>
+      <View style={[styles.headersCol, !details && { marginTop: 10 }]}>
+        <View style={GlobalStyles.row}>
+          <View style={styles.headerContent}>
+            {details && (
               <Text
+                uppercase
                 style={[
-                  styles.adIcon,
-                  {
-                    textAlign:
-                      campaign && campaign.language === "1019"
-                        ? "right"
-                        : "left"
-                  }
+                  styles.headline,
+                  inputH1
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
                 ]}
               >
-                {translate("Ad")}
+                {translate("Headline")} {translate("1")}
               </Text>
-              {"  " + finalurl}
-            </Text>
-          ) : (
-            <Text style={[styles.headlineText, styles.linkText]}>
-              {translate("Website")} {translate("url")}
-            </Text>
-          )}
+            )}
+            {headline1 ? (
+              <Text style={[styles.headlineText]}>{headline1}</Text>
+            ) : (
+              <Text uppercase style={[styles.headlineText]}>
+                {translate("Add")} {translate("Headline")}
+              </Text>
+            )}
+          </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={[GlobalStyles.row]}>
-            <View style={styles.headerContent}>
-              {details && (
-                <Text
-                  uppercase
-                  style={[
-                    styles.headline,
-                    inputH1
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate("1")}
-                </Text>
-              )}
-              {headline1 ? (
-                <Text style={[styles.headlineText]}>{headline1}</Text>
-              ) : (
-                <Text uppercase style={[styles.headlineText]}>
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
+        <View style={GlobalStyles.row}>
+          <View style={styles.headlineBlueLine} />
+          <View style={[GlobalStyles.column]}>
+            {details && (
+              <Text
+                uppercase
+                style={[
+                  styles.headline,
+                  { paddingLeft: 6 },
+                  inputH2
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate("2")}
+              </Text>
+            )}
+            {headline2 ? (
+              <Text style={[styles.headlineText, { paddingLeft: 6 }]}>
+                {headline2}
+              </Text>
+            ) : (
+              <Text uppercase style={[styles.headlineText, { paddingLeft: 6 }]}>
+                {translate("Add")} {translate("Headline")}
+              </Text>
+            )}
           </View>
-          <View style={[GlobalStyles.row]}>
-            <View style={styles.headlineBlueLine} />
-            <View style={[GlobalStyles.column]}>
-              {details && (
-                <Text
-                  uppercase
-                  style={[
-                    styles.headline,
-                    { paddingLeft: 6 },
-                    inputH2
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate("2")}
-                </Text>
-              )}
-              {headline2 ? (
-                <Text
-                  style={[
-                    styles.headlineText,
-                    {
-                      paddingLeft: 6,
-                      textAlign:
-                        campaign && campaign.language === "1019"
-                          ? "right"
-                          : "left"
-                    }
-                  ]}
-                >
-                  {headline2}
-                </Text>
-              ) : (
-                <Text
-                  uppercase
-                  style={[styles.headlineText, { paddingLeft: 6 }]}
-                >
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
-          </View>
-          <View style={[GlobalStyles.row]}>
-            <View style={styles.headlineBlueLine} />
-            <View style={[GlobalStyles.column]}>
-              {details && (
-                <Text
-                  uppercase
-                  style={[
-                    styles.headline,
-                    { paddingLeft: 6 },
-                    inputH3
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate("3")}
-                </Text>
-              )}
-              {headline3 ? (
-                <Text
-                  style={[
-                    styles.headlineText,
-                    {
-                      paddingLeft: 6,
-
-                      textAlign:
-                        campaign && campaign.language === "1019"
-                          ? "right"
-                          : "left"
-                    }
-                  ]}
-                >
-                  {headline3}
-                </Text>
-              ) : (
-                <Text
-                  uppercase
-                  style={[styles.headlineText, { paddingLeft: 6 }]}
-                >
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
+        </View>
+        <View style={GlobalStyles.row}>
+          <View style={styles.headlineBlueLine} />
+          <View style={[GlobalStyles.column]}>
+            {details && (
+              <Text
+                uppercase
+                style={[
+                  styles.headline,
+                  { paddingLeft: 6 },
+                  inputH3
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.lightGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate("3")}
+              </Text>
+            )}
+            {headline3 ? (
+              <Text style={[styles.headlineText, { paddingLeft: 6 }]}>
+                {headline3}
+              </Text>
+            ) : (
+              <Text uppercase style={[styles.headlineText, { paddingLeft: 6 }]}>
+                {translate("Add")} {translate("Headline")}
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -195,20 +128,21 @@ export default GoogleSEAPreview = props => {
             {translate("Website")} {translate("url")}
           </Text>
         )}
+        <View style={GlobalStyles.row}>
+          <ADIcon style={styles.adIcon} />
+          {finalurl ? (
+            <Text uppercase style={[styles.headlineText, styles.linkText]}>
+              {finalurl}
+            </Text>
+          ) : (
+            <Text style={[styles.headlineText, styles.linkText]}>
+              {translate("Website")} {translate("url")}
+            </Text>
+          )}
+        </View>
       </View>
       <View style={styles.descriptionGrayLine} />
-      <View
-        style={[
-          styles.headersCol,
-          !details && { marginTop: 10 },
-          {
-            alignSelf:
-              campaign && campaign.language === "1019"
-                ? "flex-end"
-                : "flex-start"
-          }
-        ]}
-      >
+      <View style={[styles.headersCol, !details && { marginTop: 10 }]}>
         {details && (
           <Text
             uppercase
@@ -226,10 +160,6 @@ export default GoogleSEAPreview = props => {
           style={[
             styles.headlineText,
             styles.descriptionText,
-            {
-              textAlign:
-                campaign && campaign.language === "1019" ? "right" : "left"
-            },
             !details && { color: "#909090" }
           ]}
         >
@@ -244,14 +174,6 @@ export default GoogleSEAPreview = props => {
           style={[
             styles.headlineText,
             styles.descriptionText,
-            {
-              textAlign:
-                campaign && campaign.language === "1019" ? "right" : "left",
-              alignSelf:
-                campaign && campaign.language === "1019"
-                  ? "flex-end"
-                  : "flex-start"
-            },
             !details && { color: "#909090" }
           ]}
         >
