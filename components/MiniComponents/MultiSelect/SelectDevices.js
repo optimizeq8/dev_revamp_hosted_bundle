@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, ActivityIndicator } from "react-native";
-import { Icon } from "native-base";
+import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
@@ -14,13 +14,12 @@ import * as actionCreators from "../../../store/actions";
 import BackButton from "../../MiniComponents/BackButton";
 
 //Icons
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 
 //Styles
 import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
-import LowerButton from "../LowerButton";
-import GradientButton from "../GradientButton";
 
 class SelectDevices extends Component {
   state = { deviceBrands: null };
@@ -83,12 +82,12 @@ class SelectDevices extends Component {
             </Text>
 
             <View style={styles.slidercontainer}>
-              <GradientButton
+              <Button
                 style={styles.toggleSelectorButton}
-                onPressAction={() => this.DeviceSection._toggleSelector()}
+                onPress={() => this.DeviceSection._toggleSelector()}
               >
                 <PlusCircle width={53} height={53} />
-              </GradientButton>
+              </Button>
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.DeviceSection = ref)}
@@ -133,11 +132,12 @@ class SelectDevices extends Component {
                   styles={SectionStyle}
                   confirmText={"\u2714"}
                   stickyFooterComponent={
-                    <LowerButton
-                      checkmark
-                      style={styles.button}
-                      function={() => this.DeviceSection._submitSelection()}
-                    />
+                    <Button
+                      style={styles.stickyFooterButton}
+                      onPress={() => this.DeviceSection._submitSelection()}
+                    >
+                      <CheckmarkIcon width={53} height={53} />
+                    </Button>
                   }
                   headerComponent={
                     <View style={styles.headerComponent}>
@@ -185,11 +185,13 @@ class SelectDevices extends Component {
               </ScrollView>
             </View>
           </View>
-          <LowerButton
+
+          <Button
             style={styles.button}
-            checkmark={true}
-            function={() => this.props._handleSideMenuState(false)}
-          />
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
       </SafeAreaView>
     );

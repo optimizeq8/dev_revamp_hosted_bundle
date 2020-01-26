@@ -60,7 +60,12 @@ class ReachBar extends Component {
               />
             ) : (
               <LowerButton
-                style={[styles.reachBarLowerButton]}
+                isRTL={I18nManager.isRTL}
+                width={I18nManager.isRTL ? 25 : 70}
+                height={I18nManager.isRTL ? 25 : 70}
+                style={[
+                  I18nManager.isRTL ? styles.reachBarLowerButton : styles.flex
+                ]}
                 function={() => this.props._handleSubmission()}
               />
             ))}

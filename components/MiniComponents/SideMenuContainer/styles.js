@@ -57,7 +57,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   button: {
-    marginBottom: 40
+    backgroundColor: "transparent",
+    alignSelf: "center",
+    borderRadius: 50,
+    borderColor: "transparent",
+    borderWidth: 1,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    // top: heightPercentageToDP(5) < 30 ? -5 : 30,
+    marginBottom: 40,
+    elevation: -1
   },
   rangeMakerContainer: {
     flexDirection: "column",

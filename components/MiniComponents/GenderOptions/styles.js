@@ -44,10 +44,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   button: {
+    backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 55,
     height: 55,
-
+    borderRadius: 27.5,
+    borderColor: "transparent",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
     marginBottom: 40
   },
   icon: {

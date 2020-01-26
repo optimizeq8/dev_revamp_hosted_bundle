@@ -13,6 +13,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import CameraIcon from "../../../../assets/SVGs/Camera";
 import CloseCircle from "../../../../assets/SVGs/CloseCircle";
+import CheckmarkIcon from "../../../../assets/SVGs/Checkmark";
 
 import CustomHeader from "../../../MiniComponents/Header";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
@@ -21,7 +22,6 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 //styles
 import styles from "./styles";
 import segmentEventTrack from "../../../segmentEventTrack";
-import LowerButton from "../../../MiniComponents/LowerButton";
 
 class DownloadMediaFromDifferentDevice extends Component {
   constructor(props) {
@@ -95,9 +95,8 @@ class DownloadMediaFromDifferentDevice extends Component {
                   }}
                   // onPress={() => this.props.handleDownloadMedia("//", "")}
                 />
-                <LowerButton
-                  checkmark={true}
-                  function={() => {
+                <CheckmarkIcon
+                  onPress={() => {
                     segmentEventTrack(
                       "Button clicked downloads the media file to own device that has been uploaded from a different device"
                     );
@@ -106,7 +105,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                       this.props.mediaTypeWebLink
                     );
                   }}
-                  style={[styles.marginH20, { width: 55, height: 55 }]}
+                  style={styles.marginH20}
                 />
               </View>
             )}
@@ -190,9 +189,8 @@ class DownloadMediaFromDifferentDevice extends Component {
                     }}
                     // onPress={() => this.props.handleDownloadMedia("//", "")}
                   />
-                  <LowerButton
-                    checkmark
-                    function={() => {
+                  <CheckmarkIcon
+                    onPress={() => {
                       segmentEventTrack(
                         "Button clicked downloads the media file to own devicee that has been uploaded from a different device"
                       );
@@ -200,7 +198,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                         this.props.mediaStoryAdsDifferentDevice
                       );
                     }}
-                    style={[styles.marginH20, { width: 55, height: 55 }]}
+                    style={styles.marginH20}
                   />
                 </View>
               )}
@@ -300,9 +298,8 @@ class DownloadMediaFromDifferentDevice extends Component {
                     }}
                     // onPress={() => this.props.handleDownloadMedia("//", "")}
                   />
-                  <LowerButton
-                    checkmark
-                    function={() => {
+                  <CheckmarkIcon
+                    onPress={() => {
                       segmentEventTrack(
                         "Button clicked downloads the media file to own device that has been uploaded from a different device"
                       );
