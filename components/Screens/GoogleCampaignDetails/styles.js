@@ -481,15 +481,8 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   reachBarLowerButton: {
-    backgroundColor: "#ff9d00",
-    borderRadius: 50,
-    paddingLeft: 5,
-    // padding: 5,
     width: 55,
     height: 55,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     marginRight: wp(35),
     flex: 0
   },
