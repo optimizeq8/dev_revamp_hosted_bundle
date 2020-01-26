@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(94),
     height: heightPercentageToDP(12),
     borderRadius: 10,
-    bottom: heightPercentageToDP(16),
+    bottom: heightPercentageToDP(17),
     marginHorizontal: 10,
     display: "flex",
     flexDirection: "row",
