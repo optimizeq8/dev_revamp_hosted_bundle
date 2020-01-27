@@ -501,7 +501,8 @@ class GoogleCampaignDetails extends Component {
                       <TouchableOpacity
                         onPress={() =>
                           this.props.navigation.push("GoogleSEAPreviewScreen", {
-                            campaign: selectedCampaign.ad
+                            campaign: selectedCampaign.ad,
+                            language: selectedCampaign.campaign.language
                           })
                         }
                       >
@@ -516,6 +517,7 @@ class GoogleCampaignDetails extends Component {
                             path2={selectedCampaign.ad.path2}
                             description={selectedCampaign.ad.description}
                             description2={selectedCampaign.ad.description2}
+                            language={selectedCampaign.campaign.language}
                           />
                         </Transition>
                       </TouchableOpacity>

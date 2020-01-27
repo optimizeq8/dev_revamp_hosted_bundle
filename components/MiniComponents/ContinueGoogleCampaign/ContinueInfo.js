@@ -72,6 +72,7 @@ ContinueInfo = props => {
             path2={campaign.path2}
             description={campaign.description}
             description2={campaign.description2}
+            language={campaign.language}
           />
         </View>
       </Content>

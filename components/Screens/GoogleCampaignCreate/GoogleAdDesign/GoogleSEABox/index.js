@@ -86,23 +86,11 @@ export default GoogleSEABox = props => {
           style={[
             styles.row,
             {
-              paddingTop: 5
+              paddingTop: 5,
+              paddingLeft: 20
             }
           ]}
         >
-          <GradientButton
-            style={{
-              width: 40,
-              height: 40
-            }}
-            onPressAction={() => handleHttp(networkString, setVal)}
-          >
-            <Text style={styles.networkLabel}>
-              {networkString === "https://" ? "https" : "http"}
-            </Text>
-            <Text style={styles.networkLabel}>{`< >`}</Text>
-          </GradientButton>
-
           <Input
             autoFocus={!props.parentState.unmounted}
             placeholder={translate("Input landing page url")}
@@ -121,7 +109,7 @@ export default GoogleSEABox = props => {
               setVal({ finalurl: value });
             }}
             onSubmitEditing={() => {
-              submitEditing("inputD");
+              submitEditing("inputH1");
             }}
             onBlur={() => {
               blur("finalurl", "inputURL");
@@ -197,6 +185,7 @@ export default GoogleSEABox = props => {
               blurOnSubmit={false}
               onFocus={() => focus({ inputH1: true })}
               returnKeyType={"next"}
+              ref={input => reference("inputH1", input)}
             />
           </View>
         </View>
@@ -314,7 +303,7 @@ export default GoogleSEABox = props => {
                 setVal({ headline3: value });
               }}
               onSubmitEditing={() => {
-                submitEditing("inputURL");
+                submitEditing("inputD");
               }}
               onBlur={() => {
                 blur("headline3", "inputH3");

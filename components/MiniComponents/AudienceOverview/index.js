@@ -1,10 +1,9 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import PropTypes from "prop-types";
 
 import styles from "./styles";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
-import { Text } from "native-base";
 import LowerButton from "../../MiniComponents/LowerButton";
 import NavigationService from "../../../NavigationService";
 import globalStyles from "../../../GlobalStyles";
@@ -33,11 +32,7 @@ export default AundienceOverView = props => {
         </View>
       ) : (
         <View style={styles.audienceHeadingView}>
-          <Text
-            numberOfLines={1}
-            uppercase
-            style={[globalStyles.title, styles.title]}
-          >
+          <Text style={[globalStyles.title, styles.title]}>
             {translate("Audience")}
           </Text>
         </View>

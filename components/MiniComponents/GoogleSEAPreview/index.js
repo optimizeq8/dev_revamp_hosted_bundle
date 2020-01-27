@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import GlobalStyles from "../../../GlobalStyles";
-import styles from "./styles";
+import styles, { dynamicStyle } from "./styles";
 import ADIcon from "../../../assets/SVGs/ADIcon";
 
 export default GoogleSEAPreview = props => {
@@ -24,52 +23,41 @@ export default GoogleSEAPreview = props => {
     inputD2,
     inputURL,
     details = true,
-    campaign
+    language
   } = props;
   const { translate } = screenProps;
-
+  let headlineArray = [headline1, headline2, headline3];
+  let headlineNums = ["1", "2", "3"];
+  if (language === "1019") {
+    headlineArray = headlineArray.reverse();
+    headlineNums = headlineNums.reverse();
+  }
   if (path1) finalurl = finalurl + "/" + path1;
   if (path2) finalurl += "/" + path2;
 
   return (
     <View style={styles.previewBlock}>
-      <View
-        style={[
-          styles.headersCol,
-          !details && { marginTop: 10 },
-          {
-            alignSelf:
-              campaign && campaign.language === "1019"
-                ? "flex-end"
-                : "flex-start"
-          }
-        ]}
-      >
-        <View
-          style={[
-            GlobalStyles.row,
-            {
-              justifyContent:
-                campaign && campaign.language === "1019"
-                  ? "flex-end"
-                  : "flex-start"
-            }
-          ]}
-        >
+      <View style={[styles.headersCol, !details && { marginTop: 10 }]}>
+        <View style={(styles.headersCol, dynamicStyle(language).arabic)}>
+          {details && (
+            <Text
+              style={[
+                styles.headline,
+                inputURL
+                  ? GlobalStyles.orangeTextColor
+                  : GlobalStyles.darkGrayTextColor
+              ]}
+            >
+              {translate("Website")} {translate("url")}
+            </Text>
+          )}
+        </View>
+
+        <View style={[GlobalStyles.row, dynamicStyle(language).arabic]}>
           {finalurl ? (
             <Text style={[styles.headlineText, styles.linkText]}>
-              <Text
-                style={[
-                  styles.adIcon,
-                  {
-                    textAlign:
-                      campaign && campaign.language === "1019"
-                        ? "right"
-                        : "left"
-                  }
-                ]}
-              >
-                {translate("Ad")}
+              <Text style={[styles.adIcon, dynamicStyle(language).arabic]}>
+                {language === "1019" ? "إعلان" : "Ad"}
               </Text>
               {"  " + finalurl}
             </Text>
@@ -79,130 +67,80 @@ export default GoogleSEAPreview = props => {
             </Text>
           )}
         </View>
-        <View style={styles.headlineRowContainer}>
-          <View
-            style={[
-              styles.headlineRow,
-              {
-                justifyContent:
-                  campaign && campaign.language === "1019"
-                    ? "flex-end"
-                    : "flex-start"
-              }
-            ]}
-          >
-            <View style={styles.headerContent}>
+        <View
+          style={[styles.headlineRowContainer, dynamicStyle(language).arabic]}
+        >
+          <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
+            <View style={[styles.headerContent, dynamicStyle(language).arabic]}>
               {details && (
                 <Text
-                  uppercase
                   style={[
                     styles.headline,
+                    dynamicStyle(language).arabic,
                     inputH1
                       ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
+                      : GlobalStyles.darkGrayTextColor
                   ]}
                 >
-                  {translate("Headline")} {translate("1")}
+                  {translate("Headline")} {translate(headlineNums[0])}
                 </Text>
               )}
               {headline1 ? (
                 <Text
-                  style={[
-                    styles.headlineText,
-                    {
-                      textAlign:
-                        campaign && campaign.language === "1019"
-                          ? "right"
-                          : "left"
-                    }
-                  ]}
+                  style={[styles.headlineText, dynamicStyle(language).arabic]}
                 >
-                  {headline1}
+                  {headlineArray[0]}
                 </Text>
               ) : (
-                <Text uppercase style={[styles.headlineText]}>
+                <Text style={[styles.headlineText]}>
                   {translate("Add")} {translate("Headline")}
                 </Text>
               )}
             </View>
           </View>
-          <View
-            style={[
-              styles.headlineRow,
-              {
-                justifyContent:
-                  campaign && campaign.language === "1019"
-                    ? "flex-end"
-                    : "flex-start"
-              }
-            ]}
-          >
+          <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
             <View style={styles.headlineBlueLine} />
             <View style={[GlobalStyles.column]}>
               {details && (
                 <Text
-                  uppercase
                   style={[
                     styles.headline,
-                    { paddingLeft: 6 },
+                    dynamicStyle(language).arabic,
                     inputH2
                       ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
+                      : GlobalStyles.darkGrayTextColor
                   ]}
                 >
-                  {translate("Headline")} {translate("2")}
+                  {translate("Headline")} {translate(headlineNums[1])}
                 </Text>
               )}
               {headline2 ? (
                 <Text
-                  style={[
-                    styles.headlineText,
-                    {
-                      paddingLeft: 6,
-                      textAlign:
-                        campaign && campaign.language === "1019"
-                          ? "right"
-                          : "left"
-                    }
-                  ]}
+                  style={[styles.headlineText, dynamicStyle(language).arabic]}
                 >
-                  {headline2}
+                  {headlineArray[1]}
                 </Text>
               ) : (
-                <Text
-                  uppercase
-                  style={[styles.headlineText, { paddingLeft: 6 }]}
-                >
+                <Text style={[styles.headlineText]}>
                   {translate("Add")} {translate("Headline")}
                 </Text>
               )}
             </View>
           </View>
-          <View
-            style={[
-              styles.headlineRow,
-              {
-                justifyContent:
-                  campaign && campaign.language === "1019"
-                    ? "flex-end"
-                    : "flex-start"
-              }
-            ]}
-          >
+          <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
             <View style={styles.headlineBlueLine} />
             <View style={[GlobalStyles.column]}>
               {details && (
                 <Text
-                  uppercase
                   style={[
                     styles.headline,
-                    { paddingLeft: 6 },
+                    dynamicStyle(language).arabic,
                     inputH3
                       ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.lightGrayTextColor
+                      : GlobalStyles.darkGrayTextColor
                   ]}
                 >
-                  {translate("Headline")} {translate("3")}
+                  {translate("Headline")} {translate(headlineNums[2])}
                 </Text>
               )}
               {headline3 ? (
@@ -210,22 +148,15 @@ export default GoogleSEAPreview = props => {
                   style={[
                     styles.headlineText,
                     {
-                      paddingLeft: 6,
-
-                      textAlign:
-                        campaign && campaign.language === "1019"
-                          ? "right"
-                          : "left"
-                    }
+                      paddingLeft: 6
+                    },
+                    dynamicStyle(language).arabic
                   ]}
                 >
-                  {headline3}
+                  {headlineArray[2]}
                 </Text>
               ) : (
-                <Text
-                  uppercase
-                  style={[styles.headlineText, { paddingLeft: 6 }]}
-                >
+                <Text style={[styles.headlineText]}>
                   {translate("Add")} {translate("Headline")}
                 </Text>
               )}
@@ -233,37 +164,17 @@ export default GoogleSEAPreview = props => {
           </View>
         </View>
       </View>
-      <View style={styles.headersCol}>
-        {details && (
-          <Text
-            uppercase
-            style={[
-              styles.headline,
-              inputURL
-                ? GlobalStyles.orangeTextColor
-                : GlobalStyles.lightGrayTextColor
-            ]}
-          >
-            {translate("Website")} {translate("url")}
-          </Text>
-        )}
-      </View>
+
       <View style={styles.descriptionGrayLine} />
       <View
         style={[
           styles.headersCol,
           !details && { marginTop: 10 },
-          {
-            alignSelf:
-              campaign && campaign.language === "1019"
-                ? "flex-end"
-                : "flex-start"
-          }
+          dynamicStyle(language).arabic
         ]}
       >
         {details && (
           <Text
-            uppercase
             style={[
               styles.headline,
               inputD || inputD2
@@ -278,10 +189,7 @@ export default GoogleSEAPreview = props => {
           style={[
             styles.headlineText,
             styles.descriptionText,
-            {
-              textAlign:
-                campaign && campaign.language === "1019" ? "right" : "left"
-            },
+            dynamicStyle(language).arabic,
             !details && { color: "#909090" }
           ]}
         >
@@ -296,14 +204,7 @@ export default GoogleSEAPreview = props => {
           style={[
             styles.headlineText,
             styles.descriptionText,
-            {
-              textAlign:
-                campaign && campaign.language === "1019" ? "right" : "left",
-              alignSelf:
-                campaign && campaign.language === "1019"
-                  ? "flex-end"
-                  : "flex-start"
-            },
+            dynamicStyle(language).arabic,
             !details && { color: "#909090" }
           ]}
         >

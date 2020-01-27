@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#FFF",
     paddingVertical: 20,
-    textAlign: "left"
+    textTransform: "uppercase"
   },
   subHeadingView: {
     display: "flex",
