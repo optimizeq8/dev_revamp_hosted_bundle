@@ -66,7 +66,11 @@ export default AundienceOverView = props => {
                   <Text style={styles.categories}>
                     {translate(info.heading)}
                   </Text>
-                  <Text numberOfLines={1} style={styles.subtext}>
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={styles.subtext}
+                  >
                     {info.content}
                   </Text>
                 </View>

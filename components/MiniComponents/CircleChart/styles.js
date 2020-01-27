@@ -8,7 +8,7 @@ export default StyleSheet.create({
   chartText: {
     color: globalColors.orange,
     fontFamily: "montserrat-medium",
-    fontSize: 14
+    fontSize: 12
   },
   chartSubtext: {
     fontSize: 12,
