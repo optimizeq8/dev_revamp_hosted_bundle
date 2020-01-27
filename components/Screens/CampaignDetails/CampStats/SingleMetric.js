@@ -58,7 +58,7 @@ export default class SingleMetric extends Component {
                 Number.isInteger(metricValue)
                   ? metricValue
                   : parseFloat(metricValue).toFixed(2),
-                true
+                !metric.toLowerCase().includes("c")
               )}
             </Text>
           </Text>

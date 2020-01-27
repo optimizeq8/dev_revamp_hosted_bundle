@@ -150,7 +150,7 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail
                     ]}
                   >
-                    {campaign ? campaign.reach : 0}
+                    {campaign ? formatNumber(campaign.reach, true) : 0}
                   </Text>
                 </View>
               </View>
@@ -176,7 +176,7 @@ class CampaignCircleChart extends Component {
                           ? campaign.cpm
                           : campaign.swipes
                         : 0,
-                      true
+                      campaign.objective !== "BRAND_AWARENESS"
                     )}
                   </Text>
                   <Text
@@ -213,7 +213,7 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail
                     ]}
                   >
-                    {campaign ? campaign.paid_frequency : 0}
+                    {campaign ? campaign.paid_frequency.toFixed(2) : 0}
                   </Text>
                 </View>
               </View>

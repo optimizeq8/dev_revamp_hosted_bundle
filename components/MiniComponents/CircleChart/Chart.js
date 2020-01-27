@@ -48,7 +48,7 @@ export default Chart = props => {
                   numberOfLines={1}
                   style={styles.chartText}
                 >
-                  ${formatNumber(spends, true)}
+                  ${formatNumber(spends.toFixed(2), true)}
                 </Text>
                 {!detail && (
                   <Text uppercase style={[styles.chartSubtext]}>
