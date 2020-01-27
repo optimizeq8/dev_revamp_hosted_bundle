@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     paddingVertical: 10,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase"
   },
   chartTitle: {
     color: "#fff",

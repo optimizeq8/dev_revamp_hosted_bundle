@@ -1,6 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Text } from "native-base";
+import { View, TouchableOpacity, Text } from "react-native";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 import styles from "./styles";
@@ -31,7 +30,7 @@ export default function(props) {
           <PlaceholderLine />
         </View>
       ) : (
-        <Text uppercase style={[styles.subHeadings, { paddingVertical: 10 }]}>
+        <Text style={[styles.subHeading, { paddingVertical: 10 }]}>
           {translate("Keywords")}
         </Text>
       )}
@@ -42,9 +41,7 @@ export default function(props) {
         }}
       >
         {listKeyWords && listKeyWords.length > 0 && (
-          <Text uppercase style={styles.subHeading}>
-            {translate("Best Performing")}
-          </Text>
+          <Text style={styles.subHeading}>{translate("Best Performing")}</Text>
         )}
         {loading ? (
           <View style={styles.placeholderView}>

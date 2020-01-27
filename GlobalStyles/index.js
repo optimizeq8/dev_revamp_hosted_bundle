@@ -105,7 +105,8 @@ const globalStyles = StyleSheet.create({
     fontSize: 20 / PixelRatio.getFontScale(),
     color: "#fff",
     paddingVertical: 10,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase"
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),

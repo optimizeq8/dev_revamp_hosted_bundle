@@ -184,10 +184,7 @@ class GoogleAdDesign extends Component {
       correctPathsLength &&
       onlyTwoPaths
     ) {
-      let finalurl =
-        (!this.state.finalurl.toLowerCase().includes("http")
-          ? this.state.networkString
-          : "") + this.state.finalurl;
+      let finalurl = this.state.finalurl;
       let data = {
         headline1: this.state.headline1,
         headline2: this.state.headline2,
@@ -454,7 +451,8 @@ class GoogleAdDesign extends Component {
                         finalurl: this.state.finalurl,
                         description: this.state.description,
                         description2: this.state.description2
-                      }
+                      },
+                      language: this.props.campaign.language
                     });
                   }}
                 >
