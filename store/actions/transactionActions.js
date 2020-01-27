@@ -72,11 +72,6 @@ export const getWalletAmount = (retries = 3) => {
         return res.data;
       })
       .then(data => {
-        data.success &&
-          showMessage({
-            message: "Wallet retrieved",
-            type: "success"
-          });
         return dispatch({
           type: actionTypes.SET_WALLET_AMOUNT,
           payload: data
