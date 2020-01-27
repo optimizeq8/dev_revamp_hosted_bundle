@@ -59,9 +59,7 @@ class AppUpdateChecker extends PureComponent {
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
         this.setState({
-          status: translate(
-            "There is an OTA update available Please wait while it downloads"
-          ),
+          status: translate("New update found"),
           OTAAvalibe: true
         });
         await Updates.fetchUpdateAsync({
@@ -149,7 +147,7 @@ class AppUpdateChecker extends PureComponent {
                 <Text style={[styles.textUpdate, { top: 10 }]}>
                   {this.state.status + "\n"}
                   <Small style={{ fontSize: 14 }}>
-                    {translate("The app will restart once it's done")}
+                    {translate("The app will restart once it's done") + "\n"}
                   </Small>
                   {this.state.status2}
                 </Text>
