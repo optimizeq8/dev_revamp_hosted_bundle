@@ -10,11 +10,6 @@ import NavigationService from "../../NavigationService";
 
 export const changeBusiness = business => {
   return dispatch => {
-    showMessage({
-      message: "Changed business account",
-      type: "success",
-      position: "top"
-    });
     persistor.purge();
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
