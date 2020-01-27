@@ -341,7 +341,8 @@ class GoogleCampaignDetails extends Component {
                 <View style={{ margin: 5 }}>
                   <PlaceholderLine />
                 </View>
-              ) : selectedCampaign.campaign.status === "REMOVED" ? (
+              ) : this.state.expand ? null : selectedCampaign.campaign
+                  .status === "REMOVED" ? (
                 <View style={[styles.adStatus]}>
                   <Icon
                     style={[
