@@ -19,6 +19,14 @@ import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
 import { Small } from "../../MiniComponents/StyledComponents/index";
 class CampaignCircleChart extends Component {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.chartExpanded !== this.props.chartExpanded &&
+      !this.props.chartExpanded
+    ) {
+      this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     let {
@@ -52,6 +60,7 @@ class CampaignCircleChart extends Component {
           </View>
         )}
         <ScrollView
+          ref={ref => (this.scroll = ref)}
           showsHorizontalScrollIndicator={false}
           horizontal
           scrollEnabled={detail && chartExpanded}
