@@ -455,23 +455,28 @@ class CampaignDetails extends Component {
                   selectedCampaign,
                   new Date(selectedCampaign.end_time)
                 ) ? (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.orange
-                      }
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.orange }]}
-                  >
-                    {translate("Campaign ended")}
-                  </Text>
-                </View>
+                !this.state.expand && (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: globalColors.orange
+                        }
+                      ]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        { color: globalColors.orange }
+                      ]}
+                    >
+                      {translate("Campaign ended")}
+                    </Text>
+                  </View>
+                )
               ) : (
                 <View style={[styles.adStatus]}>
                   <Icon
