@@ -1219,30 +1219,58 @@ const strings = {
   "Rejected Reason": "سبب الرفض",
   "Search transactions": "بحث المعاملات",
   "Input Description 2 text": "إدخال نص وصف 2",
-  "Input Description 1 text": "",
-  "Input landing page url": "",
-  "Payment Method": "",
-  "Top-Up History": "",
-  "Top Up Now": "",
+  "Input Description 1 text": "ادخال الوصف الأول",
+  "Input landing page url": "ادخال الوصف الثاني",
+  "Payment Method": "طريقة الدفع",
+  "Top-Up History": "سجل تحويل الرصيد",
+  "Top Up Now": "زيد رصيدك",
   Send: "ارسل",
   "Export CSV": "إصدار ملف CSV",
   "Recipient email": "البريد الإلكتروني المستلم",
-  "Switching Language Please wait": "",
+  "Switching Language Please wait": "سيتم تحويل اللغة رجاء الإنتطار",
   "The app will restart once it's done":
     "سيتم إعادة تشغيل التطبيق بمجرد إنتهاء التحميل.",
-  "Choose your language": "",
+  "Choose your language": "الرجاء اختيار اللغة",
   "Welcome to": "مرحبا بك في",
-  "Your changes will be lost": "",
+  "Your changes will be lost": "ستفقد التغييرات",
   "You’re in the middle of reviewing your ad,\nif you go back, all changes will be discarded":
-    "",
-  "Continue Review": "",
-  "Discard Changes": "",
-  Businesses: "",
-  "Select Area": "",
+    "إذا رجعت سيتم ستفقد جميع التغييرات",
+  "Continue Review": "استمر المراجعة",
+  "Discard Changes": "حذف التغييرات",
+  Businesses: "الشركات",
+  "Select Area": "اختر المنطقة",
   "Your account has been suspended, please get in touch to review your issue":
-    "",
-  "Account Suspended": "",
-  "Get in touch": ""
+    "تم ايقاف حسابك. يرجى التواصل معنا لمراجعة المشكلة",
+  "Account Suspended": "تم تعليق الحساب",
+  "Get in touch": "تواصل معنا",
+  "Switch Business": "تغير المشروع",
+  "You have been invited to join": "تم دعوتك للانضمام إلى",
+  INVITATION: "دعوة",
+  "Search Engine Ad Preview": "مراجعة إعلان قوقل للبحث",
+  "Please sign in with the correct email to accept":
+    "يرجى تسجيل الدخول بالبريد الإلكتروني الصحيح لقبول الدعوة",
+  "Please complete all of the fields": "الرجاء إكمال جميع الخانات",
+  deletion: "حذف",
+  "Are you sure you want to delete this business":
+    "هل أنت متأكد من أنك تريد حذف هذا المشروع؟",
+  "Make sure to include (http://) or (https://)":
+    "تأكد من وجود (//:https) او (//:http)",
+  "Website url issue": "خطئ في الرابط ",
+  "Only  2 paths are allowed": "يجوز فقط جزئين من الرابط",
+  "Paths length exceeded": "تجاوزت حروف أجزاء الرابط الحد الأقصى",
+  "The max length of the url paths are 15 characters each":
+    "الحد الأقصى لكل جزء للرابط ١٥ حرف ",
+  Eg: "مثلا",
+  "Team member": "عضو الفريق",
+  "Are you sure you want to delete this member":
+    "هل أنت متأكد من أنك تريد حذف هذا العضو؟",
+  "This business doesn't have campaigns yet":
+    "لا يحتوي هذا المشروع على حملات حتى الآن",
+  "Send a detailed CSV file of your ads performance":
+    "بعث ملف CSV يحتوي تفاصيل اداء حملتك",
+  "Search campaigns": "بحث الحملات",
+  "Set your budget": "حدد ميزانيتك",
+  "New update found": "تم العثور على تحديث جديد"
 };
 
 export default strings;

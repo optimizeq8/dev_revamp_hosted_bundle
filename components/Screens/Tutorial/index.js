@@ -23,6 +23,7 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import globalStyles from "../../../GlobalStyles";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -64,12 +65,16 @@ class Tutorial extends Component {
     // console.log('trasnslate', translate);
 
     const Slide = ({ url, i }) => {
+      Segment.screen(`Tutorial Slide ${i}`);
+
       return (
         <>
           <Image
             style={[
               styles.imageSlide,
-              { bottom: i === 3 ? heightPercentageToDP("-2%") : 0 }
+              {
+                bottom: i === 3 ? heightPercentageToDP("-2%") : 0
+              }
             ]}
             source={url}
             resizeMode="contain"
@@ -78,6 +83,7 @@ class Tutorial extends Component {
             <GradientButton
               style={[styles.getStartedButton]}
               onPressAction={() => {
+                segmentEventTrack("Button Get Started Clicked");
                 AsyncStorage.getItem("tutorialOpened")
                   .then(value => {
                     if (value == null) {
