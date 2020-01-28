@@ -3,6 +3,7 @@ import qs from "qs";
 import { AsyncStorage, I18nManager } from "react-native";
 import i18n from "i18n-js";
 import * as actionTypes from "./actionTypes";
+import * as Segment from "expo-analytics-segment";
 import store from "../index";
 import arabicStrings from "../../components/Data/translationArabic";
 import englishStrings from "../../components/Data/translationEnglish";
@@ -42,6 +43,12 @@ export const getLanguageListPOEdit = language => {
             [language]: modifierJson
           };
 
+          if (getState().auth.userid) {
+            Segment.identifyWithTraits(getState().auth.userid, {
+              app_language: language
+            });
+          }
+
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
@@ -61,6 +68,11 @@ export const getLanguageListPOEdit = language => {
           i18n.translations = {
             [language]: data
           };
+          if (getState().auth.userid) {
+            Segment.identifyWithTraits(getState().auth.userid, {
+              app_language: language
+            });
+          }
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
@@ -72,6 +84,11 @@ export const getLanguageListPOEdit = language => {
           i18n.translations = {
             [language]: language === "ar" ? arabicStrings : englishStrings
           };
+          if (getState().auth.userid) {
+            Segment.identifyWithTraits(getState().auth.userid, {
+              app_language: language
+            });
+          }
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
@@ -82,7 +99,7 @@ export const getLanguageListPOEdit = language => {
         }
       }
     } catch (error) {
-      // console.log('translation error', error.response || error.message);
+      // console.log("translation error", error.response || error.message);
 
       await AsyncStorage.setItem("appLanguage", language);
       I18nManager.allowRTL(language === "ar");
@@ -90,6 +107,11 @@ export const getLanguageListPOEdit = language => {
       i18n.translations = {
         [language]: language === "ar" ? arabicStrings : englishStrings
       };
+      if (getState().auth.userid) {
+        Segment.identifyWithTraits(getState().auth.userid, {
+          app_language: language
+        });
+      }
       return dispatch({
         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
         payload: {

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
 import { Updates } from "expo";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { ActivityIndicator } from "react-native-paper";
-
+import * as Segment from "expo-analytics-segment";
 //Redux
 import { connect } from "react-redux";
 
@@ -25,6 +25,11 @@ class SwitchLanguageLoading extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.track("Switch Language Loading");
+          }}
+        />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />
           <Text style={styles.loadingText}>

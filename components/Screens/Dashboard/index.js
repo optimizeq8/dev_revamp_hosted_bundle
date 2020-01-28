@@ -55,6 +55,7 @@ import whyDidYouRender from "@welldone-software/why-did-you-render";
 import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
+import segmentEventTrack from "../../segmentEventTrack";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -419,6 +420,10 @@ class Dashboard extends Component {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
+                    segmentEventTrack("Button clicked to change app language", {
+                      app_language:
+                        this.props.appLanguage === "en" ? "ar" : "en"
+                    });
                     this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
                     );
