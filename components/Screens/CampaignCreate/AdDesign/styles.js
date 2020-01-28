@@ -309,11 +309,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
-    // width: "80%",
-    // height: "40%",
     flexDirection: "row",
-    paddingHorizontal: 20,
-    // justifyContent: "space-evenly",
+    paddingHorizontal: 23,
     alignItems: "center",
     marginVertical: 20
   },

@@ -79,12 +79,17 @@ export default class SingleMetric extends Component {
                 detail && { fontFamily: "montserrat-regular" }
               ]}
             >
-              {formatNumber(
-                Number.isInteger(metricValue)
-                  ? metricValue
-                  : parseFloat(metricValue).toFixed(2),
-                true
-              )}
+              {(metric === "ctr"
+                ? "%"
+                : metric === "cpc" || metric === "cpm"
+                ? "$"
+                : "") +
+                formatNumber(
+                  Number.isInteger(metricValue)
+                    ? metricValue
+                    : parseFloat(metricValue).toFixed(2),
+                  true
+                )}
             </Text>
           </View>
         ) : (

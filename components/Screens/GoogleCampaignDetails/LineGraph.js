@@ -13,7 +13,10 @@ import {
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
 class LineGraph extends Component {
@@ -24,7 +27,11 @@ class LineGraph extends Component {
             this.props.chartChoice === "CPC" ? 2 : 0
           ) +
           " k"
-      : (this.props.chartChoice === "Spend" ? "$" : "") +
+      : (this.props.chartChoice === "Spend" || this.props.chartChoice === "CPC"
+          ? "$"
+          : this.props.chartChoice === "ctr"
+          ? "%"
+          : "") +
           Math.abs(num).toFixed(this.props.chartChoice === "CPC" ? 2 : 0);
   };
   render() {
@@ -60,7 +67,7 @@ class LineGraph extends Component {
     }
 
     return (
-      <View style={{ paddingLeft: 30, bottom: 10 }}>
+      <View style={{ paddingLeft: 30, bottom: 10, paddingBottom: 20 }}>
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -90,6 +97,7 @@ class LineGraph extends Component {
           )}
           <VictoryChart
             domainPadding={{ y: 17 }}
+            height={heightPercentageToDP(38)}
             containerComponent={
               <VictoryVoronoiContainer
                 labels={({ datum }) => {
@@ -159,13 +167,14 @@ class LineGraph extends Component {
         <View style={styles.xAxisStyle}>
           <VictoryAxis
             dependentAxis
-            domainPadding={{ y: 17 }}
+            height={heightPercentageToDP(38)}
+            domainPadding={{ y: 18 }}
             tickFormat={t => this.kFormatter(t)}
             offsetX={45}
             tickCount={5}
             padding={{
               top: 70,
-              bottom: this.props.campaignStats.length === 1 ? 50 : 20,
+              bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 60
             }}
