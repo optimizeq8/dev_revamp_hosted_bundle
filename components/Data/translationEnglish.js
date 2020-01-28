@@ -812,7 +812,7 @@ const strings = {
   "website interactions": "Website interaction",
   "call clicks": "Mobile",
   "instagram clicks": "Instagram",
-  "location clicks": "Loaction",
+  "location clicks": "Location",
   "whatsapp clicks": "Whatsapp",
   "Input headline text": "Input headline text",
   "Top results": "Top results",
@@ -1257,7 +1257,35 @@ const strings = {
   "Your account has been suspended, please get in touch to review your issue":
     "Your account has been suspended, \nplease get in touch to review your issue",
   "Account Suspended": "Account Suspended",
-  "Get in touch": "Get in touch"
+  "Get in touch": "Get in touch",
+  "Switch Business": "Switch Business",
+  "You have been invited to join": "You have been invited to join",
+  INVITATION: "INVITATION",
+  "Search Engine Ad Preview": "Search Engine Ad Preview",
+  "Please sign in with the correct email to accept":
+    "Please sign in with the correct email to accept",
+  "Please complete all of the fields": "Please complete all of the fields",
+  deletion: "deletion",
+  "Are you sure you want to delete this business":
+    "Are you sure you want to delete this business?",
+  "Make sure to include (http://) or (https://)":
+    "Make sure to include (http://) or (https://)",
+  "Website url issue": "Website url issue",
+  "Only  2 paths are allowed": "Only  2 paths are allowed",
+  "Paths length exceeded": "Paths length exceeded",
+  "The max length of the url paths are 15 characters each":
+    "The max length of the url paths are 15 characters each",
+  Eg: "Eg.",
+  "Team member": "Team member",
+  "Are you sure you want to delete this member":
+    "Are you sure you want to delete this member",
+  "This business doesn't have campaigns yet":
+    "This business doesn't have campaigns yet",
+  "Send a detailed CSV file of your ads performance":
+    "Send a detailed CSV file of your ads performance",
+  "Search campaigns": "Search campaigns...",
+  "Set your budget": "Set your budget",
+  "New update found": "New update found"
 };
 
 export default strings;
