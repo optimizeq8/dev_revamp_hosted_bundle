@@ -113,7 +113,7 @@ class CampaignCircleChart extends Component {
             />
           )}
         </ScrollView>
-        {detail && (
+        {detail && selectedCampaign.campaign.status !== "REMOVED" && (
           <CampDetailsInfo
             screenProps={this.props.screenProps}
             campaign={selectedCampaign.campaign}

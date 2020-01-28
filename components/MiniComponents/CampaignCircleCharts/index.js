@@ -248,7 +248,10 @@ class CampaignCircleChart extends Component {
             />
           )}
         </ScrollView>
-        {detail && <CampDetailsInfo {...this.props} />}
+        {detail &&
+          !(
+            this.campaignEndedOrNot(campaign) || campaign.campaign_end === "1"
+          ) && <CampDetailsInfo {...this.props} />}
       </View>
     );
   }
