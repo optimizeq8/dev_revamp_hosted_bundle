@@ -192,8 +192,7 @@ class CampaignDetails extends Component {
   showCSVModal = isVisible => {
     this.setState({ CSVModalVisible: isVisible });
   };
-  campaignEndedOrNot = campaign => {
-    let endDate = new Date(campaign.end_time);
+  campaignEndedOrNot = (campaign, endDate) => {
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
       campaign.review_status.includes("APPROVED") &&
@@ -206,12 +205,6 @@ class CampaignDetails extends Component {
     return campaignEndedOrNot;
   };
 
-  onLayout = event => {
-    const layout = event.nativeEvent.layout;
-    this.setState({
-      maxHeight: hp(87) - layout.height
-    });
-  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -458,7 +451,10 @@ class CampaignDetails extends Component {
                 <View style={{ margin: 5 }}>
                   <PlaceholderLine />
                 </View>
-              ) : this.campaignEndedOrNot(selectedCampaign) ? (
+              ) : this.campaignEndedOrNot(
+                  selectedCampaign,
+                  new Date(selectedCampaign.end_time)
+                ) ? (
                 !this.state.expand && (
                   <View style={[styles.adStatus]}>
                     <Icon
@@ -542,7 +538,7 @@ class CampaignDetails extends Component {
                 )
               )}
               <ScrollView
-                contentContainerStyle={{ height: hp(100) }}
+                contentContainerStyle={{ height: "100%" }}
                 scrollEnabled={!this.state.expand}
                 style={{ maxHeight: "100%" }}
               >
@@ -553,7 +549,6 @@ class CampaignDetails extends Component {
                       selectedCampaign.campaign_end === "0") ||
                     new Date(selectedCampaign.end_time) < new Date() ? (
                       <TouchableOpacity
-                        onLayout={this.onLayout}
                         disabled={this.state.expand}
                         onPress={this.handleChartToggle}
                       >

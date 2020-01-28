@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 6,
     lineHeight: 17,
+    width: "95%",
     color: "#fff"
   },
   title: {
