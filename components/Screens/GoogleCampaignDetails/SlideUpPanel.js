@@ -46,7 +46,8 @@ export default class SlideUpPanel extends Component {
             style={{
               height: "15%",
               alignSelf: "center",
-              width: "85%"
+              width: "85%",
+              zIndex: 3
             }}
           >
             <ChartChoices
@@ -57,10 +58,8 @@ export default class SlideUpPanel extends Component {
           </View>
 
           <ScrollView
-            style={{ zIndex: 2 }}
             contentContainerStyle={{
-              paddingBottom: 100,
-              zIndex: 2
+              paddingBottom: 100
             }}
           >
             <LineChartGraphs
