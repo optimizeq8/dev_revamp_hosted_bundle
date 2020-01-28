@@ -7,14 +7,14 @@ import {
   PixelRatio
 } from "react-native";
 import { connect } from "react-redux";
-import { Input, Item, Icon } from "native-base";
+import { Input, Button, Item, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import LocationIcon from "../../../assets/SVGs/Location";
-import LowerButton from "../LowerButton";
 
 class SelectRegions extends Component {
   state = { selectedAll: false };
@@ -127,11 +127,13 @@ class SelectRegions extends Component {
               </ScrollView>
             </View>
           </View>
-          <LowerButton
-            checkmark={true}
+
+          <Button
             style={[styles.button]}
-            function={() => this.props._handleSideMenuState(false)}
-          />
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
       </SafeAreaView>
     );

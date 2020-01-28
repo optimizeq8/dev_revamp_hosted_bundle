@@ -1,12 +1,9 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   previewBlock: {
-    display: "flex",
-    flexDirection: "column",
     width: wp(90),
-    alignItems: "center",
     marginTop: 10,
     paddingTop: 10,
     paddingBottom: 15,
@@ -29,38 +26,36 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 10 / PixelRatio.getFontScale(),
     color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    alignSelf: "flex-start",
     paddingBottom: 2,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    textTransform: "uppercase"
   },
   headlineText: {
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#1B10AB",
-    alignSelf: "center",
-    textAlign: "center",
-    alignSelf: "flex-start",
     paddingBottom: 5,
     paddingHorizontal: 20
   },
   headlineBlueLine: {
     borderLeftColor: "#1B10AB",
     borderLeftWidth: 1,
+    height: 30,
     marginBottom: 5,
     marginLeft: 13
   },
   adIcon: {
     marginRight: 5,
     alignSelf: "center",
-    marginBottom: 5,
-    marginLeft: 20
+    fontFamily: "montserrat-bold",
+    fontSize: 14
   },
   linkText: {
     fontFamily: "montserrat-regular",
-    color: "#197132",
-    paddingLeft: 0
+    color: "#0009",
+    paddingLeft: 0,
+    fontSize: 10,
+    marginLeft: 20
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",
@@ -69,9 +64,30 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   descriptionText: {
-    color: "#1B10AB",
+    color: "#0009",
     textAlign: "left"
+  },
+  headlineRow: {
+    flexDirection: "row",
+    width: "35%"
+  },
+  headlineRowContainer: {
+    flexDirection: "row",
+    width: "100%",
+    paddingRight: 20
   }
 });
+
+export const dynamicStyle = language => {
+  return StyleSheet.create({
+    arabic: {
+      // backgroundColor: "red",
+      alignItems: language === "1019" ? "flex-end" : "flex-start",
+      justifyContent: language === "1019" ? "flex-end" : "flex-start",
+      alignSelf: language === "1019" ? "flex-end" : "flex-start",
+      textAlign: language === "1019" ? "right" : "left"
+    }
+  });
+};
 
 export default styles;

@@ -34,6 +34,8 @@ class GoogleSEAPreviewScreen extends Component {
 
   render() {
     let campaign = this.props.navigation.getParam("campaign", {});
+    let language = this.props.navigation.getParam("language", {});
+
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -93,6 +95,7 @@ class GoogleSEAPreviewScreen extends Component {
                     path2={campaign.path2}
                     description={campaign.description}
                     description2={campaign.description2}
+                    language={language}
                   />
                 </Transition>
               </View>

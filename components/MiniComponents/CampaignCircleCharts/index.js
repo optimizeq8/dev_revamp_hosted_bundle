@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, I18nManager } from "react-native";
 import Chart from "../CircleChart/Chart";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -19,6 +19,14 @@ import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
 import { Small } from "../../MiniComponents/StyledComponents/index";
 class CampaignCircleChart extends Component {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.chartExpanded !== this.props.chartExpanded &&
+      !this.props.chartExpanded
+    ) {
+      this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     let {
@@ -42,8 +50,9 @@ class CampaignCircleChart extends Component {
                 </Text>
                 <LowerButton
                   function={() => handleChartToggle()}
-                  width={15}
-                  height={15}
+                  width={I18nManager.isRTL ? 8 : 40}
+                  height={40}
+                  isRTL={I18nManager.isRTL}
                   style={styles.adPerformanceLowerBUtton}
                 />
               </>
@@ -51,6 +60,7 @@ class CampaignCircleChart extends Component {
           </View>
         )}
         <ScrollView
+          ref={ref => (this.scroll = ref)}
           showsHorizontalScrollIndicator={false}
           horizontal
           scrollEnabled={detail && chartExpanded}
@@ -149,7 +159,7 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail
                     ]}
                   >
-                    {campaign ? campaign.reach : 0}
+                    {campaign ? formatNumber(campaign.reach, true) : 0}
                   </Text>
                 </View>
               </View>
@@ -175,7 +185,7 @@ class CampaignCircleChart extends Component {
                           ? campaign.cpm
                           : campaign.swipes
                         : 0,
-                      true
+                      campaign.objective !== "BRAND_AWARENESS"
                     )}
                   </Text>
                   <Text
@@ -212,7 +222,7 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail
                     ]}
                   >
-                    {campaign ? campaign.paid_frequency : 0}
+                    {campaign ? campaign.paid_frequency.toFixed(2) : 0}
                   </Text>
                 </View>
               </View>

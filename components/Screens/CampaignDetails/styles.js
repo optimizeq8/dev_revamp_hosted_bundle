@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
-    top: 35,
+    top: 40,
     left: "22%",
     alignItems: "center",
     position: "absolute",
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     paddingVertical: 10,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase"
   },
   chartTitle: {
     color: "#fff",
@@ -408,7 +409,8 @@ const styles = StyleSheet.create({
     width: "35%"
   },
   chartChoiceText: {
-    fontSize: 11 / PixelRatio.getFontScale()
+    fontSize: 8 / PixelRatio.getFontScale(),
+    width: "110%"
   },
   pauseModalTitle: {
     fontFamily: "montserrat-bold",

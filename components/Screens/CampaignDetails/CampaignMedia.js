@@ -1,8 +1,6 @@
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
-import { Text } from "native-base";
-import globalStyles from "../../../GlobalStyles";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
 import { ActivityIndicator } from "react-native-paper";
@@ -67,17 +65,10 @@ export default props => {
   return (
     <View
       style={{
-        width: "40%",
-        alignItems: "center"
+        width: "40%"
       }}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          width: "100%"
-        }}
-      >
+      <>
         {loading ? (
           <View style={styles.placeholderView}>
             <PlaceholderLine />
@@ -87,7 +78,7 @@ export default props => {
             {translate("Media")}
           </Text>
         )}
-      </View>
+      </>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>
           <ActivityIndicator color="#fff" />

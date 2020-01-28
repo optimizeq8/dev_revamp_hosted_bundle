@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { Button, Text } from "native-base";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
@@ -19,6 +19,7 @@ import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
 
 //icons
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import CalenderkIcon from "../../../assets/SVGs/Calender";
 
 import {
@@ -26,7 +27,6 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import Loading from "../LoadingScreen";
-import LowerButton from "../LowerButton";
 
 class DateFields extends Component {
   constructor(props) {
@@ -384,11 +384,12 @@ class DateFields extends Component {
               (this.state.end_choice &&
                 this.props.start_time &&
                 !this.state.reset) ? (
-                <LowerButton
-                  checkmark
-                  style={styles.button}
-                  function={() => this.handleDate()}
-                />
+                <Button style={styles.button} onPress={() => this.handleDate()}>
+                  <CheckmarkIcon
+                    width={hp(5) < 30 ? 40 : 53}
+                    height={hp(5) < 30 ? 40 : 53}
+                  />
+                </Button>
               ) : null}
             </SafeAreaView>
           </BlurView>

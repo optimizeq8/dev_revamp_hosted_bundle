@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Platform } from "react-native";
+import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -198,8 +198,12 @@ const styles = StyleSheet.create({
   },
   proceedButtonRTL: {
     width: 55,
-    height: 55
-
+    height: 55,
+    backgroundColor: globalColors.orange,
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
     // padding: 20
   },
   smallSubHeading: {

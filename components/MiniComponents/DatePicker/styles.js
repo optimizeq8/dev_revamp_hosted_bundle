@@ -22,6 +22,13 @@ const styles = StyleSheet.create({
     // paddingTop: hp("10%")
   },
   button: {
+    backgroundColor: "transparent",
+    alignSelf: "center",
+    borderRadius: 50,
+    borderColor: "transparent",
+    borderWidth: 1,
+    justifyContent: "center",
+
     top: heightPercentageToDP(5) < 30 ? -5 : 20
   },
   icon: {

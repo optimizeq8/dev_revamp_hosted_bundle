@@ -822,7 +822,10 @@ class GoogleAdDesign extends Component {
                 />
               ) : (
                 <LowerButton
-                  style={styles.proceedButtonRTL}
+                  isRTL={I18nManager.isRTL}
+                  style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                  width={I18nManager.isRTL ? 25 : 70}
+                  height={I18nManager.isRTL ? 25 : 70}
                   bottom={2}
                   function={this._handleSubmission}
                 />

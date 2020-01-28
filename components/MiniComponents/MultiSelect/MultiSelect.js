@@ -18,7 +18,6 @@ import rtlStyles from "./rtlStyles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import LowerButton from "../LowerButton";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -161,11 +160,12 @@ class MultiSelectList extends Component {
             </View>
           </View>
 
-          <LowerButton
+          <TouchableOpacity
             style={styles.button}
-            checkmark={true}
-            function={() => this.props._handleSideMenuState(false)}
-          />
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
