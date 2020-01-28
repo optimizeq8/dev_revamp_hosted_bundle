@@ -27,21 +27,6 @@ class CampaignCircleChart extends Component {
       this.scroll.scrollTo({ x: 0, y: 0, animated: true });
     }
   }
-
-  campaignEndedOrNot = campaign => {
-    let endDate = new Date(campaign.end_time);
-    endDate.setDate(endDate.getDate() + 2);
-    let campaignEndedOrNot =
-      campaign.review_status.includes("APPROVED") &&
-      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= new Date()
-        ? null
-        : campaign.campaign_end === "1" ||
-          new Date(campaign.end_time) < new Date();
-    return campaignEndedOrNot;
-  };
-
   render() {
     const { translate } = this.props.screenProps;
     let {
@@ -250,10 +235,7 @@ class CampaignCircleChart extends Component {
             />
           )}
         </ScrollView>
-        {detail &&
-          !(
-            this.campaignEndedOrNot(campaign) || campaign.campaign_end === "1"
-          ) && <CampDetailsInfo {...this.props} />}
+        {detail && <CampDetailsInfo {...this.props} />}
       </View>
     );
   }

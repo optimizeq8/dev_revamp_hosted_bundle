@@ -409,8 +409,8 @@ const styles = StyleSheet.create({
     width: "35%"
   },
   chartChoiceText: {
-    fontSize: 10 / PixelRatio.getFontScale(),
-    width: "125%"
+    fontSize: 8 / PixelRatio.getFontScale(),
+    width: "110%"
   },
   pauseModalTitle: {
     fontFamily: "montserrat-bold",

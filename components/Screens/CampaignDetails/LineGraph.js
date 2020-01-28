@@ -71,7 +71,7 @@ ${day}/${shortMonths[month]}`;
     }
 
     return (
-      <View style={{ paddingLeft: 30, bottom: 10, paddingBottom: 20 }}>
+      <View style={{ paddingLeft: 30, bottom: 10 }}>
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -101,7 +101,6 @@ ${day}/${shortMonths[month]}`;
           )}
           <VictoryChart
             domainPadding={{ y: 17 }}
-            height={heightPercentageToDP(38)}
             containerComponent={
               <VictoryVoronoiContainer
                 labels={({ datum }) => {
@@ -169,14 +168,13 @@ ${day}/${shortMonths[month]}`;
         </ScrollView>
         <View style={styles.xAxisStyle}>
           <VictoryAxis
-            height={heightPercentageToDP(38)}
-            domainPadding={{ y: 18 }}
+            domainPadding={{ y: 17 }}
             dependentAxis
             tickFormat={t => this.kFormatter(t)}
             tickCount={5}
             padding={{
               top: 70,
-              bottom: this.props.campaignStats.length === 1 ? 50 : 30,
+              bottom: this.props.campaignStats.length === 1 ? 50 : 20,
               left: 60,
               right: 60
             }}
