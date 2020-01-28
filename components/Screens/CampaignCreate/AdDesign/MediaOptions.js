@@ -64,7 +64,7 @@ export default class MediaOptions extends Component {
         style={styles.MediaOptionsStyle}
       >
         {imageIcon}
-        <View style={{ flexDirection: "column", marginLeft: 30 }}>
+        <View style={{ flexDirection: "column", marginLeft: 10, flex: 1 }}>
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={[styles.MediaOptionsDescription]}>
             {title === "Upload media from a different device"

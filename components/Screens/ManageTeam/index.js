@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Text, View, RefreshControl } from "react-native";
 import { connect } from "react-redux";
+import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
-import { SafeAreaView, ScrollView } from "react-navigation";
+import { SafeAreaView, ScrollView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import styles from "./Styles";
@@ -48,6 +49,11 @@ class ManageTeam extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.track("Manage Team");
+          }}
+        />
         <Header
           screenProps={this.props.screenProps}
           title={"Manage Team"}
@@ -73,7 +79,7 @@ class ManageTeam extends Component {
           {team}
           {this.props.pendingTeamInvites.length > 0 && (
             <View style={{ top: 20 }}>
-              <Text style={styles.title}>Pending</Text>
+              <Text style={styles.title}>{this.translate("Pending")}</Text>
               {pendingInvites}
             </View>
           )}

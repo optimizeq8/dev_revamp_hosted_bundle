@@ -60,7 +60,6 @@ export default class MediaModal extends Component {
                 title={"UPLOAD MEDIA"}
               />
               <Content
-                padder
                 indicatorStyle="white"
                 contentContainerStyle={{
                   marginTop: 15,

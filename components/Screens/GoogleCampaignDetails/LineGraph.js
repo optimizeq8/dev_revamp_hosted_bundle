@@ -27,7 +27,11 @@ class LineGraph extends Component {
             this.props.chartChoice === "CPC" ? 2 : 0
           ) +
           " k"
-      : (this.props.chartChoice === "Spend" ? "$" : "") +
+      : (this.props.chartChoice === "Spend" || this.props.chartChoice === "CPC"
+          ? "$"
+          : this.props.chartChoice === "ctr"
+          ? "%"
+          : "") +
           Math.abs(num).toFixed(this.props.chartChoice === "CPC" ? 2 : 0);
   };
   render() {
