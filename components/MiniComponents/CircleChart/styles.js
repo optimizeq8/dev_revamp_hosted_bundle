@@ -8,9 +8,11 @@ export default StyleSheet.create({
   chartText: {
     color: globalColors.orange,
     fontFamily: "montserrat-medium",
-    fontSize: 12
+    fontSize: 12,
+    textTransform: "uppercase"
   },
   chartSubtext: {
+    textTransform: "uppercase",
     fontSize: 12,
     color: "#fff",
     fontFamily: "montserrat-bold"
@@ -24,6 +26,6 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "70%"
+    width: "90%"
   }
 });

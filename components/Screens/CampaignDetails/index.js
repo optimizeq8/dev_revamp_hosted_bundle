@@ -478,60 +478,64 @@ class CampaignDetails extends Component {
                   </View>
                 )
               ) : (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange
+                !this.state.expand && (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: selectedCampaign.review_status.includes(
+                            "REJECTED"
+                          )
+                            ? globalColors.red
+                            : selectedCampaign.status === "LIVE"
+                            ? globalColors.green
+                            : globalColors.orange
+                        }
+                      ]}
+                      name={
+                        selectedCampaign.review_status.includes("REJECTED")
+                          ? "circle-slash"
+                          : "circle"
                       }
-                    ]}
-                    name={
-                      selectedCampaign.review_status.includes("REJECTED")
-                        ? "circle-slash"
-                        : "circle"
-                    }
-                    type={
-                      selectedCampaign.review_status.includes("REJECTED")
-                        ? "Octicons"
-                        : "FontAwesome"
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : !selectedCampaign.review_status.includes(
-                              "PENDING"
-                            ) && selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange
+                      type={
+                        selectedCampaign.review_status.includes("REJECTED")
+                          ? "Octicons"
+                          : "FontAwesome"
                       }
-                    ]}
-                  >
-                    {translate(
-                      `${
-                        selectedCampaign.review_status.includes("PENDING")
-                          ? "In Review"
-                          : selectedCampaign.review_status.includes("REJECTED")
-                          ? "Ad Rejected"
-                          : selectedCampaign.status === "LIVE"
-                          ? "LIVE"
-                          : "Campaign Paused"
-                      }`
-                    )}
-                  </Text>
-                </View>
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        {
+                          color: selectedCampaign.review_status.includes(
+                            "REJECTED"
+                          )
+                            ? globalColors.red
+                            : !selectedCampaign.review_status.includes(
+                                "PENDING"
+                              ) && selectedCampaign.status === "LIVE"
+                            ? globalColors.green
+                            : globalColors.orange
+                        }
+                      ]}
+                    >
+                      {translate(
+                        `${
+                          selectedCampaign.review_status.includes("PENDING")
+                            ? "In Review"
+                            : selectedCampaign.review_status.includes(
+                                "REJECTED"
+                              )
+                            ? "Ad Rejected"
+                            : selectedCampaign.status === "LIVE"
+                            ? "LIVE"
+                            : "Campaign Paused"
+                        }`
+                      )}
+                    </Text>
+                  </View>
+                )
               )}
               <ScrollView
                 contentContainerStyle={{ height: "100%" }}

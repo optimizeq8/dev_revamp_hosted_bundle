@@ -216,7 +216,7 @@ class CampaignCard extends Component {
                         {TimeDifferance(new Date(), campaign.end_time)}
                       </Text>
                       <Text uppercase style={styles.cardText}>
-                        {"Day(s) left"}
+                        {translate("Day(s) left")}
                       </Text>
                     </View>
                   </>

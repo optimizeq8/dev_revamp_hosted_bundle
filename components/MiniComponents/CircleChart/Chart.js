@@ -1,17 +1,15 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
 import styles from "./styles";
 import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
-import { Text } from "native-base";
 
 export default Chart = props => {
   const { translate } = props.screenProps;
   let { detail, budget, spends } = props;
   let x = (spends / budget) * 100;
-
   return (
     <View style={{ alignSelf: "center", marginVertical: 10 }}>
       <AnimatedCircularProgress
@@ -38,15 +36,15 @@ export default Chart = props => {
                 }}
               >
                 {detail && (
-                  <Text uppercase style={[styles.chartSubtext]}>
+                  <Text style={[styles.chartSubtext]}>
                     {translate("Spend")}
                   </Text>
                 )}
                 <Text
-                  uppercase
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={styles.chartText}
+                  adjustsFontSizeToFit={true}
                 >
                   ${formatNumber(spends.toFixed(2), true)}
                 </Text>
@@ -56,10 +54,16 @@ export default Chart = props => {
                   </Text>
                 )}
                 {detail && (
-                  <Text
-                    uppercase
-                    style={[styles.chartBudgetSubtext]}
-                  >{`${translate("out of")} $${budget}`}</Text>
+                  <View>
+                    <Text
+                      adjustsFontSizeToFit={true}
+                      style={[styles.chartBudgetSubtext]}
+                    >
+                      {`${translate("out of")} ${
+                        budget.length > 6 ? "\n" : ""
+                      }$${budget}`}
+                    </Text>
+                  </View>
                 )}
               </View>
             </View>
