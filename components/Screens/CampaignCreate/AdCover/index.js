@@ -8,13 +8,7 @@ import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import {
-  View,
-  TouchableOpacity,
-  Platform,
-  BackHandler,
-  I18nManager
-} from "react-native";
+import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -843,7 +837,6 @@ class AdCover extends Component {
                 <LowerButton
                   function={this._handleSubmission}
                   style={[styles.proceedButtonRTL]}
-                  isRTL={I18nManager.isRTL}
                 />
               </View>
             ) : (

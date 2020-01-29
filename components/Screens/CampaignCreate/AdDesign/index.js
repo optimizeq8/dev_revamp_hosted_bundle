@@ -1254,7 +1254,6 @@ class AdDesign extends Component {
                             );
                           }}
                           style={[styles.proceedButtonRTL]}
-                          isRTL={I18nManager.isRTL}
                         />
                       ) : (
                         <Text style={styles.footerTextStyle}>

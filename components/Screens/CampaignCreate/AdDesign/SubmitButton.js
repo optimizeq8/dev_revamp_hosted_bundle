@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { I18nManager } from "react-native";
 import { connect } from "react-redux";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
@@ -16,7 +15,6 @@ class SubmitButton extends Component {
           <LowerButton
             function={this.props._handleSubmission}
             style={[styles.proceedButtonRTL]}
-            isRTL={I18nManager.isRTL}
           />
         );
       }
@@ -27,7 +25,6 @@ class SubmitButton extends Component {
           <LowerButton
             function={this.props._handleSubmission}
             style={[styles.proceedButtonRTL]}
-            isRTL={I18nManager.isRTL}
           />
         );
       } else if (
@@ -38,7 +35,6 @@ class SubmitButton extends Component {
           <LowerButton
             function={this.props._handleSubmission}
             style={[styles.proceedButtonRTL]}
-            isRTL={I18nManager.isRTL}
           />
         );
       }
