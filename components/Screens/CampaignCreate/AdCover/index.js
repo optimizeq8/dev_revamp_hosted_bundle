@@ -762,20 +762,27 @@ class AdCover extends Component {
                               alignItems: "center"
                             }}
                           >
-                            <PlusAddIcon />
-                            <Text
+                            <View
                               style={{
-                                color: globalColors.orange,
-                                fontFamily: "montserrat-bold"
+                                flexDirection: "column",
+                                alignItems: "center"
                               }}
                             >
-                              {translate("Your Logo")}
-                            </Text>
-                            <Text style={styles.addLogoTextStyle}>
-                              {translate(
-                                "Must be 993px by 284px and transparent"
-                              )}
-                            </Text>
+                              <PlusAddIcon />
+                              <Text
+                                style={{
+                                  color: globalColors.orange,
+                                  fontFamily: "montserrat-bold"
+                                }}
+                              >
+                                {translate("Your Logo")}
+                              </Text>
+                              <Text style={styles.addLogoTextStyle}>
+                                {translate(
+                                  "Must be 993px by 284px and transparent"
+                                )}
+                              </Text>
+                            </View>
                           </View>
                         </TouchableOpacity>
                       )}

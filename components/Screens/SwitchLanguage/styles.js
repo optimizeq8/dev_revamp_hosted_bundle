@@ -102,16 +102,6 @@ const styles = StyleSheet.create({
   },
   inactiveText: {
     color: "rgba(255,255,255,0.6)"
-  },
-  backRTL: {
-    width: 70,
-    height: 70,
-    backgroundColor: globalColors.orange,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    paddingLeft: 5
   }
 });
 

@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-navigation";
 import { Text, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import * as Segment from "expo-analytics-segment";
+import LowerButton from "../LowerButton";
 
 export default class GenderOptions extends Component {
   componentDidMount() {
@@ -110,12 +110,11 @@ export default class GenderOptions extends Component {
             </View>
           </View>
 
-          <TouchableOpacity
+          <LowerButton
             style={[styles.button]}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </TouchableOpacity>
+            checkmark={true}
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </View>
       </SafeAreaView>
     );

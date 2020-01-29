@@ -58,11 +58,10 @@ export default class InvitationRow extends Component {
             height={30}
             style={[
               {
-                borderWidth: 1,
-                borderRadius: 30,
-                backgroundColor: globalColors.orange
-              },
-              globalStyles.orangeBorderColor
+                width: 32,
+                height: 32,
+                ...globalStyles.orangeBorderColor
+              }
             ]}
           />
           <LowerButton
@@ -77,6 +76,10 @@ export default class InvitationRow extends Component {
                   userEmail
               })
             }
+            style={{
+              width: 32,
+              height: 32
+            }}
             width={30}
             height={30}
           />
