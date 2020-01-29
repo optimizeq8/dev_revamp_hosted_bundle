@@ -34,7 +34,8 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 24
+      "versionCode": 24,
+      "googleServicesFile": "./google-services.json"
     },
     "hooks": {
       "postPublish": [

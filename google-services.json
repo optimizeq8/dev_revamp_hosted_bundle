@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "707133061105",
+    "firebase_url": "https://optimizeapp-9139f.firebaseio.com",
+    "project_id": "optimizeapp-9139f",
+    "storage_bucket": "optimizeapp-9139f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707133061105:android:55299150ecede942f17650",
+        "android_client_info": {
+          "package_name": "com.optimizeapp.optimizeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707133061105-plvt6pc6s5mho6mivmq2k401vtjg43uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTmQnBmL4QlElTUv7j1chWXl8XwkeeWFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707133061105-plvt6pc6s5mho6mivmq2k401vtjg43uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
