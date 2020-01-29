@@ -3,12 +3,13 @@ import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import LocationIcon from "../../../assets/SVGs/Location";
-import { Input, Button, Item, Icon } from "native-base";
+import { Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem";
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
+import LowerButton from "../LowerButton";
 export default class SelectOS extends Component {
   componentDidMount() {
     Segment.screen("OS Type Options");
@@ -128,12 +129,11 @@ export default class SelectOS extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          <Button
+          <LowerButton
             style={[styles.button]}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button>
+            checkmark={true}
+            function={() => this.props._handleSideMenuState(false)}
+          />
         </View>
       </SafeAreaView>
     );

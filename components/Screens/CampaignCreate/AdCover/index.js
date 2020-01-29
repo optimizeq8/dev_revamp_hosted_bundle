@@ -8,13 +8,7 @@ import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import {
-  View,
-  TouchableOpacity,
-  Platform,
-  BackHandler,
-  I18nManager
-} from "react-native";
+import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -22,6 +16,7 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import LowerButton from "../../../MiniComponents/LowerButton";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 //Redux
@@ -839,20 +834,10 @@ class AdCover extends Component {
           <Footer style={styles.footerStyle}>
             {cover ? (
               <View style={styles.footerButtonsContainer}>
-                <TouchableOpacity
-                  onPress={this._handleSubmission}
-                  style={[
-                    styles.button,
-
-                    I18nManager.isRTL && styles.proceedButtonRTL
-                  ]}
-                >
-                  {I18nManager.isRTL ? (
-                    <BackButton />
-                  ) : (
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  )}
-                </TouchableOpacity>
+                <LowerButton
+                  function={this._handleSubmission}
+                  style={[styles.proceedButtonRTL]}
+                />
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>

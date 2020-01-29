@@ -1,25 +1,33 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { TouchableOpacity, View, StyleSheet, I18nManager } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import GradientButton from "../MiniComponents/GradientButton";
 import ForwardButton from "../../assets/SVGs/ForwardButton";
 import CheckmarkIcon from "../../assets/SVGs/Checkmark";
 import CrossIcon from "../../assets/SVGs/CrossButton";
 import BackButton from "../../assets/SVGs/BackButton";
+import ArrowForward from "../../assets/SVGs/ArrowForward";
 
 export default class LowerButton extends Component {
   render() {
-    let { width, height, style, isRTL } = this.props;
+    let { width, height, style } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     return (
-      <TouchableOpacity
+      <GradientButton
         style={[
           {
-            alignSelf: "center",
             bottom: heightPercentageToDP(bottom)
           },
-          style
+          style,
+          styles.button
         ]}
-        onPress={() => this.props.function(false)}
+        width={60}
+        height={60}
+        radius={50}
+        onPressAction={() => this.props.function(false)}
       >
         {this.props.checkmark ? (
           <CheckmarkIcon
@@ -28,22 +36,31 @@ export default class LowerButton extends Component {
           />
         ) : this.props.cross ? (
           <CrossIcon
-            fill="#000"
-            width={width ? width : 73}
-            height={height ? height : 63}
+            fill={"#ff9d00"}
+            width={width ? width : 25}
+            height={height ? height : 25}
           />
-        ) : isRTL ? (
+        ) : I18nManager.isRTL ? (
           <BackButton
-            width={width ? width : 83}
-            height={height ? height : 83}
+            style={styles.rtlReverse}
+            width={width ? width : 25}
+            height={height ? height : 25}
           />
         ) : (
-          <ForwardButton
-            width={width ? width : 83}
-            height={height ? height : 83}
+          <ArrowForward
+            style={styles.rtlReverse}
+            width={width ? width : 25}
+            height={height ? height : 25}
           />
         )}
-      </TouchableOpacity>
+      </GradientButton>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: "center"
+  },
+  rtlReverse: { left: widthPercentageToDP(0.5) }
+});

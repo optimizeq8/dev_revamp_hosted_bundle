@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, I18nManager } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text } from "native-base";
 import Chart from "../CircleChart/Chart";
 import CampaignStats from "./CampStats/CampaignStats";
@@ -38,9 +38,8 @@ class CampaignCircleChart extends Component {
                 </Text>
                 <LowerButton
                   function={() => handleChartToggle()}
-                  width={I18nManager.isRTL ? 8 : 40}
-                  height={40}
-                  isRTL={I18nManager.isRTL}
+                  width={15}
+                  height={15}
                   style={styles.adPerformanceLowerButton}
                 />
               </>
@@ -114,7 +113,7 @@ class CampaignCircleChart extends Component {
             />
           )}
         </ScrollView>
-        {detail && (
+        {detail && selectedCampaign.campaign.status !== "REMOVED" && (
           <CampDetailsInfo
             screenProps={this.props.screenProps}
             campaign={selectedCampaign.campaign}

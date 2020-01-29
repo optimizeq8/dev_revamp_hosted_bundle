@@ -42,7 +42,8 @@ import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
+  heightPercentageToDP
 } from "react-native-responsive-screen";
 import dateFormat from "dateformat";
 
@@ -169,6 +170,12 @@ class GoogleCampaignDetails extends Component {
   };
   showCSVModal = isVisible => {
     this.setState({ CSVModalVisible: isVisible });
+  };
+  onLayout = event => {
+    const layout = event.nativeEvent.layout;
+    this.setState({
+      maxHeight: hp(87) - layout.height
+    });
   };
   render() {
     let loading = this.props.loading;
@@ -426,7 +433,10 @@ class GoogleCampaignDetails extends Component {
               )}
               <ScrollView
                 scrollEnabled={!this.state.expand}
-                contentContainerStyle={[styles.mainCard]}
+                contentContainerStyle={[
+                  styles.mainCard
+                  // { height: heightPercentageToDP(100) }
+                ]}
                 style={{
                   maxHeight: "100%",
                   height: "100%",
@@ -452,6 +462,7 @@ class GoogleCampaignDetails extends Component {
                   selectedCampaign.campaign.review_status !== "PENDING" ? (
                     <TouchableOpacity
                       disabled={this.state.expand}
+                      onLayout={this.layout}
                       onPress={this.handleChartToggle}
                     >
                       <CampaignCircleChart

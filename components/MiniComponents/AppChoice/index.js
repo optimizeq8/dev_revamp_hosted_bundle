@@ -4,8 +4,7 @@ import {
   View,
   BackHandler,
   ScrollView,
-  KeyboardAvoidingView,
-  I18nManager
+  KeyboardAvoidingView
 } from "react-native";
 import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
@@ -397,14 +396,7 @@ class AppChoice extends Component {
             </Text>
           )}
 
-          <LowerButton
-            isRTL={I18nManager.isRTL}
-            style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
-            width={I18nManager.isRTL ? 25 : null}
-            height={I18nManager.isRTL ? 25 : null}
-            bottom={I18nManager.isRTL ? 2 : 0}
-            function={() => this.validate()}
-          />
+          <LowerButton checkmark={true} function={() => this.validate()} />
         </View>
       </View>
     );

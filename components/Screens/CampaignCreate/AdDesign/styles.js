@@ -309,11 +309,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
-    // width: "80%",
-    // height: "40%",
     flexDirection: "row",
-    paddingHorizontal: 20,
-    // justifyContent: "space-evenly",
+    paddingHorizontal: 23,
     alignItems: "center",
     marginVertical: 20
   },
@@ -322,12 +319,14 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
     fontSize: 16,
+    lineHeight: 20,
     textAlign: "left"
   },
   MediaOptionsDescription: {
-    fontFamily: "montserrat-light-english",
+    fontFamily: "montserrat-light",
     color: "#fff",
     fontSize: 13,
+    lineHeight: 17,
     textAlign: "left"
   },
   downIcon: {
@@ -602,13 +601,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   proceedButtonRTL: {
-    backgroundColor: globalColors.orange,
     width: wp(13),
-    height: hp(6),
-    borderRadius: 26,
-    // alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 3
+    height: hp(6)
   }
 });
 

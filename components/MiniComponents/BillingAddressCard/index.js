@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
 import isUndefined from "lodash/isUndefined";
 import { showMessage } from "react-native-flash-message";
@@ -20,8 +20,8 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 //Icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import LocationIcon from "../../../assets/SVGs/LocationOutline";
+import LowerButton from "../LowerButton";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -412,8 +412,9 @@ class BillingAddressCard extends React.Component {
               progress={this.props.progressSaving}
             />
           ) : (
-            <TouchableOpacity
-              onPress={() => this._handleSubmission()}
+            <LowerButton
+              checkmark
+              function={() => this._handleSubmission()}
               style={[
                 styles.button,
                 {
@@ -421,9 +422,7 @@ class BillingAddressCard extends React.Component {
                 }
               ]}
               disabled={this.props.errorLoading}
-            >
-              <CheckmarkIcon />
-            </TouchableOpacity>
+            />
           )}
         </InputScrollView>
       </>

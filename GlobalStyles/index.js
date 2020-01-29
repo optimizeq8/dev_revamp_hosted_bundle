@@ -120,6 +120,18 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-bold"
   },
+  buttonText: {
+    fontSize: 16 / PixelRatio.getFontScale(),
+    color: "#fff",
+    textAlign: "center",
+    fontFamily: "montserrat-bold"
+  },
+  buttonText: {
+    fontSize: 16 / PixelRatio.getFontScale(),
+    color: "#fff",
+    textAlign: "center",
+    fontFamily: "montserrat-bold"
+  },
   numbers: {
     textAlign: "center",
     color: "#FF9D00",

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, Alert } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
+import * as Segment from "expo-analytics-segment";
 import AddTeamIcon from "../../../../assets/SVGs/AddTeam";
 import Header from "../../../MiniComponents/Header";
 import AddMember from "../AddMemberButton";
@@ -13,6 +14,7 @@ import { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class AddOrEditTeamMember extends Component {
   state = {
@@ -75,6 +77,9 @@ class AddOrEditTeamMember extends Component {
    * @param {Int} userRole a number to indicate which user role is selected
    */
   handleMemberType = userRole => {
+    segmentEventTrack("Changed Member Type User Role", {
+      userRole: userRole === this.state.userRole ? 0 : userRole
+    });
     this.setState({
       //if none of the switches are selected then set the state to 0
       userRole: userRole === this.state.userRole ? 0 : userRole
@@ -132,6 +137,7 @@ class AddOrEditTeamMember extends Component {
    * Handles updating an existing team member, mostly same concept as handleInvite
    */
   updateMember = () => {
+    segmentEventTrack("Button Clicked to update member");
     //Receives an object for the member from the list of team members
     let teamMember = this.props.navigation.getParam("member", {});
     let { userRole } = this.state;
@@ -144,8 +150,11 @@ class AddOrEditTeamMember extends Component {
         businessid: this.props.mainBusiness.businessid
       });
     } else {
+      segmentEventTrack("Error updating team member", {
+        error_manage_team: "Please Choose a role for the team member"
+      });
       showMessage({
-        message: this.translate("Please Choose a role for the team member."),
+        message: this.translate("Please Choose a role for the team member"),
         type: "warning"
       });
       //incomplete is set to signal the child components to play the animations of shaking
@@ -154,6 +163,7 @@ class AddOrEditTeamMember extends Component {
   };
 
   handleDelete = () => {
+    segmentEventTrack("Button Clicked to delete member");
     Alert.alert(
       this.translate("Team member") + this.translate("deletion"),
       this.translate("Are you sure you want to delete this member"),
@@ -164,12 +174,14 @@ class AddOrEditTeamMember extends Component {
         },
         {
           text: this.translate("Delete"),
-          onPress: () =>
+          onPress: () => {
+            segmentEventTrack("Button clicked Confirm to delete Member");
             this.props.deleteTeamMembers(
               this.props.navigation.getParam("member", {}).userid,
               this.props.mainBusiness.businessid,
               this.props.navigation
-            ),
+            );
+          },
           style: "destructive"
         }
       ]
@@ -199,6 +211,13 @@ class AddOrEditTeamMember extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screen(
+              editTeamMember ? "Edit team member" : "Add team member"
+            );
+          }}
+        />
         <Header
           screenProps={this.props.screenProps}
           title={editTeamMember ? "Edit team member" : "Add team member"}
