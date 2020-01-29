@@ -236,14 +236,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#fff",
-    // paddingLeft: 5,
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center",
     fontSize: 35,
-    paddingTop: 12
+    paddingTop: 15
   },
   mediaButtonMsg: {
+    alignSelf: "center",
     textAlign: "center",
     paddingTop: 23,
     fontFamily: "montserrat-medium",
@@ -260,15 +260,8 @@ const styles = StyleSheet.create({
     color: globalColors.orange
   },
   button: {
-    alignSelf: "center",
-    width: wp(10),
-    height: hp(7.5),
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginHorizontal: wp(10)
+    width: wp(15),
+    height: hp(7)
   },
   errorMsg: {
     textAlign: "center",

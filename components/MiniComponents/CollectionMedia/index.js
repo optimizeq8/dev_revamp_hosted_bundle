@@ -40,7 +40,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 //icons
-import Checkmark from "../../../assets/SVGs/Checkmark";
 import CameraEdit from "../../../assets/SVGs/CameraCircleOutline";
 
 // Style
@@ -54,11 +53,8 @@ import { netLoc } from "../../Data/callactions.data";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
 import split from "lodash/split";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import segmentEventTrack from "../../segmentEventTrack";
+import LowerButton from "../LowerButton";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -948,12 +944,11 @@ class CollectionMedia extends Component {
           <View style={styles.footerStyle}>
             {this.state.collection.collection_media ? (
               <View style={styles.footerButtonsContainer}>
-                <TouchableOpacity
-                  onPress={this._handleSubmission}
+                <LowerButton
+                  function={this._handleSubmission}
                   style={styles.button}
-                >
-                  <Checkmark width={wp(24)} height={hp(8)} />
-                </TouchableOpacity>
+                  checkmark
+                />
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>

@@ -73,6 +73,7 @@ import {
 import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
 import segmentEventTrack from "../../../segmentEventTrack";
+import LowerButton from "../../../MiniComponents/LowerButton";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -1226,8 +1227,8 @@ class AdDesign extends Component {
                     )}
                     {this.adType === "StoryAd" ? (
                       true ? (
-                        <TouchableOpacity
-                          onPress={() => {
+                        <LowerButton
+                          function={() => {
                             this.handleUpload();
                             _handleSubmission(
                               this.adType,
@@ -1252,17 +1253,8 @@ class AdDesign extends Component {
                               this.props.screenProps
                             );
                           }}
-                          style={[
-                            styles.button,
-                            I18nManager.isRTL && styles.proceedButtonRTL
-                          ]}
-                        >
-                          {I18nManager.isRTL ? (
-                            <BackButton />
-                          ) : (
-                            <ForwardButton width={wp(24)} height={hp(8)} />
-                          )}
-                        </TouchableOpacity>
+                          style={[styles.proceedButtonRTL]}
+                        />
                       ) : (
                         <Text style={styles.footerTextStyle}>
                           {this.adType === "StoryAd"
