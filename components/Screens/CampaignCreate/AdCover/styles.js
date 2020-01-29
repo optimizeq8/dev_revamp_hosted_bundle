@@ -288,13 +288,8 @@ const styles = StyleSheet.create({
     top: 15
   },
   proceedButtonRTL: {
-    backgroundColor: globalColors.orange,
     width: wp(13),
-    height: hp(6),
-    borderRadius: 26,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 3
+    height: hp(6)
   }
 });
 

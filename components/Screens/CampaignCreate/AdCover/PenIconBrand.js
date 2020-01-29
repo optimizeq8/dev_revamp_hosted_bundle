@@ -6,6 +6,7 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { globalColors } from "../../../../GlobalStyles";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
@@ -19,7 +20,7 @@ export default class PenIconBrand extends Component {
           style={{ alignSelf: "flex-start" }}
           fill={
             this.state.input
-              ? "#FF9D00"
+              ? globalColors.orange
               : this.props.coverHeadlineError
               ? "red"
               : "#fff"

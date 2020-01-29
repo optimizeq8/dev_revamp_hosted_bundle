@@ -22,6 +22,7 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import LowerButton from "../../../MiniComponents/LowerButton";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 //Redux
@@ -839,20 +840,11 @@ class AdCover extends Component {
           <Footer style={styles.footerStyle}>
             {cover ? (
               <View style={styles.footerButtonsContainer}>
-                <TouchableOpacity
-                  onPress={this._handleSubmission}
-                  style={[
-                    styles.button,
-
-                    I18nManager.isRTL && styles.proceedButtonRTL
-                  ]}
-                >
-                  {I18nManager.isRTL ? (
-                    <BackButton />
-                  ) : (
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  )}
-                </TouchableOpacity>
+                <LowerButton
+                  function={this._handleSubmission}
+                  style={[styles.proceedButtonRTL]}
+                  isRTL={I18nManager.isRTL}
+                />
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>

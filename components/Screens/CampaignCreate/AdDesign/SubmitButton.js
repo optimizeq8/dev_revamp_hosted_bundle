@@ -1,15 +1,9 @@
 import React, { Component } from "react";
-import { TouchableOpacity, I18nManager } from "react-native";
+import { I18nManager } from "react-native";
 import { connect } from "react-redux";
-import { Text } from "native-base";
-import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-import BackButton from "../../../../assets/SVGs/BackButton";
+import LowerButton from "../../../MiniComponents/LowerButton";
 
 import styles from "./styles";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 class SubmitButton extends Component {
   submitButton = () => {
     if (this.props.adType === "CollectionAd") {
@@ -19,57 +13,33 @@ class SubmitButton extends Component {
         true
       ) {
         return (
-          <TouchableOpacity
-            onPress={this.props._handleSubmission}
-            style={[
-              styles.button,
-              I18nManager.isRTL && styles.proceedButtonRTL
-            ]}
-          >
-            {I18nManager.isRTL ? (
-              <BackButton />
-            ) : (
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            )}
-          </TouchableOpacity>
+          <LowerButton
+            function={this.props._handleSubmission}
+            style={[styles.proceedButtonRTL]}
+            isRTL={I18nManager.isRTL}
+          />
         );
       }
       return;
     } else {
       if (this.props.objective === "BRAND_AWARENESS") {
         return (
-          <TouchableOpacity
-            onPress={this.props._handleSubmission}
-            style={[
-              styles.button,
-              I18nManager.isRTL && styles.proceedButtonRTL
-            ]}
-          >
-            {I18nManager.isRTL ? (
-              <BackButton />
-            ) : (
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            )}
-          </TouchableOpacity>
+          <LowerButton
+            function={this.props._handleSubmission}
+            style={[styles.proceedButtonRTL]}
+            isRTL={I18nManager.isRTL}
+          />
         );
       } else if (
         this.props.objective !== "BRAND_AWARENESS" &&
         !this.props.swipeUpError
       ) {
         return (
-          <TouchableOpacity
-            onPress={this.props._handleSubmission}
-            style={[
-              styles.button,
-              I18nManager.isRTL && styles.proceedButtonRTL
-            ]}
-          >
-            {I18nManager.isRTL ? (
-              <BackButton />
-            ) : (
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            )}
-          </TouchableOpacity>
+          <LowerButton
+            function={this.props._handleSubmission}
+            style={[styles.proceedButtonRTL]}
+            isRTL={I18nManager.isRTL}
+          />
         );
       }
     }
