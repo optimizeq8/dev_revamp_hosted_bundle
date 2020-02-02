@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: wp("80%"),
-    height: "100%"
+    height: 50
   },
   googleIcon: {
     alignSelf: "center"

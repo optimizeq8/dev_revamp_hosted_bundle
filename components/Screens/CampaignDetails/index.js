@@ -447,10 +447,7 @@ class CampaignDetails extends Component {
                   textAlign: "left",
                   fontSize: 15,
                   paddingTop: 3,
-                  alignSelf: "center",
-                  justifyContent: "center",
-                  flex: 1,
-                  alignItems: "center"
+                  flex: 1
                 }}
                 campaignStatus={loading ? null : selectedCampaign.status}
               />
