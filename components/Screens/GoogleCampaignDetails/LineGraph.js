@@ -122,7 +122,7 @@ class LineGraph extends Component {
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
           >
             <Defs>
-              <LinearGradient x1="0" y1="0" x2="0" y2="180" id="myGradient">
+              <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
                 <Stop offset="0%" stopColor="#FF7D08" />
                 <Stop offset="5%" stopColor="#f07204" />
                 <Stop offset="60%" stopColor="#000" />
