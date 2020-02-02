@@ -23,13 +23,11 @@ NodeBackendURL = () =>
  * @returns {Function} dispatch action with user information if found
  */
 export const connect_user_to_intercom = user_id => {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch({
       type: actionTypes.SET_LOADING,
       payload: true
     });
-    // console.log("user_id: ", user_id);
-
     NodeBackendURL()
       .get(`get-user/${user_id}`)
       .then(res => {
@@ -37,26 +35,8 @@ export const connect_user_to_intercom = user_id => {
       })
       .then(data => {
         if (data.code === "not_found") {
-          var user = getState().auth.userInfo;
-          var bus = getState().account.mainBusiness;
-          var body = {
-            user_id: user.userid,
-            email: user.email,
-            phone: user.mobile,
-            name: `${user.firstname} ${user.lastname}`
-          };
-          if (bus.hasOwnProperty("businessid")) {
-            body["companies"] = [
-              {
-                company_id: bus.businessid,
-                name: bus.businessname
-              }
-            ];
-          }
-          return dispatch(create_user_on_intercom(body));
+          return dispatch(create_user_on_intercom());
         } else {
-          // console.log("found user");
-
           dispatch(get_conversation(user_id));
           return dispatch({
             type: actionTypes.SET_CURRENT_MESSENGER,
@@ -71,8 +51,7 @@ export const connect_user_to_intercom = user_id => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top",
-          description: translate("chat, login")
+          position: "top"
         });
 
         console.log("get_user", err.message || err.response);
@@ -108,16 +87,32 @@ export const connect_user_to_intercom = user_id => {
  * @param {array} user.companies includes objects of company id and name
  * @returns {Function} dispatch action with user information
  */
-export const create_user_on_intercom = user => {
-  return dispatch => {
+export const create_user_on_intercom = () => {
+  return (dispatch, getState) => {
+    var user = getState().auth.userInfo;
+    var bus = getState().account.mainBusiness;
+    var body = {
+      user_id: user.userid,
+      email: user.email,
+      phone: user.mobile,
+      name: `${user.firstname} ${user.lastname}`
+    };
+    if (bus.hasOwnProperty("businessid")) {
+      body["companies"] = [
+        {
+          company_id: bus.businessid,
+          name: bus.businessname
+        }
+      ];
+    }
     dispatch({
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
     NodeBackendURL()
-      .post("/create-user", user)
+      .post("/create-user", body)
       .then(res => {
-        // dispatch(get_conversation(res.data.user_id));
+        dispatch(get_conversation(res.data.user_id));
         return dispatch({
           type: actionTypes.SET_CURRENT_MESSENGER,
           payload: res.data
@@ -232,7 +227,7 @@ export const start_conversation = (message, callback) => {
           payload: response.data
         });
       })
-      .then(() => callback())
+      .then(() => dispatch(callback()))
       .catch(err => {
         showMessage({
           message:
@@ -512,7 +507,7 @@ export const upload_media = media => {
           } else {
             dispatch(
               start_conversation("Sending an attachment", () =>
-                dispatch(reply(null, [data.media_link]))
+                reply(null, [data.media_link])
               )
             );
           }
