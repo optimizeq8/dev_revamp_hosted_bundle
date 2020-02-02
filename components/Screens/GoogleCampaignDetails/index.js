@@ -272,6 +272,7 @@ class GoogleCampaignDetails extends Component {
             content: location
           });
         }
+        console.log(selectedCampaign);
       }
 
       return (
@@ -415,7 +416,7 @@ class GoogleCampaignDetails extends Component {
                   >
                     {translate(
                       `${
-                        !selectedCampaign.campaign.review_status.includes(
+                        selectedCampaign.campaign.review_status.includes(
                           "PENDING"
                         )
                           ? "In Review"
@@ -424,7 +425,7 @@ class GoogleCampaignDetails extends Component {
                             )
                           ? "Ad Rejected"
                           : selectedCampaign.campaign.status === "ENABLED"
-                          ? "ENABLED"
+                          ? "LIVE"
                           : "Campaign Paused"
                       }`
                     )}
