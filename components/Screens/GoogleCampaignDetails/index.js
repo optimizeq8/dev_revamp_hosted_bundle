@@ -378,7 +378,10 @@ class GoogleCampaignDetails extends Component {
                           "REJECTED"
                         )
                           ? globalColors.red
-                          : selectedCampaign.campaign.status === "ENABLED"
+                          : selectedCampaign.campaign.status === "ENABLED" &&
+                            !selectedCampaign.campaign.review_status.includes(
+                              "PENDING"
+                            )
                           ? globalColors.green
                           : globalColors.orange
                       }
