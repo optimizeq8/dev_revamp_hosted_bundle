@@ -21,7 +21,8 @@ import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
-import FilterMenu from "../../MiniComponents/FilterMenu";
+// import FilterMenu from "../../MiniComponents/FilterMenu";
+let FilterMenu = null;
 import Axios from "axios";
 // import Menu from "../Menu";
 let Menu = null; //Doing an inline require for big components helps with performance
@@ -157,6 +158,9 @@ class Dashboard extends Component {
 
   startAnimation = () => {
     this.setState({ anim: true });
+    if (FilterMenu) {
+      FilterMenu = null;
+    }
     if (Menu == null) {
       Menu = require("../Menu").default; //Doing an inline require for big components helps with performance
     }
@@ -179,11 +183,18 @@ class Dashboard extends Component {
     if (Menu) {
       Menu = null;
     }
+    if (!FilterMenu)
+      FilterMenu = require("../../MiniComponents/FilterMenu").default;
   };
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
   _handleSideMenuState = status => {
+    if (status) {
+      FilterMenu = require("../../MiniComponents/FilterMenu").default;
+    } else {
+      FilterMenu = null;
+    }
     this.setState({ sidemenustate: status }, () => {});
   };
 
@@ -326,13 +337,14 @@ class Dashboard extends Component {
     let placeHolderCards = [1, 2, 3, 4].map(x => (
       <View key={x} style={styles.placeHolderCardsStyle} />
     ));
-    let menu = !this.state.open ? (
-      <FilterMenu
-        _handleSideMenuState={this._handleSideMenuState}
-        open={this.state.sidemenustate}
-        screenProps={this.props.screenProps}
-      />
-    ) : null;
+    let menu =
+      !this.state.open && FilterMenu ? (
+        <FilterMenu
+          _handleSideMenuState={this._handleSideMenuState}
+          open={this.state.sidemenustate}
+          screenProps={this.props.screenProps}
+        />
+      ) : null;
     let adButtons = [...snapAds, ...googleAds].map(adType => (
       <AdButtons
         translate={this.props.screenProps.translate}
