@@ -41,34 +41,32 @@ export default class SlideUpPanel extends Component {
 
     return (
       <View style={[styles.bottomContainer]}>
-        <View>
-          <View
-            style={{
-              height: "15%",
-              alignSelf: "center",
-              width: "85%",
-              zIndex: 3
-            }}
-          >
-            <ChartChoices
-              screenProps={this.props.screenProps}
-              changeChart={this.changeChart}
-              selectedCampaign={selectedCampaign}
-            />
-          </View>
-
-          <ScrollView
-            contentContainerStyle={{
-              paddingBottom: 100
-            }}
-          >
-            <LineChartGraphs
-              screenProps={this.props.screenProps}
-              chartChoice={this.state.chartChoice}
-              campaignStats={this.props.campaignStats}
-            />
-          </ScrollView>
+        <View
+          style={{
+            height: "15%",
+            alignSelf: "center",
+            width: "85%",
+            zIndex: 3
+          }}
+        >
+          <ChartChoices
+            screenProps={this.props.screenProps}
+            changeChart={this.changeChart}
+            selectedCampaign={selectedCampaign}
+          />
         </View>
+
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 100
+          }}
+        >
+          <LineChartGraphs
+            screenProps={this.props.screenProps}
+            chartChoice={this.state.chartChoice}
+            campaignStats={this.props.campaignStats}
+          />
+        </ScrollView>
       </View>
     );
   }
