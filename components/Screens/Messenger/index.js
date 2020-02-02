@@ -31,7 +31,7 @@ import { globalColors } from "../../../GlobalStyles";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import { connect } from "react-redux";
-
+import * as actionTypes from "../../../store/actions/actionTypes";
 //Functions
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
@@ -115,7 +115,13 @@ class Messenger extends Component {
     if (this.state.textValue !== "") {
       if (this.props.open_conversation)
         this.props.reply(this.state.textValue, []);
-      else this.props.start_conversation(this.state.textValue, () => {});
+      else
+        this.props.start_conversation(this.state.textValue, () => {
+          return {
+            type: actionTypes.SET_LOADING_MESSAGE,
+            payload: false
+          };
+        });
       this._resetTextInput();
     }
   };

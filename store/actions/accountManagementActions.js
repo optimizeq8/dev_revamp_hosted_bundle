@@ -269,7 +269,6 @@ export const updateUserInfo = (info, navigation) => {
           payload: false
         });
       })
-
       .catch(err => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",
