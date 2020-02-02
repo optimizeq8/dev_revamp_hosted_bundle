@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Modal, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import Header from "../../MiniComponents/Header";
@@ -8,7 +8,7 @@ import InputField from "../../MiniComponents/InputField";
 import EmailTransparentIcon from "../../../assets/SVGs/EmailTransparent";
 import CustomButtons from "../../MiniComponents/CustomButtons";
 import FlashMessage from "react-native-flash-message";
-
+import Modal from "react-native-modal";
 export default class CSVModal extends Component {
   state = { email: "", emailError: "", incomplete: false };
 
@@ -61,45 +61,53 @@ export default class CSVModal extends Component {
     const { translate } = screenProps;
 
     return (
-      <Modal animationType="fade" transparent visible={isVisible}>
+      <Modal
+        style={{ margin: 0 }}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        isVisible={isVisible}
+      >
         <BlurView intensity={100} tint="dark" style={{ height: "100%" }}>
-          <SafeAreaView style={{ justifyContent: "space-evenly" }}>
-            <Header
-              closeButton={true}
-              actionButton={this.actionButton}
-              screenProps={screenProps}
-              title={"Export CSV"}
-            />
-            <Text style={styles.CSVText}>
-              {translate("Send a detailed CSV file of your ads performance")}
-            </Text>
-            <InputField
-              ref={ref => (this.InFref = ref)}
-              stateName1={"email"}
-              value={this.state.email}
-              valueError1={this.state.emailError}
-              setValue={this.setValue}
-              getValidInfo={this.getValidInfo}
-              translate={translate}
-              incomplete={this.state.incomplete}
-              autoFocus={true}
-              icon={EmailTransparentIcon}
-              label={"Recipient email"}
-            />
-            <CustomButtons
-              onPressFunction={this.handleSubmit}
-              buttonStyle={CSVStyle.customButtonStyle}
-              screenProps={screenProps}
-              content="Send"
-              filled
-            />
-            <CustomButtons
-              buttonStyle={CSVStyle.customButtonStyle}
-              onPressFunction={this.actionButton}
-              screenProps={screenProps}
-              content="Cancel"
-            />
-          </SafeAreaView>
+          {/* <SafeAreaView
+            style={{ justifyContent: "space-evenly" }}
+            forceInset={{ top: "always" }}
+          > */}
+          <Header
+            closeButton={true}
+            actionButton={this.actionButton}
+            screenProps={screenProps}
+            title={"Export CSV"}
+          />
+          <Text style={styles.CSVText}>
+            {translate("Send a detailed CSV file of your ads performance")}
+          </Text>
+          <InputField
+            ref={ref => (this.InFref = ref)}
+            stateName1={"email"}
+            value={this.state.email}
+            valueError1={this.state.emailError}
+            setValue={this.setValue}
+            getValidInfo={this.getValidInfo}
+            translate={translate}
+            incomplete={this.state.incomplete}
+            autoFocus={true}
+            icon={EmailTransparentIcon}
+            label={"Recipient email"}
+          />
+          <CustomButtons
+            onPressFunction={this.handleSubmit}
+            buttonStyle={CSVStyle.customButtonStyle}
+            screenProps={screenProps}
+            content="Send"
+            filled
+          />
+          <CustomButtons
+            buttonStyle={CSVStyle.customButtonStyle}
+            onPressFunction={this.actionButton}
+            screenProps={screenProps}
+            content="Cancel"
+          />
+          {/* </SafeAreaView> */}
           <FlashMessage ref="modalFlash" position="top" />
         </BlurView>
       </Modal>
@@ -108,5 +116,5 @@ export default class CSVModal extends Component {
 }
 
 const CSVStyle = StyleSheet.create({
-  customButtonStyle: { height: "13%", width: "70%" }
+  customButtonStyle: { height: 50, width: "70%" }
 });
