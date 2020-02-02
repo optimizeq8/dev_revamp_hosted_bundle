@@ -73,7 +73,7 @@ export default class SideMenu extends React.Component {
 
     this.prevLeft = 0;
     this.isOpen = !!props.isOpen;
-
+    this.responder = PanResponder;
     const initialMenuPositionMultiplier =
       props.menuPosition === "right" ? -1 : 1;
     const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
@@ -116,7 +116,7 @@ export default class SideMenu extends React.Component {
     );
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.responder = PanResponder.create({
       onStartShouldSetResponderCapture: this.onStartShouldSetResponderCapture,
       onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
@@ -126,13 +126,13 @@ export default class SideMenu extends React.Component {
     });
   }
 
-  componentWillReceiveProps(props) {
+  componentDidUpdate(nextProps) {
     if (
-      typeof props.isOpen !== "undefined" &&
-      this.isOpen !== props.isOpen &&
-      (props.autoClosing || this.isOpen === false)
+      typeof nextProps.isOpen !== "undefined" &&
+      this.props.isOpen !== nextProps.isOpen &&
+      (nextProps.autoClosing || this.isOpen === false)
     ) {
-      this.openMenu(props.isOpen);
+      this.openMenu(this.props.isOpen);
     }
   }
 
