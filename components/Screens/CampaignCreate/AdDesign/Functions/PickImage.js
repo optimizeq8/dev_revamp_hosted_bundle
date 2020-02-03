@@ -44,7 +44,8 @@ export const pick = async (mediaTypes, screenProps) => {
       //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 0.8
+      quality: 0.8,
+      allowsEditing: Platform.OS === "ios" && mediaTypes === "Videos"
     });
   }
 
@@ -405,7 +406,8 @@ export const _pickImage = async (
               mediaError: null,
               result: result.uri,
               iosVideoUploaded: false,
-              sourceChanging: true
+              sourceChanging: true,
+              fileReadyToUpload: true
             });
             onToggleModal(false);
             segmentEventTrack("Selected Video Successfully");
@@ -418,7 +420,8 @@ export const _pickImage = async (
           !rejected &&
             save_campaign_info({
               media: result.uri,
-              type: result.type.toUpperCase()
+              type: result.type.toUpperCase(),
+              fileReadyToUpload: true
             });
           setTheState({ sourceChanging: false });
           return;
