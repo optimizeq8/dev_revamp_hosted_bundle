@@ -32,9 +32,8 @@ export const formatStoryAd = async (
     storyBody.append("story_media_type", card.media_type);
   }
   if (
-    storyAdAttachment.hasOwnProperty(
-      "longformvideo_media" && card.rejectionLongVidUpload
-    )
+    storyAdAttachment.hasOwnProperty("longformvideo_media") &&
+    storyAdAttachment.rejectionLongVidUpload
   ) {
     let resVideo = storyAdAttachment.longformvideo_media.split("/ImagePicker/");
     let formatVideo = resVideo[1].split(".");
