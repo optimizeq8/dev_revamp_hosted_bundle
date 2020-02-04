@@ -34,7 +34,10 @@ previewHandler = (selectedCampaign, navigation) => {
     call_to_action = storyOrCollection[0].call_to_action;
     destination = storyOrCollection[0].destination;
   } else {
-    icon_media_url = JSON.parse(selectedCampaign.attachment).icon_media_url;
+    icon_media_url =
+      selectedCampaign.attachment !== "BLANK"
+        ? JSON.parse(selectedCampaign.attachment).icon_media_url
+        : "";
   }
   navigation.push(
     selectedCampaign.campaign_type !== "StoryAd"
