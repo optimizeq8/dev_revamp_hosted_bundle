@@ -809,11 +809,11 @@ export const get_budget = (info, segmentInfo, navigation) => {
 export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
   return (dispatch, getState) => {
     GoogleBackendURL()
-      .get(`export/report/`, {
-        businessid: getState().account.mainBusiness.businessid,
-        id: campaign_id,
-        email: email
-      })
+      .get(
+        `export/report/?businessid=${
+          getState().account.mainBusiness.businessid
+        }&id=${campaign_id}&email=${email}`
+      )
       .then(res => res.data)
       .then(data => {
         if (data.message) showModalMessage(data.message, "success");
