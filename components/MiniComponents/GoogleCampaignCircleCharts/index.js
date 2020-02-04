@@ -63,8 +63,8 @@ class CampaignCircleChart extends Component {
             <Chart
               budget={selectedCampaign.campaign.budget}
               spends={
-                (!detail && googleCampaignOverall.spend) ||
-                (!detail ? selectedCampaign.campaign.cost : 0)
+                (!detail ? selectedCampaign.campaign.cost : 0) ||
+                googleCampaignOverall.spend
               }
               screenProps={this.props.screenProps}
               detail={detail}
