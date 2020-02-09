@@ -463,6 +463,7 @@ class GoogleAdTargetting extends Component {
                   budgetOption={this.state.budgetOption}
                   _handleBudget={this._handleBudget}
                   uploading={this.props.campaign.uploading}
+                  screenProps={this.props.screenProps}
                 />
 
                 <Text style={styles.subHeadings}>
