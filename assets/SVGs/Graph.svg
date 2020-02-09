@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="565" height="310.613" viewBox="0 0 565 310.613">
+  <defs><style>.a,.d{stroke:#707070;}.a{fill:url(#a);}.b{clip-path:url(#b);}.c{opacity:0;}.d,.e,.f,.j{fill:none;}.d,.e{opacity:0.08;}.e,.f,.j{stroke:#fff;}.f{opacity:0.003;}.g,.h,.k,.p,.q{fill:#fff;}.g,.o,.p{font-size:11px;}.g,.h,.l{font-family:Montserrat-Regular, Montserrat;}.h,.n,.q{font-size:13px;}.i{stroke:#ff7d08;stroke-width:5px;fill:url(#c);}.i,.j{stroke-linecap:round;}.j{stroke-width:2px;}.l{fill:#ff9d00;font-size:7.583px;}.m{baseline-shift:4.332900027028696;}.n,.p,.q{font-family:Montserrat-Bold, Montserrat;font-weight:700;}.o{fill:#c6c6c6;font-family:Montserrat-Medium, Montserrat;font-weight:500;}.r{filter:url(#n);}.s{filter:url(#l);}.t{filter:url(#j);}.u{filter:url(#h);}.v{filter:url(#f);}.w{filter:url(#d);}</style>
+  <linearGradient id="a" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+  <stop offset="0" stop-color="#ff9d00"/>
+  <stop offset="1" stop-color="#ff5c14"/>
+  </linearGradient>
+  <clipPath id="b">
+  <rect fill="url(#a)" stroke="#707070"  width="565" height="310.613"/></clipPath>
+  <linearGradient id="c" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+  <stop offset="0" stop-color="#ff7e07"/>
+  <stop offset="0.468" stop-color="#fd8414" stop-opacity="0.486"/>
+  <stop offset="1" stop-color="#fb8920" stop-opacity="0"/>
+  </linearGradient><filter id="d" x="130.556" y="139.134" width="38.324" height="38.346" filterUnits="userSpaceOnUse">
+  <feOffset dy="3" input="SourceAlpha"/><feGaussianBlur stdDeviation="3" result="e"/>
+  <feFlood flood-opacity="0.161"/><feComposite operator="in" in2="e"/>
+  <feComposite in="SourceGraphic"/></filter>
+  <filter id="f" x="47.906" y="215.091" width="38.324" height="38.346" filterUnits="userSpaceOnUse">
+  
+  <feOffset dy="3" input="SourceAlpha"/>
+  <feGaussianBlur stdDeviation="3" result="g"/><feFlood flood-opacity="0.161"/>
+  <feComposite operator="in" in2="g"/>
+  <feComposite in="SourceGraphic"/></filter>
+  <filter id="h" x="209.141" y="159.479" width="38.324" height="38.346" filterUnits="userSpaceOnUse">
+  <feOffset dy="3" input="SourceAlpha"/><feGaussianBlur stdDeviation="3" result="i"/><feFlood flood-opacity="0.161"/>
+  <feComposite operator="in" in2="i"/><feComposite in="SourceGraphic"/
+  ></filter><filter id="j" x="287.727" y="129.639" width="38.324" height="38.346" filterUnits="userSpaceOnUse">
+  <feOffset dy="3" input="SourceAlpha"/><feGaussianBlur stdDeviation="3" result="k"/>
+  <feFlood flood-opacity="0.161"/><feComposite operator="in" in2="k"/>
+  <feComposite in="SourceGraphic"/></filter>
+  <filter id="l" x="365.649" y="82.165" width="38.324" height="38.346" filterUnits="userSpaceOnUse">
+  <feOffset dy="3" input="SourceAlpha"/><feGaussianBlur stdDeviation="3" result="m"/>
+  <feFlood flood-opacity="0.161"/><feComposite operator="in" in2="m"/>
+  
+  <feComposite in="SourceGraphic"/></filter>
+  <filter id="n" x="103.788" y="84.07" width="91.4" height="67.275" filterUnits="userSpaceOnUse">
+  <feOffset dy="3" input="SourceAlpha"/><feGaussianBlur stdDeviation="3" result="o"/><feFlood flood-opacity="0.161"/><feComposite operator="in" in2="o"/>
+  <feComposite in="SourceGraphic"/></filter></defs><g clip-path="url(#b)"><g opacity="0" transform="translate(-12.699 -40.035)"><line fill="none" stroke="#707070" opacity="0.08" x2="504.936" transform="translate(7.298 0)"/><line opacity="0.08" stroke="#fff" fill="none" x2="477.446" transform="translate(0 47.066)"/><line opacity="0.08" stroke="#fff" fill="none" x2="477.446" transform="translate(86.715 94.132)"/><line opacity="0.08" stroke="#fff" fill="none" x2="477.446" transform="translate(0 141.199)"/>
+  <line opacity="0.08" stroke="#fff" fill="none" x2="477.446" transform="translate(0 188.265)"/><line opacity="0.08" stroke="#fff" fill="none" x2="477.446" transform="translate(0 235.331)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(80.25 0)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(159.689 0)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(239.129 0)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(318.568 0)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(398.007 0)"/><line opacity="0.08" stroke="#fff" fill="none" y2="282.397" transform="translate(477.446 0)"/></g><line class="f" x2="477.446" transform="translate(-12.699 242.362)"/><text class="g" transform="translate(79.715 285.647)"><tspan x="-25.586" y="0">April</tspan></text><text class="h" transform="translate(158.162 286.291)"><tspan x="-27.001" y="0">May</tspan></text><text class="h" transform="translate(240.144 286.291)"><tspan x="-31.941" y="0">June</tspan></text><text class="h" transform="translate(317.335 286.291)"><tspan x="-25.805" y="0">July</tspan></text><text class="g" transform="translate(491.288 285.647)"><tspan x="-61.952" y="0">September</tspan></text><text class="h" transform="translate(406.832 286.291)"><tspan x="-47.242" y="0">August</tspan></text><path class="i" d="M1341.507-1687.231c-.469-.217,19.959.567,59.318-15.111s46.226-73.6,92.754-77.628,62.727,60.245,93.36,61.5,31.736-107.254,92.851-107.932,66.456-48.281,94.331-47.716,47.285,40.674,91.831,0,72.131-22.145,108.411,15.151,93.309,168.187,134.091,168.187" transform="translate(-1318.905 1928.422)"/><line class="j" y2="7.977" transform="translate(67.551 259.72)"/><line class="j" y2="7.977" transform="translate(146.99 259.72)"/><line class="j" y2="7.977" transform="translate(226.429 259.72)"/><line class="j" y2="7.977" transform="translate(305.869 259.72)"/><line class="j" y2="7.977" transform="translate(464.496 259.72)"/><line class="j" y2="7.977" transform="translate(385.308 259.72)"/>
+  <g class="w" transform="matrix(1, 0, 0, 1, 0, 0)"><ellipse class="k" cx="10.162" cy="10.173" rx="10.162" ry="10.173" transform="translate(139.56 145.13)"/></g><g class="v" transform="matrix(1, 0, 0, 1, 0, 0)"><ellipse class="k" cx="10.162" cy="10.173" rx="10.162" ry="10.173" transform="translate(56.91 221.09)"/></g><g class="u" transform="matrix(1, 0, 0, 1, 0, 0)"><ellipse class="k" cx="10.162" cy="10.173" rx="10.162" ry="10.173" transform="translate(218.14 165.48)"/></g><g class="t" transform="matrix(1, 0, 0, 1, 0, 0)"><ellipse class="k" cx="10.162" cy="10.173" rx="10.162" ry="10.173" transform="translate(296.73 135.64)"/></g><g class="s" transform="matrix(1, 0, 0, 1, 0, 0)"><ellipse class="k" cx="10.162" cy="10.173" rx="10.162" ry="10.173" transform="translate(374.65 88.17)"/></g><g class="r" transform="matrix(1, 0, 0, 1, 0, 0)"><path class="k" d="M34.283,45.106H15a15,15,0,0,1-15-15V15A15,15,0,0,1,15,0H58.4a15,15,0,0,1,15,15V30.106a15,15,0,0,1-15,15H39.091l-2.4,4.169Z" transform="translate(112.79 90.07)"/></g><text fill="#ff9d00" font-size="7.583px" transform="translate(145.957 110.923)"><tspan class="m" x="-14.532" y="0">$</tspan><tspan class="n" y="0">750</tspan></text><text class="o" transform="translate(146.949 123.215)"><tspan x="-13.673" y="0">June</tspan></text><text class="h" transform="translate(577.511 286.484)"><tspan x="-53.365" y="0">October</tspan></text><line class="j" y2="7.977" transform="translate(550.758 259.72)"/><line class="j" y2="7.977" transform="translate(789.552 259.72)"/><text class="p" transform="translate(717.861 284.25)"><tspan x="-41.756" y="0">August</tspan></text><text class="q" transform="translate(639.405 286.25)"><tspan x="-31.122" y="0">Sept</tspan></text><text class="q" transform="translate(798.032 286.25)"><tspan x="-31.122" y="0">Sept</tspan></text><line class="j" y2="7.977" transform="translate(710.113 259.72)"/><line class="j" y2="7.977" transform="translate(630.925 259.72)"/>
+  </g></svg>
