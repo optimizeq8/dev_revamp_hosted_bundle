@@ -25,7 +25,6 @@ class CampaignCircleChart extends Component {
       chartExpanded,
       googleCampaignOverall
     } = this.props;
-
     return (
       <View style={detail ? styles.campaignInfoStyle : styles.campaignInfoCard}>
         {detail && (
@@ -63,8 +62,9 @@ class CampaignCircleChart extends Component {
             <Chart
               budget={selectedCampaign.campaign.budget}
               spends={
-                googleCampaignOverall.spend ||
-                (!detail ? selectedCampaign.campaign.cost : 0)
+                !detail
+                  ? selectedCampaign.campaign.cost
+                  : googleCampaignOverall.spend
               }
               screenProps={this.props.screenProps}
               detail={detail}
@@ -77,8 +77,9 @@ class CampaignCircleChart extends Component {
                 translate={translate}
                 loadingCampaignStats={this.props.loadingCampaignStats}
                 metricValue={
-                  googleCampaignOverall.impressions ||
-                  (detail ? selectedCampaign.campaign.impressions : 0)
+                  !detail
+                    ? selectedCampaign.campaign.impressions
+                    : googleCampaignOverall.impressions
                 }
                 metric="impressions"
               />
@@ -88,8 +89,9 @@ class CampaignCircleChart extends Component {
               translate={translate}
               loadingCampaignStats={this.props.loadingCampaignStats}
               metricValue={
-                googleCampaignOverall.clicks ||
-                (!detail ? selectedCampaign.campaign.clicks : 0)
+                !detail
+                  ? selectedCampaign.campaign.clicks
+                  : googleCampaignOverall.clicks
               }
               metric="clicks"
             />
@@ -98,8 +100,9 @@ class CampaignCircleChart extends Component {
               translate={translate}
               loadingCampaignStats={this.props.loadingCampaignStats}
               metricValue={
-                googleCampaignOverall.ctr ||
-                (!detail ? selectedCampaign.campaign.ctr.toFixed(2) : 0)
+                !detail
+                  ? selectedCampaign.campaign.ctr.toFixed(2)
+                  : googleCampaignOverall.ctr
               }
               metric="ctr"
             />
