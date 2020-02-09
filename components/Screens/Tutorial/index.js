@@ -112,7 +112,7 @@ class Tutorial extends Component {
     const { activeSlide } = this.state;
     let screen = "";
     if (id === activeSlide) {
-      // Segment.screen(`Tutorial ${activeSlide + 1}`);
+      Segment.screen(`Tutorial ${activeSlide + 1}`);
     }
 
     if (id === 0)
