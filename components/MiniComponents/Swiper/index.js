@@ -24,6 +24,7 @@ const Swiper = React.forwardRef((props, ref) => {
     dotsStyle,
     driver,
     onSwipe,
+    activeSlide,
     ...rest
   } = props;
 
@@ -49,7 +50,7 @@ const Swiper = React.forwardRef((props, ref) => {
 
   return (
     <View style={styles.container}>
-      {dots && (
+      {activeSlide !== 3 && dots && (
         <View style={dotsContainerStyle}>
           {slides.map((slide, index) => (
             <View key={`dot-${index}`} style={dotStyle} />
@@ -57,7 +58,7 @@ const Swiper = React.forwardRef((props, ref) => {
         </View>
       )}
 
-      {dots && (
+      {activeSlide !== 3 && dots && (
         <View style={dotsContainerStyle}>
           {slides.map((slide, index) => (
             <Animated.View
