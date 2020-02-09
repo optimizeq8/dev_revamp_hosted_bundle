@@ -17,7 +17,7 @@ export default class Screen3 extends React.Component {
 
     return (
       <View>
-        {changed && id === activeSlide && (
+        {id === activeSlide && (
           <Animatable.View
             animation={
               this.props.changed
@@ -109,7 +109,7 @@ export default class Screen3 extends React.Component {
             </LinearGradient>
           </Animatable.View>
         )}
-        {changed && id === activeSlide && (
+        {id === activeSlide && (
           <Image
             style={styles.graphImage}
             source={require("../../../assets/images/Graph.png")}
