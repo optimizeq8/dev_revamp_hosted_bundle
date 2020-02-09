@@ -25,7 +25,7 @@ export class BudgetCards extends Component {
       budgetOption,
       uploading
     } = this.props;
-
+    const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
 
     let cards = [
@@ -90,7 +90,7 @@ export class BudgetCards extends Component {
                       }
                     ]}
                   >
-                    Custom Budget
+                    {translate("Custom Budget")}
                   </Text>
                 </TouchableOpacity>
               ) : (
