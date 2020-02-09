@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "uppercase"
   },
   cardStatusDays: {
     flex: 1,

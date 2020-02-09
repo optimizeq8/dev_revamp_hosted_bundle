@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Animated, Dimensions, View, StyleSheet, Platform } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  View,
+  StyleSheet,
+  Platform,
+  I18nManager
+} from "react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP
@@ -29,11 +36,11 @@ const Swiper = React.forwardRef((props, ref) => {
     { useNativeDriver: true }
   );
 
-  const onMomentumScrollEnd = e => {
-    if (onSwipe) {
-      onSwipe(e, e.nativeEvent.contentOffset.x / width);
-    }
-  };
+  // const onMomentumScrollEnd = e => {
+  //   if (onSwipe) {
+  //     onSwipe(e, e.nativeEvent.contentOffset.x / width);
+  //   }
+  // };
 
   const dotsContainerStyle = [styles.dotsContainer];
 
@@ -70,11 +77,12 @@ const Swiper = React.forwardRef((props, ref) => {
         </View>
       )}
       <Animated.ScrollView
-        onMomentumScrollEnd={onMomentumScrollEnd}
+        onMomentumScrollEnd={props.onSlideChange}
         onScroll={onScroll}
         pagingEnabled
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}
         {...rest}
         horizontal
         ref={ref}
@@ -96,13 +104,17 @@ Swiper.defaultProps = {
   dotsStyle: {
     borderRadius: 7,
     height: 14,
-    marginHorizontal: 10,
+    marginHorizontal: 2,
     width: 14
   },
   driver: new Animated.Value(0)
 };
 
 const styles = StyleSheet.create({
+  contentContainerStyle: {
+    flexDirection:
+      I18nManager.isRTL && Platform.OS === "android" ? "row-reverse" : "row"
+  },
   container: {
     flex: 1,
     height: "100%",
@@ -116,10 +128,10 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === "ios" ? heightPercentageToDP(3) : 0
   },
   dotsContainer: {
-    alignItems: "center",
-    alignSelf: "center",
-    flexDirection: "row",
-    top: heightPercentageToDP("3%"),
+    flexDirection:
+      I18nManager.isRTL && Platform.OS === "android" ? "row-reverse" : "row",
+    bottom: heightPercentageToDP(5),
+    right: widthPercentageToDP(22),
     zIndex: 80,
     position: "absolute"
   }
