@@ -112,7 +112,7 @@ class Tutorial extends Component {
     const { activeSlide } = this.state;
     let screen = "";
     if (id === activeSlide) {
-      Segment.screen(`Tutorial ${activeSlide + 1}`);
+      // Segment.screen(`Tutorial ${activeSlide + 1}`);
     }
 
     if (id === 0)
@@ -196,6 +196,7 @@ class Tutorial extends Component {
             dotsColorActive={globalColors.orange}
             onSlideChange={this.onSlideChange}
             ref={ref => (this.swiperRef = ref)}
+            activeSlide={this.state.activeSlide}
           >
             {this.state.slidesData.map(item =>
               this.Slide({
@@ -204,7 +205,14 @@ class Tutorial extends Component {
               })
             )}
           </Swiper>
-          <View style={styles.bottomView}>
+          <View
+            style={[
+              styles.bottomView,
+              this.state.activeSlide === 3 && {
+                justifyContent: "center"
+              }
+            ]}
+          >
             {this.state.activeSlide === 3 ? (
               <GradientButton
                 style={[styles.getStartedButton]}

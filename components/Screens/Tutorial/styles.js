@@ -8,7 +8,6 @@ import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   cardStyle: {
-    // marginHorizontal: 20,
     borderRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 0,
@@ -23,9 +22,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderTopLeftRadius: 30,
     paddingHorizontal: 25,
-    // paddingLeft: 20,
-    // paddingRight: 20,
-
     zIndex: -19
   },
   shopCard: {
@@ -33,21 +29,14 @@ const styles = StyleSheet.create({
     left: widthPercentageToDP(-45),
     top: heightPercentageToDP(3),
     width: widthPercentageToDP(100)
-    // zIndex: -19
-    // right:
   },
   campaignButton: {
-    // flex: 1,
     padding: 20
   },
   textcontainer: {
-    // flex: 1,
     flexDirection: "column"
-    // alignItems: "center"
-    // justifyContent: "flex-start"
   },
   header: {
-    // flex: 1,
     flexDirection: "row",
     paddingVertical: 0,
     alignItems: "center"
@@ -56,7 +45,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    // left: 5,
     textAlign: "left"
   },
   adStatus: {
@@ -81,7 +69,6 @@ const styles = StyleSheet.create({
   channelIcon: {
     position: "absolute",
     top: -15
-    // zIndex: 1000
   },
   horizontalLineView: {
     width: 3,
@@ -108,7 +95,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     paddingHorizontal: 20,
-    // width: "90%",
     alignSelf: "center",
     alignItems: "center",
 
@@ -178,8 +164,6 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     fontSize: 30,
-    // marginVertical: 2,
-    // bottom: 5,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -196,11 +180,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginTop: -10,
-    // position: "absolute",
     zIndex: 1000
-    // elevation: 2,
-    // top: -15,
-    // left: 20
   },
   block3: {
     width: 30,
@@ -225,18 +205,11 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   getStartedButton: {
-    // alignSelf: "flex-end",
-    // left: widthPercentageToDP(-35),
-    // marginRight: widthPercentageToDP("7%"),
-    // bottom: heightPercentageToDP(-3.5),
     alignSelf: "center",
     zIndex: 100,
     height: 40,
     width: 110,
-    // elevation: 3,
-    // width: widthPercentageToDP(60),
-    // height: heightPercentageToDP(7),
-    // borderRadius: 50,
+
     justifyContent: "center"
   },
   imageSlide: {
@@ -248,10 +221,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    // marginTop: heightPercentageToDP(5.2),
     backgroundColor: "transparent"
-    // flex: 1,
-    // height: "100%"
   },
   background: {
     position: "absolute",
@@ -301,7 +271,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   blockDescription: {
-    // alignSelf: "flex-end",
     position: "absolute",
     bottom: heightPercentageToDP(15),
     marginVertical: 20,
@@ -333,7 +302,6 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     display: "flex",
-    // alignItem: "center",
     justifyContent: "center",
     borderRadius: 26,
     alignSelf: "center",
@@ -370,13 +338,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.55)",
     paddingHorizontal: 25
-    // marginBottom: 200
   },
   bsnView: {
     alignSelf: "flex-start",
     zIndex: 200
-    // paddingTop: 10
-    // width: 200
   },
   lowerBtn: { width: 46, height: 46 },
   mainView: {
@@ -384,9 +349,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     paddingHorizontal: 20
-    // flexDirection: "column"
-    // justifyContent: "center"
-    // padding: 20
   }
 });
 
