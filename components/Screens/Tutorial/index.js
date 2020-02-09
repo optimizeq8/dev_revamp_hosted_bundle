@@ -54,7 +54,8 @@ class Tutorial extends Component {
         description:
           "Because campaign creation is automated, you get to cut the hefty agency costs out of the equation"
       }
-    ]
+    ],
+    animatedValue: new Animated.Value(0)
   };
   componentDidMount() {
     AsyncStorage.getItem("tutorialOpened")
@@ -82,6 +83,15 @@ class Tutorial extends Component {
         });
         //  console.log(err)
       });
+    //Listener to avoid buggy animation when next button
+    this.state.animatedValue.addListener(({ value }) => {
+      // console.log("value", value);
+      this.swiperRef.getNode().scrollTo({
+        x: value,
+        y: 0,
+        animated: false
+      });
+    });
   }
 
   onSlideChange = e => {
@@ -244,20 +254,15 @@ class Tutorial extends Component {
                 <LowerButton
                   function={() => {
                     // SOURCE: https://stackoverflow.com/questions/55580525/react-native-scrollview-scrollto-spring-animation
-                    const animatedValue = new Animated.Value(0);
-                    const id = animatedValue.addListener(({ value }) => {
-                      this.swiperRef.getNode().scrollTo({
-                        x: value,
-                        y: 0,
-                        animated: false
-                      });
-                    });
-                    Animated.spring(animatedValue, {
+                    // const animatedValue = new Animated.Value(0);
+
+                    Animated.spring(this.state.animatedValue, {
                       toValue:
                         (this.state.activeSlide + 1) *
                         Dimensions.get("window").width
                     }).start(() => {
-                      animatedValue.removeListener(id); /* finished callback */
+                      // animatedValue.removeListener(id);
+                      /* finished callback */
                     });
 
                     this.setState({

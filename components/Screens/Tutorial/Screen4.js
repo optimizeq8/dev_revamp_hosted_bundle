@@ -11,7 +11,7 @@ export default class Screen4 extends React.Component {
 
     return (
       <View style={styles.screen4View}>
-        {changed && id === activeSlide && (
+        {id === activeSlide && (
           <Animatable.View animation={this.props.changed ? "bounceInDown" : ""}>
             <Award width={widthPercentageToDP(70)} />
           </Animatable.View>
