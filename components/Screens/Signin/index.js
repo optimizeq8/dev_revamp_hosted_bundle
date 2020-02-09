@@ -49,7 +49,8 @@ class Signin extends Component {
       email: "",
       password: "",
       emailError: "",
-      passwordError: ""
+      passwordError: "",
+      activeTab: 0
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -67,9 +68,10 @@ class Signin extends Component {
   };
 
   componentDidMount() {
-    Segment.screenWithProperties("Sign In", {
-      category: "Sign In"
-    });
+    //TODO: uncomment segment code once done
+    // Segment.screenWithProperties("Sign In", {
+    //   category: "Sign In"
+    // });
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
   render() {
@@ -100,10 +102,14 @@ class Signin extends Component {
                     <View style={styles.logoContainer}>
                       <Logo
                         style={styles.logo}
-                        width={heightPercentageToDP(12)}
-                        height={heightPercentageToDP(12)}
+                        width={heightPercentageToDP(9)}
+                        height={heightPercentageToDP(9)}
                       />
-                      <Text style={styles.logoText}>Optimize</Text>
+                      <View style={styles.signTextContainer}>
+                        <Text style={styles.signText}>Sign up</Text>
+                        <Text style={styles.signText}>Sign in</Text>
+                      </View>
+                      {/* <Text style={styles.logoText}>Optimize</Text> */}
                     </View>
 
                     <View style={styles.keyboardShiftContainer}>

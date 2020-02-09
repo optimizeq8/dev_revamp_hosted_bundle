@@ -20,7 +20,26 @@ const styles = StyleSheet.create({
   },
   bottomInviteViewContainer: { bottom: "5%" },
   textInviteCode: { fontFamily: "montserrat-bold" },
-  logoContainer: { alignSelf: "center", marginBottom: 10 },
+  logoContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "space-around"
+    // marginBottom: 10
+  },
+  signTextContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "center"
+  },
+  signText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-regular"
+  },
   dontHaveAccountText: {
     paddingBottom: 5,
     fontSize: 14,
@@ -38,9 +57,9 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   logo: {
-    alignSelf: "center",
+    // alignSelf: "flex-start"
     // fontSize: 50
-    position: "relative"
+    // position: "relative"
     // top: heightPercentageToDP(1)
   },
   logoText: {
