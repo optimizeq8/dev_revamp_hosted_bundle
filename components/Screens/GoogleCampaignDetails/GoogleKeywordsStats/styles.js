@@ -57,7 +57,7 @@ export default StyleSheet.create({
     // marginVertical: 10,
     // flexGrow: 1,
     width: "100%",
-    paddingBottom: "10%"
+    paddingBottom: "15%"
     // maxHeight: hp("45%")
 
     // flex: 1
@@ -68,8 +68,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginVertical: 5,
     width: "100%",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    height: 50,
     borderRadius: 27
   },
   emptyButton: {
@@ -78,8 +77,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginVertical: 5,
     width: "100%",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    height: 50,
     borderRadius: 27
   },
   contentStyle: {
@@ -98,7 +96,8 @@ export default StyleSheet.create({
   numbercontentStyle: {
     ...globalStyles.whiteTextColor,
     ...globalStyles.buttonText,
-    fontSize: 12
+    fontSize: 12,
+    flexShrink: 1
   },
   outerBlock: {
     display: "flex",
@@ -110,7 +109,6 @@ export default StyleSheet.create({
   },
   innerBlock: {
     display: "flex",
-    // alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "column",
     paddingLeft: 15
@@ -125,7 +123,9 @@ export default StyleSheet.create({
   displayStatsView: {
     flex: 1,
     borderLeftWidth: 2,
-    borderLeftColor: "rgba(255,255,255,0.15)"
+    borderLeftColor: "rgba(255,255,255,0.15)",
+    flexDirection: "row",
+    justifyContent: "center"
   },
   keywordRowView: {
     flex: 1,

@@ -13,7 +13,7 @@ export const Small = props => (
   <Text
     style={[
       {
-        fontFamily: "montserrat-medium",
+        fontFamily: "montserrat-bold",
         fontSize: 17,
         color: globalColors.white
       },
