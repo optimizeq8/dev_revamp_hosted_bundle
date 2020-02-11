@@ -11,6 +11,7 @@ import CPIIcon from "../../../../assets/SVGs/CampaignDetail/CPIIcon";
 import CPVIcon from "../../../../assets/SVGs/CampaignDetail/CPVIcon";
 import ReachIcon from "../../../../assets/SVGs/CampaignDetail/ReachIcon";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { Small } from "../../../MiniComponents/StyledComponents";
 
 export default class SingleMetric extends Component {
   render() {
@@ -48,20 +49,31 @@ export default class SingleMetric extends Component {
           />
         )}
         {!loadingCampaignStats ? (
-          <Text style={[styles.title]}>
-            {translate(metric)}
-            {"\n "}
-            <Text
-              style={[styles.numbers, { fontFamily: "montserrat-regular" }]}
-            >
-              {formatNumber(
-                Number.isInteger(metricValue)
-                  ? metricValue
-                  : parseFloat(metricValue).toFixed(2),
-                !metric.toLowerCase().includes("c")
+          <View>
+            <Text style={[styles.title]}>{translate(metric)}</Text>
+            <View style={globalStyles.row}>
+              {metric.toLowerCase().includes("c") && (
+                <Small
+                  style={[
+                    styles.numbers,
+                    { fontSize: 9, fontFamily: "montserrat-regular" }
+                  ]}
+                >
+                  $
+                </Small>
               )}
-            </Text>
-          </Text>
+              <Text
+                style={[styles.numbers, { fontFamily: "montserrat-regular" }]}
+              >
+                {formatNumber(
+                  Number.isInteger(metricValue)
+                    ? metricValue
+                    : parseFloat(metricValue).toFixed(2),
+                  true
+                )}
+              </Text>
+            </View>
+          </View>
         ) : (
           <PlaceholderLine width={70} />
         )}

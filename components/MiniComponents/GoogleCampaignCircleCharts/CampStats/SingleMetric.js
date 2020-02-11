@@ -11,7 +11,7 @@ import CPCIcon from "../../../../assets/SVGs/Performance/CPC";
 import CTRIcon from "../../../../assets/SVGs/Performance/CTR";
 import CPIIcon from "../../../../assets/SVGs/CampaignDetail/CPIIcon";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-
+import { Small } from "../../../MiniComponents/StyledComponents";
 export default class SingleMetric extends Component {
   render() {
     let {
@@ -72,25 +72,39 @@ export default class SingleMetric extends Component {
             >
               {translate(metric)}
             </Text>
-            <Text
-              style={[
-                styles.numbers,
-                ,
-                detail && { fontFamily: "montserrat-regular" }
-              ]}
-            >
-              {(metric === "ctr"
-                ? "%"
-                : metric === "cpc" || metric === "cpm"
-                ? "$"
-                : "") +
-                formatNumber(
+            <View style={{ flexDirection: "row" }}>
+              <Small
+                style={[
+                  (styles.numbers,
+                  {
+                    fontSize: 10,
+                    color: "#FF9D00",
+                    fontFamily: "montserrat-regular"
+                  })
+                ]}
+              >
+                {metric === "cpc" || metric === "cpm" ? "$" : ""}
+              </Small>
+              <Text
+                style={[
+                  styles.numbers,
+                  ,
+                  detail && { fontFamily: "montserrat-regular" }
+                ]}
+              >
+                {formatNumber(
                   Number.isInteger(metricValue)
                     ? metricValue
                     : parseFloat(metricValue).toFixed(2),
                   true
                 )}
-            </Text>
+              </Text>
+              <Small
+                style={[(styles.numbers, { fontSize: 10, color: "#FF9D00" })]}
+              >
+                {metric === "ctr" ? "%" : ""}
+              </Small>
+            </View>
           </View>
         ) : (
           <PlaceholderLine width={70} />

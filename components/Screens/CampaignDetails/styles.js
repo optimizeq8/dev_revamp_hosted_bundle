@@ -117,8 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium-english",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: 16
   },
   toggleSpace: {
     top: hp("2"),

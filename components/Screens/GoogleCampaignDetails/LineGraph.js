@@ -23,16 +23,13 @@ class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
-          (Math.abs(num) / 1000).toFixed(
-            this.props.chartChoice === "CPC" ? 2 : 0
-          ) +
-          " k"
+          Math.abs(num) / (Math.abs(num) > 9999999 ? 1000 : 1000000) +
+          `${Math.abs(num) > 9999999 ? "K" : "M"}`
       : (this.props.chartChoice === "Spend" || this.props.chartChoice === "CPC"
           ? "$"
-          : this.props.chartChoice === "ctr"
-          ? "%"
           : "") +
-          Math.abs(num).toFixed(this.props.chartChoice === "CPC" ? 2 : 0);
+          Math.abs(num) +
+          (this.props.chartChoice === "ctr" ? "%" : "");
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -170,8 +167,8 @@ class LineGraph extends Component {
             height={heightPercentageToDP(38)}
             domainPadding={{ y: 18 }}
             tickFormat={t => this.kFormatter(t)}
-            offsetX={45}
-            tickCount={5}
+            offsetX={55}
+            tickCount={4}
             padding={{
               top: 70,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
@@ -196,7 +193,7 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 14,
+    fontSize: 13,
     padding: 5,
     fontFamily: "Helvetica",
     fontWeight: "100"
