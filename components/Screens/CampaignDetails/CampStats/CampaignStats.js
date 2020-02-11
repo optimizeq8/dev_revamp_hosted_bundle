@@ -61,45 +61,24 @@ class CampaignStats extends PureComponent {
       case "TRAFFIC":
         objectiveMetric = campaignMetrics.filter(
           metric =>
-            ![
-              "video views",
-              "eCPV",
-              "swipeup rate",
-              "spend",
-              "swipes"
-            ].includes(metric.metric)
+            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
         );
         break;
       case "WEB_CONVERSION":
         objectiveMetric = campaignMetrics.filter(
           metric =>
-            ![
-              "video views",
-              "eCPV",
-              "swipeup rate",
-              "spend",
-              "swipes"
-            ].includes(metric.metric)
+            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
         );
         break;
       case "APP_INSTALLS":
         objectiveMetric = campaignMetrics.filter(
           metric =>
-            ![
-              "video views",
-              "eCPV",
-              "swipeup rate",
-              "spend",
-              "swipes"
-            ].includes(metric.metric)
+            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
         );
         break;
       case "VIDEO_VIEWS":
         objectiveMetric = campaignMetrics.filter(
-          metric =>
-            !["eCPSU", "swipeup rate", "spend", "swipes"].includes(
-              metric.metric
-            )
+          metric => !["eCPSU", "spend", "swipes"].includes(metric.metric)
         );
         break;
       default:

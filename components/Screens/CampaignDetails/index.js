@@ -180,6 +180,7 @@ class CampaignDetails extends Component {
     this.setState(prevState => ({
       expand: !prevState.expand
     }));
+    this.scroll.scrollTo({ x: 0, y: 0, animated: true });
     this.toggle();
   };
 
@@ -541,6 +542,7 @@ class CampaignDetails extends Component {
               <ScrollView
                 contentContainerStyle={{ height: hp(100) }}
                 scrollEnabled={!this.state.expand}
+                ref={ref => (this.scroll = ref)}
                 style={{ maxHeight: "100%" }}
               >
                 <View style={[styles.mainCard]}>

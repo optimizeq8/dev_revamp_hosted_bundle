@@ -5,6 +5,7 @@ import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import globalStyles from "../../../../GlobalStyles";
 import ImpressionsIcons from "../../../../assets/SVGs/CampaignCards/ImpressionsIcon";
+import SwipeUpsIcon from "../../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import SpendIcons from "../../../../assets/SVGs/SpendingIcon";
 import FrequencyIcon from "../../../../assets/SVGs/CampaignDetail/FrequencyIcon";
 import CPIIcon from "../../../../assets/SVGs/CampaignDetail/CPIIcon";
@@ -32,6 +33,9 @@ export default class SingleMetric extends Component {
         break;
       case "Reach":
         Icon = ReachIcon;
+        break;
+      case "swipeup rate":
+        Icon = SwipeUpsIcon;
         break;
       default:
       case "eCPV":

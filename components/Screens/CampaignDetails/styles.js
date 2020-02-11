@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: 11,
     textAlign: "left",
     textTransform: "uppercase"
   },
