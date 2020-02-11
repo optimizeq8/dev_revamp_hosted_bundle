@@ -47,7 +47,7 @@ class CampaignStats extends PureComponent {
         metricValue: googleCampaignOverall[metric]
       });
     });
-    let metricsArr = ["impressions", "clicks", "spend"];
+    let metricsArr = ["impressions", "clicks", "spend", "ctr"];
     let metrics = [];
     campaignMetrics = campaignMetrics.filter(
       metric => !metricsArr.includes(metric.metric)

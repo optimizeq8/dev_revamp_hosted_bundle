@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   metricRow: {
     flexDirection: "row",
-    alignSelf: "center"
+    marginVertical: 5
   }
 });
 
