@@ -70,7 +70,10 @@ class GoogleCampaignCard extends Component {
                         style={[
                           styles.circleIcon,
                           {
-                            color: globalColors.green
+                            color:
+                              campaign.status === "REMOVED"
+                                ? globalColors.orange
+                                : globalColors.green
                           }
                         ]}
                         name={"circle"}
@@ -79,7 +82,12 @@ class GoogleCampaignCard extends Component {
                       <Text
                         style={[
                           styles.reviewText,
-                          { color: globalColors.green }
+                          {
+                            color:
+                              campaign.status === "REMOVED"
+                                ? globalColors.orange
+                                : globalColors.green
+                          }
                         ]}
                       >
                         {translate(
