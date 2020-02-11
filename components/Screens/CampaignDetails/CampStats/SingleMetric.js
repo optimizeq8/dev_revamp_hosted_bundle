@@ -76,6 +76,16 @@ export default class SingleMetric extends Component {
                   true
                 )}
               </Text>
+              {metric.toLowerCase() === "swipeup rate" && (
+                <Small
+                  style={[
+                    styles.numbers,
+                    { fontSize: 9, fontFamily: "montserrat-regular" }
+                  ]}
+                >
+                  %
+                </Small>
+              )}
             </View>
           </View>
         ) : (
