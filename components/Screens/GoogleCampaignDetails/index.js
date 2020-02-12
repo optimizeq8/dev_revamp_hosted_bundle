@@ -523,6 +523,7 @@ class GoogleCampaignDetails extends Component {
                       >
                         <Transition shared="preview">
                           <GoogleSEAPreview
+                            details={false}
                             screenProps={this.props.screenProps}
                             headline1={selectedCampaign.ad.headline1}
                             headline2={selectedCampaign.ad.headline2}

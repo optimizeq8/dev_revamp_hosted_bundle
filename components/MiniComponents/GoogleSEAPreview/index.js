@@ -71,101 +71,44 @@ export default GoogleSEAPreview = props => {
           style={[styles.headlineRowContainer, dynamicStyle(language).arabic]}
         >
           <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
-            <View style={[styles.headerContent, dynamicStyle(language).arabic]}>
-              {details && (
-                <Text
-                  style={[
-                    styles.headline,
-                    dynamicStyle(language).arabic,
-                    inputH1
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.darkGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate(headlineNums[0])}
-                </Text>
-              )}
-              {headline1 ? (
-                <Text
-                  style={[styles.headlineText, dynamicStyle(language).arabic]}
-                >
-                  {headlineArray[0]}
-                </Text>
-              ) : (
-                <Text style={[styles.headlineText]}>
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
-          </View>
-          <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
-            <View style={styles.headlineBlueLine} />
-            <View style={[GlobalStyles.column]}>
-              {details && (
-                <Text
-                  style={[
-                    styles.headline,
-                    dynamicStyle(language).arabic,
-                    inputH2
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.darkGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate(headlineNums[1])}
-                </Text>
-              )}
-              {headline2 ? (
-                <Text
-                  style={[styles.headlineText, dynamicStyle(language).arabic]}
-                >
-                  {headlineArray[1]}
-                </Text>
-              ) : (
-                <Text style={[styles.headlineText]}>
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
-          </View>
-          <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
-            <View style={styles.headlineBlueLine} />
-            <View style={[GlobalStyles.column]}>
-              {details && (
-                <Text
-                  style={[
-                    styles.headline,
-                    dynamicStyle(language).arabic,
-                    inputH3
-                      ? GlobalStyles.orangeTextColor
-                      : GlobalStyles.darkGrayTextColor
-                  ]}
-                >
-                  {translate("Headline")} {translate(headlineNums[2])}
-                </Text>
-              )}
-              {headline3 ? (
-                <Text
-                  style={[
-                    styles.headlineText,
-                    {
-                      paddingLeft: 6
-                    },
-                    dynamicStyle(language).arabic
-                  ]}
-                >
-                  {headlineArray[2]}
-                </Text>
-              ) : (
-                <Text style={[styles.headlineText]}>
-                  {translate("Add")} {translate("Headline")}
-                </Text>
-              )}
-            </View>
+            {details && (
+              <Text
+                style={[
+                  styles.headline,
+                  dynamicStyle(language).arabic,
+                  inputH1
+                    ? GlobalStyles.orangeTextColor
+                    : GlobalStyles.darkGrayTextColor
+                ]}
+              >
+                {translate("Headline")} {translate(headlineNums[0])}
+              </Text>
+            )}
+
+            <Text style={[styles.headlineText, dynamicStyle(language).arabic]}>
+              {headline1
+                ? headlineArray[0] + " "
+                : translate("Add") + " " + translate("Headline")}
+              |{" "}
+              <Text
+                style={[styles.headlineText, dynamicStyle(language).arabic]}
+              >
+                {headline2
+                  ? headlineArray[1] + " "
+                  : translate("Add") + " " + translate("Headline")}
+              </Text>
+              |{" "}
+              <Text
+                style={[styles.headlineText, dynamicStyle(language).arabic]}
+              >
+                {headline3
+                  ? headlineArray[2] + " "
+                  : translate("Add") + " " + translate("Headline")}
+              </Text>
+            </Text>
           </View>
         </View>
       </View>
-
-      <View style={styles.descriptionGrayLine} />
       <View
         style={[
           styles.headersCol,
@@ -198,9 +141,16 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("Description") +
               " " +
-              translate("1")}
+              translate("1") +
+              " "}
+          {description2 ||
+            translate("Add") +
+              " " +
+              translate("Description") +
+              " " +
+              translate("2")}
         </Text>
-        <Text
+        {/* <Text
           style={[
             styles.headlineText,
             styles.descriptionText,
@@ -215,6 +165,7 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("2")}
         </Text>
+       */}
       </View>
     </View>
   );
