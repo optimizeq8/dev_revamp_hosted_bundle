@@ -97,18 +97,16 @@ export const create_user_on_intercom = () => {
       phone: user.mobile,
       name: `${user.firstname} ${user.lastname}`
     };
-    if (bus.hasOwnProperty("businessid")) {
-      body["companies"] = [
-        {
-          company_id: bus.businessid,
-          name: bus.businessname
-        }
-      ];
-    }
+
+    body["companies"] = getState().account.businessAccounts.map(bus => {
+      return { company_id: bus.businessid, name: bus.businessname };
+    });
+
     dispatch({
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
+
     NodeBackendURL()
       .post("/create-user", body)
       .then(res => {
@@ -554,5 +552,59 @@ export const subscribe = socket => {
     return dispatch({
       type: actionTypes.SET_AS_SUBSCRIBED
     });
+  };
+};
+
+// {
+//     "user_id": "5",
+//     "email": "heedll@oo.co",
+//     "phone": "00971569028443",
+//     "name": "HEloo SiR",
+//         "companies": [
+//             {
+//                 "company_id": "3",
+//                 "name": "businiess name"
+//             }
+//         ]
+// }
+
+/**
+ * Creates a user on intercom
+ *
+ * @method
+ * @param {object} user
+ * @param {string} user.user_id
+ * @param {string} user.email
+ * @param {string} user.phone
+ * @param {string} user.name includes both the first and last name in one string
+ * @param {array} user.companies includes objects of company id and name
+ * @returns {Function} dispatch action with user information
+ */
+export const update_user_on_intercom = body => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_LOADING_MESSENGER,
+      payload: true
+    });
+    NodeBackendURL()
+      .post("/update-user", body)
+      .then(res => {
+        dispatch(get_conversation(res.data.user_id));
+        return dispatch({
+          type: actionTypes.SET_CURRENT_MESSENGER,
+          payload: res.data
+        });
+      })
+      .catch(err => {
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("create_user_on_intercom", err.message || err.response);
+      });
   };
 };
