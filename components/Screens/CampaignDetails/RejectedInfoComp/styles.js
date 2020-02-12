@@ -12,9 +12,7 @@ export default StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 20,
     flexDirection: "column",
-    // alignItems: "center",
-    // height: 80,
-    // width: "100%",
+    width: "80%",
     justifyContent: "space-evenly",
     marginTop: 10
   },
@@ -31,8 +29,8 @@ export default StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-regular",
     color: "#fff",
-    lineHeight: 16
-    // width: 200
+    lineHeight: 16,
+    textTransform: "uppercase"
   },
   rejectedModalTitleContainer: {
     flexDirection: "row",
@@ -67,8 +65,9 @@ export default StyleSheet.create({
     flex: 1
   },
   rejectedOuterView: {
-    maxHeight: 280,
-    paddingHorizontal: "5%"
+    maxHeight: "40%",
+    paddingHorizontal: "5%",
+    marginTop: "5%"
   },
   contentStyle: {
     paddingBottom: "10%"
@@ -82,10 +81,9 @@ export default StyleSheet.create({
     paddingHorizontal: 20
   },
   customButtonStyle: {
-    width: 164,
-    height: 40,
-    alignSelf: "flex-end",
-    paddingHorizontal: 20
+    width: 160,
+    height: 50,
+    alignSelf: "flex-end"
   },
   customButtonText: {
     fontSize: 14
