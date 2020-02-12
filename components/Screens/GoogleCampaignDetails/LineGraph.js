@@ -64,7 +64,13 @@ class LineGraph extends Component {
     }
 
     return (
-      <View style={{ paddingLeft: 30, bottom: 10, paddingBottom: 20 }}>
+      <View
+        style={{
+          paddingLeft: 30,
+          bottom: 10,
+          paddingBottom: 20
+        }}
+      >
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -111,7 +117,7 @@ class LineGraph extends Component {
               />
             }
             padding={{
-              top: 70,
+              top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 50
@@ -141,7 +147,7 @@ class LineGraph extends Component {
             ) : (
               <VictoryArea
                 categories={{ x: category }}
-                interpolation="cardinal"
+                interpolation="catmullRom"
                 style={{
                   data: {
                     stroke: "#FF7D08",
@@ -165,19 +171,19 @@ class LineGraph extends Component {
           <VictoryAxis
             dependentAxis
             height={heightPercentageToDP(38)}
-            domainPadding={{ y: 18 }}
+            domainPadding={{ y: 40 }}
             tickFormat={t => this.kFormatter(t)}
             offsetX={55}
-            tickCount={4}
+            tickCount={5}
             padding={{
-              top: 70,
+              top: 20,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 60
             }}
             domain={
               independentTickValues.length > 0
-                ? [0, Math.max(...independentTickValues)]
+                ? [0, Math.max(...independentTickValues) * 1.05]
                 : [0, 1]
             }
             style={tickLabelStyles}

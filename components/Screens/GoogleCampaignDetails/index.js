@@ -272,7 +272,6 @@ class GoogleCampaignDetails extends Component {
             content: location
           });
         }
-        console.log(selectedCampaign);
       }
 
       return (
@@ -466,7 +465,7 @@ class GoogleCampaignDetails extends Component {
                   selectedCampaign.campaign.review_status !== "PENDING" ? (
                     <TouchableOpacity
                       disabled={this.state.expand}
-                      onLayout={this.layout}
+                      onLayout={this.onLayout}
                       onPress={this.handleChartToggle}
                     >
                       <CampaignCircleChart
