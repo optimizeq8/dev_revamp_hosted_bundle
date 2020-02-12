@@ -137,7 +137,8 @@ export {
   update_last_seen,
   subscribe,
   update_conversatusion_read_status,
-  upload_media
+  upload_media,
+  update_user_on_intercom
 } from "./messengerActions";
 
 export { getLanguageListPOEdit } from "./languageActions";
