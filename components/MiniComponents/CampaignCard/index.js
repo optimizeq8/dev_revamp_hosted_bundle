@@ -57,6 +57,7 @@ class CampaignCard extends Component {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
+    endDate.setDate(endDate.getDate() + 2);
     return (
       <LinearGradient
         colors={["#9300FF", "#9300FF", "#4E00CB"]}

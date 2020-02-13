@@ -447,6 +447,8 @@ export const get_google_campiagn_details = (
         return res.data;
       })
       .then(data => {
+        console.log(data);
+
         // added to handle in case of error
         if (data.error) {
           showMessage({
@@ -464,11 +466,21 @@ export const get_google_campiagn_details = (
             type: actionTypes.SET_GOOGLE_CAMPAIGN_STATS,
             payload: { loading: false, data: data }
           });
-        else
+        else {
+          let endDate = new Date(data.campaign.end_time);
+          endDate.setDate(endDate.getDate() + 2);
+          if (
+            !data.campaign.completed &&
+            data.campaign.status === "PAUSED" &&
+            endDate < new Date()
+          ) {
+            dispatch(refundGoogleCampaignAmount(data.campaign.id));
+          }
           return dispatch({
             type: actionTypes.SET_CAMPAIGN,
             payload: { loading: false, data: data }
           });
+        }
       })
       .catch(err => {
         showMessage({
@@ -817,6 +829,22 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
       .then(res => res.data)
       .then(data => {
         if (data.message) showModalMessage(data.message, "success");
+      })
+      .catch(err => showModalMessage(err));
+  };
+};
+
+export const refundGoogleCampaignAmount = campaign_id => {
+  return (dispatch, getState) => {
+    GoogleBackendURL()
+      .get(`request/refund/`, {
+        businessid: getState().account.mainBusiness.businessid,
+        id: campaign_id
+      })
+      .then(res => res.data)
+      .then(data => {
+        if (data.message)
+          showMessage({ message: data.message, type: "success" });
       })
       .catch(err => showModalMessage(err));
   };
