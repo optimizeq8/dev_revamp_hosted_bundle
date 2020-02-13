@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 import PersonTransparentIcon from "../../../../assets/SVGs/MenuIcons/PersonTransparent";
 import EmailTransparentIcon from "../../../../assets/SVGs/EmailTransparent";
 import InputField from "../../../MiniComponents/InputField";

@@ -41,7 +41,6 @@ class CampaignCircleChart extends Component {
           new Date(campaign.end_time) < new Date();
     return campaignEndedOrNot;
   };
-
   render() {
     const { translate } = this.props.screenProps;
     let {

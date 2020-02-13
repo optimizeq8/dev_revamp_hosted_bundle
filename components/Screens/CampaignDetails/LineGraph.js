@@ -126,7 +126,7 @@ ${day}/${shortMonths[month]}`;
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
           >
             <Defs>
-              <LinearGradient x1="0" y1="0" x2="0" y2="180" id="myGradient">
+              <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
                 <Stop offset="0%" stopColor="#FF7D08" />
                 <Stop offset="5%" stopColor="#f07204" />
                 <Stop offset="60%" stopColor="#000" />
@@ -148,7 +148,7 @@ ${day}/${shortMonths[month]}`;
             ) : (
               <VictoryArea
                 categories={{ x: category }}
-                interpolation="cardinal"
+                interpolation="catmullRom"
                 style={{
                   data: {
                     stroke: "#FF7D08",
@@ -170,19 +170,19 @@ ${day}/${shortMonths[month]}`;
         <View style={styles.xAxisStyle}>
           <VictoryAxis
             height={heightPercentageToDP(38)}
-            domainPadding={{ y: 18 }}
+            domainPadding={{ y: 40 }}
             dependentAxis
             tickFormat={t => this.kFormatter(t)}
-            tickCount={5}
+            tickCount={4}
             padding={{
-              top: 70,
+              top: 20,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 60
             }}
             domain={
               independentTickValues.length > 0
-                ? [0, Math.max(...independentTickValues)]
+                ? [0, Math.max(...independentTickValues) * 1.05]
                 : [0, 1]
             }
             style={tickLabelStyles}

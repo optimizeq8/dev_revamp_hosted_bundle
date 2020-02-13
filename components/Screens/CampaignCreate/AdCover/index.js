@@ -530,7 +530,6 @@ class AdCover extends Component {
     this.rejected &&
       this.selectedCampaign &&
       body.append("preview_media_id", this.selectedCampaign.story_preview_id);
-    console.log(body);
 
     this.setState({
       formattedCover: body

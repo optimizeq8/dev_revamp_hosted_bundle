@@ -15,10 +15,7 @@ export default class MediaOptions extends Component {
   handleOptionSelect = () => {
     let { title } = this.props;
 
-    if (Platform.OS === "ios" && title === "Video") {
-      segmentEventTrack("Option upload Video through URL selected");
-      this.props.getVideoUploadUrl();
-    } else if (title === "Upload media from a different device") {
+    if (title === "Upload media from a different device") {
       segmentEventTrack("Option upload media from different device selected");
       this.props.setUploadFromDifferentDeviceModal(true);
       this.props.setMediaModalVisible(false);

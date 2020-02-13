@@ -27,10 +27,13 @@ export const send_push_notification = () => {
     Permissions.getAsync(Permissions.NOTIFICATIONS)
       .then(permission => {
         if (permission.status === "granted") {
-          Notifications.getExpoPushTokenAsync().then(token => {
+          Notifications.getDevicePushTokenAsync({
+            gcmSenderId: "707133061105"
+          }).then(token => {
             createBaseUrl()
               .post(`updatepushToken`, {
-                token: token,
+                token: token.data,
+                token_type: token.type,
                 userid: getState().auth.userInfo.userid
               })
               .then(res => {

@@ -538,7 +538,8 @@ const styles = StyleSheet.create({
   },
   rejectedHeader: {
     alignItems: "center",
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    marginTop: "5%"
   },
   reviewStatusReason: {
     fontSize: 13,

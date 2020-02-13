@@ -25,6 +25,7 @@ export class BudgetCards extends Component {
       lifetime_budget_micro,
       budgetOption
     } = this.props;
+    const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
     let cards = [
       { recBudget, id: 1 },
@@ -86,7 +87,7 @@ export class BudgetCards extends Component {
                       }
                     ]}
                   >
-                    Custom Budget
+                    {translate("Custom Budget")}
                   </Text>
                 </TouchableOpacity>
               ) : (

@@ -93,28 +93,26 @@ class SelectInterests extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </GradientButton>
-              <ScrollView style={styles.scrollContainer}>
-                <Picker
-                  showIcon={true}
-                  screenProps={this.props.screenProps}
-                  searchPlaceholderText={translate("Search Interests")}
-                  data={this.state.interests}
-                  uniqueKey={"id"}
-                  displayKey={"name"}
-                  open={this.state.open}
-                  onSelectedItemsChange={this.props.onSelectedItemsChange}
-                  onSelectedItemObjectsChange={
-                    this.props.onSelectedItemObjectsChange
-                  }
-                  selectedItems={this.props.selectedItems}
-                  single={false}
-                  screenName={"Select Interests"}
-                  closeCategoryModal={() => this.setState({ open: false })}
-                />
-                {isNull(this.state.interests) && (
-                  <ActivityIndicator color="#FFFF" size="large" />
-                )}
-              </ScrollView>
+              <Picker
+                showIcon={true}
+                screenProps={this.props.screenProps}
+                searchPlaceholderText={translate("Search Interests")}
+                data={this.state.interests}
+                uniqueKey={"id"}
+                displayKey={"name"}
+                open={this.state.open}
+                onSelectedItemsChange={this.props.onSelectedItemsChange}
+                onSelectedItemObjectsChange={
+                  this.props.onSelectedItemObjectsChange
+                }
+                selectedItems={this.props.selectedItems}
+                single={false}
+                screenName={"Select Interests"}
+                closeCategoryModal={() => this.setState({ open: false })}
+              />
+              {isNull(this.state.interests) && (
+                <ActivityIndicator color="#FFFF" size="large" />
+              )}
             </View>
           </View>
           <LowerButton

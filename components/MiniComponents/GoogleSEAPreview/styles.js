@@ -19,8 +19,9 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   headerContent: {
-    flexDirection: "column",
-    paddingRight: 0
+    flexDirection: "row",
+    flex: 1,
+    flexWrap: "wrap"
   },
   headline: {
     fontFamily: "montserrat-bold",
@@ -68,8 +69,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   headlineRow: {
-    flexDirection: "row",
-    width: "35%"
+    flexDirection: "row"
   },
   headlineRowContainer: {
     flexDirection: "row",

@@ -377,7 +377,10 @@ class GoogleCampaignDetails extends Component {
                           "REJECTED"
                         )
                           ? globalColors.red
-                          : selectedCampaign.campaign.status === "ENABLED"
+                          : selectedCampaign.campaign.status === "ENABLED" &&
+                            !selectedCampaign.campaign.review_status.includes(
+                              "PENDING"
+                            )
                           ? globalColors.green
                           : globalColors.orange
                       }
@@ -462,7 +465,7 @@ class GoogleCampaignDetails extends Component {
                   selectedCampaign.campaign.review_status !== "PENDING" ? (
                     <TouchableOpacity
                       disabled={this.state.expand}
-                      onLayout={this.layout}
+                      onLayout={this.onLayout}
                       onPress={this.handleChartToggle}
                     >
                       <CampaignCircleChart
@@ -520,6 +523,7 @@ class GoogleCampaignDetails extends Component {
                       >
                         <Transition shared="preview">
                           <GoogleSEAPreview
+                            details={false}
                             screenProps={this.props.screenProps}
                             headline1={selectedCampaign.ad.headline1}
                             headline2={selectedCampaign.ad.headline2}

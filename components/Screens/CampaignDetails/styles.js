@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 12,
+    fontSize: 11,
     textAlign: "left",
     textTransform: "uppercase"
   },
@@ -117,8 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium-english",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: 16
   },
   toggleSpace: {
     top: hp("2"),

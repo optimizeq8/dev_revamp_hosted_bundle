@@ -12,6 +12,8 @@ import isStringArabic from "../../isStringArabic";
 import GoogleCampaignCircleCharts from "../GoogleCampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import globalStyles from "../../../GlobalStyles";
+import dateFormat from "dateformat";
+
 class GoogleCampaignCard extends Component {
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
@@ -32,6 +34,8 @@ class GoogleCampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
+    let endDate = new Date(campaign.end_time);
+    endDate.setDate(endDate.getDate() + 2);
 
     return (
       <LinearGradient
@@ -70,7 +74,10 @@ class GoogleCampaignCard extends Component {
                         style={[
                           styles.circleIcon,
                           {
-                            color: globalColors.green
+                            color:
+                              campaign.status === "REMOVED"
+                                ? globalColors.orange
+                                : globalColors.green
                           }
                         ]}
                         name={"circle"}
@@ -79,18 +86,32 @@ class GoogleCampaignCard extends Component {
                       <Text
                         style={[
                           styles.reviewText,
-                          { color: globalColors.green }
+                          {
+                            color:
+                              campaign.status === "REMOVED"
+                                ? globalColors.orange
+                                : globalColors.green
+                          }
                         ]}
                       >
                         {translate(
                           `${
-                            campaign.status === "LIVE"
-                              ? "LIVE"
+                            campaign.status === "ENABLED"
+                              ? new Date(campaign.start_time) > new Date()
+                                ? "Scheduled for"
+                                : "LIVE"
                               : campaign.status === "PAUSED"
                               ? "Campaign Paused"
                               : "Campaign ended"
                           }`
-                        )}
+                        ) +
+                          " " +
+                          (new Date(campaign.start_time) > new Date()
+                            ? dateFormat(
+                                new Date(campaign.start_time),
+                                "mmm dS"
+                              )
+                            : "")}
                       </Text>
                     </View>
                   ) : this.review_status === "REJECTED" ? (
@@ -137,6 +158,23 @@ class GoogleCampaignCard extends Component {
                   )}
                 </View>
               </View>
+              {!campaign.completed &&
+                campaign.status === "REMOVED" &&
+                endDate < new Date() && (
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="alert"
+                    style={[
+                      styles.icon,
+                      {
+                        marginLeft: "auto",
+                        // left: "75%",
+                        color: globalColors.green
+                        // position: "absolute"
+                      }
+                    ]}
+                  />
+                )}
             </View>
             {this.review_status === "APPROVED" && (
               <View style={styles.chartContainer}>

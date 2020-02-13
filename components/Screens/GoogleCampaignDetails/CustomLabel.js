@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { G } from "react-native-svg";
 import { VictoryTooltip } from "victory-native";
+import formatNumber from "../../formatNumber";
 
 export default class CustomLabel extends Component {
   render() {
@@ -9,10 +10,17 @@ export default class CustomLabel extends Component {
         <VictoryTooltip
           {...this.props}
           y={this.props.y - 5}
-          text={
-            (this.props.chartChoice === "Spend" ? "$" : "") +
-            `${this.props.datum.y.toFixed(2)}`
-          }
+          text={`${
+            this.props.chartChoice === "Spend" ||
+            this.props.chartChoice === "CPC"
+              ? "$"
+              : ""
+          }${formatNumber(
+            this.props.datum.y.toFixed(
+              Number.isInteger(this.props.datum.y) ? 0 : 2
+            ),
+            true
+          )}${this.props.chartChoice === "ctr" ? "%" : ""}`}
           style={{
             fill: "#FF9D00",
             fontSize: 20
@@ -20,7 +28,7 @@ export default class CustomLabel extends Component {
           orientation="top"
           pointerLength={15}
           cornerRadius={15}
-          width={80}
+          flyoutWidth={85}
           active={true}
           flyoutHeight={45}
           pointerWidth={30}
@@ -37,7 +45,7 @@ export default class CustomLabel extends Component {
               ? `${this.props.category[this.props.datum.x].split("\n")[0]}`
               : `${this.props.datum.x}`
           }
-          y={this.props.y - 20}
+          y={this.props.y - 17}
           orientation="top"
           pointerLength={10}
           style={{ fill: "#C6C6C6", fontSize: 12 }}

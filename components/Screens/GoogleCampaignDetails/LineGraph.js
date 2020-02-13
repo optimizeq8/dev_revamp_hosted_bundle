@@ -23,16 +23,13 @@ class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
-          (Math.abs(num) / 1000).toFixed(
-            this.props.chartChoice === "CPC" ? 2 : 0
-          ) +
-          " k"
+          Math.abs(num) / (Math.abs(num) > 9999999 ? 1000 : 1000000) +
+          `${Math.abs(num) > 9999999 ? "K" : "M"}`
       : (this.props.chartChoice === "Spend" || this.props.chartChoice === "CPC"
           ? "$"
-          : this.props.chartChoice === "ctr"
-          ? "%"
           : "") +
-          Math.abs(num).toFixed(this.props.chartChoice === "CPC" ? 2 : 0);
+          Math.abs(num) +
+          (this.props.chartChoice === "ctr" ? "%" : "");
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -67,7 +64,13 @@ class LineGraph extends Component {
     }
 
     return (
-      <View style={{ paddingLeft: 30, bottom: 10, paddingBottom: 20 }}>
+      <View
+        style={{
+          paddingLeft: 30,
+          bottom: 10,
+          paddingBottom: 20
+        }}
+      >
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -114,7 +117,7 @@ class LineGraph extends Component {
               />
             }
             padding={{
-              top: 70,
+              top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 50
@@ -122,7 +125,7 @@ class LineGraph extends Component {
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
           >
             <Defs>
-              <LinearGradient x1="0" y1="0" x2="0" y2="180" id="myGradient">
+              <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
                 <Stop offset="0%" stopColor="#FF7D08" />
                 <Stop offset="5%" stopColor="#f07204" />
                 <Stop offset="60%" stopColor="#000" />
@@ -144,7 +147,7 @@ class LineGraph extends Component {
             ) : (
               <VictoryArea
                 categories={{ x: category }}
-                interpolation="cardinal"
+                interpolation="catmullRom"
                 style={{
                   data: {
                     stroke: "#FF7D08",
@@ -168,19 +171,19 @@ class LineGraph extends Component {
           <VictoryAxis
             dependentAxis
             height={heightPercentageToDP(38)}
-            domainPadding={{ y: 18 }}
+            domainPadding={{ y: 40 }}
             tickFormat={t => this.kFormatter(t)}
-            offsetX={45}
+            offsetX={55}
             tickCount={5}
             padding={{
-              top: 70,
+              top: 20,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 60
             }}
             domain={
               independentTickValues.length > 0
-                ? [0, Math.max(...independentTickValues)]
+                ? [0, Math.max(...independentTickValues) * 1.05]
                 : [0, 1]
             }
             style={tickLabelStyles}
@@ -196,7 +199,7 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 14,
+    fontSize: 13,
     padding: 5,
     fontFamily: "Helvetica",
     fontWeight: "100"

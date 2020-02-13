@@ -25,11 +25,12 @@ export default styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
-    // marginTop: hp(5),
     marginVertical: 0,
     marginLeft: 0,
     backgroundColor: "rgba(0,0,0,0.9)",
-    width: wp(100)
+    width: "100%",
+    height: "105%",
+    flex: 0
   },
   searchBar: {
     backgroundColor: "rgba(255,255,255,0.1)",
@@ -56,7 +57,7 @@ export default styles = StyleSheet.create({
   },
   scrollView: {
     width: wp(80),
-    marginBottom: hp(5),
+    // marginBottom: hp(5),
     alignSelf: "center"
   },
   button: {

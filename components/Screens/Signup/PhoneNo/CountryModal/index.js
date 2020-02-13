@@ -30,8 +30,8 @@ const defaultProps = {
 };
 
 export default class CountryModal extends BaseComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this._bind("onChange", "open", "close", "renderChildren");
 
@@ -49,8 +49,9 @@ export default class CountryModal extends BaseComponent {
     this.setState({ cancelText: this.props.cancelText });
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ data: nextProps.data });
+  componentDidUpdate(prevProps) {
+    if (prevProps.data !== this.props.data)
+      this.setState({ data: this.props.data });
   }
 
   onChange(item) {

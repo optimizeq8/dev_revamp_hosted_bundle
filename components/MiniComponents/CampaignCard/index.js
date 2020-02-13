@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
 import slowlog from "react-native-slowlog";
+import dateFormat from "dateformat";
 
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
@@ -53,10 +54,12 @@ class CampaignCard extends Component {
           new Date(campaign.end_time) < new Date();
     return campaignEndedOrNot;
   };
+
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
+    endDate.setDate(endDate.getDate() + 2);
     return (
       <LinearGradient
         colors={["#9300FF", "#9300FF", "#4E00CB"]}
@@ -125,7 +128,8 @@ class CampaignCard extends Component {
                         {
                           color: this.review_status.includes("REJECTED")
                             ? globalColors.red
-                            : this.campaign_status === "LIVE"
+                            : this.campaign_status === "LIVE" &&
+                              !this.review_status.includes("PENDING")
                             ? globalColors.green
                             : globalColors.orange
                         }
@@ -161,10 +165,18 @@ class CampaignCard extends Component {
                             : this.review_status.includes("REJECTED")
                             ? "Ad Rejected"
                             : this.campaign_status === "LIVE"
-                            ? "LIVE"
+                            ? new Date(campaign.start_time) > new Date()
+                              ? "Scheduled for"
+                              : "LIVE"
                             : "Campaign Paused"
                         }`
-                      )}
+                      ) +
+                        " " +
+                        (this.campaign_status === "LIVE" &&
+                        !this.review_status.includes("PENDING") &&
+                        new Date(campaign.start_time) > new Date()
+                          ? dateFormat(new Date(campaign.start_time), "mmm dS")
+                          : "")}
                     </Text>
                   </View>
                 )}

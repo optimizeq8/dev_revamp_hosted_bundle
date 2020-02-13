@@ -231,7 +231,7 @@ class GoogleKeywordsStats extends Component {
                   styles.scrollContainer,
                   !isUndefined(this.state.selected.keyword) && {
                     maxHeight: hp("45%"),
-                    paddingBottom: "3%"
+                    paddingBottom: "5%"
                   }
                 ]}
               >
