@@ -471,7 +471,7 @@ export const get_google_campiagn_details = (
           endDate.setDate(endDate.getDate() + 2);
           if (
             !data.campaign.completed &&
-            data.campaign.status === "PAUSED" &&
+            data.campaign.status === "REMOVED" &&
             endDate < new Date()
           ) {
             dispatch(refundGoogleCampaignAmount(data.campaign.id));
@@ -846,6 +846,8 @@ export const refundGoogleCampaignAmount = campaign_id => {
         if (data.message)
           showMessage({ message: data.message, type: "success" });
       })
-      .catch(err => showModalMessage(err));
+      .catch(err => {
+        errorMessageHandler(err);
+      });
   };
 };

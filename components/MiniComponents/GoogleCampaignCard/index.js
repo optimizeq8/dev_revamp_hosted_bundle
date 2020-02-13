@@ -12,6 +12,8 @@ import isStringArabic from "../../isStringArabic";
 import GoogleCampaignCircleCharts from "../GoogleCampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import globalStyles from "../../../GlobalStyles";
+import dateFormat from "dateformat";
+
 class GoogleCampaignCard extends Component {
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
@@ -94,13 +96,22 @@ class GoogleCampaignCard extends Component {
                       >
                         {translate(
                           `${
-                            campaign.status === "LIVE"
-                              ? "LIVE"
+                            campaign.status === "ENABLED"
+                              ? new Date(campaign.start_time) > new Date()
+                                ? "Scheduled for"
+                                : "LIVE"
                               : campaign.status === "PAUSED"
                               ? "Campaign Paused"
                               : "Campaign ended"
                           }`
-                        )}
+                        ) +
+                          " " +
+                          (new Date(campaign.start_time) > new Date()
+                            ? dateFormat(
+                                new Date(campaign.start_time),
+                                "mmm dS"
+                              )
+                            : "")}
                       </Text>
                     </View>
                   ) : this.review_status === "REJECTED" ? (
