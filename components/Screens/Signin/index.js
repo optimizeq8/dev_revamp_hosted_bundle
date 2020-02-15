@@ -1,18 +1,11 @@
 //// components
 import React, { Component } from "react";
-import {
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  I18nManager
-} from "react-native";
-import { Button, Text, Item, Input, Container, Content } from "native-base";
+import { View, TouchableOpacity, I18nManager } from "react-native";
+import { Text } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
@@ -21,23 +14,25 @@ import * as Segment from "expo-analytics-segment";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
+import InputField from "../../MiniComponents/InputField";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import LowerButton from "../../MiniComponents/LowerButton";
-import ForwardLoading from "../../MiniComponents/ForwardLoading";
 
 // Validation
 import validateWrapper from "./ValidateWrapper";
 
 // Icons
 import Logo from "../../../assets/SVGs/Optimize";
-import Background from "../../../assets/SVGs/Background";
-import UserProfile from "../../../assets/SVGs/UserProfile";
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
+import SignInCover from "../../../assets/SVGs/SignInCover";
+
+SignInCover;
+import PersonTransparentIcon from "../../../assets/SVGs/MenuIcons/PersonTransparent";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
 import { colors } from "../../GradiantColors/colors";
+import GradientButton from "../../MiniComponents/GradientButton";
+import { showMessage } from "react-native-flash-message";
 
 class Signin extends Component {
   static navigationOptions = {
@@ -50,6 +45,8 @@ class Signin extends Component {
       password: "",
       emailError: "",
       passwordError: "",
+      newEmail: "",
+      newEmailError: "",
       activeTab: 0
     };
     this._handleSubmission = this._handleSubmission.bind(this);
@@ -68,12 +65,40 @@ class Signin extends Component {
   };
 
   componentDidMount() {
-    //TODO: uncomment segment code once done
-    // Segment.screenWithProperties("Sign In", {
-    //   category: "Sign In"
-    // });
+    Segment.screenWithProperties("Signup Using Email", {
+      category: "Sign Up",
+      label: "Step 1 of Registeration"
+    });
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    this.setState({ ...state });
+  };
+
+  getValidInfo = (stateError, validWrap) => {
+    let state = {};
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
+  createNewAccount = () => {
+    if (!this.state.newEmailError) {
+      this.props.verifyEmail(
+        this.state.newEmail,
+        { email: this.state.newEmail },
+
+        this.props.navigation
+      );
+    } else {
+      showMessage({
+        message: this.state.newEmailError,
+        type: "warning"
+      });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.userInfo) {
@@ -89,150 +114,184 @@ class Signin extends Component {
             locations={[1, 0.3]}
             style={styles.gradient}
           />
-          <Container style={styles.container}>
-            <TouchableWithoutFeedback
-              onPress={Keyboard.dismiss}
-              accessible={false}
-            >
-              <View style={[styles.touchableViewContainer]}>
-                {this.props.checkingForToken ? (
-                  <LoadingScreen dash={true} />
-                ) : (
-                  <>
-                    <View style={styles.logoContainer}>
-                      <Logo
-                        style={styles.logo}
-                        width={heightPercentageToDP(9)}
-                        height={heightPercentageToDP(9)}
-                      />
-                      <View style={styles.signTextContainer}>
-                        <Text style={styles.signText}>Sign up</Text>
-                        <Text style={styles.signText}>Sign in</Text>
-                      </View>
-                      {/* <Text style={styles.logoText}>Optimize</Text> */}
-                    </View>
 
-                    <View style={styles.keyboardShiftContainer}>
-                      {/* <Text style={styles.text}>Sign In</Text> */}
-
-                      <View style={styles.mainView}>
-                        <Item
-                          rounded
-                          style={[
-                            styles.input,
-                            this.state.emailError
-                              ? globalStyles.redBorderColor
-                              : globalStyles.transparentBorderColor
-                          ]}
-                        >
-                          <UserProfile style={styles.inputIcon} fill={"#fff"} />
-                          <Input
-                            placeholderTextColor="#fff"
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            onChangeText={value => {
-                              this.setState({
-                                email: value.trim()
-                              });
-                            }}
-                            onBlur={() => {
-                              this.setState({
-                                emailError: validateWrapper(
-                                  "email",
-                                  this.state.email
-                                )
-                              });
-                            }}
-                            placeholder={translate("Email")}
-                          />
-                        </Item>
-
-                        <Item
-                          rounded
-                          style={[
-                            styles.input,
-                            this.state.passwordError
-                              ? globalStyles.redBorderColor
-                              : globalStyles.transparentBorderColor
-                          ]}
-                        >
-                          <PasswordIcon
-                            style={styles.inputIcon}
-                            fill={"#FFF"}
-                          />
-                          <Input
-                            placeholderTextColor="#fff"
-                            secureTextEntry={true}
-                            autoCorrect={false}
-                            textContentType="password"
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            onChangeText={value => {
-                              this.setState({
-                                password: value
-                              });
-                            }}
-                            onBlur={() => {
-                              this.setState({
-                                passwordError: validateWrapper(
-                                  "password",
-                                  this.state.password
-                                )
-                              });
-                            }}
-                            placeholder={translate("Password")}
-                          />
-                        </Item>
-                        {this.props.loading ? (
-                          <ForwardLoading
-                            mainViewStyle={{
-                              width: widthPercentageToDP(9),
-                              height: heightPercentageToDP(9)
-                            }}
-                            bottom={5}
-                            style={{
-                              width: widthPercentageToDP(7),
-                              height: heightPercentageToDP(7)
-                            }}
-                          />
-                        ) : (
-                          <LowerButton
-                            style={styles.proceedButtonRTL}
-                            function={() => this._handleSubmission()}
-                          />
-                        )}
-
-                        <Text
-                          onPress={() => {
-                            Segment.track("Forgot Password Button");
-                            this.props.navigation.push("ForgotPassword");
-                          }}
-                          style={[styles.link, styles.forgotPasswordLink]}
-                        >
-                          {translate("Forgot Password?")}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.bottomInviteViewContainer}>
-                      <Text style={[styles.link, styles.dontHaveAccountText]}>
-                        {translate("Don’t Have an Account?")}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          this.props.navigation.push("MainForm");
-                        }}
-                      >
-                        <Text uppercase style={styles.createOneText}>
-                          {translate("SIGN UP")}!
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                )}
+          {this.props.checkingForToken ? (
+            <LoadingScreen dash={true} />
+          ) : (
+            <View style={styles.mainView}>
+              <View style={styles.logoContainer}>
+                <Logo
+                  style={styles.logo}
+                  width={heightPercentageToDP(9)}
+                  height={heightPercentageToDP(9)}
+                />
+                <View style={styles.signTextContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Segment.screenWithProperties("Signup Using Email", {
+                        category: "Sign Up",
+                        label: "Step 1 of Registeration"
+                      });
+                      this.setState({
+                        activeTab: 0
+                      });
+                    }}
+                    style={[
+                      styles.tabView,
+                      this.state.activeTab === 0 && styles.activeTabView
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.signText,
+                        {
+                          color:
+                            this.state.activeTab === 0
+                              ? "#FFF"
+                              : "rgba(255,255,255,0.65)"
+                        }
+                      ]}
+                    >
+                      {translate("SIGN UP")}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Segment.screenWithProperties("Sign In", {
+                        category: "Sign In"
+                      });
+                      this.setState({
+                        activeTab: 1
+                      });
+                    }}
+                    style={[
+                      styles.tabView,
+                      this.state.activeTab === 1 && styles.activeTabView
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.signText,
+                        {
+                          color:
+                            this.state.activeTab === 1
+                              ? "#FFF"
+                              : "rgba(255,255,255,0.65)"
+                        }
+                      ]}
+                    >
+                      {translate("Sign in")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {/* <Text style={styles.logoText}>Optimize</Text> */}
               </View>
-            </TouchableWithoutFeedback>
-          </Container>
+              {this.state.activeTab === 0 && (
+                <View>
+                  <Text style={styles.heading}>
+                    {translate("Create an Account")}
+                  </Text>
+                  <InputField
+                    // disabled={this.props.loadingUpdateInfo}
+                    customStyles={{ width: "100%", marginLeft: 0 }}
+                    incomplete={false}
+                    translate={this.props.screenProps.translate}
+                    stateName1="newEmail"
+                    label="Email"
+                    placeholder1="Enter your email"
+                    value={this.state.newEmail}
+                    valueError1={this.state.newEmailError}
+                    icon={PersonTransparentIcon}
+                    setValue={this.setValue}
+                    getValidInfo={this.getValidInfo}
+                    key={"Email"}
+                  />
+                  <GradientButton
+                    text={translate("Create Account")}
+                    uppercase
+                    style={{
+                      height: 50,
+                      width: "100%",
+                      marginHorizontal: 0
+                    }}
+                    textStyle={{ fontSize: 14 }}
+                    onPressAction={this.createNewAccount}
+                  />
+                </View>
+              )}
+              {this.state.activeTab === 1 && (
+                <View>
+                  <Text style={styles.heading}>
+                    {translate("Welcome Back !")}
+                  </Text>
+                  <InputField
+                    // disabled={this.props.loadingUpdateInfo}
+                    customStyles={{ width: "100%", marginLeft: 0 }}
+                    incomplete={false}
+                    translate={this.props.screenProps.translate}
+                    stateName1="email"
+                    label="Email"
+                    placeholder1="Enter your email"
+                    value={this.state.email}
+                    valueError1={this.state.emailError}
+                    icon={PersonTransparentIcon}
+                    setValue={this.setValue}
+                    getValidInfo={this.getValidInfo}
+                    key={"Email"}
+                  />
+                  <InputField
+                    // disabled={this.props.loadingUpdateInfo}
+                    customStyles={{ width: "100%", marginLeft: 0 }}
+                    incomplete={false}
+                    translate={this.props.screenProps.translate}
+                    stateName1="password"
+                    label="Password"
+                    placeholder1="Enter your password"
+                    value={this.state.password}
+                    valueError1={this.state.passwordError}
+                    icon={PasswordIcon}
+                    setValue={this.setValue}
+                    getValidInfo={this.getValidInfo}
+                    key={"Passowrd"}
+                    secureTextEntry={true}
+                  />
+
+                  <GradientButton
+                    disabled={this.props.loading}
+                    text={translate("Sign in")}
+                    uppercase
+                    style={styles.signInButton}
+                    textStyle={{ fontSize: 14 }}
+                    onPressAction={() => this._handleSubmission()}
+                  />
+
+                  <Text
+                    onPress={() => {
+                      Segment.track("Forgot Password Button");
+                      this.props.navigation.push("ForgotPassword");
+                    }}
+                    style={[styles.link, styles.forgotPasswordLink]}
+                  >
+                    {translate("Forgot Password?")}
+                  </Text>
+                </View>
+              )}
+              <View
+                style={{
+                  position: "absolute",
+                  // zIndex: -1,
+                  // top: "100%",
+                  bottom: 0,
+                  left: I18nManager.isRTL
+                    ? widthPercentageToDP(-20)
+                    : widthPercentageToDP(20)
+                  // right: -20
+                }}
+              >
+                <SignInCover height={heightPercentageToDP(38)} />
+              </View>
+            </View>
+          )}
         </SafeAreaView>
       );
   }
@@ -245,6 +304,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  verifyEmail: (email, userInfo, navigation) =>
+    dispatch(actionCreators.verifyEmail(email, userInfo, navigation)),
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
   resetRegister: () => dispatch(actionCreators.resetRegister()),

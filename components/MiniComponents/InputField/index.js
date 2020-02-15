@@ -47,9 +47,11 @@ export default class InputField extends Component {
     } else {
       // same as above but for the main input field
       valueError = validateWrapper(
+        // newEmail is used on the sign up screen
         // this to check if the input field is for email/password input,
         //if so validate using the 'email'/'password' validator
-        this.props.stateName1 === "email"
+        this.props.stateName1 === "email" ||
+          this.props.stateName1 === "newEmail"
           ? "email"
           : this.props.stateName1 === "password"
           ? "password"
@@ -60,7 +62,11 @@ export default class InputField extends Component {
     }
 
     // if the input field is for email input, show the error in a FlashMessage
-    if (this.props.stateName1 === "email" && valueError) {
+    if (
+      (this.props.stateName1 === "email" ||
+        this.props.stateName1 === "newEmail") &&
+      valueError
+    ) {
       showMessage({
         message: valueError,
         position: "top",
@@ -144,7 +150,8 @@ export default class InputField extends Component {
       maxLength,
       valueError1,
       valueError2,
-      secureTextEntry
+      secureTextEntry,
+      customStyles
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -169,7 +176,7 @@ export default class InputField extends Component {
             {translate(label)}
           </Text>
         </View>
-        <Item style={[styles.input1]}>
+        <Item style={[styles.input1, customStyles]}>
           {FieldIcon && (
             <FieldIcon
               style={{}}

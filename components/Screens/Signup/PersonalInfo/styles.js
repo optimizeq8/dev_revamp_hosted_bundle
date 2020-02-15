@@ -8,7 +8,19 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   marginVertical: {
-    marginVertical: 15
+    marginBottom: 30
+  },
+  personalInfoView: {
+    backgroundColor: "#0000",
+    display: "flex",
+    justifyContent: "space-between",
+    flex: 1,
+    paddingTop: 0
+  },
+  mobileView: {
+    width: 300,
+    alignSelf: "center",
+    marginBottom: 25
   },
   inputLabel: {
     marginBottom: -10,
@@ -130,9 +142,9 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: widthPercentageToDP(75),
+    width: 300,
     borderWidth: 0,
-    height: 54
+    height: 50
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

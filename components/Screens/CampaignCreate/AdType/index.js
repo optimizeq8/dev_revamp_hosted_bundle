@@ -119,41 +119,54 @@ class AdType extends Component {
   };
 
   navigationHandler = adType => {
-    Segment.trackWithProperties("Selected Ad Type", {
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: this.state.campaign_type
-    });
-    Segment.trackWithProperties("Completed Checkout Step", {
-      step: 1,
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: this.state.campaign_type
-    });
-
+    //Check if account is verified or not
     if (
-      this.props.adType !== this.state.campaign_type &&
-      !this.props.incompleteCampaign
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account
     ) {
-      this.props.resetCampaignInfo(true);
-    }
-    if (!this.props.incompleteCampaign) {
-      this.props.set_adType(this.state.campaign_type);
-    }
-    if (
-      !this.props.mainBusiness.snap_ad_account_id &&
-      (adType.mediaType === "snapchat" ||
-        this.state.media_type[0].mediaType === "snapchat")
-    ) {
-      this.props.navigation.navigate("SnapchatCreateAdAcc");
-    } else if (
-      !this.props.mainBusiness.google_account_id &&
-      (adType.mediaType === "google" ||
-        this.state.media_type[0].mediaType === "google")
-    ) {
-      this.props.navigation.navigate("GoogleCreateAdAcc");
-    } else
-      this.props.navigation.navigate(adType.rout || this.state.route, {
-        tempAdType: this.state.campaign_type
+      Segment.trackWithProperties("Navigate to VerifyAccount", {
+        step: 1,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_type: this.state.campaign_type
       });
+      this.props.navigation.navigate("VerifyAccount");
+    } else {
+      Segment.trackWithProperties("Selected Ad Type", {
+        business_name: this.props.mainBusiness.businessname,
+        campaign_type: this.state.campaign_type
+      });
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 1,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_type: this.state.campaign_type
+      });
+      if (
+        this.props.adType !== this.state.campaign_type &&
+        !this.props.incompleteCampaign
+      ) {
+        this.props.resetCampaignInfo(true);
+      }
+      if (!this.props.incompleteCampaign) {
+        this.props.set_adType(this.state.campaign_type);
+      }
+      if (
+        !this.props.mainBusiness.snap_ad_account_id &&
+        (adType.mediaType === "snapchat" ||
+          this.state.media_type[0].mediaType === "snapchat")
+      ) {
+        this.props.navigation.navigate("SnapchatCreateAdAcc");
+      } else if (
+        !this.props.mainBusiness.google_account_id &&
+        (adType.mediaType === "google" ||
+          this.state.media_type[0].mediaType === "google")
+      ) {
+        this.props.navigation.navigate("GoogleCreateAdAcc");
+      } else
+        this.props.navigation.navigate(adType.rout || this.state.route, {
+          tempAdType: this.state.campaign_type
+        });
+    }
+
     // this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
@@ -297,7 +310,8 @@ const mapStateToProps = state => ({
   adType: state.campaignC.adType,
   incompleteCampaign: state.campaignC.incompleteCampaign,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
+  userInfo: state.auth.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({

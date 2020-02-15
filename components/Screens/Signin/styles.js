@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Dimensions } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
@@ -7,38 +7,38 @@ import {
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#0000"
-  },
-  touchableViewContainer: {
-    flex: 1,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1
   },
   bottomInviteViewContainer: { bottom: "5%" },
   textInviteCode: { fontFamily: "montserrat-bold" },
   logoContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "space-around"
-    // marginBottom: 10
+    flexDirection: "row"
   },
   signTextContainer: {
     display: "flex",
     flexDirection: "row",
-    alignSelf: "center",
+    marginLeft: "auto",
     alignItems: "center"
   },
+  signInButton: {
+    height: 50,
+    width: "100%",
+    marginHorizontal: 0
+  },
   signText: {
-    color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
+    textTransform: "capitalize"
+  },
+  activeTabView: {
+    borderBottomWidth: 5,
+    paddingBottom: 5,
+    borderBottomColor: "#FFF",
+    borderRadius: 5
+  },
+  tabView: {
+    paddingBottom: 10,
+    paddingHorizontal: 20
   },
   dontHaveAccountText: {
     paddingBottom: 5,
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   forgotPasswordLink: { paddingVertical: 10, fontSize: 12 },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: heightPercentageToDP(3),
+    // marginTop: heightPercentageToDP(3),
     flex: 1,
-    backgroundColor: "#0000",
-    alignItems: "center",
-    width: "100%"
+    // backgroundColor: "#0000"
+    alignItems: "center"
+    // width: "100%"
   },
   logo: {
     // alignSelf: "flex-start"
@@ -71,15 +71,25 @@ const styles = StyleSheet.create({
   },
 
   mainView: {
-    // flex: 1,
-    // justifyContent: "flex-start",
-    alignItems: "center"
-    // borderWidth: 1
+    flex: 1,
+    // width: Dimensions.get("window").width,
+    paddingTop: 40,
+    paddingHorizontal: 30
+  },
+  heading: {
+    textAlign: "left",
+    alignSelf: "flex-start",
+    color: "#FFF",
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    fontSize: 25,
+    // width: "70%",
+    paddingVertical: 15
   },
   text: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 40,
+    // paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 24,
@@ -138,14 +148,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 40,
     justifyContent: "center"
-  },
-  background: {
-    position: "absolute",
-    top: "10%",
-
-    opacity: 0.3,
-    alignSelf: "center",
-    zIndex: 0
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
