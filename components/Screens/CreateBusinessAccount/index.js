@@ -315,8 +315,20 @@ class CreateBusinessAccount extends Component {
             });
           }
         } else {
+          let websitelink = this.state.businessAccount.websitelink;
+          if (websitelink !== "") {
+            websitelink =
+              this.state.networkString + this.state.businessAccount.websitelink;
+          }
           this.props.createBusinessAccount(
-            this.state.businessAccount,
+            {
+              ...this.state.businessAccount,
+              websitelink,
+              otherBusinessCategory:
+                this.state.businessAccount.businesscategory !== "43"
+                  ? null
+                  : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+            },
             this.props.navigation
           );
         }

@@ -41,7 +41,7 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
             payload: { ...data.data }
           });
-          // data.success && navigation.navigate("Dashboard");
+          NavigationService.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {

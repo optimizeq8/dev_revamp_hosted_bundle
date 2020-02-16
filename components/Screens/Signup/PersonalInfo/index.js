@@ -41,7 +41,7 @@ class PersonalInfo extends Component {
       inputE: false,
       inputP: false,
       inputPR: false,
-
+      valid: false,
       repassword: "",
       emailError: "",
       passwordError: "",
@@ -128,12 +128,34 @@ class PersonalInfo extends Component {
     // }
   };
   _handleSubmission = async () => {
+    // Need to validate all fields again here since for the input feild component the error value is set to null after animation is over
+    const passwordError = validateWrapper(
+      "password",
+      this.state.userInfo.password
+    );
+    const emailError = validateWrapper("email", this.state.userInfo.email);
+    const firstnameError = validateWrapper(
+      "firstname",
+      this.state.userInfo.firstname
+    );
+    const lastnameError = validateWrapper(
+      "lastname",
+      this.state.userInfo.lastname
+    );
+
+    this.setState({
+      passwordError,
+      emailError,
+      firstnameError,
+      lastnameError
+    });
     if (
       this._passwordVarification() &&
-      !this.state.firstnameError &&
-      !this.state.lastError &&
-      !this.state.emailError &&
-      !this.state.passwordError
+      !firstnameError &&
+      !tlastError &&
+      !emailError &&
+      !passwordError &&
+      this.state.valid // condition for mobile no
     ) {
       const mobile = this.state.userInfo.mobile.substring(
         4,
