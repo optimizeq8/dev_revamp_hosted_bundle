@@ -1,11 +1,8 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableOpacity, I18nManager } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text } from "native-base";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
@@ -264,30 +261,19 @@ class Signin extends Component {
                     textStyle={{ fontSize: 14 }}
                     onPressAction={() => this._handleSubmission()}
                   />
-
-                  <Text
+                  <TouchableOpacity
                     onPress={() => {
                       Segment.track("Forgot Password Button");
                       this.props.navigation.push("ForgotPassword");
                     }}
-                    style={[styles.link, styles.forgotPasswordLink]}
                   >
-                    {translate("Forgot Password?")}
-                  </Text>
+                    <Text style={[styles.link, styles.forgotPasswordLink]}>
+                      {translate("Forgot Password?")}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               )}
-              <View
-                style={{
-                  position: "absolute",
-                  // zIndex: -1,
-                  // top: "100%",
-                  bottom: 0,
-                  left: I18nManager.isRTL
-                    ? widthPercentageToDP(-20)
-                    : widthPercentageToDP(20)
-                  // right: -20
-                }}
-              >
+              <View style={styles.SignInCoverImage}>
                 <SignInCover height={heightPercentageToDP(38)} />
               </View>
             </View>

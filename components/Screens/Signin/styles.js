@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Dimensions } from "react-native";
+import { StyleSheet, PixelRatio, Dimensions, I18nManager } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
@@ -47,7 +47,13 @@ const styles = StyleSheet.create({
   },
 
   keyboardShiftContainer: { flex: 1, alignItems: "center" },
-  forgotPasswordLink: { paddingVertical: 10, fontSize: 12 },
+  forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 1 },
+  SignInCoverImage: {
+    position: "absolute",
+    zIndex: -1,
+    bottom: 0,
+    left: I18nManager.isRTL ? widthPercentageToDP(-20) : widthPercentageToDP(20)
+  },
   title: { color: "#000", fontSize: 48 },
   container: {
     // marginTop: heightPercentageToDP(3),
