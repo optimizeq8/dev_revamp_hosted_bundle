@@ -23,8 +23,8 @@ class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
-          (Math.abs(num) / 1000).toFixed(0) +
-          "k"
+          Math.abs(num) / (Math.abs(num) > 9999999 ? 1000000 : 1000) +
+          `${Math.abs(num) > 9999999 ? "M" : "K"}`
       : (this.props.chartChoice === "Spend" ? "$" : "") +
           Math.abs(num).toFixed(0);
   };
@@ -102,6 +102,11 @@ ${day}/${shortMonths[month]}`;
           <VictoryChart
             domainPadding={{ y: 17 }}
             height={heightPercentageToDP(38)}
+            domain={
+              this.props.campaignStats.length === 1
+                ? { y: [0, Math.max(...independentTickValues) * 1.05] }
+                : {}
+            }
             containerComponent={
               <VictoryVoronoiContainer
                 labels={({ datum }) => {
@@ -170,10 +175,12 @@ ${day}/${shortMonths[month]}`;
         <View style={styles.xAxisStyle}>
           <VictoryAxis
             height={heightPercentageToDP(38)}
-            domainPadding={{ y: 40 }}
+            domainPadding={{
+              y: this.props.campaignStats.length === 1 ? 60 : 40
+            }}
             dependentAxis
             tickFormat={t => this.kFormatter(t)}
-            tickCount={4}
+            tickCount={5}
             padding={{
               top: 20,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
