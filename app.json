@@ -6,11 +6,8 @@
     "slug": "optimize_app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "0.2.10",
+    "platforms": ["ios", "android"],
+    "version": "0.2.20",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -25,27 +22,19 @@
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_ERROR_RECOVERY"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "25",
+      "buildNumber": "27",
       "supportsTablet": false
     },
     "packagerOpts": {
-      "sourceExts": [
-        "js",
-        "jsx",
-        "ts",
-        "tsx",
-        "svg"
-      ],
+      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"],
       "config": "metro.config.js"
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 24,
+      "versionCode": 25,
       "googleServicesFile": "./google-services.json"
     },
     "hooks": {

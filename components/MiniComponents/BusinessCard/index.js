@@ -26,7 +26,7 @@ class BusinessCard extends Component {
       onPress: () => {
         Alert.alert(
           this.translate("Business") + this.translate("deletion"),
-          this.translate("Are you sure you want to delete this business?"),
+          this.translate("Are you sure you want to delete this business"),
           [
             {
               text: this.translate("Cancel"),

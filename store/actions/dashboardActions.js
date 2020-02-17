@@ -84,7 +84,7 @@ export const getCampaignStats = (campaign, duration) => {
     result.setDate(result.getDate() + days);
     return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(
       -2
-    )}-${result.getDate()}`;
+    )}-${("0" + result.getDate()).slice(-2)}`;
   };
 
   return dispatch => {

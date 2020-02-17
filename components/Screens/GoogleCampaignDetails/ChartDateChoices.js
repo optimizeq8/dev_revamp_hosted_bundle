@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import styles from "./styles";
 import { Button } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
+import dateFormat from "dateformat";
 
 export default class ChartDateChoices extends Component {
   state = { selectedChoice: "All" };
@@ -12,24 +13,29 @@ export default class ChartDateChoices extends Component {
    * @param choice A string either All, today or yesterday
    */
   handleDateButtons = choice => {
+    let newDate = new Date();
+
     switch (choice) {
       case "All":
         this.props.durationChange(
           this.props.selectedCampaign.start_time,
-          this.props.selectedCampaign.end_time
+          new Date(this.props.selectedCampaign.end_time) > new Date()
+            ? dateFormat(new Date(), "yyyy-mm-dd")
+            : this.props.selectedCampaign.end_time
         );
         break;
       case "Today":
-        let today = new Date().toISOString().split("T")[0];
-        this.props.durationChange(today, today);
+        this.props.durationChange(
+          dateFormat(newDate, "yyyy-mm-dd"),
+          dateFormat(newDate, "yyyy-mm-dd")
+        );
         break;
       case "Yesterday":
-        let yesterday = new Date();
-        yesterday = yesterday.setDate(yesterday.getDate() - 1);
-        yesterday = new Date(yesterday);
-        yesterday = yesterday.toISOString().split("T")[0];
-
-        this.props.durationChange(yesterday, yesterday);
+        let oldDate = newDate.setDate(newDate.getDate() - 1);
+        this.props.durationChange(
+          dateFormat(oldDate, "yyyy-mm-dd"),
+          dateFormat(oldDate, "yyyy-mm-dd")
+        );
         break;
       default:
         break;
