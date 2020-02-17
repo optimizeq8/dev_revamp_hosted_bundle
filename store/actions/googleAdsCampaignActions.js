@@ -837,7 +837,7 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
 export const refundGoogleCampaignAmount = campaign_id => {
   return (dispatch, getState) => {
     GoogleBackendURL()
-      .get(`request/refund/`, {
+      .post(`request/refund/`, {
         businessid: getState().account.mainBusiness.businessid,
         id: campaign_id
       })
