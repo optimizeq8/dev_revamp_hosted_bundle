@@ -114,11 +114,12 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             category: "Sign Up",
             label: "Step 3 of Registration"
           });
-        }
-
-        const decodedUser = jwt_decode(user.token);
-        let peomise = await setAuthToken(user.token);
-        return { user: decodedUser, message: user.message };
+          const decodedUser = jwt_decode(user.token);
+          let peomise = await setAuthToken(user.token);
+          return { user: decodedUser, message: user.message };
+          //if something goes wrong with the registeration process or Front-end verification
+          //this will throw an error and stop the regiteration process
+        } else return Promise.reject({ message: user.message });
       })
       .then(decodedUser => {
         if (decodedUser && decodedUser.user) {
