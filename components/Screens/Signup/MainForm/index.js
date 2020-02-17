@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text, Container, Badge } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 
 //Redux
 import { connect } from "react-redux";
@@ -25,7 +25,10 @@ class MainForm extends Component {
     header: null
   };
   state = { verified: false };
-  componentDidMount() {
+  /**
+   * Gets called whenever a user presses on an invite registeration deep link
+   */
+  handleBusinessInvite = () => {
     if (this.props.navigation.getParam("b", null) === "0") {
       this.setState({
         businessInvite: this.props.navigation.getParam("b", null),
@@ -33,7 +36,7 @@ class MainForm extends Component {
       });
       this.props.getTempUserInfo(this.props.navigation.getParam("v", null));
     }
-  }
+  };
   render() {
     const { translate } = this.props.screenProps;
     let content = (
@@ -60,6 +63,7 @@ class MainForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents onDidFocus={this.handleBusinessInvite} />
         <Container style={styles.container}>
           <View style={styles.progressCardView}>
             <TouchableOpacity
@@ -81,18 +85,20 @@ class MainForm extends Component {
               <View style={styles.badgeView}>
                 <Badge
                   style={
-                    !this.props.successPersonalInfo &&
-                    this.props.successEmail &&
-                    !this.props.registered
+                    (!this.props.successPersonalInfo &&
+                      this.props.successEmail &&
+                      !this.props.registered) ||
+                    this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
                       ? styles.activeBadege
                       : styles.badge
                   }
                 >
                   <Text
                     style={
-                      !this.props.successPersonalInfo &&
-                      this.props.successEmail &&
-                      !this.props.registered
+                      (!this.props.successPersonalInfo &&
+                        this.props.successEmail &&
+                        !this.props.registered) ||
+                      this.state.businessInvite === "0"
                         ? styles.activeBadegeText
                         : styles.badgeText
                     }
@@ -102,9 +108,10 @@ class MainForm extends Component {
                 </Badge>
                 <Text
                   style={
-                    !this.props.successPersonalInfo &&
-                    this.props.successEmail &&
-                    !this.props.registered
+                    (!this.props.successPersonalInfo &&
+                      this.props.successEmail &&
+                      !this.props.registered) ||
+                    this.state.businessInvite === "0"
                       ? styles.activeTitleText
                       : styles.titleText
                   }
