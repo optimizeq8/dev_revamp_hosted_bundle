@@ -22,6 +22,7 @@ import globalStyles from "../../../../GlobalStyles";
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -128,6 +129,7 @@ class PersonalInfo extends Component {
     // }
   };
   _handleSubmission = async () => {
+    const { translate } = this.props.screenProps;
     // Need to validate all fields again here since for the input feild component the error value is set to null after animation is over
     const passwordError = validateWrapper(
       "password",
@@ -135,11 +137,11 @@ class PersonalInfo extends Component {
     );
     const emailError = validateWrapper("email", this.state.userInfo.email);
     const firstnameError = validateWrapper(
-      "firstname",
+      "mandatory",
       this.state.userInfo.firstname
     );
     const lastnameError = validateWrapper(
-      "lastname",
+      "mandatory",
       this.state.userInfo.lastname
     );
 
@@ -149,10 +151,41 @@ class PersonalInfo extends Component {
       firstnameError,
       lastnameError
     });
+    if (passwordError) {
+      showMessage({
+        message: translate(passwordError),
+        type: "warning"
+      });
+    }
+    if (emailError) {
+      showMessage({
+        message: translate(emailError),
+        type: "warning"
+      });
+    }
+    if (firstnameError) {
+      showMessage({
+        message: translate(firstnameError),
+        type: "warning"
+      });
+    }
+    if (lastnameError) {
+      showMessage({
+        message: translate(lastnameError),
+        type: "warning"
+      });
+    }
+    if (!this.state.valid) {
+      showMessage({
+        message: translate("Please enter a valid number!"),
+        type: "warning"
+      });
+    }
+
     if (
       this._passwordVarification() &&
       !firstnameError &&
-      !tlastError &&
+      !lastnameError &&
       !emailError &&
       !passwordError &&
       this.state.valid // condition for mobile no
@@ -261,6 +294,7 @@ class PersonalInfo extends Component {
               key={"password"}
               secureTextEntry={true}
             />
+
             <View style={styles.marginVertical}>
               <View style={[styles.labelView]}>
                 <Text

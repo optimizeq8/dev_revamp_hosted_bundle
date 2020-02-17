@@ -66,11 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   passwordErrorText: {
-    bottom: 40,
-    paddingVertical: 0,
-    paddingTop: 0,
-    marginBottom: 0,
-    paddingVertical: 0
+    paddingVertical: 10
   },
   repassworderrorText: {
     bottom: 15,
