@@ -5,7 +5,6 @@ import AddTeamIcon from "../../../assets/SVGs/AddTeam";
 import segmentEventTrack from "../../segmentEventTrack";
 
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../segmentEventTrack";
 export default class AddMember extends Component {
   render() {
     let {
