@@ -1,5 +1,8 @@
 import { StyleSheet, I18nManager } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -24,19 +27,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   content: {
-    // paddingTop: heightPercentageToDP("2%"),
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center"
-    // flex: 1
   },
   mainCard: {
-    // top: 15,
-    // borderTopStartRadius: 30,
-    // borderTopEndRadius: 30,
-    // backgroundColor: "#fff",
-    // borderColor: "transparent",
-
+    paddingTop: 0,
     flex: 1,
     marginLeft: 0,
     marginRight: 0
@@ -46,13 +42,16 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 35,
-    // borderColor: "#6C63FF",
-    // borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
+
     alignSelf: "center",
     paddingVertical: 0
   },
   badge: {
     alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "transparent",
     width: 30,
     height: 30,
@@ -111,6 +110,53 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30
+  },
+  getStartedBtn: {
+    height: 54,
+    width: 220,
+    alignSelf: "center"
+  },
+  registerSuccessIcon: {
+    marginLeft: I18nManager.isRTL
+      ? widthPercentageToDP(-5)
+      : widthPercentageToDP(-55),
+    marginTop: heightPercentageToDP(5)
+  },
+  successText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#FFF",
+    textAlign: "left"
+  },
+  registerCompleteText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 27,
+    color: "#FFF",
+    textAlign: "left",
+    paddingTop: 10
+  },
+  mainView: {
+    display: "flex",
+    paddingHorizontal: 30,
+    paddingTop: 10,
+    flexDirection: "column"
+  },
+  getStartedText: {
+    fontSize: 14
+  },
+  registerationText: {
+    fontSize: 14,
+    color: "#6C63FF",
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    letterSpacing: 0,
+    lineHeight: 18,
+    marginTop: 10
+  },
+  registerHeaderIconView: {
+    display: "flex",
+    alignItems: "center"
+    // flex: 1
   }
 });
 

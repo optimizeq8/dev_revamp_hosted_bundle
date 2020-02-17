@@ -37,17 +37,47 @@ export default StyleSheet.create({
     elevation: 0
   },
   mainButtonView: {
-    height: "25%",
-    top: "35%",
-    justifyContent: "space-between"
+    flex: 1,
+    justifyContent: "center",
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    backgroundColor: "#FFF"
+  },
+  helloNameStyle: {
+    textTransform: "uppercase",
+    fontSize: 28,
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    paddingTop: 20
+  },
+  accountNotVerifiedText: {
+    fontSize: 14,
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular"
+  },
+  verifyAccountText: {
+    fontSize: 14,
+    textAlign: "center",
+    color: globalColors.orange,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    textDecorationLine: "underline"
   },
   campaignButton: {
+    marginTop: 25,
+    marginBottom: 15,
     backgroundColor: globalColors.orange,
-    borderRadius: 30,
     justifyContent: "center",
     alignSelf: "center",
-    width: "35%",
-    height: 50
+    width: 80,
+    height: 80,
+    shadowColor: "rgba(0,0,0,0.6)", // IOS
+    shadowOffset: { height: 2, width: 2 }, // IOS
+    shadowOpacity: 2, // IOS
+    shadowRadius: 100, //IOS
+    elevation: 2 // Android
   },
   campaignButtonText: {
     textAlign: "center",
@@ -58,9 +88,26 @@ export default StyleSheet.create({
   mainText: {
     textAlign: "center",
     alignSelf: "center",
-    color: "#fff",
-    fontSize: 15,
-    width: "70%",
+    color: "#909090",
+    fontSize: 14,
+    width: "50%",
     fontFamily: "montserrat-regular"
+  },
+  logo: { alignSelf: "center" },
+  flex: { flex: 1, justifyContent: "center" },
+  bottomText: {
+    textAlign: "center",
+    color: "#909090",
+    fontSize: 16,
+    fontFamily: "montserrat-regular"
+  },
+  launchText: {
+    textAlign: "center",
+    textTransform: "uppercase",
+    color: "#575757",
+    fontSize: 19
+  },
+  flex1: {
+    flex: 1
   }
 });

@@ -5,6 +5,8 @@ import { Item, Input, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
+import InputFeild from "../../../MiniComponents/InputField";
+import PhoneNoField from "../PhoneNo/PhoneNoField";
 import InputScrollView from "react-native-input-scroll-view";
 
 //icons
@@ -19,6 +21,8 @@ import globalStyles from "../../../../GlobalStyles";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -38,7 +42,7 @@ class PersonalInfo extends Component {
       inputE: false,
       inputP: false,
       inputPR: false,
-
+      valid: false,
       repassword: "",
       emailError: "",
       passwordError: "",
@@ -50,22 +54,50 @@ class PersonalInfo extends Component {
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
-    if (this.props.tempUserInfo) {
+    Segment.screenWithProperties("Personal Info Registration", {
+      category: "Sign Up"
+    });
+    if (this.props.userInfo) {
+      this.setState({
+        ...this.state,
+        userInfo: {
+          ...this.state.userInfo,
+          ...this.props.userInfo
+        }
+      });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.tempUserInfo && this.props.tempUserInfo) {
       this.setState({
         ...this.state,
         userInfo: {
           ...this.state.userInfo,
           firstname: this.props.tempUserInfo.firstname,
           lastname: this.props.tempUserInfo.lastname,
-          email: this.props.tempUserInfo.email
+          email: this.props.tempUserInfo.email,
+          v: this.props.tempId
         }
       });
     }
-    Segment.screenWithProperties("Personal Info Registration", {
-      category: "Sign Up"
-    });
   }
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    let userInfo = {
+      ...this.state.userInfo,
+      ...state
+    };
+    this.setState({ userInfo });
+  };
 
+  getValidInfo = (stateError, validWrap) => {
+    let state = {};
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
   _passwordVarification = () => {
     if (
       this.state.userInfo.password !== this.state.repassword ||
@@ -81,36 +113,94 @@ class PersonalInfo extends Component {
       return true;
     }
   };
-  _handleSubmission = () => {
-    const emailError = validateWrapper("email", this.state.userInfo.email);
+  changePersonalNo = (number, countryCode, type, valid) => {
+    let userInfo = {
+      ...this.state.userInfo,
+      mobile: number,
+      country_code: countryCode
+    };
+    // if (number.toString().length > 3 && valid) {
+    this.setState({
+      // phoneNum: number.toString().length > 3 && valid ? number.split(countryCode)[1] : number,
+      userInfo,
+      valid,
+      type
+    });
+    // }
+  };
+  _handleSubmission = async () => {
+    const { translate } = this.props.screenProps;
+    // Need to validate all fields again here since for the input feild component the error value is set to null after animation is over
     const passwordError = validateWrapper(
       "password",
       this.state.userInfo.password
+    );
+    const emailError = validateWrapper("email", this.state.userInfo.email);
+    const firstnameError = validateWrapper(
+      "mandatory",
+      this.state.userInfo.firstname
     );
     const lastnameError = validateWrapper(
       "mandatory",
       this.state.userInfo.lastname
     );
-    const firstnameError = validateWrapper(
-      "mandatory",
-      this.state.userInfo.firstname
-    );
+
     this.setState({
-      emailError,
       passwordError,
-      lastnameError,
-      firstnameError
+      emailError,
+      firstnameError,
+      lastnameError
     });
+    if (passwordError) {
+      showMessage({
+        message: translate(passwordError),
+        type: "warning"
+      });
+    }
+    if (emailError) {
+      showMessage({
+        message: translate(emailError),
+        type: "warning"
+      });
+    }
+    if (firstnameError) {
+      showMessage({
+        message: translate(firstnameError),
+        type: "warning"
+      });
+    }
+    if (lastnameError) {
+      showMessage({
+        message: translate(lastnameError),
+        type: "warning"
+      });
+    }
+    if (!this.state.valid) {
+      showMessage({
+        message: translate("Please enter a valid number!"),
+        type: "warning"
+      });
+    }
+
     if (
       this._passwordVarification() &&
-      !this.state.firstnameError &&
-      !this.state.lastError &&
-      !this.state.emailError &&
-      !this.state.passwordError
+      !firstnameError &&
+      !lastnameError &&
+      !emailError &&
+      !passwordError &&
+      this.state.valid // condition for mobile no
     ) {
-      this.props.verifyEmail(
-        this.state.userInfo.email,
-        this.state.userInfo,
+      const mobile = this.state.userInfo.mobile.substring(
+        4,
+        this.state.userInfo.mobile
+      );
+      let userInfo = {
+        ...this.state.userInfo,
+        mobile
+      };
+
+      this.props.registerGuestUser(
+        userInfo,
         this.props.businessInvite,
         this.props.navigation
       );
@@ -123,336 +213,88 @@ class PersonalInfo extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <Container
-        style={{
-          backgroundColor: "#0000",
-          display: "flex",
-          justifyContent: "space-between",
-          flex: 1
-        }}
-      >
+      <Container style={styles.personalInfoView}>
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[
             {
               paddingBottom: "55%",
-              paddingTop: 13
+              paddingTop: 20
             }
           ]}
         >
           <View style={styles.contentContainer}>
-            <View style={styles.marginVertical}>
+            <InputFeild
+              key={"Full Name"}
+              getValidInfo={this.getValidInfo}
+              setValue={this.setValue}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="firstname"
+              stateName2="lastname"
+              label="Full name"
+              placeholder1="First Name"
+              placeholder2="Last Name"
+              value={this.state.userInfo.firstname}
+              value2={this.state.userInfo.lastname}
+              valueError1={this.state.firstnameError}
+              valueError2={this.state.lastnameError}
+              icon={UserProfile}
+              disabled={this.props.loadingUpdateInfo}
+            />
+            <View style={[styles.mobileView]}>
               <View style={[styles.labelView]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    styles.labelInputText,
-                    this.state.inputF
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("First Name")}
+                <Text uppercase style={[styles.inputLabel]}>
+                  {translate("Mobile No")}
                 </Text>
               </View>
-              <Item
-                style={[
-                  styles.input,
-                  this.state.inputF
-                    ? globalStyles.transparentBorderColor
-                    : this.state.firstnameError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor
-                ]}
-              >
-                <UserProfile
-                  style={[
-                    styles.iconSize,
-                    this.state.inputF
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.darkGrayTextColor
-                  ]}
-                  fill={this.state.inputF ? "#FF9D00" : "#FFF"}
-                />
 
-                <Input
-                  onSubmitEditing={() => {
-                    this.focusTheField("inputL");
-                  }}
-                  ref={input => {
-                    this.inputs["inputF"] = input;
-                  }}
-                  blurOnSubmit={false}
-                  returnKeyType={"next"}
-                  style={styles.inputText}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={this.state.userInfo.firstname}
-                  onChangeText={value => {
-                    this.setState({
-                      userInfo: {
-                        ...this.state.userInfo,
-                        firstname: value
-                      }
-                    });
-                  }}
-                  autoFocus={true}
-                  onFocus={() => {
-                    this.setState({ inputF: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputF: false });
-                    this.setState({
-                      firstnameError:
-                        validateWrapper(
-                          "mandatory",
-                          this.state.userInfo.firstname
-                        ) ||
-                        validateWrapper(
-                          "firstName",
-                          this.state.userInfo.firstname
-                        )
-                    });
-                  }}
-                />
-              </Item>
-              {this.state.firstnameError && this.state.firstnameError !== "" ? (
-                <Text style={[styles.text, styles.repasswordErrorText]}>
-                  {translate(this.state.firstnameError)}
-                </Text>
-              ) : null}
+              <PhoneNoField
+                disabled={this.props.loadingUpdateInfo}
+                screenProps={this.props.screenProps}
+                valid={this.state.valid}
+                changeNo={this.changePersonalNo}
+                phoneNum={this.state.userInfo.mobile}
+              />
             </View>
-            <View style={styles.marginVertical}>
-              <View style={[styles.labelView]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    styles.labelInputText,
-                    this.state.inputL
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Last Name")}
-                </Text>
-              </View>
-              <Item
-                style={[
-                  styles.input,
-                  this.state.inputL
-                    ? globalStyles.purpleBorderColor
-                    : this.state.lastnameError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor
-                ]}
-              >
-                <UserProfile
-                  style={[
-                    styles.iconSize,
-                    this.state.inputL
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.darkGrayTextColor
-                  ]}
-                  fill={this.state.inputL ? "#FF9D00" : "#FFF"}
-                />
 
-                <Input
-                  onSubmitEditing={() => {
-                    this.focusTheField("inputE");
-                  }}
-                  ref={input => {
-                    this.inputs["inputL"] = input;
-                  }}
-                  blurOnSubmit={false}
-                  returnKeyType={"next"}
-                  style={styles.inputText}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={this.state.userInfo.lastname}
-                  onChangeText={value =>
-                    this.setState({
-                      userInfo: {
-                        ...this.state.userInfo,
-                        lastname: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputL: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputL: false });
-                    this.setState({
-                      lastnameError:
-                        validateWrapper(
-                          "mandatory",
-                          this.state.userInfo.lastname
-                        ) ||
-                        validateWrapper(
-                          "lastName",
-                          this.state.userInfo.lastname
-                        )
-                    });
-                  }}
-                />
-              </Item>
-              {this.state.lastnameError && this.state.lastnameError !== "" ? (
-                <Text style={[styles.text]}>
-                  {translate(this.state.lastnameError)}
-                </Text>
-              ) : null}
-            </View>
-            <View style={styles.marginVertical}>
-              <View style={[styles.labelView]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    styles.labelInputText,
-                    this.state.inputE
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Email")}
-                </Text>
-              </View>
-              <Item
-                ref={r => {
-                  this._textInputRef = r;
-                }}
-                style={[
-                  styles.input,
-                  this.state.inputE
-                    ? globalStyles.purpleBorderColor
-                    : this.state.emailError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor
-                ]}
-              >
-                <EmailIcon
-                  style={[styles.iconSize]}
-                  fill={this.state.inputE ? "#FF9D00" : "#FFF"}
-                />
+            <InputFeild
+              // disabled={this.props.loadingUpdateInfo}
+              // customStyles={{ width: "100%", marginLeft: 0 }}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="email"
+              label="Email"
+              placeholder1="Enter your email"
+              value={this.state.userInfo.email}
+              valueError1={this.state.emailError}
+              icon={EmailIcon}
+              setValue={this.setValue}
+              getValidInfo={this.getValidInfo}
+              key={"Email"}
+            />
+            {this.state.emailError && this.state.emailError !== "" ? (
+              <Text style={[styles.text, styles.emailErrorText]}>
+                {translate(this.state.emailError)}
+              </Text>
+            ) : null}
 
-                <Input
-                  onSubmitEditing={() => {
-                    this.focusTheField("inputP");
-                  }}
-                  ref={input => {
-                    this.inputs["inputE"] = input;
-                  }}
-                  blurOnSubmit={false}
-                  returnKeyType={"next"}
-                  style={styles.inputText}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={this.state.userInfo.email}
-                  onChangeText={value =>
-                    this.setState({
-                      userInfo: {
-                        ...this.state.userInfo,
-                        email: value.trim()
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputE: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputE: false });
-                    this.setState({
-                      emailError: validateWrapper(
-                        "email",
-                        this.state.userInfo.email.trim()
-                      )
-                    });
-                  }}
-                />
-              </Item>
-              {this.state.emailError && this.state.emailError !== "" ? (
-                <Text style={[styles.text, styles.emailErrorText]}>
-                  {translate(this.state.emailError)}
-                </Text>
-              ) : null}
-            </View>
-            <View style={styles.marginVertical}>
-              <View style={[styles.labelView]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    styles.labelInputText,
-                    this.state.inputP
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Password")}
-                </Text>
-              </View>
-              <Item
-                ref={r => {
-                  this._textInputRef = r;
-                }}
-                style={[
-                  styles.input,
-                  this.state.inputP
-                    ? globalStyles.purpleBorderColor
-                    : this.state.passwordError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor
-                ]}
-              >
-                <PasswordIcon
-                  style={[styles.iconSize]}
-                  fill={this.state.inputP ? "#FF9D00" : "#FFF"}
-                />
+            <InputFeild
+              // disabled={this.props.loadingUpdateInfo}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="password"
+              label="Password"
+              placeholder1="Enter your password"
+              value={this.state.userInfo.password}
+              valueError1={this.state.passwordError}
+              icon={PasswordIcon}
+              setValue={this.setValue}
+              getValidInfo={this.getValidInfo}
+              key={"password"}
+              secureTextEntry={true}
+            />
 
-                <Input
-                  onSubmitEditing={() => {
-                    this.focusTheField("inputPR");
-                  }}
-                  ref={input => {
-                    this.inputs["inputP"] = input;
-                  }}
-                  blurOnSubmit={false}
-                  returnKeyType={"next"}
-                  style={styles.inputText}
-                  secureTextEntry={true}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      userInfo: {
-                        ...this.state.userInfo,
-                        password: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputP: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputP: false });
-                    this.setState({
-                      passwordError: validateWrapper(
-                        "password",
-                        this.state.userInfo.password
-                      )
-                    });
-                  }}
-                />
-              </Item>
-              {this.state.passwordError &&
-              this.state.passwordError.includes("8 characters") ? (
-                <Text style={[styles.text, styles.repasswordErrorText]}>
-                  {translate(this.state.passwordError)}
-                </Text>
-              ) : null}
-            </View>
             <View style={styles.marginVertical}>
               <View style={[styles.labelView]}>
                 <Text
@@ -513,7 +355,14 @@ class PersonalInfo extends Component {
                 </Text>
               ) : null}
             </View>
-            <LowerButton function={() => this._handleSubmission()} />
+            <LowerButton
+              style={{
+                alignSelf: "flex-end",
+                marginHorizontal: widthPercentageToDP(12)
+              }}
+              // bottom={-10}
+              function={() => this._handleSubmission()}
+            />
           </View>
         </InputScrollView>
       </Container>
@@ -523,13 +372,19 @@ class PersonalInfo extends Component {
 const mapStateToProps = state => ({
   mobileNo: state.register.mobileNo,
   countryCode: state.register.countryCode,
-  tempUserInfo: state.account.tempUserInfo
+  tempUserInfo: state.account.tempUserInfo,
+  successEmail: state.register.successEmail,
+  userInfo: state.register.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
   verifyEmail: (email, userInfo, businessInvite, navigation) =>
     dispatch(
       actionCreators.verifyEmail(email, userInfo, businessInvite, navigation)
+    ),
+  registerGuestUser: (userInfo, businessInvite, navigation) =>
+    dispatch(
+      actionCreators.registerGuestUser(userInfo, businessInvite, navigation)
     )
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);

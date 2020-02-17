@@ -5,6 +5,7 @@ import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
 import SwitchLanguage from "../Screens/SwitchLanguage";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
+import RegistrationSuccess from "../Screens/Signup/RegistrationSuccess";
 
 import Signin from "../Screens/Signin";
 // import Invitation from "../Screens/InvitationScreen";
@@ -21,7 +22,8 @@ export default FluidNavigator(
     Signin: Signin,
     ForgotPassword: ForgotPassword,
     SwitchLanguage: SwitchLanguage,
-    SwitchLanguageLoading: SwitchLanguageLoading
+    SwitchLanguageLoading: SwitchLanguageLoading,
+    RegistrationSuccess: RegistrationSuccess
 
     // Invitation: Invitation
   },

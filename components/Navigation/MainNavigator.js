@@ -48,6 +48,7 @@ import GoogleEditKeywords from "../Screens/GoogleCampaignDetails/EditKeywords";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
+import VerifyAccount from "../Screens/VerifyAccount";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -107,7 +108,8 @@ export default FluidNavigator(
     GoogleEditKeywords: GoogleEditKeywords,
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
-    GoogleSEAPreviewScreen: GoogleSEAPreviewScreen
+    GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" }
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

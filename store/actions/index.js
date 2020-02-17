@@ -119,7 +119,10 @@ export {
   verifyMobileCode,
   resendVerifyMobileCode,
   resendVerifyMobileCodeByEmail,
-  resetRegister
+  resetRegister,
+  registerGuestUser,
+  resetVerificationCode,
+  verifyEmailCodeLink
 } from "./registerActions";
 
 export {

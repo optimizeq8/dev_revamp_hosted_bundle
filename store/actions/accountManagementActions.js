@@ -41,7 +41,7 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
             payload: { ...data.data }
           });
-          // data.success && navigation.navigate("Dashboard");
+          NavigationService.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
@@ -428,10 +428,22 @@ export const getTempUserInfo = member_id => {
       .get(`memberaccount/${member_id}`)
       .then(res => res.data)
       .then(data => {
-        dispatch({
-          type: actionTypes.SET_TEMP_USERINFO,
-          payload: data.data
-        });
+        //if the user tries again to open the same deep link after registering
+        //it will return {message:'invalid Account,success:false}
+        if (data.success)
+          dispatch({
+            type: actionTypes.SET_TEMP_USERINFO,
+            payload: data.data
+          });
+        else {
+          showMessage({ message: data.message, type: "warning" });
+          //reset navigation
+          NavigationService.navigate("SwitchLanguage");
+          dispatch({
+            type: actionTypes.SET_TEMP_USERINFO,
+            payload: null
+          });
+        }
       })
       .catch(err => {
         //console.log(err);

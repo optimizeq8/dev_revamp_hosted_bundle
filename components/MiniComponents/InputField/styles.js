@@ -16,7 +16,8 @@ export default StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    marginBottom: -10
+    marginBottom: -10,
+    textTransform: "uppercase"
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -47,5 +48,20 @@ export default StyleSheet.create({
   },
   modalBar: {
     flexDirection: "row"
+  },
+  networkLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    textAlign: "center",
+    color: "#fff",
+    top: 2,
+    textTransform: "uppercase"
+  },
+  networkStringButton: {
+    width: 85,
+    height: 54,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 0
   }
 });

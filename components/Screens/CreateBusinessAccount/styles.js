@@ -104,10 +104,23 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   buttonText: {
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
     textAlign: "center",
     alignSelf: "center"
+  },
+  appText: {
+    fontSize: 12,
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    textAlign: "center"
+  },
+  optionalText: {
+    fontSize: 12,
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+    textTransform: "capitalize"
   },
   label: {
     textAlign: "center",
@@ -138,16 +151,10 @@ const styles = StyleSheet.create({
   },
   bottomCard: {
     justifyContent: "center",
-    backgroundColor: "#FF9D00",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    height: heightPercentageToDP(10)
+    alignSelf: "center",
+    height: 50,
+    width: widthPercentageToDP(50),
+    marginBottom: 30
   },
   link: {
     textAlign: "center",
@@ -169,6 +176,7 @@ const styles = StyleSheet.create({
   textAgreement: {
     // bottom: 10,
     paddingHorizontal: 70,
+    marginBottom: 10,
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center"
@@ -201,7 +209,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#FFF",
     textAlign: "center",
-    marginBottom: 20
+    marginVertical: 10
   },
   marginVertical: {
     marginVertical: 10
