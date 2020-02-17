@@ -23,8 +23,8 @@ class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
-          Math.abs(num) / (Math.abs(num) > 9999999 ? 1000 : 1000000) +
-          `${Math.abs(num) > 9999999 ? "K" : "M"}`
+          Math.abs(num) / (Math.abs(num) > 9999999 ? 1000000 : 1000) +
+          `${Math.abs(num) > 9999999 ? "M" : "K"}`
       : (this.props.chartChoice === "Spend" || this.props.chartChoice === "CPC"
           ? "$"
           : "") +
@@ -100,6 +100,11 @@ class LineGraph extends Component {
           )}
           <VictoryChart
             domainPadding={{ y: 17 }}
+            domain={
+              this.props.campaignStats.length === 1 || true
+                ? { y: [0, Math.max(...independentTickValues) * 1.05] }
+                : {}
+            }
             height={heightPercentageToDP(38)}
             containerComponent={
               <VictoryVoronoiContainer
@@ -171,7 +176,9 @@ class LineGraph extends Component {
           <VictoryAxis
             dependentAxis
             height={heightPercentageToDP(38)}
-            domainPadding={{ y: 40 }}
+            domainPadding={{
+              y: this.props.campaignStats.length !== 1 ? 60 : 40
+            }}
             tickFormat={t => this.kFormatter(t)}
             offsetX={55}
             tickCount={5}
