@@ -43,7 +43,8 @@ class AppUpdateChecker extends PureComponent {
       if (!this.props.underMaintenanceMessage_en) this.handleUpdates();
     } else if (
       prevProps.actualVersion !== this.props.actualVersion &&
-      this.props.actualVersion !== Constants.manifest.version
+      this.props.actualVersion !== Constants.manifest.version &&
+      this.props.actualVersion
     ) {
       this.setState({ updateIsAvalible: true });
     }
