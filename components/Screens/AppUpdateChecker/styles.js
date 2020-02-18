@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 export default StyleSheet.create({
   textContainer: {
     alignSelf: "center",
     // backgroundColor: "#0009",
     width: "80%",
-    height: "20%",
+    height: heightPercentageToDP(20),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
@@ -34,6 +37,6 @@ export default StyleSheet.create({
   buttonContainer: {
     flexDirection: "column",
     justifyContent: "space-evenly",
-    height: "20%"
+    height: "100%"
   }
 });
