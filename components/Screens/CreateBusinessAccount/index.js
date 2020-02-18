@@ -582,13 +582,13 @@ class CreateBusinessAccount extends Component {
                 >
                   <Input
                     onSubmitEditing={() => {
-                      this.focusTheField("inputE");
+                      !this.props.registering && this.focusTheField("inputE");
                     }}
                     ref={input => {
                       this.inputs["inputBN"] = input;
                     }}
-                    blurOnSubmit={false}
-                    returnKeyType={"next"}
+                    blurOnSubmit={this.props.registering}
+                    returnKeyType={!this.props.registering ? "next" : "done"}
                     style={styles.inputText}
                     autoCorrect={false}
                     disabled={
@@ -883,14 +883,11 @@ class CreateBusinessAccount extends Component {
                       }
                     />
                     <Input
-                      onSubmitEditing={() => {
-                        this.focusTheField("inputL");
-                      }}
                       ref={input => {
                         this.inputs["inputF"] = input;
                       }}
-                      blurOnSubmit={false}
-                      returnKeyType={"next"}
+                      blurOnSubmit={true}
+                      returnKeyType={"done"}
                       style={styles.inputText}
                       autoCorrect={false}
                       onChangeText={value =>

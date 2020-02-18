@@ -24,6 +24,7 @@ import * as actionCreators from "../../../store/actions";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import LowerButton from "../../MiniComponents/LowerButton";
 import ForwardLoading from "../../MiniComponents/ForwardLoading";
+import AppUpdateChecker from "../AppUpdateChecker";
 
 // Validation
 import validateWrapper from "./ValidateWrapper";
@@ -226,6 +227,7 @@ class Signin extends Component {
                 )}
               </View>
             </TouchableWithoutFeedback>
+            <AppUpdateChecker screenProps={this.props.screenProps} />
           </Container>
         </SafeAreaView>
       );
