@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import * as Animatable from "react-native-animatable";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
-import { Text, Platform, I18nManager } from "react-native";
+import { View, Text, Platform, I18nManager } from "react-native";
 import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -13,6 +13,8 @@ import styles from "./styles";
 import Modal from "react-native-modal";
 import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
+import CustomHeader from "../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 
 class AppUpdateChecker extends PureComponent {
   static navigationOptions = {
@@ -107,100 +109,121 @@ class AppUpdateChecker extends PureComponent {
         style={{ margin: 0 }}
         isVisible={this.state.updateIsAvalible || this.state.OTAAvalibe}
       >
-        <BlurView intensity={70} tint="dark" style={styles.blurStyle}>
-          <Animatable.View animation="fadeInDown" style={styles.textContainer}>
-            <Text style={styles.textUpdate}>
-              {this.props.loadingChecker
-                ? translate("checking for updates")
-                : this.state.statusLoading
-                ? ""
-                : this.props.underMaintenanceMessage_en
-                ? translate("Under Maintenance")
-                : this.props.updateMessage_en && this.state.updateIsAvalible
-                ? translate("Update Available")
-                : this.props.customMessage_en && this.props.customMessage_ar
-                ? translate("Important notice")
-                : ""}
-            </Text>
-
-            <Text
-              style={[styles.textUpdate, { fontFamily: "montserrat-light" }]}
-            >
-              {this.props.loadingChecker
-                ? translate("Please wait while we check for updates")
-                : !this.state.statusLoading
-                ? this.props.underMaintenanceMessage_en
-                  ? I18nManager.isRTL
-                    ? this.props.underMaintenanceMessage_ar
-                    : this.props.underMaintenanceMessage_en
-                  : this.state.updateIsAvalible
-                  ? I18nManager.isRTL
-                    ? this.props.updateMessage_ar
-                    : this.props.updateMessage_en
-                  : I18nManager.isRTL
-                  ? this.props.customMessage_ar
-                  : this.props.customMessage_en
-                : ""}
-            </Text>
-
-            {this.state.statusLoading && (
-              <>
-                <Text style={[styles.textUpdate, { top: 10 }]}>
-                  {this.state.status + "\n"}
-                  <Small style={{ fontSize: 14 }}>
-                    {translate("The app will restart once it's done") + "\n"}
-                  </Small>
-                  {this.state.status2}
-                </Text>
-              </>
-            )}
-          </Animatable.View>
-          {this.props.loadingChecker || this.state.statusLoading ? (
-            <LottieView
-              ref={animation => {
-                this.animation = animation;
-              }}
-              style={styles.loadingStyle}
-              resizeMode="contain"
-              source={require("../../../assets/animation/update_loader.json")}
-              loop
-              autoPlay
-            />
-          ) : (
-            <Animatable.View
-              animation="fadeInUp"
-              style={styles.buttonContainer}
-            >
-              {(this.props.updateMessage_en && this.state.updateIsAvalible) ||
-              this.props.underMaintenanceMessage_en ? (
-                <GradientButton
-                  onPressAction={this.handleButton}
-                  style={styles.updateButton}
-                  textStyle={styles.textUpdate}
-                  text={
-                    this.props.underMaintenanceMessage_en
-                      ? translate("Check for update")
-                      : translate("Update Now")
-                  }
-                  uppercase={true}
-                />
-              ) : (
-                <GradientButton
-                  onPressAction={() =>
-                    this.setState({
-                      updateIsAvalible: false,
-                      OTAAvalibe: false
-                    })
-                  }
-                  style={styles.updateButton}
-                  textStyle={styles.textUpdate}
-                  text={translate("Continue with the app")}
-                  uppercase={true}
+        <SafeAreaView forceInset={{ top: "always" }}>
+          <BlurView intensity={70} tint="dark" style={styles.blurStyle}>
+            <View style={{ height: "100%" }}>
+              {this.state.updateIsAvalible && (
+                <CustomHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={true}
+                  actionButton={() => {
+                    this.setState({ updateIsAvalible: false });
+                  }}
                 />
               )}
-            </Animatable.View>
-          )}
-        </BlurView>
+              <Animatable.View
+                animation="fadeInDown"
+                style={styles.textContainer}
+              >
+                <Text style={styles.textUpdate}>
+                  {this.props.loadingChecker
+                    ? translate("checking for updates")
+                    : this.state.statusLoading
+                    ? ""
+                    : this.props.underMaintenanceMessage_en
+                    ? translate("Under Maintenance")
+                    : this.props.updateMessage_en && this.state.updateIsAvalible
+                    ? translate("Update Available")
+                    : this.props.customMessage_en && this.props.customMessage_ar
+                    ? translate("Important notice")
+                    : ""}
+                </Text>
+
+                <Text
+                  style={[
+                    styles.textUpdate,
+                    { fontFamily: "montserrat-light" }
+                  ]}
+                >
+                  {this.props.loadingChecker
+                    ? translate("Please wait while we check for updates")
+                    : !this.state.statusLoading
+                    ? this.props.underMaintenanceMessage_en
+                      ? I18nManager.isRTL
+                        ? this.props.underMaintenanceMessage_ar
+                        : this.props.underMaintenanceMessage_en
+                      : this.state.updateIsAvalible
+                      ? I18nManager.isRTL
+                        ? this.props.updateMessage_ar
+                        : this.props.updateMessage_en
+                      : I18nManager.isRTL
+                      ? this.props.customMessage_ar
+                      : this.props.customMessage_en
+                    : ""}
+                </Text>
+
+                {this.state.statusLoading && (
+                  <>
+                    <Text style={[styles.textUpdate, { top: 10 }]}>
+                      {this.state.status + "\n"}
+                      <Small style={{ fontSize: 14 }}>
+                        {translate("The app will restart once it's done") +
+                          "\n"}
+                      </Small>
+                      {this.state.status2}
+                    </Text>
+                  </>
+                )}
+              </Animatable.View>
+              {this.props.loadingChecker || this.state.statusLoading ? (
+                <LottieView
+                  ref={animation => {
+                    this.animation = animation;
+                  }}
+                  style={styles.loadingStyle}
+                  resizeMode="contain"
+                  source={require("../../../assets/animation/update_loader.json")}
+                  loop
+                  autoPlay
+                />
+              ) : (
+                <Animatable.View
+                  animation="fadeInUp"
+                  style={styles.buttonContainer}
+                >
+                  {(this.props.updateMessage_en &&
+                    this.state.updateIsAvalible) ||
+                  this.props.underMaintenanceMessage_en ? (
+                    <GradientButton
+                      onPressAction={this.handleButton}
+                      style={styles.updateButton}
+                      textStyle={styles.textUpdate}
+                      text={
+                        this.props.underMaintenanceMessage_en
+                          ? translate("Check for update")
+                          : translate("Update Now")
+                      }
+                      uppercase={true}
+                    />
+                  ) : (
+                    <GradientButton
+                      onPressAction={() =>
+                        this.setState({
+                          updateIsAvalible: false,
+                          OTAAvalibe: false
+                        })
+                      }
+                      style={styles.updateButton}
+                      textStyle={styles.textUpdate}
+                      text={translate("Continue with the app")}
+                      uppercase={true}
+                    />
+                  )}
+                </Animatable.View>
+              )}
+            </View>
+          </BlurView>
+        </SafeAreaView>
       </Modal>
     );
   }
