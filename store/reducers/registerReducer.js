@@ -131,7 +131,8 @@ const reducer = (state = initialState, action) => {
         successNo: false,
         mobileNo: "",
         countryCode: "",
-        verificationCode: false
+        verificationCode: false,
+        emailLinkCodeExpired: false
       };
     case actionTypes.VERIFY_EMAIL_CODE_LINK:
       return {

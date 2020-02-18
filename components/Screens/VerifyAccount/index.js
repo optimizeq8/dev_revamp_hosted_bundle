@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React, { Component, createRef } from "react";
+import { Text, View, TouchableOpacity, AppState } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CodeInput from "react-native-confirmation-code-field";
 
@@ -21,6 +21,8 @@ import * as Segment from "expo-analytics-segment";
 import segmentEventTrack from "../../segmentEventTrack";
 
 class VerifyAccount extends Component {
+  inputRef = createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +40,42 @@ class VerifyAccount extends Component {
       showErrorComponent: false
     };
   }
+  handleDidFocusLink = appState => {
+    if (appState === "active") {
+      const countryCode = this.props.userInfo.mobile.substring(0, 3);
+      const mobile = this.props.userInfo.mobile.substring(3);
+
+      //FROM EMAIL LINK
+      // check if email in the link is same as logged in user
+      const linkEmail = this.props.navigation.getParam("email", null);
+
+      if (linkEmail && linkEmail !== this.props.userInfo.email) {
+        this.setState({
+          showErrorComponent: true
+        });
+      } else if (linkEmail === this.props.userInfo.email) {
+        const code = this.props.navigation.getParam("code", null);
+
+        //To autofill code through email
+        const { current } = this.inputRef;
+
+        if (current) {
+          current.handlerOnTextChange(code);
+        }
+        // check if email link is valid or not
+
+        this.props.verifyEmailCodeLink(code, countryCode, mobile);
+
+        this.setState({
+          code: code,
+          verifyByMobile: false
+        });
+      }
+    }
+  };
   componentDidMount() {
+    // USING APP STATE To see if screen is focused or not
+    AppState.addEventListener("change", this.handleDidFocusLink);
     // RESET THE SUCCESSNO to FALSE
     this.props.resetVerificationCode();
     if (this.props.userInfo) {
@@ -54,26 +91,12 @@ class VerifyAccount extends Component {
         valid: true,
         country_code: countryCode
       });
-
-      //FROM EMAIL LINK
-      // check if email in the link is same as logged in user
-      const linkEmail = this.props.navigation.getParam("email", null);
-
-      if (linkEmail && linkEmail !== this.props.userInfo.email) {
-        this.setState({
-          showErrorComponent: true
-        });
-      } else if (linkEmail === this.props.userInfo.email) {
-        const code = this.props.navigation.getParam("code", "");
-
-        // check if email link is valid or not
-        this.props.verifyEmailCodeLink(code, countryCode, mobile);
-        this.setState({
-          code,
-          verifyByMobile: false
-        });
-      }
+      this.handleDidFocusLink("active");
     }
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this.handleDidFocusLink);
   }
 
   toggleVerify = () => {
@@ -141,7 +164,7 @@ class VerifyAccount extends Component {
   render() {
     const { translate } = this.props.screenProps;
     const { userInfo, verifyByMobile } = this.state;
-    console.log("verificationCode", this.props.verificationCode);
+    // console.log("verificationCode", this.props.verificationCode);
 
     /**
      *
