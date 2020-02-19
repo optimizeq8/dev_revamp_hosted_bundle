@@ -18,6 +18,9 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 // Icons
+
+import BackButton from "../../../assets/SVGs/BackButton";
+import ArrowForward from "../../../assets/SVGs/ArrowForward";
 import Logo from "../../../assets/SVGs/Optimize";
 const imageLogo = require("../../../assets/images/people.png");
 
@@ -86,6 +89,7 @@ class SwitchLanguage extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    const { language } = this.state;
     if (isNull(this.state.languageOpened)) {
       return <LoadingScreen dash={true} />;
     } else
@@ -121,17 +125,41 @@ class SwitchLanguage extends Component {
               />
             </View>
             <View style={styles.welcomeView}>
-              <Text uppercase style={styles.welcomeText}>
-                {translate("Welcome to")}
+              <Text
+                uppercase
+                style={[
+                  styles.welcomeText,
+                  {
+                    fontFamily:
+                      language === "ar"
+                        ? "changa-bold-arabic"
+                        : "montserrat-bold-english"
+                  }
+                ]}
+              >
+                {language === "ar" ? "مرحبا بك في" : "Welcome to"}
               </Text>
               <Text uppercase style={styles.optimizeAppText}>
                 Optimize App
               </Text>
             </View>
-            <Text style={styles.chooseLanguageText}>
-              {translate("Choose your language")}
+            <Text
+              style={[
+                styles.chooseLanguageText,
+                {
+                  fontFamily:
+                    language === "ar"
+                      ? "montserrat-regular-arabic"
+                      : "montserrat-regular-english"
+                }
+              ]}
+            >
+              {/* {translate("Choose your language")} */}
+              {language === "ar"
+                ? "الرجاء اختيار اللغة"
+                : "Choose your language"}
             </Text>
-            <View style={styles.buttonGroup}>
+            <View style={[styles.buttonGroup]}>
               <GradientButton
                 transparent={this.state.language !== "en"}
                 onPressAction={() => this.handleLanguageChange("en")}
@@ -153,12 +181,19 @@ class SwitchLanguage extends Component {
                 ]}
               />
             </View>
-
-            <LowerButton
-              function={() => this.handleSubmitLanguage()}
-              bottom={heightPercentageToDP(-1)}
-            />
           </Container>
+          {/* Using Gradient button instead of LowerButton component because the RTL condition uses checks the device RTL */}
+          <GradientButton
+            onPressAction={this.handleSubmitLanguage}
+            radius={60}
+            style={styles.bottomButton}
+          >
+            {language === "ar" ? (
+              <BackButton width={10} height={20} />
+            ) : (
+              <ArrowForward width={10} height={20} />
+            )}
+          </GradientButton>
         </SafeAreaView>
       );
   }

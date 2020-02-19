@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
@@ -102,6 +106,13 @@ const styles = StyleSheet.create({
   },
   inactiveText: {
     color: "rgba(255,255,255,0.6)"
+  },
+  bottomButton: {
+    // flex: 1,
+    width: 55,
+    height: 55,
+    alignSelf: "center",
+    bottom: heightPercentageToDP(4)
   }
 });
 
