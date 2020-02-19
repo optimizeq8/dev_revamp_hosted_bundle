@@ -47,27 +47,23 @@ const styles = StyleSheet.create({
   },
 
   keyboardShiftContainer: { flex: 1, alignItems: "center" },
-  forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 1 },
+  outView: {
+    flex: 1
+  },
+  forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 10 },
   SignInCoverImage: {
     position: "absolute",
     zIndex: -1,
+    elevation: 1, //For android to show up
     bottom: 0,
-    left: I18nManager.isRTL ? widthPercentageToDP(-20) : widthPercentageToDP(20)
+    left: I18nManager.isRTL ? widthPercentageToDP(-25) : widthPercentageToDP(18)
   },
   title: { color: "#000", fontSize: 48 },
   container: {
-    // marginTop: heightPercentageToDP(3),
     flex: 1,
-    // backgroundColor: "#0000"
     alignItems: "center"
-    // width: "100%"
   },
-  logo: {
-    // alignSelf: "flex-start"
-    // fontSize: 50
-    // position: "relative"
-    // top: heightPercentageToDP(1)
-  },
+
   logoText: {
     textAlign: "center",
     color: "#fff",
@@ -78,7 +74,6 @@ const styles = StyleSheet.create({
 
   mainView: {
     flex: 1,
-    // width: Dimensions.get("window").width,
     paddingTop: 40,
     paddingHorizontal: 30
   },
@@ -89,13 +84,11 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     fontSize: 25,
-    // width: "70%",
     paddingVertical: 15
   },
   text: {
     textAlign: "center",
     color: "#fff",
-    // paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 24,
@@ -168,7 +161,6 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    // position: "absolute",
     color: "#FFF"
   },
   proceedButtonRTL: {
