@@ -184,7 +184,7 @@ class Signin extends Component {
                 {/* <Text style={styles.logoText}>Optimize</Text> */}
               </View>
               {this.state.activeTab === 0 && (
-                <View>
+                <View style={styles.outView}>
                   <Text style={styles.heading}>
                     {translate("Create an Account")}
                   </Text>
@@ -217,7 +217,7 @@ class Signin extends Component {
                 </View>
               )}
               {this.state.activeTab === 1 && (
-                <View>
+                <View style={styles.outView}>
                   <Text style={styles.heading}>
                     {translate("Welcome Back !")}
                   </Text>
@@ -274,7 +274,7 @@ class Signin extends Component {
                 </View>
               )}
               <View style={styles.SignInCoverImage}>
-                <SignInCover height={heightPercentageToDP(38)} />
+                <SignInCover height={heightPercentageToDP(42)} />
               </View>
             </View>
           )}
