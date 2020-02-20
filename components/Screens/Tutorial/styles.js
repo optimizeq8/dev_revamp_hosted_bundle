@@ -25,9 +25,8 @@ const styles = StyleSheet.create({
     zIndex: -19
   },
   shopCard: {
-    // position: "absolute",
     left: widthPercentageToDP(8),
-    // top: heightPercentageToDP(3),
+
     width: widthPercentageToDP(100)
   },
   campaignButton: {
@@ -90,17 +89,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   },
   screen1OuterView: {
-    // position: "absolute",
-    // top: heightPercentageToDP(14),
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    // flex: 1,
     paddingHorizontal: 20,
     alignSelf: "center",
     alignItems: "center"
-
-    // marginBottom: 200
   },
   adDesignTopView: {
     display: "flex",
@@ -182,13 +176,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginLeft: widthPercentageToDP(10)
-    // position: "absolute",
-    // top: 0,
-    // left: -widthPercentageToDP(20)
-    // right: 0,
-    // bottom: 0,
-    // zIndex: 100
-    // elevation: 40
   },
   block3: {
     width: 30,
