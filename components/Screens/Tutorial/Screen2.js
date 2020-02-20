@@ -21,54 +21,58 @@ export default class Screen2 extends React.Component {
     const { id, activeSlide, changed } = this.props;
     if (changed && id === activeSlide) {
       // To start the animation of (button 1) view together with the business name and brandname view
-      this.bsnViewBtn.animate({
-        0: { scale: 1, translateX: 0 },
-        0.5: { scale: 1.2, translateX: I18nManager.isRTL ? -30 : 30 },
-        1: { scale: 1, translateX: 0 }
-      });
-
-      this.bsnView
-        .animate({
+      this.bsnViewBtn &&
+        this.bsnViewBtn.animate({
           0: { scale: 1, translateX: 0 },
-          0.5: {
-            scale: 1.4,
-            translateX: I18nManager.isRTL ? -30 : 30
-          },
+          0.5: { scale: 1.2, translateX: I18nManager.isRTL ? -30 : 30 },
           1: { scale: 1, translateX: 0 }
-        })
-        .then(() => {
-          this.mediaBtnRef
-            .animate({
-              0: {
-                scale: 1,
-                translateX: 0
-              },
-              0.5: {
-                scale: 1.5,
-                translateX: 0
-              },
-              1: {
-                scale: 1,
-                translateX: 0
-              }
-            })
-            .then(() => {
-              this.swipeViewRef.animate({
-                0: {
-                  scale: 1,
-                  translateX: 0
-                },
-                0.5: {
-                  scale: 1.25,
-                  translateX: 0
-                },
-                1: {
-                  scale: 1,
-                  translateX: 0
-                }
-              });
-            });
         });
+
+      this.bsnView &&
+        this.bsnView
+          .animate({
+            0: { scale: 1, translateX: 0 },
+            0.5: {
+              scale: 1.4,
+              translateX: I18nManager.isRTL ? -30 : 30
+            },
+            1: { scale: 1, translateX: 0 }
+          })
+          .then(() => {
+            this.mediaBtnRef &&
+              this.mediaBtnRef
+                .animate({
+                  0: {
+                    scale: 1,
+                    translateX: 0
+                  },
+                  0.5: {
+                    scale: 1.5,
+                    translateX: 0
+                  },
+                  1: {
+                    scale: 1,
+                    translateX: 0
+                  }
+                })
+                .then(() => {
+                  this.swipeViewRef &&
+                    this.swipeViewRef.animate({
+                      0: {
+                        scale: 1,
+                        translateX: 0
+                      },
+                      0.5: {
+                        scale: 1.25,
+                        translateX: 0
+                      },
+                      1: {
+                        scale: 1,
+                        translateX: 0
+                      }
+                    });
+                });
+          });
     }
   }
 
