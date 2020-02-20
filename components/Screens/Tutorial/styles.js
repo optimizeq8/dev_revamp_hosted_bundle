@@ -266,12 +266,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   blockDescription: {
-    // flex: 1,
-    // position: "absolute",
-    // bottom: heightPercentageToDP(15),
     marginVertical: 20,
-    paddingHorizontal: 40,
-    alignSelf: "flex-end"
+    alignSelf: "center"
   },
   heading: {
     fontSize: 20,
@@ -340,6 +336,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20
+  },
+  paginationContainerStyle: {
+    paddingVertical: 5,
+    bottom: heightPercentageToDP(5),
+    left: widthPercentageToDP(18)
+  },
+  paginationDotStyle: {
+    borderRadius: 7,
+    height: 14,
+    marginHorizontal: -5,
+    width: 14
   }
 });
 
