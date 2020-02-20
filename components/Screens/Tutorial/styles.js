@@ -13,21 +13,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 0,
-    marginVertical: 8,
+    // marginVertical: 8,
     shadowOpacity: 1,
     shadowRadius: 30,
     shadowColor: "#5314B4",
     elevation: 8,
     shadowOffset: { height: 6, width: 0 },
-    paddingVertical: 20,
+    paddingVertical: 10,
     borderTopLeftRadius: 30,
     paddingHorizontal: 25,
     zIndex: -19
   },
   shopCard: {
-    position: "absolute",
-    left: widthPercentageToDP(-45),
-    top: heightPercentageToDP(3),
+    // position: "absolute",
+    left: widthPercentageToDP(8),
+    // top: heightPercentageToDP(3),
     width: widthPercentageToDP(100)
   },
   campaignButton: {
@@ -90,15 +90,17 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   },
   screen1OuterView: {
-    position: "absolute",
-    top: heightPercentageToDP(14),
+    // position: "absolute",
+    // top: heightPercentageToDP(14),
+    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
+    // flex: 1,
     paddingHorizontal: 20,
     alignSelf: "center",
-    alignItems: "center",
+    alignItems: "center"
 
-    marginBottom: 200
+    // marginBottom: 200
   },
   adDesignTopView: {
     display: "flex",
@@ -179,8 +181,14 @@ const styles = StyleSheet.create({
   block1: {
     width: 30,
     height: 30,
-    marginTop: -10,
-    zIndex: 1000
+    marginLeft: widthPercentageToDP(10)
+    // position: "absolute",
+    // top: 0,
+    // left: -widthPercentageToDP(20)
+    // right: 0,
+    // bottom: 0,
+    // zIndex: 100
+    // elevation: 40
   },
   block3: {
     width: 30,
@@ -190,7 +198,7 @@ const styles = StyleSheet.create({
     top: -12
   },
   blockText: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 17
   },
   safeAreaViewContainer: {
@@ -271,10 +279,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   blockDescription: {
-    position: "absolute",
-    bottom: heightPercentageToDP(15),
+    // flex: 1,
+    // position: "absolute",
+    // bottom: heightPercentageToDP(15),
     marginVertical: 20,
-    paddingHorizontal: 40
+    paddingHorizontal: 40,
+    alignSelf: "flex-end"
   },
   heading: {
     fontSize: 20,
@@ -313,40 +323,34 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textTransform: "uppercase"
   },
-  screen4View: {
-    position: "absolute",
-    top: heightPercentageToDP(8)
-    // width: "100%"
-  },
   graphImage: {
-    position: "absolute",
-    top: heightPercentageToDP(20),
-    left: I18nManager.isRTL
-      ? widthPercentageToDP(-80)
-      : widthPercentageToDP(-60)
+    height: heightPercentageToDP(30),
+    width: widthPercentageToDP(100)
   },
   screen2OuterView: {
-    position: "absolute",
-    top:
-      Dimensions.get("window").width > 400
-        ? heightPercentageToDP(18)
-        : heightPercentageToDP(10),
     display: "flex",
     alignItems: "center",
     borderRadius: 30,
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.55)",
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
+    marginTop: -15
   },
   bsnView: {
+    alignSelf: "flex-start"
+  },
+  bsnBtnView: {
     alignSelf: "flex-start",
-    zIndex: 200
+    zIndex: 2,
+    elevation: 1
   },
   lowerBtn: { width: 46, height: 46 },
   mainView: {
     flex: 1,
     display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20
   }
