@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AsyncStorage, View, Text, Dimensions, Animated } from "react-native";
+import { AsyncStorage, View, Text, Platform, I18nManager } from "react-native";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
-import Swiper from "../../MiniComponents/Swiper";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -21,41 +21,44 @@ import { colors } from "../../GradiantColors/colors";
 import isNull from "lodash/isNull";
 import { globalColors } from "../../../GlobalStyles";
 import segmentEventTrack from "../../segmentEventTrack";
-
+const slidesData = [
+  {
+    id: 0,
+    heading: "MULTICHANNEL ADVERTISING",
+    description:
+      "Promote your business and reach your target audience whether they're surfing the web, or Snapchatting their friends"
+  },
+  {
+    id: 1,
+    heading: "EASY PUBLISHING",
+    description:
+      "We make it easy so you can focus on growing your business Let us do the heavy lifting for you"
+  },
+  {
+    id: 2,
+    heading: "REPORTS",
+    description:
+      "Compare Key Performance Indicators from previous campaigns Did the changes result in more clicks?"
+  },
+  {
+    id: 3,
+    heading: "NO AGENCIES ALL YOU",
+    description:
+      "Because campaign creation is automated, you get to cut the hefty agency costs out of the equation"
+  }
+];
 class Tutorial extends Component {
   static navigationOptions = {
     header: null
   };
   state = {
     tutorialOpened: null,
+    inverted: I18nManager.isRTL && Platform.OS === "android",
     activeSlide: 0,
-    slidesData: [
-      {
-        id: 0,
-        heading: "MULTICHANNEL ADVERTISING",
-        description:
-          "Promote your business and reach your target audience whether they're surfing the web, or Snapchatting their friends"
-      },
-      {
-        id: 1,
-        heading: "EASY PUBLISHING",
-        description:
-          "We make it easy so you can focus on growing your business Let us do the heavy lifting for you"
-      },
-      {
-        id: 2,
-        heading: "REPORTS",
-        description:
-          "Compare Key Performance Indicators from previous campaigns Did the changes result in more clicks?"
-      },
-      {
-        id: 3,
-        heading: "NO AGENCIES ALL YOU",
-        description:
-          "Because campaign creation is automated, you get to cut the hefty agency costs out of the equation"
-      }
-    ],
-    animatedValue: new Animated.Value(0)
+    slidesData:
+      I18nManager.isRTL && Platform.OS === "android"
+        ? slidesData.reverse()
+        : slidesData // To properly show reversed data for RTL and Adnroid setting it in initial state
   };
   componentDidMount() {
     AsyncStorage.getItem("tutorialOpened")
@@ -83,46 +86,21 @@ class Tutorial extends Component {
         });
         //  console.log(err)
       });
-    //Listener to avoid buggy animation when next button
-    this.state.animatedValue.addListener(({ value }) => {
-      // console.log("value", value);
-      this.swiperRef.getNode().scrollTo({
-        x: value,
-        y: 0,
-        animated: false
-      });
-    });
   }
 
-  onSlideChange = e => {
-    //Source: https://stackoverflow.com/questions/43370807/react-native-get-current-page-in-flatlist-when-using-pagingenabled
-    let contentOffset = e.nativeEvent.contentOffset;
-    let viewSize = e.nativeEvent.layoutMeasurement;
-
-    // Divide the horizontal offset by the width of the view to see which page is visible
-    let pageNum = Math.abs(Math.floor(contentOffset.x / viewSize.width));
-    // console.log("scrolled to page ", pageNum);
-    this.setState({
-      activeSlide: pageNum,
-      changed: pageNum !== this.state.activeSlide
-    });
-  };
-  Slide = ({ key, id, heading, description, component }) => {
+  Slide = ({ item }) => {
     const { translate } = this.props.screenProps;
     const { activeSlide } = this.state;
     let screen = "";
-    if (id === activeSlide) {
-      Segment.screen(`Tutorial ${activeSlide + 1}`);
-    }
 
+    const { id, heading, description } = item;
     if (id === 0)
       screen = (
         <Screen1
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
           id={id}
-          activeSlide={this.state.activeSlide}
-          changed={this.state.changed}
+          activeSlide={activeSlide}
         />
       );
     else if (id === 1)
@@ -132,7 +110,6 @@ class Tutorial extends Component {
           navigation={this.props.navigation}
           id={id}
           activeSlide={this.state.activeSlide}
-          changed={this.state.changed}
         />
       );
     else if (id === 2)
@@ -142,7 +119,6 @@ class Tutorial extends Component {
           navigation={this.props.navigation}
           id={id}
           activeSlide={this.state.activeSlide}
-          changed={this.state.changed}
         />
       );
     else if (id === 3)
@@ -152,12 +128,11 @@ class Tutorial extends Component {
           navigation={this.props.navigation}
           id={id}
           activeSlide={this.state.activeSlide}
-          changed={this.state.changed}
         />
       );
 
     return (
-      <View key={key} style={styles.mainView}>
+      <View key={id} style={styles.mainView}>
         {screen}
         <View style={styles.blockDescription}>
           <Text style={styles.heading}>{translate(heading)}</Text>
@@ -165,6 +140,12 @@ class Tutorial extends Component {
         </View>
       </View>
     );
+  };
+  // To change slide
+  navigationRouteHandler = index => {
+    this.setState({
+      activeSlide: index
+    });
   };
 
   render() {
@@ -178,33 +159,36 @@ class Tutorial extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          {/* <NavigationEvents
-            onDidFocus={() => {
-              Segment.screen("Tutorial");
-            }}
-          /> */}
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
             style={styles.gradient}
           />
 
-          <Swiper
-            backgroundColor={["#0000", "#0000", "#0000", "#0000"]}
-            dots
-            dotsColor="rgba(255, 255, 255, 0.25)"
-            dotsColorActive={globalColors.orange}
-            onSlideChange={this.onSlideChange}
-            ref={ref => (this.swiperRef = ref)}
-            activeSlide={this.state.activeSlide}
-          >
-            {this.state.slidesData.map(item =>
-              this.Slide({
-                key: item.id,
-                ...item
-              })
-            )}
-          </Swiper>
+          <Carousel
+            firstItem={0}
+            ref={c => {
+              this._carousel = c;
+            }}
+            onSnapToItem={indx => this.navigationRouteHandler(indx)}
+            data={this.state.slidesData}
+            renderItem={this.Slide}
+            sliderWidth={widthPercentageToDP(100)}
+            itemWidth={widthPercentageToDP(100)}
+            inverted={this.state.inverted}
+          />
+          {this.state.activeSlide !== 3 && (
+            <Pagination
+              containerStyle={styles.paginationContainerStyle}
+              dotsLength={this.state.slidesData.length}
+              activeDotIndex={this.state.activeSlide}
+              dotStyle={styles.paginationDotStyle}
+              dotColor={globalColors.orange}
+              inactiveDotColor={"rgba(255, 255, 255, 0.2)"}
+              inactiveDotOpacity={1}
+              inactiveDotScale={1}
+            />
+          )}
           <View
             style={[
               styles.bottomView,
@@ -261,26 +245,7 @@ class Tutorial extends Component {
                 />
                 <LowerButton
                   function={() => {
-                    // SOURCE: https://stackoverflow.com/questions/55580525/react-native-scrollview-scrollto-spring-animation
-                    // const animatedValue = new Animated.Value(0);
-
-                    Animated.spring(this.state.animatedValue, {
-                      toValue:
-                        (this.state.activeSlide + 1) *
-                        Dimensions.get("window").width
-                    }).start(() => {
-                      // animatedValue.removeListener(id);
-                      /* finished callback */
-                    });
-
-                    this.setState({
-                      activeSlide: this.state.activeSlide + 1,
-                      changed:
-                        ((this.state.activeSlide + 1) *
-                          Dimensions.get("window").width) /
-                          Dimensions.get("window").width !==
-                        this.state.activeSlide
-                    });
+                    this._carousel.snapToNext(true);
                   }}
                   style={styles.lowerBtn}
                 />
