@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, Text, I18nManager, Platform } from "react-native";
 import { Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
+import * as Segment from "expo-analytics-segment";
 
 import PenIcon from "../../../assets/SVGs/Pen";
 import EditCameraIcon from "../../../assets/SVGs/CameraCircleOutline";
@@ -18,8 +19,8 @@ export default class Screen2 extends React.Component {
     };
   }
   componentDidUpdate() {
-    const { id, activeSlide, changed } = this.props;
-    if (changed && id === activeSlide) {
+    const { id, activeSlide } = this.props;
+    if (id === activeSlide) {
       // To start the animation of (button 1) view together with the business name and brandname view
       this.bsnViewBtn &&
         this.bsnViewBtn.animate({
@@ -77,7 +78,12 @@ export default class Screen2 extends React.Component {
   }
 
   render() {
+    const { id, activeSlide } = this.props;
+
     const { translate } = this.props.screenProps;
+    if (id === activeSlide) {
+      Segment.screen(`Tutorial 2`);
+    }
 
     return (
       <Animatable.View>

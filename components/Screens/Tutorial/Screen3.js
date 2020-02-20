@@ -3,29 +3,27 @@ import { View, Text, I18nManager, Image } from "react-native";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
+import * as Segment from "expo-analytics-segment";
 
 import CampaignCircleChart from "../../MiniComponents/CampaignCircleCharts";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
-import Graph from "../../../assets/SVGs/Graph";
 
 import styles from "./styles";
 export default class Screen3 extends React.Component {
   render() {
     const { translate } = this.props.screenProps;
     const { id, activeSlide, changed } = this.props;
+    if (id === activeSlide) {
+      Segment.screen(`Tutorial 3`);
+    }
 
     return (
       <View>
         {id === activeSlide && (
           <Animatable.View
-            animation={
-              this.props.changed
-                ? I18nManager.isRTL
-                  ? "slideInLeft"
-                  : "slideInRight"
-                : ""
-            }
+            ref={ref => (this.bsnViewBtn = ref)}
+            animation={I18nManager.isRTL ? "slideInLeft" : "slideInRight"}
             style={styles.shopCard}
           >
             <LinearGradient
@@ -109,12 +107,11 @@ export default class Screen3 extends React.Component {
             </LinearGradient>
           </Animatable.View>
         )}
-        {id === activeSlide && (
-          <Image
-            style={styles.graphImage}
-            source={require("../../../assets/images/Graph.png")}
-          />
-        )}
+
+        <Image
+          style={styles.graphImage}
+          source={require("../../../assets/images/Graph.png")}
+        />
       </View>
     );
   }
