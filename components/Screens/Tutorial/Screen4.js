@@ -2,18 +2,17 @@ import React from "react";
 import { View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import Award from "../../../assets/SVGs/award";
-import { widthPercentageToDP } from "react-native-responsive-screen";
-import styles from "./styles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default class Screen4 extends React.Component {
   render() {
     const { id, activeSlide, changed } = this.props;
 
     return (
-      <View style={styles.screen4View}>
+      <View>
         {id === activeSlide && (
           <Animatable.View animation={this.props.changed ? "bounceInDown" : ""}>
-            <Award width={widthPercentageToDP(70)} />
+            <Award height={heightPercentageToDP(50)} />
           </Animatable.View>
         )}
       </View>
