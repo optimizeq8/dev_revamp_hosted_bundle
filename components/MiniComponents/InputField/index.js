@@ -86,10 +86,17 @@ export default class InputField extends Component {
                                   of the input field
    */
   handleTextChange = (value, secondHalf = false) => {
-    clearTimeout(this.typingTimeout);
+    const { stateName1 } = this.props;
+    // Remove validation on timeout while typing for email fields
+    if (stateName1 !== "email" && stateName1 !== "newEmail") {
+      clearTimeout(this.typingTimeout);
+    }
+
     if (secondHalf) this.props.setValue(this.props.stateName2, value);
     else this.props.setValue(this.props.stateName1, value);
-    this.typingTimeout = setTimeout(() => this.validate(), 800);
+    if (stateName1 !== "email" && stateName1 !== "newEmail") {
+      this.typingTimeout = setTimeout(() => this.validate(), 800);
+    }
   };
 
   /**
