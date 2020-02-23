@@ -63,21 +63,21 @@ class LineGraph extends Component {
 ${day}/${shortMonths[month]}`;
         if (this.props.granularity !== "DAY") category.push(hour);
 
+        //For swipeups/ Impression check the swipe/impression  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
         if (
-          this.props.chartChoice === "Swipe Ups" ||
-          this.props.chartChoice === "Impressions"
+          ((this.props.chartChoice === "Swipe Ups" &&
+            stat.stats.swipes !== 0 &&
+            stat.stats.swipes > 999) ||
+            (this.props.chartChoice === "Impressions" &&
+              stat.stats.impressions !== 0 &&
+              stat.stats.impressions > 999)) &&
+          !this.state.valuesGreaterThanThousand
         ) {
-          //For swipeups/ Impression check the swipe/impression  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
-          if (
-            ((stat.stats.swipes !== 0 && stat.stats.swipes > 999) ||
-              (stat.stats.impressions !== 0 && stat.stats.impressions > 999)) &&
-            !this.state.valuesGreaterThanThousand
-          ) {
-            this.setState({
-              valuesGreaterThanThousand: true
-            });
-          }
+          this.setState({
+            valuesGreaterThanThousand: true
+          });
         }
+
         tickValues =
           this.props.chartChoice === "Spend"
             ? stat.stats.spend / 1000000
