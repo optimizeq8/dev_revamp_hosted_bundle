@@ -203,8 +203,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: "center",
-    top: 10
+    justifyContent: "center"
   },
   tab: {
     // position: "absolute",
@@ -405,7 +404,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   chartChoiceButtons: {
-    width: "35%"
+    width: "35%",
+    height: 40
   },
   chartChoiceText: {
     fontSize: 10 / PixelRatio.getFontScale(),
@@ -458,6 +458,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#66D072"
+  },
+  chartChoicesView: {
+    height: "10%",
+    width: "85%",
+    alignSelf: "center",
+    marginTop: 10
   }
 });
 

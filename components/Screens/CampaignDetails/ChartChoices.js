@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import styles from "./styles";
-import { Text, Button } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -23,39 +23,26 @@ export default class ChartChoices extends Component {
     )
       choices.push("website interactions");
     choices = choices.map(choice => (
-      <Button
+      <GradientButton
         key={choice}
-        onPress={() => {
+        onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
         }}
-        style={[
-          styles.choiceButtons,
+        style={[styles.choiceButtons, styles.chartChoiceButtons]}
+        transparent={this.state.selectedChoice !== choice}
+        uppercase
+        text={translate(choice)}
+        textStyle={[
+          styles.choiceText,
           {
-            backgroundColor:
-              this.state.selectedChoice === choice
+            color:
+              this.state.selectedChoice !== choice
                 ? globalColors.orange
-                : "transparent"
-          },
-          styles.chartChoiceButtons
+                : "#fff"
+          }
         ]}
-      >
-        <Text
-          uppercase
-          style={[
-            styles.choiceText,
-            {
-              color:
-                this.state.selectedChoice !== choice
-                  ? globalColors.orange
-                  : "#fff"
-            },
-            styles.chartChoiceText
-          ]}
-        >
-          {translate(choice)}
-        </Text>
-      </Button>
+      />
     ));
     return (
       <View style={[styles.choicesStyles, styles.chartChoices]}>{choices}</View>
