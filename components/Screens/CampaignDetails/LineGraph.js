@@ -104,7 +104,11 @@ ${day}/${shortMonths[month]}`;
     }
 
     return (
-      <View style={{ paddingLeft: 30 }}>
+      <View
+        style={{
+          paddingLeft: I18nManager.isRTL ? wp(12) : wp(5)
+        }}
+      >
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
