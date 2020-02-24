@@ -58,13 +58,11 @@ export default class SlideUpPanel extends Component {
 
     return (
       <View style={[styles.bottomContainer]}>
-        <View style={styles.chartChoicesView}>
-          <ChartChoices
-            screenProps={this.props.screenProps}
-            changeChart={this.changeChart}
-            selectedCampaign={selectedCampaign}
-          />
-        </View>
+        <ChartChoices
+          screenProps={this.props.screenProps}
+          changeChart={this.changeChart}
+          selectedCampaign={selectedCampaign}
+        />
 
         <ScrollView
           refreshControl={

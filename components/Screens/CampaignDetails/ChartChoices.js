@@ -44,8 +44,6 @@ export default class ChartChoices extends Component {
         ]}
       />
     ));
-    return (
-      <View style={[styles.choicesStyles, styles.chartChoices]}>{choices}</View>
-    );
+    return <View style={[styles.chartChoicesViewContainer]}>{choices}</View>;
   }
 }

@@ -158,7 +158,11 @@ ${day}/${shortMonths[month]}`;
             padding={{
               top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
-              left: I18nManager.isRTL ? 120 : 60,
+              left: I18nManager.isRTL
+                ? this.props.campaignStats.length > 4
+                  ? 160
+                  : 120
+                : 60,
               right: 50
             }}
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}

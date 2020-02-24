@@ -404,8 +404,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   chartChoiceButtons: {
-    width: "35%",
-    height: 40
+    // width: "20%",
+    height: 35
   },
   chartChoiceText: {
     fontSize: 10 / PixelRatio.getFontScale(),
@@ -464,6 +464,16 @@ const styles = StyleSheet.create({
     width: "85%",
     alignSelf: "center",
     marginTop: 10
+  },
+  chartChoicesViewContainer: {
+    elevation: 11,
+    zIndex: 11,
+    width: "100%",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-around",
+    marginTop: 10,
+    marginBottom: 10
   }
 });
 
