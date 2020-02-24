@@ -106,7 +106,8 @@ ${day}/${shortMonths[month]}`;
     return (
       <View
         style={{
-          paddingLeft: I18nManager.isRTL ? wp(12) : wp(5)
+          paddingLeft: I18nManager.isRTL ? wp(12) : wp(5),
+          paddingRight: I18nManager.isRTL ? wp(15) : wp(5)
         }}
       >
         <ScrollView
@@ -162,11 +163,7 @@ ${day}/${shortMonths[month]}`;
             padding={{
               top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
-              left: I18nManager.isRTL
-                ? this.props.campaignStats.length > 4
-                  ? 160
-                  : 120
-                : 60,
+              left: 60,
               right: 50
             }}
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
@@ -213,7 +210,14 @@ ${day}/${shortMonths[month]}`;
             />
           </VictoryChart>
         </ScrollView>
-        <View style={styles.xAxisStyle}>
+        <View
+          style={[
+            styles.xAxisStyle,
+            I18nManager.isRTL && {
+              width: 0
+            }
+          ]}
+        >
           <VictoryAxis
             height={heightPercentageToDP(38)}
             domainPadding={{

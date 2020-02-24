@@ -99,7 +99,8 @@ class LineGraph extends Component {
     return (
       <View
         style={{
-          paddingLeft: 30
+          paddingLeft: I18nManager.isRTL ? 0 : wp(5),
+          paddingRight: I18nManager.isRTL ? wp(15) : wp(5)
         }}
       >
         <ScrollView
@@ -155,11 +156,7 @@ class LineGraph extends Component {
             padding={{
               top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
-              left: I18nManager.isRTL
-                ? this.props.campaignStats.length > 4
-                  ? 180
-                  : 120
-                : 60,
+              left: 60,
               right: 50
             }}
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
@@ -207,7 +204,14 @@ class LineGraph extends Component {
             />
           </VictoryChart>
         </ScrollView>
-        <View style={styles.xAxisStyle}>
+        <View
+          style={[
+            styles.xAxisStyle,
+            I18nManager.isRTL && {
+              width: 0
+            }
+          ]}
+        >
           <VictoryAxis
             dependentAxis
             height={heightPercentageToDP(38)}
