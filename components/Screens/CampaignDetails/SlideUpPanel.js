@@ -72,9 +72,10 @@ export default class SlideUpPanel extends Component {
               onRefresh={() => this._onRefresh(selectedCampaign)}
             />
           }
-          style={{ zIndex: 2, flex: 1 }}
+          style={{ zIndex: 2 }}
           contentContainerStyle={{
-            zIndex: 2
+            zIndex: 2,
+            flex: 1
           }}
         >
           {this.state.chartChoice !== "website interactions" ? (

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import styles from "./styles";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
@@ -29,13 +29,16 @@ export default class ChartChoices extends Component {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
         }}
-        style={[styles.choiceButtons, styles.chartChoiceButtons]}
+        style={[styles.chartChoiceButtons]}
         transparent={this.state.selectedChoice !== choice}
         uppercase
+        numberOfLines={2}
         text={translate(choice)}
         textStyle={[
           styles.choiceText,
           {
+            fontSize: 11,
+            paddingHorizontal: 15,
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.orange
@@ -44,6 +47,23 @@ export default class ChartChoices extends Component {
         ]}
       />
     ));
-    return <View style={[styles.chartChoicesViewContainer]}>{choices}</View>;
+    return (
+      <ScrollView
+        horizontal
+        style={{
+          alignSelf: "center",
+          alignContent: "center",
+          width: "100%"
+        }}
+        contentContainerStyle={[
+          styles.chartChoicesViewContainer,
+          {
+            width: choices.length === 4 ? null : "100%"
+          }
+        ]}
+      >
+        {choices}
+      </ScrollView>
+    );
   }
 }
