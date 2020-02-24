@@ -189,6 +189,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
             payload: { data: data, navigation: navigation.navigate }
           });
         } else {
+          // navigate back only when error
+          navigation.goBack();
           showMessage({
             message: data.message,
             type: "info",
@@ -200,10 +202,6 @@ export const create_snapchat_ad_account = (id, navigation) => {
           });
         }
       })
-      .then(() => {
-        navigation.goBack();
-      })
-
       .catch(err => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",
