@@ -42,10 +42,12 @@ class CampaignStats extends PureComponent {
     let { googleCampaignOverall, detail } = this.props;
     let campaignMetrics = [];
     Object.keys(googleCampaignOverall).map((metric, i) => {
-      campaignMetrics.push({
-        metric: metric,
-        metricValue: googleCampaignOverall[metric]
-      });
+      // To remove metric cpm from front end
+      metric !== "cpm" &&
+        campaignMetrics.push({
+          metric: metric,
+          metricValue: googleCampaignOverall[metric]
+        });
     });
     let metricsArr = ["impressions", "clicks", "spend", "ctr"];
     let metrics = [];
