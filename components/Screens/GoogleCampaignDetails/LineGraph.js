@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, I18nManager } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
 import { BlurView } from "expo-blur";
@@ -20,8 +20,27 @@ import {
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
 class LineGraph extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      valuesGreaterThanThousand: false // Keep track of all values on xAxis  > 999
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Set valuesGreaterThanThousand back to false when chartChoice changes
+    if (
+      prevProps.chartChoice !== this.props.chartChoice &&
+      this.state.valuesGreaterThanThousand
+    ) {
+      this.setState({
+        valuesGreaterThanThousand: false
+      });
+    }
+  }
   kFormatter = num => {
-    return Math.abs(num) > 999
+    // OR condition added so that it shows up values properly
+    return Math.abs(num) > 999 || this.state.valuesGreaterThanThousand
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
           Math.abs(num) / (Math.abs(num) > 9999999 ? 1000000 : 1000) +
           `${Math.abs(num) > 9999999 ? "M" : "K"}`
@@ -44,6 +63,20 @@ class LineGraph extends Component {
 
         let day = date.getDate();
         let month = date.getMonth();
+        //For Clicks/ CPC check the clicks/cpc  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
+        if (
+          ((this.props.chartChoice === "Clicks" &&
+            stat.clicks !== 0 &&
+            stat.clicks > 999) ||
+            (this.props.chartChoice === "CPC" &&
+              stat.cpc !== 0 &&
+              stat.cpc > 999)) &&
+          !this.state.valuesGreaterThanThousand
+        ) {
+          this.setState({
+            valuesGreaterThanThousand: true
+          });
+        }
         tickValues =
           this.props.chartChoice === "Spend"
             ? stat.spend
@@ -66,9 +99,7 @@ class LineGraph extends Component {
     return (
       <View
         style={{
-          paddingLeft: 30,
-          bottom: 10,
-          paddingBottom: 20
+          paddingLeft: 30
         }}
       >
         <ScrollView
@@ -101,8 +132,8 @@ class LineGraph extends Component {
           <VictoryChart
             domainPadding={{ y: 17 }}
             domain={
-              this.props.campaignStats.length === 1 || true
-                ? { y: [0, Math.max(...independentTickValues) * 1.05] }
+              this.props.campaignStats.length === 1
+                ? { y: [0, Math.max(...independentTickValues) * 0.93] }
                 : {}
             }
             height={heightPercentageToDP(38)}
@@ -124,7 +155,11 @@ class LineGraph extends Component {
             padding={{
               top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
-              left: 60,
+              left: I18nManager.isRTL
+                ? this.props.campaignStats.length > 4
+                  ? 180
+                  : 120
+                : 60,
               right: 50
             }}
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}

@@ -34,7 +34,7 @@ export default class SingleMetric extends Component {
         break;
     }
     return (
-      <View style={styles.metricsStyle}>
+      <View style={[styles.metricsStyle, { marginVertical: 20 }]}>
         {Icon && (
           <Icon
             width={heightPercentageToDP(4)}

@@ -291,7 +291,6 @@ const styles = StyleSheet.create({
   choiceButtons: {
     elevation: 0,
     borderRadius: 30,
-    width: 100,
     justifyContent: "center"
   },
   choiceText: {
@@ -575,6 +574,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#66D072"
+  },
+  chartChoicesView: {
+    elevation: 11,
+    zIndex: 11,
+    width: "100%",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-around",
+    marginTop: 20,
+    marginBottom: 10
   }
 });
 
