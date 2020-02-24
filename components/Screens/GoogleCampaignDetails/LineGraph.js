@@ -132,8 +132,8 @@ class LineGraph extends Component {
           <VictoryChart
             domainPadding={{ y: 17 }}
             domain={
-              this.props.campaignStats.length === 1 || true
-                ? { y: [0, Math.max(...independentTickValues) * 1.05] }
+              this.props.campaignStats.length === 1
+                ? { y: [0, Math.max(...independentTickValues) * 0.93] }
                 : {}
             }
             height={heightPercentageToDP(38)}

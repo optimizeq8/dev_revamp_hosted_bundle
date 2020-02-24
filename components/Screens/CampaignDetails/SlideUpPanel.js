@@ -75,7 +75,7 @@ export default class SlideUpPanel extends Component {
           style={{ zIndex: 2 }}
           contentContainerStyle={{
             zIndex: 2,
-            flex: 1
+            paddingBottom: 10
           }}
         >
           {this.state.chartChoice !== "website interactions" ? (
