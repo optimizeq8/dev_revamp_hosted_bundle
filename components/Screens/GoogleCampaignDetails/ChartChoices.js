@@ -33,7 +33,7 @@ export default class ChartChoices extends Component {
           styles.choiceText,
           {
             fontSize: 11,
-            paddingHorizontal: 5,
+            paddingHorizontal: I18nManager.isRTL ? 15 : 5,
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.orange
