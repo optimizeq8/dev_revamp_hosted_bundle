@@ -40,7 +40,7 @@ class SnapchatCreateAdAcc extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.mainBusiness.snap_ad_account_id) {
       this.props.navigation.getParam("closeAnimation", () => {})();
-      this.props.navigation.navigate("Dashboard");
+      // this.props.navigation.navigate("Dashboard");
     }
   }
 
@@ -116,24 +116,21 @@ class SnapchatCreateAdAcc extends Component {
               </View>
             </ScrollView>
             <View style={styles.bottomContainer}>
-              {this.props.loading ? (
-                <ActivityIndicator size="large" />
-              ) : (
-                <Button
-                  block
-                  dark
-                  // disabled={!this.state.accept}
-                  style={[styles.button]}
-                  onPress={() => {
-                    this.props.create_snapchat_ad_account(
-                      this.props.mainBusiness.businessid,
-                      this.props.navigation
-                    );
-                  }}
-                >
-                  <Text style={styles.buttontext}>{translate("Accept")}</Text>
-                </Button>
-              )}
+              <Button
+                block
+                dark
+                // disabled={!this.state.accept}
+                style={[styles.button]}
+                onPress={() => {
+                  this.props.navigation.navigate("AcceptTermsConditionLoading");
+                  this.props.create_snapchat_ad_account(
+                    this.props.mainBusiness.businessid,
+                    this.props.navigation
+                  );
+                }}
+              >
+                <Text style={styles.buttontext}>{translate("Accept")}</Text>
+              </Button>
             </View>
           </Card>
         </Container>

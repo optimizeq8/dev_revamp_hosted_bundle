@@ -48,6 +48,8 @@ import GoogleEditKeywords from "../Screens/GoogleCampaignDetails/EditKeywords";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
+import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading";
+
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -107,7 +109,8 @@ export default FluidNavigator(
     GoogleEditKeywords: GoogleEditKeywords,
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
-    GoogleSEAPreviewScreen: GoogleSEAPreviewScreen
+    GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
+    AcceptTermsConditionLoading: AcceptTermsConditionLoading
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
