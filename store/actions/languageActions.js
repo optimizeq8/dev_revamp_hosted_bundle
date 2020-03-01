@@ -25,6 +25,9 @@ export const getLanguageListPOEdit = language => {
           language
         })
       );
+      Segment.trackWithProperties("Selected App Language", {
+        app_language: language
+      });
 
       if (response.data.response.status === "success") {
         await AsyncStorage.setItem("appLanguage", language);
