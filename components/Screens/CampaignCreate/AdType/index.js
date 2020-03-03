@@ -161,6 +161,13 @@ class AdType extends Component {
           this.state.media_type[0].mediaType === "google")
       ) {
         this.props.navigation.navigate("GoogleCreateAdAcc");
+      } else if (
+        this.props.mainBusiness.google_account_id &&
+        (adType.mediaType === "google" ||
+          this.state.media_type[0].mediaType === "google") &&
+        this.props.mainBusiness.google_suspended === "1"
+      ) {
+        this.props.navigation.navigate("SuspendedWarning");
       } else
         this.props.navigation.navigate(adType.rout || this.state.route, {
           tempAdType: this.state.campaign_type
