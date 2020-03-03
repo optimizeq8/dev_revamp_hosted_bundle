@@ -13,17 +13,23 @@ import { send_push_notification } from "./loginActions";
 import createBaseUrl from "./createBaseUrl";
 import segmentEventTrack from "../../components/segmentEventTrack";
 
-export const verifyBusinessName = (businessname, _handleBusinessName) => {
+export const verifyBusinessName = (
+  businessname,
+  _handleBusinessName,
+  submission
+) => {
   return dispatch => {
+    dispatch({ type: actionTypes.CHECKING_BUSINESSNAME, payload: true });
     createBaseUrl()
       .post(`verifyBusinessName`, { businessname })
       .then(res => res.data)
       .then(data => {
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "warning",
-          position: "top"
-        });
+        (data.success ? !submission : true) &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top"
+          });
         _handleBusinessName(data.success);
         return dispatch({
           type: actionTypes.VERIFY_BUSINESSNAME,

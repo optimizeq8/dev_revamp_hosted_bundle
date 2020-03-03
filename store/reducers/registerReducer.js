@@ -14,7 +14,8 @@ const initialState = {
   successName: false,
   successPersonalInfo: false,
   savingRegister: false,
-  emailLinkCodeExpired: null
+  emailLinkCodeExpired: null,
+  checkingBusinessName: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -101,7 +102,13 @@ const reducer = (state = initialState, action) => {
     case actionTypes.VERIFY_BUSINESSNAME:
       return {
         ...state,
-        successName: action.payload.success
+        successName: action.payload.success,
+        checkingBusinessName: false
+      };
+    case actionTypes.CHECKING_BUSINESSNAME:
+      return {
+        ...state,
+        checkingBusinessName: action.payload
       };
     case actionTypes.ERROR_VERIFY_BUSINESSNAME:
       return {

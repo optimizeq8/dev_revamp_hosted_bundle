@@ -15,6 +15,7 @@ import Website from "../../MiniComponents/InputField/Website";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import GradientButton from "../../MiniComponents/GradientButton";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //data
 import businessCategoryList from "../../Data/businessCategoriesList.data";
@@ -125,7 +126,8 @@ class CreateBusinessAccount extends Component {
       attachment: {},
       AppError: null,
       data: [],
-      androidData: []
+      androidData: [],
+      checkingBusinessNameSubmission: false
     };
   }
   componentDidMount() {
@@ -181,15 +183,21 @@ class CreateBusinessAccount extends Component {
     });
   };
 
-  _verifyBusinessName = async name => {
+  _verifyBusinessName = async (name, submision) => {
     if (name !== "") {
-      await this.props.verifyBusinessName(name, this._handleBusinessName);
+      if (submision) this.setState({ checkingBusinessNameSubmission: true });
+      await this.props.verifyBusinessName(
+        name,
+        this._handleBusinessName,
+        submision
+      );
       return this.props.successName;
     }
   };
   _handleBusinessName = value => {
     this.setState({
-      businessnameAvalible: value
+      businessnameAvalible: value,
+      checkingBusinessNameSubmission: false
     });
   };
 
@@ -242,7 +250,6 @@ class CreateBusinessAccount extends Component {
         type: "warning"
       });
     } else {
-      await this._verifyBusinessName(this.state.businessAccount.businessname);
       if (
         !businessnameError &&
         !businessemailError &&
@@ -259,44 +266,75 @@ class CreateBusinessAccount extends Component {
             }
           });
         }
-
-        if (this.props.registering) {
-          let { businessemail, ...business } = this.state.businessAccount;
-          let websitelink = this.state.businessAccount.websitelink;
-          if (websitelink !== "") {
-            websitelink =
-              this.state.networkString + this.state.businessAccount.websitelink;
+        if (
+          await this._verifyBusinessName(
+            this.state.businessAccount.businessname,
+            true
+          )
+        ) {
+          if (this.props.registering) {
+            let { businessemail, ...business } = this.state.businessAccount;
+            let websitelink = this.state.businessAccount.websitelink;
+            if (websitelink !== "") {
+              websitelink =
+                this.state.networkString +
+                this.state.businessAccount.websitelink;
+            }
+            let userInfo = {
+              ...this.props.userInfoR,
+              ...business,
+              websitelink
+            };
+            this.props.registerUser(userInfo, this.props.navigation);
           }
-          let userInfo = {
-            ...this.props.userInfoR,
-            ...business,
-            websitelink
-          };
-
-          this.props.registerUser(userInfo, this.props.navigation);
-        }
-        //  condition for updating business info
-        else if (this.state.editBusinessInfo) {
-          let websitelink = this.state.businessAccount.websitelink;
-          if (websitelink !== "") {
-            websitelink =
-              this.state.networkString + this.state.businessAccount.websitelink;
-          }
-          // check if info changed then call api else showMessage for no change
-          const changedInfo = !isEqual(
-            {
-              ...this.state.businessAccount,
-              websitelink,
-              otherBusinessCategory:
-                this.state.businessAccount.businesscategory !== "43"
-                  ? null
-                  : this.state.businessAccount.otherBusinessCategory // to handle other business category field
-            },
-            this.props.mainBusiness
-          );
-          if (changedInfo) {
-            this.props.updateBusinessInfo(
-              this.props.userInfo.userid,
+          //  condition for updating business info
+          else if (this.state.editBusinessInfo) {
+            let websitelink = this.state.businessAccount.websitelink;
+            if (websitelink !== "") {
+              websitelink =
+                this.state.networkString +
+                this.state.businessAccount.websitelink;
+            }
+            // check if info changed then call api else showMessage for no change
+            const changedInfo = !isEqual(
+              {
+                ...this.state.businessAccount,
+                websitelink,
+                otherBusinessCategory:
+                  this.state.businessAccount.businesscategory !== "43"
+                    ? null
+                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+              },
+              this.props.mainBusiness
+            );
+            if (changedInfo) {
+              this.props.updateBusinessInfo(
+                this.props.userInfo.userid,
+                {
+                  ...this.state.businessAccount,
+                  websitelink,
+                  otherBusinessCategory:
+                    this.state.businessAccount.businesscategory !== "43"
+                      ? null
+                      : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                },
+                this.props.navigation
+              );
+            } else {
+              showMessage({
+                type: "warning",
+                message: translate("No changes to update"),
+                position: "top"
+              });
+            }
+          } else {
+            let websitelink = this.state.businessAccount.websitelink;
+            if (websitelink !== "") {
+              websitelink =
+                this.state.networkString +
+                this.state.businessAccount.websitelink;
+            }
+            this.props.createBusinessAccount(
               {
                 ...this.state.businessAccount,
                 websitelink,
@@ -307,31 +345,13 @@ class CreateBusinessAccount extends Component {
               },
               this.props.navigation
             );
-          } else {
-            showMessage({
-              type: "warning",
-              message: translate("No changes to update"),
-              position: "top"
-            });
           }
-        } else {
-          let websitelink = this.state.businessAccount.websitelink;
-          if (websitelink !== "") {
-            websitelink =
-              this.state.networkString + this.state.businessAccount.websitelink;
-          }
-          this.props.createBusinessAccount(
-            {
-              ...this.state.businessAccount,
-              websitelink,
-              otherBusinessCategory:
-                this.state.businessAccount.businesscategory !== "43"
-                  ? null
-                  : this.state.businessAccount.otherBusinessCategory // to handle other business category field
-            },
-            this.props.navigation
-          );
         }
+      } else {
+        showMessage({
+          message: translate("Please complete all the required fields"),
+          type: "warning"
+        });
       }
     }
   };
@@ -475,7 +495,6 @@ class CreateBusinessAccount extends Component {
     iosApp_name,
     androidApp_name
   ) => {};
-
   render() {
     const { translate } = this.props.screenProps;
     // Added disable(when updating business info loading ) and value ={having state value} props to input fields
@@ -1165,6 +1184,10 @@ class CreateBusinessAccount extends Component {
             />
           )}
         </InputScrollView>
+        {this.props.checkingBusinessName &&
+          this.state.checkingBusinessNameSubmission && (
+            <LoadingScreen dash={true} />
+          )}
         <AppSearchModal
           mainState={this.state}
           selectApp={this.selectApp}
@@ -1189,7 +1212,8 @@ const mapStateToProps = state => ({
   successName: state.register.successName,
   mainBusiness: state.account.mainBusiness,
   loadingUpdateBusinessInfo: state.account.editBusinessInfoLoading,
-  savingRegister: state.register.savingRegister
+  savingRegister: state.register.savingRegister,
+  checkingBusinessName: state.register.checkingBusinessName
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1197,9 +1221,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   createBusinessAccount: (account, navigation) =>
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
-  verifyBusinessName: (businessName, _handleBusinessName) =>
+  verifyBusinessName: (businessName, _handleBusinessName, submision) =>
     dispatch(
-      actionCreators.verifyBusinessName(businessName, _handleBusinessName)
+      actionCreators.verifyBusinessName(
+        businessName,
+        _handleBusinessName,
+        submision
+      )
     ),
   updateBusinessInfo: (userid, info, navigation) =>
     dispatch(actionCreators.updateBusinessInfo(userid, info, navigation))
