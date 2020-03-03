@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 
@@ -16,6 +16,8 @@ import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // icons
 import BackIcon from "../../../../assets/SVGs/BackButtonPurple";
+import FowrwardIcon from "../../../../assets/SVGs/ArrowForwardPurple";
+
 import RegisterIcon from "../../../../assets/SVGs/RegisterIcon";
 // Style
 import styles from "./styles";
@@ -72,7 +74,7 @@ class MainForm extends Component {
                 this.props.resetRegister();
               }}
             >
-              <BackIcon fill={"#C6C6C6"} />
+              {I18nManager.isRTL ? <FowrwardIcon /> : <BackIcon />}
             </TouchableOpacity>
 
             <View style={styles.registerHeaderIconView}>

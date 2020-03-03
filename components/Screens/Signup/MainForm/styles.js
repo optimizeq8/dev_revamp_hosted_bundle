@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   content: {
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     backgroundColor: "#FFF",
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 30,
     borderBottomLeftRadius: 30,
