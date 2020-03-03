@@ -87,7 +87,7 @@ class CreateBusinessAccount extends Component {
       businesscategoryOtherError: "",
       countryError: "",
       websitelinkError: null,
-      items: businessCategoryList,
+      items: businessCategoryList(translate),
       countries: [
         {
           label: translate("Kuwait"),

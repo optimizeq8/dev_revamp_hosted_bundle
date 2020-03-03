@@ -48,22 +48,22 @@ export default [
     icon: businesIcons.FoodBeverage
   },
   {
-    label: "Food & Bevrage: Confectionary",
+    label: "Food & Beverage: Confectionary",
     value: "15",
     icon: businesIcons.FoodBeverage
   },
   {
-    label: "Food & Bevrage: Fast Food",
+    label: "Food & Beverage: Fast Food",
     value: "16",
     icon: businesIcons.FoodBeverage
   },
   {
-    label: "Food & Bevrage: Fine Dining",
+    label: "Food & Beverage: Fine Dining",
     value: "17",
     icon: businesIcons.FoodBeverage
   },
   {
-    label: "Food & Bevrage: Other",
+    label: "Food & Beverage: Other",
     value: "18",
     icon: businesIcons.FoodBeverage
   },
