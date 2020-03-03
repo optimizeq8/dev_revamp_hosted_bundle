@@ -1068,11 +1068,7 @@ class AdDesign extends Component {
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
-          <Content
-            contentContainerStyle={styles.contentContainer}
-            scrollEnabled={false}
-            padder
-          >
+          <View style={styles.contentContainer} scrollEnabled={false} padder>
             <Transition style={styles.transition} shared="image">
               <View style={styles.buttonN}>
                 <View style={styles.placeholder}>
@@ -1172,7 +1168,7 @@ class AdDesign extends Component {
                 </View>
               </View>
             </Transition>
-          </Content>
+          </View>
 
           <Footer style={styles.footerStyle}>
             {(media !== "//" && !swipeUpError) || true ? (

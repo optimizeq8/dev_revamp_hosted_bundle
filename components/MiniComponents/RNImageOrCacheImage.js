@@ -11,7 +11,8 @@ export default class RNImageOrCacheImage extends Component {
   state = { path: "" };
   async componentDidMount() {}
   handlCacheLoading = async () => {
-    if (this.props.media !== "//") {
+    let { media } = this.props;
+    if (media.includes("https://") || media.includes("http://")) {
       const path = await CacheManager.get(this.props.media).getPath();
       this.setState({ path });
     }
@@ -22,7 +23,7 @@ export default class RNImageOrCacheImage extends Component {
       <>
         <NavigationEvents onDidFocus={this.handlCacheLoading} />
 
-        {media.includes("https://") ? (
+        {media.includes("https://") || media.includes("http://") ? (
           <>
             {!this.state.path && (
               <ActivityIndicator

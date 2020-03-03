@@ -173,7 +173,7 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -228,7 +228,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received")
-      Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
     //   this.setState({
     //     uploadMediaDifferentDeviceModal: false,
     //     uploadMediaNotification: uploadMediaNotification,

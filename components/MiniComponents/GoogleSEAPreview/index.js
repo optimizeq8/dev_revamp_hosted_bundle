@@ -67,7 +67,13 @@ export default GoogleSEAPreview = props => {
           )}
         </View>
         <View
-          style={[styles.headlineRowContainer, dynamicStyle(language).arabic]}
+          style={[
+            styles.headlineRowContainer,
+            dynamicStyle(language).arabic,
+            {
+              paddingRight: language === "1019" ? 0 : 20
+            }
+          ]}
         >
           <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
             {details && (

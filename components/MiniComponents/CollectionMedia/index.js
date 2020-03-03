@@ -55,6 +55,7 @@ import isNull from "lodash/isNull";
 import split from "lodash/split";
 import segmentEventTrack from "../../segmentEventTrack";
 import LowerButton from "../LowerButton";
+import { PESDK, Configuration } from "react-native-photoeditorsdk";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -301,61 +302,61 @@ class CollectionMedia extends Component {
     try {
       const { translate } = this.props.screenProps;
       let result = await this.pick();
-
+      let configuration: Configuration = {
+        forceCrop: true,
+        transform: {
+          items: [{ width: 1, height: 1 }]
+        }
+      };
       let file = {};
-      let newWidth = "";
-      let newHeight = "";
       if (result) {
         file = await FileSystem.getInfoAsync(result.uri, {
           size: true
         });
         this.setState({ directory: "/ImagePicker/" });
-        newWidth = result.width;
-        newHeight = result.height;
         await this.validateImage();
       }
-
       if (result && !result.cancelled) {
         if (result.width >= 160 && result.height >= 160) {
-          newWidth = 160;
-          newHeight = 160;
-          ImageManipulator.manipulateAsync(
-            result.uri,
-            [
-              {
-                resize:
-                  result.height < result.width
-                    ? { height: newHeight }
-                    : { width: newWidth }
-              }
-            ],
-            {
-              compress: 1
-            }
-          )
+          PESDK.openEditor(result.uri, configuration)
             .then(async manipResult => {
-              manipResult = await ImageManipulator.manipulateAsync(
-                manipResult.uri,
-                [
-                  {
-                    crop: {
-                      originX: (manipResult.width - 160) / 2,
-                      originY: (manipResult.height - 160) / 2,
-                      width: 160,
-                      height: 160
-                    }
-                  }
-                ],
-                {
-                  compress: 1
-                }
+              let newDimensions = await ImageManipulator.manipulateAsync(
+                manipResult.image
               );
+              if (newDimensions.width !== newDimensions.height) {
+                //incase the user undos the cropping of 1:1
+                this.setState({
+                  imageError:
+                    "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
+                  collection: {
+                    ...this.state.collection,
+                    collection_media: null
+                  }
+                });
+                segmentEventTrack("Error Collection Ad Media", {
+                  campaign_error_collection_media_image:
+                    "User undid the cropping,Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
+                });
+                this.onToggleModal(false);
+
+                return Promise.reject({
+                  wrongAspect: true,
+                  message: "Image's aspect ratio must be 1:1"
+                });
+              }
+              if (newDimensions.width > 1200) {
+                //resize image to be less than 2 MB
+                newDimensions = await ImageManipulator.manipulateAsync(
+                  newDimensions.uri,
+                  [{ resize: { width: 1200, height: 1200 } }]
+                );
+              }
               this.setState({
                 directory: "/ImageManipulator/"
               });
-              result.uri = manipResult.uri;
-              result.height = manipResult.height;
-              result.width = manipResult.width;
+              result.uri = newDimensions.uri;
+              result.height = newDimensions.height;
+              result.width = newDimensions.width;
             })
             .then(async () => {
               file = await FileSystem.getInfoAsync(result.uri, {
@@ -412,7 +413,9 @@ class CollectionMedia extends Component {
               });
               this.onToggleModal(false);
               showMessage({
-                message: translate("Please choose another image"),
+                message: error.wrongAspect
+                  ? error.message
+                  : translate("Please choose another image"),
                 position: "top",
                 type: "warning"
               });
@@ -422,7 +425,7 @@ class CollectionMedia extends Component {
         } else if (result.width < 160 || result.height < 160) {
           this.setState({
             imageError:
-              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px.",
+              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
             collection: {
               ...this.state.collection,
               collection_media: null
@@ -430,54 +433,15 @@ class CollectionMedia extends Component {
           });
           segmentEventTrack("Error Collection Ad Media", {
             campaign_error_collection_media_image:
-              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
           });
           this.onToggleModal(false);
           showMessage({
             message: translate(
-              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
             ),
             position: "top",
             type: "warning"
-          });
-          return;
-        } else if (file.size > 2000000) {
-          this.setState({
-            imageError: "Image must be less than 2 MBs.",
-            collection: {
-              ...this.state.collection,
-              collection_media: null
-            }
-          });
-          segmentEventTrack("Error Collection Ad Media", {
-            campaign_error_collection_media_image:
-              "Image must be less than 2 MBs"
-          });
-          this.onToggleModal(false);
-          showMessage({
-            message: translate("Image must be less than {{fileSize}} MBs", {
-              fileSize: 2
-            }),
-            position: "top",
-            type: "warning"
-          });
-
-          return;
-        } else {
-          this.setState({
-            collection: {
-              ...this.state.collection,
-              collection_media: result.uri
-            },
-            type: result.type.toUpperCase(),
-            imageError: null
-          });
-          segmentEventTrack("Selected Collection Ad Image successfully");
-          this.onToggleModal(false);
-          showMessage({
-            message: translate("Image has been selected successfully"),
-            position: "top",
-            type: "success"
           });
           return;
         }

@@ -80,9 +80,9 @@ class Dashboard extends Component {
       componentMounting: true
     };
     //Logs/gives warnign if a component has any functions that take a while to render
-    slowlog(this, /.*/, {
-      // verbose: true
-    }); //verbose logs all functions and their time
+    // slowlog(this, /.*/, {
+    //   // verbose: true
+    // }); //verbose logs all functions and their time
     this.page = 1;
   }
 
@@ -316,6 +316,8 @@ class Dashboard extends Component {
   };
 
   render() {
+    console.log(this.props.campaignList);
+
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -617,7 +619,9 @@ class Dashboard extends Component {
                             contentContainerStyle={
                               styles.flatlistContainerStyle
                             }
-                            keyExtractor={item => item.campaign_id}
+                            keyExtractor={item =>
+                              JSON.stringify(item.campaign_id)
+                            }
                             data={this.props.filteredCampaigns}
                             onEndReached={this.loadMoreData}
                             onEndReachedThreshold={0.1}
