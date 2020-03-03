@@ -8,7 +8,7 @@ import segmentEventTrack from "../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
-import { PESDK, Configuration } from "react-native-photoeditorsdk";
+import { PESDK, Configuration, TintMode } from "react-native-photoeditorsdk";
 
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
@@ -72,6 +72,31 @@ export const _pickImage = async (
       forceCrop: true,
       transform: {
         items: [{ width: 9, height: 16 }]
+      },
+      sticker: {
+        personalStickers: true,
+        defaultPersonalStickerTintMode: TintMode.COLORIZED,
+        categories: [
+          { identifier: "imgly_sticker_category_emoticons" },
+          { identifier: "imgly_sticker_category_shapes" },
+          {
+            identifier: "demo_sticker_category",
+            name: "Logos",
+            thumbnailURI: require("../../../../../assets/logo.png"),
+            items: [
+              {
+                identifier: "demo_sticker_logo",
+                name: "Optimize Logo",
+                stickerURI: require("../../../../../assets/logo.png")
+              },
+              {
+                identifier: "demo_sticker_icon",
+                name: "Optimize Icon",
+                stickerURI: require("../../../../../assets/icon.png")
+              }
+            ]
+          }
+        ]
       }
     };
     let file = {};
