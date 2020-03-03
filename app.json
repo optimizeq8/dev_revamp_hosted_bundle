@@ -6,11 +6,8 @@
     "slug": "optimize_app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "0.2.210",
+    "platforms": ["ios", "android"],
+    "version": "0.3.10",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -25,29 +22,21 @@
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_ERROR_RECOVERY"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "28",
+      "buildNumber": "29",
       "supportsTablet": false,
       "publishBundlePath": "ios/optimizeapp/Supporting/shell-app.bundle",
       "publishManifestPath": "ios/optimizeapp/Supporting/shell-app-manifest.json"
     },
     "packagerOpts": {
-      "sourceExts": [
-        "js",
-        "jsx",
-        "ts",
-        "tsx",
-        "svg"
-      ],
+      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"],
       "config": "metro.config.js"
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 26,
+      "versionCode": 27,
       "googleServicesFile": "./google-services.json",
       "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
       "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
