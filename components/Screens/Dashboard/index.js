@@ -316,7 +316,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log(this.props.campaignList);
+    // console.log(this.props.campaignList);
 
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
