@@ -1,267 +1,267 @@
-export default [
+export default translate => [
   {
-    label: "Accounting",
+    label: translate("Accounting"),
     value: "0"
   },
   {
-    label: "Advertising/Public Relations",
+    label: translate("Advertising/Public Relations"),
     value: "1"
   },
   {
-    label: "Agriculture",
+    label: translate("Agriculture"),
     value: "2"
   },
   {
-    label: "Architectural Service",
+    label: translate("Architectural Service"),
     value: "3"
   },
   {
-    label: "Arts",
+    label: translate("Arts"),
     value: "4"
   },
   {
-    label: "Automotive",
+    label: translate("Automotive"),
     value: "5"
   },
   {
-    label: "Beauty Products",
+    label: translate("Beauty Products"),
     value: "6"
   },
   {
-    label: "Books, Magazines, & Newspapers",
+    label: translate("Books, Magazines, & Newspapers"),
     value: "7"
   },
   {
-    label: "Builder/General Contractor",
+    label: translate("Builder/General Contractor"),
     value: "8"
   },
   {
-    label: "Business Consulting/Services",
+    label: translate("Business Consulting/Services"),
     value: "9"
   },
   {
-    label: "Construction",
+    label: translate("Construction"),
     value: "10"
   },
   {
-    label: "Education",
+    label: translate("Education"),
     value: "11"
   },
   {
-    label: "Finance/Investments",
+    label: translate("Finance/Investments"),
     value: "12"
   },
   {
-    label: "Fitness/Healthy Lifestlyes",
+    label: translate("Fitness/Healthy Lifestlyes"),
     value: "13"
   },
   {
-    label: "Food & Beverage: Coffee Shop",
+    label: translate("Food & Beverage: Coffee Shop"),
     value: "14"
   },
   {
-    label: "Food & Bevrage: Confectionary",
+    label: translate("Food & Beverage: Confectionary"),
     value: "15"
   },
   {
-    label: "Food & Bevrage: Fast Food",
+    label: translate("Food & Beverage: Fast Food"),
     value: "16"
   },
   {
-    label: "Food & Bevrage: Fine Dining",
+    label: translate("Food & Beverage: Fine Dining"),
     value: "17"
   },
   {
-    label: "Food & Bevrage: Other",
+    label: translate("Food & Beverage: Other"),
     value: "18"
   },
   {
-    label: "Games: Digital",
+    label: translate("Games: Digital"),
     value: "19"
   },
   {
-    label: "Games: Mobile",
+    label: translate("Games: Mobile"),
     value: "20"
   },
   {
-    label: "Games: Other",
+    label: translate("Games: Other"),
     value: "21"
   },
   {
-    label: "Government",
+    label: translate("Government"),
     value: "22"
   },
   {
-    label: "Health Care",
+    label: translate("Health Care"),
     value: "23"
   },
   {
-    label: "Health Services/HMOs",
+    label: translate("Health Services/HMOs"),
     value: "24"
   },
   {
-    label: "Home Business",
+    label: translate("Home Business"),
     value: "25"
   },
   {
-    label: "Hospitality",
+    label: translate("Hospitality"),
     value: "26"
   },
   {
-    label: "Insurance",
+    label: translate("Insurance"),
     value: "27"
   },
   {
-    label: "IT: Cloud & Storage",
+    label: translate("IT: Cloud & Storage"),
     value: "28"
   },
   {
-    label: "IT: Hardware Repair",
+    label: translate("IT: Hardware Repair"),
     value: "29"
   },
   {
-    label: "IT: Network & Security",
+    label: translate("IT: Network & Security"),
     value: "30"
   },
   {
-    label: "IT: Other",
+    label: translate("IT: Other"),
     value: "31"
   },
   {
-    label: "IT: Software Development",
+    label: translate("IT: Software Development"),
     value: "32"
   },
   {
-    label: "IT: VoIP Service",
+    label: translate("IT: VoIP Service"),
     value: "33"
   },
   {
-    label: "Legal Services",
+    label: translate("Legal Services"),
     value: "34"
   },
   {
-    label: "Entertainment: Live/Performing Arts",
+    label: translate("Entertainment: Live/Performing Arts"),
     value: "35"
   },
   {
-    label: "Entertainment: Exhibition",
+    label: translate("Entertainment: Exhibition"),
     value: "36"
   },
   {
-    label: "Entertainment: Other",
+    label: translate("Entertainment: Other"),
     value: "37"
   },
   {
-    label: "Manufacturing",
+    label: translate("Manufacturing"),
     value: "38"
   },
   {
-    label: "Medical Products",
+    label: translate("Medical Products"),
     value: "39"
   },
   {
-    label: "Music Production",
+    label: translate("Music Production"),
     value: "40"
   },
   {
-    label: "Nonprofit",
+    label: translate("Nonprofit"),
     value: "41"
   },
   {
-    label: "Oil & Gas",
+    label: translate("Oil & Gas"),
     value: "42"
   },
   {
-    label: "Pharmaceutical",
+    label: translate("Pharmaceutical"),
     value: "44"
   },
   {
-    label: "Radio",
+    label: translate("Radio"),
     value: "45"
   },
   {
-    label: "Real Estate",
+    label: translate("Real Estate"),
     value: "46"
   },
   {
-    label: "Real Estate/Housing",
+    label: translate("Real Estate/Housing"),
     value: "47"
   },
   {
-    label: "Rental & Leasing Services",
+    label: translate("Rental & Leasing Services"),
     value: "48"
   },
   {
-    label: "Retail: Clothing",
+    label: translate("Retail: Clothing"),
     value: "49"
   },
   {
-    label: "Retail: Electronics",
+    label: translate("Retail: Electronics"),
     value: "50"
   },
   {
-    label: "Retail: Food Stuff & Consumables",
+    label: translate("Retail: Food Stuff & Consumables"),
     value: "51"
   },
   {
-    label: "Retail: Furniture",
+    label: translate("Retail: Furniture"),
     value: "52"
   },
   {
-    label: "Retail: Other",
+    label: translate("Retail: Other"),
     value: "53"
   },
   {
-    label: "Retail: Sports Equipment",
+    label: translate("Retail: Sports Equipment"),
     value: "54"
   },
   {
-    label: "Retail: Wholesale",
+    label: translate("Retail: Wholesale"),
     value: "55"
   },
   {
-    label: "Sports: Esports",
+    label: translate("Sports: Esports"),
     value: "56"
   },
   {
-    label: "Sports: Motorsports",
+    label: translate("Sports: Motorsports"),
     value: "57"
   },
   {
-    label: "Sports: Other",
+    label: translate("Sports: Other"),
     value: "58"
   },
   {
-    label: "Sports: Team Sports",
+    label: translate("Sports: Team Sports"),
     value: "59"
   },
   {
-    label: "Tech Business",
+    label: translate("Tech Business"),
     value: "60"
   },
   {
-    label: "Telecommunications",
+    label: translate("Telecommunications"),
     value: "61"
   },
   {
-    label: "Travel & Tourism: Airlines",
+    label: translate("Travel & Tourism: Airlines"),
     value: "62"
   },
 
   {
-    label: "Travel & Tourism: Ride Hailing",
+    label: translate("Travel & Tourism: Ride Hailing"),
     value: "63"
   },
   {
-    label: "Travel & Tourism: Travel Agency",
+    label: translate("Travel & Tourism: Travel Agency"),
     value: "64"
   },
   {
-    label: "TV Production",
+    label: translate("TV Production"),
     value: "65"
   },
   {
-    label: "Other",
+    label: translate("Other"),
     value: "43"
   }
 ];
