@@ -38,6 +38,7 @@ xcuserdata
 .gradle
 /android/.idea
 /android/.idea/caches
+/android/.idea/libraries
 .idea/libraries
 /android/.idea/libraries
 .idea/workspace.xml
