@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, I18nManager } from "react-native";
 import GlobalStyles from "../../../GlobalStyles";
 import styles, { dynamicStyle } from "./styles";
 import ADIcon from "../../../assets/SVGs/ADIcon";
@@ -54,7 +54,15 @@ export default GoogleSEAPreview = props => {
         </View>
         <View style={[GlobalStyles.row, dynamicStyle(language).arabic]}>
           {finalurl ? (
-            <Text style={[styles.headlineText, styles.linkText]}>
+            <Text
+              style={[
+                styles.headlineText,
+                styles.linkText,
+                {
+                  paddingRight: language === "1019" ? 0 : 20
+                }
+              ]}
+            >
               <Text style={[styles.adIcon, dynamicStyle(language).arabic]}>
                 {language === "1019" ? "إعلان" : "Ad"}
               </Text>
@@ -67,13 +75,7 @@ export default GoogleSEAPreview = props => {
           )}
         </View>
         <View
-          style={[
-            styles.headlineRowContainer,
-            dynamicStyle(language).arabic,
-            {
-              paddingRight: language === "1019" ? 0 : 20
-            }
-          ]}
+          style={[styles.headlineRowContainer, dynamicStyle(language).arabic]}
         >
           <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
             {details && (
