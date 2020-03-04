@@ -59,12 +59,20 @@ const styles = StyleSheet.create({
   heading: {
     color: "#575757",
     fontSize: 12,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textAlign: "left"
   },
   detailInput: {
     color: "#909090",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular-english",
+    textAlign: I18nManager.isRTL ? "right" : "left"
+  },
+  detailInputText: {
+    color: "#909090",
+    fontSize: 14,
+    fontFamily: "montserrat-regular-english",
+    textAlign: "left"
   },
   codeSentText: {
     fontFamily: "montserrat-regular",
