@@ -18,6 +18,7 @@ import {
   AsyncStorage,
   ActivityIndicator
 } from "react-native";
+import segmentEventTrack from "./components/segmentEventTrack";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -227,8 +228,12 @@ class App extends React.Component {
       }
     }
 
-    if (handleScreen.origin === "received")
+    if (handleScreen.origin === "received") {
       Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+    }
+    if (handleScreen.origin === "selected") {
+      segmentEventTrack("Pressed notification");
+    }
     //   this.setState({
     //     uploadMediaDifferentDeviceModal: false,
     //     uploadMediaNotification: uploadMediaNotification,
