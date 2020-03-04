@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(40)
   },
   htmlContainer: {
-    width: widthPercentageToDP(85),
+    width: widthPercentageToDP(100),
     alignSelf: "center"
   },
   bottomContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    marginBottom: 10
+    marginVertical: 10
   },
   imageSlide: {
     height: 250,
@@ -79,6 +79,14 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  contentWebView: {
+    backgroundColor: "transparent",
+    height: "100%"
+  },
+  webview: {
+    backgroundColor: "transparent",
+    marginTop: -50
   }
 });
 
