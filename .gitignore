@@ -47,7 +47,7 @@ xcuserdata
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
-
+*.keystore
 # Android
 *.apk
 /android/**/build
