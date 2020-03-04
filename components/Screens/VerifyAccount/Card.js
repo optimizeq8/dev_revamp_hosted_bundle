@@ -55,7 +55,7 @@ Card = ({
               autoCorrect={false}
             />
           ) : (
-            <Text style={styles.detailInput}>{detail}</Text>
+            <Text style={styles.detailInputText}>{detail}</Text>
           )}
         </View>
         <GradientButton

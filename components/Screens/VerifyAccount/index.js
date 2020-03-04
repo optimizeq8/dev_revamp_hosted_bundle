@@ -223,8 +223,8 @@ class VerifyAccount extends Component {
         <View style={styles.mobileDetailCard}>
           <Text style={styles.codeSentText}>
             {verifyByMobile
-              ? " We’ve sent a code to your Mobile number"
-              : "  We’ve sent a code to your Email"}
+              ? translate("We’ve sent a code to your Mobile number")
+              : translate("We’ve sent a code to your Email")}
           </Text>
           <Text style={styles.detail}>
             {verifyByMobile ? this.state.phoneNum : userInfo.email}
