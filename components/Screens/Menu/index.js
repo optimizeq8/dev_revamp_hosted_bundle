@@ -116,7 +116,6 @@ class Menu extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -348,7 +347,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/2/
+                {Constants.manifest.version}/3/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}
               </Text>
