@@ -268,7 +268,7 @@
              android:exported="false"/>
 
     <!-- GCM -->
-    <receiver
+    <!-- <receiver
       android:name="com.google.android.gms.gcm.GcmReceiver"
       android:exported="true"
       android:permission="com.google.android.c2dm.permission.SEND">
@@ -297,7 +297,7 @@
     <service
       android:name=".gcm.GcmRegistrationIntentService"
       android:exported="false">
-    </service>
+    </service> -->
 
     <!-- FCM -->
     <service

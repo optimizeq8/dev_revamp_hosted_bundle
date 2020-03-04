@@ -34,7 +34,8 @@ export {
   checkForUpdate,
   update_app_status_chat_notification,
   getBusinessAccounts,
-  getBusinessInvites
+  getBusinessInvites,
+  checkNotification
 } from "./genericActions";
 
 export {

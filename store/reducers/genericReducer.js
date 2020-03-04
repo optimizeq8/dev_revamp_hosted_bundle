@@ -9,7 +9,8 @@ const initialState = {
   updateMessage_en: "",
   customMessage_en: "",
   customMessage_ar: "",
-  loadingChecker: false
+  loadingChecker: false,
+  checkNotification: "Not received"
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,6 +30,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_UPDATE_LOADING:
       return { ...state, loadingChecker: action.payload };
+    case actionTypes.CHECK_NOTIFICATION:
+      return { ...state, checkNotification: action.payload };
     default:
       return state;
   }

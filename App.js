@@ -198,8 +198,9 @@ class App extends React.Component {
   };
 
   _handleNotification = async handleScreen => {
+    segmentEventTrack("Notification received");
     // console.log("handleScreen app", handleScreen);
-
+    store.dispatch(actionCreators.checkNotification("recieved"));
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
         store.dispatch(actionCreators.set_as_seen(false));
@@ -232,6 +233,8 @@ class App extends React.Component {
       Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
     }
     if (handleScreen.origin === "selected") {
+      store.dispatch(actionCreators.checkNotification("Pressed notification"));
+
       segmentEventTrack("Pressed notification");
     }
     //   this.setState({
