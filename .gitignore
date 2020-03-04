@@ -48,6 +48,9 @@ xcuserdata
 .idea/modules.xml
 .idea/vcs.xml
 *.keystore
+*.jks
+*.aab
+*.apk
 # Android
 *.apk
 /android/**/build
