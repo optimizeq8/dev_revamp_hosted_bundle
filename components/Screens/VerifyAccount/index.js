@@ -315,9 +315,7 @@ class VerifyAccount extends Component {
         />
         <NavigationEvents
           onDidFocus={() => {
-            console.log("Verify account by Mobile");
-
-            // Segment.screen("Verify Account");
+            Segment.screen("Verify Account by Mobile");
           }}
         />
         <Text style={styles.headingText}>
