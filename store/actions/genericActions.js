@@ -164,10 +164,10 @@ export const getBusinessInvites = () => {
       });
   };
 };
-export const checkNotification = message => {
+export const checkNotification = (message, data) => {
   return (dispatch, getState) => {
     dispatch({
-      payload: message,
+      payload: { message, data },
       type: actionTypes.CHECK_NOTIFICATION
     });
   };

@@ -351,7 +351,7 @@ class Menu extends Component {
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
                 {Constants.manifest.releaseChannel}/
-                {this.props.checkNotification}
+                {this.props.checkNotification}/{this.props.notificationData}
               </Text>
             </ScrollView>
           </View>
@@ -396,7 +396,8 @@ const mapStateToProps = state => ({
   businessInvitee: state.account.businessInvitee,
   invitedEmail: state.account.invitedEmail,
   businessInvites: state.account.businessInvites,
-  checkNotification: state.generic.checkNotification
+  checkNotification: state.generic.checkNotification,
+  notificationData: state.generic.notificationData
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
