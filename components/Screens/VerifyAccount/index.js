@@ -161,6 +161,28 @@ class VerifyAccount extends Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    const { verifyByMobile } = this.state;
+    // Segments to keep track of screens
+    if (
+      !this.props.successNo &&
+      !prevState.verifyByMobile &&
+      this.state.verifyByMobile
+    ) {
+      Segment.screen("Verify Account by Mobile");
+    } else if (
+      !this.props.successNo &&
+      !verifyByMobile &&
+      prevState.verifyByMobile
+    ) {
+      Segment.screen("Verify Account by Email");
+    } else if (!prevProps.successNo && this.props.successNo) {
+      Segment.screen(
+        `Verify  OTP code by ${verifyByMobile ? "Mobile" : "Email"}`
+      );
+    }
+  }
+
   render() {
     const { translate } = this.props.screenProps;
     const { userInfo, verifyByMobile } = this.state;
@@ -293,7 +315,7 @@ class VerifyAccount extends Component {
         />
         <NavigationEvents
           onDidFocus={() => {
-            Segment.screen("Verify Account");
+            Segment.screen("Verify Account by Mobile");
           }}
         />
         <Text style={styles.headingText}>
