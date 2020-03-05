@@ -199,7 +199,7 @@ class App extends React.Component {
 
   _handleNotification = async handleScreen => {
     segmentEventTrack("Notification received");
-    // console.log("handleScreen app", handleScreen);
+    console.log("handleScreen app", handleScreen);
     store.dispatch(actionCreators.checkNotification("recieved"));
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
