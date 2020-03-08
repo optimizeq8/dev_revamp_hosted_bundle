@@ -73,7 +73,9 @@ class SnapchatCreateAdAcc extends Component {
         <NavigationEvents
           onDidFocus={() => {
             Segment.screenWithProperties("Snap Ad Account", {
-              category: "Sign Up"
+              category: "Sign Up",
+              businessname: this.props.mainBusiness.businessname,
+              businessid: this.props.mainBusiness.businessid
             });
           }}
         />
@@ -81,7 +83,7 @@ class SnapchatCreateAdAcc extends Component {
           <CustomHeader
             closeButton={false}
             segment={{
-              str: "Dashabord",
+              str: "Dashboard",
               obj: {
                 businessname: this.props.mainBusiness.businessname
               }

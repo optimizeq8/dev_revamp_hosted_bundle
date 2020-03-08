@@ -62,7 +62,9 @@ class GoogleCreateAdAcc extends Component {
         <NavigationEvents
           onDidFocus={() => {
             Segment.screenWithProperties("Google Ad Account", {
-              category: "Sign Up"
+              category: "Sign Up",
+              businessname: this.props.mainBusiness.businessname,
+              businessid: this.props.mainBusiness.businessid
             });
           }}
         />
