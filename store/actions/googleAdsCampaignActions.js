@@ -35,6 +35,10 @@ export const create_google_ad_account = (info, navigation) => {
       })
       .then(data => {
         if (data.error) {
+          Segment.trackWithProperties("Error Google Ad Account Create", {
+            error_google_ad_account_create: data.error,
+            businessid: info.businessid
+          });
           showMessage({
             message: data.error,
             type: "info",
@@ -45,7 +49,12 @@ export const create_google_ad_account = (info, navigation) => {
             payload: false
           });
         } else {
-          Segment.track("Google Ad Account Created Successfully");
+          Segment.trackWithProperties(
+            "Google Ad Account Created Successfully",
+            {
+              businessid: info.businessid
+            }
+          );
           return dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
             payload: { data: data }

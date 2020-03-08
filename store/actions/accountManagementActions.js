@@ -182,13 +182,20 @@ export const create_snapchat_ad_account = (id, navigation) => {
       })
       .then(data => {
         if (data.success) {
-          Segment.track("Snapchat Ad Account Created Successfully");
+          Segment.trackWithProperties(
+            "Snapchat Ad Account Created Successfully",
+            { businessid: id }
+          );
 
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data, navigation: navigation.navigate }
           });
         } else {
+          Segment.trackWithProperties("Error Snapchat Ad Account Create", {
+            error_snap_ad_account_create: data.message,
+            businessid: id
+          });
           showMessage({
             message: data.message,
             type: "info",
