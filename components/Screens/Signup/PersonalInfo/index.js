@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, I18nManager } from "react-native";
 import { Item, Input, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 
@@ -296,7 +296,12 @@ class PersonalInfo extends Component {
             />
 
             <View style={styles.marginVertical}>
-              <View style={[styles.labelView]}>
+              <View
+                style={[
+                  styles.labelView,
+                  { width: !I18nManager.isRTL ? 150 : "50%" }
+                ]}
+              >
                 <Text
                   numberOfLines={1}
                   lineBreakMode={"middle"}

@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
 import styles from "./styles";
+import { View } from "react-native";
 class SubmitButton extends Component {
   submitButton = () => {
     if (this.props.adType === "CollectionAd") {
       if (
         (this.props.collectionAdMedia.length === 4 &&
           !this.props.collectionAdMedia.includes(undefined)) ||
-        true
+        true //left as true to check for validation when they submit instead of hiding it
       ) {
         return (
           <LowerButton
@@ -18,7 +19,6 @@ class SubmitButton extends Component {
           />
         );
       }
-      return;
     } else {
       if (this.props.objective === "BRAND_AWARENESS") {
         return (
@@ -42,7 +42,7 @@ class SubmitButton extends Component {
     return;
   };
   render() {
-    return <>{this.submitButton()}</>;
+    return <View style={{ bottom: 3 }}>{this.submitButton()}</View>;
   }
 }
 const mapStateToProps = state => ({
