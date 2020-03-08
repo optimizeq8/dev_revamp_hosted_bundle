@@ -7133,10 +7133,10 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-photoeditorsdk@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.3.1.tgz#e062022bfe7985f8853a9376ba73595ae12e91d1"
-  integrity sha512-190bmw6vw7gfq/fnLKRMwNdcwSs6ZYfqGWcCmySxEON3AULGeY5dfGM/mgl5TIBVC/QzhjuZPzbrN8+i5qgv8Q==
+react-native-photoeditorsdk@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.3.2.tgz#26df604c96b3d779260905d6cfd526da4427ad75"
+  integrity sha512-g4cKI3rPZsX1LOPxHE/CmplBPW/OSwsVgkSGw9s1/AFYnQUduJoW+wJLt3sTpsGdUlcvkBSuQCwxfxtJ6IfoWg==
 
 react-native-ratings@^6.3.0:
   version "6.3.0"
