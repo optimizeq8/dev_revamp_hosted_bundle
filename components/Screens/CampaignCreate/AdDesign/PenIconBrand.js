@@ -55,12 +55,9 @@ export default class PenIconBrand extends Component {
             }
             value={
               field === "Business Name"
-                ? brand_name
+                ? brand_name && brand_name.length <= 25
                   ? brand_name
-                  : // : mainBusiness.brandname &&
-                    //   mainBusiness.brandname.length <= 25
-                    // ? mainBusiness.brandname
-                    ""
+                  : ""
                 : headline
                 ? headline
                 : ""
