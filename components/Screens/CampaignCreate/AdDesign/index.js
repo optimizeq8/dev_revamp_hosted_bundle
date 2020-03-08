@@ -1171,102 +1171,50 @@ class AdDesign extends Component {
           </View>
 
           <Footer style={styles.footerStyle}>
-            {(media !== "//" && !swipeUpError) || true ? (
-              // true ||
-              //---For Story ads---//
-              // (this.adType === "StoryAd" && //---
-              //   ((storyAdCards.storyAdSelected && //---
-              //   storyAdCards.selectedStoryAd.media !== "//" && //---
-              //     !videoIsLoading) || //---
-              //     ((objective !== "BRAND_AWARENESS" ? !swipeUpError : true) && //---
-              //       validCards.length >= 3)))
-              //---
-              //---For Story ads---//
-              <View style={styles.footerButtonsContainer}>
-                {this.props.loadingStoryAdsArray.length > 0 &&
-                this.props.loadingStoryAdsArray.includes(true) ? (
-                  <CircleLoader
-                    mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={-0.2}
-                    loop={true}
-                    style={{ width: wp(8), height: hp(8) }}
-                  />
-                ) : (
-                  <>
-                    {this.adType === "StoryAd" ? (
-                      !storyAdCards.storyAdSelected &&
-                      validCards.length >= 3 && (
-                        <TouchableOpacity
-                          style={styles.button}
-                          onPress={() => {
-                            segmentEventTrack(
-                              "Button clicked to preview Story Ad Design"
-                            );
-                            this.previewHandler();
-                          }}
-                        >
-                          <EyeIcon width={wp(24)} height={hp(8)} />
-                        </TouchableOpacity>
-                      )
-                    ) : (
+            <View style={styles.footerButtonsContainer}>
+              {this.props.loadingStoryAdsArray.length > 0 &&
+              this.props.loadingStoryAdsArray.includes(true) ? (
+                <CircleLoader
+                  mainViewStyle={{ width: wp(8), height: hp(8) }}
+                  bottom={-0.2}
+                  loop={true}
+                  style={{ width: wp(8), height: hp(8) }}
+                />
+              ) : (
+                <>
+                  {this.adType === "StoryAd" ? (
+                    !storyAdCards.storyAdSelected &&
+                    validCards.length >= 3 && (
                       <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
                           segmentEventTrack(
-                            "Button clicked to preview Ad Design"
+                            "Button clicked to preview Story Ad Design"
                           );
                           this.previewHandler();
                         }}
                       >
-                        <EyeIcon width={wp(24)} height={hp(8)} />
+                        <EyeIcon width={65} height={65} />
                       </TouchableOpacity>
-                    )}
-                    {this.adType === "StoryAd" ? (
-                      true ? (
-                        <LowerButton
-                          function={() => {
-                            this.handleUpload();
-                            _handleSubmission(
-                              this.adType,
-                              this.props.storyAdsArray,
-                              storyAdCards,
-                              storyAdAttachChanged,
-                              formatStoryAd,
-                              this.validator,
-                              this.finalSubmission,
-                              this.setTheState,
-                              {
-                                //for formatStoryAd
-                                storyAdAttachment: this.props.storyAdAttachment,
-                                campaignInfo: this.state.campaignInfo,
-                                selectedCampaign: this.selectedCampaign,
-                                campaign_id: this.props.campaign_id,
-                                rejected: this.rejected,
-                                handleUpload: this.handleUpload,
-                                signal: this.state.signal,
-                                uploadStoryAdCard: this.props.uploadStoryAdCard
-                              },
-                              this.props.screenProps
-                            );
-                          }}
-                          style={[styles.proceedButtonRTL]}
-                        />
-                      ) : (
-                        <Text style={styles.footerTextStyle}>
-                          {this.adType === "StoryAd"
-                            ? videoIsLoading
-                              ? translate(
-                                  "Please wait while the video is downloading"
-                                )
-                              : translate("Please add minimum of 3 media files")
-                            : objective !== "BRAND_AWARENESS"
-                            ? ""
-                            : translate("Please add media to proceed")}
-                        </Text>
-                      )
-                    ) : (
-                      <SubmitButton
-                        _handleSubmission={() =>
+                    )
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        segmentEventTrack(
+                          "Button clicked to preview Ad Design"
+                        );
+                        this.previewHandler();
+                      }}
+                    >
+                      <EyeIcon width={65} height={65} />
+                    </TouchableOpacity>
+                  )}
+                  {this.adType === "StoryAd" ? (
+                    true ? (
+                      <LowerButton
+                        function={() => {
+                          this.handleUpload();
                           _handleSubmission(
                             this.adType,
                             this.props.storyAdsArray,
@@ -1288,26 +1236,55 @@ class AdDesign extends Component {
                               uploadStoryAdCard: this.props.uploadStoryAdCard
                             },
                             this.props.screenProps
-                          )
-                        }
-                        adType={this.adType}
+                          );
+                        }}
+                        style={[styles.proceedButtonRTL]}
                       />
-                    )}
-                  </>
-                )}
-              </View>
-            ) : (
-              <FooterText
-                collectionAdMedia={this.props.collectionAdMedia}
-                storyAdCards={storyAdCards}
-                adType={this.adType}
-                videoIsLoading={videoIsLoading}
-                objective={objective}
-                swipeUpError={swipeUpError}
-                media={media}
-                screenProps={this.props.screenProps}
-              />
-            )}
+                    ) : (
+                      <Text style={styles.footerTextStyle}>
+                        {this.adType === "StoryAd"
+                          ? videoIsLoading
+                            ? translate(
+                                "Please wait while the video is downloading"
+                              )
+                            : translate("Please add minimum of 3 media files")
+                          : objective !== "BRAND_AWARENESS"
+                          ? ""
+                          : translate("Please add media to proceed")}
+                      </Text>
+                    )
+                  ) : (
+                    <SubmitButton
+                      _handleSubmission={() =>
+                        _handleSubmission(
+                          this.adType,
+                          this.props.storyAdsArray,
+                          storyAdCards,
+                          storyAdAttachChanged,
+                          formatStoryAd,
+                          this.validator,
+                          this.finalSubmission,
+                          this.setTheState,
+                          {
+                            //for formatStoryAd
+                            storyAdAttachment: this.props.storyAdAttachment,
+                            campaignInfo: this.state.campaignInfo,
+                            selectedCampaign: this.selectedCampaign,
+                            campaign_id: this.props.campaign_id,
+                            rejected: this.rejected,
+                            handleUpload: this.handleUpload,
+                            signal: this.state.signal,
+                            uploadStoryAdCard: this.props.uploadStoryAdCard
+                          },
+                          this.props.screenProps
+                        )
+                      }
+                      adType={this.adType}
+                    />
+                  )}
+                </>
+              )}
+            </View>
           </Footer>
         </Container>
         <MediaModal
