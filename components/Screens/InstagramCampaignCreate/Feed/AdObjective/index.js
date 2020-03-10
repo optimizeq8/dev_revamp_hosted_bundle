@@ -546,7 +546,6 @@ const mapDispatchToProps = dispatch => ({
     ),
   save_campaign_info_instagram: info =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
-  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>

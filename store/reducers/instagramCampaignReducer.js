@@ -57,38 +57,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         adType: action.payload
       };
-    case actionTypes.SET_AD_OBJECTIVE_INSTAGARM_STORY:
-      return {
-        ...state,
-        campaign_id: action.payload.campaign_id,
-        dataStory: { ...state.dataStory, ...action.payload.data },
-        message: action.payload.message,
-        loadingObj: false,
-        incompleteCampaign: true,
-        //saves this part just in case anything is changed in AdObjective and not submitting
-        oldTempData: { ...state.dataStory, ...action.payload.data },
-        oldTempAdType: state.adType
-      };
-    case actionTypes.SET_AD_OBJECTIVE_INSTAGARM_FEED:
-      return {
-        ...state,
-        campaign_id: action.payload.campaign_id,
-        dataFeed: { ...state.dataFeed, ...action.payload.data },
-        message: action.payload.message,
-        loadingObj: false,
-        incompleteCampaign: true,
-        //saves this part just in case anything is changed in AdObjective and not submitting
-        oldTempData: { ...state.dataFeed, ...action.payload.data },
-        oldTempAdType: state.adType
-      };
-
-    case actionTypes.SET_MINIMUN_CASH:
+    case actionTypes.SET_MINIMUN_CASH_INSTAGRAM:
       return {
         ...state,
         minValueBudget: action.payload.minValueBudget,
         maxValueBudget: action.payload.maxValueBudget
       };
-    case actionTypes.ERROR_SET_AD_OBJECTIVE:
+    case actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM:
       return {
         ...state,
         loadingObj: false
