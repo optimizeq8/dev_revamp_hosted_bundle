@@ -204,7 +204,7 @@ class AdObjective extends Component {
   };
   setModalVisible = visible => {
     if (visible) {
-      Segment.screen("Ad Objective Modal");
+      Segment.screen("Instagram Feed Ad Objective Modal");
     }
     this.setState({ modalVisible: visible });
   };
