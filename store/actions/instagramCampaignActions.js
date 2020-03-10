@@ -16,6 +16,12 @@ InstagramBackendURL = () =>
       : "https://optimizekwtestingserver.com/optimize/instagram/" // REPLACE TO LIVE
   });
 
+/**
+ *
+ * @param {*} info {businessid, campaign_id, name (ad name), state_time, end_time, objective}
+ * @param {*} navigation_route Route to direct on success oneOf[InstagramFeedAdDesign ,InstagramStoryAdDesign ]
+ * @param {*} segmentInfo Object for showing on analytics tool [campaign data]
+ */
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
@@ -66,6 +72,10 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   };
 };
 
+/**
+ *
+ * @param {*} data One of [IntagramFeedAd , InstagramStoryAd]
+ */
 export const set_adType_instagram = data => {
   return dispatch => {
     return dispatch({
@@ -75,6 +85,10 @@ export const set_adType_instagram = data => {
   };
 };
 
+/**
+ *
+ * @param {*} info To locally store the data
+ */
 export const save_campaign_info_instagram = info => {
   return dispatch => {
     dispatch({
@@ -84,6 +98,11 @@ export const save_campaign_info_instagram = info => {
   };
 };
 
+/**
+ *
+ * @param {*} step save campaigns steps instagram
+ * // need to rethink as there will will be 2 separte routes now
+ */
 export const saveCampaignStepsInstagram = step => {
   return dispatch => {
     dispatch({
