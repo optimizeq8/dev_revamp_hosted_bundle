@@ -3,6 +3,7 @@ import React from "react";
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
+import Instagram from "../../assets/images/AdTypes/logoIg";
 
 export const snapAds = [
   {
@@ -61,10 +62,28 @@ export const googleAds = [
 export const instagramAds = [
   {
     id: 1,
-    media: "instagram",
+    mediaType: "instagram",
     text: "Create Your Ad Now!",
-    rout: "",
-    title: "",
-    media: require("../../assets/images/logoP.png")
+    rout: "InstagramFeedAdObjective",
+    createRout: "InstagramFeedAdObjective",
+    title: "Instagram Feed",
+    value: "InstagramFeedAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
+      .default,
+    icon: AdIcons.InstagramFeed,
+    channelIcon: Instagram
+  },
+  {
+    id: 2,
+    mediaType: "instagram",
+    text: "Create Your Ad Now!",
+    rout: "InstagramStoryAdObjective",
+    createRout: "InstagramStoryAdObjective",
+    title: "Instagram Story",
+    value: "InstagramStoryAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
+      .default,
+    icon: AdIcons.InstagramStory,
+    channelIcon: Instagram
   }
 ];

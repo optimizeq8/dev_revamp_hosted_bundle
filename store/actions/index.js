@@ -160,3 +160,13 @@ export {
   enable_end_or_pause_google_campaign,
   downloadGoogleCSV
 } from "./googleAdsCampaignActions";
+
+export {
+  ad_objective_instagram,
+  set_adType_instagram,
+  save_campaign_info_instagram,
+  setCampaignInProgressInstagram,
+  saveCampaignStepsInstagram,
+  resetCampaignInfoInstagram,
+  overWriteObjectiveDataInstagram
+} from "./instagramCampaignActions";

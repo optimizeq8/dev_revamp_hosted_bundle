@@ -11,6 +11,11 @@ export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
     const { translate } = this.props.screenProps;
+
+    if (adType.mediaType) {
+      var Media = adType.media;
+    }
+
     return (
       <TouchableOpacity
         onPress={() => {
@@ -34,25 +39,31 @@ export default class AdTypeCard extends Component {
           >
             {translate(adType.title)}{" "}
           </Text>
-          <View
-            style={[
-              styles.placeholder,
-              {
-                width: adType.mediaType === "google" ? "140%" : "100%",
-                backgroundColor:
-                  adType.mediaType === "google" ? "#0000" : "#fff"
-              }
-            ]}
-          >
-            <Image
-              loadingIndicatorSource={
-                <ActivityIndicator color={globalColors.white} />
-              }
-              style={styles.media}
-              resizeMode={adType.mediaType === "google" ? "contain" : "stretch"}
-              source={adType.media}
-            />
-          </View>
+          {adType.mediaType === "instagram" ? (
+            <Media width={"100%"} height={"100%"} />
+          ) : (
+            <View
+              style={[
+                styles.placeholder,
+                {
+                  width: adType.mediaType === "google" ? "140%" : "100%",
+                  backgroundColor:
+                    adType.mediaType === "google" ? "#0000" : "#fff"
+                }
+              ]}
+            >
+              <Image
+                loadingIndicatorSource={
+                  <ActivityIndicator color={globalColors.white} />
+                }
+                style={styles.media}
+                resizeMode={
+                  adType.mediaType === "google" ? "contain" : "stretch"
+                }
+                source={adType.media}
+              />
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );

@@ -38,7 +38,7 @@ import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationI
 import styles from "./styles";
 
 //data
-import { snapAds, googleAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds, instagramAds } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -341,7 +341,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [...snapAds, ...googleAds].map(adType => (
+    let adButtons = [...snapAds, ...googleAds, ...instagramAds].map(adType => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
@@ -562,14 +562,14 @@ class Dashboard extends Component {
                                   style={{ color: "#fff" }}
                                 />
                               </GradientButton>
-                              <Text
+                              {/* <Text
                                 style={[
                                   styles.campaignButtonText,
                                   styles.newCampaignTitle
                                 ]}
                               >
                                 {translate("New Ad")}
-                              </Text>
+                              </Text> */}
                             </View>
                             <ScrollView
                               style={{
