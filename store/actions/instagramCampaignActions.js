@@ -13,7 +13,7 @@ InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
-      : "http://googliver.optimizeapp.com/" // REPLACE TO LIVE
+      : "https://optimizekwtestingserver.com/optimize/instagram/" // REPLACE TO LIVE
   });
 
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
