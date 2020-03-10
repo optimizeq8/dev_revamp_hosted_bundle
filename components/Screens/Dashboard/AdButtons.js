@@ -21,8 +21,8 @@ export default class AdButtons extends Component {
         >
           <AdIcon
             style={{}}
-            width={ad.mediaType === "google" ? 20 : 30}
-            height={ad.mediaType === "google" ? 20 : 30}
+            width={ad.mediaType !== "google" ? 30 : 20}
+            height={ad.mediaType !== "google" ? 30 : 20}
           />
           {ChannelIcon && (
             <ChannelIcon
@@ -47,10 +47,10 @@ export default class AdButtons extends Component {
             styles.adButtonText,
             !isStringArabic(this.props.translate(ad.title))
               ? {
-                  fontFamily: "montserrat-regular-english"
+                  fontFamily: "montserrat-bold-english"
                 }
               : {
-                  fontFamily: "montserrat-regular"
+                  fontFamily: "montserrat-bold"
                 }
           ]}
         >
