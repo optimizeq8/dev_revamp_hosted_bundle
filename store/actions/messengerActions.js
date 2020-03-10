@@ -10,8 +10,7 @@ import { update_app_status_chat_notification } from "./genericActions";
 
 NodeBackendURL = () =>
   axios.create({
-    // baseURL: "https://www.optimizeapp.io/"
-    baseURL: "https://intercom-react.glitch.me/"
+    baseURL: "https://www.optimizeapp.io/"
   });
 
 /**
