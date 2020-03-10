@@ -55,7 +55,6 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
-      collectionAdLinkForm: 0,
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
@@ -74,15 +73,6 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
-    // if (this.props.adType === "CollectionAd") {
-    //   if (this.props.collectionAdLinkForm !== 0) {
-    //     this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-    //   } else {
-    //     this._handleCollectionAdLinkForm(1);
-    //   }
-    // } else {
-    //   this._handleCollectionAdLinkForm(0);
-    // }
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -98,23 +88,6 @@ class AdObjective extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
-    }
-    if (
-      (prevProps.adType !== this.props.adType &&
-        this.props.adType === "CollectionAd") ||
-      prevProps.currentCampaignSteps !== this.props.currentCampaignSteps
-    ) {
-      if (
-        this.props.adType === "CollectionAd" &&
-        // prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
-        this.props.collectionAdLinkForm !== 0
-      ) {
-        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-      } else if (this.props.adType === "CollectionAd") {
-        this._handleCollectionAdLinkForm(1);
-      }
-    } else if (prevProps.adType !== this.props.adType) {
-      this._handleCollectionAdLinkForm(0);
     }
   }
 
@@ -247,10 +220,6 @@ class AdObjective extends Component {
     });
   };
 
-  _handleCollectionAdLinkForm = val => {
-    this.setState({ collectionAdLinkForm: val });
-  };
-
   _handleSubmission = async () => {
     let { nameError, objectiveError } = this.state;
     let dateErrors = this.dateField.getErrors();
@@ -310,15 +279,6 @@ class AdObjective extends Component {
         });
         persistor.purge();
       }
-      if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
-        this.props.reset_collections();
-        this.props.save_campaign_info_instagram({
-          destination: "BLANK",
-          call_to_action: { label: "BLANK", value: "BLANK" },
-          attachment: "BLANK"
-        });
-      }
-      this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
 
       this.props.save_campaign_info_instagram({
         campaign_id: this.props.campaign_id,
@@ -569,7 +529,6 @@ const mapStateToProps = state => ({
   campaign_id: state.instagramAds.campaign_id,
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
-  collectionAdLinkForm: state.instagramAds.collectionAdLinkForm,
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
   campaignProgressStarted: state.instagramAds.campaignProgressStarted
@@ -582,10 +541,7 @@ const mapDispatchToProps = dispatch => ({
     ),
   save_campaign_info_instagram: info =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
-  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
-  set_collectionAd_link_form: value =>
-    dispatch(actionCreators.set_collectionAd_link_form(value)),
-  reset_collections: () => dispatch(actionCreators.reset_collections()),
+
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
