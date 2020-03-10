@@ -111,11 +111,16 @@ class AdType extends Component {
         route = "GoogleAdInfo";
         media_type = googleAds;
         break;
-      // case 2:
-      //   media_type = instagramAds;
-      //   break;
+      case 2:
+        route = "InstagramFeedAdObjective";
+        media_type = instagramAds;
+        break;
     }
-    this.setState({ route, media_type, activeSlide: 0 });
+    // To set campaign type by deafult to 1st value of the respective media type selected
+    let campaign_type = media_type[0].value;
+    // console.log("campaign_tpe selected", campaign_type);
+
+    this.setState({ route, media_type, activeSlide: 0, campaign_type });
   };
 
   navigationHandler = adType => {
