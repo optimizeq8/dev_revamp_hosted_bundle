@@ -55,7 +55,6 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
-      collectionAdLinkForm: 0,
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
@@ -163,7 +162,7 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label
     });
-    segmentEventTrack("Selected Ad Objective", {
+    segmentEventTrack("Selected Instagram Feed Ad Objective", {
       campaign_objective: choice.label
     });
     this.props.save_campaign_info_instagram({
@@ -183,7 +182,7 @@ class AdObjective extends Component {
         start_time: date
       }
     });
-    segmentEventTrack("Selected Campaign Start Date", {
+    segmentEventTrack("Selected Instagram Feed Campaign Start Date", {
       campaign_start_date: date
     });
     this.props.save_campaign_info_instagram({ start_time: date });
@@ -195,7 +194,7 @@ class AdObjective extends Component {
         end_time: date
       }
     });
-    segmentEventTrack("Selected Campaign End Date", {
+    segmentEventTrack("Selected Instagram Feed Campaign End Date", {
       campaign_end_date: date
     });
     this.props.save_campaign_info_instagram({
@@ -223,10 +222,7 @@ class AdObjective extends Component {
     });
   };
 
-  _handleCollectionAdLinkForm = val => {
-    this.setState({ collectionAdLinkForm: val });
-  };
-
+  _;
   _handleSubmission = async () => {
     let { nameError, objectiveError } = this.state;
     let dateErrors = this.dateField.getErrors();
@@ -242,16 +238,19 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_ad_objective: objectiveError ? objectiveError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
-      });
+      segmentEventTrack(
+        "Error occured on  Instagram Feed ad objective screen sumbit button",
+        {
+          campaign_error_ad_name: nameError ? nameError : "",
+          campaign_error_ad_objective: objectiveError ? objectiveError : "",
+          campaign_error_ad_start_date: dateErrors.start_timeError
+            ? dateErrors.start_timeError
+            : "",
+          campaign_error_ad_end_date: dateErrors.end_timeError
+            ? dateErrors.end_timeError
+            : ""
+        }
+      );
     }
     if (
       !nameError &&
@@ -325,7 +324,7 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      segmentEventTrack(`Error in ${stateError}`, {
+      segmentEventTrack(`Error in  Instagram Feed ${stateError}`, {
         campaign_error: validObj
       });
     }
@@ -371,7 +370,7 @@ class AdObjective extends Component {
               screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
-                str: "Ad Objective Back Button",
+                str: "Instagram Feed Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname }
               }}
               navigation={this.props.navigation}
@@ -548,9 +547,6 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info_instagram: info =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
-  set_collectionAd_link_form: value =>
-    dispatch(actionCreators.set_collectionAd_link_form(value)),
-  reset_collections: () => dispatch(actionCreators.reset_collections()),
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
