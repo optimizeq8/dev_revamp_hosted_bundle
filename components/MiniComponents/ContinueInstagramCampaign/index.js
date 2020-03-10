@@ -105,24 +105,26 @@ class ContinueCampaign extends Component {
       let updated_transaction_data = {
         channel: ""
       };
-      if (this.props.currentCampaignSteps.includes("AdObjective")) {
+      if (
+        this.props.currentCampaignSteps.includes("InstagramFeedAdObjective")
+      ) {
         updated_transaction_data = {
           ...updated_transaction_data,
           campaign_id: this.props.data.campaign_id
         };
       }
-      if (this.props.currentCampaignSteps.includes("AdDetails")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget: this.props.data.lifetime_budget_micro
-        };
-      }
-      if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget_kdamount: this.props.data.kdamount
-        };
-      }
+      // if (this.props.currentCampaignSteps.includes("AdDetails")) {
+      //   updated_transaction_data = {
+      //     ...updated_transaction_data,
+      //     campaign_budget: this.props.data.lifetime_budget_micro
+      //   };
+      // }
+      // if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
+      //   updated_transaction_data = {
+      //     ...updated_transaction_data,
+      //     campaign_budget_kdamount: this.props.data.kdamount
+      //   };
+      // }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
@@ -146,7 +148,7 @@ class ContinueCampaign extends Component {
       this.props.handleClosingContinueModal();
     //Set the adType to the one the user clicked on from Dashboard or AdType
     this.props.set_adType_instagram(
-      this.props.navigation.getParam("tempAdType", "SnapAd")
+      this.props.navigation.getParam("tempAdType", "InstagramFeedAd")
     );
   };
   render() {
