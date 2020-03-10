@@ -49,6 +49,12 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import VerifyAccount from "../Screens/VerifyAccount";
+import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
+import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
+
+import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
+import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
+
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -109,7 +115,11 @@ export default FluidNavigator(
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
-    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" }
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
+    InstagramFeedAdObjective: InstagramFeedAdObjective,
+    InstagramFeedAdDesign: InstagramFeedAdDesign,
+    InstagramStoryAdObjective: InstagramStoryAdObjective,
+    InstagramStoryAdDesign: InstagramStoryAdDesign
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
