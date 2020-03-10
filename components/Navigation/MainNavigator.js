@@ -49,9 +49,9 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import VerifyAccount from "../Screens/VerifyAccount";
+import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
 import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
-
 import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
 
@@ -116,6 +116,7 @@ export default FluidNavigator(
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
     VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
+    ImagePreview: ImagePreview,
     InstagramFeedAdObjective: InstagramFeedAdObjective,
     InstagramFeedAdDesign: InstagramFeedAdDesign,
     InstagramStoryAdObjective: InstagramStoryAdObjective,
