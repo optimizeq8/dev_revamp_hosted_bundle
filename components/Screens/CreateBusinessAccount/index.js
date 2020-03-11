@@ -688,6 +688,8 @@ class CreateBusinessAccount extends Component {
                 onSubmitEditing={() => {
                   this.focusTheField("inputBN");
                 }}
+                maxLength={25}
+                autoCorrect={false}
                 ref={input => {
                   this.inputs["inputN"] = input;
                 }}
