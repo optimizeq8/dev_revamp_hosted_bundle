@@ -312,15 +312,7 @@ class AdDesign extends Component {
           }}
         />
         {!this.state.expanded ? (
-          <View
-            style={{
-              marginHorizontal: 40,
-              display: "flex",
-              flex: 2.5,
-              overflow: "hidden",
-              backgroundColor: "#fffff"
-            }}
-          >
+          <View style={styles.mainView}>
             <View style={styles.adImageOptionView}>
               <GradientButton
                 disabled={this.props.loading}
@@ -387,17 +379,13 @@ class AdDesign extends Component {
                 }}
                 style={styles.captionView}
               >
-                <View style={{ flex: 1 }}>
+                <View style={styles.captionTextView}>
                   <Text style={styles.captionText}>{translate("Caption")}</Text>
                   <Text numberOfLines={1} style={styles.caption}>
                     {this.state.campaignInfo.message}
                   </Text>
                 </View>
-                <PenIcon
-                  width={18}
-                  height={18}
-                  style={{ alignSelf: "center" }}
-                />
+                <PenIcon width={18} height={18} style={styles.penIcon} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -413,7 +401,7 @@ class AdDesign extends Component {
             </View>
             <LowerButton
               function={this.handleSubmission}
-              style={{ alignSelf: "flex-end" }}
+              style={styles.lowerBtn}
             />
           </View>
         ) : (
@@ -445,15 +433,7 @@ class AdDesign extends Component {
               }}
               accessible={false}
             >
-              <View
-                style={{
-                  height: heightPercentageToDP(60),
-                  borderRadius: 50,
-                  marginHorizontal: 40,
-                  backgroundColor: "rgba(0,0,0,.3)",
-                  padding: 35
-                }}
-              >
+              <View style={styles.captionMainView}>
                 <Text style={styles.captionTextBig}>
                   {translate("Caption")}
                 </Text>

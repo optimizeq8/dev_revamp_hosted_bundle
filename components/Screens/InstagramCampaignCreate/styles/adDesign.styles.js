@@ -11,6 +11,23 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  mainView: {
+    marginHorizontal: 40,
+    display: "flex",
+    flex: 2.5,
+    overflow: "hidden",
+    backgroundColor: "#fffff"
+  },
+  captionTextView: { flex: 1 },
+  penIcon: { alignSelf: "center" },
+  lowerBtn: { alignSelf: "flex-end" },
+  captionMainView: {
+    height: hp(60),
+    borderRadius: 50,
+    marginHorizontal: 40,
+    backgroundColor: "rgba(0,0,0,.3)",
+    padding: 35
+  },
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%"
