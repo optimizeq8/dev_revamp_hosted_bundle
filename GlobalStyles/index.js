@@ -13,7 +13,9 @@ export const globalColors = {
   red: "#EA514B",
   black: "#000000",
   transparent: "#0000",
-  lightGray: "#C6C6C6"
+  lightGray: "#C6C6C6",
+  darkGray: "#717171",
+  gray: "#A0A0A0"
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
