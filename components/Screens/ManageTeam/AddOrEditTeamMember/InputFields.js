@@ -57,6 +57,7 @@ export const InputFields = (parentState, setValue, getValidInfo, translate) => {
         setValue={setValue}
         incomplete={incomplete}
         {...field}
+        maxLength={field.stateName1 === "firstName" ? 25 : false}
         translate={translate}
       />
     );
