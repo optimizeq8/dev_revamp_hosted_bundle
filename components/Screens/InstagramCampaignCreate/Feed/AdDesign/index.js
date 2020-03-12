@@ -265,6 +265,16 @@ class AdDesign extends Component {
       }
     }
   };
+  handleCaptionExpand = value => {
+    this.setState(
+      {
+        expanded: value
+      },
+      () => {
+        this.toggle();
+      }
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     var { media } = this.state;
@@ -368,14 +378,7 @@ class AdDesign extends Component {
 
               <TouchableOpacity
                 onPress={() => {
-                  this.setState(
-                    {
-                      expanded: true
-                    },
-                    () => {
-                      this.toggle();
-                    }
-                  );
+                  this.handleCaptionExpand(true);
                 }}
                 style={styles.captionView}
               >
@@ -424,12 +427,7 @@ class AdDesign extends Component {
             <TouchableWithoutFeedback
               onPress={() => {
                 Keyboard.dismiss();
-                this.setState(
-                  {
-                    expanded: false
-                  },
-                  () => this.toggle()
-                );
+                this.handleCaptionExpand(false);
               }}
               accessible={false}
             >
