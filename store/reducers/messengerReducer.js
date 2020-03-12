@@ -13,7 +13,8 @@ const initialState = {
   open_conversation: false,
   read: true,
   conversation_status: true,
-  chat_sms_state: false
+  chat_sms_state: false,
+  loading_failed: false
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -21,8 +22,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
-        loading: false
+        loading: false,
+        loading_failed: false
       };
+
+    case actionTypes.ERROR_SET_CURRENT_MESSENGER: {
+      return {
+        ...state,
+        loading: false,
+        loading_failed: true
+      };
+    }
     case actionTypes.ADD_MESSAGE:
       const messageArr = state.messages;
       messageArr.unshift(action.payload);
@@ -32,12 +42,11 @@ const reducer = (state = initialState, action) => {
         loading_msg: false
       };
     case actionTypes.SET_CONVERSATION_AS_OPEN:
-      // console.log("SET_CONVERSATION_AS_OPEN: ", action.payload);
-
       return {
         ...state,
         open_conversation: action.payload,
-        loading_con: false
+        loading_con: false,
+        loading_msg: false
       };
     case actionTypes.SET_CONVERSATION:
       const reverseMessages = reverse(action.payload.messages);
@@ -49,6 +58,13 @@ const reducer = (state = initialState, action) => {
         open_conversation: true,
         read: action.payload.read
       };
+    case actionTypes.ERROR_SET_CONVERSATION: {
+      return {
+        ...state,
+        loading_con: false,
+        loading_failed: true
+      };
+    }
     case actionTypes.SET_AS_SEEN:
       return {
         ...state,

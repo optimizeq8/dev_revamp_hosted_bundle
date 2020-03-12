@@ -76,6 +76,7 @@ import {
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
+import { PESDK } from "react-native-photoeditorsdk";
 
 Sentry.init({
   dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
@@ -111,6 +112,8 @@ const myErrorHandler = (e, isFatal) => {
 // i18n.fallbacks = true;
 // i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
+//don't think we can get back the trial version once this was triggered
+if (!__DEV__) PESDK.unlockWithLicense(require("./pesdk_license"));
 class App extends React.Component {
   constructor(props) {
     super(props);
