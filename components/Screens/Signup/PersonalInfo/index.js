@@ -241,6 +241,7 @@ class PersonalInfo extends Component {
               valueError2={this.state.lastnameError}
               icon={UserProfile}
               disabled={this.props.loadingUpdateInfo}
+              maxLength={30}
             />
             <View style={[styles.mobileView]}>
               <View style={[styles.labelView]}>

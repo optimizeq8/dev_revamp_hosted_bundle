@@ -204,6 +204,7 @@ class PersonalInfo extends Component {
                         valueError2={this.state.lastnameError}
                         icon={PersonTransparentIcon}
                         disabled={this.props.loadingUpdateInfo}
+                        maxLength={30}
                       />
                     </View>
                     <View style={styles.mobileView}>
