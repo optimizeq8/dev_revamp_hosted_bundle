@@ -13,7 +13,7 @@ InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
-      : "https://optimizekwtestingserver.com/optimize/instagram/" // REPLACE TO LIVE
+      : "http://optimizeapp.com/optimize/instagram/"
   });
 
 /**
@@ -141,5 +141,68 @@ export const overWriteObjectiveDataInstagram = value => {
       type: actionTypes.OVERWRITE_OBJ_DATA_INSTAGRAM,
       payload: value
     });
+  };
+};
+/**
+ *
+ * @param {string} path Oneof [InstagramFeedAdDesign, InstagramFeedAdDesign] to redirect to next  roye and to set data in reducer
+ * @param {object} info INFO includes following
+ * @param {*} campaign_id campaign_id
+ * @param {*} message caption
+ * @param {*} media
+ * @param {*} media_type OneOf[IMAGE , VIDEO]
+ * @param {*} media_option  OneOf [single, carousel]
+ * @param {*} ios_upload  Passed as 0 so doesn't cause any issue on back end for uploading through differnet device
+ * @param {*} destination [For Objective = "BRAND_AWARENESS" destionation is set as link]
+ * @param {*} link Website link for destinations having link
+ * @param {*} attachment App store links  , Incase of website link set as "BLANK"
+ * @param {*} call_to_action Call to action for the destination
+ * @param {*} carousel_data Array having carousel_ids in case of media_option is carousel
+ */
+export const saveBrandMediaInstagram = (
+  path = "InstagramFeedAdDesign",
+  info,
+  loading,
+  onToggleModal,
+  cancelUplaod
+) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+      payload: true
+    });
+
+    InstagramBackendURL()
+      .post(`saveinstabrandmedia`, info, {
+        onUploadProgress: ProgressEvent =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("saveBrandMedia data", data);
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false
+        });
+
+        if (data.success) {
+          onToggleModal(false);
+          dispatch(save_campaign_info_instagram({ info }));
+          // console.log("data", data.data);
+          NavigationService.navigate("InstagramFeedAdTargetting");
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
+            payload: data
+          });
+        }
+      })
+      .catch(error => {
+        loading(0);
+        onToggleModal(false);
+        console.log("error saveBrandMedia ", error.response || error.message);
+      });
   };
 };

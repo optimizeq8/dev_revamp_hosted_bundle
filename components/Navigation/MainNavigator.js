@@ -53,9 +53,11 @@ import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading"
 import VerifyAccount from "../Screens/VerifyAccount";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
 import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
+import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/AdTargetting";
 
 import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
+import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 
 export default FluidNavigator(
   {
@@ -122,7 +124,9 @@ export default FluidNavigator(
     InstagramFeedAdObjective: InstagramFeedAdObjective,
     InstagramFeedAdDesign: InstagramFeedAdDesign,
     InstagramStoryAdObjective: InstagramStoryAdObjective,
-    InstagramStoryAdDesign: InstagramStoryAdDesign
+    InstagramStoryAdDesign: InstagramStoryAdDesign,
+    InstagramSwipeUpDestination: InstagramSwipeUpDestination,
+    InstagramFeedAdTargetting: InstagramFeedAdTargetting
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
