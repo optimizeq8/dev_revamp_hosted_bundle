@@ -85,22 +85,25 @@ class AppChoice extends Component {
       prevProps.attachment !== this.props.attachment &&
       this.props.attachment.app_name
     ) {
-      this.setState({
-        attachment: {
-          ...this.state.attachment,
-          ...this.props.attachment
+      this.setState(
+        {
+          attachment: {
+            ...this.state.attachment,
+            ...this.props.attachment
+          },
+          deep_link_uri: this.props.attachment.deep_link_uri,
+          callaction: this.props.callaction
+            ? this.props.callaction
+            : this.props.adType === "CollectionAd"
+            ? list[this.props.adType][0].call_to_action_list[0]
+            : list.SnapAd[this.props.listNum].call_to_action_list[0],
+          callactions:
+            this.props.adType === "CollectionAd"
+              ? list[this.props.adType][0].call_to_action_list
+              : list.SnapAd[this.props.listNum].call_to_action_list
         },
-        deep_link_uri: this.props.attachment.deep_link_uri,
-        callaction: this.props.callaction
-          ? this.props.callaction
-          : this.props.adType === "CollectionAd"
-          ? list[this.props.adType][0].call_to_action_list[0]
-          : list.SnapAd[this.props.listNum].call_to_action_list[0],
-        callactions:
-          this.props.adType === "CollectionAd"
-            ? list[this.props.adType][0].call_to_action_list
-            : list.SnapAd[this.props.listNum].call_to_action_list
-      });
+        () => this.props.handleCallaction({ ...this.state.callaction })
+      );
 
       //only update the iosApp name if it was changed instead of updating everything
       if (
@@ -108,7 +111,10 @@ class AppChoice extends Component {
       ) {
         this.setState({
           iosApp_name: this.props.attachment.ios_app_id
-            ? this.props.attachment.app_name
+            ? this.props.data.iosApp_name
+              ? this.props.data.iosApp_name
+              : this.props.mainBusiness.appstorelink &&
+                this.props.mainBusiness.appstorelink.app_name
             : ""
         });
       }
@@ -119,7 +125,10 @@ class AppChoice extends Component {
       ) {
         this.setState({
           androidApp_name: this.props.attachment.android_app_url
-            ? this.props.attachment.app_name
+            ? this.props.data.androidApp_name
+              ? this.props.data.androidApp_name
+              : this.props.mainBusiness.playstorelink &&
+                this.props.mainBusiness.playstorelink.app_name
             : ""
         });
       }
@@ -382,6 +391,7 @@ class AppChoice extends Component {
           handleAppError={this.handleAppError}
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
+          appChoice={this.props.appChoice}
         />
         <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
@@ -407,7 +417,8 @@ const mapStateToProps = state => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({});

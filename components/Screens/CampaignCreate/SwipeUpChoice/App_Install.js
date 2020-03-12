@@ -41,7 +41,9 @@ class App_Install extends Component {
       callActionError: "",
       appError: "",
       android_app_urlError: "",
-      showList: false
+      showList: false,
+      androidAppSelected: false,
+      iosAppSelected: false
     };
   }
 
@@ -68,7 +70,14 @@ class App_Install extends Component {
           ...this.state.attachment,
           ...this.props.data.attachment
         },
-        callaction: this.props.data.call_to_action
+        callaction: this.props.data.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.data.appChoice,
+        iosAppSelected: this.props.data.attachment.ios_app_id !== "",
+        androidAppSelected: this.props.data.attachment.android_app_url !== ""
       });
     } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
       this.setState({
@@ -76,7 +85,40 @@ class App_Install extends Component {
           ...this.state.attachment,
           ...this.props.storyAdAttachment.attachment
         },
-        callaction: this.props.storyAdAttachment.call_to_action
+        callaction: this.props.storyAdAttachment.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.storyAdAttachment.appChoice,
+
+        iosAppSelected:
+          this.props.storyAdAttachment.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.storyAdAttachment.attachment.android_app_url !== ""
+      });
+    } else if (
+      (this.props.mainBusiness.appstorelink &&
+        this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+      (this.props.mainBusiness.playstorelink &&
+        this.props.mainBusiness.playstorelink.android_app_url !== "")
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.mainBusiness.appstorelink,
+          ...this.props.mainBusiness.playstorelink
+        },
+        iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected:
+          this.props.mainBusiness.appstorelink.android_app_url !== "",
+        appChoice:
+          this.props.mainBusiness.appstorelink.ios_app_id !== "" &&
+          this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? null
+            : this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? "ANDROID"
+            : "iOS"
       });
     }
   }
@@ -180,6 +222,7 @@ class App_Install extends Component {
               callaction={this.state.callaction}
               _handleSubmission={this._handleSubmission}
               screenProps={this.props.screenProps}
+              appChoice={this.state.appChoice}
             />
           </View>
         </Container>
@@ -193,7 +236,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({

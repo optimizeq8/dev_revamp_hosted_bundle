@@ -154,7 +154,8 @@ export default class AppSearchModal extends Component {
       _getAndroidAppIds,
       handleAppError,
       selectApp,
-      setModalVisible
+      setModalVisible,
+      appChoice
     } = this.props;
     let {
       isVisible,
@@ -350,7 +351,7 @@ export default class AppSearchModal extends Component {
                       callactionError,
                       attachment,
                       callaction,
-                      appSelection,
+                      appChoice,
                       iosApp_name,
                       androidApp_name
                     );
