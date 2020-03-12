@@ -156,7 +156,10 @@ class PersonalInfo extends Component {
 
   setValue = (stateName, value) => {
     let state = {};
-    state[stateName] = value;
+    state[stateName] =
+      stateName === "firstname" || stateName === "lastname"
+        ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
+        : value;
     this.setState({ ...state });
   };
 
