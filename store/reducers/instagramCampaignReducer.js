@@ -66,7 +66,7 @@ const reducer = (state = initialState, action) => {
         loadingObj: false
       };
 
-    case actionTypes.SET_AD_DESIGN:
+    case actionTypes.SET_AD_DESIGN_INSTAGRAM:
       return {
         ...state,
         data: {
@@ -180,7 +180,11 @@ const reducer = (state = initialState, action) => {
         incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps
       };
-
+    case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
+      return {
+        ...state,
+        loadingDesign: action.payload
+      };
     default:
       return state;
   }

@@ -168,5 +168,6 @@ export {
   setCampaignInProgressInstagram,
   saveCampaignStepsInstagram,
   resetCampaignInfoInstagram,
-  overWriteObjectiveDataInstagram
+  overWriteObjectiveDataInstagram,
+  saveBrandMediaInstagram
 } from "./instagramCampaignActions";

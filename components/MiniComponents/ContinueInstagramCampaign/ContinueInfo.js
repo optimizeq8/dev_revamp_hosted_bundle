@@ -2,6 +2,8 @@ import React from "react";
 import { View, FlatList } from "react-native";
 import { Content, Text } from "native-base";
 import Snapchat from "../../../assets/SVGs/Snapchat";
+import Instagram from "../../../assets/images/AdTypes/InstagramLogo";
+
 import MediaBox from "../../Screens/CampaignDetails/MediaBox";
 import styles from "../ContinueCampaign/styles";
 import formatNumber from "../../formatNumber";
@@ -56,7 +58,7 @@ ContinueInfo = props => {
         }}
         style={styles.contentStyle}
       >
-        <Snapchat style={{ alignSelf: "center" }} />
+        <Instagram style={{ alignSelf: "center" }} />
         {oldTempData && oldTempData.name ? (
           <Text style={styles.text}>{oldTempData.name}</Text>
         ) : null}
@@ -84,43 +86,12 @@ ContinueInfo = props => {
               Media
             </Text>
             <View style={styles.mediaContainer}>
-              {data && oldTempAdType === "SnapAd" ? (
+              {data && oldTempAdType === "InstagramFeedAd" && (
                 <MediaBox
                   name={1}
                   disabled={true}
                   ad={{ media: data.media, media_type: data.media_type }}
                 />
-              ) : (
-                <View
-                  style={{
-                    alignItems: "center"
-                  }}
-                >
-                  {data && oldTempAdType === "CollectionAd" && (
-                    <MediaBox
-                      name={1}
-                      disabled={true}
-                      ad={{ media: data.media, media_type: data.media_type }}
-                    />
-                  )}
-                  <FlatList
-                    style={{
-                      top: "5%"
-                    }}
-                    contentContainerStyle={{
-                      paddingBottom: "20%",
-                      alignItems: "center"
-                    }}
-                    keyExtractor={item => item.index}
-                    data={
-                      oldTempAdType === "CollectionAd"
-                        ? collectionAdMedia
-                        : storyAdsArray.slice(0, storyAdsArray.length - 1)
-                    }
-                    renderItem={this.adCreatives}
-                    numColumns={2}
-                  />
-                </View>
               )}
             </View>
           </View>

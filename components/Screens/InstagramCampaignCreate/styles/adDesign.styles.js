@@ -11,6 +11,23 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  mainView: {
+    marginHorizontal: 40,
+    display: "flex",
+    flex: 2.5,
+    overflow: "hidden",
+    backgroundColor: globalColors.transparent
+  },
+  captionTextView: { flex: 1 },
+  penIcon: { alignSelf: "center" },
+  lowerBtn: { alignSelf: "flex-end" },
+  captionMainView: {
+    height: hp(60),
+    borderRadius: 50,
+    marginHorizontal: 40,
+    backgroundColor: "rgba(0,0,0,.3)",
+    padding: 35
+  },
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%"
@@ -251,6 +268,134 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65
     // padding: 20
+  },
+  adImageOptionView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    borderRadius: 50,
+    backgroundColor: "rgba(0,0,0,0.3)"
+  },
+  adImageOptionButton: {
+    width: "100%",
+    height: 40,
+    marginHorizontal: 0
+  },
+  outerBlock: {
+    // flex: 1,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    borderRadius: 50,
+    marginVertical: 12
+  },
+  profileBsnNameView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingVertical: 12,
+    paddingLeft: 12,
+    alignItems: "center"
+  },
+  businessProfilePic: {
+    width: 56,
+    height: 56,
+    borderRadius: 30
+  },
+  bsnNameView: {
+    paddingLeft: 12
+  },
+  businessNameText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 11,
+    color: globalColors.white
+  },
+  businessName: {
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    color: globalColors.white
+  },
+
+  placeholder: {
+    borderRadius: 30,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "90%",
+    height: hp(35),
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center"
+  },
+
+  placeholder1: {
+    opacity: 0.35,
+    borderRadius: 30,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    position: "absolute",
+    justifyContent: "center"
+  },
+  captionView: {
+    display: "flex",
+    flexDirection: "row",
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignSelf: "center",
+    width: "90%",
+    // height: "100%",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "space-between",
+    marginTop: 15
+  },
+  captionText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 9,
+    color: globalColors.white
+  },
+  caption: {
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    color: globalColors.white
+  },
+  destinationView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: globalColors.white,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+
+    borderRadius: 50,
+    marginTop: 15
+  },
+  destinationText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: globalColors.orange,
+    textTransform: "uppercase",
+    marginTop: 5
+  },
+  captionTextBig: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: globalColors.white
+  },
+  message: {
+    flex: 1,
+    // alignSelf: "flex-start",
+    color: globalColors.white,
+    fontSize: 12,
+    fontFamily: "montserrat-regular"
+  },
+  addMediaText: {
+    fontSize: 11,
+    fontFamily: "montserrat-medium",
+    textAlign: "center",
+    textTransform: "uppercase",
+    color: globalColors.orange,
+    marginVertical: 5
   }
 });
 
