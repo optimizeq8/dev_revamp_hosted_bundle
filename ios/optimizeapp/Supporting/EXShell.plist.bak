@@ -9,6 +9,10 @@
 	<key>manifestUrl</key>
 	<string>exp://exp.host/@samyoptimize/optimize_app</string>
 	<key>releaseChannel</key>
+<<<<<<< HEAD
 	<string>prod-v3.1</string>
+=======
+	<string>sprint_v1</string>
+>>>>>>> App bundle changes
 </dict>
 </plist>
