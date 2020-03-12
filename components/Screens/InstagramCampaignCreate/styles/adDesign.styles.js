@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 2.5,
     overflow: "hidden",
-    backgroundColor: "#fffff"
+    backgroundColor: globalColors.transparent
   },
   captionTextView: { flex: 1 },
   penIcon: { alignSelf: "center" },
