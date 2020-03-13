@@ -40,6 +40,7 @@ import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
+import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -239,12 +240,7 @@ class AdCover extends Component {
 
   _pickLogo = async () => {
     let logo = await this.pick("Images");
-    let configuration: Configuration = {
-      forceCrop: true,
-      transform: {
-        items: [{ width: 35, height: 10 }]
-      }
-    };
+    let configuration = PhotoEditorConfiguration({ width: 35, height: 10 });
     const { translate } = this.props.screenProps;
     if (logo && !logo.cancelled) {
       let editedLogo = await PESDK.openEditor(logo.uri, configuration)
@@ -341,12 +337,7 @@ class AdCover extends Component {
     try {
       const { translate } = this.props.screenProps;
       let result = await this.pick(mediaTypes);
-      let configuration: Configuration = {
-        forceCrop: true,
-        transform: {
-          items: [{ width: 6, height: 10 }]
-        }
-      };
+      let configuration = PhotoEditorConfiguration({ width: 6, height: 10 });
       this.setMediaModalVisible(false);
       let file = {};
       if (result) {
