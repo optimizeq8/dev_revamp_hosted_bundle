@@ -61,7 +61,9 @@ class AppChoice extends Component {
       loading: false,
       appLoading: false,
       inputCallToAction: false,
-      isVisible: false
+      isVisible: false,
+      androidAppSelected: false,
+      iosAppSelected: false
     };
   }
 
@@ -100,7 +102,9 @@ class AppChoice extends Component {
           callactions:
             this.props.adType === "CollectionAd"
               ? list[this.props.adType][0].call_to_action_list
-              : list.SnapAd[this.props.listNum].call_to_action_list
+              : list.SnapAd[this.props.listNum].call_to_action_list,
+          iosAppSelected: this.props.appSelections.iosAppSelected,
+          androidAppSelected: this.props.appSelections.androidAppSelected
         },
         () => this.props.handleCallaction({ ...this.state.callaction })
       );
@@ -147,7 +151,9 @@ class AppChoice extends Component {
         ios_app_id: app.id,
         icon_media_url: app.icon
       },
-      iosApp_name: app.title
+      iosApp_name: app.title,
+      iosApp_icon: app.icon,
+      iosAppSelected: true
     });
   };
 
@@ -160,7 +166,9 @@ class AppChoice extends Component {
         icon_media_url: app.icon,
         android_app_url: app.id ? app.id : app.application_id
       },
-      androidApp_name: app.title
+      androidApp_name: app.title,
+      androidApp_icon: app.icon,
+      androidAppSelected: true
     });
   };
 
@@ -267,7 +275,24 @@ class AppChoice extends Component {
       this.props._handleSubmission(this.state.deep_link_uri);
     }
   };
+  /**
+   * toggles the app selection for iOS or Android both in the state and App_install or Deep_link
+   */
+  toggleAppSelection = android => {
+    this.setState(
+      android
+        ? { androidAppSelected: !this.state.androidAppSelected }
+        : { iosAppSelected: !this.state.iosAppSelected }
+    );
+    this.props.setTheState(
+      android
+        ? { androidAppSelected: !this.state.androidAppSelected }
+        : { iosAppSelected: !this.state.iosAppSelected }
+    );
+  };
+
   render() {
+    let { iosAppSelected, androidAppSelected } = this.state;
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainCard}>
@@ -328,11 +353,15 @@ class AppChoice extends Component {
               </View>
 
               <AppBox
+                appstorelink={this.props.mainBusiness.appstorelink}
+                playstorelink={this.props.mainBusiness.playstorelink}
                 setModalVisible={this.setModalVisible}
                 attachment={this.state.attachment}
                 iosApp_name={this.state.iosApp_name}
                 androidApp_name={this.state.androidApp_name}
                 screenProps={this.props.screenProps}
+                appSelections={{ iosAppSelected, androidAppSelected }}
+                toggleAppSelection={this.toggleAppSelection}
               />
               {this.props.deepLink && (
                 <View style={{ marginTop: 20 }}>

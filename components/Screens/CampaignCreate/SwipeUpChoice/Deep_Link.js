@@ -21,6 +21,8 @@ import { connect } from "react-redux";
 import * as actionsCreators from "../../../../store/actions";
 
 import segmentEventTrack from "../../../segmentEventTrack";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import { showMessage } from "react-native-flash-message";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -52,7 +54,10 @@ class Deep_Link extends Component {
       appError: "",
       android_app_urlError: "",
       deep_link_uriError: "",
-      showList: false
+      showList: false,
+      androidAppSelected: false,
+      iosAppSelected: false,
+      appChoice: ""
     };
   }
 
@@ -78,7 +83,14 @@ class Deep_Link extends Component {
           ...this.state.attachment,
           ...this.props.data.attachment
         },
-        callaction: this.props.data.call_to_action
+        callaction: this.props.data.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.data.appChoice,
+        iosAppSelected: this.props.data.attachment.ios_app_id !== "",
+        androidAppSelected: this.props.data.attachment.android_app_url !== ""
       });
     } else if (this.props.storyAdAttachment.destination === "DEEP_LINK") {
       this.setState({
@@ -86,7 +98,40 @@ class Deep_Link extends Component {
           ...this.state.attachment,
           ...this.props.storyAdAttachment.attachment
         },
-        callaction: this.props.storyAdAttachment.call_to_action
+        callaction: this.props.storyAdAttachment.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.storyAdAttachment.appChoice,
+
+        iosAppSelected:
+          this.props.storyAdAttachment.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.storyAdAttachment.attachment.android_app_url !== ""
+      });
+    } else if (
+      (this.props.mainBusiness.appstorelink &&
+        this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+      (this.props.mainBusiness.playstorelink &&
+        this.props.mainBusiness.playstorelink.android_app_url !== "")
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.mainBusiness.appstorelink,
+          ...this.props.mainBusiness.playstorelink
+        },
+        iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected:
+          this.props.mainBusiness.appstorelink.android_app_url !== "",
+        appChoice:
+          this.props.mainBusiness.appstorelink.ios_app_id !== "" &&
+          this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? null
+            : this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? "ANDROID"
+            : "iOS"
       });
     }
   }
@@ -103,7 +148,9 @@ class Deep_Link extends Component {
     callaction,
     appChoice = null,
     iosApp_name,
-    androidApp_name
+    androidApp_name,
+    iosApp_icon,
+    androidApp_icon
   ) => {
     if (nameError || callActionError) {
       segmentEventTrack("Error Swipeup DeepLink", {
@@ -117,29 +164,93 @@ class Deep_Link extends Component {
       });
       this.setState({
         attachment,
-        callaction
+        callaction,
+        appChoice:
+          this.state.iosAppSelected && this.state.androidAppSelected
+            ? null
+            : appChoice,
+        iosAppSelected:
+          iosApp_name !== "" &&
+          this.state.iosAppSelected &&
+          this.state.androidAppSelected
+            ? true
+            : appChoice === "iOS",
+        androidAppSelected:
+          androidApp_name !== "" &&
+          this.state.iosAppSelected &&
+          this.state.androidAppSelected
+            ? true
+            : appChoice !== "iOS"
       });
       !this.props.rejCampaign &&
-        this.props.save_campaign_info({ iosApp_name, androidApp_name });
+        this.props.save_campaign_info({
+          iosApp_name,
+          androidApp_name,
+          iosApp_icon,
+          androidApp_icon
+        });
     }
   };
 
   _handleSubmission = async deep_link_uri => {
-    await this.setState({
-      attachment: { ...this.state.attachment, deep_link_uri: deep_link_uri }
-    });
-
-    this.props._changeDestination(
-      this.props.collectionAdLinkForm === 0 || !this.props.collectionAdLinkForm
-        ? "DEEP_LINK"
-        : "COLLECTION",
-      this.state.callaction,
-      this.state.attachment
+    const { translate } = this.props.screenProps;
+    const appError = validateWrapper(
+      "mandatory",
+      this.state.attachment.ios_app_id || this.state.attachment.android_app_url
     );
-    this.props.navigation.navigate("AdDesign");
+    this.setState({
+      appError
+    });
+    if (appError) {
+      segmentEventTrack("Error Submit Deep Link", {
+        campaign_error_deep_link: validateWrapper(
+          "mandatory",
+          this.state.attachment.ios_app_id ||
+            this.state.attachment.android_app_url
+        )
+      });
+    }
+    let attachment = this.state.attachment;
+    let appChoice = this.state.appChoice;
+
+    attachment["deep_link_uri"] = deep_link_uri;
+    if (
+      (this.state.iosAppSelected || this.state.androidAppSelected) &&
+      !appError
+    ) {
+      if (!this.state.iosAppSelected) {
+        attachment["ios_app_id"] = "";
+        appChoice = "ANDROID";
+      }
+      if (!this.state.androidAppSelected) {
+        attachment["android_app_url"] = "";
+        appChoice = "iOS";
+      }
+      console.log("APP_INSTALL", this.state.callaction, attachment, appChoice);
+      this.props._changeDestination(
+        this.props.collectionAdLinkForm === 0 ||
+          !this.props.collectionAdLinkForm
+          ? "DEEP_LINK"
+          : "COLLECTION",
+        this.state.callaction,
+        attachment,
+        appChoice
+      );
+      this.props.navigation.navigate("AdDesign");
+    } else
+      showMessage({
+        message: translate("Please select at least one app"),
+        type: "warning"
+      });
+  };
+  setTheState = state => {
+    this.setState({
+      ...state
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
+    let { iosAppSelected, androidAppSelected } = this.state;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -195,6 +306,8 @@ class Deep_Link extends Component {
                     _handleSubmission={this._handleSubmission}
                     deepLink={true}
                     screenProps={this.props.screenProps}
+                    appSelections={{ iosAppSelected, androidAppSelected }}
+                    setTheState={this.setTheState}
                   />
                 </>
               )}
@@ -211,7 +324,8 @@ const mapStateToProps = state => ({
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({

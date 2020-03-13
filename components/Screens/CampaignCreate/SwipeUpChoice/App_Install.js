@@ -19,6 +19,7 @@ import {
 } from "react-native-responsive-screen";
 import * as actionsCreators from "../../../../store/actions";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { showMessage } from "react-native-flash-message";
 
 class App_Install extends Component {
   static navigationOptions = {
@@ -130,7 +131,9 @@ class App_Install extends Component {
     callaction,
     appChoice,
     iosApp_name,
-    androidApp_name
+    androidApp_name,
+    iosApp_icon,
+    androidApp_icon
   ) => {
     if (nameError || callActionError) {
       segmentEventTrack("Error App Install", {
@@ -145,10 +148,31 @@ class App_Install extends Component {
       this.setState({
         attachment,
         callaction,
-        appChoice
+        appChoice:
+          this.state.iosAppSelected && this.state.androidAppSelected
+            ? null
+            : appChoice,
+        //to not turn off or on the toogle of the other app selection
+        iosAppSelected:
+          iosApp_name !== "" &&
+          this.state.iosAppSelected &&
+          this.state.androidAppSelected
+            ? true
+            : appChoice === "iOS",
+        androidAppSelected:
+          androidApp_name !== "" &&
+          this.state.iosAppSelected &&
+          this.state.androidAppSelected
+            ? true
+            : appChoice !== "iOS"
       });
       !this.props.rejCampaign &&
-        this.props.save_campaign_info({ iosApp_name, androidApp_name });
+        this.props.save_campaign_info({
+          iosApp_name,
+          androidApp_name,
+          iosApp_icon,
+          androidApp_icon
+        });
     }
   };
 
@@ -157,7 +181,13 @@ class App_Install extends Component {
       callaction
     });
   };
+  setTheState = state => {
+    this.setState({
+      ...state
+    });
+  };
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const appError = validateWrapper(
       "mandatory",
       this.state.attachment.ios_app_id || this.state.attachment.android_app_url
@@ -175,22 +205,41 @@ class App_Install extends Component {
         )
       });
     }
-    if (!appError) {
+    let attachment = this.state.attachment;
+    let appChoice = this.state.appChoice;
+    if (!this.state.iosAppSelected) {
+      attachment["ios_app_id"] = "";
+      appChoice = "ANDROID";
+    }
+    if (!this.state.androidAppSelected) {
+      attachment["android_app_url"] = "";
+      appChoice = "iOS";
+    }
+    if (
+      (this.state.iosAppSelected || this.state.androidAppSelected) &&
+      !appError
+    ) {
       this.props._changeDestination(
         "APP_INSTALL",
         this.state.callaction,
-        this.state.attachment,
-        this.state.appChoice
+        attachment,
+        appChoice
       );
       segmentEventTrack("Submited App Install SwipeUp Success", {
         campaign_app_choice: this.state.appChoice,
         campaign_attachment: this.state.attachment
       });
       this.props.navigation.navigate("AdDesign");
+    } else {
+      showMessage({
+        message: translate("Please select at least one app"),
+        type: "warning"
+      });
     }
   };
   render() {
     const { translate } = this.props.screenProps;
+    let { iosAppSelected, androidAppSelected } = this.state;
 
     return (
       <SafeAreaView
@@ -223,6 +272,8 @@ class App_Install extends Component {
               _handleSubmission={this._handleSubmission}
               screenProps={this.props.screenProps}
               appChoice={this.state.appChoice}
+              appSelections={{ iosAppSelected, androidAppSelected }}
+              setTheState={this.setTheState}
             />
           </View>
         </Container>

@@ -146,16 +146,35 @@ export default class AppSearchModal extends Component {
         // console.log(err.response)
       });
   };
+  submitApp = close => {
+    let { mainState, selectApp, setModalVisible } = this.props;
+    let {
+      nameError,
+      attachment,
+      callactionError,
+      iosApp_name,
+      androidApp_name,
+      callaction,
+      appSelection
+    } = mainState;
+    (!nameError || close) && setModalVisible(false);
+    selectApp(
+      nameError,
+      callactionError,
+      attachment,
+      callaction,
+      appSelection,
+      iosApp_name,
+      androidApp_name
+    );
+  };
   render() {
     let {
       mainState,
       setTheState,
       _getIosAppIds,
       _getAndroidAppIds,
-      handleAppError,
-      selectApp,
-      setModalVisible,
-      appChoice
+      handleAppError
     } = this.props;
     let {
       isVisible,
@@ -166,12 +185,10 @@ export default class AppSearchModal extends Component {
       nameError,
       attachment,
       AppError,
-      callactionError,
       data,
       androidData,
       iosApp_name,
-      androidApp_name,
-      callaction
+      androidApp_name
     } = mainState;
     const { translate } = this.props.screenProps;
     return (
@@ -185,9 +202,8 @@ export default class AppSearchModal extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
-                actionButton={() => {
-                  setModalVisible(false, false);
-                }}
+                actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,
+                //it will change in it AppChoice but won't change in App_installs or Deep_link
               />
               <View
                 style={{
@@ -344,18 +360,7 @@ export default class AppSearchModal extends Component {
                 <LowerButton
                   bottom={4}
                   // function={() => navigation.push("AdDesign")}
-                  function={() => {
-                    !nameError && setModalVisible(false);
-                    selectApp(
-                      nameError,
-                      callactionError,
-                      attachment,
-                      callaction,
-                      appChoice,
-                      iosApp_name,
-                      androidApp_name
-                    );
-                  }}
+                  function={this.submitApp}
                 />
               )}
             </View>
