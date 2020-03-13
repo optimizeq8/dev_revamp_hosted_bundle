@@ -28,7 +28,9 @@ export default class AppBox extends Component {
     } = this.props;
     if (
       this.props.iosApp_name === "" ||
-      (appstorelink && appstorelink.ios_app_id === "")
+      (this.props.iosApp_name === "" &&
+        appstorelink &&
+        appstorelink.ios_app_id === "")
     )
       setModalVisible(true, "iOS");
     else {
@@ -48,7 +50,9 @@ export default class AppBox extends Component {
     } = this.props;
     if (
       this.props.androidApp_name === "" ||
-      (playstorelink && playstorelink.android_app_url === "")
+      (this.props.androidApp_name === "" &&
+        playstorelink &&
+        playstorelink.android_app_url === "")
     )
       setModalVisible(true, "ANDROID");
     else {
@@ -60,6 +64,8 @@ export default class AppBox extends Component {
     }
   };
   render() {
+    console.log(this.props.iosApp_name);
+
     let {
       setModalVisible,
       attachment,

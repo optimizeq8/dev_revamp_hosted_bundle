@@ -171,14 +171,16 @@ class Deep_Link extends Component {
             : appChoice,
         iosAppSelected:
           iosApp_name !== "" &&
-          this.state.iosAppSelected &&
-          this.state.androidAppSelected
+          (androidApp_name && this.state.iosAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
             ? true
             : appChoice === "iOS",
         androidAppSelected:
           androidApp_name !== "" &&
-          this.state.iosAppSelected &&
-          this.state.androidAppSelected
+          (iosApp_name && this.state.androidAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
             ? true
             : appChoice !== "iOS"
       });
@@ -226,7 +228,6 @@ class Deep_Link extends Component {
         attachment["android_app_url"] = "";
         appChoice = "iOS";
       }
-      console.log("APP_INSTALL", this.state.callaction, attachment, appChoice);
       this.props._changeDestination(
         this.props.collectionAdLinkForm === 0 ||
           !this.props.collectionAdLinkForm

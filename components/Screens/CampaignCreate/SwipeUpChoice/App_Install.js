@@ -155,14 +155,16 @@ class App_Install extends Component {
         //to not turn off or on the toogle of the other app selection
         iosAppSelected:
           iosApp_name !== "" &&
-          this.state.iosAppSelected &&
-          this.state.androidAppSelected
+          (androidApp_name && this.state.iosAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
             ? true
             : appChoice === "iOS",
         androidAppSelected:
           androidApp_name !== "" &&
-          this.state.iosAppSelected &&
-          this.state.androidAppSelected
+          (iosApp_name && this.state.androidAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
             ? true
             : appChoice !== "iOS"
       });
