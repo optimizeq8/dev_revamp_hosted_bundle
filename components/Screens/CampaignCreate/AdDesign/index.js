@@ -910,7 +910,11 @@ class AdDesign extends Component {
     // update storyads array
     await this.props.updateStoryADS(storyAdsArray);
     let cards = this.props.storyAdsArray;
-    cards.map((card, index) => {
+    cards.map(async (card, index) => {
+      let uneditedImageUri = await FileSystem.downloadAsync(
+        card.media,
+        FileSystem.cacheDirectory + "webImage" + card.story_id
+      );
       if (storyAdsArray[index]) {
         card = {
           ...card,
@@ -920,7 +924,8 @@ class AdDesign extends Component {
           media_type: storyAdsArray[index].media_type,
           uploaded: true,
           iosVideoUploaded: true,
-          uploadedFromDifferentDevice: true
+          uploadedFromDifferentDevice: true,
+          uneditedImageUri: uneditedImageUri.uri
         };
         cards[index] = card;
         this.setState({
@@ -960,10 +965,15 @@ class AdDesign extends Component {
     collectionAdMainMediaType,
     collectionAdsArray
   ) => {
+    let uneditedImageUri = await FileSystem.downloadAsync(
+      collectionAdMainMedia,
+      FileSystem.cacheDirectory + "webImage"
+    );
     this.setState({
       media: collectionAdMainMedia,
       type: collectionAdMainMediaType,
-      downloadMediaModal: false
+      downloadMediaModal: false,
+      uneditedImageUri: uneditedImageUri.uri
     });
     this.props.setCollectionAdMediaArray(collectionAdsArray);
     !this.rejected &&
@@ -1319,7 +1329,11 @@ class AdDesign extends Component {
             media: this.state.uneditedImageUri,
             storyAdCards: this.state.storyAdCards
           }}
-          serialization={this.state.serialization}
+          serialization={
+            this.state.serialization.hasOwnProperty("image")
+              ? this.state.serialization
+              : this.state.storyAdCards.selectedStoryAd.serialization
+          }
           screenProps={this.props.screenProps}
         />
         <UploadMediaFromDifferentDevice

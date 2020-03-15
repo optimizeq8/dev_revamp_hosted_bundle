@@ -633,7 +633,6 @@ class AdCover extends Component {
   };
   render() {
     let { cover, coverHeadlineError, formattedCover } = this.state;
-    console.log("logo", this.state.campaignInfo.logo);
 
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;

@@ -173,12 +173,12 @@ export const _pickImage = async (
               }
 
               setTheState({
-                directory: "/ImageManipulator/",
-                serialization
+                directory: "/ImageManipulator/"
               });
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
+              result.serialization = serialization;
             } else {
               return Promise.reject("Editing canceled");
             }
@@ -196,7 +196,8 @@ export const _pickImage = async (
                 media_type: result.type.toUpperCase(),
                 iosVideoUploaded: false,
                 fileReadyToUpload: true,
-                uneditedImageUri
+                uneditedImageUri,
+                serialization: result.serialization
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;
@@ -225,7 +226,8 @@ export const _pickImage = async (
                 result: result.uri,
                 iosVideoUploaded: false,
                 fileReadyToUpload: true,
-                uneditedImageUri
+                uneditedImageUri,
+                serialization: result.serialization
               });
 
               onToggleModal(false);
