@@ -1114,10 +1114,10 @@ class CreateBusinessAccount extends Component {
                 />
                 <Input
                   onSubmitEditing={() => {
-                    this.focusTheField("inputL");
+                    this.focusTheField("inputWeb");
                   }}
                   ref={input => {
-                    this.inputs["inputF"] = input;
+                    this.inputs["inputO"] = input;
                   }}
                   blurOnSubmit={false}
                   returnKeyType={"next"}
@@ -1156,6 +1156,8 @@ class CreateBusinessAccount extends Component {
           <View style={styles.marginVertical}>
             <Website
               register={true}
+              ref={ref => (this.websiteInput = ref)}
+              inputs={this.inputs}
               stateName={"websitelink"}
               screenProps={this.props.screenProps}
               customStyle={{
