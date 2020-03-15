@@ -149,7 +149,7 @@ export default GoogleSEAPreview = props => {
               translate("Description") +
               " " +
               translate("1") +
-              " "}
+              " "}{" "}
           {description2 ||
             translate("Add") +
               " " +
