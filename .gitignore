@@ -31,17 +31,26 @@ yarn-error.log
 *.xccheckout
 *.xcscmblueprint
 xcuserdata
+/ios/Pods
 
 # Android Studio
 *.iml
 .gradle
+/android/.idea
+/android/.idea/caches
+/android/.idea/libraries
 .idea/libraries
+/android/.idea/libraries
 .idea/workspace.xml
+/android/.idea/workspace.xml
 .idea/gradle.xml
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
-
+*.keystore
+*.jks
+*.aab
+*.apk
 # Android
 *.apk
 /android/**/build
@@ -63,14 +72,10 @@ jarjar-rules.txt
 .kernel-ngrok-url
 
 # Template files
-/android/app/src/main/AndroidManifest.xml
-/android/app/google-services.json
 /android/expoview/src/main/java/host/exp/exponent/generated/ExponentKeys.java
 /android/app/fabric.properties
 /ios/Exponent/Generated/EXKeys.h
 /ios/ExponentIntegrationTests/EXTestEnvironment.plist
-/ios/Podfile
-/exponent-view-template/ios/Podfile
 
 # Codemod
 .codemod.bookmark
