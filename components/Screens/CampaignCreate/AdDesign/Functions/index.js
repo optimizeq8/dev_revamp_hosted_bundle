@@ -188,6 +188,8 @@ export const formatMedia = (
     mediaLink = mediaLink[mediaLink.length - 1];
     body.append("media_link", mediaLink);
   }
+  console.log(body);
+
   setTheState({
     formatted: body
   });
