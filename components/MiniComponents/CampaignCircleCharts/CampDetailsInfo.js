@@ -68,9 +68,9 @@ export default props => {
                 dateFormat(
                   new Date(
                     statusOfCampaign === "starts"
-                      ? campaign.start_time
-                      : campaign.end_time
-                  ).setHours(0, 0, 0, 0),
+                      ? campaign.start_time.split("T")[0].replace(/-/gi, "/")
+                      : campaign.end_time.split("T")[0].replace(/-/gi, "/")
+                  ),
                   "mmm dS, yyyy"
                 )}
             </Text>
