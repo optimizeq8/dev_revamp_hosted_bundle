@@ -74,6 +74,7 @@ import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
 import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import { manipulateAsync } from "expo-image-manipulator";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -803,7 +804,14 @@ class AdDesign extends Component {
         this.setTheState
       );
       await this.handleUpload();
-      if (
+      console.log(this.state.fileReadyToUpload, this.state.incorrectDimensions);
+
+      if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
+        showMessage({
+          message: "Please crop the image to the right dimensions",
+          type: "warning"
+        });
+      } else if (
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
         JSON.stringify(this.props.data.formatted) !==
@@ -894,11 +902,21 @@ class AdDesign extends Component {
       mediaWebLink,
       FileSystem.cacheDirectory + "webImage"
     );
+    let file = await manipulateAsync(uneditedImageUri.uri);
+    console.log(file);
+
+    let incorrectDimensions =
+      Math.floor(file.width / 9) !== Math.floor(file.height / 16) ||
+      file.width < 1080 ||
+      file.height < 1920;
+
     this.setState({
       media: mediaWebLink,
       type: mediaTypeWebLink,
       downloadMediaModal: false,
-      uneditedImageUri
+      uneditedImageUri: uneditedImageUri.uri,
+      incorrectDimensions,
+      fileReadyToUpload: false
     });
     !this.rejected &&
       this.props.save_campaign_info({
@@ -915,6 +933,12 @@ class AdDesign extends Component {
         card.media,
         FileSystem.cacheDirectory + "webImage" + card.story_id
       );
+      let file = await manipulateAsync(uneditedImageUri.uri);
+      let incorrectDimensions =
+        Math.floor(file.width / 9) !== Math.floor(file.height / 16) ||
+        file.width < 1080 ||
+        file.height < 1920;
+
       if (storyAdsArray[index]) {
         card = {
           ...card,
@@ -925,7 +949,8 @@ class AdDesign extends Component {
           uploaded: true,
           iosVideoUploaded: true,
           uploadedFromDifferentDevice: true,
-          uneditedImageUri: uneditedImageUri.uri
+          uneditedImageUri: uneditedImageUri.uri,
+          incorrectDimensions
         };
         cards[index] = card;
         this.setState({
@@ -969,11 +994,18 @@ class AdDesign extends Component {
       collectionAdMainMedia,
       FileSystem.cacheDirectory + "webImage"
     );
+    let file = await manipulateAsync(uneditedImageUri.uri);
+    let incorrectDimensions =
+      Math.floor(file.width / 9) !== Math.floor(file.height / 16) ||
+      file.width < 1080 ||
+      file.height < 1920;
+
     this.setState({
       media: collectionAdMainMedia,
       type: collectionAdMainMediaType,
       downloadMediaModal: false,
-      uneditedImageUri: uneditedImageUri.uri
+      uneditedImageUri: uneditedImageUri.uri,
+      incorrectDimensions
     });
     this.props.setCollectionAdMediaArray(collectionAdsArray);
     !this.rejected &&

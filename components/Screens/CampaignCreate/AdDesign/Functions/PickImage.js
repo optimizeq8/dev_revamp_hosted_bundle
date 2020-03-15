@@ -268,7 +268,8 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Maximum video duration  is 10 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -296,7 +297,8 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Minimum video duration  is 3 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -322,7 +324,8 @@ export const _pickImage = async (
         } else if (file.size > 32000000) {
           setTheState({
             mediaError: "Allowed video size is up to 32 MBs.",
-            media: "//"
+            media: "//",
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -409,8 +412,8 @@ export const _pickImage = async (
             mediaError:
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
             media: "//",
-
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -445,7 +448,8 @@ export const _pickImage = async (
       segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
-        media: "//"
+        media: "//",
+        uneditedImageUri: "//"
       });
       !rejected &&
         save_campaign_info({
