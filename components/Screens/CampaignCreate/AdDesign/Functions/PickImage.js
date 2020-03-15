@@ -64,11 +64,18 @@ export const _pickImage = async (
   adType,
   setTheState,
   screenProps,
-  rejected
+  rejected,
+  mediaEditor,
+  editImage
 ) => {
   try {
-    let result = await pick(mediaTypes, screenProps);
-    let configuration = PhotoEditorConfiguration();
+    let result = {};
+    if (!editImage) result = await pick(mediaTypes, screenProps);
+    else
+      result = { uri: mediaEditor.mediaUri, cancelled: false, type: "image" };
+    let configuration = PhotoEditorConfiguration({
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization")
+    });
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
@@ -80,9 +87,16 @@ export const _pickImage = async (
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
       if (result.type === "image") {
-        PESDK.openEditor(result.uri, configuration)
+        let uneditedImageUri = result.uri;
+        PESDK.openEditor(
+          result.uri,
+          configuration,
+          mediaEditor ? mediaEditor.serialization : {}
+        )
           .then(async manipResult => {
+            let serialization = {};
             if (manipResult) {
+              serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -164,6 +178,7 @@ export const _pickImage = async (
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
+              result.serialization = serialization;
             } else {
               return Promise.reject("Editing canceled");
             }
@@ -180,7 +195,9 @@ export const _pickImage = async (
                 uploaded: false,
                 media_type: result.type.toUpperCase(),
                 iosVideoUploaded: false,
-                fileReadyToUpload: true
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;
@@ -208,7 +225,9 @@ export const _pickImage = async (
                 mediaError: null,
                 result: result.uri,
                 iosVideoUploaded: false,
-                fileReadyToUpload: true
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
               });
 
               onToggleModal(false);

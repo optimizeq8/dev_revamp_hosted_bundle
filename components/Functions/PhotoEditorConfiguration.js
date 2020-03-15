@@ -1,9 +1,19 @@
-import { Configuration, TintMode } from "react-native-photoeditorsdk";
+import {
+  Configuration,
+  TintMode,
+  SerializationExportType
+} from "react-native-photoeditorsdk";
 
 export default (custom = {}) => {
   let { width, height } = custom;
   let configuration: Configuration = {
     forceCrop: true,
+    export: {
+      serialization: {
+        enabled: true,
+        exportType: SerializationExportType.OBJECT
+      }
+    },
     transform: {
       items: [{ width: width || 9, height: height || 16 }]
     },

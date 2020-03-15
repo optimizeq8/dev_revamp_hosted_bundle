@@ -123,7 +123,9 @@ class AdDesign extends Component {
       storyAdAttachChanged: false,
       uploadMediaDifferentDeviceModal: false,
       uploadMediaNotification: {},
-      downloadMediaModal: false
+      downloadMediaModal: false,
+      serialization: {},
+      uneditedImageUri: "//"
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign;
@@ -409,7 +411,7 @@ class AdDesign extends Component {
     !this.rejected &&
       this.props.save_campaign_info({ headline: headline.replace("@", "") });
   };
-  adDesignPickImage = mediaTypes =>
+  adDesignPickImage = (mediaTypes, mediaEditor, editImage) =>
     _pickImage(
       mediaTypes,
       this.setMediaModalVisible,
@@ -420,7 +422,9 @@ class AdDesign extends Component {
       this.adType,
       this.setTheState,
       this.props.screenProps,
-      this.rejected
+      this.rejected,
+      mediaEditor,
+      editImage
     );
 
   getVideoUploadUrl = () => {
@@ -742,6 +746,12 @@ class AdDesign extends Component {
   };
 
   setTheState = state => {
+    if (state.hasOwnProperty("serialization")) {
+      state = {
+        ...state,
+        serialization: { ...this.state.serialization, ...state.serialization }
+      };
+    }
     this.setState({ ...state });
   };
   finalSubmission = async () => {
@@ -879,11 +889,16 @@ class AdDesign extends Component {
       downloadMediaModal: val
     });
   };
-  handleDownloadMedia = (mediaWebLink, mediaTypeWebLink) => {
+  handleDownloadMedia = async (mediaWebLink, mediaTypeWebLink) => {
+    let uneditedImageUri = await FileSystem.downloadAsync(
+      mediaWebLink,
+      FileSystem.cacheDirectory + "webImage"
+    );
     this.setState({
       media: mediaWebLink,
       type: mediaTypeWebLink,
-      downloadMediaModal: false
+      downloadMediaModal: false,
+      uneditedImageUri
     });
     !this.rejected &&
       this.props.save_campaign_info({
@@ -895,7 +910,11 @@ class AdDesign extends Component {
     // update storyads array
     await this.props.updateStoryADS(storyAdsArray);
     let cards = this.props.storyAdsArray;
-    cards.map((card, index) => {
+    cards.map(async (card, index) => {
+      let uneditedImageUri = await FileSystem.downloadAsync(
+        card.media,
+        FileSystem.cacheDirectory + "webImage" + card.story_id
+      );
       if (storyAdsArray[index]) {
         card = {
           ...card,
@@ -905,7 +924,8 @@ class AdDesign extends Component {
           media_type: storyAdsArray[index].media_type,
           uploaded: true,
           iosVideoUploaded: true,
-          uploadedFromDifferentDevice: true
+          uploadedFromDifferentDevice: true,
+          uneditedImageUri: uneditedImageUri.uri
         };
         cards[index] = card;
         this.setState({
@@ -945,10 +965,15 @@ class AdDesign extends Component {
     collectionAdMainMediaType,
     collectionAdsArray
   ) => {
+    let uneditedImageUri = await FileSystem.downloadAsync(
+      collectionAdMainMedia,
+      FileSystem.cacheDirectory + "webImage"
+    );
     this.setState({
       media: collectionAdMainMedia,
       type: collectionAdMainMediaType,
-      downloadMediaModal: false
+      downloadMediaModal: false,
+      uneditedImageUri: uneditedImageUri.uri
     });
     this.props.setCollectionAdMediaArray(collectionAdsArray);
     !this.rejected &&
@@ -1289,7 +1314,9 @@ class AdDesign extends Component {
         </Container>
         <MediaModal
           getVideoUploadUrl={this.getVideoUploadUrl}
-          _pickImage={mediaTypes => this.adDesignPickImage(mediaTypes)}
+          _pickImage={(mediaTypes, mediaEditor, editImage) =>
+            this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
+          }
           mediaModalVisible={mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
           adType={this.props.adType}
@@ -1298,6 +1325,15 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          mediaUri={{
+            media: this.state.uneditedImageUri,
+            storyAdCards: this.state.storyAdCards
+          }}
+          serialization={
+            this.state.serialization.hasOwnProperty("image")
+              ? this.state.serialization
+              : this.state.storyAdCards.selectedStoryAd.serialization
+          }
           screenProps={this.props.screenProps}
         />
         <UploadMediaFromDifferentDevice
