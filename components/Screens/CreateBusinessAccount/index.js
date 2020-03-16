@@ -762,6 +762,10 @@ class CreateBusinessAccount extends Component {
                 style={[styles.inputText]}
                 value={this.state.businessAccount.businessname}
                 onChangeText={value => {
+                  value = value.replace(
+                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                    ""
+                  );
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
@@ -828,14 +832,18 @@ class CreateBusinessAccount extends Component {
                   this.props.savingRegister
                 }
                 value={this.state.businessAccount.brandname}
-                onChangeText={value =>
+                onChangeText={value => {
+                  value = value.replace(
+                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                    ""
+                  );
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
                       brandname: value
                     }
-                  })
-                }
+                  });
+                }}
                 maxLength={25}
                 onFocus={() => {
                   this.setState({ inputBN: true });
