@@ -201,7 +201,11 @@ export const _pickImage = async (
                 uneditedImageUri,
                 serialization: result.serialization
               };
-
+              segmentEventTrack("Selected Story Ad Image Successful");
+              segmentEventTrack("Selected Story Ad serialization", {
+                index: storyAdCards.selectedStoryAd.index,
+                ...result.serialization
+              });
               cards[storyAdCards.selectedStoryAd.index] = card;
               setTheState({
                 storyAdCards: {
@@ -239,6 +243,9 @@ export const _pickImage = async (
                 type: "success"
               });
               segmentEventTrack("Selected Image Successful");
+              segmentEventTrack("Selected Image serialization", {
+                ...result.serialization
+              });
               !rejected &&
                 save_campaign_info({
                   media: result.uri,

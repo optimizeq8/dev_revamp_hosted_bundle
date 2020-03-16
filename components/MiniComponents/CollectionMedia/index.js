@@ -393,6 +393,12 @@ class CollectionMedia extends Component {
                   rejectionColUpload: true
                 });
                 segmentEventTrack("Selected Collection Ad Image successfully");
+                segmentEventTrack(
+                  "Selected Collection Ad Image serialization",
+                  {
+                    ...serialization
+                  }
+                );
                 this.onToggleModal(false);
                 showMessage({
                   message: translate("Image has been selected successfully"),

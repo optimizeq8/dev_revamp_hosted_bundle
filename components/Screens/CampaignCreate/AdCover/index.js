@@ -355,6 +355,11 @@ class AdCover extends Component {
                 : "Logo must be exactly 993px by 284px,In png format and transparent background "
           }
         );
+        editedLogo.uri !== "" &&
+          segmentEventTrack("Selected Story Ad Logo serialization", {
+            index: storyAdCards.selectedStoryAd.index,
+            ...serialization
+          });
         !this.rejected &&
           this.props.save_campaign_info({
             logo: editedLogo.uri !== "" ? editedLogo.uri : "",
@@ -469,6 +474,10 @@ class AdCover extends Component {
               });
               this.onToggleModal(false);
               segmentEventTrack("Selected Story Ad Cover Media successfully");
+              segmentEventTrack("Selected Story Ad Cover serialization", {
+                index: storyAdCards.selectedStoryAd.index,
+                ...result.serialization
+              });
               showMessage({
                 message: translate("Image has been selected successfully"),
                 position: "top",
