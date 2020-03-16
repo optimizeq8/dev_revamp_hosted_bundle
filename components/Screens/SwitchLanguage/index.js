@@ -47,6 +47,7 @@ class SwitchLanguage extends Component {
     AsyncStorage.getItem("languageOpened")
       .then(value => {
         if (isNull(value)) {
+          Segment.screen("Select App Language");
           AsyncStorage.setItem("languageOpened", "false").then(() => {
             this.setState({
               languageOpened: false
@@ -55,6 +56,7 @@ class SwitchLanguage extends Component {
         } else if (value === "true") {
           this.props.navigation.replace("Tutorial");
         } else {
+          Segment.screen("Select App Language");
           this.setState({
             languageOpened: false
           });

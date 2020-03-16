@@ -58,39 +58,37 @@ export default class SlideUpPanel extends Component {
 
     return (
       <View style={[styles.bottomContainer]}>
-        <View>
-          <View style={{ height: "15%", width: "85%", alignSelf: "center" }}>
-            <ChartChoices
-              screenProps={this.props.screenProps}
-              changeChart={this.changeChart}
-              selectedCampaign={selectedCampaign}
-            />
-          </View>
+        <ChartChoices
+          screenProps={this.props.screenProps}
+          changeChart={this.changeChart}
+          selectedCampaign={selectedCampaign}
+        />
 
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                tintColor={"#fff"}
-                refreshing={this.state.refreshing}
-                onRefresh={() => this._onRefresh(selectedCampaign)}
-              />
-            }
-            style={{ zIndex: 2 }}
-            contentContainerStyle={{
-              zIndex: 2
-            }}
-          >
-            {this.state.chartChoice !== "website interactions" ? (
-              <LineChartGraphs
-                screenProps={this.props.screenProps}
-                chartChoice={this.state.chartChoice}
-                campaign={selectedCampaign}
-              />
-            ) : (
-              <WebsiteInteracions screenProps={this.props.screenProps} />
-            )}
-          </ScrollView>
-        </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              tintColor={"#fff"}
+              refreshing={this.state.refreshing}
+              onRefresh={() => this._onRefresh(selectedCampaign)}
+            />
+          }
+          style={{ zIndex: 2 }}
+          contentContainerStyle={{
+            zIndex: 2,
+            paddingBottom: 10,
+            flex: 1 // needed to occupy major graph part
+          }}
+        >
+          {this.state.chartChoice !== "website interactions" ? (
+            <LineChartGraphs
+              screenProps={this.props.screenProps}
+              chartChoice={this.state.chartChoice}
+              campaign={selectedCampaign}
+            />
+          ) : (
+            <WebsiteInteracions screenProps={this.props.screenProps} />
+          )}
+        </ScrollView>
       </View>
     );
   }

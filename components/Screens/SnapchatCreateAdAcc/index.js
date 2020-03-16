@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { View, Image, ScrollView, BackHandler } from "react-native";
+import WebView from "react-native-webview";
+
+import { View, BackHandler, I18nManager } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { LinearGradient } from "expo-linear-gradient";
 import { NavigationEvents, SafeAreaView } from "react-navigation";
-import HTMLView from "react-native-htmlview";
+import Loading from "../../MiniComponents/LoadingScreen";
 import { ActivityIndicator } from "react-native-paper";
-import { terms, secondTerms } from "../../Data/snapchatTerms.data";
 import CustomHeader from "../../MiniComponents/Header";
 import Snapchat from "../../../assets/SVGs/Snapchat-Border";
 
@@ -73,7 +73,9 @@ class SnapchatCreateAdAcc extends Component {
         <NavigationEvents
           onDidFocus={() => {
             Segment.screenWithProperties("Snap Ad Account", {
-              category: "Sign Up"
+              category: "Sign Up",
+              businessname: this.props.mainBusiness.businessname,
+              businessid: this.props.mainBusiness.businessid
             });
           }}
         />
@@ -81,7 +83,7 @@ class SnapchatCreateAdAcc extends Component {
           <CustomHeader
             closeButton={false}
             segment={{
-              str: "Dashabord",
+              str: "Dashboard",
               obj: {
                 businessname: this.props.mainBusiness.businessname
               }
@@ -99,22 +101,20 @@ class SnapchatCreateAdAcc extends Component {
           /> */}
 
           <Card padder style={styles.mainCard}>
-            <Text style={styles.text}>{translate("Terms & Conditions")}</Text>
-            <ScrollView
-              onScroll={({ nativeEvent }) => {
-                if (this.isCloseToBottom(nativeEvent)) {
-                  this.setState({ accept: true });
-                }
+            {/** Replace the hard code snapchat policies html data with webview so as to directly pull data from snapchat ad policies */}
+            <WebView
+              startInLoadingState={true}
+              source={{
+                uri: I18nManager.isRTL
+                  ? "https://www.snap.com/ar/ad-policies"
+                  : "https://www.snap.com/en-GB/ad-policies"
               }}
-              scrollEventThrottle={400}
-              contentContainerStyle={styles.scrollViewContentContainer}
-              style={styles.scrollViewContainer}
-            >
-              <View style={styles.htmlContainer}>
-                <HTMLView value={terms} stylesheet={htmlStyles} />
-                <HTMLView value={secondTerms} stylesheet={htmlStyles} />
-              </View>
-            </ScrollView>
+              renderLoading={() => <Loading top={40} />}
+              style={styles.webview}
+              contentContainerStyle={[styles.contentWebView]}
+              ref={ref => (this.webview = ref)}
+            />
+
             <View style={styles.bottomContainer}>
               <Button
                 block

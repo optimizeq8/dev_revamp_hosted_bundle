@@ -8,6 +8,8 @@ import segmentEventTrack from "../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
+import { PESDK, Configuration, TintMode } from "react-native-photoeditorsdk";
+import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -62,10 +64,18 @@ export const _pickImage = async (
   adType,
   setTheState,
   screenProps,
-  rejected
+  rejected,
+  mediaEditor = {},
+  editImage
 ) => {
   try {
-    let result = await pick(mediaTypes, screenProps);
+    let result = {};
+    if (!editImage) result = await pick(mediaTypes, screenProps);
+    else
+      result = { uri: mediaEditor.mediaUri, cancelled: false, type: "image" };
+    let configuration = PhotoEditorConfiguration({
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization")
+    });
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
@@ -77,33 +87,53 @@ export const _pickImage = async (
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
       if (result.type === "image") {
-        if (result.width >= 1080 && result.height >= 1920) {
-          ImageManipulator.manipulateAsync(
-            result.uri,
-            [
-              {
-                resize:
-                  result.width >= (result.height / 16) * 9
-                    ? {
-                        height: 1920
-                      }
-                    : {
-                        width: 1080
-                      }
+        let uneditedImageUri = result.uri;
+        PESDK.openEditor(
+          result.uri,
+          configuration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
+          .then(async manipResult => {
+            let serialization = {};
+            if (manipResult) {
+              serialization = manipResult.serialization;
+              manipResult = await ImageManipulator.manipulateAsync(
+                manipResult.image
+              );
+              if (
+                Math.floor(manipResult.width / 9) !==
+                Math.floor(manipResult.height / 16)
+              ) {
+                //check for aspect ration incase user undos the cropping
+                setTheState({
+                  mediaError:
+                    "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
+                  media: "//",
+                  type: ""
+                });
+                !rejected &&
+                  save_campaign_info({
+                    media: "//",
+                    type: ""
+                  });
+                onToggleModal(false);
+                segmentEventTrack("Selected Image Error", {
+                  campaign_error_image:
+                    "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px"
+                });
+                return Promise.reject({
+                  wrongAspect: true,
+                  message:
+                    "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
+                });
               }
-            ],
-            {
-              compress: 1
-            }
-          )
-            .then(async manipResult => {
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.uri,
                 [
                   {
-                    crop: {
-                      originX: Math.floor((manipResult.width - 1080) / 2),
-                      originY: Math.floor((manipResult.height - 1920) / 2),
+                    resize: {
                       width: 1080,
                       height: 1920
                     }
@@ -150,146 +180,107 @@ export const _pickImage = async (
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
-            })
-            .then(() => {
-              if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
-                let cards = storyAdsArray;
-                let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
+              result.serialization = serialization;
+            } else {
+              return Promise.reject("Editing canceled");
+            }
+          })
+          .then(() => {
+            if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
+              let cards = storyAdsArray;
+              let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
 
-                card = {
-                  ...card,
-                  index: storyAdCards.selectedStoryAd.index,
-                  media: result.uri,
-                  uploaded: false,
-                  media_type: result.type.toUpperCase(),
-                  iosVideoUploaded: false,
-                  fileReadyToUpload: true
-                };
+              card = {
+                ...card,
+                index: storyAdCards.selectedStoryAd.index,
+                media: result.uri,
+                uploaded: false,
+                media_type: result.type.toUpperCase(),
+                iosVideoUploaded: false,
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
+              };
+              segmentEventTrack("Selected Story Ad Image Successful");
+              segmentEventTrack("Selected Story Ad serialization", {
+                index: storyAdCards.selectedStoryAd.index,
+                ...result.serialization
+              });
+              cards[storyAdCards.selectedStoryAd.index] = card;
+              setTheState({
+                storyAdCards: {
+                  ...storyAdCards,
+                  // storyAdSelected: false,
+                  selectedStoryAd: {
+                    ...card
+                  }
+                },
+                fileReadyToUpload: true,
+                type: result.type.toUpperCase()
+              });
+              save_campaign_info({
+                media: result.uri,
+                type: result.type.toUpperCase(),
+                fileReadyToUpload: true
+              });
+              onToggleModal(false);
+            } else {
+              setTheState({
+                media: result.uri,
+                type: result.type.toUpperCase(),
+                mediaError: null,
+                result: result.uri,
+                iosVideoUploaded: false,
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
+              });
 
-                cards[storyAdCards.selectedStoryAd.index] = card;
-                setTheState({
-                  storyAdCards: {
-                    ...storyAdCards,
-                    // storyAdSelected: false,
-                    selectedStoryAd: {
-                      ...card
-                    }
-                  },
-                  fileReadyToUpload: true,
-                  type: result.type.toUpperCase()
-                });
+              onToggleModal(false);
+              showMessage({
+                message: translate("Image has been selected successfully"),
+                position: "top",
+                type: "success"
+              });
+              segmentEventTrack("Selected Image Successful");
+              segmentEventTrack("Selected Image serialization", {
+                ...result.serialization
+              });
+              !rejected &&
                 save_campaign_info({
                   media: result.uri,
                   type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization
                 });
-                onToggleModal(false);
-              } else {
-                setTheState({
-                  media: result.uri,
-                  type: result.type.toUpperCase(),
-                  mediaError: null,
-                  result: result.uri,
-                  iosVideoUploaded: false,
-                  fileReadyToUpload: true
-                });
+            }
+          })
+          .catch(error => {
+            console.log(error);
 
-                onToggleModal(false);
-                showMessage({
-                  message: translate("Image has been selected successfully"),
-                  position: "top",
-                  type: "success"
-                });
-                segmentEventTrack("Selected Image Successful");
-                !rejected &&
-                  save_campaign_info({
-                    media: result.uri,
-                    type: result.type.toUpperCase(),
-                    fileReadyToUpload: true
-                  });
-              }
-            })
-            .catch(error => {
-              // console.log(error);
-
-              onToggleModal(false);
-              segmentEventTrack("Seleeted Image Error", {
-                campaign_error_image: "The dimensions are too large"
-              });
-              showMessage({
-                message:
-                  error ||
+            onToggleModal(false);
+            segmentEventTrack("Seleeted Image Error", {
+              campaign_error_image: "The dimensions are too large"
+            });
+            showMessage({
+              message: error.wrongAspect
+                ? error.message
+                : error ||
                   translate(
                     "The dimensions are too large, please choose a different image"
                   ),
-                // message:
-                //   error ||
-                //   "The dimensions are too large, please choose a different image.",
-                position: "top",
-                type: "warning"
-              });
+              position: "top",
+              type: "warning"
             });
-          return;
-        } else if (
-          Math.floor(result.width / 9) !== Math.floor(result.height / 16) ||
-          result.width < 1080 ||
-          result.height < 1920
-        ) {
-          setTheState({
-            mediaError:
-              "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
-            media: "//",
-            type: ""
-            // videoIsLoading: false
           });
-          !rejected &&
-            save_campaign_info({
-              media: "//",
-              type: ""
-            });
-          onToggleModal(false);
-          segmentEventTrack("Seleeted Image Error", {
-            campaign_error_image:
-              "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px"
-          });
-          showMessage({
-            message: translate(
-              "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
-            ),
-            // message:
-            //   "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
-            position: "top",
-            type: "warning"
-          });
-          return;
-        } else {
-          setTheState({
-            media: result.uri,
-            type: result.type.toUpperCase(),
-            mediaError: null,
-            result: result.uri,
-            iosVideoUploaded: false
-          });
-          onToggleModal(false);
-          segmentEventTrack("Selected Image successfully");
-          showMessage({
-            message: translate("Image has been selected successfully"),
-            position: "top",
-            type: "success"
-          });
-          !rejected &&
-            save_campaign_info({
-              media: result.uri,
-              type: result.type.toUpperCase()
-            });
-          return;
-        }
       } else if (result.type === "video") {
         if (result.duration > 10999) {
           setTheState({
             mediaError: "Maximum video duration  is 10 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -317,7 +308,8 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Minimum video duration  is 3 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -343,7 +335,8 @@ export const _pickImage = async (
         } else if (file.size > 32000000) {
           setTheState({
             mediaError: "Allowed video size is up to 32 MBs.",
-            media: "//"
+            media: "//",
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -430,8 +423,8 @@ export const _pickImage = async (
             mediaError:
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
             media: "//",
-
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -466,7 +459,8 @@ export const _pickImage = async (
       segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
-        media: "//"
+        media: "//",
+        uneditedImageUri: "//"
       });
       !rejected &&
         save_campaign_info({
@@ -481,6 +475,6 @@ export const _pickImage = async (
     }
   } catch (error) {
     onToggleModal(false);
-    // console.log("error image pick", error);
+    console.log("error image pick", error);
   }
 };

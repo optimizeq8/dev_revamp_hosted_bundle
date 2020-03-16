@@ -164,3 +164,11 @@ export const getBusinessInvites = () => {
       });
   };
 };
+export const checkNotification = (message, data) => {
+  return (dispatch, getState) => {
+    dispatch({
+      payload: { message, data },
+      type: actionTypes.CHECK_NOTIFICATION
+    });
+  };
+};

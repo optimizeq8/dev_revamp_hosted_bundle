@@ -19,6 +19,7 @@ import {
 } from "react-native-responsive-screen";
 import * as actionsCreators from "../../../../store/actions";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { showMessage } from "react-native-flash-message";
 
 class App_Install extends Component {
   static navigationOptions = {
@@ -41,7 +42,9 @@ class App_Install extends Component {
       callActionError: "",
       appError: "",
       android_app_urlError: "",
-      showList: false
+      showList: false,
+      androidAppSelected: false,
+      iosAppSelected: false
     };
   }
 
@@ -68,7 +71,14 @@ class App_Install extends Component {
           ...this.state.attachment,
           ...this.props.data.attachment
         },
-        callaction: this.props.data.call_to_action
+        callaction: this.props.data.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.data.appChoice,
+        iosAppSelected: this.props.data.attachment.ios_app_id !== "",
+        androidAppSelected: this.props.data.attachment.android_app_url !== ""
       });
     } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
       this.setState({
@@ -76,7 +86,40 @@ class App_Install extends Component {
           ...this.state.attachment,
           ...this.props.storyAdAttachment.attachment
         },
-        callaction: this.props.storyAdAttachment.call_to_action
+        callaction: this.props.storyAdAttachment.call_to_action,
+        appChoice:
+          this.props.data.attachment.ios_app_id !== "" &&
+          this.props.data.attachment.android_app_url !== ""
+            ? null
+            : this.props.storyAdAttachment.appChoice,
+
+        iosAppSelected:
+          this.props.storyAdAttachment.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.storyAdAttachment.attachment.android_app_url !== ""
+      });
+    } else if (
+      (this.props.mainBusiness.appstorelink &&
+        this.props.mainBusiness.appstorelink.ios_app_id !== "") ||
+      (this.props.mainBusiness.playstorelink &&
+        this.props.mainBusiness.playstorelink.android_app_url !== "")
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.mainBusiness.appstorelink,
+          ...this.props.mainBusiness.playstorelink
+        },
+        iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected:
+          this.props.mainBusiness.appstorelink.android_app_url !== "",
+        appChoice:
+          this.props.mainBusiness.appstorelink.ios_app_id !== "" &&
+          this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? null
+            : this.props.mainBusiness.playstorelink.android_app_url !== ""
+            ? "ANDROID"
+            : "iOS"
       });
     }
   }
@@ -88,7 +131,9 @@ class App_Install extends Component {
     callaction,
     appChoice,
     iosApp_name,
-    androidApp_name
+    androidApp_name,
+    iosApp_icon,
+    androidApp_icon
   ) => {
     if (nameError || callActionError) {
       segmentEventTrack("Error App Install", {
@@ -103,10 +148,33 @@ class App_Install extends Component {
       this.setState({
         attachment,
         callaction,
-        appChoice
+        appChoice:
+          this.state.iosAppSelected && this.state.androidAppSelected
+            ? null
+            : appChoice,
+        //to not turn off or on the toogle of the other app selection
+        iosAppSelected:
+          iosApp_name !== "" &&
+          (androidApp_name && this.state.iosAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
+            ? true
+            : appChoice === "iOS",
+        androidAppSelected:
+          androidApp_name !== "" &&
+          (iosApp_name && this.state.androidAppSelected
+            ? true
+            : this.state.iosAppSelected && this.state.androidAppSelected)
+            ? true
+            : appChoice !== "iOS"
       });
       !this.props.rejCampaign &&
-        this.props.save_campaign_info({ iosApp_name, androidApp_name });
+        this.props.save_campaign_info({
+          iosApp_name,
+          androidApp_name,
+          iosApp_icon,
+          androidApp_icon
+        });
     }
   };
 
@@ -115,7 +183,13 @@ class App_Install extends Component {
       callaction
     });
   };
+  setTheState = state => {
+    this.setState({
+      ...state
+    });
+  };
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const appError = validateWrapper(
       "mandatory",
       this.state.attachment.ios_app_id || this.state.attachment.android_app_url
@@ -133,22 +207,41 @@ class App_Install extends Component {
         )
       });
     }
-    if (!appError) {
+    let attachment = this.state.attachment;
+    let appChoice = this.state.appChoice;
+    if (!this.state.iosAppSelected) {
+      attachment["ios_app_id"] = "";
+      appChoice = "ANDROID";
+    }
+    if (!this.state.androidAppSelected) {
+      attachment["android_app_url"] = "";
+      appChoice = "iOS";
+    }
+    if (
+      (this.state.iosAppSelected || this.state.androidAppSelected) &&
+      !appError
+    ) {
       this.props._changeDestination(
         "APP_INSTALL",
         this.state.callaction,
-        this.state.attachment,
-        this.state.appChoice
+        attachment,
+        appChoice
       );
       segmentEventTrack("Submited App Install SwipeUp Success", {
         campaign_app_choice: this.state.appChoice,
         campaign_attachment: this.state.attachment
       });
       this.props.navigation.navigate("AdDesign");
+    } else {
+      showMessage({
+        message: translate("Please select at least one app"),
+        type: "warning"
+      });
     }
   };
   render() {
     const { translate } = this.props.screenProps;
+    let { iosAppSelected, androidAppSelected } = this.state;
 
     return (
       <SafeAreaView
@@ -180,6 +273,9 @@ class App_Install extends Component {
               callaction={this.state.callaction}
               _handleSubmission={this._handleSubmission}
               screenProps={this.props.screenProps}
+              appChoice={this.state.appChoice}
+              appSelections={{ iosAppSelected, androidAppSelected }}
+              setTheState={this.setTheState}
             />
           </View>
         </Container>
@@ -193,7 +289,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({

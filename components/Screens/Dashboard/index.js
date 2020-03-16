@@ -80,9 +80,9 @@ class Dashboard extends Component {
       componentMounting: true
     };
     //Logs/gives warnign if a component has any functions that take a while to render
-    slowlog(this, /.*/, {
-      // verbose: true
-    }); //verbose logs all functions and their time
+    // slowlog(this, /.*/, {
+    //   // verbose: true
+    // }); //verbose logs all functions and their time
     this.page = 1;
   }
 
@@ -481,16 +481,19 @@ class Dashboard extends Component {
                 }
               ]}
             >
-              {!this.props.loadingCampaigns &&
-              !this.props.loadingAccountMgmt &&
-              this.props.campaignList &&
-              this.props.campaignList.length === 0 ? (
+              {(!this.props.loadingCampaigns &&
+                !this.props.loadingAccountMgmt &&
+                this.props.campaignList &&
+                this.props.campaignList.length === 0) ||
+              (this.props.userInfo.hasOwnProperty("verified_account") &&
+                !this.props.userInfo.verified_account) ? (
                 <EmptyCampaigns
                   translate={translate}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
                   }
+                  userInfo={this.props.userInfo}
                 />
               ) : (
                 <Container style={styles.container}>
@@ -614,7 +617,9 @@ class Dashboard extends Component {
                             contentContainerStyle={
                               styles.flatlistContainerStyle
                             }
-                            keyExtractor={item => item.campaign_id}
+                            keyExtractor={item =>
+                              JSON.stringify(item.campaign_id)
+                            }
                             data={this.props.filteredCampaigns}
                             onEndReached={this.loadMoreData}
                             onEndReachedThreshold={0.1}

@@ -203,8 +203,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: "center",
-    top: 10
+    justifyContent: "center"
   },
   tab: {
     // position: "absolute",
@@ -333,16 +332,22 @@ const styles = StyleSheet.create({
   placeHolderChart: {
     position: "absolute",
     zIndex: 10,
+    display: "flex",
+    flex: 1,
     width: wp(90),
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
     borderRadius: 15
   },
   ScrollChartArea: {
     height: 35
   },
-  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
+  placeHolderChartText: {
+    fontFamily: "montserrat-medium",
+    color: "#fff"
+  },
   dot: {
     top: 10,
     width: 10,
@@ -405,7 +410,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   chartChoiceButtons: {
-    width: "35%"
+    // width: I18nManager.isRTL ? null : "20%",
+    height: 35
   },
   chartChoiceText: {
     fontSize: 10 / PixelRatio.getFontScale(),
@@ -458,6 +464,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#66D072"
+  },
+  chartChoicesView: {
+    height: "10%",
+    width: "85%",
+    alignSelf: "center",
+    marginTop: 10
+  },
+  chartChoicesViewContainer: {
+    elevation: 11,
+    zIndex: 11,
+    // width: "100%",
+    flexDirection: "row",
+    // marginRight: wp(10),
+    alignSelf: "center",
+    marginTop: 15,
+    paddingBottom: 10,
+    // justifyContent: "space-around",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 

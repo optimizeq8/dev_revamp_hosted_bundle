@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, I18nManager } from "react-native";
 import styles from "./styles";
-import { Button, Text } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -9,53 +9,39 @@ export default class ChartChoices extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let choices = ["Spend", "Clicks", "CPC", "ctr"].map(choice => (
-      <Button
+      <GradientButton
         key={choice}
-        onPress={() => {
+        onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
         }}
+        numberOfLines={2}
         style={[
           styles.choiceButtons,
           {
-            backgroundColor:
-              this.state.selectedChoice === choice
-                ? globalColors.orange
-                : "transparent"
-          },
-          { width: "35%" }
-        ]}
-      >
-        <Text
-          uppercase
-          style={[
-            styles.choiceText,
-            {
-              fontSize: 11,
-              color:
-                this.state.selectedChoice !== choice
-                  ? globalColors.orange
-                  : "#fff"
-            }
-          ]}
-        >
-          {translate(choice)}
-        </Text>
-      </Button>
-    ));
-    return (
-      <View
-        style={[
-          styles.choicesStyles,
-          {
-            justifyContent: "center",
-            backgroundColor: "#0000",
-            paddingVertical: 15
+            height: 35,
+            width: I18nManager.isRTL ? null : "20%", // Since for arabic the name string are big it should take up the width of the content size
+            marginHorizontal: 0,
+            borderRadius: 100
           }
         ]}
-      >
-        {choices}
-      </View>
-    );
+        radius={50}
+        transparent={this.state.selectedChoice !== choice}
+        text={translate(choice)}
+        uppercase
+        textStyle={[
+          styles.choiceText,
+          {
+            fontSize: 11,
+            paddingHorizontal: I18nManager.isRTL ? 15 : 5,
+            color:
+              this.state.selectedChoice !== choice
+                ? globalColors.orange
+                : "#fff"
+          }
+        ]}
+      />
+    ));
+    return <View style={styles.chartChoicesView}>{choices}</View>;
   }
 }

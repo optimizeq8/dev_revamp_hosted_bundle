@@ -50,6 +50,7 @@ import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading";
 
+import VerifyAccount from "../Screens/VerifyAccount";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -110,7 +111,8 @@ export default FluidNavigator(
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
-    AcceptTermsConditionLoading: AcceptTermsConditionLoading
+    AcceptTermsConditionLoading: AcceptTermsConditionLoading,
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" }
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

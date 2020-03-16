@@ -86,6 +86,7 @@ class GoogleSEAPreviewScreen extends Component {
                 <Transition shared="preview" zIndex={3}>
                   <GoogleSEAPreview
                     details={false}
+                    showEmpty={true}
                     screenProps={this.props.screenProps}
                     headline1={campaign.headline1}
                     headline2={campaign.headline2}

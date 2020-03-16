@@ -46,7 +46,10 @@ const styles = StyleSheet.create({
   },
   footerButtonsContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
+    width: "50%",
+    justifyContent: "space-evenly"
   },
   errorMsg: {
     textAlign: "center",
@@ -64,7 +67,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    marginTop: hp(3)
+    marginTop: hp(3),
+    padding: 10
   },
   mainSafeArea: {
     height: "100%",
@@ -272,14 +276,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "center",
-    width: wp(10),
-    height: hp(7.5),
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginHorizontal: wp(10)
+    width: 50
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -601,8 +598,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   proceedButtonRTL: {
-    width: wp(13),
-    height: hp(6)
+    width: 50,
+    height: 50
   }
 });
 

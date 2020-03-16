@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import * as Segment from 'expo-analytics-segment';
 const initialState = {
   inviteCode: "",
   inviteRegistered: false,
@@ -12,7 +11,11 @@ const initialState = {
   successEmail: false,
   loadingRegister: true,
   registered: false,
-  successName: false
+  successName: false,
+  successPersonalInfo: false,
+  savingRegister: false,
+  emailLinkCodeExpired: null,
+  checkingBusinessName: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,10 +28,10 @@ const reducer = (state = initialState, action) => {
         loadingRegister: !action.payload.data.success
       };
     case actionTypes.ERROR_SET_INVITE_CODE:
-        return {
+      return {
         ...state,
         loadingRegister: false
-    };
+      };
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
         ...state,
@@ -37,74 +40,112 @@ const reducer = (state = initialState, action) => {
         countryCode: action.payload.country_code,
         verified: action.payload.verified,
         verificationCode: action.payload.verificationCode,
-        registered: action.payload.registered,
-    };
+        registered: action.payload.registered
+      };
     case actionTypes.ERROR_SEND_MOBILE_NUMBER:
-        return {
+      return {
         ...state,
-        successNo: action.payload.success,
+        successNo: action.payload.success
         // mobileNo: action.payload.mobile,
         // countryCode: action.payload.country_code,
         // verified: action.payload.verified,
         // verificationCode: action.payload.verificationCode,
         // registered: action.payload.registered,
-    };
+      };
     case actionTypes.VERIFY_MOBILE_NUMBER:
       return {
         ...state,
-        verified: action.payload.success,
+        verified: action.payload.success
       };
     case actionTypes.ERROR_VERIFY_MOBILE_NUMBER:
       return {
-          ...state,
-          verified: action.payload.success
-      }
+        ...state,
+        verified: action.payload.success
+      };
     case actionTypes.RESEND_VERIFICATION:
       return {
         ...state,
         successNo: action.payload.success,
-        verificationCode: action.payload.verificationCode,
+        verificationCode: action.payload.verificationCode
       };
     case actionTypes.ERROR_RESEND_VERIFICATION:
       return {
         ...state,
-        successNo: action.payload.success,
+        successNo: action.payload.success
         // verificationCode: action.payload.verificationCode,
       };
     case actionTypes.RESEND_VERIFICATION_EMAIL:
       return {
         ...state,
         successNo: action.payload.success,
-        verificationCode: action.payload.verificationCode,
+        verificationCode: action.payload.verificationCode
       };
-     case actionTypes.ERROR_RESEND_VERIFICATION_EMAIL:
+    case actionTypes.ERROR_RESEND_VERIFICATION_EMAIL:
       return {
         ...state,
-        successNo: action.payload.success,
+        successNo: action.payload.success
         // verificationCode: action.payload.verificationCode,
       };
     case actionTypes.VERIFY_EMAIL:
       return {
         ...state,
         successEmail: action.payload.success,
-        userInfo: action.payload.userInfo,
+        userInfo: action.payload.userInfo
       };
     case actionTypes.ERROR_VERIFY_EMAIL:
       return {
         ...state,
         successEmail: action.payload.success,
-        userInfo: action.payload.userInfo,
+        userInfo: action.payload.userInfo
       };
-    
+
     case actionTypes.VERIFY_BUSINESSNAME:
       return {
         ...state,
         successName: action.payload.success,
+        checkingBusinessName: false
+      };
+    case actionTypes.CHECKING_BUSINESSNAME:
+      return {
+        ...state,
+        checkingBusinessName: action.payload
       };
     case actionTypes.ERROR_VERIFY_BUSINESSNAME:
       return {
         ...state,
-        successName: action.payload.success,
+        successName: action.payload.success
+      };
+    case actionTypes.REGISTER_GUEST_USER:
+      return {
+        ...state,
+        successPersonalInfo: action.payload.success,
+        userInfo: action.payload.userInfo
+      };
+    case actionTypes.ERROR_REGISTER_GUEST_USER:
+      return {
+        ...state,
+        successPersonalInfo: action.payload.success,
+        userInfo: action.payload.userInfo
+      };
+    case actionTypes.SAVING_REGISTER_ACCOUNT:
+      return {
+        ...state,
+        savingRegister: action.payload
+      };
+    case actionTypes.RESET_VERIFICATION_CODE:
+      return {
+        ...state,
+        successNo: false,
+        mobileNo: "",
+        countryCode: "",
+        verificationCode: false,
+        emailLinkCodeExpired: false
+      };
+    case actionTypes.VERIFY_EMAIL_CODE_LINK:
+      return {
+        ...state,
+        emailLinkCodeExpired: !action.payload.success,
+        successNo: action.payload.success
       };
     default:
       return state;

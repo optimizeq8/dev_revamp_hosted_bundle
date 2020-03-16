@@ -29,7 +29,8 @@ class GradientButton extends React.PureComponent {
       disabled,
       orangeDark,
       uppercase,
-      transparent
+      transparent,
+      numberOfLines = 1
     } = this.props;
     const orangeDarkColor = ["#FF9D00", "#FF5C14"];
     const transparentColor = ["rgba(0,0,0,0)", "rgba(0,0,0,0)"];
@@ -118,7 +119,11 @@ class GradientButton extends React.PureComponent {
           {children ? (
             children
           ) : (
-            <Text uppercase={uppercase} style={[styles.text, textStyle]}>
+            <Text
+              numberOfLines={numberOfLines}
+              uppercase={uppercase}
+              style={[styles.text, textStyle]}
+            >
               {text}
             </Text>
           )}

@@ -47,9 +47,11 @@ export default class InputField extends Component {
     } else {
       // same as above but for the main input field
       valueError = validateWrapper(
+        // newEmail is used on the sign up screen
         // this to check if the input field is for email/password input,
         //if so validate using the 'email'/'password' validator
-        this.props.stateName1 === "email"
+        this.props.stateName1 === "email" ||
+          this.props.stateName1 === "newEmail"
           ? "email"
           : this.props.stateName1 === "password"
           ? "password"
@@ -60,7 +62,11 @@ export default class InputField extends Component {
     }
 
     // if the input field is for email input, show the error in a FlashMessage
-    if (this.props.stateName1 === "email" && valueError) {
+    if (
+      (this.props.stateName1 === "email" ||
+        this.props.stateName1 === "newEmail") &&
+      valueError
+    ) {
       showMessage({
         message: valueError,
         position: "top",
@@ -80,10 +86,17 @@ export default class InputField extends Component {
                                   of the input field
    */
   handleTextChange = (value, secondHalf = false) => {
-    clearTimeout(this.typingTimeout);
+    const { stateName1 } = this.props;
+    // Remove validation on timeout while typing for email fields
+    if (stateName1 !== "email" && stateName1 !== "newEmail") {
+      clearTimeout(this.typingTimeout);
+    }
+
     if (secondHalf) this.props.setValue(this.props.stateName2, value);
     else this.props.setValue(this.props.stateName1, value);
-    this.typingTimeout = setTimeout(() => this.validate(), 800);
+    if (stateName1 !== "email" && stateName1 !== "newEmail") {
+      this.typingTimeout = setTimeout(() => this.validate(), 800);
+    }
   };
 
   /**
@@ -144,7 +157,8 @@ export default class InputField extends Component {
       maxLength,
       valueError1,
       valueError2,
-      secureTextEntry
+      secureTextEntry,
+      customStyles
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -169,7 +183,7 @@ export default class InputField extends Component {
             {translate(label)}
           </Text>
         </View>
-        <Item style={[styles.input1]}>
+        <Item style={[styles.input1, customStyles]}>
           {FieldIcon && (
             <FieldIcon
               style={{}}
@@ -220,7 +234,7 @@ export default class InputField extends Component {
                   disabled ? { opacity: 0.6 } : {}
                 ]}
                 autoCorrect={false}
-                maxLength={34}
+                maxLength={maxLength ? maxLength : 34}
                 autoCapitalize="none"
                 onChangeText={value2 => this.handleTextChange(value2, true)}
                 onFocus={this.focusFeild}
