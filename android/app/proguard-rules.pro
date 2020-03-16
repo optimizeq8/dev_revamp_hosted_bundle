@@ -150,8 +150,3 @@
 -keep class org.spongycastle.**
 -dontwarn org.spongycastle.jce.provider.X509LDAPCertStoreSpi
 -dontwarn org.spongycastle.x509.util.LDAPStoreHelper
-
-##### PhotoEditor SDK #####
--keep public class ly.img.android.sdk.config.* {
-  public protected *;
-}
