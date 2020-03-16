@@ -25,7 +25,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "33",
+      "buildNumber": "34",
       "supportsTablet": false,
       "publishBundlePath": "ios/optimizeapp/Supporting/shell-app.bundle",
       "publishManifestPath": "ios/optimizeapp/Supporting/shell-app-manifest.json"
