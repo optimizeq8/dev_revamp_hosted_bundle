@@ -65,7 +65,7 @@ export const _pickImage = async (
   setTheState,
   screenProps,
   rejected,
-  mediaEditor,
+  mediaEditor = {},
   editImage
 ) => {
   try {
@@ -91,7 +91,9 @@ export const _pickImage = async (
         PESDK.openEditor(
           result.uri,
           configuration,
-          mediaEditor ? mediaEditor.serialization : {}
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
         )
           .then(async manipResult => {
             let serialization = {};
