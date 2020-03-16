@@ -41,6 +41,7 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
+import MediaModal from "./MediaModal";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -76,7 +77,11 @@ class AdCover extends Component {
       heightComponent: 0,
       coverRejectionUpload: false,
       logoRejectionUpload: false,
-      headlineRejectionUpload: false
+      headlineRejectionUpload: false,
+      coverSerialization: {},
+      logoSerialization: {},
+      uneditedCoverUri: "//",
+      uneditedLogoUri: "//"
     };
     this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -223,12 +228,12 @@ class AdCover extends Component {
         headlineRejectionUpload: true
       });
   };
-  pick = async mediaTypes => {
+  pick = async () => {
     let status = await this.askForPermssion();
     let result = "";
     if (status === "granted") {
       result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: mediaTypes,
+        mediaTypes: "Images",
         base64: false,
         exif: false,
         quality: 0.8
@@ -333,11 +338,23 @@ class AdCover extends Component {
     }
   };
 
-  _pickImage = async (mediaTypes = "All") => {
+  _pickImage = async (mediaEditor = {}, editImage = false) => {
     try {
       const { translate } = this.props.screenProps;
-      let result = await this.pick(mediaTypes);
-      let configuration = PhotoEditorConfiguration({ width: 6, height: 10 });
+      let result = {};
+      if (!editImage) result = await this.pick();
+      else
+        result = {
+          uri: mediaEditor.mediaUri,
+          cancelled: false,
+          type: "image"
+        };
+      let configuration = PhotoEditorConfiguration({
+        width: 6,
+        height: 10,
+        serialization:
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+      });
       this.setMediaModalVisible(false);
       let file = {};
       if (result) {
@@ -345,8 +362,18 @@ class AdCover extends Component {
       }
       if (result && !result.cancelled) {
         if (result.type === "image") {
-          PESDK.openEditor(result.uri, configuration)
+          let uneditedCoverUri = result.uri;
+
+          PESDK.openEditor(
+            result.uri,
+            configuration,
+            mediaEditor && mediaEditor.hasOwnProperty("serialization")
+              ? mediaEditor.serialization
+              : null
+          )
             .then(async manipResult => {
+              let serialization = {};
+              serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -381,6 +408,7 @@ class AdCover extends Component {
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
+              result.serialization = serialization;
               file = await FileSystem.getInfoAsync(result.uri, {
                 size: true
               });
@@ -407,7 +435,9 @@ class AdCover extends Component {
                 type: result.type.toUpperCase(),
                 coverError: null,
                 result: result.uri,
-                coverRejectionUpload: true
+                coverRejectionUpload: true,
+                uneditedCoverUri,
+                coverSerialization: result.serialization
               });
               this.onToggleModal(false);
               segmentEventTrack("Selected Story Ad Cover Media successfully");
@@ -785,7 +815,11 @@ class AdCover extends Component {
                       <MediaButton
                         type={"cover"}
                         cover={true}
-                        _pickImage={this._pickImage}
+                        _pickImage={() =>
+                          this.state.cover === "//"
+                            ? this._pickImage()
+                            : this.setMediaModalVisible(true)
+                        }
                         image={this.state.cover}
                         media={this.state.cover}
                         screenProps={this.props.screenProps}
@@ -824,7 +858,22 @@ class AdCover extends Component {
             )}
           </Footer>
         </Container>
-
+        <MediaModal
+          _pickImage={(mediaEditor, editImage) =>
+            this._pickImage(mediaEditor, editImage)
+          }
+          mediaModalVisible={this.state.mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+          mediaUri={{
+            media: this.state.uneditedCoverUri
+          }}
+          serialization={
+            this.state.coverSerialization.hasOwnProperty("image")
+              ? this.state.coverSerialization
+              : null
+          }
+          screenProps={this.props.screenProps}
+        />
         <Modal
           visible={this.props.coverLoading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}

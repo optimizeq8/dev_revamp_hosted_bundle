@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
   },
   MediaOptionsStyle: {
     width: "80%",
-    height: "40%",
     flexDirection: "row",
     padding: 20,
     justifyContent: "space-evenly",
