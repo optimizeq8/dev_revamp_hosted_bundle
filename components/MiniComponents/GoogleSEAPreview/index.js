@@ -17,13 +17,12 @@ export default GoogleSEAPreview = props => {
     description,
     description2,
     inputH1,
-    inputH2,
-    inputH3,
     inputD,
     inputD2,
     inputURL,
     details = true,
-    language
+    language,
+    showEmpty
   } = props;
   const { translate } = screenProps;
   let headlineArray = [headline1, headline2, headline3];
@@ -59,7 +58,7 @@ export default GoogleSEAPreview = props => {
                 styles.headlineText,
                 styles.linkText,
                 {
-                  paddingRight: language === "1019" ? 0 : 20
+                  paddingRight: language === "1019" ? 20 : 0
                 }
               ]}
             >
@@ -74,24 +73,23 @@ export default GoogleSEAPreview = props => {
             </Text>
           )}
         </View>
+        {details && (
+          <Text
+            style={[
+              styles.headline,
+              dynamicStyle(language).arabic,
+              inputH1
+                ? GlobalStyles.orangeTextColor
+                : GlobalStyles.darkGrayTextColor
+            ]}
+          >
+            {translate("Headline")}
+          </Text>
+        )}
         <View
           style={[styles.headlineRowContainer, dynamicStyle(language).arabic]}
         >
           <View style={[styles.headlineRow, dynamicStyle(language).arabic]}>
-            {details && (
-              <Text
-                style={[
-                  styles.headline,
-                  dynamicStyle(language).arabic,
-                  inputH1
-                    ? GlobalStyles.orangeTextColor
-                    : GlobalStyles.darkGrayTextColor
-                ]}
-              >
-                {translate("Headline")} {translate(headlineNums[0])}
-              </Text>
-            )}
-
             <Text style={[styles.headlineText, dynamicStyle(language).arabic]}>
               {headline1
                 ? headlineArray[0] + " "
@@ -104,13 +102,14 @@ export default GoogleSEAPreview = props => {
                   ? headlineArray[1] + " "
                   : translate("Add") + " " + translate("Headline")}
               </Text>
-              |{" "}
               <Text
                 style={[styles.headlineText, dynamicStyle(language).arabic]}
               >
                 {headline3
-                  ? headlineArray[2] + " "
-                  : translate("Add") + " " + translate("Headline")}
+                  ? "| " + headlineArray[2] + " "
+                  : showEmpty
+                  ? "| " + translate("Add") + " " + translate("Headline")
+                  : ""}
               </Text>
             </Text>
           </View>
@@ -150,12 +149,15 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("1") +
               " "}{" "}
-          {description2 ||
-            translate("Add") +
+          {description2
+            ? description2
+            : showEmpty
+            ? translate("Add") +
               " " +
               translate("Description") +
               " " +
-              translate("2")}
+              translate("2")
+            : ""}
         </Text>
       </View>
     </View>
