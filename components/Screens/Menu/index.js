@@ -116,7 +116,6 @@ class Menu extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -348,9 +347,11 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/6/
+                {Constants.manifest.version}/12/
                 {Constants.manifest.ios.buildNumber}/
-                {Constants.manifest.android.versionCode}
+                {Constants.manifest.android.versionCode}/
+                {Constants.manifest.releaseChannel}/
+                {this.props.checkNotification}/{this.props.notificationData}
               </Text>
             </ScrollView>
           </View>
@@ -394,7 +395,9 @@ const mapStateToProps = state => ({
   clearTokenLoading: state.login.clearTokenLoading,
   businessInvitee: state.account.businessInvitee,
   invitedEmail: state.account.invitedEmail,
-  businessInvites: state.account.businessInvites
+  businessInvites: state.account.businessInvites,
+  checkNotification: state.generic.checkNotification,
+  notificationData: state.generic.notificationData
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>

@@ -25,8 +25,6 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
-import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-import BackButton from "../../../../assets/SVGs/BackButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 // Style
 import styles from "./styles";
@@ -35,16 +33,15 @@ import { colors } from "../../../GradiantColors/colors";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
 import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { PESDK, Configuration } from "react-native-photoeditorsdk";
+import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
+import MediaModal from "./MediaModal";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -80,7 +77,12 @@ class AdCover extends Component {
       heightComponent: 0,
       coverRejectionUpload: false,
       logoRejectionUpload: false,
-      headlineRejectionUpload: false
+      headlineRejectionUpload: false,
+      coverSerialization: {},
+      logoSerialization: {},
+      uneditedCoverUri: "//",
+      uneditedLogoUri: "//",
+      selectingLogo: false
     };
     this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -207,8 +209,8 @@ class AdCover extends Component {
     return status;
   };
 
-  setMediaModalVisible = visible => {
-    this.setState({ mediaModalVisible: visible });
+  setMediaModalVisible = (visible, selectingLogo) => {
+    this.setState({ mediaModalVisible: visible, selectingLogo });
   };
 
   changeHeadline = coverHeadline => {
@@ -227,12 +229,12 @@ class AdCover extends Component {
         headlineRejectionUpload: true
       });
   };
-  pick = async mediaTypes => {
+  pick = async () => {
     let status = await this.askForPermssion();
     let result = "";
     if (status === "granted") {
       result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: mediaTypes,
+        mediaTypes: "Images",
         base64: false,
         exif: false,
         quality: 0.8
@@ -242,223 +244,269 @@ class AdCover extends Component {
     return result;
   };
 
-  _pickLogo = async () => {
-    let logo = await this.pick("Images");
+  _pickLogo = async (mediaEditor = {}, editImage = false) => {
+    let logo = {};
+    if (!editImage) logo = await this.pick();
+    else
+      logo = {
+        uri: mediaEditor.mediaUri,
+        cancelled: false,
+        type: "image"
+      };
+    let configuration = PhotoEditorConfiguration({
+      width: 35,
+      height: 10,
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization")
+    });
     const { translate } = this.props.screenProps;
     if (logo && !logo.cancelled) {
-      let correctLogo = logo.width === 993 && logo.height === 284;
-      let logoFormat =
-        logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          logo: correctLogo && logoFormat ? logo.uri : ""
-        },
-        logoError: correctLogo || logoFormat,
-        logoRejectionUpload: correctLogo && logoFormat
-      });
-      showMessage({
-        message:
-          correctLogo && logoFormat
-            ? translate("Logo selected successfully")
-            : translate("Logo must be exactly 993px by 284px"),
-        description:
-          correctLogo && logoFormat
-            ? ""
-            : translate("In png format and transparent background"),
-        position: "top",
-        duration: correctLogo ? 2000 : 10000,
-        type: correctLogo ? "success" : "warning"
-      });
-      segmentEventTrack(
-        `${
-          correctLogo && logoFormat
-            ? "Logo selected successfully"
-            : "Selected Logo Error"
-        }`,
-        {
-          campaign_error_story_ad_logo:
-            correctLogo && logoFormat
-              ? ""
-              : "Logo must be exactly 993px by 284px,In png format and transparent background "
-        }
-      );
-      !this.rejected &&
-        this.props.save_campaign_info({
-          logo: correctLogo && logoFormat ? logo.uri : "",
-          logoRejectionUpload: correctLogo && logoFormat
-        });
-    }
-  };
+      let uneditedLogoUri = logo.uri;
+      let serialization = {};
+      let editedLogo = await PESDK.openEditor(
+        logo.uri,
+        configuration,
+        mediaEditor && mediaEditor.hasOwnProperty("serialization")
+          ? mediaEditor.serialization
+          : null
+      )
+        .then(async manipResult => {
+          if (manipResult) {
+            serialization = manipResult.serialization;
+            if (logo.height !== 284 && logo.width !== 993)
+              manipResult = await ImageManipulator.manipulateAsync(
+                manipResult.image
+              );
 
-  _pickImage = async (mediaTypes = "All") => {
-    try {
-      const { translate } = this.props.screenProps;
-      let result = await this.pick(mediaTypes);
-
-      this.setMediaModalVisible(false);
-      let file = {};
-      if (result) {
-        file = await FileSystem.getInfoAsync(result.uri, {
-          size: true
-        });
-        this.setState({ directory: "/ImagePicker/" });
-      }
-      if (result && !result.cancelled) {
-        if (result.type === "image") {
-          if (result.width > 360 && result.height > 600) {
-            ImageManipulator.manipulateAsync(
-              result.uri,
+            if (
+              manipResult.width &&
+              Math.floor(manipResult.width / 35) !==
+                Math.floor(manipResult.height / 10)
+            ) {
+              return Promise.reject({
+                wrongAspect: true,
+                message:
+                  "Wrong aspect ratio for logo, Please crop the image to the correct size"
+              });
+            }
+            manipResult = await ImageManipulator.manipulateAsync(
+              manipResult.uri || manipResult.image,
               [
                 {
-                  resize:
-                    result.width >= (result.height / 5) * 3
-                      ? {
-                          height: 600
-                        }
-                      : {
-                          width: 360
-                        }
+                  resize: {
+                    width: 993,
+                    height: 284
+                  }
                 }
               ],
               {
                 compress: 1,
                 format: "png"
               }
-            )
-              .then(async manipResult => {
-                manipResult = await ImageManipulator.manipulateAsync(
-                  manipResult.uri,
-                  [
-                    {
-                      crop: {
-                        originX: Math.floor((manipResult.width - 360) / 2),
-                        originY: Math.floor((manipResult.height - 600) / 2),
-                        width: 360,
-                        height: 600
-                      }
-                    }
-                  ],
-                  {
-                    compress: 1,
-                    format: "png"
-                  }
-                );
+            );
+          }
+          return manipResult;
+        })
+        .catch(error => {
+          segmentEventTrack("Seleeted Image Error", {
+            campaign_error_image:
+              "Wrong aspect ratio for logo, Please crop the image to the correct size"
+          });
+          showMessage({
+            message: error.wrongAspect ? error.message : error,
+            position: "top",
+            type: "warning"
+          });
+        });
+      if (editedLogo) {
+        this.setMediaModalVisible(false);
+        this.setState({
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            logo: editedLogo.uri ? editedLogo.uri : ""
+          },
+          logoError: editedLogo.uri === "",
+          logoRejectionUpload: editedLogo.uri !== "",
+          uneditedLogoUri,
+          logoSerialization: serialization
+        });
+        showMessage({
+          message:
+            editedLogo.uri !== ""
+              ? translate("Logo selected successfully")
+              : translate("Logo must be exactly 993px by 284px"),
+          description:
+            editedLogo.uri !== ""
+              ? ""
+              : translate("In png format and transparent background"),
+          position: "top",
+          duration: editedLogo.uri === "" ? 2000 : 10000,
+          type: editedLogo.uri !== "" ? "success" : "warning"
+        });
+        segmentEventTrack(
+          `${
+            editedLogo.uri !== ""
+              ? "Logo selected successfully"
+              : "Selected Logo Error"
+          }`,
+          {
+            campaign_error_story_ad_logo:
+              editedLogo.uri !== ""
+                ? ""
+                : "Logo must be exactly 993px by 284px,In png format and transparent background "
+          }
+        );
+        editedLogo.uri !== "" &&
+          segmentEventTrack("Selected Story Ad Logo serialization", {
+            index: storyAdCards.selectedStoryAd.index,
+            ...serialization
+          });
+        !this.rejected &&
+          this.props.save_campaign_info({
+            logo: editedLogo.uri !== "" ? editedLogo.uri : "",
+            logoRejectionUpload: editedLogo.uri !== "",
+            uneditedLogoUri,
+            logoSerialization: serialization
+          });
+      }
+    }
+  };
 
-                this.setState({
-                  directory: "/ImageManipulator/"
+  _pickImage = async (mediaEditor = {}, editImage = false) => {
+    try {
+      const { translate } = this.props.screenProps;
+      let result = {};
+      if (!editImage) result = await this.pick();
+      else
+        result = {
+          uri: mediaEditor.mediaUri,
+          cancelled: false,
+          type: "image"
+        };
+      let configuration = PhotoEditorConfiguration({
+        width: 6,
+        height: 10,
+        serialization:
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+      });
+      this.setMediaModalVisible(false);
+      let file = {};
+      if (result) {
+        this.setState({ directory: "/ImagePicker/" });
+      }
+      if (result && !result.cancelled) {
+        if (result.type === "image") {
+          let uneditedCoverUri = result.uri;
+
+          PESDK.openEditor(
+            result.uri,
+            configuration,
+            mediaEditor && mediaEditor.hasOwnProperty("serialization")
+              ? mediaEditor.serialization
+              : null
+          )
+            .then(async manipResult => {
+              let serialization = {};
+              serialization = manipResult.serialization;
+              manipResult = await ImageManipulator.manipulateAsync(
+                manipResult.image
+              );
+              if (
+                Math.floor(manipResult.width / 6) !==
+                Math.floor(manipResult.height / 10)
+              ) {
+                return Promise.reject({
+                  wrongAspect: true,
+                  message:
+                    "Wrong aspect ratio for cover, Please crop the image to the correct size"
                 });
-                result.uri = manipResult.uri;
-                result.height = manipResult.height;
-                result.width = manipResult.width;
-                file = await FileSystem.getInfoAsync(result.uri, {
-                  size: true
-                });
-              })
-              .then(() => {
-                if (file.size > 2000000) {
-                  this.onToggleModal(false);
-                  showMessage({
-                    message: translate(
-                      "Image must be less than {{fileSize}} MBs",
-                      { fileSize: 2 }
-                    ),
-                    position: "top",
-                    type: "warning"
-                  });
-                  segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                    campaign_error_story_ad_cover_image:
-                      "Image must be less than 2 MBs"
-                  });
-                  return;
+              }
+              manipResult = await ImageManipulator.manipulateAsync(
+                manipResult.uri,
+                [
+                  {
+                    resize: {
+                      width: 360,
+                      height: 600
+                    }
+                  }
+                ],
+                {
+                  compress: 1,
+                  format: "png"
                 }
-                this.setState({
-                  cover: result.uri,
-                  type: result.type.toUpperCase(),
-                  coverError: null,
-                  result: result.uri,
-                  coverRejectionUpload: true
-                });
+              );
+              this.setState({
+                directory: "/ImageManipulator/"
+              });
+              result.uri = manipResult.uri;
+              result.height = manipResult.height;
+              result.width = manipResult.width;
+              result.serialization = serialization;
+              file = await FileSystem.getInfoAsync(result.uri, {
+                size: true
+              });
+            })
+            .then(() => {
+              if (file.size > 2000000) {
                 this.onToggleModal(false);
-                segmentEventTrack("Selected Story Ad Cover Media successfully");
                 showMessage({
-                  message: translate("Image has been selected successfully"),
-                  position: "top",
-                  type: "success"
-                });
-                !this.rejected &&
-                  this.props.save_campaign_info({
-                    cover: result.uri,
-                    coverRejectionUpload: true
-                  });
-              })
-              .catch(error => {
-                this.onToggleModal(false);
-                segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                  campaign_error_story_ad_cover_image: "Please choose an image"
-                });
-                showMessage({
-                  message: translate("Please choose an image"),
+                  message: translate(
+                    "Image must be less than {{fileSize}} MBs",
+                    { fileSize: 2 }
+                  ),
                   position: "top",
                   type: "warning"
                 });
-                // console.log("ImageManipulator err", error);
+                segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                  campaign_error_story_ad_cover_image:
+                    "Image must be less than 2 MBs"
+                });
                 return;
+              }
+              this.setState({
+                cover: result.uri,
+                type: result.type.toUpperCase(),
+                coverError: null,
+                result: result.uri,
+                coverRejectionUpload: true,
+                uneditedCoverUri,
+                coverSerialization: result.serialization
               });
-            return;
-          } else if (file.size > 2000000) {
-            this.onToggleModal(false);
-            showMessage({
-              message: translate("Image must be less than {{fileSize}} MBs", {
-                fileSize: 2
-              }),
-              position: "top",
-              type: "warning"
-            });
-            segmentEventTrack("Error in selecting Story Ad Cover Media", {
-              campaign_error_story_ad_cover_image:
-                "Image must be less than 2 MBs"
-            });
-            return;
-          } else if (
-            Math.floor(result.width / 3) !== Math.floor(result.height / 5) ||
-            result.width < 360 ||
-            result.height < 600
-          ) {
-            this.onToggleModal(false);
-            showMessage({
-              message: translate(
-                "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
-              ),
-              position: "top",
-              type: "warning"
-            });
-            segmentEventTrack("Error in selecting Story Ad Cover Media", {
-              campaign_error_story_ad_cover_image:
-                "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
-            });
-            return;
-          } else {
-            this.setState({
-              ...this.state,
-              cover: result.uri,
-              type: result.type.toUpperCase(),
-              coverError: null,
-              result: result.uri
-            });
-            this.onToggleModal(false);
-            segmentEventTrack("Selected Story Ad Cover Media successfully");
-            showMessage({
-              message: translate("Image has been selected successfully"),
-              position: "top",
-              type: "success"
-            });
-            !this.rejected &&
-              this.props.save_campaign_info({
-                cover: result.uri
+              this.onToggleModal(false);
+              segmentEventTrack("Selected Story Ad Cover Media successfully");
+              segmentEventTrack("Selected Story Ad Cover serialization", {
+                index: storyAdCards.selectedStoryAd.index,
+                ...result.serialization
               });
-            return;
-          }
+              showMessage({
+                message: translate("Image has been selected successfully"),
+                position: "top",
+                type: "success"
+              });
+              !this.rejected &&
+                this.props.save_campaign_info({
+                  cover: result.uri,
+                  coverRejectionUpload: true,
+                  uneditedCoverUri,
+                  coverSerialization: result.serialization
+                });
+            })
+            .catch(error => {
+              this.onToggleModal(false);
+              segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                campaign_error_story_ad_cover_image: error.wrongAspect
+                  ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
+                  : "Please choose an image"
+              });
+              showMessage({
+                message: error.wrongAspect
+                  ? error.message
+                  : translate("Please choose an image"),
+                position: "top",
+                type: "warning"
+              });
+              return;
+            });
         } else {
           showMessage({
             message: translate("Please make sure the image is in png format"),
@@ -645,6 +693,12 @@ class AdCover extends Component {
       title: "Support"
     });
   };
+  handleLogo = () => {
+    segmentEventTrack("Button clicked to select Logo from gallery");
+    this.state.campaignInfo.logo === "//"
+      ? this._pickLogo()
+      : this.setMediaModalVisible(true, true);
+  };
   /**
    * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
    */
@@ -653,7 +707,8 @@ class AdCover extends Component {
     this.props.navigation.goBack();
   };
   render() {
-    let { cover, coverHeadlineError, formattedCover } = this.state;
+    let { cover, coverHeadlineError, logoSerialization } = this.state;
+    console.log(logoSerialization);
 
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
@@ -712,12 +767,7 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
-                          onPress={() => {
-                            segmentEventTrack(
-                              "Button clicked to select Logo from gallery"
-                            );
-                            this._pickLogo();
-                          }}
+                          onPress={this.handleLogo}
                           style={styles.changeLogoStyle}
                         >
                           <RNImageOrCacheImage
@@ -742,12 +792,7 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
-                          onPress={() => {
-                            segmentEventTrack(
-                              "Button clicked to select Logo from gallery"
-                            );
-                            this._pickLogo();
-                          }}
+                          onPress={this.handleLogo}
                           style={styles.addLogoStyle}
                         >
                           <View
@@ -806,7 +851,11 @@ class AdCover extends Component {
                       <MediaButton
                         type={"cover"}
                         cover={true}
-                        _pickImage={this._pickImage}
+                        _pickImage={() =>
+                          this.state.cover === "//"
+                            ? this._pickImage()
+                            : this.setMediaModalVisible(true)
+                        }
                         image={this.state.cover}
                         media={this.state.cover}
                         screenProps={this.props.screenProps}
@@ -845,7 +894,30 @@ class AdCover extends Component {
             )}
           </Footer>
         </Container>
-
+        <MediaModal
+          _pickImage={(mediaEditor, editImage) =>
+            this.state.selectingLogo
+              ? this._pickLogo(mediaEditor, editImage)
+              : this._pickImage(mediaEditor, editImage)
+          }
+          mediaModalVisible={this.state.mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+          mediaUri={{
+            media: this.state.selectingLogo
+              ? this.state.uneditedLogoUri
+              : this.state.uneditedCoverUri
+          }}
+          serialization={
+            this.state.coverSerialization.hasOwnProperty("image") &&
+            !this.state.selectingLogo
+              ? this.state.coverSerialization
+              : this.state.logoSerialization.hasOwnProperty("image") &&
+                this.state.selectingLogo
+              ? this.state.logoSerialization
+              : null
+          }
+          screenProps={this.props.screenProps}
+        />
         <Modal
           visible={this.props.coverLoading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}

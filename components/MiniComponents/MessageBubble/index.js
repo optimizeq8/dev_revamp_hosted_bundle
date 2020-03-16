@@ -28,7 +28,7 @@ class MessageBubble extends Component {
 
     return (
       <View style={styles.messageBubbleOuterView}>
-        {
+        {this.props.message.created_at && (
           <Text
             style={[
               styles.dateText,
@@ -43,7 +43,7 @@ class MessageBubble extends Component {
               "dd mmm, h:MM TT"
             )}
           </Text>
-        }
+        )}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
           {this.props.message.author.type === "admin" && (
             <View

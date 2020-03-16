@@ -128,15 +128,15 @@ class GoogleAdDesign extends Component {
   _handleSubmission = async () => {
     const headline1Error = validateWrapper("mandatory", this.state.headline1);
     const headline2Error = validateWrapper("mandatory", this.state.headline2);
-    const headline3Error = validateWrapper("mandatory", this.state.headline3);
+    // const headline3Error = validateWrapper("mandatory", this.state.headline3);
     const descriptionError = validateWrapper(
       "mandatory",
       this.state.description
     );
-    const description2Error = validateWrapper(
-      "mandatory",
-      this.state.description2
-    );
+    // const description2Error = validateWrapper(
+    //   "mandatory",
+    //   this.state.description2
+    // );
     const finalurlError = validateWrapper(
       "website",
       (!this.state.finalurl.toLowerCase().includes("http")
@@ -147,9 +147,9 @@ class GoogleAdDesign extends Component {
     this.setState({
       headline1Error,
       headline2Error,
-      headline3Error,
+      // headline3Error,
       descriptionError,
-      description2Error,
+      // description2Error,
       finalurlError
     });
     let { correctPathsLength, onlyTwoPaths } = this.validatePaths();
@@ -157,9 +157,9 @@ class GoogleAdDesign extends Component {
     if (
       headline1Error ||
       headline2Error ||
-      headline3Error ||
-      descriptionError ||
-      description2Error
+      // headline3Error ||
+      descriptionError
+      // description2Error
     ) {
       showMessage({
         message: this.translate("Please complete all of the fields"),
@@ -168,18 +168,18 @@ class GoogleAdDesign extends Component {
       segmentEventTrack("Error occured on ad design screen sumbit button", {
         campaign_error_headline1: headline1Error,
         campaign_error_headline2: headline2Error,
-        campaign_error_headline3: headline3Error,
+        // campaign_error_headline3: headline3Error,
         campaign_error_description: descriptionError,
-        campaign_error_description2: description2Error,
+        // campaign_error_description2: description2Error,
         campaign_error_finalurl: finalurlError
       });
     }
     if (
       !headline1Error &&
       !headline2Error &&
-      !headline3Error &&
-      !description2Error &&
+      // !headline3Error &&
       !descriptionError &&
+      // !description2Error &&
       !finalurlError &&
       correctPathsLength &&
       onlyTwoPaths

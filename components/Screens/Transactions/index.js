@@ -70,7 +70,8 @@ class Transactions extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (this.props.loading) return <LoadingScreen dash={true} top={0} />;
+    } else if (this.props.loading || !this.props.filteredTransactions)
+      return <LoadingScreen dash={true} top={0} />;
     else {
       let menu = FilterMenu ? (
         <FilterMenu

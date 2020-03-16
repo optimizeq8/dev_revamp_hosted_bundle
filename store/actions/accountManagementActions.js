@@ -41,7 +41,7 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
             payload: { ...data.data }
           });
-          // data.success && navigation.navigate("Dashboard");
+          NavigationService.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
@@ -182,15 +182,20 @@ export const create_snapchat_ad_account = (id, navigation) => {
       })
       .then(data => {
         if (data.success) {
-          Segment.track("Snapchat Ad Account Created Successfully");
+          Segment.trackWithProperties(
+            "Snapchat Ad Account Created Successfully",
+            { businessid: id }
+          );
 
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data, navigation: navigation.navigate }
           });
         } else {
-          // navigate back only when error
-          navigation.goBack();
+          Segment.trackWithProperties("Error Snapchat Ad Account Create", {
+            error_snap_ad_account_create: data.message,
+            businessid: id
+          });
           showMessage({
             message: data.message,
             type: "info",
@@ -426,10 +431,22 @@ export const getTempUserInfo = member_id => {
       .get(`memberaccount/${member_id}`)
       .then(res => res.data)
       .then(data => {
-        dispatch({
-          type: actionTypes.SET_TEMP_USERINFO,
-          payload: data.data
-        });
+        //if the user tries again to open the same deep link after registering
+        //it will return {message:'invalid Account,success:false}
+        if (data.success)
+          dispatch({
+            type: actionTypes.SET_TEMP_USERINFO,
+            payload: data.data
+          });
+        else {
+          showMessage({ message: data.message, type: "warning" });
+          //reset navigation
+          NavigationService.navigate("SwitchLanguage");
+          dispatch({
+            type: actionTypes.SET_TEMP_USERINFO,
+            payload: null
+          });
+        }
       })
       .catch(err => {
         //console.log(err);

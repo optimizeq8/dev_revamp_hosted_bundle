@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Container, Badge } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 
 //Redux
 import { connect } from "react-redux";
@@ -16,6 +16,8 @@ import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // icons
 import BackIcon from "../../../../assets/SVGs/BackButtonPurple";
+import FowrwardIcon from "../../../../assets/SVGs/ArrowForwardPurple";
+
 import RegisterIcon from "../../../../assets/SVGs/RegisterIcon";
 // Style
 import styles from "./styles";
@@ -25,7 +27,10 @@ class MainForm extends Component {
     header: null
   };
   state = { verified: false };
-  componentDidMount() {
+  /**
+   * Gets called whenever a user presses on an invite registeration deep link
+   */
+  handleBusinessInvite = () => {
     if (this.props.navigation.getParam("b", null) === "0") {
       this.setState({
         businessInvite: this.props.navigation.getParam("b", null),
@@ -33,35 +38,19 @@ class MainForm extends Component {
       });
       this.props.getTempUserInfo(this.props.navigation.getParam("v", null));
     }
-  }
+  };
   render() {
     const { translate } = this.props.screenProps;
-    let invite =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.invite;
-    let title = "Phone Number";
     let content = (
-      <PhoneNo
+      <PersonalInfo
+        businessInvite={this.state.businessInvite}
         navigation={this.props.navigation}
+        tempId={this.state.tempId}
         screenProps={this.props.screenProps}
       />
     );
-    if (this.props.verificationCode) {
-      content = <Verification screenProps={this.props.screenProps} />;
-      title = "Verification";
-    }
-    if (!this.props.registered && this.props.verified) {
-      content = (
-        <PersonalInfo
-          businessInvite={this.state.businessInvite}
-          navigation={this.props.navigation}
-          tempId={this.state.tempId}
-          screenProps={this.props.screenProps}
-        />
-      );
-      title = "Personal Info";
-    }
-    if (this.props.successEmail && !this.state.businessInvite) {
+
+    if (this.props.successPersonalInfo && !this.state.businessInvite) {
       content = (
         <CreateBusinessAccount
           registering={true}
@@ -69,7 +58,6 @@ class MainForm extends Component {
           screenProps={this.props.screenProps}
         />
       );
-      title = "Business Info";
     }
 
     return (
@@ -77,6 +65,7 @@ class MainForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents onDidFocus={this.handleBusinessInvite} />
         <Container style={styles.container}>
           <View style={styles.progressCardView}>
             <TouchableOpacity
@@ -85,28 +74,12 @@ class MainForm extends Component {
                 this.props.resetRegister();
               }}
             >
-              <BackIcon fill={"#C6C6C6"} />
+              {I18nManager.isRTL ? <FowrwardIcon /> : <BackIcon />}
             </TouchableOpacity>
 
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center"
-                // flex: 1
-              }}
-            >
+            <View style={styles.registerHeaderIconView}>
               <RegisterIcon />
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#6C63FF",
-                  textTransform: "uppercase",
-                  fontFamily: "montserrat-bold",
-                  letterSpacing: 0,
-                  lineHeight: 18,
-                  marginTop: 10
-                }}
-              >
+              <Text style={styles.registerationText}>
                 {translate("Registration")}
               </Text>
             </View>
@@ -114,14 +87,20 @@ class MainForm extends Component {
               <View style={styles.badgeView}>
                 <Badge
                   style={
-                    !this.props.successNo && !this.props.verificationCode
+                    (!this.props.successPersonalInfo &&
+                      this.props.successEmail &&
+                      !this.props.registered) ||
+                    this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
                       ? styles.activeBadege
                       : styles.badge
                   }
                 >
                   <Text
                     style={
-                      !this.props.successNo && !this.props.verificationCode
+                      (!this.props.successPersonalInfo &&
+                        this.props.successEmail &&
+                        !this.props.registered) ||
+                      this.state.businessInvite === "0"
                         ? styles.activeBadegeText
                         : styles.badgeText
                     }
@@ -131,88 +110,10 @@ class MainForm extends Component {
                 </Badge>
                 <Text
                   style={
-                    !this.props.successNo && !this.props.verificationCode
-                      ? styles.activeTitleText
-                      : styles.titleText
-                  }
-                >
-                  {translate("Number")}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.dash,
-                  !this.props.successNo &&
-                    !this.props.verificationCode &&
-                    styles.dashActive
-                ]}
-              />
-              <View style={styles.badgeView}>
-                <Badge
-                  style={
-                    this.props.verificationCode && !this.props.verified
-                      ? styles.activeBadege
-                      : styles.badge
-                  }
-                >
-                  <Text
-                    style={
-                      this.props.verificationCode && !this.props.verified
-                        ? styles.activeBadegeText
-                        : styles.badgeText
-                    }
-                  >
-                    {translate("2")}
-                  </Text>
-                </Badge>
-                <Text
-                  style={
-                    this.props.verificationCode && !this.props.verified
-                      ? styles.activeTitleText
-                      : styles.titleText
-                  }
-                >
-                  {translate("Verify")}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.dash,
-
-                  this.props.verified &&
-                  !this.props.successEmail &&
-                  !this.props.registered
-                    ? { marginLeft: -4, marginRight: -8 }
-                    : { marginRight: -4 }
-                ]}
-              />
-              <View style={styles.badgeView}>
-                <Badge
-                  style={
-                    this.props.verified &&
-                    !this.props.successEmail &&
-                    !this.props.registered
-                      ? styles.activeBadege
-                      : styles.badge
-                  }
-                >
-                  <Text
-                    style={
-                      this.props.verified &&
-                      !this.props.successEmail &&
-                      !this.props.registered
-                        ? styles.activeBadegeText
-                        : styles.badgeText
-                    }
-                  >
-                    {translate("3")}
-                  </Text>
-                </Badge>
-                <Text
-                  style={
-                    this.props.verified &&
-                    !this.props.successEmail &&
-                    !this.props.registered
+                    (!this.props.successPersonalInfo &&
+                      this.props.successEmail &&
+                      !this.props.registered) ||
+                    this.state.businessInvite === "0"
                       ? styles.activeTitleText
                       : styles.titleText
                   }
@@ -226,7 +127,7 @@ class MainForm extends Component {
                     style={[
                       styles.dash,
                       // { width: 30 },
-                      this.props.successEmail
+                      this.props.successPersonalInfo && !this.props.registered
                         ? { marginRight: -8 }
                         : {
                             marginRight: -4,
@@ -237,24 +138,25 @@ class MainForm extends Component {
                   <View style={styles.badgeView}>
                     <Badge
                       style={
-                        this.props.successEmail
+                        this.props.successPersonalInfo && !this.props.registered
                           ? styles.activeBadege
                           : styles.badge
                       }
                     >
                       <Text
                         style={
-                          this.props.successEmail
+                          this.props.successPersonalInfo &&
+                          !this.props.registered
                             ? styles.activeBadegeText
                             : styles.badgeText
                         }
                       >
-                        {translate("4")}
+                        {translate("2")}
                       </Text>
                     </Badge>
                     <Text
                       style={
-                        this.props.successEmail
+                        this.props.successPersonalInfo && !this.props.registered
                           ? styles.activeTitleText
                           : styles.titleText
                       }
@@ -266,7 +168,7 @@ class MainForm extends Component {
               )}
             </View>
           </View>
-          <View style={[styles.mainCard]}>{content}</View>
+          {content}
         </Container>
       </SafeAreaView>
     );
@@ -278,7 +180,8 @@ const mapStateToProps = state => ({
   successNo: state.register.successNo,
   successEmail: state.register.successEmail,
   verified: state.register.verified,
-  registered: state.register.registered
+  registered: state.register.registered,
+  successPersonalInfo: state.register.successPersonalInfo
 });
 
 const mapDispatchToProps = dispatch => ({

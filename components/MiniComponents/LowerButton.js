@@ -21,8 +21,8 @@ export default class LowerButton extends Component {
           {
             bottom: heightPercentageToDP(bottom)
           },
-          style,
-          styles.button
+          styles.button,
+          style
         ]}
         width={60}
         height={60}

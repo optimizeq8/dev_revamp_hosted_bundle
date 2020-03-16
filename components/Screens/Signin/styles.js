@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Dimensions, I18nManager } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
@@ -7,20 +7,39 @@ import {
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#0000"
-  },
-  touchableViewContainer: {
-    flex: 1,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1
   },
   bottomInviteViewContainer: { bottom: "5%" },
   textInviteCode: { fontFamily: "montserrat-bold" },
-  logoContainer: { alignSelf: "center", marginBottom: 10 },
+  logoContainer: {
+    flexDirection: "row"
+  },
+  signTextContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: "auto",
+    alignItems: "center"
+  },
+  signInButton: {
+    height: 50,
+    width: "100%",
+    marginHorizontal: 0
+  },
+  signText: {
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    textTransform: "capitalize"
+  },
+  activeTabView: {
+    borderBottomWidth: 5,
+    paddingBottom: 5,
+    borderBottomColor: "#FFF",
+    borderRadius: 5
+  },
+  tabView: {
+    paddingBottom: 10,
+    paddingHorizontal: 20
+  },
   dontHaveAccountText: {
     paddingBottom: 5,
     fontSize: 14,
@@ -28,21 +47,23 @@ const styles = StyleSheet.create({
   },
 
   keyboardShiftContainer: { flex: 1, alignItems: "center" },
-  forgotPasswordLink: { paddingVertical: 10, fontSize: 12 },
+  outView: {
+    flex: 1
+  },
+  forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 10 },
+  SignInCoverImage: {
+    position: "absolute",
+    zIndex: -1,
+    elevation: 1, //For android to show up
+    bottom: 0,
+    left: I18nManager.isRTL ? widthPercentageToDP(-25) : widthPercentageToDP(18)
+  },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: heightPercentageToDP(3),
     flex: 1,
-    backgroundColor: "#0000",
-    alignItems: "center",
-    width: "100%"
+    alignItems: "center"
   },
-  logo: {
-    alignSelf: "center",
-    // fontSize: 50
-    position: "relative"
-    // top: heightPercentageToDP(1)
-  },
+
   logoText: {
     textAlign: "center",
     color: "#fff",
@@ -52,15 +73,22 @@ const styles = StyleSheet.create({
   },
 
   mainView: {
-    // flex: 1,
-    // justifyContent: "flex-start",
-    alignItems: "center"
-    // borderWidth: 1
+    flex: 1,
+    paddingTop: 40,
+    paddingHorizontal: 30
+  },
+  heading: {
+    textAlign: "left",
+    alignSelf: "flex-start",
+    color: "#FFF",
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    fontSize: 25,
+    paddingVertical: 15
   },
   text: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 24,
@@ -120,14 +148,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center"
   },
-  background: {
-    position: "absolute",
-    top: "10%",
-
-    opacity: 0.3,
-    alignSelf: "center",
-    zIndex: 0
-  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
@@ -141,7 +161,6 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    // position: "absolute",
     color: "#FFF"
   },
   proceedButtonRTL: {

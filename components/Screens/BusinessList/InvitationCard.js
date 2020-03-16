@@ -22,7 +22,7 @@ InvitationCard = props => {
     userInfo,
     invitedEmail
   } = props;
-
+  const { translate } = props.screenProps;
   let invites = [];
   if (businessInvites)
     invites = businessInvites.map(invite => (
@@ -39,7 +39,7 @@ InvitationCard = props => {
   return (
     <View>
       <Text uppercase style={[styles.headings]}>
-        Invitation
+        {translate("INVITATION")}
       </Text>
       {invites}
     </View>

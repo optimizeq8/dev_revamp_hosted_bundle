@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, I18nManager } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
 import { BlurView } from "expo-blur";
@@ -20,14 +20,32 @@ import {
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
 class LineGraph extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      valuesGreaterThanThousand: false // Keep track of all values on xAxis  > 999
+    };
+  }
   kFormatter = num => {
-    return Math.abs(num) > 999
+    // OR condition added so that it shows up values properly
+    return Math.abs(num) > 999 || this.state.valuesGreaterThanThousand
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
           Math.abs(num) / (Math.abs(num) > 9999999 ? 1000000 : 1000) +
           `${Math.abs(num) > 9999999 ? "M" : "K"}`
       : (this.props.chartChoice === "Spend" ? "$" : "") +
           Math.abs(num).toFixed(0);
   };
+  componentDidUpdate(prevProps) {
+    // Set valuesGreaterThanThousand back to false when chartChoice changes
+    if (
+      prevProps.chartChoice !== this.props.chartChoice &&
+      this.state.valuesGreaterThanThousand
+    ) {
+      this.setState({
+        valuesGreaterThanThousand: false
+      });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     let data = chartData;
@@ -44,6 +62,21 @@ class LineGraph extends Component {
         let hour = `${startDate.getHours()}:00 / ${date.getHours()}:00
 ${day}/${shortMonths[month]}`;
         if (this.props.granularity !== "DAY") category.push(hour);
+
+        //For swipeups/ Impression check the swipe/impression  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
+        if (
+          ((this.props.chartChoice === "Swipe Ups" &&
+            stat.stats.swipes !== 0 &&
+            stat.stats.swipes > 999) ||
+            (this.props.chartChoice === "Impressions" &&
+              stat.stats.impressions !== 0 &&
+              stat.stats.impressions > 999)) &&
+          !this.state.valuesGreaterThanThousand
+        ) {
+          this.setState({
+            valuesGreaterThanThousand: true
+          });
+        }
 
         tickValues =
           this.props.chartChoice === "Spend"
@@ -71,7 +104,12 @@ ${day}/${shortMonths[month]}`;
     }
 
     return (
-      <View style={{ paddingLeft: 30, bottom: 10, paddingBottom: 20 }}>
+      <View
+        style={{
+          paddingLeft: I18nManager.isRTL ? wp(12) : wp(5),
+          paddingRight: I18nManager.isRTL ? wp(15) : wp(5)
+        }}
+      >
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -172,7 +210,14 @@ ${day}/${shortMonths[month]}`;
             />
           </VictoryChart>
         </ScrollView>
-        <View style={styles.xAxisStyle}>
+        <View
+          style={[
+            styles.xAxisStyle,
+            I18nManager.isRTL && {
+              width: 0
+            }
+          ]}
+        >
           <VictoryAxis
             height={heightPercentageToDP(38)}
             domainPadding={{

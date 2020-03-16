@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.2.22",
+    "version": "0.3.21",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -25,8 +25,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "28",
-      "supportsTablet": false
+      "buildNumber": "32",
+      "supportsTablet": false,
+      "publishBundlePath": "ios/optimizeapp/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/optimizeapp/Supporting/shell-app-manifest.json"
     },
     "packagerOpts": {
       "sourceExts": ["js", "jsx", "ts", "tsx", "svg"],
@@ -34,8 +36,10 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 26,
-      "googleServicesFile": "./google-services.json"
+      "versionCode": 30,
+      "googleServicesFile": "./google-services.json",
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
     },
     "hooks": {
       "postPublish": [
@@ -48,6 +52,11 @@
           }
         }
       ]
+    },
+    "isDetached": true,
+    "detach": {
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.14.3-sdk36.0.0-00f587c0-b8c9-4b6b-88f6-2ccd4f20dc9c.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.14.2-sdk36.0.0-ce7e16db-fd5d-4fdd-bdeb-701ba94a04d1.tar.gz"
     }
   }
 }

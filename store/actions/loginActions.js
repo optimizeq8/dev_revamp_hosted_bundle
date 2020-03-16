@@ -309,7 +309,7 @@ export const clearPushToken = (navigation, userid) => {
         dispatch(logout(navigation));
       })
       .catch(err => {
-        // console.log("clear push notification", err.message || err.response);
+        console.log("clear push notification", err.message || err.response);
         dispatch({
           type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
         });

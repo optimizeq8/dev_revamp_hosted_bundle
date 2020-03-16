@@ -18,6 +18,7 @@ import {
   AsyncStorage,
   ActivityIndicator
 } from "react-native";
+import segmentEventTrack from "./components/segmentEventTrack";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
@@ -75,6 +76,7 @@ import {
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
+import { PESDK } from "react-native-photoeditorsdk";
 
 Sentry.init({
   dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
@@ -110,6 +112,8 @@ const myErrorHandler = (e, isFatal) => {
 // i18n.fallbacks = true;
 // i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
+//don't think we can get back the trial version once this was triggered
+if (!__DEV__) PESDK.unlockWithLicense(require("./pesdk_license"));
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -173,7 +177,7 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -197,8 +201,14 @@ class App extends React.Component {
   };
 
   _handleNotification = async handleScreen => {
-    // console.log("handleScreen app", handleScreen);
-
+    segmentEventTrack("Notification received");
+    console.log("handleScreen app", handleScreen);
+    store.dispatch(
+      actionCreators.checkNotification(
+        "recieved",
+        JSON.stringify(handleScreen.data)
+      )
+    );
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
         store.dispatch(actionCreators.set_as_seen(false));
@@ -227,8 +237,19 @@ class App extends React.Component {
       }
     }
 
-    if (handleScreen.origin === "received")
-      Notifications.setBadgeNumberAsync(0);
+    if (handleScreen.origin === "received") {
+      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+    }
+    if (handleScreen.origin === "selected") {
+      store.dispatch(
+        actionCreators.checkNotification(
+          "Pressed notification",
+          JSON.stringify(handleScreen.data)
+        )
+      );
+
+      segmentEventTrack("Pressed notification");
+    }
     //   this.setState({
     //     uploadMediaDifferentDeviceModal: false,
     //     uploadMediaNotification: uploadMediaNotification,

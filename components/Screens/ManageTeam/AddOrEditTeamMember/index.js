@@ -53,7 +53,10 @@ class AddOrEditTeamMember extends Component {
    */
   setValue = (stateName, value) => {
     let state = {};
-    state[stateName] = value;
+    state[stateName] =
+      stateName === "firstName" || stateName === "lastName"
+        ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
+        : value;
     this.setState({ ...state });
   };
 

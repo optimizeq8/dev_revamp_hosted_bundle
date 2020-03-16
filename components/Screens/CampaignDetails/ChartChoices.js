@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import styles from "./styles";
-import { Text, Button } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -23,42 +23,47 @@ export default class ChartChoices extends Component {
     )
       choices.push("website interactions");
     choices = choices.map(choice => (
-      <Button
+      <GradientButton
         key={choice}
-        onPress={() => {
+        onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
         }}
-        style={[
-          styles.choiceButtons,
+        style={[styles.chartChoiceButtons]}
+        transparent={this.state.selectedChoice !== choice}
+        uppercase
+        numberOfLines={2}
+        text={translate(choice)}
+        textStyle={[
+          styles.choiceText,
           {
-            backgroundColor:
-              this.state.selectedChoice === choice
+            fontSize: 11,
+            paddingHorizontal: 15,
+            color:
+              this.state.selectedChoice !== choice
                 ? globalColors.orange
-                : "transparent"
-          },
-          styles.chartChoiceButtons
+                : "#fff"
+          }
         ]}
-      >
-        <Text
-          uppercase
-          style={[
-            styles.choiceText,
-            {
-              color:
-                this.state.selectedChoice !== choice
-                  ? globalColors.orange
-                  : "#fff"
-            },
-            styles.chartChoiceText
-          ]}
-        >
-          {translate(choice)}
-        </Text>
-      </Button>
+      />
     ));
     return (
-      <View style={[styles.choicesStyles, styles.chartChoices]}>{choices}</View>
+      <ScrollView
+        horizontal
+        style={{
+          alignSelf: "center",
+          alignContent: "center",
+          width: "100%"
+        }}
+        contentContainerStyle={[
+          styles.chartChoicesViewContainer,
+          {
+            width: choices.length === 4 ? null : "100%"
+          }
+        ]}
+      >
+        {choices}
+      </ScrollView>
     );
   }
 }

@@ -1,8 +1,4 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
@@ -76,8 +72,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     paddingBottom: 10,
-    marginTop: 10,
-    width: "100%"
+    marginTop: 10
   },
   mobileView: {
     width: "100%",
@@ -98,10 +93,17 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 150,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    // borderRadius: 25,
     paddingTop: 2,
     marginBottom: 0,
     backgroundColor: "rgba(0,0,0,0.15)"
+  },
+  flagIcon: {
+    fontSize: 12,
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  flagStyle: {
+    height: 15
   }
 });
 

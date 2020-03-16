@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
   linkText: {
     fontFamily: "montserrat-regular",
     color: "#0009",
-    paddingLeft: 0,
     fontSize: 10,
     marginLeft: 20
   },
@@ -73,8 +72,7 @@ const styles = StyleSheet.create({
   },
   headlineRowContainer: {
     flexDirection: "row",
-    width: "100%",
-    paddingRight: 20
+    width: "100%"
   }
 });
 
@@ -82,10 +80,38 @@ export const dynamicStyle = language => {
   return StyleSheet.create({
     arabic: {
       // backgroundColor: "red",
-      alignItems: language === "1019" ? "flex-end" : "flex-start",
-      justifyContent: language === "1019" ? "flex-end" : "flex-start",
-      alignSelf: language === "1019" ? "flex-end" : "flex-start",
-      textAlign: language === "1019" ? "right" : "left"
+      alignItems:
+        language === "1019"
+          ? I18nManager.isRTL
+            ? "flex-start"
+            : "flex-end"
+          : I18nManager.isRTL
+          ? "flex-end"
+          : "flex-start",
+      justifyContent:
+        language === "1019"
+          ? I18nManager.isRTL
+            ? "flex-start"
+            : "flex-end"
+          : I18nManager.isRTL
+          ? "flex-end"
+          : "flex-start",
+      alignSelf:
+        language === "1019"
+          ? I18nManager.isRTL
+            ? "flex-start"
+            : "flex-end"
+          : I18nManager.isRTL
+          ? "flex-end"
+          : "flex-start",
+      textAlign:
+        language === "1019"
+          ? I18nManager.isRTL
+            ? "left"
+            : "right"
+          : I18nManager.isRTL
+          ? "right"
+          : "left"
     }
   });
 };

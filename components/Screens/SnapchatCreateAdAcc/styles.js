@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(40)
   },
   htmlContainer: {
-    width: widthPercentageToDP(85),
+    width: widthPercentageToDP(100),
     alignSelf: "center"
   },
   bottomContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    marginBottom: 10
+    marginVertical: 10
   },
   imageSlide: {
     height: 250,
@@ -80,24 +80,13 @@ const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
-  safeAreaViewContainer: {
-    flex: 1,
-    // top: 5,
-    backgroundColor: "#0000"
+  contentWebView: {
+    backgroundColor: "transparent",
+    height: "100%"
   },
-  loadingText: {
-    fontSize: 14,
-    lineHeight: 18,
-    color: "#FFF",
-    fontFamily: "montserrat-regular",
-    textAlign: "center",
-    width: "60%",
-    marginVertical: 20
-  },
-  loadingView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+  webview: {
+    backgroundColor: "transparent",
+    marginTop: -50
   }
 });
 
