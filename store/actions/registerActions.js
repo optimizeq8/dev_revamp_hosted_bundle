@@ -37,6 +37,8 @@ export const verifyBusinessName = (
         });
       })
       .catch(err => {
+        dispatch({ type: actionTypes.CHECKING_BUSINESSNAME, payload: false });
+
         // console.log("verifyBusinessName", err.message || err.response);
         showMessage({
           message:
