@@ -243,7 +243,9 @@ export const _pickImage = async (
                 save_campaign_info({
                   media: result.uri,
                   type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization
                 });
             }
           })

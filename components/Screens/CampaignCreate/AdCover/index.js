@@ -41,6 +41,7 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
+import MediaModal from "./MediaModal";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -76,7 +77,12 @@ class AdCover extends Component {
       heightComponent: 0,
       coverRejectionUpload: false,
       logoRejectionUpload: false,
-      headlineRejectionUpload: false
+      headlineRejectionUpload: false,
+      coverSerialization: {},
+      logoSerialization: {},
+      uneditedCoverUri: "//",
+      uneditedLogoUri: "//",
+      selectingLogo: false
     };
     this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -203,8 +209,8 @@ class AdCover extends Component {
     return status;
   };
 
-  setMediaModalVisible = visible => {
-    this.setState({ mediaModalVisible: visible });
+  setMediaModalVisible = (visible, selectingLogo) => {
+    this.setState({ mediaModalVisible: visible, selectingLogo });
   };
 
   changeHeadline = coverHeadline => {
@@ -223,12 +229,12 @@ class AdCover extends Component {
         headlineRejectionUpload: true
       });
   };
-  pick = async mediaTypes => {
+  pick = async () => {
     let status = await this.askForPermssion();
     let result = "";
     if (status === "granted") {
       result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: mediaTypes,
+        mediaTypes: "Images",
         base64: false,
         exif: false,
         quality: 0.8
@@ -238,44 +244,66 @@ class AdCover extends Component {
     return result;
   };
 
-  _pickLogo = async () => {
-    let logo = await this.pick("Images");
-    let configuration = PhotoEditorConfiguration({ width: 35, height: 10 });
+  _pickLogo = async (mediaEditor = {}, editImage = false) => {
+    let logo = {};
+    if (!editImage) logo = await this.pick();
+    else
+      logo = {
+        uri: mediaEditor.mediaUri,
+        cancelled: false,
+        type: "image"
+      };
+    let configuration = PhotoEditorConfiguration({
+      width: 35,
+      height: 10,
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization")
+    });
     const { translate } = this.props.screenProps;
     if (logo && !logo.cancelled) {
-      let editedLogo = await PESDK.openEditor(logo.uri, configuration)
+      let uneditedLogoUri = logo.uri;
+      let serialization = {};
+      let editedLogo = await PESDK.openEditor(
+        logo.uri,
+        configuration,
+        mediaEditor && mediaEditor.hasOwnProperty("serialization")
+          ? mediaEditor.serialization
+          : null
+      )
         .then(async manipResult => {
-          if (logo.height !== 284 && logo.width !== 993)
-            manipResult = await ImageManipulator.manipulateAsync(
-              manipResult.image
-            );
+          if (manipResult) {
+            serialization = manipResult.serialization;
+            if (logo.height !== 284 && logo.width !== 993)
+              manipResult = await ImageManipulator.manipulateAsync(
+                manipResult.image
+              );
 
-          if (
-            manipResult.width &&
-            Math.floor(manipResult.width / 35) !==
-              Math.floor(manipResult.height / 10)
-          ) {
-            return Promise.reject({
-              wrongAspect: true,
-              message:
-                "Wrong aspect ratio for logo, Please crop the image to the correct size"
-            });
-          }
-          manipResult = await ImageManipulator.manipulateAsync(
-            manipResult.uri || manipResult.image,
-            [
-              {
-                resize: {
-                  width: 993,
-                  height: 284
-                }
-              }
-            ],
-            {
-              compress: 1,
-              format: "png"
+            if (
+              manipResult.width &&
+              Math.floor(manipResult.width / 35) !==
+                Math.floor(manipResult.height / 10)
+            ) {
+              return Promise.reject({
+                wrongAspect: true,
+                message:
+                  "Wrong aspect ratio for logo, Please crop the image to the correct size"
+              });
             }
-          );
+            manipResult = await ImageManipulator.manipulateAsync(
+              manipResult.uri || manipResult.image,
+              [
+                {
+                  resize: {
+                    width: 993,
+                    height: 284
+                  }
+                }
+              ],
+              {
+                compress: 1,
+                format: "png"
+              }
+            );
+          }
           return manipResult;
         })
         .catch(error => {
@@ -290,13 +318,16 @@ class AdCover extends Component {
           });
         });
       if (editedLogo) {
+        this.setMediaModalVisible(false);
         this.setState({
           campaignInfo: {
             ...this.state.campaignInfo,
             logo: editedLogo.uri ? editedLogo.uri : ""
           },
           logoError: editedLogo.uri === "",
-          logoRejectionUpload: editedLogo.uri !== ""
+          logoRejectionUpload: editedLogo.uri !== "",
+          uneditedLogoUri,
+          logoSerialization: serialization
         });
         showMessage({
           message:
@@ -327,17 +358,31 @@ class AdCover extends Component {
         !this.rejected &&
           this.props.save_campaign_info({
             logo: editedLogo.uri !== "" ? editedLogo.uri : "",
-            logoRejectionUpload: editedLogo.uri !== ""
+            logoRejectionUpload: editedLogo.uri !== "",
+            uneditedLogoUri,
+            logoSerialization: serialization
           });
       }
     }
   };
 
-  _pickImage = async (mediaTypes = "All") => {
+  _pickImage = async (mediaEditor = {}, editImage = false) => {
     try {
       const { translate } = this.props.screenProps;
-      let result = await this.pick(mediaTypes);
-      let configuration = PhotoEditorConfiguration({ width: 6, height: 10 });
+      let result = {};
+      if (!editImage) result = await this.pick();
+      else
+        result = {
+          uri: mediaEditor.mediaUri,
+          cancelled: false,
+          type: "image"
+        };
+      let configuration = PhotoEditorConfiguration({
+        width: 6,
+        height: 10,
+        serialization:
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+      });
       this.setMediaModalVisible(false);
       let file = {};
       if (result) {
@@ -345,8 +390,18 @@ class AdCover extends Component {
       }
       if (result && !result.cancelled) {
         if (result.type === "image") {
-          PESDK.openEditor(result.uri, configuration)
+          let uneditedCoverUri = result.uri;
+
+          PESDK.openEditor(
+            result.uri,
+            configuration,
+            mediaEditor && mediaEditor.hasOwnProperty("serialization")
+              ? mediaEditor.serialization
+              : null
+          )
             .then(async manipResult => {
+              let serialization = {};
+              serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -381,6 +436,7 @@ class AdCover extends Component {
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
+              result.serialization = serialization;
               file = await FileSystem.getInfoAsync(result.uri, {
                 size: true
               });
@@ -407,7 +463,9 @@ class AdCover extends Component {
                 type: result.type.toUpperCase(),
                 coverError: null,
                 result: result.uri,
-                coverRejectionUpload: true
+                coverRejectionUpload: true,
+                uneditedCoverUri,
+                coverSerialization: result.serialization
               });
               this.onToggleModal(false);
               segmentEventTrack("Selected Story Ad Cover Media successfully");
@@ -419,7 +477,9 @@ class AdCover extends Component {
               !this.rejected &&
                 this.props.save_campaign_info({
                   cover: result.uri,
-                  coverRejectionUpload: true
+                  coverRejectionUpload: true,
+                  uneditedCoverUri,
+                  coverSerialization: result.serialization
                 });
             })
             .catch(error => {
@@ -624,6 +684,12 @@ class AdCover extends Component {
       title: "Support"
     });
   };
+  handleLogo = () => {
+    segmentEventTrack("Button clicked to select Logo from gallery");
+    this.state.campaignInfo.logo === "//"
+      ? this._pickLogo()
+      : this.setMediaModalVisible(true, true);
+  };
   /**
    * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
    */
@@ -632,7 +698,8 @@ class AdCover extends Component {
     this.props.navigation.goBack();
   };
   render() {
-    let { cover, coverHeadlineError, formattedCover } = this.state;
+    let { cover, coverHeadlineError, logoSerialization } = this.state;
+    console.log(logoSerialization);
 
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
@@ -691,12 +758,7 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
-                          onPress={() => {
-                            segmentEventTrack(
-                              "Button clicked to select Logo from gallery"
-                            );
-                            this._pickLogo();
-                          }}
+                          onPress={this.handleLogo}
                           style={styles.changeLogoStyle}
                         >
                           <RNImageOrCacheImage
@@ -721,12 +783,7 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
-                          onPress={() => {
-                            segmentEventTrack(
-                              "Button clicked to select Logo from gallery"
-                            );
-                            this._pickLogo();
-                          }}
+                          onPress={this.handleLogo}
                           style={styles.addLogoStyle}
                         >
                           <View
@@ -785,7 +842,11 @@ class AdCover extends Component {
                       <MediaButton
                         type={"cover"}
                         cover={true}
-                        _pickImage={this._pickImage}
+                        _pickImage={() =>
+                          this.state.cover === "//"
+                            ? this._pickImage()
+                            : this.setMediaModalVisible(true)
+                        }
                         image={this.state.cover}
                         media={this.state.cover}
                         screenProps={this.props.screenProps}
@@ -824,7 +885,30 @@ class AdCover extends Component {
             )}
           </Footer>
         </Container>
-
+        <MediaModal
+          _pickImage={(mediaEditor, editImage) =>
+            this.state.selectingLogo
+              ? this._pickLogo(mediaEditor, editImage)
+              : this._pickImage(mediaEditor, editImage)
+          }
+          mediaModalVisible={this.state.mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+          mediaUri={{
+            media: this.state.selectingLogo
+              ? this.state.uneditedLogoUri
+              : this.state.uneditedCoverUri
+          }}
+          serialization={
+            this.state.coverSerialization.hasOwnProperty("image") &&
+            !this.state.selectingLogo
+              ? this.state.coverSerialization
+              : this.state.logoSerialization.hasOwnProperty("image") &&
+                this.state.selectingLogo
+              ? this.state.logoSerialization
+              : null
+          }
+          screenProps={this.props.screenProps}
+        />
         <Modal
           visible={this.props.coverLoading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}
