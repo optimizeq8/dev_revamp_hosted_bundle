@@ -52,10 +52,11 @@ public class AppConstants {
         
         
         
+        
         // ADD EMBEDDED RESPONSES HERE
         // START EMBEDDED RESPONSES
         embeddedResponses.add(new Constants.EmbeddedResponse("https://exp.host/@samyoptimize/optimize_app", "assets://shell-app-manifest.json", "application/json"));
-        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.10%2F393b8a5cb9b889f70c41dc9b5cfc343e-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.10%2Fb75ce463077f5f172c67e75ddf6f2c96-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
         // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }
