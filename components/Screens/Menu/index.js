@@ -350,7 +350,8 @@ class Menu extends Component {
                 {Constants.manifest.version}/12/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
-                {this.props.notificationData}/
+                {Constants.manifest.releaseChannel}/
+                {this.props.notificationData}
               </Text>
             </ScrollView>
           </View>
