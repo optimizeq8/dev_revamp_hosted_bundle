@@ -348,8 +348,9 @@ class Menu extends Component {
               <Text style={styles.version}>
                 {translate("Version:")}
                 {Constants.manifest.version}/12/
-                {Constants.manifest.ios.buildNumber}
-                {/* {Constants.manifest.android.versionCode}/ */}
+                {Constants.manifest.ios.buildNumber}/
+                {Constants.manifest.android.versionCode}/
+                {this.props.notificationData}/
               </Text>
             </ScrollView>
           </View>
