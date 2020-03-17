@@ -61,8 +61,8 @@ android {
     applicationId 'com.optimizeapp.optimizeapp'
     minSdkVersion safeExtGet("minSdkVersion", 21)
     targetSdkVersion safeExtGet("targetSdkVersion", 28)
-    versionCode 32
-    versionName '0.3.22'
+    versionCode 33
+    versionName '0.3.220'
 
     multiDexEnabled true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
