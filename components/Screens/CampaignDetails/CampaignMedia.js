@@ -10,7 +10,7 @@ const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
 };
-previewHandler = (selectedCampaign, navigation) => {
+export const previewHandler = (selectedCampaign, navigation) => {
   let media =
     selectedCampaign.campaign_type !== "StoryAd"
       ? { media: selectedCampaign.media }
@@ -35,6 +35,7 @@ previewHandler = (selectedCampaign, navigation) => {
     destination = storyOrCollection[0].destination;
   } else {
     icon_media_url =
+      typeof selectedCampaign.attachment === "string" &&
       selectedCampaign.attachment !== "BLANK"
         ? JSON.parse(selectedCampaign.attachment).icon_media_url
         : "";
@@ -103,7 +104,7 @@ export default props => {
           !selectedCampaign.media.includes(".jpg") &&
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
-              onPress={() => this.previewHandler(selectedCampaign, navigation)}
+              onPress={() => previewHandler(selectedCampaign, navigation)}
               style={[styles.backgroundViewWrapper]}
             >
               <Video
@@ -125,7 +126,7 @@ export default props => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              onPress={() => this.previewHandler(selectedCampaign, navigation)}
+              onPress={() => previewHandler(selectedCampaign, navigation)}
               style={styles.backgroundViewWrapper}
             >
               <Image
