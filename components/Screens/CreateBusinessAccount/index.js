@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
 
 import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
+import isEqual from "react-fast-compare";
 
 import Picker from "../../MiniComponents/Picker";
 import Website from "../../MiniComponents/InputField/Website";
@@ -275,8 +275,10 @@ class CreateBusinessAccount extends Component {
           });
         }
         if (
-          this.state.businessAccount.businessname !==
-          this.props.mainBusiness.businessname
+          (this.state.editBusinessInfo
+          ? this.state.businessAccount.businessname !==
+            this.props.mainBusiness.businessname
+          : true)
             ? await this._verifyBusinessName(
                 this.state.businessAccount.businessname,
                 true
@@ -375,6 +377,23 @@ class CreateBusinessAccount extends Component {
               });
             }
           } else {
+            let businessAccount = this.state.businessAccount;
+            if (!this.state.iosAppSelected) {
+              let appstorelink = {
+                app_name: "",
+                ios_app_id: "",
+                icon_media_url: ""
+              };
+              businessAccount = { ...businessAccount, appstorelink };
+            }
+            if (!this.state.androidAppSelected) {
+              let playstorelink = {
+                app_name: "",
+                icon_media_url: "",
+                android_app_url: ""
+              };
+              businessAccount = { ...businessAccount, playstorelink };
+            }
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
@@ -383,7 +402,7 @@ class CreateBusinessAccount extends Component {
             }
             this.props.createBusinessAccount(
               {
-                ...this.state.businessAccount,
+                ...businessAccount,
                 websitelink,
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"

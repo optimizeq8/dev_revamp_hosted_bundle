@@ -39,13 +39,14 @@ export const createBusinessAccount = (account, navigation) => {
         if (data.success) {
           dispatch({
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-            payload: { ...data.data }
+            payload: { ...data.data, ...account }
           });
           NavigationService.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
-              ...data.data
+              ...data.data,
+              ...account
             }
           });
         }
