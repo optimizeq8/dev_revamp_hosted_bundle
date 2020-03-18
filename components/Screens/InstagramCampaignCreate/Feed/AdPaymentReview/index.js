@@ -64,30 +64,36 @@ class InstagramAdPaymentReview extends Component {
         start_time: "2020-03-18",
         campaignInfo: {
           targeting: {
-            demographics: [
+            gender: "1",
+            os_version_max: "3.2",
+            os_version_min: "10.2",
+
+            geo_locations: [
               {
-                gender: "1"
+                countries: ["AE", "SA"],
+                regions: [{ key: "14" }, { key: "4202" }, { key: "14" }]
               }
             ],
-            geo_locations: {
-              country: ["KW"],
-              regions: [{ key: "4362" }, { key: "4366" }]
-            },
             flexible_spec: [
               {
                 interests: [
                   {
-                    id: "6003584163107",
-                    name: "Advertising"
+                    id: "6003030029655",
+                    name: "Chinese cuisine"
                   },
                   {
-                    id: "6003127206524",
-                    name: "Digital marketing"
+                    id: "6003102988840",
+                    name: "Latin American cuisine"
+                  },
+                  {
+                    id: "6003134986700",
+                    name: "Baking"
                   }
                 ]
               }
             ],
-            devices: [{ os_type: "iOS" }]
+            user_device: ["2.1", "6.1 plus", "a1000"],
+            user_os: ["Android"]
           },
           lifetime_budget_micro: "75"
         }
@@ -108,21 +114,18 @@ class InstagramAdPaymentReview extends Component {
       let start_time = new Date(data.start_time || "01-01-1970");
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
-      let gender = targeting.demographics[0].gender
+      let gender = targeting.gender
         ? startCase(
             lowerCase(
               genderValues.find(
-                genderValue =>
-                  genderValue.value === targeting.demographics[0].gender
+                genderValue => genderValue.value === targeting.gender
               ).label
             )
           )
         : "All";
-      let country =
-        this.props.country ||
-        countries.find(
-          country => country.value === targeting.geo_locations.country[0]
-        );
+      let country = countries.find(
+        country => country.value === targeting.geo_locations[0].countries[0]
+      );
 
       let country_region = country_regions.find(
         countryRegs => countryRegs.country_code === country.value
@@ -142,18 +145,14 @@ class InstagramAdPaymentReview extends Component {
       let message = data.message;
       let link = data.link;
 
-      let OSContnet =
-        targeting.devices[0].hasOwnProperty("os_type") &&
-        targeting.devices[0].os_type !== ""
-          ? targeting.devices[0].os_type
-          : "All";
+      let OSContnet = targeting.user_os !== "" ? targeting.user_os : "All";
 
       const media = data.media ? data.media : "//";
       // -------Keep commented code incase we will add it--------------//
       // let ageGroupContent =
-      //   targeting.demographics[0].min_age +
+      //   targeting.min_age +
       //   "-" +
-      //   targeting.demographics[0].max_age;
+      //   targeting.max_age;
 
       // if (
       //   targeting.geos[0].hasOwnProperty("region_id") &&
@@ -175,7 +174,7 @@ class InstagramAdPaymentReview extends Component {
       //     this.props.languages.length > 0 &&
       //     targeting &&
       //     targeting.demographics[0] &&
-      //     targeting.demographics[0].languages.map(languageId => {
+      //     targeting.languages.map(languageId => {
       //       return translate(
       //         this.props.languages &&
       //           this.props.languages.find(lang => lang.id === languageId).name
