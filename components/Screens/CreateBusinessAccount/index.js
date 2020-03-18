@@ -796,7 +796,13 @@ class CreateBusinessAccount extends Component {
                   this.setState({ inputN: true });
                 }}
                 onBlur={() => {
-                  this.setState({ inputN: false });
+                  this.setState({
+                    inputN: false,
+                    businessAccount: {
+                      ...this.state.businessAccount,
+                      businessname: this.state.businessAccount.businessname.trim()
+                    }
+                  });
                   this._verifyBusinessName(
                     this.state.businessAccount.businessname
                   );
@@ -868,7 +874,13 @@ class CreateBusinessAccount extends Component {
                   this.setState({ inputBN: true });
                 }}
                 onBlur={() => {
-                  this.setState({ inputBN: false });
+                  this.setState({
+                    inputBN: false,
+                    businessAccount: {
+                      ...this.state.businessAccount,
+                      brandname: this.state.businessAccount.brandname.trim()
+                    }
+                  });
                 }}
               />
             </Item>
@@ -941,11 +953,15 @@ class CreateBusinessAccount extends Component {
                     this.setState({ inputE: true });
                   }}
                   onBlur={() => {
-                    this.setState({ inputE: false });
                     this.setState({
+                      inputE: false,
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        businessemail: this.state.businessAccount.businessemail.trim()
+                      },
                       businessemailError: validateWrapper(
                         "email",
-                        this.state.businessAccount.businessemail
+                        this.state.businessAccount.businessemail.trim()
                       )
                     });
                   }}
@@ -1165,7 +1181,11 @@ class CreateBusinessAccount extends Component {
                   }}
                   onBlur={() => {
                     this.setState({
-                      inputBusinessCategoryOther: false
+                      inputBusinessCategoryOther: false,
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        otherBusinessCategory: this.state.businessAccount.otherBusinessCategory.trim()
+                      }
                     });
                   }}
                   value={this.state.businessAccount.otherBusinessCategory}
