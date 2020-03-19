@@ -548,8 +548,7 @@ class CampaignDetails extends Component {
                 <View style={[styles.mainCard]}>
                   {!loading &&
                     ((selectedCampaign &&
-                      selectedCampaign.review_status !== "REJECTED" &&
-                      selectedCampaign.campaign_end === "0") ||
+                      selectedCampaign.review_status !== "REJECTED") ||
                     new Date(selectedCampaign.end_time) < new Date() ? (
                       <TouchableOpacity
                         onLayout={this.onLayout}
@@ -579,7 +578,7 @@ class CampaignDetails extends Component {
                         loading={loading}
                         screenProps={this.props.screenProps}
                         review_status_reason={
-                          selectedCampaign.review_status_reason
+                          selectedCampaign.review_status_reason || []
                         }
                         navigation={this.props.navigation}
                         selectedCampaign={selectedCampaign}
