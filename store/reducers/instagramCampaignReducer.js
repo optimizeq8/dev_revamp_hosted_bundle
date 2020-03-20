@@ -185,6 +185,61 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingDesign: action.payload
       };
+    case actionTypes.SET_INSTAGRAM_INTERESTS:
+      return {
+        ...state,
+        interests: action.payload
+      };
+    case actionTypes.SET_INSTAGRAM_OS_VERSIONS:
+      return {
+        ...state,
+        isoVersions: action.payload.isoVersions,
+        androidVersions: action.payload.androidVersions
+      };
+    case actionTypes.SET_INSTAGRAM_DEVICE_BRANDS:
+      return {
+        ...state,
+        deviceBrands: action.payload
+      };
+    case actionTypes.SET_INSTAGRAM_AUDIENCE_SIZE:
+      return {
+        ...state,
+        average_reach: action.payload.average_reach
+      };
+    case actionTypes.ERROR_SET_INSTAGRAM_AUDIENCE_SIZE:
+      return {
+        ...state,
+        average_reach: 0
+      };
+
+    case actionTypes.SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE:
+      return {
+        ...state,
+        total_reach: (state.average_reach / action.payload.average_reach) * 100
+      };
+    case actionTypes.ERROR_SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE:
+      return {
+        ...state,
+        total_reach: 0
+      };
+    case actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM:
+      return {
+        ...state,
+        loadingDetail: action.payload
+      };
+    case actionTypes.SET_AD_DETAILS_INSTAGRAM:
+      return {
+        ...state,
+        data: { ...state.data, ...action.payload.data.data },
+        message: action.payload.data.message,
+        kdamount: action.payload.data.kdamount,
+        loadingDetail: false
+      };
+    case actionTypes.ERROR_SET_AD_DETAILS_INSTAGRAM:
+      return {
+        ...state,
+        loadingDetail: false
+      };
     default:
       return state;
   }

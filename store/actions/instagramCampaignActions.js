@@ -47,13 +47,13 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
       })
       .then(data => {
         if (data.success) {
-          segmentEventTrack("Completed Checkout Step", segmentInfo);
+          // segmentEventTrack("Completed Checkout Step", segmentInfo);
           // console.log("data success", data);
           NavigationService.navigate(navigation_route);
         } else {
-          segmentEventTrack("Error Submitting Instagram Ad Objective", {
-            campaign_error: data.message
-          });
+          // segmentEventTrack("Error Submitting Instagram Ad Objective", {
+          //   campaign_error: data.message
+          // });
 
           showMessage({
             message: data.message,
@@ -182,7 +182,7 @@ export const saveBrandMediaInstagram = (
         return res.data;
       })
       .then(data => {
-        console.log("saveBrandMedia data", data);
+        // console.log("saveBrandMedia data", data);
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false
@@ -202,7 +202,218 @@ export const saveBrandMediaInstagram = (
       .catch(error => {
         loading(0);
         onToggleModal(false);
-        console.log("error saveBrandMedia ", error.response || error.message);
+        // console.log("error saveBrandMedia ", error.response || error.message);
+      });
+  };
+};
+
+/**
+ *  To get interest list
+ */
+export const get_interests_instagram = () => {
+  return dispatch => {
+    InstagramBackendURL()
+      .get(`categorizedinterests`)
+      .then(res => res.data)
+      .then(data => {
+        if (data && data.interests) {
+          return dispatch({
+            type: actionTypes.SET_INSTAGRAM_INTERESTS,
+            payload: data.interests
+          });
+        }
+      })
+      .catch(error => {
+        // console.log("error get_interests_instagram", error);
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_INTERESTS,
+          payload: []
+        });
+      });
+  };
+};
+
+/**
+ * To get OS versions list
+ * @param {*} osType  One of [Android, iOS]
+ */
+export const getOSVersion = osType => {
+  return dispatch => {
+    InstagramBackendURL()
+      .get(`osversion/${osType}`)
+      .then(res => res.data)
+      .then(data => {
+        if (data && data.osversion) {
+          let osVersionArray = data.osversion.description.split(";");
+
+          if (osType === "Android") {
+            return dispatch({
+              type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
+              payload: {
+                isoVersions: [],
+                androidVersions: osVersionArray
+              }
+            });
+          }
+          if (osType === "iOS") {
+            return dispatch({
+              type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
+              payload: {
+                isoVersions: osVersionArray,
+                androidVersions: []
+              }
+            });
+          }
+        }
+      })
+      .catch(error => {
+        // console.log("getOSVersion error", error.response || error.message);
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
+          payload: {
+            isoVersions: [],
+            androidVersions: []
+          }
+        });
+      });
+  };
+};
+
+/**
+ * To get device brands name
+ * @param {*} osType One of [Android, iOS]
+ */
+export const getDeviceBrand = osType => {
+  return dispatch => {
+    InstagramBackendURL()
+      .get(`deviceBrands/${osType}`)
+      .then(res => res.data)
+      .then(data => {
+        if (data.device_make) {
+          const deviceBrands = data.device_make.map(device => {
+            return {
+              name: device.name
+            };
+          });
+          return dispatch({
+            type: actionTypes.SET_INSTAGRAM_DEVICE_BRANDS,
+            payload: deviceBrands
+          });
+        }
+      })
+      .catch(error => {
+        // console.log("getDeviceBrand error", error.response || error.message);
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_DEVICE_BRANDS,
+          payload: []
+        });
+      });
+  };
+};
+
+/**
+ * To get audience size
+ * @param {*} info // All tragetting aspects that have been selected like gender, user_os,versions min/max, interests, device brands
+ * @param {*} totalReach // For country total rach
+ */
+export const instagram_ad_audience_size = (info, totalReach) => {
+  return dispatch => {
+    InstagramBackendURL()
+      .post(`audiencesize`, info)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_AUDIENCE_SIZE,
+          payload: data
+        });
+      })
+      .then(() => dispatch(get_total_reach_instagram(totalReach)))
+      .catch(err => {
+        // console.log("instagram_ad_audience_size", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_SET_INSTAGRAM_AUDIENCE_SIZE
+        });
+      });
+  };
+};
+
+/**
+ * To get total reach based on country
+ * @param {*} info
+ */
+export const get_total_reach_instagram = info => {
+  return dispatch => {
+    InstagramBackendURL()
+      .post("audiencesize", info)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // console.log("get_total_reach_instagram ", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE
+        });
+      });
+  };
+};
+
+/**
+ * To save ad details targeting
+ * @param {*} info
+ * @param {*} navigation
+ * @param {*} segmentInfo
+ */
+export const ad_details_instagram = (info, navigation, segmentInfo) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
+      payload: true
+    });
+    InstagramBackendURL()
+      .post(`saveinstatargeting`, info)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        dispatch(
+          setCampaignInfoForTransaction({
+            campaign_id: getState().instagramAds.campaign_id,
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_budget_kdamount: data.kdamount,
+            channel: "instagram"
+          })
+        );
+        return dispatch({
+          type: actionTypes.SET_AD_DETAILS_INSTAGRAM,
+          payload: { data }
+        });
+      })
+      .then(() => {
+        // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+        // Ad the route here for
+        // navigation.navigate("AdPaymentReview");
+      })
+      .catch(err => {
+        // console.log("ad_details_instagram error", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_DETAILS_INSTAGRAM
+        });
       });
   };
 };

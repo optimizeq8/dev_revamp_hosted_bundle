@@ -169,5 +169,11 @@ export {
   saveCampaignStepsInstagram,
   resetCampaignInfoInstagram,
   overWriteObjectiveDataInstagram,
-  saveBrandMediaInstagram
+  saveBrandMediaInstagram,
+  get_interests_instagram,
+  getOSVersion,
+  getDeviceBrand,
+  instagram_ad_audience_size,
+  get_total_reach_instagram,
+  ad_details_instagram
 } from "./instagramCampaignActions";
