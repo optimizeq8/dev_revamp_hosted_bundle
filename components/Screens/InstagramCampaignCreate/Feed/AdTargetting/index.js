@@ -290,7 +290,7 @@ class AdDetails extends Component {
       // });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
-        interestNames: selectedItems
+        campaignInfo: replace
       });
   };
 
@@ -557,7 +557,24 @@ class AdDetails extends Component {
     // ) {
 
     let r = cloneDeep(this.state.campaignInfo.targeting);
-
+    let totalReach = {
+      geo_locations: {
+        countries: r.geo_locations.countries,
+        regions: r.geo_locations.regions
+      }
+    };
+    if (r.geo_locations.countries.length === 0) {
+      delete r.geo_locations.countries;
+    }
+    if (r.geo_locations.regions.length === 0) {
+      delete r.geo_locations.regions;
+    }
+    if (
+      !r.geo_locations.hasOwnProperty("regions") &&
+      !r.geo_locations.hasOwnProperty("countries")
+    ) {
+      delete r.geo_locations;
+    }
     if (r.genders[0] === "") {
       delete r.genders;
     }
@@ -591,21 +608,24 @@ class AdDetails extends Component {
     };
     // console.log("obj", obj);
 
-    let totalReach = {
-      geo_locations: {
-        countries: r.geo_locations.countries,
-        regions: r.geo_locations.regions
-      }
-    };
     if (totalReach.geo_locations.countries.length === 0) {
       delete totalReach.geo_locations.countries;
+    }
+    if (totalReach.geo_locations.regions.length === 0) {
+      delete totalReach.geo_locations.regions;
+    }
+    if (
+      !totalReach.geo_locations.hasOwnProperty("regions") &&
+      !totalReach.geo_locations.hasOwnProperty("countries")
+    ) {
+      delete totalReach.geo_locations;
     }
     const obj2 = {
       targeting: JSON.stringify(totalReach),
       ad_account_id: 123456789012
       // this.props.mainBusiness.snap_ad_account_id
     };
-    // console.log("obj", obj);
+    // console.log("obj2", obj2);
 
     await this.props.instagram_ad_audience_size(obj, obj2);
     // }
@@ -840,6 +860,9 @@ class AdDetails extends Component {
       selectedCountriesAndRegions: item,
       campaignInfo: replace
     });
+    this.props.save_campaign_info_instagram({
+      campaignInfo: { ...replace }
+    });
   };
   onSelectedCountryRegionsObjectsChange = items => {};
   render() {
@@ -946,6 +969,10 @@ class AdDetails extends Component {
             selectedMaxVersions={
               this.state.campaignInfo.targeting.os_version_max
             }
+            selectedVersions={[
+              this.state.campaignInfo.targeting.os_version_min,
+              this.state.campaignInfo.targeting.os_version_max
+            ]}
             onSelectedVersionsChange={this.onSelectedVersionsChange}
             OSType={this.state.campaignInfo.targeting.user_os[0]}
             option={this.state.selectionOption}
