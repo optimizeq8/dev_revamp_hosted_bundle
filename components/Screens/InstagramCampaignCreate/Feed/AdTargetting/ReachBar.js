@@ -69,13 +69,10 @@ class ReachBar extends Component {
   }
 }
 const mapStateToProps = state => ({
-  average_reach: state.campaignC.average_reach,
-  total_reach: state.campaignC.total_reach,
+  average_reach: state.instagramAds.average_reach,
+  total_reach: state.instagramAds.total_reach,
   mainBusiness: state.account.mainBusiness,
-  campaignEnded: state.campaignC.campaignEnded
+  campaignEnded: state.instagramAds.campaignEnded
 });
-const mapDispatchToProps = dispatch => ({
-  snap_ad_audience_size: (info, totalReach) =>
-    dispatch(actionCreators.snap_ad_audience_size(info, totalReach))
-});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(ReachBar);

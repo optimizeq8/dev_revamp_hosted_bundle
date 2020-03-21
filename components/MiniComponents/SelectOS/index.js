@@ -16,6 +16,7 @@ export default class SelectOS extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
+    const { selectedOSType, androidName, iosName } = this.props;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -40,13 +41,9 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.devices[0].os_type === ""
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedOSType === "" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type === ""
+                    selectedOSType === ""
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize
@@ -59,19 +56,15 @@ export default class SelectOS extends Component {
 
               <TouchableOpacity
                 style={styles.optionsRowContainer}
-                onPress={() => this.props.onSelectedOSChange("iOS")}
+                onPress={() => this.props.onSelectedOSChange(iosName)}
               >
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "iOS"
-                      ? "circle"
-                      : "circle-outline"
+                    selectedOSType === iosName ? "circle" : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "iOS"
+                    selectedOSType === iosName
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize
@@ -95,19 +88,15 @@ export default class SelectOS extends Component {
 
               <TouchableOpacity
                 style={styles.optionsRowContainer}
-                onPress={() => this.props.onSelectedOSChange("ANDROID")}
+                onPress={() => this.props.onSelectedOSChange(androidName)}
               >
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "ANDROID"
-                      ? "circle"
-                      : "circle-outline"
+                    selectedOSType === androidName ? "circle" : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "ANDROID"
+                    selectedOSType === androidName
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize

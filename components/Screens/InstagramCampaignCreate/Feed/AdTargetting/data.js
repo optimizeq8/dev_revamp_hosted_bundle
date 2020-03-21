@@ -1,289 +1,569 @@
 export const gender = [
-  { label: "Female", value: "FEMALE" },
-  { label: "Male", value: "MALE" },
+  { label: "Female", value: "2" },
+  { label: "Male", value: "1" },
   { label: "All", value: "" }
 ];
 export const OSType = [
   { value: "iOS", label: "iOS" },
-  { value: "ANDROID", label: "ANDROID" },
+  { value: "Android", label: "ANDROID" },
   { label: "All", value: "" }
 ];
 
+export const allRegions = [
+  {
+    key: "4364",
+    name: "Al Farwaniyah Governorate",
+    country: "KW"
+  },
+  {
+    key: "4365",
+    name: "Hawalli Governorate",
+    country: "KW"
+  },
+  {
+    key: "4366",
+    name: "Mubarak Al-Kabeer Governorate",
+    country: "KW"
+  },
+  {
+    key: "4362",
+    name: "Al Jahra Governorate",
+    country: "KW"
+  },
+  {
+    key: "4367",
+    name: "Al Ahmadi Governorate",
+    country: "KW"
+  },
+  {
+    key: "4363",
+    name: "Capital Governorate",
+    country: "KW"
+  },
+
+  {
+    key: "14",
+    name: "Umm al-Quwain",
+    country: "AE"
+  },
+  {
+    key: "10",
+    name: "Dubai",
+    country: "AE"
+  },
+  {
+    key: "13",
+    name: "Sharjah Emirate",
+    country: "AE"
+  },
+  {
+    key: "8",
+    name: "Abu Dhabi Emirate",
+    country: "AE"
+  },
+
+  {
+    key: "9",
+    name: "Ajman Emirate",
+    country: "AE"
+  },
+  {
+    key: "12",
+    name: "Ras Al Khaimah",
+    country: "AE"
+  },
+  {
+    key: "11",
+    name: "Fujairah",
+    country: "AE"
+  },
+  {
+    key: "3203",
+    name: "Al-Qassim Region",
+    country: "SA"
+  },
+  {
+    key: "3199",
+    name: "Al Bahah Region",
+    country: "SA"
+  },
+  {
+    key: "3211",
+    name: "Emirate of Tabuk",
+    country: "SA"
+  },
+  {
+    key: "4202",
+    name: "Najran Region",
+    country: "SA"
+  },
+  {
+    key: "3206",
+    name: "Ha'il Region",
+    country: "SA"
+  },
+  {
+    key: "3207",
+    name: "Makkah Region",
+    country: "SA"
+  },
+
+  {
+    key: "3212",
+    name: "Al Jawf Region",
+    country: "SA"
+  },
+
+  {
+    key: "4201",
+    name: "Asir Region",
+    country: "SA"
+  },
+  {
+    key: "3210",
+    name: "Jizan Region",
+    country: "SA"
+  },
+  {
+    key: "3205",
+    name: "Riyadh Region",
+    country: "SA"
+  },
+  {
+    key: "3202",
+    name: "Eastern Provincen",
+    country: "SA"
+  },
+  {
+    key: "3201",
+    name: "Al Madinah Region",
+    country: "SA"
+  },
+  {
+    key: "3208",
+    name: "Northern Borders Region",
+    country: "SA"
+  },
+
+  {
+    key: "374",
+    name: "Muharraq Governorate",
+    country: "BH"
+  },
+  {
+    key: "4516",
+    name: "Capital Governorate",
+    country: "BH"
+  },
+  {
+    key: "4530",
+    name: "Northern Governorate",
+    country: "BH"
+  },
+  {
+    key: "4518",
+    name: "Southern Governorate",
+    country: "BH"
+  },
+  {
+    key: "4563",
+    name: "Central Governorate",
+    country: "BH"
+  },
+
+  {
+    key: "3048",
+    name: "Doha",
+    country: "QA"
+  },
+  {
+    key: "4349",
+    name: "Al Daayen",
+    country: "QA"
+  },
+  {
+    key: "3054",
+    name: "Umm Salal",
+    country: "QA"
+  },
+  {
+    key: "3051",
+    name: "Al Khor",
+    country: "QA"
+  },
+  {
+    key: "4343",
+    name: "Al Rayyan",
+    country: "QA"
+  },
+  {
+    key: "3053",
+    name: "Madinat ash Shamal",
+    country: "QA"
+  },
+  {
+    key: "4394",
+    name: "Al Wakra",
+    country: "QA"
+  },
+
+  {
+    key: "2745",
+    name: "Musandam Governorate",
+    country: "OM"
+  },
+  {
+    key: "2746",
+    name: "Dhofar Governorate",
+    country: "OM"
+  },
+  {
+    key: "4702",
+    name: "Al Buraimi Governorate",
+    country: "OM"
+  },
+  {
+    key: "2744",
+    name: "Muscat Governorate",
+    country: "OM"
+  },
+  {
+    key: "2742",
+    name: "Ash Sharqiyah North Governorate",
+    country: "OM"
+  },
+  {
+    key: "2743",
+    name: "Ad Dhahirah Governorate",
+    country: "OM"
+  },
+  {
+    key: "4703",
+    name: "Al Wusta Governorate",
+    country: "OM"
+  },
+  {
+    key: "4700",
+    name: "Ash Sharqiyah South Governorate",
+    country: "OM"
+  },
+  {
+    key: "2740",
+    name: "Al Batinah North Governorate",
+    country: "OM"
+  },
+  {
+    key: "4701",
+    name: "Ad Dakhiliyah Governorate",
+    country: "OM"
+  }
+];
 export const country_regions = [
   {
-    country_code: "kw",
+    key: "KW",
+    name: "Kuwait",
     regions: [
       {
-        id: "25678",
-        code: "ah",
-        name: "Ahmadi"
+        key: "4364",
+        name: "Al Farwaniyah Governorate",
+        country: "KW"
+      },
+      {
+        key: "4365",
+        name: "Hawalli Governorate",
+        country: "KW"
+      },
+      {
+        key: "4366",
+        name: "Mubarak Al-Kabeer Governorate",
+        country: "KW"
+      },
+      {
+        key: "4362",
+        name: "Al Jahra Governorate",
+        country: "KW"
+      },
+      {
+        key: "4367",
+        name: "Al Ahmadi Governorate",
+        country: "KW"
+      },
+      {
+        key: "4363",
+        name: "Capital Governorate",
+        country: "KW"
+      }
+    ]
+  },
+  {
+    key: "AE",
+    name: "UAE",
+
+    regions: [
+      {
+        key: "14",
+        name: "Umm al-Quwain",
+        country: "AE"
+      },
+      {
+        key: "10",
+        name: "Dubai",
+        country: "AE"
+      },
+      {
+        key: "13",
+        name: "Sharjah Emirate",
+        country: "AE"
+      },
+      {
+        key: "8",
+        name: "Abu Dhabi Emirate",
+        country: "AE"
       },
 
       {
-        id: "25680",
-        code: "ku",
-        name: "Kuwait City (Capital)"
+        key: "9",
+        name: "Ajman Emirate",
+        country: "AE"
+      },
+      {
+        key: "12",
+        name: "Ras Al Khaimah",
+        country: "AE"
+      },
+      {
+        key: "11",
+        name: "Fujairah",
+        country: "AE"
       }
     ]
   },
   {
-    country_code: "ae",
+    key: "SA",
+    name: "KSA",
     regions: [
       {
-        id: "25151",
-        code: "aj",
-        name: "Ajman"
+        key: "3203",
+        name: "Al-Qassim Region",
+        country: "SA"
       },
       {
-        id: "25152",
-        code: "az",
-        name: "Abu Dhabi"
+        key: "3199",
+        name: "Al Bahah Region",
+        country: "SA"
       },
       {
-        id: "25153",
-        code: "du",
-        name: "Dubai"
+        key: "3211",
+        name: "Emirate of Tabuk",
+        country: "SA"
       },
       {
-        id: "25154",
-        code: "fu",
-        name: "Fujairah"
+        key: "4202",
+        name: "Najran Region",
+        country: "SA"
+      },
+      {
+        key: "3206",
+        name: "Ha'il Region",
+        country: "SA"
+      },
+      {
+        key: "3207",
+        name: "Makkah Region",
+        country: "SA"
       },
 
       {
-        id: "25156",
-        code: "sh",
-        name: "Sharjah"
-      },
-      {
-        id: "25157",
-        code: "uq",
-        name: "Umm Al - Quwain"
-      }
-    ]
-  },
-  {
-    country_code: "sa",
-    regions: [
-      {
-        id: "12205",
-        code: "04",
-        name: "Eastern Province"
-      },
-      {
-        id: "12207",
-        code: "02",
-        name: "Makkah"
-      },
-      {
-        id: "12208",
-        code: "01",
-        name: "Riyadh"
-      },
-      {
-        id: "23905",
-        code: "03",
-        name: "Al - Madinah"
-      },
-      {
-        id: "24313",
-        code: "07",
-        name: "Tabuk"
-      },
-      {
-        id: "24817",
-        code: "09",
-        name: "Jizan"
+        key: "3212",
+        name: "Al Jawf Region",
+        country: "SA"
       },
 
       {
-        id: "24819",
-        code: "08",
-        name: "Northern Borders"
-      },
-
-      {
-        id: "24970",
-        code: "12",
-        name: "Al Jawf"
+        key: "4201",
+        name: "Asir Region",
+        country: "SA"
       },
       {
-        id: "24971",
-        code: "14",
-        name: "Asir"
+        key: "3210",
+        name: "Jizan Region",
+        country: "SA"
       },
       {
-        id: "24972",
-        code: "10",
-        name: "Najran"
+        key: "3205",
+        name: "Riyadh Region",
+        country: "SA"
+      },
+      {
+        key: "3202",
+        name: "Eastern Provincen",
+        country: "SA"
+      },
+      {
+        key: "3201",
+        name: "Al Madinah Region",
+        country: "SA"
+      },
+      {
+        key: "3208",
+        name: "Northern Borders Region",
+        country: "SA"
       }
     ]
   },
   {
-    country_code: "bh",
+    key: "BH",
+    name: "Bahrain",
     regions: [
       {
-        id: "25180",
-        code: "13",
-        name: "Al Asimah"
+        key: "374",
+        name: "Muharraq Governorate",
+        country: "BH"
       },
-      // {
-      //   id: "28673",
-      //   code: "14",
-      //   name: "Al Janubiyah"
-      // },
-      // {
-      //   id: "28674",
-      //   code: "15",
-      //   name: "Al Muharraq"
-      // },
-      // {
-      //   id: "28675",
-      //   code: "16",
-      //   name: "Al Wusta"
-      // },
       {
-        id: "28676",
-        code: "17",
-        name: "Ash Shamaliyah"
+        key: "4516",
+        name: "Capital Governorate",
+        country: "BH"
+      },
+      {
+        key: "4530",
+        name: "Northern Governorate",
+        country: "BH"
+      },
+      {
+        key: "4518",
+        name: "Southern Governorate",
+        country: "BH"
+      },
+      {
+        key: "4563",
+        name: "Central Governorate",
+        country: "BH"
       }
     ]
   },
   {
-    country_code: "qa",
+    key: "QA",
+    name: "Qatar",
     regions: [
       {
-        id: "25911",
-        code: "da",
-        name: "Ad Dawhah"
+        key: "3048",
+        name: "Doha",
+        country: "QA"
       },
       {
-        id: "30060",
-        code: "kh",
-        name: "Al Khawr Wa Adh Dhakhira"
+        key: "4349",
+        name: "Al Daayen",
+        country: "QA"
       },
-      // {
-      //   id: "30061",
-      //   code: "ms",
-      //   name: "Ash Shamal"
-      // },
-      // {
-      //   id: "30062",
-      //   code: "ra",
-      //   name: "Ar Rayyan"
-      // },
-      // {
-      //   id: "30063",
-      //   code: "us",
-      //   name: "Umm Salai"
-      // },
       {
-        id: "30064",
-        code: "wa",
-        name: "Al Wakrah"
+        key: "3054",
+        name: "Umm Salal",
+        country: "QA"
+      },
+      {
+        key: "3051",
+        name: "Al Khor",
+        country: "QA"
+      },
+      {
+        key: "4343",
+        name: "Al Rayyan",
+        country: "QA"
+      },
+      {
+        key: "3053",
+        name: "Madinat ash Shamal",
+        country: "QA"
+      },
+      {
+        key: "4394",
+        name: "Al Wakra",
+        country: "QA"
       }
-      // {
-      //   id: "30065",
-      //   code: "za",
-      //   name: "Az Zain"
-      // }
     ]
   },
   {
-    country_code: "om",
+    key: "OM",
+    name: "Oman",
     regions: [
       {
-        id: "25874",
-        code: "ma",
-        name: "Masqat"
+        key: "2745",
+        name: "Musandam Governorate",
+        country: "OM"
       },
-      // {
-      //   id: "29714",
-      //   code: "ba",
-      //   name: "Al Batinah"
-      // },
-      // {
-      //   id: "29715",
-      //   code: "bu",
-      //   name: "Al Buraimi"
-      // },
       {
-        id: "29716",
-        code: "da",
-        name: "Ad Dakhiliyah"
+        key: "2746",
+        name: "Dhofar Governorate",
+        country: "OM"
       },
-      // {
-      //   id: "29717",
-      //   code: "mu",
-      //   name: "Musandam"
-      // },
-      // {
-      //   id: "29718",
-      //   code: "sh",
-      //   name: "Ash Sharqiyah"
-      // },
-      // {
-      //   id: "29719",
-      //   code: "wu",
-      //   name: "Al Wusta"
-      // },
-      // {
-      //   id: "29720",
-      //   code: "za",
-      //   name: "Az Zahirah"
-      // },
       {
-        id: "29721",
-        code: "zu",
-        name: "Zufar"
+        key: "4702",
+        name: "Al Buraimi Governorate",
+        country: "OM"
+      },
+      {
+        key: "2744",
+        name: "Muscat Governorate",
+        country: "OM"
+      },
+      {
+        key: "2742",
+        name: "Ash Sharqiyah North Governorate",
+        country: "OM"
+      },
+      {
+        key: "2743",
+        name: "Ad Dhahirah Governorate",
+        country: "OM"
+      },
+      {
+        key: "4703",
+        name: "Al Wusta Governorate",
+        country: "OM"
+      },
+      {
+        key: "4700",
+        name: "Ash Sharqiyah South Governorate",
+        country: "OM"
+      },
+      {
+        key: "2740",
+        name: "Al Batinah North Governorate",
+        country: "OM"
+      },
+      {
+        key: "4701",
+        name: "Ad Dakhiliyah Governorate",
+        country: "OM"
       }
-      // {
-      //   id: "34944",
-      //   code: "bj",
-      //   name: "Janub Al Batinah"
-      // },
-      // {
-      //   id: "34945",
-      //   code: "sj",
-      //   name: "Janub Ash Sharqiyah"
-      // },
-      // {
-      //   id: "34946",
-      //   code: "bs",
-      //   name: "Shamal Al Batinah"
-      // },
-      // {
-      //   id: "34947",
-      //   code: "ss",
-      //   name: "Shamal Ash Sharqiyah"
-      // }
     ]
   }
 ];
 
-export default (countries = [
+export default countries = [
   {
     label: "Kuwait",
-    value: "kw"
+    value: "KW"
   },
   {
     label: "UAE",
-    value: "ae"
+    value: "AE"
   },
   {
     label: "KSA",
-    value: "sa"
+    value: "SA"
   },
   {
     label: "Bahrain",
-    value: "bh"
+    value: "BH"
   },
   {
     label: "Qatar",
-    value: "qa"
+    value: "QA"
   },
   {
     label: "Oman",
-    value: "om"
+    value: "OM"
   }
-]);
+];
