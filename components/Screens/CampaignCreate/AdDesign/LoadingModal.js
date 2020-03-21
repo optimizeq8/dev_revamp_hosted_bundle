@@ -34,8 +34,7 @@ export default class LoadingModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => cancelUpload()}
-                title={"Uploading Image"}
-                // title="Uploading Image"
+                title={"Uploading Media"}
               />
             )}
             {!loading && (

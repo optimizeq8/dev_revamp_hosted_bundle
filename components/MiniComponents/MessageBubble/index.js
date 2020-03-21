@@ -41,7 +41,7 @@ class MessageBubble extends PureComponent {
 
     return (
       <View style={styles.messageBubbleOuterView}>
-        {
+        {this.props.message.created_at && (
           <Text
             style={[
               styles.dateText,
@@ -56,8 +56,7 @@ class MessageBubble extends PureComponent {
               "dd mmm, h:MM TT"
             )}
           </Text>
-        }
-        {/* Triangle for admin */}
+        )}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
           {this.props.message.author.type === "admin" &&
             !isNull(this.props.message.body) &&

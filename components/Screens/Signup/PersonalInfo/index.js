@@ -83,7 +83,10 @@ class PersonalInfo extends Component {
   }
   setValue = (stateName, value) => {
     let state = {};
-    state[stateName] = value;
+    state[stateName] =
+      stateName === "firstname" || stateName === "lastname"
+        ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
+        : value;
     let userInfo = {
       ...this.state.userInfo,
       ...state
@@ -241,6 +244,7 @@ class PersonalInfo extends Component {
               valueError2={this.state.lastnameError}
               icon={UserProfile}
               disabled={this.props.loadingUpdateInfo}
+              maxLength={30}
             />
             <View style={[styles.mobileView]}>
               <View style={[styles.labelView]}>

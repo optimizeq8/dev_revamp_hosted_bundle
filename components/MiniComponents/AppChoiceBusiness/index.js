@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Animated } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 import Toggle from "../Toggle";
 
@@ -10,8 +10,53 @@ import globalStyles from "../../../GlobalStyles";
 import { Text } from "native-base";
 import styles from "./styles";
 export default class AppChoiceBusiness extends Component {
+  state = {
+    fadeIOSLogo: new Animated.Value(1),
+    fadeAndroidLogo: new Animated.Value(1)
+  };
+
+  handleAndroidAppSelection = () => {
+    let {
+      setModalVisible,
+      playstorelink,
+      toggleAppSelection,
+      appSelections
+    } = this.props;
+    if (playstorelink && playstorelink.android_app_url === "")
+      setModalVisible(true, "ANDROID");
+    else {
+      Animated.timing(this.state.fadeAndroidLogo, {
+        toValue: !appSelections.androidAppSelected ? 1 : 0.5,
+        useNativeDriver: true
+      }).start();
+      toggleAppSelection(true);
+    }
+  };
+  handleIOSAppSelection = () => {
+    let {
+      setModalVisible,
+      appstorelink,
+      toggleAppSelection,
+      appSelections
+    } = this.props;
+    if (appstorelink && appstorelink.ios_app_id === "")
+      setModalVisible(true, "iOS");
+    else {
+      Animated.timing(this.state.fadeIOSLogo, {
+        toValue: !appSelections.iosAppSelected ? 1 : 0.5,
+        useNativeDriver: true
+      }).start();
+      toggleAppSelection(false);
+    }
+  };
   render() {
-    let { setModalVisible, playstorelink, appstorelink } = this.props;
+    let {
+      setModalVisible,
+      playstorelink,
+      appstorelink,
+      appSelections
+    } = this.props;
+
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.advertiseOSButtonView}>
@@ -19,20 +64,27 @@ export default class AppChoiceBusiness extends Component {
           onPress={() => setModalVisible(true, "iOS")}
           style={[globalStyles.column, styles.appStoreButtons]}
         >
-          <AppStoreIcon />
+          <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
+            <AppStoreIcon />
+          </Animated.View>
           <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
             {translate(`apple\napp store`)}
           </Text>
           <Text style={styles.appStyle}>
             {appstorelink.app_name + "\n" + "id: " + appstorelink.ios_app_id}
           </Text>
+          {/* iOSSwich */}
           <Toggle
-            switchOn={appstorelink && appstorelink.ios_app_id !== ""}
+            switchOn={
+              appSelections.iosAppSelected &&
+              appstorelink &&
+              appstorelink.ios_app_id !== ""
+            }
             backgroundColorOff="rgba(255,255,255,0.1)"
             backgroundColorOn="rgba(255,255,255,0.1)"
             circleColorOff="#FFf"
             circleColorOn="#66D072"
-            onPress={() => setModalVisible(true, "iOS")}
+            onPress={this.handleIOSAppSelection}
             duration={500}
             circleStyle={appConfirmStyles.toggleCircle}
             containerStyle={appConfirmStyles.toggleStyle}
@@ -42,7 +94,9 @@ export default class AppChoiceBusiness extends Component {
           onPress={() => setModalVisible(true, "ANDROID")}
           style={[globalStyles.column, styles.appStoreButtons]}
         >
-          <PlayStoreIcon />
+          <Animated.View style={{ opacity: this.state.fadeAndroidLogo }}>
+            <PlayStoreIcon />
+          </Animated.View>
           <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
             {translate(`google\nplay store`)}
           </Text>
@@ -52,15 +106,19 @@ export default class AppChoiceBusiness extends Component {
               "id:" +
               playstorelink.android_app_url}
           </Text>
-
+          {/* Android switch */}
           <Toggle
-            switchOn={playstorelink && playstorelink.android_app_url !== ""}
+            switchOn={
+              appSelections.androidAppSelected &&
+              playstorelink &&
+              playstorelink.android_app_url !== ""
+            }
             backgroundColorOff="rgba(255,255,255,0.1)"
             backgroundColorOn="rgba(255,255,255,0.1)"
             circleColorOff="#FFf"
             circleColorOn="#66D072"
             duration={500}
-            onPress={() => setModalVisible(true, "ANDROID")}
+            onPress={this.handleAndroidAppSelection}
             circleStyle={appConfirmStyles.toggleCircle}
             containerStyle={appConfirmStyles.toggleStyle}
           />

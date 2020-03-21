@@ -56,6 +56,7 @@ import split from "lodash/split";
 import segmentEventTrack from "../../segmentEventTrack";
 import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
+import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -302,12 +303,7 @@ class CollectionMedia extends Component {
     try {
       const { translate } = this.props.screenProps;
       let result = await this.pick();
-      let configuration: Configuration = {
-        forceCrop: true,
-        transform: {
-          items: [{ width: 1, height: 1 }]
-        }
-      };
+      let configuration = PhotoEditorConfiguration({ width: 1, height: 1 });
       let file = {};
       if (result) {
         file = await FileSystem.getInfoAsync(result.uri, {
@@ -397,6 +393,12 @@ class CollectionMedia extends Component {
                   rejectionColUpload: true
                 });
                 segmentEventTrack("Selected Collection Ad Image successfully");
+                segmentEventTrack(
+                  "Selected Collection Ad Image serialization",
+                  {
+                    ...serialization
+                  }
+                );
                 this.onToggleModal(false);
                 showMessage({
                   message: translate("Image has been selected successfully"),

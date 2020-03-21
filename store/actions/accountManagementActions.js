@@ -207,10 +207,6 @@ export const create_snapchat_ad_account = (id, navigation) => {
           });
         }
       })
-      .then(() => {
-        navigation.goBack();
-      })
-
       .catch(err => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",

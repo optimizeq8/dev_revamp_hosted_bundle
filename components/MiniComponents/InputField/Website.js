@@ -96,6 +96,9 @@ export default class WebsiteComponent extends React.Component {
               styles.inputText,
               I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
             ]}
+            ref={input => {
+              this.props.inputs["inputWeb"] = input;
+            }}
             onFocus={this.focusFeild}
             placeholder={translate(`Enter your website's URL`)}
             placeholderTextColor={globalColors.white}

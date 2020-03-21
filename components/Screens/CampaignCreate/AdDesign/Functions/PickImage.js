@@ -9,7 +9,7 @@ import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
 import { PESDK, Configuration, TintMode } from "react-native-photoeditorsdk";
-
+import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -64,41 +64,18 @@ export const _pickImage = async (
   adType,
   setTheState,
   screenProps,
-  rejected
+  rejected,
+  mediaEditor = {},
+  editImage
 ) => {
   try {
-    let result = await pick(mediaTypes, screenProps);
-    let configuration: Configuration = {
-      forceCrop: true,
-      transform: {
-        items: [{ width: 9, height: 16 }]
-      },
-      sticker: {
-        personalStickers: true,
-        defaultPersonalStickerTintMode: TintMode.COLORIZED,
-        categories: [
-          { identifier: "imgly_sticker_category_emoticons" },
-          { identifier: "imgly_sticker_category_shapes" },
-          {
-            identifier: "demo_sticker_category",
-            name: "Logos",
-            thumbnailURI: require("../../../../../assets/logo.png"),
-            items: [
-              {
-                identifier: "demo_sticker_logo",
-                name: "Optimize Logo",
-                stickerURI: require("../../../../../assets/logo.png")
-              },
-              {
-                identifier: "demo_sticker_icon",
-                name: "Optimize Icon",
-                stickerURI: require("../../../../../assets/icon.png")
-              }
-            ]
-          }
-        ]
-      }
-    };
+    let result = {};
+    if (!editImage) result = await pick(mediaTypes, screenProps);
+    else
+      result = { uri: mediaEditor.mediaUri, cancelled: false, type: "image" };
+    let configuration = PhotoEditorConfiguration({
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization")
+    });
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
@@ -110,9 +87,18 @@ export const _pickImage = async (
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
       if (result.type === "image") {
-        PESDK.openEditor(result.uri, configuration)
+        let uneditedImageUri = result.uri;
+        PESDK.openEditor(
+          result.uri,
+          configuration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
           .then(async manipResult => {
+            let serialization = {};
             if (manipResult) {
+              serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -194,6 +180,7 @@ export const _pickImage = async (
               result.uri = manipResult.uri;
               result.height = manipResult.height;
               result.width = manipResult.width;
+              result.serialization = serialization;
             } else {
               return Promise.reject("Editing canceled");
             }
@@ -210,9 +197,15 @@ export const _pickImage = async (
                 uploaded: false,
                 media_type: result.type.toUpperCase(),
                 iosVideoUploaded: false,
-                fileReadyToUpload: true
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
               };
-
+              segmentEventTrack("Selected Story Ad Image Successful");
+              segmentEventTrack("Selected Story Ad serialization", {
+                index: storyAdCards.selectedStoryAd.index,
+                ...result.serialization
+              });
               cards[storyAdCards.selectedStoryAd.index] = card;
               setTheState({
                 storyAdCards: {
@@ -238,7 +231,9 @@ export const _pickImage = async (
                 mediaError: null,
                 result: result.uri,
                 iosVideoUploaded: false,
-                fileReadyToUpload: true
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization
               });
 
               onToggleModal(false);
@@ -248,11 +243,16 @@ export const _pickImage = async (
                 type: "success"
               });
               segmentEventTrack("Selected Image Successful");
+              segmentEventTrack("Selected Image serialization", {
+                ...result.serialization
+              });
               !rejected &&
                 save_campaign_info({
                   media: result.uri,
                   type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization
                 });
             }
           })
@@ -279,7 +279,8 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Maximum video duration  is 10 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -307,7 +308,8 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Minimum video duration  is 3 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -333,7 +335,8 @@ export const _pickImage = async (
         } else if (file.size > 32000000) {
           setTheState({
             mediaError: "Allowed video size is up to 32 MBs.",
-            media: "//"
+            media: "//",
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -420,8 +423,8 @@ export const _pickImage = async (
             mediaError:
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
             media: "//",
-
-            sourceChanging: true
+            sourceChanging: true,
+            uneditedImageUri: "//"
           });
           !rejected &&
             save_campaign_info({
@@ -456,7 +459,8 @@ export const _pickImage = async (
       segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
-        media: "//"
+        media: "//",
+        uneditedImageUri: "//"
       });
       !rejected &&
         save_campaign_info({
@@ -471,6 +475,6 @@ export const _pickImage = async (
     }
   } catch (error) {
     onToggleModal(false);
-    // console.log("error image pick", error);
+    console.log("error image pick", error);
   }
 };

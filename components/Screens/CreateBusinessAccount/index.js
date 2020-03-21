@@ -127,7 +127,9 @@ class CreateBusinessAccount extends Component {
       AppError: null,
       data: [],
       androidData: [],
-      checkingBusinessNameSubmission: false
+      checkingBusinessNameSubmission: false,
+      androidAppSelected: false,
+      iosAppSelected: false
     };
   }
   componentDidMount() {
@@ -162,7 +164,13 @@ class CreateBusinessAccount extends Component {
           websitelink: websitelink ? websitelink : ""
         },
         editBusinessInfo,
-        networkString: networkString ? networkString : "http://"
+        networkString: networkString ? networkString : "http://",
+        iosAppSelected:
+          this.props.mainBusiness.appstorelink &&
+          this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected:
+          this.props.mainBusiness.playstorelink &&
+          this.props.mainBusiness.playstorelink.android_app_url !== ""
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -267,13 +275,34 @@ class CreateBusinessAccount extends Component {
           });
         }
         if (
-          await this._verifyBusinessName(
-            this.state.businessAccount.businessname,
-            true
-          )
+          this.state.businessAccount.businessname !==
+          this.props.mainBusiness.businessname
+            ? await this._verifyBusinessName(
+                this.state.businessAccount.businessname,
+                true
+              )
+            : true
         ) {
           if (this.props.registering) {
-            let { businessemail, ...business } = this.state.businessAccount;
+            let businessAccount = this.state.businessAccount;
+            if (!this.state.iosAppSelected) {
+              let appstorelink = {
+                app_name: "",
+                ios_app_id: "",
+                icon_media_url: ""
+              };
+              businessAccount = { ...businessAccount, appstorelink };
+            }
+            if (!this.state.androidAppSelected) {
+              let playstorelink = {
+                app_name: "",
+                icon_media_url: "",
+                android_app_url: ""
+              };
+              businessAccount = { ...businessAccount, playstorelink };
+            }
+            let { businessemail, ...business } = businessAccount;
+
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
@@ -289,6 +318,24 @@ class CreateBusinessAccount extends Component {
           }
           //  condition for updating business info
           else if (this.state.editBusinessInfo) {
+            let businessAccount = this.state.businessAccount;
+            if (!this.state.iosAppSelected) {
+              let appstorelink = {
+                app_name: "",
+                ios_app_id: "",
+                icon_media_url: ""
+              };
+              businessAccount = { ...businessAccount, appstorelink };
+            }
+            if (!this.state.androidAppSelected) {
+              let playstorelink = {
+                app_name: "",
+                icon_media_url: "",
+                android_app_url: ""
+              };
+              businessAccount = { ...businessAccount, playstorelink };
+            }
+            let { ...business } = businessAccount;
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
@@ -298,7 +345,7 @@ class CreateBusinessAccount extends Component {
             // check if info changed then call api else showMessage for no change
             const changedInfo = !isEqual(
               {
-                ...this.state.businessAccount,
+                ...businessAccount,
                 websitelink,
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"
@@ -311,7 +358,7 @@ class CreateBusinessAccount extends Component {
               this.props.updateBusinessInfo(
                 this.props.userInfo.userid,
                 {
-                  ...this.state.businessAccount,
+                  ...business,
                   websitelink,
                   otherBusinessCategory:
                     this.state.businessAccount.businesscategory !== "43"
@@ -443,6 +490,15 @@ class CreateBusinessAccount extends Component {
   setModalVisible = (isVisible, os) => {
     this.setState({ isVisible, appSelection: os });
   };
+
+  toggleAppSelection = android => {
+    this.setState(
+      android
+        ? { androidAppSelected: !this.state.androidAppSelected }
+        : { iosAppSelected: !this.state.iosAppSelected }
+    );
+  };
+
   _getIosAppIds = app => {
     this.setState({
       ...this.state,
@@ -458,7 +514,8 @@ class CreateBusinessAccount extends Component {
         app_name: app.title,
         ios_app_id: app.id,
         icon_media_url: app.icon
-      }
+      },
+      iosAppSelected: true
     });
   };
 
@@ -477,7 +534,8 @@ class CreateBusinessAccount extends Component {
         app_name: app.title,
         icon_media_url: app.icon,
         android_app_url: app.id ? app.id : app.application_id
-      }
+      },
+      androidAppSelected: true
     });
   };
   setTheState = state => {
@@ -497,6 +555,7 @@ class CreateBusinessAccount extends Component {
   ) => {};
   render() {
     const { translate } = this.props.screenProps;
+    let { iosAppSelected, androidAppSelected } = this.state;
     // Added disable(when updating business info loading ) and value ={having state value} props to input fields
     return (
       <SafeAreaView
@@ -688,6 +747,8 @@ class CreateBusinessAccount extends Component {
                 onSubmitEditing={() => {
                   this.focusTheField("inputBN");
                 }}
+                maxLength={25}
+                autoCorrect={false}
                 ref={input => {
                   this.inputs["inputN"] = input;
                 }}
@@ -701,6 +762,10 @@ class CreateBusinessAccount extends Component {
                 style={[styles.inputText]}
                 value={this.state.businessAccount.businessname}
                 onChangeText={value => {
+                  value = value.replace(
+                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                    ""
+                  );
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
@@ -767,14 +832,18 @@ class CreateBusinessAccount extends Component {
                   this.props.savingRegister
                 }
                 value={this.state.businessAccount.brandname}
-                onChangeText={value =>
+                onChangeText={value => {
+                  value = value.replace(
+                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                    ""
+                  );
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
                       brandname: value
                     }
-                  })
-                }
+                  });
+                }}
                 maxLength={25}
                 onFocus={() => {
                   this.setState({ inputBN: true });
@@ -1053,10 +1122,10 @@ class CreateBusinessAccount extends Component {
                 />
                 <Input
                   onSubmitEditing={() => {
-                    this.focusTheField("inputL");
+                    this.focusTheField("inputWeb");
                   }}
                   ref={input => {
-                    this.inputs["inputF"] = input;
+                    this.inputs["inputO"] = input;
                   }}
                   blurOnSubmit={false}
                   returnKeyType={"next"}
@@ -1095,6 +1164,8 @@ class CreateBusinessAccount extends Component {
           <View style={styles.marginVertical}>
             <Website
               register={true}
+              ref={ref => (this.websiteInput = ref)}
+              inputs={this.inputs}
               stateName={"websitelink"}
               screenProps={this.props.screenProps}
               customStyle={{
@@ -1125,12 +1196,14 @@ class CreateBusinessAccount extends Component {
             appstorelink={this.state.businessAccount.appstorelink}
             playstorelink={this.state.businessAccount.playstorelink}
             setModalVisible={this.setModalVisible}
+            toggleAppSelection={this.toggleAppSelection}
             screenProps={this.props.screenProps}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||
               this.props.savingRegister
             }
+            appSelections={{ iosAppSelected, androidAppSelected }}
           />
           {/* Added handle submision button for updating business info */}
           {this.state.editBusinessInfo &&

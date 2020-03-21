@@ -295,7 +295,7 @@ export const removeWalletAmount = (
       })
       .catch(err => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);
-        if (reties > 0) {
+        if (retries > 0) {
           removeWalletAmount(
             campaign_id,
             navigation,

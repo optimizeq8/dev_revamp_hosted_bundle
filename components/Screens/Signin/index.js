@@ -13,6 +13,7 @@ import * as actionCreators from "../../../store/actions";
 
 import InputField from "../../MiniComponents/InputField";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import AppUpdateChecker from "../AppUpdateChecker";
 
 // Validation
 import validateWrapper from "./ValidateWrapper";
@@ -276,6 +277,7 @@ class Signin extends Component {
               <View style={styles.SignInCoverImage}>
                 <SignInCover height={heightPercentageToDP(42)} />
               </View>
+              <AppUpdateChecker screenProps={this.props.screenProps} />
             </View>
           )}
         </SafeAreaView>
