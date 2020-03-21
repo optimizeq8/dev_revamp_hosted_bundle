@@ -174,11 +174,8 @@ class AdDetails extends Component {
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
-        let countryRegions = find(
-          country_regions,
-          country =>
-            country.country_code === rep.targeting.geo_locations.country_code
-        );
+        // console.log("data campaignInfo", this.props.data);
+
         this.setState(
           {
             ...this.state,
@@ -221,34 +218,34 @@ class AdDetails extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  _handleMaxAge = value => {
-    let rep = this.state.campaignInfo;
-    // rep.targeting.demographics[0].max_age = parseInt(value);
-    // segmentEventTrack(`Selected Max Age`, {
-    //   campaign_max_age: parseInt(value)
-    // });
-    this.setState({
-      campaignInfo: rep
-    });
-    //  !this.editCampaign &&
-    this.props.save_campaign_info_instagram({ campaignInfo: rep });
-  };
+  // _handleMaxAge = value => {
+  //   let rep = this.state.campaignInfo;
+  //   // rep.targeting.demographics[0].max_age = parseInt(value);
+  //   // segmentEventTrack(`Selected Max Age`, {
+  //   //   campaign_max_age: parseInt(value)
+  //   // });
+  //   this.setState({
+  //     campaignInfo: rep
+  //   });
+  //   //  !this.editCampaign &&
+  //   this.props.save_campaign_info_instagram({ campaignInfo: rep });
+  // };
 
-  _handleMinAge = value => {
-    let rep = this.state.campaignInfo;
-    // rep.targeting.demographics[0].min_age = value;
-    // segmentEventTrack(`Selected Min Age`, {
-    //   campaign_min_age: parseInt(value)
-    // });
+  // _handleMinAge = value => {
+  //   let rep = this.state.campaignInfo;
+  //   // rep.targeting.demographics[0].min_age = value;
+  //   // segmentEventTrack(`Selected Min Age`, {
+  //   //   campaign_min_age: parseInt(value)
+  //   // });
 
-    this.setState({
-      campaignInfo: rep
-    });
-    //  !this.editCampaign &&
-    this.props.save_campaign_info_instagram({
-      campaignInfo: rep
-    });
-  };
+  //   this.setState({
+  //     campaignInfo: rep
+  //   });
+  //   //  !this.editCampaign &&
+  //   this.props.save_campaign_info_instagram({
+  //     campaignInfo: rep
+  //   });
+  // };
 
   onSelectedInterestsChange = selectedItems => {
     // No more used, kept for PICKER component
@@ -297,49 +294,49 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedLangsChange = selectedItem => {
-    const { translate } = this.props.screenProps;
-    let replace = this.state.campaignInfo;
-    let langs = [];
-    if (
-      replace.targeting.demographics[0].languages.find(r => r === selectedItem)
-    ) {
-      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        r => r !== selectedItem
-      );
-      langs = replace.targeting.demographics[0].languages;
-      // segmentEventTrack(`Selected Languages`, {
-      //   campaign_languages: langs.join(", ")
-      // });
-    } else {
-      replace.targeting.demographics[0].languages.push(selectedItem);
-      langs = replace.targeting.demographics[0].languages;
-      // segmentEventTrack(`Selected Languages`, {
-      //   campaign_languages: langs.join(", ")
-      // });
-    }
+  // onSelectedLangsChange = selectedItem => {
+  //   const { translate } = this.props.screenProps;
+  //   let replace = this.state.campaignInfo;
+  //   let langs = [];
+  //   if (
+  //     replace.targeting.demographics[0].languages.find(r => r === selectedItem)
+  //   ) {
+  //     replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
+  //       r => r !== selectedItem
+  //     );
+  //     langs = replace.targeting.demographics[0].languages;
+  //     // segmentEventTrack(`Selected Languages`, {
+  //     //   campaign_languages: langs.join(", ")
+  //     // });
+  //   } else {
+  //     replace.targeting.demographics[0].languages.push(selectedItem);
+  //     langs = replace.targeting.demographics[0].languages;
+  //     // segmentEventTrack(`Selected Languages`, {
+  //     //   campaign_languages: langs.join(", ")
+  //     // });
+  //   }
 
-    if (replace.targeting.demographics[0].languages.length === 0) {
-      // segmentEventTrack(`Error Selecting Language`, {
-      //   campaign_languages_error: "Please choose a language"
-      // });
+  //   if (replace.targeting.demographics[0].languages.length === 0) {
+  //     // segmentEventTrack(`Error Selecting Language`, {
+  //     //   campaign_languages_error: "Please choose a language"
+  //     // });
 
-      showMessage({
-        message: translate("Please choose a language"),
-        type: "warning",
-        position: "top"
-      });
-    }
-    this.setState({
-      campaignInfo: replace,
-      languagesError:
-        this.state.campaignInfo.targeting.demographics[0].languages.length === 0
-          ? "Please choose a language."
-          : null
-    });
-    //  !this.editCampaign &&
-    this.props.save_campaign_info_instagram({ campaignInfo: replace });
-  };
+  //     showMessage({
+  //       message: translate("Please choose a language"),
+  //       type: "warning",
+  //       position: "top"
+  //     });
+  //   }
+  //   this.setState({
+  //     campaignInfo: replace,
+  //     languagesError:
+  //       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
+  //         ? "Please choose a language."
+  //         : null
+  //   });
+  //   //  !this.editCampaign &&
+  //   this.props.save_campaign_info_instagram({ campaignInfo: replace });
+  // };
 
   onSelectedOSChange = selectedItem => {
     let replace = this.state.campaignInfo;
@@ -399,66 +396,66 @@ class AdDetails extends Component {
     });
   };
 
-  onSelectedRegionChange = (selectedItem, regionName) => {
-    let replace = this.state.campaignInfo;
-    let rIds = replace.targeting.geo_locations.region_id;
-    let rNamesSelected = this.state.regionNames;
+  // onSelectedRegionChange = (selectedItem, regionName) => {
+  //   let replace = this.state.campaignInfo;
+  //   let rIds = replace.targeting.geo_locations.region_id;
+  //   let rNamesSelected = this.state.regionNames;
 
-    if (selectedItem === -1) {
-      if (this.state.regions.length === this.state.regionNames.length) {
-        replace.targeting.geo_locations.region_id = [];
-        // segmentEventTrack(`Selected No Regions`);
-        this.setState({
-          regionNames: [],
-          campaignInfo: replace
-        });
-      } else {
-        rNamesSelected = this.state.regions.map(r => r.name);
-        rIds = this.state.regions.map(r => r.id);
-        replace.targeting.geo_locations.region_id = rIds;
-        // segmentEventTrack(`Selected Regions`, {
-        //   campaign_region_names: rNamesSelected.join(", ")
-        // });
-        this.setState({
-          regionNames: rNamesSelected,
-          campaignInfo: replace
-        });
-      }
+  //   if (selectedItem === -1) {
+  //     if (this.state.regions.length === this.state.regionNames.length) {
+  //       replace.targeting.geo_locations.region_id = [];
+  //       // segmentEventTrack(`Selected No Regions`);
+  //       this.setState({
+  //         regionNames: [],
+  //         campaignInfo: replace
+  //       });
+  //     } else {
+  //       rNamesSelected = this.state.regions.map(r => r.name);
+  //       rIds = this.state.regions.map(r => r.id);
+  //       replace.targeting.geo_locations.region_id = rIds;
+  //       // segmentEventTrack(`Selected Regions`, {
+  //       //   campaign_region_names: rNamesSelected.join(", ")
+  //       // });
+  //       this.setState({
+  //         regionNames: rNamesSelected,
+  //         campaignInfo: replace
+  //       });
+  //     }
 
-      //  !this.editCampaign &&
-      this.props.save_campaign_info_instagram({
-        campaignInfo: replace,
-        regionNames: rNamesSelected
-      });
-      return;
-    } else {
-      // logic change
+  //     //  !this.editCampaign &&
+  //     this.props.save_campaign_info_instagram({
+  //       campaignInfo: replace,
+  //       regionNames: rNamesSelected
+  //     });
+  //     return;
+  //   } else {
+  //     // logic change
 
-      // campignInfo region
-      if (rIds.find(r => r === selectedItem)) {
-        replace.targeting.geo_locations.region_id = rIds.filter(
-          r => r !== selectedItem
-        );
-        rNamesSelected = rNamesSelected.filter(r => r !== regionName);
-      } else {
-        replace.targeting.geo_locations.region_id.push(selectedItem);
-        rNamesSelected.push(regionName);
-      }
-      // segmentEventTrack(`Selected Regions`, {
-      //   campaign_region_names: rNamesSelected.join(", ")
-      // });
+  //     // campignInfo region
+  //     if (rIds.find(r => r === selectedItem)) {
+  //       replace.targeting.geo_locations.region_id = rIds.filter(
+  //         r => r !== selectedItem
+  //       );
+  //       rNamesSelected = rNamesSelected.filter(r => r !== regionName);
+  //     } else {
+  //       replace.targeting.geo_locations.region_id.push(selectedItem);
+  //       rNamesSelected.push(regionName);
+  //     }
+  //     // segmentEventTrack(`Selected Regions`, {
+  //     //   campaign_region_names: rNamesSelected.join(", ")
+  //     // });
 
-      this.setState({
-        campaignInfo: replace,
-        regionNames: rNamesSelected
-      });
-      //  !this.editCampaign &&
-      this.props.save_campaign_info_instagram({
-        campaignInfo: replace,
-        regionNames: rNamesSelected
-      });
-    }
-  };
+  //     this.setState({
+  //       campaignInfo: replace,
+  //       regionNames: rNamesSelected
+  //     });
+  //     //  !this.editCampaign &&
+  //     this.props.save_campaign_info_instagram({
+  //       campaignInfo: replace,
+  //       regionNames: rNamesSelected
+  //     });
+  //   }
+  // };
 
   formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -541,9 +538,9 @@ class AdDetails extends Component {
     this.props.save_campaign_info_instagram({ campaignInfo: { ...replace } });
   };
 
-  filterLanguages = value => {
-    this.setState({ filteredLanguages: value });
-  };
+  // filterLanguages = value => {
+  //   this.setState({ filteredLanguages: value });
+  // };
 
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
@@ -578,11 +575,21 @@ class AdDetails extends Component {
       delete r.flexible_spec;
     }
 
+    if (r.user_device && r.user_device.length === 0) {
+      delete r.user_device;
+    }
+    if (r.os_version_min === "") {
+      delete r.os_version_min;
+    }
+    if (r.os_version_max === "") {
+      delete r.os_version_max;
+    }
     const obj = {
       targeting: JSON.stringify(r),
       ad_account_id: 123456789012
       //  this.props.mainBusiness.snap_ad_account_id
     };
+    // console.log("obj", obj);
 
     let totalReach = {
       geo_locations: {
@@ -768,6 +775,7 @@ class AdDetails extends Component {
     }
     return [];
   };
+  // For picker not to crash
   onSelectedCountryRegionChange = item => {
     let replace = this.state.campaignInfo;
     let countryArrayFromSelectedArray = countries.filter(country =>
