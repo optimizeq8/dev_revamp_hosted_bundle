@@ -266,8 +266,6 @@ export default GoogleSEABox = props => {
                 },
                 inputH3
                   ? GlobalStyles.orangeTextColor
-                  : headline3Error
-                  ? GlobalStyles.redTextColor
                   : GlobalStyles.darkGrayTextColor
               ]}
             >
@@ -283,11 +281,9 @@ export default GoogleSEABox = props => {
                   styles.smallFont,
                   inputH3
                     ? GlobalStyles.orangeTextColor
-                    : headline3Error
-                    ? GlobalStyles.redTextColor
                     : GlobalStyles.darkGrayTextColor
                 ]}
-              >{` (${30 - headline3.length})`}</Text>
+              >{` (${translate("optional")}) (${30 - headline3.length})`}</Text>
             </Text>
             <Input
               placeholder={translate("Input headline text")}
@@ -393,8 +389,6 @@ export default GoogleSEABox = props => {
             styles.titlePadding,
             inputD2
               ? GlobalStyles.orangeTextColor
-              : description2Error
-              ? GlobalStyles.redTextColor
               : GlobalStyles.darkGrayTextColor
           ]}
         >
@@ -410,11 +404,9 @@ export default GoogleSEABox = props => {
               styles.smallFont,
               inputD2
                 ? GlobalStyles.orangeTextColor
-                : description2Error
-                ? GlobalStyles.redTextColor
                 : GlobalStyles.darkGrayTextColor
             ]}
-          >{` (${90 - description2.length})`}</Text>
+          >{` (${translate("optional")}) (${90 - description2.length})`}</Text>
         </Text>
         <Input
           multiline

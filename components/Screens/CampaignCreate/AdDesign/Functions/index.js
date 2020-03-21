@@ -177,10 +177,12 @@ export const formatMedia = (
   );
   body.append(
     "ios_upload",
-    (Platform.OS === "ios" && iosVideoUploaded && adType !== "StoryAd") ||
-      (adType === "StoryAd" && allIosVideos)
-      ? 1
-      : 0
+    // (Platform.OS === "ios" && iosVideoUploaded && adType !== "StoryAd") ||
+    //   (adType === "StoryAd" && allIosVideos)
+    //   ? 1
+    //   :
+    //need to send as 1 whenever the user downloads media from different device
+    fileReadyToUpload ? 0 : 1
   );
 
   if (allIosVideos && Platform.OS === "ios" && adType === "StoryAd") {
@@ -188,6 +190,8 @@ export const formatMedia = (
     mediaLink = mediaLink[mediaLink.length - 1];
     body.append("media_link", mediaLink);
   }
+  console.log(body);
+
   setTheState({
     formatted: body
   });

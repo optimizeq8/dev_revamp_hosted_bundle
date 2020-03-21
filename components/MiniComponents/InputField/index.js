@@ -234,7 +234,7 @@ export default class InputField extends Component {
                   disabled ? { opacity: 0.6 } : {}
                 ]}
                 autoCorrect={false}
-                maxLength={34}
+                maxLength={maxLength ? maxLength : 34}
                 autoCapitalize="none"
                 onChangeText={value2 => this.handleTextChange(value2, true)}
                 onFocus={this.focusFeild}

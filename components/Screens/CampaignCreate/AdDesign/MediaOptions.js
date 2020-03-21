@@ -10,6 +10,7 @@ import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
 import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
   handleOptionSelect = () => {
@@ -23,7 +24,7 @@ export default class MediaOptions extends Component {
       segmentEventTrack("Option download media from different device selected");
       this.props.setDownloadMediaModal(true);
       this.props.getWebUploadLinkMedia();
-    } else {
+    } else if (title === "Image" || title === "Video") {
       segmentEventTrack(
         ` ${
           title === "Image" ? "Image" : "Video"
@@ -32,6 +33,16 @@ export default class MediaOptions extends Component {
         } `
       );
       this.props._pickImage(title === "Image" ? "Images" : "Videos");
+    } else {
+      segmentEventTrack(` Image edit option selected`);
+      this.props._pickImage(
+        "Images",
+        {
+          mediaUri: this.props.mediaUri,
+          serialization: this.props.serialization
+        },
+        true
+      );
     }
   };
   render() {
@@ -41,6 +52,10 @@ export default class MediaOptions extends Component {
     if (title === "Image") {
       imageIcon = (
         <CameraIcon width={30} height={25} fill={globalColors.orange} />
+      );
+    } else if (title === "Video") {
+      imageIcon = (
+        <VideoIcon width={30} height={30} fill={globalColors.orange} />
       );
     } else if (title === "Upload media from a different device") {
       imageIcon = (
@@ -52,7 +67,11 @@ export default class MediaOptions extends Component {
       );
     } else {
       imageIcon = (
-        <VideoIcon width={30} height={30} fill={globalColors.orange} />
+        <Icon
+          name="square-edit-outline"
+          type="MaterialCommunityIcons"
+          style={{ color: globalColors.orange, fontSize: 35 }}
+        />
       );
     }
     return (
