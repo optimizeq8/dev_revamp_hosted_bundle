@@ -54,6 +54,7 @@ class InstagramAdPaymentReview extends Component {
       return <LoadingScreen top={50} />;
     } else {
       let data = this.props.data || {
+        //Object for testing
         lifetime_budget_micro: "75",
         objectiveLabel: "Brand Awareness",
         instagram_business_name: "optimizeapp",
@@ -64,16 +65,25 @@ class InstagramAdPaymentReview extends Component {
         start_time: "2020-03-18",
         campaignInfo: {
           targeting: {
-            gender: "1",
+            genders: ["1"],
             os_version_max: "3.2",
             os_version_min: "10.2",
 
-            geo_locations: [
-              {
-                countries: ["AE", "SA"],
-                regions: [{ key: "14" }, { key: "4202" }, { key: "14" }]
-              }
-            ],
+            geo_locations: {
+              countries: ["KW", "AE"],
+              regions: [
+                {
+                  country: "SA",
+                  key: "3203",
+                  name: "Al-Qassim Region"
+                },
+                {
+                  country: "SA",
+                  key: "3199",
+                  name: "Al Bahah Region"
+                }
+              ]
+            },
             flexible_spec: [
               {
                 interests: [
@@ -114,39 +124,38 @@ class InstagramAdPaymentReview extends Component {
       let start_time = new Date(data.start_time || "01-01-1970");
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
-      let gender = targeting.gender
+      let gender = targeting.genders
         ? startCase(
             lowerCase(
               genderValues.find(
-                genderValue => genderValue.value === targeting.gender
+                genderValue => genderValue.value === targeting.genders[0]
               ).label
             )
           )
         : "All";
-      let country = countries.find(
-        country => country.value === targeting.geo_locations[0].countries[0]
-      );
+      let countrySelections = [];
+      targeting.geo_locations.countries.forEach(selectedCountry => {
+        countrySelections.push(
+          countries.find(countryData => countryData.value === selectedCountry)
+            .label
+        );
+      });
 
-      let country_region = country_regions.find(
-        countryRegs => countryRegs.country_code === country.value
-      );
       if (targeting.geo_locations.hasOwnProperty("regions")) {
         var regionNames = targeting.geo_locations.regions.map(reg => {
-          return country_region.regions.find(cReg => cReg.id === reg.key).name;
+          return reg.name;
         });
       } else regionNames = [""];
-
-      let locationContent =
-        regionNames.length > 0
-          ? translate(country.label) + ": " + regionNames
-          : translate(country.label);
 
       let instagram_business_name = data.instagram_business_name;
       let message = data.message;
       let link = data.link;
 
-      let OSContnet = targeting.user_os !== "" ? targeting.user_os : "All";
+      let OSContnet = targeting.hasOwnProperty("user_os")
+        ? targeting.user_os[0]
+        : "All";
 
+      let user_devices = targeting.user_device;
       const media = data.media ? data.media : "//";
       // -------Keep commented code incase we will add it--------------//
       // let ageGroupContent =
@@ -327,8 +336,12 @@ class InstagramAdPaymentReview extends Component {
                           content: translate(gender)
                         },
                         {
-                          title: "Location",
-                          content: locationContent
+                          title: "Countries",
+                          content: countrySelections.join(", ")
+                        },
+                        {
+                          title: "Regions",
+                          content: regionNames.join(", ")
                         },
                         // {
                         //   title: "Language",
@@ -343,25 +356,23 @@ class InstagramAdPaymentReview extends Component {
                           content: interestNames + ""
                         },
 
-                        // devices.length > 0 && {
-                        //   title: "Devices",
-                        //   content: devices + ""
-                        // },
-                        targeting.hasOwnProperty("devices") && {
+                        user_devices.length > 0 && {
+                          title: "Devices",
+                          content: user_devices.join(", ")
+                        },
+                        targeting.hasOwnProperty("user_os") && {
                           title: "OS Type",
                           content: translate(OSContnet)
-                        }
-                        // targeting.hasOwnProperty("devices") &&
-                        //   targeting.devices[0].os_version_max !== "" && {
-                        //     title: "OS Versions",
-                        //     content:
-                        //       targeting.devices[0].hasOwnProperty(
-                        //         "os_version_min"
-                        //       ) &&
-                        //       targeting.devices[0].os_version_min +
-                        //         ", " +
-                        //         targeting.devices[0].os_version_max
-                        //   }
+                        },
+                        targeting.hasOwnProperty("os_version_max") &&
+                          targeting.os_version_max !== "" && {
+                            title: "OS Versions",
+                            content:
+                              targeting.hasOwnProperty("os_version_min") &&
+                              targeting.os_version_min +
+                                ", " +
+                                targeting.os_version_max
+                          }
                       ]}
                     />
                   </Content>
@@ -437,19 +448,19 @@ class InstagramAdPaymentReview extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign_id: state.campaignC.campaign_id,
+  campaign_id: state.instagramAds.campaign_id,
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data,
-  media: state.campaignC.media,
-  countryName: state.campaignC.countryName,
-  interestNames: state.campaignC.interestNames,
-  regionNames: state.campaignC.regionNames,
-  loading: state.campaignC.loadingDetail,
-  kdamount: state.campaignC.kdamount,
+  data: state.instagramAds.data,
+  media: state.instagramAds.media,
+  countryName: state.instagramAds.countryName,
+  interestNames: state.instagramAds.interestNames,
+  regionNames: state.instagramAds.regionNames,
+  loading: state.instagramAds.loadingDetail,
+  kdamount: state.instagramAds.kdamount,
   mainBusiness: state.account.mainBusiness,
-  adType: state.campaignC.adType,
-  languages: state.campaignC.languagesList,
-  languagesListLoading: state.campaignC.languagesListLoading,
+  adType: state.instagramAds.adType,
+  languages: state.instagramAds.languagesList,
+  languagesListLoading: state.instagramAds.languagesListLoading,
   data: state.instagramAds.data
 });
 
