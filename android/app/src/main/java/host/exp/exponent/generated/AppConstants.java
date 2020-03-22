@@ -14,7 +14,7 @@ public class AppConstants {
   public static final String VERSION_NAME = "0.2.210";
   public static String INITIAL_URL = "exp://exp.host/@samyoptimize/optimize_app";
   public static final String SHELL_APP_SCHEME = "optimize";
-  public static final String RELEASE_CHANNEL = "prod-v3.1";
+  public static final String RELEASE_CHANNEL = "prov-v3.2";
   public static boolean SHOW_LOADING_VIEW_IN_SHELL_APP = true;
   public static boolean ARE_REMOTE_UPDATES_ENABLED = true;
   public static final List<Constants.EmbeddedResponse> EMBEDDED_RESPONSES;
@@ -68,10 +68,14 @@ public class AppConstants {
         
         
         
+        
+        
+        
+        
         // ADD EMBEDDED RESPONSES HERE
         // START EMBEDDED RESPONSES
         embeddedResponses.add(new Constants.EmbeddedResponse("https://exp.host/@samyoptimize/optimize_app", "assets://shell-app-manifest.json", "application/json"));
-        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.22%2F937d3408e573c680659192f5102998c6-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.23%2F63dfcf2b2a0fd537e07b93016f595d85-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
         // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }

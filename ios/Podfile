@@ -28,6 +28,8 @@ target 'optimizeapp' do
  use_react_native!
  pod 'RNPhotoEditorSDK', :path => '../node_modules/react-native-photoeditorsdk'
 
+ pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
  post_install do |installer|
   installer.pods_project.main_group.tab_width = '2';
     installer.pods_project.main_group.indent_width = '2';

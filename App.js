@@ -64,7 +64,6 @@ import { Icon as BIcon, Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
-import * as Sentry from "sentry-expo";
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
@@ -78,10 +77,9 @@ import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 
+import * as Sentry from "@sentry/react-native";
 Sentry.init({
-  dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
-  enableInExpoDevelopment: false,
-  debug: true
+  dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
 });
 // Sentry.captureException(new Error("Oops!"));
 // crash;
@@ -100,7 +98,7 @@ const myErrorHandler = (e, isFatal) => {
         );
       }
     }
-
+    Sentry.captureException(e);
     // store.dispatch(actionCreators.logout(NavigationService));
   }
   // isFatal: if the error is fatal and will kill the app

@@ -15,6 +15,7 @@ import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
+import * as Sentry from "@sentry/react-native";
 
 class AppUpdateChecker extends PureComponent {
   static navigationOptions = {
@@ -75,6 +76,7 @@ class AppUpdateChecker extends PureComponent {
         else this.setState({ statusLoading: false });
       }
     } catch (e) {
+      Sentry.captureException(e);
       this.setState({
         status: "",
         statusLoading: false,

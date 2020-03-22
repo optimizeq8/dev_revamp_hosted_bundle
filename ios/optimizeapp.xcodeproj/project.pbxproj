@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		07887208336445119CD759A8 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 212BF70271DF42EDB48E369E /* Roboto.ttf */; };
 		292AC55D0BD44E369B86A6C1 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40B2C09F59A84472AEEADA20 /* FontAwesome5_Regular.ttf */; };
+		32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF7DBC25BE34949B1C08ECE /* libz.tbd */; };
 		3B30A9B73C5B4002B423263F /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B57378FC97F4DD9B1A9C6B6 /* FontAwesome.ttf */; };
 		402CC572BB4D47DB85A4473E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD9ACC2D2AA94CCC90B89167 /* MaterialCommunityIcons.ttf */; };
 		4396537C53E949DDBB7E0B0B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59E77E5F2B1D4731B717DE78 /* MaterialIcons.ttf */; };
@@ -44,6 +45,7 @@
 		013BE6C6E1714379BE037057 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		212BF70271DF42EDB48E369E /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		2C1548D9E4CB1AEFA5CCAE6D /* Pods-optimizeapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-optimizeapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-optimizeapp/Pods-optimizeapp.debug.xcconfig"; sourceTree = "<group>"; };
+		2DF7DBC25BE34949B1C08ECE /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		32E98ECC49484B7BAB05801D /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		33943D130AC34898860A523A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		40B2C09F59A84472AEEADA20 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBB8117C1BFA0514F79CAF74 /* libPods-optimizeapp.a in Frameworks */,
+				32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				C4A88D15726AD99E8A257BC7 /* libPods-optimizeapp.a */,
+				2DF7DBC25BE34949B1C08ECE /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,6 +202,7 @@
 				AA38385B7D8D0854176B72FC /* [CP] Copy Pods Resources */,
 				19D233B7204FDD7D0087ED51 /* Bundle Expo Assets */,
 				71C1C1F9E037A22444A9562D /* [CP] Embed Pods Frameworks */,
+				62BF6FBF93E1429D93671C40 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -313,6 +318,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		62BF6FBF93E1429D93671C40 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 		71C1C1F9E037A22444A9562D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -510,6 +529,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/optimizeapp/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -529,6 +549,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 928C7U9LTT;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/optimizeapp/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
