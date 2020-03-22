@@ -77,7 +77,7 @@ export const instagramAds = [
     id: 2,
     mediaType: "instagram",
     text: "Create Your Ad Now!",
-    rout: "InstagramAdPaymentReview",
+    rout: "InstagramStoryAdObjective",
     createRout: "InstagramStoryAdObjective",
     title: "Instagram Story",
     value: "InstagramStoryAd",
