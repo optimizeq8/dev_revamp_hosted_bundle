@@ -122,6 +122,15 @@ class AdDesign extends Component {
   }
   componentDidMount() {
     if (this.props.data) {
+      let {
+        media_option = "single",
+        link,
+        call_to_action,
+        attachment,
+        message = "",
+        media_type,
+        media = "//"
+      } = this.props.data;
       let destination = "";
       if (this.props.data.destination) {
         destination = this.props.data.destination;
@@ -133,10 +142,16 @@ class AdDesign extends Component {
       }
       this.setState({
         campaignInfo: {
-          ...this.state.campaignInfo,
           ...this.props.data,
-          destination
-        }
+          media_option, // Oneof[ "single, caraousel"]
+          destination,
+          link,
+          call_to_action,
+          attachment,
+          message,
+          media_type
+        },
+        media
       });
     }
   }
@@ -278,7 +293,12 @@ class AdDesign extends Component {
   render() {
     const { translate } = this.props.screenProps;
     var { media } = this.state;
-    if (this.props.data.media && this.props.data.media !== "//") {
+    //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
+    if (
+      this.props.data &&
+      this.props.data.media &&
+      this.props.data.media !== "//"
+    ) {
       media = this.props.data.media;
     }
 
@@ -364,7 +384,8 @@ class AdDesign extends Component {
               {this.state.campaignInfo.media_option === "single" && (
                 <SingleImage
                   media_type={
-                    this.state.media_type || this.props.data.media_type
+                    this.state.media_type ||
+                    (this.props.data && this.props.data.media_type)
                   }
                   media={media !== "//" ? media : preview.uri}
                   save_campaign_info_instagram={
@@ -447,6 +468,9 @@ class AdDesign extends Component {
                         ...this.state.campaignInfo,
                         message: value
                       }
+                    });
+                    this.props.save_campaign_info_instagram({
+                      message: value
                     });
                   }}
                 />
