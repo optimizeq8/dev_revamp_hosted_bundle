@@ -9,6 +9,6 @@
 	<key>manifestUrl</key>
 	<string>exp://exp.host/@samyoptimize/optimize_app</string>
 	<key>releaseChannel</key>
-	<string>prod-v3.1</string>
+	<string>development</string>
 </dict>
 </plist>
