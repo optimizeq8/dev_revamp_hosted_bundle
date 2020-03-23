@@ -42,6 +42,8 @@ import * as actionCreators from "../../../../../store/actions";
 // import BackButton from "../../../../assets/SVGs/BackButton";
 import PenIcon from "../../../../../assets/SVGs/Pen";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
+import EyeIcon from "../../../../../assets/SVGs/Eye";
+
 import MediaButtonIcon from "../../../../../assets/SVGs/CameraCircleOutline";
 
 // Style
@@ -275,6 +277,12 @@ class AdDesign extends Component {
       }
     );
   };
+  handleReview = async () => {
+    const noError = this.validator();
+    if (noError) {
+      this.props.navigation.push("AdFeedDesignReview");
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     var { media } = this.state;
@@ -322,18 +330,21 @@ class AdDesign extends Component {
           }}
         />
         {!this.state.expanded ? (
-          <View style={styles.mainView}>
-            <View style={styles.adImageOptionView}>
-              <GradientButton
-                disabled={this.props.loading}
-                radius={100}
-                onPressAction={() => this.selectImageOption("single")}
-                style={styles.adImageOptionButton}
-                text={translate("Single Image")}
-                uppercase
-                transparent={this.state.campaignInfo.media_option !== "single"}
-              />
-              {/*
+          <Transition style={styles.transition} shared="image">
+            <View style={styles.mainView}>
+              <View style={styles.adImageOptionView}>
+                <GradientButton
+                  disabled={this.props.loading}
+                  radius={100}
+                  onPressAction={() => this.selectImageOption("single")}
+                  style={styles.adImageOptionButton}
+                  text={translate("Single Image")}
+                  uppercase
+                  transparent={
+                    this.state.campaignInfo.media_option !== "single"
+                  }
+                />
+                {/*
               <GradientButton
                 onPressAction={() => this.selectImageOption("carousel")}
                 style={styles.adImageOptionButton}
@@ -343,70 +354,75 @@ class AdDesign extends Component {
                 }
                 uppercase
               /> */}
-            </View>
-            <View style={[styles.outerBlock]}>
-              <View style={styles.profileBsnNameView}>
-                <RNImage
-                  style={styles.businessProfilePic}
-                  source={{
-                    uri: this.state.campaignInfo.instagram_profile_pic
-                  }}
-                />
-                <View style={styles.bsnNameView}>
-                  <Text style={styles.businessNameText}>
-                    {translate("Business Name")}
-                  </Text>
-                  <Text style={styles.businessName}>
-                    {this.state.campaignInfo.instagram_business_name}
-                  </Text>
-                </View>
               </View>
-              {this.state.campaignInfo.media_option === "single" && (
-                <SingleImage
-                  media_type={
-                    this.state.media_type || this.props.data.media_type
-                  }
-                  media={media !== "//" ? media : preview.uri}
-                  save_campaign_info_instagram={
-                    this.props.save_campaign_info_instagram
-                  }
-                  setTheState={this.setTheState}
-                  screenProps={this.props.screenProps}
-                  videoIsLoading={this.videoIsLoading}
-                />
-              )}
-
-              <TouchableOpacity
-                onPress={() => {
-                  this.handleCaptionExpand(true);
-                }}
-                style={styles.captionView}
-              >
-                <View style={styles.captionTextView}>
-                  <Text style={styles.captionText}>{translate("Caption")}</Text>
-                  <Text numberOfLines={1} style={styles.caption}>
-                    {this.state.campaignInfo.message}
-                  </Text>
+              <View style={[styles.outerBlock]}>
+                <View style={styles.profileBsnNameView}>
+                  <RNImage
+                    style={styles.businessProfilePic}
+                    source={{
+                      uri: this.state.campaignInfo.instagram_profile_pic
+                    }}
+                  />
+                  <View style={styles.bsnNameView}>
+                    <Text style={styles.businessNameText}>
+                      {translate("Business Name")}
+                    </Text>
+                    <Text style={styles.businessName}>
+                      {this.state.campaignInfo.instagram_business_name}
+                    </Text>
+                  </View>
                 </View>
-                <PenIcon width={18} height={18} style={styles.penIcon} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.push("InstagramSwipeUpDestination")
-                }
-                style={styles.destinationView}
-              >
-                <ArrowUp stroke={globalColors.orange} />
-                <Text style={styles.destinationText}>
-                  {translate("Destination")}
-                </Text>
-              </TouchableOpacity>
+                {this.state.campaignInfo.media_option === "single" && (
+                  <SingleImage
+                    media_type={
+                      this.state.media_type || this.props.data.media_type
+                    }
+                    media={media !== "//" ? media : preview.uri}
+                    save_campaign_info_instagram={
+                      this.props.save_campaign_info_instagram
+                    }
+                    setTheState={this.setTheState}
+                    screenProps={this.props.screenProps}
+                    videoIsLoading={this.videoIsLoading}
+                  />
+                )}
+
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleCaptionExpand(true);
+                  }}
+                  style={styles.captionView}
+                >
+                  <View style={styles.captionTextView}>
+                    <Text style={styles.captionText}>
+                      {translate("Caption")}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.caption}>
+                      {this.state.campaignInfo.message}
+                    </Text>
+                  </View>
+                  <PenIcon width={18} height={18} style={styles.penIcon} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.push("InstagramSwipeUpDestination")
+                  }
+                  style={styles.destinationView}
+                >
+                  <ArrowUp stroke={globalColors.orange} />
+                  <Text style={styles.destinationText}>
+                    {translate("Destination")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.lowerBtn}>
+                <TouchableOpacity onPress={this.handleReview}>
+                  <EyeIcon />
+                </TouchableOpacity>
+                <LowerButton function={this.handleSubmission} />
+              </View>
             </View>
-            <LowerButton
-              function={this.handleSubmission}
-              style={styles.lowerBtn}
-            />
-          </View>
+          </Transition>
         ) : (
           <Animated.View
             onPress={() => {
@@ -442,11 +458,13 @@ class AdDesign extends Component {
                   style={styles.message}
                   value={this.state.campaignInfo.message}
                   onChangeText={value => {
+                    let replace = this.state.campaignInfo;
+                    replace.message = value;
                     this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        message: value
-                      }
+                      campaignInfo: replace
+                    });
+                    this.props.save_campaign_info_instagram({
+                      ...replace
                     });
                   }}
                 />

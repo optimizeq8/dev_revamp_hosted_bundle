@@ -580,7 +580,7 @@ class AdDetails extends Component {
     }
 
     if (r.user_os[0] === "") {
-      delete r.user_os;
+      r.user_os = [];
       delete r.user_device;
       delete r.os_version_min;
       delete r.os_version_max;
