@@ -11,6 +11,7 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  transition: { height: "100%" },
   mainView: {
     marginHorizontal: 40,
     display: "flex",
@@ -20,7 +21,10 @@ const styles = StyleSheet.create({
   },
   captionTextView: { flex: 1 },
   penIcon: { alignSelf: "center" },
-  lowerBtn: { alignSelf: "flex-end" },
+  lowerBtn: {
+    flexDirection: "row",
+    alignSelf: "flex-end"
+  },
   captionMainView: {
     height: hp(60),
     borderRadius: 50,
