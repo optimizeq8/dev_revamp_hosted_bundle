@@ -125,12 +125,18 @@ class AdDesign extends Component {
   componentDidMount() {
     if (this.props.data) {
       let destination = "";
-      if (this.props.data.destination) {
+      if (
+        this.props.data.destination &&
+        this.props.data.destination !== "BLANK"
+      ) {
         destination = this.props.data.destination;
       } else {
         switch (this.props.data.objective) {
           case "BRAND_AWARENESS":
             destination = "link";
+            break;
+          default:
+            destination = "BLANK";
         }
       }
       this.setState({
@@ -139,6 +145,9 @@ class AdDesign extends Component {
           ...this.props.data,
           destination
         }
+      });
+      this.props.save_campaign_info_instagram({
+        destination
       });
     }
   }
@@ -158,7 +167,6 @@ class AdDesign extends Component {
       }
     });
     this.props.save_campaign_info_instagram({
-      ...this.state.campaignInfo,
       media_option
     });
   };
@@ -464,7 +472,6 @@ class AdDesign extends Component {
                       campaignInfo: replace
                     });
                     this.props.save_campaign_info_instagram({
-                      ...this.props.data,
                       message: value
                     });
                   }}
