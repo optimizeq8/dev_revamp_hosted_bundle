@@ -464,7 +464,8 @@ class AdDesign extends Component {
                       campaignInfo: replace
                     });
                     this.props.save_campaign_info_instagram({
-                      ...replace
+                      ...this.props.data,
+                      message: value
                     });
                   }}
                 />

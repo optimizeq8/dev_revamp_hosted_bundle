@@ -699,11 +699,8 @@ class AdDetails extends Component {
         delete rep.targeting.flexible_spec;
       }
 
-      if (
-        rep.targeting.user_os[0] === "" ||
-        rep.targeting.user_os[0] === null
-      ) {
-        delete rep.targeting.user_os[0];
+      if (rep.targeting.user_os[0] === "") {
+        delete rep.targeting.user_os;
         delete rep.targeting.os_version_max;
         delete rep.targeting.os_version_min;
         delete rep.targeting.user_device;
