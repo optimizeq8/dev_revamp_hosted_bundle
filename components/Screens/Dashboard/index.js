@@ -110,8 +110,13 @@ class Dashboard extends Component {
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
-    if (this.props.campaignInProgress && this.props.incompleteCampaign)
+    if (this.props.campaignProgressStarted && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
+    if (
+      this.props.instagramCampaignProgressStarted &&
+      this.props.instagramIncompleteCampaign
+    )
+      this.props.setCampaignInProgressInstagram(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -634,6 +639,7 @@ class Dashboard extends Component {
                 onDidFocus={() => {
                   Segment.screen("Dashboard");
                   this.props.setCampaignInProgress(false);
+                  this.props.setCampaignInProgressInstagram(false);
                 }}
               />
             </Animatable.View>
@@ -698,6 +704,9 @@ const mapStateToProps = state => ({
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  instagramCampaignProgressStarted:
+    state.instagramAds.instagramCampaignProgressStarted,
+  instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns
 });
@@ -718,6 +727,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
+  setCampaignInProgressInstagram: value =>
+    dispatch(actionCreators.setCampaignInProgressInstagram(value)),
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
   getLanguageListPOEdit: language =>

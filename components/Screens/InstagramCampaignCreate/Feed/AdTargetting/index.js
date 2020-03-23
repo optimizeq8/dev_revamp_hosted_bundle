@@ -44,7 +44,7 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import segmentEventTrack from "../../../../segmentEventTrack";
 
-class AdDetails extends Component {
+class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
     header: null,
     gesturesEnabled: false
@@ -861,7 +861,8 @@ class AdDetails extends Component {
       campaignInfo: replace
     });
     this.props.save_campaign_info_instagram({
-      campaignInfo: { ...replace }
+      campaignInfo: { ...replace },
+      selectedCountriesAndRegions: item //to save the selection of countries and regions if they resumed
     });
   };
   onSelectedCountryRegionsObjectsChange = items => {};
@@ -1110,31 +1111,27 @@ class AdDetails extends Component {
         >
           <NavigationEvents
             onDidFocus={() => {
-              // this.props.saveCampaignSteps(
-              //   this.props.adType === "StoryAd"
-              //     ? [
-              //         "Dashboard",
-              //         "AdObjective",
-              //         "AdCover",
-              //         "AdDesign",
-              //         "AdDetails"
-              //       ]
-              //     : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
-              // );
-              // if (this.editCampaign) {
-              //   Segment.screenWithProperties("Snap Ad Targetting Update", {
-              //     category: "Campaign Update"
-              //   });
-              // } else {
-              //   Segment.screenWithProperties("Snap Ad Targetting", {
-              //     category: "Campaign Creation",
-              //     channel: "snapchat"
-              //   });
-              //   Segment.trackWithProperties("Viewed Checkout Step", {
-              //     checkout_id: this.props.campaign_id,
-              //     step: 4
-              //   });
-              // }
+              if (
+                !this.props.currentCampaignSteps.includes(
+                  "InstagramAdPaymentReview"
+                )
+              ) {
+                this.props.saveCampaignSteps([
+                  "Dashboard",
+                  "InstagramFeedAdObjective",
+                  "InstagramFeedAdDesign",
+                  "InstagramFeedAdTargetting"
+                ]);
+              }
+              // Segment.screenWithProperties("Instagram Feed Ad Design", {
+              //   category: "Campaign Creation",
+              //   channel: "instagram"
+              // });
+              // Segment.trackWithProperties("Viewed Checkout Step", {
+              //   checkout_id: this.props.campaign_id,
+              //   step: 3,
+              //   business_name: this.props.mainBusiness.businessname
+              // });
             }}
           />
           <Container style={styles.mainContainer}>
@@ -1303,12 +1300,16 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info_instagram: info =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
   instagram_ad_audience_size: (info, totalReach) =>
-    dispatch(actionCreators.instagram_ad_audience_size(info, totalReach))
+    dispatch(actionCreators.instagram_ad_audience_size(info, totalReach)),
   // get_languages: () => dispatch(actionCreators.get_languages()),
-  // saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  saveCampaignSteps: step =>
+    dispatch(actionCreators.saveCampaignStepsInstagram(step))
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   // get_interests: info => dispatch(actionCreators.get_interests(info))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InstagramFeedAdTargetting);

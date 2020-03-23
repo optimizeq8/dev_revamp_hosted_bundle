@@ -406,7 +406,7 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
       .then(() => {
         // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
-        // navigation.navigate("AdPaymentReview");
+        navigation.navigate("InstagramAdPaymentReview");
       })
       .catch(err => {
         // console.log("ad_details_instagram error", err.message || err.response);

@@ -240,6 +240,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingDetail: false
       };
+    case actionTypes.SAVE_CAMPAIGN_STEP_INSTAGRAM:
+      return {
+        ...state,
+        currentCampaignSteps: action.payload
+      };
+    case actionTypes.SET_CAMPAIGN_IN_PROGRESS_INSTAGRAM:
+      return {
+        ...state,
+        campaignProgressStarted: action.payload
+      };
     default:
       return state;
   }
