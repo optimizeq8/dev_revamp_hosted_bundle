@@ -42,6 +42,7 @@ import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 import MediaModal from "./MediaModal";
+import { SaveFormat } from "expo-image-manipulator";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -274,7 +275,9 @@ class AdCover extends Component {
             serialization = manipResult.serialization;
             if (logo.height !== 284 && logo.width !== 993)
               manipResult = await ImageManipulator.manipulateAsync(
-                manipResult.image
+                manipResult.image,
+                [],
+                { format: SaveFormat.PNG }
               );
 
             if (
@@ -300,7 +303,7 @@ class AdCover extends Component {
               ],
               {
                 compress: 1,
-                format: "png"
+                format: SaveFormat.PNG
               }
             );
           }
@@ -706,7 +709,6 @@ class AdCover extends Component {
   };
   render() {
     let { cover, coverHeadlineError, logoSerialization } = this.state;
-    console.log(logoSerialization);
 
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
