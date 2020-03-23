@@ -312,10 +312,12 @@ class CollectionMedia extends Component {
         this.setState({ directory: "/ImagePicker/" });
         await this.validateImage();
       }
+      let serialization = {};
       if (result && !result.cancelled) {
         if (result.width >= 160 && result.height >= 160) {
           PESDK.openEditor(result.uri, configuration)
             .then(async manipResult => {
+              serialization = manipResult.serialization;
               let newDimensions = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -353,6 +355,7 @@ class CollectionMedia extends Component {
               result.uri = newDimensions.uri;
               result.height = newDimensions.height;
               result.width = newDimensions.width;
+              result.serialization = serialization;
             })
             .then(async () => {
               file = await FileSystem.getInfoAsync(result.uri, {
@@ -396,7 +399,7 @@ class CollectionMedia extends Component {
                 segmentEventTrack(
                   "Selected Collection Ad Image serialization",
                   {
-                    ...serialization
+                    ...result.serialization
                   }
                 );
                 this.onToggleModal(false);
