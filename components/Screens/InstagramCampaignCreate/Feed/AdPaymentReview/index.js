@@ -321,7 +321,7 @@ class InstagramAdPaymentReview extends Component {
                           content: message
                         },
                         {
-                          title: "Swipe Up Destination",
+                          title: "Swipe Up destination",
                           content: link
                         }
                       ]}
@@ -360,10 +360,11 @@ class InstagramAdPaymentReview extends Component {
                           title: "Devices",
                           content: user_devices.join(", ")
                         },
-                        targeting.hasOwnProperty("user_os") && {
-                          title: "OS Type",
-                          content: translate(OSContnet)
-                        },
+                        targeting.hasOwnProperty("user_os") &&
+                          targeting.user_os[0] !== "" && {
+                            title: "OS Type",
+                            content: translate(OSContnet)
+                          },
                         targeting.hasOwnProperty("os_version_max") &&
                           targeting.os_version_max !== "" && {
                             title: "OS Versions",

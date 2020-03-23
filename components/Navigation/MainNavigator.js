@@ -131,7 +131,7 @@ export default FluidNavigator(
     InstagramStoryAdDesign: InstagramStoryAdDesign,
     InstagramSwipeUpDestination: InstagramSwipeUpDestination,
     InstagramFeedAdTargetting: InstagramFeedAdTargetting,
-    AdFeedDesignReview: AdFeedDesignReview
+    AdFeedDesignReview: AdFeedDesignReview,
     InstagramAdPaymentReview: InstagramAdPaymentReview
     //     PaymentForm: {
     //       screen: PaymentForm
