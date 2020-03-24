@@ -18,6 +18,8 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
+import InstagramCampaignCard from "../../MiniComponents/InstagramCampaignCard";
+
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
@@ -287,7 +289,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (item.channel === "snapchat")
+    } else if (item.channel === "snapchat") {
       return (
         <CampaignCard
           channel={"snapchat"}
@@ -297,6 +299,17 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
+    } else if (item.channel === "instagram") {
+      return (
+        <InstagramCampaignCard
+          channel={"instagram"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+    }
   };
 
   handleNewCampaign = () => {

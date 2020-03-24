@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
-// import segmentEventTrack from "../../../../segmentEventTrack";
+import segmentEventTrack from "../../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
@@ -126,10 +126,10 @@ export const _pickImage = async (
                   media_type: ""
                 });
 
-                // segmentEventTrack("Selected Image Error", {
-                //   campaign_error_image:
-                //     "Image's aspect ratio must be 1:1 with a minimum size of 500px x 500px"
-                // });
+                segmentEventTrack("Selected Image Error", {
+                  campaign_instagram_error_image:
+                    "Image's aspect ratio must be 1:1 with a minimum size of 500px x 500px"
+                });
                 return Promise.reject({
                   wrongAspect: true,
                   message:
@@ -174,9 +174,10 @@ export const _pickImage = async (
                   position: "top",
                   type: "warning"
                 });
-                // segmentEventTrack("Seleeted Image Error", {
-                //   campaign_error_image: "Image must be less than 5 MBs"
-                // });
+                segmentEventTrack("Selected Instagram Image Error", {
+                  campaign_instagram_error_image:
+                    "Image must be less than 5 MBs"
+                });
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
@@ -205,7 +206,7 @@ export const _pickImage = async (
               position: "top",
               type: "success"
             });
-            // segmentEventTrack("Selected Image Successful");
+            segmentEventTrack("Selected Image Successful");
 
             save_campaign_info_instagram({
               media: result.uri,
@@ -214,11 +215,11 @@ export const _pickImage = async (
             });
           })
           .catch(error => {
-            // segmentEventTrack(error);
+            segmentEventTrack(error);
 
-            // segmentEventTrack("Seleeted Image Error", {
-            //   campaign_error_image: "The dimensions are too large"
-            // });
+            segmentEventTrack("Seleeted Image Error", {
+              campaign_instagram_error_image: "The dimensions are too large"
+            });
             showMessage({
               message: error.wrongAspect
                 ? error.message
@@ -243,9 +244,10 @@ export const _pickImage = async (
             media: "//",
             media_type: ""
           });
-          // segmentEventTrack("Selected Video Error", {
-          //   campaign_error_video: "Maximum video duration is 120 seconds"
-          // });
+          segmentEventTrack("Selected Video Error", {
+            campaign_instagram_error_video:
+              "Maximum video duration is 120 seconds"
+          });
           showMessage({
             message: translate("Maximum video duration is 120 seconds"),
             description:
@@ -271,9 +273,10 @@ export const _pickImage = async (
             media: "//",
             media_type: ""
           });
-          // segmentEventTrack("Selected Video Error", {
-          //   campaign_error_video: "Minimum video duration is 3 seconds"
-          // });
+          segmentEventTrack("Selected Video Error", {
+            campaign_instagram_error_video:
+              "Minimum video duration is 3 seconds"
+          });
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
             description:
@@ -298,9 +301,9 @@ export const _pickImage = async (
             media: "//",
             media_type: ""
           });
-          // segmentEventTrack("Selected Video Error", {
-          //   videoError: "Allowed video size is up to 30 MBs"
-          // });
+          segmentEventTrack("Selected Video Error", {
+            campaign_instagram_error_video: "Allowed video size is up to 30 MBs"
+          });
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
               fileSize: 30
@@ -311,9 +314,9 @@ export const _pickImage = async (
 
           return;
         } else if (
-          result.width >= 400 &&
-          result.height >= 500 &&
-          Math.floor(result.width / 4) === Math.floor(result.height / 5)
+          result.width >= 500 &&
+          result.height >= 625
+          // && Math.floor(result.width / 4) === Math.floor(result.height / 5)
         ) {
           setTheState({
             media: result.uri,
@@ -325,7 +328,7 @@ export const _pickImage = async (
             fileReadyToUpload: true
           });
 
-          // segmentEventTrack("Selected Video Successfully");
+          segmentEventTrack("Selected Video Successfully");
           showMessage({
             message: translate("Video has been selected successfully"),
             position: "top",
@@ -343,7 +346,7 @@ export const _pickImage = async (
       } else {
         setTheState({
           mediaError:
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 400 x 500.",
+            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625.",
           media: "//",
           media_type: "",
           sourceChanging: true
@@ -354,14 +357,14 @@ export const _pickImage = async (
           media_type: ""
         });
 
-        // segmentEventTrack("Selected Video Error", {
-        //   campaign_error_video:
-        //     "Video's aspect ratio must be 4:5\nwith a minimum size of 400 x 500"
-        // });
+        segmentEventTrack("Selected Video Error", {
+          campaign_instagram_error_video:
+            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625"
+        });
 
         showMessage({
           message: translate(
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 400 x 500"
+            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625"
           ),
           // message:
           //   "Video's aspect ratio must be 1:1\nwith a minimum size of 1080 x 1920.",
@@ -377,7 +380,7 @@ export const _pickImage = async (
         position: "top",
         type: "warning"
       });
-      // segmentEventTrack("Image Picker closed without selecting a media file");
+      segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//",
@@ -394,6 +397,6 @@ export const _pickImage = async (
       return;
     }
   } catch (error) {
-    //// segmentEventTrack("error image pick", error);
+    // console.log("error image pick", error);
   }
 };
