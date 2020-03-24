@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 40,
     backgroundColor: "rgba(0,0,0,.3)",
-    padding: 35
+    padding: 35,
+    marginBottom: 5
   },
   safeAreaView: {
     backgroundColor: "#0000",
