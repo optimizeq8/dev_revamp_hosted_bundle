@@ -15,7 +15,9 @@ public class MainActivity extends DetachActivity {
 
   @Override
   public String publishedUrl() {
-    return "exp://exp.host/@samyoptimize/optimize_app";
+    return "https://samyoptimize.github.io/hosting_ejected_expo/android-index.json";
+    // return "exp://exp.host/@samyoptimize/optimize_app";
+
   }
 
   @Override

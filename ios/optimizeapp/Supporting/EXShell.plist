@@ -7,7 +7,7 @@
 	<key>isShell</key>
 	<true/>
 	<key>manifestUrl</key>
-	<string>exp://exp.host/@samyoptimize/optimize_app</string>
+	<string>https://samyoptimize.github.io/hosting_ejected_expo/ios-index.json</string>
 	<key>releaseChannel</key>
 	<string>prov-v3.2</string>
 </dict>

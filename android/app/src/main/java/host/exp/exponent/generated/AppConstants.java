@@ -12,7 +12,7 @@ import host.exp.exponent.Constants;
 public class AppConstants {
 
   public static final String VERSION_NAME = "0.2.210";
-  public static String INITIAL_URL = "exp://exp.host/@samyoptimize/optimize_app";
+  public static String INITIAL_URL = "https://samyoptimize.github.io/hosting_ejected_expo/android-index.json";
   public static final String SHELL_APP_SCHEME = "optimize";
   public static final String RELEASE_CHANNEL = "prov-v3.2";
   public static boolean SHOW_LOADING_VIEW_IN_SHELL_APP = true;
