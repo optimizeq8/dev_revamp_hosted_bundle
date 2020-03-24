@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		07887208336445119CD759A8 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 212BF70271DF42EDB48E369E /* Roboto.ttf */; };
 		292AC55D0BD44E369B86A6C1 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40B2C09F59A84472AEEADA20 /* FontAwesome5_Regular.ttf */; };
@@ -181,6 +180,14 @@
 				B563865E1DB96A5E00A0598C /* main.m */,
 			);
 			path = Supporting;
+			sourceTree = "<group>";
+		};
+		B3E1DB3D9E754E6F8783308B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
