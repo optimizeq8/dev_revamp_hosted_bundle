@@ -654,14 +654,13 @@ class InstagramFeedAdTargetting extends Component {
         this.state.budgetOption
       )
     ) {
-      // segmentEventTrack("Error on submit ad details", {
-      //   campaign_country_error: countryRegionError,
-      //   campaign_languages_error: languagesError,
-      //   campaign_budget_error: validateWrapper(
-      //     "Budget",
-      //     this.state.campaignInfo.lifetime_budget_micro
-      //   )
-      // });
+      segmentEventTrack("Error on submit instagram feed ad details", {
+        campaign_country_error: countryRegionError,
+        campaign_budget_error: validateWrapper(
+          "Budget",
+          this.state.campaignInfo.lifetime_budget_micro
+        )
+      });
     }
     if (
       this._handleBudget(
@@ -1120,15 +1119,15 @@ class InstagramFeedAdTargetting extends Component {
                   "InstagramFeedAdTargetting"
                 ]);
               }
-              // Segment.screenWithProperties("Instagram Feed Ad Design", {
-              //   category: "Campaign Creation",
-              //   channel: "instagram"
-              // });
-              // Segment.trackWithProperties("Viewed Checkout Step", {
-              //   checkout_id: this.props.campaign_id,
-              //   step: 3,
-              //   business_name: this.props.mainBusiness.businessname
-              // });
+              Segment.screenWithProperties("Instagram Feed Ad Targeting", {
+                category: "Campaign Creation",
+                channel: "instagram"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                checkout_id: this.props.campaign_id,
+                step: 3,
+                business_name: this.props.mainBusiness.businessname
+              });
             }}
           />
           <Container style={styles.mainContainer}>

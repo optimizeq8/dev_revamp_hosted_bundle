@@ -1,7 +1,7 @@
 export const gender = [
-  { label: "Female", value: "2" },
-  { label: "Male", value: "1" },
-  { label: "All", value: null }
+  { label: "Female", value: "FEMALE" },
+  { label: "Male", value: "MALE" },
+  { label: "All", value: "" }
 ];
 export const OSType = [
   { value: "iOS", label: "iOS" },
@@ -11,230 +11,252 @@ export const OSType = [
 
 export const country_regions = [
   {
-    country_code: "KW",
+    country_code: "kw",
     regions: [
       {
-        id: "4364",
-        name: "Al Farwaniyah Governorate"
+        id: "25678",
+        code: "ah",
+        name: "Ahmadi"
       },
+
       {
-        id: "4365",
-        name: "Hawalli Governorate"
-      },
-      {
-        id: "4366",
-        name: "Mubarak Al-Kabeer Governorate"
-      },
-      {
-        id: "4362",
-        name: "Al Jahra Governorate"
-      },
-      {
-        id: "4367",
-        name: "Al Ahmadi Governorate"
-      },
-      {
-        id: "4363",
-        name: "Capital Governorate"
+        id: "25680",
+        code: "ku",
+        name: "Kuwait City (Capital)"
       }
     ]
   },
   {
-    country_code: "AE",
+    country_code: "ae",
     regions: [
       {
-        id: "14",
-        name: "Umm al-Quwain"
+        id: "25151",
+        code: "aj",
+        name: "Ajman"
       },
       {
-        id: "10",
+        id: "25152",
+        code: "az",
+        name: "Abu Dhabi"
+      },
+      {
+        id: "25153",
+        code: "du",
         name: "Dubai"
       },
       {
-        id: "13",
-        name: "Sharjah Emirate"
-      },
-      {
-        id: "8",
-        name: "Abu Dhabi Emirate"
-      },
-
-      {
-        id: "9",
-        name: "Ajman Emirate"
-      },
-      {
-        id: "12",
-        name: "Ras Al Khaimah"
-      },
-      {
-        id: "11",
+        id: "25154",
+        code: "fu",
         name: "Fujairah"
-      }
-    ]
-  },
-  {
-    country_code: "SA",
-    regions: [
-      {
-        id: "3203",
-        name: "Al-Qassim Region"
-      },
-      {
-        id: "3199",
-        name: "Al Bahah Region"
-      },
-      {
-        id: "3211",
-        name: "Emirate of Tabuk"
-      },
-      {
-        id: "4202",
-        name: "Najran Region"
-      },
-      {
-        id: "3206",
-        name: "Ha'il Region"
-      },
-      {
-        id: "3207",
-
-        name: "Makkah Region"
       },
 
       {
-        id: "3212",
-        name: "Al Jawf Region"
+        id: "25156",
+        code: "sh",
+        name: "Sharjah"
+      },
+      {
+        id: "25157",
+        code: "uq",
+        name: "Umm Al - Quwain"
+      }
+    ]
+  },
+  {
+    country_code: "sa",
+    regions: [
+      {
+        id: "12205",
+        code: "04",
+        name: "Eastern Province"
+      },
+      {
+        id: "12207",
+        code: "02",
+        name: "Makkah"
+      },
+      {
+        id: "12208",
+        code: "01",
+        name: "Riyadh"
+      },
+      {
+        id: "23905",
+        code: "03",
+        name: "Al - Madinah"
+      },
+      {
+        id: "24313",
+        code: "07",
+        name: "Tabuk"
+      },
+      {
+        id: "24817",
+        code: "09",
+        name: "Jizan"
       },
 
       {
-        id: "4201",
-        name: "Asir Region"
+        id: "24819",
+        code: "08",
+        name: "Northern Borders"
+      },
+
+      {
+        id: "24970",
+        code: "12",
+        name: "Al Jawf"
       },
       {
-        id: "3210",
-        name: "Jizan Region"
+        id: "24971",
+        code: "14",
+        name: "Asir"
       },
       {
-        id: "3205",
-        name: "Riyadh Region"
-      },
-      {
-        id: "3202",
-        name: "Eastern Provincen"
-      },
-      {
-        id: "3201",
-        name: "Al Madinah Region"
-      },
-      {
-        id: "3208",
-        name: "Northern Borders Region"
+        id: "24972",
+        code: "10",
+        name: "Najran"
       }
     ]
   },
   {
-    country_code: "BH",
+    country_code: "bh",
     regions: [
       {
-        id: "374",
-        name: "Muharraq Governorate"
+        id: "25180",
+        code: "13",
+        name: "Al Asimah"
       },
+      // {
+      //   id: "28673",
+      //   code: "14",
+      //   name: "Al Janubiyah"
+      // },
+      // {
+      //   id: "28674",
+      //   code: "15",
+      //   name: "Al Muharraq"
+      // },
+      // {
+      //   id: "28675",
+      //   code: "16",
+      //   name: "Al Wusta"
+      // },
       {
-        id: "4516",
-        name: "Capital Governorate"
-      },
-      {
-        id: "4530",
-        name: "Northern Governorate"
-      },
-      {
-        id: "4518",
-        name: "Southern Governorate"
-      },
-      {
-        id: "4563",
-        name: "Central Governorate"
+        id: "28676",
+        code: "17",
+        name: "Ash Shamaliyah"
       }
     ]
   },
   {
-    country_code: "QA",
+    country_code: "qa",
     regions: [
       {
-        id: "3048",
-        name: "Doha"
+        id: "25911",
+        code: "da",
+        name: "Ad Dawhah"
       },
       {
-        id: "4349",
-        name: "Al Daayen"
+        id: "30060",
+        code: "kh",
+        name: "Al Khawr Wa Adh Dhakhira"
       },
+      // {
+      //   id: "30061",
+      //   code: "ms",
+      //   name: "Ash Shamal"
+      // },
+      // {
+      //   id: "30062",
+      //   code: "ra",
+      //   name: "Ar Rayyan"
+      // },
+      // {
+      //   id: "30063",
+      //   code: "us",
+      //   name: "Umm Salai"
+      // },
       {
-        id: "3054",
-        name: "Umm Salal"
-      },
-      {
-        id: "3051",
-        name: "Al Khor"
-      },
-      {
-        id: "4343",
-        name: "Al Rayyan"
-      },
-      {
-        id: "3053",
-        name: "Madinat ash Shamal"
-      },
-      {
-        id: "4394",
-        code: "za",
-        name: "Al Wakra"
+        id: "30064",
+        code: "wa",
+        name: "Al Wakrah"
       }
+      // {
+      //   id: "30065",
+      //   code: "za",
+      //   name: "Az Zain"
+      // }
     ]
   },
   {
-    country_code: "OM",
+    country_code: "om",
     regions: [
       {
-        id: "2745",
-        name: "Musandam Governorate"
+        id: "25874",
+        code: "ma",
+        name: "Masqat"
       },
+      // {
+      //   id: "29714",
+      //   code: "ba",
+      //   name: "Al Batinah"
+      // },
+      // {
+      //   id: "29715",
+      //   code: "bu",
+      //   name: "Al Buraimi"
+      // },
       {
-        id: "2746",
-        name: "Dhofar Governorate"
+        id: "29716",
+        code: "da",
+        name: "Ad Dakhiliyah"
       },
+      // {
+      //   id: "29717",
+      //   code: "mu",
+      //   name: "Musandam"
+      // },
+      // {
+      //   id: "29718",
+      //   code: "sh",
+      //   name: "Ash Sharqiyah"
+      // },
+      // {
+      //   id: "29719",
+      //   code: "wu",
+      //   name: "Al Wusta"
+      // },
+      // {
+      //   id: "29720",
+      //   code: "za",
+      //   name: "Az Zahirah"
+      // },
       {
-        id: "4702",
-        name: "Al Buraimi Governorate"
-      },
-      {
-        id: "2744",
-        name: "Muscat Governorate"
-      },
-      {
-        id: "2742",
-        name: "Ash Sharqiyah North Governorate"
-      },
-      {
-        id: "2743",
-        name: "Ad Dhahirah Governorate"
-      },
-      {
-        id: "4703",
-        name: "Al Wusta Governorate"
-      },
-      {
-        id: "4700",
-        name: "Ash Sharqiyah South Governorate"
-      },
-      {
-        id: "2740",
-        name: "Al Batinah North Governorate"
-      },
-      {
-        id: "4701",
-        name: "Ad Dakhiliyah Governorate"
+        id: "29721",
+        code: "zu",
+        name: "Zufar"
       }
+      // {
+      //   id: "34944",
+      //   code: "bj",
+      //   name: "Janub Al Batinah"
+      // },
+      // {
+      //   id: "34945",
+      //   code: "sj",
+      //   name: "Janub Ash Sharqiyah"
+      // },
+      // {
+      //   id: "34946",
+      //   code: "bs",
+      //   name: "Shamal Al Batinah"
+      // },
+      // {
+      //   id: "34947",
+      //   code: "ss",
+      //   name: "Shamal Ash Sharqiyah"
+      // }
     ]
   }
 ];
@@ -242,26 +264,26 @@ export const country_regions = [
 export default countries = [
   {
     label: "Kuwait",
-    value: "KW"
+    value: "kw"
   },
   {
     label: "UAE",
-    value: "AE"
+    value: "ae"
   },
   {
     label: "KSA",
-    value: "SA"
+    value: "sa"
   },
   {
     label: "Bahrain",
-    value: "BH"
+    value: "bh"
   },
   {
     label: "Qatar",
-    value: "QA"
+    value: "qa"
   },
   {
     label: "Oman",
-    value: "OM"
+    value: "om"
   }
 ];

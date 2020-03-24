@@ -287,7 +287,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else
+    } else if (item.channel === "snapchat")
       return (
         <CampaignCard
           channel={"snapchat"}
