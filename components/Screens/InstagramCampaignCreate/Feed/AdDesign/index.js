@@ -346,15 +346,15 @@ class AdDesign extends Component {
                 "InstagramFeedAdDesign"
               ]);
             }
-            // Segment.screenWithProperties("Instagram Feed Ad Design", {
-            //   category: "Campaign Creation",
-            //   channel: "instagram"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   checkout_id: this.props.campaign_id,
-            //   step: 3,
-            //   business_name: this.props.mainBusiness.businessname
-            // });
+            Segment.screenWithProperties("Instagram Feed Ad Design", {
+              category: "Campaign Creation",
+              channel: "instagram"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              checkout_id: this.props.campaign_id,
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
           }}
         />
         {!this.state.expanded ? (
@@ -414,7 +414,6 @@ class AdDesign extends Component {
                     videoIsLoading={this.videoIsLoading}
                   />
                 )}
-            
 
                 <TouchableOpacity
                   onPress={() => {
@@ -472,7 +471,7 @@ class AdDesign extends Component {
             <TouchableWithoutFeedback
               onPress={() => {
                 Keyboard.dismiss();
-                this.handleCaptionExpand(false);
+                // this.handleCaptionExpand(false);
               }}
               accessible={false}
             >
@@ -495,13 +494,16 @@ class AdDesign extends Component {
                     this.props.save_campaign_info_instagram({
                       message: value
                     });
-                    this.props.save_campaign_info_instagram({
-                      message: value
-                    });
                   }}
                 />
               </View>
             </TouchableWithoutFeedback>
+            <LowerButton
+              checkmark={true}
+              function={() => {
+                this.handleCaptionExpand(false);
+              }}
+            />
           </Animated.View>
         )}
         <LoadingModal

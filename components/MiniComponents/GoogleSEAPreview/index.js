@@ -159,7 +159,6 @@ export default GoogleSEAPreview = props => {
               translate("2")
             : ""}
         </Text>
-        */}
       </View>
     </View>
   );
