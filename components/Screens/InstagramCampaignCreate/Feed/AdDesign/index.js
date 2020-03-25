@@ -366,7 +366,7 @@ class AdDesign extends Component {
                   radius={100}
                   onPressAction={() => this.selectImageOption("single")}
                   style={styles.adImageOptionButton}
-                  text={translate("Single Image")}
+                  text={translate("Instagram Feed Campaign")}
                   uppercase
                   transparent={
                     this.state.campaignInfo.media_option !== "single"
@@ -405,7 +405,7 @@ class AdDesign extends Component {
                     media_type={
                       this.state.media_type || this.props.data.media_type
                     }
-                    media={media !== "//" ? media : preview.uri}
+                    media={media}
                     save_campaign_info_instagram={
                       this.props.save_campaign_info_instagram
                     }
@@ -468,6 +468,16 @@ class AdDesign extends Component {
               { transform: [{ translateY: this.state.animation }] }
             ]}
           >
+            <LowerButton
+              style={{
+                alignSelf: "flex-end",
+                marginHorizontal: 50,
+                marginBottom: 10
+              }}
+              function={() => {
+                this.handleCaptionExpand(false);
+              }}
+            />
             <TouchableWithoutFeedback
               onPress={() => {
                 Keyboard.dismiss();
@@ -498,12 +508,6 @@ class AdDesign extends Component {
                 />
               </View>
             </TouchableWithoutFeedback>
-            <LowerButton
-              checkmark={true}
-              function={() => {
-                this.handleCaptionExpand(false);
-              }}
-            />
           </Animated.View>
         )}
         <LoadingModal
