@@ -31,10 +31,7 @@ export default class SingleImage extends React.PureComponent {
           <VideoPlayer videoIsLoading={videoIsLoading} media={media} />
         )}
         {media_type === "IMAGE" && (
-          <RNImageOrCacheImage
-            media={media !== "//" ? media : preview.uri}
-            style={styles.placeholder1}
-          />
+          <RNImageOrCacheImage media={media} style={styles.placeholder1} />
         )}
 
         <TouchableOpacity

@@ -40,17 +40,23 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
+    // media_type:
+    //   Platform.OS === "android" && I18nManager.isRTL
+    //     ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
+    //     : snapAds,
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
-        ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
-        : snapAds,
+        ? [...instagramAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
+        : instagramAds,
     isVisible: false,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...SocialPlatforms].reverse()
         : SocialPlatforms,
-    campaign_type: "SnapAd",
-    route: "AdObjective",
+    // campaign_type: "SnapAd",
+    // route: "AdObjective",
+    campaign_type: "InstagramFeedAd",
+    route: "InstagramFeedAdObjective",
     inverted: Platform.OS === "android" && I18nManager.isRTL
   };
 
