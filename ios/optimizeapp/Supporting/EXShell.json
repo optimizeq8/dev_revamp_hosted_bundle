@@ -1,6 +1,6 @@
 {
   "isShell": true,
-  "manifestUrl": "exp://exp.host/@samyoptimize/optimize_app",
+  "manifestUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/ios-index.json",
   "releaseChannel": "prov-v3.2",
   "isManifestVerificationBypassed": true
 }

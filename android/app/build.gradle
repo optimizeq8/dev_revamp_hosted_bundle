@@ -61,7 +61,7 @@ android {
     applicationId 'com.optimizeapp.optimizeapp'
     minSdkVersion safeExtGet("minSdkVersion", 21)
     targetSdkVersion safeExtGet("targetSdkVersion", 28)
-    versionCode 36
+    versionCode 37
     versionName '0.3.25'
 
     multiDexEnabled true
