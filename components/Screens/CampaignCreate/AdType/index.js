@@ -31,7 +31,10 @@ import * as actionCreators from "../../../../store/actions";
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
 import { snapAds, googleAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
@@ -41,6 +44,7 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
+    active: "Snapchat",
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
@@ -228,9 +232,34 @@ class AdType extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    let backgroundColor = "#0000";
+    let textColor = "#FFF";
+    const index = SocialPlatforms.findIndex(
+      sP => sP.title === this.state.active
+    );
+    let MainIcon = SocialPlatforms[index].headingIcon.type;
+    switch (this.state.active) {
+      case "Snapchat":
+        backgroundColor = "#FEFB00";
+        textColor = "#000";
+        break;
+      case "Google":
+        backgroundColor = "#4285F4";
+        textColor = "#FFF";
+        break;
+      case "Instagram":
+        backgroundColor = "#0000";
+        textColor = "#FFF";
+        break;
+    }
     return (
       <SafeAreaView
-        style={styles.safeAreaView}
+        style={[
+          styles.safeAreaView,
+          {
+            backgroundColor: backgroundColor
+          }
+        ]}
         forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
@@ -250,63 +279,207 @@ class AdType extends Component {
           <CustomHeader
             screenProps={this.props.screenProps}
             closeButton={true}
+            titelStyle={{ color: textColor }}
+            iconColor={textColor}
             segment={{
               str: "Ad Type Close",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title={"Create a new campaign!"}
+            // title={"Create a new campaign!"}
           />
 
-          <View>
+          <View style={{ paddingHorizontal: 26 }}>
+            <Text
+              style={[
+                {
+                  fontFamily: "montserrat-bold",
+                  fontSize: 16,
+
+                  textTransform: "uppercase",
+                  paddingBottom: 12
+                },
+                {
+                  color: textColor
+                }
+              ]}
+            >
+              Create a new
+            </Text>
             <ScrollView horizontal>
               {SocialPlatforms.map(social => {
                 let MediaIcon = social.icon.type;
                 return (
-                  <View
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({
+                        active: social.title
+                      });
+                    }}
                     style={[
                       {
                         alignItems: "center",
                         width: 55,
                         height: 55,
                         borderRadius: 50,
-                        marginHorizontal: 10,
+                        marginHorizontal: 5,
                         backgroundColor: "rgba(0,0,0,0.2)"
                       },
-                      {
+                      this.state.active === social.title && {
                         borderColor: "#FF790A",
                         borderWidth: 3
                       }
                     ]}
                   >
                     <MediaIcon width={"100%"} height={"100%"} />
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <MainIcon
+              width={widthPercentageToDP(70)}
+              style={{
+                position: "absolute",
+                right: widthPercentageToDP(-22),
+                top: heightPercentageToDP(-10)
+              }}
+            />
+            <Text
+              style={[
+                {
+                  fontSize: 23,
+                  fontFamily: "montserrat-bold",
+                  textTransform: "uppercase",
+                  paddingVertical: 13
+                },
+                {
+                  color: textColor
+                }
+              ]}
+            >
+              {this.state.active}
+              <Text
+                style={[
+                  {
+                    color: "#FFF",
+                    fontSize: 14,
+                    fontFamily: "montserrat-bold",
+                    textTransform: "uppercase"
+                  },
+                  {
+                    color: textColor
+                  }
+                ]}
+              >
+                {" " + translate("Campaign")}
+              </Text>
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#F4F4F4",
+              borderTopRightRadius: 35,
+              borderTopLeftRadius: 35
+            }}
+          >
+            <Text
+              style={{
+                textTransform: "uppercase",
+                fontFamily: "montserrat-bold",
+                fontSize: 16,
+                color: "#909090",
+                paddingTop: 20,
+                paddingHorizontal: 12 + 16
+              }}
+            >
+              {`Select ${this.state.active} Ad Type`}
+            </Text>
+            <ScrollView
+              style={{
+                paddingHorizontal: 12
+              }}
+              contentContainerStyle={{}}
+            >
+              {snapAds.map(item => {
+                let Image = item.image;
+                return (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      // alignItems: "center",
+                      backgroundColor: "#FFF",
+                      borderRadius: 35,
+                      paddingVertical: 20,
+                      paddingHorizontal: 10,
+                      marginVertical: 5
+                    }}
+                  >
+                    <Image style={{ alignSelf: "center" }} />
+                    <View style={{ marginHorizontal: 10 }}>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-bold",
+                          fontSize: 19,
+                          color: "#575757",
+                          textTransform: "uppercase",
+                          lineHeight: 21
+                        }}
+                      >
+                        {item.title} Ad
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-regular",
+                          fontSize: 10,
+                          color: "#909090",
+                          lineHeight: 17,
+                          width: widthPercentageToDP(60)
+                        }}
+                      >
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+                        sed diam nonumy eirmod tempor invidunt ut labore et
+                        dolore magna aliquyam erat, sed diam voluptua. At vero
+                        eos et accusam et justo duo
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-bold",
+                          fontSize: 12,
+                          lineHeight: 13,
+                          marginTop: 12,
+                          marginBottom: 4,
+                          color: "#575757",
+                          textTransform: "uppercase"
+                        }}
+                      >
+                        Suitable For:
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-bold",
+                          fontSize: 9,
+                          lineHeight: 14,
+                          color: "#FF7A09"
+                        }}
+                      >
+                        Events Coverage, Vlogs ,Others
+                      </Text>
+                      <LowerButton
+                        style={{
+                          width: 50,
+                          height: 50,
+                          alignSelf: "flex-end"
+                        }}
+                      />
+                    </View>
                   </View>
                 );
               })}
             </ScrollView>
-            <Text
-              style={{
-                color: "#FFF",
-                fontSize: 23,
-                fontFamily: "montserrat-bold",
-                textTransform: "uppercase"
-              }}
-            >
-              SNAPCHAT
-              <Text
-                style={{
-                  color: "#FFF",
-                  fontSize: 14,
-                  fontFamily: "montserrat-bold",
-                  textTransform: "uppercase"
-                }}
-              >
-                {translate("Campaign")}
-              </Text>
-            </Text>
           </View>
 
-          <View style={{ height: 70, marginBottom: 10 }}>
+          {/* <View style={{ height: 70, marginBottom: 10 }}>
             <Animatable.View animation={"fadeIn"}>
               <LowerButton
                 style={styles.proceedButtonRTL}
@@ -314,7 +487,7 @@ class AdType extends Component {
                 bottom={1}
               />
             </Animatable.View>
-          </View>
+          </View> */}
         </Container>
       </SafeAreaView>
     );

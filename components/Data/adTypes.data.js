@@ -4,6 +4,9 @@ import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
 import Instagram from "../../assets/images/AdTypes/logoIg";
+import SnapAd from "../../assets/SVGs/AdType/Snapchat/SnapAd";
+import StoryAd from "../../assets/SVGs/AdType/Snapchat/StoryAd";
+import CollectionAd from "../../assets/SVGs/AdType/Snapchat/CollectionAd";
 
 export const snapAds = [
   {
@@ -16,7 +19,8 @@ export const snapAds = [
     value: "SnapAd",
     media: require("../../assets/images/AdTypes/SnapAd.gif"),
     icon: AdIcons.SnapAd,
-    channelIcon: Snapchat
+    channelIcon: Snapchat,
+    image: SnapAd
   },
   {
     id: 2,
@@ -28,7 +32,8 @@ export const snapAds = [
     value: "StoryAd",
     media: require("../../assets/images/AdTypes/StoryAd.gif"),
     icon: AdIcons.StoryAd,
-    channelIcon: Snapchat
+    channelIcon: Snapchat,
+    image: StoryAd
   },
   {
     id: 3,
@@ -40,7 +45,8 @@ export const snapAds = [
     value: "CollectionAd",
     media: require("../../assets/images/AdTypes/CollectionAd.gif"),
     icon: AdIcons.CollectionAd,
-    channelIcon: Snapchat
+    channelIcon: Snapchat,
+    image: CollectionAd
   }
 ];
 
