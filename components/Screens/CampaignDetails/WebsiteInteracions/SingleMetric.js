@@ -9,6 +9,8 @@ import InstagramIcon from "../../../../assets/SVGs/InstagramIcon";
 import MobileIcon from "../../../../assets/SVGs/CampaignDetail/MobileIcon";
 import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 import LocationClicksIcon from "../../../../assets/SVGs/CampaignDetail/LocationClicksIcon";
+import YoutubeIcon from "../../../../assets/SVGs/CampaignDetail/YoutubeIcon";
+
 import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default class SingleMetric extends Component {
@@ -27,6 +29,12 @@ export default class SingleMetric extends Component {
         break;
       case "instagram clicks":
         Icon = InstagramIcon;
+        break;
+      case "youtube clicks":
+        if (metricValue === 0) {
+          return null;
+        }
+        Icon = YoutubeIcon;
         break;
 
       default:
