@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 55,
     height: 55
-  }
+  },
+  icons: {}
 });
 
 export default styles;

@@ -6,7 +6,8 @@ import {
   BackHandler,
   Platform,
   I18nManager,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -40,23 +41,23 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
-    // media_type:
-    //   Platform.OS === "android" && I18nManager.isRTL
-    //     ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
-    //     : snapAds,
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
-        ? [...instagramAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
-        : instagramAds,
+        ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
+        : snapAds,
+    // media_type:
+    //   Platform.OS === "android" && I18nManager.isRTL
+    //     ? [...instagramAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
+    //     : instagramAds,
     isVisible: false,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...SocialPlatforms].reverse()
         : SocialPlatforms,
-    // campaign_type: "SnapAd",
-    // route: "AdObjective",
-    campaign_type: "InstagramFeedAd",
-    route: "InstagramFeedAdObjective",
+    campaign_type: "SnapAd",
+    route: "AdObjective",
+    // campaign_type: "InstagramFeedAd",
+    // route: "InstagramFeedAdObjective",
     inverted: Platform.OS === "android" && I18nManager.isRTL
   };
 
@@ -245,7 +246,7 @@ class AdType extends Component {
           }}
         />
         <Container style={styles.container}>
-          <BackDrop />
+          {/* <BackDrop /> */}
           <CustomHeader
             screenProps={this.props.screenProps}
             closeButton={true}
@@ -257,57 +258,54 @@ class AdType extends Component {
             title={"Create a new campaign!"}
           />
 
-          <View style={{ height: 90 }}>
-            <Carousel
-              ref={c => {
-                this.media_carousel = c;
+          <View>
+            <ScrollView horizontal>
+              {SocialPlatforms.map(social => {
+                let MediaIcon = social.icon.type;
+                return (
+                  <View
+                    style={[
+                      {
+                        alignItems: "center",
+                        width: 55,
+                        height: 55,
+                        borderRadius: 50,
+                        marginHorizontal: 10,
+                        backgroundColor: "rgba(0,0,0,0.2)"
+                      },
+                      {
+                        borderColor: "#FF790A",
+                        borderWidth: 3
+                      }
+                    ]}
+                  >
+                    <MediaIcon width={"100%"} height={"100%"} />
+                  </View>
+                );
+              })}
+            </ScrollView>
+            <Text
+              style={{
+                color: "#FFF",
+                fontSize: 23,
+                fontFamily: "montserrat-bold",
+                textTransform: "uppercase"
               }}
-              enableMomentum={true}
-              onSnapToItem={indx => this.handleMediaChange(indx)}
-              inactiveSlideScale={0.75}
-              data={this.state.socialMediaPlatforms}
-              renderItem={this._renderItem}
-              sliderWidth={widthPercentageToDP(100)}
-              itemWidth={110}
-              inverted={this.state.inverted}
-            />
+            >
+              SNAPCHAT
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 14,
+                  fontFamily: "montserrat-bold",
+                  textTransform: "uppercase"
+                }}
+              >
+                {translate("Campaign")}
+              </Text>
+            </Text>
           </View>
-          <Carousel
-            firstItem={this.props.data ? this.props.data.index : 0}
-            ref={c => {
-              this._carousel = c;
-            }}
-            onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={this.state.media_type}
-            renderItem={this._renderSlides}
-            sliderWidth={widthPercentageToDP(100)}
-            itemWidth={
-              Platform.OS === "android"
-                ? widthPercentageToDP(
-                    this.state.route === "GoogleAdInfo" ? 80 : 60
-                  )
-                : widthPercentageToDP(70)
-            }
-            inactiveSlideScale={0.8}
-            inverted={this.state.inverted}
-          />
-          <Pagination
-            containerStyle={{
-              paddingVertical: 5,
-              bottom: 17
-            }}
-            dotsLength={this.state.media_type.length}
-            activeDotIndex={this.state.activeSlide}
-            dotStyle={{
-              width: 15,
-              height: 15,
-              borderRadius: 50,
-              marginHorizontal: 8,
-              backgroundColor: "rgba(255, 255, 255, 0.92)"
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
+
           <View style={{ height: 70, marginBottom: 10 }}>
             <Animatable.View animation={"fadeIn"}>
               <LowerButton
