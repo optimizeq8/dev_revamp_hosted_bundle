@@ -21,7 +21,7 @@ export default class WebsiteComponent extends React.Component {
       this.props.networkString + this.props.website
     );
     this.props.getValidInfo(stateName + "Error", urlError);
-    if (urlError) {
+    if (urlError && this.props.website) {
       showMessage({
         message: register
           ? translate("Please enter a valid URL")
@@ -33,6 +33,7 @@ export default class WebsiteComponent extends React.Component {
         duration: 7000
       });
     }
+    this.setState({ highlight: false });
   };
   handleAnimationEnd = () => {
     // Resets the valueErrors back to null for
