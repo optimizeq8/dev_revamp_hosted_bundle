@@ -83,19 +83,19 @@ export const instagramAds = [
     icon: AdIcons.InstagramFeed,
     channelIcon: Instagram,
     image: InstagramFeedAd
-  },
-  {
-    id: 2,
-    mediaType: "instagram",
-    text: "Create Your Ad Now!",
-    rout: "InstagramStoryAdObjective",
-    createRout: "InstagramStoryAdObjective",
-    title: "Instagram Story",
-    value: "InstagramStoryAd",
-    media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
-      .default,
-    icon: AdIcons.InstagramStory,
-    channelIcon: Instagram,
-    image: InstagramStoryAd
   }
+  // {
+  //   id: 2,
+  //   mediaType: "instagram",
+  //   text: "Create Your Ad Now!",
+  //   rout: "InstagramStoryAdObjective",
+  //   createRout: "InstagramStoryAdObjective",
+  //   title: "Instagram Story",
+  //   value: "InstagramStoryAd",
+  //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
+  //     .default,
+  //   icon: AdIcons.InstagramStory,
+  //   channelIcon: Instagram,
+  //   image: InstagramStoryAd
+  // }
 ];
