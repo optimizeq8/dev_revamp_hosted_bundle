@@ -45,6 +45,7 @@ class AdType extends Component {
   state = {
     activeSlide: 0,
     active: "Snapchat",
+    ad_type_array: snapAds,
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
@@ -143,50 +144,47 @@ class AdType extends Component {
       Segment.trackWithProperties("Navigate to VerifyAccount", {
         step: 1,
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       this.props.navigation.navigate("VerifyAccount");
     } else {
       Segment.trackWithProperties("Selected Ad Type", {
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       Segment.trackWithProperties("Completed Checkout Step", {
         step: 1,
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       if (
-        this.props.adType !== this.state.campaign_type &&
+        this.props.adType !== adType.value &&
         !this.props.incompleteCampaign
       ) {
         this.props.resetCampaignInfo(true);
       }
       if (!this.props.incompleteCampaign) {
-        this.props.set_adType(this.state.campaign_type);
+        this.props.set_adType(adType.value);
       }
       if (
         !this.props.mainBusiness.snap_ad_account_id &&
-        (adType.mediaType === "snapchat" ||
-          this.state.media_type[0].mediaType === "snapchat")
+        adType.mediaType === "snapchat"
       ) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
       } else if (
         !this.props.mainBusiness.google_account_id &&
-        (adType.mediaType === "google" ||
-          this.state.media_type[0].mediaType === "google")
+        adType.mediaType === "google"
       ) {
         this.props.navigation.navigate("GoogleCreateAdAcc");
       } else if (
         this.props.mainBusiness.google_account_id &&
-        (adType.mediaType === "google" ||
-          this.state.media_type[0].mediaType === "google") &&
+        adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
       } else
-        this.props.navigation.navigate(adType.rout || this.state.route, {
-          tempAdType: this.state.campaign_type
+        this.props.navigation.navigate(adType.rout, {
+          tempAdType: adType.value
         });
     }
 
@@ -230,28 +228,47 @@ class AdType extends Component {
     this.setState({ isVisible });
     resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
   };
-  render() {
-    const { translate } = this.props.screenProps;
+  getValuebasedOnActiveSlide = () => {
     let backgroundColor = "#0000";
     let textColor = "#FFF";
     const index = SocialPlatforms.findIndex(
       sP => sP.title === this.state.active
     );
     let MainIcon = SocialPlatforms[index].headingIcon.type;
+    let ad_type_array = [];
     switch (this.state.active) {
       case "Snapchat":
         backgroundColor = "#FEFB00";
         textColor = "#000";
+        ad_type_array = snapAds;
         break;
       case "Google":
         backgroundColor = "#4285F4";
         textColor = "#FFF";
+        ad_type_array = googleAds;
         break;
       case "Instagram":
         backgroundColor = "#0000";
         textColor = "#FFF";
+        ad_type_array = instagramAds;
         break;
     }
+
+    return {
+      backgroundColor,
+      textColor,
+      MainIcon,
+      ad_type_array
+    };
+  };
+  render() {
+    const { translate } = this.props.screenProps;
+    const {
+      backgroundColor,
+      textColor,
+      MainIcon,
+      ad_type_array
+    } = this.getValuebasedOnActiveSlide();
     return (
       <SafeAreaView
         style={[
@@ -295,7 +312,7 @@ class AdType extends Component {
                 {
                   fontFamily: "montserrat-bold",
                   fontSize: 16,
-
+                  textAlign: "left",
                   textTransform: "uppercase",
                   paddingBottom: 12
                 },
@@ -340,8 +357,14 @@ class AdType extends Component {
               width={widthPercentageToDP(70)}
               style={{
                 position: "absolute",
-                right: widthPercentageToDP(-22),
-                top: heightPercentageToDP(-10)
+                right:
+                  this.state.active === "Google"
+                    ? widthPercentageToDP(-45)
+                    : widthPercentageToDP(-22),
+                top:
+                  this.state.active === "Google"
+                    ? heightPercentageToDP(-5)
+                    : heightPercentageToDP(-10)
               }}
             />
             <Text
@@ -350,14 +373,15 @@ class AdType extends Component {
                   fontSize: 23,
                   fontFamily: "montserrat-bold",
                   textTransform: "uppercase",
-                  paddingVertical: 13
+                  paddingVertical: 13,
+                  textAlign: "left"
                 },
                 {
                   color: textColor
                 }
               ]}
             >
-              {this.state.active}
+              {translate(this.state.active)}
               <Text
                 style={[
                   {
@@ -396,37 +420,43 @@ class AdType extends Component {
               {`Select ${this.state.active} Ad Type`}
             </Text>
             <ScrollView
-              style={{
-                paddingHorizontal: 12
+              // style={{
+              //   paddingHorizontal: 12
+              // }}
+              contentContainerStyle={{
+                paddingHorizontal: 12,
+                marginHorizontal: 5
               }}
-              contentContainerStyle={{}}
             >
-              {snapAds.map(item => {
+              {ad_type_array.map(item => {
                 let Image = item.image;
                 return (
                   <View
+                    key={item.title}
                     style={{
                       flexDirection: "row",
                       // alignItems: "center",
                       backgroundColor: "#FFF",
                       borderRadius: 35,
                       paddingVertical: 20,
-                      paddingHorizontal: 10,
+
                       marginVertical: 5
                     }}
                   >
-                    <Image style={{ alignSelf: "center" }} />
-                    <View style={{ marginHorizontal: 10 }}>
+                    <Image style={{ alignSelf: "center", marginLeft: 10 }} />
+                    <View style={{ paddingHorizontal: 10 }}>
                       <Text
                         style={{
                           fontFamily: "montserrat-bold",
                           fontSize: 19,
                           color: "#575757",
                           textTransform: "uppercase",
-                          lineHeight: 21
+                          lineHeight: 21,
+                          paddingTop: 10,
+                          textAlign: "left"
                         }}
                       >
-                        {item.title} Ad
+                        {translate(item.title)} {translate("Ad")}
                       </Text>
                       <Text
                         style={{
@@ -434,7 +464,8 @@ class AdType extends Component {
                           fontSize: 10,
                           color: "#909090",
                           lineHeight: 17,
-                          width: widthPercentageToDP(60)
+                          textAlign: "left",
+                          width: widthPercentageToDP(55)
                         }}
                       >
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
@@ -446,11 +477,12 @@ class AdType extends Component {
                         style={{
                           fontFamily: "montserrat-bold",
                           fontSize: 12,
-                          lineHeight: 13,
+                          lineHeight: 16,
                           marginTop: 12,
                           marginBottom: 4,
                           color: "#575757",
-                          textTransform: "uppercase"
+                          textTransform: "uppercase",
+                          textAlign: "left"
                         }}
                       >
                         Suitable For:
@@ -460,7 +492,8 @@ class AdType extends Component {
                           fontFamily: "montserrat-bold",
                           fontSize: 9,
                           lineHeight: 14,
-                          color: "#FF7A09"
+                          color: "#FF7A09",
+                          textAlign: "left"
                         }}
                       >
                         Events Coverage, Vlogs ,Others
@@ -470,6 +503,9 @@ class AdType extends Component {
                           width: 50,
                           height: 50,
                           alignSelf: "flex-end"
+                        }}
+                        function={() => {
+                          this.navigationHandler(item);
                         }}
                       />
                     </View>

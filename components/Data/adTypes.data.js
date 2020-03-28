@@ -7,6 +7,9 @@ import Instagram from "../../assets/images/AdTypes/logoIg";
 import SnapAd from "../../assets/SVGs/AdType/Snapchat/SnapAd";
 import StoryAd from "../../assets/SVGs/AdType/Snapchat/StoryAd";
 import CollectionAd from "../../assets/SVGs/AdType/Snapchat/CollectionAd";
+import GoogleSearchAd from "../../assets/SVGs/AdType/Google/GoogleSearchAd";
+import InstagramFeedAd from "../../assets/images/AdTypes/Instagram/InstagramFeedAd";
+import InstagramStoryAd from "../../assets/images/AdTypes/Instagram/InstagramStoryAd";
 
 export const snapAds = [
   {
@@ -61,7 +64,8 @@ export const googleAds = [
     value: "GoogleSEAd",
     media: require("../../assets/images/AdTypes/GoogleAdEx.png"),
     icon: AdIcons.GoogleSE,
-    channelIcon: GoogleAds
+    channelIcon: GoogleAds,
+    image: GoogleSearchAd
   }
 ];
 
@@ -77,19 +81,21 @@ export const instagramAds = [
     media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
       .default,
     icon: AdIcons.InstagramFeed,
-    channelIcon: Instagram
+    channelIcon: Instagram,
+    image: InstagramFeedAd
+  },
+  {
+    id: 2,
+    mediaType: "instagram",
+    text: "Create Your Ad Now!",
+    rout: "InstagramStoryAdObjective",
+    createRout: "InstagramStoryAdObjective",
+    title: "Instagram Story",
+    value: "InstagramStoryAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
+      .default,
+    icon: AdIcons.InstagramStory,
+    channelIcon: Instagram,
+    image: InstagramStoryAd
   }
-  // {
-  //   id: 2,
-  //   mediaType: "instagram",
-  //   text: "Create Your Ad Now!",
-  //   rout: "InstagramStoryAdObjective",
-  //   createRout: "InstagramStoryAdObjective",
-  //   title: "Instagram Story",
-  //   value: "InstagramStoryAd",
-  //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
-  //     .default,
-  //   icon: AdIcons.InstagramStory,
-  //   channelIcon: Instagram
-  // }
 ];
