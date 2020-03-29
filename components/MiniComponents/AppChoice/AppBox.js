@@ -64,8 +64,6 @@ export default class AppBox extends Component {
     }
   };
   render() {
-    console.log(this.props.iosApp_name);
-
     let {
       setModalVisible,
       attachment,

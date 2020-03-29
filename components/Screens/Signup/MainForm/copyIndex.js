@@ -27,11 +27,6 @@ class MainForm extends Component {
   state = { verified: false };
   componentDidMount() {
     if (this.props.navigation.getParam("b", null) === "0") {
-      console.log(
-        'this.props.navigation.getParam("v", null)',
-        this.props.navigation.getParam("v", null)
-      );
-
       this.setState({
         businessInvite: this.props.navigation.getParam("b", null),
         tempId: this.props.navigation.getParam("v", null)
