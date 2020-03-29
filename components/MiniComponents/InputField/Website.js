@@ -18,16 +18,20 @@ export default class WebsiteComponent extends React.Component {
     const { stateName, register } = this.props;
     const urlError = validateWrapper(
       register ? "url" : "website",
-      this.props.networkString + this.props.website
+      this.props.website
     );
-    this.props.getValidInfo(stateName + "Error", urlError);
+
+    this.props.getValidInfo &&
+      this.props.getValidInfo(stateName + "Error", urlError);
     if (urlError && this.props.website) {
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+
       showMessage({
         message: register
           ? translate("Please enter a valid URL")
-          : translate(
-              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
-            ),
+          : !this.props.website.match(regex)
+          ? "Please enter a valid url"
+          : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
         type: "warning",
         position: "top",
         duration: 7000
@@ -77,7 +81,7 @@ export default class WebsiteComponent extends React.Component {
           </Text>
         </View>
         <Item style={[styles.input1, customStyle]}>
-          <GradientButton
+          {/* <GradientButton
             style={styles.networkStringButton}
             onPressAction={() => {
               if (this.props.networkString === "https://") {
@@ -91,14 +95,14 @@ export default class WebsiteComponent extends React.Component {
               {this.props.networkString === "https://" ? "https" : "http"}
             </Text>
             <Text style={styles.networkLabel}>{`< >`}</Text>
-          </GradientButton>
+          </GradientButton> */}
           <Input
             style={[
-              styles.inputText,
-              I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
+              styles.inputText
+              // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
             ]}
             ref={input => {
-              this.props.inputs["inputWeb"] = input;
+              this.props.inputs && (this.props.inputs["inputWeb"] = input);
             }}
             onFocus={this.focusFeild}
             placeholder={translate(`Enter your website's URL`)}
