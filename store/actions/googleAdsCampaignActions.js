@@ -456,8 +456,6 @@ export const get_google_campiagn_details = (
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         // added to handle in case of error
         if (data.error) {
           showMessage({

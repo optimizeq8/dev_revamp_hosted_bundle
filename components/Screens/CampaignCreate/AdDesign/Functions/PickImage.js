@@ -257,7 +257,7 @@ export const _pickImage = async (
             }
           })
           .catch(error => {
-            console.log(error);
+            // console.log(error);
 
             onToggleModal(false);
             segmentEventTrack("Seleeted Image Error", {
@@ -475,6 +475,6 @@ export const _pickImage = async (
     }
   } catch (error) {
     onToggleModal(false);
-    console.log("error image pick", error);
+    // console.log("error image pick", error);
   }
 };

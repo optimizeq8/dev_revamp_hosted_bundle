@@ -16,7 +16,7 @@ export default props => {
     ? new Date().setHours(0, 0, 0, 0) <
       new Date(campaign.start_time).setHours(0, 0, 0, 0)
       ? "starts"
-      : new Date().setHours(0, 0, 0, 0) <
+      : new Date().setHours(0, 0, 0, 0) <=
         new Date(campaign.end_time).setHours(0, 0, 0, 0)
       ? "ends"
       : "ended"
@@ -48,10 +48,11 @@ export default props => {
             progress={
               statusOfCampaign === "starts"
                 ? 0
-                : TimeDifferance(campaign.start_time, currentDate) /
+                : (TimeDifferance(campaign.start_time, currentDate) + 1) /
                   (TimeDifferance(campaign.start_time, campaign.end_time) === 0
                     ? 1
-                    : TimeDifferance(campaign.start_time, campaign.end_time))
+                    : TimeDifferance(campaign.start_time, campaign.end_time) +
+                      1)
             }
             borderWidth={0}
             unfilledColor="#0004"

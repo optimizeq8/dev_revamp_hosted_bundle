@@ -804,7 +804,6 @@ class AdDesign extends Component {
         this.setTheState
       );
       await this.handleUpload();
-      console.log(this.state.fileReadyToUpload, this.state.incorrectDimensions);
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
         showMessage({
@@ -903,7 +902,6 @@ class AdDesign extends Component {
       FileSystem.cacheDirectory + "webImage"
     );
     let file = await manipulateAsync(uneditedImageUri.uri);
-    console.log(file);
 
     let incorrectDimensions =
       Math.floor(file.width / 9) !== Math.floor(file.height / 16) ||
