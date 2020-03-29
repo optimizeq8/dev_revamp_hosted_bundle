@@ -32,7 +32,7 @@ import { netLoc } from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
-
+import WebsiteField from "../../../MiniComponents/InputField/Website";
 class Website extends Component {
   static navigationOptions = {
     header: null
@@ -95,15 +95,22 @@ class Website extends Component {
     const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
-      this.state.networkString + this.state.campaignInfo.attachment
+      this.state.campaignInfo.attachment
     );
+
     this.setState({
       urlError
     });
+
     if (urlError) {
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
       showMessage({
         message: translate(
-          "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+          `${
+            !this.state.campaignInfo.attachment.match(regex)
+              ? "Please enter a valid url"
+              : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+          }`
         ),
         type: "warning",
         position: "top",
@@ -113,6 +120,15 @@ class Website extends Component {
     } else {
       return true;
     }
+  };
+  setWebsiteValue = value => {
+    const campaignInfo = {
+      ...this.state.campaignInfo,
+      attachment: value
+    };
+    this.setState({
+      campaignInfo
+    });
   };
   _handleSubmission = () => {
     let objective = this.props.data
@@ -138,7 +154,7 @@ class Website extends Component {
 
         this.state.campaignInfo.callaction,
         {
-          url: this.state.networkString + this.state.campaignInfo.attachment
+          url: this.state.campaignInfo.attachment
         }
       );
       segmentEventTrack("Submitted Website SwipeUp Success", {
@@ -271,12 +287,20 @@ class Website extends Component {
                 <View style={styles.topContainer}>
                   <View style={styles.inputContainer}>
                     <View style={styles.websiteView}>
-                      <View style={[styles.websiteLabelView]}>
-                        <Text uppercase style={[styles.inputLabel]}>
-                          {translate("url")}
-                        </Text>
-                      </View>
-                      <Item
+                      <WebsiteField
+                        stateName={"attachment"}
+                        screenProps={this.props.screenProps}
+                        website={this.state.campaignInfo.attachment}
+                        setWebsiteValue={this.setWebsiteValue}
+                        stateNameError={this.state.websitelinkError}
+                        // getValidInfo={this.validateUrl}
+                        // disabled={
+                        //   (this.state.editBusinessInfo &&
+                        //     this.props.editBusinessInfoLoading) ||
+                        //   this.props.savingRegister
+                        // }
+                      />
+                      {/* <Item
                         style={[
                           styles.input
                           // this.state.urlError
@@ -338,6 +362,7 @@ class Website extends Component {
                             {`< >`}
                           </Text>
                         </TouchableOpacity>
+
                         <Input
                           style={[
                             styles.inputtext,
@@ -375,6 +400,7 @@ class Website extends Component {
                           }}
                         />
                       </Item>
+                    */}
                     </View>
                   </View>
                 </View>
