@@ -74,7 +74,7 @@ class CollectionMedia extends Component {
         collection_order: 0
       },
       urlError: "",
-      networkString: "http://",
+      // networkString: "http://",
       netLoc: netLoc,
       loaded: 0,
       isVisible: false,
@@ -164,27 +164,25 @@ class CollectionMedia extends Component {
           this.props.collectionAdLinkForm === 1 ||
           collAds[order].interaction_type === "WEB_VIEW"
         ) {
-          const url = split(
-            JSON.parse(
-              collAds[order][
-                collAds[order].collection_attachment
-                  ? "collection_attachment"
-                  : "attachment_properties"
-              ]
-            ).url,
-            "://"
-          );
+          const url = JSON.parse(
+            collAds[order][
+              collAds[order].collection_attachment
+                ? "collection_attachment"
+                : "attachment_properties"
+            ]
+          ).url;
+
           this.setState({
             collection: {
               ...this.state.collection,
               ...collAds[order],
-              collection_attachment: url[1].includes("?utm_source")
-                ? url[1].split("?utm_source")[0]
-                : url[1],
+              collection_attachment: url.includes("?utm_source")
+                ? url.split("?utm_source")[0]
+                : url,
               collection_media:
                 collAds[order][collAds[order].localUri ? "localUri" : "media"]
             },
-            networkString: url[0] + "://",
+            // networkString: url[0] + "://",
             localUri:
               collAds[order][collAds[order].localUri ? "localUri" : "media"]
           });
@@ -247,14 +245,22 @@ class CollectionMedia extends Component {
     const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
-      this.state.networkString + this.state.collection.collection_attachment
+      this.state.collection.collection_attachment
     );
     this.setState({
       urlError
     });
     if (urlError) {
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+
       showMessage({
-        message: translate("Please enter a valid URL"),
+        message: translate(
+          `${
+            !this.state.collection.collection_attachment.match(regex)
+              ? "Please enter a valid URL"
+              : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+          }`
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -534,7 +540,7 @@ class CollectionMedia extends Component {
         "collection_attachment",
         JSON.stringify({
           url:
-            this.state.networkString +
+            // this.state.networkString +
             this.state.collection.collection_attachment
         })
       );
@@ -810,9 +816,9 @@ class CollectionMedia extends Component {
                               //     : GlobalStyles.transparentBorderColor
                             ]}
                           >
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                               style={[
-                                GlobalStyles.orangeBackgroundColor,
+                                GlobalStyles.orangeBacksgroundColor,
                                 {
                                   borderRadius: 30,
                                   width: 54,
@@ -856,13 +862,9 @@ class CollectionMedia extends Component {
                                 {`< >`}
                               </Text>
                             </TouchableOpacity>
+                           */}
                             <Input
-                              style={[
-                                styles.inputtext,
-                                I18nManager.isRTL
-                                  ? { textAlign: "right" }
-                                  : { textAlign: "left" }
-                              ]}
+                              style={[styles.inputtext]}
                               placeholder={translate(
                                 "Enter your website's URL"
                               )}
