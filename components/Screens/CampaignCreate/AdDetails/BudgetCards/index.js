@@ -21,12 +21,6 @@ export class BudgetCards extends Component {
     let x = event.nativeEvent.contentOffset.x;
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
   };
-  componentDidMount() {
-    if (this.props.data)
-      this.setState({
-        customValue: this.props.data.campaignInfo.lifetime_budget_micro
-      });
-  }
   componentDidUpdate(prevProps) {
     if (
       this.props.budgetOption !== prevProps.budgetOption &&
@@ -36,6 +30,13 @@ export class BudgetCards extends Component {
         // only works in time out for somee reason
         this.budgetScrollView.scrollToEnd();
       }, 100);
+    }
+    if (prevProps.recBudget !== this.props.recBudget && this.props.data) {
+      this.setState({
+        customValue: this.props.data.hasOwnProperty("campaignInfo")
+          ? this.props.data.campaignInfo.lifetime_budget_micro
+          : this.props.recBudget
+      });
     }
   }
   handleCustomBudgetSelect = () => {
@@ -96,7 +97,6 @@ export class BudgetCards extends Component {
     let { _handleBudget, value, recBudget, budgetOption } = this.props;
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
-    console.log(this.state.customValue);
 
     let cards = [
       { recBudget, id: 1 },
