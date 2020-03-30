@@ -842,13 +842,13 @@ class CreateBusinessAccount extends Component {
             >
               <Input
                 onSubmitEditing={() => {
-                  this.focusTheField("inputE");
+                  if (this.inputs["inputE"]) this.focusTheField("inputE");
                 }}
+                blurOnSubmit={!this.inputs["inputE"]}
                 ref={input => {
                   this.inputs["inputBN"] = input;
                 }}
-                blurOnSubmit={false}
-                returnKeyType={"next"}
+                returnKeyType={this.inputs["inputE"] ? "next" : "default"}
                 style={styles.inputText}
                 autoCorrect={false}
                 disabled={
