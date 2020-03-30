@@ -35,7 +35,7 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: "50%",
+    left: "23%",
     bottom: "70%",
     backgroundColor: globalColors.green,
     borderRadius: 50,

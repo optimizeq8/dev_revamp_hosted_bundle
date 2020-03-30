@@ -1127,6 +1127,7 @@ class AdDetails extends Component {
                       budgetOption={this.state.budgetOption}
                       _handleBudget={this._handleBudget}
                       screenProps={this.props.screenProps}
+                      data={this.props.data}
                     />
 
                     {/*---------leave if in case we want to use it again---------*/}

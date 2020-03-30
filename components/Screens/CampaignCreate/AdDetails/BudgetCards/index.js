@@ -12,21 +12,92 @@ import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
 export class BudgetCards extends Component {
-  state = { placeholder: false, scrollX: 1 };
+  state = {
+    placeholder: false,
+    scrollX: 1,
+    customValue: this.props.recBudget
+  };
   handleFading = event => {
     let x = event.nativeEvent.contentOffset.x;
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
   };
+  componentDidMount() {
+    if (this.props.data)
+      this.setState({
+        customValue: this.props.data.campaignInfo.lifetime_budget_micro
+      });
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.budgetOption !== prevProps.budgetOption &&
+      this.props.budgetOption === 0
+    ) {
+      setTimeout(() => {
+        // only works in time out for somee reason
+        this.budgetScrollView.scrollToEnd();
+      }, 100);
+    }
+  }
+  handleCustomBudgetSelect = () => {
+    this.setState({ placeholder: true });
+    this.props._handleBudget(
+      this.state.customValue === 0
+        ? "$" + this.props.recBudget
+        : this.state.customValue,
+      this.state.customValue === 0
+        ? this.props.recBudget
+        : this.state.customValue,
+      false,
+      0
+    );
+    this.setState({
+      customValue:
+        this.state.customValue === 0
+          ? this.props.recBudget
+          : this.state.customValue
+    });
+    setTimeout(() => {
+      //wait untill moenyField is mounted becuase it's conditionally rendered
+      this.moneyField.getElement().focus();
+    }, 10);
+  };
+
+  handleCustomBudgetChange = (value, rawText) => {
+    if (!isNaN(rawText)) {
+      this.props._handleBudget(value, rawText, false, 0);
+      this.setState({ customValue: rawText });
+    } else {
+      this.props._handleBudget(
+        this.state.customValue,
+        this.state.customValue,
+        false,
+        0
+      );
+    }
+  };
+
+  handleCustomBudgetFocus = () => {
+    this.setState({ placeholder: true });
+  };
+
+  handleCustomBudgetBlur = () => {
+    if (this.state.placeholder)
+      this.props._handleBudget(
+        this.state.customValue,
+        this.state.customValue,
+        true,
+        0
+      );
+    this.setState({
+      placeholder: false
+    });
+  };
   render() {
-    let {
-      _handleBudget,
-      value,
-      recBudget,
-      lifetime_budget_micro,
-      budgetOption
-    } = this.props;
+    let { _handleBudget, value, recBudget, budgetOption } = this.props;
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
+    console.log(this.state.customValue);
+
     let cards = [
       { recBudget, id: 1 },
       { recBudget: recBudget * 2, id: 2 },
@@ -56,10 +127,12 @@ export class BudgetCards extends Component {
             onScroll={this.handleFading}
             scrollEventThrottle={100}
             horizontal
+            ref={ref => (this.budgetScrollView = ref)}
             style={styles.budgetCardsStyle}
             contentContainerStyle={styles.scrollContainerStyle}
             showsHorizontalScrollIndicator={false}
           >
+            {cards}
             <View
               style={[
                 styles.budgetCardStyle,
@@ -70,10 +143,7 @@ export class BudgetCards extends Component {
               (value === "$0" && !this.state.placeholder) ? (
                 <TouchableOpacity
                   style={{ flex: 1, justifyContent: "center" }}
-                  onPress={() => {
-                    this.setState({ placeholder: true });
-                    _handleBudget("$0", 0, false, 0);
-                  }}
+                  onPress={this.handleCustomBudgetSelect}
                 >
                   <Text
                     style={[
@@ -99,20 +169,14 @@ export class BudgetCards extends Component {
                     delimiter: ",",
                     unit: "$"
                   }}
-                  focus={this.state.placeholder}
+                  selectTextOnFocus={true}
                   maxLength={8}
-                  value={value + ""}
-                  onChangeText={(value, rawText) => {
-                    _handleBudget(value, rawText, false, 0);
-                  }}
-                  onFocus={() => {
-                    this.setState({ placeholder: true });
-                    _handleBudget("$0", 0, false, 0);
-                  }}
-                  onBlur={() => {
-                    _handleBudget(value, lifetime_budget_micro, true, 0);
-                    this.setState({ placeholder: false });
-                  }}
+                  value={this.state.customValue}
+                  onChangeText={(value, rawText) =>
+                    this.handleCustomBudgetChange(value, rawText)
+                  }
+                  onFocus={this.handleCustomBudgetFocus}
+                  onBlur={this.handleCustomBudgetBlur}
                   style={[
                     styles.budget,
                     {
@@ -127,7 +191,6 @@ export class BudgetCards extends Component {
                 />
               )}
             </View>
-            {cards}
           </ScrollView>
         </MaskedViewIOS>
       </View>

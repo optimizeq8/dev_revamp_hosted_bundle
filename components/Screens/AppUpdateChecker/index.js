@@ -76,7 +76,7 @@ class AppUpdateChecker extends PureComponent {
         else this.setState({ statusLoading: false });
       }
     } catch (e) {
-      Sentry.captureException(e);
+      !__DEV__ && Sentry.captureException(e);
       this.setState({
         status: "",
         statusLoading: false,

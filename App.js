@@ -98,7 +98,7 @@ const myErrorHandler = (e, isFatal) => {
         );
       }
     }
-    Sentry.captureException(e);
+    if (!__DEV__) Sentry.captureException(e);
     // store.dispatch(actionCreators.logout(NavigationService));
   }
   // isFatal: if the error is fatal and will kill the app

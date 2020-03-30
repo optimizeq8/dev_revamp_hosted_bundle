@@ -508,9 +508,9 @@ class AdObjective extends Component {
                   dateField={this.dateField}
                 />
               </Animatable.View>
-              <Text style={styles.minBudget}>
+              {/* <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
-              </Text>
+              </Text> */}
               <View style={[styles.input2]}>
                 <ModalField
                   stateName={"objective"}
