@@ -99,7 +99,10 @@ class SelectDevices extends Component {
                   readOnlyHeadings={false}
                   selectChildren={true}
                   filterItems={(searchText, items) => {
-                    if (this.state.deviceBrands.length !== 0) {
+                    if (
+                      this.state.deviceBrands &&
+                      this.state.deviceBrands.length !== 0
+                    ) {
                       return items.filter(device =>
                         device.name
                           .toLowerCase()

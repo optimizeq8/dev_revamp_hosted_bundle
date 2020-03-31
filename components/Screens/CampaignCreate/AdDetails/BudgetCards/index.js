@@ -34,7 +34,7 @@ export class BudgetCards extends Component {
     if (prevProps.recBudget !== this.props.recBudget && this.props.data) {
       this.setState({
         customValue: this.props.data.hasOwnProperty("campaignInfo")
-          ? this.props.data.campaignInfo.lifetime_budget_micro
+          ? this.props.lifetime_budget_micro
           : this.props.recBudget
       });
     }
