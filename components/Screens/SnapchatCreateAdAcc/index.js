@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 // Style
 import styles, { htmlStyles } from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import { globalColors } from "../../../GlobalStyles";
 
 class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
@@ -109,7 +110,13 @@ class SnapchatCreateAdAcc extends Component {
                   ? "https://www.snap.com/ar/ad-policies"
                   : "https://www.snap.com/en-GB/ad-policies"
               }}
-              renderLoading={() => <Loading top={40} />}
+              renderLoading={() => (
+                <ActivityIndicator
+                  color={globalColors.orange}
+                  style={{ bottom: "50%" }}
+                  size="large"
+                />
+              )}
               style={styles.webview}
               contentContainerStyle={[styles.contentWebView]}
               ref={ref => (this.webview = ref)}
