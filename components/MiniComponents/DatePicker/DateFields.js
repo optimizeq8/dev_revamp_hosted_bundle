@@ -263,6 +263,7 @@ class DateFields extends Component {
       );
       this.props.navigation.dispatch(resetAction);
     }
+    this.setState({ resumeLoading: false });
   };
 
   render() {
@@ -323,8 +324,9 @@ class DateFields extends Component {
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });
-                    this.props.handleClosingContinueModal &&
-                      this.props.handleClosingContinueModal();
+                    if (this.state.outdatedDate) {
+                      this.props.navigation.goBack();
+                    }
                   }}
                   topRightButtonText={translate("Reset")}
                   topRightButtonFunction={this.handleReset}
