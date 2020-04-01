@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="116" height="211" viewBox="0 0 116 211">
     <rect id="Rectangle_2138" data-name="Rectangle 2138" width="104" height="189" rx="18" transform="translate(6 24)" fill="rgba(0,0,0,0.18)"/>
-    <g id="Rectangle_2132" data-name="Rectangle 2132" fill="#fff" stroke="#707070" stroke-width="6">
+    <g id="Rectangle_2132" data-name="Rectangle 2132" fill="#fff" stroke="#000" stroke-width="6">
       <rect width="116" height="211" rx="18" stroke="none"/>
       <rect x="3" y="3" width="110" height="205" rx="15" fill="none"/>
     </g>
@@ -40,5 +40,5 @@
       </g>
       <circle id="Ellipse_364-4" data-name="Ellipse 364" cx="7.5" cy="7.5" r="7.5" transform="translate(2.509 3.109)" fill="#c1c1c1"/>
     </g>
-    <path id="Rectangle_2137" data-name="Rectangle 2137" d="M0,0H58a0,0,0,0,1,0,0V7a5,5,0,0,1-5,5H5A5,5,0,0,1,0,7V0A0,0,0,0,1,0,0Z" transform="translate(30 4)" fill="#707070"/>
+    <path id="Rectangle_2137" data-name="Rectangle 2137" d="M0,0H58a0,0,0,0,1,0,0V7a5,5,0,0,1-5,5H5A5,5,0,0,1,0,7V0A0,0,0,0,1,0,0Z" transform="translate(30 4)" fill="#000"/>
 </svg>

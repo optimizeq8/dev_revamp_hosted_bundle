@@ -11,6 +11,15 @@ import GoogleSearchAd from "../../assets/SVGs/AdType/Google/GoogleSearchAd";
 import InstagramFeedAd from "../../assets/images/AdTypes/Instagram/InstagramFeedAd";
 import InstagramStoryAd from "../../assets/images/AdTypes/Instagram/InstagramStoryAd";
 
+// ICONS for description:
+
+import Corporate from "../../assets/SVGs/AdTypeSuitableForIcons/Corporate";
+import Hand from "../../assets/SVGs/AdTypeSuitableForIcons/Hand";
+import Mortgage from "../../assets/SVGs/AdTypeSuitableForIcons/Mortgage";
+import OnlineStore from "../../assets/SVGs/AdTypeSuitableForIcons/OnlineStore";
+import StartUp from "../../assets/SVGs/AdTypeSuitableForIcons/StartUp";
+import StoryTeller from "../../assets/SVGs/AdTypeSuitableForIcons/StoryTeller";
+
 export const snapAds = [
   {
     id: 1,
@@ -23,7 +32,23 @@ export const snapAds = [
     media: require("../../assets/images/AdTypes/SnapAd.gif"),
     icon: AdIcons.SnapAd,
     channelIcon: Snapchat,
-    image: SnapAd
+    image: SnapAd,
+    description:
+      "Snap Ads are full screen 3-10 second videos or images that get shown to users between their friends’ stories Snap Ads are a great way to advertise no matter what service or product you’re promoting",
+    suitableFor: [
+      {
+        icon: Mortgage,
+        name: "Home Businesses"
+      },
+      {
+        icon: Hand,
+        name: "Service Providers"
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs"
+      }
+    ]
   },
   {
     id: 2,
@@ -36,7 +61,19 @@ export const snapAds = [
     media: require("../../assets/images/AdTypes/StoryAd.gif"),
     icon: AdIcons.StoryAd,
     channelIcon: Snapchat,
-    image: StoryAd
+    image: StoryAd,
+    description:
+      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+    suitableFor: [
+      {
+        icon: Corporate,
+        name: "Corporate"
+      },
+      {
+        icon: StoryTeller,
+        name: "Story-Tellers"
+      }
+    ]
   },
   {
     id: 3,
@@ -49,7 +86,15 @@ export const snapAds = [
     media: require("../../assets/images/AdTypes/CollectionAd.gif"),
     icon: AdIcons.CollectionAd,
     channelIcon: Snapchat,
-    image: CollectionAd
+    image: CollectionAd,
+    description:
+      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+    suitableFor: [
+      {
+        icon: OnlineStore,
+        name: "E-COMMERCE & Online Stores"
+      }
+    ]
   }
 ];
 
@@ -65,7 +110,22 @@ export const googleAds = [
     media: require("../../assets/images/AdTypes/GoogleAdEx.png"),
     icon: AdIcons.GoogleSE,
     channelIcon: GoogleAds,
-    image: GoogleSearchAd
+    image: GoogleSearchAd,
+    description: " ",
+    suitableFor: [
+      {
+        icon: Mortgage,
+        name: "Home Businesses"
+      },
+      {
+        icon: Hand,
+        name: "Service Providers"
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs"
+      }
+    ]
   }
 ];
 
@@ -76,13 +136,28 @@ export const instagramAds = [
     text: "Create Your Ad Now!",
     rout: "InstagramFeedAdObjective",
     createRout: "InstagramFeedAdObjective",
-    title: "Instagram Feed",
+    title: "Feed",
     value: "InstagramFeedAd",
     media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
       .default,
     icon: AdIcons.InstagramFeed,
     channelIcon: Instagram,
-    image: InstagramFeedAd
+    image: InstagramFeedAd,
+    description: " ",
+    suitableFor: [
+      {
+        icon: Mortgage,
+        name: "Home Businesses"
+      },
+      {
+        icon: Hand,
+        name: "Service Providers"
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs"
+      }
+    ]
   }
   // {
   //   id: 2,
@@ -90,12 +165,27 @@ export const instagramAds = [
   //   text: "Create Your Ad Now!",
   //   rout: "InstagramStoryAdObjective",
   //   createRout: "InstagramStoryAdObjective",
-  //   title: "Instagram Story",
+  //   title: "Story",
   //   value: "InstagramStoryAd",
   //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
   //     .default,
   //   icon: AdIcons.InstagramStory,
   //   channelIcon: Instagram,
-  //   image: InstagramStoryAd
+  //   image: InstagramStoryAd,
+  //   description: "",
+  //   suitableFor: [
+  //     {
+  //       icon: Mortgage,
+  //       name: "Home Businesses"
+  //     },
+  //     {
+  //       icon: Hand,
+  //       name: "Service Providers"
+  //     },
+  //     {
+  //       icon: StartUp,
+  //       name: "Startups & SMEs"
+  //     }
+  //   ]
   // }
 ];

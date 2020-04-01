@@ -83,6 +83,29 @@ export class TargetAudience extends Component {
           >
             <TouchableOpacity
               disabled={loading}
+              onPress={() => this.callFunction("selectors", "countries")}
+              style={styles.targetTouchable}
+            >
+              <View style={globalStyles.row}>
+                <LocationIcon width={30} height={30} style={styles.icon} />
+
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Location")}</Text>
+                  <Text style={styles.menudetails}>
+                    {countries_names}, {regions_names}
+                  </Text>
+                </View>
+              </View>
+              {startEditing &&
+                (countries_names.length !== 0 || regions_names.length !== 0 ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={loading}
               onPress={() => this.callFunction("genders")}
               style={styles.targetTouchable}
             >
@@ -139,29 +162,6 @@ export class TargetAudience extends Component {
                   <PlusCircleIcon width={30} height={30} />
                 ))}
             </TouchableOpacity> */}
-
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("selectors", "countries")}
-              style={styles.targetTouchable}
-            >
-              <View style={globalStyles.row}>
-                <LocationIcon width={30} height={30} style={styles.icon} />
-
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Location")}</Text>
-                  <Text style={styles.menudetails}>
-                    {countries_names}, {regions_names}
-                  </Text>
-                </View>
-              </View>
-              {startEditing &&
-                (countries_names.length !== 0 || regions_names.length !== 0 ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
 
             {/*
             

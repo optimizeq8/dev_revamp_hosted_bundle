@@ -6,7 +6,7 @@
  </g>
  <g>
   <title>Layer 1</title>
-  <g stroke-width="6" stroke="#707070" fill="#fff" id="Rectangle_2132">
+  <g stroke-width="6" stroke="#000" fill="#fff" id="Rectangle_2132">
    <rect x="3" y="3" id="svg_1" rx="18" height="211" width="116"/>
    <rect id="svg_2" fill="none" rx="15" height="205" width="110" y="6" x="6"/>
   </g>
@@ -25,6 +25,6 @@
     <rect x="85" y="174" fill="#fefb00" rx="2" height="21" width="21" id="Rectangle_2199-4"/>
    </g>
   </g>
-  <path fill="#707070" d="m33,7l58,0a0,0 0 0 1 0,0l0,5a5,5 0 0 1 -5,5l-48,0a5,5 0 0 1 -5,-5l0,-5a0,0 0 0 1 0,0z" id="Rectangle_2137"/>
+  <path fill="#000" d="m33,7l58,0a0,0 0 0 1 0,0l0,5a5,5 0 0 1 -5,5l-48,0a5,5 0 0 1 -5,-5l0,-5a0,0 0 0 1 0,0z" id="Rectangle_2137"/>
  </g>
 </svg>
