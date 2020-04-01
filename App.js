@@ -76,6 +76,7 @@ import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -134,6 +135,12 @@ class App extends React.Component {
     };
     // Instruct SplashScreen not to hide yet
     SplashScreen.preventAutoHide();
+    const adjustConfig = new AdjustConfig(
+      "c698tyk65u68",
+      AdjustConfig.EnvironmentSandbox
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    Adjust.create(adjustConfig);
   }
 
   _loadAsync = async () => {
@@ -279,6 +286,7 @@ class App extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    Adjust.componentWillUnmount();
   }
 
   getCurrentRouteName = navigationState => {
