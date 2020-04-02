@@ -6,18 +6,15 @@ import {
   BackHandler,
   Platform,
   I18nManager,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
+  Text
 } from "react-native";
-import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import * as Animatable from "react-native-animatable";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import LowerButton from "../../../MiniComponents/LowerButton";
-import AdTypeCard from "./AdTypeCard";
-import CustomHeader from "../../../MiniComponents/Header";
+import { LinearGradient } from "expo-linear-gradient";
 
-//Icons
-import BackDrop from "../../../MiniComponents/BackDrop";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import CustomHeader from "../../../MiniComponents/Header";
 
 //Style
 import styles from "./styles";
@@ -30,41 +27,26 @@ import * as actionCreators from "../../../../store/actions";
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
 import { snapAds, googleAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
-import { widthPercentageToDP } from "react-native-responsive-screen";
-
-import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 class AdType extends Component {
   static navigationOptions = {
     header: null
   };
   state = {
-    activeSlide: 0,
-    // media_type:
-    //   Platform.OS === "android" && I18nManager.isRTL
-    //     ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
-    //     : snapAds,
-    media_type:
-      Platform.OS === "android" && I18nManager.isRTL
-        ? [...instagramAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
-        : instagramAds,
-    isVisible: false,
+    active: "Snapchat",
+    ad_type_array: snapAds,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...SocialPlatforms].reverse()
         : SocialPlatforms,
-    // campaign_type: "SnapAd",
-    // route: "AdObjective",
-    campaign_type: "InstagramFeedAd",
-    route: "InstagramFeedAdObjective",
-    inverted: Platform.OS === "android" && I18nManager.isRTL
+    route: "AdObjective"
   };
 
   componentDidMount() {
-    // console.log("this.props.data", this.props.data);
-    if (this.props.data && this.props.data.hasOwnProperty("index")) {
-      this.navigationRouteHandler(this.props.data.index);
-    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -76,57 +58,8 @@ class AdType extends Component {
     Segment.trackWithProperties("Closed Ad Type", {
       business_name: this.props.mainBusiness.businessname
     });
-
     this.props.navigation.navigate("Dashboard");
-
     return true;
-  };
-
-  navigationRouteHandler = index => {
-    let activeSlide = index;
-    if (this.state.inverted) {
-      const reversedSnapAds = [...this.state.media_type].reverse(); //Needed to spread the state array becuase it was reversing the array every time you switch between slides
-      // console.log("reversedSnapAds", reversedSnapAds);
-      let campaign_type = reversedSnapAds[index].value;
-      // console.log("index", index);
-      // console.log("campaign_type reverse", campaign_type);
-      let route = reversedSnapAds[index].rout;
-      this.setState({ route, campaign_type, activeSlide });
-    } else {
-      let campaign_type = this.state.media_type[index].value;
-      // console.log("campaign_type", campaign_type);
-      let route = this.state.media_type[index].rout;
-      this.setState({
-        route,
-        campaign_type,
-        activeSlide
-      });
-    }
-  };
-
-  handleMediaChange = index => {
-    let route = "";
-    let media_type = "";
-
-    switch (index) {
-      case 0:
-        route = "AdObjective";
-        media_type = this.state.inverted ? [...snapAds].reverse() : snapAds;
-        break;
-      case 1:
-        route = "GoogleAdInfo";
-        media_type = googleAds;
-        break;
-      case 2:
-        route = "InstagramFeedAdObjective";
-        media_type = instagramAds;
-        break;
-    }
-    // To set campaign type by deafult to 1st value of the respective media type selected
-    let campaign_type = media_type[0].value;
-    // console.log("campaign_tpe selected", campaign_type);
-
-    this.setState({ route, media_type, activeSlide: 0, campaign_type });
   };
 
   navigationHandler = adType => {
@@ -138,204 +71,297 @@ class AdType extends Component {
       Segment.trackWithProperties("Navigate to VerifyAccount", {
         step: 1,
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       this.props.navigation.navigate("VerifyAccount");
     } else {
       Segment.trackWithProperties("Selected Ad Type", {
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       Segment.trackWithProperties("Completed Checkout Step", {
         step: 1,
         business_name: this.props.mainBusiness.businessname,
-        campaign_type: this.state.campaign_type
+        campaign_type: adType.value
       });
       if (
-        this.props.adType !== this.state.campaign_type &&
+        this.props.adTypeInstagram !== adType.value &&
+        !this.props.incompleteCampaignInstagram
+      ) {
+        this.props.resetCampaignInfoInstagram(true);
+      }
+      if (
+        this.props.adType !== adType.value &&
         !this.props.incompleteCampaign
       ) {
         this.props.resetCampaignInfo(true);
       }
-      if (!this.props.incompleteCampaign) {
-        this.props.set_adType(this.state.campaign_type);
+      if (!this.props.incompleteCampaign && adType.mediaType === "snapchat") {
+        this.props.set_adType(adType.value);
+      }
+      if (
+        !this.props.incompleteCampaignInstagram &&
+        adType.mediaType === "instagram"
+      ) {
+        this.props.set_adType_instagram(adType.value);
       }
       if (
         !this.props.mainBusiness.snap_ad_account_id &&
-        (adType.mediaType === "snapchat" ||
-          this.state.media_type[0].mediaType === "snapchat")
+        adType.mediaType === "snapchat"
       ) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
       } else if (
         !this.props.mainBusiness.google_account_id &&
-        (adType.mediaType === "google" ||
-          this.state.media_type[0].mediaType === "google")
+        adType.mediaType === "google"
       ) {
         this.props.navigation.navigate("GoogleCreateAdAcc");
       } else if (
         this.props.mainBusiness.google_account_id &&
-        (adType.mediaType === "google" ||
-          this.state.media_type[0].mediaType === "google") &&
+        adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
       } else
-        this.props.navigation.navigate(adType.rout || this.state.route, {
-          tempAdType: this.state.campaign_type
+        this.props.navigation.navigate(adType.rout, {
+          tempAdType: adType.value
         });
     }
-
-    // this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
-  _renderItem = ({ item }) => {
-    let MediaIcon = item.icon.type;
-    const { translate } = this.props.screenProps;
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          this.media_carousel.snapToItem(item.id - 1);
-        }}
-        style={styles.slide}
-      >
-        <MediaIcon
-          fill="#fff"
-          width={"75%"}
-          height={"75%"}
-          style={styles.slideIcon}
-        />
-        <Text style={styles.iconTitle}>{translate(item.title)}</Text>
-      </TouchableOpacity>
+  getValuebasedOnActiveSlide = () => {
+    let backgroundColor = "#0000";
+    let textColor = "#FFF";
+    const index = SocialPlatforms.findIndex(
+      sP => sP.title === this.state.active
     );
+    let MainIcon = SocialPlatforms[index].headingIcon.type;
+    let ad_type_array = [];
+    switch (this.state.active) {
+      case "Snapchat":
+        backgroundColor = "#FEFB00";
+        textColor = "#000";
+        ad_type_array = snapAds;
+        break;
+      case "Google":
+        backgroundColor = "#4285F4";
+        textColor = "#FFF";
+        ad_type_array = googleAds;
+        break;
+      case "Instagram":
+        backgroundColor = "#4300D9";
+        textColor = "#FFF";
+        ad_type_array = instagramAds;
+        break;
+    }
+
+    return {
+      backgroundColor,
+      textColor,
+      MainIcon,
+      ad_type_array
+    };
   };
 
-  _renderSlides = ({ item }) => {
-    return (
-      <AdTypeCard
-        key={item.value}
-        navigationHandler={this.navigationHandler}
-        mainBusiness={this.props.mainBusiness}
-        campaign_type={this.state.campaign_type}
-        adType={item}
-        screenProps={this.props.screenProps}
-      />
-    );
+  setActiveCampaignType = title => {
+    Segment.screenWithProperties(`Ad Type ${title}`, {
+      category: "Campaign Creation"
+    });
+    this.setState({
+      active: title
+    });
   };
-  setModalVisible = (isVisible, resetCampaign) => {
-    this.setState({ isVisible });
-    resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
-  };
+
   render() {
     const { translate } = this.props.screenProps;
+    const {
+      backgroundColor,
+      textColor,
+      MainIcon,
+      ad_type_array
+    } = this.getValuebasedOnActiveSlide();
+
     return (
       <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
+        forceInset={{ top: "always", bottom: "never" }}
+        style={[
+          {
+            backgroundColor: backgroundColor
+          },
+          styles.safeAreaView
+        ]}
       >
+        {this.state.active === "Instagram" && (
+          <LinearGradient
+            colors={["#DC8B61", "#4300D9"]}
+            start={[0, 0]}
+            end={[0.7, 0.25]}
+            style={styles.gradient}
+          />
+        )}
         <NavigationEvents
           onDidFocus={() => {
-            Segment.screenWithProperties("Ad Type", {
+            Segment.screenWithProperties("Ad Type Snapchat", {
               category: "Campaign Creation"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               step: 1,
-              business_name: this.props.mainBusiness.businessname,
-              campaign_type: this.state.campaign_type
+              business_name: this.props.mainBusiness.businessname
             });
           }}
         />
-        <Container style={styles.container}>
-          <BackDrop />
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            closeButton={true}
-            segment={{
-              str: "Ad Type Close",
-              obj: { businessname: this.props.mainBusiness.businessname }
-            }}
-            navigation={this.props.navigation}
-            title={"Create a new campaign!"}
-          />
 
-          <View style={{ height: 90 }}>
-            <Carousel
-              ref={c => {
-                this.media_carousel = c;
-              }}
-              enableMomentum={true}
-              onSnapToItem={indx => this.handleMediaChange(indx)}
-              inactiveSlideScale={0.75}
-              data={this.state.socialMediaPlatforms}
-              renderItem={this._renderItem}
-              sliderWidth={widthPercentageToDP(100)}
-              itemWidth={110}
-              inverted={this.state.inverted}
-            />
-          </View>
-          <Carousel
-            firstItem={this.props.data ? this.props.data.index : 0}
-            ref={c => {
-              this._carousel = c;
-            }}
-            onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={this.state.media_type}
-            renderItem={this._renderSlides}
-            sliderWidth={widthPercentageToDP(100)}
-            itemWidth={
-              Platform.OS === "android"
-                ? widthPercentageToDP(
-                    this.state.route === "GoogleAdInfo" ? 80 : 60
-                  )
-                : widthPercentageToDP(70)
-            }
-            inactiveSlideScale={0.8}
-            inverted={this.state.inverted}
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          closeButton={true}
+          titelStyle={{ color: textColor }}
+          iconColor={textColor}
+          segment={{
+            str: "Ad Type Close",
+            obj: { businessname: this.props.mainBusiness.businessname }
+          }}
+          navigation={this.props.navigation}
+        />
+
+        <View style={{ paddingHorizontal: 26 }}>
+          <Text
+            style={[
+              styles.createANewText,
+              {
+                color: textColor
+              }
+            ]}
+          >
+            {translate("Create a new")}
+          </Text>
+          <ScrollView horizontal>
+            {SocialPlatforms.map(social => {
+              let MediaIcon = social.icon.type;
+              return (
+                <TouchableOpacity
+                  key={social.title}
+                  onPress={() => this.setActiveCampaignType(social.title)}
+                  style={[
+                    styles.mediaIcon,
+                    this.state.active === social.title && styles.activeMediaIcon
+                  ]}
+                >
+                  <MediaIcon width={"100%"} height={"100%"} />
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+          <MainIcon
+            width={widthPercentageToDP(70)}
+            style={[
+              styles.mainIcon,
+              this.state.active === "Google" && styles.googleMainIcon,
+              {
+                right:
+                  this.state.active === "Google" && I18nManager.isRTL
+                    ? widthPercentageToDP(-20)
+                    : this.state.active === "Google" && !I18nManager.isRTL
+                    ? widthPercentageToDP(-32)
+                    : widthPercentageToDP(-22),
+                top:
+                  this.state.active === "Google"
+                    ? heightPercentageToDP(-5)
+                    : heightPercentageToDP(-10)
+              }
+            ]}
           />
-          <Pagination
-            containerStyle={{
-              paddingVertical: 5,
-              bottom: 17
-            }}
-            dotsLength={this.state.media_type.length}
-            activeDotIndex={this.state.activeSlide}
-            dotStyle={{
-              width: 15,
-              height: 15,
-              borderRadius: 50,
-              marginHorizontal: 8,
-              backgroundColor: "rgba(255, 255, 255, 0.92)"
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
-          <View style={{ height: 70, marginBottom: 10 }}>
-            <Animatable.View animation={"fadeIn"}>
-              <LowerButton
-                style={styles.proceedButtonRTL}
-                function={this.navigationHandler}
-                bottom={1}
-              />
-            </Animatable.View>
-          </View>
-        </Container>
+          <Text
+            style={[
+              styles.headingText,
+              {
+                color: textColor
+              }
+            ]}
+          >
+            {translate(this.state.active)}
+            <Text
+              style={[
+                styles.campaignText,
+                {
+                  color: textColor
+                }
+              ]}
+            >
+              {" " + translate("Campaign")}
+            </Text>
+          </Text>
+        </View>
+        <View style={styles.mainView}>
+          <Text style={styles.selectADTypeText}>
+            {translate(`Select {{activeSlide}} Ad Type`, {
+              activeSlide: this.state.active
+            })}
+          </Text>
+          <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {ad_type_array.map(item => {
+              let Image = item.image;
+              return (
+                <View key={item.title} style={styles.cardView}>
+                  <Image style={styles.adTypeImage} />
+                  <View style={styles.descriptionView}>
+                    <Text style={styles.titleText}>
+                      {translate(item.title)}
+                    </Text>
+                    <Text style={styles.description}>
+                      {translate(item.description)}
+                    </Text>
+                    <Text style={styles.suitableForText}>
+                      {translate("Suitable For:")}
+                    </Text>
+                    {item.suitableFor.map(point => {
+                      let Icon = point.icon;
+                      return (
+                        <View
+                          key={point.name}
+                          style={styles.suitablePointsView}
+                        >
+                          <Icon />
+                          <Text style={styles.suitablePoints}>
+                            {translate(point.name)}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <LowerButton
+                    style={styles.lowerButton}
+                    width={12}
+                    height={15}
+                    bottom={2}
+                    function={() => {
+                      this.navigationHandler(item);
+                    }}
+                  />
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  data: state.campaignC.data,
   adType: state.campaignC.adType,
+  adTypeInstagram: state.instagramAds.adType,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  incompleteCampaignInstagram: state.instagramAds.incompleteCampaign,
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  set_adType_instagram: value =>
+    dispatch(actionCreators.set_adType_instagram(value)),
   resetCampaignInfo: resetAdType =>
-    dispatch(actionCreators.resetCampaignInfo(resetAdType))
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  resetCampaignInfoInstagram: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

@@ -58,7 +58,6 @@ class CampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
-    console.log("campaign insta", this.props.campaign);
 
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
