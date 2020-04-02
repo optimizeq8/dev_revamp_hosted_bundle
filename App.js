@@ -78,9 +78,11 @@ import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 
 import * as Sentry from "@sentry/react-native";
-Sentry.init({
-  dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
-});
+if (!__DEV__) {
+  Sentry.init({
+    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
+  });
+}
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 
