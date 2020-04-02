@@ -99,6 +99,9 @@ const myErrorHandler = (e, isFatal) => {
       }
     }
     if (!__DEV__) {
+      let userInfo =
+        store.getState().auth.userInfo || store.getState().register.userInfo;
+      if (userInfo) Sentry.setUser(userInfo);
       Sentry.captureException(e);
     }
     // store.dispatch(actionCreators.logout(NavigationService));
