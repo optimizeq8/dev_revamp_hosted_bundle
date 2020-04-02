@@ -87,17 +87,27 @@ class Dashboard extends Component {
       AdjustConfig.EnvironmentSandbox
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    adjustConfig.setAttributionCallbackListener(function(attribution) {
-      // Printing all attribution properties.
-      console.log("Attribution changed!");
-      console.log(attribution.trackerToken);
-      console.log(attribution.trackerName);
-      console.log(attribution.network);
-      console.log(attribution.campaign);
-      console.log(attribution.adgroup);
-      console.log(attribution.creative);
-      console.log(attribution.clickLabel);
-      console.log(attribution.adid);
+    adjustConfig.setEventTrackingSucceededCallbackListener(function(
+      eventSuccess
+    ) {
+      console.log("Event tracking succeeded callback received");
+      console.log("Message: " + eventSuccess.message);
+      console.log("Timestamp: " + eventSuccess.timestamp);
+      console.log("Adid: " + eventSuccess.adid);
+      console.log("Event token: " + eventSuccess.eventToken);
+      console.log("Callback Id: " + eventSuccess.callbackId);
+      console.log("JSON response: " + eventSuccess.jsonResponse);
+    });
+    adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailure) {
+      // Printing all event failure properties.
+      console.log("Event tracking failed!");
+      console.log(eventFailure.message);
+      console.log(eventFailure.timestamp);
+      console.log(eventFailure.eventToken);
+      console.log(eventFailure.callbackId);
+      console.log(eventFailure.adid);
+      console.log(eventFailure.willRetry);
+      console.log(eventFailure.jsonResponse);
     });
 
     Adjust.create(adjustConfig);
@@ -255,10 +265,15 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       )
         this.props.navigation.navigate("SuspendedWarning");
-      else
+      else {
+        if (adType.value === "SnapAd") {
+          let adjustEvent = new AdjustEvent("kd8uvi");
+          Adjust.trackEvent(adjustEvent);
+        }
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value
         });
+      }
     }
   };
 
@@ -333,7 +348,7 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
-    var adjustEvent = new AdjustEvent("7kk0e6");
+    let adjustEvent = new AdjustEvent("7kk0e6");
     Adjust.trackEvent(adjustEvent);
     if (!this.props.mainBusiness.snap_ad_account_id) {
       Segment.trackWithProperties("Create SnapAd Acount", {
