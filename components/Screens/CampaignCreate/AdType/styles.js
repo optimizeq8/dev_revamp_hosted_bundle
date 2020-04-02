@@ -12,6 +12,15 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(100),
     width: widthPercentageToDP(100)
   },
+  googleMainIcon: {
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.16
+    // elevation: 2
+  },
   safeAreaView: {
     flex: 1
   },
@@ -131,7 +140,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 35,
     borderTopLeftRadius: 35
   },
-  mainIcon: { position: "absolute" }
+  mainIcon: { position: "absolute", zIndex: -2 }
 });
 
 export default styles;

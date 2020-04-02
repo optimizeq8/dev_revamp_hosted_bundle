@@ -254,12 +254,13 @@ class AdType extends Component {
             width={widthPercentageToDP(70)}
             style={[
               styles.mainIcon,
+              this.state.active === "Google" && styles.googleMainIcon,
               {
                 right:
                   this.state.active === "Google" && I18nManager.isRTL
-                    ? widthPercentageToDP(0)
+                    ? widthPercentageToDP(-20)
                     : this.state.active === "Google" && !I18nManager.isRTL
-                    ? widthPercentageToDP(-45)
+                    ? widthPercentageToDP(-32)
                     : widthPercentageToDP(-22),
                 top:
                   this.state.active === "Google"
