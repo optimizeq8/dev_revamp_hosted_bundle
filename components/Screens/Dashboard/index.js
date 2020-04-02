@@ -57,6 +57,7 @@ import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import segmentEventTrack from "../../segmentEventTrack";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -79,6 +80,25 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true
     };
+    const adjustConfig = new AdjustConfig(
+      "c698tyk65u68",
+      AdjustConfig.EnvironmentSandbox
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    adjustConfig.setAttributionCallbackListener(function(attribution) {
+      // Printing all attribution properties.
+      console.log("Attribution changed!");
+      console.log(attribution.trackerToken);
+      console.log(attribution.trackerName);
+      console.log(attribution.network);
+      console.log(attribution.campaign);
+      console.log(attribution.adgroup);
+      console.log(attribution.creative);
+      console.log(attribution.clickLabel);
+      console.log(attribution.adid);
+    });
+
+    Adjust.create(adjustConfig);
     //Logs/gives warnign if a component has any functions that take a while to render
     // slowlog(this, /.*/, {
     //   // verbose: true
@@ -299,6 +319,8 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
+    var adjustEvent = new AdjustEvent("7kk0e6");
+    Adjust.trackEvent(adjustEvent);
     if (!this.props.mainBusiness.snap_ad_account_id) {
       Segment.trackWithProperties("Create SnapAd Acount", {
         category: "Ad Account",
