@@ -22,15 +22,6 @@ export class BudgetCards extends Component {
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
   };
   componentDidUpdate(prevProps) {
-    if (
-      this.props.budgetOption !== prevProps.budgetOption &&
-      this.props.budgetOption === 0
-    ) {
-      setTimeout(() => {
-        // only works in time out for somee reason
-        this.budgetScrollView.scrollToEnd();
-      }, 100);
-    }
     if (prevProps.recBudget !== this.props.recBudget && this.props.data) {
       this.setState({
         customValue: this.props.data.hasOwnProperty("campaignInfo")
@@ -132,7 +123,6 @@ export class BudgetCards extends Component {
             contentContainerStyle={styles.scrollContainerStyle}
             showsHorizontalScrollIndicator={false}
           >
-            {cards}
             <View
               style={[
                 styles.budgetCardStyle,
@@ -191,6 +181,7 @@ export class BudgetCards extends Component {
                 />
               )}
             </View>
+            {cards}
           </ScrollView>
         </MaskedViewIOS>
       </View>

@@ -22,21 +22,8 @@ export class BudgetCards extends Component {
         customValue: this.props.campaign.budget
       });
   }
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.budgetOption !== prevProps.budgetOption &&
-      this.props.budgetOption === 0
-    ) {
-      setTimeout(() => {
-        // only works in time out for somee reason
-        this.budgetScrollView.scrollToEnd();
-      }, 100);
-    }
-  }
 
   handleCustomBudgetSelect = () => {
-    console.log("handleCustomBudgetSelect", this.state.customValue);
-
     this.setState({ placeholder: true });
     this.props._handleBudget(
       this.state.customValue === 0
@@ -101,7 +88,6 @@ export class BudgetCards extends Component {
       budgetOption,
       uploading
     } = this.props;
-    console.log(this.state.customValue);
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
 
@@ -140,7 +126,6 @@ export class BudgetCards extends Component {
             contentContainerStyle={styles.scrollContainerStyle}
             showsHorizontalScrollIndicator={false}
           >
-            {cards}
             <View
               style={[
                 styles.budgetCardStyle,
@@ -201,6 +186,7 @@ export class BudgetCards extends Component {
                 />
               )}
             </View>
+            {cards}
           </ScrollView>
         </MaskedViewIOS>
       </View>
