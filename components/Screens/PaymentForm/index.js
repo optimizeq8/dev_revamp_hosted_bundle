@@ -338,9 +338,7 @@ class PaymentForm extends Component {
     }
     let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
     adjustPaymentFormTracker.setRevenue(
-      this.props.walletUsed
-        ? this.props.campaign_balance_amount
-        : this.props.campaign_budget && this.props.campaign_budget,
+      this.props.campaign_budget && this.props.campaign_budget,
       "USD"
     );
     Adjust.trackEvent(adjustPaymentFormTracker);
