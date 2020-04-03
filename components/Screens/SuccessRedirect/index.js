@@ -17,6 +17,7 @@ import { colors } from "../../GradiantColors/colors";
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
 import { persistor } from "../../../store";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -50,7 +51,15 @@ class SuccessRedirect extends Component {
     //   business_name: this.props.mainBusiness.businessname,
     //   checkout_id: this.props.campaign_id
     // });
-
+    let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+    adjustPaymentTracker.setRevenue(
+      parseFloat(this.props.navigation.state.params.amount),
+      "USD"
+    );
+    adjustPaymentTracker.setTransactionId(
+      this.props.navigation.state.params.paymentId
+    );
+    Adjust.trackEvent(adjustPaymentTracker);
     this.setState(this.props.navigation.state.params, () => {
       // Segment.trackWithProperties("Completed Checkout Step", {
       //   step: 7,

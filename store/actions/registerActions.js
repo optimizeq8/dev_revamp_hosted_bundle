@@ -13,6 +13,7 @@ import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 import segmentEventTrack from "../../components/segmentEventTrack";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 export const verifyBusinessName = (
   businessname,
@@ -123,8 +124,12 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             category: "Sign Up",
             label: "Step 3 of Registration"
           });
+
           const decodedUser = jwt_decode(user.token);
           let peomise = await setAuthToken(user.token);
+          let adjustRegiserTracker = new AdjustEvent("z1mpdo");
+          adjustRegiserTracker.setCallbackId(decodedUser.userid);
+          Adjust.trackEvent(adjustRegiserTracker);
           return { user: decodedUser, message: user.message };
           //if something goes wrong with the registeration process or Front-end verification
           //this will throw an error and stop the regiteration process
@@ -524,7 +529,9 @@ export const registerGuestUser = (
             label: "Step 2 of Registration"
           });
         }
-
+        let adjustRegiserTracker = new AdjustEvent("eivlhl");
+        adjustRegiserTracker.setCallbackId(userInfo.mobile);
+        Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
           showMessage({
             message: data.message,
