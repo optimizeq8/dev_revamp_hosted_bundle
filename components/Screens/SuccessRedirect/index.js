@@ -51,15 +51,27 @@ class SuccessRedirect extends Component {
     //   business_name: this.props.mainBusiness.businessname,
     //   checkout_id: this.props.campaign_id
     // });
-    let adjustPaymentTracker = new AdjustEvent("kdnzgg");
-    adjustPaymentTracker.setRevenue(
-      parseFloat(this.props.navigation.state.params.amount),
-      "USD"
-    );
-    adjustPaymentTracker.setTransactionId(
-      this.props.navigation.state.params.paymentId
-    );
-    Adjust.trackEvent(adjustPaymentTracker);
+    if (this.props.navigation.getParam("isWallet") === "1") {
+      let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
+      adjustWalletPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustWalletPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustWalletPaymentTracker);
+    } else {
+      let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      adjustPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustPaymentTracker);
+    }
     this.setState(this.props.navigation.state.params, () => {
       // Segment.trackWithProperties("Completed Checkout Step", {
       //   step: 7,
@@ -105,6 +117,8 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   render() {
+    console.log(this.props.navigation.state.params.amount);
+
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView

@@ -336,12 +336,18 @@ class PaymentForm extends Component {
         checkout_id: this.props.campaign_id
       });
     }
-    let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
-    adjustPaymentFormTracker.setRevenue(
-      this.props.campaign_budget && this.props.campaign_budget,
-      "USD"
-    );
-    Adjust.trackEvent(adjustPaymentFormTracker);
+    if (this.state.addingCredits) {
+      let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
+      adjustWalletPaymentFormTracker.setRevenue(this.state.amount, "USD");
+      Adjust.trackEvent(adjustWalletPaymentFormTracker);
+    } else {
+      let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
+      adjustPaymentFormTracker.setRevenue(
+        this.props.campaign_budget && this.props.campaign_budget,
+        "USD"
+      );
+      Adjust.trackEvent(adjustPaymentFormTracker);
+    }
   };
   render() {
     const { translate } = this.props.screenProps;

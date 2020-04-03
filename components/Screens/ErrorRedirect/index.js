@@ -21,6 +21,7 @@ import { colors } from "../../GradiantColors/colors";
 import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class ErrorRedirect extends Component {
   static navigationOptions = {
@@ -45,6 +46,27 @@ class ErrorRedirect extends Component {
           ? "Wallet Transaction"
           : "Campaign Transaction"
     });
+    if (this.props.navigation.getParam("isWallet") === "1") {
+      let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
+      adjustWalletPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustWalletPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustWalletPaymentTracker);
+    } else {
+      let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      adjustPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustPaymentTracker);
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
