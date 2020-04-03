@@ -21,6 +21,7 @@ import isUndefined from "lodash/isUndefined";
 
 //Data
 import CountriesList from "../../../Data/countries.googleSE.data";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -91,6 +92,26 @@ class AdPaymentReview extends Component {
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+
+  handleGooglePaymentReviewFocus = () => {
+    this.props.save_google_campaign_steps([
+      "Dashboard",
+      "GoogleAdInfo",
+      "GoogleAdDesign",
+      "GoogleAdTargetting",
+      "GoogleAdPaymentReview"
+    ]);
+    Segment.screenWithProperties("Google Ad Payment Review", {
+      category: "Campaign Creation"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 5,
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_id
+    });
+    let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
+    Adjust.trackEvent(adjustGoogleAdReviewTracker);
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -99,25 +120,7 @@ class AdPaymentReview extends Component {
         style={[styles.safeAreaView]}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            this.props.save_google_campaign_steps([
-              "Dashboard",
-              "GoogleAdInfo",
-              "GoogleAdDesign",
-              "GoogleAdTargetting",
-              "GoogleAdPaymentReview"
-            ]);
-            Segment.screenWithProperties("Google Ad Payment Review", {
-              category: "Campaign Creation"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 5,
-              business_name: this.props.mainBusiness.businessname,
-              checkout_id: this.props.campaign_id
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleGooglePaymentReviewFocus} />
 
         <Container style={[styles.container]}>
           <CustomHeader
