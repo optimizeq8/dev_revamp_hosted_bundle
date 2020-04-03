@@ -26,6 +26,7 @@ import { connect } from "react-redux";
 
 import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -44,6 +45,38 @@ class AdPaymentReview extends Component {
     this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+
+  handlePaymentReviewFocus = () => {
+    this.props.saveCampaignSteps(
+      this.props.adType === "StoryAd"
+        ? [
+            "Dashboard",
+            "AdObjective",
+            "AdCover",
+            "AdDesign",
+            "AdDetails",
+            "AdPaymentReview"
+          ]
+        : [
+            "Dashboard",
+            "AdObjective",
+            "AdDesign",
+            "AdDetails",
+            "AdPaymentReview"
+          ]
+    );
+    Segment.screenWithProperties("Snap Ad Payment Review", {
+      category: "Campaign Creation",
+      channel: "snapchat"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 5,
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_ids
+    });
+    let adjustAdReviewTracker = new AdjustEvent("rag8r1");
+    Adjust.trackEvent(adjustAdReviewTracker);
+  };
   render() {
     const { translate } = this.props.screenProps;
     if (
@@ -105,37 +138,7 @@ class AdPaymentReview extends Component {
           style={[styles.safeAreaView]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              this.props.saveCampaignSteps(
-                this.props.adType === "StoryAd"
-                  ? [
-                      "Dashboard",
-                      "AdObjective",
-                      "AdCover",
-                      "AdDesign",
-                      "AdDetails",
-                      "AdPaymentReview"
-                    ]
-                  : [
-                      "Dashboard",
-                      "AdObjective",
-                      "AdDesign",
-                      "AdDetails",
-                      "AdPaymentReview"
-                    ]
-              );
-              Segment.screenWithProperties("Snap Ad Payment Review", {
-                category: "Campaign Creation",
-                channel: "snapchat"
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                step: 5,
-                business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_ids
-              });
-            }}
-          />
+          <NavigationEvents onDidFocus={this.handlePaymentReviewFocus} />
 
           <Container style={[styles.container]}>
             <CustomHeader

@@ -59,7 +59,7 @@ import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
 import InputField from "../../../MiniComponents/InputField";
 import ModalField from "../../../MiniComponents/ModalField";
-
+import { Adjust, AdjustEvent } from "react-native-adjust";
 class AdObjective extends Component {
   static navigationOptions = {
     header: null
@@ -399,6 +399,26 @@ class AdObjective extends Component {
     });
   };
 
+  handleAdOnjectiveFocus = () => {
+    Segment.screenWithProperties(
+      (this.props.adType === "SnapAd"
+        ? "Snap Ad"
+        : this.props.adType === "StoryAd"
+        ? "Story Ad"
+        : "Collection Ad") + " Objective",
+      {
+        category: "Campaign Creation",
+        channel: "snapchat"
+      }
+    );
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 2,
+      business_name: this.props.mainBusiness.businessname
+    });
+
+    let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
+    Adjust.trackEvent(adjustAdObjectiveTracker);
+  };
   render() {
     let adType = this.props.adType;
     const list = ObjectiveData[this.props.adType].map(o => (
@@ -416,25 +436,7 @@ class AdObjective extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties(
-              (adType === "SnapAd"
-                ? "Snap Ad"
-                : adType === "StoryAd"
-                ? "Story Ad"
-                : "Collection Ad") + " Objective",
-              {
-                category: "Campaign Creation",
-                channel: "snapchat"
-              }
-            );
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 2,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleAdOnjectiveFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />
