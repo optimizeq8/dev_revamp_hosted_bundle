@@ -43,6 +43,7 @@ import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -830,6 +831,31 @@ class AdDetails extends Component {
     }
   };
 
+  handleAdDetailsFocus = () => {
+    this.props.saveCampaignSteps(
+      this.props.adType === "StoryAd"
+        ? ["Dashboard", "AdObjective", "AdCover", "AdDesign", "AdDetails"]
+        : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
+    );
+
+    if (this.editCampaign) {
+      Segment.screenWithProperties("Snap Ad Targetting Update", {
+        category: "Campaign Update"
+      });
+    } else {
+      Segment.screenWithProperties("Snap Ad Targetting", {
+        category: "Campaign Creation",
+        channel: "snapchat"
+      });
+      Segment.trackWithProperties("Viewed Checkout Step", {
+        checkout_id: this.props.campaign_id,
+        step: 4
+      });
+    }
+    let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+    Adjust.trackEvent(adjustAdDetailsTracker);
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1051,36 +1077,7 @@ class AdDetails extends Component {
           ]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              this.props.saveCampaignSteps(
-                this.props.adType === "StoryAd"
-                  ? [
-                      "Dashboard",
-                      "AdObjective",
-                      "AdCover",
-                      "AdDesign",
-                      "AdDetails"
-                    ]
-                  : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
-              );
-
-              if (this.editCampaign) {
-                Segment.screenWithProperties("Snap Ad Targetting Update", {
-                  category: "Campaign Update"
-                });
-              } else {
-                Segment.screenWithProperties("Snap Ad Targetting", {
-                  category: "Campaign Creation",
-                  channel: "snapchat"
-                });
-                Segment.trackWithProperties("Viewed Checkout Step", {
-                  checkout_id: this.props.campaign_id,
-                  step: 4
-                });
-              }
-            }}
-          />
+          <NavigationEvents onDidFocus={this.handleAdDetailsFocus} />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader

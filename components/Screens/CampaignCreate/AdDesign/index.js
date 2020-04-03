@@ -75,6 +75,7 @@ import { formatStoryAd } from "./Functions/formatStoryAd";
 import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -1016,6 +1017,28 @@ class AdDesign extends Component {
         type: collectionAdMainMediaType
       });
   };
+
+  handleAdDesignFocus = () => {
+    if (!this.props.currentCampaignSteps.includes("AdDetails")) {
+      this.props.saveCampaignSteps(
+        this.adType === "StoryAd"
+          ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
+          : ["Dashboard", "AdObjective", "AdDesign"]
+      );
+    }
+    Segment.screenWithProperties("Snap Ad Design", {
+      category: "Campaign Creation",
+      channel: "snapchat"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign_id,
+      step: 3,
+      business_name: this.props.mainBusiness.businessname
+    });
+
+    let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
+    Adjust.trackEvent(adjustAdDesignTracker);
+  };
   render() {
     let {
       media,
@@ -1091,26 +1114,7 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            if (!this.props.currentCampaignSteps.includes("AdDetails")) {
-              this.props.saveCampaignSteps(
-                this.adType === "StoryAd"
-                  ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
-                  : ["Dashboard", "AdObjective", "AdDesign"]
-              );
-            }
-            Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation",
-              channel: "snapchat"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              checkout_id: this.props.campaign_id,
-              step: 3,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleAdDesignFocus} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
