@@ -58,6 +58,7 @@ import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -708,6 +709,9 @@ class CollectionMedia extends Component {
 
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
+  handleAdCollectionMediaFocus = () => {
+    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    Adjust.trackEvent(adjustAdCoverTracker);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -727,6 +731,8 @@ class CollectionMedia extends Component {
             navigation={this.props.navigation}
             title={"Compose Collection Ad"}
           />
+          <NavigationEvents onDidFocus={this.handleAdCollectionMediaFocus} />
+
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <KeyboardShift style={{}}>
               {() => (
