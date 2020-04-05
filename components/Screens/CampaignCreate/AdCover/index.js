@@ -357,7 +357,6 @@ class AdCover extends Component {
         );
         editedLogo.uri !== "" &&
           segmentEventTrack("Selected Story Ad Logo serialization", {
-            index: storyAdCards.selectedStoryAd.index,
             ...serialization
           });
         !this.rejected &&
@@ -475,7 +474,6 @@ class AdCover extends Component {
               this.onToggleModal(false);
               segmentEventTrack("Selected Story Ad Cover Media successfully");
               segmentEventTrack("Selected Story Ad Cover serialization", {
-                index: storyAdCards.selectedStoryAd.index,
                 ...result.serialization
               });
               showMessage({
