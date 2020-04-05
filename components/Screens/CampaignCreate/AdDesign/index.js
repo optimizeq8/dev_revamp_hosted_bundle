@@ -297,7 +297,7 @@ class AdDesign extends Component {
         type: this.adType !== "StoryAd" ? this.props.data.type : ""
       });
     }
-
+    this.validator(true);
     //----keep for later---//
 
     // if (this.props.navigation.state.params) {
@@ -607,7 +607,7 @@ class AdDesign extends Component {
     }
   };
 
-  validator = () => {
+  validator = mount => {
     const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -663,11 +663,13 @@ class AdDesign extends Component {
           ad.hasOwnProperty("destination")
         ))
     ) {
-      showMessage({
-        message: translate("Choose A Swipe Up Destination"),
-        position: "top",
-        type: "warning"
-      });
+      if (!mount) {
+        showMessage({
+          message: translate("Choose A Swipe Up Destination"),
+          position: "top",
+          type: "warning"
+        });
+      }
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
       this.adType === "StoryAd" &&
@@ -697,7 +699,7 @@ class AdDesign extends Component {
         type: "warning"
       });
     }
-    if (mediaError) {
+    if (mediaError && !mount) {
       showMessage({
         message: translate("Please add media to proceed"),
         position: "top",
