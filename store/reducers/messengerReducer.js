@@ -12,8 +12,8 @@ const initialState = {
   subscribed: false,
   open_conversation: false,
   read: true,
-  conversation_status: true,
-  chat_sms_state: false
+  chat_sms_state: false,
+  unread_converstaion: 0
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -53,7 +53,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         read: action.payload,
-        conversation_status: action.payload
+        unread_converstaion: action.payload ? 0 : state.unread_converstaion
       };
     case actionTypes.SET_LAST_SEEN:
       return {
@@ -83,7 +83,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CONVERSATION_STATUS:
       return {
         ...state,
-        conversation_status: action.payload
+        unread_converstaion: action.payload.unread_converstaion
       };
     case actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS:
       return {
