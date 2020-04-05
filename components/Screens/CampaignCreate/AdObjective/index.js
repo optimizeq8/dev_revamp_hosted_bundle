@@ -108,7 +108,8 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid
-      }
+      },
+      objectiveLabel: "Select Objective"
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -152,7 +153,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
+        name: this.props.data.name ? this.props.data.name : "",
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
@@ -271,12 +272,16 @@ class AdObjective extends Component {
   };
 
   _handleSubmission = async () => {
-    let { nameError, objectiveError } = this.state;
+    let { campaignInfo } = this.state;
     let dateErrors = this.dateField.getErrors();
+    let objectiveError = validateWrapper("mandatory", campaignInfo.objective);
+    let nameError = validateWrapper("mandatory", campaignInfo.name);
 
     this.setState({
       start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      end_timeError: dateErrors.end_timeError,
+      objectiveError,
+      nameError
     });
     // In case error in any field keep track
     if (
