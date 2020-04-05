@@ -186,7 +186,7 @@ class App extends React.Component {
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
-        store.getState().messenger.conversation_status
+        store.getState().messenger.unread_converstaion === 0
       ) {
         store.dispatch(
           actionCreators.connect_user_to_intercom(

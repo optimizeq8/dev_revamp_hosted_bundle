@@ -16,6 +16,6 @@
 	<key>TEMPORARY_SDK_VERSION</key>
 	<string>36.0.0</string>
 	<key>developmentUrl</key>
-	<string>optimize://192.168.8.103:19000</string>
+	<string>optimize://192.168.43.104:19000</string>
 </dict>
 </plist>

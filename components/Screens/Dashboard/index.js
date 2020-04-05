@@ -418,14 +418,18 @@ class Dashboard extends Component {
                     }
                     style={[styles.headerIcons]}
                   >
-                    {this.props.conversation_status ? (
+                    {this.props.unread_converstaion === 0 ? (
                       <IntercomIcon width={24} height={24} />
                     ) : (
-                      <IntercomNotificationIcon
-                        width={33}
-                        height={33}
-                        style={{ marginBottom: 6, marginLeft: 3 }}
-                      />
+                      <>
+                        <View style={styles.unreadTextView}>
+                          <Text style={styles.unreadText}>
+                            {this.props.unread_converstaion}
+                          </Text>
+                        </View>
+
+                        <IntercomIcon width={24} height={24} />
+                      </>
                     )}
                   </TouchableOpacity>
                 </>
@@ -698,7 +702,7 @@ const mapStateToProps = state => ({
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  conversation_status: state.messenger.conversation_status,
+  unread_converstaion: state.messenger.unread_converstaion,
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,

@@ -10,6 +10,7 @@ import NavigationService from "../../NavigationService";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
 import { send_push_notification } from "./loginActions";
+import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 import segmentEventTrack from "../../components/segmentEventTrack";
 
@@ -155,6 +156,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           navigation.navigate("RegistrationSuccess");
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
+          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
