@@ -645,7 +645,8 @@ class AdDesign extends Component {
       // !this.rejected &&
       this.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
-      this.state.campaignInfo.call_to_action.label === "BLANK"
+      this.state.campaignInfo.call_to_action.label === "BLANK" &&
+      !mount
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -674,7 +675,8 @@ class AdDesign extends Component {
     } else if (
       this.adType === "StoryAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
-      this.props.storyAdAttachment.attachment === "BLANK"
+      this.props.storyAdAttachment.attachment === "BLANK" &&
+      !mount
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -685,7 +687,7 @@ class AdDesign extends Component {
     } else {
       swipeUpError = null;
     }
-    if (collectionError) {
+    if (collectionError && !mount) {
       showMessage({
         message: translate("Please add more products to proceed"),
         position: "top",
@@ -706,7 +708,7 @@ class AdDesign extends Component {
         type: "warning"
       });
     }
-    if (validCards.length < 3) {
+    if (validCards.length < 3 && !mount) {
       showMessage({
         message: translate("Please add minimum of 3 media files to proceed"),
         position: "top",
@@ -1361,6 +1363,7 @@ class AdDesign extends Component {
             media: this.state.uneditedImageUri,
             storyAdCards: this.state.storyAdCards
           }}
+          media_type={type}
           serialization={
             this.state.serialization.hasOwnProperty("image")
               ? this.state.serialization

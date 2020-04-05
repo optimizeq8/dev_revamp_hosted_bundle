@@ -57,6 +57,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
+import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -85,7 +86,10 @@ class CollectionMedia extends Component {
       formatted: null,
       localUri: null,
       deep_link_uriError: "",
-      rejectionColUpload: false
+      rejectionColUpload: false,
+      mediaModalVisible: false,
+      uneditedImageUri: "",
+      serialization: {}
     };
   }
 
@@ -305,10 +309,17 @@ class CollectionMedia extends Component {
     return result;
   };
 
-  _pickImage = async () => {
+  _pickImage = async (mediaEditor = {}, editImage = false) => {
     try {
       const { translate } = this.props.screenProps;
-      let result = await this.pick();
+      let result = {};
+      if (!editImage) result = await this.pick();
+      else
+        result = {
+          uri: mediaEditor.mediaUri,
+          cancelled: false,
+          type: "image"
+        };
       let configuration = PhotoEditorConfiguration({ width: 1, height: 1 });
       let file = {};
       if (result) {
@@ -319,10 +330,18 @@ class CollectionMedia extends Component {
         await this.validateImage();
       }
       let serialization = {};
+      this.setMediaModalVisible(false);
       if (result && !result.cancelled) {
-        if (result.width >= 160 && result.height >= 160) {
-          PESDK.openEditor(result.uri, configuration)
-            .then(async manipResult => {
+        let uneditedImageUri = result.uri;
+        PESDK.openEditor(
+          result.uri,
+          configuration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
+          .then(async manipResult => {
+            if (manipResult) {
               serialization = manipResult.serialization;
               let newDimensions = await ImageManipulator.manipulateAsync(
                 manipResult.image
@@ -362,78 +381,76 @@ class CollectionMedia extends Component {
               result.height = newDimensions.height;
               result.width = newDimensions.width;
               result.serialization = serialization;
-            })
-            .then(async () => {
-              file = await FileSystem.getInfoAsync(result.uri, {
-                size: true
+            }
+          })
+          .then(async () => {
+            file = await FileSystem.getInfoAsync(result.uri, {
+              size: true
+            });
+            if (file.size > 2000000) {
+              this.setState({
+                imageError: "Image must be less than 2 MBs.",
+                collection: {
+                  ...this.state.collection,
+                  collection_media: null
+                }
               });
-              if (file.size > 2000000) {
-                this.setState({
-                  imageError: "Image must be less than 2 MBs.",
-                  collection: {
-                    ...this.state.collection,
-                    collection_media: null
-                  }
-                });
-                segmentEventTrack("Error Collection Ad Media", {
-                  campaign_error_collection_media_image:
-                    "Image must be less than 2 MBs"
-                });
-                this.onToggleModal(false);
-                showMessage({
-                  message: translate(
-                    "Image must be less than {{fileSize}} MBs",
-                    { fileSize: 2 }
-                  ),
-                  position: "top",
-                  type: "warning"
-                });
-
-                return;
-              } else {
-                this.setState({
-                  type: result.type.toUpperCase(),
-                  imageError: null,
-                  collection: {
-                    ...this.state.collection,
-                    collection_media: result.uri
-                  },
-                  localUri: result.uri,
-                  rejectionColUpload: true
-                });
-                segmentEventTrack("Selected Collection Ad Image successfully");
-                segmentEventTrack(
-                  "Selected Collection Ad Image serialization",
-                  {
-                    ...result.serialization
-                  }
-                );
-                this.onToggleModal(false);
-                showMessage({
-                  message: translate("Image has been selected successfully"),
-                  position: "top",
-                  type: "success"
-                });
-              }
-            })
-            .catch(error => {
-              // console.log(error);
               segmentEventTrack("Error Collection Ad Media", {
                 campaign_error_collection_media_image:
-                  "Please choose another image"
+                  "Image must be less than 2 MBs"
               });
               this.onToggleModal(false);
               showMessage({
-                message: error.wrongAspect
-                  ? error.message
-                  : translate("Please choose another image"),
+                message: translate("Image must be less than {{fileSize}} MBs", {
+                  fileSize: 2
+                }),
                 position: "top",
                 type: "warning"
               });
+
               return;
+            } else {
+              this.setState({
+                type: result.type.toUpperCase(),
+                imageError: null,
+                collection: {
+                  ...this.state.collection,
+                  collection_media: result.uri
+                },
+                localUri: result.uri,
+                rejectionColUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization || {}
+              });
+              segmentEventTrack("Selected Collection Ad Image successfully");
+              segmentEventTrack("Selected Collection Ad Image serialization", {
+                ...result.serialization
+              });
+              this.onToggleModal(false);
+              showMessage({
+                message: translate("Image has been selected successfully"),
+                position: "top",
+                type: "success"
+              });
+            }
+          })
+          .catch(error => {
+            // console.log(error);
+            segmentEventTrack("Error Collection Ad Media", {
+              campaign_error_collection_media_image:
+                "Please choose another image"
             });
-          return;
-        } else if (result.width < 160 || result.height < 160) {
+            this.onToggleModal(false);
+            showMessage({
+              message: error.wrongAspect
+                ? error.message
+                : translate("Please choose another image"),
+              position: "top",
+              type: "warning"
+            });
+            return;
+          });
+        if (result.width < 160 || result.height < 160) {
           this.setState({
             imageError:
               "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
@@ -664,7 +681,9 @@ class CollectionMedia extends Component {
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
-            this._pickImage();
+            if (this.state.collection.collection_media) {
+              this.setMediaModalVisible(true);
+            } else this._pickImage();
           }}
         >
           <CameraEdit width={70} height={70} />
@@ -687,6 +706,9 @@ class CollectionMedia extends Component {
     }
   };
 
+  setMediaModalVisible = visible => {
+    this.setState({ mediaModalVisible: visible });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -928,6 +950,22 @@ class CollectionMedia extends Component {
             )}
           </View>
         </Container>
+        <MediaModal
+          _pickImage={(mediaEditor, editImage) =>
+            this._pickImage(mediaEditor, editImage)
+          }
+          mediaModalVisible={this.state.mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+          mediaUri={{
+            media: this.state.uneditedImageUri
+          }}
+          serialization={
+            this.state.serialization.hasOwnProperty("image")
+              ? this.state.serialization
+              : null
+          }
+          screenProps={this.props.screenProps}
+        />
         <Modal
           visible={this.props.loading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}

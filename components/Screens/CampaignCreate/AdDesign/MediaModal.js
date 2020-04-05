@@ -33,7 +33,7 @@ export default class MediaModal extends Component {
         />
       );
     });
-    let { mediaUri } = this.props;
+    let { mediaUri, media_type } = this.props;
     let { media, storyAdCards } = mediaUri;
 
     return (
@@ -70,24 +70,25 @@ export default class MediaModal extends Component {
                 }}
               >
                 {options}
-                {(media !== "//" ||
-                  storyAdCards.selectedStoryAd.media !== "//") && (
-                  <MediaOptions
-                    _pickImage={this.props._pickImage}
-                    title={"Edit Image"}
-                    setUploadFromDifferentDeviceModal={
-                      this.props.setUploadFromDifferentDeviceModal
-                    }
-                    setMediaModalVisible={this.props.setMediaModalVisible}
-                    screenProps={this.props.screenProps}
-                    mediaUri={
-                      media !== "//"
-                        ? media
-                        : storyAdCards.selectedStoryAd.uneditedImageUri
-                    }
-                    serialization={this.props.serialization}
-                  />
-                )}
+                {media_type === "IMAGE" &&
+                  (media !== "//" ||
+                    storyAdCards.selectedStoryAd.media !== "//") && (
+                    <MediaOptions
+                      _pickImage={this.props._pickImage}
+                      title={"Edit Image"}
+                      setUploadFromDifferentDeviceModal={
+                        this.props.setUploadFromDifferentDeviceModal
+                      }
+                      setMediaModalVisible={this.props.setMediaModalVisible}
+                      screenProps={this.props.screenProps}
+                      mediaUri={
+                        media !== "//"
+                          ? media
+                          : storyAdCards.selectedStoryAd.uneditedImageUri
+                      }
+                      serialization={this.props.serialization}
+                    />
+                  )}
               </Content>
             </View>
           </SafeAreaView>
