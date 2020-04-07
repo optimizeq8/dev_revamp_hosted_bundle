@@ -417,7 +417,6 @@
     "asset_43b8c7986a269052c8e85faec9347abc.png",
     "asset_7c89fdeb35a19ed48839cf86fd10a184.json"
   ],
-<<<<<<< HEAD
   "assetUrlOverride": "./assets",
   "publishedTime": "2020-03-25T16:28:54.436Z",
   "commitTime": "2020-03-25T16:28:54.436Z",
@@ -425,14 +424,4 @@
   "id": "@samyoptimize/optimize_app",
   "bundleUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/bundles/ios-8e228446e3d497d04944cc1432c9567f.js",
   "platform": "ios"
-=======
-  "id": "@samyoptimize/optimize_app",
-  "releaseId": "7236a563-89ef-4211-b757-f6b88de9afb9",
-  "revisionId": "0.3.22-r.SkJUAYkLU",
-  "publishedTime": "2020-03-18T12:04:23.001Z",
-  "commitTime": "2020-03-18T12:04:23.043Z",
-  "bundleUrl": "https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.22%2F0771c77f619b862bc27c89477da986dd-36.0.0-ios.js",
-  "releaseChannel": "prod-v3.1",
-  "hostUri": "exp.host/@samyoptimize/optimize_app?release-channel=prod-v3.1"
->>>>>>> Add extra settings for Adjust sdk
 }

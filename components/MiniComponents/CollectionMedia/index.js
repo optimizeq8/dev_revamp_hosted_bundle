@@ -709,6 +709,7 @@ class CollectionMedia extends Component {
 
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
+  };
   handleAdCollectionMediaFocus = () => {
     let adjustAdCoverTracker = new AdjustEvent("s62u9o");
     Adjust.trackEvent(adjustAdCoverTracker);
