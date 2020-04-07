@@ -29,7 +29,9 @@ export default class Header extends Component {
       icon,
       translateTitle = true,
       showTopRightButtonIcon,
-      disabled = false
+      disabled = false,
+      changeHeaderColor = false,
+      iconColor = "#FFF"
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -61,7 +63,7 @@ export default class Header extends Component {
           ]}
         >
           {closeButton ? (
-            <CloseIcon width={23} height={23} />
+            <CloseIcon width={23} height={23} stroke={iconColor} />
           ) : (
             <BackIcon width={24} height={24} />
           )}
