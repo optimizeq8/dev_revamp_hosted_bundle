@@ -418,6 +418,10 @@ class AdObjective extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
+            Segment.screenWithProperties("Snapchat Objective", {
+              category: "Campaign Creation",
+              channel: "snapchat"
+            });
             Segment.screenWithProperties(
               (adType === "SnapAd"
                 ? "Snap Ad"
