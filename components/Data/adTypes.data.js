@@ -1,5 +1,3 @@
-import React from "react";
-
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
@@ -111,19 +109,16 @@ export const googleAds = [
     icon: AdIcons.GoogleSE,
     channelIcon: GoogleAds,
     image: GoogleSearchAd,
-    description: " ",
+    description:
+      "Google is where people search for what to do, where to go, and what to buy Your digital ads can appear on Google at the very moment someone is looking for products or services like yours",
     suitableFor: [
       {
-        icon: Mortgage,
-        name: "Home Businesses"
+        icon: Corporate,
+        name: "Corporate"
       },
       {
-        icon: Hand,
-        name: "Service Providers"
-      },
-      {
-        icon: StartUp,
-        name: "Startups & SMEs"
+        icon: OnlineStore,
+        name: "E-COMMERCE & Online Stores"
       }
     ]
   }
