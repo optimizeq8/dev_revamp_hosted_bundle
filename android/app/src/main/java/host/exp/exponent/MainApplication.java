@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
 import io.sentry.RNSentryPackage;
+import com.adjust.nativemodule.AdjustPackage;
 import ly.img.react_native.pesdk.RNPhotoEditorSDKPackage;
 
 public class MainApplication extends ExpoApplication implements AppLoaderPackagesProviderInterface<ReactPackage> {
@@ -32,6 +33,7 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
         // Needed for `react-native link`
         // new MainReactPackage(),
             new RNSentryPackage(),
+            new AdjustPackage(),
             new RNPhotoEditorSDKPackage()
     );
   }

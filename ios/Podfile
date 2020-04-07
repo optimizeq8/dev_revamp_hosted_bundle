@@ -29,6 +29,7 @@ target 'optimizeapp' do
  pod 'RNPhotoEditorSDK', :path => '../node_modules/react-native-photoeditorsdk'
 
  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+ pod 'react-native-adjust', :path => '../node_modules/react-native-adjust'
 
  post_install do |installer|
   installer.pods_project.main_group.tab_width = '2';

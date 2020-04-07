@@ -52,6 +52,7 @@ import {
 } from "react-native-responsive-screen";
 import segmentEventTrack from "../../../segmentEventTrack";
 import isNull from "lodash/isNull";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -321,6 +322,29 @@ class GoogleAdTargetting extends Component {
     }
   };
 
+  handleGoogleAdDetailsFocus = () => {
+    this.props.save_google_campaign_steps([
+      "Dashboard",
+      "GoogleAdInfo",
+      "GoogleAdDesign",
+      "GoogleAdTargetting"
+    ]);
+    Segment.screenWithProperties("Google Ad Targetting", {
+      category: "Campaign Creation",
+      channel: "google"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign.id,
+      step: 4
+    });
+    let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
+    adjustGoogleAdDetailsTracker.addPartnerParameter(
+      `Google_SEM`,
+      "google_sem"
+    );
+
+    Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+  };
   render() {
     const { translate } = this.props.screenProps;
     let menu;
@@ -415,24 +439,7 @@ class GoogleAdTargetting extends Component {
           style={[styles.safeArea]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              this.props.save_google_campaign_steps([
-                "Dashboard",
-                "GoogleAdInfo",
-                "GoogleAdDesign",
-                "GoogleAdTargetting"
-              ]);
-              Segment.screenWithProperties("Google Ad Targetting", {
-                category: "Campaign Creation",
-                channel: "google"
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign.id,
-                step: 4
-              });
-            }}
-          />
+          <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader

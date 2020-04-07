@@ -17,6 +17,7 @@ import { colors } from "../../GradiantColors/colors";
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
 import { persistor } from "../../../store";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -50,7 +51,39 @@ class SuccessRedirect extends Component {
     //   business_name: this.props.mainBusiness.businessname,
     //   checkout_id: this.props.campaign_id
     // });
-
+    if (this.props.navigation.getParam("isWallet") === "1") {
+      let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
+      adjustWalletPaymentTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
+      adjustWalletPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustWalletPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustWalletPaymentTracker);
+    } else {
+      let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      adjustPaymentTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
+      adjustPaymentTracker.setRevenue(
+        parseFloat(this.props.navigation.state.params.amount),
+        "USD"
+      );
+      adjustPaymentTracker.setTransactionId(
+        this.props.navigation.state.params.paymentId
+      );
+      Adjust.trackEvent(adjustPaymentTracker);
+    }
     this.setState(this.props.navigation.state.params, () => {
       // Segment.trackWithProperties("Completed Checkout Step", {
       //   step: 7,
@@ -180,7 +213,8 @@ const mapStateToProps = state => ({
   campaign_id: state.transA.campaign_id,
   campaign_budget: state.transA.campaign_budget,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
-  channel: state.transA.channel
+  channel: state.transA.channel,
+  adType: state.campaignC.adType
 });
 const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),

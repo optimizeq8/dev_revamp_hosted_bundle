@@ -40,6 +40,7 @@ import {
 import segmentEventTrack from "../../../segmentEventTrack";
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null
@@ -299,7 +300,7 @@ class GoogleAdDesign extends Component {
     this.inputs[value] = input;
   };
 
-  handleDidFocus = () => {
+  handleGoogleAdDesignFocus = () => {
     if (!this.props.navigation.getParam("rejected", false))
       this.props.save_google_campaign_steps([
         "Dashboard",
@@ -315,6 +316,9 @@ class GoogleAdDesign extends Component {
       business_name: this.props.mainBusiness.businessname
     });
     this.setState({ unmounted: false });
+    let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
+    adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
+    Adjust.trackEvent(adjustGoogleAdDesignTracker);
   };
 
   /**
@@ -383,7 +387,7 @@ class GoogleAdDesign extends Component {
           onWillBlur={() => {
             this.setState({ unmounted: true });
           }}
-          onDidFocus={this.handleDidFocus}
+          onDidFocus={this.handleGoogleAdDesignFocus}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
