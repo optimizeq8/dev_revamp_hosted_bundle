@@ -75,6 +75,10 @@ class AdPaymentReview extends Component {
       checkout_id: this.props.campaign_ids
     });
     let adjustAdReviewTracker = new AdjustEvent("rag8r1");
+    adjustAdReviewTracker.addPartnerParameter(
+      `Snap_${this.props.adType}`,
+      this.props.adType
+    );
     Adjust.trackEvent(adjustAdReviewTracker);
   };
   render() {

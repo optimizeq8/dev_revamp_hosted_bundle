@@ -110,6 +110,7 @@ class AdPaymentReview extends Component {
       checkout_id: this.props.campaign_id
     });
     let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
+    adjustGoogleAdReviewTracker.addPartnerParameter(`Google_SEM`, "google_sem");
     Adjust.trackEvent(adjustGoogleAdReviewTracker);
   };
   render() {

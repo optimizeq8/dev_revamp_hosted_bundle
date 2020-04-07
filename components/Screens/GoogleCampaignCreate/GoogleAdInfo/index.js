@@ -326,6 +326,10 @@ class GoogleAdInfo extends Component {
       business_name: this.props.mainBusiness.businessname
     });
     let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
+    adjustGoogleAdObjectiveTracker.addPartnerParameter(
+      `Google_SEM`,
+      "google_sem"
+    );
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   render() {

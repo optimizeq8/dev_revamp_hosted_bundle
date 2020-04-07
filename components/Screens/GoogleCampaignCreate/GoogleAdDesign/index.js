@@ -317,6 +317,7 @@ class GoogleAdDesign extends Component {
     });
     this.setState({ unmounted: false });
     let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
+    adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
     Adjust.trackEvent(adjustGoogleAdDesignTracker);
   };
 

@@ -53,6 +53,12 @@ class SuccessRedirect extends Component {
     // });
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
+      adjustWalletPaymentTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
       adjustWalletPaymentTracker.setRevenue(
         parseFloat(this.props.navigation.state.params.amount),
         "USD"
@@ -63,6 +69,12 @@ class SuccessRedirect extends Component {
       Adjust.trackEvent(adjustWalletPaymentTracker);
     } else {
       let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      adjustPaymentTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
       adjustPaymentTracker.setRevenue(
         parseFloat(this.props.navigation.state.params.amount),
         "USD"
@@ -117,8 +129,6 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   render() {
-    console.log(this.props.navigation.state.params.amount);
-
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -203,7 +213,8 @@ const mapStateToProps = state => ({
   campaign_id: state.transA.campaign_id,
   campaign_budget: state.transA.campaign_budget,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
-  channel: state.transA.channel
+  channel: state.transA.channel,
+  adType: state.campaignC.adType
 });
 const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),

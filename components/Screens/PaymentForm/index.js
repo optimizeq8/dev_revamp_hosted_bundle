@@ -338,10 +338,22 @@ class PaymentForm extends Component {
     }
     if (this.state.addingCredits) {
       let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
+      adjustWalletPaymentFormTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
       adjustWalletPaymentFormTracker.setRevenue(this.state.amount, "USD");
       Adjust.trackEvent(adjustWalletPaymentFormTracker);
     } else {
       let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
+      adjustPaymentFormTracker.addPartnerParameter(
+        this.props.channel === "google"
+          ? `Google_SEM`
+          : `Snap_${this.props.adType}`,
+        this.props.channel === "google" ? "google_sem" : this.props.adType
+      );
       adjustPaymentFormTracker.setRevenue(
         this.props.campaign_budget && this.props.campaign_budget,
         "USD"
@@ -640,7 +652,8 @@ const mapStateToProps = state => ({
   walletAmountInKwd: state.transA.walletAmountInKwd,
   loading: state.transA.loading_transaction,
   loadingTrans: state.transA.loading,
-  wallet: state.transA.wallet
+  wallet: state.transA.wallet,
+  channel: state.transA.channel
 });
 const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),

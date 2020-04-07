@@ -1037,6 +1037,10 @@ class AdDesign extends Component {
     });
 
     let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
+    adjustAdDesignTracker.addPartnerParameter(
+      `Snap_${this.adType}`,
+      this.adType
+    );
     Adjust.trackEvent(adjustAdDesignTracker);
   };
   render() {

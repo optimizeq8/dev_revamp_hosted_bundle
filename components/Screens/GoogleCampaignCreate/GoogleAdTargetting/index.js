@@ -338,6 +338,11 @@ class GoogleAdTargetting extends Component {
       step: 4
     });
     let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
+    adjustGoogleAdDetailsTracker.addPartnerParameter(
+      `Google_SEM`,
+      "google_sem"
+    );
+
     Adjust.trackEvent(adjustGoogleAdDetailsTracker);
   };
   render() {

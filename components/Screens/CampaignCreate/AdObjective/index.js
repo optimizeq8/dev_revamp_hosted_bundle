@@ -117,6 +117,7 @@ class AdObjective extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
+      this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
     }
     if (
       (prevProps.adType !== this.props.adType &&
@@ -417,6 +418,16 @@ class AdObjective extends Component {
     });
 
     let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
+    adjustAdObjectiveTracker.addPartnerParameter(
+      `snap_${
+        this.props.incomplete
+          ? his.props.navigation.getParam("tempAdType", "SnapAd")
+          : this.props.adType
+      }`,
+      this.props.incomplete
+        ? his.props.navigation.getParam("tempAdType", "SnapAd")
+        : this.props.adType
+    );
     Adjust.trackEvent(adjustAdObjectiveTracker);
   };
   render() {

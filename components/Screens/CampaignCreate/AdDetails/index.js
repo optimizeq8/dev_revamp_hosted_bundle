@@ -853,6 +853,10 @@ class AdDetails extends Component {
       });
     }
     let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+    adjustAdDetailsTracker.addPartnerParameter(
+      `Snap_${this.props.adType}`,
+      this.props.adType
+    );
     Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
