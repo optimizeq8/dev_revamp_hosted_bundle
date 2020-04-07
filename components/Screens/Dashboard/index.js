@@ -570,14 +570,14 @@ class Dashboard extends Component {
                                   style={{ color: "#fff" }}
                                 />
                               </GradientButton>
-                              <Text
+                              {/* <Text
                                 style={[
                                   styles.campaignButtonText,
                                   styles.newCampaignTitle
                                 ]}
                               >
                                 {translate("New Ad")}
-                              </Text>
+                              </Text> */}
                             </View>
                             <ScrollView
                               style={{
