@@ -3,7 +3,7 @@ import { View, Image, BackHandler, Linking } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 
 // Redux
 import { connect } from "react-redux";
@@ -71,23 +71,12 @@ class ErrorComponent extends Component {
   // handleBackButton() {
   //   return true;
   // }
-  handleErrorFocus = () => {
-    Segment.screen("Error");
-    //On android, the deep link for optimize://main_navigator from adjust goes to the dashboard, if there is no userInfo
-    //then the error component mounts so I check for the deep link and navigate accordingly. On iOS it just opens the app without navigating
-    Linking.addEventListener("url", this.handleDeepLink);
-    Linking.getInitialURL().then(url => {
-      if (url.includes("?adjust_reftag")) {
-        this.handleDeepLink({ url });
-      }
-    });
-  };
+
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.loading) {
       return (
         <>
-          <NavigationEvents onDidFocus={this.handleErrorFocus} />
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
@@ -107,7 +96,6 @@ class ErrorComponent extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
-        <NavigationEvents onDidFocus={this.handleErrorFocus} />
         <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
           <ErrorIcon fill="#ea514b" width={80} height={80} />
