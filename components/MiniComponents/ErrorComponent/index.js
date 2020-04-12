@@ -55,7 +55,7 @@ class ErrorComponent extends Component {
     }
   };
   componentWillUnmount() {
-    // Linking.removeAllListeners("url");
+    Linking.removeAllListeners("url");
     this.setState({
       deepLinkChecked: true
     });
