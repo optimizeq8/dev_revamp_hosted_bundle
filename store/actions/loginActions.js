@@ -236,7 +236,6 @@ export const login = (userData, navigation) => {
 export const logout = navigation => {
   return (dispatch, getState) => {
     setAuthToken()
-      .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
         navigation &&
           navigation.navigate("SwitchLanguage", {
@@ -251,7 +250,9 @@ export const logout = navigation => {
               (navigation && navigation.getParam("email", "")) ||
               getState().account.invitedEmail
           });
-      });
+      })
+      //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
+      .then(() => dispatch(setCurrentUser(null)));
   };
 };
 
@@ -300,14 +301,15 @@ export const clearPushToken = (navigation, userid) => {
         return res.data;
       })
       .then(data => {
+        dispatch(logout(navigation)); //Call this first so that it navigates first then turns everything to null
+        //so that the error componenet doesn't show up in the dashboard
+      })
+      .then(() => {
         dispatch({
           type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN
         });
       })
-      .then(() => {
-        dispatch(update_app_status_chat_notification(false));
-        dispatch(logout(navigation));
-      })
+      .then(() => dispatch(update_app_status_chat_notification(false)))
       .catch(err => {
         // console.log("clear push notification", err.message || err.response);
         dispatch({
