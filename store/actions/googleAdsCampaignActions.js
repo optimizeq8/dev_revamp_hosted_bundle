@@ -8,6 +8,7 @@ import { errorMessageHandler } from "./ErrorActions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import segmentEventTrack from "../../components/segmentEventTrack";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 GoogleBackendURL = () =>
   axios.create({
@@ -55,6 +56,8 @@ export const create_google_ad_account = (info, navigation) => {
               businessid: info.businessid
             }
           );
+          let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
+          Adjust.trackEvent(adjustGoogleAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
             payload: { data: data }
