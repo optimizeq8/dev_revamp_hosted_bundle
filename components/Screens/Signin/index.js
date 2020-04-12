@@ -1,6 +1,6 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Linking, Platform } from "react-native";
 import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
@@ -67,7 +67,28 @@ class Signin extends Component {
       category: "Sign Up",
       label: "Step 1 of Registeration"
     });
+    if (Platform.OS === "ios") {
+      Linking.addEventListener("url", this.handleDeepLink);
+      Linking.getInitialURL().then(url => {
+        if (url.includes("?adjust_reftag")) {
+          this.handleDeepLink({ url });
+        }
+      });
+    }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
+  }
+  handleDeepLink = url => {
+    if (this.props.userInfo) {
+      let screen = url.url.split("/main_navigator/");
+      screen = screen[1].split("/")[0];
+      this.props.navigation.navigate(screen);
+      Linking.removeEventListener("url", evnt =>
+        console.log("unmounted", evnt)
+      );
+    }
+  };
+  componentWillUnmount() {
+    Linking.removeEventListener("url", evnt => console.log("unmounted", evnt));
   }
   setValue = (stateName, value) => {
     let state = {};
