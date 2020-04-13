@@ -685,3 +685,74 @@ export const resetBusinessInvitee = () => {
 //       });
 //   };
 // };
+
+/**
+ *
+ * @param {*} info object {
+ * businessid,
+ * insta_handle,
+ * googlemaplink,
+ * whatsappnumber,
+ * callnumber
+ * }
+ * @param {*} submitNextStep Needed to go to next step of registration
+ */
+export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
+      payload: true
+    });
+
+    createBaseUrl()
+      .put("businesswebInfo", info)
+      .then(resp => {
+        return resp.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+            payload: {
+              ...info
+            }
+          });
+        } else {
+          dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+            payload: {
+              success: data.success,
+              errorMessage: data.message
+            }
+          });
+        }
+
+        return data;
+      })
+      .then(data => {
+        if (data.success && submitNextStep) {
+          submitNextStep(2);
+        } else if (data.success && !submitNextStep) {
+          NavigationService.navigateBack("MyWebsite");
+        }
+      })
+      .catch(error => {
+        // console.log(
+        //   "updateWebInfoForBusiness error",
+        //   error.response || error.message
+        // );
+        return dispatch({
+          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+          payload: {
+            success: false,
+            errorMessage: error.response || error.message
+          }
+        });
+      });
+  };
+};

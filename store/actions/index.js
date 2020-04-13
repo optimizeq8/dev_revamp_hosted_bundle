@@ -15,7 +15,8 @@ export {
   updateTeamMembers,
   deleteTeamMembers,
   saveBusinessInvitee,
-  resetBusinessInvitee
+  resetBusinessInvitee,
+  updateWebInfoForBusiness
 } from "./accountManagementActions";
 
 export {
@@ -158,3 +159,11 @@ export {
   enable_end_or_pause_google_campaign,
   downloadGoogleCSV
 } from "./googleAdsCampaignActions";
+
+export {
+  getInstagramPostInitialWebsite,
+  loadMoreInstagramPostWebsite,
+  verifyInstagramHandleWebsite,
+  saveWebProductsToHide,
+  getWebProductsToHide
+} from "./optimizeWebsiteActions";

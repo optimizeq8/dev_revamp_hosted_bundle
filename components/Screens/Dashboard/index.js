@@ -10,6 +10,9 @@ import {
   I18nManager,
   Linking
 } from "react-native";
+
+import { LinearGradient } from "expo-linear-gradient";
+
 import { Updates } from "expo";
 import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
@@ -32,6 +35,8 @@ import AdButtons from "./AdButtons";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
+import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
+
 import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
 
 // Style
@@ -56,6 +61,8 @@ import whyDidYouRender from "@welldone-software/why-did-you-render";
 import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
+import LowerButton from "../../MiniComponents/LowerButton";
+
 import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
@@ -85,7 +92,7 @@ class Dashboard extends Component {
       AdjustConfig.EnvironmentSandbox
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    adjustConfig.setEventTrackingSucceededCallbackListener(function(
+    adjustConfig.setEventTrackingSucceededCallbackListener(function (
       eventSuccess
     ) {
       console.log("Event tracking succeeded callback received");
@@ -96,7 +103,9 @@ class Dashboard extends Component {
       console.log("Callback Id: " + eventSuccess.callbackId);
       console.log("JSON response: " + eventSuccess.jsonResponse);
     });
-    adjustConfig.setEventTrackingFailedCallbackListener(function(eventFailure) {
+    adjustConfig.setEventTrackingFailedCallbackListener(function (
+      eventFailure
+    ) {
       // Printing all event failure properties.
       console.log("Event tracking failed!");
       console.log(eventFailure.message);
@@ -628,12 +637,57 @@ class Dashboard extends Component {
                           </>
                         )}
                       </View>
+                    </View>
+                    {(!this.props.mainBusiness.hasOwnProperty("weburl") ||
+                      !this.props.mainBusiness.weburl ||
+                      this.props.mainBusiness.weburl === "") && (
+                      <TouchableOpacity
+                        style={styles.websiteCard}
+                        onPress={() => {
+                          this.props.navigation.navigate("OptimizeWebsite");
+                        }}
+                      >
+                        <LinearGradient
+                          colors={["#41C5FF", "#46ABF4"]}
+                          locations={[0.3, 0.75]}
+                          style={styles.gradient}
+                        />
+                        <OnlineStoreHome
+                          width={wp(70)}
+                          style={styles.onlineStoreHomeIcon}
+                        />
+                        {this.props.mainBusiness.user_role == "3" ? (
+                          <Text style={styles.mainText}>
+                            {translate(
+                              "This business doesn't have campaigns yet"
+                            )}
+                          </Text>
+                        ) : !this.props.mainBusiness.hasOwnProperty(
+                            "businessid"
+                          ) ? (
+                          <Text style={styles.mainText}>
+                            {translate("Tap the button below to")}
+                          </Text>
+                        ) : (
+                          <Text style={styles.mainText}>
+                            {translate("Create your own website")}
+                          </Text>
+                        )}
+
+                        <LowerButton
+                          width={10}
+                          height={10}
+                          style={styles.lowerButton}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    <View style={[styles.mainCard]}>
                       <View style={styles.searchbarContainer}>
                         <View style={{ width: "80%" }}>
                           <SearchBar
                             screenProps={this.props.screenProps}
                             customInputStyle={{
-                              backgroundColor: "#0003",
+                              backgroundColor: "rgba(0,0,0,0.13)",
                               height: "100%"
                             }}
                             renderSearchBar={this.renderSearchBar}
@@ -645,11 +699,10 @@ class Dashboard extends Component {
                             this._handleSideMenuState(true);
                           }}
                         >
-                          <FilterIcon width={30} height={30} fill="#fff" />
+                          <FilterIcon width={30} height={30} fill="#909090" />
                         </TouchableOpacity>
                       </View>
-                    </View>
-                    <View style={[styles.mainCard]}>
+
                       {this.props.loadingCampaigns ? (
                         placeHolderCards
                       ) : (

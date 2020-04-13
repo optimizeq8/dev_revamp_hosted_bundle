@@ -9,3 +9,4 @@ export { default as CloseListIcon } from "./CloseListIcon.svg";
 export { default as LogoutIcon } from "./LogoutIcon.svg";
 export { default as GroupTransparentIcon } from "./GroupTransparent";
 export { default as GroupIcon } from "../Group";
+export { default as WebsiteIcon } from "./website.svg";

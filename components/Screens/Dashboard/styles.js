@@ -310,7 +310,8 @@ const styles = StyleSheet.create({
   searchbarContainer: {
     flexDirection: "row",
     height: 60,
-    alignItems: "center"
+    alignItems: "center",
+    alignSelf: "center"
   },
   channelIcon: {
     position: "absolute",
@@ -353,6 +354,34 @@ const styles = StyleSheet.create({
     top: -3,
     left: 18,
     zIndex: 1
+  },
+  websiteCard: {
+    borderRadius: 35,
+    overflow: "hidden",
+    paddingVertical: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: "-12%",
+    marginHorizontal: 15
+  },
+  mainText: {
+    color: "#FFF",
+    fontSize: 13,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    width: "40%",
+    marginLeft: "-10%",
+    marginTop: "-18%"
+  },
+  onlineStoreHomeIcon: {
+    marginLeft: "-10%",
+    marginTop: "-18%"
+  },
+  lowerButton: {
+    width: 30,
+    height: 30,
+    bottom: "10%",
+    right: 15
   }
 });
 

@@ -145,6 +145,7 @@ class SelectDevices extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        stroke={"#FFF"}
                         style={{ top: 0, left: 0 }}
                         screenname="Select Devices"
                         businessname={this.props.mainBusiness.businessname}
