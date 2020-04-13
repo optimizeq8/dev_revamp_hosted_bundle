@@ -135,6 +135,52 @@ class ProductSelect extends React.Component {
       this.props.instaEndCursor
     );
   };
+  renderItem = item => {
+    if (item) {
+      // console.log("itemFound", itemFound);
+      const itemFound =
+        this.state.cartList.filter(imageId => imageId === item.imageId).length >
+        0;
+      return (
+        <TouchableOpacity
+          key={item.imageId}
+          style={styles.itemProductView}
+          onPress={() => this.addToCart(item)}
+        >
+          {itemFound ? (
+            <View
+              style={[
+                styles.itemView,
+                {
+                  backgroundColor: globalColors.orange
+                }
+              ]}
+            >
+              <CloseIcon width={8} />
+            </View>
+          ) : (
+            <View style={styles.itemView}></View>
+          )}
+          <Image
+            source={{
+              uri: item.imageUrl
+            }}
+            width={65}
+            height={65}
+            style={[
+              { width: 65, height: 65, borderRadius: 20 },
+              itemFound
+                ? {
+                    borderWidth: 3,
+                    borderColor: globalColors.orange
+                  }
+                : {}
+            ]}
+          />
+        </TouchableOpacity>
+      );
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -156,53 +202,7 @@ class ProductSelect extends React.Component {
               }
               return index;
             }}
-            renderItem={({ item }) => {
-              if (item) {
-                // console.log("itemFound", itemFound);
-                const itemFound =
-                  this.state.cartList.filter(
-                    imageId => imageId === item.imageId
-                  ).length > 0;
-                return (
-                  <TouchableOpacity
-                    key={item.imageId}
-                    style={styles.itemProductView}
-                    onPress={() => this.addToCart(item)}
-                  >
-                    {itemFound ? (
-                      <View
-                        style={[
-                          styles.itemView,
-                          {
-                            backgroundColor: globalColors.orange
-                          }
-                        ]}
-                      >
-                        <CloseIcon width={8} />
-                      </View>
-                    ) : (
-                      <View style={styles.itemView}></View>
-                    )}
-                    <Image
-                      source={{
-                        uri: item.imageUrl
-                      }}
-                      width={65}
-                      height={65}
-                      style={[
-                        { width: 65, height: 65, borderRadius: 20 },
-                        itemFound
-                          ? {
-                              borderWidth: 3,
-                              borderColor: globalColors.orange
-                            }
-                          : {}
-                      ]}
-                    />
-                  </TouchableOpacity>
-                );
-              }
-            }}
+            renderItem={({ item }) => this.renderItem(item)}
           />
         )}
         {this.props.loadingMoreInstaPost && (
