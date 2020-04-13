@@ -17,11 +17,6 @@ import { connect } from "react-redux";
 
 // Icons
 import Award from "../../../assets/SVGs/award";
-import { StackActions, NavigationActions } from "react-navigation";
-const resetAction = StackActions.reset({
-  index: 0,
-  actions: [NavigationActions.navigate({ routeName: "Dashboard" })]
-});
 class WebsiteRegistartionSuccess extends React.Component {
   componentDidMount() {
     // Segment.screen("Registration Complete");
@@ -68,7 +63,7 @@ class WebsiteRegistartionSuccess extends React.Component {
             text={"Take me to my website settings"}
             onPressAction={() => {
               segmentEventTrack("Button Clicked to navigate to MyWebsite");
-              this.props.navigation.dispatch(resetAction);
+              this.props.navigation.navigate("MyWebsite");
             }}
           />
         </View>

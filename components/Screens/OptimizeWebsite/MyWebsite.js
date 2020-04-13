@@ -49,10 +49,13 @@ class MyWebsite extends Component {
     });
   };
   goToManageProducts = () => {
-    this.props.navigation.push("ManageProducts");
+    this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    this.props.navigation.push("WebsiteSetting");
+    this.props.navigation.navigate("WebsiteSetting");
+  };
+  goBack = () => {
+    this.props.navigation.navigate("Dashboard");
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -71,7 +74,8 @@ class MyWebsite extends Component {
           //   obj: { businessname: this.props.mainBusiness.businessname }
           // }}
           showTopRightButtonIcon={"settings"}
-          navigation={this.props.navigation}
+          // navigation={this.props.navigation}
+          actionButton={this.goBack}
           topRightButtonFunction={this.topRightButtonFunction}
           title={"My Website"}
         />
