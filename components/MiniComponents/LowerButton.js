@@ -45,6 +45,7 @@ export default class LowerButton extends Component {
             style={styles.rtlReverse}
             width={width ? width : 25}
             height={height ? height : 25}
+            stroke={"#FFF"}
           />
         ) : (
           <ArrowForward

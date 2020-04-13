@@ -89,12 +89,12 @@ class SearchBar extends Component {
                 !isStringArabic(
                   translate(`Search ads`)
                     ? {
-                        fontFamily: "montserrat-light-english"
+                        fontFamily: "montserrat-regular-english"
                       }
                     : {}
                 ),
               {
-                color: !businessList ? "#fff" : "#000"
+                color: !businessList ? "#fff" : "#fff"
               }
             ]}
             placeholder={translate(
@@ -110,7 +110,7 @@ class SearchBar extends Component {
               transactionSearch
                 ? "#rgba(255,255,255,0.4)"
                 : !businessList
-                ? "#fff9"
+                ? "#fff"
                 : globalStyles.darkGrayTextColor.color
             }
             value={this.state.value}
@@ -125,7 +125,7 @@ class SearchBar extends Component {
                 !businessList && this.props.renderSearchBar();
               }}
             >
-              <CloseIcon width={18} height={18} stroke="#C6C6C6" />
+              <CloseIcon width={18} height={18} stroke="#FFF" />
             </TouchableOpacity>
           )}
         </Item>

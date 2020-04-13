@@ -49,7 +49,11 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading";
-
+import OptimizeWebsite from "../Screens/OptimizeWebsite";
+import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
+import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
+import ManageProducts from "../Screens/OptimizeWebsite/ManageProducts";
+import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
 export default FluidNavigator(
   {
@@ -112,7 +116,12 @@ export default FluidNavigator(
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
     AcceptTermsConditionLoading: AcceptTermsConditionLoading,
-    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" }
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
+    OptimizeWebsite: OptimizeWebsite,
+    WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
+    WebsiteSetting: WebsiteSetting,
+    ManageProducts: ManageProducts,
+    MyWebsite: MyWebsite
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
