@@ -138,8 +138,8 @@ class App extends React.Component {
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
       // !__DEV__
-      AdjustConfig.EnvironmentProduction
-      // : AdjustConfig.EnvironmentSandbox
+      // ? AdjustConfig.EnvironmentProduction
+      AdjustConfig.EnvironmentSandbox
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
