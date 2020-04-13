@@ -6,18 +6,18 @@
   "privacy": "public",
   "sdkVersion": "36.0.0",
   "platforms": ["ios", "android"],
-  "version": "0.3.32",
+  "version": "0.3.33",
   "orientation": "portrait",
   "icon": "./assets/icon_1024.png",
   "notification": {
     "icon": "./assets/icon_1024.png",
-    "iconUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/assets/fc4e8902b3a59481e6d995153ed83ebf"
+    "iconUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/assets/fc4e8902b3a59481e6d995153ed83ebf"
   },
   "splash": {
     "image": "./assets/splash.png",
     "resizeMode": "cover",
     "backgroundColor": "#751AFF",
-    "imageUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/assets/f0b064ec63b924013da78abeb8da96f4"
+    "imageUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/assets/f0b064ec63b924013da78abeb8da96f4"
   },
   "updates": {
     "fallbackToCacheTimeout": 0,
@@ -25,7 +25,7 @@
   },
   "ios": {
     "bundleIdentifier": "com.optimizeapp.optimizeapp",
-    "buildNumber": "48",
+    "buildNumber": "49",
     "supportsTablet": false,
     "publishBundlePath": "ios/optimizeapp/Supporting/shell-app.bundle",
     "publishManifestPath": "ios/optimizeapp/Supporting/shell-app-manifest.json"
@@ -36,7 +36,7 @@
   },
   "android": {
     "package": "com.optimizeapp.optimizeapp",
-    "versionCode": 40,
+    "versionCode": 41,
     "googleServicesFile": "{\n  \"project_info\": {\n    \"project_number\": \"707133061105\",\n    \"firebase_url\": \"https://optimizeapp-9139f.firebaseio.com\",\n    \"project_id\": \"optimizeapp-9139f\",\n    \"storage_bucket\": \"optimizeapp-9139f.appspot.com\"\n  },\n  \"client\": [\n    {\n      \"client_info\": {\n        \"mobilesdk_app_id\": \"1:707133061105:android:55299150ecede942f17650\",\n        \"android_client_info\": {\n          \"package_name\": \"com.optimizeapp.optimizeapp\"\n        }\n      },\n      \"oauth_client\": [\n        {\n          \"client_id\": \"707133061105-plvt6pc6s5mho6mivmq2k401vtjg43uc.apps.googleusercontent.com\",\n          \"client_type\": 3\n        }\n      ],\n      \"api_key\": [\n        {\n          \"current_key\": \"AIzaSyDTmQnBmL4QlElTUv7j1chWXl8XwkeeWFk\"\n        }\n      ],\n      \"services\": {\n        \"appinvite_service\": {\n          \"other_platform_oauth_client\": [\n            {\n              \"client_id\": \"707133061105-plvt6pc6s5mho6mivmq2k401vtjg43uc.apps.googleusercontent.com\",\n              \"client_type\": 3\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"configuration_version\": \"1\"\n}",
     "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
     "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
@@ -47,7 +47,7 @@
     "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.14.2-sdk36.0.0-ce7e16db-fd5d-4fdd-bdeb-701ba94a04d1.tar.gz"
   },
   "locales": {},
-  "iconUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/assets/fc4e8902b3a59481e6d995153ed83ebf",
+  "iconUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/assets/fc4e8902b3a59481e6d995153ed83ebf",
   "bundledAssets": [
     "asset_3a2ba31570920eeb9b1d217cabe58315.ttf",
     "asset_8b12b3e16d591abc926165fa8f760e3b.json",
@@ -417,10 +417,10 @@
     "asset_7c89fdeb35a19ed48839cf86fd10a184.json"
   ],
   "assetUrlOverride": "./assets",
-  "publishedTime": "2020-04-12T17:32:36.183Z",
-  "commitTime": "2020-04-12T17:32:36.183Z",
-  "revisionId": "dZZzNx7504",
+  "publishedTime": "2020-04-13T10:01:03.721Z",
+  "commitTime": "2020-04-13T10:01:03.721Z",
+  "revisionId": "lg3WYBzN7b",
   "id": "@samyoptimize/optimize_app",
-  "bundleUrl": "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/bundles/ios-4cb2e4ca53ac23c8e7b8f03a3957d7e3.js",
+  "bundleUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/ios-8ab8e338594b19f595719b22fb31152b.js",
   "platform": "ios"
 }
