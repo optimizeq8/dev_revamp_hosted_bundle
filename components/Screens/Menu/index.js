@@ -376,9 +376,11 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/34/
+                {Constants.manifest.version}/37/
                 {Constants.manifest.ios.buildNumber}/
-                {Constants.manifest.android.versionCode}
+                {Constants.manifest.android.versionCode}/
+                {Constants.manifest.releaseChannel}/
+                {this.props.notificationData}/
               </Text>
             </ScrollView>
           </View>

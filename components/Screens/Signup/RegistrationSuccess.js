@@ -11,10 +11,16 @@ import {
 import GradientButton from "../../MiniComponents/GradientButton";
 import segmentEventTrack from "../../segmentEventTrack";
 import styles from "./MainForm/styles";
+import { AdjustEvent, Adjust } from "react-native-adjust";
+import { connect } from "react-redux";
 
-export default class RegistartionSuccess extends React.Component {
+class RegistartionSuccess extends React.Component {
   componentDidMount() {
     Segment.screen("Registration Complete");
+    let adjustRegiserTracker = new AdjustEvent("z1mpdo");
+    this.props.userInfo &&
+      adjustRegiserTracker.setCallbackId(this.props.userInfo.userid);
+    Adjust.trackEvent(adjustRegiserTracker);
   }
   render() {
     const { translate } = this.props.screenProps;
@@ -54,3 +60,9 @@ export default class RegistartionSuccess extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo
+});
+
+export default connect(mapStateToProps, null)(RegistartionSuccess);

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler } from "react-native";
+import { View, Image, BackHandler, Linking } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
@@ -17,9 +17,9 @@ import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../LoadingScreen";
 import GradientButton from "../GradientButton";
+import { showMessage } from "react-native-flash-message";
 
 const imageLogo = require("../../../assets/images/logo01.png");
-
 class ErrorComponent extends Component {
   static navigationOptions = {
     header: null
@@ -28,21 +28,50 @@ class ErrorComponent extends Component {
     super(props);
 
     this.state = {
-      logoImage: require("../../../assets/images/logo01.png")
+      logoImage: require("../../../assets/images/logo01.png"),
+      deepLinkChecked: false
     };
   }
 
   componentDidMount() {
     Segment.screen("Error");
+    //On android, the deep link for optimize://main_navigator from adjust goes to the dashboard, if there is no userInfo
+    //then the error component mounts so I check for the deep link and navigate accordingly. On iOS it just opens the app without navigating
+    Linking.addEventListener("url", this.handleDeepLink);
+    Linking.getInitialURL().then(url => {
+      if (url.includes("adj")) {
+        this.handleDeepLink({ url });
+      }
+    });
+
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  // }
+  handleDeepLink = url => {
+    const { translate } = this.props.screenProps;
+    if (url.url.includes("adj")) {
+      if (this.props.userInfo) {
+        this.props.navigation.navigate("Dashboard");
+      } else {
+        showMessage({
+          message: translate("Please sign in first"),
+          type: "warning"
+        });
+        this.props.navigation.navigate("Signin");
+      }
+    }
+  };
+  componentWillUnmount() {
+    Linking.removeEventListener("url");
+    this.setState({
+      deepLinkChecked: true
+    });
+    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
   // handleBackButton() {
   //   return true;
   // }
+
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.loading) {
@@ -101,7 +130,7 @@ class ErrorComponent extends Component {
             style={styles.whitebutton}
             onPressAction={() => {
               this.props.dashboard
-                ? this.props.navigation.navigate("AppUpdateChecker")
+                ? this.props.navigation.navigate("Signin")
                 : this.props.navigation.navigate("Dashboard");
             }}
             textStyle={styles.whitebuttontext}

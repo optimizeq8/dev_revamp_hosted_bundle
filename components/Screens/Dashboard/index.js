@@ -87,37 +87,7 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true
     };
-    const adjustConfig = new AdjustConfig(
-      "c698tyk65u68",
-      AdjustConfig.EnvironmentSandbox
-    );
-    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    adjustConfig.setEventTrackingSucceededCallbackListener(function (
-      eventSuccess
-    ) {
-      console.log("Event tracking succeeded callback received");
-      console.log("Message: " + eventSuccess.message);
-      console.log("Timestamp: " + eventSuccess.timestamp);
-      console.log("Adid: " + eventSuccess.adid);
-      console.log("Event token: " + eventSuccess.eventToken);
-      console.log("Callback Id: " + eventSuccess.callbackId);
-      console.log("JSON response: " + eventSuccess.jsonResponse);
-    });
-    adjustConfig.setEventTrackingFailedCallbackListener(function (
-      eventFailure
-    ) {
-      // Printing all event failure properties.
-      console.log("Event tracking failed!");
-      console.log(eventFailure.message);
-      console.log(eventFailure.timestamp);
-      console.log(eventFailure.eventToken);
-      console.log(eventFailure.callbackId);
-      console.log(eventFailure.adid);
-      console.log(eventFailure.willRetry);
-      console.log(eventFailure.jsonResponse);
-    });
 
-    Adjust.create(adjustConfig);
     //Logs/gives warnign if a component has any functions that take a while to render
     // slowlog(this, /.*/, {
     //   // verbose: true
@@ -413,7 +383,10 @@ class Dashboard extends Component {
           mySlideInUp={mySlideInUp}
         />
       );
-    } else if (this.props.businessLoadError || !this.props.userInfo) {
+    } else if (
+      this.props.businessLoadError ||
+      (!this.props.userInfo && !this.props.clearTokenLoading) //so it doesn't show error component when logging out
+    ) {
       return (
         <>
           <ErrorComponent
@@ -797,7 +770,8 @@ const mapStateToProps = state => ({
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   businessAccounts: state.account.businessAccounts,
-  loadingCampaigns: state.dashboard.loadingCampaigns
+  loadingCampaigns: state.dashboard.loadingCampaigns,
+  clearTokenLoading: state.login.clearTokenLoading
 });
 
 const mapDispatchToProps = dispatch => ({

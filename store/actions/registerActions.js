@@ -127,9 +127,6 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
 
           const decodedUser = jwt_decode(user.token);
           let peomise = await setAuthToken(user.token);
-          let adjustRegiserTracker = new AdjustEvent("z1mpdo");
-          adjustRegiserTracker.setCallbackId(decodedUser.userid);
-          Adjust.trackEvent(adjustRegiserTracker);
           return { user: decodedUser, message: user.message };
           //if something goes wrong with the registeration process or Front-end verification
           //this will throw an error and stop the regiteration process
@@ -235,8 +232,6 @@ export const verifyMobileCode = mobileAuth => {
       })
       .then(async data => {
         if (data.success === true) {
-          let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
-          Adjust.trackEvent(adjustVerifyAccountTracker);
           segmentEventTrack("Successfully Verified Account", {
             category: "Account Verification",
             label: "Step 2 of Account Verification"
@@ -269,6 +264,8 @@ export const verifyMobileCode = mobileAuth => {
         }
       })
       .then(() => {
+        let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
+        Adjust.trackEvent(adjustVerifyAccountTracker);
         NavigationService.navigate("Dashboard");
       })
       .catch(err => {

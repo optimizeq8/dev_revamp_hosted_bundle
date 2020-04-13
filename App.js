@@ -137,7 +137,9 @@ class App extends React.Component {
     SplashScreen.preventAutoHide();
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
-      AdjustConfig.EnvironmentProduction
+      // !__DEV__
+      // ? AdjustConfig.EnvironmentProduction
+      AdjustConfig.EnvironmentSandbox
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
