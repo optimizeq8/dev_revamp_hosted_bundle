@@ -37,6 +37,7 @@ import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import segmentEventTrack from "../../segmentEventTrack";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -317,6 +318,49 @@ class PaymentForm extends Component {
       showWalletModal: value
     });
   };
+
+  handlePaymentFormFocus = () => {
+    if (this.state.addingCredits) {
+      Segment.screenWithProperties("Payment Selection", {
+        category: "Wallet Top Up"
+      });
+    } else {
+      Segment.screenWithProperties("Payment Selection", {
+        businessname: this.props.mainBusiness.businessname,
+        campaign_id: this.props.campaign_id,
+        category: "Campaign Creation"
+      });
+      Segment.trackWithProperties("Viewed Checkout Step", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id
+      });
+    }
+    if (this.state.addingCredits) {
+      // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
+      // adjustWalletPaymentFormTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustWalletPaymentFormTracker.setRevenue(this.state.amount, "USD");
+      // Adjust.trackEvent(adjustWalletPaymentFormTracker);
+    } else {
+      // let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
+      // adjustPaymentFormTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustPaymentFormTracker.setRevenue(
+      //   this.props.campaign_budget && this.props.campaign_budget,
+      //   "USD"
+      // );
+      // Adjust.trackEvent(adjustPaymentFormTracker);
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -324,26 +368,7 @@ class PaymentForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            if (this.state.addingCredits) {
-              Segment.screenWithProperties("Payment Selection", {
-                category: "Wallet Top Up"
-              });
-            } else {
-              Segment.screenWithProperties("Payment Selection", {
-                businessname: this.props.mainBusiness.businessname,
-                campaign_id: this.props.campaign_id,
-                category: "Campaign Creation"
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                step: 6,
-                business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_id
-              });
-            }
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handlePaymentFormFocus} />
 
         <Container style={[styles.container]}>
           {/* <BackDrop style={styles.backDrop} /> */}
@@ -627,7 +652,8 @@ const mapStateToProps = state => ({
   walletAmountInKwd: state.transA.walletAmountInKwd,
   loading: state.transA.loading_transaction,
   loadingTrans: state.transA.loading,
-  wallet: state.transA.wallet
+  wallet: state.transA.wallet,
+  channel: state.transA.channel
 });
 const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),

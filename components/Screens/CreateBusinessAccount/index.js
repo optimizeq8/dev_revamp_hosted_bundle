@@ -115,7 +115,7 @@ class CreateBusinessAccount extends Component {
         }
       ],
       editBusinessInfo: false,
-      networkString: "http://",
+      // networkString: "http://",
       isVisible: false,
       appSelection: "iOS",
       androidApp_name: "",
@@ -150,21 +150,21 @@ class CreateBusinessAccount extends Component {
     );
     // prefilling the values in case of updating business info
     if (this.props.mainBusiness && editBusinessInfo) {
-      const website =
-        this.props.mainBusiness.websitelink &&
-        this.props.mainBusiness.websitelink.split("//");
-      if (website) {
-        var networkString = website[0] + "//";
-        var websitelink = website[1];
-      }
+      const website = this.props.mainBusiness.websitelink;
+      // &&
+      // this.props.mainBusiness.websitelink.split("//");
+      // if (website) {
+      //   // var networkString = website[0] + "//";
+      //   // var websitelink = website[1];
+      // }
       this.setState({
         businessAccount: {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
-          websitelink: websitelink ? websitelink : ""
+          websitelink: website ? website : ""
         },
         editBusinessInfo,
-        networkString: networkString ? networkString : "http://",
+        // networkString: networkString ? networkString : "http://",
         iosAppSelected:
           this.props.mainBusiness.appstorelink &&
           this.props.mainBusiness.appstorelink.ios_app_id !== "",
@@ -241,7 +241,8 @@ class CreateBusinessAccount extends Component {
       this.state.businessAccount.websitelink !== "" &&
       validateWrapper(
         "url",
-        this.state.networkString + this.state.businessAccount.websitelink
+        // this.state.networkString +
+        this.state.businessAccount.websitelink
       );
 
     this.setState({
@@ -308,7 +309,7 @@ class CreateBusinessAccount extends Component {
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
-                this.state.networkString +
+                // this.state.networkString +
                 this.state.businessAccount.websitelink;
             }
             let userInfo = {
@@ -341,7 +342,7 @@ class CreateBusinessAccount extends Component {
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
-                this.state.networkString +
+                // this.state.networkString +
                 this.state.businessAccount.websitelink;
             }
             // check if info changed then call api else showMessage for no change
@@ -397,7 +398,7 @@ class CreateBusinessAccount extends Component {
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
-                this.state.networkString +
+                // this.state.networkString +
                 this.state.businessAccount.websitelink;
             }
             this.props.createBusinessAccount(
@@ -495,11 +496,11 @@ class CreateBusinessAccount extends Component {
       businessAccount
     });
   };
-  setNetworkString = value => {
-    this.setState({
-      networkString: value
-    });
-  };
+  // setNetworkString = value => {
+  //   this.setState({
+  //     networkString: value
+  //   });
+  // };
   getValidInfo = (stateError, error) => {
     this.setState({
       [stateError]: error
@@ -842,13 +843,13 @@ class CreateBusinessAccount extends Component {
             >
               <Input
                 onSubmitEditing={() => {
-                  this.focusTheField("inputE");
+                  if (this.inputs["inputE"]) this.focusTheField("inputE");
                 }}
+                blurOnSubmit={!this.inputs["inputE"]}
                 ref={input => {
                   this.inputs["inputBN"] = input;
                 }}
-                blurOnSubmit={false}
-                returnKeyType={"next"}
+                returnKeyType={this.inputs["inputE"] ? "next" : "default"}
                 style={styles.inputText}
                 autoCorrect={false}
                 disabled={
@@ -1184,7 +1185,9 @@ class CreateBusinessAccount extends Component {
                       inputBusinessCategoryOther: false,
                       businessAccount: {
                         ...this.state.businessAccount,
-                        otherBusinessCategory: this.state.businessAccount.otherBusinessCategory.trim()
+                        otherBusinessCategory:
+                          this.state.businessAccount.otherBusinessCategory &&
+                          this.state.businessAccount.otherBusinessCategory.trim()
                       }
                     });
                   }}
@@ -1214,9 +1217,9 @@ class CreateBusinessAccount extends Component {
               optional={true}
               website={this.state.businessAccount.websitelink}
               setWebsiteValue={this.setWebsiteValue}
-              networkString={this.state.networkString}
+              // networkString={this.state.networkString}
               stateNameError={this.state.websitelinkError}
-              setNetworkString={this.setNetworkString}
+              // setNetworkString={this.setNetworkString}
               getValidInfo={this.getValidInfo}
               disabled={
                 (this.state.editBusinessInfo &&

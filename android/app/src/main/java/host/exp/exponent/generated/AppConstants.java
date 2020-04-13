@@ -12,7 +12,8 @@ import host.exp.exponent.Constants;
 public class AppConstants {
 
   public static final String VERSION_NAME = "0.2.210";
-  public static String INITIAL_URL = "exp://exp.host/@samyoptimize/optimize_app";
+  public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json";
+  // public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json";
   public static final String SHELL_APP_SCHEME = "optimize";
   public static final String RELEASE_CHANNEL = "development";
   public static boolean SHOW_LOADING_VIEW_IN_SHELL_APP = true;
@@ -62,12 +63,27 @@ public class AppConstants {
         
         
         
+<<<<<<< HEAD
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         // ADD EMBEDDED RESPONSES HERE
         // START EMBEDDED RESPONSES
         embeddedResponses.add(new Constants.EmbeddedResponse("https://exp.host/@samyoptimize/optimize_app", "assets://shell-app-manifest.json", "application/json"));
-        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.22%2F8b27c262a0df406d5f8a2752218f9be8-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.23%2F63dfcf2b2a0fd537e07b93016f595d85-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+=======
+        // ADD EMBEDDED RESPONSES HERE
+        // START EMBEDDED RESPONSES
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://exp.host/@samyoptimize/optimize_app", "assets://shell-app-manifest.json", "application/json"));
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40samyoptimize%2Foptimize_app%2F0.3.20%2Ff2ff691330d34e3e691f009f9533fd8e-36.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+>>>>>>> Add generic files
         // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }

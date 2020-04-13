@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.3.220",
+    "version": "0.3.330",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -25,7 +25,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "37",
+      "buildNumber": "49",
       "supportsTablet": false,
       "publishBundlePath": "ios/optimizeapp/Supporting/shell-app.bundle",
       "publishManifestPath": "ios/optimizeapp/Supporting/shell-app-manifest.json"
@@ -36,7 +36,7 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 33,
+      "versionCode": 41,
       "googleServicesFile": "./google-services.json",
       "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
       "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"

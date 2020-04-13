@@ -53,6 +53,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdInfo extends Component {
   static navigationOptions = {
@@ -312,6 +313,25 @@ class GoogleAdInfo extends Component {
     this.setState({ closedContinueModal: true });
   };
 
+  handleGoogleAdInfoFocus = () => {
+    if (this.props.campaign.campaignResumed) {
+      this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
+    }
+    Segment.screenWithProperties("Google SE Info AD", {
+      category: "Campaign Creation",
+      channel: "google"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 2,
+      business_name: this.props.mainBusiness.businessname
+    });
+    let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
+    adjustGoogleAdObjectiveTracker.addPartnerParameter(
+      `Google_SEM`,
+      "google_sem"
+    );
+    Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -320,24 +340,7 @@ class GoogleAdInfo extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            if (this.props.campaign.campaignResumed) {
-              this.props.save_google_campaign_steps([
-                "Dashboard",
-                "GoogleAdInfo"
-              ]);
-            }
-            Segment.screenWithProperties("Google SE Info AD", {
-              category: "Campaign Creation",
-              channel: "google"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 2,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleGoogleAdInfoFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />

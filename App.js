@@ -64,7 +64,6 @@ import { Icon as BIcon, Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
-import * as Sentry from "sentry-expo";
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
@@ -77,12 +76,14 @@ import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
-Sentry.init({
-  dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
-  enableInExpoDevelopment: false,
-  debug: true
-});
+import * as Sentry from "@sentry/react-native";
+if (!__DEV__) {
+  Sentry.init({
+    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
+  });
+}
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 
@@ -100,7 +101,12 @@ const myErrorHandler = (e, isFatal) => {
         );
       }
     }
-
+    if (!__DEV__) {
+      let userInfo =
+        store.getState().auth.userInfo || store.getState().register.userInfo;
+      if (userInfo) Sentry.setUser(userInfo);
+      Sentry.captureException(e);
+    }
     // store.dispatch(actionCreators.logout(NavigationService));
   }
   // isFatal: if the error is fatal and will kill the app
@@ -129,6 +135,14 @@ class App extends React.Component {
     };
     // Instruct SplashScreen not to hide yet
     SplashScreen.preventAutoHide();
+    const adjustConfig = new AdjustConfig(
+      "c698tyk65u68",
+      // !__DEV__
+      AdjustConfig.EnvironmentProduction
+      // : AdjustConfig.EnvironmentSandbox
+    );
+    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    Adjust.create(adjustConfig);
   }
 
   _loadAsync = async () => {
@@ -181,7 +195,7 @@ class App extends React.Component {
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
-        store.getState().messenger.conversation_status
+        store.getState().messenger.unread_converstaion === 0
       ) {
         store.dispatch(
           actionCreators.connect_user_to_intercom(
@@ -274,6 +288,7 @@ class App extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    Adjust.componentWillUnmount();
   }
 
   getCurrentRouteName = navigationState => {

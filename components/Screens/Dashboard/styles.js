@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   },
   channelIcon: {
     position: "absolute",
-    top: -23
+    top: -22
   },
   adButtonView: {
     flexDirection: "column",
@@ -332,6 +332,27 @@ const styles = StyleSheet.create({
   languageTouchView: {
     right: "5%",
     position: "absolute"
+  },
+  unreadText: {
+    fontFamily: "montserrat-bold-english",
+    fontSize: 10,
+    color: globalColors.white,
+
+    textAlign: "center"
+  },
+  unreadTextView: {
+    position: "absolute",
+    borderRadius: 30,
+    backgroundColor: globalColors.orange,
+    width: 20,
+    height: 20,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    top: -3,
+    left: 18,
+    zIndex: 1
   }
 });
 

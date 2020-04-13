@@ -39,6 +39,7 @@ import {
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
@@ -158,6 +159,8 @@ class Messenger extends Component {
         <NavigationEvents
           onDidFocus={() => {
             Segment.screen("Support");
+            let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
+            Adjust.trackEvent(adjustSupportTrackeer);
           }}
         />
         <CustomHeader
@@ -284,7 +287,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.update_conversatusion_read_status())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Messenger);
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger);

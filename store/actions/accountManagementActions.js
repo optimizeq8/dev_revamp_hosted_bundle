@@ -7,6 +7,7 @@ import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 export const changeBusiness = business => {
   return dispatch => {
@@ -187,7 +188,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
             "Snapchat Ad Account Created Successfully",
             { businessid: id }
           );
-
+          let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
+          Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data, navigation: navigation.navigate }

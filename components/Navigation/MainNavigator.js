@@ -66,7 +66,7 @@ export default FluidNavigator(
     TransactionList: TransactionList,
     Wallet: Wallet,
     AdType: AdType,
-    AdObjective: AdObjective,
+    AdObjective: { screen: AdObjective, path: "AdObjective/" },
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
     AdCover: AdCover,

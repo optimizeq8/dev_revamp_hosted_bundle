@@ -212,7 +212,9 @@ class Tutorial extends Component {
                         );
                       }
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => {
+                      // console.log(err)
+                    });
                 }}
                 textStyle={styles.getStartedText}
                 text={translate("Get Started!")}
@@ -240,7 +242,9 @@ class Tutorial extends Component {
                           );
                         }
                       })
-                      .catch(err => console.log(err));
+                      .catch(err => {
+                        // console.log(err)
+                      });
                   }}
                 />
                 <LowerButton

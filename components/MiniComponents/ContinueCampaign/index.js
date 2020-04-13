@@ -86,6 +86,29 @@ class ContinueCampaign extends Component {
   handleContinue = () => {
     //checks if the old campaign dates are still applicable or not so
     //it doesn't create a campaign with old dates
+    let updated_transaction_data = {
+      channel: ""
+    };
+    if (this.props.currentCampaignSteps.includes("AdObjective")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_id: this.props.data.campaign_id
+      };
+    }
+    if (this.props.currentCampaignSteps.includes("AdDetails")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_budget: this.props.data.lifetime_budget_micro
+      };
+    }
+    if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_budget_kdamount: this.props.data.kdamount
+      };
+    }
+    this.props.setCampaignInfoForTransaction(updated_transaction_data);
+
     if (
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
@@ -96,32 +119,10 @@ class ContinueCampaign extends Component {
         type: "warning"
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.props.dateField.showModal();
+      this.props.dateField.showModal(true);
       this.handleSubmition(false, false), 800;
     } else {
       this.setState({ resumeLoading: true });
-      let updated_transaction_data = {
-        channel: ""
-      };
-      if (this.props.currentCampaignSteps.includes("AdObjective")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_id: this.props.data.campaign_id
-        };
-      }
-      if (this.props.currentCampaignSteps.includes("AdDetails")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget: this.props.data.lifetime_budget_micro
-        };
-      }
-      if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget_kdamount: this.props.data.kdamount
-        };
-      }
-      this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
       this.props.set_adType(this.props.oldTempAdType); //set the adType to the old campaign's adType

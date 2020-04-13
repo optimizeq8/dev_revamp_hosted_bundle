@@ -43,6 +43,7 @@ import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -192,20 +193,25 @@ class AdDetails extends Component {
             ...this.props.data,
             campaignInfo: {
               ...rep,
-              lifetime_budget_micro: this.props.data.campaignDateChanged
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
+              lifetime_budget_micro:
+                this.props.data.campaignDateChanged &&
+                this.props.data.campaignInfo.lifetime_budget_micro <
+                  this.props.data.minValueBudget
+                  ? recBudget
+                  : this.props.data.campaignInfo.lifetime_budget_micro
             },
             value: this.formatNumber(
-              this.props.data.campaignDateChanged
+              this.props.data.campaignDateChanged &&
+                this.props.data.campaignInfo.lifetime_budget_micro <
+                  this.props.data.minValueBudget
                 ? recBudget
                 : this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
-            filteredRegions: countryRegions.regions,
-            regions: countryRegions.regions,
+            filteredRegions: countryRegions ? countryRegions.regions : [],
+            regions: countryRegions ? countryRegions.regions : [],
             budgetOption: this.props.data.campaignDateChanged
               ? 1
               : this.props.data.budgetOption
@@ -420,28 +426,28 @@ class AdDetails extends Component {
         campaignInfo: { ...replace }
       });
   };
-  onSelectedBudgetChange = budget => {
-    if (budget === this.state.maxValueBudget) {
-      showMessage({
-        message: "You can also enter your budget manually.",
-        type: "success",
-        position: "top"
-      });
-    }
-    let replace = this.state.campaignInfo;
-    replace.lifetime_budget_micro = budget;
-    segmentEventTrack(`Campaign Budget Change`, {
-      campaign_budget: this.formatNumber(budget)
-    });
-    this.setState({
-      campaignInfo: replace,
-      value: this.formatNumber(budget)
-    });
-    !this.editCampaign &&
-      this.props.save_campaign_info({
-        campaignInfo: replace
-      });
-  };
+  // onSelectedBudgetChange = budget => {
+  //   if (budget === this.state.maxValueBudget) {
+  //     showMessage({
+  //       message: "You can also enter your budget manually.",
+  //       type: "success",
+  //       position: "top"
+  //     });
+  //   }
+  //   let replace = this.state.campaignInfo;
+  //   replace.lifetime_budget_micro = budget;
+  //   segmentEventTrack(`Campaign Budget Change`, {
+  //     campaign_budget: this.formatNumber(budget)
+  //   });
+  //   this.setState({
+  //     campaignInfo: replace,
+  //     value: this.formatNumber(budget)
+  //   });
+  //   !this.editCampaign &&
+  //     this.props.save_campaign_info({
+  //       campaignInfo: replace
+  //     });
+  // };
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
@@ -565,7 +571,7 @@ class AdDetails extends Component {
         this.props.save_campaign_info({
           campaignInfo: {
             ...this.state.campaignInfo,
-            lifetime_budget_micro: this.state.minValueBudget
+            lifetime_budget_micro: this.state.recBudget
           },
           budgetOption
         });
@@ -825,6 +831,35 @@ class AdDetails extends Component {
     }
   };
 
+  handleAdDetailsFocus = () => {
+    this.props.saveCampaignSteps(
+      this.props.adType === "StoryAd"
+        ? ["Dashboard", "AdObjective", "AdCover", "AdDesign", "AdDetails"]
+        : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
+    );
+
+    if (this.editCampaign) {
+      Segment.screenWithProperties("Snap Ad Targetting Update", {
+        category: "Campaign Update"
+      });
+    } else {
+      Segment.screenWithProperties("Snap Ad Targetting", {
+        category: "Campaign Creation",
+        channel: "snapchat"
+      });
+      Segment.trackWithProperties("Viewed Checkout Step", {
+        checkout_id: this.props.campaign_id,
+        step: 4
+      });
+    }
+    let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+    adjustAdDetailsTracker.addPartnerParameter(
+      `Snap_${this.props.adType}`,
+      this.props.adType
+    );
+    Adjust.trackEvent(adjustAdDetailsTracker);
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1046,36 +1081,7 @@ class AdDetails extends Component {
           ]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              this.props.saveCampaignSteps(
-                this.props.adType === "StoryAd"
-                  ? [
-                      "Dashboard",
-                      "AdObjective",
-                      "AdCover",
-                      "AdDesign",
-                      "AdDetails"
-                    ]
-                  : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
-              );
-
-              if (this.editCampaign) {
-                Segment.screenWithProperties("Snap Ad Targetting Update", {
-                  category: "Campaign Update"
-                });
-              } else {
-                Segment.screenWithProperties("Snap Ad Targetting", {
-                  category: "Campaign Creation",
-                  channel: "snapchat"
-                });
-                Segment.trackWithProperties("Viewed Checkout Step", {
-                  checkout_id: this.props.campaign_id,
-                  step: 4
-                });
-              }
-            }}
-          />
+          <NavigationEvents onDidFocus={this.handleAdDetailsFocus} />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader
@@ -1127,6 +1133,7 @@ class AdDetails extends Component {
                       budgetOption={this.state.budgetOption}
                       _handleBudget={this._handleBudget}
                       screenProps={this.props.screenProps}
+                      data={this.props.data}
                     />
 
                     {/*---------leave if in case we want to use it again---------*/}

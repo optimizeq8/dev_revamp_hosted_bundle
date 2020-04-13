@@ -59,6 +59,8 @@ import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
 import InputField from "../../../MiniComponents/InputField";
 import ModalField from "../../../MiniComponents/ModalField";
+import { Adjust, AdjustEvent } from "react-native-adjust";
+import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -106,9 +108,12 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-        businessid: this.props.mainBusiness.businessid
-      }
+        ad_account_id:
+          this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid
+      },
+      objectiveLabel: "Select Objective"
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -116,6 +121,7 @@ class AdObjective extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
+      this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
     }
     if (
       (prevProps.adType !== this.props.adType &&
@@ -150,9 +156,11 @@ class AdObjective extends Component {
     ) {
       rep = {
         ...this.state.campaignInfo,
-        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-        businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
+        ad_account_id:
+          this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
+        businessid:
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
+        name: this.props.data.name ? this.props.data.name : "",
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
@@ -177,8 +185,11 @@ class AdObjective extends Component {
     } else {
       this.setState({
         campaignInfo: {
-          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-          businessid: this.props.mainBusiness.businessid,
+          ad_account_id:
+            this.props.mainBusiness &&
+            this.props.mainBusiness.snap_ad_account_id,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: "",
           objective: "",
           start_time: "",
@@ -271,12 +282,16 @@ class AdObjective extends Component {
   };
 
   _handleSubmission = async () => {
-    let { nameError, objectiveError } = this.state;
+    let { campaignInfo } = this.state;
     let dateErrors = this.dateField.getErrors();
+    let objectiveError = validateWrapper("mandatory", campaignInfo.objective);
+    let nameError = validateWrapper("mandatory", campaignInfo.name);
 
     this.setState({
       start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      end_timeError: dateErrors.end_timeError,
+      objectiveError,
+      nameError
     });
     // In case error in any field keep track
     if (
@@ -394,6 +409,36 @@ class AdObjective extends Component {
     });
   };
 
+  handleAdOnjectiveFocus = () => {
+    Segment.screenWithProperties(
+      (this.props.adType === "SnapAd"
+        ? "Snap Ad"
+        : this.props.adType === "StoryAd"
+        ? "Story Ad"
+        : "Collection Ad") + " Objective",
+      {
+        category: "Campaign Creation",
+        channel: "snapchat"
+      }
+    );
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 2,
+      business_name: this.props.mainBusiness.businessname
+    });
+
+    let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
+    adjustAdObjectiveTracker.addPartnerParameter(
+      `snap_${
+        this.props.incomplete
+          ? his.props.navigation.getParam("tempAdType", "SnapAd")
+          : this.props.adType
+      }`,
+      this.props.incomplete
+        ? his.props.navigation.getParam("tempAdType", "SnapAd")
+        : this.props.adType
+    );
+    Adjust.trackEvent(adjustAdObjectiveTracker);
+  };
   render() {
     let adType = this.props.adType;
     const list = ObjectiveData[this.props.adType].map(o => (
@@ -406,283 +451,287 @@ class AdObjective extends Component {
       />
     ));
     const { translate } = this.props.screenProps;
-    return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties(
-              (adType === "SnapAd"
-                ? "Snap Ad"
-                : adType === "StoryAd"
-                ? "Story Ad"
-                : "Collection Ad") + " Objective",
-              {
-                category: "Campaign Creation",
-                channel: "snapchat"
-              }
-            );
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 2,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
+    if (!this.props.userInfo) {
+      return (
+        <ErrorComponent
+          screenProps={this.props.screenProps}
+          loading={this.props.loading}
+          navigation={this.props.navigation}
         />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <Container style={styles.container}>
-            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Objective Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
-              }}
-              navigation={this.props.navigation}
-              title={[
-                adType === "SnapAd"
-                  ? "Snap Ad"
-                  : adType === "StoryAd"
-                  ? "Story Ad"
-                  : "Collection Ad",
+      );
+    } else
+      return (
+        <SafeAreaView
+          style={styles.safeAreaView}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
+          <NavigationEvents onDidFocus={this.handleAdOnjectiveFocus} />
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <Container style={styles.container}>
+              <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                segment={{
+                  str: "Ad Objective Back Button",
+                  obj: {
+                    businessname:
+                      this.props.mainBusiness &&
+                      this.props.mainBusiness.businessname
+                  }
+                }}
+                navigation={this.props.navigation}
+                title={[
+                  adType === "SnapAd"
+                    ? "Snap Ad"
+                    : adType === "StoryAd"
+                    ? "Story Ad"
+                    : "Collection Ad",
 
-                "Campaign"
-              ]}
-            />
-            <PhoneIcon
-              style={styles.phoneicon}
-              width={hp(5) < 30 ? 50 : 70}
-              height={hp(5) < 30 ? 50 : 70}
-            />
-            <View style={styles.block1}></View>
-            <ScrollView
-              contentContainerStyle={styles.mainContent}
-              scrollEnabled={true}
-              style={styles.scrollViewStyle}
-            >
-              <InputField
-                label={"Ad Name"}
-                setValue={this.setValue}
-                getValidInfo={this.getValidInfo}
-                disabled={this.props.loading}
-                disabled={this.props.loading}
-                stateName1={"name"}
-                value={this.state.campaignInfo.name}
-                valueError1={this.state.nameError}
-                maxLength={34}
-                autoFocus={false}
-                incomplete={this.state.incomplete}
-                valueText={this.state.objectiveLabel}
-                translate={this.props.screenProps.translate}
+                  "Campaign"
+                ]}
               />
-              <Animatable.View
-                onAnimationEnd={() =>
-                  this.setState({
-                    start_timeError: null,
-                    end_timeError: null
-                  })
-                }
-                duration={200}
-                easing={"ease"}
-                animation={
-                  !this.state.start_timeError || !this.state.end_timeError
-                    ? ""
-                    : "shake"
-                }
+              <PhoneIcon
+                style={styles.phoneicon}
+                width={hp(5) < 30 ? 50 : 70}
+                height={hp(5) < 30 ? 50 : 70}
+              />
+              <View style={styles.block1}></View>
+              <ScrollView
+                contentContainerStyle={styles.mainContent}
+                scrollEnabled={true}
+                style={styles.scrollViewStyle}
               >
-                <View style={[styles.dateTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Date")}
-                  </Text>
-                </View>
-                <Duration
-                  screenProps={this.props.screenProps}
-                  loading={this.props.loading}
-                  dismissKeyboard={Keyboard.dismiss}
-                  start_time={this.state.campaignInfo.start_time}
-                  end_time={this.state.campaignInfo.end_time}
-                  start_timeError={this.state.start_timeError}
-                  end_timeError={this.state.end_timeError}
-                  dateField={this.dateField}
-                />
-              </Animatable.View>
-              <Text style={styles.minBudget}>
-                {translate("Minimum of $25/day")}
-              </Text>
-              <View style={[styles.input2]}>
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
+                <InputField
+                  label={"Ad Name"}
+                  setValue={this.setValue}
                   getValidInfo={this.getValidInfo}
                   disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
+                  disabled={this.props.loading}
+                  stateName1={"name"}
+                  value={this.state.campaignInfo.name}
+                  valueError1={this.state.nameError}
+                  maxLength={34}
+                  autoFocus={false}
                   incomplete={this.state.incomplete}
+                  valueText={this.state.objectiveLabel}
                   translate={this.props.screenProps.translate}
                 />
-              </View>
-
-              {this.props.adType === "CollectionAd" && (
-                <View style={styles.collectionAdView}>
-                  <Text uppercase style={styles.collectionAdText}>
-                    {translate("Where are you taking the user ?")}
-                  </Text>
-                  <View style={styles.topContainer}>
-                    <TouchableOpacity
-                      style={[
-                        this.state.collectionAdLinkForm === 1
-                          ? styles.activeButton
-                          : styles.button,
-                        styles.collectionAdLinkForm1
-                      ]}
-                      onPress={() => {
-                        segmentEventTrack("Selected Collection Ad Link Form ", {
-                          campaign_collection_ad_link_form: "Website"
-                        });
-                        this._handleCollectionAdLinkForm(1);
-                      }}
-                    >
-                      <Text
-                        uppercase
-                        style={[
-                          this.state.collectionAdLinkForm === 1
-                            ? styles.activeText
-                            : styles.inactiveText
-                        ]}
-                      >
-                        {translate("Website")}
-                      </Text>
-                      <Text
-                        style={[
-                          this.state.collectionAdLinkForm === 1
-                            ? styles.activeText
-                            : styles.inactiveText,
-                          styles.buttonSubText
-                        ]}
-                      >
-                        {translate("Links to your site")}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[
-                        this.state.collectionAdLinkForm === 2
-                          ? styles.activeButton
-                          : styles.button,
-                        styles.collectionAdLinkForm2
-                      ]}
-                      onPress={() => {
-                        segmentEventTrack("Selected Collection Ad Link Form ", {
-                          campaign_collection_ad_link_form: "App DeepLink"
-                        });
-                        this._handleCollectionAdLinkForm(2);
-                      }}
-                    >
-                      <Text
-                        uppercase
-                        style={[
-                          this.state.collectionAdLinkForm === 2
-                            ? styles.activeText
-                            : styles.inactiveText
-                        ]}
-                      >
-                        {translate("App DeepLink")}
-                      </Text>
-                      <Text
-                        style={[
-                          this.state.collectionAdLinkForm === 2
-                            ? styles.activeText
-                            : styles.inactiveText,
-                          styles.buttonSubText
-                        ]}
-                      >
-                        {translate("Links to your App")}
-                      </Text>
-                    </TouchableOpacity>
+                <Animatable.View
+                  onAnimationEnd={() =>
+                    this.setState({
+                      start_timeError: null,
+                      end_timeError: null
+                    })
+                  }
+                  duration={200}
+                  easing={"ease"}
+                  animation={
+                    !this.state.start_timeError || !this.state.end_timeError
+                      ? ""
+                      : "shake"
+                  }
+                >
+                  <View style={[styles.dateTextLabel]}>
+                    <Text uppercase style={[styles.inputLabel]}>
+                      {translate("Date")}
+                    </Text>
                   </View>
-                  {/* <Text style={styles.minBudget}>
+                  <Duration
+                    screenProps={this.props.screenProps}
+                    loading={this.props.loading}
+                    dismissKeyboard={Keyboard.dismiss}
+                    start_time={this.state.campaignInfo.start_time}
+                    end_time={this.state.campaignInfo.end_time}
+                    start_timeError={this.state.start_timeError}
+                    end_timeError={this.state.end_timeError}
+                    dateField={this.dateField}
+                  />
+                </Animatable.View>
+                {/* <Text style={styles.minBudget}>
+                {translate("Minimum of $25/day")}
+              </Text> */}
+                <View style={[styles.input2]}>
+                  <ModalField
+                    stateName={"objective"}
+                    setModalVisible={this.setModalVisible}
+                    modal={true}
+                    label={"Objective"}
+                    valueError={this.state.objectiveError}
+                    getValidInfo={this.getValidInfo}
+                    disabled={this.props.loading}
+                    valueText={this.state.objectiveLabel}
+                    value={this.state.campaignInfo.objective}
+                    incomplete={this.state.incomplete}
+                    translate={this.props.screenProps.translate}
+                  />
+                </View>
+
+                {this.props.adType === "CollectionAd" && (
+                  <View style={styles.collectionAdView}>
+                    <Text uppercase style={styles.collectionAdText}>
+                      {translate("Where are you taking the user ?")}
+                    </Text>
+                    <View style={styles.topContainer}>
+                      <TouchableOpacity
+                        style={[
+                          this.state.collectionAdLinkForm === 1
+                            ? styles.activeButton
+                            : styles.button,
+                          styles.collectionAdLinkForm1
+                        ]}
+                        onPress={() => {
+                          segmentEventTrack(
+                            "Selected Collection Ad Link Form ",
+                            {
+                              campaign_collection_ad_link_form: "Website"
+                            }
+                          );
+                          this._handleCollectionAdLinkForm(1);
+                        }}
+                      >
+                        <Text
+                          uppercase
+                          style={[
+                            this.state.collectionAdLinkForm === 1
+                              ? styles.activeText
+                              : styles.inactiveText
+                          ]}
+                        >
+                          {translate("Website")}
+                        </Text>
+                        <Text
+                          style={[
+                            this.state.collectionAdLinkForm === 1
+                              ? styles.activeText
+                              : styles.inactiveText,
+                            styles.buttonSubText
+                          ]}
+                        >
+                          {translate("Links to your site")}
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[
+                          this.state.collectionAdLinkForm === 2
+                            ? styles.activeButton
+                            : styles.button,
+                          styles.collectionAdLinkForm2
+                        ]}
+                        onPress={() => {
+                          segmentEventTrack(
+                            "Selected Collection Ad Link Form ",
+                            {
+                              campaign_collection_ad_link_form: "App DeepLink"
+                            }
+                          );
+                          this._handleCollectionAdLinkForm(2);
+                        }}
+                      >
+                        <Text
+                          uppercase
+                          style={[
+                            this.state.collectionAdLinkForm === 2
+                              ? styles.activeText
+                              : styles.inactiveText
+                          ]}
+                        >
+                          {translate("App DeepLink")}
+                        </Text>
+                        <Text
+                          style={[
+                            this.state.collectionAdLinkForm === 2
+                              ? styles.activeText
+                              : styles.inactiveText,
+                            styles.buttonSubText
+                          ]}
+                        >
+                          {translate("Links to your App")}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    {/* <Text style={styles.minBudget}>
                     Collection Ads only work on iOS
                   </Text> */}
+                  </View>
+                )}
+
+                {this.props.loading ? (
+                  <ForwardLoading
+                    mainViewStyle={{ width: wp(8), height: hp(8) }}
+                    bottom={-hp(5)}
+                    style={{ width: wp(8), height: hp(8) }}
+                  />
+                ) : (
+                  <LowerButton
+                    style={styles.proceedButtonRTL}
+                    bottom={-5}
+                    function={this._handleSubmission}
+                  />
+                )}
+              </ScrollView>
+            </Container>
+          </TouchableWithoutFeedback>
+
+          <DateFields
+            getMinimumCash={this.getMinimumCash}
+            onRef={ref => (this.dateField = ref)}
+            handleStartDatePicked={this.handleStartDatePicked}
+            handleEndDatePicked={this.handleEndDatePicked}
+            start_time={this.state.campaignInfo.start_time}
+            end_time={this.state.campaignInfo.end_time}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            closedContinueModal={this.state.closedContinueModal}
+            handleClosingContinueModal={this.handleClosingContinueModal}
+            incompleteCampaign={this.props.incompleteCampaign}
+            campaignProgressStarted={this.props.campaignProgressStarted}
+            currentCampaignSteps={this.props.currentCampaignSteps}
+          />
+          <ContinueCampaign
+            tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
+            navigation={this.props.navigation}
+            dateField={this.dateField}
+            screenProps={this.props.screenProps}
+            handleClosingContinueModal={this.handleClosingContinueModal}
+          />
+          <Modal
+            animationType={"slide"}
+            transparent={true}
+            onDismiss={() => this.setModalVisible(false)}
+            visible={this.state.modalVisible}
+          >
+            <BlurView intensity={95} tint="dark">
+              <SafeAreaView
+                style={styles.safeAreaView}
+                forceInset={{ bottom: "never", top: "always" }}
+              >
+                <View style={styles.popupOverlay}>
+                  <CustomHeader
+                    screenProps={this.props.screenProps}
+                    closeButton={false}
+                    actionButton={() => {
+                      this.setModalVisible(false);
+                    }}
+                    title={"Campaign Objective"}
+                  />
+                  <Content
+                    padder
+                    indicatorStyle="white"
+                    contentContainerStyle={styles.contentContainer}
+                  >
+                    {list}
+                  </Content>
+                  {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
                 </View>
-              )}
-
-              {this.props.loading ? (
-                <ForwardLoading
-                  mainViewStyle={{ width: wp(8), height: hp(8) }}
-                  bottom={-hp(5)}
-                  style={{ width: wp(8), height: hp(8) }}
-                />
-              ) : (
-                <LowerButton
-                  style={styles.proceedButtonRTL}
-                  bottom={-5}
-                  function={this._handleSubmission}
-                />
-              )}
-            </ScrollView>
-          </Container>
-        </TouchableWithoutFeedback>
-
-        <DateFields
-          getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
-          handleStartDatePicked={this.handleStartDatePicked}
-          handleEndDatePicked={this.handleEndDatePicked}
-          start_time={this.state.campaignInfo.start_time}
-          end_time={this.state.campaignInfo.end_time}
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-          closedContinueModal={this.state.closedContinueModal}
-          handleClosingContinueModal={this.handleClosingContinueModal}
-          incompleteCampaign={this.props.incompleteCampaign}
-          campaignProgressStarted={this.props.campaignProgressStarted}
-          currentCampaignSteps={this.props.currentCampaignSteps}
-        />
-        <ContinueCampaign
-          tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
-          navigation={this.props.navigation}
-          dateField={this.dateField}
-          screenProps={this.props.screenProps}
-          handleClosingContinueModal={this.handleClosingContinueModal}
-        />
-        <Modal
-          animationType={"slide"}
-          transparent={true}
-          onDismiss={() => this.setModalVisible(false)}
-          visible={this.state.modalVisible}
-        >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              style={styles.safeAreaView}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
-              <View style={styles.popupOverlay}>
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  actionButton={() => {
-                    this.setModalVisible(false);
-                  }}
-                  title={"Campaign Objective"}
-                />
-                <Content
-                  padder
-                  indicatorStyle="white"
-                  contentContainerStyle={styles.contentContainer}
-                >
-                  {list}
-                </Content>
-                {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
-              </View>
-            </SafeAreaView>
-          </BlurView>
-        </Modal>
-      </SafeAreaView>
-    );
+              </SafeAreaView>
+            </BlurView>
+          </Modal>
+        </SafeAreaView>
+      );
   }
 }
 

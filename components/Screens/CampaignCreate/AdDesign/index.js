@@ -75,6 +75,7 @@ import { formatStoryAd } from "./Functions/formatStoryAd";
 import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -297,7 +298,7 @@ class AdDesign extends Component {
         type: this.adType !== "StoryAd" ? this.props.data.type : ""
       });
     }
-
+    this.validator(true);
     //----keep for later---//
 
     // if (this.props.navigation.state.params) {
@@ -607,7 +608,7 @@ class AdDesign extends Component {
     }
   };
 
-  validator = () => {
+  validator = mount => {
     const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -645,7 +646,8 @@ class AdDesign extends Component {
       // !this.rejected &&
       this.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
-      this.state.campaignInfo.call_to_action.label === "BLANK"
+      this.state.campaignInfo.call_to_action.label === "BLANK" &&
+      !mount
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -663,16 +665,19 @@ class AdDesign extends Component {
           ad.hasOwnProperty("destination")
         ))
     ) {
-      showMessage({
-        message: translate("Choose A Swipe Up Destination"),
-        position: "top",
-        type: "warning"
-      });
+      if (!mount) {
+        showMessage({
+          message: translate("Choose A Swipe Up Destination"),
+          position: "top",
+          type: "warning"
+        });
+      }
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
       this.adType === "StoryAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
-      this.props.storyAdAttachment.attachment === "BLANK"
+      this.props.storyAdAttachment.attachment === "BLANK" &&
+      !mount
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -683,7 +688,7 @@ class AdDesign extends Component {
     } else {
       swipeUpError = null;
     }
-    if (collectionError) {
+    if (collectionError && !mount) {
       showMessage({
         message: translate("Please add more products to proceed"),
         position: "top",
@@ -697,14 +702,14 @@ class AdDesign extends Component {
         type: "warning"
       });
     }
-    if (mediaError) {
+    if (mediaError && !mount) {
       showMessage({
         message: translate("Please add media to proceed"),
         position: "top",
         type: "warning"
       });
     }
-    if (validCards.length < 3) {
+    if (validCards.length < 3 && !mount) {
       showMessage({
         message: translate("Please add minimum of 3 media files to proceed"),
         position: "top",
@@ -804,7 +809,6 @@ class AdDesign extends Component {
         this.setTheState
       );
       await this.handleUpload();
-      console.log(this.state.fileReadyToUpload, this.state.incorrectDimensions);
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
         showMessage({
@@ -903,7 +907,6 @@ class AdDesign extends Component {
       FileSystem.cacheDirectory + "webImage"
     );
     let file = await manipulateAsync(uneditedImageUri.uri);
-    console.log(file);
 
     let incorrectDimensions =
       Math.floor(file.width / 9) !== Math.floor(file.height / 16) ||
@@ -1014,6 +1017,32 @@ class AdDesign extends Component {
         type: collectionAdMainMediaType
       });
   };
+
+  handleAdDesignFocus = () => {
+    if (!this.props.currentCampaignSteps.includes("AdDetails")) {
+      this.props.saveCampaignSteps(
+        this.adType === "StoryAd"
+          ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
+          : ["Dashboard", "AdObjective", "AdDesign"]
+      );
+    }
+    Segment.screenWithProperties("Snap Ad Design", {
+      category: "Campaign Creation",
+      channel: "snapchat"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign_id,
+      step: 3,
+      business_name: this.props.mainBusiness.businessname
+    });
+
+    let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
+    adjustAdDesignTracker.addPartnerParameter(
+      `Snap_${this.adType}`,
+      this.adType
+    );
+    Adjust.trackEvent(adjustAdDesignTracker);
+  };
   render() {
     let {
       media,
@@ -1089,26 +1118,7 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            if (!this.props.currentCampaignSteps.includes("AdDetails")) {
-              this.props.saveCampaignSteps(
-                this.adType === "StoryAd"
-                  ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
-                  : ["Dashboard", "AdObjective", "AdDesign"]
-              );
-            }
-            Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation",
-              channel: "snapchat"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              checkout_id: this.props.campaign_id,
-              step: 3,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleAdDesignFocus} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
@@ -1361,6 +1371,7 @@ class AdDesign extends Component {
             media: this.state.uneditedImageUri,
             storyAdCards: this.state.storyAdCards
           }}
+          media_type={type}
           serialization={
             this.state.serialization.hasOwnProperty("image")
               ? this.state.serialization

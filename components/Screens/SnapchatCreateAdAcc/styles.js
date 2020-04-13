@@ -6,6 +6,11 @@ import {
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    // top: 5,
+    backgroundColor: "#0000"
+  },
   scrollViewContentContainer: {
     // height: heightPercentageToDP("100%")
     // flex: 1
@@ -87,6 +92,20 @@ const styles = StyleSheet.create({
   webview: {
     backgroundColor: "transparent",
     marginTop: -50
+  },
+  loadingView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  loadingText: {
+    fontSize: 14,
+    lineHeight: 18,
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    textAlign: "center",
+    width: "60%",
+    marginVertical: 20
   }
 });
 

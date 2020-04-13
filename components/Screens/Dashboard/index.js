@@ -57,6 +57,7 @@ import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import segmentEventTrack from "../../segmentEventTrack";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -231,10 +232,15 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       )
         this.props.navigation.navigate("SuspendedWarning");
-      else
+      else {
+        if (adType.value === "SnapAd") {
+          let adjustEvent = new AdjustEvent("kd8uvi");
+          Adjust.trackEvent(adjustEvent);
+        }
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value
         });
+      }
     }
   };
 
@@ -299,6 +305,8 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
+    let adjustEvent = new AdjustEvent("7kk0e6");
+    Adjust.trackEvent(adjustEvent);
     if (!this.props.mainBusiness.snap_ad_account_id) {
       Segment.trackWithProperties("Create SnapAd Acount", {
         category: "Ad Account",
@@ -367,7 +375,10 @@ class Dashboard extends Component {
           mySlideInUp={mySlideInUp}
         />
       );
-    } else if (this.props.businessLoadError || !this.props.userInfo) {
+    } else if (
+      this.props.businessLoadError ||
+      (!this.props.userInfo && !this.props.clearTokenLoading) //so it doesn't show error component when logging out
+    ) {
       return (
         <>
           <ErrorComponent
@@ -418,14 +429,18 @@ class Dashboard extends Component {
                     }
                     style={[styles.headerIcons]}
                   >
-                    {this.props.conversation_status ? (
+                    {this.props.unread_converstaion === 0 ? (
                       <IntercomIcon width={24} height={24} />
                     ) : (
-                      <IntercomNotificationIcon
-                        width={33}
-                        height={33}
-                        style={{ marginBottom: 6, marginLeft: 3 }}
-                      />
+                      <>
+                        <View style={styles.unreadTextView}>
+                          <Text style={styles.unreadText}>
+                            {this.props.unread_converstaion}
+                          </Text>
+                        </View>
+
+                        <IntercomIcon width={24} height={24} />
+                      </>
                     )}
                   </TouchableOpacity>
                 </>
@@ -566,14 +581,14 @@ class Dashboard extends Component {
                                   style={{ color: "#fff" }}
                                 />
                               </GradientButton>
-                              <Text
+                              {/* <Text
                                 style={[
                                   styles.campaignButtonText,
                                   styles.newCampaignTitle
                                 ]}
                               >
                                 {translate("New Ad")}
-                              </Text>
+                              </Text> */}
                             </View>
                             <ScrollView
                               style={{
@@ -698,12 +713,13 @@ const mapStateToProps = state => ({
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  conversation_status: state.messenger.conversation_status,
+  unread_converstaion: state.messenger.unread_converstaion,
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   businessAccounts: state.account.businessAccounts,
-  loadingCampaigns: state.dashboard.loadingCampaigns
+  loadingCampaigns: state.dashboard.loadingCampaigns,
+  clearTokenLoading: state.login.clearTokenLoading
 });
 
 const mapDispatchToProps = dispatch => ({
