@@ -266,7 +266,8 @@ class GoogleAdInfo extends Component {
     ) {
       const segmentInfo = {
         step: 2,
-        business_name: this.props.mainBusiness.businessname,
+        business_name:
+          this.props.mainBusiness && this.props.mainBusiness.businessname,
         campaign_name: this.state.name,
         campaign_language: this.state.language,
         campaign_start_date: this.state.start_time,
@@ -285,7 +286,8 @@ class GoogleAdInfo extends Component {
       this.props.create_google_SE_campaign_info(
         {
           id: this.props.campaign.id !== "" ? this.props.campaign.id : "",
-          businessid: this.props.mainBusiness.businessid,
+          businessid:
+            this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: this.state.name,
           language: this.state.language,
           start_time: this.state.start_time,
@@ -323,7 +325,8 @@ class GoogleAdInfo extends Component {
     });
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
-      business_name: this.props.mainBusiness.businessname
+      business_name:
+        this.props.mainBusiness && this.props.mainBusiness.businessname
     });
     let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustGoogleAdObjectiveTracker.addPartnerParameter(
@@ -348,7 +351,11 @@ class GoogleAdInfo extends Component {
               closeButton={false}
               segment={{
                 str: "Google SE Info Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
+                obj: {
+                  businessname:
+                    this.props.mainBusiness &&
+                    this.props.mainBusiness.businessname
+                }
               }}
               actionButton={() => {
                 this.props.navigation.goBack();

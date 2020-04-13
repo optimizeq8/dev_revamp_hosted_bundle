@@ -123,6 +123,13 @@ class AdObjective extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (
+      prevProps.navigation.getParam("adType", false) !==
+        this.props.navigation.getParam("adType", false) &&
+      this.props.navigation.getParam("adType", false)
+    ) {
+      this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
+    }
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
       this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
