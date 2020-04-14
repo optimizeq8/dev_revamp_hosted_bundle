@@ -97,7 +97,7 @@ class ProductSelect extends React.Component {
       this.props.edit,
       this.state.cartList,
       this.props.mainBusiness.businessid,
-      this.props.businessLogo,
+      this.props.mainBusiness.businesslogo,
       this.state.no_of_products_to_show
     );
   };

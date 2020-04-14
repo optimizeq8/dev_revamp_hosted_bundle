@@ -4,6 +4,7 @@ import { View, Image, BackHandler, Text } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import Axios from "axios";
 
 //Redux
 import { connect } from "react-redux";
@@ -21,11 +22,16 @@ import ProductSelect from "./ProductSelect";
 import GradientButton from "../../MiniComponents/GradientButton";
 import { TouchableOpacity } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
+import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
+
+import { _pickImage } from "./PickImage";
 class MyWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 1
+      signal: null,
+      loaded: 0,
+      isVisible: false
     };
   }
   componentWillUnmount() {
@@ -36,18 +42,17 @@ class MyWebsite extends Component {
     this.props.navigation.goBack();
     return true;
   };
+  _getUploadState = loading => {
+    this.setState({
+      loaded: loading
+    });
+  };
   componentDidMount() {
     // Segment.screenWithProperties("Personal Info", {
     //   category: "User Menu"
     // });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-
-  submitNextStep = activeStep => {
-    this.setState({
-      activeStep
-    });
-  };
   goToManageProducts = () => {
     this.props.navigation.navigate("ManageProducts");
   };
@@ -57,9 +62,35 @@ class MyWebsite extends Component {
   goBack = () => {
     this.props.navigation.navigate("Dashboard");
   };
+  startUpload = media => {
+    var body = new FormData();
+    body.append("businessid", this.props.mainBusiness.businessid);
+    body.append("businesslogo", media);
+    this.props.changeBusinessLogo(
+      body,
+      this._getUploadState,
+      this.cancelUpload,
+      this.onToggleModal
+    );
+  };
+  handleUpload = () => {
+    this.setState({ signal: Axios.CancelToken.source() });
+  };
+  cancelUpload = () => {
+    if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
+  };
+
+  uploadPhoto = () => {
+    _pickImage("Images", this.props.screenProps, this.startUpload);
+  };
+  onToggleModal = visibile => {
+    this.setState({ isVisible: visibile });
+  };
+
   render() {
     const { translate } = this.props.screenProps;
-    const { activeStep } = this.state;
+    const { mainBusiness } = this.props;
+    console.log("render mainBusiness", mainBusiness);
 
     return (
       <SafeAreaView
@@ -96,7 +127,7 @@ class MyWebsite extends Component {
               width: 140,
               height: 140
             }}
-            source={{ uri: this.props.businessLogo }}
+            source={{ uri: mainBusiness.businesslogo }}
           />
         </View>
         <TouchableOpacity
@@ -106,6 +137,7 @@ class MyWebsite extends Component {
             alignItems: "center",
             marginBottom: 20
           }}
+          onPress={this.uploadPhoto}
         >
           <Pen width={15} fill={globalColors.orange} />
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
@@ -117,18 +149,35 @@ class MyWebsite extends Component {
           text={"Manage Products"}
           onPressAction={this.goToManageProducts}
         />
+        <LoadingModal
+          videoUrlLoading={false}
+          loading={this.props.loading}
+          isVisible={this.state.isVisible}
+          onToggleModal={this.onToggleModal}
+          cancelUpload={this.cancelUpload}
+          loaded={this.state.loaded}
+          screenProps={this.props.screenProps}
+        />
       </SafeAreaView>
     );
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo,
-  loadingUpdateInfo: state.auth.loadingUpdateInfo,
-  businessLogo: state.website.businessLogo
+  loading: state.account.loading,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
   updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation))
+    dispatch(actionCreators.updateUserInfo(info, navigation)),
+  changeBusinessLogo: (info, loading, cancelUpload, onToggleModal) =>
+    dispatch(
+      actionCreators.changeBusinessLogo(
+        info,
+        loading,
+        cancelUpload,
+        onToggleModal
+      )
+    )
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
