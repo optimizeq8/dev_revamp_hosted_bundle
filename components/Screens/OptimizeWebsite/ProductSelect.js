@@ -18,7 +18,7 @@ import { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 
 // Icons
-import CloseIcon from "../../../assets/SVGs/TrashBin";
+import CloseIcon from "../../../assets/SVGs/EyeCut";
 
 // MiniComponents
 import GradientButton from "../../MiniComponents/GradientButton";
