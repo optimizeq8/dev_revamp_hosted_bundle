@@ -9,6 +9,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import find from "lodash/find";
+import { LinearGradient } from "expo-linear-gradient";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -23,14 +25,15 @@ import CloseIcon from "../../../assets/SVGs/EyeCut";
 // MiniComponents
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(
       this.props.mainBusiness.insta_handle
     );
-    if (this.props.edit) {
-      this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
-    }
+    // if (this.props.edit) {
+    this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
+    // }
   }
 
   constructor(props) {
@@ -148,15 +151,8 @@ class ProductSelect extends React.Component {
           onPress={() => this.addToCart(item)}
         >
           {itemFound ? (
-            <View
-              style={[
-                styles.itemView,
-                {
-                  backgroundColor: globalColors.orange
-                }
-              ]}
-            >
-              <CloseIcon width={8} />
+            <View style={[styles.itemView, styles.itemFoundView]}>
+              <CloseIcon width={15} />
             </View>
           ) : (
             <View style={styles.itemView}></View>
@@ -167,15 +163,7 @@ class ProductSelect extends React.Component {
             }}
             width={65}
             height={65}
-            style={[
-              { width: 65, height: 65, borderRadius: 20 },
-              itemFound
-                ? {
-                    borderWidth: 3,
-                    borderColor: globalColors.orange
-                  }
-                : {}
-            ]}
+            style={[styles.eachItem, itemFound && styles.itemFound]}
           />
         </TouchableOpacity>
       );
@@ -185,42 +173,54 @@ class ProductSelect extends React.Component {
     const { translate } = this.props.screenProps;
 
     return (
-      <View style={{ flex: 1 }}>
-        {this.props.instagramPostLoading && (
-          <ActivityIndicator color={globalColors.orange} size="large" />
-        )}
-        {!this.props.instagramPostLoading && this.props.instagramPostList && (
-          <FlatList
-            contentContainerStyle={styles.list}
-            initialNumToRender={12}
-            numColumns={4}
-            horizontal={false}
-            data={this.state.posts}
-            keyExtractor={(item, index) => {
-              if (item) {
-                return item.imageId;
-              }
-              return index;
-            }}
-            renderItem={({ item }) => this.renderItem(item)}
-          />
-        )}
-        {this.props.loadingMoreInstaPost && (
-          <ActivityIndicator color={globalColors.orange} size="large" />
-        )}
-        {!this.props.instagramPostLoading &&
-          !this.props.loadingMoreInstaPost &&
-          this.props.instagramPostList &&
-          this.props.instaHasNextPage && (
-            <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
-              {translate("VIEW MORE")}
+      <View style={styles.productSelectOuterView}>
+        <View style={styles.productsTextView}>
+          <Text style={styles.productsText}>{translate("Products")}</Text>
+        </View>
+        <View style={styles.selectProductTextView}>
+          <Text style={styles.selectProductText}>
+            {translate("These are the products that will show on your website")}
+            .{" "}
+            <Text style={styles.hideProductText}>
+              {translate("Tap to remove products")}.
             </Text>
+          </Text>
+          {this.props.instagramPostLoading && (
+            <ActivityIndicator color={globalColors.orange} size="large" />
           )}
-        <LowerButton
-          style={{ marginBottom: 20 }}
-          checkmark={true}
-          function={this.handleSubmission}
-        />
+          {!this.props.instagramPostLoading && this.props.instagramPostList && (
+            <FlatList
+              contentContainerStyle={styles.list}
+              initialNumToRender={12}
+              numColumns={4}
+              horizontal={false}
+              data={this.state.posts}
+              keyExtractor={(item, index) => {
+                if (item) {
+                  return item.imageId;
+                }
+                return index;
+              }}
+              renderItem={({ item }) => this.renderItem(item)}
+            />
+          )}
+          {this.props.loadingMoreInstaPost && (
+            <ActivityIndicator color={globalColors.orange} size="large" />
+          )}
+          {!this.props.instagramPostLoading &&
+            !this.props.loadingMoreInstaPost &&
+            this.props.instagramPostList &&
+            this.props.instaHasNextPage && (
+              <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
+                {translate("VIEW MORE")}
+              </Text>
+            )}
+          <LowerButton
+            style={styles.lowerBtn}
+            checkmark={true}
+            function={this.handleSubmission}
+          />
+        </View>
       </View>
     );
   }

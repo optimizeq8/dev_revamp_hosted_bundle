@@ -308,6 +308,13 @@ export const saveWebProductsToHide = (
  */
 export const getWebProductsToHide = businessid => {
   return dispatch => {
+    dispatch({
+      type: actionTypes.SET_HIDDEN_INSTAGRAM_POST,
+      payload: {
+        products_to_hide_id: null,
+        products_to_hide_list: []
+      }
+    });
     createBaseUrl()
       .get(`businesswebProducts/${businessid}`)
       .then(res => {

@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import { View, Image, BackHandler, Text } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+
+import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+// import * as actionCreators from "../../../store/actions";
 
 //icons
-import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import Pen from "../../../assets/SVGs/Pen";
+// import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
+// import Pen from "../../../assets/SVGs/Pen";
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
@@ -19,8 +20,8 @@ import myWebsiteStyles from "./myWebsiteStyles";
 import Header from "../../MiniComponents/Header";
 import ProductSelect from "./ProductSelect";
 import GradientButton from "../../MiniComponents/GradientButton";
-import { TouchableOpacity } from "react-native";
-import { globalColors } from "../../../GlobalStyles";
+// import { TouchableOpacity } from "react-native";
+// import { globalColors } from "../../../GlobalStyles";
 class MyWebsite extends Component {
   constructor(props) {
     super(props);
@@ -59,13 +60,17 @@ class MyWebsite extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    const { activeStep } = this.state;
 
     return (
       <SafeAreaView
         style={myWebsiteStyles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={["#9300FF", "#5600CB"]}
+          locations={[0, 0.35]}
+          style={styles.gradient}
+        />
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -80,26 +85,16 @@ class MyWebsite extends Component {
           title={"My Website"}
         />
 
-        <View
-          style={{
-            width: 140,
-            height: 140,
-            alignSelf: "center",
-            backgroundColor: "rgba(0,0,0,0.16)",
-            marginVertical: 10,
-            borderRadius: 140,
-            overflow: "hidden"
-          }}
-        >
+        <View style={styles.businesslogoView}>
           <Image
-            style={{
-              width: 140,
-              height: 140
-            }}
+            style={styles.businessLogo}
             source={{ uri: this.props.businessLogo }}
           />
         </View>
-        <TouchableOpacity
+        <Text style={styles.bsnNameText}>
+          {this.props.mainBusiness.businessname}
+        </Text>
+        {/* <TouchableOpacity
           style={{
             flexDirection: "row",
             alignSelf: "center",
@@ -109,26 +104,17 @@ class MyWebsite extends Component {
         >
           <Pen width={15} fill={globalColors.orange} />
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <GradientButton
-          style={styles.submitProducts}
-          uppercase
-          text={"Manage Products"}
-          onPressAction={this.goToManageProducts}
-        />
+        <ProductSelect edit={true} screenProps={this.props.screenProps} />
       </SafeAreaView>
     );
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo,
-  loadingUpdateInfo: state.auth.loadingUpdateInfo,
+  mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation))
-});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
