@@ -91,7 +91,8 @@ export default class EmptyCampaigns extends Component {
         <ScrollView
           contentContainerStyle={[
             styles.mainButtonView,
-            (user_role === "3" || mainBusiness.weburl !== "") && {
+            (user_role === "3" ||
+              (mainBusiness.weburl && mainBusiness.weburl !== "")) && {
               flex: 1
             }
           ]}
@@ -143,7 +144,7 @@ export default class EmptyCampaigns extends Component {
               <TouchableOpacity
                 style={styles.websiteCard}
                 onPress={() => {
-                  this.props.navigation.navigate("OptimizeWebsite");
+                  this.props.navigation.navigate("TutorialWeb");
                 }}
               >
                 <LinearGradient

@@ -54,6 +54,7 @@ import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationS
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
+import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -119,7 +120,8 @@ export default FluidNavigator(
     OptimizeWebsite: OptimizeWebsite,
     WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
     WebsiteSetting: WebsiteSetting,
-    MyWebsite: MyWebsite
+    MyWebsite: MyWebsite,
+    TutorialWeb: TutorialWeb
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
