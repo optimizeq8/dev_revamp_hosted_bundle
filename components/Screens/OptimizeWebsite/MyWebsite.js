@@ -3,16 +3,17 @@ import { View, Image, BackHandler, Text } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
+import Axios from "axios";
 
 import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
-// import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../store/actions";
 
 //icons
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-// import Pen from "../../../assets/SVGs/Pen";
+import Pen from "../../../assets/SVGs/Pen";
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
@@ -20,13 +21,19 @@ import myWebsiteStyles from "./myWebsiteStyles";
 import Header from "../../MiniComponents/Header";
 import ProductSelect from "./ProductSelect";
 import GradientButton from "../../MiniComponents/GradientButton";
-// import { TouchableOpacity } from "react-native";
-// import { globalColors } from "../../../GlobalStyles";
+import { TouchableOpacity } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
+import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
+
+import { _pickImage } from "./PickImage";
+
 class MyWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 1
+      signal: null,
+      loaded: 0,
+      isVisible: false
     };
   }
   componentWillUnmount() {
@@ -37,18 +44,17 @@ class MyWebsite extends Component {
     this.props.navigation.goBack();
     return true;
   };
+  _getUploadState = loading => {
+    this.setState({
+      loaded: loading
+    });
+  };
   componentDidMount() {
     // Segment.screenWithProperties("Personal Info", {
     //   category: "User Menu"
     // });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-
-  submitNextStep = activeStep => {
-    this.setState({
-      activeStep
-    });
-  };
   goToManageProducts = () => {
     this.props.navigation.navigate("ManageProducts");
   };
@@ -58,9 +64,34 @@ class MyWebsite extends Component {
   goBack = () => {
     this.props.navigation.navigate("Dashboard");
   };
+  startUpload = media => {
+    var body = new FormData();
+    body.append("businessid", this.props.mainBusiness.businessid);
+    body.append("businesslogo", media);
+    this.props.changeBusinessLogo(
+      body,
+      this._getUploadState,
+      this.cancelUpload,
+      this.onToggleModal
+    );
+  };
+  handleUpload = () => {
+    this.setState({ signal: Axios.CancelToken.source() });
+  };
+  cancelUpload = () => {
+    if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
+  };
+
+  uploadPhoto = () => {
+    _pickImage("Images", this.props.screenProps, this.startUpload);
+  };
+  onToggleModal = visibile => {
+    this.setState({ isVisible: visibile });
+  };
+
   render() {
     const { translate } = this.props.screenProps;
-
+    const { mainBusiness } = this.props;
     return (
       <SafeAreaView
         style={myWebsiteStyles.safeAreaViewContainer}
@@ -87,34 +118,61 @@ class MyWebsite extends Component {
 
         <View style={styles.businesslogoView}>
           <Image
-            style={styles.businessLogo}
-            source={{ uri: this.props.businessLogo }}
+            style={{
+              width: 140,
+              height: 140
+            }}
+            source={{
+              uri: mainBusiness.businesslogo || this.props.businessLogo
+            }}
           />
         </View>
         <Text style={styles.bsnNameText}>
           {this.props.mainBusiness.businessname}
         </Text>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={{
             flexDirection: "row",
             alignSelf: "center",
             alignItems: "center",
             marginBottom: 20
           }}
+          onPress={this.uploadPhoto}
         >
           <Pen width={15} fill={globalColors.orange} />
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
-        </TouchableOpacity> */}
-
+        </TouchableOpacity>
         <ProductSelect edit={true} screenProps={this.props.screenProps} />
+        <LoadingModal
+          videoUrlLoading={false}
+          loading={this.props.loading}
+          isVisible={this.state.isVisible}
+          onToggleModal={this.onToggleModal}
+          cancelUpload={this.cancelUpload}
+          loaded={this.state.loaded}
+          screenProps={this.props.screenProps}
+        />
       </SafeAreaView>
     );
   }
 }
 const mapStateToProps = state => ({
+  loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  updateUserInfo: (info, navigation) =>
+    dispatch(actionCreators.updateUserInfo(info, navigation)),
+  changeBusinessLogo: (info, loading, cancelUpload, onToggleModal) =>
+    dispatch(
+      actionCreators.changeBusinessLogo(
+        info,
+        loading,
+        cancelUpload,
+        onToggleModal
+      )
+    )
+});
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

@@ -16,7 +16,8 @@ export {
   deleteTeamMembers,
   saveBusinessInvitee,
   resetBusinessInvitee,
-  updateWebInfoForBusiness
+  updateWebInfoForBusiness,
+  changeBusinessLogo
 } from "./accountManagementActions";
 
 export {
