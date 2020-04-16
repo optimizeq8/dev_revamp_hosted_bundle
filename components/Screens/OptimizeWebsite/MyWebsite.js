@@ -9,11 +9,11 @@ import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
-// import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../store/actions";
 
 //icons
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-// import Pen from "../../../assets/SVGs/Pen";
+import Pen from "../../../assets/SVGs/Pen";
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
@@ -92,9 +92,6 @@ class MyWebsite extends Component {
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
-    console.log("render mainBusiness", mainBusiness);
-
-
     return (
       <SafeAreaView
         style={myWebsiteStyles.safeAreaViewContainer}
@@ -125,14 +122,15 @@ class MyWebsite extends Component {
               width: 140,
               height: 140
             }}
-            source={{ uri: mainBusiness.businesslogo }}
-
+            source={{
+              uri: mainBusiness.businesslogo || this.props.businessLogo
+            }}
           />
         </View>
         <Text style={styles.bsnNameText}>
           {this.props.mainBusiness.businessname}
         </Text>
-         <TouchableOpacity
+        <TouchableOpacity
           style={{
             flexDirection: "row",
             alignSelf: "center",
@@ -144,8 +142,7 @@ class MyWebsite extends Component {
           <Pen width={15} fill={globalColors.orange} />
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
         </TouchableOpacity>
-
-
+        <ProductSelect edit={true} screenProps={this.props.screenProps} />
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -155,9 +152,6 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
-
-        <ProductSelect edit={true} screenProps={this.props.screenProps} />
-
       </SafeAreaView>
     );
   }
@@ -165,8 +159,7 @@ class MyWebsite extends Component {
 const mapStateToProps = state => ({
   loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
-  
-   businessLogo: state.website.businessLogo
+  businessLogo: state.website.businessLogo
 });
 
 const mapDispatchToProps = dispatch => ({

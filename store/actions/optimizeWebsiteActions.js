@@ -253,7 +253,7 @@ export const saveWebProductsToHide = (
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl, businesslogo: businesslogo }
+              payload: { weburl: data.weburl }
             });
           }
 
