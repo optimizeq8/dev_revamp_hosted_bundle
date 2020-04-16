@@ -777,7 +777,6 @@ export const changeBusinessLogo = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data;"
     };
-    console.log("info", info);
 
     createBaseUrl()
       .post("uploadBusinessLogo", info, {

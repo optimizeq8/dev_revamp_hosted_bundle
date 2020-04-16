@@ -105,12 +105,6 @@ export const getInstagramPostInitialWebsite = insta_handle => {
           //   return !item.isVideo;
           // });
           // console.log("imagesList", imagesList.length);
-          await dispatch({
-            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-            payload: {
-              businesslogo: businessLogo
-            }
-          });
 
           return dispatch({
             type: actionTypes.GET_INSTAGRAM_POST,
@@ -259,7 +253,7 @@ export const saveWebProductsToHide = (
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl }
+              payload: { weburl: data.weburl, businesslogo: businesslogo }
             });
           }
 
@@ -287,7 +281,7 @@ export const saveWebProductsToHide = (
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl }
+              payload: { weburl: data.weburl, businesslogo: businesslogo }
             });
           }
 
