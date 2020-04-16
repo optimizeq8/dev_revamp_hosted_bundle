@@ -55,15 +55,19 @@ export const pick = async (mediaTypes, screenProps) => {
 export const _pickImage = async (
   mediaTypes = "Images",
   screenProps,
-  startUpload,
-  businessid
+  startUpload
 ) => {
   try {
     let result = {};
     result = await pick(mediaTypes, screenProps);
     result = { uri: result.uri, cancelled: false, type: "image" };
     let configuration = PhotoEditorConfiguration({
-      serialization: result && result.hasOwnProperty("serialization")
+      width: 1,
+      height: 1,
+      serialization: result && result.hasOwnProperty("serialization"),
+      transform: {
+        items: [{ width: 1, height: 1, name: "Square" }]
+      }
     });
     let file = {};
     if (result) {
@@ -133,8 +137,15 @@ export const _pickImage = async (
             position: "top",
             type: "success"
           });
-
-          startUpload(result.uri);
+          var res = result.uri.split("/");
+          res = res[res.length - 1];
+          var photo = {
+            uri: result.uri,
+            type: "IMAGE" + "/" + format,
+            name: res
+          };
+          let format = res.split(".")[1];
+          startUpload(photo);
         })
         .catch(error => {
           // console.log(error);
@@ -154,6 +165,6 @@ export const _pickImage = async (
       return;
     }
   } catch (error) {
-    console.log("error image pick", error);
+    // console.log("error image pick", error);
   }
 };
