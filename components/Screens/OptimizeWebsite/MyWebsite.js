@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { View, Image, BackHandler, Text } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
 
+import * as Segment from "expo-analytics-segment";
+
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+// import * as actionCreators from "../../../store/actions";
 
 //icons
-import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import Pen from "../../../assets/SVGs/Pen";
+// import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
+// import Pen from "../../../assets/SVGs/Pen";
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
@@ -25,6 +26,7 @@ import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "./PickImage";
+
 class MyWebsite extends Component {
   constructor(props) {
     super(props);
@@ -92,11 +94,17 @@ class MyWebsite extends Component {
     const { mainBusiness } = this.props;
     console.log("render mainBusiness", mainBusiness);
 
+
     return (
       <SafeAreaView
         style={myWebsiteStyles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={["#9300FF", "#5600CB"]}
+          locations={[0, 0.35]}
+          style={styles.gradient}
+        />
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -111,26 +119,20 @@ class MyWebsite extends Component {
           title={"My Website"}
         />
 
-        <View
-          style={{
-            width: 140,
-            height: 140,
-            alignSelf: "center",
-            backgroundColor: "rgba(0,0,0,0.16)",
-            marginVertical: 10,
-            borderRadius: 140,
-            overflow: "hidden"
-          }}
-        >
+        <View style={styles.businesslogoView}>
           <Image
             style={{
               width: 140,
               height: 140
             }}
             source={{ uri: mainBusiness.businesslogo }}
+
           />
         </View>
-        <TouchableOpacity
+        <Text style={styles.bsnNameText}>
+          {this.props.mainBusiness.businessname}
+        </Text>
+         <TouchableOpacity
           style={{
             flexDirection: "row",
             alignSelf: "center",
@@ -143,12 +145,7 @@ class MyWebsite extends Component {
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
         </TouchableOpacity>
 
-        <GradientButton
-          style={styles.submitProducts}
-          uppercase
-          text={"Manage Products"}
-          onPressAction={this.goToManageProducts}
-        />
+
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -158,13 +155,18 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
+
+        <ProductSelect edit={true} screenProps={this.props.screenProps} />
+
       </SafeAreaView>
     );
   }
 }
 const mapStateToProps = state => ({
   loading: state.account.loading,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
+  
+   businessLogo: state.website.businessLogo
 });
 
 const mapDispatchToProps = dispatch => ({

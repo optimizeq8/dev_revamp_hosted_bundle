@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler, Text } from "react-native";
+import { View, TouchableOpacity, BackHandler, Text, Image } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
@@ -12,6 +12,10 @@ import * as actionCreators from "../../../store/actions";
 //icons
 import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 import BackIcon from "../../../assets/SVGs/BackButton";
+import InstagramIcon from "../../../assets/SVGs/InstagarmBlackBg";
+import WhatsApp from "../../../assets/SVGs/WhatsappBlackBg";
+import PhoneIcon from "../../../assets/SVGs/PhoneBlackBackground";
+
 // Style
 import styles from "./styles";
 import RegisterForm from "./RegisterForm";
@@ -111,33 +115,70 @@ class OptimizeWebsite extends Component {
           </View>
         </View>
         <OnlineStoreHome style={styles.onlineStoreHomeIcon} />
-        <View style={styles.outerView}>
-          <LinearGradient
-            colors={["#9300FF", "#5600CB"]}
-            locations={[0, 0.75]}
-            style={styles.gradient}
-          />
-          <Text style={styles.createWebsiteText}>
-            {activeStep === 1
-              ? translate(
-                  "We’ll create a mini website for your business Just fill in the info below"
-                )
-              : translate(
-                  "These are the products that will show on your website Tap to remove products"
-                )}
-          </Text>
+
+        <View
+          style={[styles.outerView, activeStep === 2 && styles.step2OuterView]}
+        >
           {activeStep === 1 && (
-            <RegisterForm
-              screenProps={this.props.screenProps}
-              submitNextStep={this.submitNextStep}
+            <LinearGradient
+              colors={["#9300FF", "#5600CB"]}
+              locations={[0, 0.75]}
+              style={styles.gradient}
             />
           )}
           {activeStep === 2 && (
-            <ProductSelect
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-            />
+            <View style={styles.livePreviewView}>
+              <Text style={styles.livePreviewText}>
+                {translate("Live Preview")}
+              </Text>
+            </View>
           )}
+          <>
+            {activeStep === 2 && (
+              <View style={styles.previewOuterView}>
+                <LinearGradient
+                  colors={["#9300FF", "#5600CB"]}
+                  locations={[0, 0.75]}
+                  style={styles.gradient}
+                />
+                <Image
+                  style={styles.profileIcon}
+                  source={{
+                    uri: this.props.businessLogo
+                  }}
+                />
+                <Text style={styles.bsnNameText}>
+                  {this.props.mainBusiness.businessname}
+                </Text>
+                <View style={styles.socialMediaView}>
+                  <PhoneIcon width={40} styles={styles.socialMediaIcon} />
+
+                  <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+
+                  <WhatsApp width={40} styles={styles.socialMediaIcon} />
+                </View>
+              </View>
+            )}
+            {activeStep === 1 && (
+              <Text style={styles.createWebsiteText}>
+                {translate(
+                  "We’ll create a mini website for your business Just fill in the info below"
+                )}
+              </Text>
+            )}
+            {activeStep === 1 && (
+              <RegisterForm
+                screenProps={this.props.screenProps}
+                submitNextStep={this.submitNextStep}
+              />
+            )}
+            {activeStep === 2 && (
+              <ProductSelect
+                navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
+              />
+            )}
+          </>
         </View>
       </SafeAreaView>
     );
@@ -145,11 +186,9 @@ class OptimizeWebsite extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  loadingUpdateInfo: state.auth.loadingUpdateInfo
+  mainBusiness: state.account.mainBusiness,
+  businessLogo: state.website.businessLogo
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation))
-});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(OptimizeWebsite);

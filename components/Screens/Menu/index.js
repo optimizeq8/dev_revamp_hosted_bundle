@@ -227,7 +227,6 @@ class Menu extends Component {
                   this.props.mainBusiness.user_role === "3"
                 }
                 onPress={() => {
-                  this.props.navigation.navigate("BusinessInfo");
                   if (
                     mainBusiness.hasOwnProperty("weburl") &&
                     mainBusiness.weburl &&
@@ -235,7 +234,7 @@ class Menu extends Component {
                   ) {
                     this.props.navigation.navigate("MyWebsite");
                   } else {
-                    this.props.navigation.navigate("OptimizeWebsite");
+                    this.props.navigation.navigate("TutorialWeb");
                   }
                 }}
               >
@@ -376,7 +375,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/38/
+                {Constants.manifest.version}/40/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
                 {Constants.manifest.releaseChannel}/

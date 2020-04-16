@@ -6,7 +6,11 @@ import {
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  safeAreaViewContainer: { flex: 1, backgroundColor: "#FFF" },
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#FFF"
+    // position: "absolute"
+  },
   personalInfoIcon: {
     alignSelf: "center",
     marginTop: 20
@@ -157,6 +161,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35
+    // overflow: "hidden"
   },
   whatsAppDetailContainer: {
     paddingTop: 20,
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
   },
   itemView: {
     width: 25,
-    borderRadius: 30,
+    borderRadius: 20,
     height: 25,
     marginBottom: -15,
     zIndex: 1,
@@ -225,13 +230,13 @@ const styles = StyleSheet.create({
   },
   viewMoreText: {
     fontFamily: "montserrat-bold",
-    color: "#FFF",
+    color: globalColors.orange,
     fontSize: 14,
     lineHeight: 18,
     paddingVertical: 10,
     textAlign: "center",
     borderWidth: 1,
-    borderColor: "#FFF",
+    borderColor: globalColors.orange,
     borderRadius: 20,
     marginHorizontal: 60,
     marginBottom: 20
@@ -326,11 +331,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 35,
     marginTop: -110,
     overflow: "hidden",
+    zIndex: 10,
     paddingHorizontal: 20,
     paddingTop: 20
   },
   onlineStoreHomeIcon: {
-    left: -10
+    left: -10,
+    zIndex: -1
   },
   list: {
     // paddingTop: 20
@@ -372,6 +379,121 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     color: "#fff",
     textAlign: "center"
+  },
+  socialMediaIcon: {
+    marginHorizontal: 20
+  },
+  selectProductText: {
+    fontSize: 12,
+    fontFamily: "montserrat-regular",
+    color: "#999999",
+    paddingHorizontal: 50,
+    textAlign: "left"
+  },
+  hideProductText: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.orange
+  },
+  productsText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#909090",
+    textTransform: "uppercase"
+  },
+  step2OuterView: {
+    overflow: "visible",
+    paddingHorizontal: 0,
+    paddingTop: 0
+  },
+  livePreviewView: {
+    backgroundColor: "#42EB56",
+    paddingHorizontal: 16,
+    paddingVertical: 7,
+    borderRadius: 20,
+    position: "absolute",
+    zIndex: 2,
+    left: 30,
+    marginTop: -15
+  },
+  livePreviewText: {
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    color: "#FFF"
+  },
+  previewOuterView: {
+    display: "flex",
+    alignItems: "center",
+    overflow: "hidden",
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingTop: 25,
+    paddingBottom: 15
+  },
+  profileIcon: {
+    width: 62,
+    height: 62,
+    borderRadius: 70
+  },
+  bsnNameText: {
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    color: "#FFF",
+    paddingTop: 10,
+    paddingBottom: 15
+  },
+  socialMediaView: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  productSelectOuterView: {
+    flex: 1,
+    backgroundColor: "#5600CB"
+  },
+  productsTextView: {
+    alignSelf: "center",
+    backgroundColor: "#FFF",
+    paddingTop: 10,
+    paddingHorizontal: 50,
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 25,
+    marginBottom: -4,
+    zIndex: 1
+  },
+  selectProductTextView: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingTop: 20
+  },
+  lowerBtn: { marginBottom: 20 },
+  eachItem: {
+    width: 65,
+    height: 65,
+    borderRadius: 20
+  },
+  itemFound: {
+    opacity: 0.26
+  },
+  itemFoundView: {
+    backgroundColor: "#D84D28"
+  },
+  businesslogoView: {
+    width: 140,
+    height: 140,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.16)",
+    marginVertical: 10,
+    borderRadius: 140,
+    overflow: "hidden"
+  },
+  businessLogo: {
+    width: 140,
+    height: 140
   }
 });
 

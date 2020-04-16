@@ -52,9 +52,9 @@ import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading"
 import OptimizeWebsite from "../Screens/OptimizeWebsite";
 import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
-import ManageProducts from "../Screens/OptimizeWebsite/ManageProducts";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
+import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -120,8 +120,8 @@ export default FluidNavigator(
     OptimizeWebsite: OptimizeWebsite,
     WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
     WebsiteSetting: WebsiteSetting,
-    ManageProducts: ManageProducts,
-    MyWebsite: MyWebsite
+    MyWebsite: MyWebsite,
+    TutorialWeb: TutorialWeb
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
