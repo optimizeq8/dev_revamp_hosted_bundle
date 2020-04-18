@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   ss1: {
-    height: heightPercentageToDP(50),
+    height: heightPercentageToDP(45),
     alignSelf: "flex-start",
     marginLeft: widthPercentageToDP(-10)
   },

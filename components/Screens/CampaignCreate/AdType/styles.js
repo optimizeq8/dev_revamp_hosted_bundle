@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   campaignText: {
+    textAlign: "left",
     color: "#FFF",
     fontSize: 14,
     fontFamily: "montserrat-bold",

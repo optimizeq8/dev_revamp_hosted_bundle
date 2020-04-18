@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import * as Segment from "expo-analytics-segment";
 
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
 import BackIcon from "../../../../assets/SVGs/BackButton";
@@ -53,9 +54,7 @@ export default class TutorialWeb extends React.Component {
     return true;
   };
   componentDidMount() {
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+    Segment.screen("Website Introduction");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

@@ -50,9 +50,7 @@ class OptimizeWebsite extends Component {
     return true;
   };
   componentDidMount() {
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+    Segment.screen("Website Registration Detail");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -61,6 +59,11 @@ class OptimizeWebsite extends Component {
       activeStep
     });
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.activeStep === 1 && this.state.activeStep === 2) {
+      Segment.screen("Website Registration Product Select");
+    }
+  }
 
   render() {
     const { translate } = this.props.screenProps;
