@@ -254,15 +254,7 @@ class AdType extends Component {
               }
             ]}
           />
-          <Text
-            style={[
-              styles.headingText,
-              {
-                color: textColor
-              }
-            ]}
-          >
-            {translate(this.state.active)}
+          {this.state.active !== "Google" && I18nManager.isRTL ? (
             <Text
               style={[
                 styles.campaignText,
@@ -271,14 +263,48 @@ class AdType extends Component {
                 }
               ]}
             >
-              {" " + translate("Campaign")}
+              {translate("Campaign") + " "}
+              <Text
+                style={[
+                  styles.headingText,
+                  {
+                    color: textColor
+                  }
+                ]}
+              >
+                {translate(this.state.active)}
+              </Text>
             </Text>
-          </Text>
+          ) : (
+            <Text
+              style={[
+                styles.headingText,
+                {
+                  color: textColor
+                }
+              ]}
+            >
+              {translate(this.state.active)}
+              <Text
+                style={[
+                  styles.campaignText,
+                  {
+                    color: textColor
+                  }
+                ]}
+              >
+                {" " + translate("Campaign")}
+              </Text>
+            </Text>
+          )}
         </View>
         <View style={styles.mainView}>
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
-              activeSlide: this.state.active
+              activeSlide:
+                this.state.active === "Google" && I18nManager.isRTL
+                  ? " "
+                  : this.state.active
             })}
           </Text>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>

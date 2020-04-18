@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import Award from "../../../assets/SVGs/award";
 class WebsiteRegistartionSuccess extends React.Component {
   componentDidMount() {
-    // Segment.screen("Registration Complete");
+    Segment.screen("Website Registartion Complete");
   }
   render() {
     const { translate } = this.props.screenProps;

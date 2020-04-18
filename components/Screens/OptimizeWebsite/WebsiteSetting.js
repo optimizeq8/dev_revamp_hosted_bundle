@@ -27,9 +27,7 @@ export default class MyWebsite extends Component {
     return true;
   };
   componentDidMount() {
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+    Segment.screenWithProperties("Website Setting");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

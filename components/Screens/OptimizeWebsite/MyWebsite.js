@@ -50,9 +50,10 @@ class MyWebsite extends Component {
     });
   };
   componentDidMount() {
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+    Segment.screenWithProperties("My Website", {
+      businessid: this.props.mainBusiness.businessid,
+      businessname: this.props.mainBusiness.businessname
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   goToManageProducts = () => {
