@@ -74,7 +74,10 @@ export default class TutorialWeb extends React.Component {
           />
 
           <View style={styles.handArrowView}>
-            <HandsArrow width={widthPercentageToDP(10)} />
+            <HandsArrow
+              width={widthPercentageToDP(10)}
+              style={{ alignSelf: "flex-start" }}
+            />
             <Text style={styles.maintainText}>
               {translate("NO MAINTENANCE NEEDED")}
             </Text>
@@ -148,7 +151,15 @@ export default class TutorialWeb extends React.Component {
       >
         <View style={styles.headerCardView}>
           <TouchableOpacity onPress={this.handleBackPress}>
-            <BackIcon stroke={"#FFF"} width={25} />
+            <BackIcon
+              stroke={"#FFF"}
+              width={25}
+              style={[
+                I18nManager.isRTL && {
+                  transform: [{ rotateY: "180deg" }]
+                }
+              ]}
+            />
           </TouchableOpacity>
           <Text style={styles.headerText}>
             {translate("WEBSITE REGISTRATION")}
@@ -162,7 +173,14 @@ export default class TutorialWeb extends React.Component {
               <Text style={styles.getStartedText}>
                 {translate("Get Started!")}
               </Text>
-              <ForwardButton height={11} />
+              <ForwardButton
+                height={11}
+                style={[
+                  I18nManager.isRTL && {
+                    transform: [{ rotateY: "180deg" }]
+                  }
+                ]}
+              />
             </View>
           </GradientButton>
         </View>

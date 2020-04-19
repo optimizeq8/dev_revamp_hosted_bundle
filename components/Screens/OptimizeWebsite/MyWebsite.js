@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler, Text } from "react-native";
+import {
+  View,
+  Image,
+  BackHandler,
+  Text,
+  Clipboard,
+  TouchableOpacity
+} from "react-native";
 
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,14 +21,14 @@ import * as actionCreators from "../../../store/actions";
 //icons
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 import Pen from "../../../assets/SVGs/Pen";
+import CopyIcon from "../../../assets/SVGs/CopyIcon";
+
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
 
 import Header from "../../MiniComponents/Header";
 import ProductSelect from "./ProductSelect";
-import GradientButton from "../../MiniComponents/GradientButton";
-import { TouchableOpacity } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
@@ -93,6 +100,10 @@ class MyWebsite extends Component {
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
+    let website = mainBusiness.weburl;
+    if (website && !website.includes(".com")) {
+      website = `https://${mainBusiness.weburl}.optimizeapp.com`;
+    }
     return (
       <SafeAreaView
         style={myWebsiteStyles.safeAreaViewContainer}
@@ -120,8 +131,8 @@ class MyWebsite extends Component {
         <View style={styles.businesslogoView}>
           <Image
             style={{
-              width: 140,
-              height: 140
+              width: 95,
+              height: 95
             }}
             source={{
               uri: mainBusiness.businesslogo || this.props.businessLogo
@@ -136,13 +147,30 @@ class MyWebsite extends Component {
             flexDirection: "row",
             alignSelf: "center",
             alignItems: "center",
-            marginBottom: 20
+            marginBottom: 13
           }}
           onPress={this.uploadPhoto}
         >
           <Pen width={15} fill={globalColors.orange} />
           <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
         </TouchableOpacity>
+
+        <View style={styles.labelView}>
+          <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
+        </View>
+        <View style={styles.weburlView}>
+          <Text selectable style={styles.weburl}>
+            {website}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              Clipboard.setString(website);
+            }}
+          >
+            <CopyIcon style={styles.copyIcon} />
+          </TouchableOpacity>
+        </View>
+
         <ProductSelect edit={true} screenProps={this.props.screenProps} />
         <LoadingModal
           videoUrlLoading={false}

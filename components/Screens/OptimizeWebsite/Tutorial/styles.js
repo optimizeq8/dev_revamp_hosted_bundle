@@ -107,13 +107,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#9204FE",
     textTransform: "uppercase",
-    lineHeight: 22
+    lineHeight: 22,
+    textAlign: "left"
   },
   readyWithinTextView: {
     display: "flex",
     flexDirection: "column",
     paddingHorizontal: 8,
-    alignSelf: "center"
+    alignSelf: "center",
+    textAlign: "left"
   },
   freeChargeView: {
     display: "flex",
@@ -130,24 +132,27 @@ const styles = StyleSheet.create({
   syncedText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    color: "#9204FE"
+    color: "#9204FE",
+    textAlign: "left"
   },
   maintainText: {
     fontFamily: "montserrat-bold",
     fontSize: 15,
     color: "#9204FE",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    textAlign: "left"
   },
   handArrowView: {
     paddingHorizontal: 25,
-    marginTop: heightPercentageToDP(-12),
+    marginTop: heightPercentageToDP(-8),
 
     paddingBottom: 20
   },
   ss1: {
     height: heightPercentageToDP(45),
+    width: widthPercentageToDP(100),
     alignSelf: "flex-start",
-    marginLeft: widthPercentageToDP(-10)
+    marginLeft: I18nManager.isRTL ? 0 : widthPercentageToDP(-15)
   },
   slide1View: {
     backgroundColor: "#FFF",
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
   onlineStoreHomeIcon: {
     position: "absolute",
     bottom: "-5%",
-    left: "-12%",
+    left: I18nManager.isRTL ? "12%" : "-12%",
     zIndex: -1
   }
 });
