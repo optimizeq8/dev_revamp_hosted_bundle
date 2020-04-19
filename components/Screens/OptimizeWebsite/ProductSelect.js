@@ -118,6 +118,9 @@ class ProductSelect extends React.Component {
     // console.log("checkifALreadyExist", checkifALreadyExist);
     if (!checkifALreadyExist) {
       newCartList.push(item.imageId);
+      segmentEventTrack("Add product to hide", {
+        products_list_item: newCartList
+      });
       const counterNew = this.state.counter;
       this.setState({
         cartList: newCartList,
@@ -130,6 +133,9 @@ class ProductSelect extends React.Component {
       const counterNew = this.state.counter;
 
       newCartList.splice(index, 1);
+      segmentEventTrack("Remove product to hide", {
+        products_list_item: newCartList
+      });
       this.setState({
         cartList: newCartList,
         counter: counterNew - 1

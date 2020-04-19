@@ -112,6 +112,9 @@ export const _pickImage = async (
             });
 
             if (newSize.size > 5000000) {
+              segmentEventTrack("Error selecting business logo", {
+                error_businesslogo: "Image must be less than 5 MBs"
+              });
               showMessage({
                 message: translate("Image must be less than {{fileSize}} MBs", {
                   fileSize: 5
@@ -132,6 +135,7 @@ export const _pickImage = async (
           }
         })
         .then(() => {
+          segmentEventTrack("Business logo image selected successfully");
           showMessage({
             message: translate("Image has been selected successfully"),
             position: "top",

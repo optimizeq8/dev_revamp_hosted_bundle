@@ -33,6 +33,7 @@ import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "./PickImage";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -91,6 +92,7 @@ class MyWebsite extends Component {
   };
 
   uploadPhoto = () => {
+    segmentEventTrack("Button clicked to change business logo");
     _pickImage("Images", this.props.screenProps, this.startUpload);
   };
   onToggleModal = visibile => {
@@ -117,10 +119,10 @@ class MyWebsite extends Component {
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
-          // segment={{
-          //   str: "Ad Design Back Button",
-          //   obj: { businessname: this.props.mainBusiness.businessname }
-          // }}
+          segment={{
+            str: "MyWebsite Back Button",
+            obj: { businessname: this.props.mainBusiness.businessname }
+          }}
           showTopRightButtonIcon={"settings"}
           // navigation={this.props.navigation}
           actionButton={this.goBack}

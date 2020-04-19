@@ -6,7 +6,7 @@ import {
   NavigationActions,
   StackActions
 } from "react-navigation";
-
+import * as Segment from "expo-analytics-segment";
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -15,6 +15,9 @@ import CustomHeader from "../../MiniComponents/Header";
 //styles
 import styles from "./styles";
 export default class SuspendedWarning extends Component {
+  componentDidMount() {
+    Segment.screen("Suspended Warning");
+  }
   render() {
     const { translate } = this.props.screenProps;
 
