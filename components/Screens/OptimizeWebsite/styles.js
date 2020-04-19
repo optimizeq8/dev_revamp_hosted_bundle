@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
     textTransform: "uppercase",
-    marginBottom: -3
+    marginBottom: I18nManager.isRTL ? -8 : -3,
+    zIndex: 1
   },
   labelView: {
     height: 15,
@@ -440,8 +441,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     color: "#FFF",
-    paddingTop: 10,
-    paddingBottom: 15
+    paddingBottom: 5
   },
   socialMediaView: {
     display: "flex",
@@ -483,17 +483,51 @@ const styles = StyleSheet.create({
     backgroundColor: "#D84D28"
   },
   businesslogoView: {
-    width: 140,
-    height: 140,
+    width: 95,
+    height: 95,
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.16)",
     marginVertical: 10,
-    borderRadius: 140,
+    borderRadius: 100,
     overflow: "hidden"
   },
   businessLogo: {
     width: 140,
     height: 140
+  },
+  yourUrlText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#FFF",
+    textTransform: "uppercase",
+    textAlign: "center",
+    paddingTop: 5,
+    marginBottom: -10,
+    zIndex: 1
+  },
+  weburl: {
+    fontFamily: "montserrat-regular-english",
+    fontSize: 14,
+    color: "#FFF",
+    textAlign: "center"
+  },
+  weburlView: {
+    backgroundColor: "rgba(0,0,0,0.15)",
+    paddingHorizontal: 20,
+    width: widthPercentageToDP(80),
+    alignSelf: "center",
+    paddingVertical: 20,
+    borderRadius: 30,
+    display: "flex",
+    flexDirection: "row",
+    marginBottom: 13
+  },
+  copyIcon: {
+    alignSelf: "flex-end",
+    left: 10
+  },
+  urlView: {
+    marginBottom: 13
   }
 });
 
