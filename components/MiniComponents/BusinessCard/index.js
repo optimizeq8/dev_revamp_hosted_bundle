@@ -8,7 +8,7 @@ import businessList from "../../Data/newBusinessCategoryList.data";
 import isStringArabic from "../../isStringArabic";
 import Swipeout from "react-native-swipeout";
 import { ActivityIndicator } from "react-native-paper";
-
+import segmentEventTrack from "../../segmentEventTrack";
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
@@ -50,6 +50,7 @@ class BusinessCard extends Component {
   ];
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
+      segmentEventTrack("Switched business", this.props.business);
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
       this.props.rest_google_campaign_data();

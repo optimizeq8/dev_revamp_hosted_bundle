@@ -301,10 +301,7 @@ class AdType extends Component {
         <View style={styles.mainView}>
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
-              activeSlide:
-                this.state.active === "Google" && I18nManager.isRTL
-                  ? " "
-                  : this.state.active
+              activeSlide: I18nManager.isRTL ? " " : this.state.active
             })}
           </Text>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>

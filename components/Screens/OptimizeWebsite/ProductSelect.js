@@ -26,6 +26,7 @@ import CloseIcon from "../../../assets/SVGs/EyeCut";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import segmentEventTrack from "../../segmentEventTrack";
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(
@@ -96,6 +97,10 @@ class ProductSelect extends React.Component {
     }
   }
   handleSubmission = () => {
+    segmentEventTrack("Submit Products to hide", {
+      businessid: this.props.mainBusiness.businessid,
+      products_to_hide_list: this.state.cartList
+    });
     this.props.saveWebProductsToHide(
       this.props.edit,
       this.state.cartList,
@@ -132,7 +137,7 @@ class ProductSelect extends React.Component {
     }
   };
   onScrollHandler = () => {
-    // segmentEventTrack("Button clicked to view more instagram post");
+    segmentEventTrack("Button clicked to view more instagram post");
     this.props.loadMoreInstagramPostWebsite(
       this.props.instaHandleId,
       this.props.instaEndCursor

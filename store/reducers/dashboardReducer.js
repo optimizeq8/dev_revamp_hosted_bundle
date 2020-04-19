@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import isUndefined from "lodash/isUndefined";
 
 const initialState = {
-  campaignList: [],
+  campaignList: null,
   filteredCampaigns: [],
   fetching_from_server: false,
   isListEnd: false,
