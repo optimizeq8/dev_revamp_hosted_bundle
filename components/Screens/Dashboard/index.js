@@ -673,6 +673,7 @@ class Dashboard extends Component {
                               backgroundColor: "rgba(0,0,0,0.13)",
                               height: "100%"
                             }}
+                            strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
                           />
                         </View>
