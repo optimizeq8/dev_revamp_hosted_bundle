@@ -43,7 +43,8 @@ class RegisterForm extends Component {
       insta_handleError: "",
       showChangeInstaHandle: false,
       submissionLoading: false,
-      googlemaplink: ""
+      googlemaplink: "",
+      googleMapLinkError: null
     };
   }
   componentWillUnmount() {
@@ -114,8 +115,14 @@ class RegisterForm extends Component {
 
   _handleSubmissionUpdate = () => {
     const { translate } = this.props.screenProps;
-
-    if (this.validate() && !this.props.errorInstaHandle) {
+    const valid = this.validate();
+    if (!valid) {
+      segmentEventTrack("Error on Submit update website information", {
+        error_insta_handle:
+          this.props.errorInstaHandleMessage || this.state.insta_handleError,
+        error_googlemaplink: this.state.googleMapLinkError
+      });
+    } else if (valid && !this.props.errorInstaHandle) {
       const whatsappnumber =
         this.props.mainBusiness.whatsappnumber &&
         this.props.mainBusiness.whatsappnumber.length > 0
@@ -170,12 +177,18 @@ class RegisterForm extends Component {
   };
 
   changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
+    if (validNumber) {
+      segmentEventTrack("Change WhatsApp number", value);
+    }
     this.setState({
       whatsappnumber: validNumber ? value : "",
       validWhatsAppNumber: validNumber
     });
   };
   changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
+    if (validNumber) {
+      segmentEventTrack("Change Call number", value);
+    }
     this.setState({
       callnumber: validNumber ? value : "",
       validCallNumber: validNumber
@@ -303,21 +316,16 @@ class RegisterForm extends Component {
               autoCapitalize="none"
               onChangeText={value => this.changeInstaHandle(value)}
               onBlur={async () => {
-                //   segmentEventTrack("Changed SME Growth Instagram Handle", {
-                //     campaign_insta_handle: this.state.campaignInfo
-                //       .insta_handle
-                //   });
+                segmentEventTrack("Change Instagram Handle", {
+                  insta_handle: this.state.insta_handle
+                });
                 this.validate();
                 await this.props.verifyInstagramHandle(this.state.insta_handle);
-                //   if (this.props.errorInstaHandle) {
-                //     segmentEventTrack(
-                //       "Error on blur sme growth insta handle",
-                //       {
-                //         campaign_error_insta_handle: this.props
-                //           .errorInstaHandleMessage
-                //       }
-                //     );
-                //   }
+                if (this.props.errorInstaHandle) {
+                  segmentEventTrack("Error on blurinsta handle", {
+                    error_insta_handle: this.props.errorInstaHandleMessage
+                  });
+                }
               }}
             />
             {this.props.errorInstaHandle && (
@@ -425,21 +433,14 @@ class RegisterForm extends Component {
               autoCapitalize="none"
               onChangeText={value => this.changeGoogleMapLocation(value)}
               onBlur={async () => {
-                // segmentEventTrack(
-                //   "Changed SME Growth Google Map Location",
-                //   {
-                //     campaign_googlemaplink: this.state.googleMapLinkError
-                //   }
-                // );
+                segmentEventTrack("Changed Google Map Location", {
+                  googlemaplink: this.state.googleMapLinkError
+                });
                 await this.validateUrl();
                 if (this.state.googleMapLinkError) {
-                  // segmentEventTrack(
-                  //   "Error on blur sme growth google map location",
-                  //   {
-                  //     campaign_error_googlemaplink: this.state
-                  //       .googleMapLinkError
-                  //   }
-                  // );
+                  segmentEventTrack("Error on blur  google map location", {
+                    error_googlemaplink: this.state.googleMapLinkError
+                  });
                 }
               }}
             />

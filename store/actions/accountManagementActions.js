@@ -9,6 +9,7 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const changeBusiness = business => {
   return dispatch => {
@@ -787,8 +788,6 @@ export const changeBusinessLogo = (
         cancelToken: cancelUplaod.token
       })
       .then(resp => {
-        console.log("resp", resp);
-
         return resp.data;
       })
       .then(data => {
@@ -800,6 +799,7 @@ export const changeBusinessLogo = (
         onToggleModal(false);
 
         if (data.success) {
+          segmentEventTrack(data.message);
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
@@ -807,6 +807,7 @@ export const changeBusinessLogo = (
             }
           });
         } else {
+          segmentEventTrack(data.message);
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
@@ -819,10 +820,10 @@ export const changeBusinessLogo = (
       .catch(error => {
         loading(0);
         onToggleModal(false);
-        console.log(
-          "changeBusinessLogo error",
-          error.response || error.message
-        );
+        // console.log(
+        //   "changeBusinessLogo error",
+        //   error.response || error.message
+        // );
         return dispatch({
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {

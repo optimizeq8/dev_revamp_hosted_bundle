@@ -20,6 +20,7 @@ import PhoneIcon from "../../../assets/SVGs/PhoneBlackBackground";
 import styles from "./styles";
 import RegisterForm from "./RegisterForm";
 import ProductSelect from "./ProductSelect";
+import segmentEventTrack from "../../segmentEventTrack";
 const regsiterSteps = [
   {
     id: 1,
@@ -46,6 +47,16 @@ class OptimizeWebsite extends Component {
   }
 
   handleBackPress = () => {
+    if (this.state.activeStep === 1) {
+      segmentEventTrack(
+        "Back button pressed on Website Registration Detail screen"
+      );
+    } else {
+      segmentEventTrack(
+        "Back button pressed on Website Registration Product Select screen"
+      );
+    }
+
     this.props.navigation.goBack();
     return true;
   };

@@ -22,6 +22,7 @@ import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../GlobalStyles";
+import segmentEventTrack from "../../../segmentEventTrack";
 const slidesData = [
   {
     id: 0
@@ -50,6 +51,7 @@ export default class TutorialWeb extends React.Component {
   }
 
   handleBackPress = () => {
+    segmentEventTrack("Back button pressed on Website introduction screen");
     this.props.navigation.goBack();
     return true;
   };
@@ -139,6 +141,7 @@ export default class TutorialWeb extends React.Component {
     });
   };
   getStartWebsiteReg = () => {
+    segmentEventTrack("Button clicked to start Website Registration");
     this.props.navigation.navigate("OptimizeWebsite");
   };
 
