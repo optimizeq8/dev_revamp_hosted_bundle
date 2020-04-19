@@ -22,6 +22,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class RegisterForm extends Component {
   static navigationOptions = {
@@ -106,7 +107,7 @@ class RegisterForm extends Component {
         callnumber,
         googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : ""
       };
-
+      segmentEventTrack("Submit website regsiter", info);
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
     }
   };
@@ -138,7 +139,6 @@ class RegisterForm extends Component {
         this.state.googlemaplink !== this.props.mainBusiness.googlemaplink ||
         statewhatsappnumber !== whatsappnumber ||
         statecallnumber !== callnumber;
-      console.log("changedInfo", changedInfo);
 
       if (changedInfo) {
         const callnumber =
@@ -158,7 +158,7 @@ class RegisterForm extends Component {
             ? this.state.googlemaplink
             : ""
         };
-
+        segmentEventTrack("Submit update website information", info);
         this.props.updateWebInfoForBusiness(info, false);
       } else
         showMessage({

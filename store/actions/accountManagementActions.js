@@ -739,8 +739,10 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
       })
       .then(data => {
         if (data.success && submitNextStep) {
+          segmentEventTrack("Successfully register website information");
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
+          segmentEventTrack("Successfully update website information");
           NavigationService.navigateBack("MyWebsite");
         }
       })
