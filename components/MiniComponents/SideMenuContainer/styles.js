@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   button: {
-    marginBottom: 40
+    bottom: 40
   },
   rangeMakerContainer: {
     flexDirection: "column",
