@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Text } from "native-base";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
+import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
 import {
   SafeAreaView,
@@ -17,6 +18,7 @@ import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
 import Loading from "../LoadingScreen";
+import segmentEventTrack from "../../segmentEventTrack";
 /**
  * The modal that shows up when there's a campaign to resume
  */
@@ -28,7 +30,8 @@ class ContinueCampaign extends Component {
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
     if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
-      this.continueCampaign();
+      Segment.screen("Continue Campaign Modal");
+    this.continueCampaign();
   }
 
   /**
@@ -37,11 +40,12 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    let continueRoutes = this.props.currentCampaignSteps.map(route =>
+    let continueRoutes = this.props.currentCampaignSteps.map(route => {
+      segmentEventTrack(`Navigate to ${route}`);
       NavigationActions.navigate({
         routeName: route
-      })
-    );
+      });
+    });
     //resets the navigation stack
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1, //index of the last screen route
@@ -63,6 +67,7 @@ class ContinueCampaign extends Component {
       this.props.tempAdType
     );
     if (resetCampaign) {
+      segmentEventTrack("Button clicked to start with new campaign");
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType(tempAdType);
@@ -113,6 +118,11 @@ class ContinueCampaign extends Component {
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
     ) {
+      segmentEventTrack("Dates are no longer applicable", {
+        campaign_old_start_data: this.props.data.start_time,
+        campaign_old_end_data: this.props.data.end_time,
+        campaign_id: this.props.data.campaign_id
+      });
       showMessage({
         message: "The dates are no longer applicable",
         description: "Please choose new dates",
@@ -122,6 +132,7 @@ class ContinueCampaign extends Component {
       this.props.dateField.showModal(true);
       this.handleSubmition(false, false), 800;
     } else {
+      segmentEventTrack("Resume Campaign", this.props.data);
       this.setState({ resumeLoading: true });
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
