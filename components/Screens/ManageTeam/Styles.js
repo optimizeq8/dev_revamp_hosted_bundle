@@ -8,6 +8,7 @@ export default styles = StyleSheet.create({
     fontSize: 20,
     textTransform: "uppercase",
     color: "#fff",
+    textAlign: "left",
     left: "10%"
   },
   groupIconStyle: { alignSelf: "center" },
@@ -25,7 +26,7 @@ export default styles = StyleSheet.create({
   },
   teamText: {
     // right: 30,
-
+    textAlign: "left",
     fontFamily: "montserrat-bold",
     color: globalColors.white,
     fontSize: 11 / PixelRatio.getFontScale()

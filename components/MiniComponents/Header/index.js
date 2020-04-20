@@ -11,6 +11,8 @@ import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
+import Settings from "../../../assets/SVGs/Settings";
+
 export default class Header extends Component {
   render() {
     let {
@@ -28,7 +30,7 @@ export default class Header extends Component {
       titelStyle,
       icon,
       translateTitle = true,
-      showTopRightButtonIcon,
+      showTopRightButtonIcon = false,
       disabled = false,
       changeHeaderColor = false,
       iconColor = "#FFF"
@@ -65,7 +67,7 @@ export default class Header extends Component {
           {closeButton ? (
             <CloseIcon width={23} height={23} stroke={iconColor} />
           ) : (
-            <BackIcon width={24} height={24} />
+            <BackIcon width={24} height={24} stroke={iconColor} />
           )}
         </TouchableOpacity>
         {icon === "snapchat" && (
@@ -124,7 +126,11 @@ export default class Header extends Component {
             </Text>
           ) : showTopRightButtonIcon ? (
             <TouchableOpacity onPress={topRightButtonFunction}>
-              <ShareIcon fill="#fff" />
+              {showTopRightButtonIcon === "settings" ? (
+                <Settings width={30} />
+              ) : (
+                <ShareIcon fill="#fff" />
+              )}
             </TouchableOpacity>
           ) : null}
         </View>

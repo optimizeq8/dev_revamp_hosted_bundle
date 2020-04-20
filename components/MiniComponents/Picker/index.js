@@ -80,6 +80,7 @@ export default class Picker extends Component {
         headerComponent={
           <View style={styles.headerComponent}>
             <BackButton
+              stroke={"#FFF"}
               style={{ top: 0, left: 0 }}
               screenname={this.props.screenName}
               //   businessname={this.props.mainBusiness.businessname}

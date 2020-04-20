@@ -61,6 +61,7 @@ import InputField from "../../../MiniComponents/InputField";
 import ModalField from "../../../MiniComponents/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
+import { Linking } from "react-native";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -95,6 +96,9 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    if (this.props.navigation.getParam("adType", false)) {
+      this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
+    }
     this.setCampaignInfo();
     if (this.props.adType === "CollectionAd") {
       if (this.props.collectionAdLinkForm !== 0) {
@@ -119,6 +123,13 @@ class AdObjective extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (
+      prevProps.navigation.getParam("adType", false) !==
+        this.props.navigation.getParam("adType", false) &&
+      this.props.navigation.getParam("adType", false)
+    ) {
+      this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
+    }
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
       this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming

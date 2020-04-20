@@ -39,7 +39,7 @@ class ErrorComponent extends Component {
     //then the error component mounts so I check for the deep link and navigate accordingly. On iOS it just opens the app without navigating
     Linking.addEventListener("url", this.handleDeepLink);
     Linking.getInitialURL().then(url => {
-      if (url.includes("?adjust_reftag")) {
+      if (url.includes("adj")) {
         this.handleDeepLink({ url });
       }
     });
@@ -49,7 +49,7 @@ class ErrorComponent extends Component {
 
   handleDeepLink = url => {
     const { translate } = this.props.screenProps;
-    if (url.url.includes("?adjust_reftag")) {
+    if (url.url.includes("adj")) {
       if (this.props.userInfo) {
         this.props.navigation.navigate("Dashboard");
       } else {
@@ -62,7 +62,7 @@ class ErrorComponent extends Component {
     }
   };
   componentWillUnmount() {
-    Linking.removeAllListeners("url");
+    Linking.removeEventListener("url");
     this.setState({
       deepLinkChecked: true
     });

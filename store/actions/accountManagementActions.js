@@ -1,3 +1,4 @@
+import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
@@ -8,6 +9,7 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const changeBusiness = business => {
   return dispatch => {
@@ -687,3 +689,148 @@ export const resetBusinessInvitee = () => {
 //       });
 //   };
 // };
+
+/**
+ *
+ * @param {*} info object {
+ * businessid,
+ * insta_handle,
+ * googlemaplink,
+ * whatsappnumber,
+ * callnumber
+ * }
+ * @param {*} submitNextStep Needed to go to next step of registration
+ */
+export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
+      payload: true
+    });
+
+    createBaseUrl()
+      .put("businesswebInfo", info)
+      .then(resp => {
+        return resp.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+            payload: {
+              ...info
+            }
+          });
+        } else {
+          dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+            payload: {
+              success: data.success,
+              errorMessage: data.message
+            }
+          });
+        }
+
+        return data;
+      })
+      .then(data => {
+        if (data.success && submitNextStep) {
+          segmentEventTrack("Successfully register website information");
+          submitNextStep(2);
+        } else if (data.success && !submitNextStep) {
+          segmentEventTrack("Successfully update website information");
+          NavigationService.navigateBack("MyWebsite");
+        }
+      })
+      .catch(error => {
+        // console.log(
+        //   "updateWebInfoForBusiness error",
+        //   error.response || error.message
+        // );
+        return dispatch({
+          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+          payload: {
+            success: false,
+            errorMessage: error.response || error.message
+          }
+        });
+      });
+  };
+};
+
+export const changeBusinessLogo = (
+  info,
+  loading,
+  cancelUplaod,
+  onToggleModal
+) => {
+  onToggleModal(true);
+
+  return dispatch => {
+    dispatch({
+      type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
+      payload: true
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data;"
+    };
+
+    createBaseUrl()
+      .post("uploadBusinessLogo", info, {
+        onUploadProgress: ProgressEvent =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
+      })
+      .then(resp => {
+        return resp.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        onToggleModal(false);
+
+        if (data.success) {
+          segmentEventTrack(data.message);
+          return dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+            payload: {
+              businesslogo: data.businesslogo
+            }
+          });
+        } else {
+          segmentEventTrack(data.message);
+          return dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+            payload: {
+              success: data.success,
+              errorMessage: data.message
+            }
+          });
+        }
+      })
+      .catch(error => {
+        loading(0);
+        onToggleModal(false);
+        // console.log(
+        //   "changeBusinessLogo error",
+        //   error.response || error.message
+        // );
+        return dispatch({
+          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+          payload: {
+            success: false,
+            errorMessage: error.response || error.message
+          }
+        });
+      });
+  };
+};

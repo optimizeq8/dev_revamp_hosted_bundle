@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   budgetAmountView: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
   },
   budgetDollarText: {
     color: "#FFFFFF",
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   budgetAmountText: {
     color: "#FF9D00",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 24
   },
   contentContainerStyle: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     margin: 0,
     borderTopWidth: 0,
-    height: 100,
+    // height: 100,
     backgroundColor: "#FFF",
     borderTopStartRadius: 35,
     borderTopEndRadius: 35,
@@ -138,10 +138,15 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingRight: 40,
     paddingLeft: 55,
-    paddingTop: 15
+    paddingTop: 15,
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingBottom: 20
   },
   dollarAmountContainer: {
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignSelf: "flex-start"
     // alignItems: 'baseline',
   },
   dollarAmountText: {
@@ -149,18 +154,19 @@ const styles = StyleSheet.create({
     color: "#FF9D00"
   },
   kdAmountContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
+    alignSelf: "flex-start",
     // alignItems: 'center',
     paddingTop: 2
   },
   kdText: {
     fontSize: 11,
     color: "#C6C6C6",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold-english"
   },
   kdAmountText: {
     fontSize: 13,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     paddingLeft: 4,
     color: "#C6C6C6"
   },
@@ -186,7 +192,7 @@ const styles = StyleSheet.create({
     color: "#FF9D00",
     // textAlign: 'center',
     fontSize: 21,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold-english"
     // paddingTop: 3
   },
   feesAmountText: {

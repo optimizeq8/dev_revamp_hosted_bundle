@@ -897,9 +897,9 @@ export const getInstagramPostInitial = insta_handle => {
             };
           });
 
-          imagesList = imagesList.filter(item => {
-            return !item.isVideo;
-          });
+          // imagesList = imagesList.filter(item => {
+          //   return !item.isVideo;
+          // });
 
           return dispatch({
             type: actionTypes.SET_INSTAGRAM_POST,
@@ -1338,9 +1338,9 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
           };
         });
 
-        imagesList = imagesList.filter(item => {
-          return !item.isVideo;
-        });
+        // imagesList = imagesList.filter(item => {
+        //   return !item.isVideo;
+        // });
         return dispatch({
           type: actionTypes.GET_MORE_INSTAGRAM_POST,
           payload: {
