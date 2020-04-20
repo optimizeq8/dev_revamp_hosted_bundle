@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { I18nManager, View } from "react-native";
+import { Icon } from "native-base";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -202,6 +203,36 @@ export default class DateRangePicker extends Component<Props> {
         }}
         style={styles.calender}
         theme={{
+          "stylesheet.day.period": {
+            base: {
+              overflow: "hidden",
+              height: 34,
+              alignItems: "center",
+              width: 38
+            }
+          },
+          // "stylesheet.calendar.main": {
+          //   week: {
+          //     marginTop: 7,
+          //     marginBottom: 7,
+          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+          //     justifyContent: "space-around"
+          //   }
+          // },
+          // "stylesheet.calendar.header": {
+          //   header: {
+          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+          //     justifyContent: "space-between",
+          //     paddingLeft: 10,
+          //     paddingRight: 10,
+          //     alignItems: "center"
+          //   },
+          //   week: {
+          //     marginTop: 7,
+          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+          //     justifyContent: "space-around"
+          //   }
+          // },
           calendarBackground: "transparent",
           textSectionTitleColor: "#b6c1cd",
           selectedDayBackgroundColor: "#00adf5",
