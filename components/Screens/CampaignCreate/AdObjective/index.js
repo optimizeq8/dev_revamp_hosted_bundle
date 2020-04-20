@@ -413,7 +413,8 @@ class AdObjective extends Component {
     );
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
-      business_name: this.props.mainBusiness.businessname
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_id
     });
 
     let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
