@@ -1,0 +1,30 @@
+<svg width="122" height="217" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="219" width="124" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke-width="6" stroke="#000" fill="#fff" id="Rectangle_2132">
+   <rect x="3" y="3" id="svg_1" rx="18" height="211" width="116"/>
+   <rect id="svg_2" fill="none" rx="15" height="205" width="110" y="6" x="6"/>
+  </g>
+  <rect x="16" y="24" fill="#fefb00" rx="5" height="146" width="90" id="Rectangle_2133"/>
+  <g clip-path="url(#clip-path)" id="Repeat_Grid_6">
+   <g id="svg_3">
+    <rect x="16" y="174" fill="#fefb00" rx="2" height="21" width="21" id="Rectangle_2199"/>
+   </g>
+   <g id="svg_4">
+    <rect x="39" y="174" fill="#fefb00" rx="2" height="21" width="21" id="Rectangle_2199-2"/>
+   </g>
+   <g id="svg_5">
+    <rect x="62" y="174" fill="#fefb00" rx="2" height="21" width="21" id="Rectangle_2199-3"/>
+   </g>
+   <g id="svg_6">
+    <rect x="85" y="174" fill="#fefb00" rx="2" height="21" width="21" id="Rectangle_2199-4"/>
+   </g>
+  </g>
+  <path fill="#000" d="m33,7l58,0a0,0 0 0 1 0,0l0,5a5,5 0 0 1 -5,5l-48,0a5,5 0 0 1 -5,-5l0,-5a0,0 0 0 1 0,0z" id="Rectangle_2137"/>
+ </g>
+</svg>

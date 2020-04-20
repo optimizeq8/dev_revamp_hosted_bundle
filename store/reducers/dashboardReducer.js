@@ -171,9 +171,13 @@ const reducer = (state = initialState, action) => {
         loadingCampaignStats: action.payload
       };
     case actionTypes.FILTER_CAMPAIGNS:
-      let filtered = state.campaignList.filter(campaign =>
-        campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
-      );
+      let filtered =
+        state.campaignList &&
+        state.campaignList.filter(campaign =>
+          campaign.name
+            .toLowerCase()
+            .includes(action.payload.value.toLowerCase())
+        );
 
       if (action.payload.selected !== "A")
         filtered = filtered.filter(campaign =>

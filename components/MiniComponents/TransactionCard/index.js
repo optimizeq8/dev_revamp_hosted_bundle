@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, I18nManager } from "react-native";
 import { Text, Icon } from "native-base";
 
 // styles
@@ -85,7 +85,9 @@ class TransactionCard extends Component {
               {translate("Amount")}
             </Text>
             <Text style={[globalStyles.numbers, styles.amountText]}>
-              {transaction.total_amount}$
+              {I18nManager.isRTL && "$"}
+              {transaction.total_amount}
+              {!I18nManager.isRTL && "$"}
             </Text>
           </View>
         </View>

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   linkText: {
     fontFamily: "montserrat-regular",
     color: "#197132",
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignContent: "flex-start",
-    alignItems: "flex-start",
-    height: 35
+    alignItems: "flex-start"
+    // height: 35
     // width: "100%"
   },
   textArea: {

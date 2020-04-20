@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: 37,
     height: 37,
     alignSelf: "flex-end",
-    left: "-30%"
+    left: "-22%"
   },
   suitablePoints: {
     fontFamily: "montserrat-bold",
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     color: "#909090",
     lineHeight: 17,
     textAlign: "left",
-    width: widthPercentageToDP(55)
+
+    width: widthPercentageToDP(50)
   },
   titleText: {
     fontFamily: "montserrat-bold",

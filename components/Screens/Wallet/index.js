@@ -5,7 +5,8 @@ import {
   Keyboard,
   Platform,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
@@ -121,14 +122,15 @@ class Wallet extends Component {
           <WalletIcon style={styles.walletIcon} width={60} height={60} />
           <View
             style={{
-              flexDirection: "row",
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
               justifyContent: "center",
               alignItems: "center"
             }}
           >
             <Text style={[globalStyles.numbers, styles.walletAmountText]}>
+              {I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
               {formatNumber(this.props.wallet, true)}
-              <Text style={styles.dollar}>$</Text>
+              {!I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
             </Text>
             {this.props.loading ? (
               <ActivityIndicator

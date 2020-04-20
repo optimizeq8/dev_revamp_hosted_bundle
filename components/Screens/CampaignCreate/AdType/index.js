@@ -218,7 +218,7 @@ class AdType extends Component {
           >
             {translate("Create a new")}
           </Text>
-          <ScrollView horizontal>
+          <ScrollView horizontal contentContainerStyle={{ width: "100%" }}>
             {SocialPlatforms.map(social => {
               let MediaIcon = social.icon.type;
               return (
@@ -251,7 +251,11 @@ class AdType extends Component {
                   this.state.active === "Google"
                     ? heightPercentageToDP(-5)
                     : heightPercentageToDP(-10)
-              }
+              },
+              this.state.active === "Snapchat" &&
+                I18nManager.isRTL && {
+                  transform: [{ rotateY: "180deg" }]
+                }
             ]}
           />
           {this.state.active !== "Google" && I18nManager.isRTL ? (
