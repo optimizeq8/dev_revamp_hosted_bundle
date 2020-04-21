@@ -12,8 +12,12 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const changeBusiness = business => {
-  return dispatch => {
+  return (dispatch, getState) => {
     persistor.purge();
+    Segment.identifyWithTraits(getState().auth.userid, {
+      businessname: business.businessname
+    });
+
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business }
