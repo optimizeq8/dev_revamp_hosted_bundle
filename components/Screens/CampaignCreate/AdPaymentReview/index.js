@@ -67,12 +67,15 @@ class AdPaymentReview extends Component {
     );
     Segment.screenWithProperties("Snap Ad Payment Review", {
       category: "Campaign Creation",
-      channel: "snapchat"
+      channel: "snapchat",
+      adType: this.props.adType,
+      business_id: this.props.mainBusiness.businessid,
+      campaign_id: this.props.campaign_id
     });
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 5,
       business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_ids
+      checkout_id: this.props.campaign_id
     });
     let adjustAdReviewTracker = new AdjustEvent("rag8r1");
     Adjust.trackEvent(adjustAdReviewTracker);
