@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     borderColor: globalColors.orange,
     borderRadius: 20,
     marginHorizontal: 60,
-    marginBottom: 20
+    marginVertical: 30
   },
   submitText: {
     fontFamily: "montserrat-bold",
@@ -333,12 +333,14 @@ const styles = StyleSheet.create({
     marginTop: -110,
     overflow: "hidden",
     zIndex: 10,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
+    backgroundColor: "#9300FF",
     paddingTop: 20
   },
   onlineStoreHomeIcon: {
     left: -10,
-    zIndex: -1
+    zIndex: -1,
+    backgroundColor: "#FFF"
   },
   list: {
     // paddingTop: 20
@@ -346,7 +348,7 @@ const styles = StyleSheet.create({
     // flexGrow: 1,
     // justifyContent: "space-around",
     alignItems: "center",
-    marginBottom: 30
+    marginBottom: 40
   },
   submitProducts: {
     width: "70%",
@@ -359,7 +361,8 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    backgroundColor: "#FFF"
   },
   badgeViewInner: {
     display: "flex",
@@ -450,6 +453,7 @@ const styles = StyleSheet.create({
   },
   productSelectOuterView: {
     flex: 1,
+
     backgroundColor: "#5600CB"
   },
   productsTextView: {

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: "-6%",
     left: -10,
-    zIndex: 0
+    zIndex: -1
   },
   createWebsiteText: {
     alignSelf: "center"
