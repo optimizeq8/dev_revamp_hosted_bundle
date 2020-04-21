@@ -9,8 +9,12 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = business => {
-  return dispatch => {
+  return (dispatch, getState) => {
     persistor.purge();
+    Segment.identifyWithTraits(getState().auth.userid, {
+      businessname: business.businessname
+    });
+
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business }
