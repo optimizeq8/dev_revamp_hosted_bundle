@@ -13,8 +13,8 @@ public class AppConstants {
 
   public static final String VERSION_NAME = "0.2.210";
   // public static String INITIAL_URL = "exp://exp.host/@samyoptimize/optimize_app";
-  // public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json";
-  public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json";
+  public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json";
+  // public static String INITIAL_URL = "https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json";
   public static final String SHELL_APP_SCHEME = "optimize";
   public static final String RELEASE_CHANNEL = "production";
   public static boolean SHOW_LOADING_VIEW_IN_SHELL_APP = true;
@@ -90,10 +90,11 @@ public class AppConstants {
       
       
       
+      
       // ADD EMBEDDED RESPONSES HERE
       // START EMBEDDED RESPONSES
-      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/android-index.json", "assets://shell-app-manifest.json", "application/json"));
-      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/bundles/android-fd3c6d24216ded9041447004c86a7244.js", "assets://shell-app.bundle", "application/javascript"));
+      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json", "assets://shell-app-manifest.json", "application/json"));
+      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/android-fd3c6d24216ded9041447004c86a7244.js", "assets://shell-app.bundle", "application/javascript"));
       // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }
