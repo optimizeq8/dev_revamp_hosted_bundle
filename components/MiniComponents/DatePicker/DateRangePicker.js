@@ -209,30 +209,37 @@ export default class DateRangePicker extends Component<Props> {
               height: 34,
               alignItems: "center",
               width: 38
+            },
+            fillers: {
+              position: "absolute",
+
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              left: 0,
+              right: 0
             }
           },
-          // "stylesheet.calendar.main": {
-          //   week: {
-          //     marginTop: 7,
-          //     marginBottom: 7,
-          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-          //     justifyContent: "space-around"
-          //   }
-          // },
-          // "stylesheet.calendar.header": {
-          //   header: {
-          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-          //     justifyContent: "space-between",
-          //     paddingLeft: 10,
-          //     paddingRight: 10,
-          //     alignItems: "center"
-          //   },
-          //   week: {
-          //     marginTop: 7,
-          //     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-          //     justifyContent: "space-around"
-          //   }
-          // },
+          "stylesheet.calendar.main": {
+            week: {
+              marginTop: 7,
+              marginBottom: 7,
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              justifyContent: "space-around"
+            }
+          },
+          "stylesheet.calendar.header": {
+            header: {
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              justifyContent: "space-between",
+              paddingLeft: 10,
+              paddingRight: 10,
+              alignItems: "center"
+            },
+            week: {
+              marginTop: 7,
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              justifyContent: "space-around"
+            }
+          },
           calendarBackground: "transparent",
           textSectionTitleColor: "#b6c1cd",
           selectedDayBackgroundColor: "#00adf5",
