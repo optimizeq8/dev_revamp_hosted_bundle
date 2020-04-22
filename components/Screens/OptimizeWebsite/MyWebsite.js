@@ -5,7 +5,8 @@ import {
   BackHandler,
   Text,
   Clipboard,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
@@ -129,51 +130,54 @@ class MyWebsite extends Component {
           topRightButtonFunction={this.topRightButtonFunction}
           title={"My Website"}
         />
-
-        <View style={styles.businesslogoView}>
-          <Image
-            style={{
-              width: 95,
-              height: 95
-            }}
-            source={{
-              uri: mainBusiness.businesslogo || this.props.businessLogo
-            }}
-          />
-        </View>
-        <Text style={styles.bsnNameText}>
-          {this.props.mainBusiness.businessname}
-        </Text>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignSelf: "center",
-            alignItems: "center",
-            marginBottom: 13
-          }}
-          onPress={this.uploadPhoto}
-        >
-          <Pen width={15} fill={globalColors.orange} />
-          <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
-        </TouchableOpacity>
-
-        <View style={styles.labelView}>
-          <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
-        </View>
-        <View style={styles.weburlView}>
-          <Text selectable style={styles.weburl}>
-            {website}
+        <ScrollView>
+          <View style={styles.businesslogoView}>
+            <Image
+              style={{
+                width: 95,
+                height: 95
+              }}
+              source={{
+                uri: mainBusiness.businesslogo || this.props.businessLogo
+              }}
+            />
+          </View>
+          <Text style={styles.bsnNameText}>
+            {this.props.mainBusiness.businessname}
           </Text>
           <TouchableOpacity
-            onPress={() => {
-              Clipboard.setString(website);
+            style={{
+              flexDirection: "row",
+              alignSelf: "center",
+              alignItems: "center",
+              marginBottom: 13
             }}
+            onPress={this.uploadPhoto}
           >
-            <CopyIcon style={styles.copyIcon} />
+            <Pen width={15} fill={globalColors.orange} />
+            <Text style={styles.changeLogoText}>
+              {translate("Change Logo")}
+            </Text>
           </TouchableOpacity>
-        </View>
 
-        <ProductSelect edit={true} screenProps={this.props.screenProps} />
+          <View style={styles.labelView}>
+            <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
+          </View>
+          <View style={styles.weburlView}>
+            <Text selectable style={styles.weburl}>
+              {website}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                Clipboard.setString(website);
+              }}
+            >
+              <CopyIcon style={styles.copyIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <ProductSelect edit={true} screenProps={this.props.screenProps} />
+        </ScrollView>
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}

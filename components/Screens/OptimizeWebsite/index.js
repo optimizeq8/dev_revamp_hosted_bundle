@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler, Text, Image } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  BackHandler,
+  Text,
+  Image,
+  ScrollView
+} from "react-native";
 
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
@@ -130,7 +137,7 @@ class OptimizeWebsite extends Component {
         </View>
         <OnlineStoreHome style={styles.onlineStoreHomeIcon} />
 
-        <View
+        <ScrollView
           style={[styles.outerView, activeStep === 2 && styles.step2OuterView]}
         >
           {activeStep === 1 && (
@@ -193,7 +200,7 @@ class OptimizeWebsite extends Component {
               />
             )}
           </>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

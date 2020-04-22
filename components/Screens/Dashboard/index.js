@@ -332,11 +332,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    // console.log(
-    //   "this.props.campaignList.length",
-    //   this.props.campaignList.length
-    // );
-
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -619,6 +614,7 @@ class Dashboard extends Component {
                       </View>
                     </View>
                     {this.props.mainBusiness &&
+                      this.props.mainBusiness.websitelink === "" &&
                       (!this.props.mainBusiness.hasOwnProperty("weburl") ||
                         !this.props.mainBusiness.weburl ||
                         this.props.mainBusiness.weburl === "") && (
