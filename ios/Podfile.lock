@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.21.0):
-    - Adjust/Core (= 4.21.0)
-  - Adjust/Core (4.21.0)
+  - Adjust (4.21.2):
+    - Adjust/Core (= 4.21.2)
+  - Adjust/Core (4.21.2)
   - Amplitude-iOS (4.7.1)
   - Analytics (3.7.1)
   - boost-for-react-native (1.63.0)
@@ -118,11 +118,11 @@ PODS:
   - GoogleMaps/Base (3.8.0)
   - GoogleMaps/Maps (3.8.0):
     - GoogleMaps/Base
-  - imglyKit (10.7.4)
+  - imglyKit (10.10.0)
   - JKBigInteger2 (0.0.5)
   - lottie-ios (2.5.3)
-  - PhotoEditorSDK (10.7.4):
-    - imglyKit (= 10.7.4)
+  - PhotoEditorSDK (10.10.0):
+    - imglyKit (= 10.10.0)
   - RCTRequired (0.61.4)
   - RCTTypeSafety (0.61.4):
     - FBLazyVector (= 0.61.4)
@@ -593,7 +593,7 @@ CHECKOUT OPTIONS:
     :tag: ios/2.14.4
 
 SPEC CHECKSUMS:
-  Adjust: 7091afbeb9935103636f80f73742d21a83e085ae
+  Adjust: 2f90b971d48927c7ceea2b0d51eec5b472d682a3
   Amplitude-iOS: a0347ab05f2d196e6bbb22cc6f62eea33b5a035b
   Analytics: f82f3cd6d3c8fbfd76ce25773199576656981a4a
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -627,10 +627,10 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
-  imglyKit: 4fb44cced73ef09ae16655e8650c94f9073345a9
+  imglyKit: 1d6f241c25c6f673d32661955c5829d84e228e05
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  PhotoEditorSDK: 5b97ccf0ecd0e6a339ac6caa465005f1fe7a10f4
+  PhotoEditorSDK: 9f98884121c8d77af6a316f0c070ba4d94ea78b6
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
   React: 10e0130b57e55a7cd8c3dee37c1261102ce295f4
@@ -670,4 +670,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e7701cce714e32a3081793829de9cf9a43ad3c72
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.8.4

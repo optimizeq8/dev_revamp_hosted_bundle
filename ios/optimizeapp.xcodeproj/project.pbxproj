@@ -528,6 +528,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2C1548D9E4CB1AEFA5CCAE6D /* Pods-optimizeapp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = optimizeapp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
@@ -548,6 +549,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A47FE4D7F70906B7DC8CE39B /* Pods-optimizeapp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = optimizeapp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
