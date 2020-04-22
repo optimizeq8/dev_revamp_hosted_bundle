@@ -8,14 +8,16 @@ import {
   KeyboardAvoidingView,
   I18nManager
 } from "react-native";
+import * as Permissions from "expo-permissions";
+
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import * as ImagePicker from "expo-image-picker";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import socketIOClient from "socket.io-client";
-import { Content } from "native-base";
-import KeyBoardShift from "../../MiniComponents/KeyboardShift";
+import { ActivityIndicator } from "react-native-paper";
+
 //icons
 import ForwardButton from "../../../assets/SVGs/ForwardButton";
 import Camera from "../../../assets/SVGs/Camera";
@@ -24,22 +26,22 @@ import ChatBot from "../../../assets/SVGs/ChatBot";
 // Style
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import { connect } from "react-redux";
-
+import * as actionTypes from "../../../store/actions/actionTypes";
 //Functions
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
+<<<<<<< HEAD
 import { AdjustEvent, Adjust } from "react-native-adjust";
+=======
+import { showMessage } from "react-native-flash-message";
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
@@ -79,51 +81,61 @@ class Messenger extends Component {
     };
   }
   componentDidMount() {
-    // this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // after the scoket is connected, it will intercept any "AdminReply" activity for the
+    // room the user is subscribed to based on their id
+    // the conversation is set as seen/read whe they open the messenger
+    // at the same time the update_conversatusion_read_status gets called tp update the notifications indicator
+
     socket.connect();
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
       this.props.admin_response(data);
-      // this.props.set_as_seen(true);
     });
-    this.props.set_as_seen(true);
+    if (this.props.conversation_id) this.props.set_as_seen(true);
     this.props.update_conversatusion_read_status();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.messages.length !== this.props.messages.length) {
-    // 	// console.log("scrolling to end");
-    // 	this.flatList.scrollToEnd({ animated: true });
-    // }
-    // if (prevState.text !== this.state.text) {
-    //   socket.emit("unsubscribe", prevState.text);
-    // }
-  }
+  componentDidUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {
+    //whene the user leaves the chat I disconnect them from the server
+    //and I update their last seen status
+
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     socket.removeAllListeners();
+    socket.disconnect();
     this.props.update_last_seen();
   }
 
   handleBackPress = () => {
-    // this.props.navigation.goBack();
-    this.props.navigation.navigate("Dashboard");
+    this.props.navigation.goBack();
     return true;
   };
+
+  //this handles the message dilevry, if there are no conversation open
+  //it send the first msg through the open conversation function
   _handleSubmission = () => {
     if (this.state.textValue !== "") {
-      if (this.props.open_conversation) this.props.reply(this.state.textValue);
-      else this.props.start_conversation(this.state.textValue);
+      if (this.props.open_conversation)
+        this.props.reply(this.state.textValue, []);
+      else
+        this.props.start_conversation(this.state.textValue, () => {
+          return {
+            type: actionTypes.SET_LOADING_MESSAGE,
+            payload: false
+          };
+        });
       this._resetTextInput();
     }
   };
+
   _onChange(event) {
     this.setState({ textValue: event.nativeEvent.text || "" });
   }
 
   _resetTextInput() {
+    this.setState({ textValue: "" });
     this._textInput.clear();
     // this._textInput.resetHeightToMin();
   }
@@ -140,11 +152,78 @@ class Messenger extends Component {
   };
 
   getItemLayout = (data, index) => ({ length: 10, offset: 5 * index, index });
+
   updateSize = height => {
     this.setState({
       height
     });
   };
+
+  pick = async screenProps => {
+    try {
+      await this.askForPermssion(screenProps);
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "Images",
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+
+      if (!result.cancelled)
+        this.setState({ media: result }, () =>
+          this.props.navigation.push("ImagePreview", {
+            image: this.state.media.uri,
+            id: "upload",
+            upload: this.formatMedia.bind(this)
+          })
+        );
+    } catch (error) {
+      showMessage({
+        message: translate("Something went wrong!"),
+        position: "top",
+        type: "danger"
+      });
+    }
+  };
+
+  askForPermssion = async screenProps => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { translate } = screenProps;
+    if (status !== "granted") {
+      showMessage({
+        message: translate(
+          "Please allow access to the gallery to upload media"
+        ),
+        position: "top",
+        type: "warning"
+      });
+      Platform.OS === "ios" && Linking.openURL("app-settings:");
+    }
+  };
+
+  //Submits the media after formatting it after the user confirm their selection
+  formatMedia() {
+    var body = new FormData();
+    let res = this.state.media.uri.split("/");
+    res = res[res.length - 1];
+    let format = res.split(".");
+
+    var photo = {
+      uri: this.state.media.uri,
+      type: "IMAGE" + "/" + format[1],
+      name: res
+    };
+    body.append("media", photo);
+    this.setState(
+      {
+        formatted: body
+      },
+      () => {
+        this.props.upload_media(this.state.formatted);
+      }
+    );
+  }
+
   render() {
     const { translate } = this.props.screenProps;
     const { height } = this.state;
@@ -168,15 +247,11 @@ class Messenger extends Component {
           closeButton={true}
           title={"Support"}
           titelStyle={{
-            // alignSelf: "center",
             bottom: 8
-            // alignContent: "center",
-            // justifyContent: "center"
           }}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>
-          {/* <Content scrollEnabled={false} contentContainerStyle={{ flex: 1 }}> */}
           <KeyboardAvoidingView
             keyboardVerticalOffset={heightPercentageToDP("10%")}
             style={styles.container}
@@ -189,16 +264,19 @@ class Messenger extends Component {
                 ref={ref => {
                   this.flatList = ref;
                 }}
-                // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
                 data={this.props.messages}
                 keyExtractor={this._keyExtractor}
-                // getItemLayout={this.getItemLayout}
-                // scrollToIndex={params => this.scrollToIndex(params)}
-                // initialScrollIndex={this.props.messages.length - 1}
                 renderItem={(msg, index) => {
-                  if (!isNull(msg.item.body))
+                  if (
+                    !isNull(msg.item.body) ||
+                    msg.item.attachments.length !== 0
+                  )
                     return (
-                      <MessageBubble key={msg.item.id} message={msg.item} />
+                      <MessageBubble
+                        navigation={this.props.navigation}
+                        key={msg.item.id}
+                        message={msg.item}
+                      />
                     );
                 }}
               />
@@ -207,14 +285,18 @@ class Messenger extends Component {
                   <ChatBot width={100} height={100} />
                 </View>
               )}
-              {/* </View> */}
               <View style={styles.textInputContainer}>
-                {/* <Camera
-										fill={globalColors.orange}
-										style={styles.cameraIcon}
-										width={heightPercentageToDP(4)}
-										height={heightPercentageToDP(4)}
-									/> */}
+                <TouchableOpacity
+                  style={styles.cameraButton}
+                  onPress={() => this.pick(this.props.screenProps)}
+                >
+                  <Camera
+                    fill={globalColors.orange}
+                    style={styles.cameraIcon}
+                    width={heightPercentageToDP(3)}
+                    height={heightPercentageToDP(3)}
+                  />
+                </TouchableOpacity>
                 <TextInput
                   editable={true}
                   multiline={true}
@@ -238,25 +320,33 @@ class Messenger extends Component {
                     this.updateSize(e.nativeEvent.contentSize.height)
                   }
                 />
-                <TouchableOpacity
-                  style={[
-                    styles.submitButton,
-                    I18nManager.isRTL
-                      ? { transform: [{ rotateY: "180deg" }] }
-                      : {}
-                  ]}
-                  onPress={this._handleSubmission}
-                >
-                  <ForwardButton
-                    width={heightPercentageToDP(7)}
-                    height={heightPercentageToDP(7)}
-                    bottom={-10}
+
+                {this.props.loading_msg ? (
+                  <ActivityIndicator
+                    color="orange"
+                    size="small"
+                    style={styles.activityIndicator}
                   />
-                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={[
+                      styles.submitButton,
+                      I18nManager.isRTL
+                        ? { transform: [{ rotateY: "180deg" }] }
+                        : {}
+                    ]}
+                    onPress={this._handleSubmission}
+                  >
+                    <ForwardButton
+                      width={heightPercentageToDP(7)}
+                      height={heightPercentageToDP(7)}
+                      bottom={-10}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </>
           </KeyboardAvoidingView>
-          {/* </Content> */}
         </View>
       </SafeAreaView>
     );
@@ -268,23 +358,23 @@ const mapStateToProps = state => ({
   user: state.messenger.user,
   messages: state.messenger.messages,
   loading_con: state.messenger.loading_con,
+  loading_msg: state.messenger.loading_msg,
   subscribed: state.messenger.subscribed,
   open_conversation: state.messenger.open_conversation,
   conversation_id: state.messenger.conversation_id
 });
 
 const mapDispatchToProps = dispatch => ({
-  connect_user_to_intercom: user_id =>
-    dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  reply: message => dispatch(actionCreators.reply(message)),
+  reply: (message, media) => dispatch(actionCreators.reply(message, media)),
   admin_response: message => dispatch(actionCreators.admin_response(message)),
   set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
-  start_conversation: message =>
-    dispatch(actionCreators.start_conversation(message)),
+  start_conversation: (message, callback) =>
+    dispatch(actionCreators.start_conversation(message, callback)),
   update_last_seen: () => dispatch(actionCreators.update_last_seen()),
   update_conversatusion_read_status: () =>
-    dispatch(actionCreators.update_conversatusion_read_status())
+    dispatch(actionCreators.update_conversatusion_read_status()),
+  upload_media: media => dispatch(actionCreators.upload_media(media))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messenger);

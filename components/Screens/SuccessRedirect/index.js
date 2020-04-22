@@ -114,13 +114,22 @@ class SuccessRedirect extends Component {
         });
       }
       if (
+<<<<<<< HEAD
         this.props.channel === "" ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
+=======
+        //added checking for channel in case it turns to null and crashes the app on this screen
+        (this.props.channel && this.props.channel === "") ||
+        this.props.channel.toLowerCase() === "snapchat"
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
       ) {
         this.props.resetCampaignInfo();
       }
       if (this.props.channel === "google") {
         this.props.rest_google_campaign_data();
+      }
+      if (this.props.channel === "instagram") {
+        this.props.resetCampaignInfoInstagram();
       }
       this.props.reset_transaction_reducer();
     });
@@ -129,6 +138,8 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   render() {
+    console.log(this.props.navigation.state.params);
+
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -218,6 +229,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
+  resetCampaignInfoInstagram: () =>
+    dispatch(actionCreators.resetCampaignInfoInstagram()),
   reset_transaction_reducer: () =>
     dispatch(actionCreators.reset_transaction_reducer()),
   rest_google_campaign_data: () =>

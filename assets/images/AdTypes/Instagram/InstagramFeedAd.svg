@@ -41,4 +41,8 @@
       <circle id="Ellipse_364-4" data-name="Ellipse 364" cx="7.5" cy="7.5" r="7.5" transform="translate(2.509 3.109)" fill="#c1c1c1"/>
     </g>
     <path id="Rectangle_2137" data-name="Rectangle 2137" d="M0,0H58a0,0,0,0,1,0,0V7a5,5,0,0,1-5,5H5A5,5,0,0,1,0,7V0A0,0,0,0,1,0,0Z" transform="translate(30 4)" fill="#000"/>
+<<<<<<< HEAD
 </svg>
+=======
+</svg>
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd

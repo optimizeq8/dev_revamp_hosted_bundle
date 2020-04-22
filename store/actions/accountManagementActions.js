@@ -11,6 +11,7 @@ import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import segmentEventTrack from "../../components/segmentEventTrack";
 
+import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = business => {
   return (dispatch, getState) => {
     persistor.purge();
@@ -234,7 +235,7 @@ export const create_snapchat_ad_account = (id, navigation) => {
 };
 
 export const updateUserInfo = (info, navigation) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
       payload: true
@@ -258,7 +259,7 @@ export const updateUserInfo = (info, navigation) => {
             mobile: info.country_code + info.mobile
           };
           navigation.goBack();
-          return dispatch({
+          dispatch({
             type: actionTypes.UPDATE_USERINFO,
             payload: { ...updateInfo }
           });
@@ -273,8 +274,21 @@ export const updateUserInfo = (info, navigation) => {
           type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
           payload: false
         });
+        return data.success;
       })
-
+      .then(success => {
+        if (success) {
+          var user = getState().auth.userInfo;
+          return dispatch(
+            update_user_on_intercom({
+              user_id: user.userid,
+              name: `${user.firstname} ${user.lastname}`,
+              email: user.email,
+              phone: user.mobile
+            })
+          );
+        }
+      })
       .catch(err => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",

@@ -10,7 +10,11 @@ import registerReducer from "./registerReducer";
 import messengerReducer from "./messengerReducer";
 import languageReducer from "./languageReducer";
 import googleAdsReducer from "./googleAdsCampaignReducer";
+<<<<<<< HEAD
 import websiteReducer from "./optimizeWebsiteReducer";
+=======
+import instagramAdsReducer from "./instagramCampaignReducer";
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -24,7 +28,11 @@ const appReducer = combineReducers({
   messenger: messengerReducer,
   language: languageReducer,
   googleAds: googleAdsReducer,
+<<<<<<< HEAD
   website: websiteReducer
+=======
+  instagramAds: instagramAdsReducer
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 });
 
 const rootReducer = (state, action) => {

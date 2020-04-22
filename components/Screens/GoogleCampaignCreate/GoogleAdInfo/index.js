@@ -325,6 +325,7 @@ class GoogleAdInfo extends Component {
     });
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
+<<<<<<< HEAD
       business_name:
         this.props.mainBusiness && this.props.mainBusiness.businessname
     });
@@ -333,6 +334,11 @@ class GoogleAdInfo extends Component {
       `Google_SEM`,
       "google_sem"
     );
+=======
+      business_name: this.props.mainBusiness.businessname
+    });
+    let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   render() {

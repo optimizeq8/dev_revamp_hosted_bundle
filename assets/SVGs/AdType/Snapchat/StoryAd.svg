@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg id="Group_5862" data-name="Group 5862" xmlns="http://www.w3.org/2000/svg" width="116" height="211" viewBox="0 0 116 211">
   <g id="Rectangle_2132" data-name="Rectangle 2132" fill="#fff" stroke="#1d1d1d" stroke-width="6">
     <rect width="116" height="211" rx="18" stroke="none"/>
@@ -39,3 +40,55 @@
   </g>
   <path id="Rectangle_2137" data-name="Rectangle 2137" d="M0,0H58a0,0,0,0,1,0,0V5a5,5,0,0,1-5,5H5A5,5,0,0,1,0,5V0A0,0,0,0,1,0,0Z" transform="translate(30 4)" fill="#1d1d1d"/>
 </svg>
+=======
+<svg width="124" height="219" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="221" width="126" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect x="9" y="27" fill="rgba(0,0,0,0.18)" rx="18" height="189" width="104" id="Rectangle_2138"/>
+  <g stroke-width="6" stroke="#000" fill="#fff" id="Rectangle_2132">
+   <rect x="3" y="3" id="svg_1" rx="18" height="211" width="116"/>
+   <rect id="svg_2" fill="none" rx="15" height="205" width="110" y="6" x="6"/>
+  </g>
+  <rect x="14" y="52" fill="#fefb00" rx="5" height="58" width="44" id="Rectangle_2133"/>
+  <rect x="14" y="116" fill="#efefef" rx="5" height="58" width="44" id="Rectangle_2197"/>
+  <path fill="#efefef" d="m19,180l34,0a5,5 0 0 1 5,5l0,23a0,0 0 0 1 0,0l-38,0a6,6 0 0 1 -6,-6l0,-17a5,5 0 0 1 5,-5z" id="Rectangle_2198"/>
+  <rect x="64" y="52" fill="#efefef" rx="5" height="58" width="44" id="Rectangle_2195"/>
+  <rect x="64" y="116" fill="#efefef" rx="5" height="58" width="44" id="Rectangle_2196"/>
+  <path fill="#efefef" d="m69,180l34,0a5,5 0 0 1 5,5l0,17a6,6 0 0 1 -6,6l-38,0a0,0 0 0 1 0,0l0,-23a5,5 0 0 1 5,-5z" id="Rectangle_2199"/>
+  <g id="Group_1181">
+   <g stroke="#c1c1c1" fill="#fff" id="Ellipse_363">
+    <circle id="svg_3" r="10.5" cy="35.500001" cx="22.5"/>
+    <circle id="svg_4" fill="none" r="10" cy="35.500001" cx="22.5"/>
+   </g>
+   <circle fill="#c1c1c1" r="7.5" cy="35.500001" cx="22.5" id="Ellipse_364"/>
+  </g>
+  <g id="Group_1185">
+   <g stroke="#c1c1c1" fill="#fff" id="Ellipse_363-2">
+    <circle id="svg_5" r="10.5" cy="35.500001" cx="46.500001"/>
+    <circle id="svg_6" fill="none" r="10" cy="35.500001" cx="46.500001"/>
+   </g>
+   <circle fill="#c1c1c1" r="7.5" cy="35.500001" cx="46.500001" id="Ellipse_364-2"/>
+  </g>
+  <g id="Group_1186">
+   <g stroke="#c1c1c1" fill="#fff" id="Ellipse_363-3">
+    <circle id="svg_7" r="10.5" cy="35.500001" cx="70.500001"/>
+    <circle id="svg_8" fill="none" r="10" cy="35.500001" cx="70.500001"/>
+   </g>
+   <circle fill="#c1c1c1" r="7.5" cy="35.500001" cx="70.500001" id="Ellipse_364-3"/>
+  </g>
+  <g id="Group_1187">
+   <g stroke="#c1c1c1" fill="#fff" id="Ellipse_363-4">
+    <circle id="svg_9" r="10.5" cy="35.500001" cx="94.499997"/>
+    <circle id="svg_10" fill="none" r="10" cy="35.500001" cx="94.499997"/>
+   </g>
+   <circle fill="#c1c1c1" r="7.5" cy="35.500001" cx="94.499997" id="Ellipse_364-4"/>
+  </g>
+  <path fill="#000" d="m33,7l58,0a0,0 0 0 1 0,0l0,5a5,5 0 0 1 -5,5l-48,0a5,5 0 0 1 -5,-5l0,-5a0,0 0 0 1 0,0z" id="Rectangle_2137"/>
+ </g>
+</svg>
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd

@@ -9,6 +9,10 @@
 	<key>manifestUrl</key>
 	<string>https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/ios-index.json</string>
 	<key>releaseChannel</key>
+<<<<<<< HEAD
 	<string>production</string>
+=======
+	<string>sprint_v1</string>
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 </dict>
 </plist>

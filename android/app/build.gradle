@@ -61,8 +61,14 @@ android {
     applicationId 'com.optimizeapp.optimizeapp'
     minSdkVersion safeExtGet("minSdkVersion", 21)
     targetSdkVersion safeExtGet("targetSdkVersion", 28)
+<<<<<<< HEAD
     versionCode 44
     versionName '0.3.42'
+=======
+    versionCode 31
+    versionName '0.3.20'
+
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
     multiDexEnabled true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     // Deprecated. Used by net.openid:appauth

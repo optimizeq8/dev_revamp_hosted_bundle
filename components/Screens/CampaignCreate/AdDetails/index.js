@@ -853,10 +853,13 @@ class AdDetails extends Component {
       });
     }
     let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+<<<<<<< HEAD
     adjustAdDetailsTracker.addPartnerParameter(
       `Snap_${this.props.adType}`,
       this.props.adType
     );
+=======
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
     Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
@@ -868,6 +871,10 @@ class AdDetails extends Component {
       case "gender": {
         menu = (
           <GenderOptions
+            selectedGender={
+              this.state.campaignInfo.targeting.demographics[0].gender
+            }
+            chanel="snapchat"
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedGenderChange={this.onSelectedGenderChange}
@@ -922,6 +929,11 @@ class AdDetails extends Component {
       case "OS": {
         menu = (
           <SelectOS
+            selectedOSType={
+              this.state.campaignInfo.targeting.devices[0].os_type
+            }
+            iosName={"iOS"}
+            androidName={"ANDROID"}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}

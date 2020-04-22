@@ -13,6 +13,15 @@ export default class GenderOptions extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
+    const { chanel, selectedGender } = this.props;
+    let male = "MALE";
+    let female = "FEMALE";
+    let all = "";
+    if (chanel === "instagram") {
+      male = "1";
+      female = "2";
+      all = "";
+    }
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -29,19 +38,13 @@ export default class GenderOptions extends Component {
             <View style={styles.optionsContainer}>
               <TouchableOpacity
                 style={styles.optionsRowContainer}
-                onPress={() => this.props.onSelectedGenderChange("MALE")}
+                onPress={() => this.props.onSelectedGenderChange(male)}
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedGender === male ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
+                    selectedGender === male
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize
@@ -56,19 +59,13 @@ export default class GenderOptions extends Component {
 
               <TouchableOpacity
                 style={styles.optionsRowContainer}
-                onPress={() => this.props.onSelectedGenderChange("FEMALE")}
+                onPress={() => this.props.onSelectedGenderChange(female)}
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedGender === female ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
+                    selectedGender === female
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize
@@ -87,15 +84,9 @@ export default class GenderOptions extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedGender === "" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
+                    selectedGender === ""
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize

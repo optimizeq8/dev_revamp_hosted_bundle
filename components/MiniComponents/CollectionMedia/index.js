@@ -740,9 +740,9 @@ class CollectionMedia extends Component {
                 <View style={styles.mainView}>
                   <View style={styles.imageView}>
                     <Text style={styles.productText}>
-                      {`${translate("Product")} ${parseInt(
-                        this.state.collection.collection_order
-                      ) + 1}`}
+                      {`${translate("Product")} ${
+                        parseInt(this.state.collection.collection_order) + 1
+                      }`}
                     </Text>
                   </View>
                   {isNull(this.state.collection.collection_media) ? (
