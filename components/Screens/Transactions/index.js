@@ -49,9 +49,7 @@ class Transactions extends Component {
   }
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status });
-    if (!FilterMenu) {
-      FilterMenu = require("../../MiniComponents/FilterMenu").default;
-    } else FilterMenu = null;
+    FilterMenu = require("../../MiniComponents/FilterMenu").default;
   };
 
   renderTransactionCard = ({ item }) => (

@@ -165,7 +165,12 @@ class CampaignCard extends Component {
                             : this.review_status.includes("REJECTED")
                             ? "Ad Rejected"
                             : this.campaign_status === "LIVE"
-                            ? new Date(campaign.start_time) > new Date()
+                            ? new Date(campaign.start_time).setHours(
+                                0,
+                                0,
+                                0,
+                                0
+                              ) > new Date().setHours(0, 0, 0, 0)
                               ? "Scheduled for"
                               : "LIVE"
                             : "Campaign Paused"

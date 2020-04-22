@@ -1,7 +1,8 @@
 import {
   Configuration,
   TintMode,
-  SerializationExportType
+  SerializationExportType,
+  ImageFormat
 } from "react-native-photoeditorsdk";
 
 export default (custom = {}) => {
@@ -9,6 +10,7 @@ export default (custom = {}) => {
   let configuration: Configuration = {
     forceCrop: true,
     export: {
+      image: { format: ImageFormat.PNG },
       serialization: {
         enabled: true,
         exportType: SerializationExportType.OBJECT

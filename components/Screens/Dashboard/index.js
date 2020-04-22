@@ -59,6 +59,7 @@ import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import segmentEventTrack from "../../segmentEventTrack";
+import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -235,10 +236,15 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       )
         this.props.navigation.navigate("SuspendedWarning");
-      else
+      else {
+        if (adType.value === "SnapAd") {
+          let adjustEvent = new AdjustEvent("kd8uvi");
+          Adjust.trackEvent(adjustEvent);
+        }
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value
         });
+      }
     }
   };
 
@@ -313,6 +319,8 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
+    let adjustEvent = new AdjustEvent("7kk0e6");
+    Adjust.trackEvent(adjustEvent);
     if (!this.props.mainBusiness.snap_ad_account_id) {
       Segment.trackWithProperties("Create SnapAd Acount", {
         category: "Ad Account",
@@ -381,7 +389,10 @@ class Dashboard extends Component {
           mySlideInUp={mySlideInUp}
         />
       );
-    } else if (this.props.businessLoadError || !this.props.userInfo) {
+    } else if (
+      this.props.businessLoadError ||
+      (!this.props.userInfo && !this.props.clearTokenLoading) //so it doesn't show error component when logging out
+    ) {
       return (
         <>
           <ErrorComponent
@@ -721,7 +732,8 @@ const mapStateToProps = state => ({
     state.instagramAds.instagramCampaignProgressStarted,
   instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   businessAccounts: state.account.businessAccounts,
-  loadingCampaigns: state.dashboard.loadingCampaigns
+  loadingCampaigns: state.dashboard.loadingCampaigns,
+  clearTokenLoading: state.login.clearTokenLoading
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -9,8 +9,12 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = business => {
-  return dispatch => {
+  return (dispatch, getState) => {
     persistor.purge();
+    Segment.identifyWithTraits(getState().auth.userid, {
+      businessname: business.businessname
+    });
+
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business }
@@ -39,13 +43,14 @@ export const createBusinessAccount = (account, navigation) => {
         if (data.success) {
           dispatch({
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-            payload: { ...data.data }
+            payload: { ...data.data, ...account }
           });
           NavigationService.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
-              ...data.data
+              ...data.data,
+              ...account
             }
           });
         }

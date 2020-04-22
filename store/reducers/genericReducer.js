@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { Platform } from "react-native";
 
 const initialState = {
   actualVersion: "",
@@ -19,7 +20,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_ACTUAL_VERSION:
       return {
         ...state,
-        actualVersion: action.payload.app_version,
+        actualVersion:
+          Platform.OS === "android"
+            ? action.payload.android_version
+            : action.payload.ios_version,
         underMaintenance: action.payload.underMaintenance,
         underMaintenanceMessage_ar: action.payload.underMaintenanceMessage_ar,
         underMaintenanceMessage_en: action.payload.underMaintenanceMessage_en,

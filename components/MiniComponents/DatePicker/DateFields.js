@@ -259,10 +259,21 @@ class DateFields extends Component {
         },
         //this is as if passing this.props.navigation and calling navigation.push but it does nothing
         //because i don't want to navigate from within the store after the request is done
-        { push: () => {} }
+        { push: () => {} },
+        {
+          campaign_id: this.props.campaign_id,
+          campaign_type: this.props.adType,
+          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: this.props.data.name,
+          objective: this.props.data.objective,
+          start_time: this.props.data.start_time,
+          end_time: this.props.data.end_time
+        }
       );
       this.props.navigation.dispatch(resetAction);
     }
+    this.setState({ resumeLoading: false });
   };
 
   render() {
@@ -323,8 +334,9 @@ class DateFields extends Component {
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });
-                    this.props.handleClosingContinueModal &&
-                      this.props.handleClosingContinueModal();
+                    if (this.state.outdatedDate) {
+                      this.props.navigation.goBack();
+                    }
                   }}
                   topRightButtonText={translate("Reset")}
                   topRightButtonFunction={this.handleReset}

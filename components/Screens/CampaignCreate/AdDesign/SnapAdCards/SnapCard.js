@@ -128,7 +128,10 @@ class SnapCard extends Component {
           <>
             <ActivityIndicator color={globalColors.orange} />
             <Text style={{ color: "#fff" }}>
-              {Math.round(snapCardInfo.item.progress, 2)}%
+              {!isNaN(Math.round(snapCardInfo.item.progress, 2))
+                ? Math.round(snapCardInfo.item.progress, 2)
+                : 0}
+              %
             </Text>
           </>
         )}

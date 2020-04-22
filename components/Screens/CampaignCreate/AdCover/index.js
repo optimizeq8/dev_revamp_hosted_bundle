@@ -42,7 +42,8 @@ import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 import MediaModal from "./MediaModal";
-
+import { SaveFormat } from "expo-image-manipulator";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 class AdCover extends Component {
   static navigationOptions = {
     header: null
@@ -274,7 +275,9 @@ class AdCover extends Component {
             serialization = manipResult.serialization;
             if (logo.height !== 284 && logo.width !== 993)
               manipResult = await ImageManipulator.manipulateAsync(
-                manipResult.image
+                manipResult.image,
+                [],
+                { format: SaveFormat.PNG }
               );
 
             if (
@@ -300,7 +303,7 @@ class AdCover extends Component {
               ],
               {
                 compress: 1,
-                format: "png"
+                format: SaveFormat.PNG
               }
             );
           }
@@ -704,9 +707,25 @@ class AdCover extends Component {
     if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
     this.props.navigation.goBack();
   };
+
+  handleAdCoverFocus = () => {
+    if (!this.props.currentCampaignSteps.includes("AdDesign")) {
+      this.props.saveCampaignSteps(["Dashboard", "AdObjective", "AdCover"]);
+    }
+    Segment.screenWithProperties("Snap Ad Design", {
+      category: "Campaign Creation",
+      channel: "snapchat"
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign_id,
+      step: 3,
+      business_name: this.props.mainBusiness.businessname
+    });
+    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    Adjust.trackEvent(adjustAdCoverTracker);
+  };
   render() {
     let { cover, coverHeadlineError, logoSerialization } = this.state;
-    console.log(logoSerialization);
 
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
@@ -715,26 +734,7 @@ class AdCover extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            if (!this.props.currentCampaignSteps.includes("AdDesign")) {
-              this.props.saveCampaignSteps([
-                "Dashboard",
-                "AdObjective",
-                "AdCover"
-              ]);
-            }
-            Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation",
-              channel: "snapchat"
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              checkout_id: this.props.campaign_id,
-              step: 3,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.handleAdCoverFocus} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}

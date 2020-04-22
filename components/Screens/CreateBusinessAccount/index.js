@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
 
 import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
+import isEqual from "react-fast-compare";
 
 import Picker from "../../MiniComponents/Picker";
 import Website from "../../MiniComponents/InputField/Website";
@@ -275,8 +275,10 @@ class CreateBusinessAccount extends Component {
           });
         }
         if (
-          this.state.businessAccount.businessname !==
-          this.props.mainBusiness.businessname
+          (this.state.editBusinessInfo
+          ? this.state.businessAccount.businessname !==
+            this.props.mainBusiness.businessname
+          : true)
             ? await this._verifyBusinessName(
                 this.state.businessAccount.businessname,
                 true
@@ -375,6 +377,23 @@ class CreateBusinessAccount extends Component {
               });
             }
           } else {
+            let businessAccount = this.state.businessAccount;
+            if (!this.state.iosAppSelected) {
+              let appstorelink = {
+                app_name: "",
+                ios_app_id: "",
+                icon_media_url: ""
+              };
+              businessAccount = { ...businessAccount, appstorelink };
+            }
+            if (!this.state.androidAppSelected) {
+              let playstorelink = {
+                app_name: "",
+                icon_media_url: "",
+                android_app_url: ""
+              };
+              businessAccount = { ...businessAccount, playstorelink };
+            }
             let websitelink = this.state.businessAccount.websitelink;
             if (websitelink !== "") {
               websitelink =
@@ -383,7 +402,7 @@ class CreateBusinessAccount extends Component {
             }
             this.props.createBusinessAccount(
               {
-                ...this.state.businessAccount,
+                ...businessAccount,
                 websitelink,
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"
@@ -777,7 +796,13 @@ class CreateBusinessAccount extends Component {
                   this.setState({ inputN: true });
                 }}
                 onBlur={() => {
-                  this.setState({ inputN: false });
+                  this.setState({
+                    inputN: false,
+                    businessAccount: {
+                      ...this.state.businessAccount,
+                      businessname: this.state.businessAccount.businessname.trim()
+                    }
+                  });
                   this._verifyBusinessName(
                     this.state.businessAccount.businessname
                   );
@@ -817,13 +842,13 @@ class CreateBusinessAccount extends Component {
             >
               <Input
                 onSubmitEditing={() => {
-                  this.focusTheField("inputE");
+                  if (this.inputs["inputE"]) this.focusTheField("inputE");
                 }}
+                blurOnSubmit={!this.inputs["inputE"]}
                 ref={input => {
                   this.inputs["inputBN"] = input;
                 }}
-                blurOnSubmit={false}
-                returnKeyType={"next"}
+                returnKeyType={this.inputs["inputE"] ? "next" : "default"}
                 style={styles.inputText}
                 autoCorrect={false}
                 disabled={
@@ -849,7 +874,13 @@ class CreateBusinessAccount extends Component {
                   this.setState({ inputBN: true });
                 }}
                 onBlur={() => {
-                  this.setState({ inputBN: false });
+                  this.setState({
+                    inputBN: false,
+                    businessAccount: {
+                      ...this.state.businessAccount,
+                      brandname: this.state.businessAccount.brandname.trim()
+                    }
+                  });
                 }}
               />
             </Item>
@@ -922,11 +953,15 @@ class CreateBusinessAccount extends Component {
                     this.setState({ inputE: true });
                   }}
                   onBlur={() => {
-                    this.setState({ inputE: false });
                     this.setState({
+                      inputE: false,
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        businessemail: this.state.businessAccount.businessemail.trim()
+                      },
                       businessemailError: validateWrapper(
                         "email",
-                        this.state.businessAccount.businessemail
+                        this.state.businessAccount.businessemail.trim()
                       )
                     });
                   }}
@@ -1146,7 +1181,11 @@ class CreateBusinessAccount extends Component {
                   }}
                   onBlur={() => {
                     this.setState({
-                      inputBusinessCategoryOther: false
+                      inputBusinessCategoryOther: false,
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        otherBusinessCategory: this.state.businessAccount.otherBusinessCategory.trim()
+                      }
                     });
                   }}
                   value={this.state.businessAccount.otherBusinessCategory}

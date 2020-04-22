@@ -97,7 +97,12 @@ class GoogleCampaignCard extends Component {
                         {translate(
                           `${
                             campaign.status === "ENABLED"
-                              ? new Date(campaign.start_time) > new Date()
+                              ? new Date(campaign.start_time).setHours(
+                                  0,
+                                  0,
+                                  0,
+                                  0
+                                ) > new Date().setHours(0, 0, 0, 0)
                                 ? "Scheduled for"
                                 : "LIVE"
                               : campaign.status === "PAUSED"
@@ -185,7 +190,7 @@ class GoogleCampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!campaign.status === "REMOVED" && (
+                {campaign.status !== "REMOVED" && (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>

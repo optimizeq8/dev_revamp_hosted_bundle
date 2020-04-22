@@ -93,6 +93,29 @@ class ContinueCampaign extends Component {
   handleContinue = () => {
     const { translate } = this.props.screenProps;
     segmentEventTrack("Button Clicked to resume previous campaign");
+    let updated_transaction_data = {
+      channel: "google"
+    };
+    if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_id: this.props.data.id
+      };
+    }
+    if (this.props.data.campaignSteps.includes("GoogleAdTargetting")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_budget: this.props.data.budget
+      };
+    }
+    if (this.props.data.campaignSteps.includes("GoogleAdPaymentReview")) {
+      updated_transaction_data = {
+        ...updated_transaction_data,
+        campaign_budget_kdamount: this.props.data.kdamount
+      };
+    }
+    this.props.setCampaignInfoForTransaction(updated_transaction_data);
+
     /**
      * checks if the old campaign dates are still applicable or not so
      * it doesn't create a campaign with old dates
@@ -112,28 +135,6 @@ class ContinueCampaign extends Component {
       this.handleSubmition(false, false);
     } else {
       this.setState({ resumeLoading: true });
-      let updated_transaction_data = {
-        channel: "google"
-      };
-      if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_id: this.props.data.id
-        };
-      }
-      if (this.props.data.campaignSteps.includes("GoogleAdTargetting")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget: this.props.data.budget
-        };
-      }
-      if (this.props.data.campaignSteps.includes("GoogleAdPaymentReview")) {
-        updated_transaction_data = {
-          ...updated_transaction_data,
-          campaign_budget_kdamount: this.props.data.kdamount
-        };
-      }
-      this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.set_google_campaign_resumed(true);
       /**
        * the app actually freezes for a few seconds when navigateToContinue runs so i delay

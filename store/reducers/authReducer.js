@@ -1,3 +1,4 @@
+import { AsyncStorage } from "react-native";
 import * as actionTypes from "../actions/actionTypes";
 import * as Segment from "expo-analytics-segment";
 const initialState = {
@@ -10,10 +11,20 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
-      Segment.identifyWithTraits(
-        action.payload.user.userid,
-        action.payload.user
-      );
+      AsyncStorage.getItem("appLanguage")
+        .then(language => {
+          Segment.identifyWithTraits(action.payload.user.userid, {
+            ...action.payload.user,
+            app_language: language
+          });
+        })
+        .catch(error => {
+          Segment.identifyWithTraits(
+            action.payload.user.userid,
+            ...action.payload.user
+          );
+        });
+
       return {
         ...state,
         userid: action.payload.user.userid,

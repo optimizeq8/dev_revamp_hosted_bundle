@@ -45,7 +45,7 @@ class Website extends Component {
         callaction: list.SnapAd[0].call_to_action_list[0]
       },
       callActionLabel: "",
-      networkString: netLoc[0].label,
+      // networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions: list.SnapAd[0].call_to_action_list,
       urlError: "",
@@ -61,25 +61,25 @@ class Website extends Component {
       this.props.data.attachment !== "BLANK" &&
       !this.props.data.attachment.hasOwnProperty("android_app_url")
     ) {
-      const url = split(this.props.data.attachment.url, "://");
+      const url = this.props.data.attachment.url;
       this.setState({
         campaignInfo: {
-          attachment: url[1],
+          attachment: url,
           callaction: this.props.data.call_to_action
-        },
-        networkString: url[0] + "://"
+        }
+        // networkString: url[0] + "://"
       });
     } else if (
       this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE" ||
       this.props.storyAdAttachment.destination === "LEAD_GENERATION"
     ) {
-      const url = split(this.props.storyAdAttachment.attachment.url, "://");
+      const url = this.props.storyAdAttachment.attachment.url;
       this.setState({
         campaignInfo: {
-          attachment: url[1],
+          attachment: url,
           callaction: this.props.storyAdAttachment.call_to_action
-        },
-        networkString: url[0] + "://"
+        }
+        // networkString: url[0] + "://"
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
