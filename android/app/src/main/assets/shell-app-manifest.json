@@ -425,12 +425,12 @@
     "asset_7c89fdeb35a19ed48839cf86fd10a184.json"
   ],
   "assetUrlOverride": "./assets",
-  "publishedTime": "2020-04-21T13:58:14.468Z",
-  "commitTime": "2020-04-21T13:58:14.468Z",
-  "releaseId": "09ee2c58-be1e-4742-bba4-77f522eef0df",
-  "revisionId": "wBM1n17ey8",
+  "publishedTime": "2020-04-22T08:06:33.765Z",
+  "commitTime": "2020-04-22T08:06:33.765Z",
+  "releaseId": "3f5b3167-abce-4def-a922-8a369dfec7f3",
+  "revisionId": "er8BwknxpY",
   "id": "@samyoptimize/optimize_app",
-  "bundleUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/android-fd3c6d24216ded9041447004c86a7244.js",
+  "bundleUrl": "https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/android-926d18dd9688f4ebe4287c8d5af51c39.js",
   "platform": "android",
   "dependencies": [
     "@ptomasroos/react-native-multi-slider",
