@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const verifyInstagramHandleWebsite = insta_handle => {
   return async dispatch => {
@@ -250,6 +251,11 @@ export const saveWebProductsToHide = (
             type: data.success ? "success" : "warning",
             message: data.message
           });
+          segmentEventTrack(data.message, {
+            businessid,
+            insta_handle,
+            businesslogo
+          });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -278,6 +284,11 @@ export const saveWebProductsToHide = (
           return response.data;
         })
         .then(data => {
+          segmentEventTrack(data.message, {
+            businessid,
+            insta_handle,
+            businesslogo
+          });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
