@@ -209,8 +209,6 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
       info = { ...info, channel: getState().transA.channel };
-    else if (getState().transA.channel === "instagram")
-      info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
       .post(`useWallet`, info, { timeout: 10000 })
       .then(res => {
@@ -335,8 +333,6 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
-      info = { ...info, channel: getState().transA.channel };
-    if (getState().transA.channel === "instagram")
       info = { ...info, channel: getState().transA.channel };
 
     createBaseUrl()

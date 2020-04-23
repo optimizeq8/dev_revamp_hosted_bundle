@@ -261,7 +261,7 @@ export const country_regions = [
   }
 ];
 
-export default countries = [
+export default (countries = [
   {
     label: "Kuwait",
     value: "kw"
@@ -286,4 +286,4 @@ export default countries = [
     label: "Oman",
     value: "om"
   }
-];
+]);

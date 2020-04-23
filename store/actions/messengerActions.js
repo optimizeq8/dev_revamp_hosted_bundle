@@ -8,34 +8,48 @@ import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
-NodeBackendURL = () =>
-  axios.create({
-    baseURL: "https://www.optimizeapp.io/"
-  });
+NodeBackendURL = axios.create({
+  baseURL: "https://www.optimizeapp.io/"
+});
 
-/**
- * sends a request to get user object from intercom
- * if it doesn't find one it makes a request to create another
- *
- * @method
- * @param {string} user_id
- * @returns {Function} dispatch action with user information if found
- */
+// send the id of the user
+// will return the user object
 export const connect_user_to_intercom = user_id => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_LOADING,
+      type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-    NodeBackendURL()
-      .get(`get-user/${user_id}`)
+    // console.log("user_id: ", user_id);
+
+    NodeBackendURL.get(`get-user/${user_id}`)
       .then(res => {
         return res.data;
       })
       .then(data => {
         if (data.code === "not_found") {
-          return dispatch(create_user_on_intercom());
+          // console.log("couldn't find a user");
+
+          var user = getState().auth.userInfo;
+          var bus = getState().account.mainBusiness;
+          var body = {
+            user_id: user.userid,
+            email: user.email,
+            phone: user.mobile,
+            name: `${user.firstname} ${user.lastname}`
+          };
+          if (bus.hasOwnProperty("businessid")) {
+            body["companies"] = [
+              {
+                company_id: bus.businessid,
+                name: bus.businessname
+              }
+            ];
+          }
+          dispatch(create_user_on_intercom(body));
         } else {
+          // console.log("found user");
+
           dispatch(get_conversation(user_id));
           return dispatch({
             type: actionTypes.SET_CURRENT_MESSENGER,
@@ -44,23 +58,21 @@ export const connect_user_to_intercom = user_id => {
         }
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-
-        console.log("get_user", err.message || err.response);
-        return dispatch({
-          type: actionTypes.ERROR_SET_CURRENT_MESSENGER
-        });
+        //  showMessage({
+        //    message:
+        //      err.message ||
+        //      err.response ||
+        //      "Something went wrong, please try again.",
+        //    type: "danger",
+        //    position: "top",
+        //    description: translate("chat, login")
+        //  });
+        // console.log("get_user", err.message || err.response);
       });
   };
 };
 
+// Signup user on intercom database
 // {
 //     "user_id": "5",
 //     "email": "heedll@oo.co",
@@ -74,40 +86,13 @@ export const connect_user_to_intercom = user_id => {
 //         ]
 // }
 
-/**
- * Creates a user on intercom
- *
- * @method
- * @param {object} user
- * @param {string} user.user_id
- * @param {string} user.email
- * @param {string} user.phone
- * @param {string} user.name includes both the first and last name in one string
- * @param {array} user.companies includes objects of company id and name
- * @returns {Function} dispatch action with user information
- */
-export const create_user_on_intercom = () => {
-  return (dispatch, getState) => {
-    var user = getState().auth.userInfo;
-    var bus = getState().account.mainBusiness;
-    var body = {
-      user_id: user.userid,
-      email: user.email,
-      phone: user.mobile,
-      name: `${user.firstname} ${user.lastname}`
-    };
-
-    body["companies"] = getState().account.businessAccounts.map(bus => {
-      return { company_id: bus.businessid, name: bus.businessname };
-    });
-
+export const create_user_on_intercom = user => {
+  return dispatch => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-
-    NodeBackendURL()
-      .post("/create-user", body)
+    NodeBackendURL.post("/create-user", user)
       .then(res => {
         dispatch(get_conversation(res.data.user_id));
         return dispatch({
@@ -116,48 +101,33 @@ export const create_user_on_intercom = () => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("create_user_on_intercom", err.message || err.response);
+        // console.log("create_user_on_intercom", err.message || err.response);
       });
   };
 };
 
-/**
- * Gets conversation array with messages
- *
- * @method
- * @param {string} user_id
- * @returns {Function} if the conversation id exists returns a dispatch action with the messages array
- */
+// get conversation array with messages
+
 export const get_conversation = user_id => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_CON,
       payload: true
     });
-    NodeBackendURL()
-      .get(`get-conversation/${user_id}`)
+    NodeBackendURL.get(`get-conversation/${user_id}`)
       .then(res => {
         return res.data;
       })
       .then(data => {
         if (isNull(data.conversation_id)) {
+          // console.log("couldn't find a conversation");
+
           return dispatch({
             type: actionTypes.SET_CONVERSATION_AS_OPEN,
             payload: false
           });
         } else {
-          // console.log(
-          //   "conversation list: ",
-          //   data.messages[data.messages.length - 1]
-          // );
+          // console.log("found conversation");
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
@@ -168,25 +138,18 @@ export const get_conversation = user_id => {
       .then(() => {
         dispatch(get_conversatusion_read_status());
         dispatch(update_app_status_chat_notification(true));
+        // if (!isNull(getState().messenger.conversation_id))
+        //   dispatch(set_as_seen());
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-
-        console.log("get_conversation", err.message || err.response);
-        return dispatch({
-          type: actionTypes.ERROR_SET_CONVERSATION
-        });
+        // console.log("get_conversation", err.message || err.response);
       });
   };
 };
 
+//start a conversation from user side
+//API only called once if there is
+//no conversations prevously
 // {
 //   "from": {
 //     "type": "user",
@@ -194,51 +157,33 @@ export const get_conversation = user_id => {
 //   },
 //   "body": "Hey"
 // }
-
-/**
- * start a conversation from user side
- * This API is only called once if there is no conversations prevously
- *
- * @method
- * @param {string} message
- * @returns {Function}  dispatch with the conversation part of the same message from the axois request
- */
-export const start_conversation = (message, callback) => {
+export const start_conversation = message => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
       payload: true
     });
 
-    NodeBackendURL()
-      .post("/start-conversation", {
-        from: {
-          type: "user",
-          user_id: getState().auth.userInfo.userid
-        },
-        body: message
-      })
+    NodeBackendURL.post("/start-conversation", {
+      from: {
+        type: "user",
+        user_id: getState().auth.userInfo.userid
+      },
+      body: message
+    })
       .then(response => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION,
           payload: response.data
         });
       })
-      .then(() => dispatch(callback()))
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("start_conversation", err.message || err.response);
+        // console.log("start_conversation", err.message || err.response);
       });
   };
 };
 
+// reply to the conversation
 // {
 // "user_id": "5",
 // "body": "GREAT IT WORKS",
@@ -246,79 +191,46 @@ export const start_conversation = (message, callback) => {
 // "type": "user"
 // }
 
-/**
- * reply to the existing conversation
- *
- * @method
- * @param {string} message
- * @param {array} upload has the links of the uploaded images
- * @returns {Function} dispatch witht the conversation part of the same message from the axios request
- */
-export const reply = (message, upload) => {
+export const reply = message => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
       payload: true
     });
-    NodeBackendURL()
-      .post("/reply", {
-        user_id: getState().auth.userInfo.userid,
-        body: message,
-        message_type: "comment",
-        type: "user",
-        attachment_urls: upload
-      })
+    NodeBackendURL.post("/reply", {
+      user_id: getState().auth.userInfo.userid,
+      body: message,
+      message_type: "comment",
+      type: "user"
+    })
       .then(response => {
         dispatch(send_push_notification());
+
         return dispatch({
           type: actionTypes.ADD_MESSAGE,
           payload: response.data
         });
       })
-      .then(() => dispatch(update_conversatusion_read_status()))
       .catch(err => {
-        dispatch({
-          type: actionTypes.SET_LOADING_MESSAGE,
-          payload: false
-        });
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("reply", err.message || err.response);
+        // console.log("reply", err.message || err.response);
       });
   };
 };
 
-/**
- * recived admin response from socket
- *
- * @method
- * @param {object} message
- * @returns {Function} dispatch with the conversation object of the admin
- */
+//recived admin response
 export const admin_response = message => {
-  return async (dispatch, getState) => {
-    await dispatch({
+  return (dispatch, getState) => {
+    // dispatch(set_as_seen(true));
+
+    return dispatch({
       type: actionTypes.ADD_MESSAGE,
       payload: message
     });
-
-    dispatch(update_conversatusion_read_status());
   };
 };
 
-/**
- * Gets the last value of the message array size
- * to compare it with the current array length
- *
- * @method
- * @returns {Function} dispatch action with a boolean to diplay notifications icon according
- */
+//get status if conversation was seen
+
 export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
@@ -340,28 +252,14 @@ export const get_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log(
-          "get_conversatusion_read_status err",
-          err.message || err.response
-        );
+        // // console.log(
+        //   "get_conversatusion_read_status err",
+        //   err.message || err.response
+        // );
       });
   };
 };
 
-/**
- * updates the database with current size of the message array
- *
- * @method
- * @returns {Function} dispatch action with a true boolean to set off the notification after update
- */
 export const update_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
@@ -389,34 +287,19 @@ export const update_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log(
-          "update_conversatusion_read_status err",
-          err.message || err.response
-        );
+        // console.log(
+        //   "update_conversatusion_read_status err",
+        //   err.message || err.response
+        // );
       });
   };
 };
 
-/**
- * update the conversation as read from the user's side
- *
- * @method
- * @param {boolean} check
- * @returns {Function} dispatch action with the check boolean
- */
+// export const set_as_seen
 export const set_as_seen = check => {
   return (dispatch, getState) => {
     if (check)
-      NodeBackendURL()
-        .get(`read/${getState().messenger.conversation_id}`)
+      NodeBackendURL.get(`read/${getState().messenger.conversation_id}`)
         .then(res => {
           return res.data;
         })
@@ -427,15 +310,7 @@ export const set_as_seen = check => {
           });
         })
         .catch(err => {
-          showMessage({
-            message:
-              err.message ||
-              err.response ||
-              "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
-          });
-          console.log("set_as_seen err", err.message || err.response);
+          // console.log("set_as_seen err", err.message || err.response);
         });
     else {
       return dispatch({
@@ -446,16 +321,10 @@ export const set_as_seen = check => {
   };
 };
 
-/**
- * call when the user closes the msg screen to update their last seen
- *
- * @method
- * @returns {Function} dispatch action with the a data object
- */
+// call when the user closes the msg screen ?
 export const update_last_seen = () => {
   return (dispatch, getState) => {
-    NodeBackendURL()
-      .get(`update-last-seen/${getState().auth.userInfo.userid}`)
+    NodeBackendURL.get(`update-last-seen/${getState().auth.userInfo.userid}`)
       .then(res => {
         return res.data;
       })
@@ -466,150 +335,16 @@ export const update_last_seen = () => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("update_last_seen", err.message || err.response);
+        // console.log("update_last_seen", err.message || err.response);
       });
   };
 };
 
-/**
- * upload an image attechment
- *
- * @method
- * @param {FormData} media
- * @returns {Function} dispatch action to send a reply with the image link
- */
-export const upload_media = media => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_LOADING_MESSAGE,
-      payload: true
-    });
-    axios
-      .post(
-        getState().login.admin
-          ? "https://optimizekwtestingserver.com/optimize/public/uploadChatMedia"
-          : "https://www.optimizeapp.com/optimize/public/uploadChatMedia",
-
-        media
-      )
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.success) {
-          if (getState().messenger.open_conversation) {
-            return dispatch(reply(null, [data.media_link]));
-          } else {
-            dispatch(
-              start_conversation("Sending an attachment", () =>
-                reply(null, [data.media_link])
-              )
-            );
-          }
-        } else {
-          showMessage({
-            message: data.message || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
-          });
-          return dispatch({
-            type: actionTypes.SET_LOADING_MESSAGE,
-            payload: false
-          });
-        }
-      })
-      .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("upload_media", err.message || err.response);
-        return dispatch({
-          type: actionTypes.SET_LOADING_MESSAGE,
-          payload: false
-        });
-      });
-  };
-};
-
-/**
- * subscribe the user to the chat room to recieve admin replies
- *
- * @method
- * @param {socket} socket
- * @returns {Function} dispatch action for subscription
- */
 export const subscribe = socket => {
   return (dispatch, getState) => {
     socket.emit("subscribe", getState().auth.userInfo.userid);
     return dispatch({
       type: actionTypes.SET_AS_SUBSCRIBED
     });
-  };
-};
-
-// {
-//     "user_id": "5",
-//     "email": "heedll@oo.co",
-//     "phone": "00971569028443",
-//     "name": "HEloo SiR",
-//         "companies": [
-//             {
-//                 "company_id": "3",
-//                 "name": "businiess name"
-//             }
-//         ]
-// }
-
-/**
- * Creates a user on intercom
- *
- * @method
- * @param {object} user
- * @param {string} user.user_id
- * @param {string} user.email
- * @param {string} user.phone
- * @param {string} user.name includes both the first and last name in one string
- * @param {array} user.companies includes objects of company id and name
- * @returns {Function} dispatch action with user information
- */
-export const update_user_on_intercom = body => {
-  return dispatch => {
-    dispatch({
-      type: actionTypes.SET_LOADING_MESSENGER,
-      payload: true
-    });
-    NodeBackendURL()
-      .post("/update-user", body)
-      .then(res => {
-        dispatch(get_conversation(res.data.user_id));
-        return dispatch({
-          type: actionTypes.SET_CURRENT_MESSENGER,
-          payload: res.data
-        });
-      })
-      .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
-        console.log("create_user_on_intercom", err.message || err.response);
-      });
   };
 };

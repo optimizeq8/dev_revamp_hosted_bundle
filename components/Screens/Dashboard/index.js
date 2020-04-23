@@ -21,8 +21,6 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
-import InstagramCampaignCard from "../../MiniComponents/InstagramCampaignCard";
-
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
@@ -45,7 +43,7 @@ import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationI
 import styles from "./styles";
 
 //data
-import { snapAds, googleAds, instagramAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -118,16 +116,13 @@ class Dashboard extends Component {
       }
     }
     Segment.screen("Dashboard");
+    this.props.userInfo &&
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
-    if (this.props.campaignProgressStarted && this.props.incompleteCampaign)
+    if (this.props.campaignInProgress && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
-    if (
-      this.props.instagramCampaignProgressStarted &&
-      this.props.instagramIncompleteCampaign
-    )
-      this.props.setCampaignInProgressInstagram(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -148,6 +143,7 @@ class Dashboard extends Component {
     ) {
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -285,6 +281,7 @@ class Dashboard extends Component {
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.set_as_seen(false);
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -303,7 +300,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (item.channel === "snapchat") {
+    } else
       return (
         <CampaignCard
           channel={"snapchat"}
@@ -313,17 +310,6 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (item.channel === "instagram") {
-      return (
-        <InstagramCampaignCard
-          channel={"instagram"}
-          campaign={item}
-          navigation={this.props.navigation}
-          key={item.campaign_id}
-          screenProps={this.props.screenProps}
-        />
-      );
-    }
   };
 
   handleNewCampaign = () => {
@@ -375,7 +361,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [...snapAds, ...googleAds, ...instagramAds].map(adType => (
+    let adButtons = [...snapAds, ...googleAds].map(adType => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
@@ -727,7 +713,6 @@ class Dashboard extends Component {
                 onDidFocus={() => {
                   Segment.screen("Dashboard");
                   this.props.setCampaignInProgress(false);
-                  this.props.setCampaignInProgressInstagram(false);
                 }}
               />
             </Animatable.View>
@@ -792,9 +777,6 @@ const mapStateToProps = state => ({
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
-  instagramCampaignProgressStarted:
-    state.instagramAds.instagramCampaignProgressStarted,
-  instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns,
   clearTokenLoading: state.login.clearTokenLoading
@@ -816,10 +798,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  setCampaignInProgressInstagram: value =>
-    dispatch(actionCreators.setCampaignInProgressInstagram(value)),
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   getLanguageListPOEdit: language =>
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });

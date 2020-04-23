@@ -1,9 +1,15 @@
 import { StyleSheet, PixelRatio, Platform } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 const IsIOS = Platform.OS === "ios";
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1
+    // backgroundColor: '#0000',
   },
   container: {
     backgroundColor: "#0000",
@@ -17,6 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 10,
+    // paddingRight: 8,
     backgroundColor: "#F4F4F4",
     paddingVertical: 8,
     borderTopEndRadius: 20,
@@ -35,35 +42,67 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlignVertical: "center",
     display: "flex",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: 12,
     color: "#909090",
+    // lineHeight: 30,
     flex: 1,
+    // maxWidth:
     backgroundColor: "white",
     borderWidth: 0,
     borderRadius: 20,
     marginBottom: 17,
     width: "100%"
+    // marginHorizontal: 8,
+    // borderRadius: 80
   },
   cameraIcon: {
     marginBottom: 17
+    // flex: 0,
   },
   submitButton: {
+    // position: "absolute",
+    // flex: 0,
+    // zIndex: 0,
+    // // right: widthPercentageToDP(15),
+    // // bottom: heightPercentageToDP(1),
+
+    // bottom: heightPercentageToDP(5) > 40 ? -2 : "5%",
+    // right: heightPercentageToDP(5) > 40 ? 10 : "2%",
+    // transform: [
+    //   {
+    //     translateX: 0
+    //   },
+    //   {
+    //     translateY: heightPercentageToDP(5) > 40 ? -2 : -5
+    //   }
+    // ],
+    // alignSelf: "center",
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 3 },
+    // shadowRadius: 3,
+    // shadowOpacity: 0.2,
     marginBottom: 25,
+    // marginRight: 18
+
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
+    // marginBottom: 17,
     marginRight: 5
+
+    // bottom: heightPercentageToDP(bottom)
   },
   connectingAgentText: {
     color: "white",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: 14,
     lineHeight: 18,
     fontFamily: "montserrat-regular",
     letterSpacing: 0,
     maxWidth: 150,
     textAlign: "center"
+    // paddingTop: 10,
   },
   flexView: {
     display: "flex",
@@ -86,15 +125,6 @@ const styles = StyleSheet.create({
   },
   flexEmptyView: {
     flex: 1
-  },
-  activityIndicator: {
-    height: 72,
-    width: 62,
-    marginBottom: 10
-  },
-  cameraButton: {
-    padding: 5,
-    paddingRight: 10
   }
 });
 

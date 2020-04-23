@@ -232,8 +232,6 @@ export const verifyMobileCode = mobileAuth => {
       })
       .then(async data => {
         if (data.success === true) {
-          let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
-          Adjust.trackEvent(adjustVerifyAccountTracker);
           segmentEventTrack("Successfully Verified Account", {
             category: "Account Verification",
             label: "Step 2 of Account Verification"

@@ -138,9 +138,7 @@ export {
   set_as_seen,
   update_last_seen,
   subscribe,
-  update_conversatusion_read_status,
-  upload_media,
-  update_user_on_intercom
+  update_conversatusion_read_status
 } from "./messengerActions";
 
 export { getLanguageListPOEdit } from "./languageActions";
@@ -164,27 +162,9 @@ export {
 } from "./googleAdsCampaignActions";
 
 export {
-<<<<<<< HEAD
   getInstagramPostInitialWebsite,
   loadMoreInstagramPostWebsite,
   verifyInstagramHandleWebsite,
   saveWebProductsToHide,
   getWebProductsToHide
 } from "./optimizeWebsiteActions";
-=======
-  ad_objective_instagram,
-  set_adType_instagram,
-  save_campaign_info_instagram,
-  setCampaignInProgressInstagram,
-  saveCampaignStepsInstagram,
-  resetCampaignInfoInstagram,
-  overWriteObjectiveDataInstagram,
-  saveBrandMediaInstagram,
-  get_interests_instagram,
-  getOSVersion,
-  getDeviceBrand,
-  instagram_ad_audience_size,
-  get_total_reach_instagram,
-  ad_details_instagram
-} from "./instagramCampaignActions";
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd

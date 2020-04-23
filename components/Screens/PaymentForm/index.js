@@ -336,7 +336,6 @@ class PaymentForm extends Component {
         checkout_id: this.props.campaign_id
       });
     }
-<<<<<<< HEAD
     if (this.state.addingCredits) {
       // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
       // adjustWalletPaymentFormTracker.addPartnerParameter(
@@ -361,14 +360,6 @@ class PaymentForm extends Component {
       // );
       // Adjust.trackEvent(adjustPaymentFormTracker);
     }
-=======
-    let adjustPaymentFormTracker = new AdjustEvent("gmds3l");
-    adjustPaymentFormTracker.setRevenue(
-      this.props.campaign_budget && this.props.campaign_budget,
-      "USD"
-    );
-    Adjust.trackEvent(adjustPaymentFormTracker);
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
   };
   render() {
     const { translate } = this.props.screenProps;

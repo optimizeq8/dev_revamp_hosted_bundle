@@ -19,7 +19,6 @@ export default class RNImageOrCacheImage extends Component {
   };
   render() {
     let { media, style, resizeMode, blurRadius } = this.props;
-
     return (
       <>
         <NavigationEvents onDidFocus={this.handlCacheLoading} />

@@ -366,7 +366,6 @@ class AdType extends Component {
 
 const mapStateToProps = state => ({
   adType: state.campaignC.adType,
-  adTypeInstagram: state.instagramAds.adType,
   incompleteCampaign: state.campaignC.incompleteCampaign,
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo

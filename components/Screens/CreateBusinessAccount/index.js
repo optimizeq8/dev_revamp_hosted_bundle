@@ -1185,13 +1185,9 @@ class CreateBusinessAccount extends Component {
                       inputBusinessCategoryOther: false,
                       businessAccount: {
                         ...this.state.businessAccount,
-<<<<<<< HEAD
                         otherBusinessCategory:
                           this.state.businessAccount.otherBusinessCategory &&
                           this.state.businessAccount.otherBusinessCategory.trim()
-=======
-                        otherBusinessCategory: this.state.businessAccount.otherBusinessCategory.trim()
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
                       }
                     });
                   }}
