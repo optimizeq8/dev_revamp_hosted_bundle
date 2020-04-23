@@ -49,8 +49,14 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import AcceptTermsConditionLoading from "../Screens/SnapchatCreateAdAcc/Loading";
-
+import OptimizeWebsite from "../Screens/OptimizeWebsite";
+import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
+import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
+import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
+<<<<<<< HEAD
+import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
+=======
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
 import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
 import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/AdTargetting";
@@ -62,6 +68,7 @@ import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/Swip
 import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramAdPaymentReview from "../Screens/InstagramCampaignCreate/Feed/AdPaymentReview";
 
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -77,7 +84,7 @@ export default FluidNavigator(
     TransactionList: TransactionList,
     Wallet: Wallet,
     AdType: AdType,
-    AdObjective: AdObjective,
+    AdObjective: { screen: AdObjective, path: "AdObjective/" },
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
     AdCover: AdCover,
@@ -125,6 +132,14 @@ export default FluidNavigator(
     VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
     ImagePreview: ImagePreview,
     AcceptTermsConditionLoading: AcceptTermsConditionLoading,
+<<<<<<< HEAD
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
+    OptimizeWebsite: OptimizeWebsite,
+    WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
+    WebsiteSetting: WebsiteSetting,
+    MyWebsite: MyWebsite,
+    TutorialWeb: TutorialWeb
+=======
     InstagramFeedAdObjective: InstagramFeedAdObjective,
     InstagramFeedAdDesign: InstagramFeedAdDesign,
     InstagramStoryAdObjective: InstagramStoryAdObjective,
@@ -133,6 +148,7 @@ export default FluidNavigator(
     InstagramFeedAdTargetting: InstagramFeedAdTargetting,
     AdFeedDesignReview: AdFeedDesignReview,
     InstagramAdPaymentReview: InstagramAdPaymentReview
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

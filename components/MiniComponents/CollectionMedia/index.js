@@ -709,6 +709,7 @@ class CollectionMedia extends Component {
 
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
+  };
   handleAdCollectionMediaFocus = () => {
     let adjustAdCoverTracker = new AdjustEvent("s62u9o");
     Adjust.trackEvent(adjustAdCoverTracker);
@@ -739,9 +740,9 @@ class CollectionMedia extends Component {
                 <View style={styles.mainView}>
                   <View style={styles.imageView}>
                     <Text style={styles.productText}>
-                      {`${translate("Product")} ${parseInt(
-                        this.state.collection.collection_order
-                      ) + 1}`}
+                      {`${translate("Product")} ${
+                        parseInt(this.state.collection.collection_order) + 1
+                      }`}
                     </Text>
                   </View>
                   {isNull(this.state.collection.collection_media) ? (

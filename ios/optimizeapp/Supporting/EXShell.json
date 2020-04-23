@@ -1,1 +1,10 @@
+<<<<<<< HEAD
+{
+  "isShell": true,
+  "manifestUrl": "https://optimizeq8.github.io/live_hosted_bundle/ios-index.json",
+  "releaseChannel": "poduction",
+  "isManifestVerificationBypassed": true
+}
+=======
 {"isShell":true,"manifestUrl":"exp://exp.host/@samyoptimize/optimize_app","releaseChannel":"sprint_v1","isManifestVerificationBypassed":true}
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd

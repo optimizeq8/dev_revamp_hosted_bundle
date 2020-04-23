@@ -110,6 +110,7 @@ class AdPaymentReview extends Component {
       checkout_id: this.props.campaign_id
     });
     let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
+    adjustGoogleAdReviewTracker.addPartnerParameter(`Google_SEM`, "google_sem");
     Adjust.trackEvent(adjustGoogleAdReviewTracker);
   };
   render() {
@@ -122,171 +123,164 @@ class AdPaymentReview extends Component {
       >
         <NavigationEvents onDidFocus={this.handleGooglePaymentReviewFocus} />
 
-        <Container style={[styles.container]}>
-          <CustomHeader
-            closeButton={false}
-            segment={{
-              str: "Ad Payment Review Back Button",
-              obj: {
-                businessname: this.props.mainBusiness.businessname
-              }
-            }}
-            navigation={this.props.navigation}
-            title={"Review your Selection"}
-            screenProps={this.props.screenProps}
-          />
+        <CustomHeader
+          closeButton={false}
+          segment={{
+            str: "Ad Payment Review Back Button",
+            obj: {
+              businessname: this.props.mainBusiness.businessname
+            }
+          }}
+          navigation={this.props.navigation}
+          title={"Review your Selection"}
+          screenProps={this.props.screenProps}
+        />
 
-          <Content
-            scrollEnabled={false}
-            contentContainerStyle={{
+        <Content
+          scrollEnabled={false}
+          contentContainerStyle={{
+            flex: 1,
+            paddingHorizontal: 20,
+            marginVertical: 20,
+            borderRadius: 30
+          }}
+        >
+          <View
+            style={{
+              borderRadius: 30,
               flex: 1,
-              paddingHorizontal: 20,
-              marginVertical: 20,
-              borderRadius: 30
+              backgroundColor: "rgba(0,0,0,0.6)"
             }}
           >
-            <View
-              style={{
-                borderRadius: 30,
-                flex: 1,
-                backgroundColor: "rgba(0,0,0,0.6)"
-              }}
-            >
-              <Content>
-                <View style={styles.budgetView}>
-                  <Text style={styles.budgetText}>{translate("Budget")}</Text>
-                  <View style={styles.budgetAmountView}>
-                    <Text style={styles.budgetDollarText}>$</Text>
-                    <Text style={styles.budgetAmountText}>
-                      {formatNumber(this.props.campaign_budget, true)}
-                    </Text>
-                  </View>
-                </View>
-                <Content contentContainerStyle={styles.contentContainerStyle}>
-                  <ReviewItemCard
-                    screenProps={this.props.screenProps}
-                    title="Duration"
-                    subtitles={[
-                      { title: "Start", content: this.state.start_time },
-                      { title: "End", content: this.state.end_time }
-                    ]}
-                  />
-                  <ReviewItemCard
-                    screenProps={this.props.screenProps}
-                    title="Ad Content"
-                    subtitles={[
-                      {
-                        title: ["Headline", "1"],
-                        content: this.props.campaign.headline1
-                      },
-                      {
-                        title: ["Headline", "2"],
-                        content: this.props.campaign.headline2
-                      },
-                      {
-                        title: ["Headline", "3"],
-                        content: this.props.campaign.headline3
-                      },
-                      {
-                        title: ["Landing Page"],
-                        content: this.props.campaign.finalurl
-                      },
-                      {
-                        title: ["Description", "1"],
-                        content: this.props.campaign.description
-                      },
-                      {
-                        title: ["Description", "2"],
-                        content: this.props.campaign.description2
-                      }
-                    ]}
-                  />
-
-                  <ReviewItemCard
-                    screenProps={this.props.screenProps}
-                    title="Audience"
-                    subtitles={[
-                      {
-                        title: "Gender",
-                        content: translate(this.state.gender)
-                      },
-                      {
-                        title: "Location",
-                        content:
-                          translate(this.state.country) +
-                          ": " +
-                          [...this.state.regionsNames].join(", ")
-                      },
-                      {
-                        title: "Language",
-                        content:
-                          this.props.campaign.language === "1000"
-                            ? translate("English")
-                            : translate("Arabic")
-                      },
-                      {
-                        title: "Age group",
-                        content: this.state.age
-                      },
-                      {
-                        title: "Products",
-                        content: this.props.campaign.keywords.join(", ")
-                      }
-                    ]}
-                  />
-                </Content>
-              </Content>
-            </View>
-          </Content>
-
-          <Footer style={styles.footerBlock}>
-            <View style={styles.bottomCardBlock1}>
-              <View>
-                <View style={styles.dollarAmountContainer}>
-                  <Text style={[styles.money, styles.dollarAmountText]}>$</Text>
-
-                  <Text style={[styles.money, { paddingLeft: 3 }]}>
+            <Content>
+              <View style={styles.budgetView}>
+                <Text style={styles.budgetText}>{translate("Budget")}</Text>
+                <View style={styles.budgetAmountView}>
+                  <Text style={styles.budgetDollarText}>$</Text>
+                  <Text style={styles.budgetAmountText}>
                     {formatNumber(this.props.campaign_budget, true)}
                   </Text>
                 </View>
-                <View style={styles.kdAmountContainer}>
-                  <Text style={[styles.money, styles.kdText]}>KD </Text>
-                  <Text style={[styles.money, styles.kdAmountText]}>
-                    {this.props.campaign_budget_kdamount}
-                  </Text>
-                </View>
-
-                <View style={styles.optimizeFeesTextContainer}>
-                  <Text style={styles.optimizeFeesPercentange}>10%</Text>
-                  <Text style={[styles.money, styles.optimizeFeesText]}>
-                    {translate("Optimize App fees included")}
-                  </Text>
-                </View>
               </View>
-              <GradientButton
-                onPressAction={() => {
-                  Segment.trackWithProperties(
-                    "Select Ad Payment Review Button",
+              <Content contentContainerStyle={styles.contentContainerStyle}>
+                <ReviewItemCard
+                  screenProps={this.props.screenProps}
+                  title="Duration"
+                  subtitles={[
+                    { title: "Start", content: this.state.start_time },
+                    { title: "End", content: this.state.end_time }
+                  ]}
+                />
+                <ReviewItemCard
+                  screenProps={this.props.screenProps}
+                  title="Ad Content"
+                  subtitles={[
                     {
-                      business_name: this.props.mainBusiness.businessname,
-                      campaign_budget: this.props.campaign_budget
+                      title: ["Headline", "1"],
+                      content: this.props.campaign.headline1
+                    },
+                    {
+                      title: ["Headline", "2"],
+                      content: this.props.campaign.headline2
+                    },
+                    {
+                      title: ["Headline", "3"],
+                      content: this.props.campaign.headline3
+                    },
+                    {
+                      title: ["Landing Page"],
+                      content: this.props.campaign.finalurl
+                    },
+                    {
+                      title: ["Description", "1"],
+                      content: this.props.campaign.description
+                    },
+                    {
+                      title: ["Description", "2"],
+                      content: this.props.campaign.description2
                     }
-                  );
-                  Segment.trackWithProperties("Completed Checkout Step", {
-                    step: 5,
-                    business_name: this.props.mainBusiness.businessname,
-                    checkout_id: this.props.campaign_id
-                  });
+                  ]}
+                />
 
-                  this.props.navigation.navigate("PaymentForm");
-                }}
-                style={[styles.mainCard]}
-                text={translate("Payment Info")}
-                textStyle={styles.payNowText}
-              />
+                <ReviewItemCard
+                  screenProps={this.props.screenProps}
+                  title="Audience"
+                  subtitles={[
+                    {
+                      title: "Gender",
+                      content: translate(this.state.gender)
+                    },
+                    {
+                      title: "Location",
+                      content:
+                        translate(this.state.country) +
+                        ": " +
+                        [...this.state.regionsNames].join(", ")
+                    },
+                    {
+                      title: "Language",
+                      content:
+                        this.props.campaign.language === "1000"
+                          ? translate("English")
+                          : translate("Arabic")
+                    },
+                    {
+                      title: "Age group",
+                      content: this.state.age
+                    },
+                    {
+                      title: "Products",
+                      content: this.props.campaign.keywords.join(", ")
+                    }
+                  ]}
+                />
+              </Content>
+            </Content>
+          </View>
+        </Content>
+
+        <View style={styles.bottomCardBlock1}>
+          <View>
+            <View style={styles.dollarAmountContainer}>
+              <Text style={[styles.money, styles.dollarAmountText]}>$</Text>
+
+              <Text style={[styles.money, { paddingLeft: 3 }]}>
+                {formatNumber(this.props.campaign_budget, true)}
+              </Text>
             </View>
-          </Footer>
-        </Container>
+            <View style={styles.kdAmountContainer}>
+              <Text style={[styles.money, styles.kdText]}>KD </Text>
+              <Text style={[styles.money, styles.kdAmountText]}>
+                {this.props.campaign_budget_kdamount}
+              </Text>
+            </View>
+
+            <View style={styles.optimizeFeesTextContainer}>
+              <Text style={styles.optimizeFeesPercentange}>10%</Text>
+              <Text style={[styles.money, styles.optimizeFeesText]}>
+                {translate("Optimize App fees included")}
+              </Text>
+            </View>
+          </View>
+          <GradientButton
+            onPressAction={() => {
+              Segment.trackWithProperties("Select Ad Payment Review Button", {
+                business_name: this.props.mainBusiness.businessname,
+                campaign_budget: this.props.campaign_budget
+              });
+              Segment.trackWithProperties("Completed Checkout Step", {
+                step: 5,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_id
+              });
+
+              this.props.navigation.navigate("PaymentForm");
+            }}
+            style={[styles.mainCard]}
+            text={translate("Payment Info")}
+            textStyle={styles.payNowText}
+          />
+        </View>
       </SafeAreaView>
     );
   }

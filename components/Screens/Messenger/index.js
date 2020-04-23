@@ -37,7 +37,11 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
+<<<<<<< HEAD
+import { AdjustEvent, Adjust } from "react-native-adjust";
+=======
 import { showMessage } from "react-native-flash-message";
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
@@ -234,6 +238,8 @@ class Messenger extends Component {
         <NavigationEvents
           onDidFocus={() => {
             Segment.screen("Support");
+            let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
+            Adjust.trackEvent(adjustSupportTrackeer);
           }}
         />
         <CustomHeader

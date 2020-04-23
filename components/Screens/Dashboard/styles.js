@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingTop: 10,
-    bottom: 10
+    bottom: 5
   },
   backDrop: {
     position: "absolute",
@@ -312,11 +312,12 @@ const styles = StyleSheet.create({
   searchbarContainer: {
     flexDirection: "row",
     height: 60,
-    alignItems: "center"
+    alignItems: "center",
+    alignSelf: "center"
   },
   channelIcon: {
     position: "absolute",
-    top: -23
+    top: -22
   },
   adButtonView: {
     flexDirection: "column",
@@ -335,6 +336,55 @@ const styles = StyleSheet.create({
   languageTouchView: {
     right: "5%",
     position: "absolute"
+  },
+  unreadText: {
+    fontFamily: "montserrat-bold-english",
+    fontSize: 10,
+    color: globalColors.white,
+
+    textAlign: "center"
+  },
+  unreadTextView: {
+    position: "absolute",
+    borderRadius: 30,
+    backgroundColor: globalColors.orange,
+    width: 20,
+    height: 20,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    top: -3,
+    left: 18,
+    zIndex: 1
+  },
+  websiteCard: {
+    borderRadius: 35,
+    overflow: "hidden",
+    paddingVertical: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: "-12%",
+    marginHorizontal: 15
+  },
+  mainText: {
+    color: "#FFF",
+    fontSize: 13,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    width: "40%",
+    marginLeft: "-10%",
+    marginTop: "-18%"
+  },
+  onlineStoreHomeIcon: {
+    marginLeft: "-10%",
+    marginTop: "-18%"
+  },
+  lowerButton: {
+    width: 30,
+    height: 30,
+    bottom: "10%",
+    right: 15
   }
 });
 

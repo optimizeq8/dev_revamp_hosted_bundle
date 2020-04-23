@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   budgetAmountView: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
   },
   budgetDollarText: {
     color: "#FFFFFF",
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   budgetAmountText: {
     color: "#FF9D00",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 24
   },
   contentContainerStyle: {
@@ -84,27 +84,33 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingRight: 40,
     paddingLeft: 55,
-    paddingTop: 15
+    paddingTop: 15,
+    paddingBottom: 20,
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35
   },
   dollarAmountContainer: {
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignSelf: "flex-start"
   },
   dollarAmountText: {
     fontSize: 15,
     color: "#FF9D00"
   },
   kdAmountContainer: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignSelf: "flex-start",
     paddingTop: 2
   },
   kdText: {
     fontSize: 11,
     color: "#C6C6C6",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold-english"
   },
   kdAmountText: {
     fontSize: 13,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     paddingLeft: 4,
     color: "#C6C6C6"
   },

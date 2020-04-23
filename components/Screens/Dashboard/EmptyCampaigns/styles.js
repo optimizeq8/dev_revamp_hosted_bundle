@@ -1,47 +1,32 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 
 export default StyleSheet.create({
-  background: {
-    position: "absolute",
-    opacity: 0.5,
-    top: 230,
-    alignSelf: "center"
+  gradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 35
   },
+
   logoText: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 15,
-    fontFamily: "montserrat-medium-english",
-    marginBottom: "5%"
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    paddingBottom: 20
   },
-  businessNameStyle: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 16,
-    fontFamily: "montserrat-medium"
-    // bottom: "21%"
-  },
-  brandNameStyle: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 31,
-    fontFamily: "montserrat-bold"
-  },
-  backDrop: {
-    position: "absolute",
-    top: -heightPercentageToDP("35%"),
-    alignSelf: "center",
-    zIndex: -1,
-    elevation: 0
-  },
+
   mainButtonView: {
-    flex: 1,
-    justifyContent: "center",
+    // flex: 1,
+    justifyContent: "flex-start",
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
+    paddingBottom: "10%"
   },
   helloNameStyle: {
     textTransform: "uppercase",
@@ -49,7 +34,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    paddingTop: 20
+    paddingTop: 0
   },
   accountNotVerifiedText: {
     fontSize: 14,
@@ -63,51 +48,79 @@ export default StyleSheet.create({
     color: globalColors.orange,
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+    paddingBottom: 20
   },
-  campaignButton: {
-    marginTop: 25,
-    marginBottom: 15,
-    backgroundColor: globalColors.orange,
-    justifyContent: "center",
-    alignSelf: "center",
-    width: 80,
-    height: 80,
-    shadowColor: "rgba(0,0,0,0.6)", // IOS
-    shadowOffset: { height: 2, width: 2 }, // IOS
-    shadowOpacity: 2, // IOS
-    shadowRadius: 100, //IOS
-    elevation: 2 // Android
-  },
-  campaignButtonText: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 12,
-    fontFamily: "montserrat-bold"
-  },
+
   mainText: {
-    textAlign: "center",
-    alignSelf: "center",
-    color: "#909090",
-    fontSize: 14,
-    width: "50%",
-    fontFamily: "montserrat-regular"
-  },
-  logo: { alignSelf: "center" },
-  flex: { flex: 1, justifyContent: "center" },
-  bottomText: {
-    textAlign: "center",
-    color: "#909090",
-    fontSize: 16,
-    fontFamily: "montserrat-regular"
-  },
-  launchText: {
-    textAlign: "center",
+    textAlign: "left",
+    fontSize: 21,
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    color: "#575757",
-    fontSize: 19
+    width: "60%"
+  },
+  logo: {
+    alignSelf: "center",
+    bottom: 20
+  },
+  flex: {
+    justifyContent: "center"
   },
   flex1: {
     flex: 1
+  },
+  getStartedText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 19,
+    textTransform: "uppercase",
+    color: "#575757",
+    textAlign: "center",
+    marginTop: 20
+  },
+  lowerButton: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    width: 40,
+    height: 40,
+    bottom: heightPercentageToDP(2),
+    right: 5
+  },
+  onlineStoreHomeIcon: {
+    left: widthPercentageToDP(-12),
+    marginBottom: heightPercentageToDP(-6)
+  },
+  launchCampaignIcon: {
+    left: widthPercentageToDP(-20),
+    marginBottom: heightPercentageToDP(-11)
+  },
+  socialPlatformIconView: {
+    flexDirection: "row",
+    alignSelf: "flex-end",
+    position: "absolute"
+  },
+  snapchatIcon: {
+    right: widthPercentageToDP(-20)
+  },
+  googleIcon: {
+    right: -30
+  },
+  campaignCreateCard: {
+    paddingTop: 20,
+    borderRadius: 35,
+    paddingHorizontal: 20,
+    overflow: "hidden",
+    marginBottom: 10,
+    marginTop: 10,
+    marginHorizontal: 20
+  },
+  websiteCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    marginTop: 10,
+    paddingTop: 20,
+    borderRadius: 35,
+    overflow: "hidden",
+    paddingHorizontal: 20
   }
 });

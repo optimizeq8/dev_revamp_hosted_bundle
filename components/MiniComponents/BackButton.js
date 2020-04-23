@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import BackIcon from "../../assets/SVGs/BackButton";
 import globalStyles from "../../GlobalStyles";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export default class CloseButton extends Component {
   render() {
@@ -19,7 +19,12 @@ export default class CloseButton extends Component {
         }}
         style={[globalStyles.backButton, this.props.style]}
       >
-        <BackIcon height={24} width={24} style={{ zIndex: 2 }} />
+        <BackIcon
+          height={24}
+          width={24}
+          style={{ zIndex: 2 }}
+          stroke={"#FFF"}
+        />
       </TouchableOpacity>
     );
   }

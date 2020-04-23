@@ -99,7 +99,10 @@ class SelectDevices extends Component {
                   readOnlyHeadings={false}
                   selectChildren={true}
                   filterItems={(searchText, items) => {
-                    if (this.state.deviceBrands.length !== 0) {
+                    if (
+                      this.state.deviceBrands &&
+                      this.state.deviceBrands.length !== 0
+                    ) {
                       return items.filter(device =>
                         device.name
                           .toLowerCase()
@@ -142,6 +145,7 @@ class SelectDevices extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        stroke={"#FFF"}
                         style={{ top: 0, left: 0 }}
                         screenname="Select Devices"
                         businessname={this.props.mainBusiness.businessname}

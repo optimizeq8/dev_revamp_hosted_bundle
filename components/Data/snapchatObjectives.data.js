@@ -77,13 +77,13 @@ export default {
       value: "LEAD_GENERATION",
       info: "Generate leads for your business",
       icon: ObjIcons.Group
-    },
-    {
-      label: "SME Growth",
-      value: "WEB_CONVERSION",
-      info: "Get a free website that pushes users to your business's WhatsApp",
-      icon: ObjIcons.WhatsApp
     }
+    // {
+    //   label: "SME Growth",
+    //   value: "WEB_CONVERSION",
+    //   info: "Get a free website that pushes users to your business's WhatsApp",
+    //   icon: ObjIcons.WhatsApp
+    // }
   ]
 };
 

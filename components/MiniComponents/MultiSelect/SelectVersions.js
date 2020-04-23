@@ -166,6 +166,7 @@ class SelectVersions extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        stroke={"#FFF"}
                         style={{ top: 0, left: 0 }}
                         navigation={() =>
                           this.VersionSection._cancelSelection()

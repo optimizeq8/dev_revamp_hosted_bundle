@@ -116,6 +116,7 @@ class Menu extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    const { mainBusiness } = this.props;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -216,6 +217,33 @@ class Menu extends Component {
                   style={I18nManager.isRTL ? rtlStyles.text : styles.text}
                 >
                   {translate("Business Info")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.options}
+                disabled={
+                  this.props.mainBusiness &&
+                  this.props.mainBusiness.hasOwnProperty("user_role") &&
+                  this.props.mainBusiness.user_role === "3"
+                }
+                onPress={() => {
+                  if (
+                    mainBusiness.hasOwnProperty("weburl") &&
+                    mainBusiness.weburl &&
+                    mainBusiness.weburl !== ""
+                  ) {
+                    this.props.navigation.navigate("MyWebsite");
+                  } else {
+                    this.props.navigation.navigate("TutorialWeb");
+                  }
+                }}
+              >
+                <Icons.WebsiteIcon width={32} style={styles.icons} />
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
+                  {translate("My Website")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -347,11 +375,11 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/25/
+                {Constants.manifest.version}/49/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
                 {Constants.manifest.releaseChannel}/
-                {this.props.notificationData}
+                {this.props.notificationData}/
               </Text>
             </ScrollView>
           </View>

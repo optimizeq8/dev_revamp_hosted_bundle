@@ -333,8 +333,10 @@ export const get_conversatusion_read_status = () => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
-          payload:
-            getState().messenger.messages.length === data.intercom_chat_link
+          payload: {
+            unread_converstaion:
+              getState().messenger.messages.length - data.intercom_chat_link
+          }
         });
       })
       .catch(err => {
@@ -378,7 +380,11 @@ export const update_conversatusion_read_status = () => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
-          payload: true
+          // payload: true
+          payload: {
+            unread_converstaion: 0
+          }
+
           // getState().messenger.messages.length === data.intercom_chat_link
         });
       })

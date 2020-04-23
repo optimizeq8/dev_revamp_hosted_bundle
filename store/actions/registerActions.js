@@ -10,8 +10,10 @@ import NavigationService from "../../NavigationService";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
 import { send_push_notification } from "./loginActions";
+import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 import segmentEventTrack from "../../components/segmentEventTrack";
+import { Adjust, AdjustEvent } from "react-native-adjust";
 
 export const verifyBusinessName = (
   businessname,
@@ -122,6 +124,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             category: "Sign Up",
             label: "Step 3 of Registration"
           });
+
           const decodedUser = jwt_decode(user.token);
           let peomise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
@@ -155,6 +158,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           navigation.navigate("RegistrationSuccess");
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
+          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
@@ -262,6 +266,8 @@ export const verifyMobileCode = mobileAuth => {
         }
       })
       .then(() => {
+        let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
+        Adjust.trackEvent(adjustVerifyAccountTracker);
         NavigationService.navigate("Dashboard");
       })
       .catch(err => {
@@ -524,7 +530,9 @@ export const registerGuestUser = (
             label: "Step 2 of Registration"
           });
         }
-
+        let adjustRegiserTracker = new AdjustEvent("eivlhl");
+        adjustRegiserTracker.setCallbackId(userInfo.mobile);
+        Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
           showMessage({
             message: data.message,

@@ -191,7 +191,7 @@ class SwitchLanguage extends Component {
             style={styles.bottomButton}
           >
             {language === "ar" ? (
-              <BackButton width={10} height={20} />
+              <BackButton stroke={"#FFF"} width={10} height={20} />
             ) : (
               <ArrowForward width={10} height={20} />
             )}

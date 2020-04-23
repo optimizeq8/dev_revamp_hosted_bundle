@@ -70,7 +70,11 @@ class Signin extends Component {
     if (Platform.OS === "ios") {
       Linking.addEventListener("url", this.handleDeepLink);
       Linking.getInitialURL().then(url => {
+<<<<<<< HEAD
+        if (url.includes("adj")) {
+=======
         if (url.includes("?adjust_reftag")) {
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
           this.handleDeepLink({ url });
         }
       });
@@ -81,6 +85,17 @@ class Signin extends Component {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
       screen = screen[1].split("/")[0];
+<<<<<<< HEAD
+      if (url.url.includes("adType")) {
+        let adTypePart = url.url
+          .split("/main_navigator/")[1]
+          .split("adType=")[1];
+        let adType = adTypePart.substring(0, adTypePart.indexOf("&"));
+        this.props.set_adType(adType);
+      }
+
+=======
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
       this.props.navigation.navigate(screen);
       Linking.removeEventListener("url", evnt =>
         console.log("unmounted", evnt)
@@ -319,6 +334,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.login(userInfo, navigation)),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
   checkForExpiredToken: navigation =>
-    dispatch(actionCreators.checkForExpiredToken(navigation))
+    dispatch(actionCreators.checkForExpiredToken(navigation)),
+  set_adType: value => dispatch(actionCreators.set_adType(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

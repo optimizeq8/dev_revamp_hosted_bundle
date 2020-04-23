@@ -15,6 +15,7 @@ import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class AddOrEditTeamMember extends Component {
   state = {
@@ -119,6 +120,10 @@ class AddOrEditTeamMember extends Component {
       !emailError &&
       !userRoleError
     ) {
+      if (userRole === 3) {
+        let adjustClientTracker = new AdjustEvent("2eqii1");
+        Adjust.trackEvent(adjustClientTracker);
+      }
       this.props.inviteTeamMember({
         firstname: firstName,
         lastname: lastName,

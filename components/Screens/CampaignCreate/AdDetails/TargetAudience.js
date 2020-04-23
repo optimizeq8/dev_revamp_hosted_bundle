@@ -99,64 +99,6 @@ export class TargetAudience extends Component {
           >
             <TouchableOpacity
               disabled={loading}
-              onPress={() => this.callFunction("gender")}
-              style={styles.targetTouchable}
-            >
-              <View style={globalStyles.row}>
-                <GenderIcon width={30} height={30} style={styles.icon} />
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Gender")}</Text>
-                  <Text style={styles.menudetails}>
-                    {translate(
-                      gender.find(r => {
-                        if (r.value === targeting.demographics[0].gender)
-                          return r;
-                      }).label
-                    )}
-                  </Text>
-                </View>
-              </View>
-              <View style={globalStyles.column}>
-                {targeting.demographics[0].gender === "" ||
-                  (startEditing &&
-                    (targeting.demographics[0].gender ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PlusCircleIcon width={30} height={30} />
-                    )))}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("age")}
-              style={styles.targetTouchable}
-            >
-              <View style={globalStyles.row}>
-                <AgeIcon
-                  fill={globalColors.orange}
-                  width={25}
-                  height={25}
-                  style={styles.icon}
-                />
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Age")}</Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.demographics[0].min_age} -{" "}
-                    {targeting.demographics[0].max_age}
-                  </Text>
-                </View>
-              </View>
-
-              {startEditing &&
-                (targeting.demographics[0].max_age ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              disabled={loading}
               onPress={() => this.callFunction("selectors", "countries")}
               style={styles.targetTouchable}
             >
@@ -223,6 +165,62 @@ export class TargetAudience extends Component {
                   ))}
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+              disabled={loading}
+              onPress={() => this.callFunction("gender")}
+              style={styles.targetTouchable}
+            >
+              <View style={globalStyles.row}>
+                <GenderIcon width={30} height={30} style={styles.icon} />
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Gender")}</Text>
+                  <Text style={styles.menudetails}>
+                    {translate(
+                      gender.find(r => {
+                        if (r.value === targeting.demographics[0].gender)
+                          return r;
+                      }).label
+                    )}
+                  </Text>
+                </View>
+              </View>
+              <View style={globalStyles.column}>
+                {targeting.demographics[0].gender === "" ||
+                (startEditing && targeting.demographics[0].gender) ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              disabled={loading}
+              onPress={() => this.callFunction("age")}
+              style={styles.targetTouchable}
+            >
+              <View style={globalStyles.row}>
+                <AgeIcon
+                  fill={globalColors.orange}
+                  width={25}
+                  height={25}
+                  style={styles.icon}
+                />
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Age")}</Text>
+                  <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} -{" "}
+                    {targeting.demographics[0].max_age}
+                  </Text>
+                </View>
+              </View>
+
+              {startEditing &&
+                (targeting.demographics[0].max_age ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
+            </TouchableOpacity>
 
             <TouchableOpacity
               disabled={loading}
@@ -308,12 +306,11 @@ export class TargetAudience extends Component {
               </View>
 
               {targeting.devices[0].os_type === "" ||
-                (startEditing &&
-                  (targeting.devices[0].os_type ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
-                  ) : (
-                    <PlusCircleIcon width={30} height={30} />
-                  )))}
+              (startEditing && targeting.devices[0].os_type) ? (
+                <GreenCheckmarkIcon width={30} height={30} />
+              ) : (
+                <PlusCircleIcon width={30} height={30} />
+              )}
             </TouchableOpacity>
 
             {(startEditing &&

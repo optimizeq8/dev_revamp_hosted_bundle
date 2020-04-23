@@ -193,20 +193,25 @@ class AdDetails extends Component {
             ...this.props.data,
             campaignInfo: {
               ...rep,
-              lifetime_budget_micro: this.props.data.campaignDateChanged
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
+              lifetime_budget_micro:
+                this.props.data.campaignDateChanged &&
+                this.props.data.campaignInfo.lifetime_budget_micro <
+                  this.props.data.minValueBudget
+                  ? recBudget
+                  : this.props.data.campaignInfo.lifetime_budget_micro
             },
             value: this.formatNumber(
-              this.props.data.campaignDateChanged
+              this.props.data.campaignDateChanged &&
+                this.props.data.campaignInfo.lifetime_budget_micro <
+                  this.props.data.minValueBudget
                 ? recBudget
                 : this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
-            filteredRegions: countryRegions.regions,
-            regions: countryRegions.regions,
+            filteredRegions: countryRegions ? countryRegions.regions : [],
+            regions: countryRegions ? countryRegions.regions : [],
             budgetOption: this.props.data.campaignDateChanged
               ? 1
               : this.props.data.budgetOption
@@ -421,28 +426,28 @@ class AdDetails extends Component {
         campaignInfo: { ...replace }
       });
   };
-  onSelectedBudgetChange = budget => {
-    if (budget === this.state.maxValueBudget) {
-      showMessage({
-        message: "You can also enter your budget manually.",
-        type: "success",
-        position: "top"
-      });
-    }
-    let replace = this.state.campaignInfo;
-    replace.lifetime_budget_micro = budget;
-    segmentEventTrack(`Campaign Budget Change`, {
-      campaign_budget: this.formatNumber(budget)
-    });
-    this.setState({
-      campaignInfo: replace,
-      value: this.formatNumber(budget)
-    });
-    !this.editCampaign &&
-      this.props.save_campaign_info({
-        campaignInfo: replace
-      });
-  };
+  // onSelectedBudgetChange = budget => {
+  //   if (budget === this.state.maxValueBudget) {
+  //     showMessage({
+  //       message: "You can also enter your budget manually.",
+  //       type: "success",
+  //       position: "top"
+  //     });
+  //   }
+  //   let replace = this.state.campaignInfo;
+  //   replace.lifetime_budget_micro = budget;
+  //   segmentEventTrack(`Campaign Budget Change`, {
+  //     campaign_budget: this.formatNumber(budget)
+  //   });
+  //   this.setState({
+  //     campaignInfo: replace,
+  //     value: this.formatNumber(budget)
+  //   });
+  //   !this.editCampaign &&
+  //     this.props.save_campaign_info({
+  //       campaignInfo: replace
+  //     });
+  // };
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
@@ -566,7 +571,7 @@ class AdDetails extends Component {
         this.props.save_campaign_info({
           campaignInfo: {
             ...this.state.campaignInfo,
-            lifetime_budget_micro: this.state.minValueBudget
+            lifetime_budget_micro: this.state.recBudget
           },
           budgetOption
         });
@@ -848,6 +853,13 @@ class AdDetails extends Component {
       });
     }
     let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+<<<<<<< HEAD
+    adjustAdDetailsTracker.addPartnerParameter(
+      `Snap_${this.props.adType}`,
+      this.props.adType
+    );
+=======
+>>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
     Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
@@ -1133,6 +1145,7 @@ class AdDetails extends Component {
                       budgetOption={this.state.budgetOption}
                       _handleBudget={this._handleBudget}
                       screenProps={this.props.screenProps}
+                      data={this.props.data}
                     />
 
                     {/*---------leave if in case we want to use it again---------*/}
