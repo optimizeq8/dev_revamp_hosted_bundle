@@ -5,7 +5,8 @@ import {
   BackHandler,
   Text,
   Image,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
@@ -92,7 +93,14 @@ class OptimizeWebsite extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <View style={styles.headerCardView}>
-          <TouchableOpacity onPress={this.handleBackPress}>
+          <TouchableOpacity
+            style={[
+              I18nManager.isRTL && {
+                transform: [{ rotateY: "180deg" }, { translateX: -13 }]
+              }
+            ]}
+            onPress={this.handleBackPress}
+          >
             <BackIcon stroke={"#4CA2E0"} width={25} />
           </TouchableOpacity>
           <Text style={styles.headerText}>
@@ -126,7 +134,7 @@ class OptimizeWebsite extends Component {
                         activeStep === step.id && styles.activeStepText
                       ]}
                     >
-                      {step.name}
+                      {translate(step.name)}
                     </Text>
                   </View>
                   {step.id !== 3 && <View style={styles.horzintalLine} />}
@@ -136,9 +144,18 @@ class OptimizeWebsite extends Component {
           </View>
         </View>
         <OnlineStoreHome style={styles.onlineStoreHomeIcon} />
-
+        {activeStep === 2 && (
+          <View style={styles.livePreviewView}>
+            <Text style={styles.livePreviewText}>
+              {translate("Live Preview")}
+            </Text>
+          </View>
+        )}
         <ScrollView
-          style={[styles.outerView, activeStep === 2 && styles.step2OuterView]}
+          contentContainerStyle={[
+            activeStep === 1 && styles.outerView
+            // activeStep === 2 && styles.step2OuterView
+          ]}
         >
           {activeStep === 1 && (
             <LinearGradient
@@ -147,59 +164,51 @@ class OptimizeWebsite extends Component {
               style={styles.gradient}
             />
           )}
+
           {activeStep === 2 && (
-            <View style={styles.livePreviewView}>
-              <Text style={styles.livePreviewText}>
-                {translate("Live Preview")}
+            <View style={styles.previewOuterView}>
+              <LinearGradient
+                colors={["#9300FF", "#5600CB"]}
+                locations={[0, 0.75]}
+                style={styles.gradient}
+              />
+              <Image
+                style={styles.profileIcon}
+                source={{
+                  uri: this.props.businessLogo
+                }}
+              />
+              <Text style={styles.bsnNameText}>
+                {this.props.mainBusiness.businessname}
               </Text>
+              <View style={styles.socialMediaView}>
+                <PhoneIcon width={40} styles={styles.socialMediaIcon} />
+
+                <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+
+                <WhatsApp width={40} styles={styles.socialMediaIcon} />
+              </View>
             </View>
           )}
-          <>
-            {activeStep === 2 && (
-              <View style={styles.previewOuterView}>
-                <LinearGradient
-                  colors={["#9300FF", "#5600CB"]}
-                  locations={[0, 0.75]}
-                  style={styles.gradient}
-                />
-                <Image
-                  style={styles.profileIcon}
-                  source={{
-                    uri: this.props.businessLogo
-                  }}
-                />
-                <Text style={styles.bsnNameText}>
-                  {this.props.mainBusiness.businessname}
-                </Text>
-                <View style={styles.socialMediaView}>
-                  <PhoneIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <InstagramIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <WhatsApp width={40} styles={styles.socialMediaIcon} />
-                </View>
-              </View>
-            )}
-            {activeStep === 1 && (
-              <Text style={styles.createWebsiteText}>
-                {translate(
-                  "We’ll create a mini website for your business Just fill in the info below"
-                )}
-              </Text>
-            )}
-            {activeStep === 1 && (
-              <RegisterForm
-                screenProps={this.props.screenProps}
-                submitNextStep={this.submitNextStep}
-              />
-            )}
-            {activeStep === 2 && (
-              <ProductSelect
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-              />
-            )}
-          </>
+          {activeStep === 1 && (
+            <Text style={styles.createWebsiteText}>
+              {translate(
+                "We’ll create a mini website for your business Just fill in the info below"
+              )}
+            </Text>
+          )}
+          {activeStep === 1 && (
+            <RegisterForm
+              screenProps={this.props.screenProps}
+              submitNextStep={this.submitNextStep}
+            />
+          )}
+          {activeStep === 2 && (
+            <ProductSelect
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          )}
         </ScrollView>
       </SafeAreaView>
     );

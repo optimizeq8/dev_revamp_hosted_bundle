@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   BackHandler,
   ScrollView,
-  I18nManager,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -33,7 +33,7 @@ import { connect } from "react-redux";
 import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
-  heightPercentageToDP,
+  heightPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -48,8 +48,8 @@ class Menu extends Component {
       panelOffSet: 0,
       draggableRange: {
         top: hp("100") - 100,
-        bottom: -10,
-      },
+        bottom: -10
+      }
     };
   }
   componentDidMount() {
@@ -93,7 +93,7 @@ class Menu extends Component {
       } else {
         showMessage({
           message: translate("Please create a business account first"),
-          type: "warning",
+          type: "warning"
         });
       }
     } else {
@@ -105,13 +105,13 @@ class Menu extends Component {
    * Gets the height and y position of the business name text component
    * so that the panel shows up underneath it on most phones
    */
-  handlePanelOffset = (event) => {
+  handlePanelOffset = event => {
     const layout = event.nativeEvent.layout;
     this.setState({
       draggableRange: {
         ...this.state.draggableRange,
-        top: hp(100) - (layout.height + layout.y),
-      },
+        top: hp(100) - (layout.height + layout.y)
+      }
     });
   };
   render() {
@@ -138,9 +138,9 @@ class Menu extends Component {
                 this.props.mainBusiness.brandname &&
                 !isStringArabic(this.props.mainBusiness.brandname)
                   ? {
-                      fontFamily: "montserrat-regular-english",
+                      fontFamily: "montserrat-regular-english"
                     }
-                  : {},
+                  : {}
               ]}
             >
               {!this.props.mainBusiness
@@ -155,9 +155,9 @@ class Menu extends Component {
                 this.props.mainBusiness.businessname &&
                 !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
-                      fontFamily: "montserrat-regular-english",
+                      fontFamily: "montserrat-regular-english"
                     }
-                  : {},
+                  : {}
               ]}
             >
               {!this.props.mainBusiness
@@ -181,7 +181,7 @@ class Menu extends Component {
                 <Text
                   style={[
                     styles.buttonText,
-                    { fontFamily: "montserrat-regular" },
+                    { fontFamily: "montserrat-regular" }
                   ]}
                 >
                   {"Invite received "}
@@ -207,7 +207,7 @@ class Menu extends Component {
                 onPress={() => {
                   // this.props.navigation.navigate("BusinessInfo")
                   this.props.navigation.navigate("CreateBusinessAccount", {
-                    editBusinessInfo: true,
+                    editBusinessInfo: true
                   });
                 }}
               >
@@ -314,7 +314,7 @@ class Menu extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/privacy",
-                    title: "Privacy Policy",
+                    title: "Privacy Policy"
                   })
                 }
               >
@@ -336,7 +336,7 @@ class Menu extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/terms_conditions",
-                    title: "Terms & Conditions",
+                    title: "Terms & Conditions"
                   })
                 }
               >
@@ -344,7 +344,7 @@ class Menu extends Component {
                   name="file-document-box"
                   type="MaterialCommunityIcons"
                   style={[
-                    styles.icons,
+                    styles.icons
                     // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                   ]}
                 />
@@ -375,7 +375,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/49/
+                {Constants.manifest.version}/50/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
                 {Constants.manifest.releaseChannel}/
@@ -386,7 +386,7 @@ class Menu extends Component {
           {this.props.clearTokenLoading && <LoadingScreen dash={true} />}
           <SlidingUpPanel
             showBackdrop={false}
-            ref={(c) => (this._panel = c)}
+            ref={c => (this._panel = c)}
             friction={0.3}
             draggableRange={this.state.draggableRange}
             allowDragging={false}
@@ -415,7 +415,7 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   campaignList: state.dashboard.campaignList,
@@ -425,13 +425,13 @@ const mapStateToProps = (state) => ({
   invitedEmail: state.account.invitedEmail,
   businessInvites: state.account.businessInvites,
   checkNotification: state.generic.checkNotification,
-  notificationData: state.generic.notificationData,
+  notificationData: state.generic.notificationData
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
-  createBusinessAccount: (account) =>
+  createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
-  updateCampaignList: (id) => dispatch(actionCreators.updateCampaignList(id)),
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

@@ -1,6 +1,12 @@
 import React from "react";
 import { SafeAreaView } from "react-navigation";
-import { Text, View, Clipboard, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Clipboard,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import * as Segment from "expo-analytics-segment";
 
 import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
@@ -32,7 +38,7 @@ class WebsiteRegistartionSuccess extends React.Component {
           bottom: "never"
         }}
       >
-        <View style={styles.mainView}>
+        <ScrollView style={styles.mainView}>
           <GreenCheckmark
             width={widthPercentageToDP(20)}
             height={heightPercentageToDP(10)}
@@ -41,7 +47,7 @@ class WebsiteRegistartionSuccess extends React.Component {
             {translate("YOUR WEBSITE IS READY!")}
           </Text>
 
-          <Award />
+          <Award style={styles.award} height={heightPercentageToDP(40)} />
           <Text style={styles.yourLinkText}>
             {translate("This is your link")}
           </Text>
@@ -66,7 +72,7 @@ class WebsiteRegistartionSuccess extends React.Component {
               this.props.navigation.navigate("MyWebsite");
             }}
           />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
