@@ -1,9 +1,9 @@
 PODS:
-  - Adjust (4.21.2):
-    - Adjust/Core (= 4.21.2)
-  - Adjust/Core (4.21.2)
+  - Adjust (4.21.3):
+    - Adjust/Core (= 4.21.3)
+  - Adjust/Core (4.21.3)
   - Amplitude-iOS (4.7.1)
-  - Analytics (3.7.1)
+  - Analytics (3.8.0)
   - boost-for-react-native (1.63.0)
   - CocoaLumberjack (3.5.3):
     - CocoaLumberjack/Core (= 3.5.3)
@@ -593,9 +593,9 @@ CHECKOUT OPTIONS:
     :tag: ios/2.14.4
 
 SPEC CHECKSUMS:
-  Adjust: 2f90b971d48927c7ceea2b0d51eec5b472d682a3
+  Adjust: 4e8fe76a28dd413c183ba621df50493dcd10e28b
   Amplitude-iOS: a0347ab05f2d196e6bbb22cc6f62eea33b5a035b
-  Analytics: f82f3cd6d3c8fbfd76ce25773199576656981a4a
+  Analytics: fcf79ebc393a7d77befb8d43ce296353ba9ede3d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
@@ -670,4 +670,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e7701cce714e32a3081793829de9cf9a43ad3c72
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.1

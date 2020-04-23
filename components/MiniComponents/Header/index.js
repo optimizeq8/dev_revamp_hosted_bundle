@@ -30,11 +30,7 @@ export default class Header extends Component {
       titelStyle,
       icon,
       translateTitle = true,
-<<<<<<< HEAD
       showTopRightButtonIcon = false,
-=======
-      showTopRightButtonIcon,
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
       disabled = false,
       changeHeaderColor = false,
       iconColor = "#FFF"

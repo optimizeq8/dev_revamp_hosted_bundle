@@ -114,14 +114,9 @@ class SuccessRedirect extends Component {
         });
       }
       if (
-<<<<<<< HEAD
-        this.props.channel === "" ||
-        (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
-=======
         //added checking for channel in case it turns to null and crashes the app on this screen
         (this.props.channel && this.props.channel === "") ||
         this.props.channel.toLowerCase() === "snapchat"
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
       ) {
         this.props.resetCampaignInfo();
       }

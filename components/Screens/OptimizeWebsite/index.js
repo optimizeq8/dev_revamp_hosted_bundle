@@ -46,7 +46,7 @@ class OptimizeWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 1
+      activeStep: 2
     };
   }
   componentWillUnmount() {
@@ -138,6 +138,7 @@ class OptimizeWebsite extends Component {
         <OnlineStoreHome style={styles.onlineStoreHomeIcon} />
 
         <ScrollView
+          contentContainerStyle={[activeStep === 2 && styles.step2OuterView]}
           style={[styles.outerView, activeStep === 2 && styles.step2OuterView]}
         >
           {activeStep === 1 && (

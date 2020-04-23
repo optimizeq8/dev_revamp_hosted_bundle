@@ -164,14 +164,14 @@ export {
 } from "./googleAdsCampaignActions";
 
 export {
-<<<<<<< HEAD
   getInstagramPostInitialWebsite,
   loadMoreInstagramPostWebsite,
   verifyInstagramHandleWebsite,
   saveWebProductsToHide,
   getWebProductsToHide
 } from "./optimizeWebsiteActions";
-=======
+
+export {
   ad_objective_instagram,
   set_adType_instagram,
   save_campaign_info_instagram,
@@ -187,4 +187,3 @@ export {
   get_total_reach_instagram,
   ad_details_instagram
 } from "./instagramCampaignActions";
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd

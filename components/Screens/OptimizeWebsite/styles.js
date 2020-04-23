@@ -407,7 +407,8 @@ const styles = StyleSheet.create({
   step2OuterView: {
     overflow: "visible",
     paddingHorizontal: 0,
-    paddingTop: 0
+    paddingTop: 0,
+    flex: 0
   },
   livePreviewView: {
     backgroundColor: "#42EB56",
@@ -452,8 +453,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   productSelectOuterView: {
-    flex: 1,
-
+    // flex: 1,
     backgroundColor: "#5600CB"
   },
   productsTextView: {
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   selectProductTextView: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
