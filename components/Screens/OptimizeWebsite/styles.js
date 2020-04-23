@@ -326,29 +326,37 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  scrollView: {
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    marginTop: -110,
+    backgroundColor: "#9300FF"
+  },
   outerView: {
     flex: 1,
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    marginTop: -110,
     overflow: "hidden",
     zIndex: 10,
-    // paddingHorizontal: 20,
-    backgroundColor: "#9300FF",
+    elevation: 1,
+    paddingHorizontal: 20,
+    // backgroundColor: "#9300FF",
     paddingTop: 20
   },
   onlineStoreHomeIcon: {
     left: -10,
-    zIndex: -1,
-    backgroundColor: "#FFF"
+    zIndex: -5,
+    elevation: 0,
+    backgroundColor: "#FFF",
+    marginBottom: heightPercentageToDP(-15)
   },
   list: {
     // paddingTop: 20
     // display: "flex",
     // flexGrow: 1,
     // justifyContent: "space-around",
-    alignItems: "center",
-    marginBottom: 40
+    alignItems: "center"
+    // marginBottom: 40
   },
   submitProducts: {
     width: "70%",
@@ -407,17 +415,19 @@ const styles = StyleSheet.create({
   step2OuterView: {
     overflow: "visible",
     paddingHorizontal: 0,
-    paddingTop: 0
+    paddingTop: 0,
+    flex: 0,
+    zIndex: 2
   },
   livePreviewView: {
     backgroundColor: "#42EB56",
     paddingHorizontal: 16,
     paddingVertical: 7,
     borderRadius: 20,
-    position: "absolute",
-    zIndex: 2,
+    width: 120,
+    zIndex: 22,
     left: 30,
-    marginTop: -15
+    marginBottom: -15
   },
   livePreviewText: {
     fontSize: 12,
@@ -452,7 +462,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   productSelectOuterView: {
-    flex: 1,
+    // flex: 1,
 
     backgroundColor: "#5600CB"
   },
@@ -468,13 +478,15 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   selectProductTextView: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingTop: 20
   },
-  lowerBtn: { marginBottom: 20 },
+  lowerBtn: {
+    marginBottom: 20
+  },
   eachItem: {
     width: 65,
     height: 65,
@@ -518,7 +530,7 @@ const styles = StyleSheet.create({
   weburlView: {
     backgroundColor: "rgba(0,0,0,0.15)",
     paddingHorizontal: 20,
-    width: widthPercentageToDP(80),
+    // width: widthPercentageToDP(80),
     alignSelf: "center",
     paddingVertical: 20,
     borderRadius: 30,
@@ -532,6 +544,9 @@ const styles = StyleSheet.create({
   },
   urlView: {
     marginBottom: 13
+  },
+  award: {
+    alignSelf: "center"
   }
 });
 
