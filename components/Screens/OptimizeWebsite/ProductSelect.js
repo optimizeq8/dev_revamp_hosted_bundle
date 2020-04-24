@@ -101,11 +101,15 @@ class ProductSelect extends React.Component {
       businessid: this.props.mainBusiness.businessid,
       products_to_hide_list: this.state.cartList
     });
+
+    const businesslogo = this.props.edit
+      ? this.props.mainBusiness.businesslogo
+      : this.props.businessLogo;
     this.props.saveWebProductsToHide(
       this.props.edit,
       this.state.cartList,
       this.props.mainBusiness.businessid,
-      this.props.mainBusiness.businesslogo,
+      businesslogo,
       this.state.no_of_products_to_show
     );
   };
