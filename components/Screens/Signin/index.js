@@ -70,11 +70,7 @@ class Signin extends Component {
     if (Platform.OS === "ios") {
       Linking.addEventListener("url", this.handleDeepLink);
       Linking.getInitialURL().then(url => {
-<<<<<<< HEAD
         if (url.includes("adj")) {
-=======
-        if (url.includes("?adjust_reftag")) {
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
           this.handleDeepLink({ url });
         }
       });
@@ -85,7 +81,6 @@ class Signin extends Component {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
       screen = screen[1].split("/")[0];
-<<<<<<< HEAD
       if (url.url.includes("adType")) {
         let adTypePart = url.url
           .split("/main_navigator/")[1]
@@ -94,8 +89,6 @@ class Signin extends Component {
         this.props.set_adType(adType);
       }
 
-=======
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
       this.props.navigation.navigate(screen);
       Linking.removeEventListener("url", evnt =>
         console.log("unmounted", evnt)

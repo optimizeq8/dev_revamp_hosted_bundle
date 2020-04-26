@@ -12,14 +12,8 @@ const initialState = {
   subscribed: false,
   open_conversation: false,
   read: true,
-<<<<<<< HEAD
   chat_sms_state: false,
   unread_converstaion: 0
-=======
-  conversation_status: true,
-  chat_sms_state: false,
-  loading_failed: false
->>>>>>> 8176c501352f48ce8b96b17c7f3404d0a89464fd
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
