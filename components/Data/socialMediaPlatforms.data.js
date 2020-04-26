@@ -8,24 +8,24 @@ import SnapchatMain from "../../assets/SVGs/AdType/AdTypeScren/SnapchatMain";
 import GoogleMain from "../../assets/SVGs/AdType/AdTypeScren/GoogleMain";
 
 export const SocialPlatforms = [
-  {
-    id: 1,
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    icon: <Snapchat />,
-    title: "Snapchat",
-    media: require("../../assets/images/AdTypes/SnapAd.gif"),
-    headingIcon: <SnapchatMain />
-  },
-  {
-    id: 2,
-    text: "Create Your Ad Now!",
-    rout: "GoogleAdInfo",
-    icon: <GoogleAds />,
-    title: "Google",
-    media: require("../../assets/images/AdTypes/StoryAd.gif"),
-    headingIcon: <GoogleMain />
-  },
+  // {
+  //   id: 1,
+  //   text: "Create Your Ad Now!",
+  //   rout: "AdObjective",
+  //   icon: <Snapchat />,
+  //   title: "Snapchat",
+  //   media: require("../../assets/images/AdTypes/SnapAd.gif"),
+  //   headingIcon: <SnapchatMain />
+  // },
+  // {
+  //   id: 2,
+  //   text: "Create Your Ad Now!",
+  //   rout: "GoogleAdInfo",
+  //   icon: <GoogleAds />,
+  //   title: "Google",
+  //   media: require("../../assets/images/AdTypes/StoryAd.gif"),
+  //   headingIcon: <GoogleMain />
+  // },
   {
     id: 3,
     text: "Create Your Ad Now!",

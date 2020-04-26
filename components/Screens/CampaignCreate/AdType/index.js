@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 //Style
 import styles from "./styles";
@@ -25,7 +26,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
-import { snapAds, googleAds } from "../../../Data/adTypes.data";
+import { snapAds, googleAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import {
   widthPercentageToDP,
@@ -37,8 +38,8 @@ class AdType extends Component {
     header: null
   };
   state = {
-    active: "Snapchat",
-    ad_type_array: snapAds,
+    active: "Instagram",
+    ad_type_array: instagramAds,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...SocialPlatforms].reverse()
@@ -137,6 +138,11 @@ class AdType extends Component {
         textColor = "#FFF";
         ad_type_array = googleAds;
         break;
+      case "Instagram":
+        backgroundColor = "#4285F4";
+        textColor = "#FFF";
+        ad_type_array = instagramAds;
+        break;
     }
 
     return {
@@ -185,7 +191,7 @@ class AdType extends Component {
         )}
         <NavigationEvents
           onDidFocus={() => {
-            Segment.screenWithProperties("Ad Type Snapchat", {
+            Segment.screenWithProperties(`Ad Type ${this.state.active}`, {
               category: "Campaign Creation"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
@@ -303,6 +309,19 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
+          {this.state.active === "Instagram" && (
+            <GradientButton
+              onPressAction={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://optimizeapp.com/facebooklogin/login.php",
+                  title: "Instagram"
+                })
+              }
+              style={styles.loginBtn}
+              uppercase
+              text={translate("Login with Facebook")}
+            />
+          )}
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
               activeSlide: I18nManager.isRTL ? " " : this.state.active
