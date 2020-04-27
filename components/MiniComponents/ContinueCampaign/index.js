@@ -9,7 +9,7 @@ import * as actionCreators from "../../../store/actions";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
 import CustomHeader from "../Header";
 import { persistor } from "../../../store/";
@@ -29,9 +29,10 @@ class ContinueCampaign extends Component {
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
-    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
+    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted) {
       Segment.screen("Continue Campaign Modal");
-    this.continueCampaign();
+      this.continueCampaign();
+    }
   }
 
   /**
@@ -40,16 +41,16 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    let continueRoutes = this.props.currentCampaignSteps.map(route => {
+    let continueRoutes = this.props.currentCampaignSteps.map((route) => {
       segmentEventTrack(`Navigate to ${route}`);
-      NavigationActions.navigate({
-        routeName: route
+      return NavigationActions.navigate({
+        routeName: route,
       });
     });
     //resets the navigation stack
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1, //index of the last screen route
-      actions: continueRoutes
+      actions: continueRoutes,
     });
 
     this.props.navigation.dispatch(resetAction);
@@ -92,24 +93,24 @@ class ContinueCampaign extends Component {
     //checks if the old campaign dates are still applicable or not so
     //it doesn't create a campaign with old dates
     let updated_transaction_data = {
-      channel: ""
+      channel: "",
     };
     if (this.props.currentCampaignSteps.includes("AdObjective")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_id: this.props.data.campaign_id
+        campaign_id: this.props.data.campaign_id,
       };
     }
     if (this.props.currentCampaignSteps.includes("AdDetails")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget: this.props.data.lifetime_budget_micro
+        campaign_budget: this.props.data.lifetime_budget_micro,
       };
     }
     if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget_kdamount: this.props.data.kdamount
+        campaign_budget_kdamount: this.props.data.kdamount,
       };
     }
     this.props.setCampaignInfoForTransaction(updated_transaction_data);
@@ -121,12 +122,12 @@ class ContinueCampaign extends Component {
       segmentEventTrack("Dates are no longer applicable", {
         campaign_old_start_data: this.props.data.start_time,
         campaign_old_end_data: this.props.data.end_time,
-        campaign_id: this.props.data.campaign_id
+        campaign_id: this.props.data.campaign_id,
       });
       showMessage({
         message: "The dates are no longer applicable",
         description: "Please choose new dates",
-        type: "warning"
+        type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal(true);
@@ -188,8 +189,8 @@ class ContinueCampaign extends Component {
                   styles.text,
                   {
                     fontFamily: "montserrat-regular",
-                    width: 250
-                  }
+                    width: 250,
+                  },
                 ]}
               >
                 {translate(
@@ -220,7 +221,7 @@ class ContinueCampaign extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   data: state.campaignC.data,
   incompleteCampaign: state.campaignC.incompleteCampaign,
@@ -228,20 +229,20 @@ const mapStateToProps = state => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   oldTempAdType: state.campaignC.oldTempAdType,
   oldTempData: state.campaignC.oldTempData,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetCampaignInfo: resetAdType =>
+const mapDispatchToProps = (dispatch) => ({
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: value =>
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: (value) =>
     dispatch(actionCreators.save_campaign_info(value)),
-  overWriteObjectiveData: value =>
+  overWriteObjectiveData: (value) =>
     dispatch(actionCreators.overWriteObjectiveData(value)),
-  setCampaignInfoForTransaction: data =>
-    dispatch(actionCreators.setCampaignInfoForTransaction(data))
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);
