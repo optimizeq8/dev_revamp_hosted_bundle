@@ -112,6 +112,11 @@ class AdType extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
+      } else if (this.state.active === "Instagram") {
+        this.props.navigation.navigate("WebView", {
+          url: "https://optimizeapp.com/facebooklogin/login.php",
+          title: "Instagram"
+        });
       } else
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value
@@ -309,7 +314,7 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
-          {this.state.active === "Instagram" && (
+          {/* {this.state.active === "Instagram" && (
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
@@ -321,7 +326,7 @@ class AdType extends Component {
               uppercase
               text={translate("Login with Facebook")}
             />
-          )}
+          )} */}
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
               activeSlide: I18nManager.isRTL ? " " : this.state.active
