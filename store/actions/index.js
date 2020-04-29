@@ -17,7 +17,8 @@ export {
   saveBusinessInvitee,
   resetBusinessInvitee,
   updateWebInfoForBusiness,
-  changeBusinessLogo
+  changeBusinessLogo,
+  updateBusinessConnectedToFacebook
 } from "./accountManagementActions";
 
 export {
