@@ -65,6 +65,7 @@ class AdType extends Component {
 
   navigationHandler = adType => {
     //Check if account is verified or not
+    const { fb_connected } = this.props.mainBusiness;
     if (
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
@@ -112,9 +113,9 @@ class AdType extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
-      } else if (this.state.active === "Instagram") {
+      } else if (this.state.active === "Instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
-          url: "https://optimizeapp.com/facebooklogin/login.php",
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram"
         });
       } else
@@ -196,6 +197,16 @@ class AdType extends Component {
         )}
         <NavigationEvents
           onDidFocus={() => {
+            const changeFbConnectStatus = this.props.navigation.getParam(
+              "success",
+              false
+            );
+            if (
+              changeFbConnectStatus &&
+              changeFbConnectStatus.includes("true")
+            ) {
+              this.props.updateBusinessConnectedToFacebook("1");
+            }
             Segment.screenWithProperties(`Ad Type ${this.state.active}`, {
               category: "Campaign Creation"
             });
@@ -399,6 +410,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   resetCampaignInfo: resetAdType =>
-    dispatch(actionCreators.resetCampaignInfo(resetAdType))
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  updateBusinessConnectedToFacebook: fb_connected =>
+    dispatch(actionCreators.updateBusinessConnectedToFacebook(fb_connected))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

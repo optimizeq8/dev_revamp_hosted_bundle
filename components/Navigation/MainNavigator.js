@@ -80,7 +80,7 @@ export default FluidNavigator(
     MultiSelect: MultiSelect,
     TransactionList: TransactionList,
     Wallet: Wallet,
-    AdType: AdType,
+    AdType: { screen: AdType, path: "ad_type/" },
     AdObjective: { screen: AdObjective, path: "AdObjective/" },
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },

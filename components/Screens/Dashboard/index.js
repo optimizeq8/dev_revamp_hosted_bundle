@@ -212,6 +212,7 @@ class Dashboard extends Component {
   };
 
   navigationHandler = adType => {
+    const { fb_connected } = this.props.mainBusiness;
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: adType.title
@@ -244,7 +245,13 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       )
         this.props.navigation.navigate("SuspendedWarning");
-      else {
+      else if (adType.mediaType === "instagram" && fb_connected === "0") {
+        this.props.navigation.navigate("WebView", {
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
+          title: "Instagram"
+        });
+      }
+      {
         if (adType.value === "SnapAd") {
           let adjustEvent = new AdjustEvent("kd8uvi");
           Adjust.trackEvent(adjustEvent);
