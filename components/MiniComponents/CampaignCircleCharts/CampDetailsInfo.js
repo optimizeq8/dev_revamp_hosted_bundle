@@ -63,7 +63,7 @@ export default props => {
           {statusOfCampaign !== "ended" && (
             <Text style={[styles.chartSubtext, { alignSelf: "flex-start" }]}>
               {translate(`Campaign {{statusOfCampaign}} on`, {
-                statusOfCampaign: statusOfCampaign
+                statusOfCampaign: translate(statusOfCampaign)
               }) +
                 " " +
                 dateFormat(
