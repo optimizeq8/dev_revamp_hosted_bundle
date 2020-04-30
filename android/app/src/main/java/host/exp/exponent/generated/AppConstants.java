@@ -96,10 +96,11 @@ public class AppConstants {
       
       
       
+      
       // ADD EMBEDDED RESPONSES HERE
       // START EMBEDDED RESPONSES
       embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/android-index.json", "assets://shell-app-manifest.json", "application/json"));
-      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/android-f20533ecf056b90f3269f5a3dbfd607e.js", "assets://shell-app.bundle", "application/javascript"));
+      embeddedResponses.add(new Constants.EmbeddedResponse("https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/bundles/android-828bf2da138a11e9383bb65b057022c0.js", "assets://shell-app.bundle", "application/javascript"));
       // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }
