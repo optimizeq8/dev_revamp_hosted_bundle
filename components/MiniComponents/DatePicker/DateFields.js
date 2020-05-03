@@ -27,6 +27,7 @@ import {
 } from "react-native-responsive-screen";
 import Loading from "../LoadingScreen";
 import LowerButton from "../LowerButton";
+import { showMessage } from "react-native-flash-message";
 
 class DateFields extends Component {
   constructor(props) {
@@ -95,7 +96,47 @@ class DateFields extends Component {
           86400000
       )
     );
-    if (!this.props.filterMenu && !this.props.chartRange) {
+    if (this.props.google) {
+      if (timeDiff + 1 < 7) {
+        showMessage({
+          message: this.props.screenProps.translate(
+            "Please select minimum 7 days from start date for campaign to end"
+          ),
+          type: "warning"
+        });
+        this.setState({
+          start_choice: false,
+          end_choice: false,
+          end_date: ""
+        });
+      } else {
+        await this.props.handleStartDatePicked(this.state.start_date);
+        await this.props.handleEndDatePicked(this.state.end_date);
+        await this.props.getMinimumCash(timeDiff + 1);
+        if (
+          this.props.incompleteCampaign && //pass as a props
+          !this.props.campaignProgressStarted && //pass as a props
+          this.state.outdatedDate
+        ) {
+          //the app actually freezes for a few seconds when navigateToContinue runs so i delay
+          //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+          this.setState({ resumeLoading: true });
+          setTimeout(() => {
+            this.navigateToContinue();
+            this.setState({
+              modalVisible: false,
+              start_choice: false,
+              end_choice: false
+            });
+          }, 200);
+        } else
+          this.setState({
+            modalVisible: false,
+            start_choice: false,
+            end_choice: false
+          });
+      }
+    } else if (!this.props.filterMenu && !this.props.chartRange) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
       await this.props.getMinimumCash(timeDiff + 1);

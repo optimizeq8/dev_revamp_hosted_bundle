@@ -591,6 +591,7 @@ class GoogleAdInfo extends Component {
           campaignProgressStarted={this.props.campaign.campaignResumed}
           currentCampaignSteps={this.props.campaign.campaignSteps}
           navigation={this.props.navigation}
+          google={true}
         />
         <ContinueGoogleCampaign
           navigation={this.props.navigation}
