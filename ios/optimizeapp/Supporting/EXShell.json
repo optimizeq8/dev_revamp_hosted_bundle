@@ -1,6 +1,1 @@
-{
-  "isShell": true,
-  "manifestUrl": "https://exp.host/@samyoptimize/optimize_app",
-  "releaseChannel": "development",
-  "isManifestVerificationBypassed": true
-}
+{"isShell":true,"manifestUrl":"https://exp.host/@samyoptimize/optimize_app","releaseChannel":"developement","isManifestVerificationBypassed":true}
