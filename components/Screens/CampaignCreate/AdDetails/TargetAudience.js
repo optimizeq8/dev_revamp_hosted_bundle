@@ -94,7 +94,7 @@ export class TargetAudience extends Component {
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? "100%" : "50%" },
+              { height: editCampaign ? heightPercentageToDP(70) : "50%" },
             ]}
           >
             <TouchableOpacity
