@@ -78,7 +78,7 @@ export default class TutorialWeb extends React.Component {
           <View style={styles.handArrowView}>
             <HandsArrow
               width={widthPercentageToDP(10)}
-              style={{ alignSelf: "flex-start" }}
+              style={styles.handsArrowIcon}
             />
             <Text style={styles.maintainText}>
               {translate("NO MAINTENANCE NEEDED")}
@@ -120,7 +120,12 @@ export default class TutorialWeb extends React.Component {
             source={require("../../../../assets/SVGs/WebsiteTutorial/SS3.png")}
           />
           <View style={styles.customerWhatsappView}>
-            <WhatsApp width={50} height={50} fill="#9204FE" />
+            <WhatsApp
+              width={50}
+              height={50}
+              fill="#9204FE"
+              style={styles.handsArrowIcon}
+            />
             <Text style={styles.customerWhatsapp}>
               {translate("Send customers to WhatsApp!")}
             </Text>
