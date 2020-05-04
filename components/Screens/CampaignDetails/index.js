@@ -43,6 +43,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
 
+// segment
+import segmentEventTrack from "../../segmentEventTrack";
+
 class CampaignDetails extends Component {
   static navigationOptions = {
     header: null
@@ -110,6 +113,10 @@ class CampaignDetails extends Component {
     });
   };
   handleToggle = status => {
+    segmentEventTrack(
+      `Button pressed to ${status} campiagn`,
+      this.props.selectedCampaign
+    );
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
