@@ -153,6 +153,10 @@ class GoogleCampaignDetails extends Component {
   };
 
   handleModalToggle = status => {
+    segmentEventTrack(
+      `Button pressed to ${status} campiagn`,
+      this.props.selectedCampaign
+    );
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
