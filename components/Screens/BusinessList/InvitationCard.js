@@ -36,14 +36,7 @@ InvitationCard = props => {
       />
     ));
 
-  return (
-    <View>
-      <Text uppercase style={[styles.headings]}>
-        {translate("INVITATION")}
-      </Text>
-      {invites}
-    </View>
-  );
+  return <View>{invites}</View>;
 };
 
 const mapStateToProps = state => ({
