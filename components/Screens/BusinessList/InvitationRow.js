@@ -6,7 +6,7 @@ import isStringArabic from "../../isStringArabic";
 import { Icon } from "native-base";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import NavigationService from "../../../NavigationService";
-
+import styles from "./styles";
 export default class InvitationRow extends Component {
   render() {
     let {
@@ -35,7 +35,7 @@ export default class InvitationRow extends Component {
               businessCardStyles.titletext,
               !isStringArabic(businessname)
                 ? {
-                    fontFamily: "montserrat-medium-english"
+                    fontFamily: "montserrat-bold-english"
                   }
                 : {}
             ]}

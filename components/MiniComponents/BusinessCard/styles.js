@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   subtext: {
-    fontFamily: "montserrat-bold-english",
+    fontFamily: "montserrat-regular-english",
     fontSize: 12,
     color: "#fff"
   },
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#5F5F5F"
+    backgroundColor: "#c6c6c6"
   },
   textcontainer: {
     flex: 1,
@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 18,
     paddingVertical: 0,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    color: "#5F5F5F"
   }
 });
 
