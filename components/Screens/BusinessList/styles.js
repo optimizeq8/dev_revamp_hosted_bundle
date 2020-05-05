@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: wp(70),
     position: "absolute",
     alignSelf: "center",
-    bottom: hp(7)
+    bottom: hp(5) > 40 ? hp(7) : hp(12)
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
