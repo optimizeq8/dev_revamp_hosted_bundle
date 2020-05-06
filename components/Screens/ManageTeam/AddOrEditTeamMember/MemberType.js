@@ -41,7 +41,9 @@ export default props => {
           {translate(member.type)}{" "}
         </Text>
 
-        <Text style={styles.memberDescription}>{member.description}</Text>
+        <Text style={styles.memberDescription}>
+          {translate(member.description)}
+        </Text>
       </View>
     </View>
   );
