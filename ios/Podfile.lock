@@ -331,6 +331,10 @@ PODS:
   - RNSentry (1.3.3):
     - React
     - Sentry (~> 4.4.0)
+  - RNVideoEditorSDK (2.4.1):
+    - React
+    - React-RCTImage
+    - VideoEditorSDK (~> 10.9)
   - Sentry (4.4.3):
     - Sentry/Core (= 4.4.3)
   - Sentry/Core (4.4.3)
@@ -349,6 +353,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.0.0)
   - UMTaskManagerInterface (5.0.0)
+  - VideoEditorSDK (10.11.0):
+    - imglyKit (= 10.11.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -402,6 +408,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
+  - RNVideoEditorSDK (from `../node_modules/react-native-videoeditorsdk`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
   - UMConstantsInterface (from `../node_modules/unimodules-constants-interface/ios`)
@@ -432,6 +439,7 @@ SPEC REPOS:
     - lottie-ios
     - PhotoEditorSDK
     - Sentry
+    - VideoEditorSDK
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -548,6 +556,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-photoeditorsdk"
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
+  RNVideoEditorSDK:
+    :path: "../node_modules/react-native-videoeditorsdk"
   UMBarCodeScannerInterface:
     :path: !ruby/object:Pathname
     path: "../node_modules/unimodules-barcode-scanner-interface/ios"
@@ -653,6 +663,7 @@ SPEC CHECKSUMS:
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
   RNPhotoEditorSDK: 19574d5c0539e61981f6485b0c79760433f426a4
   RNSentry: 86baf0c87120cd5eb491d073989f8cbc1a2174c6
+  RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   UMBarCodeScannerInterface: 3802c8574ef119c150701d679ab386e2266d6a54
   UMCameraInterface: 985d301f688ed392f815728f0dd906ca34b7ccb1
@@ -666,8 +677,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 230406e3335a8dbd4c9c0e654488a1cf3b44552f
   UMSensorsInterface: d708a892ef1500bdd9fc3ff03f7836c66d1634d3
   UMTaskManagerInterface: a98e37a576a5220bf43b8faf33cfdc129d2f441d
+  VideoEditorSDK: a3b8eafcbdd426c522f8670b23c0eb2f33aa2306
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
 PODFILE CHECKSUM: e7701cce714e32a3081793829de9cf9a43ad3c72
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
