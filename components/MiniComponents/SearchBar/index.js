@@ -66,13 +66,17 @@ class SearchBar extends Component {
       businessList,
       transactionSearch,
       customInputStyle,
-      strokeColor
+      strokeColor,
+      customSearchBarStyle
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View
-        searchBar
-        style={[styles.searchBarView, { height: height ? height : "70%" }]}
+        style={[
+          styles.searchBarView,
+          customSearchBarStyle,
+          { height: height ? height : "70%" }
+        ]}
       >
         <Item rounded style={[styles.searchBarItem, customInputStyle]}>
           <SearchIcon

@@ -7,7 +7,6 @@
 	<key>isShell</key>
 	<true/>
 	<key>manifestUrl</key>
-	<!-- <string>https://exp.host/@samyoptimize/optimize_app</string> -->
 	<string>https://optimizeq8.github.io/optimizeapp_live_hosted_bundle/ios-index.json</string>
 	<key>releaseChannel</key>
 	<string>development</string>

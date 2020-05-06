@@ -69,12 +69,14 @@ export default StyleSheet.create({
   meberTypeStyle: {
     fontFamily: "montserrat-bold",
     fontSize: 14 / PixelRatio.getFontScale(),
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   memberDescription: {
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   deleteTeamMember: {
     marginBottom: 10,
