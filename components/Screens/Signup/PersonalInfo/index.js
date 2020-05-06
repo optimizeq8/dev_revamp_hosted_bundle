@@ -5,7 +5,7 @@ import { Item, Input, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
-import InputFeild from "../../../MiniComponents/InputField";
+import InputFeild from "../../../MiniComponents/InputFieldNew";
 import PhoneNoField from "../PhoneNo/PhoneNoField";
 import InputScrollView from "react-native-input-scroll-view";
 
