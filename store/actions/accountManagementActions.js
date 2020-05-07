@@ -15,7 +15,9 @@ export const changeBusiness = business => {
   return (dispatch, getState) => {
     persistor.purge();
     Segment.identifyWithTraits(getState().auth.userid, {
-      businessname: business.businessname
+      businessname: business.businessname,
+      businessid: business.businessid,
+      revenue: business.revenue
     });
 
     return dispatch({
