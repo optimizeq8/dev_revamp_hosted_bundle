@@ -1,18 +1,18 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 export default StyleSheet.create({
   input1: {
-    marginBottom: 30,
-    alignSelf: "center",
-    width: 300,
-    borderColor: "transparent",
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    borderRadius: 30,
+    // paddingHorizontal: 10,
+    borderRadius: 150,
+    borderColor: "rgba(0,0,0,0)",
+    alignSelf: "center",
+    width: "100%",
+    borderWidth: 0,
+    // height: 54,
     paddingHorizontal: 20,
-    justifyContent: "center",
-    height: 54,
-    marginTop: -20
+    display: "flex",
+    alignItems: "center",
+    marginVertical: 15
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -22,31 +22,17 @@ export default StyleSheet.create({
     textAlign: "left",
     // marginBottom: -20,
     textTransform: "uppercase",
-    marginLeft: 63
+    marginTop: 10
   },
   inputText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    color: "#fff",
-    textAlign: "left",
-    width: "100%",
-    paddingVertical: 15,
-    borderBottomColor: "transparent",
-    height: 50,
-    marginBottom: -10,
-    marginLeft: 15
-  },
-  labelView: {
-    // borderTopLeftRadius: 300,
-    // borderTopRightRadius: 300,
-    // borderBottomLeftRadius: 300,
-    // borderBottomRightRadius: 300,
-    // paddingTop: 5,
-    width: 300,
-    alignSelf: "center",
-    // backgroundColor: "rgba(0,0,0,0.2)",
-    // height: 15,
-    zIndex: 1
+    textAlign: I18nManager.isRTL ? "right" : "left",
+    color: "#FFF",
+    marginBottom: 10,
+    paddingLeft: 0,
+    paddingRight: 0,
+    height: 15
   },
   downicon: {
     fontSize: 20,
@@ -70,5 +56,21 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 0
+  },
+  colView: {
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    marginLeft: 13,
+    width: "100%"
+  },
+  rowView: {
+    flexDirection: "row",
+    flex: 1,
+    width: "100%",
+    alignItems: "center"
+  },
+  iconSize: {
+    fontSize: 16 / PixelRatio.getFontScale()
   }
 });

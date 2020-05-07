@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import styles from "./styles";
 import { Item, Input } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -170,24 +169,10 @@ export default class InputField extends Component {
         easing={"ease"}
         animation={valueError1 || valueError2 ? "shake" : ""}
       >
-        <View style={styles.labelView}>
-          <Text
-            uppercase
-            style={[
-              styles.inputLabel,
-              this.state.highlight
-                ? [GlobalStyles.orangeTextColor]
-                : GlobalStyles.whiteTextColor
-            ]}
-          >
-            {translate(label)}
-          </Text>
-        </View>
-
         <Item style={[styles.input1, customStyles]}>
           {FieldIcon && (
             <FieldIcon
-              style={{}}
+              style={[styles.iconSize]}
               fill={
                 this.state.highlight ? globalColors.orange : globalColors.white
               }
@@ -197,53 +182,68 @@ export default class InputField extends Component {
             />
           )}
 
-          <Input
-            placeholderTextColor={"#FFF"}
-            disabled={this.props.loading || disabled}
-            placeholder={placeholder1 && translate(placeholder1)}
-            value={this.props.value}
-            style={[
-              styles.inputText,
-              stateName2 ? { maxWidth: "45%" } : {},
-              disabled ? { opacity: 0.6 } : {}
-            ]}
-            secureTextEntry={secureTextEntry}
-            autoCorrect={false}
-            maxLength={maxLength ? maxLength : 34}
-            autoFocus={autoFocus}
-            autoCapitalize="none"
-            onChangeText={value => this.handleTextChange(value)}
-            onFocus={this.focusFeild}
-            onBlur={() => this.handleBlur(false)}
-          />
-          {stateName2 && (
-            <>
-              <View
-                style={{
-                  width: 1,
-                  height: "60%",
-                  backgroundColor: "#fff5"
-                }}
-              />
+          <View style={styles.colView}>
+            <Text
+              style={[
+                styles.inputLabel,
+                this.state.highlight
+                  ? [GlobalStyles.orangeTextColor]
+                  : GlobalStyles.whiteTextColor
+              ]}
+            >
+              {translate(label)}
+            </Text>
+            <View style={[styles.rowView]}>
               <Input
                 placeholderTextColor={"#FFF"}
                 disabled={this.props.loading || disabled}
-                placeholder={placeholder2 && translate(placeholder2)}
-                value={this.props.value2}
+                placeholder={placeholder1 && translate(placeholder1)}
+                value={this.props.value}
                 style={[
                   styles.inputText,
                   stateName2 ? { maxWidth: "45%" } : {},
                   disabled ? { opacity: 0.6 } : {}
                 ]}
+                secureTextEntry={secureTextEntry}
                 autoCorrect={false}
                 maxLength={maxLength ? maxLength : 34}
+                autoFocus={autoFocus}
                 autoCapitalize="none"
-                onChangeText={value2 => this.handleTextChange(value2, true)}
+                onChangeText={value => this.handleTextChange(value)}
                 onFocus={this.focusFeild}
-                onBlur={() => this.handleBlur(true)}
+                onBlur={() => this.handleBlur(false)}
               />
-            </>
-          )}
+              {stateName2 && (
+                <View
+                  style={{
+                    width: 1,
+                    height: "60%",
+                    backgroundColor: "#fff5"
+                  }}
+                />
+              )}
+              {stateName2 && (
+                <Input
+                  placeholderTextColor={"#FFF"}
+                  disabled={this.props.loading || disabled}
+                  placeholder={placeholder2 && translate(placeholder2)}
+                  value={this.props.value2}
+                  style={[
+                    styles.inputText,
+                    { marginLeft: 8 },
+                    stateName2 ? { maxWidth: "45%" } : {},
+                    disabled ? { opacity: 0.6 } : {}
+                  ]}
+                  autoCorrect={false}
+                  maxLength={maxLength ? maxLength : 34}
+                  autoCapitalize="none"
+                  onChangeText={value2 => this.handleTextChange(value2, true)}
+                  onFocus={this.focusFeild}
+                  onBlur={() => this.handleBlur(true)}
+                />
+              )}
+            </View>
+          </View>
         </Item>
       </Animatable.View>
     );

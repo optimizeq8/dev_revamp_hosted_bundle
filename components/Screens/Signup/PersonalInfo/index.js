@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, ScrollView, I18nManager } from "react-native";
-import { Item, Input, Text, Container } from "native-base";
+import { View, ScrollView, I18nManager, Text } from "react-native";
+import { Item, Input, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import InputFeild from "../../../MiniComponents/InputFieldNew";
-import PhoneNoField from "../PhoneNo/PhoneNoField";
+import PhoneNoField from "../PhoneNo/PhoneNoFieldNew";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import InputScrollView from "react-native-input-scroll-view";
 
 //icons
@@ -216,165 +217,144 @@ class PersonalInfo extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <Container style={styles.personalInfoView}>
-        <InputScrollView
-          {...ScrollView.props}
-          contentContainerStyle={[
-            {
-              paddingBottom: "55%",
-              paddingTop: 20
-            }
+      <InputScrollView
+        {...ScrollView.props}
+        contentContainerStyle={[
+          {
+            paddingBottom: "55%",
+            paddingTop: 20,
+            paddingHorizontal: 26
+          }
+        ]}
+      >
+        <View style={styles.subHeadView}>
+          <UserProfile fill="#FFF" stroke={"#FFF"} />
+          <Text style={styles.subHeading}>{translate("Personal Details")}</Text>
+        </View>
+        <InputFeild
+          key={"Full Name"}
+          getValidInfo={this.getValidInfo}
+          setValue={this.setValue}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="firstname"
+          stateName2="lastname"
+          label="Full name"
+          placeholder1="First Name"
+          placeholder2="Last Name"
+          value={this.state.userInfo.firstname}
+          value2={this.state.userInfo.lastname}
+          valueError1={this.state.firstnameError}
+          valueError2={this.state.lastnameError}
+          icon={UserProfile}
+          disabled={this.props.loadingUpdateInfo}
+          maxLength={30}
+        />
+        <InputFeild
+          // disabled={this.props.loadingUpdateInfo}
+          // customStyles={{ width: "100%", marginLeft: 0 }}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="email"
+          label="Email"
+          placeholder1="Enter your email"
+          value={this.state.userInfo.email}
+          valueError1={this.state.emailError}
+          icon={EmailIcon}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          key={"Email"}
+        />
+        {this.state.emailError && this.state.emailError !== "" ? (
+          <Text style={[styles.text, styles.emailErrorText]}>
+            {translate(this.state.emailError)}
+          </Text>
+        ) : null}
+
+        <PhoneNoField
+          disabled={this.props.loadingUpdateInfo}
+          screenProps={this.props.screenProps}
+          valid={this.state.valid}
+          changeNo={this.changePersonalNo}
+          phoneNum={this.state.userInfo.mobile}
+        />
+
+        <InputFeild
+          // disabled={this.props.loadingUpdateInfo}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="password"
+          label="Password"
+          placeholder1="Enter your password"
+          value={this.state.userInfo.password}
+          valueError1={this.state.passwordError}
+          icon={PasswordIcon}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          key={"password"}
+          secureTextEntry={true}
+        />
+
+        <Item
+          style={[
+            styles.input,
+            this.state.inputPR
+              ? globalStyles.purpleBorderColor
+              : this.state.repasswordError !== ""
+              ? globalStyles.redBorderColor
+              : globalStyles.transparentBorderColor
+            // styles.repeatPassword
           ]}
         >
-          <View style={styles.contentContainer}>
-            <InputFeild
-              key={"Full Name"}
-              getValidInfo={this.getValidInfo}
-              setValue={this.setValue}
-              incomplete={false}
-              translate={this.props.screenProps.translate}
-              stateName1="firstname"
-              stateName2="lastname"
-              label="Full name"
-              placeholder1="First Name"
-              placeholder2="Last Name"
-              value={this.state.userInfo.firstname}
-              value2={this.state.userInfo.lastname}
-              valueError1={this.state.firstnameError}
-              valueError2={this.state.lastnameError}
-              icon={UserProfile}
-              disabled={this.props.loadingUpdateInfo}
-              maxLength={30}
-            />
-            <View style={[styles.mobileView]}>
-              <View style={[styles.labelView]}>
-                <Text uppercase style={[styles.inputLabel]}>
-                  {translate("Mobile No")}
-                </Text>
-              </View>
-
-              <PhoneNoField
-                disabled={this.props.loadingUpdateInfo}
-                screenProps={this.props.screenProps}
-                valid={this.state.valid}
-                changeNo={this.changePersonalNo}
-                phoneNum={this.state.userInfo.mobile}
-              />
-            </View>
-
-            <InputFeild
-              // disabled={this.props.loadingUpdateInfo}
-              // customStyles={{ width: "100%", marginLeft: 0 }}
-              incomplete={false}
-              translate={this.props.screenProps.translate}
-              stateName1="email"
-              label="Email"
-              placeholder1="Enter your email"
-              value={this.state.userInfo.email}
-              valueError1={this.state.emailError}
-              icon={EmailIcon}
-              setValue={this.setValue}
-              getValidInfo={this.getValidInfo}
-              key={"Email"}
-            />
-            {this.state.emailError && this.state.emailError !== "" ? (
-              <Text style={[styles.text, styles.emailErrorText]}>
-                {translate(this.state.emailError)}
-              </Text>
-            ) : null}
-
-            <InputFeild
-              // disabled={this.props.loadingUpdateInfo}
-              incomplete={false}
-              translate={this.props.screenProps.translate}
-              stateName1="password"
-              label="Password"
-              placeholder1="Enter your password"
-              value={this.state.userInfo.password}
-              valueError1={this.state.passwordError}
-              icon={PasswordIcon}
-              setValue={this.setValue}
-              getValidInfo={this.getValidInfo}
-              key={"password"}
-              secureTextEntry={true}
-            />
-
-            <View style={styles.marginVertical}>
-              <View
-                style={[
-                  styles.labelView,
-                  { width: !I18nManager.isRTL ? 150 : "50%" }
-                ]}
-              >
-                <Text
-                  numberOfLines={1}
-                  lineBreakMode={"middle"}
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    styles.labelInputText,
-                    this.state.inputPR
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Re-enter Password")}
-                </Text>
-              </View>
-              <Item
-                style={[
-                  styles.input,
-                  this.state.inputPR
-                    ? globalStyles.purpleBorderColor
-                    : this.state.repasswordError !== ""
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor,
-                  styles.repeatPassword
-                ]}
-              >
-                <PasswordIcon
-                  style={[styles.iconSize]}
-                  fill={this.state.inputPR ? "#FF9D00" : "#FFF"}
-                />
-
-                <Input
-                  ref={input => {
-                    this.inputs["inputPR"] = input;
-                  }}
-                  blurOnSubmit={true}
-                  returnKeyType={"done"}
-                  style={styles.inputText}
-                  secureTextEntry={true}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value => this.setState({ repassword: value })}
-                  onFocus={() => {
-                    this.setState({ inputPR: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputPR: false });
-                    this._passwordVarification();
-                  }}
-                />
-              </Item>
-              {this.state.repasswordError !== "" &&
-              this.state.userInfo.password !== "" ? (
-                <Text style={[styles.text, styles.repasswordErrorText]}>
-                  {translate(this.state.repasswordError)}
-                </Text>
-              ) : null}
-            </View>
-            <LowerButton
-              style={{
-                alignSelf: "flex-end",
-                marginHorizontal: widthPercentageToDP(12)
+          <PasswordIcon
+            style={[styles.iconSize]}
+            fill={this.state.inputPR ? "#FF9D00" : "#FFF"}
+          />
+          <View style={styles.colView}>
+            <Text
+              style={[
+                styles.inputLabel,
+                this.state.inputPR
+                  ? globalStyles.orangeTextColor
+                  : globalStyles.whiteTextColor
+              ]}
+            >
+              {translate("Re-enter Password")}
+            </Text>
+            <Input
+              ref={input => {
+                this.inputs["inputPR"] = input;
               }}
-              // bottom={-10}
-              function={() => this._handleSubmission()}
+              blurOnSubmit={true}
+              returnKeyType={"done"}
+              style={styles.inputText}
+              secureTextEntry={true}
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={value => this.setState({ repassword: value })}
+              onFocus={() => {
+                this.setState({ inputPR: true });
+              }}
+              onBlur={() => {
+                this.setState({ inputPR: false });
+                this._passwordVarification();
+              }}
             />
           </View>
-        </InputScrollView>
-      </Container>
+        </Item>
+        {this.state.repasswordError !== "" &&
+        this.state.userInfo.password !== "" ? (
+          <Text style={[styles.text, styles.repasswordErrorText]}>
+            {translate(this.state.repasswordError)}
+          </Text>
+        ) : null}
+        <GradientButton
+          uppercase
+          style={styles.submitButton}
+          text={translate("Create Account")}
+          onPressAction={this._handleSubmission}
+        />
+      </InputScrollView>
     );
   }
 }
