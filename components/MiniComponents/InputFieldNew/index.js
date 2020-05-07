@@ -217,7 +217,7 @@ export default class InputField extends Component {
                 <View
                   style={{
                     width: 1,
-                    height: "60%",
+                    height: "90%",
                     backgroundColor: "#fff5"
                   }}
                 />
