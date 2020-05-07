@@ -7,6 +7,7 @@ import * as Segment from "expo-analytics-segment";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import InputFeild from "../../../MiniComponents/InputFieldNew";
 import PhoneNoField from "../PhoneNo/PhoneNoFieldNew";
+import BusinessAccount from "../../CreateBusinessAccount";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import InputScrollView from "react-native-input-scroll-view";
 
@@ -227,6 +228,10 @@ class PersonalInfo extends Component {
           }
         ]}
       >
+        <BusinessAccount
+          screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+        />
         <View style={styles.subHeadView}>
           <UserProfile fill="#FFF" stroke={"#FFF"} />
           <Text style={styles.subHeading}>{translate("Personal Details")}</Text>

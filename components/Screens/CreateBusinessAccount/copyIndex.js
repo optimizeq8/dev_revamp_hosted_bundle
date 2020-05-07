@@ -276,12 +276,10 @@ class CreateBusinessAccount extends Component {
           });
         }
         if (
-          (
-            this.state.editBusinessInfo
-              ? this.state.businessAccount.businessname !==
-                this.props.mainBusiness.businessname
-              : true
-          )
+          (this.state.editBusinessInfo
+          ? this.state.businessAccount.businessname !==
+            this.props.mainBusiness.businessname
+          : true)
             ? await this._verifyBusinessName(
                 this.state.businessAccount.businessname,
                 true
