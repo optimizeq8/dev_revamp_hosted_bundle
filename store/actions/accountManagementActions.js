@@ -72,7 +72,7 @@ export const createBusinessAccount = (account, navigation) => {
   };
 };
 
-export const addressForm = (address, navigation, addressId) => {
+export const addressForm = (address, navigation, addressId, translate) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -112,7 +112,7 @@ export const addressForm = (address, navigation, addressId) => {
           duration: 2000
         }).start(() => {
           showMessage({
-            message: response.data.message,
+            message: translate(response.data.message),
             type: response.data.success ? "success" : "warning",
             position: "top"
           });

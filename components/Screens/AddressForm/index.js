@@ -135,7 +135,8 @@ class AddressForm extends Component {
     this.props.addressForm(
       this.state.address,
       this.props.navigation,
-      this.state.addressId
+      this.state.addressId,
+      this.props.screenProps.translate
     );
   };
 
@@ -185,8 +186,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addressForm: (address, navigation, addressId) =>
-    dispatch(actionCreators.addressForm(address, navigation, addressId)),
+  addressForm: (address, navigation, addressId, translate) =>
+    dispatch(
+      actionCreators.addressForm(address, navigation, addressId, translate)
+    ),
   getAddressDetail: () => dispatch(actionCreators.getAddressForm())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);
