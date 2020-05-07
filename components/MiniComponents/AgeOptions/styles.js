@@ -5,11 +5,11 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
-    height: "100%"
+    height: "100%",
   },
   container: {
     flex: 1,
@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#0000",
-    marginLeft: 0
+    marginLeft: 0,
   },
   dataContainer: {
-    paddingTop: 30
+    paddingTop: 30,
   },
   icon: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   title: {
     textAlign: "center",
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignSelf: "center",
     fontSize: 16,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   subtitle: {
     textAlign: "center",
@@ -40,39 +40,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: 250,
     paddingTop: 20,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   multiSliderContainer: {
     marginTop: 20,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   selected: {
-    backgroundColor: globalColors.orange
+    backgroundColor: globalColors.orange,
   },
   unselected: {
     backgroundColor: "rgba(255,255,255,0.3)",
-    height: 2
+    height: 2,
   },
   track: {
     height: 3,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   button: {
     alignSelf: "center",
     justifyContent: "center",
-    marginBottom: 40
+    marginBottom: 40,
   },
   rangeMakerContainer: {
     flexDirection: "column",
     alignItems: "center",
-    width: 50
+    width: 50,
   },
   breaker: {
     width: 5,
     height: 20,
     backgroundColor: "#fff",
-    borderRadius: 14
-  }
+    borderRadius: 14,
+  },
+  markerStyle: { paddingHorizontal: 0 },
 });
 
 export default styles;

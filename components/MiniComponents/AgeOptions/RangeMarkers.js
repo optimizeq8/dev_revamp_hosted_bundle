@@ -9,12 +9,18 @@ export default class RangeMarkers extends Component {
       <View
         style={[
           styles.rangeMakerContainer,
-          { bottom: this.props.down ? -10 : 10 }
+          { bottom: this.props.down ? -10 : 10 },
         ]}
       >
         {!this.props.down && (
-          <Text style={[GlobalStyles.numbers, GlobalStyles.whiteTextColor]}>
-            {this.props.value}
+          <Text
+            style={[
+              GlobalStyles.numbers,
+              GlobalStyles.whiteTextColor,
+              styles.markerStyle,
+            ]}
+          >
+            {this.props.value + (this.props.value === 50 ? "+" : "")}
           </Text>
         )}
         <View style={styles.breaker} />
