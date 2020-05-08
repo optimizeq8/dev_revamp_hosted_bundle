@@ -209,7 +209,8 @@ export class TargetAudience extends Component {
                   <Text style={styles.menutext}>{translate("Age")}</Text>
                   <Text style={styles.menudetails}>
                     {targeting.demographics[0].min_age} -{" "}
-                    {targeting.demographics[0].max_age}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
                   </Text>
                 </View>
               </View>
