@@ -9,7 +9,13 @@ import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
 import { PESDK } from "react-native-photoeditorsdk";
-import { VESDK, Configuration } from "react-native-videoeditorsdk";
+import {
+  VESDK,
+  Configuration,
+  VideoFormat,
+  SerializationExportType,
+  TintMode,
+} from "react-native-videoeditorsdk";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -397,9 +403,43 @@ export const _pickImage = async (
             onToggleModal(false);
           } else {
             let uneditedImageUri = result.uri;
+            let vConfiguration: Configuration = {
+              forceCrop: true,
+              export: {
+                video: { format: VideoFormat.MOV },
+                serialization: {
+                  enabled: true,
+                  exportType: SerializationExportType.OBJECT,
+                },
+              },
+              transform: {
+                items: [
+                  { width: result.width || 9, height: result.height || 16 },
+                ],
+              },
+              sticker: {
+                personalStickers: true,
+                defaultPersonalStickerTintMode: TintMode.COLORIZED,
+                categories: [{ identifier: "imgly_sticker_category_shapes" }],
+              },
+            };
+            let orig = await FileSystem.getInfoAsync(result.uri);
+            console.log("orig", orig);
+            let x = await FileSystem.downloadAsync(
+              result.uri,
+              FileSystem.documentDirectory + "small.mp4"
+            )
+              .then(({ uri }) => {
+                console.log("Finished downloading to ", uri);
+                result.uri = uri;
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+
             VESDK.openEditor(
               result.uri,
-              configuration,
+              vConfiguration,
               mediaEditor && mediaEditor.hasOwnProperty("serialization")
                 ? mediaEditor.serialization
                 : null
@@ -410,6 +450,10 @@ export const _pickImage = async (
                 let serialization = {};
                 if (manipResult) {
                   serialization = manipResult.serialization;
+                  let filesys = await FileSystem.getInfoAsync(
+                    manipResult.video
+                  );
+                  console.log("filesys", filesys);
 
                   setTheState({
                     directory: "/ImageManipulator/",
@@ -421,7 +465,7 @@ export const _pickImage = async (
                 }
               })
               .then(() => {
-                console.log(result.uri);
+                console.log(result);
 
                 setTheState({
                   media: result.uri,
@@ -439,16 +483,17 @@ export const _pickImage = async (
                   position: "top",
                   type: "success",
                 });
-              });
+                !rejected &&
+                  save_campaign_info({
+                    media: result.uri,
+                    type: result.type.toUpperCase(),
+                    fileReadyToUpload: true,
+                  });
+                setTheState({ sourceChanging: false });
+                return;
+              })
+              .catch((err) => console.log(err));
           }
-          !rejected &&
-            save_campaign_info({
-              media: result.uri,
-              type: result.type.toUpperCase(),
-              fileReadyToUpload: true,
-            });
-          setTheState({ sourceChanging: false });
-          return;
         } else {
           setTheState({
             mediaError:
