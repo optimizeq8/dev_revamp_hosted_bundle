@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    textAlign: "center",
+    textAlign: "left",
     color: globalColors.white
   },
   pickerText: {
@@ -141,13 +141,22 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   input: {
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: widthPercentageToDP(85),
+    width: "100%",
     borderWidth: 0,
-    height: 54
+    height: 56,
+    paddingHorizontal: 20,
+    display: "flex"
+    // alignItems: "flex-start"
+  },
+  colView: {
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    marginLeft: 13
   },
   bottomCard: {
     justifyContent: "center",
@@ -227,14 +236,12 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   inputLabel: {
+    marginTop: 10,
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    borderRadius: 30,
-    marginBottom: -10,
-    marginTop: I18nManager.isRTL ? -5 : 0
+    fontSize: 12,
+    color: "#FFF",
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   itemView: {
     paddingHorizontal: 0,

@@ -28,7 +28,7 @@ export default FluidNavigator(
     // Invitation: Invitation
   },
   {
-    initialRouteName: "SwitchLanguage",
+    initialRouteName: "MainForm",
     mode: "card",
     navigationOptions: {
       header: null,

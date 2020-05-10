@@ -231,6 +231,7 @@ class PersonalInfo extends Component {
         <BusinessAccount
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
+          registering={true}
         />
         <View style={styles.subHeadView}>
           <UserProfile fill="#FFF" stroke={"#FFF"} />
@@ -347,6 +348,25 @@ class PersonalInfo extends Component {
             />
           </View>
         </Item>
+        <Text style={styles.textAgreement}>
+          <Text style={[styles.link, styles.buttonLink]}>
+            {translate(`By tapping the button below you agree to all the`) +
+              " "}
+            <Text
+              onPress={() => openTerms()}
+              style={[styles.link, styles.tNcLink]}
+            >
+              {translate(`Terms & Conditions`)}
+            </Text>{" "}
+            {translate(`mentioned in this`) + " "}
+            <Text
+              onPress={() => openPrivacy()}
+              style={[styles.link, styles.tNcLink, styles.agreementLink]}
+            >
+              {translate(`agreement`)}
+            </Text>
+          </Text>
+        </Text>
         {this.state.repasswordError !== "" &&
         this.state.userInfo.password !== "" ? (
           <Text style={[styles.text, styles.repasswordErrorText]}>
