@@ -152,6 +152,11 @@ const styles = StyleSheet.create({
     display: "flex"
     // alignItems: "flex-start"
   },
+  businessView: {
+    paddingBottom: "30%",
+    paddingTop: 13,
+    paddingHorizontal: 20
+  },
   colView: {
     display: "flex",
     flexDirection: "column",

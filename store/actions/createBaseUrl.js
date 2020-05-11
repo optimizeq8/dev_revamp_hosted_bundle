@@ -2,9 +2,11 @@ import axios from "axios";
 import store from "../index";
 export default () => {
   const instance = axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
+    baseURL:
+      // store.getState().login.admin
+      // ?
+      "https://optimizekwtestingserver.com/optimize/public/"
+    // : "https://www.optimizeapp.com/optimize/public/"
   });
   const responseHandler = response => {
     // console.log("responseHandler", response);

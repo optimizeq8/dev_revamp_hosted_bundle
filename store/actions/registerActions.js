@@ -517,11 +517,13 @@ export const registerGuestUser = (
 ) => {
   return (dispatch, getState) => {
     createBaseUrl()
-      .post(`saveUserInfo`, userInfo)
+      .post(`saveUserInfoV2`, userInfo)
       .then(res => {
         return res.data;
       })
       .then(data => {
+        console.log("data", data);
+
         if (data.success === true) {
           Segment.trackWithProperties("Register Personal Info", {
             category: "Sign Up",
@@ -543,10 +545,10 @@ export const registerGuestUser = (
           dispatch(registerUser(userInfo, navigation, businessInvite));
         }
 
-        dispatch({
-          type: actionTypes.REGISTER_GUEST_USER,
-          payload: { success: data.success, userInfo }
-        });
+        // dispatch({
+        //   type: actionTypes.REGISTER_GUEST_USER,
+        //   payload: { success: data.success, userInfo }
+        // });
         return data;
       })
       .then(async user => {

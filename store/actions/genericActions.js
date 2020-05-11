@@ -72,10 +72,10 @@ export const update_app_status_chat_notification = app_state => {
   return (dispatch, getState) => {
     axios
       .post(
-        getState().login.admin
-          ? "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS"
-          : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS",
-
+        // getState().login.admin
+        // ?
+        "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS",
+        // : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS"
         {
           app_state: app_state,
           userid: getState().auth.userInfo && getState().auth.userInfo.userid

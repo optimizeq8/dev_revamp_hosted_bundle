@@ -113,7 +113,9 @@ class BusinessList extends Component {
   };
   createNewBuiness = () => {
     segmentEventTrack("Button Clicked to add a new business");
-    this.props.navigation.navigate("CreateBusinessAccount");
+    this.props.navigation.navigate("CreateBusinessAccount", {
+      createNewBusiness: true
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
