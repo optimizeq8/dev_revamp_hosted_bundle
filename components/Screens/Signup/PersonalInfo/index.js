@@ -26,6 +26,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 
+import isEmpty from "lodash/isEmpty";
 class PersonalInfo extends Component {
   constructor(props) {
     super(props);
@@ -39,18 +40,42 @@ class PersonalInfo extends Component {
         password: "",
         v: this.props.tempId
       },
+      businessAccount: {
+        businessname: "",
+        businesscategory: "",
+        country: "",
+        otherBusinessCategory: null
+        // businesstype: "1",
+        // businessemail: "",
+        // brandname: "",
+        // websitelink: "",
+        // appstorelink: {
+        //   app_name: "",
+        //   ios_app_id: "",
+        //   icon_media_url: ""
+        // },
+        // playstorelink: {
+        //   app_name: "",
+        //   icon_media_url: "",
+        //   android_app_url: ""
+        // }
+      },
       inputF: false,
       inputL: false,
       inputE: false,
       inputP: false,
       inputPR: false,
+      inputC: false, // For country modal,
+      inputT: false, // For business category
       valid: false,
       repassword: "",
       emailError: "",
       passwordError: "",
       lastnameError: "",
       firstnameError: "",
-      repasswordError: ""
+      repasswordError: "",
+      businesscategoryError: null,
+      businessnameError: null
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
@@ -203,9 +228,14 @@ class PersonalInfo extends Component {
         ...this.state.userInfo,
         mobile
       };
-
+      console.log("userInfo", userInfo);
+      console.log("businessAccount", this.state.businessAccount);
+      const info = {
+        ...userInfo,
+        ...this.state.businessAccount
+      };
       this.props.registerGuestUser(
-        userInfo,
+        info,
         this.props.businessInvite,
         this.props.navigation
       );
@@ -215,6 +245,132 @@ class PersonalInfo extends Component {
     this.inputs[fieldName]._root.focus();
   };
   inputs = {};
+
+  // Set value for business accounts detail
+
+  setValueBusiness = (stateName, value) => {
+    let state = {};
+    state[stateName] =
+      stateName === "businessname"
+        ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
+        : value;
+
+    let businessAccount = {
+      ...this.state.businessAccount,
+      ...state
+    };
+    this.setState({ businessAccount });
+  };
+
+  getValidInfoBusiness = (stateError, validWrap) => {
+    let state = {};
+    if (stateError === "businessnameError") {
+      this._verifyBusinessName(this.state.businessAccount.businessname, false);
+    }
+
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
+  _handleBusinessName = value => {
+    this.setState({
+      businessnameAvalible: value,
+      checkingBusinessNameSubmission: false
+    });
+  };
+  _verifyBusinessName = async (name, submision) => {
+    if (name !== "") {
+      if (submision) this.setState({ checkingBusinessNameSubmission: true });
+      await this.props.verifyBusinessName(
+        name,
+        this._handleBusinessName,
+        submision
+      );
+      return this.props.successName;
+    }
+  };
+
+  // HANDLE business category STARTS HERE
+
+  _handleBusinessCategories = type => {
+    this.setState({
+      businessAccount: {
+        ...this.state.businessAccount,
+        businesstype: type
+      }
+    });
+  };
+
+  onSelectedBusinessCategoryIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("businescatId", value);
+  };
+  closeCategoryModal = () => {
+    this.setState({
+      businesscategoryError: validateWrapper(
+        "mandatory",
+        this.state.businessAccount.businesscategory
+      ),
+      inputT: false
+    });
+  };
+
+  onSelectedBusinessCategoryChange = value => {
+    if (value && !isEmpty(value)) {
+      this.setState(
+        {
+          businessAccount: {
+            ...this.state.businessAccount,
+            businesscategory: value[0].value
+          }
+        },
+        () => {
+          this.closeCategoryModal();
+        }
+      );
+    }
+  };
+  openCategoryModal = () => {
+    this.setState({ inputT: true });
+  };
+
+  // HANDLE business category ENDS HERE
+
+  // --COUNTRY HANDLE FOR BUSINESS STARTS HERE--
+
+  onSelectedCountryIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("country", value);
+  };
+  closeCountryModal = () => {
+    this.setState({
+      countryError: validateWrapper(
+        "mandatory",
+        this.state.businessAccount.country
+      ),
+      inputC: false
+    });
+  };
+  openCountryModal = () => {
+    this.setState({ inputC: true });
+  };
+  onSelectedCountryChange = value => {
+    if (value && !isEmpty(value)) {
+      this.setState(
+        {
+          businessAccount: {
+            ...this.state.businessAccount,
+            country: value[0].value
+          }
+        },
+        () => {
+          this.closeCountryModal();
+        }
+      );
+    }
+  };
+  // --COUNTRY HANDLE FOR BUSINESS ENDS HERE--
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -228,11 +384,32 @@ class PersonalInfo extends Component {
           }
         ]}
       >
-        <BusinessAccount
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-          registering={true}
-        />
+        {this.props.businessInvite !== "0" && (
+          <BusinessAccount
+            businessAccount={this.state.businessAccount}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            registering={true}
+            setValue={this.setValueBusiness}
+            getValidInfo={this.getValidInfoBusiness}
+            _handleBusinessCategories={this._handleBusinessCategories}
+            onSelectedBusinessCategoryIdChange={
+              this.onSelectedBusinessCategoryIdChange
+            }
+            closeCategoryModal={this.closeCategoryModal}
+            onSelectedBusinessCategoryChange={
+              this.onSelectedBusinessCategoryChange
+            }
+            businesscategoryError={this.state.businesscategoryError}
+            openCategoryModal={this.openCategoryModal}
+            inputT={this.state.inputT}
+            onSelectedCountryIdChange={this.onSelectedCountryIdChange}
+            closeCountryModal={this.closeCountryModal}
+            onSelectedCountryChange={this.onSelectedCountryChange}
+            openCountryModal={this.openCountryModal}
+            inputC={this.state.inputC}
+          />
+        )}
         <View style={styles.subHeadView}>
           <UserProfile fill="#FFF" stroke={"#FFF"} />
           <Text style={styles.subHeading}>{translate("Personal Details")}</Text>
@@ -388,7 +565,8 @@ const mapStateToProps = state => ({
   countryCode: state.register.countryCode,
   tempUserInfo: state.account.tempUserInfo,
   successEmail: state.register.successEmail,
-  userInfo: state.register.userInfo
+  userInfo: state.register.userInfo,
+  successName: state.register.successName
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -399,6 +577,14 @@ const mapDispatchToProps = dispatch => ({
   registerGuestUser: (userInfo, businessInvite, navigation) =>
     dispatch(
       actionCreators.registerGuestUser(userInfo, businessInvite, navigation)
+    ),
+  verifyBusinessName: (businessName, _handleBusinessName, submision) =>
+    dispatch(
+      actionCreators.verifyBusinessName(
+        businessName,
+        _handleBusinessName,
+        submision
+      )
     )
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);

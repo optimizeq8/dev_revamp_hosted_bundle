@@ -185,6 +185,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingHorizontal: 26,
     marginVertical: 15
+  },
+  link: {
+    textAlign: "center",
+    color: "#FFF",
+    paddingTop: 40,
+    paddingBottom: 10,
+    fontFamily: "montserrat-regular",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    paddingHorizontal: 10,
+    paddingVertical: 10
+  },
+  tNcLink: {
+    textDecorationLine: "underline"
+    // color: "blue"
+  },
+  buttonLink: {
+    lineHeight: 20
+  },
+  textAgreement: {
+    // bottom: 10,
+    paddingHorizontal: 70,
+    marginBottom: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  agreementLink: {
+    zIndex: 10
   }
 });
 

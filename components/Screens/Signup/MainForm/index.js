@@ -26,7 +26,12 @@ class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
-  state = { verified: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      verified: false
+    };
+  }
   /**
    * Gets called whenever a user presses on an invite registeration deep link
    */
@@ -50,15 +55,15 @@ class MainForm extends Component {
       />
     );
 
-    if (this.props.successPersonalInfo && !this.state.businessInvite) {
-      content = (
-        <CreateBusinessAccount
-          registering={true}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
-      );
-    }
+    // if (this.props.successPersonalInfo && !this.state.businessInvite) {
+    //   content = (
+    //     <CreateBusinessAccount
+    //       registering={true}
+    //       navigation={this.props.navigation}
+    //       screenProps={this.props.screenProps}
+    //     />
+    //   );
+    // }
 
     return (
       <SafeAreaView
@@ -87,22 +92,24 @@ class MainForm extends Component {
               <View style={styles.badgeView}>
                 <Badge
                   style={
-                    (!this.props.successPersonalInfo &&
-                      this.props.successEmail &&
-                      !this.props.registered) ||
-                    this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
-                      ? styles.activeBadege
-                      : styles.badge
+                    // (!this.props.successPersonalInfo &&
+                    //   this.props.successEmail &&
+                    //   !this.props.registered) ||
+                    // this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
+                    // ?
+                    styles.activeBadege
+                    // : styles.badge
                   }
                 >
                   <Text
                     style={
-                      (!this.props.successPersonalInfo &&
-                        this.props.successEmail &&
-                        !this.props.registered) ||
-                      this.state.businessInvite === "0"
-                        ? styles.activeBadegeText
-                        : styles.badgeText
+                      // (!this.props.successPersonalInfo &&
+                      //   this.props.successEmail &&
+                      //   !this.props.registered) ||
+                      // this.state.businessInvite === "0"
+                      // ?
+                      styles.activeBadegeText
+                      // : styles.badgeText
                     }
                   >
                     {translate("1")}
@@ -110,15 +117,16 @@ class MainForm extends Component {
                 </Badge>
                 <Text
                   style={
-                    (!this.props.successPersonalInfo &&
-                      this.props.successEmail &&
-                      !this.props.registered) ||
-                    this.state.businessInvite === "0"
-                      ? styles.activeTitleText
-                      : styles.titleText
+                    // (!this.props.successPersonalInfo &&
+                    //   this.props.successEmail &&
+                    //   !this.props.registered) ||
+                    // this.state.businessInvite === "0"
+                    // ?
+                    styles.activeTitleText
+                    // : styles.titleText
                   }
                 >
-                  {translate("Personal")}
+                  {translate("Details")}
                 </Text>
               </View>
               {this.state.businessInvite !== "0" && (
@@ -161,7 +169,7 @@ class MainForm extends Component {
                           : styles.titleText
                       }
                     >
-                      {translate("Business")}
+                      {translate("Complete")}
                     </Text>
                   </View>
                 </>

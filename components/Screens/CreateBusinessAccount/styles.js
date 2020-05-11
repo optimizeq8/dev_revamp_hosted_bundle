@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   pickerText: {
     fontFamily: "montserrat-regular-english",
     color: "#FFFFFF",
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 12
   },
   input: {
@@ -148,15 +148,16 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 0,
     height: 56,
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     display: "flex"
     // alignItems: "flex-start"
   },
   colView: {
     display: "flex",
     flexDirection: "column",
-    alignSelf: "center",
-    marginLeft: 13
+    alignSelf: "flex-start",
+    marginLeft: 13,
+    flex: 1
   },
   bottomCard: {
     justifyContent: "center",
@@ -248,6 +249,20 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between"
+  },
+  subHeading: {
+    fontSize: 19,
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    marginLeft: 16,
+    textTransform: "uppercase"
+  },
+  subHeadView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // paddingHorizontal: 26,
+    marginVertical: 15
   }
 });
 
