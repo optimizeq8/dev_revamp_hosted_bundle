@@ -413,9 +413,7 @@ export const _pickImage = async (
                 },
               },
               transform: {
-                items: [
-                  { width: result.width || 9, height: result.height || 16 },
-                ],
+                items: [{ width: 9, height: 16 }],
               },
               sticker: {
                 personalStickers: true,
@@ -423,19 +421,7 @@ export const _pickImage = async (
                 categories: [{ identifier: "imgly_sticker_category_shapes" }],
               },
             };
-            let orig = await FileSystem.getInfoAsync(result.uri);
-            console.log("orig", orig);
-            let x = await FileSystem.downloadAsync(
-              result.uri,
-              FileSystem.documentDirectory + "small.mp4"
-            )
-              .then(({ uri }) => {
-                console.log("Finished downloading to ", uri);
-                result.uri = uri;
-              })
-              .catch((error) => {
-                console.error(error);
-              });
+            console.log("rsasa", result.uri);
 
             VESDK.openEditor(
               result.uri,
@@ -445,20 +431,22 @@ export const _pickImage = async (
                 : null
             )
               .then(async (manipResult) => {
-                // console.log(manipResult);
+                console.log(manipResult);
 
                 let serialization = {};
                 if (manipResult) {
                   serialization = manipResult.serialization;
                   let filesys = await FileSystem.getInfoAsync(
-                    manipResult.video
+                    manipResult.video ? manipResult.video : manipResult.image
                   );
                   console.log("filesys", filesys);
 
                   setTheState({
                     directory: "/ImageManipulator/",
                   });
-                  result.uri = manipResult.video;
+                  result.uri = manipResult.video
+                    ? manipResult.video
+                    : manipResult.image;
                   result.serialization = serialization;
                 } else {
                   return Promise.reject("Editing canceled");
