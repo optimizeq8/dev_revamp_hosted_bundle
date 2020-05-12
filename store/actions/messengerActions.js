@@ -235,10 +235,9 @@ export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
       .get(
-        // getState().login.admin
-        // ?
-        "https://optimizekwtestingserver.com/optimize/public/chatLink"
-        // : "https://www.optimizeapp.com/optimize/public/chatLink"
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
+          : "https://www.optimizeapp.com/optimize/public/chatLink"
       )
       .then(res => {
         return res.data;

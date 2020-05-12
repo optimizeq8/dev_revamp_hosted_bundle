@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 54,
+    // height: 54,
     paddingHorizontal: 20,
     display: "flex",
     alignItems: "center",
@@ -19,7 +19,7 @@ export default StyleSheet.create({
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#fff",
     alignSelf: "flex-start",
-    textAlign: "left",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     // marginBottom: -20,
     textTransform: "uppercase",
     marginTop: 10
@@ -27,12 +27,13 @@ export default StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
+    alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#FFF",
     marginBottom: 10,
     paddingLeft: 0,
-    paddingRight: 0
-    // height: 15
+    paddingRight: 0,
+    height: 15
   },
   downicon: {
     fontSize: 20,

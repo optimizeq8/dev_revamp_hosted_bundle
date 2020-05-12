@@ -48,7 +48,8 @@ export default class ModalField extends Component {
       valueText,
       valueError,
       icon,
-      isVisible
+      isVisible,
+      stateName
     } = this.props;
     let FieldIcon = icon ? icon : null;
     return (
@@ -73,7 +74,11 @@ export default class ModalField extends Component {
             <Text style={[styles.inputLabel, GlobalStyles.whiteTextColor]}>
               {translate(label)}
             </Text>
-            <Text style={styles.inputText}>{translate(valueText)}</Text>
+            <Text style={styles.inputText}>
+              {stateName === "businesscategory"
+                ? valueText
+                : translate(valueText)}
+            </Text>
           </View>
 
           <Icon type="AntDesign" name="down" style={styles.downiconEnd} />

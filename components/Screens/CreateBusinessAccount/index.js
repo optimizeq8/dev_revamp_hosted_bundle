@@ -81,7 +81,6 @@ class CreateBusinessAccount extends Component {
       businessnameError: "",
       businessnameAvalible: false,
       brandNameError: "",
-      businessemailError: "",
       businesscategoryError: "",
       businesscategoryOtherError: "",
       countryError: "",
@@ -222,12 +221,6 @@ class CreateBusinessAccount extends Component {
       this.state.businessAccount.businessname
     );
 
-    const businessemailError = validateWrapper(
-      "mandatory",
-      this.props.registering
-        ? "not empty"
-        : this.state.businessAccount.businessemail
-    );
     const businesscategoryError = validateWrapper(
       "mandatory",
       this.state.businessAccount.businesscategory
@@ -253,7 +246,6 @@ class CreateBusinessAccount extends Component {
 
     this.setState({
       businessnameError,
-      businessemailError,
       businesscategoryError,
       countryError,
       businesscategoryOtherError,
@@ -267,7 +259,6 @@ class CreateBusinessAccount extends Component {
     } else {
       if (
         !businessnameError &&
-        !businessemailError &&
         !businesscategoryError &&
         !countryError &&
         !businesscategoryOtherError &&
@@ -587,7 +578,8 @@ class CreateBusinessAccount extends Component {
    *
    */
   getBusinessCategory = () => {
-    let category = "Select Business Type";
+    const { translate } = this.props.screenProps;
+    let category = translate("Select Business Type");
     // if from registration  screen
     if (
       this.props.registering &&
@@ -793,7 +785,7 @@ class CreateBusinessAccount extends Component {
                 ? this.props.businessAccount.businesscategory
                 : this.state.businessAccount.businesscategory
             }
-            incomplete={true}
+            incomplete={false}
             translate={this.props.screenProps.translate}
             icon={BusinessIcon}
             isVisible={
@@ -858,7 +850,7 @@ class CreateBusinessAccount extends Component {
                 ? this.props.businessAccount.country
                 : this.state.businessAccount.country
             }
-            incomplete={true}
+            incomplete={false}
             translate={this.props.screenProps.translate}
             icon={LocationIcon}
             isVisible={
