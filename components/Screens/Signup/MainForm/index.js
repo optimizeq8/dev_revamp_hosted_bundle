@@ -55,16 +55,6 @@ class MainForm extends Component {
       />
     );
 
-    // if (this.props.successPersonalInfo && !this.state.businessInvite) {
-    //   content = (
-    //     <CreateBusinessAccount
-    //       registering={true}
-    //       navigation={this.props.navigation}
-    //       screenProps={this.props.screenProps}
-    //     />
-    //   );
-    // }
-
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -90,90 +80,37 @@ class MainForm extends Component {
             </View>
             <View style={styles.content}>
               <View style={styles.badgeView}>
-                <Badge
-                  style={
-                    // (!this.props.successPersonalInfo &&
-                    //   this.props.successEmail &&
-                    //   !this.props.registered) ||
-                    // this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
-                    // ?
-                    styles.activeBadege
-                    // : styles.badge
-                  }
-                >
-                  <Text
-                    style={
-                      // (!this.props.successPersonalInfo &&
-                      //   this.props.successEmail &&
-                      //   !this.props.registered) ||
-                      // this.state.businessInvite === "0"
-                      // ?
-                      styles.activeBadegeText
-                      // : styles.badgeText
-                    }
-                  >
-                    {translate("1")}
-                  </Text>
+                <Badge style={styles.activeBadege}>
+                  <Text style={styles.activeBadegeText}>{translate("1")}</Text>
                 </Badge>
-                <Text
-                  style={
-                    // (!this.props.successPersonalInfo &&
-                    //   this.props.successEmail &&
-                    //   !this.props.registered) ||
-                    // this.state.businessInvite === "0"
-                    // ?
-                    styles.activeTitleText
-                    // : styles.titleText
-                  }
-                >
+                <Text style={styles.activeTitleText}>
                   {translate("Details")}
                 </Text>
               </View>
-              {this.state.businessInvite !== "0" && (
-                <>
-                  <View
-                    style={[
-                      styles.dash,
-                      // { width: 30 },
-                      this.props.successPersonalInfo && !this.props.registered
-                        ? { marginRight: -8 }
-                        : {
-                            marginRight: -4,
-                            marginLeft: -4
-                          }
-                    ]}
-                  />
-                  <View style={styles.badgeView}>
-                    <Badge
-                      style={
-                        this.props.successPersonalInfo && !this.props.registered
-                          ? styles.activeBadege
-                          : styles.badge
-                      }
-                    >
-                      <Text
-                        style={
-                          this.props.successPersonalInfo &&
-                          !this.props.registered
-                            ? styles.activeBadegeText
-                            : styles.badgeText
-                        }
-                      >
-                        {translate("2")}
-                      </Text>
-                    </Badge>
-                    <Text
-                      style={
-                        this.props.successPersonalInfo && !this.props.registered
-                          ? styles.activeTitleText
-                          : styles.titleText
-                      }
-                    >
-                      {translate("Complete")}
-                    </Text>
-                  </View>
-                </>
-              )}
+
+              <View
+                style={[
+                  styles.dash,
+                  {
+                    marginRight: -4,
+                    marginLeft: -4
+                  }
+                ]}
+              />
+              <View style={styles.badgeView}>
+                <Badge style={styles.badge}>
+                  <Text style={styles.badgeText}>{translate("2")}</Text>
+                </Badge>
+                <Text
+                  style={
+                    this.props.successPersonalInfo && !this.props.registered
+                      ? styles.activeTitleText
+                      : styles.titleText
+                  }
+                >
+                  {translate("Complete")}
+                </Text>
+              </View>
             </View>
           </View>
           {content}

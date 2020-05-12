@@ -228,8 +228,7 @@ class PersonalInfo extends Component {
         ...this.state.userInfo,
         mobile
       };
-      console.log("userInfo", userInfo);
-      console.log("businessAccount", this.state.businessAccount);
+
       const info = {
         ...userInfo,
         ...this.state.businessAccount
