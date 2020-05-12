@@ -601,7 +601,7 @@ class CreateBusinessAccount extends Component {
       ).label;
     } else if (this.state.businessAccount.businesscategory !== "") {
       // if from create business account or edit screen
-      this.state.items.find(
+      category = this.state.items.find(
         i => i.value === this.state.businessAccount.businesscategory
       ).label;
     }
@@ -985,7 +985,7 @@ class CreateBusinessAccount extends Component {
             />
           ) : null}
 
-          {!this.props.registering && (
+          {!this.props.registering && !this.state.editBusinessInfo && (
             <GradientButton
               disabled={this.props.savingRegister}
               style={[styles.bottomCard]}
