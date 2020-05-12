@@ -683,14 +683,15 @@ class CreateBusinessAccount extends Component {
             !this.props.registering && styles.businessView
           ]}
         >
-          <View style={styles.subHeadView}>
-            <BusinessIcon fill={"#FFF"} />
-            {/* <UserProfile fill="#FFF" stroke={"#FFF"} /> */}
-            <Text style={styles.subHeading}>
-              {translate("BUSINESS DETAILS")}
-            </Text>
-          </View>
-
+          {!this.state.editBusinessInfo && (
+            <View style={styles.subHeadView}>
+              <BusinessIcon fill={"#FFF"} />
+              {/* <UserProfile fill="#FFF" stroke={"#FFF"} /> */}
+              <Text style={styles.subHeading}>
+                {translate("BUSINESS DETAILS")}
+              </Text>
+            </View>
+          )}
           <InputFeild
             // disabled={this.props.loadingUpdateInfo}
             incomplete={false}
@@ -880,7 +881,7 @@ class CreateBusinessAccount extends Component {
             <Icon type="AntDesign" name="down" style={styles.iconDown} />
           </Item>
 
-          {/** Webiste Component */}
+          {/** Webiste Component for  */}
           {this.state.editBusinessInfo && (
             <Website
               register={true}
@@ -904,6 +905,23 @@ class CreateBusinessAccount extends Component {
                   this.props.editBusinessInfoLoading) ||
                 this.props.savingRegister
               }
+            />
+          )}
+
+          {/** App Choice for business */}
+          {this.state.editBusinessInfo && (
+            <AppChoiceBusiness
+              appstorelink={this.state.businessAccount.appstorelink}
+              playstorelink={this.state.businessAccount.playstorelink}
+              setModalVisible={this.setModalVisible}
+              toggleAppSelection={this.toggleAppSelection}
+              screenProps={this.props.screenProps}
+              disabled={
+                (this.state.editBusinessInfo &&
+                  this.props.editBusinessInfoLoading) ||
+                this.props.savingRegister
+              }
+              appSelections={{ iosAppSelected, androidAppSelected }}
             />
           )}
           {/* Added handle submision button for updating business info */}
@@ -971,6 +989,18 @@ class CreateBusinessAccount extends Component {
               ? this.props.closeCategoryModal
               : this.closeCountryModal
           }
+        />
+
+        <AppSearchModal
+          mainState={this.state}
+          selectApp={this.selectApp}
+          setModalVisible={this.setModalVisible}
+          setTheState={this.setTheState}
+          _getIosAppIds={this._getIosAppIds}
+          _getAndroidAppIds={this._getAndroidAppIds}
+          handleAppError={this.handleAppError}
+          validateApp={() => this.validate()}
+          screenProps={this.props.screenProps}
         />
       </SafeAreaView>
     );

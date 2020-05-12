@@ -232,17 +232,21 @@ const styles = StyleSheet.create({
   appStoreButtons: {
     flexDirection: "column",
     paddingVertical: 20,
+    // paddingHorizontal: 30,
+    width: "48%",
     borderRadius: 35,
-    backgroundColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    marginHorizontal: 10,
-    height: 170
+    backgroundColor: "rgba(0,0,0,0.16)",
+    alignItems: "center"
+    // marginHorizontal: 10
+    // height: 170
   },
   advertiseOSButtonView: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 10
+    width: "100%"
+    // marginHorizontal: 26
+    // marginVertical: 10
   }
 });
 
