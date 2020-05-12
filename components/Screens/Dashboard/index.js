@@ -44,6 +44,7 @@ import styles from "./styles";
 
 //data
 import { snapAds, googleAds } from "../../Data/adTypes.data";
+import businessCategoriesList from "../../Data/businessCategoriesList.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -76,6 +77,7 @@ class Dashboard extends Component {
   signal = Axios.CancelToken.source();
   constructor(props) {
     super(props);
+    const { translate } = this.props.screenProps;
     this.state = {
       sidemenustate: false,
       isListEnd: false,
@@ -85,7 +87,8 @@ class Dashboard extends Component {
       open: false,
       anim: false,
       play: false,
-      componentMounting: true
+      componentMounting: true,
+      items: businessCategoriesList(translate)
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -330,7 +333,21 @@ class Dashboard extends Component {
       this.props.navigation.navigate("AdType");
     }
   };
-
+  /**
+   *
+   *
+   * To find business category name from list
+   */
+  getBusinessCategoryName = () => {
+    const { mainBusiness } = this.props;
+    let businesscategoryName = "";
+    if (mainBusiness && mainBusiness.businesscategory) {
+      businesscategoryName = this.state.items.find(
+        category => category.value === mainBusiness.businesscategory
+      ).label;
+    }
+    return businesscategoryName;
+  };
   render() {
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
@@ -349,7 +366,7 @@ class Dashboard extends Component {
         top: hp(100)
       }
     };
-
+    const businesscategoryName = this.getBusinessCategoryName();
     let placeHolderCards = [1, 2, 3, 4].map(x => (
       <View key={x} style={styles.placeHolderCardsStyle} />
     ));
@@ -559,16 +576,14 @@ class Dashboard extends Component {
                           style={[
                             styles.brandStyle,
                             this.props.mainBusiness &&
-                            !isStringArabic(this.props.mainBusiness.brandname)
+                            !isStringArabic(businesscategoryName)
                               ? {
                                   fontFamily: "montserrat-regular-english"
                                 }
                               : {}
                           ]}
                         >
-                          {this.props.mainBusiness
-                            ? this.props.mainBusiness.brandname
-                            : ""}
+                          {businesscategoryName}
                         </Text>
                       </View>
                       <View style={styles.sideMenuCard}>

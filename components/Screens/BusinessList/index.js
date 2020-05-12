@@ -123,9 +123,7 @@ class BusinessList extends Component {
       <Container style={styles.container}>
         <View style={[styles.mainCard]}>
           <Text style={styles.title}>{translate("Switch Business")}</Text>
-          {(!this.props.businessInvites ||
-            (this.props.businessInvites &&
-              this.props.businessInvites.length > 0)) && (
+          {this.props.businessInvites && this.props.businessInvites.length > 0 && (
             <View style={styles.tabView}>
               {tabs.map(tab => {
                 return (
