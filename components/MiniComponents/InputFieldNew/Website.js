@@ -9,6 +9,9 @@ import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import GradientButton from "../GradientButton";
 
+//Icon
+import WebsiteIcon from "../../../assets/SVGs/SwipeUps/Website";
+
 export default class WebsiteComponent extends React.Component {
   state = {
     highlight: false
@@ -67,19 +70,6 @@ export default class WebsiteComponent extends React.Component {
         easing={"ease"}
         animation={stateNameError ? "shake" : ""}
       >
-        <View style={styles.labelView}>
-          <Text
-            style={[
-              styles.inputLabel,
-              this.state.highlight
-                ? [GlobalStyles.orangeTextColor]
-                : GlobalStyles.whiteTextColor
-            ]}
-          >
-            {translate("Website")}
-            {optional && "(" + translate("optional") + ")"}
-          </Text>
-        </View>
         <Item style={[styles.input1, customStyle]}>
           {/* <GradientButton
             style={styles.networkStringButton}
@@ -96,23 +86,44 @@ export default class WebsiteComponent extends React.Component {
             </Text>
             <Text style={styles.networkLabel}>{`< >`}</Text>
           </GradientButton> */}
-          <Input
-            style={[
-              styles.inputText
-              // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
-            ]}
-            ref={input => {
-              this.props.inputs && (this.props.inputs["inputWeb"] = input);
-            }}
-            onFocus={this.focusFeild}
-            placeholder={translate(`Enter your website's URL`)}
-            placeholderTextColor={globalColors.white}
-            value={this.props.website}
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={value => this.props.setWebsiteValue(value)}
-            onBlur={this.validateUrl}
+          <WebsiteIcon
+            width={23}
+            height={24}
+            style={styles.icon}
+            fill={
+              this.state.highlight ? globalColors.orange : globalColors.white
+            }
           />
+          <View style={styles.colView}>
+            <Text
+              style={[
+                styles.inputLabel,
+                this.state.highlight
+                  ? [GlobalStyles.orangeTextColor]
+                  : GlobalStyles.whiteTextColor
+              ]}
+            >
+              {translate("Website")}
+              {optional && "(" + translate("optional") + ")"}
+            </Text>
+            <Input
+              style={[
+                styles.inputText
+                // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
+              ]}
+              ref={input => {
+                this.props.inputs && (this.props.inputs["inputWeb"] = input);
+              }}
+              onFocus={this.focusFeild}
+              placeholder={translate(`Enter your website's URL`)}
+              placeholderTextColor={globalColors.white}
+              value={this.props.website}
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={value => this.props.setWebsiteValue(value)}
+              onBlur={this.validateUrl}
+            />
+          </View>
         </Item>
       </Animatable.View>
     );

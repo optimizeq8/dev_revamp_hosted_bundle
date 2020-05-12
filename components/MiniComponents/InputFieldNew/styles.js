@@ -1,7 +1,7 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 export default StyleSheet.create({
   input1: {
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
     // paddingHorizontal: 10,
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
@@ -72,5 +72,8 @@ export default StyleSheet.create({
   },
   iconSize: {
     fontSize: 16 / PixelRatio.getFontScale()
+  },
+  icon: {
+    marginLeft: 15
   }
 });

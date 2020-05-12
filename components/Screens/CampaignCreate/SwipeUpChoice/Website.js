@@ -225,7 +225,7 @@ class Website extends Component {
                 }
               ]}
             >
-              <WebsiteIcon style={styles.icon} />
+              <WebsiteIcon style={styles.icon} fill={"#FFF"} />
               <View style={[styles.textcontainer]}>
                 <Text style={styles.titletext}>{translate("Website")}</Text>
                 <Text style={styles.subtext}>

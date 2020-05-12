@@ -11,7 +11,7 @@ import isEmpty from "lodash/isEmpty";
 import isEqual from "react-fast-compare";
 
 import Picker from "../../MiniComponents/Picker";
-import Website from "../../MiniComponents/InputField/Website";
+import Website from "../../MiniComponents/InputFieldNew/Website";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -719,178 +719,92 @@ class CreateBusinessAccount extends Component {
             }
             key={"businessname"}
           />
-
-          {/* {!this.props.registering && (
-            <View style={styles.marginVertical}>
-              <View style={[styles.callToActionLabelView]}>
-                <Text
-                  
-                  style={[
-                    styles.inputLabel,
-                    this.state.inputE
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Email")}
-                </Text>
-              </View>
-              <Item
+          {/* Business category view starts here */}
+          <Picker
+            showIcon={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Business Category")}
+            data={this.state.items}
+            uniqueKey={"value"}
+            displayKey={"label"}
+            open={
+              this.props.registering ? this.props.inputT : this.state.inputT
+            }
+            onSelectedItemsChange={
+              this.props.registering
+                ? this.props.onSelectedBusinessCategoryIdChange
+                : this.onSelectedBusinessCategoryIdChange
+            }
+            onSelectedItemObjectsChange={
+              this.props.registering
+                ? this.props.onSelectedBusinessCategoryChange
+                : this.onSelectedBusinessCategoryChange
+            }
+            selectedItems={
+              this.props.registering
+                ? [this.props.businessAccount.businesscategory]
+                : [this.state.businessAccount.businesscategory]
+            }
+            single={true}
+            screenName={
+              this.state.editBusinessInfo
+                ? "Business Info"
+                : "Create Business Account"
+            }
+            closeCategoryModal={
+              this.props.registering
+                ? this.props.closeCategoryModal
+                : this.closeCategoryModal
+            }
+          />
+          <Item
+            disabled={
+              (this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading) ||
+              this.props.savingRegister
+            }
+            onPress={() => {
+              if (this.props.registering) {
+                this.props.openCategoryModal();
+              } else this.setState({ inputT: true });
+            }}
+            style={[
+              styles.input,
+              this.state.inputT || this.props.inputT
+                ? globalStyles.purpleBorderColor
+                : this.state.businesscategoryError ||
+                  this.props.businesscategoryError
+                ? globalStyles.redBorderColor
+                : globalStyles.transparentBorderColor,
+              styles.itemView
+            ]}
+          >
+            <BusinessIcon
+              style={{
+                // position: "absolute",
+                marginLeft: 15
+              }}
+              fill={this.state.inputT || this.props.inputT ? "#FF9D00" : "#FFF"}
+            />
+            <View style={styles.colView}>
+              <Text
                 style={[
-                  styles.input,
-                  this.state.inputE
-                    ? globalStyles.transparentBorderColor
-                    : this.state.businessemailError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor,
-                  {
-                    paddingHorizontal: 0
-                    // width: "50%"
-                  }
+                  styles.inputLabel,
+                  this.state.inputT || this.props.inputT
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
                 ]}
               >
-                <EmailIcon
-                  style={{
-                    // position: "absolute",
-                    marginLeft: 15
-                  }}
-                  fill={this.state.inputE ? "#FF9D00" : "#FFF"}
-                />
-                <Input
-                  ref={input => {
-                    this.inputs["inputE"] = input;
-                  }}
-                  blurOnSubmit={true}
-                  style={[
-                    styles.inputText,
-                    {
-                      fontFamily: "montserrat-regular-english"
-                    }
-                  ]}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  disabled={
-                    (this.state.editBusinessInfo &&
-                      this.props.editBusinessInfoLoading) ||
-                    this.props.savingRegister
-                  }
-                  value={this.state.businessAccount.businessemail}
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessemail: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputE: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      inputE: false,
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessemail: this.state.businessAccount.businessemail.trim()
-                      },
-                      businessemailError: validateWrapper(
-                        "email",
-                        this.state.businessAccount.businessemail.trim()
-                      )
-                    });
-                  }}
-                />
-              </Item>
+                {translate("Business Type")}
+              </Text>
+              <Text style={[styles.inputText]}>
+                {translate(businessCategory)}
+              </Text>
             </View>
-          )} */}
+            <Icon type="AntDesign" name="down" style={styles.iconDown} />
+          </Item>
+          {/* Business category view ends here */}
 
-          <View style={styles.marginVertical}>
-            <Picker
-              showIcon={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Business Category")}
-              data={this.state.items}
-              uniqueKey={"value"}
-              displayKey={"label"}
-              open={
-                this.props.registering ? this.props.inputT : this.state.inputT
-              }
-              onSelectedItemsChange={
-                this.props.registering
-                  ? this.props.onSelectedBusinessCategoryIdChange
-                  : this.onSelectedBusinessCategoryIdChange
-              }
-              onSelectedItemObjectsChange={
-                this.props.registering
-                  ? this.props.onSelectedBusinessCategoryChange
-                  : this.onSelectedBusinessCategoryChange
-              }
-              selectedItems={
-                this.props.registering
-                  ? [this.props.businessAccount.businesscategory]
-                  : [this.state.businessAccount.businesscategory]
-              }
-              single={true}
-              screenName={
-                this.state.editBusinessInfo
-                  ? "Business Info"
-                  : "Create Business Account"
-              }
-              closeCategoryModal={
-                this.props.registering
-                  ? this.props.closeCategoryModal
-                  : this.closeCategoryModal
-              }
-            />
-            <Item
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              onPress={() => {
-                if (this.props.registering) {
-                  this.props.openCategoryModal();
-                } else this.setState({ inputT: true });
-              }}
-              style={[
-                styles.input,
-                this.state.inputT || this.props.inputT
-                  ? globalStyles.purpleBorderColor
-                  : this.state.businesscategoryError ||
-                    this.props.businesscategoryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <BusinessIcon
-                style={{
-                  // position: "absolute",
-                  marginLeft: 15
-                }}
-                fill={
-                  this.state.inputT || this.props.inputT ? "#FF9D00" : "#FFF"
-                }
-              />
-              <View style={styles.colView}>
-                <Text
-                  style={[
-                    styles.inputLabel,
-                    this.state.inputT || this.props.inputT
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Business Type")}
-                </Text>
-                <Text style={[styles.inputText]}>
-                  {translate(businessCategory)}
-                </Text>
-              </View>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
           {((this.props.businessAccount &&
             this.props.businessAccount.businesscategory === "43") ||
             this.state.businessAccount.businesscategory === "43") && (
@@ -923,50 +837,75 @@ class CreateBusinessAccount extends Component {
               key={"otherBusinessCategory"}
             />
           )}
-          <View style={styles.marginVertical}>
-            <Item
+
+          <Item
+            disabled={
+              (this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading) ||
+              this.props.savingRegister
+            }
+            onPress={() => {
+              if (this.props.registering) {
+                this.props.openCountryModal();
+              } else this.setState({ inputC: true });
+            }}
+            style={[
+              styles.input,
+              this.state.countryError
+                ? globalStyles.redBorderColor
+                : globalStyles.transparentBorderColor,
+              styles.itemView
+            ]}
+          >
+            <LocationIcon
+              style={{
+                marginLeft: 15
+              }}
+              stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
+            />
+            <View style={styles.colView}>
+              <Text
+                style={[
+                  styles.inputLabel,
+                  this.state.inputC
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Country")}
+              </Text>
+              <Text style={[styles.inputText]}>{translate(country)}</Text>
+            </View>
+
+            <Icon type="AntDesign" name="down" style={styles.iconDown} />
+          </Item>
+
+          {/** Webiste Component */}
+          {this.state.editBusinessInfo && (
+            <Website
+              register={true}
+              ref={ref => (this.websiteInput = ref)}
+              inputs={this.inputs}
+              stateName={"websitelink"}
+              screenProps={this.props.screenProps}
+              customStyle={{
+                // width: widthPercentageToDP(85),
+                paddingHorizontal: 0
+              }}
+              optional={true}
+              website={this.state.businessAccount.websitelink}
+              setWebsiteValue={this.setWebsiteValue}
+              // networkString={this.state.networkString}
+              stateNameError={this.state.websitelinkError}
+              // setNetworkString={this.setNetworkString}
+              getValidInfo={this.getValidInfo}
               disabled={
                 (this.state.editBusinessInfo &&
                   this.props.editBusinessInfoLoading) ||
                 this.props.savingRegister
               }
-              onPress={() => {
-                if (this.props.registering) {
-                  this.props.openCountryModal();
-                } else this.setState({ inputC: true });
-              }}
-              style={[
-                styles.input,
-                this.state.countryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={{
-                  marginLeft: 15
-                }}
-                stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
-              />
-              <View style={styles.colView}>
-                <Text
-                  style={[
-                    styles.inputLabel,
-                    this.state.inputC
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Country")}
-                </Text>
-                <Text style={[styles.inputText]}>{translate(country)}</Text>
-              </View>
-
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
-
+            />
+          )}
           {/* Added handle submision button for updating business info */}
           {this.state.editBusinessInfo &&
           this.props.loadingUpdateBusinessInfo ? (

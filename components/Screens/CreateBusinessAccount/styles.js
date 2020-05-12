@@ -147,9 +147,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 56,
+    height: 54,
     paddingHorizontal: 0,
-    display: "flex"
+    display: "flex",
+    marginVertical: 10
     // alignItems: "flex-start"
   },
   businessView: {
@@ -167,9 +168,10 @@ const styles = StyleSheet.create({
   bottomCard: {
     justifyContent: "center",
     alignSelf: "center",
-    height: 50,
-    width: widthPercentageToDP(50),
-    marginBottom: 30
+    height: 54,
+    width: widthPercentageToDP(90),
+    marginHorizontal: 26
+    // marginBottom: 30
   },
   link: {
     textAlign: "center",
