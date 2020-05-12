@@ -48,7 +48,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -64,7 +64,7 @@ class CampaignDetails extends Component {
       expand: false,
       minHeight: 0,
       maxHeight: heightPercentageToDP(50),
-      CSVModalVisible: false
+      CSVModalVisible: false,
     };
   }
 
@@ -86,7 +86,7 @@ class CampaignDetails extends Component {
     ) {
       this.setState({
         toggleText: this.props.selectedCampaign.status,
-        toggle: this.props.selectedCampaign.status !== "PAUSED"
+        toggle: this.props.selectedCampaign.status !== "PAUSED",
       });
     }
   }
@@ -102,17 +102,17 @@ class CampaignDetails extends Component {
     );
   }
 
-  handleStartDatePicked = date => {
+  handleStartDatePicked = (date) => {
     this.setState({
-      start_time: date
+      start_time: date,
     });
   };
-  handleEndDatePicked = date => {
+  handleEndDatePicked = (date) => {
     this.setState({
-      end_time: date
+      end_time: date,
     });
   };
-  handleToggle = status => {
+  handleToggle = (status) => {
     segmentEventTrack(
       `Button pressed to ${status} campiagn`,
       this.props.selectedCampaign
@@ -120,7 +120,7 @@ class CampaignDetails extends Component {
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
-      toggleText: status
+      toggleText: status,
     });
   };
 
@@ -129,7 +129,7 @@ class CampaignDetails extends Component {
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
-        status: this.state.toggleText === "PAUSED" ? "ACTIVE" : "PAUSED"
+        status: this.state.toggleText === "PAUSED" ? "ACTIVE" : "PAUSED",
       },
       this.handleToggle
     );
@@ -140,13 +140,13 @@ class CampaignDetails extends Component {
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
-        status: "PAUSED"
+        status: "PAUSED",
       },
       this.handleToggle
     );
   };
 
-  showModal = visible => {
+  showModal = (visible) => {
     this.setState({ modalVisible: visible });
   };
 
@@ -167,11 +167,11 @@ class CampaignDetails extends Component {
     this.setState({ start_time, end_time });
     this.props.getCampaignStats(this.props.selectedCampaign, {
       start_time,
-      end_time
+      end_time,
     });
   };
 
-  adCreatives = item => {
+  adCreatives = (item) => {
     return (
       <MediaBox
         key={item.story_id}
@@ -184,8 +184,8 @@ class CampaignDetails extends Component {
   };
 
   handleChartToggle = () => {
-    this.setState(prevState => ({
-      expand: !prevState.expand
+    this.setState((prevState) => ({
+      expand: !prevState.expand,
     }));
     this.scroll.scrollTo({ x: 0, y: 0, animated: true });
     this.toggle();
@@ -193,14 +193,14 @@ class CampaignDetails extends Component {
 
   toggle = () => {
     Animated.spring(this.state.chartAnimation, {
-      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight
+      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight,
     }).start();
   };
 
-  showCSVModal = isVisible => {
+  showCSVModal = (isVisible) => {
     this.setState({ CSVModalVisible: isVisible });
   };
-  campaignEndedOrNot = campaign => {
+  campaignEndedOrNot = (campaign) => {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -214,10 +214,10 @@ class CampaignDetails extends Component {
     return campaignEndedOrNot;
   };
 
-  onLayout = event => {
+  onLayout = (event) => {
     const layout = event.nativeEvent.layout;
     this.setState({
-      maxHeight: hp(87) - layout.height
+      maxHeight: hp(87) - layout.height,
     });
   };
   render() {
@@ -286,14 +286,14 @@ class CampaignDetails extends Component {
         region_names =
           targeting.geos[0].hasOwnProperty("region_id") &&
           targeting.geos[0].region_id
-            .map(id =>
+            .map((id) =>
               translate(
                 regionsCountries
                   .find(
-                    country =>
+                    (country) =>
                       country.country_code === targeting.geos[0].country_code
                   )
-                  .regions.find(reg => reg.id === id).name
+                  .regions.find((reg) => reg.id === id).name
               )
             )
             .join(", ");
@@ -309,7 +309,7 @@ class CampaignDetails extends Component {
         audienceOverViewData.push({
           heading: "Gender",
           icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
-          content: gender
+          content: gender,
         });
         const ageMin = targeting && targeting.demographics[0].min_age;
         const ageMax = targeting && targeting.demographics[0].max_age;
@@ -323,26 +323,26 @@ class CampaignDetails extends Component {
               name="human-male-girl"
             />
           ),
-          content: ageMin + " - " + ageMax
+          content: ageMin + " - " + ageMax,
         });
         interesetNames =
           targeting && targeting.hasOwnProperty("interests")
-            ? targeting.interests[0].category_id.map(interest => {
+            ? targeting.interests[0].category_id.map((interest) => {
                 if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
                   return ` ${
                     interestNames.interests.scls.find(
-                      interestObj => interestObj.id === interest
+                      (interestObj) => interestObj.id === interest
                     ).name
                   }`;
                 } else {
                   return (
                     interest !== "scls" &&
                     interestNames.interests.scls.find(
-                      interestObj => interestObj.id === interest
+                      (interestObj) => interestObj.id === interest
                     ) &&
                     `${
                       interestNames.interests.scls.find(
-                        interestObj => interestObj.id === interest
+                        (interestObj) => interestObj.id === interest
                       ).name
                     }`
                   );
@@ -355,9 +355,9 @@ class CampaignDetails extends Component {
           this.props.languages.length > 0 &&
           targeting &&
           targeting.demographics[0] &&
-          targeting.demographics[0].languages.map(languageId => {
+          targeting.demographics[0].languages.map((languageId) => {
             return translate(
-              this.props.languages.find(lang => lang.id === languageId).name
+              this.props.languages.find((lang) => lang.id === languageId).name
             );
           });
         audienceOverViewData.push({
@@ -366,20 +366,20 @@ class CampaignDetails extends Component {
           content:
             langaugeNames && langaugeNames.length > 0
               ? langaugeNames.join(", ")
-              : ""
+              : "",
         });
         countryName =
           targeting &&
           targeting.geos[0].country_code &&
           translate(
             countries.find(
-              country => country.value === targeting.geos[0].country_code
+              (country) => country.value === targeting.geos[0].country_code
             ).label
           );
         audienceOverViewData.push({
           heading: "Location",
           icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
-          content: countryName + ": " + (region_names ? region_names : "")
+          content: countryName + ": " + (region_names ? region_names : ""),
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
           end_time = new Date(selectedCampaign.end_time.split("T")[0]);
@@ -394,7 +394,7 @@ class CampaignDetails extends Component {
       return (
         <>
           <DateFields
-            onRef={ref => (this.dateField = ref)}
+            onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.start_time}
@@ -412,7 +412,7 @@ class CampaignDetails extends Component {
               onDidFocus={() => {
                 if (this.props.selectedCampaign) {
                   Segment.screenWithProperties("Campaign Details", {
-                    campaign_id: this.props.selectedCampaign.campaign_id
+                    campaign_id: this.props.selectedCampaign.campaign_id,
                   });
                 }
               }}
@@ -424,8 +424,8 @@ class CampaignDetails extends Component {
                   {
                     borderBottomStartRadius: 30,
                     borderBottomEndRadius: 30,
-                    overflow: "hidden"
-                  }
+                    overflow: "hidden",
+                  },
                 ]}
               >
                 <LinearGradient
@@ -455,7 +455,7 @@ class CampaignDetails extends Component {
                   textAlign: "left",
                   fontSize: 15,
                   paddingTop: 3,
-                  flex: 1
+                  flex: 1,
                 }}
                 campaignStatus={loading ? null : selectedCampaign.status}
               />
@@ -470,8 +470,8 @@ class CampaignDetails extends Component {
                       style={[
                         styles.circleIcon,
                         {
-                          color: globalColors.orange
-                        }
+                          color: globalColors.orange,
+                        },
                       ]}
                       name={"circle"}
                       type={"FontAwesome"}
@@ -479,7 +479,7 @@ class CampaignDetails extends Component {
                     <Text
                       style={[
                         styles.reviewText,
-                        { color: globalColors.orange }
+                        { color: globalColors.orange },
                       ]}
                     >
                       {translate("Campaign ended")}
@@ -499,8 +499,8 @@ class CampaignDetails extends Component {
                             ? globalColors.red
                             : selectedCampaign.status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                       name={
                         selectedCampaign.review_status.includes("REJECTED")
@@ -525,8 +525,8 @@ class CampaignDetails extends Component {
                                 "PENDING"
                               ) && selectedCampaign.status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                     >
                       {translate(
@@ -547,9 +547,9 @@ class CampaignDetails extends Component {
                 )
               )}
               <ScrollView
-                contentContainerStyle={{ height: hp(100) }}
+                contentContainerStyle={{ height: hp(115) }}
                 scrollEnabled={!this.state.expand}
-                ref={ref => (this.scroll = ref)}
+                ref={(ref) => (this.scroll = ref)}
                 style={{ maxHeight: "100%" }}
               >
                 <View style={[styles.mainCard]}>
@@ -649,7 +649,7 @@ class CampaignDetails extends Component {
                                         onPress={() => {
                                           this.state.toggle
                                             ? this.setState({
-                                                modalVisible: true
+                                                modalVisible: true,
                                               })
                                             : this.updateStatus();
                                         }}
@@ -694,7 +694,7 @@ class CampaignDetails extends Component {
             <Animated.View
               style={[
                 { backgroundColor: "#000", overflow: "hidden" },
-                { height: this.state.chartAnimation }
+                { height: this.state.chartAnimation },
               ]}
             >
               {this.state.expand &&
@@ -726,7 +726,7 @@ class CampaignDetails extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   campaignEnded: state.campaignC.campaignEnded,
   loading: state.dashboard.loadingCampaignDetails,
@@ -735,9 +735,9 @@ const mapStateToProps = state => ({
   languages: state.campaignC.languagesList,
   mainBusiness: state.account.mainBusiness,
   languagesListLoading: state.campaignC.languagesListLoading,
-  languagesListError: state.campaignC.languagesListError
+  languagesListError: state.campaignC.languagesListError,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updateStatus: (info, handleToggle) =>
     dispatch(actionCreators.updateStatus(info, handleToggle)),
   endCampaign: (info, handleToggle) =>
@@ -746,6 +746,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
-    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage))
+    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);
