@@ -32,7 +32,7 @@ export const createBusinessAccount = (account, navigation) => {
       payload: true
     });
     createBaseUrl()
-      .post(`businessaccount`, account)
+      .post(`businessaccountV2`, account) //businessaccount OLD API
       .then(res => {
         return res.data;
       })
@@ -378,7 +378,8 @@ export const updateBusinessInfo = (userid, info, navigation) => {
       payload: true
     });
     createBaseUrl()
-      .put("businessAccount", {
+      .put("businessaccountV2", {
+        // businessAccount OLD API
         userid,
         ...info
       })

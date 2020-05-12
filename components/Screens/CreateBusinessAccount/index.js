@@ -377,38 +377,17 @@ class CreateBusinessAccount extends Component {
               });
             }
           } else {
-            let businessAccount = this.state.businessAccount;
-            if (!this.state.iosAppSelected) {
-              let appstorelink = {
-                app_name: "",
-                ios_app_id: "",
-                icon_media_url: ""
-              };
-              businessAccount = { ...businessAccount, appstorelink };
-            }
-            if (!this.state.androidAppSelected) {
-              let playstorelink = {
-                app_name: "",
-                icon_media_url: "",
-                android_app_url: ""
-              };
-              businessAccount = { ...businessAccount, playstorelink };
-            }
-            let websitelink = this.state.businessAccount.websitelink;
-            if (websitelink !== "") {
-              websitelink =
-                // this.state.networkString +
-                this.state.businessAccount.websitelink;
-            }
+            const businessAccountInfo = {
+              businessname: this.state.businessAccount.businessname,
+              businesscategory: this.state.businessAccount.businesscategory,
+              otherBusinessCategory:
+                this.state.businessAccount.businesscategory !== "43"
+                  ? null
+                  : this.state.businessAccount.otherBusinessCategory,
+              country: this.state.businessAccount.country
+            };
             this.props.createBusinessAccount(
-              {
-                ...businessAccount,
-                websitelink,
-                otherBusinessCategory:
-                  this.state.businessAccount.businesscategory !== "43"
-                    ? null
-                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
-              },
+              businessAccountInfo,
               this.props.navigation
             );
           }

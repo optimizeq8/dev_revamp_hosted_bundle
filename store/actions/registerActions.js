@@ -522,10 +522,8 @@ export const registerGuestUser = (
         return res.data;
       })
       .then(data => {
-        console.log("data", data);
-
         if (data.success === true) {
-          Segment.trackWithProperties("Register Personal Info", {
+          Segment.trackWithProperties("Register Details Success", {
             category: "Sign Up",
             label: "Step 2 of Registration"
           });
@@ -534,6 +532,11 @@ export const registerGuestUser = (
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
+          Segment.trackWithProperties("Register Details Error", {
+            category: "Sign Up",
+            label: "Step 2 of Registration",
+            error: data.message
+          });
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
@@ -552,14 +555,7 @@ export const registerGuestUser = (
         return data;
       })
       .then(async user => {
-        console.log("user", user);
-
         if (user.success === true) {
-          Segment.trackWithProperties("Register Business Info", {
-            category: "Sign Up",
-            label: "Step 3 of Registration"
-          });
-
           const decodedUser = jwt_decode(user.token);
           let peomise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
