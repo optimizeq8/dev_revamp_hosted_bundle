@@ -1,6 +1,6 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
-import { Platform } from "react-native";
+import { Platform, Alert, Clipboard } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -405,34 +405,28 @@ export const _pickImage = async (
             let uneditedImageUri = result.uri;
             let vConfiguration: Configuration = {
               forceCrop: true,
-              export: {
-                video: { format: VideoFormat.MOV },
-                serialization: {
-                  enabled: true,
-                  exportType: SerializationExportType.OBJECT,
-                },
-              },
+
               transform: {
                 items: [{ width: 9, height: 16 }],
               },
               sticker: {
                 personalStickers: true,
-                defaultPersonalStickerTintMode: TintMode.COLORIZED,
                 categories: [{ identifier: "imgly_sticker_category_shapes" }],
               },
             };
             console.log("rsasa", result.uri);
 
             VESDK.openEditor(
-              result.uri,
+              { uri: result.uri },
               vConfiguration,
               mediaEditor && mediaEditor.hasOwnProperty("serialization")
                 ? mediaEditor.serialization
                 : null
             )
               .then(async (manipResult) => {
+                await Clipboard.setString(JSON.stringify(manipResult));
+                Alert.alert("Copied to Clipboard!");
                 console.log(manipResult);
-
                 let serialization = {};
                 if (manipResult) {
                   serialization = manipResult.serialization;
@@ -480,7 +474,11 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
                 return;
               })
-              .catch((err) => console.log(err));
+              .catch((err) => {
+                console.log(err);
+                Alert.alert("Error", JSON.stringify(err));
+                Clipboard.setString(JSON.stringify(err));
+              });
           }
         } else {
           setTheState({
