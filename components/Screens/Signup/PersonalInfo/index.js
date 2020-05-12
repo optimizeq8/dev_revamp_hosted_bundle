@@ -174,13 +174,61 @@ class PersonalInfo extends Component {
       "mandatory",
       this.state.userInfo.lastname
     );
+    const businessnameError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.businessname
+    );
+
+    const businesscategoryError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.businesscategory
+    );
+    const countryError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.country
+    );
+
+    const businesscategoryOtherError =
+      this.state.businessAccount.businesscategory === "43" &&
+      validateWrapper(
+        "mandatory",
+        this.state.businessAccount.otherBusinessCategory
+      );
 
     this.setState({
       passwordError,
       emailError,
       firstnameError,
-      lastnameError
+      lastnameError,
+      businessnameError,
+      businesscategoryError,
+      businesscategoryOtherError,
+      countryError
     });
+    if (businessnameError) {
+      showMessage({
+        message: translate("Enter your business name"),
+        type: "warning"
+      });
+    }
+    if (businesscategoryError) {
+      showMessage({
+        message: translate(businesscategoryError),
+        type: "warning"
+      });
+    }
+    if (businesscategoryOtherError) {
+      showMessage({
+        message: translate(businesscategoryOtherError),
+        type: "warning"
+      });
+    }
+    if (countryError) {
+      showMessage({
+        message: translate("Please choose a country"),
+        type: "warning"
+      });
+    }
     if (passwordError) {
       showMessage({
         message: translate(passwordError),
@@ -218,6 +266,10 @@ class PersonalInfo extends Component {
       !lastnameError &&
       !emailError &&
       !passwordError &&
+      !businessnameError &&
+      !businesscategoryError &&
+      !businesscategoryOtherError &&
+      !countryError &&
       this.state.valid // condition for mobile no
     ) {
       const mobile = this.state.userInfo.mobile.substring(

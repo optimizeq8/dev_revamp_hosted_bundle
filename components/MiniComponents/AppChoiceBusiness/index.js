@@ -71,7 +71,9 @@ export default class AppChoiceBusiness extends Component {
             {translate(`apple\napp store`)}
           </Text>
           <Text style={styles.appStyle}>
-            {appstorelink.app_name + "\n" + "id: " + appstorelink.ios_app_id}
+            {appstorelink &&
+              appstorelink.app_name + "\n" + "id: " + appstorelink &&
+              appstorelink.ios_app_id}
           </Text>
           {/* iOSSwich */}
           <Toggle
@@ -101,9 +103,8 @@ export default class AppChoiceBusiness extends Component {
             {translate(`google\nplay store`)}
           </Text>
           <Text style={styles.appStyle}>
-            {playstorelink.app_name +
-              "\n" +
-              "id:" +
+            {playstorelink &&
+              playstorelink.app_name + "\n" + "id:" + playstorelink &&
               playstorelink.android_app_url}
           </Text>
           {/* Android switch */}

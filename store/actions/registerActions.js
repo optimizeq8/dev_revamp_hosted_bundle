@@ -541,9 +541,9 @@ export const registerGuestUser = (
           });
         }
         // TODO: NEED A SOLUTION FOR THIS
-        if (businessInvite === "0") {
-          dispatch(registerUser(userInfo, navigation, businessInvite));
-        }
+        // if (businessInvite === "0") {
+        //   dispatch(registerUser(userInfo, navigation, businessInvite));
+        // }
 
         // dispatch({
         //   type: actionTypes.REGISTER_GUEST_USER,

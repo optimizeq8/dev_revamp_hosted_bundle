@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    // height: 54,
+    height: 54,
     paddingHorizontal: 20,
     display: "flex",
     alignItems: "center",
@@ -31,13 +31,18 @@ export default StyleSheet.create({
     color: "#FFF",
     marginBottom: 10,
     paddingLeft: 0,
-    paddingRight: 0,
-    height: 15
+    paddingRight: 0
+    // height: 15
   },
   downicon: {
     fontSize: 20,
     color: "#fff",
     marginLeft: -20
+  },
+  downiconEnd: {
+    fontSize: 20,
+    color: "#fff",
+    marginLeft: -60
   },
   modalBar: {
     flexDirection: "row"

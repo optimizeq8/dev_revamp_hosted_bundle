@@ -17,12 +17,10 @@ import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import InputFeild from "../../MiniComponents/InputFieldNew";
+import ModalField from "../../MiniComponents/InputFieldNew/ModalField";
 
 //data
 import businessCategoryList from "../../Data/businessCategoriesList.data";
-
-//privay
-import { openPrivacy, openTerms } from "../../Terms&Conditions";
 
 // Style
 import styles from "./styles";
@@ -583,10 +581,10 @@ class CreateBusinessAccount extends Component {
     iosApp_name,
     androidApp_name
   ) => {};
+
   /**
    * returns categoryname to be displayed
    *
-   * @memberof CreateBusinessAccount
    */
   getBusinessCategory = () => {
     let category = "Select Business Type";
@@ -643,6 +641,21 @@ class CreateBusinessAccount extends Component {
     this.setState({
       ...state
     });
+  };
+
+  /**
+   * open category modal
+   */
+  openCategoryModal = () => {
+    this.setState({ inputT: true });
+  };
+
+  /**
+   * Open country modal
+   */
+
+  openCountryModal = () => {
+    this.setState({ inputC: true });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -758,52 +771,36 @@ class CreateBusinessAccount extends Component {
                 : this.closeCategoryModal
             }
           />
-          <Item
+          <ModalField
+            stateName={"businesscategory"}
+            setModalVisible={
+              this.props.registering
+                ? this.props.openCategoryModal
+                : this.openCategoryModal
+            }
+            modal={true}
+            label={"Business Type"}
+            valueError={this.state.businesscategoryError}
+            getValidInfo={this.getValidInfo}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||
               this.props.savingRegister
             }
-            onPress={() => {
-              if (this.props.registering) {
-                this.props.openCategoryModal();
-              } else this.setState({ inputT: true });
-            }}
-            style={[
-              styles.input,
-              this.state.inputT || this.props.inputT
-                ? globalStyles.purpleBorderColor
-                : this.state.businesscategoryError ||
-                  this.props.businesscategoryError
-                ? globalStyles.redBorderColor
-                : globalStyles.transparentBorderColor,
-              styles.itemView
-            ]}
-          >
-            <BusinessIcon
-              style={{
-                // position: "absolute",
-                marginLeft: 15
-              }}
-              fill={this.state.inputT || this.props.inputT ? "#FF9D00" : "#FFF"}
-            />
-            <View style={styles.colView}>
-              <Text
-                style={[
-                  styles.inputLabel,
-                  this.state.inputT || this.props.inputT
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Business Type")}
-              </Text>
-              <Text style={[styles.inputText]}>
-                {translate(businessCategory)}
-              </Text>
-            </View>
-            <Icon type="AntDesign" name="down" style={styles.iconDown} />
-          </Item>
+            valueText={businessCategory}
+            value={
+              this.props.registering
+                ? this.props.businessAccount.businesscategory
+                : this.state.businessAccount.businesscategory
+            }
+            incomplete={true}
+            translate={this.props.screenProps.translate}
+            icon={BusinessIcon}
+            isVisible={
+              this.props.registering ? this.props.inputT : this.state.inputT
+            }
+          />
+
           {/* Business category view ends here */}
 
           {((this.props.businessAccount &&
@@ -839,47 +836,35 @@ class CreateBusinessAccount extends Component {
             />
           )}
 
-          <Item
+          <ModalField
+            stateName={"businesscategory"}
+            setModalVisible={
+              this.props.registering
+                ? this.props.openCountryModal
+                : this.openCountryModal
+            }
+            modal={true}
+            label={"Country"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
             disabled={
               (this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading) ||
               this.props.savingRegister
             }
-            onPress={() => {
-              if (this.props.registering) {
-                this.props.openCountryModal();
-              } else this.setState({ inputC: true });
-            }}
-            style={[
-              styles.input,
-              this.state.countryError
-                ? globalStyles.redBorderColor
-                : globalStyles.transparentBorderColor,
-              styles.itemView
-            ]}
-          >
-            <LocationIcon
-              style={{
-                marginLeft: 15
-              }}
-              stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
-            />
-            <View style={styles.colView}>
-              <Text
-                style={[
-                  styles.inputLabel,
-                  this.state.inputC
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Country")}
-              </Text>
-              <Text style={[styles.inputText]}>{translate(country)}</Text>
-            </View>
-
-            <Icon type="AntDesign" name="down" style={styles.iconDown} />
-          </Item>
+            valueText={country}
+            value={
+              this.props.registering
+                ? this.props.businessAccount.country
+                : this.state.businessAccount.country
+            }
+            incomplete={true}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={
+              this.props.registering ? this.props.inputC : this.state.inputC
+            }
+          />
 
           {/** Webiste Component for  */}
           {this.state.editBusinessInfo && (

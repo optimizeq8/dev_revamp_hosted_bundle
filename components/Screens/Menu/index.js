@@ -130,9 +130,13 @@ class Menu extends Component {
     const { mainBusiness } = this.props;
     let businesscategoryName = "";
     if (mainBusiness && mainBusiness.businesscategory) {
-      businesscategoryName = this.state.items.find(
-        category => category.value === mainBusiness.businesscategory
-      ).label;
+      // check if category === "43" ie other then show the otherCategory name
+      if (mainBusiness.businesscategory === "43") {
+        businesscategoryName = mainBusiness.otherBusinessCategory;
+      } else
+        businesscategoryName = this.state.items.find(
+          category => category.value === mainBusiness.businesscategory
+        ).label;
     }
     return businesscategoryName;
   };
