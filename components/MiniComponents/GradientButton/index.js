@@ -34,7 +34,7 @@ class GradientButton extends React.PureComponent {
     } = this.props;
     const orangeDarkColor = ["#FF9D00", "#FF5C14"];
     const transparentColor = ["rgba(0,0,0,0)", "rgba(0,0,0,0)"];
-    const purpleVioletColor = ["#7B42F6", "#B01EFF"];
+    const purpleVioletColor = ["#9300FF", "#9300FF"];
     const violetPinkColor = ["#B01EFF", "#E1467C"];
     const pinkDarkGreenColor = ["#E1467C", "#205284"];
     const blueVioletColor = ["#3672F8", "#B01EFF"];

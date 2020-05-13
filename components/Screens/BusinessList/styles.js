@@ -29,6 +29,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     zIndex: 10
   },
+  noInviteText: {
+    alignSelf: "center",
+    color: "#A496AC",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "center",
+    position: "absolute",
+    bottom: hp(30)
+  },
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -49,6 +58,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     bottom: hp(5) > 40 ? hp(7) : hp(12)
   },
+  bottomCard2: {
+    borderRadius: 50,
+    height: 54,
+    width: wp(70),
+    position: "absolute",
+    alignSelf: "center",
+    bottom: hp(20),
+    borderColor: "#D2C6D8",
+    borderWidth: 1
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
@@ -56,7 +75,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     // paddingBottom: 20,
-    color: "#5f5f5f"
+    color: "#A496AC"
   },
   contentContainer: {
     paddingTop: 20,
@@ -119,8 +138,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10
   },
   activeTab: {
-    borderBottomColor: "#FF7A09",
-    color: "#FF7A09"
+    borderBottomColor: "#9300FF",
+    color: "#9300FF"
   },
   pendingInviteNumber: {
     fontFamily: "montserrat-bold-english",

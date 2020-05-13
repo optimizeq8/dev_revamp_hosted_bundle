@@ -48,14 +48,16 @@ const styles = StyleSheet.create({
 
   keyboardShiftContainer: { flex: 1, alignItems: "center" },
   outView: {
-    flex: 1
+    // flex: 1
   },
   forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 10 },
   SignInCoverImage: {
     position: "absolute",
+    alignSelf: "flex-end",
     zIndex: -1,
     elevation: 1, //For android to show up
     bottom: 0,
+    borderColor: "transparent",
     left: I18nManager.isRTL ? widthPercentageToDP(-25) : widthPercentageToDP(18)
   },
   title: { color: "#000", fontSize: 48 },
@@ -63,7 +65,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center"
   },
-
+  gradientBtn: {
+    height: 54,
+    width: "100%",
+    marginHorizontal: 0
+  },
+  gradientBtnText: { fontSize: 14 },
   logoText: {
     textAlign: "center",
     color: "#fff",
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
 
   mainView: {
-    flex: 1,
+    // flex: 1,
     paddingTop: 40,
     paddingHorizontal: 30
   },
