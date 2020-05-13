@@ -16,6 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
+import MediaMeta from "react-native-media-meta";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -80,7 +81,11 @@ export const _pickImage = async (
     let result = {};
     if (!editImage) result = await pick(mediaTypes, screenProps);
     else
-      result = { uri: mediaEditor.mediaUri, cancelled: false, type: "image" };
+      result = {
+        uri: mediaEditor.mediaUri,
+        cancelled: false,
+        type: mediaTypes === "Images" ? "image" : "video",
+      };
     let configuration = PhotoEditorConfiguration({
       serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
     });
@@ -283,172 +288,229 @@ export const _pickImage = async (
             });
           });
       } else if (result.type === "video") {
-        if (result.duration > 10999) {
+        if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
+          let cards = storyAdsArray;
+          let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
+
+          card = {
+            ...card,
+            uploaded: false,
+            index: storyAdCards.selectedStoryAd.index,
+            media: result.uri,
+            media_type: result.type.toUpperCase(),
+            iosVideoUploaded: false,
+            fileReadyToUpload: true,
+          };
+
+          cards[storyAdCards.selectedStoryAd.index] = card;
           setTheState({
-            mediaError: "Maximum video duration  is 10 seconds.",
-            media: "//",
-            sourceChanging: true,
-            uneditedImageUri: "//",
+            storyAdCards: {
+              ...storyAdCards,
+              // storyAdSelected: false,
+              selectedStoryAd: {
+                ...card,
+              },
+            },
+            fileReadyToUpload: true,
+            type: result.type.toUpperCase(),
           });
-          !rejected &&
-            save_campaign_info({
-              media: "//",
-              type: "",
-            });
-          segmentEventTrack("Selected Video Error", {
-            campaign_error_video: "Maximum video duration is 10 seconds",
-          });
-          showMessage({
-            message: translate("Maximum video duration is 10 seconds"),
-            description:
-              translate("Selected video duration") +
-              (result.duration / 1000).toFixed(2) +
-              translate("seconds"),
-            position: "top",
-            type: "warning",
+          save_campaign_info({
+            media: result.uri,
+            type: result.type.toUpperCase(),
+            fileReadyToUpload: true,
           });
           onToggleModal(false);
-          setTheState({
-            sourceChanging: false,
-          });
-          return;
-        } else if (result.duration < 3000) {
-          setTheState({
-            mediaError: "Minimum video duration  is 3 seconds.",
-            media: "//",
-            sourceChanging: true,
-            uneditedImageUri: "//",
-          });
-          !rejected &&
-            save_campaign_info({
-              media: "//",
-              type: "",
-            });
-          segmentEventTrack("Selected Video Error", {
-            campaign_error_video: "Minimum video duration is 3 seconds",
-          });
-          showMessage({
-            message: translate("Minimum video duration is 3 seconds"),
-            description:
-              translate("Selected video duration") +
-              (result.duration / 1000).toFixed(2) +
-              translate("seconds"),
+        } else {
+          uneditedImageUri = result.uri;
+          let vConfiguration: Configuration = {
+            forceCrop: true,
+            // export: {
+            //   serialization: {
+            //     enabled: true,
+            //     exportType: SerializationExportType.OBJECT,
+            //   },
+            // },
+            transform: {
+              items: [{ width: 9, height: 16 }],
+            },
+            sticker: {
+              personalStickers: true,
+              categories: [{ identifier: "imgly_sticker_category_shapes" }],
+            },
+          };
 
-            position: "top",
-            type: "warning",
-          });
-          onToggleModal(false);
-          setTheState({ sourceChanging: false });
-          return;
-        } else if (file.size > 32000000) {
-          setTheState({
-            mediaError: "Allowed video size is up to 32 MBs.",
-            media: "//",
-            uneditedImageUri: "//",
-          });
-          !rejected &&
-            save_campaign_info({
-              media: "//",
-              type: "",
-            });
-          segmentEventTrack("Selected Video Error", {
-            videoError: "Allowed video size is up to 32 MBs",
-          });
-          showMessage({
-            message: translate("Allowed video size is up to {{fileSize}} MBs", {
-              fileSize: 32,
-            }),
-            position: "top",
-            type: "warning",
-          });
-          onToggleModal(false);
-          return;
-        } else if (
-          (result.width >= 1080 &&
-            result.height >= 1920 &&
-            Math.floor(result.width / 9) === Math.floor(result.height / 16)) ||
-          true
-        ) {
-          if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
-            let cards = storyAdsArray;
-            let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
+          VESDK.openEditor(
+            { uri: result.uri },
+            vConfiguration,
+            mediaEditor &&
+              mediaEditor.hasOwnProperty("serialization") &&
+              Platform.OS === "android"
+              ? mediaEditor.serialization
+              : null
+          )
 
-            card = {
-              ...card,
-              uploaded: false,
-              index: storyAdCards.selectedStoryAd.index,
-              media: result.uri,
-              media_type: result.type.toUpperCase(),
-              iosVideoUploaded: false,
-              fileReadyToUpload: true,
-            };
-
-            cards[storyAdCards.selectedStoryAd.index] = card;
-            setTheState({
-              storyAdCards: {
-                ...storyAdCards,
-                // storyAdSelected: false,
-                selectedStoryAd: {
-                  ...card,
-                },
-              },
-              fileReadyToUpload: true,
-              type: result.type.toUpperCase(),
-            });
-            save_campaign_info({
-              media: result.uri,
-              type: result.type.toUpperCase(),
-              fileReadyToUpload: true,
-            });
-            onToggleModal(false);
-          } else {
-            let uneditedImageUri = result.uri;
-            let vConfiguration: Configuration = {
-              forceCrop: true,
-
-              transform: {
-                items: [{ width: 9, height: 16 }],
-              },
-              sticker: {
-                personalStickers: true,
-                categories: [{ identifier: "imgly_sticker_category_shapes" }],
-              },
-            };
-            console.log("rsasa", result.uri);
-
-            VESDK.openEditor(
-              { uri: result.uri },
-              vConfiguration,
-              mediaEditor && mediaEditor.hasOwnProperty("serialization")
-                ? mediaEditor.serialization
-                : null
-            )
-              .then(async (manipResult) => {
-                await Clipboard.setString(JSON.stringify(manipResult));
-                Alert.alert("Copied to Clipboard!");
-                console.log(manipResult);
-                let serialization = {};
-                if (manipResult) {
-                  serialization = manipResult.serialization;
-                  let filesys = await FileSystem.getInfoAsync(
-                    manipResult.video ? manipResult.video : manipResult.image
-                  );
-                  console.log("filesys", filesys);
-
-                  setTheState({
-                    directory: "/ImageManipulator/",
-                  });
-                  result.uri = manipResult.video
+            .then(async (manipResult) => {
+              if (manipResult) {
+                let newResult = await MediaMeta.get(
+                  manipResult.hasChanges
                     ? manipResult.video
-                    : manipResult.image;
-                  result.serialization = serialization;
-                } else {
-                  return Promise.reject("Editing canceled");
-                }
-              })
-              .then(() => {
-                console.log(result);
+                      ? manipResult.video.replace("file://", "")
+                      : manipResult.image.replace("file://", "")
+                    : result.uri.replace("file://", "")
+                );
 
+                console.log(
+                  newResult.duration,
+                  newResult.height,
+                  newResult.width,
+                  newResult.duration < 3000
+                );
+
+                let newSize = await FileSystem.getInfoAsync(
+                  manipResult.hasChanges
+                    ? manipResult.video
+                      ? manipResult.video
+                      : manipResult.image
+                    : result.uri
+                );
+                console.log(
+                  newResult.width < 1080,
+                  newResult.height < 1920,
+                  Math.floor(newResult.width / 9) !==
+                    Math.floor(newResult.height / 16)
+                );
+
+                if (
+                  Math.floor(newResult.width / 9) !==
+                  Math.floor(newResult.height / 16)
+                ) {
+                  setTheState({
+                    mediaError:
+                      "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                    media: "//",
+                    sourceChanging: true,
+                    uneditedImageUri: "//",
+                  });
+                  !rejected &&
+                    save_campaign_info({
+                      media: "//",
+                      type: "",
+                    });
+                  onToggleModal(false);
+                  segmentEventTrack("Selected Video Error", {
+                    campaign_error_video:
+                      "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920",
+                  });
+
+                  showMessage({
+                    message: translate(
+                      "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+                    ),
+                    // message:
+                    //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                    position: "top",
+                    type: "warning",
+                  });
+                  setTheState({ sourceChanging: false });
+                  return false;
+                } else if (newResult.duration > 10999) {
+                  setTheState({
+                    mediaError: "Maximum video duration  is 10 seconds.",
+                    media: "//",
+                    sourceChanging: true,
+                    uneditedImageUri: "//",
+                  });
+                  !rejected &&
+                    save_campaign_info({
+                      media: "//",
+                      type: "",
+                    });
+                  segmentEventTrack("Selected Video Error", {
+                    campaign_error_video:
+                      "Maximum video duration is 10 seconds",
+                  });
+                  showMessage({
+                    message: translate("Maximum video duration is 10 seconds"),
+                    description:
+                      translate("Selected video duration") +
+                      (newResult.duration / 1000).toFixed(2) +
+                      translate("seconds"),
+                    position: "top",
+                    type: "warning",
+                  });
+                  onToggleModal(false);
+                  setTheState({
+                    sourceChanging: false,
+                  });
+                  return;
+                } else if (newResult.duration < 3000) {
+                  setTheState({
+                    mediaError: "Minimum video duration  is 3 seconds.",
+                    media: "//",
+                    sourceChanging: true,
+                    uneditedImageUri: "//",
+                  });
+                  !rejected &&
+                    save_campaign_info({
+                      media: "//",
+                      type: "",
+                    });
+                  segmentEventTrack("Selected Video Error", {
+                    campaign_error_video: "Minimum video duration is 3 seconds",
+                  });
+                  showMessage({
+                    message: translate("Minimum video duration is 3 seconds"),
+                    description:
+                      translate("Selected video duration") +
+                      (newResult.duration / 1000).toFixed(2) +
+                      translate("seconds"),
+
+                    position: "top",
+                    type: "warning",
+                  });
+                  onToggleModal(false);
+                  setTheState({ sourceChanging: false });
+                  return;
+                } else if (newSize.size > 32000000) {
+                  setTheState({
+                    mediaError: "Allowed video size is up to 32 MBs.",
+                    media: "//",
+                    uneditedImageUri: "//",
+                  });
+                  !rejected &&
+                    save_campaign_info({
+                      media: "//",
+                      type: "",
+                    });
+                  segmentEventTrack("Selected Video Error", {
+                    videoError: "Allowed video size is up to 32 MBs",
+                  });
+                  showMessage({
+                    message: translate(
+                      "Allowed video size is up to {{fileSize}} MBs",
+                      {
+                        fileSize: 32,
+                      }
+                    ),
+                    position: "top",
+                    type: "warning",
+                  });
+                  onToggleModal(false);
+                  return false;
+                } else {
+                  result.uri = manipResult.hasChanges
+                    ? manipResult.video
+                      ? manipResult.video
+                      : manipResult.image
+                    : result.uri;
+                  result.serialization = manipResult.serialization;
+                }
+              } else {
+                return Promise.reject("Editing canceled");
+              }
+            })
+            .then((correct = true) => {
+              if (correct) {
                 setTheState({
                   media: result.uri,
                   type: result.type.toUpperCase(),
@@ -457,6 +519,8 @@ export const _pickImage = async (
                   iosVideoUploaded: false,
                   sourceChanging: true,
                   fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization,
                 });
                 onToggleModal(false);
                 segmentEventTrack("Selected Video Successfully");
@@ -473,43 +537,15 @@ export const _pickImage = async (
                   });
                 setTheState({ sourceChanging: false });
                 return;
-              })
-              .catch((err) => {
-                console.log(err);
-                Alert.alert("Error", JSON.stringify(err));
-                Clipboard.setString(JSON.stringify(err));
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              showMessage({
+                message: err,
+                type: "warning",
               });
-          }
-        } else {
-          setTheState({
-            mediaError:
-              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-            media: "//",
-            sourceChanging: true,
-            uneditedImageUri: "//",
-          });
-          !rejected &&
-            save_campaign_info({
-              media: "//",
-              type: "",
             });
-          onToggleModal(false);
-          segmentEventTrack("Selected Video Error", {
-            campaign_error_video:
-              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920",
-          });
-
-          showMessage({
-            message: translate(
-              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
-            ),
-            // message:
-            //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-            position: "top",
-            type: "warning",
-          });
-          setTheState({ sourceChanging: false });
-          return;
         }
       }
     } else if (result && !result.cancelled && isNull(media)) {

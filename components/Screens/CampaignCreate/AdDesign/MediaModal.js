@@ -15,8 +15,8 @@ export default class MediaModal extends Component {
       "Image",
       "Video",
       "Upload media from a different device",
-      "Download media from a different device"
-    ].map(op => {
+      "Download media from a different device",
+    ].map((op) => {
       return (
         <MediaOptions
           getVideoUploadUrl={this.props.getVideoUploadUrl}
@@ -66,7 +66,7 @@ export default class MediaModal extends Component {
                 contentContainerStyle={{
                   marginTop: 15,
                   paddingTop: 15,
-                  marginBottom: 15
+                  marginBottom: 15,
                 }}
               >
                 {options}
@@ -76,9 +76,6 @@ export default class MediaModal extends Component {
                     <MediaOptions
                       _pickImage={this.props._pickImage}
                       title={"Edit Image"}
-                      setUploadFromDifferentDeviceModal={
-                        this.props.setUploadFromDifferentDeviceModal
-                      }
                       setMediaModalVisible={this.props.setMediaModalVisible}
                       screenProps={this.props.screenProps}
                       mediaUri={

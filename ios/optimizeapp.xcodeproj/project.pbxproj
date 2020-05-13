@@ -11,6 +11,7 @@
 		292AC55D0BD44E369B86A6C1 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40B2C09F59A84472AEEADA20 /* FontAwesome5_Regular.ttf */; };
 		32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF7DBC25BE34949B1C08ECE /* libz.tbd */; };
 		3B30A9B73C5B4002B423263F /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B57378FC97F4DD9B1A9C6B6 /* FontAwesome.ttf */; };
+		3E5A2C827C06431696597595 /* libRNMediaMeta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 217B52E231C947C99755A100 /* libRNMediaMeta.a */; };
 		402CC572BB4D47DB85A4473E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD9ACC2D2AA94CCC90B89167 /* MaterialCommunityIcons.ttf */; };
 		4396537C53E949DDBB7E0B0B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59E77E5F2B1D4731B717DE78 /* MaterialIcons.ttf */; };
 		4B1D970EF1FB45D2AB4277A9 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D32A712204BB4A4CAB5DFEAB /* Feather.ttf */; };
@@ -42,9 +43,21 @@
 		FCE858E565CD4B43B6917280 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFBEB9DC037A4A68B1FF982F /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F754A137246C35D400404666 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 05520CF899DD464FA090AC12 /* RNMediaMeta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNMediaMeta;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		013BE6C6E1714379BE037057 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		05520CF899DD464FA090AC12 /* RNMediaMeta.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNMediaMeta.xcodeproj; path = "../node_modules/react-native-media-meta/ios/RNMediaMeta.xcodeproj"; sourceTree = "<group>"; };
 		212BF70271DF42EDB48E369E /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
+		217B52E231C947C99755A100 /* libRNMediaMeta.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNMediaMeta.a; sourceTree = "<group>"; };
 		2C1548D9E4CB1AEFA5CCAE6D /* Pods-optimizeapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-optimizeapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-optimizeapp/Pods-optimizeapp.debug.xcconfig"; sourceTree = "<group>"; };
 		2DF7DBC25BE34949B1C08ECE /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		32E98ECC49484B7BAB05801D /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -92,6 +105,7 @@
 				F7F47D282434CDE10055B2E3 /* AdSupport.framework in Frameworks */,
 				EBB8117C1BFA0514F79CAF74 /* libPods-optimizeapp.a in Frameworks */,
 				32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */,
+				3E5A2C827C06431696597595 /* libRNMediaMeta.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +157,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9E883E4E09674C9D86051CE6 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				05520CF899DD464FA090AC12 /* RNMediaMeta.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		B56386381DB9693800A0598C = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +173,8 @@
 				5B29BC350A332C58878A9F13 /* Pods */,
 				1A42804E64B7E9E0AB8B6799 /* Frameworks */,
 				42A3CBB74F154D82A8E3CB5F /* Resources */,
+				9E883E4E09674C9D86051CE6 /* Libraries */,
+				F754A133246C35D400404666 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,6 +213,22 @@
 				B563865E1DB96A5E00A0598C /* main.m */,
 			);
 			path = Supporting;
+			sourceTree = "<group>";
+		};
+		F754A133246C35D400404666 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				217B52E231C947C99755A100 /* libRNMediaMeta.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		F754A134246C35D400404666 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F754A138246C35D400404666 /* libRNMediaMeta.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,12 +285,28 @@
 			mainGroup = B56386381DB9693800A0598C;
 			productRefGroup = B56386421DB9693800A0598C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F754A134246C35D400404666 /* Products */;
+					ProjectRef = 05520CF899DD464FA090AC12 /* RNMediaMeta.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B56386401DB9693800A0598C /* optimizeapp */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F754A138246C35D400404666 /* libRNMediaMeta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNMediaMeta.a;
+			remoteRef = F754A137246C35D400404666 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B563863F1DB9693800A0598C /* Resources */ = {
@@ -543,6 +599,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/optimizeapp/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				MARKETING_VERSION = 0.3.4200;
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -566,6 +626,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/optimizeapp/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				MARKETING_VERSION = 0.3.4200;
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

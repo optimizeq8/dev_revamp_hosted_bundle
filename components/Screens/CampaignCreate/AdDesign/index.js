@@ -1187,7 +1187,7 @@ class AdDesign extends Component {
                       }
                     />
                   )}
-                  {videoIsLoading ? <CameraLoading /> : null}
+                  {/* {media !== "//" && videoIsLoading ? <CameraLoading /> : null} */}
                   <SwipeCompCondition
                     screenProps={this.props.screenProps}
                     _changeDestination={(

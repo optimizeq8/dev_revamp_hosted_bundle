@@ -36,10 +36,10 @@ export default class MediaOptions extends Component {
     } else {
       segmentEventTrack(` Image edit option selected`);
       this.props._pickImage(
-        "Images",
+        title === "Image" ? "Images" : "Videos",
         {
           mediaUri: this.props.mediaUri,
-          serialization: this.props.serialization
+          serialization: this.props.serialization,
         },
         true
       );
