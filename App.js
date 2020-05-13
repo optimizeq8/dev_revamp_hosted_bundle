@@ -167,10 +167,10 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   async componentDidMount() {
-    // Segment.initialize({
-    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
-    // });
+    Segment.initialize({
+      androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
