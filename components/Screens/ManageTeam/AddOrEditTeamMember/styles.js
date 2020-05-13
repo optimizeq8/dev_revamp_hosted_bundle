@@ -58,13 +58,16 @@ export default StyleSheet.create({
     borderRadius: 50
   },
   membersTypes: {
-    width: "60%",
-    height: "25%",
-    alignSelf: "center",
+    alignSelf: "flex-start",
     marginVertical: 10,
+    width: "85%",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start"
+    paddingHorizontal: 10
+  },
+  memberTypeView: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginVertical: 10
   },
   meberTypeStyle: {
     fontFamily: "montserrat-bold",

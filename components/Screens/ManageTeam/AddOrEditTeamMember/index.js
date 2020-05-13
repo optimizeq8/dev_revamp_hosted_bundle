@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, ScrollView } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
+import InputScrollView from "react-native-input-scroll-view";
 import * as Segment from "expo-analytics-segment";
 import AddTeamIcon from "../../../../assets/SVGs/AddTeam";
 import Header from "../../../MiniComponents/Header";
@@ -231,7 +232,12 @@ class AddOrEditTeamMember extends Component {
           title={editTeamMember ? "Edit team member" : "Add team member"}
           navigation={this.props.navigation}
         />
-        <Content contentContainerStyle={{ flex: 1 }}>
+        <InputScrollView
+          {...ScrollView.props}
+          contentContainerStyle={{
+            paddingHorizontal: 26
+          }}
+        >
           <AddTeamIcon
             style={{ alignSelf: "center", marginBottom: 10 }}
             width={50}
@@ -273,7 +279,7 @@ class AddOrEditTeamMember extends Component {
           >
             {MemberTypes(this.handleMemberType, userRole, this.translate)}
           </Animatable.View>
-        </Content>
+        </InputScrollView>
 
         {editTeamMember ? (
           <View style={{ flex: 0.25 }}>
