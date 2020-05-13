@@ -515,15 +515,15 @@ export const registerGuestUser = (
   businessInvite = "1",
   navigation
 ) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     createBaseUrl()
-      .post(`saveUserInfo`, userInfo)
+      .post(`saveUserInfoV2`, userInfo)
       .then(res => {
         return res.data;
       })
       .then(data => {
         if (data.success === true) {
-          Segment.trackWithProperties("Register Personal Info", {
+          Segment.trackWithProperties("Register Details Success", {
             category: "Sign Up",
             label: "Step 2 of Registration"
           });
@@ -532,23 +532,69 @@ export const registerGuestUser = (
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
+          Segment.trackWithProperties("Register Details Error", {
+            category: "Sign Up",
+            label: "Step 2 of Registration",
+            error: data.message
+          });
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
             position: "top"
           });
         }
-        if (businessInvite === "0") {
-          dispatch(registerUser(userInfo, navigation, businessInvite));
-        }
+        // TODO: NEED A SOLUTION FOR THIS
+        // if (businessInvite === "0") {
+        //   dispatch(registerUser(userInfo, navigation, businessInvite));
+        // }
 
-        return dispatch({
-          type: actionTypes.REGISTER_GUEST_USER,
-          payload: { success: data.success, userInfo }
-        });
+        // dispatch({
+        //   type: actionTypes.REGISTER_GUEST_USER,
+        //   payload: { success: data.success, userInfo }
+        // });
+        return data;
+      })
+      .then(async user => {
+        if (user.success === true) {
+          const decodedUser = jwt_decode(user.token);
+          let peomise = await setAuthToken(user.token);
+          return { user: decodedUser, message: user.message };
+          //if something goes wrong with the registeration process or Front-end verification
+          //this will throw an error and stop the regiteration process
+        } else return Promise.reject({ message: user.message });
+      })
+      .then(decodedUser => {
+        if (decodedUser && decodedUser.user) {
+          if (
+            [
+              "nouf@optimizeapp.com",
+              "sam.omran@hotmail.com",
+              "imran@optimizekw.com",
+              "saadiya@optimizekw.com",
+              "shorook@optimizekw.com",
+              "samy@optimizeapp.com"
+            ].includes(decodedUser.user.email)
+          ) {
+            dispatch(chanege_base_url(true));
+          }
+          dispatch(setCurrentUser(decodedUser));
+        }
+      })
+      .then(() => {
+        if (getState().auth.userInfo) {
+          dispatch({
+            type: actionTypes.SAVING_REGISTER_ACCOUNT,
+            payload: false
+          });
+          navigation.navigate("RegistrationSuccess");
+          dispatch(send_push_notification());
+          dispatch(getBusinessAccounts());
+          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          AsyncStorage.setItem("registeredWithInvite", "true");
+        }
       })
       .catch(err => {
-        // console.log("registerGuestUser ERROR", err.message || err.response);
+        console.log("registerGuestUser ERROR", err.message || err.response);
         showMessage({
           message:
             err.message ||

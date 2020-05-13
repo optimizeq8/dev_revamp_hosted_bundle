@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
+import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
+import { Button, Item, Input, Container, Icon } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
@@ -11,17 +11,16 @@ import isEmpty from "lodash/isEmpty";
 import isEqual from "react-fast-compare";
 
 import Picker from "../../MiniComponents/Picker";
-import Website from "../../MiniComponents/InputField/Website";
+import Website from "../../MiniComponents/InputFieldNew/Website";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import InputFeild from "../../MiniComponents/InputFieldNew";
+import ModalField from "../../MiniComponents/InputFieldNew/ModalField";
 
 //data
 import businessCategoryList from "../../Data/businessCategoriesList.data";
-
-//privay
-import { openPrivacy, openTerms } from "../../Terms&Conditions";
 
 // Style
 import styles from "./styles";
@@ -82,7 +81,6 @@ class CreateBusinessAccount extends Component {
       businessnameError: "",
       businessnameAvalible: false,
       brandNameError: "",
-      businessemailError: "",
       businesscategoryError: "",
       businesscategoryOtherError: "",
       countryError: "",
@@ -129,7 +127,8 @@ class CreateBusinessAccount extends Component {
       androidData: [],
       checkingBusinessNameSubmission: false,
       androidAppSelected: false,
-      iosAppSelected: false
+      iosAppSelected: false,
+      createNewBusiness: false
     };
   }
   componentDidMount() {
@@ -138,6 +137,11 @@ class CreateBusinessAccount extends Component {
       "editBusinessInfo",
       false
     );
+    const createNewBusiness = this.props.navigation.getParam(
+      "createNewBusiness",
+      false
+    );
+    this.setState({ createNewBusiness });
     Segment.screen(
       editBusinessInfo
         ? "Edit Business Info"
@@ -148,6 +152,7 @@ class CreateBusinessAccount extends Component {
         category: this.props.registering ? "Sign Up" : "User Menu"
       }
     );
+
     // prefilling the values in case of updating business info
     if (this.props.mainBusiness && editBusinessInfo) {
       const website = this.props.mainBusiness.websitelink;
@@ -216,12 +221,6 @@ class CreateBusinessAccount extends Component {
       this.state.businessAccount.businessname
     );
 
-    const businessemailError = validateWrapper(
-      "mandatory",
-      this.props.registering
-        ? "not empty"
-        : this.state.businessAccount.businessemail
-    );
     const businesscategoryError = validateWrapper(
       "mandatory",
       this.state.businessAccount.businesscategory
@@ -247,7 +246,6 @@ class CreateBusinessAccount extends Component {
 
     this.setState({
       businessnameError,
-      businessemailError,
       businesscategoryError,
       countryError,
       businesscategoryOtherError,
@@ -261,7 +259,6 @@ class CreateBusinessAccount extends Component {
     } else {
       if (
         !businessnameError &&
-        !businessemailError &&
         !businesscategoryError &&
         !countryError &&
         !businesscategoryOtherError &&
@@ -276,10 +273,12 @@ class CreateBusinessAccount extends Component {
           });
         }
         if (
-          (this.state.editBusinessInfo
-          ? this.state.businessAccount.businessname !==
-            this.props.mainBusiness.businessname
-          : true)
+          (
+            this.state.editBusinessInfo
+              ? this.state.businessAccount.businessname !==
+                this.props.mainBusiness.businessname
+              : true
+          )
             ? await this._verifyBusinessName(
                 this.state.businessAccount.businessname,
                 true
@@ -378,38 +377,17 @@ class CreateBusinessAccount extends Component {
               });
             }
           } else {
-            let businessAccount = this.state.businessAccount;
-            if (!this.state.iosAppSelected) {
-              let appstorelink = {
-                app_name: "",
-                ios_app_id: "",
-                icon_media_url: ""
-              };
-              businessAccount = { ...businessAccount, appstorelink };
-            }
-            if (!this.state.androidAppSelected) {
-              let playstorelink = {
-                app_name: "",
-                icon_media_url: "",
-                android_app_url: ""
-              };
-              businessAccount = { ...businessAccount, playstorelink };
-            }
-            let websitelink = this.state.businessAccount.websitelink;
-            if (websitelink !== "") {
-              websitelink =
-                // this.state.networkString +
-                this.state.businessAccount.websitelink;
-            }
+            const businessAccountInfo = {
+              businessname: this.state.businessAccount.businessname,
+              businesscategory: this.state.businessAccount.businesscategory,
+              otherBusinessCategory:
+                this.state.businessAccount.businesscategory !== "43"
+                  ? null
+                  : this.state.businessAccount.otherBusinessCategory,
+              country: this.state.businessAccount.country
+            };
             this.props.createBusinessAccount(
-              {
-                ...businessAccount,
-                websitelink,
-                otherBusinessCategory:
-                  this.state.businessAccount.businesscategory !== "43"
-                    ? null
-                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
-              },
+              businessAccountInfo,
               this.props.navigation
             );
           }
@@ -573,9 +551,88 @@ class CreateBusinessAccount extends Component {
     iosApp_name,
     androidApp_name
   ) => {};
+
+  /**
+   * returns categoryname to be displayed
+   *
+   */
+  getBusinessCategory = () => {
+    const { translate } = this.props.screenProps;
+    let category = translate("Select Business Type");
+    // if from registration  screen
+    if (
+      this.props.registering &&
+      this.props.businessAccount &&
+      this.props.businessAccount.businesscategory !== ""
+    ) {
+      category = this.state.items.find(
+        i => i.value === this.props.businessAccount.businesscategory
+      ).label;
+    } else if (this.state.businessAccount.businesscategory !== "") {
+      // if from create business account or edit screen
+      category = this.state.items.find(
+        i => i.value === this.state.businessAccount.businesscategory
+      ).label;
+    }
+    return category;
+  };
+  getCountryName = () => {
+    let country = "Select Country";
+    if (this.props.registering && this.props.businessAccount.country !== "") {
+      // From registration screen and country selcted
+      country = this.props.businessAccount.country;
+    } else if (this.state.businessAccount.country !== "") {
+      // if from create business account or edit business info screen
+      country = this.state.businessAccount.country;
+    }
+    return country;
+  };
+
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] =
+      stateName === "businessname"
+        ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
+        : value;
+
+    let businessAccount = {
+      ...this.state.businessAccount,
+      ...state
+    };
+    this.setState({ businessAccount });
+  };
+
+  getValidInfo = (stateError, validWrap) => {
+    let state = {};
+    if (stateError === "businessnameError") {
+      this._verifyBusinessName(this.state.businessAccount.businessname, false);
+    }
+
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
+
+  /**
+   * open category modal
+   */
+  openCategoryModal = () => {
+    this.setState({ inputT: true });
+  };
+
+  /**
+   * Open country modal
+   */
+
+  openCountryModal = () => {
+    this.setState({ inputC: true });
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { iosAppSelected, androidAppSelected } = this.state;
+    const businessCategory = this.getBusinessCategory();
+    const country = this.getCountryName();
     // Added disable(when updating business info loading ) and value ={having state value} props to input fields
     return (
       <SafeAreaView
@@ -595,615 +652,187 @@ class CreateBusinessAccount extends Component {
               }
               closeButton={!this.state.editBusinessInfo}
             />
-            {/* to display only when creating new business */}
-            {!this.state.editBusinessInfo && (
-              <Text style={styles.subTitle}>
-                {translate("You can create a new Business under you!")}
-              </Text>
-            )}
           </View>
         )}
 
         <InputScrollView
           {...ScrollView.props}
-          contentContainerStyle={{ paddingBottom: "30%", paddingTop: 13 }}
+          contentContainerStyle={[
+            !this.props.registering && styles.businessView
+          ]}
         >
-          <Text uppercase style={styles.whatAreYouText}>
-            {translate("What are you ?")}
-          </Text>
-          <View style={styles.topContainer}>
-            <GradientButton
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              radius={50}
-              transparent={this.state.businessAccount.businesstype !== "1"}
-              style={[
-                this.state.businessAccount.businesstype === "1"
-                  ? styles.activeButton
-                  : styles.button,
-                isStringArabic(translate("Startup")) ? { width: "40%" } : {}
-              ]}
-              onPressAction={() => {
-                this._handleBusinessCategories("1");
-              }}
-            >
-              <StartUpIcon
-                style={styles.iconButtonStyleLeft}
-                fill={
-                  this.state.businessAccount.businesstype === "1"
-                    ? "#FFF"
-                    : "rgba(255,255,255,0.6)"
-                }
-              />
-              <Text
-                style={[
-                  this.state.businessAccount.businesstype === "1"
-                    ? styles.activeText
-                    : styles.inactiveText
-                ]}
-              >
-                {translate("SME")}
-                {!isStringArabic(translate("Startup")) &&
-                  "\n" + translate("or") + " " + translate("Startup")}
+          {!this.state.editBusinessInfo && (
+            <View style={styles.subHeadView}>
+              <BusinessIcon fill={"#FFF"} />
+              {/* <UserProfile fill="#FFF" stroke={"#FFF"} /> */}
+              <Text style={styles.subHeading}>
+                {translate("BUSINESS DETAILS")}
               </Text>
-            </GradientButton>
-
-            <GradientButton
-              radius={50}
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              transparent={this.state.businessAccount.businesstype !== "2"}
-              style={[
-                this.state.businessAccount.businesstype === "2"
-                  ? styles.activeButton
-                  : styles.button
-              ]}
-              onPressAction={() => {
-                this._handleBusinessCategories("2");
-              }}
-            >
-              <AgencyIcon
-                fill={
-                  this.state.businessAccount.businesstype === "2"
-                    ? "#FFF"
-                    : "rgba(255,255,255,0.6)"
-                }
-              />
-              <Text
-                style={[
-                  this.state.businessAccount.businesstype === "2"
-                    ? styles.activeText
-                    : styles.inactiveText
-                ]}
-              >
-                {translate("Agency")}
-              </Text>
-            </GradientButton>
-
-            <GradientButton
-              radius={50}
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              transparent={this.state.businessAccount.businesstype !== "3"}
-              style={[
-                this.state.businessAccount.businesstype === "3"
-                  ? styles.activeButton
-                  : styles.button
-              ]}
-              onPressAction={() => {
-                this._handleBusinessCategories("3");
-              }}
-            >
-              <CorporateIcon
-                fill={
-                  this.state.businessAccount.businesstype === "3"
-                    ? "#FFF"
-                    : "rgba(255,255,255,0.6)"
-                }
-              />
-
-              <Text
-                style={[
-                  this.state.businessAccount.businesstype === "3"
-                    ? styles.activeText
-                    : styles.inactiveText
-                ]}
-              >
-                {translate("Corporate")}
-              </Text>
-            </GradientButton>
-          </View>
-
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputN
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {this.state.businessAccount.businesstype === "1"
-                  ? translate("Startup Name")
-                  : this.state.businessAccount.businesstype === "2"
-                  ? translate("Agency Name")
-                  : translate("Corporate Name")}
-              </Text>
-            </View>
-            <Item
-              style={[
-                styles.input,
-                this.state.inputN
-                  ? globalStyles.purpleBorderColor
-                  : this.state.businessnameError
-                  ? // !this.props.successName
-                    globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                {
-                  paddingHorizontal: 0
-                  // width: "50%"
-                }
-              ]}
-            >
-              <CorporateIcon
-                style={{
-                  position: "absolute",
-                  marginLeft: 15
-                }}
-                fill={this.state.inputN ? "#FF9D00" : "#FFF"}
-              />
-              <Input
-                onSubmitEditing={() => {
-                  this.focusTheField("inputBN");
-                }}
-                maxLength={25}
-                autoCorrect={false}
-                ref={input => {
-                  this.inputs["inputN"] = input;
-                }}
-                blurOnSubmit={false}
-                returnKeyType={"next"}
-                disabled={
-                  (this.state.editBusinessInfo &&
-                    this.props.editBusinessInfoLoading) ||
-                  this.props.savingRegister
-                }
-                style={[styles.inputText]}
-                value={this.state.businessAccount.businessname}
-                onChangeText={value => {
-                  value = value.replace(
-                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
-                    ""
-                  );
-                  this.setState({
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      businessname: value
-                    }
-                  });
-                }}
-                onFocus={() => {
-                  this.setState({ inputN: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputN: false,
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      businessname: this.state.businessAccount.businessname.trim()
-                    }
-                  });
-                  this._verifyBusinessName(
-                    this.state.businessAccount.businessname
-                  );
-                }}
-              />
-            </Item>
-          </View>
-
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView, { width: 200 }]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputBN
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {this.state.businessAccount.businesstype === "1"
-                  ? translate("Brand Name")
-                  : this.state.businessAccount.businesstype === "2"
-                  ? translate("Client Name")
-                  : translate("Brand Name")}{" "}
-                ({translate("optional")})
-              </Text>
-            </View>
-            <Item
-              style={[
-                styles.input,
-                globalStyles.transparentBorderColor,
-                {
-                  paddingHorizontal: 0
-                  // width: "50%"
-                }
-              ]}
-            >
-              <Input
-                onSubmitEditing={() => {
-                  if (this.inputs["inputE"]) this.focusTheField("inputE");
-                }}
-                blurOnSubmit={!this.inputs["inputE"]}
-                ref={input => {
-                  this.inputs["inputBN"] = input;
-                }}
-                returnKeyType={this.inputs["inputE"] ? "next" : "default"}
-                style={styles.inputText}
-                autoCorrect={false}
-                disabled={
-                  (this.state.editBusinessInfo &&
-                    this.props.editBusinessInfoLoading) ||
-                  this.props.savingRegister
-                }
-                value={this.state.businessAccount.brandname}
-                onChangeText={value => {
-                  value = value.replace(
-                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
-                    ""
-                  );
-                  this.setState({
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      brandname: value
-                    }
-                  });
-                }}
-                maxLength={25}
-                onFocus={() => {
-                  this.setState({ inputBN: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputBN: false,
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      brandname: this.state.businessAccount.brandname.trim()
-                    }
-                  });
-                }}
-              />
-            </Item>
-          </View>
-
-          {!this.props.registering && (
-            <View style={styles.marginVertical}>
-              <View style={[styles.callToActionLabelView]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    this.state.inputE
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Email")}
-                </Text>
-              </View>
-              <Item
-                style={[
-                  styles.input,
-                  this.state.inputE
-                    ? globalStyles.transparentBorderColor
-                    : this.state.businessemailError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor,
-                  {
-                    paddingHorizontal: 0
-                    // width: "50%"
-                  }
-                ]}
-              >
-                <EmailIcon
-                  style={{
-                    // position: "absolute",
-                    marginLeft: 15
-                  }}
-                  fill={this.state.inputE ? "#FF9D00" : "#FFF"}
-                />
-                <Input
-                  ref={input => {
-                    this.inputs["inputE"] = input;
-                  }}
-                  blurOnSubmit={true}
-                  style={[
-                    styles.inputText,
-                    {
-                      fontFamily: "montserrat-regular-english"
-                    }
-                  ]}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  disabled={
-                    (this.state.editBusinessInfo &&
-                      this.props.editBusinessInfoLoading) ||
-                    this.props.savingRegister
-                  }
-                  value={this.state.businessAccount.businessemail}
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessemail: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputE: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      inputE: false,
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessemail: this.state.businessAccount.businessemail.trim()
-                      },
-                      businessemailError: validateWrapper(
-                        "email",
-                        this.state.businessAccount.businessemail.trim()
-                      )
-                    });
-                  }}
-                />
-              </Item>
             </View>
           )}
+          <InputFeild
+            // disabled={this.props.loadingUpdateInfo}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            stateName1="businessname"
+            label="Business Name"
+            placeholder1="Enter your business name"
+            value={
+              this.props.registering
+                ? this.props.businessAccount.businessname
+                : this.state.businessAccount.businessname
+            }
+            valueError1={
+              this.props.registering
+                ? this.props.businessnameError
+                : this.state.businessnameError
+            }
+            icon={CorporateIcon}
+            setValue={
+              this.props.registering ? this.props.setValue : this.setValue
+            }
+            getValidInfo={
+              this.props.registering
+                ? this.props.getValidInfo
+                : this.getValidInfo
+            }
+            key={"businessname"}
+          />
+          {/* Business category view starts here */}
+          <Picker
+            showIcon={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Business Category")}
+            data={this.state.items}
+            uniqueKey={"value"}
+            displayKey={"label"}
+            open={
+              this.props.registering ? this.props.inputT : this.state.inputT
+            }
+            onSelectedItemsChange={
+              this.props.registering
+                ? this.props.onSelectedBusinessCategoryIdChange
+                : this.onSelectedBusinessCategoryIdChange
+            }
+            onSelectedItemObjectsChange={
+              this.props.registering
+                ? this.props.onSelectedBusinessCategoryChange
+                : this.onSelectedBusinessCategoryChange
+            }
+            selectedItems={
+              this.props.registering
+                ? [this.props.businessAccount.businesscategory]
+                : [this.state.businessAccount.businesscategory]
+            }
+            single={true}
+            screenName={
+              this.state.editBusinessInfo
+                ? "Business Info"
+                : "Create Business Account"
+            }
+            closeCategoryModal={
+              this.props.registering
+                ? this.props.closeCategoryModal
+                : this.closeCategoryModal
+            }
+          />
+          <ModalField
+            stateName={"businesscategory"}
+            setModalVisible={
+              this.props.registering
+                ? this.props.openCategoryModal
+                : this.openCategoryModal
+            }
+            modal={true}
+            label={"Business Type"}
+            valueError={this.state.businesscategoryError}
+            getValidInfo={this.getValidInfo}
+            disabled={
+              (this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading) ||
+              this.props.savingRegister
+            }
+            valueText={businessCategory}
+            value={
+              this.props.registering
+                ? this.props.businessAccount.businesscategory
+                : this.state.businessAccount.businesscategory
+            }
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={BusinessIcon}
+            isVisible={
+              this.props.registering ? this.props.inputT : this.state.inputT
+            }
+          />
 
-          <View style={styles.marginVertical}>
-            <Picker
-              showIcon={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Country")}
-              data={this.state.countries}
-              uniqueKey={"value"}
-              displayKey={"label"}
-              open={this.state.inputC}
-              onSelectedItemsChange={this.onSelectedCountryIdChange}
-              onSelectedItemObjectsChange={this.onSelectedCountryChange}
-              selectedItems={[this.state.businessAccount.country]}
-              single={true}
-              screenName={"Create Business Account"}
-              closeCategoryModal={this.closeCountryModal}
+          {/* Business category view ends here */}
+
+          {((this.props.businessAccount &&
+            this.props.businessAccount.businesscategory === "43") ||
+            this.state.businessAccount.businesscategory === "43") && (
+            <InputFeild
+              // disabled={this.props.loadingUpdateInfo}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="otherBusinessCategory"
+              label="Other Business Category"
+              // placeholder1="Other Business Category"
+              value={
+                this.props.registering
+                  ? this.props.businessAccount.otherBusinessCategory
+                  : this.state.businessAccount.otherBusinessCategory
+              }
+              valueError1={
+                this.props.registering
+                  ? this.props.otherBusinessCategoryError
+                  : this.state.otherBusinessCategoryError
+              }
+              icon={BusinessIcon}
+              setValue={
+                this.props.registering ? this.props.setValue : this.setValue
+              }
+              getValidInfo={
+                this.props.registering
+                  ? this.props.getValidInfo
+                  : this.getValidInfo
+              }
+              key={"otherBusinessCategory"}
             />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputC
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Country")}
-              </Text>
-            </View>
-            <Item
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              onPress={() => {
-                this.setState({ inputC: true });
-              }}
-              style={[
-                styles.input,
-                this.state.countryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={{
-                  // position: "absolute",
-                  marginLeft: 15
-                }}
-                stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
-              />
-              <Text
-                style={[
-                  styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
-                ]}
-              >
-                {this.state.businessAccount.country !== ""
-                  ? translate(this.state.businessAccount.country)
-                  : translate("Select Country")}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
-
-          <View style={styles.marginVertical}>
-            <Picker
-              showIcon={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Business Category")}
-              data={this.state.items}
-              uniqueKey={"value"}
-              displayKey={"label"}
-              open={this.state.inputT}
-              onSelectedItemsChange={this.onSelectedBusinessCategoryIdChange}
-              onSelectedItemObjectsChange={
-                this.onSelectedBusinessCategoryChange
-              }
-              selectedItems={[this.state.businessAccount.businesscategory]}
-              single={true}
-              screenName={
-                this.state.editBusinessInfo
-                  ? "Business Info"
-                  : "Create Business Account"
-              }
-              closeCategoryModal={this.closeCategoryModal}
-            />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputT
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Business Type")}
-              </Text>
-            </View>
-            <Item
-              disabled={
-                (this.state.editBusinessInfo &&
-                  this.props.editBusinessInfoLoading) ||
-                this.props.savingRegister
-              }
-              onPress={() => {
-                this.setState({ inputT: true });
-              }}
-              style={[
-                styles.input,
-                this.state.inputT
-                  ? globalStyles.purpleBorderColor
-                  : this.state.businesscategoryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <BusinessIcon
-                style={{
-                  // position: "absolute",
-                  marginLeft: 15
-                }}
-                fill={this.state.inputT ? "#FF9D00" : "#FFF"}
-              />
-              <Text style={[styles.pickerText]}>
-                {this.state.businessAccount.businesscategory === ""
-                  ? this.state.businessAccount.businesstype === "1"
-                    ? translate("Industry")
-                    : this.state.businessAccount.businesstype === "2"
-                    ? translate("Client Industry")
-                    : translate("Industry")
-                  : this.state.items.find(
-                      i =>
-                        i.value === this.state.businessAccount.businesscategory
-                    ).label}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
-
-          {this.state.businessAccount.businesscategory === "43" && (
-            <View style={styles.marginVertical}>
-              <View style={[styles.callToActionLabelView, { width: 220 }]}>
-                <Text
-                  uppercase
-                  style={[
-                    styles.inputLabel,
-                    {
-                      width: 200
-                    },
-                    this.state.inputBusinessCategoryOther
-                      ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
-                  ]}
-                >
-                  {translate("Other Business Category")}
-                </Text>
-              </View>
-              <Item
-                onPress={() => {
-                  this.setState({ inputT: true });
-                }}
-                style={[
-                  styles.input,
-                  this.state.inputBusinessCategoryOther
-                    ? globalStyles.purpleBorderColor
-                    : this.state.businesscategoryOtherError
-                    ? globalStyles.redBorderColor
-                    : globalStyles.transparentBorderColor,
-                  styles.itemView
-                ]}
-              >
-                <BusinessIcon
-                  style={{
-                    // position: "absolute",
-                    marginLeft: 15
-                  }}
-                  fill={
-                    this.state.inputBusinessCategoryOther ? "#FF9D00" : "#FFF"
-                  }
-                />
-                <Input
-                  onSubmitEditing={() => {
-                    this.focusTheField("inputWeb");
-                  }}
-                  ref={input => {
-                    this.inputs["inputO"] = input;
-                  }}
-                  blurOnSubmit={false}
-                  returnKeyType={"next"}
-                  style={styles.inputText}
-                  autoCorrect={false}
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        otherBusinessCategory: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({
-                      inputBusinessCategoryOther: true
-                    });
-                  }}
-                  onBlur={() => {
-                    this.setState({
-                      inputBusinessCategoryOther: false,
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        otherBusinessCategory:
-                          this.state.businessAccount.otherBusinessCategory &&
-                          this.state.businessAccount.otherBusinessCategory.trim()
-                      }
-                    });
-                  }}
-                  value={this.state.businessAccount.otherBusinessCategory}
-                  disabled={
-                    (this.state.editBusinessInfo &&
-                      this.props.editBusinessInfoLoading) ||
-                    this.props.savingRegister
-                  }
-                />
-              </Item>
-            </View>
           )}
 
-          {/** Webiste Component */}
-          <View style={styles.marginVertical}>
+          <ModalField
+            stateName={"country"}
+            setModalVisible={
+              this.props.registering
+                ? this.props.openCountryModal
+                : this.openCountryModal
+            }
+            modal={true}
+            label={"Country"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
+            disabled={
+              (this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading) ||
+              this.props.savingRegister
+            }
+            valueText={country}
+            value={
+              this.props.registering
+                ? this.props.businessAccount.country
+                : this.state.businessAccount.country
+            }
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={
+              this.props.registering ? this.props.inputC : this.state.inputC
+            }
+          />
+
+          {/** Webiste Component for  */}
+          {this.state.editBusinessInfo && (
             <Website
               register={true}
               ref={ref => (this.websiteInput = ref)}
@@ -1211,7 +840,7 @@ class CreateBusinessAccount extends Component {
               stateName={"websitelink"}
               screenProps={this.props.screenProps}
               customStyle={{
-                width: widthPercentageToDP(85),
+                // width: widthPercentageToDP(85),
                 paddingHorizontal: 0
               }}
               optional={true}
@@ -1227,26 +856,24 @@ class CreateBusinessAccount extends Component {
                 this.props.savingRegister
               }
             />
-          </View>
+          )}
 
-          <Text style={styles.appText}>
-            {translate("Do you have an app?")}
-            <Text style={styles.optionalText}> ({translate("optional")})</Text>
-          </Text>
           {/** App Choice for business */}
-          <AppChoiceBusiness
-            appstorelink={this.state.businessAccount.appstorelink}
-            playstorelink={this.state.businessAccount.playstorelink}
-            setModalVisible={this.setModalVisible}
-            toggleAppSelection={this.toggleAppSelection}
-            screenProps={this.props.screenProps}
-            disabled={
-              (this.state.editBusinessInfo &&
-                this.props.editBusinessInfoLoading) ||
-              this.props.savingRegister
-            }
-            appSelections={{ iosAppSelected, androidAppSelected }}
-          />
+          {this.state.editBusinessInfo && (
+            <AppChoiceBusiness
+              appstorelink={this.state.businessAccount.appstorelink}
+              playstorelink={this.state.businessAccount.playstorelink}
+              setModalVisible={this.setModalVisible}
+              toggleAppSelection={this.toggleAppSelection}
+              screenProps={this.props.screenProps}
+              disabled={
+                (this.state.editBusinessInfo &&
+                  this.props.editBusinessInfoLoading) ||
+                this.props.savingRegister
+              }
+              appSelections={{ iosAppSelected, androidAppSelected }}
+            />
+          )}
           {/* Added handle submision button for updating business info */}
           {this.state.editBusinessInfo &&
           this.props.loadingUpdateBusinessInfo ? (
@@ -1265,28 +892,7 @@ class CreateBusinessAccount extends Component {
             />
           ) : null}
 
-          {this.props.registering && (
-            <Text style={styles.textAgreement}>
-              <Text style={[styles.link, styles.buttonLink]}>
-                {translate(`By tapping the button below you agree to all the`) +
-                  " "}
-                <Text
-                  onPress={() => openTerms()}
-                  style={[styles.link, styles.tNcLink]}
-                >
-                  {translate(`Terms & Conditions`)}
-                </Text>{" "}
-                {translate(`mentioned in this`) + " "}
-                <Text
-                  onPress={() => openPrivacy()}
-                  style={[styles.link, styles.tNcLink, styles.agreementLink]}
-                >
-                  {translate(`agreement`)}
-                </Text>
-              </Text>
-            </Text>
-          )}
-          {!this.state.editBusinessInfo && (
+          {!this.props.registering && !this.state.editBusinessInfo && (
             <GradientButton
               disabled={this.props.savingRegister}
               style={[styles.bottomCard]}
@@ -1303,6 +909,38 @@ class CreateBusinessAccount extends Component {
           this.state.checkingBusinessNameSubmission && (
             <LoadingScreen dash={true} />
           )}
+        <Picker
+          showIcon={true}
+          screenProps={this.props.screenProps}
+          searchPlaceholderText={translate("Search Country")}
+          data={this.state.countries}
+          uniqueKey={"value"}
+          displayKey={"label"}
+          open={this.props.registering ? this.props.inputC : this.state.inputC}
+          onSelectedItemsChange={
+            this.props.registering
+              ? this.props.onSelectedCountryIdChange
+              : this.onSelectedCountryIdChange
+          }
+          onSelectedItemObjectsChange={
+            this.props.registering
+              ? this.props.onSelectedCountryChange
+              : this.onSelectedCountryChange
+          }
+          selectedItems={
+            this.props.registering
+              ? [this.props.businessAccount.country]
+              : [this.state.businessAccount.country]
+          }
+          single={true}
+          screenName={"Create Business Account"}
+          closeCategoryModal={
+            this.props.registering
+              ? this.props.closeCategoryModal
+              : this.closeCountryModal
+          }
+        />
+
         <AppSearchModal
           mainState={this.state}
           selectApp={this.selectApp}

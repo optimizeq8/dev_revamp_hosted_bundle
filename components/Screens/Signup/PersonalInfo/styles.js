@@ -18,17 +18,18 @@ const styles = StyleSheet.create({
     paddingTop: 0
   },
   mobileView: {
-    width: 300,
+    width: "100%",
     alignSelf: "center",
     marginBottom: 25
   },
   inputLabel: {
-    marginBottom: -10,
+    // marginBottom: -10,
+    marginTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    lineHeight: 18,
     color: "#FFF",
-    textAlign: "center"
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   labelEmail: {
     flexDirection: "row"
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   iconSize: {
-    position: "absolute",
-    marginLeft: 15,
+    // position: "absolute",
+    // marginLeft: 15,
     fontSize: 16 / PixelRatio.getFontScale()
   },
   emailerrorText: {
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   contentContainer: {
-    // paddingVertical: 40,
+    paddingVertical: 40,
     flex: 1,
     justifyContent: "space-around"
   },
@@ -118,9 +119,16 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light-english",
     fontSize: 14 / PixelRatio.getFontScale(),
+    // alignSelf: "left",
+    textAlign: "left",
+    color: "#FFF",
+    marginBottom: 10
+  },
+  colView: {
+    display: "flex",
+    flexDirection: "column",
     alignSelf: "center",
-    textAlign: "center",
-    color: "#FFF"
+    marginLeft: 13
   },
   // input: {
   //   // bottom: 25,
@@ -133,14 +141,16 @@ const styles = StyleSheet.create({
   //   borderColor: "#7039FF"
   // },
   input: {
-    backgroundColor: "rgba(0,0,0,0.2)",
-    // paddingHorizontal: 10,
+    backgroundColor: "rgba(0,0,0,0.16)",
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: 300,
+    width: "100%",
     borderWidth: 0,
-    height: 50
+    height: 56,
+    paddingHorizontal: 20,
+    display: "flex",
+    alignItems: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -156,6 +166,53 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
     zIndex: 1
+  },
+  submitButton: {
+    height: 54,
+    width: "100%",
+    alignSelf: "center"
+  },
+  subHeading: {
+    fontSize: 19,
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    marginLeft: 16,
+    textTransform: "uppercase"
+  },
+  subHeadView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // paddingHorizontal: 26,
+    marginVertical: 15
+  },
+  link: {
+    textAlign: "center",
+    color: "#FFF",
+    paddingTop: 40,
+    paddingBottom: 10,
+    fontFamily: "montserrat-regular",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    paddingHorizontal: 10,
+    paddingVertical: 10
+  },
+  tNcLink: {
+    textDecorationLine: "underline"
+    // color: "blue"
+  },
+  buttonLink: {
+    lineHeight: 20
+  },
+  textAgreement: {
+    // bottom: 10,
+    paddingHorizontal: 70,
+    marginBottom: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  agreementLink: {
+    zIndex: 10
   }
 });
 

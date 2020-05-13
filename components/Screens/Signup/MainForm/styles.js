@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    color: "#6C63FF"
+    color: "#6C63FF",
+    textTransform: "uppercase"
   },
   titleText: {
     fontFamily: "montserrat-regular",
@@ -151,11 +152,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
     lineHeight: 18,
-    marginTop: 10
+    marginLeft: 5
   },
   registerHeaderIconView: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    flexDirection: "row"
+    // alignSelf: "flex-start"
     // flex: 1
   }
 });

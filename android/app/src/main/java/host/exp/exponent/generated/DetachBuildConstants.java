@@ -5,4 +5,5 @@ public class DetachBuildConstants {
 
   public static final String DEVELOPMENT_URL = "optimize://192.168.1.6:19000";
 
+
 }

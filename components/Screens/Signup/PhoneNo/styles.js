@@ -36,6 +36,17 @@ const styles = StyleSheet.create({
     marginBottom: -10,
     marginTop: I18nManager.isRTL ? -5 : 0
   },
+  inputLabelNew: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    color: "#fff",
+    textTransform: "uppercase",
+    // alignSelf: "center",
+    textAlign: "left",
+    borderRadius: 30,
+    // marginBottom: -10,
+    marginTop: I18nManager.isRTL ? -5 : 0
+  },
   button: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
@@ -116,6 +127,20 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(75),
     height: 50
   },
+  phoneView: {
+    width: "100%",
+    flex: 1
+  },
+  phoneInputNew: {
+    borderRadius: 50,
+    borderColor: "transparent",
+    alignSelf: "center",
+    width: "100%",
+    height: 56,
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.16)",
+    paddingHorizontal: 20
+  },
   flagTouchableArea: {
     width: 60,
     height: 30,
@@ -128,10 +153,12 @@ const styles = StyleSheet.create({
   },
   flagIcon: {
     marginRight: -30,
-    left: -5
+    left: 50,
+    alignSelf: "center",
+    top: 7
   },
   flagStyle: {
-    left: 14,
+    left: 0,
     zIndex: 5
   },
   phoneInputTextStyle: {
