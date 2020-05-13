@@ -13,8 +13,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   contentContainer: {
-    flex: 1,
-    paddingTop: 15
+    // flex: 1,
+    paddingTop: 15,
+
+    paddingHorizontal: 30
   }
 });
 

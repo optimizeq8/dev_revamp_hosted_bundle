@@ -13,12 +13,7 @@ import styles from "./styles";
 export default props => {
   let { member, userRole, handleMemberType, translate } = props;
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center"
-      }}
-    >
+    <View style={styles.memberTypeView}>
       <Toggle
         switchOn={member.id === userRole}
         backgroundColorOff="rgba(255,255,255,0.1)"
