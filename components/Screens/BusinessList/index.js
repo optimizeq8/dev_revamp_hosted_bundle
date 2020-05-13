@@ -123,42 +123,42 @@ class BusinessList extends Component {
       <Container style={styles.container}>
         <View style={[styles.mainCard]}>
           <Text style={styles.title}>{translate("Switch Business")}</Text>
-          {this.props.businessInvites && this.props.businessInvites.length > 0 && (
-            <View style={styles.tabView}>
-              {tabs.map(tab => {
-                return (
-                  <TouchableOpacity
-                    key={tab.key}
+
+          <View style={styles.tabView}>
+            {tabs.map(tab => {
+              return (
+                <TouchableOpacity
+                  key={tab.key}
+                  style={[
+                    styles.touchTabView,
+                    tab.name === this.state.activeTab && styles.activeTab
+                  ]}
+                  onPress={this.changeActiveTab}
+                >
+                  {tab.name === "INVITATION" &&
+                  this.props.businessInvites &&
+                  this.props.businessInvites.length > 0 ? (
+                    <View style={styles.pendingInviteView}>
+                      <Text style={styles.pendingInviteNumber}>
+                        {this.props.businessInvites.length}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={{ width: 17, paddingVertical: 7 }} />
+                  )}
+                  <Text
                     style={[
-                      styles.touchTabView,
+                      styles.tabText,
                       tab.name === this.state.activeTab && styles.activeTab
                     ]}
-                    onPress={this.changeActiveTab}
                   >
-                    {tab.name === "INVITATION" &&
-                    this.props.businessInvites &&
-                    this.props.businessInvites.length > 0 ? (
-                      <View style={styles.pendingInviteView}>
-                        <Text style={styles.pendingInviteNumber}>
-                          {this.props.businessInvites.length}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View style={{ width: 17, paddingVertical: 7 }} />
-                    )}
-                    <Text
-                      style={[
-                        styles.tabText,
-                        tab.name === this.state.activeTab && styles.activeTab
-                      ]}
-                    >
-                      {translate(tab.name)}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          )}
+                    {translate(tab.name)}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
           {this.state.activeTab === "Businesses" && (
             <SearchBar
               screenProps={this.props.screenProps}
@@ -182,22 +182,51 @@ class BusinessList extends Component {
               refreshing={this.props.businessesLoading}
             />
           </View>
-          <GradientButton
-            style={[styles.bottomCard]}
-            radius={50}
-            onPressAction={this.createNewBuiness}
-          >
-            <View style={styles.flex}>
-              <Icon
-                name="plus"
-                type="MaterialCommunityIcons"
-                style={styles.iconStyle}
-              />
-              <Text style={styles.addNewBusinessText}>
-                {translate("Add a new Business")}
+          {this.state.activeTab === "INVITATION" &&
+            (!this.props.businessInvites ||
+              (this.props.businessInvites &&
+                this.props.businessInvites.length === 0)) && (
+              <Text style={[styles.noInviteText]}>
+                {translate("No Invitations available")}
               </Text>
-            </View>
-          </GradientButton>
+            )}
+          {this.state.activeTab === "INVITATION" &&
+            (!this.props.businessInvites ||
+              (this.props.businessInvites &&
+                this.props.businessInvites.length === 0)) && (
+              <GradientButton
+                uppercase
+                transparent
+                style={[styles.bottomCard2]}
+                radius={50}
+                textStyle={{
+                  fontFamily: "montserrat-bold",
+                  fontSize: 14,
+                  color: "#D2C6D8"
+                }}
+                text={"Refresh"}
+                onPressAction={this.props.getBusinessAccounts}
+              />
+            )}
+          {this.state.activeTab === "Businesses" && (
+            <GradientButton
+              purpleViolet
+              style={[styles.bottomCard]}
+              radius={50}
+              onPressAction={this.createNewBuiness}
+            >
+              <View style={styles.flex}>
+                <Icon
+                  name="plus"
+                  type="MaterialCommunityIcons"
+                  style={styles.iconStyle}
+                />
+                <Text style={styles.addNewBusinessText}>
+                  {translate("Add a new Business")}
+                </Text>
+              </View>
+            </GradientButton>
+          )}
         </View>
       </Container>
     );

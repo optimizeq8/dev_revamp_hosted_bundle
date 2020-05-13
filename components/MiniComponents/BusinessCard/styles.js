@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#c6c6c6"
+    backgroundColor: "#D2C6D8"
   },
   textcontainer: {
     flex: 1,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 0,
     textTransform: "uppercase",
-    color: "#5F5F5F"
+    color: "#75647C"
   }
 });
 
