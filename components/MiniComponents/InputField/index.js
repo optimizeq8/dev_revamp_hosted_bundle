@@ -38,6 +38,7 @@ export default class InputField extends Component {
                       of the input field
   */
   validate = (secondHalf = false) => {
+    const { translate } = this.props;
     let valueError = null;
     if (secondHalf) {
       // validates the value of the second part of the input field
@@ -68,7 +69,7 @@ export default class InputField extends Component {
       valueError
     ) {
       showMessage({
-        message: valueError,
+        message: translate(valueError),
         position: "top",
         type: "warning"
       });
