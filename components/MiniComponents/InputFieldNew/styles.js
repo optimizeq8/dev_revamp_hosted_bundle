@@ -33,7 +33,7 @@ export default StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 0,
     paddingRight: 0,
-    height: 15
+    height: 20
   },
   downicon: {
     fontSize: 20,

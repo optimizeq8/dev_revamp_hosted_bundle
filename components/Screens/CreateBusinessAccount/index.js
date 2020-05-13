@@ -652,12 +652,6 @@ class CreateBusinessAccount extends Component {
               }
               closeButton={!this.state.editBusinessInfo}
             />
-            {/* to display only when creating new business */}
-            {!this.state.editBusinessInfo && (
-              <Text style={styles.subTitle}>
-                {translate("You can create a new Business under you!")}
-              </Text>
-            )}
           </View>
         )}
 
@@ -808,7 +802,7 @@ class CreateBusinessAccount extends Component {
           )}
 
           <ModalField
-            stateName={"businesscategory"}
+            stateName={"country"}
             setModalVisible={
               this.props.registering
                 ? this.props.openCountryModal
