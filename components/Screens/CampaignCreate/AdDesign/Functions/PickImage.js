@@ -77,7 +77,6 @@ export const _pickImage = async (
   editImage
 ) => {
   try {
-    console.log("mediaEditor.mediaType", mediaEditor.mediaType);
 
     let result = {};
     if (!editImage) result = await pick(mediaTypes, screenProps);
