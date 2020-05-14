@@ -27,6 +27,7 @@ imglyConfig {
         include 'ui:transform'
         include 'ui:adjustment'
         include 'ui:text-design'
+        include 'ui:video-trim'
 
         // This module is big, remove the serializer if you don't need that feature.
         include 'backend:serializer'
@@ -131,6 +132,8 @@ apply from: 'expo.gradle'
 apply from: "../../node_modules/react-native-unimodules/gradle.groovy"
 
 dependencies {
+    implementation project(':react-native-media-meta')
+    implementation project(':react-native-videoeditorsdk')
     implementation project(':@sentry_react-native')
     implementation project(':react-native-adjust')
     implementation project(':react-native-photoeditorsdk')

@@ -12,11 +12,10 @@ import segmentEventTrack from "../../../segmentEventTrack";
 export default class MediaModal extends Component {
   render() {
     var options = [
-      "Image",
-      "Video",
+      "Media",
       "Upload media from a different device",
-      "Download media from a different device"
-    ].map(op => {
+      "Download media from a different device",
+    ].map((op) => {
       return (
         <MediaOptions
           getVideoUploadUrl={this.props.getVideoUploadUrl}
@@ -30,6 +29,7 @@ export default class MediaModal extends Component {
           getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
           setDownloadMediaModal={this.props.setDownloadMediaModal}
           screenProps={this.props.screenProps}
+          media_type={media_type}
         />
       );
     });
@@ -66,7 +66,7 @@ export default class MediaModal extends Component {
                 contentContainerStyle={{
                   marginTop: 15,
                   paddingTop: 15,
-                  marginBottom: 15
+                  marginBottom: 15,
                 }}
               >
                 {options}
@@ -76,9 +76,6 @@ export default class MediaModal extends Component {
                     <MediaOptions
                       _pickImage={this.props._pickImage}
                       title={"Edit Image"}
-                      setUploadFromDifferentDeviceModal={
-                        this.props.setUploadFromDifferentDeviceModal
-                      }
                       setMediaModalVisible={this.props.setMediaModalVisible}
                       screenProps={this.props.screenProps}
                       mediaUri={
@@ -86,6 +83,7 @@ export default class MediaModal extends Component {
                           ? media
                           : storyAdCards.selectedStoryAd.uneditedImageUri
                       }
+                      media_type={media_type}
                       serialization={this.props.serialization}
                     />
                   )}
