@@ -131,30 +131,47 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    textAlign: "center",
+    textAlign: "left",
     color: globalColors.white
   },
   pickerText: {
     fontFamily: "montserrat-regular-english",
     color: "#FFFFFF",
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 12
   },
   input: {
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: widthPercentageToDP(85),
+    width: "100%",
     borderWidth: 0,
-    height: 54
+    height: 54,
+    paddingHorizontal: 0,
+    display: "flex",
+    marginVertical: 10
+    // alignItems: "flex-start"
+  },
+  businessView: {
+    paddingBottom: "30%",
+    paddingTop: 13,
+    paddingHorizontal: 20
+  },
+  colView: {
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "flex-start",
+    marginLeft: 13,
+    flex: 1
   },
   bottomCard: {
     justifyContent: "center",
     alignSelf: "center",
-    height: 50,
-    width: widthPercentageToDP(50),
-    marginBottom: 30
+    height: 54,
+    width: widthPercentageToDP(90),
+    marginHorizontal: 26
+    // marginBottom: 30
   },
   link: {
     textAlign: "center",
@@ -227,20 +244,32 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   inputLabel: {
+    marginTop: 10,
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    borderRadius: 30,
-    marginBottom: -10,
-    marginTop: I18nManager.isRTL ? -5 : 0
+    fontSize: 12,
+    color: "#FFF",
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   itemView: {
     paddingHorizontal: 0,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between"
+  },
+  subHeading: {
+    fontSize: 19,
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    marginLeft: 16,
+    textTransform: "uppercase"
+  },
+  subHeadView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // paddingHorizontal: 26,
+    marginVertical: 15
   }
 });
 

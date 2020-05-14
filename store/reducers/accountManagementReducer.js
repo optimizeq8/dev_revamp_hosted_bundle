@@ -64,7 +64,8 @@ const reducer = (state = initialState, action) => {
           : setNewBusinessAccounts[0];
         Segment.identifyWithTraits(action.payload.userid, {
           businessid: main.businessid,
-          businessname: main.businessname
+          businessname: main.businessname,
+          revenue: main.revenue
         });
       }
 

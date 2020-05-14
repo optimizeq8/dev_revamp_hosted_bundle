@@ -75,7 +75,6 @@ export const update_app_status_chat_notification = app_state => {
         getState().login.admin
           ? "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS"
           : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS",
-
         {
           app_state: app_state,
           userid: getState().auth.userInfo && getState().auth.userInfo.userid

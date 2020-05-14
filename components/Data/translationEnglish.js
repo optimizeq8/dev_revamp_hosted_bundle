@@ -573,7 +573,7 @@ const strings = {
   "Ad Language": "Ad Language",
   English: "English",
   Arabic: "Arabic",
-  "What are you ?": "What are you ?",
+  "What are you ?": "Tell us about your business!",
   Description: "Description",
   "Landing Page": "Landing Page",
   text: "text",
@@ -1260,7 +1260,7 @@ const strings = {
   "Get in touch": "Get in touch",
   "Switch Business": "Switch Business",
   "You have been invited to join": "You have been invited to join",
-  INVITATION: "INVITATION",
+  INVITATION: "INVITATIONS",
   "Search Engine Ad Preview": "Search Engine Ad Preview",
   "Please sign in with the correct email to accept":
     "Please sign in with the correct email to accept",
@@ -1471,7 +1471,23 @@ const strings = {
   "Synced with Instagram": "Synced with Instagram",
   "FREE OF CHARGE": "FREE OF CHARGE",
   "READY WITHIN MINUTES": "READY WITHIN MINUTES",
-  "Send customers to WhatsApp!": "Send customers to WhatsApp!"
+  "Send customers to WhatsApp!": "Send customers to WhatsApp!",
+  "Your URL": "Your URL",
+  Details: "Details",
+  Done: "Done",
+  "Login with Facebook": "Login with Facebook",
+  "Please select minimum 7 days from start date for campaign to end":
+    "Please select minimum 7 days from start date for campaign to end",
+  "Launch & manage campaigns, invite users, edit roles, remove users":
+    "Launch & manage campaigns, invite users, edit roles, remove users",
+  "Launch & manage campaigns": "Launch & manage campaigns",
+  "View reports & campaign details": "View reports & campaign details",
+  "Personal Details": "Personal Details",
+  "Press here to open settings": "Press here to open settings",
+  "Address saved successfully": "Address saved successfully",
+  "Address updated successfully": "Address updated successfully",
+  "Select Business Type": "Select Business Type",
+  "BUSINESS DETAILS": "BUSINESS DETAILS"
 };
 
 export default strings;

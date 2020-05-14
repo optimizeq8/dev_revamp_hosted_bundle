@@ -15,7 +15,9 @@ export const changeBusiness = business => {
   return (dispatch, getState) => {
     persistor.purge();
     Segment.identifyWithTraits(getState().auth.userid, {
-      businessname: business.businessname
+      businessname: business.businessname,
+      businessid: business.businessid,
+      revenue: business.revenue
     });
 
     return dispatch({
@@ -32,7 +34,7 @@ export const createBusinessAccount = (account, navigation) => {
       payload: true
     });
     createBaseUrl()
-      .post(`businessaccount`, account)
+      .post(`businessaccountV2`, account) //businessaccount OLD API
       .then(res => {
         return res.data;
       })
@@ -72,7 +74,7 @@ export const createBusinessAccount = (account, navigation) => {
   };
 };
 
-export const addressForm = (address, navigation, addressId) => {
+export const addressForm = (address, navigation, addressId, translate) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -112,7 +114,7 @@ export const addressForm = (address, navigation, addressId) => {
           duration: 2000
         }).start(() => {
           showMessage({
-            message: response.data.message,
+            message: translate(response.data.message),
             type: response.data.success ? "success" : "warning",
             position: "top"
           });
@@ -378,7 +380,8 @@ export const updateBusinessInfo = (userid, info, navigation) => {
       payload: true
     });
     createBaseUrl()
-      .put("businessAccount", {
+      .put("businessaccountV2", {
+        // businessAccount OLD API
         userid,
         ...info
       })

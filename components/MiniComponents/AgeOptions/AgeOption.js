@@ -18,20 +18,20 @@ import LowerButton from "../LowerButton";
 
 export default class AgeOption extends Component {
   state = {
-    values: [13, 50]
+    values: [13, 50],
   };
 
   componentDidMount() {
     Segment.screen("Age Option");
     this.setState({
-      values: [this.props.state.min_age, this.props.state.max_age]
+      values: [this.props.state.min_age, this.props.state.max_age],
     });
   }
-  multiSliderValuesChange = values => {
+  multiSliderValuesChange = (values) => {
     this.props._handleMinAge(values[0]);
     this.props._handleMaxAge(values[1]);
     this.setState({
-      values
+      values,
     });
   };
 
@@ -54,18 +54,20 @@ export default class AgeOption extends Component {
                 values={[this.state.values[0], this.state.values[1]]}
                 sliderLength={wp(60)}
                 isMarkersSeparated
-                customMarkerLeft={e => (
+                customMarkerLeft={(e) => (
                   <RangeMarkers value={e.currentValue} down={true} />
                 )}
-                customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
+                customMarkerRight={(e) => (
+                  <RangeMarkers value={e.currentValue} />
+                )}
                 onValuesChange={this.multiSliderValuesChange}
                 min={13}
-                max={49}
+                max={50}
                 step={1}
                 selectedStyle={styles.selected}
                 unselectedStyle={{
                   backgroundColor: "rgba(255,255,255,0.3)",
-                  height: 2
+                  height: 2,
                 }}
                 trackStyle={styles.track}
               />

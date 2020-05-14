@@ -8,7 +8,7 @@ import * as Segment from "expo-analytics-segment";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
-import InputField from "../../MiniComponents/InputField";
+import InputField from "../../MiniComponents/InputFieldNew";
 
 //icons
 import PasswordOutline from "../../../assets/SVGs/PasswordOutline";

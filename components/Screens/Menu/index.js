@@ -29,6 +29,9 @@ import rtlStyles from "./rtlStyles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
+//data
+import businessCategoriesList from "../../Data/businessCategoriesList.data";
+
 //Functions
 import isStringArabic from "../../isStringArabic";
 import {
@@ -42,6 +45,8 @@ import segmentEventTrack from "../../segmentEventTrack";
 class Menu extends Component {
   constructor(props) {
     super(props);
+    const { translate } = this.props.screenProps;
+
     this.state = {
       slidePanel: false,
       _draggedValue: new Animated.Value(0),
@@ -50,6 +55,7 @@ class Menu extends Component {
         top: hp("100") - 100,
         bottom: -10,
       },
+      items: businessCategoriesList(translate),
     };
   }
   componentDidMount() {
@@ -114,9 +120,30 @@ class Menu extends Component {
       },
     });
   };
+
+  /**
+   *
+   *
+   * To find business category name from list
+   */
+  getBusinessCategoryName = () => {
+    const { mainBusiness } = this.props;
+    let businesscategoryName = "";
+    if (mainBusiness && mainBusiness.businesscategory) {
+      // check if category === "43" ie other then show the otherCategory name
+      if (mainBusiness.businesscategory === "43") {
+        businesscategoryName = mainBusiness.otherBusinessCategory;
+      } else
+        businesscategoryName = this.state.items.find(
+          (category) => category.value === mainBusiness.businesscategory
+        ).label;
+    }
+    return businesscategoryName;
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
+    const businesscategoryName = this.getBusinessCategoryName();
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -135,23 +162,6 @@ class Menu extends Component {
               style={[
                 styles.businessTitle,
                 this.props.mainBusiness &&
-                this.props.mainBusiness.brandname &&
-                !isStringArabic(this.props.mainBusiness.brandname)
-                  ? {
-                      fontFamily: "montserrat-regular-english",
-                    }
-                  : {},
-              ]}
-            >
-              {!this.props.mainBusiness
-                ? ""
-                : this.props.mainBusiness.brandname}
-            </Text>
-            <Text
-              onLayout={this.handlePanelOffset}
-              style={[
-                styles.businessname,
-                this.props.mainBusiness &&
                 this.props.mainBusiness.businessname &&
                 !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
@@ -163,6 +173,21 @@ class Menu extends Component {
               {!this.props.mainBusiness
                 ? ""
                 : this.props.mainBusiness.businessname}
+            </Text>
+            <Text
+              onLayout={this.handlePanelOffset}
+              style={[
+                styles.businessname,
+                this.props.mainBusiness &&
+                this.props.mainBusiness.businesscategory &&
+                !isStringArabic(businesscategoryName)
+                  ? {
+                      fontFamily: "montserrat-regular-english",
+                    }
+                  : {},
+              ]}
+            >
+              {businesscategoryName}
             </Text>
 
             <GradientButton
@@ -375,7 +400,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/59/
+                {Constants.manifest.version}/61/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}/
                 {Constants.manifest.releaseChannel}/

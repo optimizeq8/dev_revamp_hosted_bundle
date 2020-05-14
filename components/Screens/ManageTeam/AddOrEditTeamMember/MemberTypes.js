@@ -1,5 +1,23 @@
 import React from "react";
 import MemberType from "./MemberType";
+const member_roles = [
+  {
+    id: 1,
+    type: "Admin",
+    description:
+      "Launch & manage campaigns, invite users, edit roles, remove users"
+  },
+  {
+    id: 2,
+    type: "Campaign manager",
+    description: "Launch & manage campaigns"
+  },
+  {
+    id: 3,
+    type: "Client",
+    description: "View reports & campaign details"
+  }
+];
 /**
  * A Functional component that render the 3 different MemberType switches
  * for the user roles
@@ -10,24 +28,7 @@ import MemberType from "./MemberType";
  * @return {Array} an array of components of type MemberType to render
  */
 export default (handleMemberType, userRole, translate) => {
-  let member_roles = [
-    {
-      id: 1,
-      type: "Admin",
-      description:
-        "Launch & manage campaigns, invite users, edit roles, remove users"
-    },
-    {
-      id: 2,
-      type: "Campaign manager",
-      description: "Launch & manage campaigns"
-    },
-    {
-      id: 3,
-      type: "Client",
-      description: "View reports & campaign details"
-    }
-  ].map(mem => (
+  return member_roles.map(mem => (
     <MemberType
       key={mem.type}
       handleMemberType={handleMemberType}
@@ -36,5 +37,6 @@ export default (handleMemberType, userRole, translate) => {
       translate={translate}
     />
   ));
-  return member_roles;
+
+  // return member_roles;
 };

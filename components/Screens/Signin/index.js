@@ -1,9 +1,17 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableOpacity, Linking, Platform } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Linking,
+  Platform,
+  ScrollView
+} from "react-native";
 import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
+
+import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
 
@@ -11,7 +19,7 @@ import * as Segment from "expo-analytics-segment";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
-import InputField from "../../MiniComponents/InputField";
+import InputField from "../../MiniComponents/InputFieldNew";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import AppUpdateChecker from "../AppUpdateChecker";
 
@@ -145,82 +153,87 @@ class Signin extends Component {
           {this.props.checkingForToken ? (
             <LoadingScreen dash={true} />
           ) : (
-            <View style={styles.mainView}>
-              <View style={styles.logoContainer}>
-                <Logo
-                  style={styles.logo}
-                  width={heightPercentageToDP(9)}
-                  height={heightPercentageToDP(9)}
-                />
-                <View style={styles.signTextContainer}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Segment.screenWithProperties("Signup Using Email", {
-                        category: "Sign Up",
-                        label: "Step 1 of Registeration"
-                      });
-                      this.setState({
-                        activeTab: 0
-                      });
-                    }}
-                    style={[
-                      styles.tabView,
-                      this.state.activeTab === 0 && styles.activeTabView
-                    ]}
-                  >
-                    <Text
+            <View style={{ flex: 1 }}>
+              <InputScrollView
+                {...ScrollView.props}
+                contentContainerStyle={styles.mainView}
+              >
+                <View style={styles.logoContainer}>
+                  <Logo
+                    style={styles.logo}
+                    width={heightPercentageToDP(9)}
+                    height={heightPercentageToDP(9)}
+                  />
+                  <View style={styles.signTextContainer}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Segment.screenWithProperties("Signup Using Email", {
+                          category: "Sign Up",
+                          label: "Step 1 of Registeration"
+                        });
+                        this.setState({
+                          activeTab: 0
+                        });
+                      }}
                       style={[
-                        styles.signText,
-                        {
-                          color:
-                            this.state.activeTab === 0
-                              ? "#FFF"
-                              : "rgba(255,255,255,0.65)"
-                        }
+                        styles.tabView,
+                        this.state.activeTab === 0 && styles.activeTabView
                       ]}
                     >
-                      {translate("SIGN UP")}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Segment.screenWithProperties("Sign In", {
-                        category: "Sign In"
-                      });
-                      this.setState({
-                        activeTab: 1
-                      });
-                    }}
-                    style={[
-                      styles.tabView,
-                      this.state.activeTab === 1 && styles.activeTabView
-                    ]}
-                  >
-                    <Text
+                      <Text
+                        style={[
+                          styles.signText,
+                          {
+                            color:
+                              this.state.activeTab === 0
+                                ? "#FFF"
+                                : "rgba(255,255,255,0.65)"
+                          }
+                        ]}
+                      >
+                        {translate("SIGN UP")}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Segment.screenWithProperties("Sign In", {
+                          category: "Sign In"
+                        });
+                        this.setState({
+                          activeTab: 1
+                        });
+                      }}
                       style={[
-                        styles.signText,
-                        {
-                          color:
-                            this.state.activeTab === 1
-                              ? "#FFF"
-                              : "rgba(255,255,255,0.65)"
-                        }
+                        styles.tabView,
+                        this.state.activeTab === 1 && styles.activeTabView
                       ]}
                     >
-                      {translate("Sign in")}
-                    </Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={[
+                          styles.signText,
+                          {
+                            color:
+                              this.state.activeTab === 1
+                                ? "#FFF"
+                                : "rgba(255,255,255,0.65)"
+                          }
+                        ]}
+                      >
+                        {translate("Sign in")}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  {/* <Text style={styles.logoText}>Optimize</Text> */}
                 </View>
-                {/* <Text style={styles.logoText}>Optimize</Text> */}
-              </View>
-              {this.state.activeTab === 0 && (
-                <View style={styles.outView}>
-                  <Text style={styles.heading}>
-                    {translate("Create an Account")}
-                  </Text>
+                <Text style={styles.heading}>
+                  {this.state.activeTab === 0
+                    ? translate("Create an Account")
+                    : translate("Welcome Back !")}
+                </Text>
+                {this.state.activeTab === 0 && (
                   <InputField
                     // disabled={this.props.loadingUpdateInfo}
-                    customStyles={{ width: "100%", marginLeft: 0 }}
+                    // customStyles={{ width: "100%", marginLeft: 0 }}
                     incomplete={false}
                     translate={this.props.screenProps.translate}
                     stateName1="newEmail"
@@ -233,64 +246,58 @@ class Signin extends Component {
                     getValidInfo={this.getValidInfo}
                     key={"Email"}
                   />
-                  <GradientButton
-                    text={translate("Create Account")}
-                    uppercase
-                    style={{
-                      height: 50,
-                      width: "100%",
-                      marginHorizontal: 0
-                    }}
-                    textStyle={{ fontSize: 14 }}
-                    onPressAction={this.createNewAccount}
-                  />
-                </View>
-              )}
-              {this.state.activeTab === 1 && (
-                <View style={styles.outView}>
-                  <Text style={styles.heading}>
-                    {translate("Welcome Back !")}
-                  </Text>
-                  <InputField
-                    // disabled={this.props.loadingUpdateInfo}
-                    customStyles={{ width: "100%", marginLeft: 0 }}
-                    incomplete={false}
-                    translate={this.props.screenProps.translate}
-                    stateName1="email"
-                    label="Email"
-                    placeholder1="Enter your email"
-                    value={this.state.email}
-                    valueError1={this.state.emailError}
-                    icon={PersonTransparentIcon}
-                    setValue={this.setValue}
-                    getValidInfo={this.getValidInfo}
-                    key={"Email"}
-                  />
-                  <InputField
-                    // disabled={this.props.loadingUpdateInfo}
-                    customStyles={{ width: "100%", marginLeft: 0 }}
-                    incomplete={false}
-                    translate={this.props.screenProps.translate}
-                    stateName1="password"
-                    label="Password"
-                    placeholder1="Enter your password"
-                    value={this.state.password}
-                    valueError1={this.state.passwordError}
-                    icon={PasswordIcon}
-                    setValue={this.setValue}
-                    getValidInfo={this.getValidInfo}
-                    key={"Passowrd"}
-                    secureTextEntry={true}
-                  />
-
-                  <GradientButton
-                    disabled={this.props.loading}
-                    text={translate("Sign in")}
-                    uppercase
-                    style={styles.signInButton}
-                    textStyle={{ fontSize: 14 }}
-                    onPressAction={() => this._handleSubmission()}
-                  />
+                )}
+                {this.state.activeTab === 1 && (
+                  <>
+                    <InputField
+                      // disabled={this.props.loadingUpdateInfo}
+                      // customStyles={{ width: "100%", marginLeft: 0 }}
+                      incomplete={false}
+                      translate={this.props.screenProps.translate}
+                      stateName1="email"
+                      label="Email"
+                      placeholder1="Enter your email"
+                      value={this.state.email}
+                      valueError1={this.state.emailError}
+                      icon={PersonTransparentIcon}
+                      setValue={this.setValue}
+                      getValidInfo={this.getValidInfo}
+                      key={"Email"}
+                    />
+                    <InputField
+                      // disabled={this.props.loadingUpdateInfo}
+                      // customStyles={{ width: "100%", marginLeft: 0 }}
+                      incomplete={false}
+                      translate={this.props.screenProps.translate}
+                      stateName1="password"
+                      label="Password"
+                      placeholder1="Enter your password"
+                      value={this.state.password}
+                      valueError1={this.state.passwordError}
+                      icon={PasswordIcon}
+                      setValue={this.setValue}
+                      getValidInfo={this.getValidInfo}
+                      key={"Passowrd"}
+                      secureTextEntry={true}
+                    />
+                  </>
+                )}
+                <GradientButton
+                  text={
+                    this.state.activeTab === 0
+                      ? translate("Create Account")
+                      : translate("Sign in")
+                  }
+                  uppercase
+                  style={styles.gradientBtn}
+                  textStyle={styles.gradientBtnText}
+                  onPressAction={
+                    this.state.activeTab === 0
+                      ? this.createNewAccount
+                      : this._handleSubmission
+                  }
+                />
+                {this.state.activeTab === 1 && (
                   <TouchableOpacity
                     onPress={() => {
                       Segment.track("Forgot Password Button");
@@ -301,12 +308,13 @@ class Signin extends Component {
                       {translate("Forgot Password?")}
                     </Text>
                   </TouchableOpacity>
-                </View>
-              )}
-              <View style={styles.SignInCoverImage}>
-                <SignInCover height={heightPercentageToDP(42)} />
-              </View>
+                )}
+              </InputScrollView>
               <AppUpdateChecker screenProps={this.props.screenProps} />
+              <SignInCover
+                style={styles.SignInCoverImage}
+                height={heightPercentageToDP(42)}
+              />
             </View>
           )}
         </SafeAreaView>
