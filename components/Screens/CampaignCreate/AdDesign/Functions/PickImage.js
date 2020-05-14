@@ -77,7 +77,6 @@ export const _pickImage = async (
   editImage
 ) => {
   try {
-
     let result = {};
     if (!editImage) result = await pick(mediaTypes, screenProps);
     else
@@ -268,6 +267,7 @@ export const _pickImage = async (
             onToggleModal(false);
             segmentEventTrack("Seleeted Image Error", {
               campaign_error_image: "The dimensions are too large",
+              error,
             });
             showMessage({
               message: error.wrongAspect
@@ -520,7 +520,10 @@ export const _pickImage = async (
             return;
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
+            segmentEventTrack("Selected Video Error", {
+              campaign_error_image: err,
+            });
             showMessage({
               message: err,
               type: "warning",
@@ -553,5 +556,6 @@ export const _pickImage = async (
   } catch (error) {
     onToggleModal(false);
     // console.log("error image pick", error);
+    segmentEventTrack("error image picker", { campaign_error_image: error });
   }
 };
