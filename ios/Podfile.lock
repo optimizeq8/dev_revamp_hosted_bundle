@@ -3,7 +3,7 @@ PODS:
     - Adjust/Core (= 4.21.3)
   - Adjust/Core (4.21.3)
   - Amplitude-iOS (4.7.1)
-  - Analytics (3.8.0)
+  - Analytics (3.8.1)
   - boost-for-react-native (1.63.0)
   - CocoaLumberjack (3.5.3):
     - CocoaLumberjack/Core (= 3.5.3)
@@ -17,7 +17,7 @@ PODS:
     - UMPermissionsInterface
   - EXBlur (8.0.0):
     - UMCore
-  - EXConstants (8.0.0):
+  - EXConstants (9.0.0):
     - UMConstantsInterface
     - UMCore
   - EXErrorRecovery (1.0.0):
@@ -48,7 +48,7 @@ PODS:
   - EXMediaLibrary (8.0.0):
     - UMCore
     - UMPermissionsInterface
-  - EXPermissions (8.0.0):
+  - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
   - ExpoKit/Core (36.0.0):
@@ -324,11 +324,13 @@ PODS:
     - React-cxxreact (= 0.61.4)
     - React-jsi (= 0.61.4)
     - ReactCommon/jscallinvoker (= 0.61.4)
-  - RNPhotoEditorSDK (2.3.2):
-    - PhotoEditorSDK (~> 10.7)
+  - ReactNativeAutogrowTextinput (5.4.0):
+    - React
+  - RNPhotoEditorSDK (2.4.1):
+    - PhotoEditorSDK (~> 10.9)
     - React
     - React-RCTImage
-  - RNSentry (1.3.3):
+  - RNSentry (1.3.8):
     - React
     - Sentry (~> 4.4.0)
   - RNVideoEditorSDK (2.4.1):
@@ -362,7 +364,7 @@ DEPENDENCIES:
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXBlur (from `../node_modules/expo-blur/ios`)
-  - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXConstants (from `../node_modules/sentry-expo/node_modules/expo-constants/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -373,7 +375,7 @@ DEPENDENCIES:
   - EXLocalization (from `../node_modules/expo-localization/ios`)
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
-  - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXPermissions (from `../node_modules/expo-image-picker/node_modules/expo-permissions/ios`)
   - ExpoKit/Core (from `http://github.com/expo/expo.git`, tag `ios/2.14.4`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
@@ -406,6 +408,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNVideoEditorSDK (from `../node_modules/react-native-videoeditorsdk`)
@@ -455,7 +458,7 @@ EXTERNAL SOURCES:
     path: "../node_modules/expo-blur/ios"
   EXConstants:
     :path: !ruby/object:Pathname
-    path: "../node_modules/expo-constants/ios"
+    path: "../node_modules/sentry-expo/node_modules/expo-constants/ios"
   EXErrorRecovery:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-error-recovery/ios"
@@ -488,7 +491,7 @@ EXTERNAL SOURCES:
     path: "../node_modules/expo-media-library/ios"
   EXPermissions:
     :path: !ruby/object:Pathname
-    path: "../node_modules/expo-permissions/ios"
+    path: "../node_modules/expo-image-picker/node_modules/expo-permissions/ios"
   ExpoKit:
     :git: http://github.com/expo/expo.git
     :tag: ios/2.14.4
@@ -552,6 +555,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeAutogrowTextinput:
+    :path: "../node_modules/react-native-autogrow-textinput"
   RNPhotoEditorSDK:
     :path: "../node_modules/react-native-photoeditorsdk"
   RNSentry:
@@ -605,7 +610,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Adjust: 4e8fe76a28dd413c183ba621df50493dcd10e28b
   Amplitude-iOS: a0347ab05f2d196e6bbb22cc6f62eea33b5a035b
-  Analytics: fcf79ebc393a7d77befb8d43ce296353ba9ede3d
+  Analytics: 45b1faec509367a99c7b788cc5389180c43fe3fc
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
@@ -613,7 +618,7 @@ SPEC CHECKSUMS:
   EXAppLoaderProvider: ebdb6bc2632c1ccadbe49f5e4104d8d690969c49
   EXAV: 39a3b794d690e91404774cabfc563182d4f84ac3
   EXBlur: d1604f66f89a9414f5ee65dfb23874437c1bb147
-  EXConstants: 4051b16c17ef3defa03c541d42811dc92b249146
+  EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
   EXErrorRecovery: d36db99ec6a3808f313f01b0890eb443796dd1c2
   EXFileSystem: 6e0d9bb6cc4ea404dbb8f583c1a8a2dcdf4b83b6
   EXFont: 6187b5ab46ee578d5f8e7f2ea092752e78772235
@@ -624,7 +629,7 @@ SPEC CHECKSUMS:
   EXLocalization: 6a3ec1e9dda2ec9ba9dcc4a29dd840e5e950115e
   EXLocation: 3c75d012ca92eed94d4338778d79c49d1252393a
   EXMediaLibrary: 9281707de8f95cc391d242b614f493ab781030fa
-  EXPermissions: 9bc08859a675d291e89be9a0870155c27c16ac35
+  EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
   ExpoKit: b966bbd05ef8415d77939e4d2b7520a6f6ef268c
   EXSecureStore: 1448b90d665c9400aaaf6655fccb464da14698f6
   EXSegment: d1f9b468c14c70b8dacad0730bb9dffaf2452010
@@ -661,8 +666,9 @@ SPEC CHECKSUMS:
   React-RCTText: 21934e0a51d522abcd0a275407e80af45d6fd9ec
   React-RCTVibration: 0f76400ee3cec6edb9c125da49fed279340d145a
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
-  RNPhotoEditorSDK: 19574d5c0539e61981f6485b0c79760433f426a4
-  RNSentry: 86baf0c87120cd5eb491d073989f8cbc1a2174c6
+  ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
+  RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
+  RNSentry: 05cc998036c027785e466c896211b5c75b3e0ffd
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   UMBarCodeScannerInterface: 3802c8574ef119c150701d679ab386e2266d6a54
