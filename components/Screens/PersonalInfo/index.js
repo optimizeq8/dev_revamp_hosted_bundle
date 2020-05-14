@@ -229,6 +229,7 @@ class PersonalInfo extends Component {
                 valid={this.state.valid}
                 changeNo={this.changePersonalNo}
                 phoneNum={this.state.phoneNum}
+                label={"Mobile No"}
               />
             </View>
             {this.props.loadingUpdateInfo ? (

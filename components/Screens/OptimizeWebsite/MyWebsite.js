@@ -29,6 +29,7 @@ import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
 
 import Header from "../../MiniComponents/Header";
+import Website from "../../MiniComponents/InputFieldNew/Website";
 import ProductSelect from "./ProductSelect";
 import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
@@ -159,21 +160,27 @@ class MyWebsite extends Component {
               {translate("Change Logo")}
             </Text>
           </TouchableOpacity>
-
-          <View style={styles.labelView}>
-            <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
-          </View>
           <View style={styles.weburlView}>
-            <Text selectable style={styles.weburl}>
-              {website}
-            </Text>
+            <Website
+              website={website}
+              disabled={true}
+              screenProps={this.props.screenProps}
+            />
             <TouchableOpacity
+              style={styles.copyIcon2}
               onPress={() => {
                 Clipboard.setString(website);
               }}
             >
               <CopyIcon style={styles.copyIcon} />
             </TouchableOpacity>
+
+            {/* <View style={styles.colView}>
+              <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
+              <Text selectable style={styles.weburl}>
+                {website}
+              </Text>
+            </View> */}
           </View>
 
           <ProductSelect edit={true} screenProps={this.props.screenProps} />

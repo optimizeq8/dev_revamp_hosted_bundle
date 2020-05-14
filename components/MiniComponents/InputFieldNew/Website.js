@@ -61,7 +61,8 @@ export default class WebsiteComponent extends React.Component {
       customStyle,
       stateNameError,
       optional,
-      setNetworkString
+      setNetworkString,
+      disabled
     } = this.props;
     return (
       <Animatable.View
@@ -70,22 +71,7 @@ export default class WebsiteComponent extends React.Component {
         easing={"ease"}
         animation={stateNameError ? "shake" : ""}
       >
-        <Item style={[styles.input1, customStyle]}>
-          {/* <GradientButton
-            style={styles.networkStringButton}
-            onPressAction={() => {
-              if (this.props.networkString === "https://") {
-                setNetworkString("http://");
-              } else {
-                setNetworkString("https://");
-              }
-            }}
-          >
-            <Text style={styles.networkLabel}>
-              {this.props.networkString === "https://" ? "https" : "http"}
-            </Text>
-            <Text style={styles.networkLabel}>{`< >`}</Text>
-          </GradientButton> */}
+        <Item disabled={disabled} style={[styles.input1, customStyle]}>
           <WebsiteIcon
             width={23}
             height={24}
@@ -114,6 +100,7 @@ export default class WebsiteComponent extends React.Component {
               ref={input => {
                 this.props.inputs && (this.props.inputs["inputWeb"] = input);
               }}
+              disabled={disabled}
               onFocus={this.focusFeild}
               placeholder={translate(`Enter your website's URL`)}
               placeholderTextColor={globalColors.white}

@@ -78,16 +78,20 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: widthPercentageToDP(75),
+    width: "100%",
     borderWidth: 0,
     height: 54
   },
   inputtext: {
-    fontFamily: "montserrat-light-english",
+    fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    alignSelf: "center",
-    textAlign: "center",
-    color: "#fff"
+    alignSelf: "flex-start",
+    textAlign: I18nManager.isRTL ? "right" : "left",
+    color: "#FFF",
+    marginBottom: 10,
+    paddingLeft: 0,
+    paddingRight: 0,
+    height: 20
   },
   fullNameView: {
     width: "100%"
@@ -109,9 +113,9 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#FFF",
-    textAlign: "center",
+    textAlign: "left",
     textTransform: "uppercase",
-    marginBottom: I18nManager.isRTL ? -8 : -3,
+    marginTop: 10,
     zIndex: 1
   },
   labelView: {
@@ -166,7 +170,8 @@ const styles = StyleSheet.create({
   },
   whatsAppDetailContainer: {
     paddingTop: 20,
-    paddingBottom: "30%"
+    paddingBottom: "30%",
+    paddingHorizontal: 30
     // minHeight: '100%',
     // justifyContent: 'space-around',
     // flex: 1,
@@ -385,12 +390,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5
   },
   instagramErrorText: {
-    paddingTop: 12,
-    paddingHorizontal: 50,
+    // paddingTop: 12,
+    // paddingHorizontal: 50,
     fontSize: 14,
     fontFamily: "montserrat-regular",
     color: "#fff",
     textAlign: "center"
+  },
+  errorIcon: {
+    position: "absolute",
+    right: 15,
+    alignSelf: "center",
+    top: I18nManager.isRTL ? 35 : 30
   },
   socialMediaIcon: {
     marginHorizontal: 20
@@ -516,37 +527,41 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#FFF",
     textTransform: "uppercase",
-    textAlign: "center",
-    paddingTop: 5,
-    marginBottom: -10,
+    textAlign: "left",
+    marginTop: 10,
     zIndex: 1
   },
   weburl: {
     fontFamily: "montserrat-regular-english",
     fontSize: 14,
     color: "#FFF",
-    textAlign: "center"
+    textAlign: "left"
   },
   weburlView: {
-    backgroundColor: "rgba(0,0,0,0.15)",
-    paddingHorizontal: 20,
-    // width: widthPercentageToDP(80),
-    alignSelf: "center",
-    paddingVertical: 20,
-    borderRadius: 30,
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 13
+    marginHorizontal: 26
+    // flexDirection: "row"
   },
   copyIcon: {
     alignSelf: "flex-end",
     left: 10
+  },
+  copyIcon2: {
+    position: "absolute",
+    right: 20,
+    top: I18nManager.isRTL ? 35 : 30
   },
   urlView: {
     marginBottom: 13
   },
   award: {
     alignSelf: "center"
+  },
+  colView: {
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    marginLeft: 13,
+    width: "100%"
   }
 });
 
