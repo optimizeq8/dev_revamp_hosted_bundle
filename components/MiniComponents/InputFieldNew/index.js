@@ -157,7 +157,8 @@ export default class InputField extends Component {
       valueError1,
       valueError2,
       secureTextEntry,
-      customStyles
+      customStyles,
+      compulsory
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -172,7 +173,7 @@ export default class InputField extends Component {
         <Item style={[styles.input1, customStyles]}>
           {FieldIcon && (
             <FieldIcon
-              style={[styles.iconSize]}
+              style={[styles.iconSize, styles.icon]}
               fill={
                 this.state.highlight ? globalColors.orange : globalColors.white
               }
@@ -192,6 +193,7 @@ export default class InputField extends Component {
               ]}
             >
               {translate(label)}
+              {compulsory && "*"}
             </Text>
             <View style={[styles.rowView]}>
               <Input

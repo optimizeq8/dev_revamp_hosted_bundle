@@ -65,7 +65,7 @@ export default class ModalField extends Component {
         >
           {FieldIcon && (
             <FieldIcon
-              style={[styles.iconSize]}
+              style={[styles.iconSize, styles.icon]}
               fill={isVisible ? globalColors.orange : globalColors.white}
               stroke={isVisible ? globalColors.orange : globalColors.white}
             />

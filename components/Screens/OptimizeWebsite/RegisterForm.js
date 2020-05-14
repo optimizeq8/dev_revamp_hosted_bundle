@@ -21,7 +21,8 @@ import styles from "./styles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
-import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
+import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
+import InputField from "../../MiniComponents/InputFieldNew";
 import segmentEventTrack from "../../segmentEventTrack";
 
 class RegisterForm extends Component {
@@ -278,6 +279,32 @@ class RegisterForm extends Component {
       showChangeInstaHandle: value
     });
   };
+
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+
+    this.setState({ ...state });
+  };
+
+  getValidInfo = async (stateError, validWrap) => {
+    let state = {};
+    if (stateError === "insta_handleError") {
+      segmentEventTrack("Change Instagram Handle", {
+        insta_handle: this.state.insta_handle
+      });
+      await this.props.verifyInstagramHandle(this.state.insta_handle);
+      if (this.props.errorInstaHandle) {
+        segmentEventTrack("Error on blur insta handle", {
+          error_insta_handle: this.props.errorInstaHandleMessage
+        });
+      }
+    }
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -285,92 +312,46 @@ class RegisterForm extends Component {
         {...ScrollView.props}
         contentContainerStyle={[styles.whatsAppDetailContainer]}
       >
-        <View style={styles.marginVertical}>
-          <View style={[styles.callToActionLabelView]}>
-            <Text style={[styles.inputLabel]}>{translate("instagram")}*</Text>
-          </View>
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                paddingHorizontal: 0
-              }
-              //   this.state.insta_handleError
-              //     ? GlobalStyles.redBorderColor
-              //     : GlobalStyles.transparentBorderColor
-            ]}
-          >
-            <InstagramIcon
-              width={25}
-              height={25}
-              style={{ marginLeft: 15 }}
-              fill="#FFF"
-            />
-            <Input
-              style={styles.inputtext}
-              placeholder="Handle"
-              placeholderTextColor="#fff"
-              value={this.state.insta_handle}
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value => this.changeInstaHandle(value)}
-              onBlur={async () => {
-                segmentEventTrack("Change Instagram Handle", {
-                  insta_handle: this.state.insta_handle
-                });
-                this.validate();
-                await this.props.verifyInstagramHandle(this.state.insta_handle);
-                if (this.props.errorInstaHandle) {
-                  segmentEventTrack("Error on blurinsta handle", {
-                    error_insta_handle: this.props.errorInstaHandleMessage
-                  });
-                }
-              }}
-            />
-            {this.props.errorInstaHandle && (
-              <ErrorIcon
-                width={25}
-                height={25}
-                style={{ marginRight: 10 }}
-                fill={"#EA514B"}
-              />
-            )}
-            {!this.props.errorInstaHandle && (
-              <SuccessIcon width={25} height={25} style={{ marginRight: 10 }} />
-            )}
-          </Item>
+        <InputField
+          // disabled={this.props.loadingUpdateInfo}
+          // customStyles={{ width: "100%", marginLeft: 0 }}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="insta_handle"
+          label="instagram"
+          placeholder1="Handle"
+          value={this.state.insta_handle}
+          valueError1={this.state.insta_handleError}
+          icon={InstagramIcon}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          key={"insta_handle"}
+          compulsory={true}
+        />
+
+        {this.props.errorInstaHandle && (
+          <ErrorIcon
+            width={25}
+            height={25}
+            style={styles.errorIcon}
+            fill={"#EA514B"}
+          />
+        )}
+        {!this.props.errorInstaHandle && (
+          <SuccessIcon width={25} height={25} style={styles.errorIcon} />
+        )}
+        {this.props.errorInstaHandleMessage && (
           <Text style={styles.instagramErrorText}>
-            {this.props.errorInstaHandleMessage &&
-              translate(
-                `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
-                  this.props.errorInstaHandleMessage.indexOf(" ") + 1
-                )}`,
-                { insta_handle: this.state.insta_handle }
-              )}
+            {translate(
+              `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+                this.props.errorInstaHandleMessage.indexOf(" ") + 1
+              )}`,
+              { insta_handle: this.state.insta_handle }
+            )}
           </Text>
-        </View>
+        )}
+
         <View style={styles.marginVertical}>
-          <View
-            style={[
-              styles.callToActionLabelView,
-              {
-                backgroundColor: "rgba(0,0,0,0.15)"
-              }
-            ]}
-          >
-            <Text
-              style={[
-                styles.inputLabel,
-                {
-                  fontFamily: "montserrat-bold-english",
-                  marginTop: 0
-                }
-              ]}
-            >
-              {translate("WhatsApp Number")}
-            </Text>
-          </View>
           <PhoneNoField
             valid={this.state.validWhatsAppNumber}
             screenProps={this.props.screenProps}
@@ -378,20 +359,10 @@ class RegisterForm extends Component {
             phoneNum={this.state.whatsappnumber}
             changeNo={this.changeWhatsAppPhoneNo}
             invite={true}
+            label={"WhatsApp Number"}
           />
         </View>
         <View style={styles.marginVertical}>
-          <View
-            style={[
-              styles.callToActionLabelView,
-              {
-                backgroundColor: "rgba(0,0,0,0.15)"
-              }
-            ]}
-          >
-            <Text style={[styles.inputLabel]}>{translate("Phone Number")}</Text>
-          </View>
-          {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
           <PhoneNoField
             valid={this.state.validCallNumber}
             screenProps={this.props.screenProps}
@@ -399,51 +370,42 @@ class RegisterForm extends Component {
             phoneNum={this.state.callnumber}
             changeNo={this.changeCallNumberPhoneNo}
             invite={true}
+            label={"Phone Number"}
           />
         </View>
         <View style={styles.marginVertical}>
-          <View style={[styles.callToActionLabelView]}>
-            <Text style={[styles.inputLabel]}>{translate("LOCATION URL")}</Text>
-          </View>
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                paddingHorizontal: 0
-                // width: "75%"
-              }
-              //   this.state.insta_handleError
-              //     ? GlobalStyles.redBorderColor
-              //     : GlobalStyles.transparentBorderColor
-            ]}
-          >
+          <Item rounded style={[styles.input]}>
             <LocationIcon
               // width={50}
               // height={50}
-              style={{ marginLeft: 12 }}
+              style={{ marginLeft: 18 }}
               stroke={"#FFF"}
             />
-            <Input
-              style={styles.inputtext}
-              placeholder={translate("Add Location URL")}
-              placeholderTextColor="#fff"
-              value={this.state.googlemaplink}
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value => this.changeGoogleMapLocation(value)}
-              onBlur={async () => {
-                segmentEventTrack("Changed Google Map Location", {
-                  googlemaplink: this.state.googleMapLinkError
-                });
-                await this.validateUrl();
-                if (this.state.googleMapLinkError) {
-                  segmentEventTrack("Error on blur  google map location", {
-                    error_googlemaplink: this.state.googleMapLinkError
+            <View style={styles.colView}>
+              <Text style={[styles.inputLabel]}>
+                {translate("LOCATION URL")}
+              </Text>
+              <Input
+                style={styles.inputtext}
+                placeholder={translate("Add Location URL")}
+                placeholderTextColor="#fff"
+                value={this.state.googlemaplink}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value => this.changeGoogleMapLocation(value)}
+                onBlur={async () => {
+                  segmentEventTrack("Changed Google Map Location", {
+                    googlemaplink: this.state.googleMapLinkError
                   });
-                }
-              }}
-            />
+                  await this.validateUrl();
+                  if (this.state.googleMapLinkError) {
+                    segmentEventTrack("Error on blur  google map location", {
+                      error_googlemaplink: this.state.googleMapLinkError
+                    });
+                  }
+                }}
+              />
+            </View>
           </Item>
         </View>
         {this.props.edit ? (

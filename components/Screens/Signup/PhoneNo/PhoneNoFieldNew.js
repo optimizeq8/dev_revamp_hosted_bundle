@@ -50,6 +50,7 @@ export default class PhoneNoField extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    const { label } = this.props;
     return (
       <View style={styles.phoneView}>
         <Item
@@ -75,7 +76,7 @@ export default class PhoneNoField extends Component {
             style={[styles.flagIcon, globalStyles.orangeTextColor]}
           />
           <View style={{ marginLeft: 13 }}>
-            <Text style={[styles.inputLabelNew]}>{translate("Mobile No")}</Text>
+            <Text style={[styles.inputLabelNew]}>{translate(label)}</Text>
 
             <PhoneInput
               style={styles.phoneInputStyle}

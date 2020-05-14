@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     alignSelf: "center",
     width: "100%",
-    height: 56,
+    // height: 56,
+    paddingVertical: 6,
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.16)",
     paddingHorizontal: 20
@@ -162,7 +163,8 @@ const styles = StyleSheet.create({
     zIndex: 5
   },
   phoneInputTextStyle: {
-    left: "3%"
+    left: "3%",
+    textAlign: I18nManager.isRTL ? "right" : "left"
   },
   optionTextStyle: {
     alignSelf: "flex-start"

@@ -511,6 +511,7 @@ class PersonalInfo extends Component {
           valid={this.state.valid}
           changeNo={this.changePersonalNo}
           phoneNum={this.state.userInfo.mobile}
+          label={"Mobile No"}
         />
 
         <InputFeild

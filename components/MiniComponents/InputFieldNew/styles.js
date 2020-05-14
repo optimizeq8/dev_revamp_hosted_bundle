@@ -9,7 +9,7 @@ export default StyleSheet.create({
     width: "100%",
     borderWidth: 0,
     // height: 54,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 18,
     display: "flex",
     alignItems: "center",
     marginVertical: 15
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     marginTop: 10
   },
   inputText: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
@@ -43,7 +43,7 @@ export default StyleSheet.create({
   downiconEnd: {
     fontSize: 20,
     color: "#fff",
-    marginLeft: -60
+    marginLeft: -80
   },
   modalBar: {
     flexDirection: "row"
