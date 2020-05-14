@@ -76,6 +76,7 @@ import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
+import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 
 import * as Sentry from "@sentry/react-native";
@@ -119,7 +120,8 @@ const myErrorHandler = (e, isFatal) => {
 // i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
 //don't think we can get back the trial version once this was triggered
-if (!__DEV__) PESDK.unlockWithLicense(require("./pesdk_license"));
+if (!__DEV__) PESDK.unlockWithLicense(require("./img.ly/pesdk_license"));
+if (!__DEV__) VESDK.unlockWithLicense(require("./img.ly/vesdk_license"));
 class App extends React.Component {
   constructor(props) {
     super(props);
