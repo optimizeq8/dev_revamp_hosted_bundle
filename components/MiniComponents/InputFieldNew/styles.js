@@ -43,7 +43,7 @@ export default StyleSheet.create({
   downiconEnd: {
     fontSize: 20,
     color: "#fff",
-    marginLeft: -60
+    marginLeft: -80
   },
   modalBar: {
     flexDirection: "row"

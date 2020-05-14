@@ -173,7 +173,7 @@ export default class InputField extends Component {
         <Item style={[styles.input1, customStyles]}>
           {FieldIcon && (
             <FieldIcon
-              style={[styles.iconSize]}
+              style={[styles.iconSize, styles.icon]}
               fill={
                 this.state.highlight ? globalColors.orange : globalColors.white
               }
