@@ -1368,10 +1368,16 @@ class AdDesign extends Component {
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
           mediaUri={{
-            media: this.state.uneditedImageUri,
+            media: storyAdCards.storyAdSelected
+              ? storyAdCards.selectedStoryAd.uneditedImageUri
+              : this.state.uneditedImageUri,
             storyAdCards: this.state.storyAdCards,
           }}
-          media_type={type}
+          media_type={
+            storyAdCards.storyAdSelected
+              ? storyAdCards.selectedStoryAd.media_type
+              : type
+          }
           serialization={
             this.state.serialization.hasOwnProperty("image")
               ? this.state.serialization

@@ -56,7 +56,6 @@ export const pick = async (mediaTypes, screenProps) => {
       base64: false,
       exif: false,
       quality: 0.8,
-      allowsEditing: Platform.OS === "ios" && mediaTypes === "Videos",
     });
   }
 
@@ -78,24 +77,19 @@ export const _pickImage = async (
   editImage
 ) => {
   try {
+    console.log("mediaEditor.mediaType", mediaEditor.mediaType);
+
     let result = {};
     if (!editImage) result = await pick(mediaTypes, screenProps);
     else
       result = {
         uri: mediaEditor.mediaUri,
         cancelled: false,
-        type: mediaTypes === "Images" ? "image" : "video",
+        type: mediaEditor.media_type === "IMAGE" ? "image" : "video",
       };
     let configuration = PhotoEditorConfiguration({
       serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
     });
-    let file = {};
-    if (result) {
-      file = await FileSystem.getInfoAsync(result.uri, {
-        size: true,
-      });
-      setTheState({ directory: "/ImagePicker/" });
-    }
     const { translate } = screenProps;
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
@@ -474,6 +468,7 @@ export const _pickImage = async (
                 media: correct ? result.uri : "//",
                 media_type: result.type.toUpperCase(),
                 iosVideoUploaded: false,
+                uneditedImageUri,
                 fileReadyToUpload: true,
               };
 
