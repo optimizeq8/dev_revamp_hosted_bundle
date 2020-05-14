@@ -1,6 +1,6 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
-import { Platform, Alert, Clipboard } from "react-native";
+import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
