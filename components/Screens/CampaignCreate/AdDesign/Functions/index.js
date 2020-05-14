@@ -131,7 +131,6 @@ export const formatMedia = (
       type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
       name: res,
     };
-    console.log(photo);
 
     body.append("media", photo);
     body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
