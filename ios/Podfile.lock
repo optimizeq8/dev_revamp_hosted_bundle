@@ -410,7 +410,6 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
-  - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNVideoEditorSDK (from `../node_modules/react-native-videoeditorsdk`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -560,8 +559,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-autogrow-textinput"
   RNPhotoEditorSDK:
     :path: "../node_modules/react-native-photoeditorsdk"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
   RNVideoEditorSDK:
