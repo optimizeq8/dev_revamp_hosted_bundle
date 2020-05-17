@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5
   },
   contentScrollViewContainer: {
-    paddingBottom: "70%"
+    paddingBottom: "70%",
+    paddingHorizontal: 26
   },
   marginVertical: {
     marginBottom: 25

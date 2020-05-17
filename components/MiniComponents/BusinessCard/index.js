@@ -60,19 +60,19 @@ class BusinessCard extends Component {
     //this.props.manageTeam was to be used in BusinessModal to choose multiple businesses but
     //it's not being used anymore until further notice
     let changeState = {
-      color: "#D2C6D8",
-      textColor: "#75647C"
+      color: "#c6c6c6",
+      textColor: "#5F5F5F"
     };
     if (
       !this.props.manageTeam &&
       this.props.mainBusiness &&
       this.props.mainBusiness.businessid === this.props.business.businessid
     ) {
-      changeState.color = "#9300FF";
-      changeState.textColor = "#9300FF";
+      changeState.color = "#FF790A";
+      changeState.textColor = "#FF790A";
     } else if (this.props.isSelected) {
-      changeState.color = "#9300FF";
-      changeState.textColor = "#9300FF";
+      changeState.color = "#FF790A";
+      changeState.textColor = "#FF790A";
     }
     let BusinessIcon = this.businessCategory.icon;
     return (

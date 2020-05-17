@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     // paddingBottom: 20,
     color: "#A496AC"
+    // color: "#FF790A"
   },
   contentContainer: {
     paddingTop: 20,
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10
   },
   activeTab: {
-    borderBottomColor: "#9300FF",
-    color: "#9300FF"
+    borderBottomColor: "#FF790A",
+    color: "#FF790A"
   },
   pendingInviteNumber: {
     fontFamily: "montserrat-bold-english",

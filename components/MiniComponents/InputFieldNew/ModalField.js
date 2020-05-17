@@ -75,7 +75,7 @@ export default class ModalField extends Component {
               {translate(label)}
             </Text>
             <Text style={styles.inputText}>
-              {stateName === "businesscategory"
+              {stateName === "businesscategory" || stateName === "area"
                 ? valueText
                 : translate(valueText)}
             </Text>
