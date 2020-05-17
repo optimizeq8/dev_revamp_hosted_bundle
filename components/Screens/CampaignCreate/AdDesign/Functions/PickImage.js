@@ -491,32 +491,39 @@ export const _pickImage = async (
                 });
               onToggleModal(false);
             } else {
-              setTheState({
-                media: correct ? result.uri : "//",
-                type: result.type.toUpperCase(),
-                mediaError: null,
-                result: correct ? result.uri : "//",
-                iosVideoUploaded: false,
-                sourceChanging: true,
-                fileReadyToUpload: true,
-                uneditedImageUri,
-                serialization: result.serialization,
-              });
-              onToggleModal(false);
-              segmentEventTrack("Selected Video Successfully");
-              showMessage({
-                message: translate("Video has been selected successfully"),
-                position: "top",
-                type: "success",
-              });
+              if (correct) {
+                setTheState({
+                  media: result.uri,
+                  type: result.type.toUpperCase(),
+                  mediaError: null,
+                  iosVideoUploaded: false,
+                  sourceChanging: true,
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization,
+                });
+                onToggleModal(false);
+                segmentEventTrack("Selected Video Successfully");
+                showMessage({
+                  message: translate("Video has been selected successfully"),
+                  position: "top",
+                  type: "success",
+                });
+                !rejected &&
+                  save_campaign_info({
+                    media: result.uri,
+                    type: result.type.toUpperCase(),
+                    fileReadyToUpload: true,
+                  });
+                setTheState({ sourceChanging: false });
+              } else {
+                segmentEventTrack("Selected Video Unsuccessfully");
+                setTheState({
+                  media: "//",
+                });
+              }
             }
-            !rejected &&
-              save_campaign_info({
-                media: result.uri,
-                type: result.type.toUpperCase(),
-                fileReadyToUpload: true,
-              });
-            setTheState({ sourceChanging: false });
+
             return;
           })
           .catch((err) => {
