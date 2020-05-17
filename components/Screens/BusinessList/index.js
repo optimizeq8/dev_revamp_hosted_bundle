@@ -210,7 +210,7 @@ class BusinessList extends Component {
             )}
           {this.state.activeTab === "Businesses" && (
             <GradientButton
-              purpleViolet
+              // purpleViolet
               style={[styles.bottomCard]}
               radius={50}
               onPressAction={this.createNewBuiness}

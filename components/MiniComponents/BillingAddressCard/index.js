@@ -9,7 +9,8 @@ import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
 import Picker from "../Picker";
-import InputField from "../InputField";
+import InputField from "../InputFieldNew";
+import ModalField from "../InputFieldNew/ModalField";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -256,6 +257,17 @@ class BillingAddressCard extends React.Component {
     });
     return feilds;
   };
+  openCountryModal = () => {
+    this.setState({
+      inputC: true
+    });
+  };
+
+  openAreaModal = () => {
+    this.setState({
+      inputA: true
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -271,140 +283,83 @@ class BillingAddressCard extends React.Component {
           {...ScrollView.props}
           contentContainerStyle={styles.contentScrollViewContainer}
         >
-          <View style={styles.marginVertical}>
-            <Picker
-              showIcon={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Country")}
-              data={this.state.countries}
-              uniqueKey={"value"}
-              displayKey={"label"}
-              open={this.state.inputC}
-              onSelectedItemsChange={this.onSelectedCountryIdChange}
-              onSelectedItemObjectsChange={this.onSelectedCountryChange}
-              selectedItems={[this.state.country_code]}
-              single={true}
-              screenName={"Billing Address"}
-              closeCategoryModal={this.closeCountryModal}
-            />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputC
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Country")}
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              onPress={() => {
-                this.setState({
-                  inputC: true
-                });
-              }}
-              style={[
-                styles.input,
-                this.state.countryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={styles.locationIcon}
-                stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
-              />
-              <Text
-                style={[
-                  styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
-                ]}
-              >
-                {this.props.address.country === ""
-                  ? translate("Select Country")
-                  : translate(this.props.address.country)}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
+          <Picker
+            showIcon={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Country")}
+            data={this.state.countries}
+            uniqueKey={"value"}
+            displayKey={"label"}
+            open={this.state.inputC}
+            onSelectedItemsChange={this.onSelectedCountryIdChange}
+            onSelectedItemObjectsChange={this.onSelectedCountryChange}
+            selectedItems={[this.state.country_code]}
+            single={true}
+            screenName={"Billing Address"}
+            closeCategoryModal={this.closeCountryModal}
+          />
 
-          <View style={styles.marginVertical}>
-            <Picker
-              showDropDowns={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Area")}
-              data={this.state.areas}
-              uniqueKey={"id"}
-              displayKey={"name"}
-              subKey="areas"
-              single={true}
-              open={this.state.inputA}
-              onSelectedItemsChange={this.onSelectedRegionChange}
-              onSelectedItemObjectsChange={this.onSelectedRegionNameChange}
-              selectedItems={this.state.selectedItems}
-              single={true}
-              screenName={"Billing Address"}
-              closeCategoryModal={this.closeCountryModal}
-              readOnlyHeadings={true}
-              showIcon={false}
-            />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputA
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Area")}
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              onPress={() => {
-                this.state.country_code === ""
-                  ? showMessage({
-                      message: translate("Please select a country first"),
-                      type: "warning",
-                      position: "top"
-                    })
-                  : this.setState({
-                      inputA: true
-                    });
-              }}
-              style={[
-                styles.input,
-                this.state.areaError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={styles.locationIcon}
-                stroke={this.state.inputA ? "#FF9D00" : "#FFF"}
-              />
-              <Text
-                style={[
-                  styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
-                ]}
-              >
-                {isUndefined(this.props.address.area) ||
-                this.props.address.area === ""
-                  ? translate("Select Area")
-                  : this.props.address.area}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
+          <ModalField
+            stateName={"country"}
+            setModalVisible={this.openCountryModal}
+            modal={true}
+            label={"Country"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
+            disabled={this.props.saving}
+            valueText={
+              this.props.address.country === ""
+                ? "Select Country"
+                : this.props.address.country
+            }
+            value={this.props.address.country}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={this.state.inputC}
+          />
+
+          <Picker
+            showDropDowns={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Area")}
+            data={this.state.areas}
+            uniqueKey={"id"}
+            displayKey={"name"}
+            subKey="areas"
+            single={true}
+            open={this.state.inputA}
+            onSelectedItemsChange={this.onSelectedRegionChange}
+            onSelectedItemObjectsChange={this.onSelectedRegionNameChange}
+            selectedItems={this.state.selectedItems}
+            single={true}
+            screenName={"Billing Address"}
+            closeCategoryModal={this.closeCountryModal}
+            readOnlyHeadings={true}
+            showIcon={false}
+          />
+
+          <ModalField
+            stateName={"area"}
+            setModalVisible={this.openAreaModal}
+            modal={true}
+            label={"Area"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
+            disabled={this.props.saving}
+            valueText={
+              isUndefined(this.props.address.area) ||
+              this.props.address.area === ""
+                ? "Select Area"
+                : this.props.address.area
+            }
+            value={this.props.address.area}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={this.state.inputA}
+          />
+
           {this.feildsComponent()}
           {this.props.saving ? (
             <CheckmarkLoading
