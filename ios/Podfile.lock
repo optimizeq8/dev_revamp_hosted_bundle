@@ -118,11 +118,11 @@ PODS:
   - GoogleMaps/Base (3.8.0)
   - GoogleMaps/Maps (3.8.0):
     - GoogleMaps/Base
-  - imglyKit (10.11.0)
+  - imglyKit (10.12.0)
   - JKBigInteger2 (0.0.5)
   - lottie-ios (2.5.3)
-  - PhotoEditorSDK (10.11.0):
-    - imglyKit (= 10.11.0)
+  - PhotoEditorSDK (10.12.0):
+    - imglyKit (= 10.12.0)
   - RCTRequired (0.61.4)
   - RCTTypeSafety (0.61.4):
     - FBLazyVector (= 0.61.4)
@@ -330,7 +330,7 @@ PODS:
     - PhotoEditorSDK (~> 10.9)
     - React
     - React-RCTImage
-  - RNSentry (1.3.8):
+  - RNSentry (1.3.9):
     - React
     - Sentry (~> 4.4.0)
   - RNVideoEditorSDK (2.4.1):
@@ -355,8 +355,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.0.0)
   - UMTaskManagerInterface (5.0.0)
-  - VideoEditorSDK (10.11.0):
-    - imglyKit (= 10.11.0)
+  - VideoEditorSDK (10.12.0):
+    - imglyKit (= 10.12.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -642,10 +642,10 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
-  imglyKit: 1833a7f374005ea9483eb050f1bca80894bcadef
+  imglyKit: 6b5046351e836a73e375aa0a1369ba573cdd4ed9
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  PhotoEditorSDK: 19b064295d525181e18337c4223e7c7777158d0b
+  PhotoEditorSDK: 8745e8abecd66e90de03e016d900918ade27b438
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
   React: 10e0130b57e55a7cd8c3dee37c1261102ce295f4
@@ -668,7 +668,7 @@ SPEC CHECKSUMS:
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
-  RNSentry: 05cc998036c027785e466c896211b5c75b3e0ffd
+  RNSentry: 9c9783b13fb5cba387fff55f085cc1da3854ce71
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   UMBarCodeScannerInterface: 3802c8574ef119c150701d679ab386e2266d6a54
@@ -683,7 +683,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 230406e3335a8dbd4c9c0e654488a1cf3b44552f
   UMSensorsInterface: d708a892ef1500bdd9fc3ff03f7836c66d1634d3
   UMTaskManagerInterface: a98e37a576a5220bf43b8faf33cfdc129d2f441d
-  VideoEditorSDK: a3b8eafcbdd426c522f8670b23c0eb2f33aa2306
+  VideoEditorSDK: fd2be51eea710eebc9b204dd49551d2034add06c
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
 PODFILE CHECKSUM: 462e8f04e0fe128c40bf9c730b20cc89ca97ee00
