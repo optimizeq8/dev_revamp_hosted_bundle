@@ -132,6 +132,7 @@ apply from: 'expo.gradle'
 apply from: "../../node_modules/react-native-unimodules/gradle.groovy"
 
 dependencies {
+    implementation project(':react-native-video-processing')
     implementation project(':react-native-media-meta')
     implementation project(':react-native-videoeditorsdk')
     implementation project(':@sentry_react-native')
