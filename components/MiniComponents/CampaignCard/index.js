@@ -71,6 +71,7 @@ class CampaignCard extends Component {
         <TouchableOpacity
           onPress={this.handleCampaignPress}
           style={styles.campaignButton}
+          disabled={campaign.channel === "instagram"}
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
