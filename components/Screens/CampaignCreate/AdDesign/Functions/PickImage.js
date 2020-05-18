@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import MediaMeta from "react-native-media-meta";
+import { ProcessingManager } from "react-native-video-processing";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -311,13 +311,14 @@ export const _pickImage = async (
 
           .then(async (manipResult) => {
             if (manipResult) {
-              let newResult = await MediaMeta.get(
+              let newResult = await ProcessingManager.getVideoInfo(
                 manipResult.hasChanges
                   ? manipResult.video
                     ? manipResult.video.replace("file://", "")
                     : manipResult.image.replace("file://", "")
                   : result.uri.replace("file://", "")
               );
+              console.log(newResult);
 
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
@@ -328,8 +329,8 @@ export const _pickImage = async (
               );
 
               if (
-                Math.floor(newResult.width / 9) !==
-                Math.floor(newResult.height / 16)
+                Math.floor(newResult.size.width / 9) !==
+                Math.floor(newResult.size.height / 16)
               ) {
                 setTheState({
                   mediaError:
@@ -360,7 +361,7 @@ export const _pickImage = async (
                 });
                 setTheState({ sourceChanging: false });
                 return false;
-              } else if (newResult.duration > 10999) {
+              } else if (newResult.duration > 10.999) {
                 setTheState({
                   mediaError: "Maximum video duration  is 10 seconds.",
                   media: "//",
@@ -379,7 +380,7 @@ export const _pickImage = async (
                   message: translate("Maximum video duration is 10 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
                   position: "top",
                   type: "warning",
@@ -389,7 +390,7 @@ export const _pickImage = async (
                   sourceChanging: false,
                 });
                 return false;
-              } else if (newResult.duration < 3000) {
+              } else if (newResult.duration < 3.0) {
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
                   media: "//",
@@ -408,7 +409,7 @@ export const _pickImage = async (
                   message: translate("Minimum video duration is 3 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
 
                   position: "top",
