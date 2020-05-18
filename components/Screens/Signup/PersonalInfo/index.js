@@ -223,7 +223,7 @@ class PersonalInfo extends Component {
         type: "warning"
       });
     }
-    if (countryError) {
+    if (this.props.businessInvite !== "0" && countryError) {
       showMessage({
         message: translate("Please choose a country"),
         type: "warning"

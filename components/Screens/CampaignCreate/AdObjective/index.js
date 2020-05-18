@@ -57,8 +57,8 @@ import {
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
-import InputField from "../../../MiniComponents/InputField";
-import ModalField from "../../../MiniComponents/ModalField";
+import InputField from "../../../MiniComponents/InputFieldNew";
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
@@ -525,6 +525,7 @@ class AdObjective extends Component {
                   disabled={this.props.loading}
                   stateName1={"name"}
                   value={this.state.campaignInfo.name}
+                  placeholder1={"Enter Your campaign’s name"}
                   valueError1={this.state.nameError}
                   maxLength={34}
                   autoFocus={false}
@@ -547,11 +548,11 @@ class AdObjective extends Component {
                       : "shake"
                   }
                 >
-                  <View style={[styles.dateTextLabel]}>
+                  {/* <View style={[styles.dateTextLabel]}>
                     <Text uppercase style={[styles.inputLabel]}>
                       {translate("Date")}
                     </Text>
-                  </View>
+                  </View> */}
                   <Duration
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}

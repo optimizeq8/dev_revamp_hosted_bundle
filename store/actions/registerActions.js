@@ -516,6 +516,8 @@ export const registerGuestUser = (
   navigation
 ) => {
   return (dispatch, getState) => {
+    console.log("userInfo", userInfo);
+
     createBaseUrl()
       .post(`saveUserInfoV2`, userInfo)
       .then(res => {

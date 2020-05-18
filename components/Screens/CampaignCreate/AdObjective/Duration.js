@@ -3,6 +3,8 @@ import { View, TouchableHighlight, I18nManager } from "react-native";
 import { Text } from "native-base";
 import dateFormat from "dateformat";
 
+import CalendarIcon from "../../../../assets/SVGs/Calendar";
+
 //styles
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
@@ -50,6 +52,7 @@ export default class Duration extends Component {
         }}
       >
         <View style={styles.dateContainer}>
+          <CalendarIcon />
           <View style={styles.dateColumn}>
             {this.props.start_time !== "" || selectedCampaign ? (
               <Text style={styles.date}>
