@@ -88,11 +88,7 @@ class CampaignCircleChart extends Component {
         >
           {!loading && (
             <Chart
-              budget={
-                channel === "snapchat"
-                  ? campaign.lifetime_budget_micro
-                  : campaign.budget
-              }
+              budget={campaign.lifetime_budget_micro}
               spends={campaign.spends}
               screenProps={this.props.screenProps}
               detail={detail}
