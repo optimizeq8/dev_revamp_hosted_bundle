@@ -6,17 +6,11 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  I18nManager
-} from "react-native";
-import {
-  Content,
+  I18nManager,
   Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
+  TouchableOpacity
+} from "react-native";
+import { Content, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
@@ -26,6 +20,8 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import InputField from "../../../MiniComponents/InputFieldNew";
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -35,6 +31,7 @@ import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampai
 //Icons
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
+import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
@@ -78,7 +75,8 @@ class GoogleAdInfo extends Component {
       start_timeError: "",
       end_timeError: "",
       selectRegion: false,
-      closedContinueModal: false
+      closedContinueModal: false,
+      incomplete: false
     };
   }
   componentWillUnmount() {
@@ -164,6 +162,8 @@ class GoogleAdInfo extends Component {
   };
 
   _handleCountryChange = val => {
+    console.log("val", val);
+
     this.setState({ country: val, location: [val] });
     segmentEventTrack("Selected Campaign Country", {
       campaign_country: val
@@ -335,6 +335,19 @@ class GoogleAdInfo extends Component {
     );
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
+  getValidInfo = (stateError, validObj) => {
+    let state = {};
+    state[stateError] = validObj;
+    this.setState({
+      ...state
+    });
+  };
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    this.setState({ ...state });
+    this.props.save_google_campaign_data({ name: value });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -375,67 +388,21 @@ class GoogleAdInfo extends Component {
               scrollEnabled={true}
               style={styles.scrollViewStyle}
             >
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ nameError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.nameError ? "" : "shake"}
-              >
-                <View style={styles.inputViewContainer}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputN
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Ad Name")}
-                  </Text>
-                </View>
-                <Item style={[styles.input1]}>
-                  <Input
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.name}
-                    style={[styles.inputText]}
-                    autoCorrect={false}
-                    maxLength={34}
-                    autoCapitalize="none"
-                    onChangeText={value => {
-                      this.setState({
-                        name: value
-                      });
-                      this.props.save_google_campaign_data({ name: value });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputN: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("Name Field on Blur", {
-                        campaign_name: this.state.name
-                      });
-                      this.setState({ inputN: false });
-                      this.setState(
-                        {
-                          nameError: validateWrapper(
-                            "mandatory",
-                            this.state.name
-                          )
-                        },
-                        () => {
-                          if (this.state.nameError) {
-                            segmentEventTrack("Error Name Field on Blur", {
-                              campaign_error_ad_name: this.state.nameError
-                            });
-                          }
-                        }
-                      );
-                    }}
-                  />
-                </Item>
-              </Animatable.View>
+              <InputField
+                label={"Ad Name"}
+                setValue={this.setValue}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.campaign.uploading}
+                stateName1={"name"}
+                value={this.state.name}
+                placeholder1={"Enter Your campaign’s name"}
+                valueError1={this.state.nameError}
+                maxLength={34}
+                autoFocus={false}
+                incomplete={this.state.incomplete}
+                valueText={this.state.name}
+                translate={this.props.screenProps.translate}
+              />
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({
@@ -451,12 +418,8 @@ class GoogleAdInfo extends Component {
                     : "shake"
                 }
               >
-                <View style={[styles.dateTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Date")}
-                  </Text>
-                </View>
                 <Duration
+                  label={"Campaign Duration"}
                   screenProps={this.props.screenProps}
                   loading={this.props.campaign.uploading}
                   dismissKeyboard={Keyboard.dismiss}
@@ -473,42 +436,38 @@ class GoogleAdInfo extends Component {
                 easing={"ease"}
                 animation={!this.state.countryError ? "" : "shake"}
               >
-                <View style={[styles.countryTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Country")}
-                  </Text>
-                </View>
-                <Item
-                  disabled={this.props.campaign.uploading}
-                  // rounded
-                  style={[styles.input2]}
-                  onPress={() => {
-                    Keyboard.dismiss();
+                <ModalField
+                  stateName={"country"}
+                  setModalVisible={() => {
                     this.setModalVisible(true);
                   }}
-                >
-                  <Text style={styles.label}>
-                    {this.state.country !== ""
-                      ? translate(
-                          CountriesList.find(
-                            c => c.criteria_id === this.state.country
-                          ).name
-                        )
-                      : translate("Select Country") +
-                        "/" +
-                        translate("Regions")}
-                  </Text>
-                  <Icon type="AntDesign" name="down" style={styles.downicon} />
-                </Item>
+                  modal={true}
+                  label={"Country"}
+                  valueError={this.state.countryError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.campaign.uploading}
+                  valueText={
+                    this.state.country !== ""
+                      ? CountriesList.find(
+                          c => c.criteria_id === this.state.country
+                        ).name
+                      : "Select Country/Regions"
+                  }
+                  value={this.state.country}
+                  incomplete={false}
+                  translate={this.props.screenProps.translate}
+                  icon={LocationIcon}
+                  isVisible={this.state.modalVisible}
+                  isTranslate={false}
+                />
               </Animatable.View>
 
               <View style={styles.languageChoiceView}>
-                <Text uppercase style={styles.languageChoiceText}>
+                <Text style={styles.languageChoiceText}>
                   {translate("Ad Language")}
                 </Text>
                 <View style={styles.topContainer}>
-                  <Button
-                    block
+                  <TouchableOpacity
                     style={[
                       this.state.language === "1000"
                         ? styles.activeButton
@@ -523,7 +482,6 @@ class GoogleAdInfo extends Component {
                     }}
                   >
                     <Text
-                      uppercase
                       style={[
                         this.state.language === "1000"
                           ? styles.activeText
@@ -532,9 +490,8 @@ class GoogleAdInfo extends Component {
                     >
                       {translate("English")}
                     </Text>
-                  </Button>
-                  <Button
-                    block
+                  </TouchableOpacity>
+                  <TouchableOpacity
                     style={[
                       this.state.language === "1019"
                         ? styles.activeButton
@@ -549,7 +506,6 @@ class GoogleAdInfo extends Component {
                     }}
                   >
                     <Text
-                      uppercase
                       style={[
                         this.state.language === "1019"
                           ? styles.activeText
@@ -558,7 +514,7 @@ class GoogleAdInfo extends Component {
                     >
                       {translate("Arabic")}
                     </Text>
-                  </Button>
+                  </TouchableOpacity>
                 </View>
               </View>
 

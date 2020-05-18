@@ -158,7 +158,8 @@ export default class InputField extends Component {
       valueError2,
       secureTextEntry,
       customStyles,
-      compulsory
+      compulsory,
+      animateCustomStyle
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -168,6 +169,7 @@ export default class InputField extends Component {
         onAnimationEnd={this.handleAnimationEnd}
         duration={200}
         easing={"ease"}
+        style={[{ width: "100%" }, animateCustomStyle]}
         animation={valueError1 || valueError2 ? "shake" : ""}
       >
         <Item style={[styles.input1, customStyles]}>
@@ -183,7 +185,7 @@ export default class InputField extends Component {
             />
           )}
 
-          <View style={styles.colView}>
+          <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
             <Text
               style={[
                 styles.inputLabel,

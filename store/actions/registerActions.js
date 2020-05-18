@@ -505,7 +505,7 @@ export const requestInvitationCode = info => {
 };
 
 /**
- * To register a user as guest user on personal info registeration
+ * To register a user on the app
  * @param {*} userInfo
  * @param {*} businessInvite
  * @param {*} navigation
@@ -594,7 +594,7 @@ export const registerGuestUser = (
         }
       })
       .catch(err => {
-        console.log("registerGuestUser ERROR", err.message || err.response);
+        // console.log("registerGuestUser ERROR", err.message || err.response);
         showMessage({
           message:
             err.message ||

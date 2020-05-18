@@ -57,8 +57,8 @@ import {
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
-import InputField from "../../../MiniComponents/InputField";
-import ModalField from "../../../MiniComponents/ModalField";
+import InputField from "../../../MiniComponents/InputFieldNew";
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
@@ -525,6 +525,7 @@ class AdObjective extends Component {
                   disabled={this.props.loading}
                   stateName1={"name"}
                   value={this.state.campaignInfo.name}
+                  placeholder1={"Enter Your campaign’s name"}
                   valueError1={this.state.nameError}
                   maxLength={34}
                   autoFocus={false}
@@ -547,12 +548,13 @@ class AdObjective extends Component {
                       : "shake"
                   }
                 >
-                  <View style={[styles.dateTextLabel]}>
+                  {/* <View style={[styles.dateTextLabel]}>
                     <Text uppercase style={[styles.inputLabel]}>
                       {translate("Date")}
                     </Text>
-                  </View>
+                  </View> */}
                   <Duration
+                    label={"Campaign Duration"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}
@@ -566,21 +568,20 @@ class AdObjective extends Component {
                 {/* <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text> */}
-                <View style={[styles.input2]}>
-                  <ModalField
-                    stateName={"objective"}
-                    setModalVisible={this.setModalVisible}
-                    modal={true}
-                    label={"Objective"}
-                    valueError={this.state.objectiveError}
-                    getValidInfo={this.getValidInfo}
-                    disabled={this.props.loading}
-                    valueText={this.state.objectiveLabel}
-                    value={this.state.campaignInfo.objective}
-                    incomplete={this.state.incomplete}
-                    translate={this.props.screenProps.translate}
-                  />
-                </View>
+
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.loading}
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>

@@ -70,7 +70,7 @@ export default class ModalField extends Component {
               stroke={isVisible ? globalColors.orange : globalColors.white}
             />
           )}
-          <View style={styles.colView}>
+          <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
             <Text style={[styles.inputLabel, GlobalStyles.whiteTextColor]}>
               {translate(label)}
             </Text>

@@ -240,6 +240,8 @@ class BillingAddressCard extends React.Component {
     ].map(feild => {
       return (
         <InputField
+          animateCustomStyle={styles.customAnimate}
+          customStyles={styles.customStyleInput}
           key={feild.label}
           label={feild.label}
           setValue={this.setValue}
@@ -359,8 +361,7 @@ class BillingAddressCard extends React.Component {
             icon={LocationIcon}
             isVisible={this.state.inputA}
           />
-
-          {this.feildsComponent()}
+          <View style={styles.inputView}>{this.feildsComponent()}</View>
           {this.props.saving ? (
             <CheckmarkLoading
               style={{ bottom: -5, width: 70, height: 70 }}
