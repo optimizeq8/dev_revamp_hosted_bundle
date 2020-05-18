@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-
+import { ProcessingManager } from "react-native-video-processing";
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
 export const askForPermssion = async (screenProps) => {
@@ -317,7 +317,14 @@ export const _pickImage = async (
             console.log("manipResult", manipResult);
 
             if (manipResult) {
-              let newResult = manipResult.serialization.image;
+              let newResult = await ProcessingManager.getVideoInfo(
+                manipResult.hasChanges
+                  ? manipResult.video
+                    ? manipResult.video
+                    : manipResult.image
+                  : result.uri
+              );
+              // manipResult.serialization.image;
               console.log(newResult);
 
               let newSize = await FileSystem.getInfoAsync(
@@ -329,8 +336,8 @@ export const _pickImage = async (
               );
 
               if (
-                Math.floor(newResult.width / 9) !==
-                Math.floor(newResult.height / 16)
+                Math.floor(newResult.size.width / 9) !==
+                Math.floor(newResult.size.height / 16)
               ) {
                 setTheState({
                   mediaError:
