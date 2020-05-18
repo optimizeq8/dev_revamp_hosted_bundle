@@ -8,9 +8,11 @@ import CalendarIcon from "../../../../assets/SVGs/Calendar";
 //styles
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export default class Duration extends Component {
   render() {
     const { translate } = this.props.screenProps;
+    const { label } = this.props;
     let currentDay =
       dateFormat(new Date(), "d mmm").toUpperCase() +
       " " +
@@ -53,63 +55,76 @@ export default class Duration extends Component {
       >
         <View style={styles.dateContainer}>
           <CalendarIcon />
-          <View style={styles.dateColumn}>
-            {this.props.start_time !== "" || selectedCampaign ? (
-              <Text style={styles.date}>
-                {start_time} {start_year}
-              </Text>
-            ) : (
+          <View
+            style={{ flexDirection: "column", marginLeft: 13, width: "100%" }}
+          >
+            <Text style={styles.inputLabel}>{translate(label)}</Text>
+            <View
+              style={{
+                flexDirection: "row"
+                // justifyContent: "space-between"
+              }}
+            >
+              <View style={styles.dateColumn}>
+                {this.props.start_time !== "" || selectedCampaign ? (
+                  <Text style={styles.date}>
+                    {start_time} {start_year}
+                  </Text>
+                ) : (
+                  <Text
+                    style={[
+                      styles.dateLabel,
+
+                      I18nManager.isRTL
+                        ? { marginHorizontal: -15 }
+                        : { marginHorizontal: 0 }
+                    ]}
+                  >
+                    {translate("Start")}
+                  </Text>
+                )}
+              </View>
+
               <Text
                 style={[
                   styles.dateLabel,
-
-                  I18nManager.isRTL
-                    ? { marginHorizontal: -15 }
-                    : { marginHorizontal: 0 }
+                  GlobalStyles.whiteTextColor,
+                  {
+                    alignSelf: "center",
+                    marginHorizontal: widthPercentageToDP(5)
+                    // top: this.props.start_time === '' ? 0 : 10,
+                    // marginHorizontal: -25
+                  }
                 ]}
               >
-                {translate("Start")}
+                {I18nManager.isRTL ? "\t" : translate("To")}
               </Text>
-            )}
-          </View>
 
-          <Text
-            style={[
-              styles.dateLabel,
-              GlobalStyles.whiteTextColor,
-              {
-                alignSelf: "center"
-                // top: this.props.start_time === '' ? 0 : 10,
-                // marginHorizontal: -25
-              }
-            ]}
-          >
-            {I18nManager.isRTL ? "\t" : translate("To")}
-          </Text>
-
-          {!this.props.slidePanel ||
-          new Date(selectedCampaign.end_time) < new Date() ? (
-            <View style={styles.dateColumn}>
-              {this.props.end_time !== "" || selectedCampaign ? (
-                <Text style={styles.date}>
-                  {end_time} {end_year}
-                </Text>
+              {!this.props.slidePanel ||
+              new Date(selectedCampaign.end_time) < new Date() ? (
+                <View style={styles.dateColumn}>
+                  {this.props.end_time !== "" || selectedCampaign ? (
+                    <Text style={styles.date}>
+                      {end_time} {end_year}
+                    </Text>
+                  ) : (
+                    <Text style={[styles.dateLabel]}>{translate("End")}</Text>
+                  )}
+                </View>
               ) : (
-                <Text style={[styles.dateLabel]}>{translate("End")}</Text>
+                this.props.slidePanel && (
+                  <View style={styles.dateColumn}>
+                    <Text style={styles.date}>
+                      {new Date(selectedCampaign.start_time.split("T")[0]) >=
+                      new Date()
+                        ? end_time + " " + end_year
+                        : currentDay}
+                    </Text>
+                  </View>
+                )
               )}
             </View>
-          ) : (
-            this.props.slidePanel && (
-              <View style={styles.dateColumn}>
-                <Text style={styles.date}>
-                  {new Date(selectedCampaign.start_time.split("T")[0]) >=
-                  new Date()
-                    ? end_time + " " + end_year
-                    : currentDay}
-                </Text>
-              </View>
-            )
-          )}
+          </View>
         </View>
       </TouchableHighlight>
     );

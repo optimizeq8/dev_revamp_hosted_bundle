@@ -554,6 +554,7 @@ class AdObjective extends Component {
                     </Text>
                   </View> */}
                   <Duration
+                    label={"Campaign Duration"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}
@@ -567,21 +568,20 @@ class AdObjective extends Component {
                 {/* <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text> */}
-                <View style={[styles.input2]}>
-                  <ModalField
-                    stateName={"objective"}
-                    setModalVisible={this.setModalVisible}
-                    modal={true}
-                    label={"Objective"}
-                    valueError={this.state.objectiveError}
-                    getValidInfo={this.getValidInfo}
-                    disabled={this.props.loading}
-                    valueText={this.state.objectiveLabel}
-                    value={this.state.campaignInfo.objective}
-                    incomplete={this.state.incomplete}
-                    translate={this.props.screenProps.translate}
-                  />
-                </View>
+
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.loading}
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
