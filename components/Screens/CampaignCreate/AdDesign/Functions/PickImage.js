@@ -16,7 +16,6 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import { ProcessingManager } from "react-native-video-processing";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -281,15 +280,15 @@ export const _pickImage = async (
             });
           });
       } else if (result.type === "video") {
+        let exportOption = {
+          serialization: {
+            enabled: true,
+            exportType: SerializationExportType.OBJECT,
+          },
+        };
         uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
-          // export: {
-          //   serialization: {
-          //     enabled: true,
-          //     exportType: SerializationExportType.OBJECT,
-          //   },
-          // },
           transform: {
             items: [{ width: 9, height: 16 }],
           },
@@ -298,7 +297,12 @@ export const _pickImage = async (
             categories: [{ identifier: "imgly_sticker_category_shapes" }],
           },
         };
-
+        if (Platform.OS === "ios") {
+          exportOption["filename"] = "exportSerlization";
+          vConfiguration["export"] = exportOption;
+        } else {
+          vConfiguration["export"] = exportOption;
+        }
         VESDK.openEditor(
           { uri: result.uri },
           vConfiguration,
@@ -310,14 +314,10 @@ export const _pickImage = async (
         )
 
           .then(async (manipResult) => {
+            console.log("manipResult", manipResult);
+
             if (manipResult) {
-              let newResult = await ProcessingManager.getVideoInfo(
-                manipResult.hasChanges
-                  ? manipResult.video
-                    ? manipResult.video.replace("file://", "")
-                    : manipResult.image.replace("file://", "")
-                  : result.uri.replace("file://", "")
-              );
+              let newResult = manipResult.serialization.image;
               console.log(newResult);
 
               let newSize = await FileSystem.getInfoAsync(
@@ -329,8 +329,8 @@ export const _pickImage = async (
               );
 
               if (
-                Math.floor(newResult.size.width / 9) !==
-                Math.floor(newResult.size.height / 16)
+                Math.floor(newResult.width / 9) !==
+                Math.floor(newResult.height / 16)
               ) {
                 setTheState({
                   mediaError:
