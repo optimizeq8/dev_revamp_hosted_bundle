@@ -259,8 +259,9 @@ class PersonalInfo extends Component {
         type: "warning"
       });
     }
-
+    // For non invited user
     if (
+      this.props.businessInvite !== "0" &&
       this._passwordVarification() &&
       !firstnameError &&
       !lastnameError &&
@@ -284,6 +285,34 @@ class PersonalInfo extends Component {
       const info = {
         ...userInfo,
         ...this.state.businessAccount
+      };
+      this.props.registerGuestUser(
+        info,
+        this.props.businessInvite,
+        this.props.navigation
+      );
+    }
+    // For invited users
+    else if (
+      this.props.businessInvite === "0" &&
+      this._passwordVarification() &&
+      !firstnameError &&
+      !lastnameError &&
+      !emailError &&
+      !passwordError &&
+      this.state.valid // condition for mobile no
+    ) {
+      const mobile = this.state.userInfo.mobile.substring(
+        4,
+        this.state.userInfo.mobile
+      );
+      let userInfo = {
+        ...this.state.userInfo,
+        mobile
+      };
+
+      const info = {
+        ...userInfo
       };
       this.props.registerGuestUser(
         info,
