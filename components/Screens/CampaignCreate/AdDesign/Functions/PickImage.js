@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import MediaMeta from "react-native-media-meta";
+import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -88,6 +88,7 @@ export const _pickImage = async (
     let configuration = PhotoEditorConfiguration({
       serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
     });
+
     const { translate } = screenProps;
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
@@ -281,15 +282,15 @@ export const _pickImage = async (
             });
           });
       } else if (result.type === "video") {
+        let exportOption = {
+          serialization: {
+            enabled: true,
+            exportType: SerializationExportType.OBJECT,
+          },
+        };
         uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
-          // export: {
-          //   serialization: {
-          //     enabled: true,
-          //     exportType: SerializationExportType.OBJECT,
-          //   },
-          // },
           transform: {
             items: [{ width: 9, height: 16 }],
           },
@@ -298,26 +299,53 @@ export const _pickImage = async (
             categories: [{ identifier: "imgly_sticker_category_shapes" }],
           },
         };
-
+        if (Platform.OS === "ios") {
+          exportOption["filename"] = "exportSerlization";
+          vConfiguration["export"] = exportOption;
+        } else {
+          vConfiguration["export"] = exportOption;
+        }
         VESDK.openEditor(
           { uri: result.uri },
           vConfiguration,
-          mediaEditor &&
-            mediaEditor.hasOwnProperty("serialization") &&
-            Platform.OS === "android"
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
             ? mediaEditor.serialization
             : null
         )
 
           .then(async (manipResult) => {
+            // console.log("manipResult", manipResult);
+
             if (manipResult) {
-              let newResult = await MediaMeta.get(
-                manipResult.hasChanges
-                  ? manipResult.video
-                    ? manipResult.video.replace("file://", "")
-                    : manipResult.image.replace("file://", "")
-                  : result.uri.replace("file://", "")
+              await RNFFmpeg.execute(
+                `-i ${
+                  manipResult.hasChanges
+                    ? manipResult.video
+                      ? manipResult.video
+                      : manipResult.image
+                    : result.uri
+                } -vf scale=-1:1920 ${FileSystem.documentDirectory}/output.mp4`
               );
+              let newResult = await RNFFprobe.getMediaInformation(
+                `${FileSystem.documentDirectory}/output.mp4`
+              );
+
+              newResult = {
+                width:
+                  newResult.streams[Platform.OS === "android" ? 1 : 0].width,
+                height:
+                  newResult.streams[Platform.OS === "android" ? 1 : 0].height,
+                duration: newResult.duration / 1000,
+              };
+              // console.log("FFmpeg process exited with rc ", result)
+
+              // await RNFFprobe.getMediaInformation(
+              //   manipResult.hasChanges
+              //     ? manipResult.video
+              //       ? manipResult.video
+              //       : manipResult.image
+              //     : result.uri
+              // );
 
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
@@ -326,10 +354,10 @@ export const _pickImage = async (
                     : manipResult.image
                   : result.uri
               );
-
               if (
                 Math.floor(newResult.width / 9) !==
-                Math.floor(newResult.height / 16)
+                  Math.floor(newResult.height / 16) ||
+                (newResult.width < 1080 && newResult.height < 1920)
               ) {
                 setTheState({
                   mediaError:
@@ -360,7 +388,7 @@ export const _pickImage = async (
                 });
                 setTheState({ sourceChanging: false });
                 return false;
-              } else if (newResult.duration > 10999) {
+              } else if (newResult.duration > 10.999) {
                 setTheState({
                   mediaError: "Maximum video duration  is 10 seconds.",
                   media: "//",
@@ -379,7 +407,7 @@ export const _pickImage = async (
                   message: translate("Maximum video duration is 10 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
                   position: "top",
                   type: "warning",
@@ -389,7 +417,7 @@ export const _pickImage = async (
                   sourceChanging: false,
                 });
                 return false;
-              } else if (newResult.duration < 3000) {
+              } else if (newResult.duration < 3.0) {
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
                   media: "//",
@@ -408,7 +436,7 @@ export const _pickImage = async (
                   message: translate("Minimum video duration is 3 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
 
                   position: "top",
@@ -456,6 +484,8 @@ export const _pickImage = async (
             }
           })
           .then((correct = true) => {
+            // console.log(result);
+
             if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
               let cards = storyAdsArray;
               let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
@@ -469,6 +499,7 @@ export const _pickImage = async (
                 iosVideoUploaded: false,
                 uneditedImageUri,
                 fileReadyToUpload: true,
+                serialization: result.serialization,
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;

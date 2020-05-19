@@ -1976,9 +1976,9 @@
     serve-static "^1.13.1"
 
 "@react-native-community/cli-debugger-ui@^4.8.0":
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.8.0.tgz#9a6419b29be69422e0056bbb1874775750351d22"
-  integrity sha512-Eq9lHINDXiBAwmFRCMN8jeKk6FTDnTxAfITkjPUNNTj7q3K+fH/oyOMJjxbIZbryIJY6g+g/ln6vsS2WzISNYQ==
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.9.0.tgz#4177764ba69243c97aa26829d59d9501acb2bd71"
+  integrity sha512-fBFGamHm4VUrDqkBGnsrwQL8OC6Om7K6EBQb4xj0nWekpXt1HSa3ScylYHTTWwYcpRf9htGMRGiv4dQDY/odAw==
   dependencies:
     serve-static "^1.13.1"
 
@@ -2030,9 +2030,9 @@
     node-fetch "^2.5.0"
 
 "@react-native-community/cli-tools@^4.8.0":
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cli-tools/-/cli-tools-4.8.0.tgz#144a029c741c2cf40a7f9c059819ce9a69e7f1e3"
-  integrity sha512-voXGruhYyyhCbEYM2uZ54dMZcBgXFFcQxVK3nLwJDG9nSQGObZInj9Zf76ix5qGnvKKGWIGUcbmRhyLpAzTXuQ==
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-tools/-/cli-tools-4.9.0.tgz#d8fd0326cc2fcaeb8c920baf24b68b63c8164fa2"
+  integrity sha512-vCeYkJ3n/EIaW3lAfznzojMffGxYhCUzwZzwBuC3+O+gYxkymdpletqNYLLEa04DzJr174mxgbgBw8g5IP91yA==
   dependencies:
     chalk "^3.0.0"
     lodash "^4.17.15"
@@ -3721,9 +3721,9 @@ browserify-rsa@^4.0.0, browserify-rsa@^4.0.1:
     randombytes "^2.0.1"
 
 browserify-sign@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/browserify-sign/-/browserify-sign-4.1.0.tgz#4fe971b379a5aeb4925e06779f9fa1f41d249d70"
-  integrity sha512-VYxo7cDCeYUoBZ0ZCy4UyEUCP3smyBd4DRQM5nrFS1jJjPJjX7rP3oLRpPoWfkhQfyJ0I9ZbHbKafrFD/SGlrg==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/browserify-sign/-/browserify-sign-4.2.0.tgz#545d0b1b07e6b2c99211082bf1b12cce7a0b0e11"
+  integrity sha512-hEZC1KEeYuoHRqhGhTy6gWrpJA3ZDjFWv0DE61643ZnOXAKJb3u7yWcrU0mMc9SwAqK1n7myPGndkp0dFG7NFA==
   dependencies:
     bn.js "^5.1.1"
     browserify-rsa "^4.0.1"
@@ -3733,6 +3733,7 @@ browserify-sign@^4.0.0:
     inherits "^2.0.4"
     parse-asn1 "^5.1.5"
     readable-stream "^3.6.0"
+    safe-buffer "^5.2.0"
 
 browserify-zlib@^0.2.0:
   version "0.2.0"
@@ -7440,9 +7441,9 @@ http-proxy-middleware@0.19.1:
     micromatch "^3.1.10"
 
 http-proxy@^1.17.0:
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.0.tgz#dbe55f63e75a347db7f3d99974f2692a314a6a3a"
-  integrity sha512-84I2iJM/n1d4Hdgc6y2+qY5mDaz2PUVjlg9znE9byl+q0uC3DeByqBGReQu5tpLK0TAqTIXScRUV+dg7+bUPpQ==
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
+  integrity sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==
   dependencies:
     eventemitter3 "^4.0.0"
     follow-redirects "^1.0.0"
@@ -11526,6 +11527,11 @@ react-native-expo-image-cache@^4.0.8:
     crypto-js "^3.1.9-1"
     lodash "^4.17.4"
 
+react-native-ffmpeg@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-ffmpeg/-/react-native-ffmpeg-0.4.4.tgz#9f4dbda53c96078cecbbe83a866d4b535b957131"
+  integrity sha512-MUBV3Xvto1Hl049Y9EaOZdjazkK1ixQzCzPEt1o7V2duSOrM2kJ2o/RiC4rSRgapU2uqYRHMZ6X4JJI7y40qXw==
+
 react-native-flash-message@^0.1.15:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/react-native-flash-message/-/react-native-flash-message-0.1.15.tgz#ebda84c27665756dbae85e06e3205c161cc3eda0"
@@ -11590,11 +11596,6 @@ react-native-masked-text@^1.13.0:
   dependencies:
     date-and-time "0.9.0"
     tinymask "1.0.2"
-
-react-native-media-meta@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/react-native-media-meta/-/react-native-media-meta-0.0.10.tgz#097cc19d04505258e481547bcfd16db6d390e3dd"
-  integrity sha512-2c90VMGrmK4ANpjlabpYZlAaJyrPuACX9WpkmPq4ZOSShQW0Yvf4EX/zIXbw5yILI34wbEOVT3bAz5Asrse/lw==
 
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.1"

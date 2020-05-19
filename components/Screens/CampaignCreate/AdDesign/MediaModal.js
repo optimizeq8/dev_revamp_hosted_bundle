@@ -70,7 +70,7 @@ export default class MediaModal extends Component {
                 }}
               >
                 {options}
-                {media_type === "IMAGE" &&
+                {(media_type === "IMAGE" || true) &&
                   (media !== "//" ||
                     storyAdCards.selectedStoryAd.media !== "//") && (
                     <MediaOptions
