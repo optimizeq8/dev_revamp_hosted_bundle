@@ -121,7 +121,7 @@ PODS:
   - imglyKit (10.12.0)
   - JKBigInteger2 (0.0.5)
   - lottie-ios (2.5.3)
-  - mobile-ffmpeg-https (4.3.1)
+  - mobile-ffmpeg-https (4.3.1.LTS)
   - PhotoEditorSDK (10.12.0):
     - imglyKit (= 10.12.0)
   - RCTRequired (0.61.4)
@@ -290,11 +290,8 @@ PODS:
   - react-native-adjust (4.21.0):
     - Adjust (~> 4.21.0)
     - React
-  - react-native-ffmpeg (0.4.4):
-    - React
-    - react-native-ffmpeg/https (= 0.4.4)
-  - react-native-ffmpeg/https (0.4.4):
-    - mobile-ffmpeg-https (= 4.3.1)
+  - react-native-ffmpeg/https-lts (0.4.4):
+    - mobile-ffmpeg-https (= 4.3.1.LTS)
     - React
   - React-RCTActionSheet (0.61.4):
     - React-Core/RCTActionSheetHeaders (= 0.61.4)
@@ -404,7 +401,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-adjust (from `../node_modules/react-native-adjust`)
-  - react-native-ffmpeg (from `../node_modules/react-native-ffmpeg`)
+  - react-native-ffmpeg/https-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -545,7 +542,7 @@ EXTERNAL SOURCES:
   react-native-adjust:
     :path: "../node_modules/react-native-adjust"
   react-native-ffmpeg:
-    :path: "../node_modules/react-native-ffmpeg"
+    :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -656,7 +653,7 @@ SPEC CHECKSUMS:
   imglyKit: 6b5046351e836a73e375aa0a1369ba573cdd4ed9
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  mobile-ffmpeg-https: c4a3c255163ddb1abc4b4dfc613c2d885f8c46eb
+  mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
   PhotoEditorSDK: 8745e8abecd66e90de03e016d900918ade27b438
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
@@ -699,6 +696,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: fd2be51eea710eebc9b204dd49551d2034add06c
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 5813dd5d8a71148445975f5814be0f5945a4c81b
+PODFILE CHECKSUM: 2464ae7606320f9d3c2de182ae6c6a771e7a3678
 
 COCOAPODS: 1.8.4
