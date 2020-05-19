@@ -144,27 +144,20 @@ class SwipeUpChoice extends Component {
     if (this.props.adType === "CollectionAd") return menu;
     else
       return (
-        <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+        <SafeAreaView
+          style={styles.safeAreaContainer}
+          forceInset={{ top: "always" }}
+        >
           <NavigationEvents onDidFocus={() => this.segment()} />
+          <CustomeHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            screenProps={this.props.screenProps}
+            title={"Swipe Up destination"}
+            navigation={this.props.navigation}
+          />
 
-          <Container style={styles.container}>
-            <CustomeHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              screenProps={this.props.screenProps}
-              title={"Swipe Up destination"}
-              navigation={this.props.navigation}
-            />
-            <Content contentContainerStyle={styles.contentContainer}>
-              <KeyBoardShift
-                // resetScrollToCoords={{ x: 0, y: 0 }}
-                // scrollEnabled={false}
-                style={styles.contentContainer}
-              >
-                {() => menu}
-              </KeyBoardShift>
-            </Content>
-          </Container>
+          {menu}
         </SafeAreaView>
       );
   }
