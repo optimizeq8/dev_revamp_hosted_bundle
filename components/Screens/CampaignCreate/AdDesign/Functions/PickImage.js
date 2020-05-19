@@ -330,8 +330,8 @@ export const _pickImage = async (
                   newResult.streams[Platform.OS === "android" ? 1 : 0].width,
                 height:
                   newResult.streams[Platform.OS === "android" ? 1 : 0].height,
+                duration: newResult.duration / 1000,
               };
-              // manipResult.serialization.image;
 
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
