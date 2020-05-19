@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import MediaMeta from "react-native-media-meta";
+import { RNFFprobe } from "react-native-ffmpeg";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -281,15 +281,15 @@ export const _pickImage = async (
             });
           });
       } else if (result.type === "video") {
+        let exportOption = {
+          serialization: {
+            enabled: true,
+            exportType: SerializationExportType.OBJECT,
+          },
+        };
         uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
-          // export: {
-          //   serialization: {
-          //     enabled: true,
-          //     exportType: SerializationExportType.OBJECT,
-          //   },
-          // },
           transform: {
             items: [{ width: 9, height: 16 }],
           },
@@ -298,7 +298,12 @@ export const _pickImage = async (
             categories: [{ identifier: "imgly_sticker_category_shapes" }],
           },
         };
-
+        if (Platform.OS === "ios") {
+          exportOption["filename"] = "exportSerlization";
+          vConfiguration["export"] = exportOption;
+        } else {
+          vConfiguration["export"] = exportOption;
+        }
         VESDK.openEditor(
           { uri: result.uri },
           vConfiguration,
@@ -310,14 +315,23 @@ export const _pickImage = async (
         )
 
           .then(async (manipResult) => {
+            // console.log("manipResult", manipResult);
+
             if (manipResult) {
-              let newResult = await MediaMeta.get(
+              let newResult = await RNFFprobe.getMediaInformation(
                 manipResult.hasChanges
                   ? manipResult.video
-                    ? manipResult.video.replace("file://", "")
-                    : manipResult.image.replace("file://", "")
-                  : result.uri.replace("file://", "")
+                    ? manipResult.video
+                    : manipResult.image
+                  : result.uri
               );
+              newResult = {
+                width:
+                  newResult.streams[Platform.OS === "android" ? 1 : 0].width,
+                height:
+                  newResult.streams[Platform.OS === "android" ? 1 : 0].height,
+                duration: newResult.duration / 1000,
+              };
 
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
@@ -360,7 +374,7 @@ export const _pickImage = async (
                 });
                 setTheState({ sourceChanging: false });
                 return false;
-              } else if (newResult.duration > 10999) {
+              } else if (newResult.duration > 10.999) {
                 setTheState({
                   mediaError: "Maximum video duration  is 10 seconds.",
                   media: "//",
@@ -379,7 +393,7 @@ export const _pickImage = async (
                   message: translate("Maximum video duration is 10 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
                   position: "top",
                   type: "warning",
@@ -389,7 +403,7 @@ export const _pickImage = async (
                   sourceChanging: false,
                 });
                 return false;
-              } else if (newResult.duration < 3000) {
+              } else if (newResult.duration < 3.0) {
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
                   media: "//",
@@ -408,7 +422,7 @@ export const _pickImage = async (
                   message: translate("Minimum video duration is 3 seconds"),
                   description:
                     translate("Selected video duration") +
-                    (newResult.duration / 1000).toFixed(2) +
+                    newResult.duration.toFixed(2) +
                     translate("seconds"),
 
                   position: "top",

@@ -11,7 +11,6 @@
 		292AC55D0BD44E369B86A6C1 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40B2C09F59A84472AEEADA20 /* FontAwesome5_Regular.ttf */; };
 		32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF7DBC25BE34949B1C08ECE /* libz.tbd */; };
 		3B30A9B73C5B4002B423263F /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B57378FC97F4DD9B1A9C6B6 /* FontAwesome.ttf */; };
-		3E5A2C827C06431696597595 /* libRNMediaMeta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 217B52E231C947C99755A100 /* libRNMediaMeta.a */; };
 		402CC572BB4D47DB85A4473E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD9ACC2D2AA94CCC90B89167 /* MaterialCommunityIcons.ttf */; };
 		4396537C53E949DDBB7E0B0B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59E77E5F2B1D4731B717DE78 /* MaterialIcons.ttf */; };
 		4B1D970EF1FB45D2AB4277A9 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D32A712204BB4A4CAB5DFEAB /* Feather.ttf */; };
@@ -38,6 +37,12 @@
 		DEFB4F30E05947E1BD947D9A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A313233434FF48649BD15895 /* rubicon-icon-font.ttf */; };
 		EBB8117C1BFA0514F79CAF74 /* libPods-optimizeapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A88D15726AD99E8A257BC7 /* libPods-optimizeapp.a */; };
 		F2B6D2D2D2B24A818C52E32B /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BAE6A2A3D5964795B69EC68F /* AntDesign.ttf */; };
+		F754A1FF2471893B00404666 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A1FE2471893B00404666 /* CoreMedia.framework */; };
+		F754A2012471894200404666 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2002471894100404666 /* CoreVideo.framework */; };
+		F754A2032471894800404666 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2022471894800404666 /* OpenGLES.framework */; };
+		F754A2052471894D00404666 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2042471894D00404666 /* AVFoundation.framework */; };
+		F754A2072471895300404666 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2062471895300404666 /* QuartzCore.framework */; };
+		F754A2092471895800404666 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2082471895800404666 /* MobileCoreServices.framework */; };
 		F7F47D282434CDE10055B2E3 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7F47D272434CDE10055B2E3 /* AdSupport.framework */; };
 		FB61CAC08B0A4AD7ADCD3DE8 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E410A63783EB45D5A2F5BC35 /* FontAwesome5_Brands.ttf */; };
 		FCE858E565CD4B43B6917280 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFBEB9DC037A4A68B1FF982F /* Ionicons.ttf */; };
@@ -52,6 +57,19 @@
 			remoteInfo = RNMediaMeta;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F754A2202471899100404666 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		013BE6C6E1714379BE037057 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -92,6 +110,13 @@
 		E410A63783EB45D5A2F5BC35 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		EF3B73313D5D45B7B83BAF66 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		EFBEB9DC037A4A68B1FF982F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		F754A1C62471866D00404666 /* optimizeapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "optimizeapp-Bridging-Header.h"; sourceTree = "<group>"; };
+		F754A1FE2471893B00404666 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F754A2002471894100404666 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		F754A2022471894800404666 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		F754A2042471894D00404666 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F754A2062471895300404666 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F754A2082471895800404666 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F7F39C10240E973F003DBE9E /* optimizeapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = optimizeapp.entitlements; sourceTree = "<group>"; };
 		F7F47D272434CDE10055B2E3 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		FD9ACC2D2AA94CCC90B89167 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -102,10 +127,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F754A2052471894D00404666 /* AVFoundation.framework in Frameworks */,
+				F754A2032471894800404666 /* OpenGLES.framework in Frameworks */,
 				F7F47D282434CDE10055B2E3 /* AdSupport.framework in Frameworks */,
+				F754A2092471895800404666 /* MobileCoreServices.framework in Frameworks */,
 				EBB8117C1BFA0514F79CAF74 /* libPods-optimizeapp.a in Frameworks */,
 				32C96EDF0C9141AAB30EFD30 /* libz.tbd in Frameworks */,
-				3E5A2C827C06431696597595 /* libRNMediaMeta.a in Frameworks */,
+				F754A1FF2471893B00404666 /* CoreMedia.framework in Frameworks */,
+				F754A2012471894200404666 /* CoreVideo.framework in Frameworks */,
+				F754A2072471895300404666 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +145,12 @@
 		1A42804E64B7E9E0AB8B6799 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F754A2082471895800404666 /* MobileCoreServices.framework */,
+				F754A2062471895300404666 /* QuartzCore.framework */,
+				F754A2042471894D00404666 /* AVFoundation.framework */,
+				F754A2022471894800404666 /* OpenGLES.framework */,
+				F754A2002471894100404666 /* CoreVideo.framework */,
+				F754A1FE2471893B00404666 /* CoreMedia.framework */,
 				F7F47D272434CDE10055B2E3 /* AdSupport.framework */,
 				C4A88D15726AD99E8A257BC7 /* libPods-optimizeapp.a */,
 				2DF7DBC25BE34949B1C08ECE /* libz.tbd */,
@@ -189,6 +225,7 @@
 		B56386431DB9693800A0598C /* optimizeapp */ = {
 			isa = PBXGroup;
 			children = (
+				F754A1C62471866D00404666 /* optimizeapp-Bridging-Header.h */,
 				F7F39C10240E973F003DBE9E /* optimizeapp.entitlements */,
 				B56386471DB9693800A0598C /* AppDelegate.h */,
 				B56386481DB9693800A0598C /* AppDelegate.m */,
@@ -247,6 +284,7 @@
 				19D233B7204FDD7D0087ED51 /* Bundle Expo Assets */,
 				71C1C1F9E037A22444A9562D /* [CP] Embed Pods Frameworks */,
 				62BF6FBF93E1429D93671C40 /* Upload Debug Symbols to Sentry */,
+				F754A2202471899100404666 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -269,16 +307,16 @@
 					B56386401DB9693800A0598C = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 928C7U9LTT;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
 					};
 				};
 			};
 			buildConfigurationList = B563863C1DB9693800A0598C /* Build configuration list for PBXProject "optimizeapp" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -580,6 +618,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -590,6 +629,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = optimizeapp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
@@ -607,6 +647,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "com.optimizeapp.optimizeapp AppStore";
+				SWIFT_OBJC_BRIDGING_HEADER = "optimizeapp/optimizeapp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -617,6 +660,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = optimizeapp/optimizeapp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: OPTIMIZE ADVERTISING AND MARKETING COMPANY WLL (928C7U9LTT)";
 				CODE_SIGN_STYLE = Manual;
@@ -634,6 +678,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "com.optimizeapp.optimizeapp AppStore";
+				SWIFT_OBJC_BRIDGING_HEADER = "optimizeapp/optimizeapp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
