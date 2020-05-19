@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import { RNFFprobe } from "react-native-ffmpeg";
+import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -88,6 +88,7 @@ export const _pickImage = async (
     let configuration = PhotoEditorConfiguration({
       serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
     });
+
     const { translate } = screenProps;
     setMediaModalVisible(false);
     if (result && !result.cancelled) {
@@ -307,9 +308,7 @@ export const _pickImage = async (
         VESDK.openEditor(
           { uri: result.uri },
           vConfiguration,
-          mediaEditor &&
-            mediaEditor.hasOwnProperty("serialization") &&
-            Platform.OS === "android"
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
             ? mediaEditor.serialization
             : null
         )
@@ -318,13 +317,19 @@ export const _pickImage = async (
             // console.log("manipResult", manipResult);
 
             if (manipResult) {
-              let newResult = await RNFFprobe.getMediaInformation(
-                manipResult.hasChanges
-                  ? manipResult.video
+              await RNFFmpeg.execute(
+                `-i ${
+                  manipResult.hasChanges
                     ? manipResult.video
-                    : manipResult.image
-                  : result.uri
+                      ? manipResult.video
+                      : manipResult.image
+                    : result.uri
+                } -vf scale=-1:1920 ${FileSystem.documentDirectory}/output.mp4`
               );
+              let newResult = await RNFFprobe.getMediaInformation(
+                `${FileSystem.documentDirectory}/output.mp4`
+              );
+
               newResult = {
                 width:
                   newResult.streams[Platform.OS === "android" ? 1 : 0].width,
@@ -332,6 +337,15 @@ export const _pickImage = async (
                   newResult.streams[Platform.OS === "android" ? 1 : 0].height,
                 duration: newResult.duration / 1000,
               };
+              // console.log("FFmpeg process exited with rc ", result)
+
+              // await RNFFprobe.getMediaInformation(
+              //   manipResult.hasChanges
+              //     ? manipResult.video
+              //       ? manipResult.video
+              //       : manipResult.image
+              //     : result.uri
+              // );
 
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
@@ -340,10 +354,10 @@ export const _pickImage = async (
                     : manipResult.image
                   : result.uri
               );
-
               if (
                 Math.floor(newResult.width / 9) !==
-                Math.floor(newResult.height / 16)
+                  Math.floor(newResult.height / 16) ||
+                (newResult.width < 1080 && newResult.height < 1920)
               ) {
                 setTheState({
                   mediaError:
@@ -470,6 +484,8 @@ export const _pickImage = async (
             }
           })
           .then((correct = true) => {
+            // console.log(result);
+
             if (adType === "StoryAd" && storyAdCards.storyAdSelected) {
               let cards = storyAdsArray;
               let card = storyAdsArray[storyAdCards.selectedStoryAd.index];
@@ -483,6 +499,7 @@ export const _pickImage = async (
                 iosVideoUploaded: false,
                 uneditedImageUri,
                 fileReadyToUpload: true,
+                serialization: result.serialization,
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;
