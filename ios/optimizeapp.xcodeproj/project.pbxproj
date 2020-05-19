@@ -37,8 +37,8 @@
 		DEFB4F30E05947E1BD947D9A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A313233434FF48649BD15895 /* rubicon-icon-font.ttf */; };
 		EBB8117C1BFA0514F79CAF74 /* libPods-optimizeapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A88D15726AD99E8A257BC7 /* libPods-optimizeapp.a */; };
 		F2B6D2D2D2B24A818C52E32B /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BAE6A2A3D5964795B69EC68F /* AntDesign.ttf */; };
-		F701B58B2472CBF000961F94 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F701B58A2472CBE900961F94 /* GPUImage.framework */; };
-		F701B58C2472CBF000961F94 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F701B58A2472CBE900961F94 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F701B59B2472D59100961F94 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F701B59A2472D58B00961F94 /* GPUImage.framework */; };
+		F701B59C2472D59100961F94 /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F701B59A2472D58B00961F94 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F754A1FF2471893B00404666 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A1FE2471893B00404666 /* CoreMedia.framework */; };
 		F754A2012471894200404666 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2002471894100404666 /* CoreVideo.framework */; };
 		F754A2032471894800404666 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F754A2022471894800404666 /* OpenGLES.framework */; };
@@ -65,16 +65,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F701B5872472CBE900961F94 /* PBXContainerItemProxy */ = {
+		F701B5972472D58B00961F94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F701B5812472CBE900961F94 /* GPUImage.xcodeproj */;
+			containerPortal = F701B5912472D58B00961F94 /* GPUImage.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
 			remoteInfo = GPUImage;
 		};
-		F701B5892472CBE900961F94 /* PBXContainerItemProxy */ = {
+		F701B5992472D58B00961F94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F701B5812472CBE900961F94 /* GPUImage.xcodeproj */;
+			containerPortal = F701B5912472D58B00961F94 /* GPUImage.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = BCE209E51943F20C002FEED8;
 			remoteInfo = GPUImageFramework;
@@ -95,7 +95,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F701B58C2472CBF000961F94 /* GPUImage.framework in Embed Frameworks */,
+				F701B59C2472D59100961F94 /* GPUImage.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,7 +141,7 @@
 		E410A63783EB45D5A2F5BC35 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		EF3B73313D5D45B7B83BAF66 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		EFBEB9DC037A4A68B1FF982F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		F701B5812472CBE900961F94 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../node_modules/react-native-video-processing/ios/GPUImage/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
+		F701B5912472D58B00961F94 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../node_modules/react-native-video-processing/ios/GPUImage/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		F754A1C62471866D00404666 /* optimizeapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "optimizeapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		F754A1FE2471893B00404666 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F754A2002471894100404666 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -185,7 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F754A2052471894D00404666 /* AVFoundation.framework in Frameworks */,
-				F701B58B2472CBF000961F94 /* GPUImage.framework in Frameworks */,
+				F701B59B2472D59100961F94 /* GPUImage.framework in Frameworks */,
 				F754A2032471894800404666 /* OpenGLES.framework in Frameworks */,
 				F7F47D282434CDE10055B2E3 /* AdSupport.framework in Frameworks */,
 				F754A2092471895800404666 /* MobileCoreServices.framework in Frameworks */,
@@ -262,7 +262,7 @@
 		B56386381DB9693800A0598C = {
 			isa = PBXGroup;
 			children = (
-				F701B5812472CBE900961F94 /* GPUImage.xcodeproj */,
+				F701B5912472D58B00961F94 /* GPUImage.xcodeproj */,
 				F7F782AA2471A420006B8364 /* RNVideoProcessing */,
 				B56386431DB9693800A0598C /* optimizeapp */,
 				B56386421DB9693800A0598C /* Products */,
@@ -312,11 +312,11 @@
 			path = Supporting;
 			sourceTree = "<group>";
 		};
-		F701B5822472CBE900961F94 /* Products */ = {
+		F701B5922472D58B00961F94 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F701B5882472CBE900961F94 /* libGPUImage.a */,
-				F701B58A2472CBE900961F94 /* GPUImage.framework */,
+				F701B5982472D58B00961F94 /* libGPUImage.a */,
+				F701B59A2472D58B00961F94 /* GPUImage.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -450,8 +450,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = F701B5822472CBE900961F94 /* Products */;
-					ProjectRef = F701B5812472CBE900961F94 /* GPUImage.xcodeproj */;
+					ProductGroup = F701B5922472D58B00961F94 /* Products */;
+					ProjectRef = F701B5912472D58B00961F94 /* GPUImage.xcodeproj */;
 				},
 				{
 					ProductGroup = F754A134246C35D400404666 /* Products */;
@@ -466,18 +466,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		F701B5882472CBE900961F94 /* libGPUImage.a */ = {
+		F701B5982472D58B00961F94 /* libGPUImage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libGPUImage.a;
-			remoteRef = F701B5872472CBE900961F94 /* PBXContainerItemProxy */;
+			remoteRef = F701B5972472D58B00961F94 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		F701B58A2472CBE900961F94 /* GPUImage.framework */ = {
+		F701B59A2472D58B00961F94 /* GPUImage.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = GPUImage.framework;
-			remoteRef = F701B5892472CBE900961F94 /* PBXContainerItemProxy */;
+			remoteRef = F701B5992472D58B00961F94 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F754A138246C35D400404666 /* libRNMediaMeta.a */ = {
