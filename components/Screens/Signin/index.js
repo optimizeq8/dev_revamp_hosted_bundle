@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -31,7 +31,6 @@ import Logo from "../../../assets/SVGs/Optimize";
 import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import SignInCover from "../../../assets/SVGs/SignInCover";
 
-SignInCover;
 import PersonTransparentIcon from "../../../assets/SVGs/MenuIcons/PersonTransparent";
 
 // Style
@@ -42,7 +41,7 @@ import { showMessage } from "react-native-flash-message";
 
 class Signin extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -53,7 +52,7 @@ class Signin extends Component {
       passwordError: "",
       newEmail: "",
       newEmailError: "",
-      activeTab: 0
+      activeTab: 0,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -63,7 +62,7 @@ class Signin extends Component {
     const passwordError = validateWrapper("password", this.state.password);
     this.setState({
       emailError: emailError,
-      passwordError: passwordError
+      passwordError: passwordError,
     });
     if (!emailError && !passwordError) {
       this.props.login(this.state, this.props.navigation);
@@ -73,11 +72,11 @@ class Signin extends Component {
   componentDidMount() {
     Segment.screenWithProperties("Signup Using Email", {
       category: "Sign Up",
-      label: "Step 1 of Registeration"
+      label: "Step 1 of Registeration",
     });
     if (Platform.OS === "ios") {
       Linking.addEventListener("url", this.handleDeepLink);
-      Linking.getInitialURL().then(url => {
+      Linking.getInitialURL().then((url) => {
         if (url.includes("adj")) {
           this.handleDeepLink({ url });
         }
@@ -85,7 +84,7 @@ class Signin extends Component {
     }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
-  handleDeepLink = url => {
+  handleDeepLink = (url) => {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
       screen = screen[1].split("/")[0];
@@ -98,13 +97,15 @@ class Signin extends Component {
       }
 
       this.props.navigation.navigate(screen);
-      Linking.removeEventListener("url", evnt =>
+      Linking.removeEventListener("url", (evnt) =>
         console.log("unmounted", evnt)
       );
     }
   };
   componentWillUnmount() {
-    Linking.removeEventListener("url", evnt => console.log("unmounted", evnt));
+    Linking.removeEventListener("url", (evnt) =>
+      console.log("unmounted", evnt)
+    );
   }
   setValue = (stateName, value) => {
     let state = {};
@@ -116,7 +117,7 @@ class Signin extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   createNewAccount = () => {
@@ -130,7 +131,7 @@ class Signin extends Component {
     } else {
       showMessage({
         message: this.state.newEmailError,
-        type: "warning"
+        type: "warning",
       });
     }
   };
@@ -169,15 +170,15 @@ class Signin extends Component {
                       onPress={() => {
                         Segment.screenWithProperties("Signup Using Email", {
                           category: "Sign Up",
-                          label: "Step 1 of Registeration"
+                          label: "Step 1 of Registeration",
                         });
                         this.setState({
-                          activeTab: 0
+                          activeTab: 0,
                         });
                       }}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 0 && styles.activeTabView
+                        this.state.activeTab === 0 && styles.activeTabView,
                       ]}
                     >
                       <Text
@@ -187,8 +188,8 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 0
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)"
-                          }
+                                : "rgba(255,255,255,0.65)",
+                          },
                         ]}
                       >
                         {translate("SIGN UP")}
@@ -197,15 +198,15 @@ class Signin extends Component {
                     <TouchableOpacity
                       onPress={() => {
                         Segment.screenWithProperties("Sign In", {
-                          category: "Sign In"
+                          category: "Sign In",
                         });
                         this.setState({
-                          activeTab: 1
+                          activeTab: 1,
                         });
                       }}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 1 && styles.activeTabView
+                        this.state.activeTab === 1 && styles.activeTabView,
                       ]}
                     >
                       <Text
@@ -215,8 +216,8 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 1
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)"
-                          }
+                                : "rgba(255,255,255,0.65)",
+                          },
                         ]}
                       >
                         {translate("Sign in")}
@@ -322,20 +323,20 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.auth.loading,
-  checkingForToken: state.login.checkingForToken
+  checkingForToken: state.login.checkingForToken,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   verifyEmail: (email, userInfo, navigation) =>
     dispatch(actionCreators.verifyEmail(email, userInfo, navigation)),
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
-  checkForExpiredToken: navigation =>
+  checkForExpiredToken: (navigation) =>
     dispatch(actionCreators.checkForExpiredToken(navigation)),
-  set_adType: value => dispatch(actionCreators.set_adType(value))
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);
