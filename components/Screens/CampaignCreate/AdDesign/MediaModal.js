@@ -70,23 +70,22 @@ export default class MediaModal extends Component {
                 }}
               >
                 {options}
-                {(media_type === "IMAGE" || true) &&
-                  (media !== "//" ||
-                    storyAdCards.selectedStoryAd.media !== "//") && (
-                    <MediaOptions
-                      _pickImage={this.props._pickImage}
-                      title={"Edit Image"}
-                      setMediaModalVisible={this.props.setMediaModalVisible}
-                      screenProps={this.props.screenProps}
-                      mediaUri={
-                        media !== "//"
-                          ? media
-                          : storyAdCards.selectedStoryAd.uneditedImageUri
-                      }
-                      media_type={media_type}
-                      serialization={this.props.serialization}
-                    />
-                  )}
+                {(media !== "//" ||
+                  storyAdCards.selectedStoryAd.media !== "//") && (
+                  <MediaOptions
+                    _pickImage={this.props._pickImage}
+                    title={"Edit Media"}
+                    setMediaModalVisible={this.props.setMediaModalVisible}
+                    screenProps={this.props.screenProps}
+                    mediaUri={
+                      media !== "//"
+                        ? media
+                        : storyAdCards.selectedStoryAd.uneditedImageUri
+                    }
+                    media_type={media_type}
+                    serialization={this.props.serialization}
+                  />
+                )}
               </Content>
             </View>
           </SafeAreaView>

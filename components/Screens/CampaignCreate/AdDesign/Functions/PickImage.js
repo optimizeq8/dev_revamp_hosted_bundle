@@ -74,7 +74,8 @@ export const _pickImage = async (
   screenProps,
   rejected,
   mediaEditor = {},
-  editImage
+  editImage,
+  videoIsExporting
 ) => {
   try {
     let result = {};
@@ -317,36 +318,25 @@ export const _pickImage = async (
             // console.log("manipResult", manipResult);
 
             if (manipResult) {
-              await RNFFmpeg.execute(
-                `-i ${
-                  manipResult.hasChanges
-                    ? manipResult.video
-                      ? manipResult.video
-                      : manipResult.image
-                    : result.uri
-                } -vf scale=-1:1920 ${FileSystem.documentDirectory}/output.mp4`
-              );
+              videoIsExporting(true);
               let newResult = await RNFFprobe.getMediaInformation(
-                `${FileSystem.documentDirectory}/output.mp4`
+                manipResult.hasChanges
+                  ? manipResult.video
+                    ? manipResult.video
+                    : manipResult.image
+                  : result.uri
               );
-
               newResult = {
                 width:
-                  newResult.streams[Platform.OS === "android" ? 1 : 0].width,
+                  newResult.streams[
+                    newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                  ].width,
                 height:
-                  newResult.streams[Platform.OS === "android" ? 1 : 0].height,
+                  newResult.streams[
+                    newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                  ].height,
                 duration: newResult.duration / 1000,
               };
-              // console.log("FFmpeg process exited with rc ", result)
-
-              // await RNFFprobe.getMediaInformation(
-              //   manipResult.hasChanges
-              //     ? manipResult.video
-              //       ? manipResult.video
-              //       : manipResult.image
-              //     : result.uri
-              // );
-
               let newSize = await FileSystem.getInfoAsync(
                 manipResult.hasChanges
                   ? manipResult.video
@@ -354,6 +344,45 @@ export const _pickImage = async (
                     : manipResult.image
                   : result.uri
               );
+              if (
+                Math.floor(newResult.width / 9) !==
+                  Math.floor(newResult.height / 16) ||
+                (newResult.width < 1080 && newResult.height < 1920)
+              ) {
+                await RNFFmpeg.execute(
+                  `-y -i ${
+                    manipResult.hasChanges
+                      ? manipResult.video
+                        ? manipResult.video
+                        : manipResult.image
+                      : result.uri
+                  } -vf scale=${
+                    Math.floor(newResult.width / 9) !==
+                    Math.floor(newResult.height / 16)
+                      ? "1080:1920"
+                      : "-1:1920"
+                  } ${FileSystem.documentDirectory}/output.mp4`
+                );
+                newResult = await RNFFprobe.getMediaInformation(
+                  `${FileSystem.documentDirectory}/output.mp4`
+                );
+
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                };
+                newSize = await FileSystem.getInfoAsync(
+                  `${FileSystem.documentDirectory}/output.mp4`
+                );
+              }
+              videoIsExporting(false);
               if (
                 Math.floor(newResult.width / 9) !==
                   Math.floor(newResult.height / 16) ||
@@ -594,6 +623,8 @@ export const _pickImage = async (
   } catch (error) {
     onToggleModal(false);
     // console.log("error image pick", error);
-    segmentEventTrack("error image picker", { campaign_error_image: error });
+    segmentEventTrack("error image picker", {
+      campaign_error_image: error,
+    });
   }
 };
