@@ -289,7 +289,7 @@ export const _pickImage = async (
             exportType: SerializationExportType.OBJECT,
           },
         };
-        uneditedImageUri = result.uri;
+        let uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
           transform: {
@@ -573,6 +573,8 @@ export const _pickImage = async (
                     media: result.uri,
                     type: result.type.toUpperCase(),
                     fileReadyToUpload: true,
+                    uneditedImageUri,
+                    serialization: result.serialization,
                   });
                 setTheState({ sourceChanging: false });
               } else {

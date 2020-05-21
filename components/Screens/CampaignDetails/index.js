@@ -389,7 +389,6 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
-        console.log(selectedCampaign);
       }
 
       return (
