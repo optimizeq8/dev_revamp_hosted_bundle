@@ -113,10 +113,10 @@ PODS:
     - GoogleMaps
   - Google-Maps-iOS-Utils/QuadTree (2.1.0):
     - GoogleMaps
-  - GoogleMaps (3.8.0):
-    - GoogleMaps/Maps (= 3.8.0)
-  - GoogleMaps/Base (3.8.0)
-  - GoogleMaps/Maps (3.8.0):
+  - GoogleMaps (3.8.2):
+    - GoogleMaps/Maps (= 3.8.2)
+  - GoogleMaps/Base (3.8.2)
+  - GoogleMaps/Maps (3.8.2):
     - GoogleMaps/Base
   - imglyKit (10.12.0)
   - JKBigInteger2 (0.0.5)
@@ -649,7 +649,7 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
-  GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
+  GoogleMaps: ae0efe10e9c40bcd9decd0c9fd53d947af7801a3
   imglyKit: 6b5046351e836a73e375aa0a1369ba573cdd4ed9
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
