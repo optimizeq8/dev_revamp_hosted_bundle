@@ -9,7 +9,7 @@ const XDate = require("xdate");
 
 type Props = {
   initialRange: React.PropTypes.array.isRequired,
-  onSuccess: React.PropTypes.func.isRequired
+  onSuccess: React.PropTypes.func.isRequired,
 };
 
 LocaleConfig.locales["en"] = {
@@ -25,7 +25,7 @@ LocaleConfig.locales["en"] = {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ],
   monthNamesShort: [
     "Jan.",
@@ -39,7 +39,7 @@ LocaleConfig.locales["en"] = {
     "Sept.",
     "Oct.",
     "Nov.",
-    "Dec."
+    "Dec.",
   ],
   dayNames: [
     "Sunday",
@@ -48,10 +48,10 @@ LocaleConfig.locales["en"] = {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ],
 
-  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
 };
 
 LocaleConfig.defaultLocale = "en";
@@ -66,10 +66,10 @@ export default class DateRangePicker extends Component<Props> {
       this.setState({
         isFromDatePicked: false,
         isToDatePicked: false,
-        markedDates: {}
+        markedDates: {},
       });
   }
-  onDayPress = day => {
+  onDayPress = (day) => {
     if (
       !this.state.isFromDatePicked ||
       (this.state.isFromDatePicked && this.state.isToDatePicked)
@@ -86,7 +86,7 @@ export default class DateRangePicker extends Component<Props> {
         this.setState({
           isFromDatePicked: true,
           isToDatePicked: true,
-          markedDates: mMarkedDates
+          markedDates: mMarkedDates,
         });
         this.props.onSuccess(this.state.fromDate, day.dateString);
       } else {
@@ -95,19 +95,19 @@ export default class DateRangePicker extends Component<Props> {
     }
   };
 
-  setupStartMarker = day => {
+  setupStartMarker = (day) => {
     let markedDates = {
       [day.dateString]: {
         startingDay: true,
         color: this.props.theme.markColor,
-        textColor: this.props.theme.markTextColor
-      }
+        textColor: this.props.theme.markTextColor,
+      },
     };
     this.setState({
       isFromDatePicked: true,
       isToDatePicked: false,
       fromDate: day.dateString,
-      markedDates: markedDates
+      markedDates: markedDates,
     });
     this.props.startDatePicked();
   };
@@ -121,8 +121,8 @@ export default class DateRangePicker extends Component<Props> {
         markedDates = {
           [toDate]: {
             color: this.props.theme.markColor,
-            textColor: this.props.theme.markTextColor
-          }
+            textColor: this.props.theme.markTextColor,
+          },
         };
       } else {
         for (var i = 1; i <= range; i++) {
@@ -130,13 +130,13 @@ export default class DateRangePicker extends Component<Props> {
           if (i < range) {
             markedDates[tempDate] = {
               color: this.props.theme.markColor,
-              textColor: this.props.theme.markTextColor
+              textColor: this.props.theme.markTextColor,
             };
           } else {
             markedDates[tempDate] = {
               endingDay: true,
               color: this.props.theme.markColor,
-              textColor: this.props.theme.markTextColor
+              textColor: this.props.theme.markTextColor,
             };
           }
         }
@@ -152,8 +152,8 @@ export default class DateRangePicker extends Component<Props> {
       [fromDate]: {
         startingDay: true,
         color: this.props.theme.markColor,
-        textColor: this.props.theme.markTextColor
-      }
+        textColor: this.props.theme.markTextColor,
+      },
     };
     let [mMarkedDates, range] = this.setupMarkedDates(
       fromDate,
@@ -179,7 +179,7 @@ export default class DateRangePicker extends Component<Props> {
         pastScrollRange={
           this.props.filterMenu || this.props.chartRange ? 50 : 0
         }
-        calendarHeight={300}
+        calendarHeight={350}
         calendarWidth={
           this.props.filterMenu
             ? widthPercentageToDP("90%")
@@ -198,7 +198,7 @@ export default class DateRangePicker extends Component<Props> {
             : this.state.fromDate
         }
         markedDates={this.state.markedDates}
-        onDayPress={day => {
+        onDayPress={(day) => {
           this.onDayPress(day);
         }}
         style={styles.calender}
@@ -208,23 +208,23 @@ export default class DateRangePicker extends Component<Props> {
               overflow: "hidden",
               height: 34,
               alignItems: "center",
-              width: 38
+              width: 38,
             },
             fillers: {
               position: "absolute",
 
               flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
               left: 0,
-              right: 0
-            }
+              right: 0,
+            },
           },
           "stylesheet.calendar.main": {
             week: {
               marginTop: 7,
               marginBottom: 7,
               flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-              justifyContent: "space-around"
-            }
+              justifyContent: "space-around",
+            },
           },
           "stylesheet.calendar.header": {
             header: {
@@ -232,13 +232,13 @@ export default class DateRangePicker extends Component<Props> {
               justifyContent: "space-between",
               paddingLeft: 10,
               paddingRight: 10,
-              alignItems: "center"
+              alignItems: "center",
             },
             week: {
               marginTop: 7,
               flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-              justifyContent: "space-around"
-            }
+              justifyContent: "space-around",
+            },
           },
           calendarBackground: "transparent",
           textSectionTitleColor: "#b6c1cd",
@@ -256,7 +256,7 @@ export default class DateRangePicker extends Component<Props> {
           textDayHeaderFontFamily: "montserrat-bold-english",
           textDayFontSize: 17,
           textMonthFontSize: 13,
-          textDayHeaderFontSize: 12
+          textDayHeaderFontSize: 12,
         }}
       />
     );
@@ -264,5 +264,5 @@ export default class DateRangePicker extends Component<Props> {
 }
 
 DateRangePicker.defaultProps = {
-  theme: { markColor: "#00adf5", markTextColor: "#ffffff" }
+  theme: { markColor: "#00adf5", markTextColor: "#ffffff" },
 };

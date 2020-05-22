@@ -3,7 +3,7 @@
    LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -14,9 +14,37 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B56386401DB9693800A0598C"
-               BuildableName = "optimizeapp.app"
-               BlueprintName = "optimizeapp"
+               BlueprintIdentifier = "83CBBA2D1A601D0E00E9B192"
+               BuildableName = "libReact.a"
+               BlueprintName = "React"
+               ReferencedContainer = "container:../node_modules/react-native/React/React.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+               BuildableName = "OptimizeApp"
+               BlueprintName = "OptimizeApp"
+               ReferencedContainer = "container:optimizeapp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "OptimizeAppTests.xctest"
+               BlueprintName = "OptimizeAppTests"
                ReferencedContainer = "container:optimizeapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,13 +58,23 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B56386401DB9693800A0598C"
-            BuildableName = "optimizeapp.app"
-            BlueprintName = "optimizeapp"
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "OptimizeApp"
+            BlueprintName = "OptimizeApp"
             ReferencedContainer = "container:optimizeapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "OptimizeAppTests.xctest"
+               BlueprintName = "OptimizeAppTests"
+               ReferencedContainer = "container:optimizeapp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -53,19 +91,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B56386401DB9693800A0598C"
-            BuildableName = "optimizeapp.app"
-            BlueprintName = "optimizeapp"
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "OptimizeApp"
+            BlueprintName = "OptimizeApp"
             ReferencedContainer = "container:optimizeapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "OS_ACTIVITY_MODE"
-            value = "disable"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -77,9 +108,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B56386401DB9693800A0598C"
-            BuildableName = "optimizeapp.app"
-            BlueprintName = "optimizeapp"
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "OptimizeApp"
+            BlueprintName = "OptimizeApp"
             ReferencedContainer = "container:optimizeapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

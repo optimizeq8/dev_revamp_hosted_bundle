@@ -9,7 +9,7 @@ import CustomHeader from "../Header";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -23,7 +23,7 @@ import CalenderkIcon from "../../../assets/SVGs/Calender";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Loading from "../LoadingScreen";
 import LowerButton from "../LowerButton";
@@ -41,7 +41,7 @@ class DateFields extends Component {
       end_date: "",
       start_date: "",
       resumeLoading: false,
-      outdatedDate: false
+      outdatedDate: false,
     };
   }
 
@@ -49,7 +49,7 @@ class DateFields extends Component {
     this.props.onRef(this);
     this.setState({
       end_date: this.props.end_time,
-      start_date: this.props.start_time
+      start_date: this.props.start_time,
     });
   }
   componentWillUnmount() {
@@ -59,23 +59,23 @@ class DateFields extends Component {
   getErrors = () => {
     this.setState({
       start_timeError: validateWrapper("mandatory", this.props.start_time),
-      end_timeError: validateWrapper("mandatory", this.props.end_time)
+      end_timeError: validateWrapper("mandatory", this.props.end_time),
     });
     return {
       end_timeError: validateWrapper("mandatory", this.props.end_time),
-      start_timeError: validateWrapper("mandatory", this.props.start_time)
+      start_timeError: validateWrapper("mandatory", this.props.start_time),
     };
   };
 
   startDatePicked = () => {
     this.setState({
       start_choice: true,
-      end_choice: false
+      end_choice: false,
     });
   };
   endDatePicked = () => {
     this.setState({
-      end_choice: true
+      end_choice: true,
     });
   };
 
@@ -83,7 +83,7 @@ class DateFields extends Component {
     Segment.screen("Date Modal");
     this.setState({
       modalVisible: true,
-      outdatedDate
+      outdatedDate,
     });
   };
 
@@ -102,12 +102,12 @@ class DateFields extends Component {
           message: this.props.screenProps.translate(
             "Please select minimum 7 days from start date for campaign to end"
           ),
-          type: "warning"
+          type: "warning",
         });
         this.setState({
           start_choice: false,
           end_choice: false,
-          end_date: ""
+          end_date: "",
         });
       } else {
         await this.props.handleStartDatePicked(this.state.start_date);
@@ -126,14 +126,14 @@ class DateFields extends Component {
             this.setState({
               modalVisible: false,
               start_choice: false,
-              end_choice: false
+              end_choice: false,
             });
           }, 200);
         } else
           this.setState({
             modalVisible: false,
             start_choice: false,
-            end_choice: false
+            end_choice: false,
           });
       }
     } else if (!this.props.filterMenu && !this.props.chartRange) {
@@ -156,14 +156,14 @@ class DateFields extends Component {
           this.setState({
             modalVisible: false,
             start_choice: false,
-            end_choice: false
+            end_choice: false,
           });
         }, 200);
       } else
         this.setState({
           modalVisible: false,
           start_choice: false,
-          end_choice: false
+          end_choice: false,
         });
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
@@ -171,14 +171,14 @@ class DateFields extends Component {
       this.setState({
         modalVisible: false,
         start_choice: false,
-        end_choice: false
+        end_choice: false,
       });
     } else if (this.props.chartRange) {
       this.props.durationChange(this.state.start_date, this.state.end_date);
       this.setState({
         modalVisible: false,
         start_choice: false,
-        end_choice: false
+        end_choice: false,
       });
     }
   };
@@ -191,7 +191,7 @@ class DateFields extends Component {
         start_timeError: "",
         modalVisible: false,
         start_date: "",
-        end_date: ""
+        end_date: "",
       });
       this.setState({ modalVisible: false });
       this.props.durationChange(
@@ -207,7 +207,7 @@ class DateFields extends Component {
         start_timeError: "",
         start_date: "",
         end_date: "",
-        reset: true
+        reset: true,
       });
     }
   };
@@ -223,7 +223,7 @@ class DateFields extends Component {
         // if (route !== "AdPaymentReview") {
         // pass as a props lastScreen
         let correctRoute = NavigationActions.navigate({
-          routeName: route
+          routeName: route,
         });
         newRoutes.push(correctRoute);
         // }
@@ -236,7 +236,7 @@ class DateFields extends Component {
       );
       resetAction = StackActions.reset({
         index: continueRoutes.length - 1,
-        actions: continueRoutes
+        actions: continueRoutes,
       });
       this.props.set_google_campaign_resumed(true);
 
@@ -251,7 +251,7 @@ class DateFields extends Component {
           language: this.props.googleCampaign.language,
           start_time: this.props.googleCampaign.start_time,
           end_time: this.props.googleCampaign.end_time,
-          location: this.props.googleCampaign.location
+          location: this.props.googleCampaign.location,
         },
         //this is as if passing this.props.navigation and calling navigation.push but it does nothing
         //because i don't want to navigate from within the store after the request is done
@@ -264,7 +264,7 @@ class DateFields extends Component {
         if (route !== "AdPaymentReview") {
           // pass as a props lastScreen
           let correctRoute = NavigationActions.navigate({
-            routeName: route
+            routeName: route,
           });
           newRoutes.push(correctRoute);
         }
@@ -277,12 +277,12 @@ class DateFields extends Component {
       );
       resetAction = StackActions.reset({
         index: continueRoutes.length - 1,
-        actions: continueRoutes
+        actions: continueRoutes,
       });
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData({
         start_time: this.state.start_date,
-        end_time: this.state.end_date
+        end_time: this.state.end_date,
       }); //overwrite this.props.data with the new dates
       this.props.set_adType(this.props.oldTempAdType);
       //Updates the campaign's date in the back end when resuming with the same data
@@ -296,7 +296,7 @@ class DateFields extends Component {
           name: this.props.data.name,
           objective: this.props.data.objective,
           start_time: this.props.data.start_time,
-          end_time: this.props.data.end_time
+          end_time: this.props.data.end_time,
         },
         //this is as if passing this.props.navigation and calling navigation.push but it does nothing
         //because i don't want to navigate from within the store after the request is done
@@ -309,7 +309,7 @@ class DateFields extends Component {
           name: this.props.data.name,
           objective: this.props.data.objective,
           start_time: this.props.data.start_time,
-          end_time: this.props.data.end_time
+          end_time: this.props.data.end_time,
         }
       );
       this.props.navigation.dispatch(resetAction);
@@ -327,15 +327,15 @@ class DateFields extends Component {
           this.props.filterMenu &&
             !I18nManager.isRTL && {
               marginLeft: -80,
-              marginTop: -hp(6)
+              marginTop: -hp(6),
             },
           this.props.filterMenu &&
             I18nManager.isRTL && {
               // marginLeft: 0,
               marginTop: -hp(6),
               marginLeft: 0,
-              marginRight: -10
-            }
+              marginRight: -10,
+            },
         ]}
       >
         <Modal
@@ -355,14 +355,14 @@ class DateFields extends Component {
               this.props.filterMenu &&
                 !I18nManager.isRTL && {
                   paddingLeft: wp("20"),
-                  paddingTop: hp(6)
+                  paddingTop: hp(6),
                 },
               this.props.filterMenu &&
                 I18nManager.isRTL && {
                   paddingLeft: wp("2"),
                   paddingRight: wp("8"),
-                  paddingTop: hp(6)
-                }
+                  paddingTop: hp(6),
+                },
             ]}
           >
             <SafeAreaView
@@ -423,12 +423,12 @@ class DateFields extends Component {
                     this.setState({
                       start_date: s,
                       end_date: e,
-                      reset: false
+                      reset: false,
                     });
                   }}
                   theme={{
                     markColor: "#FF9D00",
-                    markTextColor: "white"
+                    markTextColor: "white",
                   }}
                 />
               </View>
@@ -451,7 +451,7 @@ class DateFields extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   oldTempAdType: state.campaignC.oldTempAdType,
   oldTempData: state.campaignC.oldTempData,
   data: state.campaignC.data,
@@ -459,22 +459,22 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   adType: state.campaignC.adType,
   channel: state.transA.channel,
-  googleCampaign: state.googleAds
+  googleCampaign: state.googleAds,
 });
-const mapDispatchToProps = dispatch => ({
-  setCampaignInProgress: value =>
+const mapDispatchToProps = (dispatch) => ({
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  overWriteObjectiveData: value =>
+  overWriteObjectiveData: (value) =>
     dispatch(actionCreators.overWriteObjectiveData(value)),
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
   ad_objective: (info, navigation) =>
     dispatch(actionCreators.ad_objective(info, navigation)),
-  set_google_campaign_resumed: value =>
+  set_google_campaign_resumed: (value) =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
-  save_google_campaign_data: info =>
+  save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),
   create_google_SE_campaign_info: (info, navigation) =>
-    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation))
+    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
 
@@ -491,5 +491,5 @@ DateFields.propTypes = {
   open: PropTypes.bool, //Shows the modal if the sideMenu is open
   filterMenu: PropTypes.bool, //Determines if the DateField is being rendered from the dashborad filter menu or not
   durationChange: PropTypes.func, //Handles the api call to filter the charts by dates
-  selectedCampaign: PropTypes.object //The campaign from CampaignDetails
+  selectedCampaign: PropTypes.object, //The campaign from CampaignDetails
 };

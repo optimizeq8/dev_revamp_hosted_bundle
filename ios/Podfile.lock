@@ -3,7 +3,7 @@ PODS:
     - Adjust/Core (= 4.21.3)
   - Adjust/Core (4.21.3)
   - Amplitude-iOS (4.7.1)
-  - Analytics (3.8.1)
+  - Analytics (3.8.2)
   - boost-for-react-native (1.63.0)
   - CocoaLumberjack (3.5.3):
     - CocoaLumberjack/Core (= 3.5.3)
@@ -113,16 +113,16 @@ PODS:
     - GoogleMaps
   - Google-Maps-iOS-Utils/QuadTree (2.1.0):
     - GoogleMaps
-  - GoogleMaps (3.8.0):
-    - GoogleMaps/Maps (= 3.8.0)
-  - GoogleMaps/Base (3.8.0)
-  - GoogleMaps/Maps (3.8.0):
+  - GoogleMaps (3.8.2):
+    - GoogleMaps/Maps (= 3.8.2)
+  - GoogleMaps/Base (3.8.2)
+  - GoogleMaps/Maps (3.8.2):
     - GoogleMaps/Base
-  - imglyKit (10.11.0)
+  - imglyKit (10.13.0)
   - JKBigInteger2 (0.0.5)
   - lottie-ios (2.5.3)
-  - PhotoEditorSDK (10.11.0):
-    - imglyKit (= 10.11.0)
+  - PhotoEditorSDK (10.13.0):
+    - imglyKit (= 10.13.0)
   - RCTRequired (0.61.4)
   - RCTTypeSafety (0.61.4):
     - FBLazyVector (= 0.61.4)
@@ -595,7 +595,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Adjust: 4e8fe76a28dd413c183ba621df50493dcd10e28b
   Amplitude-iOS: a0347ab05f2d196e6bbb22cc6f62eea33b5a035b
-  Analytics: 45b1faec509367a99c7b788cc5389180c43fe3fc
+  Analytics: 4c482aea5efcecaeb03adfc7fc22e350f5ca575c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
@@ -626,11 +626,11 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
-  GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
-  imglyKit: 1833a7f374005ea9483eb050f1bca80894bcadef
+  GoogleMaps: ae0efe10e9c40bcd9decd0c9fd53d947af7801a3
+  imglyKit: 11ed6ada802295c824793a1ef4b98c4f26358216
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  PhotoEditorSDK: 19b064295d525181e18337c4223e7c7777158d0b
+  PhotoEditorSDK: 2787b647a1b95a8789be1e2d427ed53f462f28a5
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
   RCTTypeSafety: 2ec60de6abb1db050b56ecc4b60188026078fd10
   React: 10e0130b57e55a7cd8c3dee37c1261102ce295f4
