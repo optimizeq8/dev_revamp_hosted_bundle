@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { AsyncStorage, View, Text, Platform, I18nManager } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -26,30 +27,30 @@ const slidesData = [
     id: 0,
     heading: "MULTICHANNEL ADVERTISING",
     description:
-      "Promote your business and reach your target audience whether they're surfing the web, or Snapchatting their friends"
+      "Promote your business and reach your target audience whether they're surfing the web, or Snapchatting their friends",
   },
   {
     id: 1,
     heading: "EASY PUBLISHING",
     description:
-      "We make it easy so you can focus on growing your business Let us do the heavy lifting for you"
+      "We make it easy so you can focus on growing your business Let us do the heavy lifting for you",
   },
   {
     id: 2,
     heading: "REPORTS",
     description:
-      "Compare Key Performance Indicators from previous campaigns Did the changes result in more clicks?"
+      "Compare Key Performance Indicators from previous campaigns Did the changes result in more clicks?",
   },
   {
     id: 3,
     heading: "NO AGENCIES ALL YOU",
     description:
-      "Because campaign creation is automated, you get to cut the hefty agency costs out of the equation"
-  }
+      "Because campaign creation is automated, you get to cut the hefty agency costs out of the equation",
+  },
 ];
 class Tutorial extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   state = {
     tutorialOpened: null,
@@ -58,22 +59,51 @@ class Tutorial extends Component {
     slidesData:
       I18nManager.isRTL && Platform.OS === "android"
         ? slidesData.reverse()
-        : slidesData // To properly show reversed data for RTL and Adnroid setting it in initial state
+        : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
   };
-  componentDidMount() {
+  async componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam("source_action", null);
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    this.setState({
+      source,
+      source_action,
+    });
+    const device_id = this.props.screenProps.device_id;
     AsyncStorage.getItem("tutorialOpened")
-      .then(value => {
+      .then(async value => {
         if (isNull(value)) {
-          AsyncStorage.setItem("tutorialOpened", "false").then(() => {
+          AsyncStorage.setItem("tutorialOpened", "false").then(async () => {
+            await analytics.track("tutorial_1", {
+              anonymous_userId,
+              source,
+              source_action,
+              timestamp: new Date().getTime(),
+              device_id,
+              // location: "",
+              // country: ""
+            });
             this.setState({
-              tutorialOpened: false
+              tutorialOpened: false,
             });
           });
         } else if (value === "true") {
           this.props.navigation.replace("Signin");
         } else {
+          await analytics.track("tutorial_1", {
+            anonymous_userId,
+            source,
+            source_action,
+            timestamp: new Date().getTime(),
+            device_id,
+            // location: "",
+            // country: ""
+          });
           this.setState({
-            tutorialOpened: false
+            tutorialOpened: false,
           });
         }
       })
@@ -82,7 +112,7 @@ class Tutorial extends Component {
           message: "Something went wrong!",
           type: "warning",
           position: "top",
-          description: "Please try again later."
+          description: "Please try again later.",
         });
         //  console.log(err)
       });
@@ -143,9 +173,84 @@ class Tutorial extends Component {
   };
   // To change slide
   navigationRouteHandler = index => {
-    this.setState({
-      activeSlide: index
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    const device_id = this.props.screenProps.device_id;
+
+    analytics.track(`tutorial_${index + 1}`, {
+      anonymous_userId,
+      device_id,
+      source: `tutorial_${index}`,
+      source_action: `a_tutorial_${index}`,
+      timestamp: new Date().getTime(),
     });
+    this.setState({
+      activeSlide: index,
+    });
+  };
+
+  // GET START BUTTON PRESS
+  getStartedButtonAction = async () => {
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    const device_id = this.props.screenProps.device_id;
+
+    await analytics.track("a_get_started", {
+      source: "tutorial_4",
+      // source_action: "", // Not sure
+      timestamp: new Date().getTime(),
+      anonymous_userId,
+      device_id,
+    });
+    AsyncStorage.getItem("tutorialOpened")
+      .then(value => {
+        if (value == null) {
+          AsyncStorage.setItem("tutorialOpened", "false");
+        } else {
+          AsyncStorage.setItem("tutorialOpened", "true").then(
+            this.props.navigation.replace("Signin", {
+              source: "tutorial_4",
+              source_action: "a_get_started",
+            })
+          );
+        }
+      })
+      .catch(err => {
+        // console.log(err)
+      });
+  };
+
+  // SKIP BUTTON ACTION
+  skipTutorial = async () => {
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    const device_id = this.props.screenProps.device_id;
+    await analytics.track(`a_skip_after_${this.state.activeSlide + 1}`, {
+      anonymous_userId,
+      source: `tutorial_${this.state.activeSlide + 1}`,
+      source_action: `a_skip_after_${this.state.activeSlide + 1}`,
+      timestamp: new Date().getTime(),
+      device_id,
+      // location: "",
+      // country: ""
+    });
+
+    AsyncStorage.getItem("tutorialOpened")
+      .then(value => {
+        if (value == null) {
+          AsyncStorage.setItem("tutorialOpened", "false");
+        } else {
+          AsyncStorage.setItem("tutorialOpened", "true").then(
+            this.props.navigation.replace("Signin", {
+              source: `tutorial_${this.state.activeSlide + 1}`,
+              source_action: `a_skip_after_${this.state.activeSlide + 1}`,
+            })
+          );
+        }
+      })
+      .catch(err => {
+        // console.log(err)
+      });
+  };
+  goToNextSlide = () => {
+    this._carousel.snapToNext(true);
   };
 
   render() {
@@ -193,29 +298,14 @@ class Tutorial extends Component {
             style={[
               styles.bottomView,
               this.state.activeSlide === 3 && {
-                justifyContent: "center"
-              }
+                justifyContent: "center",
+              },
             ]}
           >
             {this.state.activeSlide === 3 ? (
               <GradientButton
                 style={[styles.getStartedButton]}
-                onPressAction={() => {
-                  segmentEventTrack("Button Get Started Clicked");
-                  AsyncStorage.getItem("tutorialOpened")
-                    .then(value => {
-                      if (value == null) {
-                        AsyncStorage.setItem("tutorialOpened", "false");
-                      } else {
-                        AsyncStorage.setItem("tutorialOpened", "true").then(
-                          this.props.navigation.replace("Signin")
-                        );
-                      }
-                    })
-                    .catch(err => {
-                      // console.log(err)
-                    });
-                }}
+                onPressAction={this.getStartedButtonAction}
                 textStyle={styles.getStartedText}
                 text={translate("Get Started!")}
                 uppercase
@@ -226,31 +316,10 @@ class Tutorial extends Component {
                   transparent
                   text={translate("SKIP")}
                   style={styles.skipButton}
-                  onPressAction={() => {
-                    segmentEventTrack(
-                      `Button SKIP Clicked after screen ${this.state
-                        .activeSlide + 1}`
-                    );
-
-                    AsyncStorage.getItem("tutorialOpened")
-                      .then(value => {
-                        if (value == null) {
-                          AsyncStorage.setItem("tutorialOpened", "false");
-                        } else {
-                          AsyncStorage.setItem("tutorialOpened", "true").then(
-                            this.props.navigation.replace("Signin")
-                          );
-                        }
-                      })
-                      .catch(err => {
-                        // console.log(err)
-                      });
-                  }}
+                  onPressAction={this.skipTutorial}
                 />
                 <LowerButton
-                  function={() => {
-                    this._carousel.snapToNext(true);
-                  }}
+                  function={this.goToNextSlide}
                   style={styles.lowerBtn}
                 />
               </>

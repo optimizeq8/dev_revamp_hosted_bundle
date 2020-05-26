@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
-
+import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
@@ -41,7 +41,7 @@ import { showMessage } from "react-native-flash-message";
 
 class Signin extends Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
   constructor(props) {
     super(props);
@@ -52,7 +52,7 @@ class Signin extends Component {
       passwordError: "",
       newEmail: "",
       newEmailError: "",
-      activeTab: 0,
+      activeTab: 0
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -62,21 +62,34 @@ class Signin extends Component {
     const passwordError = validateWrapper("password", this.state.password);
     this.setState({
       emailError: emailError,
-      passwordError: passwordError,
+      passwordError: passwordError
     });
     if (!emailError && !passwordError) {
       this.props.login(this.state, this.props.navigation);
     }
   };
 
-  componentDidMount() {
-    Segment.screenWithProperties("Signup Using Email", {
-      category: "Sign Up",
-      label: "Step 1 of Registeration",
+  async componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam("source_action", null);
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    const device_id = this.props.screenProps.device_id;
+    await analytics.track(`email_registration`, {
+      source,
+      source_action,
+      anonymous_userId,
+      device_id
+    });
+    this.setState({
+      source,
+      source_action
     });
     if (Platform.OS === "ios") {
       Linking.addEventListener("url", this.handleDeepLink);
-      Linking.getInitialURL().then((url) => {
+      Linking.getInitialURL().then(url => {
         if (url.includes("adj")) {
           this.handleDeepLink({ url });
         }
@@ -84,7 +97,7 @@ class Signin extends Component {
     }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
-  handleDeepLink = (url) => {
+  handleDeepLink = url => {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
       screen = screen[1].split("/")[0];
@@ -97,15 +110,13 @@ class Signin extends Component {
       }
 
       this.props.navigation.navigate(screen);
-      Linking.removeEventListener("url", (evnt) =>
+      Linking.removeEventListener("url", evnt =>
         console.log("unmounted", evnt)
       );
     }
   };
   componentWillUnmount() {
-    Linking.removeEventListener("url", (evnt) =>
-      console.log("unmounted", evnt)
-    );
+    Linking.removeEventListener("url", evnt => console.log("unmounted", evnt));
   }
   setValue = (stateName, value) => {
     let state = {};
@@ -117,7 +128,7 @@ class Signin extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state,
+      ...state
     });
   };
   createNewAccount = () => {
@@ -131,9 +142,42 @@ class Signin extends Component {
     } else {
       showMessage({
         message: this.state.newEmailError,
-        type: "warning",
+        type: "warning"
       });
     }
+  };
+
+  /**
+   * change active tab
+   */
+  changeActiveTab = async () => {
+    let activeTabSignUp = this.state.activeTab === 0;
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+    const device_id = this.props.screenProps.device_id;
+
+    // Action event
+    const response = await analytics.track(
+      `a_${activeTabSignUp ? "sign_in" : "sign_up"}_tab`,
+      {
+        source: activeTabSignUp ? "sign_in" : "email_registration",
+        anonymous_userId,
+        device_id,
+        timestamp: new Date().getTime()
+      }
+    );
+    console.log("response", response);
+
+    // Screeen event
+    analytics.track(`${activeTabSignUp ? "sign_in" : "email_registration"}`, {
+      source: `${activeTabSignUp ? "sign_in" : "email_registration"}`,
+      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
+      anonymous_userId,
+      device_id,
+      timestamp: new Date().getTime()
+    });
+    this.setState({
+      activeTab: activeTabSignUp ? 1 : 0
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -167,18 +211,10 @@ class Signin extends Component {
                   />
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
-                      onPress={() => {
-                        Segment.screenWithProperties("Signup Using Email", {
-                          category: "Sign Up",
-                          label: "Step 1 of Registeration",
-                        });
-                        this.setState({
-                          activeTab: 0,
-                        });
-                      }}
+                      onPress={this.changeActiveTab}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 0 && styles.activeTabView,
+                        this.state.activeTab === 0 && styles.activeTabView
                       ]}
                     >
                       <Text
@@ -188,25 +224,18 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 0
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)",
-                          },
+                                : "rgba(255,255,255,0.65)"
+                          }
                         ]}
                       >
                         {translate("SIGN UP")}
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => {
-                        Segment.screenWithProperties("Sign In", {
-                          category: "Sign In",
-                        });
-                        this.setState({
-                          activeTab: 1,
-                        });
-                      }}
+                      onPress={this.changeActiveTab}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 1 && styles.activeTabView,
+                        this.state.activeTab === 1 && styles.activeTabView
                       ]}
                     >
                       <Text
@@ -216,8 +245,8 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 1
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)",
-                          },
+                                : "rgba(255,255,255,0.65)"
+                          }
                         ]}
                       >
                         {translate("Sign in")}
@@ -323,20 +352,20 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   loading: state.auth.loading,
-  checkingForToken: state.login.checkingForToken,
+  checkingForToken: state.login.checkingForToken
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   verifyEmail: (email, userInfo, navigation) =>
     dispatch(actionCreators.verifyEmail(email, userInfo, navigation)),
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
-  checkForExpiredToken: (navigation) =>
+  checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation)),
-  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
+  set_adType: value => dispatch(actionCreators.set_adType(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

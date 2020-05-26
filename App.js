@@ -16,8 +16,10 @@ import {
   I18nManager,
   AppState,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
+import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -44,7 +46,7 @@ import {
   Linking,
   SplashScreen,
   Notifications,
-  Updates
+  Updates,
 } from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
@@ -68,7 +70,7 @@ import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 
 //icons
@@ -82,7 +84,7 @@ import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
   Sentry.init({
-    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
+    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
 // Sentry.captureException(new Error("Oops!"));
@@ -132,7 +134,9 @@ class App extends React.Component {
       splashAnimationComplete: false,
       isAppReady: false,
       currentScreen: "",
-      appState: AppState.currentState
+      appState: AppState.currentState,
+      prevAppState: AppState.currentState,
+      anonymous_userId: "",
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
@@ -169,10 +173,21 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   async componentDidMount() {
-    Segment.initialize({
-      androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+      // Record screen views automatically!
+      recordScreenViews: true,
+      // Record certain application events automatically!
+      trackAppLifecycleEvents: true,
     });
+    const anonymous_userId = await analytics.getAnonymousId();
+    this.setState({
+      anonymous_userId,
+    });
+
+    // Segment.initialize({
+    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    // });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
@@ -188,11 +203,22 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
-  _handleAppStateChange = nextAppState => {
+  _handleAppStateChange = async nextAppState => {
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
+      await analytics.track("app_open", {
+        userid:
+          (store.getState().auth &&
+            store.getState().auth.userInfo &&
+            store.getState().auth.userInfo.userid) ||
+          this.state.anonymous_userId,
+        anonymous_userId: this.state.anonymous_userId,
+        source: this.state.appState,
+        device_id: getUniqueId(),
+        timestamp: new Date().getTime(),
+      });
       Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
       // console.log("App has come to the foreground!");
       if (
@@ -213,7 +239,10 @@ class App extends React.Component {
 
       store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
-    this.setState({ appState: nextAppState });
+    this.setState({
+      prevAppState: this.state.appState,
+      appState: nextAppState,
+    });
   };
 
   _handleNotification = async handleScreen => {
@@ -244,7 +273,7 @@ class App extends React.Component {
             type: "default",
             backgroundColor: "#FF9D00",
             color: "#fff",
-            position: "top"
+            position: "top",
             // onPress: () => {
             //   NavigationService.navigate(handleScreen.data.screenName);
             // }
@@ -374,7 +403,7 @@ class App extends React.Component {
               style={{
                 backgroundColor: "transparent",
                 marginTop: 0,
-                paddingTop: 0
+                paddingTop: 0,
               }}
             />
             <LinearGradient
@@ -386,7 +415,7 @@ class App extends React.Component {
               style={{
                 backgroundColor: "transparent",
                 marginTop: 0,
-                paddingTop: 0
+                paddingTop: 0,
               }}
             />
             <View style={styles.container}>
@@ -406,7 +435,10 @@ class App extends React.Component {
                   screenProps={{
                     translate: this.t,
                     locale: this.state.locale,
-                    setLocale: this.setLocale
+                    setLocale: this.setLocale,
+                    device_id: getUniqueId(),
+                    anonymous_userId: this.state.anonymous_userId,
+                    prevAppState: this.state.prevAppState,
                   }}
                 />
               </Root>
@@ -435,8 +467,8 @@ class App extends React.Component {
           justifyContent: "center",
           opacity: this.state.splashFadeAnimation.interpolate({
             inputRange: [0, 1],
-            outputRange: [1, 0]
-          })
+            outputRange: [1, 0],
+          }),
         }}
       >
         <Animated.Image
@@ -449,7 +481,7 @@ class App extends React.Component {
             left: 0,
             bottom: 0,
             right: 0,
-            resizeMode: "cover"
+            resizeMode: "cover",
             // opacity: this.state.splashAnimation.interpolate({
             //   inputRange: [0, 1],
             //   outputRange: [0, 1]
@@ -468,16 +500,16 @@ class App extends React.Component {
             justifyContent: "center",
             opacity: this.state.splashAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, 1]
+              outputRange: [0, 1],
             }),
             transform: [
               {
                 translateY: this.state.splashAnimation.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [100, 0]
-                })
-              }
-            ]
+                  outputRange: [100, 0],
+                }),
+              },
+            ],
           }}
         >
           <PurpleLogo
@@ -495,13 +527,13 @@ class App extends React.Component {
       Animated.timing(this.state.splashAnimation, {
         toValue: 1,
         duration: 2000,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(this.state.splashFadeAnimation, {
         toValue: 1,
         duration: 1000,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start(() => {
       this.setState({ splashAnimationComplete: true });
     });
@@ -513,21 +545,21 @@ class App extends React.Component {
       if (mobileLanguage.includes("ar")) {
         await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
         this.setState({
-          locale: "ar"
+          locale: "ar",
         });
         // for proper RTL direction
         Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
-          locale: "en"
+          locale: "en",
         });
         // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
       }
     } else {
       await store.dispatch(actionCreators.getLanguageListPOEdit(appLanguage));
       this.setState({
-        locale: appLanguage
+        locale: appLanguage,
       });
     }
     // console.log(
@@ -593,8 +625,8 @@ class App extends React.Component {
           ? require("./assets/fonts/Arabic/Changa-Bold.ttf")
           : require("./assets/fonts/Montserrat-Bold.ttf"),
         Roboto: require("native-base/Fonts/Roboto.ttf"),
-        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
-      })
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      }),
     ]);
   };
 
@@ -618,12 +650,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "stretch",
     backgroundColor: "#0000",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   text: { color: "#fff" },
 
   gradient: {
-    ...StyleSheet.absoluteFillObject
-  }
+    ...StyleSheet.absoluteFillObject,
+  },
 });

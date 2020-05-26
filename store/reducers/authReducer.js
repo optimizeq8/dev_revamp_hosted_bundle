@@ -1,11 +1,14 @@
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "../actions/actionTypes";
 import * as Segment from "expo-analytics-segment";
+import { getUniqueId } from "react-native-device-info";
+import analytics from "@segment/analytics-react-native";
+
 const initialState = {
   userid: null,
   userInfo: null,
   loading: false,
-  loadingUpdateInfo: false
+  loadingUpdateInfo: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,7 +18,7 @@ const reducer = (state = initialState, action) => {
         .then(language => {
           Segment.identifyWithTraits(action.payload.user.userid, {
             ...action.payload.user,
-            app_language: language
+            user_app_language: language,
           });
         })
         .catch(error => {
@@ -29,24 +32,24 @@ const reducer = (state = initialState, action) => {
         ...state,
         userid: action.payload.user.userid,
         userInfo: action.payload.user,
-        loading: false
+        loading: false,
       };
 
     case actionTypes.UPDATE_USERINFO:
       return {
         ...state,
         loadingUpdateInfo: false,
-        userInfo: { ...state.userInfo, ...action.payload }
+        userInfo: { ...state.userInfo, ...action.payload },
       };
     case actionTypes.SET_LOADING_USER:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     case actionTypes.SET_LOADING_ACCOUNT_UPDATE:
       return {
         ...state,
-        loadingUpdateInfo: action.payload
+        loadingUpdateInfo: action.payload,
       };
     default:
       return state;
