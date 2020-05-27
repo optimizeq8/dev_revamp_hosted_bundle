@@ -9,16 +9,20 @@ import {
 import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
+import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
 import * as Segment from "expo-analytics-segment";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
+import ModalField from "../InputFieldNew/ModalField";
+import WebsiteField from "../InputFieldNew/Website";
 import Picker from "../Picker";
 import AppCard from "./AppCard";
 import isStringArabic from "../../isStringArabic";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
+import WindowIcon from "../../../assets/SVGs/Window";
 
 //Data
 import list from "../../Data/callactions.data";
@@ -56,7 +60,7 @@ class AppChoice extends Component {
       callaction: list.SnapAd[1].call_to_action_list[0],
       callactions: list.SnapAd[1].call_to_action_list,
       nameError: "",
-      callActionError: "",
+      callToActionError: "",
       AppError: "",
       loading: false,
       appLoading: false,
@@ -194,12 +198,12 @@ class AppChoice extends Component {
       "mandatory",
       this.state.iosApp_name || this.state.androidApp_name
     );
-    const callActionError = validateWrapper(
+    const callToActionError = validateWrapper(
       "mandatory",
       this.state.callaction.value
     );
     const { translate } = this.props.screenProps;
-    this.setState({ nameError, callActionError, AppError });
+    this.setState({ nameError, callToActionError, AppError });
     if (AppError) {
       showMessage({
         message: translate("Please choose an application to promote"),
@@ -207,7 +211,7 @@ class AppChoice extends Component {
         position: "top"
       });
     }
-    if (!AppError && !nameError && !callActionError) {
+    if (!AppError && !nameError && !callToActionError) {
       this._submitDeepLink();
     }
   };
@@ -290,126 +294,97 @@ class AppChoice extends Component {
         : { iosAppSelected: !this.state.iosAppSelected }
     );
   };
+  openCallToActionModal = () => {
+    segmentEventTrack("Button Clicked to open Call to action Modal");
+    this.setState({ inputCallToAction: true }, () => {
+      if (this.state.inputCallToAction) {
+        Segment.screen("Call to Action Modal");
+      }
+    });
+  };
+  getValidInfo = (stateError, error) => {
+    console.log("stateError", stateError);
+    console.log("error", error);
 
+    if (stateError === "deep_link_uriError" && error) {
+      segmentEventTrack("Changed Deep Link Url", {
+        campaign_deep_link_url: this.state.deep_link_uri
+      });
+
+      if (error) {
+        segmentEventTrack("Error on Blur Deep Link URL", {
+          campaign_error_deep_link_url: this.state.deep_link_uriError
+        });
+      }
+    }
+    this.setState({
+      [stateError]: error
+    });
+  };
+  setWebsiteValue = value => {
+    this.setState({
+      deep_link_uri: value
+    });
+  };
   render() {
     let { iosAppSelected, androidAppSelected } = this.state;
     const { translate } = this.props.screenProps;
     return (
-      <View style={styles.mainCard}>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={60}
-            style={styles.container}
-            behavior="padding"
-          >
-            <>
-              <Picker
-                showIcon={true}
-                screenProps={this.props.screenProps}
-                searchPlaceholderText={translate("Search Call To Action")}
-                data={this.state.callactions}
-                uniqueKey={"value"}
-                displayKey={"label"}
-                open={this.state.inputCallToAction}
-                onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
-                selectedItems={[this.state.callaction.value]}
-                single={true}
-                screenName={" App Choice"}
-                closeCategoryModal={this.closeCallToActionModal}
-              />
-              <View style={styles.itemCallToAction}>
-                <View style={[styles.callToActionLabelView]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("call to action")}
-                  </Text>
-                </View>
-                <Item
-                  onPress={() => {
-                    segmentEventTrack(
-                      "Button Clicked to open Call to action Modal"
-                    );
-                    this.setState({ inputCallToAction: true }, () => {
-                      if (this.state.inputCallToAction) {
-                        Segment.screen("Call to Action Modal");
-                      }
-                    });
-                  }}
-                  // rounded
-                  style={[
-                    styles.input,
-                    this.state.callActionError
-                      ? globalStyles.redBorderColor
-                      : globalStyles.transparentBorderColor
-                  ]}
-                >
-                  <Text style={styles.pickerText}>
-                    {this.state.callaction.label
-                      ? this.state.callaction.label
-                      : translate("call to action")}
-                  </Text>
-                  <Icon type="AntDesign" name="down" style={styles.iconDown} />
-                </Item>
-              </View>
+      <InputScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <AppBox
+          appstorelink={this.props.mainBusiness.appstorelink}
+          playstorelink={this.props.mainBusiness.playstorelink}
+          setModalVisible={this.setModalVisible}
+          attachment={this.state.attachment}
+          iosApp_name={this.state.iosApp_name}
+          androidApp_name={this.state.androidApp_name}
+          screenProps={this.props.screenProps}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          toggleAppSelection={this.toggleAppSelection}
+        />
+        <Picker
+          showIcon={true}
+          screenProps={this.props.screenProps}
+          searchPlaceholderText={translate("Search Call To Action")}
+          data={this.state.callactions}
+          uniqueKey={"value"}
+          displayKey={"label"}
+          open={this.state.inputCallToAction}
+          onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+          onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
+          selectedItems={[this.state.callaction.value]}
+          single={true}
+          screenName={" App Choice"}
+          closeCategoryModal={this.closeCallToActionModal}
+        />
 
-              <AppBox
-                appstorelink={this.props.mainBusiness.appstorelink}
-                playstorelink={this.props.mainBusiness.playstorelink}
-                setModalVisible={this.setModalVisible}
-                attachment={this.state.attachment}
-                iosApp_name={this.state.iosApp_name}
-                androidApp_name={this.state.androidApp_name}
-                screenProps={this.props.screenProps}
-                appSelections={{ iosAppSelected, androidAppSelected }}
-                toggleAppSelection={this.toggleAppSelection}
-              />
-              {this.props.deepLink && (
-                <View style={{ marginTop: 20 }}>
-                  <View style={[styles.callToActionLabelView]}>
-                    <Text uppercase style={[styles.inputLabel]}>
-                      {translate("url")}
-                    </Text>
-                  </View>
-                  <Item
-                    style={[
-                      appConfirmStyles.input,
-                      this.state.deep_link_uriError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
-                      appConfirmStyles.deepLinkItem
-                    ]}
-                  >
-                    <Input
-                      value={this.state.deep_link_uri}
-                      style={appConfirmStyles.inputtext}
-                      placeholder={translate("Deep Link URL")}
-                      placeholderTextColor="white"
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
-                          deep_link_uri: value
-                        });
-                      }}
-                      onBlur={async () => {
-                        segmentEventTrack("Changed Deep Link Url", {
-                          campaign_deep_link_url: this.state.deep_link_uri
-                        });
-                        const valid = await this.validateUrl();
-                        if (!valid) {
-                          segmentEventTrack("Error on Blur Deep Link URL", {
-                            campaign_error_deep_link_url: this.state
-                              .deep_link_uriError
-                          });
-                        }
-                      }}
-                    />
-                  </Item>
-                </View>
-              )}
-            </>
-          </KeyboardAvoidingView>
-        </ScrollView>
+        <ModalField
+          stateName={"callToAction"}
+          setModalVisible={this.openCallToActionModal}
+          modal={true}
+          label={"call to action"}
+          valueError={this.state.callToActionError}
+          getValidInfo={this.getValidInfo}
+          valueText={this.state.callaction.label}
+          value={this.state.callaction.label}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          icon={WindowIcon}
+          isVisible={this.state.inputCallToAction}
+        />
+
+        {this.props.deepLink && (
+          <WebsiteField
+            setWebsiteValue={this.setWebsiteValue}
+            stateName="deep_link_uri"
+            screenProps={this.props.screenProps}
+            label="Deep Link"
+            website={this.state.deep_link_uri}
+            stateNameError={this.state.deep_link_uriError}
+            placeholder={"Enter Deep Link URL"}
+            getValidInfo={this.getValidInfo}
+          />
+        )}
         <AppSearchModal
           mainState={this.state}
           selectApp={this.props.selectApp}
@@ -422,22 +397,21 @@ class AppChoice extends Component {
           screenProps={this.props.screenProps}
           appChoice={this.props.appChoice}
         />
-        <View style={styles.bottomView}>
-          {this.props.swipeUpDestination && (
-            <Text
-              style={styles.footerText}
-              onPress={() => {
-                segmentEventTrack("Clicked Change Swipe-up Destination");
-                this.props.toggleSideMenu();
-              }}
-            >
-              {translate("Change Swipe-up Destination")}
-            </Text>
-          )}
 
-          <LowerButton checkmark={true} function={() => this.validate()} />
-        </View>
-      </View>
+        {this.props.swipeUpDestination && (
+          <Text
+            style={styles.footerText}
+            onPress={() => {
+              segmentEventTrack("Clicked Change Swipe-up Destination");
+              this.props.toggleSideMenu();
+            }}
+          >
+            {translate("Change Swipe-up Destination")}
+          </Text>
+        )}
+
+        <LowerButton checkmark={true} function={() => this.validate()} />
+      </InputScrollView>
     );
   }
 }
