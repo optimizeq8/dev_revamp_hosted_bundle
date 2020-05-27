@@ -8,12 +8,12 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
-  Linking
+  Linking,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-import { Updates } from "expo";
+import * as Updates from "expo-updates";
 import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -53,7 +53,7 @@ import slowlog from "react-native-slowlog";
 //Functions
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
@@ -72,7 +72,7 @@ whyDidYouRender(React);
 
 class Dashboard extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   signal = Axios.CancelToken.source();
   constructor(props) {
@@ -88,7 +88,7 @@ class Dashboard extends Component {
       anim: false,
       play: false,
       componentMounting: true,
-      items: businessCategoriesList(translate)
+      items: businessCategoriesList(translate),
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -163,7 +163,7 @@ class Dashboard extends Component {
     }
     if (this.props.adType !== prevProps.adType) {
       this.setState({
-        adTypeChanged: true
+        adTypeChanged: true,
       });
     }
   }
@@ -179,7 +179,7 @@ class Dashboard extends Component {
     Animated.timing(this.state.menu, {
       toValue: 1,
       duration: 350,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start(() => {
       this.setState({ open: true });
     });
@@ -190,7 +190,7 @@ class Dashboard extends Component {
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
     if (Menu) {
       Menu = null;
@@ -201,7 +201,7 @@ class Dashboard extends Component {
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
-  _handleSideMenuState = status => {
+  _handleSideMenuState = (status) => {
     if (status) {
       FilterMenu = require("../../MiniComponents/FilterMenu").default;
     } else {
@@ -210,15 +210,15 @@ class Dashboard extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
 
-  navigationHandler = adType => {
+  navigationHandler = (adType) => {
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title
+      campaign_type: adType.title,
     });
     Segment.trackWithProperties("Completed Checkout Step", {
       step: 1,
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title
+      campaign_type: adType.title,
     });
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
@@ -249,7 +249,7 @@ class Dashboard extends Component {
           Adjust.trackEvent(adjustEvent);
         }
         this.props.navigation.navigate(adType.rout, {
-          tempAdType: adType.value
+          tempAdType: adType.value,
         });
       }
     }
@@ -323,12 +323,12 @@ class Dashboard extends Component {
         category: "Ad Account",
         label: "New SnapAd Account",
         business_name: this.props.mainBusiness.businessname,
-        business_id: this.props.mainBusiness.businessid
+        business_id: this.props.mainBusiness.businessid,
       });
       this.props.navigation.navigate("SnapchatCreateAdAcc");
     } else {
       Segment.trackWithProperties("Create Campaign", {
-        category: "Campaign Creation"
+        category: "Campaign Creation",
       });
       this.props.navigation.navigate("AdType");
     }
@@ -343,7 +343,7 @@ class Dashboard extends Component {
     let businesscategoryName = "";
     if (mainBusiness && mainBusiness.businesscategory) {
       businesscategoryName = this.state.items.find(
-        category => category.value === mainBusiness.businesscategory
+        (category) => category.value === mainBusiness.businesscategory
       ).label;
     }
     return businesscategoryName;
@@ -352,22 +352,22 @@ class Dashboard extends Component {
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
-        top: hp(100)
+        top: hp(100),
       },
       to: {
-        top: 0
-      }
+        top: 0,
+      },
     };
     const mySlideOutDown = {
       from: {
-        top: 0
+        top: 0,
       },
       to: {
-        top: hp(100)
-      }
+        top: hp(100),
+      },
     };
     const businesscategoryName = this.getBusinessCategoryName();
-    let placeHolderCards = [1, 2, 3, 4].map(x => (
+    let placeHolderCards = [1, 2, 3, 4].map((x) => (
       <View key={x} style={styles.placeHolderCardsStyle} />
     ));
     let menu =
@@ -378,7 +378,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [...snapAds, ...googleAds].map(adType => (
+    let adButtons = [...snapAds, ...googleAds].map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
@@ -426,8 +426,8 @@ class Dashboard extends Component {
               style={[
                 styles.mainView,
                 {
-                  display: this.state.sidemenustate ? "none" : "flex"
-                }
+                  display: this.state.sidemenustate ? "none" : "flex",
+                },
               ]}
             >
               <TouchableOpacity
@@ -475,7 +475,7 @@ class Dashboard extends Component {
                   onPress={() => {
                     segmentEventTrack("Button clicked to change app language", {
                       app_language:
-                        this.props.appLanguage === "en" ? "ar" : "en"
+                        this.props.appLanguage === "en" ? "ar" : "en",
                     });
                     this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
@@ -518,8 +518,8 @@ class Dashboard extends Component {
               style={[
                 styles.animateView,
                 {
-                  display: this.state.open ? "none" : "flex"
-                }
+                  display: this.state.open ? "none" : "flex",
+                },
               ]}
             >
               {(!this.props.loadingCampaigns &&
@@ -539,7 +539,7 @@ class Dashboard extends Component {
               ) : (
                 <Container style={styles.container}>
                   <Sidemenu
-                    onChange={isOpen => {
+                    onChange={(isOpen) => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
                     menuPosition={I18nManager.isRTL ? "left" : "right"}
@@ -561,9 +561,9 @@ class Dashboard extends Component {
                               this.props.mainBusiness.businessname
                             )
                               ? {
-                                  fontFamily: "montserrat-bold-english"
+                                  fontFamily: "montserrat-bold-english",
                                 }
-                              : {}
+                              : {},
                           ]}
                         >
                           {this.props.mainBusiness
@@ -578,9 +578,9 @@ class Dashboard extends Component {
                             this.props.mainBusiness &&
                             !isStringArabic(businesscategoryName)
                               ? {
-                                  fontFamily: "montserrat-regular-english"
+                                  fontFamily: "montserrat-regular-english",
                                 }
-                              : {}
+                              : {},
                           ]}
                         >
                           {businesscategoryName}
@@ -592,7 +592,7 @@ class Dashboard extends Component {
                             <>
                               <View
                                 style={{
-                                  flexDirection: "column"
+                                  flexDirection: "column",
                                 }}
                               >
                                 <GradientButton
@@ -618,7 +618,7 @@ class Dashboard extends Component {
                               <ScrollView
                                 style={{
                                   // height: 90,
-                                  top: I18nManager.isRTL ? 5 : 0
+                                  top: I18nManager.isRTL ? 5 : 0,
                                 }}
                                 horizontal
                               >
@@ -682,7 +682,7 @@ class Dashboard extends Component {
                             screenProps={this.props.screenProps}
                             customInputStyle={{
                               backgroundColor: "rgba(0,0,0,0.13)",
-                              height: "100%"
+                              height: "100%",
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
@@ -707,7 +707,7 @@ class Dashboard extends Component {
                             contentContainerStyle={
                               styles.flatlistContainerStyle
                             }
-                            keyExtractor={item =>
+                            keyExtractor={(item) =>
                               JSON.stringify(item.campaign_id)
                             }
                             data={this.props.filteredCampaigns}
@@ -737,7 +737,7 @@ class Dashboard extends Component {
               onAnimationEnd={() => {
                 if (this.state.anim) {
                   Segment.screenWithProperties("Home Menu", {
-                    category: "User Menu"
+                    category: "User Menu",
                   });
                 } else {
                   Segment.screen("Dashboard");
@@ -775,7 +775,7 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.dashboard.loading,
   adType: state.campaignC.adType,
@@ -794,30 +794,31 @@ const mapStateToProps = state => ({
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns,
-  clearTokenLoading: state.login.clearTokenLoading
+  clearTokenLoading: state.login.clearTokenLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
-  onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
+  onSelect: (query) => dispatch(actionCreators.filterCampaignsStatus(query)),
   getCampaignList: (id, increasePage, cancelToken) =>
     dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken)),
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: resetAdType =>
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  connect_user_to_intercom: user_id =>
+  connect_user_to_intercom: (user_id) =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
-  getLanguageListPOEdit: language =>
-    dispatch(actionCreators.getLanguageListPOEdit(language))
+  set_as_seen: (check) => dispatch(actionCreators.set_as_seen(check)),
+  getLanguageListPOEdit: (language) =>
+    dispatch(actionCreators.getLanguageListPOEdit(language)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

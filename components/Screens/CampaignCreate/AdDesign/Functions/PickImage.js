@@ -1,13 +1,12 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
-import { Platform } from "react-native";
+import { Platform, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import segmentEventTrack from "../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
-import { Linking } from "expo";
+
 import { PESDK } from "react-native-photoeditorsdk";
 import {
   VESDK,
@@ -24,9 +23,8 @@ export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
-    const pkg = Constants.manifest.releaseChannel
-      ? Constants.manifest.android.package // When published, considered as using standalone build
-      : "host.exp.exponent"; // In expo client mode
+    const pkg = "com.optimizeapp.optimizeapp";
+
     showMessage({
       message: translate("Please allow access to the gallery to upload media"),
       position: "top",

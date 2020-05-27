@@ -5,6 +5,8 @@ PODS:
   - Analytics (3.8.2)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
+  - EXApplication (2.1.1):
+    - UMCore
   - EXAV (8.1.0):
     - UMCore
     - UMFileSystemInterface
@@ -47,9 +49,15 @@ PODS:
   - EXMediaLibrary (8.1.0):
     - UMCore
     - UMPermissionsInterface
+  - EXNotifications (0.1.7):
+    - UMCore
+    - UMPermissionsInterface
   - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
+  - EXScreenOrientation (1.0.0):
+    - React-Core
+    - UMCore
   - EXSecureStore (8.1.0):
     - UMCore
   - EXSegment (8.1.0):
@@ -349,6 +357,7 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXApplication (from `../node_modules/expo-application/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXBlur (from `../node_modules/expo-blur/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -363,7 +372,9 @@ DEPENDENCIES:
   - EXLocalization (from `../node_modules/expo-localization/ios`)
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
+  - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXScreenOrientation (from `../node_modules/expo-screen-orientation/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
@@ -440,6 +451,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXApplication:
+    :path: "../node_modules/expo-application/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXBlur:
@@ -468,8 +481,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-location/ios"
   EXMediaLibrary:
     :path: "../node_modules/expo-media-library/ios"
+  EXNotifications:
+    :path: "../node_modules/expo-notifications/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
+  EXScreenOrientation:
+    :path: "../node_modules/expo-screen-orientation/ios"
   EXSecureStore:
     :path: "../node_modules/expo-secure-store/ios"
   EXSegment:
@@ -590,6 +607,7 @@ SPEC CHECKSUMS:
   Analytics: 4c482aea5efcecaeb03adfc7fc22e350f5ca575c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  EXApplication: 7cf81de6fafccff42f5d1caa5c24a159db6b9437
   EXAV: 2edd9cd30fe98d04b55325303c7ff01db02d1d0f
   EXBlur: aa14d84bff6e9c2232fbcaf54ad809eee1cc41dc
   EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
@@ -604,7 +622,9 @@ SPEC CHECKSUMS:
   EXLocalization: 1997068470bdfb7601fd58dbbf85ba1cde36fb82
   EXLocation: bbd487fd96a18a3ad9725389bbb94c4a5f78edf3
   EXMediaLibrary: 30a65e1eef453c6e7a76754febeb88c0d0fba232
+  EXNotifications: cc5d647c15b5f00602e1c4f7244d6a3a15dd2eb6
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
+  EXScreenOrientation: 44d3cd3a99a86b9cb681e742697bc2c057d7fbd2
   EXSecureStore: 7a03e21e80ae59bf8e86c55e7a400f60db2da639
   EXSegment: f2e2e08c3fd42570c7e750a2714841882c834d03
   EXSplashScreen: 6568daa178c8e17f2197d29cea858f0e0b61b695

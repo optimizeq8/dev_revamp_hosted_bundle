@@ -16,7 +16,8 @@ import {
   I18nManager,
   AppState,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking,
 } from "react-native";
 import segmentEventTrack from "./components/segmentEventTrack";
 
@@ -39,13 +40,8 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import {
-  AppLoading,
-  Linking,
-  SplashScreen,
-  Notifications,
-  Updates
-} from "expo";
+import * as Updates from "expo-updates";
+import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
@@ -68,7 +64,7 @@ import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 
 //icons
@@ -82,7 +78,7 @@ import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
   Sentry.init({
-    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
+    dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
 // Sentry.captureException(new Error("Oops!"));
@@ -132,11 +128,11 @@ class App extends React.Component {
       splashAnimationComplete: false,
       isAppReady: false,
       currentScreen: "",
-      appState: AppState.currentState
+      appState: AppState.currentState,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
-    SplashScreen.preventAutoHide();
+    // SplashScreen.preventAutoHide();
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
       !__DEV__
@@ -161,7 +157,7 @@ class App extends React.Component {
       this._handleFinishLoading();
     }
   };
-  setLocale = locale => {
+  setLocale = (locale) => {
     this.setState({ locale });
   };
 
@@ -171,7 +167,7 @@ class App extends React.Component {
   async componentDidMount() {
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
     });
     persistor.dispatch({ type: REHYDRATE });
 
@@ -188,7 +184,7 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
-  _handleAppStateChange = nextAppState => {
+  _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
@@ -216,7 +212,7 @@ class App extends React.Component {
     this.setState({ appState: nextAppState });
   };
 
-  _handleNotification = async handleScreen => {
+  _handleNotification = async (handleScreen) => {
     segmentEventTrack("Notification received");
     console.log("handleScreen app", handleScreen);
     store.dispatch(
@@ -244,7 +240,7 @@ class App extends React.Component {
             type: "default",
             backgroundColor: "#FF9D00",
             color: "#fff",
-            position: "top"
+            position: "top",
             // onPress: () => {
             //   NavigationService.navigate(handleScreen.data.screenName);
             // }
@@ -293,7 +289,7 @@ class App extends React.Component {
     Adjust.componentWillUnmount();
   }
 
-  getCurrentRouteName = navigationState => {
+  getCurrentRouteName = (navigationState) => {
     if (!navigationState) {
       return null;
     }
@@ -321,14 +317,7 @@ class App extends React.Component {
           {/* <View
             style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
           /> */}
-          <AppLoading
-            startAsync={this._loadResourcesAsync}
-            onFinish={() => {
-              this.setState({ isLoadingComplete: true });
-            }}
-            autoHideSplash={true}
-            // onError={console.warn}
-          />
+
           {/* <View
             style={{
               flex: 1
@@ -363,7 +352,7 @@ class App extends React.Component {
       );
     }
     {
-      const prefix = Linking.makeUrl("/");
+      // const prefix = Linking.makeUrl("/");
 
       return (
         <Provider store={store}>
@@ -374,7 +363,7 @@ class App extends React.Component {
               style={{
                 backgroundColor: "transparent",
                 marginTop: 0,
-                paddingTop: 0
+                paddingTop: 0,
               }}
             />
             <LinearGradient
@@ -386,7 +375,7 @@ class App extends React.Component {
               style={{
                 backgroundColor: "transparent",
                 marginTop: 0,
-                paddingTop: 0
+                paddingTop: 0,
               }}
             />
             <View style={styles.container}>
@@ -399,14 +388,14 @@ class App extends React.Component {
                     this.setState({ currentScreen });
                     // console.log("screeen name", currentScreen);
                   }}
-                  uriPrefix={prefix}
-                  ref={navigatorRef => {
+                  // uriPrefix={prefix}
+                  ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                   screenProps={{
                     translate: this.t,
                     locale: this.state.locale,
-                    setLocale: this.setLocale
+                    setLocale: this.setLocale,
                   }}
                 />
               </Root>
@@ -435,8 +424,8 @@ class App extends React.Component {
           justifyContent: "center",
           opacity: this.state.splashFadeAnimation.interpolate({
             inputRange: [0, 1],
-            outputRange: [1, 0]
-          })
+            outputRange: [1, 0],
+          }),
         }}
       >
         <Animated.Image
@@ -449,7 +438,7 @@ class App extends React.Component {
             left: 0,
             bottom: 0,
             right: 0,
-            resizeMode: "cover"
+            resizeMode: "cover",
             // opacity: this.state.splashAnimation.interpolate({
             //   inputRange: [0, 1],
             //   outputRange: [0, 1]
@@ -468,16 +457,16 @@ class App extends React.Component {
             justifyContent: "center",
             opacity: this.state.splashAnimation.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, 1]
+              outputRange: [0, 1],
             }),
             transform: [
               {
                 translateY: this.state.splashAnimation.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [100, 0]
-                })
-              }
-            ]
+                  outputRange: [100, 0],
+                }),
+              },
+            ],
           }}
         >
           <PurpleLogo
@@ -490,18 +479,18 @@ class App extends React.Component {
   };
 
   _animateOut = () => {
-    SplashScreen.hide();
+    // SplashScreen.hide();
     Animated.sequence([
       Animated.timing(this.state.splashAnimation, {
         toValue: 1,
         duration: 2000,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(this.state.splashFadeAnimation, {
         toValue: 1,
         duration: 1000,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start(() => {
       this.setState({ splashAnimationComplete: true });
     });
@@ -513,21 +502,21 @@ class App extends React.Component {
       if (mobileLanguage.includes("ar")) {
         await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
         this.setState({
-          locale: "ar"
+          locale: "ar",
         });
         // for proper RTL direction
         Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
-          locale: "en"
+          locale: "en",
         });
         // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
       }
     } else {
       await store.dispatch(actionCreators.getLanguageListPOEdit(appLanguage));
       this.setState({
-        locale: appLanguage
+        locale: appLanguage,
       });
     }
     // console.log(
@@ -542,7 +531,7 @@ class App extends React.Component {
   _loadResourcesAsync = async () => {
     await this._loadAppLanguage();
     const images = [require("./assets/images/splash.png")];
-    const cacheImages = images.map(image =>
+    const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
     );
 
@@ -593,12 +582,12 @@ class App extends React.Component {
           ? require("./assets/fonts/Arabic/Changa-Bold.ttf")
           : require("./assets/fonts/Montserrat-Bold.ttf"),
         Roboto: require("native-base/Fonts/Roboto.ttf"),
-        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
-      })
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      }),
     ]);
   };
 
-  _handleLoadingError = error => {
+  _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
@@ -618,12 +607,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "stretch",
     backgroundColor: "#0000",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   text: { color: "#fff" },
 
   gradient: {
-    ...StyleSheet.absoluteFillObject
-  }
+    ...StyleSheet.absoluteFillObject,
+  },
 });
