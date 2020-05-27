@@ -426,7 +426,8 @@ class AdDesign extends Component {
       this.props.screenProps,
       this.rejected,
       mediaEditor,
-      editImage
+      editImage,
+      this.videoIsExporting
     );
 
   getVideoUploadUrl = () => {
@@ -1043,6 +1044,9 @@ class AdDesign extends Component {
     );
     Adjust.trackEvent(adjustAdDesignTracker);
   };
+  videoIsExporting = (isLoading) =>
+    this.setState({ videoIsLoading: isLoading });
+
   render() {
     let {
       media,
@@ -1107,9 +1111,7 @@ class AdDesign extends Component {
       <VideoPlayer
         storyAdCards={storyAdCards}
         media={media}
-        videoIsLoading={(isLoading) =>
-          this.setState({ videoIsLoading: isLoading })
-        }
+        videoIsLoading={() => {}}
       />
     );
 
@@ -1176,18 +1178,20 @@ class AdDesign extends Component {
                       _handleStoryAdCards={this._handleStoryAdCards}
                     />
                   ) : (
-                    <MediaButton
-                      screenProps={this.props.screenProps}
-                      type={"media"}
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      media={
-                        media !== "//"
-                          ? media
-                          : storyAdCards.selectedStoryAd.media
-                      }
-                    />
+                    !videoIsLoading && (
+                      <MediaButton
+                        screenProps={this.props.screenProps}
+                        type={"media"}
+                        setMediaModalVisible={this.setMediaModalVisible}
+                        media={
+                          media !== "//"
+                            ? media
+                            : storyAdCards.selectedStoryAd.media
+                        }
+                      />
+                    )
                   )}
-                  {/* {media !== "//" && videoIsLoading ? <CameraLoading /> : null} */}
+                  {videoIsLoading ? <CameraLoading /> : null}
                   <SwipeCompCondition
                     screenProps={this.props.screenProps}
                     _changeDestination={(

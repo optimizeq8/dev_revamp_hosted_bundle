@@ -74,7 +74,8 @@ export const _pickImage = async (
   screenProps,
   rejected,
   mediaEditor = {},
-  editImage
+  editImage,
+  videoIsExporting
 ) => {
   try {
     let result = {};
@@ -288,7 +289,7 @@ export const _pickImage = async (
             exportType: SerializationExportType.OBJECT,
           },
         };
-        uneditedImageUri = result.uri;
+        let uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
           transform: {
@@ -300,7 +301,8 @@ export const _pickImage = async (
           },
         };
         if (Platform.OS === "ios") {
-          exportOption["filename"] = "exportSerlization";
+          let resUri = result.uri.split("/");
+          exportOption["filename"] = resUri[resUri.length - 1].split(".")[0]; //get name of file without .mp4 || .mov extension
           vConfiguration["export"] = exportOption;
         } else {
           vConfiguration["export"] = exportOption;
@@ -317,43 +319,67 @@ export const _pickImage = async (
             // console.log("manipResult", manipResult);
 
             if (manipResult) {
-              await RNFFmpeg.execute(
-                `-i ${
-                  manipResult.hasChanges
-                    ? manipResult.video
-                      ? manipResult.video
-                      : manipResult.image
-                    : result.uri
-                } -vf scale=-1:1920 ${FileSystem.documentDirectory}/output.mp4`
-              );
-              let newResult = await RNFFprobe.getMediaInformation(
-                `${FileSystem.documentDirectory}/output.mp4`
-              );
-
+              let actualUri = manipResult.hasChanges
+                ? manipResult.video
+                  ? manipResult.video
+                  : manipResult.image
+                : result.uri;
+              videoIsExporting(true);
+              let newResult = await RNFFprobe.getMediaInformation(actualUri);
               newResult = {
                 width:
-                  newResult.streams[Platform.OS === "android" ? 1 : 0].width,
+                  newResult.streams[
+                    newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                  ].width,
                 height:
-                  newResult.streams[Platform.OS === "android" ? 1 : 0].height,
+                  newResult.streams[
+                    newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                  ].height,
                 duration: newResult.duration / 1000,
               };
-              // console.log("FFmpeg process exited with rc ", result)
+              let newSize = await FileSystem.getInfoAsync(actualUri);
+              if (
+                Math.floor(newResult.width / 9) !==
+                  Math.floor(newResult.height / 16) ||
+                (newResult.width < 1080 && newResult.height < 1920)
+              ) {
+                let outputUri = actualUri.split("/");
 
-              // await RNFFprobe.getMediaInformation(
-              //   manipResult.hasChanges
-              //     ? manipResult.video
-              //       ? manipResult.video
-              //       : manipResult.image
-              //     : result.uri
-              // );
+                await RNFFmpeg.execute(
+                  `-y -i ${actualUri} -vf scale=${
+                    Math.floor(newResult.width / 9) !==
+                    Math.floor(newResult.height / 16)
+                      ? "1080:1920"
+                      : "-1:1920" //-1 means scale inly by 1920 to keep aspect ratio
+                  } ${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+                newResult = await RNFFprobe.getMediaInformation(
+                  `${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
 
-              let newSize = await FileSystem.getInfoAsync(
-                manipResult.hasChanges
-                  ? manipResult.video
-                    ? manipResult.video
-                    : manipResult.image
-                  : result.uri
-              );
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                  newUri: newResult.path,
+                };
+                newSize = await FileSystem.getInfoAsync(
+                  `${FileSystem.cacheDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+              }
+              videoIsExporting(false);
               if (
                 Math.floor(newResult.width / 9) !==
                   Math.floor(newResult.height / 16) ||
@@ -472,7 +498,9 @@ export const _pickImage = async (
                 onToggleModal(false);
                 return false;
               } else {
-                result.uri = manipResult.hasChanges
+                result.uri = newResult.hasOwnProperty("newUri")
+                  ? newResult.newUri
+                  : manipResult.hasChanges
                   ? manipResult.video
                     ? manipResult.video
                     : manipResult.image
@@ -545,6 +573,8 @@ export const _pickImage = async (
                     media: result.uri,
                     type: result.type.toUpperCase(),
                     fileReadyToUpload: true,
+                    uneditedImageUri,
+                    serialization: result.serialization,
                   });
                 setTheState({ sourceChanging: false });
               } else {
@@ -594,6 +624,8 @@ export const _pickImage = async (
   } catch (error) {
     onToggleModal(false);
     // console.log("error image pick", error);
-    segmentEventTrack("error image picker", { campaign_error_image: error });
+    segmentEventTrack("error image picker", {
+      campaign_error_image: error,
+    });
   }
 };
