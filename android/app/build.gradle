@@ -1,7 +1,28 @@
 apply plugin: "com.android.application"
-
+apply plugin: 'ly.img.android.sdk'
+apply plugin: 'kotlin-android'
 import com.android.build.OutputFile
 
+imglyConfig {
+    modules {
+        include 'ui:text'
+        include 'ui:sticker'
+        include 'ui:overlay'
+        include 'ui:transform'
+        include 'ui:adjustment'
+        include 'ui:text-design'
+        include 'ui:video-trim'
+
+        // This module is big, remove the serializer if you don't need that feature.
+        include 'backend:serializer'
+
+        // Remove the asset packs you don't need, these are also big in size.
+        include 'assets:font-basic'
+        include 'assets:frame-basic'
+        include 'assets:overlay-basic'
+        include 'assets:sticker-shapes'
+    }
+}
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -136,6 +157,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 47
         versionName "0.3.60"
+        multiDexEnabled true
+
     }
     splits {
         abi {
@@ -184,13 +207,13 @@ android {
 dependencies {
     implementation project(':react-native-adjust')
     implementation project(':react-native-photoeditorsdk')
-    implementation project(':@sentry_react-native')
     implementation project(':react-native-videoeditorsdk')
     implementation project(':react-native-ffmpeg')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     addUnimodulesDependencies()
-
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation project(':lottie-react-native')
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

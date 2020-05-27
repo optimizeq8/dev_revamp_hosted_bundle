@@ -173,7 +173,7 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken());
-    this._notificationSubscription = Notifications.addListener(
+    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -189,7 +189,7 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -250,7 +250,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received") {
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
     }
     if (handleScreen.origin === "selected") {
       store.dispatch(

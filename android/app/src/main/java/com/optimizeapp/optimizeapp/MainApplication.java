@@ -8,7 +8,7 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.adjust.nativemodule.AdjustPackage;
 import ly.img.react_native.pesdk.RNPhotoEditorSDKPackage;
-import io.sentry.RNSentryPackage;
+// import io.sentry.RNSentryPackage;
 import ly.img.react_native.vesdk.RNVideoEditorSDKPackage;
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactNativeHost;
@@ -26,13 +26,13 @@ import expo.modules.constants.ConstantsPackage;
 import expo.modules.permissions.PermissionsPackage;
 import expo.modules.filesystem.FileSystemPackage;
 import expo.modules.updates.UpdatesController;
-
+import com.airbnb.android.react.lottie.LottiePackage; 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends androidx.multidex.MultiDexApplication implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
     new BasePackageList().getPackageList()
   );

@@ -93,9 +93,9 @@ PODS:
     - glog
   - glog (0.3.5)
   - imglyKit (10.13.0)
-  - lottie-ios (2.5.3)
-  - lottie-react-native (2.6.1):
-    - lottie-ios (~> 2.5.0)
+  - lottie-ios (3.1.3)
+  - lottie-react-native (3.4.0):
+    - lottie-ios (~> 3.1.3)
     - React
   - mobile-ffmpeg-https (4.3.1.LTS)
   - PhotoEditorSDK (10.13.0):
@@ -320,9 +320,9 @@ PODS:
     - React
   - RNScreens (2.2.0):
     - React
-  - RNSentry (1.3.9):
+  - RNSentry (1.4.0):
     - React
-    - Sentry (~> 4.4.0)
+    - Sentry (~> 5.1.0)
   - RNSVG (11.0.1):
     - React
   - RNVectorIcons (6.6.0):
@@ -331,9 +331,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
-  - Sentry (4.4.3):
-    - Sentry/Core (= 4.4.3)
-  - Sentry/Core (4.4.3)
+  - Sentry (5.1.0):
+    - Sentry/Core (= 5.1.0)
+  - Sentry/Core (5.1.0)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -385,6 +385,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -442,7 +443,6 @@ SPEC REPOS:
     - Analytics
     - boost-for-react-native
     - imglyKit
-    - lottie-ios
     - mobile-ffmpeg-https
     - PhotoEditorSDK
     - Sentry
@@ -507,6 +507,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   RCTRequired:
@@ -636,8 +638,8 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   imglyKit: 11ed6ada802295c824793a1ef4b98c4f26358216
-  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
+  lottie-ios: 496ac5cea1bbf1a7bd1f1f472f3232eb1b8d744b
+  lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
   PhotoEditorSDK: 2787b647a1b95a8789be1e2d427ed53f462f28a5
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
@@ -668,11 +670,11 @@ SPEC CHECKSUMS:
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
-  RNSentry: 9c9783b13fb5cba387fff55f085cc1da3854ce71
+  RNSentry: f3f30fa75baf573dcb807cdbcc0a399a5fb80039
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
-  Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
+  Sentry: 01008d590825eb1c02a796cbdced2cd3625f61e4
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
@@ -689,6 +691,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 9e05e612ea89aa5870dc419965f9d6aef519655c
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 6ecfe13882f441d324fcd59eaa3e56ffdcf903a3
+PODFILE CHECKSUM: fb80a3090ef2e8c387d367d64c51ac4d1a6a4cf2
 
 COCOAPODS: 1.8.4

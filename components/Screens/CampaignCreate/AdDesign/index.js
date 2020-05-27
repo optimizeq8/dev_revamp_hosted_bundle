@@ -142,7 +142,7 @@ class AdDesign extends Component {
     );
   }
   async componentDidMount() {
-    this._notificationSubscription = Notifications.addListener(
+    this._notificationSubscription = Notifications.addNotificationReceivedListener(
       this._handleNotification
     );
 
