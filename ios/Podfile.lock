@@ -310,6 +310,8 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeAutogrowTextinput (5.4.0):
     - React
+  - RNBootSplash (2.2.4):
+    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNPhotoEditorSDK (2.4.1):
@@ -414,6 +416,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -559,6 +562,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeAutogrowTextinput:
     :path: "../node_modules/react-native-autogrow-textinput"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNPhotoEditorSDK:
@@ -666,6 +671,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
+  RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
@@ -691,6 +697,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 9e05e612ea89aa5870dc419965f9d6aef519655c
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: fb80a3090ef2e8c387d367d64c51ac4d1a6a4cf2
+PODFILE CHECKSUM: a0a0d83524c5810464a554b4dc23cd375c4bb286
 
 COCOAPODS: 1.8.4

@@ -74,6 +74,7 @@ import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -314,9 +315,9 @@ class App extends React.Component {
     if (!this.state.isLoadingComplete) {
       return (
         <>
-          {/* <View
-            style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
-          /> */}
+          <View
+            style={{ height: "100%", width: "100%", backgroundColor: "red" }}
+          />
 
           {/* <View
             style={{
@@ -596,6 +597,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
+    RNBootSplash.hide({ duration: 250 });
   };
 }
 

@@ -9,16 +9,13 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import expo.modules.splashscreen.SplashScreen;
 import expo.modules.splashscreen.SplashScreenImageResizeMode;
-
+import com.zoontek.rnbootsplash.RNBootSplash; 
 public class MainActivity extends ReactActivity {
-//   @Override
-//   protected void onCreate(Bundle savedInstanceState) {
-//     // super.onCreate(savedInstanceState);
-//     // SplashScreen.show(...) has to be called after super.onCreate(...)
-//     // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually
-//     // SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class);
-//   }
-
+ @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    RNBootSplash.init(R.drawable.splashscreen, MainActivity.this); // <- display the generated bootsplash.xml drawable over our MainActivity
+  }
 
     /**
      * Returns the name of the main component registered from JavaScript.

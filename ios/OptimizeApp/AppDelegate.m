@@ -14,7 +14,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <EXScreenOrientation/EXScreenOrientationViewController.h>
-
+#import "RNBootSplash.h"
 
 @interface AppDelegate ()
 
@@ -55,7 +55,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
+  [RNBootSplash initWithStoryboard:@"SplashScreen" rootView:rootView];
   return bridge;
 }
 
