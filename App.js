@@ -376,6 +376,7 @@ class App extends React.Component {
                 backgroundColor: "transparent",
                 marginTop: 0,
                 paddingTop: 0,
+                paddingTop: StatusBar.currentHeight,
               }}
             />
             <View style={styles.container}>

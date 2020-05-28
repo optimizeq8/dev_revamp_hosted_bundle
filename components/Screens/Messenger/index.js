@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  I18nManager
+  I18nManager,
+  Platform,
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
@@ -34,7 +35,7 @@ import { connect } from "react-redux";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
@@ -42,7 +43,7 @@ import { YellowBox } from "react-native";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 
 YellowBox.ignoreWarnings([
-  "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
+  "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?",
 ]);
 
 const socket = socketIOClient("https://www.optimizeapp.io/", {
@@ -50,7 +51,7 @@ const socket = socketIOClient("https://www.optimizeapp.io/", {
   jsonp: false,
   transports: ["websocket"],
   autoConnect: false,
-  reconnection: true
+  reconnection: true,
   // agent: '-',
   // path: '/', // Whatever your path is
   // pfx: '-',
@@ -66,7 +67,7 @@ const socket = socketIOClient("https://www.optimizeapp.io/", {
 class Messenger extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
@@ -75,14 +76,14 @@ class Messenger extends Component {
       text: "",
       date: "",
       textValue: "",
-      height: 40
+      height: 40,
     };
   }
   componentDidMount() {
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     socket.connect();
     this.props.subscribe(socket);
-    socket.on("AdminReply", data => {
+    socket.on("AdminReply", (data) => {
       this.props.admin_response(data);
       // this.props.set_as_seen(true);
     });
@@ -130,26 +131,26 @@ class Messenger extends Component {
 
   _keyExtractor = (item, index) => item.id;
 
-  scrollToIndex = params => {
+  scrollToIndex = (params) => {
     return {
       animated: true,
       index: 50,
       viewOffset: 5,
-      viewPosition: 1
+      viewPosition: 1,
     };
   };
 
   getItemLayout = (data, index) => ({ length: 10, offset: 5 * index, index });
-  updateSize = height => {
+  updateSize = (height) => {
     this.setState({
-      height
+      height,
     });
   };
   render() {
     const { translate } = this.props.screenProps;
     const { height } = this.state;
     let newStyle = {
-      height
+      height,
     };
     return (
       <SafeAreaView
@@ -169,7 +170,7 @@ class Messenger extends Component {
           title={"Support"}
           titelStyle={{
             // alignSelf: "center",
-            bottom: 8
+            bottom: 8,
             // alignContent: "center",
             // justifyContent: "center"
           }}
@@ -180,13 +181,13 @@ class Messenger extends Component {
           <KeyboardAvoidingView
             keyboardVerticalOffset={heightPercentageToDP("10%")}
             style={styles.container}
-            behavior="padding"
+            behavior={Platform.OS === "ios" ? "padding" : ""}
           >
             <>
               <View style={styles.flexEmptyView} />
               <FlatList
                 inverted
-                ref={ref => {
+                ref={(ref) => {
                   this.flatList = ref;
                 }}
                 // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
@@ -219,10 +220,10 @@ class Messenger extends Component {
                   editable={true}
                   multiline={true}
                   value={this.state.textValue}
-                  onChange={event => this._onChange(event)}
+                  onChange={(event) => this._onChange(event)}
                   style={[
                     I18nManager.isRTL ? rtlStyles.textInput : styles.textInput,
-                    newStyle
+                    newStyle,
                   ]}
                   placeholder={translate("Type Your Message")}
                   placeholderTextColor="#909090"
@@ -231,10 +232,10 @@ class Messenger extends Component {
                   minHeight={45}
                   maxWidth={300}
                   enableScrollToCaret
-                  ref={r => {
+                  ref={(r) => {
                     this._textInput = r;
                   }}
-                  onContentSizeChange={e =>
+                  onContentSizeChange={(e) =>
                     this.updateSize(e.nativeEvent.contentSize.height)
                   }
                 />
@@ -243,7 +244,7 @@ class Messenger extends Component {
                     styles.submitButton,
                     I18nManager.isRTL
                       ? { transform: [{ rotateY: "180deg" }] }
-                      : {}
+                      : {},
                   ]}
                   onPress={this._handleSubmission}
                 >
@@ -262,7 +263,7 @@ class Messenger extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.messenger.loading,
   user: state.messenger.user,
@@ -270,21 +271,21 @@ const mapStateToProps = state => ({
   loading_con: state.messenger.loading_con,
   subscribed: state.messenger.subscribed,
   open_conversation: state.messenger.open_conversation,
-  conversation_id: state.messenger.conversation_id
+  conversation_id: state.messenger.conversation_id,
 });
 
-const mapDispatchToProps = dispatch => ({
-  connect_user_to_intercom: user_id =>
+const mapDispatchToProps = (dispatch) => ({
+  connect_user_to_intercom: (user_id) =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  reply: message => dispatch(actionCreators.reply(message)),
-  admin_response: message => dispatch(actionCreators.admin_response(message)),
-  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
-  subscribe: socket => dispatch(actionCreators.subscribe(socket)),
-  start_conversation: message =>
+  reply: (message) => dispatch(actionCreators.reply(message)),
+  admin_response: (message) => dispatch(actionCreators.admin_response(message)),
+  set_as_seen: (check) => dispatch(actionCreators.set_as_seen(check)),
+  subscribe: (socket) => dispatch(actionCreators.subscribe(socket)),
+  start_conversation: (message) =>
     dispatch(actionCreators.start_conversation(message)),
   update_last_seen: () => dispatch(actionCreators.update_last_seen()),
   update_conversatusion_read_status: () =>
-    dispatch(actionCreators.update_conversatusion_read_status())
+    dispatch(actionCreators.update_conversatusion_read_status()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messenger);
