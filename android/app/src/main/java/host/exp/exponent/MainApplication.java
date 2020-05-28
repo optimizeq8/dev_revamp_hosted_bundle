@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.segment.analytics.reactnative.integration.mixpanel.RNAnalyticsIntegration_MixpanelPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.segment.analytics.reactnative.core.RNAnalyticsPackage;
 import com.arthenica.reactnative.RNFFmpegPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNAnalyticsIntegration_MixpanelPackage(),
             new RNDeviceInfo(),
             new RNAnalyticsPackage(),
             new RNFFmpegPackage(),

@@ -121,6 +121,7 @@ PODS:
   - imglyKit (10.12.0)
   - JKBigInteger2 (0.0.5)
   - lottie-ios (2.5.3)
+  - Mixpanel (3.6.1)
   - mobile-ffmpeg-https (4.3.1.LTS)
   - PhotoEditorSDK (10.12.0):
     - imglyKit (= 10.12.0)
@@ -333,6 +334,11 @@ PODS:
   - RNAnalytics (1.1.1-beta.5):
     - Analytics (~> 3.8)
     - React
+  - RNAnalyticsIntegration-Mixpanel (1.1.1-beta.5):
+    - Analytics
+    - React
+    - RNAnalytics
+    - Segment-Mixpanel
   - RNDeviceInfo (5.5.8):
     - React
   - RNPhotoEditorSDK (2.4.1):
@@ -346,6 +352,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
+  - Segment-Mixpanel (1.6.0):
+    - Analytics (~> 3.0)
+    - Mixpanel (~> 3.5)
   - Sentry (4.4.3):
     - Sentry/Core (= 4.4.3)
   - Sentry/Core (4.4.3)
@@ -420,6 +429,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -452,8 +462,10 @@ SPEC REPOS:
     - imglyKit
     - JKBigInteger2
     - lottie-ios
+    - Mixpanel
     - mobile-ffmpeg-https
     - PhotoEditorSDK
+    - Segment-Mixpanel
     - Sentry
     - VideoEditorSDK
 
@@ -574,6 +586,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-autogrow-textinput"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
+  RNAnalyticsIntegration-Mixpanel:
+    :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNPhotoEditorSDK:
@@ -664,6 +678,7 @@ SPEC CHECKSUMS:
   imglyKit: 6b5046351e836a73e375aa0a1369ba573cdd4ed9
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
+  Mixpanel: 61e6d8c0717c8e94ccc6d3a1ae8677b9a78f64c5
   mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
   PhotoEditorSDK: 8745e8abecd66e90de03e016d900918ade27b438
   RCTRequired: f3b3fb6f4723e8e52facb229d0c75fdc76773849
@@ -689,10 +704,12 @@ SPEC CHECKSUMS:
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNAnalytics: 030981001ebba8772df04f5eef8c660092dbc4df
+  RNAnalyticsIntegration-Mixpanel: 677a26dc71d345112ad5f8d417db87c1887dd55c
   RNDeviceInfo: 655265668063a05fff096c6819da0b7289753ef7
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
   RNSentry: 9c9783b13fb5cba387fff55f085cc1da3854ce71
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
+  Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   UMBarCodeScannerInterface: 3802c8574ef119c150701d679ab386e2266d6a54
   UMCameraInterface: 985d301f688ed392f815728f0dd906ca34b7ccb1
@@ -709,6 +726,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: fd2be51eea710eebc9b204dd49551d2034add06c
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 5fb5f51cea4c2af9190d44dbc883b264216a39d0
+PODFILE CHECKSUM: c88afc3f38776e1b4d14e7116c00492863640d9b
 
 COCOAPODS: 1.9.1

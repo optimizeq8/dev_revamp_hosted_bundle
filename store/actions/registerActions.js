@@ -3,17 +3,24 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import { getUniqueId } from "react-native-device-info";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import { setAuthToken, getBusinessAccounts } from "./genericActions";
+import {
+  setAuthToken,
+  getBusinessAccounts,
+  getAnonymousUserId
+} from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
 import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
+
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import analytics from "@segment/analytics-react-native";
 
 export const verifyBusinessName = (
   businessname,
@@ -382,7 +389,8 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 };
 
 export const verifyEmail = (email, userInfo, navigation) => {
-  return dispatch => {
+  return async dispatch => {
+    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
       .post(`verifyEmail`, { email: email })
       .then(res => {
@@ -396,12 +404,24 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_create_account`, {
+          mode_of_sign_up: "email",
+          source: "email_registration",
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId
+          // source_action: "" Not sure
+        });
         if (data.success) {
-          Segment.trackWithProperties("Register Email Info", {
-            category: "Sign Up",
-            label: "Step 1 of Registration"
+          // Segment.trackWithProperties("Register Email Info", {
+          //   category: "Sign Up",
+          //   label: "Step 1 of Registration",
+          // });
+          navigation.push("MainForm", {
+            source: "email_registration",
+            source_action: "a_create_account"
           });
-          navigation.push("MainForm");
         }
         if (!data.success) {
           showMessage({
@@ -413,6 +433,18 @@ export const verifyEmail = (email, userInfo, navigation) => {
       })
       .catch(err => {
         // console.log("verifyEmail ERROR", err.message || err.response);
+        analytics.track(`a_error`, {
+          error_page: "email_registration",
+          action_status: "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId: getAnonymousUserId(),
+          source_action: "a_create_account",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         showMessage({
           message:
             err.message ||
@@ -515,28 +547,33 @@ export const registerGuestUser = (
   businessInvite = "1",
   navigation
 ) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
       .post(`saveUserInfoV2`, userInfo)
       .then(res => {
         return res.data;
       })
       .then(data => {
-        if (data.success === true) {
-          Segment.trackWithProperties("Register Details Success", {
-            category: "Sign Up",
-            label: "Step 2 of Registration"
-          });
-        }
+        analytics.track(`a_sign_up`, {
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId,
+          source: "registration_detail",
+          source_action: "a_sign_up",
+          action_status: data.success ? "success" : "failure",
+          email: userInfo.email
+        });
+
         let adjustRegiserTracker = new AdjustEvent("eivlhl");
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
-          Segment.trackWithProperties("Register Details Error", {
-            category: "Sign Up",
-            label: "Step 2 of Registration",
-            error: data.message
-          });
+          // Segment.trackWithProperties("Register Details Error", {
+          //   category: "Sign Up",
+          //   label: "Step 2 of Registration",
+          //   error: data.message
+          // });
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
@@ -586,7 +623,10 @@ export const registerGuestUser = (
             type: actionTypes.SAVING_REGISTER_ACCOUNT,
             payload: false
           });
-          navigation.navigate("RegistrationSuccess");
+          navigation.navigate("RegistrationSuccess", {
+            source: "registration_detail",
+            source_action: "a_sign_up"
+          });
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
           dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
@@ -595,6 +635,17 @@ export const registerGuestUser = (
       })
       .catch(err => {
         // console.log("registerGuestUser ERROR", err.message || err.response);
+        analytics.track(`a_error`, {
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId,
+          error_page: "registration_detail",
+          source_action: "a_sign_up",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         showMessage({
           message:
             err.message ||

@@ -19,6 +19,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
 
@@ -174,10 +175,21 @@ class App extends React.Component {
   };
   async componentDidMount() {
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+      using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
       trackAppLifecycleEvents: true,
+      trackAttributionData: true,
+      android: {
+        flushInterval: 60,
+        collectDeviceId: true,
+      },
+      ios: {
+        trackAdvertising: true,
+        trackDeepLinks: true,
+      },
+      debug: true,
     });
     const anonymous_userId = await analytics.getAnonymousId();
     this.setState({

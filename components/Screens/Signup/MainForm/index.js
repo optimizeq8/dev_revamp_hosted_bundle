@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-
+import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -31,6 +31,24 @@ class MainForm extends Component {
     this.state = {
       verified: false
     };
+  }
+  componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam("source_action", null);
+    const device_id = this.props.screenProps.device_id;
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+
+    analytics.track(`registration_detail`, {
+      source,
+      source_action,
+      device_id,
+      anonymous_userId,
+      timestamp: new Date().getTime(),
+      email: this.props.userInfo.email
+    });
   }
   /**
    * Gets called whenever a user presses on an invite registeration deep link
@@ -126,6 +144,7 @@ const mapStateToProps = state => ({
   successEmail: state.register.successEmail,
   verified: state.register.verified,
   registered: state.register.registered,
+  userInfo: state.register.userInfo,
   successPersonalInfo: state.register.successPersonalInfo
 });
 

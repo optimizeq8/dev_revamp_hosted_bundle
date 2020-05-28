@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 
 import { AsyncStorage, Animated } from "react-native";
 const initialState = {
@@ -62,6 +63,11 @@ const reducer = (state = initialState, action) => {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
+        analytics.identify(action.payload.userid, {
+          businessid: main.businessid,
+          businessname: main.businessname,
+          revenue: main.revenue
+        });
         Segment.identifyWithTraits(action.payload.userid, {
           businessid: main.businessid,
           businessname: main.businessname,

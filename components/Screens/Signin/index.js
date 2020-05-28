@@ -132,7 +132,19 @@ class Signin extends Component {
     });
   };
   createNewAccount = () => {
+    const device_id = this.props.screenProps.device_id;
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
     if (!this.state.newEmailError) {
+      analytics.track(`a_create_account`, {
+        mode_of_sign_up: "email",
+        source: "email_registration",
+        source_action: "a_create_account",
+        action_status: "success",
+        timestamp: new Date().getTime(),
+        device_id,
+        anonymous_userId
+        // source_action: "" Not sure
+      });
       this.props.verifyEmail(
         this.state.newEmail,
         { email: this.state.newEmail },
@@ -140,6 +152,16 @@ class Signin extends Component {
         this.props.navigation
       );
     } else {
+      analytics.track(`a_create_account`, {
+        mode_of_sign_up: "email",
+        source: "email_registration",
+        action_status: "failure",
+        timestamp: new Date().getTime(),
+        device_id,
+        anonymous_userId,
+        source_action: "a_error"
+      });
+
       showMessage({
         message: this.state.newEmailError,
         type: "warning"
@@ -150,22 +172,19 @@ class Signin extends Component {
   /**
    * change active tab
    */
-  changeActiveTab = async () => {
+  changeActiveTab = () => {
     let activeTabSignUp = this.state.activeTab === 0;
     const anonymous_userId = this.props.screenProps.anonymous_userId;
     const device_id = this.props.screenProps.device_id;
 
     // Action event
-    const response = await analytics.track(
-      `a_${activeTabSignUp ? "sign_in" : "sign_up"}_tab`,
-      {
-        source: activeTabSignUp ? "sign_in" : "email_registration",
-        anonymous_userId,
-        device_id,
-        timestamp: new Date().getTime()
-      }
-    );
-    console.log("response", response);
+    analytics.track(`a_${activeTabSignUp ? "sign_in" : "sign_up"}_tab`, {
+      source: activeTabSignUp ? "sign_in" : "email_registration",
+      anonymous_userId,
+      device_id,
+      source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
+      timestamp: new Date().getTime()
+    });
 
     // Screeen event
     analytics.track(`${activeTabSignUp ? "sign_in" : "email_registration"}`, {

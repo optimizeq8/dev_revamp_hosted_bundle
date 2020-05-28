@@ -132,6 +132,7 @@ apply from: 'expo.gradle'
 apply from: "../../node_modules/react-native-unimodules/gradle.groovy"
 
 dependencies {
+    implementation project(':@segment_analytics-react-native-mixpanel')
     implementation project(':react-native-device-info')
     implementation project(':@segment_analytics-react-native')
     implementation project(':react-native-ffmpeg')

@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage, Animated } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import { saveBusinessInvitee } from "./accountManagementActions";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { Notifications } from "expo";
@@ -207,7 +208,9 @@ export const login = (userData, navigation) => {
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
-              email: navigation.getParam("email", "")
+              email: navigation.getParam("email", ""),
+              source: "sign_in",
+              source_action: "a_sign_in"
             });
           }
 
@@ -329,6 +332,7 @@ export const setCurrentUser = user => {
         payload: user
       });
     } else {
+      analytics.reset();
       return dispatch({
         type: actionTypes.LOGOUT_USER,
         payload: { user }

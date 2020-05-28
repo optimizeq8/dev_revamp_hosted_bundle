@@ -8,7 +8,7 @@ const initialState = {
   userid: null,
   userInfo: null,
   loading: false,
-  loadingUpdateInfo: false,
+  loadingUpdateInfo: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,40 +16,47 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_USER:
       AsyncStorage.getItem("appLanguage")
         .then(language => {
-          Segment.identifyWithTraits(action.payload.user.userid, {
+          // analytics.alias(action.payload.user.userid);
+          analytics.identify(action.payload.user.userid, {
             ...action.payload.user,
-            user_app_language: language,
+            $name:
+              action.payload.user.firstname +
+              " " +
+              action.payload.user.lastname,
+            selected_language: language
           });
         })
         .catch(error => {
-          Segment.identifyWithTraits(
-            action.payload.user.userid,
-            ...action.payload.user
-          );
+          // analytics.alias(action.payload.user.userid);
+          analytics.identify(action.payload.user.userid, {
+            ...action.payload.user,
+            $name:
+              action.payload.user.firstname + " " + action.payload.user.lastname
+          });
         });
 
       return {
         ...state,
         userid: action.payload.user.userid,
         userInfo: action.payload.user,
-        loading: false,
+        loading: false
       };
 
     case actionTypes.UPDATE_USERINFO:
       return {
         ...state,
         loadingUpdateInfo: false,
-        userInfo: { ...state.userInfo, ...action.payload },
+        userInfo: { ...state.userInfo, ...action.payload }
       };
     case actionTypes.SET_LOADING_USER:
       return {
         ...state,
-        loading: action.payload,
+        loading: action.payload
       };
     case actionTypes.SET_LOADING_ACCOUNT_UPDATE:
       return {
         ...state,
-        loadingUpdateInfo: action.payload,
+        loadingUpdateInfo: action.payload
       };
     default:
       return state;
