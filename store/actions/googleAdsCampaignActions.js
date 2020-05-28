@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import store from "../index";
 import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
@@ -9,7 +10,7 @@ import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
-
+import { getUniqueId } from "react-native-device-info";
 GoogleBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
@@ -35,11 +36,16 @@ export const create_google_ad_account = (info, navigation) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_accept_terms_and_condition`, {
+          source: "terms_and_condition",
+          source_action: "a_accept_terms_and_condition",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: info.businessid,
+          action_status: data.error ? "failure" : "success"
+        });
         if (data.error) {
-          Segment.trackWithProperties("Error Google Ad Account Create", {
-            error_google_ad_account_create: data.error,
-            businessid: info.businessid
-          });
           showMessage({
             message: data.error,
             type: "info",
@@ -50,24 +56,35 @@ export const create_google_ad_account = (info, navigation) => {
             payload: false
           });
         } else {
-          Segment.trackWithProperties(
-            "Google Ad Account Created Successfully",
-            {
-              businessid: info.businessid
-            }
-          );
           let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
           Adjust.trackEvent(adjustGoogleAdAccTracker);
-          return dispatch({
+          dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
             payload: { data: data }
           });
         }
+        return data;
       })
-      .then(() => {
-        navigation.goBack();
+      .then(data => {
+        if (!data.error)
+          navigation.navigate("GoogleAdInfo", {
+            source: "terms_and_condition",
+            source_action: "a_accept_terms_and_condition"
+          });
       })
       .catch(err => {
+        analytics.track(`a_error`, {
+          error_page: "terms_and_condition",
+          action_status: "failure",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_terms_and_condition",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,

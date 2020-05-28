@@ -4,6 +4,7 @@ import WebView from "react-native-webview";
 import { View, BackHandler, I18nManager } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { NavigationEvents, SafeAreaView } from "react-navigation";
 import Loading from "../../MiniComponents/LoadingScreen";
 import { ActivityIndicator } from "react-native-paper";
@@ -33,16 +34,23 @@ class SnapchatCreateAdAcc extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    if (this.props.mainBusiness.snap_ad_account_id) {
-      this.props.navigation.navigate("Dashboard");
-    }
-  }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
 
-  componentDidUpdate(prevProps) {
-    if (this.props.mainBusiness.snap_ad_account_id) {
-      this.props.navigation.getParam("closeAnimation", () => {})();
-      // this.props.navigation.navigate("Dashboard");
-    }
+    analytics.track(`terms_and_condition`, {
+      source,
+      source_action,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id
+    });
   }
 
   componentWillUnmount() {
@@ -53,13 +61,6 @@ class SnapchatCreateAdAcc extends Component {
     return true;
   };
 
-  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
-  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -71,15 +72,6 @@ class SnapchatCreateAdAcc extends Component {
         }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Snap Ad Account", {
-              category: "Sign Up",
-              businessname: this.props.mainBusiness.businessname,
-              businessid: this.props.mainBusiness.businessid
-            });
-          }}
-        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}
@@ -129,7 +121,13 @@ class SnapchatCreateAdAcc extends Component {
                 // disabled={!this.state.accept}
                 style={[styles.button]}
                 onPress={() => {
-                  this.props.navigation.navigate("AcceptTermsConditionLoading");
+                  this.props.navigation.navigate(
+                    "AcceptTermsConditionLoading",
+                    {
+                      source: "terms_and_condition",
+                      source_action: "a_accept_terms_and_condition"
+                    }
+                  );
                   this.props.create_snapchat_ad_account(
                     this.props.mainBusiness.businessid,
                     this.props.navigation
@@ -148,7 +146,8 @@ class SnapchatCreateAdAcc extends Component {
 
 const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
-  loading: state.account.loading
+  loading: state.account.loading,
+  adType: state.campaignC.adType
 });
 
 const mapDispatchToProps = dispatch => ({

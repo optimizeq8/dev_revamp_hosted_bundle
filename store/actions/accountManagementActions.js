@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
 import { persistor } from "../index";
@@ -10,6 +11,7 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import segmentEventTrack from "../../components/segmentEventTrack";
+import { getUniqueId } from "react-native-device-info";
 
 export const changeBusiness = business => {
   return (dispatch, getState) => {
@@ -191,22 +193,23 @@ export const create_snapchat_ad_account = (id, navigation) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_accept_terms_and_condition`, {
+          source: "terms_and_condition",
+          source_action: "a_accept_terms_and_condition",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: id,
+          action_status: data.success ? "success" : "failure"
+        });
         if (data.success) {
-          Segment.trackWithProperties(
-            "Snapchat Ad Account Created Successfully",
-            { businessid: id }
-          );
           let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
           Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
-            payload: { data: data, navigation: navigation.navigate }
+            payload: { data: data }
           });
         } else {
-          Segment.trackWithProperties("Error Snapchat Ad Account Create", {
-            error_snap_ad_account_create: data.message,
-            businessid: id
-          });
           showMessage({
             message: data.message,
             type: "info",
@@ -223,6 +226,18 @@ export const create_snapchat_ad_account = (id, navigation) => {
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
+        analytics.track(`a_error`, {
+          error_page: "terms_and_condition",
+          action_status: "failure",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_terms_and_condition",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         errorMessageHandler(err);
 
         return dispatch({

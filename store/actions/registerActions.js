@@ -230,7 +230,7 @@ export const sendMobileNo = mobileNo => {
   };
 };
 
-export const verifyMobileCode = mobileAuth => {
+export const verifyMobileCode = (mobileAuth, verification_channel) => {
   return dispatch => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
@@ -238,19 +238,20 @@ export const verifyMobileCode = mobileAuth => {
         return res.data;
       })
       .then(async data => {
-        if (data.success === true) {
-          segmentEventTrack("Successfully Verified Account", {
-            category: "Account Verification",
-            label: "Step 2 of Account Verification"
-          });
-        }
-
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
           position: "top"
         });
         if (!data.success) {
+          analytics.track(`a_otp_verify`, {
+            source: "otp_verify",
+            source_action: "a_otp_verify",
+            device_id: getUniqueId(),
+            timestamp: new Date().getTime(),
+            verification_channel,
+            action_status: "failure"
+          });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
             payload: data
@@ -263,20 +264,44 @@ export const verifyMobileCode = mobileAuth => {
 
         await setAuthToken(data.token);
         const decodedUser = jwt_decode(data.token);
+
         return { user: decodedUser, message: data.message };
       })
       .then(decodedUser => {
         if (decodedUser && decodedUser.user) {
+          analytics.track(`a_otp_verify`, {
+            source: "otp_verify",
+            source_action: "a_otp_verify",
+            device_id: getUniqueId(),
+            timestamp: new Date().getTime(),
+            userId: decodedUser.user.userid,
+            verification_channel,
+            action_status: "success"
+          });
           dispatch(setCurrentUser(decodedUser));
         }
       })
       .then(() => {
         let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
         Adjust.trackEvent(adjustVerifyAccountTracker);
-        NavigationService.navigate("Dashboard");
+        NavigationService.navigate("Dashboard", {
+          source: "otp_verify",
+          source_action: "a_otp_verify"
+        });
       })
       .catch(err => {
         // console.log("verifyMobileCode error", err.message || err.response);
+        analytics.track(`a_error`, {
+          error_page: "otp_verify",
+          action_status: "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_otp_verify",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         showMessage({
           message:
             err.message ||
@@ -438,7 +463,7 @@ export const verifyEmail = (email, userInfo, navigation) => {
           action_status: "failure",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          anonymous_userId: getAnonymousUserId(),
+
           source_action: "a_create_account",
           error_description:
             err.message ||

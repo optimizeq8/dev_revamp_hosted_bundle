@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
-
+import analytics from "@segment/analytics-react-native";
 import { NavigationEvents, SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";
@@ -30,6 +30,23 @@ class GoogleCreateAdAcc extends Component {
   }
 
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`terms_and_condition`, {
+      source,
+      source_action,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -59,15 +76,6 @@ class GoogleCreateAdAcc extends Component {
         }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Google Ad Account", {
-              category: "Sign Up",
-              businessname: this.props.mainBusiness.businessname,
-              businessid: this.props.mainBusiness.businessid
-            });
-          }}
-        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}

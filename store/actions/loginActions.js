@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage, Animated } from "react-native";
+import { AsyncStorage, Animated, AppState } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
@@ -115,7 +115,11 @@ export const checkForExpiredToken = navigation => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    navigation && NavigationService.navigate("Dashboard");
+                    navigation &&
+                      NavigationService.navigate("Dashboard", {
+                        source: AppState.currentState,
+                        source_action: "a_check_expired_token"
+                      });
                   });
               } else {
                 dispatch(clearPushToken(navigation, user.userid));
@@ -127,7 +131,11 @@ export const checkForExpiredToken = navigation => {
                 payload: false
               });
 
-              navigation && NavigationService.navigate("Dashboard");
+              navigation &&
+                NavigationService.navigate("Dashboard", {
+                  source: AppState.currentState,
+                  source_action: "a_check_expired_token"
+                });
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
@@ -332,7 +340,7 @@ export const setCurrentUser = user => {
         payload: user
       });
     } else {
-      analytics.reset();
+      // analytics.reset();
       return dispatch({
         type: actionTypes.LOGOUT_USER,
         payload: { user }

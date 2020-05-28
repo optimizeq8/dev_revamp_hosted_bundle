@@ -9,23 +9,12 @@ import {
   I18nManager,
   TouchableOpacity
 } from "react-native";
-import {
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
+import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
-import {
-  SafeAreaView,
-  NavigationEvents,
-  NavigationActions
-} from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -238,7 +227,17 @@ class AdObjective extends Component {
     });
   };
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "terms_and_condition_loading") {
+      this.props.navigation.navigate("AdType", {
+        source: "ad_objective",
+        source_action: "a_go_back"
+      });
+    } else this.props.navigation.goBack();
+
     return true;
   };
   handleStartDatePicked = date => {
@@ -421,23 +420,22 @@ class AdObjective extends Component {
   };
 
   handleAdOnjectiveFocus = () => {
-    Segment.screenWithProperties(
-      (this.props.adType === "SnapAd"
-        ? "Snap Ad"
-        : this.props.adType === "StoryAd"
-        ? "Story Ad"
-        : "Collection Ad") + " Objective",
-      {
-        category: "Campaign Creation",
-        channel: "snapchat"
-      }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
     );
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType
     });
-
     let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustAdObjectiveTracker.addPartnerParameter(
       `snap_${
@@ -495,7 +493,7 @@ class AdObjective extends Component {
                       this.props.mainBusiness.businessname
                   }
                 }}
-                navigation={this.props.navigation}
+                actionButton={this.handleBackButton}
                 title={[
                   adType === "SnapAd"
                     ? "Snap Ad"
