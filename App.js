@@ -166,6 +166,8 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   async componentDidMount() {
+    RNBootSplash.hide({ duration: 250 });
+
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
@@ -597,7 +599,6 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-    RNBootSplash.hide({ duration: 250 });
   };
 }
 

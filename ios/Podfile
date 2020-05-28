@@ -55,8 +55,6 @@ target 'OptimizeApp' do
 
   pod 'react-native-adjust', :path => '../node_modules/react-native-adjust'
 
-  pod 'lottie-ios', :path => '../node_modules/lottie-ios'
-
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
   pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
