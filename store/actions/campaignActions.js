@@ -174,11 +174,9 @@ export const ad_design = (
   loading,
   navigation,
   onToggleModal,
-  appChoice,
   rejected,
   cancelUplaod,
-  longVideo,
-  iosUploadVideo
+  segmentInfo
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -200,6 +198,13 @@ export const ad_design = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo
+        });
         rejected &&
           showMessage({
             message: data.message,
@@ -223,17 +228,21 @@ export const ad_design = (
         !rejected && dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
-        if (!rejected) navigation.push("AdDetails");
+        if (!rejected)
+          navigation.navigate("AdDetails", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         else {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
           dispatch({
             type: actionTypes.RESET_CAMPAING_INFO
           });
-          navigation.navigate("Dashboard");
-          persistor.purge();
-          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         }
       })
       .catch(err => {
@@ -582,14 +591,25 @@ export const ad_details = (info, names, navigation, segmentInfo) => {
             channel: ""
           })
         );
-        return dispatch({
+        dispatch({
           type: actionTypes.SET_AD_DETAILS,
           payload: { data, names }
         });
+        return data;
       })
-      .then(() => {
-        Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-        navigation.navigate("AdPaymentReview");
+      .then(data => {
+        analytics.track(`a_submit_ad_targeting`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          timestamp: new Date().getTime(),
+          action_status: data.success ? "success" : "failure",
+          campaign_budget: data.data.lifetime_budget_micro,
+          ...segmentInfo
+        });
+        navigation.navigate("AdPaymentReview", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting"
+        });
       })
       .catch(err => {
         // console.log("ad_details", err.message || err.response);
@@ -610,9 +630,11 @@ export const updateCampaign = (info, businessid, navigation) => {
 
         return res.data;
       })
-      .then(data => {})
       .then(() => {
-        navigation.navigate("Dashboard");
+        navigation.navigate("Dashboard", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting"
+        });
       })
       .catch(err => {
         // console.log("updateCampaign", err.message || err.response);

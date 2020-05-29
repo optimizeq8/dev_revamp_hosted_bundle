@@ -312,7 +312,7 @@ class GoogleAdInfo extends Component {
             (new Date(this.state.end_time) - new Date(this.state.start_time)) /
               (1000 * 60 * 60 * 24)
           ) + 1,
-        campaign_ad_name: this.state.name,
+        campaign_name: this.state.name,
         campaign_language: this.state.language,
         campaign_start_date: this.state.start_time,
         campaign_end_date: this.state.end_time,

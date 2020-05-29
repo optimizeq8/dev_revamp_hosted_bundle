@@ -7,6 +7,7 @@ import {
   BackHandler,
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
 import { Linking } from "expo";
@@ -181,7 +182,7 @@ class PaymentForm extends Component {
     Linking.removeEventListener("url", this._handleRedirect);
   };
 
-  _handleRedirect = (event) => {
+  _handleRedirect = event => {
     WebBrowser.dismissBrowser();
     // this.setState({
     //   browserLoading: false
@@ -287,9 +288,15 @@ class PaymentForm extends Component {
     }
   };
 
-  _handleChoice = (choice) => {
+  _handleChoice = choice => {
     segmentEventTrack("Selected Payment Type", {
       payment_type:
+        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD",
+    });
+    analytics.track(`a_select_payment_mode`, {
+      source: "payment_mode",
+      source_action: "a_select_payment_mode",
+      payment_mode_type:
         choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD",
     });
     this.setState({
@@ -310,7 +317,7 @@ class PaymentForm extends Component {
     this.setState({ browserLoading: false });
   };
 
-  setShowWalletModal = (value) => {
+  setShowWalletModal = value => {
     if (value) {
       Segment.screen("Payment through WALLET");
     }
@@ -320,22 +327,48 @@ class PaymentForm extends Component {
   };
 
   handlePaymentFormFocus = () => {
-    if (this.state.addingCredits) {
-      Segment.screenWithProperties("Payment Selection", {
-        category: "Wallet Top Up",
-      });
-    } else {
-      Segment.screenWithProperties("Payment Selection", {
-        businessname: this.props.mainBusiness.businessname,
-        campaign_id: this.props.campaign_id,
-        category: "Campaign Creation",
-      });
-      Segment.trackWithProperties("Viewed Checkout Step", {
-        step: 6,
-        business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign_id,
-      });
-    }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_channel = this.props.navigation.getParam(
+      "campaign_channel",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_ad_type = this.props.naviagtion.getParam(
+      "campaign_ad_type",
+      ""
+    );
+    analytics.track(`payment_mode`, {
+      source,
+      source_action,
+      campaign_id: this.props.campaign_id,
+      campaign_ad_type,
+      campaign_channel: this.state.addingCredits
+        ? "wallet_top_up"
+        : campaign_channel,
+      campaign_budget: this.props.campaign_budget,
+    });
+    // if (this.state.addingCredits) {
+    // Segment.screenWithProperties("Payment Selection", {
+    //   category: "Wallet Top Up"
+    // });
+    // } else {
+    // Segment.screenWithProperties("Payment Selection", {
+    //   businessname: this.props.mainBusiness.businessname,
+    //   campaign_id: this.props.campaign_id,
+    //   category: "Campaign Creation"
+    // });
+    // Segment.trackWithProperties("Viewed Checkout Step", {
+    //   step: 6,
+    //   business_name: this.props.mainBusiness.businessname,
+    //   checkout_id: this.props.campaign_id
+    // });
+    // }
     if (this.state.addingCredits) {
       // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
       // adjustWalletPaymentFormTracker.addPartnerParameter(
@@ -551,7 +584,7 @@ class PaymentForm extends Component {
             </Footer>
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.push("WebView", {
+                this.props.navigation.navigate("WebView", {
                   url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions",
                 })
@@ -567,7 +600,7 @@ class PaymentForm extends Component {
                 <Text
                   allowFontScaling={false}
                   onPress={() => {
-                    this.props.navigation.push("WebView", {
+                    this.props.navigation.navigate("WebView", {
                       url: "https://www.optimizeapp.com/terms_conditions",
                       title: "Terms & Conditions",
                     });
@@ -643,7 +676,7 @@ class PaymentForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   campaign_budget: state.transA.campaign_budget,
   mainBusiness: state.account.mainBusiness,
@@ -662,7 +695,7 @@ const mapStateToProps = (state) => ({
   wallet: state.transA.wallet,
   channel: state.transA.channel,
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
 
   payment_request_knet: (

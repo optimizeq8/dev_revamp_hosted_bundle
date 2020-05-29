@@ -350,7 +350,7 @@ class AdObjective extends Component {
               (1000 * 60 * 60 * 24)
           ) + 1,
         campaign_ad_type: this.props.adType,
-        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,

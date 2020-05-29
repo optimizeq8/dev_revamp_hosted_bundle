@@ -159,6 +159,19 @@ class AdDesign extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       device_id: this.props.screenProps.device_id,
+      campaign_name: this.props.data.name,
+      campaign_id: this.props.data.campaign_id,
+      campaign_objective: this.props.data.objective,
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.data.end_time) -
+            new Date(this.props.data.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_start_date: this.props.data.start_time,
+      campaign_end_date: this.props.data.end_time,
+      campaign_collectionAdLinkForm: this.props.data
+        .campaign_collectionAdLinkForm,
     });
     this.setState({
       campaignInfo: {
@@ -595,6 +608,13 @@ class AdDesign extends Component {
                 ? this.selectedCampaign.story_logo_media
                 : this.props.data.logo,
             };
+      analytics.track(`a_preview_ad`, {
+        source: "ad_design",
+        source_action: "a_preview_ad",
+        action_status: "success",
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.adType,
+      });
       this.props.navigation.push(
         this.adType === "StoryAd" ? "StoryAdDesignReview" : "AdDesignReview",
         {
@@ -783,6 +803,18 @@ class AdDesign extends Component {
       this.state.mediaError ||
       this.state.swipeUpError
     ) {
+      analytics.track(`a_submit_ad_design`, {
+        source: "ad_design",
+        source_action: "a_submit_ad_design",
+        timestamp: new Date().getTime(),
+        campaign_id: this.props.data.campaign_id,
+        action_status: "failure",
+        error_description:
+          this.state.brand_nameError ||
+          this.state.headlineError ||
+          this.state.mediaError ||
+          this.state.swipeUpError,
+      });
       segmentEventTrack("Ad Design Submit Error", {
         campaign_brand_name_error: this.state.brand_nameError,
         campaign_headline_error: this.state.headlineError,
@@ -837,25 +869,35 @@ class AdDesign extends Component {
         JSON.stringify(this.props.data.formatted) !==
           JSON.stringify(this.state.formatted)
       ) {
+        const segmentInfo = {
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.adType,
+          campaign_id: this.props.data.campaign_id,
+          campaign_brand_name: this.state.campaignInfo.brand_name,
+          campaign_headline: this.state.campaignInfo.headline,
+          campaign_attachment: this.state.campaignInfo.attachment,
+          campaign_cta: this.state.campaignInfo.call_to_action,
+          campaign_swipe_up_destination: this.state.campaignInfo.destination,
+          campaign_media: this.state.media,
+          campaign_media_type: this.state.type,
+          campaign_appChoice: this.state.appChoice,
+        };
         if (!this.props.loading) {
           await this.props.ad_design(
             this.state.formatted,
             this._getUploadState,
             this.props.navigation,
             this.onToggleModal,
-            this.state.appChoice,
             this.rejected,
             this.state.signal,
-            this.state.longformvideo_media &&
-              this.state.longformvideo_media_type === "VIDEO",
-            {
-              iosUploaded: this.state.iosVideoUploaded,
-              media: this.state.media,
-            }
+            ...segmentInfo
           );
         }
       } else {
-        this.props.navigation.push("AdDetails");
+        this.props.navigation.navigate("AdDetails", {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+        });
       }
     }
   };
@@ -1493,11 +1535,9 @@ const mapDispatchToProps = dispatch => ({
     loading,
     navigation,
     onToggleModal,
-    appChoice,
     rejected,
     cancelUpload,
-    longVideo,
-    iosUplaod
+    segmentInfo
   ) =>
     dispatch(
       actionCreators.ad_design(
@@ -1505,11 +1545,9 @@ const mapDispatchToProps = dispatch => ({
         loading,
         navigation,
         onToggleModal,
-        appChoice,
         rejected,
         cancelUpload,
-        longVideo,
-        iosUplaod
+        segmentInfo
       )
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>

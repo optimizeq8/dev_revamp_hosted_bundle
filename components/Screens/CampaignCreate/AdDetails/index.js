@@ -4,6 +4,7 @@ import { View, BackHandler, I18nManager } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -133,7 +134,7 @@ class AdDetails extends Component {
         editedCampaign.targeting.demographics[0].max_age
       );
       getCountryName = countries.find(
-        (country) =>
+        country =>
           country.value === editedCampaign.targeting.geos[0].country_code
       ).label;
       this.onSelectedCountryChange(
@@ -142,12 +143,12 @@ class AdDetails extends Component {
         getCountryName
       );
       let editedRegionNames = country_regions.find(
-        (country_region) =>
+        country_region =>
           country_region.country_code ===
           editedCampaign.targeting.geos[0].country_code
       );
-      editedCampaign.targeting.geos[0].region_id.forEach((id) => {
-        let name = editedRegionNames.regions.find((region) => region.id === id)
+      editedCampaign.targeting.geos[0].region_id.forEach(id => {
+        let name = editedRegionNames.regions.find(region => region.id === id)
           .name;
         this.onSelectedRegionChange(id, name);
       });
@@ -185,8 +186,7 @@ class AdDetails extends Component {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
         let countryRegions = find(
           country_regions,
-          (country) =>
-            country.country_code === rep.targeting.geos[0].country_code
+          country => country.country_code === rep.targeting.geos[0].country_code
         );
         this.setState(
           {
@@ -238,7 +238,7 @@ class AdDetails extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  _handleMaxAge = (value) => {
+  _handleMaxAge = value => {
     let rep = this.state.campaignInfo;
     rep.targeting.demographics[0].max_age = parseInt(value);
     segmentEventTrack(`Selected Max Age`, {
@@ -250,7 +250,7 @@ class AdDetails extends Component {
     !this.editCampaign && this.props.save_campaign_info({ campaignInfo: rep });
   };
 
-  _handleMinAge = (value) => {
+  _handleMinAge = value => {
     let rep = this.state.campaignInfo;
     rep.targeting.demographics[0].min_age = value;
     segmentEventTrack(`Selected Min Age`, {
@@ -270,8 +270,10 @@ class AdDetails extends Component {
     mounting = null,
     countryName
   ) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
+    console.log("newCountry", newCountry);
+
     if (
       typeof newCountry !== "undefined" &&
       newCountry !== replace.targeting.geos[0].country_code
@@ -281,14 +283,14 @@ class AdDetails extends Component {
       replace.targeting.geos[0].region_id = [];
 
       let reg = country_regions.find(
-        (c) => c.country_code === replace.targeting.geos[0].country_code
+        c => c.country_code === replace.targeting.geos[0].country_code
       );
       replace.targeting.interests[0].category_id = [];
       segmentEventTrack(`Selected Country`, {
         campaign_country_name: countryName,
       });
 
-      await this.setState({
+      this.setState({
         campaignInfo: replace,
         regions: reg.regions,
         filteredRegions: reg.regions,
@@ -308,7 +310,7 @@ class AdDetails extends Component {
     }
   };
 
-  onSelectedInterestsChange = (selectedItems) => {
+  onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
     this.setState({ campaignInfo: replace });
@@ -316,7 +318,7 @@ class AdDetails extends Component {
       this.props.save_campaign_info({ campaignInfo: replace });
   };
 
-  onSelectedDevicesChange = (selectedItems) => {
+  onSelectedDevicesChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].marketing_name = selectedItems;
     if (selectedItems.length > 0) {
@@ -334,12 +336,12 @@ class AdDetails extends Component {
         campaignInfo: replace,
       });
   };
-  onSelectedInterestsNamesChange = (selectedItems) => {
+  onSelectedInterestsNamesChange = selectedItems => {
     this.setState({
       interestNames: selectedItems,
     });
     let names = [];
-    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    names = selectedItems.length > 0 && selectedItems.map(item => item.name);
     if (names && names.length > 0)
       segmentEventTrack(`Selected Interests`, {
         campaign_interests_names: names.join(", "),
@@ -350,17 +352,15 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedLangsChange = (selectedItem) => {
+  onSelectedLangsChange = selectedItem => {
     const { translate } = this.props.screenProps;
     let replace = this.state.campaignInfo;
     let langs = [];
     if (
-      replace.targeting.demographics[0].languages.find(
-        (r) => r === selectedItem
-      )
+      replace.targeting.demographics[0].languages.find(r => r === selectedItem)
     ) {
       replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
-        (r) => r !== selectedItem
+        r => r !== selectedItem
       );
       langs = replace.targeting.demographics[0].languages;
       segmentEventTrack(`Selected Languages`, {
@@ -396,7 +396,7 @@ class AdDetails extends Component {
       this.props.save_campaign_info({ campaignInfo: replace });
   };
 
-  onSelectedOSChange = (selectedItem) => {
+  onSelectedOSChange = selectedItem => {
     let replace = this.state.campaignInfo;
     replace.targeting.devices[0].os_type = selectedItem;
     replace.targeting.devices[0].os_version_min = "";
@@ -413,7 +413,7 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedVersionsChange = (selectedItem) => {
+  onSelectedVersionsChange = selectedItem => {
     let replace = this.state.campaignInfo;
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
@@ -466,8 +466,8 @@ class AdDetails extends Component {
           campaignInfo: replace,
         });
       } else {
-        rNamesSelected = this.state.regions.map((r) => r.name);
-        rIds = this.state.regions.map((r) => r.id);
+        rNamesSelected = this.state.regions.map(r => r.name);
+        rIds = this.state.regions.map(r => r.id);
         replace.targeting.geos[0].region_id = rIds;
         segmentEventTrack(`Selected Regions`, {
           campaign_region_names: rNamesSelected.join(", "),
@@ -488,11 +488,11 @@ class AdDetails extends Component {
       // logic change
 
       // campignInfo region
-      if (rIds.find((r) => r === selectedItem)) {
+      if (rIds.find(r => r === selectedItem)) {
         replace.targeting.geos[0].region_id = rIds.filter(
-          (r) => r !== selectedItem
+          r => r !== selectedItem
         );
-        rNamesSelected = rNamesSelected.filter((r) => r !== regionName);
+        rNamesSelected = rNamesSelected.filter(r => r !== regionName);
       } else {
         replace.targeting.geos[0].region_id.push(selectedItem);
         rNamesSelected.push(regionName);
@@ -513,7 +513,7 @@ class AdDetails extends Component {
     }
   };
 
-  formatNumber = (num) => {
+  formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
   _handleBudget = (value, rawValue, onBlur, budgetOption) => {
@@ -583,7 +583,7 @@ class AdDetails extends Component {
     }
   };
 
-  onSelectedGenderChange = (gender) => {
+  onSelectedGenderChange = gender => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].gender = gender;
     segmentEventTrack(`Selected Gender`, {
@@ -594,15 +594,15 @@ class AdDetails extends Component {
       this.props.save_campaign_info({ campaignInfo: { ...replace } });
   };
 
-  filterRegions = (value) => {
+  filterRegions = value => {
     this.setState({ filteredRegions: value });
   };
 
-  filterLanguages = (value) => {
+  filterLanguages = value => {
     this.setState({ filteredLanguages: value });
   };
 
-  _handleSideMenuState = (status) => {
+  _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
   };
 
@@ -640,7 +640,7 @@ class AdDetails extends Component {
       let totalReach = {
         demographics: [
           {
-            languages: this.props.languages.map((lang) => lang.id),
+            languages: this.props.languages.map(lang => lang.id),
             min_age: 13,
             max_age: "50+",
           },
@@ -695,14 +695,30 @@ class AdDetails extends Component {
         this.state.budgetOption
       )
     ) {
-      segmentEventTrack("Error on submit ad details", {
-        campaign_country_error: countryError,
-        campaign_languages_error: languagesError,
-        campaign_budget_error: validateWrapper(
-          "Budget",
-          this.state.campaignInfo.lifetime_budget_micro
-        ),
+      analytics.track(`a_submit_ad_targeting`, {
+        source: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        timestamp: new Date().getTime(),
+        campaign_id: this.props.data.campaign_id,
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        action_status: "failure",
+        error_description:
+          countryError ||
+          languagesError ||
+          validateWrapper(
+            "Budget",
+            this.state.campaignInfo.lifetime_budget_micro
+          ),
       });
+      // segmentEventTrack("Error on submit ad details", {
+      //   campaign_country_error: countryError,
+      //   campaign_languages_error: languagesError,
+      //   campaign_budget_error: validateWrapper(
+      //     "Budget",
+      //     this.state.campaignInfo.lifetime_budget_micro
+      //   ),
+      // });
     }
     if (
       this._handleBudget(
@@ -750,75 +766,73 @@ class AdDetails extends Component {
         rep.targeting.demographics[0].max_age = "50+";
       }
       rep.targeting = JSON.stringify(rep.targeting);
+      let interestNamesList = [];
+      interestNamesList =
+        this.state.interestNames &&
+        this.state.interestNames.length > 0 &&
+        this.state.interestNames.map(inter => inter.name);
+      const segmentInfo = {
+        campaign_id: this.props.campaign_id,
 
+        business_name: this.props.mainBusiness.businessname,
+        campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
+        campaign_gender:
+          this.state.campaignInfo.targeting.demographics[0].gender === ""
+            ? "ALL"
+            : this.state.campaignInfo.targeting.demographics[0].gender,
+        campaign_max_age: this.state.campaignInfo.targeting.demographics[0]
+          .max_age,
+        campaign_min_age: this.state.campaignInfo.targeting.demographics[0]
+          .min_age,
+        campaign_country_name: this.state.countryName,
+        campaign_region_names:
+          this.state.regionNames && this.state.regionNames.length > 0
+            ? this.state.regionNames.join(", ")
+            : null,
+        campaign_languages:
+          this.state.campaignInfo.targeting.demographics[0].languages &&
+          this.state.campaignInfo.targeting.demographics[0].languages.length > 0
+            ? this.state.campaignInfo.targeting.demographics[0].languages.join(
+                ", "
+              )
+            : null,
+        campaign_min_version: this.state.campaignInfo.targeting.devices[0]
+          .os_version_min,
+        campaign_max_version: this.state.campaignInfo.targeting.devices[0]
+          .os_version_max,
+        campaign_os_type:
+          this.state.campaignInfo.targeting.devices[0].os_type === ""
+            ? "ALL"
+            : this.state.campaignInfo.targeting.devices[0].os_type,
+        campaign_devices_name:
+          this.state.campaignInfo.targeting.devices[0].marketing_name &&
+          this.state.campaignInfo.targeting.devices[0].marketing_name.length > 0
+            ? this.state.campaignInfo.targeting.devices[0].marketing_name.join(
+                ", "
+              )
+            : null,
+        campaign_interests_names:
+          interestNamesList && interestNamesList.length > 0
+            ? interestNamesList.join(", ")
+            : null,
+      };
       if (this.editCampaign) {
-        Segment.trackWithProperties("Updated Ad Details", {
-          business_name: this.props.mainBusiness.businessname,
-          campaign_id: this.props.campaign_id,
-        });
+        // Segment.trackWithProperties("Updated Ad Details", {
+        //   business_name: this.props.mainBusiness.businessname,
+        //   campaign_id: this.props.campaign_id,
+        // });
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation
         );
       } else {
-        Segment.trackWithProperties("Submitted Ad Details", {
-          business_name: this.props.mainBusiness.businessname,
-          campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
-          campaign_id: this.props.campaign_id,
-        });
-        let interestNamesList = [];
-        interestNamesList =
-          this.state.interestNames &&
-          this.state.interestNames.length > 0 &&
-          this.state.interestNames.map((inter) => inter.name);
-        const segmentInfo = {
-          checkout_id: this.props.campaign_id,
-          step: 4,
-          business_name: this.props.mainBusiness.businessname,
-          campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
-          campaign_gender:
-            this.state.campaignInfo.targeting.demographics[0].gender === ""
-              ? "ALL"
-              : this.state.campaignInfo.targeting.demographics[0].gender,
-          campaign_max_age: this.state.campaignInfo.targeting.demographics[0]
-            .max_age,
-          campaign_min_age: this.state.campaignInfo.targeting.demographics[0]
-            .min_age,
-          campaign_country_name: this.state.countryName,
-          campaign_region_names:
-            this.state.regionNames && this.state.regionNames.length > 0
-              ? this.state.regionNames.join(", ")
-              : null,
-          campaign_languages:
-            this.state.campaignInfo.targeting.demographics[0].languages &&
-            this.state.campaignInfo.targeting.demographics[0].languages.length >
-              0
-              ? this.state.campaignInfo.targeting.demographics[0].languages.join(
-                  ", "
-                )
-              : null,
-          campaign_min_version: this.state.campaignInfo.targeting.devices[0]
-            .os_version_min,
-          campaign_max_version: this.state.campaignInfo.targeting.devices[0]
-            .os_version_max,
-          campaign_os_type:
-            this.state.campaignInfo.targeting.devices[0].os_type === ""
-              ? "ALL"
-              : this.state.campaignInfo.targeting.devices[0].os_type,
-          campaign_devices_name:
-            this.state.campaignInfo.targeting.devices[0].marketing_name &&
-            this.state.campaignInfo.targeting.devices[0].marketing_name.length >
-              0
-              ? this.state.campaignInfo.targeting.devices[0].marketing_name.join(
-                  ", "
-                )
-              : null,
-          campaign_interests_names:
-            interestNamesList && interestNamesList.length > 0
-              ? interestNamesList.join(", ")
-              : null,
-        };
+        // Segment.trackWithProperties("Submitted Ad Details", {
+        //   business_name: this.props.mainBusiness.businessname,
+        //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
+        //   campaign_id: this.props.campaign_id,
+        // });
+
         // this.props.setCampaignInfoForTransaction({
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
@@ -839,6 +853,41 @@ class AdDetails extends Component {
   };
 
   handleAdDetailsFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const segmentInfo = {
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.data.end_time) -
+            new Date(this.props.data.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.data.name,
+      campaign_id: this.props.data.campaign_id,
+      campaign_brand_name: this.props.data.brand_name,
+      campaign_headline: this.props.data.headline,
+      campaign_attachment: this.props.data.attachment,
+      campaign_cta: this.props.data.call_to_action,
+      campaign_swipe_up_destination: this.props.data.destination,
+      campaign_media: this.props.data.media,
+      campaign_media_type: this.props.data.media_type,
+      campaign_appChoice: this.props.data.appChoice,
+      campaign_objective: this.props.data.objective,
+    };
+    analytics.track("ad_targeting", {
+      timestamp: new Date().getTime(),
+      source,
+      source_action,
+      ...segmentInfo,
+    });
     this.props.saveCampaignSteps(
       this.props.adType === "StoryAd"
         ? ["Dashboard", "AdObjective", "AdCover", "AdDesign", "AdDetails"]
@@ -976,11 +1025,11 @@ class AdDetails extends Component {
     }
 
     let regions_names = [];
-    this.state.regions.forEach((r) => {
+    this.state.regions.forEach(r => {
       if (
         this.state.campaignInfo.targeting.geos[0].region_id &&
         this.state.campaignInfo.targeting.geos[0].region_id.find(
-          (i) => i === r.id
+          i => i === r.id
         )
       ) {
         regions_names.push(translate(r.name));
@@ -989,10 +1038,10 @@ class AdDetails extends Component {
     regions_names = regions_names.join(", ");
 
     let languages_names = [];
-    this.props.languages.forEach((r) => {
+    this.props.languages.forEach(r => {
       if (
         this.state.campaignInfo.targeting.demographics[0].languages.find(
-          (i) => i === r.id
+          i => i === r.id
         )
       ) {
         languages_names.push(translate(r.name));
@@ -1003,10 +1052,10 @@ class AdDetails extends Component {
     let interests_names = [];
     if (this.state.campaignInfo.targeting.interests[0].category_id.length > 0) {
       interests_names = this.state.campaignInfo.targeting.interests[0].category_id.map(
-        (interest) => {
+        interest => {
           const nameItem = find(
             this.props.interests,
-            (intrst) => interest === intrst.id
+            intrst => interest === intrst.id
           );
           if (nameItem) return translate(nameItem.name);
         }
@@ -1023,7 +1072,7 @@ class AdDetails extends Component {
 
     return (
       <Sidemenu
-        onChange={(isOpen) => {
+        onChange={isOpen => {
           if (isOpen === false) {
             this._handleSideMenuState(isOpen);
             this._calcReach();
@@ -1231,7 +1280,7 @@ class AdDetails extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   minValueBudget: state.campaignC.minValueBudget,
   maxValueBudget: state.campaignC.maxValueBudget,
@@ -1247,20 +1296,19 @@ const mapStateToProps = (state) => ({
   campaignDateChanged: state.campaignC.campaignDateChanged,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   ad_details: (info, names, navigation, segmentInfo) =>
     dispatch(actionCreators.ad_details(info, names, navigation, segmentInfo)),
   updateCampaign: (info, businessid, navigation) =>
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
-  save_campaign_info: (info) =>
-    dispatch(actionCreators.save_campaign_info(info)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
   get_languages: () => dispatch(actionCreators.get_languages()),
-  saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
-  setCampaignInfoForTransaction: (data) =>
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  setCampaignInfoForTransaction: data =>
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
-  get_interests: (info) => dispatch(actionCreators.get_interests(info)),
+  get_interests: info => dispatch(actionCreators.get_interests(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

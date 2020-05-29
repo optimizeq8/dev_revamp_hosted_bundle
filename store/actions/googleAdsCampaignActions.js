@@ -268,19 +268,24 @@ export const create_google_SE_campaign_ad_design = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          timestamp: new Date().getTime(),
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_resumbit: rejected,
+          campaign_error: data.error
+        });
         if (!data.error) {
           //do not set the reducer if it is a rejected data
           if (!rejected) {
-            segmentEventTrack("Successfully Submitted Ad Info");
             dispatch({
               type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
               payload: { data: data }
             });
-          } else segmentEventTrack("Successfully re-Submitted rejected ad");
+          }
         } else {
-          segmentEventTrack("Error Submitting Ad Info", {
-            campaign_error: data.error
-          });
           showMessage({
             message: data.error,
             type: "info",
@@ -294,10 +299,16 @@ export const create_google_SE_campaign_ad_design = (
         return data;
       })
       .then(data => {
-        if (rejected && !data.error) NavigationService.navigate("Dashboard");
+        if (rejected && !data.error)
+          NavigationService.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         else if (!rejected && !data.error) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdTargetting");
+          NavigationService.navigate("GoogleAdTargetting", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         }
       })
       .catch(err => {
