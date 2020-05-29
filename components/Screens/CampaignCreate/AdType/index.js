@@ -208,7 +208,7 @@ class AdType extends Component {
       timestamp: new Date().getTime(),
       device_id,
       userId: this.props.userInfo.userid,
-      campaign_channel: title.toLower()
+      campaign_channel: title.toLowerCase()
     });
     this.setState({
       active: title

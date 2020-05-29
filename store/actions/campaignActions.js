@@ -2,11 +2,13 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
+import { getUniqueId } from "react-native-device-info";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return dispatch => {
@@ -120,10 +122,23 @@ export const ad_objective = (info, navigation, segmentInfo) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo
+        });
         if (data.success) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.navigate(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign",
+            {
+              source: "ad_objective",
+              source_action: "a_submit_ad_objective"
+            }
           );
         } else showMessage({ message: data.message, position: "top" });
       })

@@ -185,6 +185,15 @@ export const create_google_SE_campaign_info = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo
+        });
         if (data.error) {
           showMessage({
             message: data.error,
@@ -815,13 +824,24 @@ export const get_budget = (info, segmentInfo, navigation) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_get_budget`, {
+          ...segmentInfo,
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source: "ad_objective",
+          source_action: "a_get_budget",
+          timestamp: new Date().getTime()
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data
           });
           Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push("GoogleAdDesign");
+          navigation.push("GoogleAdDesign", {
+            source: "ad_objective",
+            source_action: "a_submit_ad_objective"
+          });
         } else
           showMessage({
             message: "Oops! Something went wrong. Please try again.",

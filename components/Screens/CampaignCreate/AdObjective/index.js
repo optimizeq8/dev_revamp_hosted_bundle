@@ -310,16 +310,29 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_ad_objective: objectiveError ? objectiveError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
+      analytics.track(`a_submit_ad_objective`, {
+        source: "ad_objective",
+        campaign_channel: "snapchat",
+        action_status: "failure",
+        source_action: "a_submit_ad_objective",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError
       });
+      // segmentEventTrack("Error occured on ad objective screen sumbit button", {
+      //   campaign_error_ad_name: nameError ? nameError : "",
+      //   campaign_error_ad_objective: objectiveError ? objectiveError : "",
+      //   campaign_error_ad_start_date: dateErrors.start_timeError
+      //     ? dateErrors.start_timeError
+      //     : "",
+      //   campaign_error_ad_end_date: dateErrors.end_timeError
+      //     ? dateErrors.end_timeError
+      //     : ""
+      // });
     }
     if (
       !nameError &&
@@ -328,13 +341,20 @@ class AdObjective extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.campaignInfo.end_time) -
+              new Date(this.state.campaignInfo.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_ad_type: this.props.adType,
         campaign_ad_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
-        campaign_collection_ad_link_form:
+        campaign_collectionAdLinkForm:
           this.props.adType === "CollectionAd"
             ? this.state.collectionAdLinkForm === 1
               ? "Website"
