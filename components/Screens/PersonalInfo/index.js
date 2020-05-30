@@ -82,9 +82,9 @@ class PersonalInfo extends Component {
       source_action,
       timestamp: new Date().getTime()
     });
-    Segment.screenWithProperties("Personal Info", {
-      category: "User Menu"
-    });
+    // Segment.screenWithProperties("Personal Info", {
+    //   category: "User Menu"
+    // });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

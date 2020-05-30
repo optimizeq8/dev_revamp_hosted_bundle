@@ -281,7 +281,12 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("Wallet", true, {})}
+                onPress={() =>
+                  this.handleNavigation("Wallet", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_wallet"
+                  })
+                }
               >
                 <Icons.Wallet style={styles.icons} />
                 <Text

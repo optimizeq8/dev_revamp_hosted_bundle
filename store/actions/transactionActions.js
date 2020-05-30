@@ -1,4 +1,5 @@
 import axios from "axios";
+import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
@@ -103,7 +104,12 @@ export const getWalletAmount = (retries = 3) => {
   };
 };
 
-export const addWalletAmount = (info, openBrowser, retries = 3) => {
+export const addWalletAmount = (
+  info,
+  openBrowser,
+  payment_mode,
+  retries = 3
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -122,6 +128,14 @@ export const addWalletAmount = (info, openBrowser, retries = 3) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_top_up_wallet`, {
+          source: "payment_mode",
+          source_action: "a_top_up_wallet",
+          top_up_amount: info.amount,
+          mode_of_payment: payment_mode,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success ? data.message : null
+        });
         return dispatch({
           type: actionTypes.ADD_WALLET_AMOUNT,
           payload: data
@@ -130,7 +144,22 @@ export const addWalletAmount = (info, openBrowser, retries = 3) => {
       .then(() => openBrowser())
       .catch(err => {
         // console.log("addWalletAmount Error: ", err.message || err.response);
-
+        analytics.track(`a_top_up_wallet`, {
+          source: "payment_mode",
+          source_action: "a_top_up_wallet",
+          top_up_amount: info.amount,
+          mode_of_payment: payment_mode,
+          action_status: "failure",
+          error_description:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         if (retries > 0) {
           dispatch(addWalletAmount(info, openBrowser, retries - 1));
           return;
@@ -340,7 +369,21 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
       .then(res => {
         return res.data;
       })
-      .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))
+      .then(data => {
+        analytics.track(`payment_processing`, {
+          source: "payment_mode",
+          source_action: "a_payment_processing",
+          mode_of_payment: "WALLET",
+          amount: data.amount,
+          campaign_id,
+          action_status: data.success ? "success" : "failure"
+        });
+        NavigationService.navigate("SuccessRedirect", {
+          ...data,
+          source: "payment_processing",
+          source_action: "a_payment_processing"
+        });
+      })
 
       .then(data => {
         // console.log("CHECKOUT_WITH_WALLET data", data);
@@ -352,6 +395,22 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
       .catch(err => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
+        analytics.track(`payment_processing`, {
+          source: "payment_mode",
+          source_action: "a_payment_processing",
+          mode_of_payment: "WALLET",
+          campaign_id,
+          action_status: "failure",
+          error_description:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         if (retries > 0) {
           checkoutwithWallet(campaign_id, retries - 1);
           return;
@@ -411,7 +470,20 @@ export const payment_request_knet = (
             payload: data
           });
         } else {
-          navigation.navigate("SuccessRedirect", data);
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "KNET",
+            campaign_id,
+            amount: data.amount,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing"
+          });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
             payload: data
@@ -473,7 +545,20 @@ export const payment_request_credit_card = (
             payload: data
           });
         } else {
-          navigation.navigate("SuccessRedirect", data);
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "CREDIT CARD",
+            amount: data.amount,
+            campaign_id,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing"
+          });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
             payload: data
