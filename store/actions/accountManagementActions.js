@@ -108,7 +108,17 @@ export const addressForm = (address, navigation, addressId, translate) => {
           businessid: getState().account.mainBusiness.businessid,
           ...address
         });
-
+        analytics.track(`a_business_address`, {
+          source: "open_business_address",
+          source_action: "a_business_address",
+          timestamp: new Date().getTime(),
+          new: true,
+          error_desctiption: !respData.data.success
+            ? respData.data.message
+            : null,
+          action_status: respData.data.success ? "success" : "failed",
+          ...address
+        });
         Animated.timing(time, {
           toValue: 1,
           duration: 2000
@@ -118,7 +128,11 @@ export const addressForm = (address, navigation, addressId, translate) => {
             type: respData.data.success ? "success" : "warning",
             position: "top"
           });
-          if (respData.data.success) navigation.goBack();
+          if (respData.data.success)
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address"
+            });
           return dispatch({
             type: actionTypes.ADD_ADDRESS,
             payload: respData.data
@@ -129,13 +143,27 @@ export const addressForm = (address, navigation, addressId, translate) => {
           toValue: 1,
           duration: 2000
         }).start(() => {
+          analytics.track(`a_business_address`, {
+            source: "open_business_address",
+            source_action: "a_business_address",
+            timestamp: new Date().getTime(),
+            new: false,
+            error_desctiption: !response.data.success
+              ? response.data.message
+              : null,
+            ...address,
+            action_status: response.data.success ? "success" : "failed"
+          });
           showMessage({
             message: translate(response.data.message),
             type: response.data.success ? "success" : "warning",
             position: "top"
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address"
+            });
           }
           return dispatch({
             type: actionTypes.ADD_ADDRESS,

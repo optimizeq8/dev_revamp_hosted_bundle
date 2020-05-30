@@ -203,7 +203,9 @@ export const login = (userData, navigation) => {
         if (getState().auth.userInfo) {
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
-              temp_pwd: true
+              temp_pwd: true,
+              source: "sign_in",
+              source_action: "a_sign_in"
             });
           } else {
             dispatch(
@@ -368,6 +370,13 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         const temPwd = navigation.getParam("temp_pwd", false);
         // if tempPwd change relogin for setting new auth token
         if (temPwd && response.data.success) {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message
+          });
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
@@ -400,13 +409,24 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           duration: 2000
           //   easing: Easing.linear
         }).start(() => {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message
+          });
+
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
             position: "top"
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "change_password",
+              source_action: "a_change_password"
+            });
           }
           return dispatch({
             type: actionTypes.CHANGE_PASSWORD,

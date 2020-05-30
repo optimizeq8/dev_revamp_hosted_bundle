@@ -299,7 +299,10 @@ class Menu extends Component {
               <TouchableOpacity
                 style={styles.options}
                 onPress={() =>
-                  this.handleNavigation("TransactionList", false, {})
+                  this.handleNavigation("TransactionList", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_transactions_list"
+                  })
                 }
               >
                 <Icons.TransactionIcon style={styles.icons} />
@@ -312,7 +315,10 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
-                  this.handleNavigation("ChangePassword", false, {})
+                  this.handleNavigation("ChangePassword", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_change_password"
+                  })
                 }
                 style={styles.options}
               >
@@ -326,7 +332,12 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("AddressForm", true, {})}
+                onPress={() =>
+                  this.handleNavigation("AddressForm", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info"
+                  })
+                }
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
