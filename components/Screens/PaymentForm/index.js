@@ -327,32 +327,32 @@ class PaymentForm extends Component {
   };
 
   handlePaymentFormFocus = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    const campaign_channel = this.props.navigation.getParam(
-      "campaign_channel",
-      this.props.screenProps.prevAppState
-    );
-    const campaign_ad_type = this.props.naviagtion.getParam(
-      "campaign_ad_type",
-      ""
-    );
-    analytics.track(`payment_mode`, {
-      source,
-      source_action,
-      campaign_id: this.props.campaign_id,
-      campaign_ad_type,
-      campaign_channel: this.state.addingCredits
-        ? "wallet_top_up"
-        : campaign_channel,
-      campaign_budget: this.props.campaign_budget,
-    });
+    // const source = this.props.navigation.getParam(
+    //   "source",
+    //   this.props.screenProps.prevAppState
+    // );
+    // const source_action = this.props.navigation.getParam(
+    //   "source_action",
+    //   this.props.screenProps.prevAppState
+    // );
+    // const campaign_channel = this.props.navigation.getParam(
+    //   "campaign_channel",
+    //   this.props.screenProps.prevAppState
+    // );
+    // const campaign_ad_type = this.props.naviagtion.getParam(
+    //   "campaign_ad_type",
+    //   ""
+    // );
+    // analytics.track(`payment_mode`, {
+    //   source,
+    //   source_action,
+    //   campaign_id: this.props.campaign_id,
+    //   campaign_ad_type,
+    //   campaign_channel: this.state.addingCredits
+    //     ? "wallet_top_up"
+    //     : campaign_channel,
+    //   campaign_budget: this.props.campaign_budget,
+    // });
     // if (this.state.addingCredits) {
     // Segment.screenWithProperties("Payment Selection", {
     //   category: "Wallet Top Up"

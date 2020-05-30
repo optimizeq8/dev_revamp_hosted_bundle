@@ -890,7 +890,7 @@ class AdDesign extends Component {
             this.onToggleModal,
             this.rejected,
             this.state.signal,
-            ...segmentInfo
+            segmentInfo
           );
         }
       } else {

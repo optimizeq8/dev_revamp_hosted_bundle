@@ -6,7 +6,7 @@ import {
   BackHandler,
   ScrollView
 } from "react-native";
-import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
 import * as Segment from "expo-analytics-segment";
@@ -68,6 +68,19 @@ class PersonalInfo extends Component {
       phoneNum: "+" + this.props.userInfo.mobile,
       valid: true,
       countryCode: countryCode
+    });
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_personal_details`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
     });
     Segment.screenWithProperties("Personal Info", {
       category: "User Menu"
@@ -147,12 +160,26 @@ class PersonalInfo extends Component {
           },
           this.props.navigation
         );
-      } else
+      } else {
+        analytics.track(`a_update_personal_info`, {
+          source: "open_personal_details",
+          source_action: "a_update_personal_info",
+          action_status: "failure",
+          error_description: "No changes to update"
+        });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
           position: "top"
         });
+      }
+    } else {
+      analytics.track(`a_update_personal_info`, {
+        source: "open_personal_details",
+        source_action: "a_update_personal_info",
+        action_status: "failure",
+        error_description: "Please complete required fields"
+      });
     }
   };
 
