@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   Platform,
   BackHandler,
+  Linking,
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
-import { Linking } from "expo";
 
 import { BlurView } from "expo-blur";
 import * as Segment from "expo-analytics-segment";

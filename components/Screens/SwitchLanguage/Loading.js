@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
-import { Updates } from "expo";
+import * as Updates from "expo-updates";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { ActivityIndicator } from "react-native-paper";
 import * as Segment from "expo-analytics-segment";
@@ -41,8 +41,8 @@ class SwitchLanguageLoading extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  languageChangeLoading: state.language.languageChangeLoading
+const mapStateToProps = (state) => ({
+  languageChangeLoading: state.language.languageChangeLoading,
 });
 
 export default connect(mapStateToProps, null)(SwitchLanguageLoading);
