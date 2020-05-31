@@ -668,7 +668,10 @@ class Dashboard extends Component {
                         <TouchableOpacity
                           style={styles.websiteCard}
                           onPress={() => {
-                            this.props.navigation.navigate("OptimizeWebsite");
+                            this.props.navigation.navigate("TutorialWeb", {
+                              source: "dashboard",
+                              source_action: "a_open_website_tutorial"
+                            });
                           }}
                         >
                           <LinearGradient

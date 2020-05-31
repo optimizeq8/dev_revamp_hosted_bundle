@@ -8,7 +8,7 @@ import {
   ScrollView,
   I18nManager
 } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
@@ -70,6 +70,20 @@ class OptimizeWebsite extends Component {
   };
   componentDidMount() {
     Segment.screen("Website Registration Detail");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_detail`, {
+      source,
+      source_action,
+      new: true,
+      timestamp: new Date().getTime()
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -81,6 +95,11 @@ class OptimizeWebsite extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeStep === 1 && this.state.activeStep === 2) {
       Segment.screen("Website Registration Product Select");
+      analytics.track(`my_website_products`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        timestamp: new Date().getTime()
+      });
     }
   }
 
@@ -205,6 +224,7 @@ class OptimizeWebsite extends Component {
           )}
           {activeStep === 2 && (
             <ProductSelect
+              source={"my_website_products"}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
             />

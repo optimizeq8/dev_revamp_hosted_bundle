@@ -113,7 +113,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
           source_action: "a_business_address",
           timestamp: new Date().getTime(),
           new: true,
-          error_desctiption: !respData.data.success
+          error_description: !respData.data.success
             ? respData.data.message
             : null,
           action_status: respData.data.success ? "success" : "failed",
@@ -148,7 +148,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
             source_action: "a_business_address",
             timestamp: new Date().getTime(),
             new: false,
-            error_desctiption: !response.data.success
+            error_description: !response.data.success
               ? response.data.message
               : null,
             ...address,
@@ -822,7 +822,14 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
             }
           });
         }
-
+        analytics.track(`a_submit_my_website_detail`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: submitNextStep ? true : false,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success && data.message,
+          ...info
+        });
         return data;
       })
       .then(data => {
@@ -831,7 +838,10 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
           segmentEventTrack("Successfully update website information");
-          NavigationService.navigateBack("MyWebsite");
+          NavigationService.navigateBack("MyWebsite", "MyWebsite", {
+            source: "my_website_detail",
+            source_action: "a_submit_my_website_detail"
+          });
         }
       })
       .catch(error => {

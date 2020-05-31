@@ -265,9 +265,15 @@ class Menu extends Component {
                     mainBusiness.weburl &&
                     mainBusiness.weburl !== ""
                   ) {
-                    this.props.navigation.navigate("MyWebsite");
+                    this.props.navigation.navigate("MyWebsite", {
+                      source: "open_hamburger",
+                      source_action: "a_open_my_website"
+                    });
                   } else {
-                    this.props.navigation.navigate("TutorialWeb");
+                    this.props.navigation.navigate("TutorialWeb", {
+                      source: "open_hamburger",
+                      source_action: "a_open_website_tutorial"
+                    });
                   }
                 }}
               >

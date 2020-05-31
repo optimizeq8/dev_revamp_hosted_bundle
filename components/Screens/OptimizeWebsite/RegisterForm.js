@@ -3,7 +3,7 @@ import { View, ScrollView, BackHandler, Text } from "react-native";
 import InputScrollView from "react-native-input-scroll-view";
 
 import { Item, Input } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -110,14 +110,36 @@ class RegisterForm extends Component {
         googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : ""
       };
       segmentEventTrack("Submit website regsiter", info);
+
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
+    } else {
+      analytics.track(`a_submit_my_website_detail`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        new: true,
+        action_status: "failure",
+        error_description:
+          this.props.errorInstaHandle ||
+          this.state.insta_handleError ||
+          this.state.googleMapLinkError
+      });
     }
   };
 
   _handleSubmissionUpdate = () => {
     const { translate } = this.props.screenProps;
     const valid = this.validate();
-    if (!valid) {
+    if (!valid || this.props.errorInstaHandle) {
+      analytics.track(`a_submit_my_website_detail`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        new: false,
+        action_status: "failure",
+        error_description:
+          this.props.errorInstaHandle ||
+          this.state.insta_handleError ||
+          this.state.googleMapLinkError
+      });
       segmentEventTrack("Error on Submit update website information", {
         error_insta_handle:
           this.props.errorInstaHandleMessage || this.state.insta_handleError,
@@ -168,12 +190,20 @@ class RegisterForm extends Component {
         };
         segmentEventTrack("Submit update website information", info);
         this.props.updateWebInfoForBusiness(info, false);
-      } else
+      } else {
+        analytics.track(`a_submit_my_website_detail`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: false,
+          action_status: "failure",
+          error_description: "No changes to update"
+        });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
           position: "top"
         });
+      }
     }
   };
 
