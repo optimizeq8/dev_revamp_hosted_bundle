@@ -481,9 +481,12 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.push("MessengerLoading")
-                    }
+                    onPress={() => {
+                      this.props.navigation.push("MessengerLoading", {
+                        source: "dashboard",
+                        source_action: "a_help"
+                      });
+                    }}
                     style={[styles.headerIcons]}
                   >
                     {this.props.unread_converstaion === 0 ? (

@@ -1041,9 +1041,26 @@ class AdDesign extends Component {
 
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
+    analytics.track(`a_help`, {
+      source: "ad_design",
+      source_action: "a_help",
+      support_type: "optimize_website",
+    });
+    analytics.track(`open_support`, {
+      source: "ad_design",
+      source_action: "a_help",
+      support_type: "optimize_website",
+      timestamp: new Date().getTime(),
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      campaign_id: this.props.data.campaign_id,
+    });
+
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
+      source: "ad_design",
+      source_action: "a_help",
     });
   };
   handleDownloadMediaCollectionAds = async (

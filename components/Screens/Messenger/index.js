@@ -12,6 +12,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import socketIOClient from "socket.io-client";
 import { Content } from "native-base";
@@ -79,6 +80,23 @@ class Messenger extends Component {
     };
   }
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`open_support`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id
+    });
+
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     socket.connect();
     this.props.subscribe(socket);

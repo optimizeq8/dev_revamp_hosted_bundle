@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, BackHandler } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import { Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import LottieView from "lottie-react-native";
 import { showMessage } from "react-native-flash-message";
 
@@ -23,6 +23,23 @@ class LoadingChatScreen extends React.Component {
     };
   }
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`open_support`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id
+    });
+
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -53,11 +70,6 @@ class LoadingChatScreen extends React.Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen("Support");
-          }}
-        />
         <Container style={[styles.container]}>
           <CustomHeader
             screenProps={this.props.screenProps}
@@ -77,8 +89,36 @@ class LoadingChatScreen extends React.Component {
               autoPlay
               onAnimationFinish={() => {
                 if (this.state.loading) {
-                  this.props.navigation.navigate("Messenger");
+                  analytics.track(`a_help`, {
+                    source: this.props.navigation.getParam(
+                      "source",
+                      this.props.screenProps.prevAppState
+                    ),
+                    source_action: "a_help",
+                    action_status: "success",
+                    support_type: "intercom"
+                  });
+                  this.props.navigation.navigate("Messenger", {
+                    source: this.props.navigation.getParam(
+                      "source",
+                      this.props.screenProps.prevAppState
+                    ),
+                    source_action: this.props.navigation.getParam(
+                      "source_action",
+                      this.props.screenProps.prevAppState
+                    )
+                  });
                 } else {
+                  analytics.track(`a_help`, {
+                    source: this.props.navigation.getParam(
+                      "source",
+                      this.props.screenProps.prevAppState
+                    ),
+                    source_action: "a_help",
+                    action_status: "failure",
+                    support_type: "intercom",
+                    error_description: "Something went wrong"
+                  });
                   showMessage({
                     message: translate("Something went wrong!"),
                     type: "warning",
@@ -117,7 +157,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.connect_user_to_intercom(user_id))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoadingChatScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingChatScreen);

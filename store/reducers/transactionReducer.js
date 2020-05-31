@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-
+import analytics from "@segment/analytics-react-native";
 const initialState = {
   campaign_id: "",
   campaign_payment_data: null,
@@ -153,6 +153,15 @@ const reducer = (state = initialState, action) => {
             return transaction;
         });
       }
+      analytics.track(`a_filter`, {
+        source: "open_transactions",
+        source_action: "a_filter",
+        no_of_results: filtered && filtered.length,
+        filter_type: "transaction",
+        keywords: action.payload.value,
+        start_date: startSearch,
+        end_date: endSearch
+      });
       return {
         ...state,
         transactionValue: action.payload.value,
