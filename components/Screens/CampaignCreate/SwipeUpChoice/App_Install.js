@@ -246,39 +246,35 @@ class App_Install extends Component {
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
+        style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}
       >
-        <Container style={styles.container}>
-          <View style={styles.appInstallContent}>
-            <AppInstallIcon
-              width={widthPercentageToDP(18)}
-              height={heightPercentageToDP(10)}
-              style={styles.icon}
-            />
-            <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>{translate("App Install")}</Text>
-              <Text style={styles.subtext}>
-                {translate(
-                  "Send Snapchatters to the app store to download your app"
-                )}
-              </Text>
-            </View>
-            <AppChoice
-              handleCallaction={this.handleCallaction}
-              listNum={1}
-              selectApp={this.selectApp}
-              navigation={this.props.navigation}
-              deepLink={false}
-              attachment={this.state.attachment}
-              callaction={this.state.callaction}
-              _handleSubmission={this._handleSubmission}
-              screenProps={this.props.screenProps}
-              appChoice={this.state.appChoice}
-              appSelections={{ iosAppSelected, androidAppSelected }}
-              setTheState={this.setTheState}
-            />
-          </View>
-        </Container>
+        <AppInstallIcon
+          width={widthPercentageToDP(18)}
+          height={heightPercentageToDP(10)}
+          style={styles.icon}
+        />
+        <View style={styles.textcontainer}>
+          <Text style={styles.titletext}>{translate("App Install")}</Text>
+          <Text style={styles.subtext}>
+            {translate(
+              "Send Snapchatters to the app store to download your app"
+            )}
+          </Text>
+        </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          listNum={1}
+          selectApp={this.selectApp}
+          navigation={this.props.navigation}
+          deepLink={false}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          _handleSubmission={this._handleSubmission}
+          screenProps={this.props.screenProps}
+          appChoice={this.state.appChoice}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </SafeAreaView>
     );
   }

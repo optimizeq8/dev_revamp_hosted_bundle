@@ -18,11 +18,12 @@ export default class WebsiteComponent extends React.Component {
   };
   validateUrl = () => {
     const { translate } = this.props.screenProps;
-    const { stateName, register } = this.props;
+    const { stateName, register, deepLink } = this.props;
     const urlError = validateWrapper(
-      register ? "url" : "website",
+      deepLink ? "deepLink" : register ? "url" : "website",
       this.props.website
     );
+    console.log("urlError", urlError);
 
     this.props.getValidInfo &&
       this.props.getValidInfo(stateName + "Error", urlError);
@@ -30,11 +31,18 @@ export default class WebsiteComponent extends React.Component {
       const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
 
       showMessage({
-        message: register
+        message: deepLink
+          ? translate("Invalid deep link URL")
+          : register
           ? translate("Please enter a valid URL")
           : !this.props.website.match(regex)
           ? "Please enter a valid url"
           : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+        description: deepLink
+          ? translate(
+              "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+            )
+          : "",
         type: "warning",
         position: "top",
         duration: 7000
@@ -62,7 +70,9 @@ export default class WebsiteComponent extends React.Component {
       stateNameError,
       optional,
       setNetworkString,
-      disabled
+      disabled,
+      label = "Website",
+      placeholder = "Enter your website's URL"
     } = this.props;
     return (
       <Animatable.View
@@ -89,7 +99,7 @@ export default class WebsiteComponent extends React.Component {
                   : GlobalStyles.whiteTextColor
               ]}
             >
-              {translate("Website")}
+              {translate(label)}
               {optional && "(" + translate("optional") + ")"}
             </Text>
             <Input
@@ -102,7 +112,7 @@ export default class WebsiteComponent extends React.Component {
               }}
               disabled={disabled}
               onFocus={this.focusFeild}
-              placeholder={translate(`Enter your website's URL`)}
+              placeholder={translate(placeholder)}
               placeholderTextColor={globalColors.white}
               value={this.props.website}
               autoCorrect={false}

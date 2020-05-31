@@ -14,10 +14,12 @@ import { showMessage } from "react-native-flash-message";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
+import WindowIcon from "../../../../assets/SVGs/Window";
 
 // Style
 import styles from "./styles";
@@ -223,6 +225,21 @@ class Long_Form_Video extends Component {
       );
     }
   };
+  getValidInfo = (stateError, validObj) => {
+    let state = {};
+    state[stateError] = validObj;
+    this.setState({
+      ...state,
+    });
+  };
+  openCallToActionModal = () => {
+    segmentEventTrack("Button Clicked to open Call to action Modal");
+    this.setState({ inputCallToAction: true }, () => {
+      if (this.state.inputCallToAction) {
+        Segment.screen("Call to Action Modal");
+      }
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -318,32 +335,35 @@ class Long_Form_Video extends Component {
             screenName={"Long form video"}
             closeCategoryModal={this.closeCallToActionModal}
           />
-          <View style={[styles.callToActionLabelView]}>
-            <Text uppercase style={[styles.inputLabel]}>
-              {translate("call to action")}
-            </Text>
-          </View>
-          <Item
-            onPress={() => {
-              segmentEventTrack("Button Clicked to open Call to action Modal");
-              this.setState({ inputCallToAction: true }, () => {
-                if (this.state.inputCallToAction) {
-                  Segment.screen("Call to Action Modal");
-                }
-              });
-            }}
-            rounded
-            style={styles.input}
-          >
-            <Text style={styles.callActionLabel}>
-              {this.state.callaction === ""
+          <ModalField
+            stateName={"callToAction"}
+            setModalVisible={this.openCallToActionModal}
+            modal={true}
+            label={"call to action"}
+            valueError={this.state.callToActionError}
+            getValidInfo={this.getValidInfo}
+            disabled={false}
+            valueText={
+              this.state.callaction === ""
                 ? this.state.callactions[0].label
                 : this.state.callactions.find(
                     (c) => this.state.callaction.value === c.value
-                  ).label}
-            </Text>
-            <Icon type="AntDesign" name="down" style={styles.downArrowIcon} />
-          </Item>
+                  ).label
+            }
+            value={
+              this.state.callaction === ""
+                ? this.state.callactions[0].label
+                : this.state.callactions.find(
+                    (c) => this.state.callaction.value === c.value
+                  ).label
+            }
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={WindowIcon}
+            isVisible={this.state.inputCallToAction}
+            isTranslate={false}
+          />
+
           <Modal isVisible={this.state.videoLoading}>
             <LoadingScreen top={50} />
           </Modal>
