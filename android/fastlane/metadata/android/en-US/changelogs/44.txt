@@ -1,0 +1,6 @@
+New Website form creation:
+- We've redesigned a new screen for easier website creation and customization for your convenience.
+
+New dashboard design for first time registered users.
+
+Various bugs and fixes.

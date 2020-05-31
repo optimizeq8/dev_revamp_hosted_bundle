@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { Linking, Notifications } from "expo";
+import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as WebBrowser from "expo-web-browser";
 import * as Segment from "expo-analytics-segment";
@@ -15,6 +15,7 @@ import {
   BackHandler,
   Image as RNImage,
   I18nManager,
+  Linking,
 } from "react-native";
 import { Content, Text, Container, Footer, Button } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -28,7 +29,6 @@ import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
@@ -142,7 +142,7 @@ class AdDesign extends Component {
     );
   }
   async componentDidMount() {
-    this._notificationSubscription = Notifications.addListener(
+    this._notificationSubscription = Notifications.addNotificationReceivedListener(
       this._handleNotification
     );
 
@@ -174,9 +174,7 @@ class AdDesign extends Component {
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        const pkg = Constants.manifest.releaseChannel
-          ? Constants.manifest.android.package // When published, considered as using standalone build
-          : "host.exp.exponent"; // In expo client mode
+        const pkg = "com.optimizeapp.optimizeapp"; // In expo client mode
 
         showMessage({
           message: translate(
