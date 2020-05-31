@@ -19,10 +19,10 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="SplashScreen" image="SplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="wgW-f2-oKj">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.72862934140000002" green="0.0" blue="0.90281360610000005" alpha="0.82254773520000002" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.72862934140000002" green="0.0" blue="0.90281360610000005" alpha="0.82254773520000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.46453756089999998" green="0.0" blue="0.89809375999999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>
                 </viewController>
@@ -32,6 +32,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SplashScreen" width="562.5" height="1218"/>
+        <image name="SplashScreen" width="540" height="960"/>
     </resources>
 </document>

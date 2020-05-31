@@ -1,7 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
@@ -18,6 +18,7 @@ import {
   AsyncStorage,
   ActivityIndicator,
   Linking,
+  Dimensions,
 } from "react-native";
 import segmentEventTrack from "./components/segmentEventTrack";
 
@@ -130,6 +131,9 @@ class App extends React.Component {
       isAppReady: false,
       currentScreen: "",
       appState: AppState.currentState,
+      translateY: new Animated.Value(1),
+      bootSplashIsVisible: true,
+      bootSplashLogoIsLoaded: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
@@ -166,8 +170,7 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   async componentDidMount() {
-    RNBootSplash.hide({ duration: 250 });
-
+    RNBootSplash.hide({ duration: 350 });
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
@@ -313,44 +316,68 @@ class App extends React.Component {
       <ActivityIndicator size="large" />
     </View>
   );
+
+  anim = () => {
+    // Animated.stagger(250, [
+    //   Animated.spring(this.state.translateY, {
+    //     useNativeDriver,
+    //     toValue: -50,
+    //   }),
+    //  ,
+    // ]).start();
+    Animated.timing(this.state.translateY, {
+      toValue: heightPercentageToDP(100),
+      // duration: 1000,
+    }).start(() => {
+      this.setState({ isLoadingComplete: true });
+    });
+    console.log(this.state.translateY);
+  };
   render() {
     if (!this.state.isLoadingComplete) {
       return (
         <>
-          <View
-            style={{ height: "100%", width: "100%", backgroundColor: "red" }}
+          <LinearGradient
+            colors={["#6200FF", "#8900FF"]}
+            locations={[1, 0.3]}
+            style={styles.gradient}
           />
+          <View
+            style={{
+              height: "100%",
+              width: "100%",
+              justifyContent: "center",
+              backgroundColor: "#0000",
+            }}
+          >
+            <Animated.Image
+              source={require("./assets/logo.png")}
+              style={{
+                width: "35%",
+                height: "35%",
+                // position: "absolute",
+                alignSelf: "center",
+                resizeMode: "contain",
+                top: 10,
+                transform: [
+                  {
+                    translateY: this.state.translateY,
+                  },
+                ],
 
-          {/* <View
+                // opacity: this.state.splashAnimation
+              }}
+              fadeDuration={0}
+              onLoadEnd={() => this.setState({ bootSplashLogoIsLoaded: true })}
+            />
+            {/* <View
             style={{
               flex: 1
             }}
           >
-            <Image
-              source={require("./assets/images/splash.png")}
-              style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                resizeMode: "cover"
-                // opacity: this.state.splashAnimation.interpolate({
-                //   inputRange: [0, 1],
-                //   outputRange: [0, 1]
-                // })
-              }}
-              onLoadEnd={() => {
-                // wait for image's content to fully load [`Image#onLoadEnd`] (https://facebook.github.io/react-native/docs/image#onloadend)
-                console.log("Image#onLoadEnd: hiding SplashScreen");
-                SplashScreen.hide(); // Image is fully presented, instruct SplashScreen to hide
-              }}
-              fadeDuration={0}
-            />
           </View>
          */}
+          </View>
         </>
       );
     }
@@ -588,7 +615,7 @@ class App extends React.Component {
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       }),
-    ]);
+    ]).then(() => this.anim());
   };
 
   _handleLoadingError = (error) => {
@@ -598,7 +625,7 @@ class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
+    // this.setState({ isLoadingComplete: true });
   };
 }
 

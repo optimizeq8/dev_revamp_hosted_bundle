@@ -37,7 +37,6 @@
     "expo-splash-screen": "^0.2.3",
     "expo-updates": "^0.2.5",
     "expo-web-browser": "~8.2.1",
-    "expokit": "36.0.1",
     "global": "^4.4.0",
     "i18n-js": "^3.3.0",
     "jwt-decode": "^2.2.0",
