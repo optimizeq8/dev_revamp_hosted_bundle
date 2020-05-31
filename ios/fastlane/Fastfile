@@ -19,8 +19,8 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     match(type: 'appstore', readonly: true)
-    increment_build_number(xcodeproj: "optimizeapp.xcodeproj")
-    build_app(workspace: "optimizeapp.xcworkspace", scheme: "optimizeapp",
+    increment_build_number(xcodeproj: "OptimizeApp.xcodeproj")
+    build_app(workspace: "OptimizeApp.xcworkspace", scheme: "OptimizeApp",
       clean: true,
     )
     upload_to_testflight

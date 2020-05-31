@@ -1,4 +1,4 @@
-git_url("https://github.com/optimizeq8/OptimizeApp-ios-certs")
+git_url("https://github.com/optimizeq8/OptimizeApp-ios-certs.git")
 
 storage_mode("git")
 
