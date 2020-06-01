@@ -423,6 +423,17 @@ class AdDesign extends Component {
         ),
       },
     });
+    analytics.track(`a_edit_business_name`, {
+      source: "ad_design",
+      source_action: "a_edit_business_name",
+      campaign_brand_name: brand_name.replace(
+        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+        ""
+      ),
+      timestamp: new Date().getTime(),
+      campaign_ad_type: this.props.adType,
+      campaign_channel: "snapchat",
+    });
     !this.rejected &&
       this.props.save_campaign_info({
         brand_name: brand_name.replace("@", ""),
@@ -437,6 +448,17 @@ class AdDesign extends Component {
           ""
         ),
       },
+    });
+    analytics.track(`a_edit_promotional_message`, {
+      source: "ad_design",
+      source_action: "a_edit_promotional_message",
+      campaign_headline: headline.replace(
+        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+        ""
+      ),
+      timestamp: new Date().getTime(),
+      campaign_ad_type: this.props.adType,
+      campaign_channel: "snapchat",
     });
     !this.rejected &&
       this.props.save_campaign_info({ headline: headline.replace("@", "") });

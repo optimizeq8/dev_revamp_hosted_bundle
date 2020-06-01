@@ -135,7 +135,11 @@ class GoogleCampaignDetails extends Component {
       this.props.selectedCampaign.campaign.id,
       start_time,
       end_time,
-      true
+      true,
+      {
+        source: "campaign_details",
+        source_action: "a_change_campaign_duration"
+      }
     );
   };
 

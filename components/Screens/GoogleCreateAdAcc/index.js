@@ -39,7 +39,7 @@ class GoogleCreateAdAcc extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`terms_and_condition`, {
+    analytics.track(`ad_TNC`, {
       source,
       source_action,
       campaign_channel: "google",

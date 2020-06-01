@@ -23,7 +23,7 @@ class AcceptTermsConditionLoading extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`terms_and_condition_loading`, {
+    analytics.track(`ad_TNC_loading`, {
       source,
       source_action,
       campaign_channel: "snapchat",
@@ -38,8 +38,8 @@ class AcceptTermsConditionLoading extends Component {
       this.props.mainBusiness.snap_ad_account_id
     ) {
       this.props.navigation.navigate("AdObjective", {
-        source: "terms_and_condition_loading",
-        source_action: "a_accept_terms_and_condition"
+        source: "ad_TNC_loading",
+        source_action: "a_accept_ad_TNC"
       });
     }
   }

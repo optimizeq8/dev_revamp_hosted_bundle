@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import store from "../../../../../store";
 export const _handleSubmission = async (
   adType,
@@ -18,9 +19,9 @@ export const _handleSubmission = async (
   if (adType === "StoryAd") {
     //Break down to different functions
 
-    validStoryAds = storyAdsArray.filter((ad) => ad.media !== "//" && ad.media);
+    validStoryAds = storyAdsArray.filter(ad => ad.media !== "//" && ad.media);
     if (
-      !validStoryAds.every((ad) => ad.uploaded) ||
+      !validStoryAds.every(ad => ad.uploaded) ||
       storyAdCards.storyAdSelected ||
       storyAdAttachChanged
     ) {
@@ -51,9 +52,9 @@ export const _handleSubmission = async (
         validator() &&
         (validStoryAds.length >= 3 ||
           storyAdAttachChanged ||
-          !validStoryAds.every((ad) => ad.uploaded))
+          !validStoryAds.every(ad => ad.uploaded))
       ) {
-        await validStoryAds.forEach((ad) => {
+        await validStoryAds.forEach(ad => {
           formatStoryAdParams.handleUpload();
           if (!ad.uploaded || storyAdAttachChanged)
             formatStoryAd(
@@ -107,7 +108,7 @@ export const formatMedia = (
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
   if (fileReadyToUpload && adType === "StoryAd") {
-    storyAd = storyAdsArray.find((card) => {
+    storyAd = storyAdsArray.find(card => {
       if (card && card.media !== "//" && !card.media.includes("https://"))
         cardMedia = card.media;
       if (card && card.media !== "//" && card.media.includes("https://"))
@@ -211,6 +212,16 @@ export const _changeDestination = (
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
+    analytics.track(`a_swipe_up_destination`, {
+      source: "swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: attachment,
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+    });
     if (whatsAppCampaign) {
       !store.getState().dashboard.rejCampaign &&
         save_campaign_info({
@@ -239,6 +250,19 @@ export const _changeDestination = (
       [Object.keys(attachment)[0]]: attachment.longformvideo_media,
       [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
     };
+    analytics.track(`a_swipe_up_destination`, {
+      source: "swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: {
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+      },
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+    });
     setTheState(newData);
 
     !store.getState().dashboard.rejCampaign &&
@@ -258,6 +282,21 @@ export const _changeDestination = (
       appChoice,
       swipeUpError: null,
     };
+
+    analytics.track(`a_swipe_up_destination`, {
+      source: "swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: {
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+      },
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+      campaign_app_choice: appChoice,
+    });
     if (whatsAppCampaign) {
       newData = {
         ...newData,

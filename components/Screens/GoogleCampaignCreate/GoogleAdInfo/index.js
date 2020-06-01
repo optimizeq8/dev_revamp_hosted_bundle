@@ -133,7 +133,7 @@ class GoogleAdInfo extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    if (source === "terms_and_condition") {
+    if (source === "ad_TNC") {
       this.props.navigation.navigate("AdType", {
         source: "ad_objective",
         source_action: "a_go_back"

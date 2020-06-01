@@ -374,7 +374,7 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/privacy",
                     title: "Privacy Policy",
-                    source: "open_hamburger",
+                    source: "app_privacy_policy",
                     source_action: "a_open_app_privacy_policy"
                   })
                 }
@@ -398,8 +398,8 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/terms_conditions",
                     title: "Terms & Conditions",
-                    source: "open_hamburger",
-                    source_action: "a_open_app_terms_and_conditions"
+                    source: "app_TNC",
+                    source_action: "a_open_app_TNC"
                   })
                 }
               >

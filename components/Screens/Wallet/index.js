@@ -95,7 +95,7 @@ class Wallet extends Component {
   handleModalVisibility = () => {
     this.setState({ modalVisible: !this.state.modalVisible }, () => {
       if (this.state.modalVisible) {
-        analytics.track(`wallet_top_up_modal`, {
+        analytics.track(`add_top_up_wallet`, {
           source: "open_wallet",
           source_action: "a_open_wallet_top_up_modal",
           timestamp: new Date().getTime()

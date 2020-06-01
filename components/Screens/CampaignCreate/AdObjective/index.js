@@ -231,7 +231,7 @@ class AdObjective extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    if (source === "terms_and_condition_loading") {
+    if (source === "ad_TNC_loading") {
       this.props.navigation.navigate("AdType", {
         source: "ad_objective",
         source_action: "a_go_back"
@@ -419,6 +419,7 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
+
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info({ name: value });
   };

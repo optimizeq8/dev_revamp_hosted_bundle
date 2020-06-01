@@ -22,10 +22,17 @@ class GoogleCampaignCard extends Component {
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,
       this.props.campaign.start_time,
-      this.props.campaign.end_time
+      this.props.campaign.end_time,
+      false,
+      {
+        source: "dashboard",
+        source_action: "a_open_campaign_details"
+      }
     );
     this.props.navigation.navigate("GoogleCampaignDetails", {
-      campaign: this.props.campaign
+      campaign: this.props.campaign,
+      source: "dashboard",
+      source_action: "a_open_campaign_details"
     });
     Segment.trackWithProperties("Pressed Google Campaign Card", {
       campaign_id: this.props.campaign.campaign_id
@@ -213,9 +220,21 @@ class GoogleCampaignCard extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  get_google_campiagn_details: (id, start_time, end_time) =>
+  get_google_campiagn_details: (
+    id,
+    start_time,
+    end_time,
+    getStats,
+    segmentInfo
+  ) =>
     dispatch(
-      actionCreators.get_google_campiagn_details(id, start_time, end_time)
+      actionCreators.get_google_campiagn_details(
+        id,
+        start_time,
+        end_time,
+        getStats,
+        segmentInfo
+      )
     )
 });
 export default connect(null, mapDispatchToProps)(GoogleCampaignCard);

@@ -4,9 +4,10 @@ import {
   TouchableOpacity,
   Image,
   BackHandler,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Content, Text, Container } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -36,7 +37,7 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -44,7 +45,7 @@ class SwipeUpDestination extends Component {
       media: "",
       sidemenustate: false,
       selected: "",
-      attachmentOptions: attachmentOptionData
+      attachmentOptions: attachmentOptionData,
     };
     this.adType = this.props.adType;
   }
@@ -58,10 +59,29 @@ class SwipeUpDestination extends Component {
   componentDidMount() {
     Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
       category: "Campaign Creation",
-      channel: "snapchat"
+      channel: "snapchat",
     });
     let media = this.props.navigation.getParam("media", "");
     let destination = this.props.navigation.getParam("destination", false);
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_ad_type = this.props.navigation.getParam(
+      "adType",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`swipe_up_destionation`, {
+      source,
+      destination,
+      source_action,
+      campaign_channel: "snapchat",
+      campaign_ad_type,
+    });
     let storyAdAttachment = this.props.storyAdAttachment;
     this.setState({
       media,
@@ -82,20 +102,20 @@ class SwipeUpDestination extends Component {
         : //if there is no campaign data then check for rejection process's campaign data
         this.props.rejCampaign && this.props.rejCampaign.destination
         ? this.props.rejCampaign.destination
-        : ""
+        : "",
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   toggleSideMenu = () => {
     this.setState({
-      sidemenustate: false
+      sidemenustate: false,
     });
   };
   handleChoice = value => {
     this.setState(
       {
         selected: value,
-        sidemenustate: true
+        sidemenustate: true,
       },
       () => {
         Segment.trackWithProperties("Selected " + value + " Swipeup", {
@@ -104,7 +124,7 @@ class SwipeUpDestination extends Component {
           label: this.props.data
             ? this.props.data.objective
             : this.props.navigation.getParam("objective", "objective") +
-              " Objective"
+              " Objective",
         });
       }
     );
@@ -216,7 +236,7 @@ class SwipeUpDestination extends Component {
                     "Snap Ad Traffic SwipeUp Selection",
                     {
                       category: "Campaign Creation",
-                      channel: "snapchat"
+                      channel: "snapchat",
                     }
                   );
                 });
@@ -225,13 +245,13 @@ class SwipeUpDestination extends Component {
                   Segment.screenWithProperties("Snap Ad Website SwipeUp", {
                     category: "Campaign Creation",
                     channel: "snapchat",
-                    label: "Traffic Objective"
+                    label: "Traffic Objective",
                   });
                 else
                   Segment.screenWithProperties("Snap Ad Deep link SwipeUp", {
                     category: "Campaign Creation",
                     channel: "snapchat",
-                    label: "Traffic Objective"
+                    label: "Traffic Objective",
                   });
               }
             }}
@@ -275,7 +295,7 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 const mapDispatchToProps = dispatch => ({});

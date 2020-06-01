@@ -102,23 +102,6 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track(`dashboard`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      userId:
-        (this.props.userInfo && this.props.userInfo.userid) ||
-        this.props.screenProps.anonymous_userId,
-      device_id: this.props.screenProps.device_id
-    });
     if (
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
@@ -378,6 +361,25 @@ class Dashboard extends Component {
       ).label;
     }
     return businesscategoryName;
+  };
+
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`dashboard`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id
+    });
+    // Segment.screen("Dashboard");
+    this.props.setCampaignInProgress(false);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -762,12 +764,7 @@ class Dashboard extends Component {
                   </Sidemenu>
                 </Container>
               )}
-              <NavigationEvents
-                onDidFocus={() => {
-                  Segment.screen("Dashboard");
-                  this.props.setCampaignInProgress(false);
-                }}
-              />
+              <NavigationEvents onDidFocus={this.onDidFocus} />
             </Animatable.View>
 
             <Animatable.View

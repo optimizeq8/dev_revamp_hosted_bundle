@@ -616,7 +616,7 @@ class PaymentForm extends Component {
                   url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions",
                   source: "payment_mode",
-                  source_action: "a_open_app_terms_and_conditions"
+                  source_action: "a_open_app_TNC"
                 })
               }
               disabled={this.state.choice === 1 && this.props.wallet === "0"}
@@ -634,7 +634,7 @@ class PaymentForm extends Component {
                       url: "https://www.optimizeapp.com/terms_conditions",
                       title: "Terms & Conditions",
                       source: "payment_mode",
-                      source_action: "a_open_app_terms_and_conditions"
+                      source_action: "a_open_app_TNC"
                     });
                     // this.setState({ browserLoading: true });
                     // openTerms(this.closeBrowserLoading);

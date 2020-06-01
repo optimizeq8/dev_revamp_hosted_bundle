@@ -43,7 +43,7 @@ class SnapchatCreateAdAcc extends Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`terms_and_condition`, {
+    analytics.track(`ad_TNC`, {
       source,
       source_action,
       campaign_channel: "snapchat",
@@ -124,8 +124,8 @@ class SnapchatCreateAdAcc extends Component {
                   this.props.navigation.navigate(
                     "AcceptTermsConditionLoading",
                     {
-                      source: "terms_and_condition",
-                      source_action: "a_accept_terms_and_condition"
+                      source: "ad_TNC",
+                      source_action: "a_accept_ad_TNC"
                     }
                   );
                   this.props.create_snapchat_ad_account(

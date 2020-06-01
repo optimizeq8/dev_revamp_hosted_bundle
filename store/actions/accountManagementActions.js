@@ -235,9 +235,9 @@ export const create_snapchat_ad_account = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        analytics.track(`a_accept_terms_and_condition`, {
-          source: "terms_and_condition",
-          source_action: "a_accept_terms_and_condition",
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
           campaign_channel: "snapchat",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
@@ -269,12 +269,12 @@ export const create_snapchat_ad_account = (id, navigation) => {
         //   err.message || err.response
         // );
         analytics.track(`a_error`, {
-          error_page: "terms_and_condition",
+          error_page: "ad_TNC",
           action_status: "failure",
           campaign_channel: "snapchat",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          source_action: "a_accept_terms_and_condition",
+          source_action: "a_accept_ad_TNC",
           error_description:
             err.message ||
             err.response ||

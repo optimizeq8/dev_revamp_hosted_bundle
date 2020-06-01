@@ -36,9 +36,9 @@ export const create_google_ad_account = (info, navigation) => {
         return res.data;
       })
       .then(data => {
-        analytics.track(`a_accept_terms_and_condition`, {
-          source: "terms_and_condition",
-          source_action: "a_accept_terms_and_condition",
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
           campaign_channel: "google",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
@@ -68,18 +68,18 @@ export const create_google_ad_account = (info, navigation) => {
       .then(data => {
         if (!data.error)
           navigation.navigate("GoogleAdInfo", {
-            source: "terms_and_condition",
-            source_action: "a_accept_terms_and_condition"
+            source: "ad_TNC",
+            source_action: "a_accept_ad_TNC"
           });
       })
       .catch(err => {
         analytics.track(`a_error`, {
-          error_page: "terms_and_condition",
+          error_page: "ad_TNC",
           action_status: "failure",
           campaign_channel: "google",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          source_action: "a_accept_terms_and_condition",
+          source_action: "a_accept_ad_TNC",
           error_description:
             err.message ||
             err.response ||
@@ -472,7 +472,8 @@ export const get_google_campiagn_details = (
   id,
   start_time,
   end_time,
-  getStats = false
+  getStats = false,
+  segmentInfo
 ) => {
   return (dispatch, getState) => {
     if (getStats)
@@ -497,6 +498,14 @@ export const get_google_campiagn_details = (
       })
       .then(data => {
         // added to handle in case of error
+        analytics.track(`a_open_campaign_details`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_id: id,
+          campaign_type: "google",
+          campaign_ad_type: "GoogleSEAd",
+          error_description: data.error
+        });
         if (data.error) {
           showMessage({
             message: data.error,

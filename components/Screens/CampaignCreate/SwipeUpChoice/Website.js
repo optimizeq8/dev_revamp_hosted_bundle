@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  BackHandler,
-  ScrollView,
-  TouchableOpacity,
-  I18nManager
-} from "react-native";
+import { View, BackHandler, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -160,7 +154,10 @@ class Website extends Component {
       segmentEventTrack("Submitted Website SwipeUp Success", {
         campaign_website_url: this.state.campaignInfo.attachment
       });
-      this.props.navigation.navigate("AdDesign");
+      this.props.navigation.navigate("AdDesign", {
+        source: "swipe_up_destination",
+        source_action: "a_swipe_up_destination"
+      });
     }
   };
   onSelectedCallToActionIdChange = value => {

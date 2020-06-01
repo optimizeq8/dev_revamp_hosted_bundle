@@ -191,7 +191,11 @@ class Long_Form_Video extends Component {
         longformvideo_media: this.state.longformvideo_media,
         longformvideo_media_type: this.state.longformvideo_media_type
       });
-      this.props.navigation.navigate("AdDesign");
+
+      this.props.navigation.navigate("AdDesign", {
+        source: "swipe_up_destination",
+        source_action: "a_swipe_up_destination"
+      });
     }
   };
 

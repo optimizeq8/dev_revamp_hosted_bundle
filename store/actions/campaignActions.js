@@ -655,6 +655,14 @@ export const updateStatus = (info, handleToggle) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status"
+        });
         handleToggle(data.status);
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -680,6 +688,14 @@ export const endCampaign = (info, handleToggle) => {
       })
       .then(data => {
         handleToggle(data.status);
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status"
+        });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
         }
