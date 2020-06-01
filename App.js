@@ -331,7 +331,6 @@ class App extends React.Component {
     }).start(() => {
       this.setState({ isLoadingComplete: true });
     });
-    console.log(this.state.translateY);
   };
   render() {
     if (!this.state.isLoadingComplete) {
@@ -342,41 +341,21 @@ class App extends React.Component {
             locations={[1, 0.3]}
             style={styles.gradient}
           />
-          <View
-            style={{
-              height: "100%",
-              width: "100%",
-              justifyContent: "center",
-              backgroundColor: "#0000",
-            }}
-          >
+          <View style={styles.logoContainer}>
             <Animated.Image
               source={require("./assets/logo.png")}
-              style={{
-                width: "35%",
-                height: "35%",
-                // position: "absolute",
-                alignSelf: "center",
-                resizeMode: "contain",
-                top: 10,
-                transform: [
-                  {
-                    translateY: this.state.translateY,
-                  },
-                ],
-
-                // opacity: this.state.splashAnimation
-              }}
+              style={[
+                styles.logo,
+                // {
+                //   transform: [
+                //     {
+                //       translateY: this.state.translateY,
+                //     },
+                //   ],
+                // },
+              ]}
               fadeDuration={0}
-              onLoadEnd={() => this.setState({ bootSplashLogoIsLoaded: true })}
             />
-            {/* <View
-            style={{
-              flex: 1
-            }}
-          >
-          </View>
-         */}
           </View>
         </>
       );
@@ -615,7 +594,10 @@ class App extends React.Component {
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       }),
-    ]).then(() => this.anim());
+    ]).then(() => {
+      //was used to animate the logo
+      //  this.anim()
+    });
   };
 
   _handleLoadingError = (error) => {
@@ -625,7 +607,7 @@ class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
-    // this.setState({ isLoadingComplete: true });
+    this.setState({ isLoadingComplete: true });
   };
 }
 
@@ -640,7 +622,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     justifyContent: "center",
   },
+  logoContainer: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    backgroundColor: "#0000",
+  },
+  logo: {
+    width: "35%",
+    height: "35%",
+    alignSelf: "center",
+    resizeMode: "contain",
+    top: 10,
 
+    // opacity: this.state.splashAnimation
+  },
   text: { color: "#fff" },
 
   gradient: {
