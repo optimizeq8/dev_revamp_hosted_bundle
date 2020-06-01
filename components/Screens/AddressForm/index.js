@@ -74,7 +74,7 @@ class AddressForm extends Component {
     );
     const source_action = this.props.navigation.getParam(
       "source_action",
-      false
+   this.props.screenProps.prevAppState
     );
     analytics.track(`open_business_address`, {
       source,
