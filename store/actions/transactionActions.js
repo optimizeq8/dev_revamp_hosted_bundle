@@ -9,7 +9,7 @@ export const setCampaignInfoForTransaction = data => {
   return dispatch => {
     return dispatch({
       type: actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION,
-      payload: data
+      payload: data,
     });
   };
 };
@@ -17,7 +17,7 @@ export const setCampaignInfoForTransaction = data => {
 export const reset_transaction_reducer = () => {
   return dispatch => {
     return dispatch({
-      type: actionTypes.RESET_TRANSACTION_DATA
+      type: actionTypes.RESET_TRANSACTION_DATA,
     });
   };
 };
@@ -26,7 +26,7 @@ export const getTransactions = () => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`paymentHistory/${getState().account.mainBusiness.businessid}`)
@@ -38,7 +38,7 @@ export const getTransactions = () => {
 
         return dispatch({
           type: actionTypes.SET_TRANSACTION_LIST,
-          payload: data
+          payload: data,
         });
       })
       .catch(err => {
@@ -49,10 +49,10 @@ export const getTransactions = () => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_SET_TRANSACTION_LIST
+          type: actionTypes.ERROR_SET_TRANSACTION_LIST,
         });
       });
   };
@@ -62,12 +62,12 @@ export const getWalletAmount = (retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
 
     createBaseUrl()
       .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`, {
-        timeout: 3000
+        timeout: 3000,
       })
       .then(res => {
         return res.data;
@@ -75,7 +75,7 @@ export const getWalletAmount = (retries = 3) => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
       .catch(err => {
@@ -91,14 +91,14 @@ export const getWalletAmount = (retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         if (retries > 0) {
           dispatch(getWalletAmount(retries - 1));
           return;
         }
         return dispatch({
-          type: actionTypes.ERROR_SET_WALLET_AMOUNT
+          type: actionTypes.ERROR_SET_WALLET_AMOUNT,
         });
       });
   };
@@ -113,14 +113,14 @@ export const addWalletAmount = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,
         {
           ...info,
-          businessid: getState().account.mainBusiness.businessid
+          businessid: getState().account.mainBusiness.businessid,
         },
         { timeout: 10000 }
       )
@@ -134,11 +134,11 @@ export const addWalletAmount = (
           top_up_amount: info.amount,
           mode_of_payment: payment_mode,
           action_status: data.success ? "success" : "failure",
-          error_description: !data.success ? data.message : null
+          error_description: !data.success ? data.message : null,
         });
         return dispatch({
           type: actionTypes.ADD_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
       .then(() => openBrowser())
@@ -158,7 +158,7 @@ export const addWalletAmount = (
               }`) ||
             err.message ||
             err.response ||
-            "Something went wrong, please try again."
+            "Something went wrong, please try again.",
         });
         if (retries > 0) {
           dispatch(addWalletAmount(info, openBrowser, retries - 1));
@@ -175,10 +175,10 @@ export const addWalletAmount = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_ADD_WALLET_AMOUNT
+          type: actionTypes.ERROR_ADD_WALLET_AMOUNT,
         });
       });
   };
@@ -187,7 +187,7 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`kdamount/${amount}`, { timeout: 10000 })
@@ -197,7 +197,7 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
       .then(data => {
         return dispatch({
           type: actionTypes.GET_WALLET_AMOUNT_IN_KWD,
-          payload: data
+          payload: data,
         });
       })
       .catch(err => {
@@ -221,10 +221,10 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD
+          type: actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD,
         });
       });
   };
@@ -233,7 +233,7 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
@@ -247,17 +247,17 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
         showMessage({
           message: data.message,
           type: "info",
-          position: "top"
+          position: "top",
         });
         if (!data.success) {
           return dispatch({
             type: actionTypes.SET_TRAN_LOADING,
-            payload: false
+            payload: false,
           });
         } else
           return dispatch({
             type: actionTypes.USE_WALLET_AMOUNT,
-            payload: data
+            payload: data,
           });
       })
 
@@ -279,11 +279,11 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         setWalletModal(false);
         return dispatch({
-          type: actionTypes.ERROR_USE_WALLET_AMOUNT
+          type: actionTypes.ERROR_USE_WALLET_AMOUNT,
         });
       });
   };
@@ -299,7 +299,7 @@ export const removeWalletAmount = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
@@ -313,13 +313,13 @@ export const removeWalletAmount = (
       .then(data => {
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
       .then(() => {
         if (goBack)
           navigation.navigate("AdPaymentReview", {
-            names: names
+            names: names,
           });
       })
       .catch(err => {
@@ -345,10 +345,10 @@ export const removeWalletAmount = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT
+          type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT,
         });
       });
   };
@@ -358,7 +358,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
@@ -376,12 +376,13 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
           mode_of_payment: "WALLET",
           amount: data.amount,
           campaign_id,
-          action_status: data.success ? "success" : "failure"
+          action_status: data.success ? "success" : "failure",
         });
         NavigationService.navigate("SuccessRedirect", {
           ...data,
           source: "payment_processing",
-          source_action: "a_payment_processing"
+          source_action: "a_payment_processing",
+          payment_mode: "WALLET",
         });
       })
 
@@ -389,7 +390,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
         // console.log("CHECKOUT_WITH_WALLET data", data);
         return dispatch({
           type: actionTypes.CHECKOUT_WITH_WALLET,
-          payload: data
+          payload: data,
         });
       })
 
@@ -409,7 +410,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
               }`) ||
             err.message ||
             err.response ||
-            "Something went wrong, please try again."
+            "Something went wrong, please try again.",
         });
         if (retries > 0) {
           checkoutwithWallet(campaign_id, retries - 1);
@@ -426,10 +427,10 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_CHECKOUT_WITH_WALLET
+          type: actionTypes.ERROR_CHECKOUT_WITH_WALLET,
         });
       });
   };
@@ -438,7 +439,7 @@ export const filterTransactions = query => {
   return dispatch =>
     dispatch({
       type: actionTypes.FILTER_TRANSACTION,
-      payload: query
+      payload: query,
     });
 };
 
@@ -451,7 +452,7 @@ export const payment_request_knet = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
-      payload: true
+      payload: true,
     });
     var url =
       getState().transA.channel === ""
@@ -467,7 +468,7 @@ export const payment_request_knet = (
         if (data.knet_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         } else {
           analytics.track(`payment_processing`, {
@@ -477,16 +478,17 @@ export const payment_request_knet = (
             campaign_id,
             amount: data.amount,
             action_status: data.success ? "success" : "failure",
-            error_description: !data.success ? data.status : null
+            error_description: !data.success ? data.status : null,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
             source: "payment_processing",
-            source_action: "a_payment_processing"
+            source_action: "a_payment_processing",
+            payment_mode: "KNET",
           });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         }
       })
@@ -503,14 +505,14 @@ export const payment_request_knet = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         closeBrowserLoading();
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -525,7 +527,7 @@ export const payment_request_credit_card = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
-      payload: true
+      payload: true,
     });
 
     var url =
@@ -542,7 +544,7 @@ export const payment_request_credit_card = (
         if (data.cc_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         } else {
           analytics.track(`payment_processing`, {
@@ -552,16 +554,17 @@ export const payment_request_credit_card = (
             amount: data.amount,
             campaign_id,
             action_status: data.success ? "success" : "failure",
-            error_description: !data.success ? data.status : null
+            error_description: !data.success ? data.status : null,
           });
           navigation.navigate("SuccessRedirect", {
             ...data,
             source: "payment_processing",
-            source_action: "a_payment_processing"
+            source_action: "a_payment_processing",
+            payment_mode: "CREDIT CARD",
           });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         }
       })
@@ -578,14 +581,14 @@ export const payment_request_credit_card = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         closeBrowserLoading();
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -600,7 +603,7 @@ export const getWalletTransactionsHistory = () => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_WALLET_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`walletpaymentHistory/${getState().account.mainBusiness.businessid}`)
@@ -611,7 +614,7 @@ export const getWalletTransactionsHistory = () => {
         // console.log("payment list:", data);
         return dispatch({
           type: actionTypes.SET_WALLET_TRANSACTION_LIST,
-          payload: data
+          payload: data,
         });
       })
       .catch(err => {
@@ -622,10 +625,10 @@ export const getWalletTransactionsHistory = () => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST
+          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST,
         });
       });
   };

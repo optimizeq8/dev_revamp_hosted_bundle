@@ -142,6 +142,13 @@ class GoogleAdTargetting extends Component {
     segmentEventTrack("Selected Campaign gender", {
       campaign_gender: gender
     });
+    analytics.track(`a_gender`, {
+      source: "ad_targeting",
+      source_action: "a_gender",
+      campaign_type: "google",
+      campaign_id: this.props.campaign.id,
+      campaign_gender: gender
+    });
     this.props.save_google_campaign_data({ gender: gender });
   };
 
@@ -180,6 +187,13 @@ class GoogleAdTargetting extends Component {
 
   _handleAddKeyword = keyword => {
     if (keyword === "Reset") {
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: [],
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       this.props.save_google_campaign_data({ keywords: [] });
@@ -191,10 +205,24 @@ class GoogleAdTargetting extends Component {
       segmentEventTrack("Selected Campaign keywords", {
         campaign_keywords: [...res, keyword]
       });
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: [...res, keyword],
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       this.props.save_google_campaign_data({
         keywords: [...res, keyword]
       });
     } else {
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: res,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       segmentEventTrack("Selected Campaign keywords", {
         campaign_keywords: res
       });
@@ -217,7 +245,12 @@ class GoogleAdTargetting extends Component {
         value: value,
         budgetOption
       });
-
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: false,
+        campaign_budget: rawValue
+      });
       this.props.save_google_campaign_data({
         budget: rawValue,
         budgetOption
@@ -226,6 +259,15 @@ class GoogleAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_change_campaign_custom_budget",
+            error_description:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget
+          });
+
           segmentEventTrack("Error Campaign Budget Change", {
             campaign_budget_error:
               validateWrapper("Budget", rawValue) +
@@ -242,6 +284,12 @@ class GoogleAdTargetting extends Component {
           position: "top"
         });
       }
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: true,
+        campaign_budget: rawValue
+      });
       segmentEventTrack("Custom Campaign Budget Change", {
         campaign_budget: rawValue
       });
@@ -286,13 +334,15 @@ class GoogleAdTargetting extends Component {
       !keywordsError
     ) {
       const segmentInfo = {
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
-        campaign_keywords: this.state.keywords
+        campaign_keywords: this.state.keywords,
+        source: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_channel: "google"
       };
 
       this.props.create_google_SE_campaign_ad_targeting(
@@ -306,6 +356,13 @@ class GoogleAdTargetting extends Component {
       );
       this.props.save_google_campaign_data(data);
     } else {
+      analytics.track(`a_error`, {
+        error_page: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        error_description: isNull(keywordsError)
+          ? "Budget can't be less than the minimum"
+          : keywordsError
+      });
       segmentEventTrack("Error on submit google Ad Targetting", {
         campaign_error_keywords: keywordsError
       });

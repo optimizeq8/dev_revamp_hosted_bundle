@@ -23,14 +23,14 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 class SuccessRedirect extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       media: require("../../../assets/images/logo01.png"),
-      successLogo: require("../../../assets/animation/success.json")
+      successLogo: require("../../../assets/animation/success.json"),
     };
   }
 
@@ -60,7 +60,8 @@ class SuccessRedirect extends Component {
           : this.props.channel === "google"
           ? "GoogleSEAd"
           : this.props.adType,
-      payment_status: "success"
+      payment_status: "success",
+      payment_mode: this.props.navigation.getParam("payment_mode"),
     });
     Segment.screenWithProperties("Payment Success", {
       category:
@@ -70,7 +71,7 @@ class SuccessRedirect extends Component {
       label:
         this.props.navigation.getParam("isWallet") === "1"
           ? "Wallet Transaction"
-          : "Campaign Transaction"
+          : "Campaign Transaction",
     });
     // this.animation.play();
 
@@ -136,9 +137,9 @@ class SuccessRedirect extends Component {
               name: "Snapchat Snap Ad",
               price: this.props.campaign_budget,
               quantity: 1,
-              category: "Advertisement"
-            }
-          ]
+              category: "Advertisement",
+            },
+          ],
         });
       }
       if (
@@ -227,9 +228,9 @@ class SuccessRedirect extends Component {
                     routeName: "Dashboard",
                     params: {
                       source: "payment_end",
-                      source_action: "a_go_to_home"
-                    }
-                  })
+                      source_action: "a_go_to_home",
+                    },
+                  }),
                 ],
                 0
               );
@@ -250,13 +251,13 @@ const mapStateToProps = state => ({
   campaign_budget: state.transA.campaign_budget,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   channel: state.transA.channel,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
 const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   reset_transaction_reducer: () =>
     dispatch(actionCreators.reset_transaction_reducer()),
   rest_google_campaign_data: () =>
-    dispatch(actionCreators.rest_google_campaign_data())
+    dispatch(actionCreators.rest_google_campaign_data()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

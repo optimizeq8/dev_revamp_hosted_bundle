@@ -411,6 +411,10 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_targeting`, {
+          ...segmentInfo,
+          action_status: data.error ? "failure" : "success"
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING,
@@ -426,6 +430,12 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
             })
           );
         } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+            error_description:
+              data.error || "Something went wrong. Please try again"
+          });
           showMessage({
             message: data.error,
             type: "info",
@@ -754,16 +764,31 @@ export const create_google_keywords = (info, segmentInfo) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_ad_keywords`, {
+          timestamp: new Date().getTime(),
+          action_status: data.error ? "failure" : "success",
+          ...segmentInfo
+        });
         if (!data.error) {
           segmentEventTrack("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdPaymentReview");
-        } else
+          NavigationService.navigate("GoogleAdPaymentReview", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
+        } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_ad_keywords",
+            error_description:
+              data.error || "Something went wrong. Please try again"
+          });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
             position: "top"
           });
+        }
       })
       .catch(err => {
         showMessage({

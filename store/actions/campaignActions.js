@@ -268,7 +268,7 @@ export const uploadStoryAdCover = (
   onToggleModal,
   rejected,
   cancelUplaod,
-  selectedCampaign
+  segmentInfo
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -290,6 +290,13 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_cover`, {
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
@@ -305,8 +312,10 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        navigation.push("AdDesign", {
-          rejected
+        navigation.navigate("AdDesign", {
+          rejected,
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover"
         });
       })
       .catch(err => {

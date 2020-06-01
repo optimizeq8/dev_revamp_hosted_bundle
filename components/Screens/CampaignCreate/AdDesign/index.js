@@ -145,34 +145,7 @@ class AdDesign extends Component {
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track(`ad_design`, {
-      source,
-      source_action,
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      device_id: this.props.screenProps.device_id,
-      campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
-      campaign_objective: this.props.data.objective,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.props.data.end_time) -
-            new Date(this.props.data.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_start_date: this.props.data.start_time,
-      campaign_end_date: this.props.data.end_time,
-      campaign_collectionAdLinkForm: this.props.data
-        .campaign_collectionAdLinkForm,
-    });
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -881,6 +854,13 @@ class AdDesign extends Component {
       await this.handleUpload();
 
       if (!this.state.fileReadyToUpload && this.state.incorrectDimensions) {
+        analytics.track(`a_error`, {
+          error_page: "ad_design",
+          error_description: "Please crop the image to the right dimensions",
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.adType,
+          campaign_id: this.props.data.campaign_id,
+        });
         showMessage({
           message: "Please crop the image to the right dimensions",
           type: "warning",
@@ -1123,15 +1103,42 @@ class AdDesign extends Component {
           : ["Dashboard", "AdObjective", "AdDesign"]
       );
     }
-    Segment.screenWithProperties("Snap Ad Design", {
-      category: "Campaign Creation",
-      channel: "snapchat",
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_design`, {
+      source,
+      source_action,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      campaign_name: this.props.data.name,
+      campaign_id: this.props.data.campaign_id,
+      campaign_objective: this.props.data.objective,
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.data.end_time) -
+            new Date(this.props.data.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_start_date: this.props.data.start_time,
+      campaign_end_date: this.props.data.end_time,
+      campaign_collectionAdLinkForm: this.props.data
+        .campaign_collectionAdLinkForm,
     });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 3,
-      business_name: this.props.mainBusiness.businessname,
-    });
+    // Segment.screenWithProperties("Snap Ad Design", {
+    //   category: "Campaign Creation",
+    //   channel: "snapchat",
+    // });
+    // Segment.trackWithProperties("Viewed Checkout Step", {
+    //   checkout_id: this.props.campaign_id,
+    //   step: 3,
+    //   business_name: this.props.mainBusiness.businessname,
+    // });
 
     let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustAdDesignTracker.addPartnerParameter(

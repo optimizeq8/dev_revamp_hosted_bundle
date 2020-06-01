@@ -531,6 +531,13 @@ class AdDetails extends Component {
         value: value,
         budgetOption,
       });
+
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: false,
+        campaign_budget: rawValue,
+      });
       !this.editCampaign &&
         this.props.save_campaign_info({
           campaignInfo: {
@@ -543,6 +550,14 @@ class AdDetails extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_change_campaign_custom_budget",
+            error_description:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget,
+          });
           segmentEventTrack("Error Campaign Budget Change", {
             campaign_budget_error:
               validateWrapper("Budget", rawValue) +
@@ -559,6 +574,12 @@ class AdDetails extends Component {
           position: "top",
         });
       }
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: true,
+        campaign_budget: rawValue,
+      });
       segmentEventTrack("Custom Campaign Budget Change", {
         campaign_budget: rawValue,
       });
