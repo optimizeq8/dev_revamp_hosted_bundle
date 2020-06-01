@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
 import BackIcon from "../../../../assets/SVGs/BackButton";
 import ForwardButton from "../../../../assets/SVGs/ArrowForward";
@@ -56,7 +56,20 @@ export default class TutorialWeb extends React.Component {
     return true;
   };
   componentDidMount() {
-    Segment.screen("Website Introduction");
+    // Segment.screen("Website Introduction");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_tutorial`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -147,7 +160,10 @@ export default class TutorialWeb extends React.Component {
   };
   getStartWebsiteReg = () => {
     segmentEventTrack("Button clicked to start Website Registration");
-    this.props.navigation.navigate("OptimizeWebsite");
+    this.props.navigation.navigate("OptimizeWebsite", {
+      source: "my_website_tutorial",
+      source_action: "a_open_my_website_detail"
+    });
   };
 
   render() {

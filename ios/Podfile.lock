@@ -446,8 +446,10 @@ SPEC REPOS:
     - boost-for-react-native
     - imglyKit
     - lottie-ios
+    - Mixpanel
     - mobile-ffmpeg-https
     - PhotoEditorSDK
+    - Segment-Mixpanel
     - Sentry
     - VideoEditorSDK
 

@@ -20,6 +20,9 @@ import {
   Linking,
   Dimensions,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
+import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -131,6 +134,8 @@ class App extends React.Component {
       isAppReady: false,
       currentScreen: "",
       appState: AppState.currentState,
+      prevAppState: AppState.currentState,
+      anonymous_userId: "",
       translateY: new Animated.Value(1),
       bootSplashIsVisible: true,
       bootSplashLogoIsLoaded: false,
@@ -170,11 +175,33 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   async componentDidMount() {
-    RNBootSplash.hide({ duration: 350 });
-    Segment.initialize({
-      androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+      using: [Mixpanel],
+      // Record screen views automatically!
+      recordScreenViews: true,
+      // Record certain application events automatically!
+      trackAppLifecycleEvents: true,
+      trackAttributionData: true,
+      android: {
+        flushInterval: 60,
+        collectDeviceId: true,
+      },
+      ios: {
+        trackAdvertising: true,
+        trackDeepLinks: true,
+      },
+      debug: true,
     });
+    RNBootSplash.hide({ duration: 350 });
+    const anonymous_userId = await analytics.getAnonymousId();
+    this.setState({
+      anonymous_userId,
+    });
+
+    // Segment.initialize({
+    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    // });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
@@ -195,7 +222,18 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
+      analytics.track("app_open", {
+        userid:
+          (store.getState().auth &&
+            store.getState().auth.userInfo &&
+            store.getState().auth.userInfo.userid) ||
+          this.state.anonymous_userId,
+        anonymous_userId: this.state.anonymous_userId,
+        source: this.state.appState,
+        device_id: getUniqueId(),
+        timestamp: new Date().getTime(),
+      });
+      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -215,7 +253,10 @@ class App extends React.Component {
 
       store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
-    this.setState({ appState: nextAppState });
+    this.setState({
+      prevAppState: this.state.appState,
+      appState: nextAppState,
+    });
   };
 
   _handleNotification = async (handleScreen) => {
@@ -406,6 +447,9 @@ class App extends React.Component {
                     translate: this.t,
                     locale: this.state.locale,
                     setLocale: this.setLocale,
+                    device_id: getUniqueId(),
+                    anonymous_userId: this.state.anonymous_userId,
+                    prevAppState: this.state.prevAppState,
                   }}
                 />
               </Root>

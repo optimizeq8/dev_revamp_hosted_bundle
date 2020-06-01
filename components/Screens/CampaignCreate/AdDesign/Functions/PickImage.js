@@ -1,5 +1,6 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import { Platform, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -124,6 +125,13 @@ export const _pickImage = async (
                     type: "",
                   });
                 onToggleModal(false);
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description:
+                    "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px",
+                });
                 segmentEventTrack("Selected Image Error", {
                   campaign_error_image:
                     "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px",
@@ -176,6 +184,12 @@ export const _pickImage = async (
                 segmentEventTrack("Seleeted Image Error", {
                   campaign_error_image: "Image must be less than 5 MBs",
                 });
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description: "Image must be less than 5 MBs",
+                });
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
@@ -206,6 +220,18 @@ export const _pickImage = async (
                 uneditedImageUri,
                 serialization: result.serialization,
               };
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: adType,
+                action_status: "success",
+                tool_used: "PESDK",
+                media_type: result.type.toUpperCase(),
+                ...result.serialization,
+                index: storyAdCards.selectedStoryAd.index,
+                source: "ad_design",
+                source_action: "a_media_editor",
+                image_for: "campaign_story_ad",
+              });
               segmentEventTrack("Selected Story Ad Image Successful");
               segmentEventTrack("Selected Story Ad serialization", {
                 index: storyAdCards.selectedStoryAd.index,
@@ -241,11 +267,30 @@ export const _pickImage = async (
                 serialization: result.serialization,
               });
 
+              analytics.track(`a_error`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: adType,
+                error_page: "ad_design",
+                error_description:
+                  "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px",
+              });
+
               onToggleModal(false);
               showMessage({
                 message: translate("Image has been selected successfully"),
                 position: "top",
                 type: "success",
+              });
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: adType,
+                source: "ad_design",
+                source_action: "a_media_editor",
+                action_status: "success",
+                tool_used: "PESDK",
+                media_type: "IMAGE",
+                ...result.serialization,
+                image_for: "campaign_ad",
               });
               segmentEventTrack("Selected Image Successful");
               segmentEventTrack("Selected Image serialization", {
@@ -268,6 +313,15 @@ export const _pickImage = async (
             segmentEventTrack("Seleeted Image Error", {
               campaign_error_image: "The dimensions are too large",
               error,
+            });
+            analytics.track(`a_error`, {
+              campaign_channel: "snapchat",
+              campaign_ad_type: adType,
+              error_page: "ad_design",
+              error_description: error.wrongAspect
+                ? error.message
+                : error ||
+                  "The dimensions are too large, please choose a different image",
             });
             showMessage({
               message: error.wrongAspect
@@ -383,6 +437,13 @@ export const _pickImage = async (
                   Math.floor(newResult.height / 16) ||
                 (newResult.width < 1080 && newResult.height < 1920)
               ) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description:
+                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                });
                 setTheState({
                   mediaError:
                     "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
@@ -413,6 +474,10 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
                 return false;
               } else if (newResult.duration > 10.999) {
+                analytics.track(`a_error`, {
+                  error_page: "ad_design",
+                  error_description: "Maximum video duration  is 10 seconds.",
+                });
                 setTheState({
                   mediaError: "Maximum video duration  is 10 seconds.",
                   media: "//",
@@ -442,6 +507,12 @@ export const _pickImage = async (
                 });
                 return false;
               } else if (newResult.duration < 3.0) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description: "Minimum video duration  is 3 seconds.",
+                });
                 setTheState({
                   mediaError: "Minimum video duration  is 3 seconds.",
                   media: "//",
@@ -470,6 +541,12 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
                 return false;
               } else if (newSize.size > 32000000) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description: "Allowed video size is up to 32 MBs",
+                });
                 setTheState({
                   mediaError: "Allowed video size is up to 32 MBs.",
                   media: "//",
@@ -506,6 +583,12 @@ export const _pickImage = async (
                 result.serialization = manipResult.serialization;
               }
             } else {
+              analytics.track(`a_error`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: adType,
+                error_page: "ad_design",
+                error_description: "Editing canceled",
+              });
               return Promise.reject("Editing canceled");
             }
           })
@@ -529,6 +612,14 @@ export const _pickImage = async (
               };
 
               cards[storyAdCards.selectedStoryAd.index] = card;
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: adType,
+                action_status: "success",
+                tool_used: "VESDK",
+                media_type: result.type.toUpperCase(),
+                ...result.serialization,
+              });
               setTheState({
                 storyAdCards: {
                   ...storyAdCards,
@@ -560,6 +651,14 @@ export const _pickImage = async (
                   serialization: result.serialization,
                 });
                 onToggleModal(false);
+                analytics.track(`a_media_editor`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  action_status: "success",
+                  tool_used: "VESDK",
+                  media_type: result.type.toUpperCase(),
+                  ...result.serialization,
+                });
                 segmentEventTrack("Selected Video Successfully");
                 showMessage({
                   message: translate("Video has been selected successfully"),
@@ -576,6 +675,12 @@ export const _pickImage = async (
                   });
                 setTheState({ sourceChanging: false });
               } else {
+                analytics.track(`a_error`, {
+                  error_page: "ad_design",
+                  error_description: "Selected Video Unsuccessfully",
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                });
                 segmentEventTrack("Selected Video Unsuccessfully");
                 setTheState({
                   media: "//",
@@ -587,6 +692,12 @@ export const _pickImage = async (
           })
           .catch((err) => {
             // console.log(err);
+            analytics.track(`a_error`, {
+              error_page: "ad_design",
+              error_description: err,
+              campaign_channel: "snapchat",
+              campaign_ad_type: adType,
+            });
             segmentEventTrack("Selected Video Error", {
               campaign_error_image: err,
             });
@@ -601,6 +712,10 @@ export const _pickImage = async (
         message: translate("Please choose a media file"),
         position: "top",
         type: "warning",
+      });
+      analytics.track(`a_error`, {
+        error_page: "ad_design",
+        error_description: "Image Picker closed without selecting a media file",
       });
       segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
@@ -622,6 +737,12 @@ export const _pickImage = async (
   } catch (error) {
     onToggleModal(false);
     // console.log("error image pick", error);
+    analytics.track(`a_error`, {
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      error_page: "ad_design",
+      error_description: error.response || error.message || error,
+    });
     segmentEventTrack("error image picker", {
       campaign_error_image: error,
     });

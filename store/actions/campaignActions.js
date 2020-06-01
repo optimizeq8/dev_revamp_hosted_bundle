@@ -2,11 +2,13 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
+import { getUniqueId } from "react-native-device-info";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -120,10 +122,23 @@ export const ad_objective = (info, navigation, segmentInfo) => {
         return data;
       })
       .then((data) => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo,
+        });
         if (data.success) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.navigate(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign",
+            {
+              source: "ad_objective",
+              source_action: "a_submit_ad_objective",
+            }
           );
         } else showMessage({ message: data.message, position: "top" });
       })
@@ -159,11 +174,9 @@ export const ad_design = (
   loading,
   navigation,
   onToggleModal,
-  appChoice,
   rejected,
   cancelUplaod,
-  longVideo,
-  iosUploadVideo
+  segmentInfo
 ) => {
   onToggleModal(true);
   return (dispatch) => {
@@ -185,6 +198,13 @@ export const ad_design = (
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
         rejected &&
           showMessage({
             message: data.message,
@@ -208,17 +228,21 @@ export const ad_design = (
         !rejected && dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
-        if (!rejected) navigation.push("AdDetails");
+        if (!rejected)
+          navigation.navigate("AdDetails", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         else {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
           dispatch({
             type: actionTypes.RESET_CAMPAING_INFO,
           });
-          navigation.navigate("Dashboard");
-          persistor.purge();
-          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         }
       })
       .catch((err) => {
@@ -244,7 +268,7 @@ export const uploadStoryAdCover = (
   onToggleModal,
   rejected,
   cancelUplaod,
-  selectedCampaign
+  segmentInfo
 ) => {
   onToggleModal(true);
   return (dispatch) => {
@@ -266,6 +290,13 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_submit_ad_cover`, {
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
@@ -281,8 +312,10 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        navigation.push("AdDesign", {
+        navigation.navigate("AdDesign", {
           rejected,
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
         });
       })
       .catch((err) => {
@@ -567,14 +600,25 @@ export const ad_details = (info, names, navigation, segmentInfo) => {
             channel: "",
           })
         );
-        return dispatch({
+        dispatch({
           type: actionTypes.SET_AD_DETAILS,
           payload: { data, names },
         });
+        return data;
       })
-      .then(() => {
-        Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-        navigation.navigate("AdPaymentReview");
+      .then((data) => {
+        analytics.track(`a_submit_ad_targeting`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          timestamp: new Date().getTime(),
+          action_status: data.success ? "success" : "failure",
+          campaign_budget: data.data.lifetime_budget_micro,
+          ...segmentInfo,
+        });
+        navigation.navigate("AdPaymentReview", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
       })
       .catch((err) => {
         // console.log("ad_details", err.message || err.response);
@@ -595,9 +639,11 @@ export const updateCampaign = (info, businessid, navigation) => {
 
         return res.data;
       })
-      .then((data) => {})
       .then(() => {
-        navigation.navigate("Dashboard");
+        navigation.navigate("Dashboard", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
       })
       .catch((err) => {
         // console.log("updateCampaign", err.message || err.response);
@@ -618,6 +664,14 @@ export const updateStatus = (info, handleToggle) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
         handleToggle(data.status);
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
@@ -643,6 +697,14 @@ export const endCampaign = (info, handleToggle) => {
       })
       .then((data) => {
         handleToggle(data.status);
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
         }

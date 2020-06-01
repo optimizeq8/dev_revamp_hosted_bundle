@@ -47,6 +47,14 @@ target 'OptimizeApp' do
 
   use_native_modules!
 
+
+
+ pod 'RNAnalytics', :path => '../node_modules/@segment/analytics-react-native'
+
+ pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
+ pod 'RNAnalyticsIntegration-Mixpanel', :path => '../node_modules/@segment/analytics-react-native-mixpanel'
+
   pod 'RNVideoEditorSDK', :path => '../node_modules/react-native-videoeditorsdk'
 
   pod 'RNSentry', :path => '../node_modules/@sentry/react-native'

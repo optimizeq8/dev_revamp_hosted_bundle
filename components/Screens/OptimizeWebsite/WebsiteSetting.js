@@ -3,7 +3,7 @@ import { View, TouchableOpacity, BackHandler, Text } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 //icons
 import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 
@@ -28,6 +28,20 @@ export default class MyWebsite extends Component {
   };
   componentDidMount() {
     Segment.screenWithProperties("Website Setting");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_detail`, {
+      source,
+      source_action,
+      new: false,
+      timestamp: new Date().getTime()
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

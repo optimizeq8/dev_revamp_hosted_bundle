@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-
+import analytics from "@segment/analytics-react-native";
 import * as Updates from "expo-updates";
 import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
@@ -213,6 +213,13 @@ class Dashboard extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: adType.title,
     });
+    analytics.track(`a_campaign_ad_type`, {
+      source: "dashboard",
+      source_action: "a_campaign_ad_type",
+      campaign_channel: adType.mediaType,
+      campaign_ad_type: adType.value,
+      device_id: this.props.screenProps.device_id,
+    });
     Segment.trackWithProperties("Completed Checkout Step", {
       step: 1,
       business_name: this.props.mainBusiness.businessname,
@@ -229,12 +236,18 @@ class Dashboard extends Component {
       !this.props.mainBusiness.snap_ad_account_id &&
       adType.mediaType === "snapchat"
     ) {
-      this.props.navigation.navigate("SnapchatCreateAdAcc");
+      this.props.navigation.navigate("SnapchatCreateAdAcc", {
+        source: "dashboard",
+        source_action: "a_campaign_ad_type",
+      });
     } else if (
       !this.props.mainBusiness.google_account_id &&
       adType.mediaType === "google"
     ) {
-      this.props.navigation.navigate("GoogleCreateAdAcc");
+      this.props.navigation.navigate("GoogleCreateAdAcc", {
+        source: "dashboard",
+        source_action: "a_campaign_ad_type",
+      });
     } else {
       if (
         adType.mediaType === "google" &&
@@ -316,20 +329,22 @@ class Dashboard extends Component {
   handleNewCampaign = () => {
     let adjustEvent = new AdjustEvent("7kk0e6");
     Adjust.trackEvent(adjustEvent);
-    if (!this.props.mainBusiness.snap_ad_account_id) {
-      Segment.trackWithProperties("Create SnapAd Acount", {
-        category: "Ad Account",
-        label: "New SnapAd Account",
-        business_name: this.props.mainBusiness.businessname,
-        business_id: this.props.mainBusiness.businessid,
-      });
-      this.props.navigation.navigate("SnapchatCreateAdAcc");
-    } else {
-      Segment.trackWithProperties("Create Campaign", {
-        category: "Campaign Creation",
-      });
-      this.props.navigation.navigate("AdType");
-    }
+    const device_id = this.props.screenProps.device_id;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`a_create_campaign`, {
+      source,
+      source_action: "a_create_campaign",
+      timestamp: new Date().getTime(),
+      userId: this.props.userInfo.userid,
+      device_id,
+    });
+    this.props.navigation.navigate("AdType", {
+      source: "dashboard",
+      source_action: "a_create_campaign",
+    });
   };
   /**
    *
@@ -345,6 +360,25 @@ class Dashboard extends Component {
       ).label;
     }
     return businesscategoryName;
+  };
+
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`dashboard`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+    });
+    // Segment.screen("Dashboard");
+    this.props.setCampaignInProgress(false);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -448,9 +482,12 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.push("MessengerLoading")
-                    }
+                    onPress={() => {
+                      this.props.navigation.push("MessengerLoading", {
+                        source: "dashboard",
+                        source_action: "a_help",
+                      });
+                    }}
                     style={[styles.headerIcons]}
                   >
                     {this.props.unread_converstaion === 0 ? (
@@ -528,6 +565,7 @@ class Dashboard extends Component {
                 !this.props.userInfo.verified_account) ? (
                 <EmptyCampaigns
                   translate={translate}
+                  screenProps={this.props.screenProps}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
@@ -634,7 +672,10 @@ class Dashboard extends Component {
                         <TouchableOpacity
                           style={styles.websiteCard}
                           onPress={() => {
-                            this.props.navigation.navigate("OptimizeWebsite");
+                            this.props.navigation.navigate("TutorialWeb", {
+                              source: "dashboard",
+                              source_action: "a_open_website_tutorial",
+                            });
                           }}
                         >
                           <LinearGradient
@@ -722,12 +763,7 @@ class Dashboard extends Component {
                   </Sidemenu>
                 </Container>
               )}
-              <NavigationEvents
-                onDidFocus={() => {
-                  Segment.screen("Dashboard");
-                  this.props.setCampaignInProgress(false);
-                }}
-              />
+              <NavigationEvents onDidFocus={this.onDidFocus} />
             </Animatable.View>
 
             <Animatable.View

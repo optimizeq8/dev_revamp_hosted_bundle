@@ -6,7 +6,7 @@ import {
   I18nManager,
   TouchableOpacity
 } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import * as Segment from "expo-analytics-segment";
@@ -44,6 +44,22 @@ class Transactions extends Component {
     return true;
   };
   componentDidMount() {
+    // Segment.screenWithProperties("Transactions List", {
+    //   category: "User Menu"
+    // });
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_transactions`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -94,13 +110,6 @@ class Transactions extends Component {
             style={styles.safeAreaContainer}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                Segment.screenWithProperties("Transactions List", {
-                  category: "User Menu"
-                });
-              }}
-            />
             <CustomHeader
               screenProps={this.props.screenProps}
               title={"Transactions"}

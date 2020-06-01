@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { TouchableOpacity, BackHandler, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
@@ -49,8 +49,21 @@ class ChangePassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    Segment.screenWithProperties("Change Password", {
-      category: "User Menu"
+    // Segment.screenWithProperties("Change Password", {
+    //   category: "User Menu"
+    // });
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      false
+    );
+    analytics.track(`change_password`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -105,6 +118,15 @@ class ChangePassword extends Component {
         this.props.navigation,
         this.props.user.email
       );
+    } else {
+      analytics.track(`a_change_password`, {
+        source: "change_password",
+        source_action: "a_change_password",
+        timestamp: new Date().getTime(),
+        action_status: "failure",
+        error_description:
+          this.state.repasswordError || this.state.passwordError
+      });
     }
   };
   setValue = (stateName, value) => {

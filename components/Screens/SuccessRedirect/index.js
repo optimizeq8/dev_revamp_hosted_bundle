@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -34,6 +35,34 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`payment_end`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      campaign_channel:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === ""
+          ? "snapchat"
+          : this.props.channel.toLowerCase(),
+      amount: parseFloat(this.props.navigation.state.params.amount),
+      campaign_ad_type:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === "google"
+          ? "GoogleSEAd"
+          : this.props.adType,
+      payment_status: "success",
+      payment_mode: this.props.navigation.getParam("payment_mode"),
+    });
     Segment.screenWithProperties("Payment Success", {
       category:
         this.props.navigation.getParam("isWallet") === "1"
@@ -178,7 +207,15 @@ class SuccessRedirect extends Component {
             style={styles.button}
             onPressAction={() => {
               this.props.navigation.reset(
-                [NavigationActions.navigate({ routeName: "Dashboard" })],
+                [
+                  NavigationActions.navigate({
+                    routeName: "Dashboard",
+                    params: {
+                      source: "payment_end",
+                      source_action: "a_go_to_home",
+                    },
+                  }),
+                ],
                 0
               );
             }}

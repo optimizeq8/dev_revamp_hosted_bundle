@@ -314,9 +314,10 @@ export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
       .get(
-        getState().login.admin
-          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
-          : "https://www.optimizeapp.com/optimize/public/chatLink"
+        // getState().login.admin
+        //   ?
+        "https://optimizekwtestingserver.com/optimize/public/chatLink"
+        // : "https://www.optimizeapp.com/optimize/public/chatLink"
       )
       .then((res) => {
         return res.data;
@@ -351,9 +352,10 @@ export const update_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
       .post(
-        getState().login.admin
-          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
-          : "https://www.optimizeapp.com/optimize/public/chatLink",
+        // getState().login.admin
+        //   ?
+        "https://optimizekwtestingserver.com/optimize/public/chatLink",
+        //   : "https://www.optimizeapp.com/optimize/public/chatLink",
 
         {
           intercom_chat_link: getState().messenger.messages.length,

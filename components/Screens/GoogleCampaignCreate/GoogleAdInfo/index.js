@@ -11,6 +11,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Content, Container } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
@@ -83,6 +84,22 @@ class GoogleAdInfo extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd"
+    });
     if (!this.props.campaign.incompleteCampaign) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
@@ -112,7 +129,17 @@ class GoogleAdInfo extends Component {
   };
 
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "ad_TNC") {
+      this.props.navigation.navigate("AdType", {
+        source: "ad_objective",
+        source_action: "a_go_back"
+      });
+    } else this.props.navigation.goBack();
+
     return true;
   };
 
@@ -245,16 +272,29 @@ class GoogleAdInfo extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad info screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_country: countryError ? countryError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
+      analytics.track(`a_submit_ad_objective`, {
+        source: "ad_objective",
+        campaign_channel: "google",
+        action_status: "failure",
+        source_action: "a_submit_ad_objective",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError
       });
+      // segmentEventTrack("Error occured on ad info screen sumbit button", {
+      //   campaign_error_ad_name: nameError ? nameError : "",
+      //   campaign_error_country: countryError ? countryError : "",
+      //   campaign_error_ad_start_date: dateErrors.start_timeError
+      //     ? dateErrors.start_timeError
+      //     : "",
+      //   campaign_error_ad_end_date: dateErrors.end_timeError
+      //     ? dateErrors.end_timeError
+      //     : ""
+      // });
     }
     if (
       !nameError &&
@@ -263,16 +303,19 @@ class GoogleAdInfo extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name:
-          this.props.mainBusiness && this.props.mainBusiness.businessname,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.end_time) - new Date(this.state.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
         campaign_name: this.state.name,
         campaign_language: this.state.language,
         campaign_start_date: this.state.start_time,
         campaign_end_date: this.state.end_time,
         campaign_location: this.state.location,
-        campaign_country: this.state.country,
-        checkout_id: this.props.campaign.id
+        campaign_country: this.state.country
       };
 
       /**
@@ -369,7 +412,7 @@ class GoogleAdInfo extends Component {
                 }
               }}
               actionButton={() => {
-                this.props.navigation.goBack();
+                this.handleBackButton();
                 this.props.set_google_campaign_resumed(false);
               }}
               disabled={this.props.campaign.uploading}

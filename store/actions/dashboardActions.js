@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
@@ -21,7 +21,11 @@ export const getCampaignDetails = (id, navigation) => {
       type: actionTypes.SET_CAMPAIGN_LOADING,
       payload: { loading: true, data: {} },
     });
-    navigation.push("CampaignDetails");
+
+    navigation.navigate("CampaignDetails", {
+      source: "dashboard",
+      source_action: "a_open_campaign",
+    });
 
     createBaseUrl()
       .get(`campaigndetail/${id}`)
@@ -35,6 +39,16 @@ export const getCampaignDetails = (id, navigation) => {
         ) {
           throw TypeError("Connection-Failure, Please try again later");
         }
+
+        analytics.track(`a_open_campaign_details`, {
+          source: "dashboard",
+          source_action: "a_open_campaign_details",
+          action_status: data.sucess ? "success" : "failure",
+          campaign_id: id,
+          campaign_type: "snapchat",
+          campaign_ad_type: data.data && data.data.campaign_type,
+          error_description: !data.sucess && data.message,
+        });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
           payload: { loading: false, data: data.data },
@@ -58,6 +72,18 @@ export const getCampaignDetails = (id, navigation) => {
         }
       })
       .catch((err) => {
+        analytics.track(`a_error`, {
+          error_page: "dashboard",
+          source_action: "a_open_campaign_details",
+          action_status: "failure",
+          campaign_id: id,
+          campaign_type: "snapchat",
+          campaign_ad_type: null,
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         // console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
           message:

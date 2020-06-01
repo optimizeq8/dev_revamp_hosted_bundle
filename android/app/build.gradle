@@ -205,6 +205,9 @@ android {
 }
 
 dependencies {
+ implementation project(':@segment_analytics-react-native-mixpanel')
+    implementation project(':react-native-device-info')
+    implementation project(':@segment_analytics-react-native')
     implementation project(':react-native-bootsplash')
     implementation project(':react-native-adjust')
     implementation project(':react-native-photoeditorsdk')

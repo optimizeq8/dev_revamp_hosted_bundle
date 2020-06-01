@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
 import isUndefined from "lodash/isUndefined";
-import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 
 import CustomHeader from "../Header";
@@ -172,6 +172,13 @@ class BillingAddressCard extends React.Component {
       !buildingError
     ) {
       this.props._handleSubmission();
+    } else {
+      analytics.track(`a_business_address`, {
+        source: "open_business_address",
+        source_action: "a_business_address",
+        error_desctiption: "Please complete the mandatory fields",
+        action_status: "failure"
+      });
     }
   };
   closeCountryModal = () => {

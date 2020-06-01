@@ -10,7 +10,7 @@ import {
   I18nManager
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
-import { Text, Item, Input, Container, Textarea } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -166,6 +166,25 @@ class GoogleAdDesign extends Component {
         message: this.translate("Please complete all of the fields"),
         type: "warning"
       });
+      const segmentInfo = {
+        campaign_headline1: this.state.headline1,
+        campaign_headline2: this.state.headline2,
+        campaign_headline3: this.state.headline3,
+        campaign_description: this.state.description,
+        campaign_description2: this.state.description2,
+        campaign_finalurl: this.state.finalurl,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_id: this.props.campaign.id
+      };
+      analytics.track(`a_submit_ad_design`, {
+        source: "ad_design",
+        source_action: "a_submit_ad_design",
+        timestamp: new Date().getTime(),
+        ...segmentInfo,
+        action_status: "failure",
+        error_description: headline1Error || headline2Error || descriptionError
+      });
       segmentEventTrack("Error occured on ad design screen sumbit button", {
         campaign_error_headline1: headline1Error,
         campaign_error_headline2: headline2Error,
@@ -198,15 +217,15 @@ class GoogleAdDesign extends Component {
             : finalurl
       };
       const segmentInfo = {
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
         campaign_headline1: this.state.headline1,
         campaign_headline2: this.state.headline2,
         campaign_headline3: this.state.headline3,
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        checkout_id: this.props.campaign.id
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_id: this.props.campaign.id
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -301,20 +320,52 @@ class GoogleAdDesign extends Component {
   };
 
   handleGoogleAdDesignFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const segmentInfo = {
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.campaign.name,
+      campaign_language: this.props.campaign.language,
+      campaign_start_date: this.props.campaign.start_time,
+      campaign_end_date: this.props.campaign.end_time,
+      campaign_location: this.props.campaign.location,
+      campaign_country: this.props.campaign.country,
+      campaign_id: this.props.campaign.id
+    };
+    analytics.track("ad_design", {
+      timestamp: new Date().getTime(),
+      source,
+      source_action,
+      ...segmentInfo
+    });
+
     if (!this.props.navigation.getParam("rejected", false))
       this.props.save_google_campaign_steps([
         "Dashboard",
         "GoogleAdInfo",
         "GoogleAdDesign"
       ]);
-    Segment.screenWithProperties("Google SE Design AD", {
-      category: "Campaign Creation",
-      channel: "google"
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 3,
-      business_name: this.props.mainBusiness.businessname
-    });
+    // Segment.screenWithProperties("Google SE Design AD", {
+    //   category: "Campaign Creation",
+    //   channel: "google"
+    // });
+    // Segment.trackWithProperties("Viewed Checkout Step", {
+    //   step: 3,
+    //   business_name: this.props.mainBusiness.businessname
+    // });
     this.setState({ unmounted: false });
     let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
@@ -444,9 +495,13 @@ class GoogleAdDesign extends Component {
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
-                    segmentEventTrack(
-                      "Button clicked to preview Google Ad Design"
-                    );
+                    analytics.track(`a_preview_ad`, {
+                      source: "ad_design",
+                      source_action: "a_preview_ad",
+                      action_status: "success",
+                      campaign_channel: "google",
+                      campaign_ad_type: "GoogleSEAd"
+                    });
                     this.props.navigation.push("GoogleSEAPreviewScreen", {
                       campaign: {
                         headline1: this.state.headline1,

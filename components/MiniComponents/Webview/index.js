@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import WebView from "react-native-webview";
+import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
 import { Container, Content } from "native-base";
 import { SafeAreaView } from "react-navigation";
@@ -9,6 +10,21 @@ import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
 export default class index extends Component {
+  componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`web_view`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
+  }
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");

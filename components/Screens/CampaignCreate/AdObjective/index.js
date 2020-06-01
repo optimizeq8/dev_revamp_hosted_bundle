@@ -9,23 +9,12 @@ import {
   I18nManager,
   TouchableOpacity
 } from "react-native";
-import {
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
+import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
-import {
-  SafeAreaView,
-  NavigationEvents,
-  NavigationActions
-} from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -238,7 +227,17 @@ class AdObjective extends Component {
     });
   };
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "ad_TNC_loading") {
+      this.props.navigation.navigate("AdType", {
+        source: "ad_objective",
+        source_action: "a_go_back"
+      });
+    } else this.props.navigation.goBack();
+
     return true;
   };
   handleStartDatePicked = date => {
@@ -311,16 +310,29 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_ad_objective: objectiveError ? objectiveError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
+      analytics.track(`a_submit_ad_objective`, {
+        source: "ad_objective",
+        campaign_channel: "snapchat",
+        action_status: "failure",
+        source_action: "a_submit_ad_objective",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError
       });
+      // segmentEventTrack("Error occured on ad objective screen sumbit button", {
+      //   campaign_error_ad_name: nameError ? nameError : "",
+      //   campaign_error_ad_objective: objectiveError ? objectiveError : "",
+      //   campaign_error_ad_start_date: dateErrors.start_timeError
+      //     ? dateErrors.start_timeError
+      //     : "",
+      //   campaign_error_ad_end_date: dateErrors.end_timeError
+      //     ? dateErrors.end_timeError
+      //     : ""
+      // });
     }
     if (
       !nameError &&
@@ -329,13 +341,20 @@ class AdObjective extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.campaignInfo.end_time) -
+              new Date(this.state.campaignInfo.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_ad_type: this.props.adType,
+        campaign_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
-        campaign_collection_ad_link_form:
+        campaign_collectionAdLinkForm:
           this.props.adType === "CollectionAd"
             ? this.state.collectionAdLinkForm === 1
               ? "Website"
@@ -400,6 +419,7 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
+
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info({ name: value });
   };
@@ -421,23 +441,22 @@ class AdObjective extends Component {
   };
 
   handleAdOnjectiveFocus = () => {
-    Segment.screenWithProperties(
-      (this.props.adType === "SnapAd"
-        ? "Snap Ad"
-        : this.props.adType === "StoryAd"
-        ? "Story Ad"
-        : "Collection Ad") + " Objective",
-      {
-        category: "Campaign Creation",
-        channel: "snapchat"
-      }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
     );
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType
     });
-
     let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustAdObjectiveTracker.addPartnerParameter(
       `snap_${
@@ -495,7 +514,7 @@ class AdObjective extends Component {
                       this.props.mainBusiness.businessname
                   }
                 }}
-                navigation={this.props.navigation}
+                actionButton={this.handleBackButton}
                 title={[
                   adType === "SnapAd"
                     ? "Snap Ad"

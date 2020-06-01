@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import store from "../index";
 import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
@@ -9,7 +10,7 @@ import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
-
+import { getUniqueId } from "react-native-device-info";
 GoogleBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
@@ -35,11 +36,16 @@ export const create_google_ad_account = (info, navigation) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: info.businessid,
+          action_status: data.error ? "failure" : "success"
+        });
         if (data.error) {
-          Segment.trackWithProperties("Error Google Ad Account Create", {
-            error_google_ad_account_create: data.error,
-            businessid: info.businessid
-          });
           showMessage({
             message: data.error,
             type: "info",
@@ -50,24 +56,35 @@ export const create_google_ad_account = (info, navigation) => {
             payload: false
           });
         } else {
-          Segment.trackWithProperties(
-            "Google Ad Account Created Successfully",
-            {
-              businessid: info.businessid
-            }
-          );
           let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
           Adjust.trackEvent(adjustGoogleAdAccTracker);
-          return dispatch({
+          dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
             payload: { data: data }
           });
         }
+        return data;
       })
-      .then(() => {
-        navigation.goBack();
+      .then(data => {
+        if (!data.error)
+          navigation.navigate("GoogleAdInfo", {
+            source: "ad_TNC",
+            source_action: "a_accept_ad_TNC"
+          });
       })
       .catch(err => {
+        analytics.track(`a_error`, {
+          error_page: "ad_TNC",
+          action_status: "failure",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_ad_TNC",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -168,6 +185,15 @@ export const create_google_SE_campaign_info = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo
+        });
         if (data.error) {
           showMessage({
             message: data.error,
@@ -242,19 +268,24 @@ export const create_google_SE_campaign_ad_design = (
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          timestamp: new Date().getTime(),
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_resumbit: rejected,
+          campaign_error: data.error
+        });
         if (!data.error) {
           //do not set the reducer if it is a rejected data
           if (!rejected) {
-            segmentEventTrack("Successfully Submitted Ad Info");
             dispatch({
               type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
               payload: { data: data }
             });
-          } else segmentEventTrack("Successfully re-Submitted rejected ad");
+          }
         } else {
-          segmentEventTrack("Error Submitting Ad Info", {
-            campaign_error: data.error
-          });
           showMessage({
             message: data.error,
             type: "info",
@@ -268,10 +299,16 @@ export const create_google_SE_campaign_ad_design = (
         return data;
       })
       .then(data => {
-        if (rejected && !data.error) NavigationService.navigate("Dashboard");
+        if (rejected && !data.error)
+          NavigationService.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         else if (!rejected && !data.error) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdTargetting");
+          NavigationService.navigate("GoogleAdTargetting", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
         }
       })
       .catch(err => {
@@ -374,6 +411,10 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
         return res.data;
       })
       .then(data => {
+        analytics.track(`a_submit_ad_targeting`, {
+          ...segmentInfo,
+          action_status: data.error ? "failure" : "success"
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING,
@@ -389,6 +430,12 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
             })
           );
         } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+            error_description:
+              data.error || "Something went wrong. Please try again"
+          });
           showMessage({
             message: data.error,
             type: "info",
@@ -435,7 +482,8 @@ export const get_google_campiagn_details = (
   id,
   start_time,
   end_time,
-  getStats = false
+  getStats = false,
+  segmentInfo
 ) => {
   return (dispatch, getState) => {
     if (getStats)
@@ -460,6 +508,14 @@ export const get_google_campiagn_details = (
       })
       .then(data => {
         // added to handle in case of error
+        analytics.track(`a_open_campaign_details`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_id: id,
+          campaign_type: "google",
+          campaign_ad_type: "GoogleSEAd",
+          error_description: data.error
+        });
         if (data.error) {
           showMessage({
             message: data.error,
@@ -708,16 +764,31 @@ export const create_google_keywords = (info, segmentInfo) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_ad_keywords`, {
+          timestamp: new Date().getTime(),
+          action_status: data.error ? "failure" : "success",
+          ...segmentInfo
+        });
         if (!data.error) {
           segmentEventTrack("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdPaymentReview");
-        } else
+          NavigationService.navigate("GoogleAdPaymentReview", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design"
+          });
+        } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_ad_keywords",
+            error_description:
+              data.error || "Something went wrong. Please try again"
+          });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
             position: "top"
           });
+        }
       })
       .catch(err => {
         showMessage({
@@ -798,13 +869,24 @@ export const get_budget = (info, segmentInfo, navigation) => {
         return data;
       })
       .then(data => {
+        analytics.track(`a_get_budget`, {
+          ...segmentInfo,
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source: "ad_objective",
+          source_action: "a_get_budget",
+          timestamp: new Date().getTime()
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data
           });
           Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push("GoogleAdDesign");
+          navigation.push("GoogleAdDesign", {
+            source: "ad_objective",
+            source_action: "a_submit_ad_objective"
+          });
         } else
           showMessage({
             message: "Oops! Something went wrong. Please try again.",

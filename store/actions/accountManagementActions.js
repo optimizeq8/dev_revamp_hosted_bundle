@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
 import { persistor } from "../index";
@@ -10,6 +11,7 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import segmentEventTrack from "../../components/segmentEventTrack";
+import { getUniqueId } from "react-native-device-info";
 import { update_user_on_intercom } from "./messengerActions";
 
 export const changeBusiness = (business) => {
@@ -20,7 +22,11 @@ export const changeBusiness = (business) => {
       businessid: business.businessid,
       revenue: business.revenue,
     });
-
+    analytics.identify(getState().auth.userid, {
+      businessname: business.businessname,
+      businessid: business.businessid,
+      revenue: business.revenue,
+    });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business },
@@ -40,6 +46,13 @@ export const createBusinessAccount = (account, navigation) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_create_buiness_account`, {
+          source: "open_create_business_account",
+          source_action: `a_create_buiness_account`,
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          ...account,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -51,7 +64,10 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
             payload: { ...data.data, ...account },
           });
-          NavigationService.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "open_create_business_account",
+            source_action: `a_create_buiness_account`,
+          });
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
@@ -93,7 +109,17 @@ export const addressForm = (address, navigation, addressId, translate) => {
           businessid: getState().account.mainBusiness.businessid,
           ...address,
         });
-
+        analytics.track(`a_business_address`, {
+          source: "open_business_address",
+          source_action: "a_business_address",
+          timestamp: new Date().getTime(),
+          new: true,
+          error_description: !respData.data.success
+            ? respData.data.message
+            : null,
+          action_status: respData.data.success ? "success" : "failed",
+          ...address,
+        });
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
@@ -103,7 +129,11 @@ export const addressForm = (address, navigation, addressId, translate) => {
             type: respData.data.success ? "success" : "warning",
             position: "top",
           });
-          if (respData.data.success) navigation.goBack();
+          if (respData.data.success)
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address",
+            });
           return dispatch({
             type: actionTypes.ADD_ADDRESS,
             payload: respData.data,
@@ -114,13 +144,27 @@ export const addressForm = (address, navigation, addressId, translate) => {
           toValue: 1,
           duration: 2000,
         }).start(() => {
+          analytics.track(`a_business_address`, {
+            source: "open_business_address",
+            source_action: "a_business_address",
+            timestamp: new Date().getTime(),
+            new: false,
+            error_description: !response.data.success
+              ? response.data.message
+              : null,
+            ...address,
+            action_status: response.data.success ? "success" : "failed",
+          });
           showMessage({
             message: translate(response.data.message),
             type: response.data.success ? "success" : "warning",
             position: "top",
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address",
+            });
           }
           return dispatch({
             type: actionTypes.ADD_ADDRESS,
@@ -192,22 +236,23 @@ export const create_snapchat_ad_account = (id, navigation) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: id,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success) {
-          Segment.trackWithProperties(
-            "Snapchat Ad Account Created Successfully",
-            { businessid: id }
-          );
           let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
           Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
-            payload: { data: data, navigation: navigation.navigate },
+            payload: { data: data },
           });
         } else {
-          Segment.trackWithProperties("Error Snapchat Ad Account Create", {
-            error_snap_ad_account_create: data.message,
-            businessid: id,
-          });
           showMessage({
             message: data.message,
             type: "info",
@@ -224,6 +269,18 @@ export const create_snapchat_ad_account = (id, navigation) => {
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
+        analytics.track(`a_error`, {
+          error_page: "ad_TNC",
+          action_status: "failure",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_ad_TNC",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         errorMessageHandler(err);
 
         return dispatch({
@@ -248,6 +305,13 @@ export const updateUserInfo = (info, navigation) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_update_personal_info`, {
+          source: "open_personal_details",
+          source_action: "a_update_personal_info",
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success ? data.message : null,
+          ...info,
+        });
         if (data.success) {
           setAuthToken(data.accessToken);
           Segment.track("Profile updated Successfully");
@@ -260,8 +324,14 @@ export const updateUserInfo = (info, navigation) => {
             ...info,
             mobile: info.country_code + info.mobile,
           };
-          navigation.goBack();
-          dispatch({
+          analytics.identify(getState().auth.userid, {
+            ...updateInfo,
+          });
+          navigation.navigate("Dashboard", {
+            source: "open_personal_details",
+            source_action: "a_update_personal_info",
+          });
+          return dispatch({
             type: actionTypes.UPDATE_USERINFO,
             payload: { ...updateInfo },
           });
@@ -409,8 +479,18 @@ export const updateBusinessInfo = (userid, info, navigation) => {
           type: data.success ? "success" : "danger",
           position: "top",
         });
+        analytics.track(`a_update_buisness_info`, {
+          source_action: "open_business_info",
+          source_action: "a_update_buisness_info",
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          ...info,
+        });
         if (data.success) {
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "open_business_info",
+            source_action: "a_update_buisness_info",
+          });
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
@@ -757,7 +837,14 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
             },
           });
         }
-
+        analytics.track(`a_submit_my_website_detail`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: submitNextStep ? true : false,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success && data.message,
+          ...info,
+        });
         return data;
       })
       .then((data) => {
@@ -766,7 +853,10 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
           segmentEventTrack("Successfully update website information");
-          NavigationService.navigateBack("MyWebsite");
+          NavigationService.navigateBack("MyWebsite", "MyWebsite", {
+            source: "my_website_detail",
+            source_action: "a_submit_my_website_detail",
+          });
         }
       })
       .catch((error) => {

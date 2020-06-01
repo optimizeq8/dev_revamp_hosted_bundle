@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Content, Container, View } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import CustomeHeader from "../../../MiniComponents/Header";
 import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
@@ -19,48 +20,96 @@ import { connect } from "react-redux";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   componentDidMount() {
     this.segment();
   }
   segment = () => {
-    {
-      switch (this.props.navigation.getParam("objective")) {
-        case "LEAD_GENERATION":
-          Segment.screenWithProperties("Snap Ad Website SwipeUp", {
-            category: "Campaign Creation",
-            channel: "snapchat",
-            label: "Lead Generation Objective"
-          });
-          // Segment.trackWithProperties(
-          //   "Selected Lead Generation Website Swipeup",
-          //   {
-          //     category: "Campaign Creation"
-          //   }
-          // );
-          break;
-        case "VIDEO_VIEWS":
-          Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
-            category: "Campaign Creation",
-            channel: "snapchat",
-            label: "Video Views Objective"
-          });
-          break;
-        case "WEB_CONVERSION":
-          Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
-            category: "Campaign Creation",
-            channel: "snapchat",
-            label: "SME Growth Campaign Objective"
-          });
-          break;
-        default:
-          Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
-            category: "Campaign Creation",
-            channel: "snapchat",
-            label: "App Install Objective"
-          });
-      }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_ad_type = this.props.navigation.getParam(
+      "adType",
+      this.props.screenProps.prevAppState
+    );
+
+    switch (this.props.navigation.getParam("objective")) {
+      case "LEAD_GENERATION":
+        Segment.screenWithProperties("Snap Ad Website SwipeUp", {
+          category: "Campaign Creation",
+          channel: "snapchat",
+          label: "Lead Generation Objective",
+        });
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "website",
+          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        // Segment.trackWithProperties(
+        //   "Selected Lead Generation Website Swipeup",
+        //   {
+        //     category: "Campaign Creation"
+        //   }
+        // );
+        break;
+      case "VIDEO_VIEWS":
+        Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
+          category: "Campaign Creation",
+          channel: "snapchat",
+          label: "Video Views Objective",
+        });
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "website",
+          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        break;
+      case "WEB_CONVERSION":
+        Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
+          category: "Campaign Creation",
+          channel: "snapchat",
+          label: "SME Growth Campaign Objective",
+        });
+
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "website",
+          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        break;
+      default:
+        Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
+          category: "Campaign Creation",
+          channel: "snapchat",
+          label: "App Install Objective",
+        });
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "App Install",
+          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
     }
   };
   render() {
@@ -75,28 +124,34 @@ class SwipeUpChoice extends Component {
       switch (this.props.collectionAdLinkForm) {
         case 1: {
           menu = (
-            <Website
-              objective={objective}
-              _changeDestination={_changeDestination}
-              navigation={this.props.navigation}
-              toggleSideMenu={this.toggleSideMenu}
-              screenProps={this.props.screenProps}
-              //   swipeUpDestination={true}
-            />
+            <>
+              <NavigationEvents onDidFocus={this.segment} />
+              <Website
+                objective={objective}
+                _changeDestination={_changeDestination}
+                navigation={this.props.navigation}
+                toggleSideMenu={this.toggleSideMenu}
+                screenProps={this.props.screenProps}
+                //   swipeUpDestination={true}
+              />
+            </>
           );
           break;
         }
         case 2: {
           menu = (
-            <Deep_Link
-              objective={objective}
-              _changeDestination={_changeDestination}
-              navigation={this.props.navigation}
-              toggleSideMenu={this.toggleSideMenu}
-              screenProps={this.props.screenProps}
+            <>
+              <NavigationEvents onDidFocus={this.segment} />
+              <Deep_Link
+                objective={objective}
+                _changeDestination={_changeDestination}
+                navigation={this.props.navigation}
+                toggleSideMenu={this.toggleSideMenu}
+                screenProps={this.props.screenProps}
 
-              //   swipeUpDestination={true}
-            />
+                //   swipeUpDestination={true}
+              />
+            </>
           );
           break;
         }
@@ -116,27 +171,36 @@ class SwipeUpChoice extends Component {
         );
       else if (objective === "VIDEO_VIEWS") {
         menu = (
-          <Long_Form_Video
-            _changeDestination={_changeDestination}
-            navigation={this.props.navigation}
-            screenProps={this.props.screenProps}
-          />
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <Long_Form_Video
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          </>
         );
       } else if (objective.toLowerCase().includes("app")) {
         menu = (
-          <App_Install
-            _changeDestination={_changeDestination}
-            navigation={this.props.navigation}
-            screenProps={this.props.screenProps}
-          />
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <App_Install
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          </>
         );
       } else if (objective === "WEB_CONVERSION") {
         menu = (
-          <WhatsApp
-            _changeDestination={_changeDestination}
-            navigation={this.props.navigation}
-            screenProps={this.props.screenProps}
-          />
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <WhatsApp
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          </>
         );
       }
     }
@@ -148,7 +212,7 @@ class SwipeUpChoice extends Component {
           style={styles.safeAreaContainer}
           forceInset={{ top: "always" }}
         >
-          <NavigationEvents onDidFocus={() => this.segment()} />
+          <NavigationEvents onDidFocus={this.segment} />
           <CustomeHeader
             screenProps={this.props.screenProps}
             closeButton={false}
@@ -163,9 +227,9 @@ class SwipeUpChoice extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

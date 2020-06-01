@@ -1,6 +1,7 @@
 //Components
 import React, { Component, Fragment } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Text, Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
@@ -112,9 +113,17 @@ class BusinessList extends Component {
     });
   };
   createNewBuiness = () => {
-    segmentEventTrack("Button Clicked to add a new business");
+    // segmentEventTrack("Button Clicked to add a new business");
+    analytics.track(`a_create_buiness_account`, {
+      source: "open_hamburger",
+      source_action: `a_create_buiness_account`,
+      action_status: "success",
+      timestamp: new Date().getTime()
+    });
     this.props.navigation.navigate("CreateBusinessAccount", {
-      createNewBusiness: true
+      createNewBusiness: true,
+      source: "open_hamburger",
+      source_action: `a_create_buiness_account`
     });
   };
   render() {

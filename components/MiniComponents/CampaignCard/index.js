@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -42,6 +43,12 @@ class CampaignCard extends Component {
   handleCampaignPress = () => {
     Segment.trackWithProperties("Pressed Campaign Card", {
       campaign_id: this.props.campaign.campaign_id,
+    });
+    analytics.track(`a_open_campaign_card`, {
+      source: "dashboard",
+      source_action: "a_open_campaign_card",
+      timestamp: new Date().getTime(),
+      campaign_id: this.props.campaign.campaign_id
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,

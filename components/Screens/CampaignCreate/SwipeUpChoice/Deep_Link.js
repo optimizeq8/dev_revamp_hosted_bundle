@@ -237,7 +237,10 @@ class Deep_Link extends Component {
         attachment,
         appChoice
       );
-      this.props.navigation.navigate("AdDesign");
+      this.props.navigation.navigate("AdDesign", {
+        source: "swipe_up_destination",
+        source_action: "a_swipe_up_destination"
+      });
     } else
       showMessage({
         message: translate("Please select at least one app"),

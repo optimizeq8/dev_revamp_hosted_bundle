@@ -7,6 +7,7 @@ import {
   BackHandler,
   I18nManager
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -141,6 +142,13 @@ class GoogleAdTargetting extends Component {
     segmentEventTrack("Selected Campaign gender", {
       campaign_gender: gender
     });
+    analytics.track(`a_gender`, {
+      source: "ad_targeting",
+      source_action: "a_gender",
+      campaign_type: "google",
+      campaign_id: this.props.campaign.id,
+      campaign_gender: gender
+    });
     this.props.save_google_campaign_data({ gender: gender });
   };
 
@@ -179,6 +187,13 @@ class GoogleAdTargetting extends Component {
 
   _handleAddKeyword = keyword => {
     if (keyword === "Reset") {
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: [],
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       this.props.save_google_campaign_data({ keywords: [] });
@@ -190,10 +205,24 @@ class GoogleAdTargetting extends Component {
       segmentEventTrack("Selected Campaign keywords", {
         campaign_keywords: [...res, keyword]
       });
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: [...res, keyword],
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       this.props.save_google_campaign_data({
         keywords: [...res, keyword]
       });
     } else {
+      analytics.track(`a_keywords`, {
+        source: "ad_targeting",
+        source_actions: "a_keywords",
+        campaign_keywords: res,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd"
+      });
       segmentEventTrack("Selected Campaign keywords", {
         campaign_keywords: res
       });
@@ -216,7 +245,12 @@ class GoogleAdTargetting extends Component {
         value: value,
         budgetOption
       });
-
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: false,
+        campaign_budget: rawValue
+      });
       this.props.save_google_campaign_data({
         budget: rawValue,
         budgetOption
@@ -225,6 +259,15 @@ class GoogleAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_change_campaign_custom_budget",
+            error_description:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget
+          });
+
           segmentEventTrack("Error Campaign Budget Change", {
             campaign_budget_error:
               validateWrapper("Budget", rawValue) +
@@ -241,6 +284,12 @@ class GoogleAdTargetting extends Component {
           position: "top"
         });
       }
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: true,
+        campaign_budget: rawValue
+      });
       segmentEventTrack("Custom Campaign Budget Change", {
         campaign_budget: rawValue
       });
@@ -285,13 +334,15 @@ class GoogleAdTargetting extends Component {
       !keywordsError
     ) {
       const segmentInfo = {
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign.id,
+        campaign_id: this.props.campaign.id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
-        campaign_keywords: this.state.keywords
+        campaign_keywords: this.state.keywords,
+        source: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_channel: "google"
       };
 
       this.props.create_google_SE_campaign_ad_targeting(
@@ -305,6 +356,13 @@ class GoogleAdTargetting extends Component {
       );
       this.props.save_google_campaign_data(data);
     } else {
+      analytics.track(`a_error`, {
+        error_page: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        error_description: isNull(keywordsError)
+          ? "Budget can't be less than the minimum"
+          : keywordsError
+      });
       segmentEventTrack("Error on submit google Ad Targetting", {
         campaign_error_keywords: keywordsError
       });
@@ -323,20 +381,58 @@ class GoogleAdTargetting extends Component {
   };
 
   handleGoogleAdDetailsFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const segmentInfo = {
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.campaign.name,
+      campaign_language: this.props.campaign.language,
+      campaign_start_date: this.props.campaign.start_time,
+      campaign_end_date: this.props.campaign.end_time,
+      campaign_location: this.props.campaign.location,
+      campaign_country: this.props.campaign.country,
+      campaign_id: this.props.campaign.id,
+      campaign_headline1: this.props.campaign.headline1,
+      campaign_headline2: this.props.campaign.headline2,
+      campaign_headline3: this.props.campaign.headline3,
+      campaign_description: this.props.campaign.description,
+      campaign_description2: this.props.campaign.description2,
+      campaign_finalurl: this.props.campaign.finalurl
+    };
+    analytics.track("ad_targeting", {
+      timestamp: new Date().getTime(),
+      source,
+      source_action,
+      ...segmentInfo
+    });
+
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
       "GoogleAdDesign",
       "GoogleAdTargetting"
     ]);
-    Segment.screenWithProperties("Google Ad Targetting", {
-      category: "Campaign Creation",
-      channel: "google"
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign.id,
-      step: 4
-    });
+    // Segment.screenWithProperties("Google Ad Targetting", {
+    //   category: "Campaign Creation",
+    //   channel: "google",
+    // });
+    // Segment.trackWithProperties("Viewed Checkout Step", {
+    //   checkout_id: this.props.campaign.id,
+    //   step: 4,
+    // });
     let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
     adjustGoogleAdDetailsTracker.addPartnerParameter(
       `Google_SEM`,

@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
   BackHandler,
   ScrollView,
-  I18nManager,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 // import BusinessList from "../BusinessList";
 let BusinessList = null;
@@ -36,7 +37,7 @@ import businessCategoriesList from "../../Data/businessCategoriesList.data";
 import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
-  heightPercentageToDP,
+  heightPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -53,9 +54,9 @@ class Menu extends Component {
       panelOffSet: 0,
       draggableRange: {
         top: hp("100") - 100,
-        bottom: -10,
+        bottom: -10
       },
-      items: businessCategoriesList(translate),
+      items: businessCategoriesList(translate)
     };
   }
   componentDidMount() {
@@ -90,20 +91,20 @@ class Menu extends Component {
       BusinessList = require("../BusinessList").default;
     }
   };
-  handleNavigation = (route, checkForBusinessId = false) => {
+  handleNavigation = (route, checkForBusinessId = false, params) => {
     segmentEventTrack(`Clicked ${route}`);
     const { translate } = this.props.screenProps;
     if (checkForBusinessId) {
       if (this.props.mainBusiness.hasOwnProperty("businessid")) {
-        this.props.navigation.navigate(route);
+        this.props.navigation.navigate(route, params);
       } else {
         showMessage({
           message: translate("Please create a business account first"),
-          type: "warning",
+          type: "warning"
         });
       }
     } else {
-      this.props.navigation.navigate(route);
+      this.props.navigation.navigate(route, params);
     }
   };
 
@@ -111,13 +112,13 @@ class Menu extends Component {
    * Gets the height and y position of the business name text component
    * so that the panel shows up underneath it on most phones
    */
-  handlePanelOffset = (event) => {
+  handlePanelOffset = event => {
     const layout = event.nativeEvent.layout;
     this.setState({
       draggableRange: {
         ...this.state.draggableRange,
-        top: hp(100) - (layout.height + layout.y),
-      },
+        top: hp(100) - (layout.height + layout.y)
+      }
     });
   };
 
@@ -135,7 +136,7 @@ class Menu extends Component {
         businesscategoryName = mainBusiness.otherBusinessCategory;
       } else
         businesscategoryName = this.state.items.find(
-          (category) => category.value === mainBusiness.businesscategory
+          category => category.value === mainBusiness.businesscategory
         ).label;
     }
     return businesscategoryName;
@@ -165,9 +166,9 @@ class Menu extends Component {
                 this.props.mainBusiness.businessname &&
                 !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
-                      fontFamily: "montserrat-regular-english",
+                      fontFamily: "montserrat-regular-english"
                     }
-                  : {},
+                  : {}
               ]}
             >
               {!this.props.mainBusiness
@@ -182,9 +183,9 @@ class Menu extends Component {
                 this.props.mainBusiness.businesscategory &&
                 !isStringArabic(businesscategoryName)
                   ? {
-                      fontFamily: "montserrat-regular-english",
+                      fontFamily: "montserrat-regular-english"
                     }
-                  : {},
+                  : {}
               ]}
             >
               {businesscategoryName}
@@ -206,7 +207,7 @@ class Menu extends Component {
                 <Text
                   style={[
                     styles.buttonText,
-                    { fontFamily: "montserrat-regular" },
+                    { fontFamily: "montserrat-regular" }
                   ]}
                 >
                   {"Invite received "}
@@ -217,7 +218,12 @@ class Menu extends Component {
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("PersonalInfo")}
+                onPress={() =>
+                  this.handleNavigation("PersonalInfo", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info"
+                  })
+                }
               >
                 <Icons.PersonalInfo style={styles.icons} />
                 <Text
@@ -233,6 +239,8 @@ class Menu extends Component {
                   // this.props.navigation.navigate("BusinessInfo")
                   this.props.navigation.navigate("CreateBusinessAccount", {
                     editBusinessInfo: true,
+                    source: "open_hamburger",
+                    source_action: "a_open_business_info"
                   });
                 }}
               >
@@ -257,9 +265,15 @@ class Menu extends Component {
                     mainBusiness.weburl &&
                     mainBusiness.weburl !== ""
                   ) {
-                    this.props.navigation.navigate("MyWebsite");
+                    this.props.navigation.navigate("MyWebsite", {
+                      source: "open_hamburger",
+                      source_action: "a_open_my_website"
+                    });
                   } else {
-                    this.props.navigation.navigate("TutorialWeb");
+                    this.props.navigation.navigate("TutorialWeb", {
+                      source: "open_hamburger",
+                      source_action: "a_open_website_tutorial"
+                    });
                   }
                 }}
               >
@@ -273,7 +287,12 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("Wallet", true)}
+                onPress={() =>
+                  this.handleNavigation("Wallet", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_wallet"
+                  })
+                }
               >
                 <Icons.Wallet style={styles.icons} />
                 <Text
@@ -285,7 +304,12 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("TransactionList")}
+                onPress={() =>
+                  this.handleNavigation("TransactionList", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_transactions_list"
+                  })
+                }
               >
                 <Icons.TransactionIcon style={styles.icons} />
                 <Text
@@ -296,7 +320,12 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.handleNavigation("ChangePassword")}
+                onPress={() =>
+                  this.handleNavigation("ChangePassword", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_change_password"
+                  })
+                }
                 style={styles.options}
               >
                 <Icons.ChangePassIcon style={styles.icons} />
@@ -309,7 +338,12 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("AddressForm", true)}
+                onPress={() =>
+                  this.handleNavigation("AddressForm", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info"
+                  })
+                }
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
@@ -322,7 +356,7 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("ManageTeam", true)}
+                onPress={() => this.handleNavigation("ManageTeam", true, {})}
                 style={styles.options}
               >
                 <Icons.GroupIcon style={styles.icons} />
@@ -340,6 +374,8 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/privacy",
                     title: "Privacy Policy",
+                    source: "app_privacy_policy",
+                    source_action: "a_open_app_privacy_policy"
                   })
                 }
               >
@@ -362,6 +398,8 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/terms_conditions",
                     title: "Terms & Conditions",
+                    source: "app_TNC",
+                    source_action: "a_open_app_TNC"
                   })
                 }
               >
@@ -369,7 +407,7 @@ class Menu extends Component {
                   name="file-document-box"
                   type="MaterialCommunityIcons"
                   style={[
-                    styles.icons,
+                    styles.icons
                     // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                   ]}
                 />
@@ -408,7 +446,7 @@ class Menu extends Component {
           {this.props.clearTokenLoading && <LoadingScreen dash={true} />}
           <SlidingUpPanel
             showBackdrop={false}
-            ref={(c) => (this._panel = c)}
+            ref={c => (this._panel = c)}
             friction={0.3}
             draggableRange={this.state.draggableRange}
             allowDragging={false}
@@ -437,7 +475,7 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   campaignList: state.dashboard.campaignList,
@@ -447,13 +485,13 @@ const mapStateToProps = (state) => ({
   invitedEmail: state.account.invitedEmail,
   businessInvites: state.account.businessInvites,
   checkNotification: state.generic.checkNotification,
-  notificationData: state.generic.notificationData,
+  notificationData: state.generic.notificationData
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
-  createBusinessAccount: (account) =>
+  createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
-  updateCampaignList: (id) => dispatch(actionCreators.updateCampaignList(id)),
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

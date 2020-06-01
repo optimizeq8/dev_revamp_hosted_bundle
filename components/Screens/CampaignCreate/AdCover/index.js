@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 
 import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Segment from "expo-analytics-segment";
@@ -312,6 +313,13 @@ class AdCover extends Component {
           return manipResult;
         })
         .catch((error) => {
+          analytics.track(`a_error`, {
+            campaign_channel: "snapchat",
+            campaign_ad_type: "StoryAd",
+            error_page: "ad_cover",
+            error_description:
+              "Wrong aspect ratio for logo, Please crop the image to the correct size",
+          });
           segmentEventTrack("Seleeted Image Error", {
             campaign_error_image:
               "Wrong aspect ratio for logo, Please crop the image to the correct size",
@@ -334,6 +342,24 @@ class AdCover extends Component {
           uneditedLogoUri,
           logoSerialization: serialization,
         });
+        analytics.track(`a_media_editor`, {
+          campaign_channel: "snapchat",
+          campaign_ad_type: "StoryAd",
+          source: "ad_cover",
+          source_action: "a_media_editor",
+          tool_used: "PESDK",
+          media_type: "IMAGE",
+          ...serialization,
+          action_status: editedLogo.uri !== "" ? "success" : "failure",
+          image_for: "campaign_cover_logo",
+        });
+        editedLogo.uri !== "" &&
+          analytics.track(`a_error`, {
+            campaign_channel: "snapchat",
+            campaign_ad_type: "StoryAd",
+            error_page: "ad_cover",
+            error_description: "Logo must be exactly 993px by 284px",
+          });
         showMessage({
           message:
             editedLogo.uri !== ""
@@ -453,6 +479,12 @@ class AdCover extends Component {
             .then(() => {
               if (file.size > 2000000) {
                 this.onToggleModal(false);
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: "StoryAd",
+                  error_page: "ad_cover",
+                  error_description: "Image must be less than 2 MBs",
+                });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
@@ -477,6 +509,17 @@ class AdCover extends Component {
                 coverSerialization: result.serialization,
               });
               this.onToggleModal(false);
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: "StoryAd",
+                action_status: "success",
+                tool_used: "PESDK",
+                media_type: result.type.toUpperCase(),
+                ...result.serialization,
+                source: "ad_cover",
+                source_action: "a_media_editor",
+                image_for: "campaign_cover",
+              });
               segmentEventTrack("Selected Story Ad Cover Media successfully");
               segmentEventTrack("Selected Story Ad Cover serialization", {
                 ...result.serialization,
@@ -496,6 +539,14 @@ class AdCover extends Component {
             })
             .catch((error) => {
               this.onToggleModal(false);
+              analytics.track(`a_error`, {
+                campaign_channel: "snapchat",
+                campaign_ad_type: "StoryAd",
+                error_page: "ad_cover",
+                error_description: error.wrongAspect
+                  ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
+                  : "Please choose an image",
+              });
               segmentEventTrack("Error in selecting Story Ad Cover Media", {
                 campaign_error_story_ad_cover_image: error.wrongAspect
                   ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
@@ -516,12 +567,24 @@ class AdCover extends Component {
             position: "top",
             type: "warning",
           });
+          analytics.track(`a_error`, {
+            campaign_channel: "snapchat",
+            campaign_ad_type: "StoryAd",
+            error_page: "ad_cover",
+            error_description: "Please make sure the image is in png format",
+          });
           segmentEventTrack("Error in selecting Story Ad Cover Media", {
             campaign_error_story_ad_cover_image:
               "Please make sure the image is in png format",
           });
         }
       } else if (result && !result.cancelled && isNull(this.state.cover)) {
+        analytics.track(`a_error`, {
+          campaign_channel: "snapchat",
+          campaign_ad_type: "StoryAd",
+          error_page: "ad_cover",
+          error_description: "Please choose a media file",
+        });
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
@@ -627,6 +690,15 @@ class AdCover extends Component {
       this.state.logoError ||
       this.state.coverError
     ) {
+      analytics.track(`a_error`, {
+        error_page: "ad_cover",
+        source_action: "a_submit_ad_cover",
+        action_status: "failure",
+        error_description:
+          this.state.coverHeadlineError ||
+          this.state.logoError ||
+          this.state.coverError,
+      });
       segmentEventTrack("Error Story Ad Cover screen Submit button", {
         campaign_error_story_ad_cover_image: this.state.coverError,
         campaign_error_stoty_ad_cover_headline: this.state.coverHeadlineError,
@@ -660,6 +732,12 @@ class AdCover extends Component {
               JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
+          const segmentInfo = {
+            campaign_channel: "snapchat",
+            campaign_ad_type: "StoryAd",
+            campaign_id: this.props.data.campaign_id,
+            campaign_cover_headline: this.state.campaignInfo.coverHeadline,
+          };
           await this.props.uploadStoryAdCover(
             this.state.formattedCover,
             this._getUploadState,
@@ -667,13 +745,15 @@ class AdCover extends Component {
             this.onToggleModal,
             this.rejected,
             this.state.signal,
-            this.selectedCampaign
+            segmentInfo
           );
         }
       } else {
         this.props.navigation.push("AdDesign", {
           rejected: this.rejected,
           selectedCampaign: this.selectedCampaign,
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
         });
       }
     }
@@ -691,9 +771,24 @@ class AdCover extends Component {
   };
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
+    analytics.track(`a_help`, {
+      source: "ad_cover",
+      source_action: "a_help",
+      support_type: "optimize_website",
+    });
+    analytics.track(`open_support`, {
+      source: "ad_cover",
+      source_action: "a_help",
+      support_type: "optimize_website",
+      timestamp: new Date().getTime(),
+      campaign_channel: "snapchat",
+      campaign_ad_type: "StoryAd",
+      campaign_id: this.props.data.campaign_id,
+    });
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
+      source: "", //TODO:
     });
   };
   handleLogo = () => {
@@ -714,6 +809,20 @@ class AdCover extends Component {
     if (!this.props.currentCampaignSteps.includes("AdDesign")) {
       this.props.saveCampaignSteps(["Dashboard", "AdObjective", "AdCover"]);
     }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track("ad_cover", {
+      source,
+      source_action,
+      campaign_channel: "snapchat",
+      campaign_ad_type: "StoryAd",
+    });
     Segment.screenWithProperties("Snap Ad Design", {
       category: "Campaign Creation",
       channel: "snapchat",
@@ -984,7 +1093,7 @@ const mapDispatchToProps = (dispatch) => ({
     onToggleModal,
     rejected,
     cancelUpload,
-    selectedCampaign
+    segmentInfo
   ) =>
     dispatch(
       actionCreators.uploadStoryAdCover(
@@ -994,7 +1103,7 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal,
         rejected,
         cancelUpload,
-        selectedCampaign
+        segmentInfo
       )
     ),
   save_campaign_info: (info) =>

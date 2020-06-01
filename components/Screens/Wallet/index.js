@@ -8,6 +8,7 @@ import {
   ScrollView,
   I18nManager
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
@@ -76,20 +77,51 @@ class Wallet extends Component {
           this.props.getWalletAmountInKwd(this.state.amount);
           this.props.navigation.navigate("PaymentForm", {
             amount: this.state.amount,
-            addingCredits: true
+            addingCredits: true,
+            source: "open_wallet",
+            source_action: "a_top_up_wallet"
           });
         }
       );
+    } else {
+      analytics.track(`a_top_up_wallet`, {
+        source: `open_wallet`,
+        source_action: "a_top_up_wallet",
+        action_status: "failure",
+        error_description: amountError
+      });
     }
   };
   handleModalVisibility = () => {
     this.setState({ modalVisible: !this.state.modalVisible }, () => {
       if (this.state.modalVisible) {
+        analytics.track(`add_top_up_wallet`, {
+          source: "open_wallet",
+          source_action: "a_open_wallet_top_up_modal",
+          timestamp: new Date().getTime()
+        });
         Segment.screen("Wallet Top Up Modal");
       }
     });
   };
-
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_wallet`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
+    // Segment.screenWithProperties("Wallet", {
+    //   category: "Wallet Top Up"
+    // });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -98,13 +130,7 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Wallet", {
-              category: "Wallet Top Up"
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Container
           style={[
             styles.container,

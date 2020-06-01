@@ -13,6 +13,8 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
+import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import { ActivityIndicator } from "react-native-paper";
 import socketIOClient from "socket.io-client";
 import * as Permissions from "expo-permissions";
@@ -79,6 +81,22 @@ class Messenger extends Component {
     };
   }
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`open_support`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+    });
     // after the scoket is connected, it will intercept any "AdminReply" activity for the
     // room the user is subscribed to based on their id
     // the conversation is set as seen/read whe they open the messenger

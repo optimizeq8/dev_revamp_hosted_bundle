@@ -44,7 +44,9 @@ export default AundienceOverView = props => {
           !loading &&
             NavigationService.navigate(navigatingRoutePath, {
               editCampaign,
-              campaign: selectedCampaign
+              campaign: selectedCampaign,
+              source: "campaign_details",
+              source_action: "a_open_ad_targeting"
             });
         }}
       >

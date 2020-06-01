@@ -8,6 +8,7 @@ import {
   Linking,
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
 
@@ -115,12 +116,21 @@ class PaymentForm extends Component {
   _openWebBrowserAsync = async () => {
     try {
       this._addLinkingListener();
+      analytics.track(`payment_processing`, {
+        source: "payment_mode",
+        source_action: "a_payment_processing",
+        amount: this.props.navigation.getParam("amount", 0),
+        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        campaign_id: this.props.campaign_id,
+      });
       if (this.state.choice === 2) {
         this.props.navigation.navigate("WebView", {
           url: this.state.addingCredits
             ? this.props.payment_data_wallet.knet_payment_url
             : this.props.payment_data.knet_payment_url,
           title: "Knet Payment",
+          source: "payment_processing",
+          source_action: "a_payment_processing",
         });
         // await WebBrowser.openBrowserAsync(
         //   this.state.addingCredits
@@ -143,6 +153,8 @@ class PaymentForm extends Component {
             ? this.props.payment_data_wallet.cc_payment_url
             : this.props.payment_data.cc_payment_url,
           title: "Credit Card Payment",
+          source: "payment_processing",
+          source_action: "a_payment_processing",
         });
         // await WebBrowser.openBrowserAsync(
         //   this.state.addingCredits
@@ -162,6 +174,15 @@ class PaymentForm extends Component {
       this.closeBrowserLoading();
       this._removeLinkingListener();
     } catch (error) {
+      analytics.track(`payment_processing`, {
+        source: "payment_mode",
+        source_action: "a_payment_processing",
+        mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
+        action_status: "failure",
+        error_description: "Something went wrong",
+        campaign_id: this.props.campaign_id,
+      });
+
       showMessage({
         message: "Something went wrong!",
         type: "warning",
@@ -213,7 +234,8 @@ class PaymentForm extends Component {
             amount: this.state.amount,
             payment_type: this.state.payment_type,
           },
-          this._openWebBrowserAsync
+          this._openWebBrowserAsync,
+          this.state.choice === 2 ? "KNET" : "CREDIT CARD"
         );
       } else if (this.state.choice === 2) {
         Segment.trackWithProperties("Completed Checkout Step", {
@@ -292,6 +314,12 @@ class PaymentForm extends Component {
       payment_type:
         choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD",
     });
+    analytics.track(`a_select_payment_mode`, {
+      source: "payment_mode",
+      source_action: "a_select_payment_mode",
+      payment_mode_type:
+        choice === 1 ? "WALLET" : choice === 2 ? "KNET" : "CREDIT CARD",
+    });
     this.setState({
       choice,
       payment_type: choice === 3 ? 2 : 1,
@@ -320,21 +348,54 @@ class PaymentForm extends Component {
   };
 
   handlePaymentFormFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_channel = this.props.navigation.getParam(
+      "campaign_channel",
+      this.props.screenProps.prevAppState
+    );
+    const campaign_ad_type = this.props.navigation.getParam(
+      "campaign_ad_type",
+      ""
+    );
+
     if (this.state.addingCredits) {
-      Segment.screenWithProperties("Payment Selection", {
-        category: "Wallet Top Up",
+      const amount = this.props.navigation.getParam(`amount`, 0);
+      analytics.track(`payment_mode`, {
+        source,
+        source_action,
+        top_up_amount: amount,
       });
+      // Segment.screenWithProperties("Payment Selection", {
+      //   category: "Wallet Top Up"
+      // });
     } else {
-      Segment.screenWithProperties("Payment Selection", {
-        businessname: this.props.mainBusiness.businessname,
+      analytics.track(`payment_mode`, {
+        source,
+        source_action,
         campaign_id: this.props.campaign_id,
-        category: "Campaign Creation",
+        campaign_ad_type,
+        campaign_channel: this.state.addingCredits
+          ? "wallet_top_up"
+          : campaign_channel,
+        campaign_budget: this.props.campaign_budget,
       });
-      Segment.trackWithProperties("Viewed Checkout Step", {
-        step: 6,
-        business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign_id,
-      });
+      // Segment.screenWithProperties("Payment Selection", {
+      //   businessname: this.props.mainBusiness.businessname,
+      //   campaign_id: this.props.campaign_id,
+      //   category: "Campaign Creation"
+      // });
+      // Segment.trackWithProperties("Viewed Checkout Step", {
+      //   step: 6,
+      //   business_name: this.props.mainBusiness.businessname,
+      //   checkout_id: this.props.campaign_id
+      // });
     }
     if (this.state.addingCredits) {
       // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");
@@ -551,9 +612,11 @@ class PaymentForm extends Component {
             </Footer>
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.push("WebView", {
+                this.props.navigation.navigate("WebView", {
                   url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions",
+                  source: "payment_mode",
+                  source_action: "a_open_app_TNC",
                 })
               }
               disabled={this.state.choice === 1 && this.props.wallet === "0"}
@@ -567,9 +630,11 @@ class PaymentForm extends Component {
                 <Text
                   allowFontScaling={false}
                   onPress={() => {
-                    this.props.navigation.push("WebView", {
+                    this.props.navigation.navigate("WebView", {
                       url: "https://www.optimizeapp.com/terms_conditions",
                       title: "Terms & Conditions",
+                      source: "payment_mode",
+                      source_action: "a_open_app_TNC",
                     });
                     // this.setState({ browserLoading: true });
                     // openTerms(this.closeBrowserLoading);
@@ -679,12 +744,12 @@ const mapDispatchToProps = (dispatch) => ({
         closeBrowserLoading
       )
     ),
-  removeWalletAmount: (info, naviagtion, names, goBack) =>
+  removeWalletAmount: (info, navigation, names, goBack) =>
     dispatch(
-      actionCreators.removeWalletAmount(info, naviagtion, names, goBack)
+      actionCreators.removeWalletAmount(info, navigation, names, goBack)
     ),
-  addWalletAmount: (info, openBrowser) =>
-    dispatch(actionCreators.addWalletAmount(info, openBrowser)),
+  addWalletAmount: (info, openBrowser, payment_mode) =>
+    dispatch(actionCreators.addWalletAmount(info, openBrowser, payment_mode)),
   payment_request_credit_card: (
     campaign_id,
     openBrowser,

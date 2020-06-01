@@ -1,8 +1,9 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage, Animated } from "react-native";
+import { AsyncStorage, Animated, AppState } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import { saveBusinessInvitee } from "./accountManagementActions";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import * as Notifications from "expo-notifications";
@@ -114,7 +115,11 @@ export const checkForExpiredToken = (navigation) => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    navigation && NavigationService.navigate("Dashboard");
+                    navigation &&
+                      NavigationService.navigate("Dashboard", {
+                        source: AppState.currentState,
+                        source_action: "a_check_expired_token",
+                      });
                   });
               } else {
                 dispatch(clearPushToken(navigation, user.userid));
@@ -126,7 +131,11 @@ export const checkForExpiredToken = (navigation) => {
                 payload: false,
               });
 
-              navigation && NavigationService.navigate("Dashboard");
+              navigation &&
+                NavigationService.navigate("Dashboard", {
+                  source: AppState.currentState,
+                  source_action: "a_check_expired_token",
+                });
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
@@ -195,6 +204,8 @@ export const login = (userData, navigation) => {
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
               temp_pwd: true,
+              source: "sign_in",
+              source_action: "a_sign_in",
             });
           } else {
             dispatch(
@@ -208,6 +219,8 @@ export const login = (userData, navigation) => {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
               email: navigation.getParam("email", ""),
+              source: "sign_in",
+              source_action: "a_sign_in",
             });
           }
 
@@ -329,6 +342,7 @@ export const setCurrentUser = (user) => {
         payload: user,
       });
     } else {
+      // analytics.reset();
       return dispatch({
         type: actionTypes.LOGOUT_USER,
         payload: { user },
@@ -356,6 +370,13 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         const temPwd = navigation.getParam("temp_pwd", false);
         // if tempPwd change relogin for setting new auth token
         if (temPwd && response.data.success) {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message,
+          });
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
@@ -388,13 +409,24 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           duration: 2000,
           //   easing: Easing.linear
         }).start(() => {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message,
+          });
+
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
             position: "top",
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "change_password",
+              source_action: "a_change_password",
+            });
           }
           return dispatch({
             type: actionTypes.CHANGE_PASSWORD,

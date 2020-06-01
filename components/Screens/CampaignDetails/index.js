@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Text, Container, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents, ScrollView } from "react-navigation";
@@ -103,17 +104,17 @@ class CampaignDetails extends Component {
     );
   }
 
-  handleStartDatePicked = (date) => {
+  handleStartDatePicked = date => {
     this.setState({
       start_time: date,
     });
   };
-  handleEndDatePicked = (date) => {
+  handleEndDatePicked = date => {
     this.setState({
       end_time: date,
     });
   };
-  handleToggle = (status) => {
+  handleToggle = status => {
     segmentEventTrack(
       `Button pressed to ${status} campiagn`,
       this.props.selectedCampaign
@@ -147,7 +148,7 @@ class CampaignDetails extends Component {
     );
   };
 
-  showModal = (visible) => {
+  showModal = visible => {
     this.setState({ modalVisible: visible });
   };
 
@@ -172,7 +173,7 @@ class CampaignDetails extends Component {
     });
   };
 
-  adCreatives = (item) => {
+  adCreatives = item => {
     return (
       <MediaBox
         key={item.story_id}
@@ -185,7 +186,7 @@ class CampaignDetails extends Component {
   };
 
   handleChartToggle = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       expand: !prevState.expand,
     }));
     this.scroll.scrollTo({ x: 0, y: 0, animated: true });
@@ -198,10 +199,10 @@ class CampaignDetails extends Component {
     }).start();
   };
 
-  showCSVModal = (isVisible) => {
+  showCSVModal = isVisible => {
     this.setState({ CSVModalVisible: isVisible });
   };
-  campaignEndedOrNot = (campaign) => {
+  campaignEndedOrNot = campaign => {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -215,11 +216,57 @@ class CampaignDetails extends Component {
     return campaignEndedOrNot;
   };
 
-  onLayout = (event) => {
+  onLayout = event => {
     const layout = event.nativeEvent.layout;
     this.setState({
       maxHeight: hp(87) - layout.height,
     });
+  };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    if (
+      (!this.props.loading &&
+        !this.props.languagesListLoading &&
+        !this.props.selectedCampaign) ||
+      this.props.campaignError ||
+      this.props.languagesListError
+    ) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: "error",
+        error_description:
+          (!this.props.loading &&
+            !this.props.languagesListLoading &&
+            !this.props.selectedCampaign) ||
+          this.props.campaignError ||
+          this.props.languagesListError,
+      });
+    }
+
+    if (this.props.selectedCampaign) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: this.props.selectedCampaign.campaign_id,
+      });
+      Segment.screenWithProperties("Campaign Details", {
+        campaign_id: this.props.selectedCampaign.campaign_id,
+      });
+    }
   };
   render() {
     let loading = this.props.loading;
@@ -232,11 +279,14 @@ class CampaignDetails extends Component {
       this.props.languagesListError
     ) {
       return (
-        <ErrorComponent
-          loading={loading}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
+        <>
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <ErrorComponent
+            loading={loading}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        </>
       );
     } else {
       let selectedCampaign = null;
@@ -287,14 +337,14 @@ class CampaignDetails extends Component {
         region_names =
           targeting.geos[0].hasOwnProperty("region_id") &&
           targeting.geos[0].region_id
-            .map((id) =>
+            .map(id =>
               translate(
                 regionsCountries
                   .find(
-                    (country) =>
+                    country =>
                       country.country_code === targeting.geos[0].country_code
                   )
-                  .regions.find((reg) => reg.id === id).name
+                  .regions.find(reg => reg.id === id).name
               )
             )
             .join(", ");
@@ -328,22 +378,22 @@ class CampaignDetails extends Component {
         });
         interesetNames =
           targeting && targeting.hasOwnProperty("interests")
-            ? targeting.interests[0].category_id.map((interest) => {
+            ? targeting.interests[0].category_id.map(interest => {
                 if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
                   return ` ${
                     interestNames.interests.scls.find(
-                      (interestObj) => interestObj.id === interest
+                      interestObj => interestObj.id === interest
                     ).name
                   }`;
                 } else {
                   return (
                     interest !== "scls" &&
                     interestNames.interests.scls.find(
-                      (interestObj) => interestObj.id === interest
+                      interestObj => interestObj.id === interest
                     ) &&
                     `${
                       interestNames.interests.scls.find(
-                        (interestObj) => interestObj.id === interest
+                        interestObj => interestObj.id === interest
                       ).name
                     }`
                   );
@@ -356,9 +406,9 @@ class CampaignDetails extends Component {
           this.props.languages.length > 0 &&
           targeting &&
           targeting.demographics[0] &&
-          targeting.demographics[0].languages.map((languageId) => {
+          targeting.demographics[0].languages.map(languageId => {
             return translate(
-              this.props.languages.find((lang) => lang.id === languageId).name
+              this.props.languages.find(lang => lang.id === languageId).name
             );
           });
         audienceOverViewData.push({
@@ -374,7 +424,7 @@ class CampaignDetails extends Component {
           targeting.geos[0].country_code &&
           translate(
             countries.find(
-              (country) => country.value === targeting.geos[0].country_code
+              country => country.value === targeting.geos[0].country_code
             ).label
           );
         audienceOverViewData.push({
@@ -395,7 +445,7 @@ class CampaignDetails extends Component {
       return (
         <>
           <DateFields
-            onRef={(ref) => (this.dateField = ref)}
+            onRef={ref => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.start_time}
@@ -409,15 +459,7 @@ class CampaignDetails extends Component {
             style={[{ height: "100%" }]}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                if (this.props.selectedCampaign) {
-                  Segment.screenWithProperties("Campaign Details", {
-                    campaign_id: this.props.selectedCampaign.campaign_id,
-                  });
-                }
-              }}
-            />
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <Container style={[styles.container]}>
               <View
                 style={[
@@ -550,7 +592,7 @@ class CampaignDetails extends Component {
               <ScrollView
                 contentContainerStyle={{ height: hp(100) }}
                 scrollEnabled={!this.state.expand}
-                ref={(ref) => (this.scroll = ref)}
+                ref={ref => (this.scroll = ref)}
                 style={{ maxHeight: "100%" }}
               >
                 <View style={[styles.mainCard]}>
@@ -600,6 +642,7 @@ class CampaignDetails extends Component {
                         navigation={this.props.navigation}
                         loading={loading}
                         screenProps={this.props.screenProps}
+                        source={"campaign_detail"}
                       />
                       <AudienceOverview
                         screenProps={this.props.screenProps}
@@ -729,7 +772,7 @@ class CampaignDetails extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   campaignEnded: state.campaignC.campaignEnded,
   loading: state.dashboard.loadingCampaignDetails,
@@ -740,7 +783,7 @@ const mapStateToProps = (state) => ({
   languagesListLoading: state.campaignC.languagesListLoading,
   languagesListError: state.campaignC.languagesListError,
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
     dispatch(actionCreators.updateStatus(info, handleToggle)),
   endCampaign: (info, handleToggle) =>

@@ -1,8 +1,8 @@
 //Components
 import React, { Component } from "react";
 import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
-import { Button, Item, Input, Container, Icon } from "native-base";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
@@ -142,6 +142,29 @@ class CreateBusinessAccount extends Component {
       false
     );
     this.setState({ createNewBusiness });
+    if (!this.props.registering) {
+      const source = this.props.navigation.getParam(
+        "source",
+        this.props.screenProps.prevAppState
+      );
+      const source_action = this.props.navigation.getParam(
+        "source_action",
+        false
+      );
+      analytics.track(
+        `${
+          editBusinessInfo
+            ? "open_business_info"
+            : "open_create_business_account"
+        }`,
+        {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          ...this.props.mainBusiness
+        }
+      );
+    }
     Segment.screen(
       editBusinessInfo
         ? "Edit Business Info"
@@ -370,6 +393,19 @@ class CreateBusinessAccount extends Component {
                 this.props.navigation
               );
             } else {
+              analytics.track(`a_update_buisness_info`, {
+                source_action: "open_business_info",
+                source_action: "a_update_buisness_info",
+                action_status: "failure",
+                timestamp: new Date().getTime(),
+                ...business,
+                websitelink,
+                otherBusinessCategory:
+                  this.state.businessAccount.businesscategory !== "43"
+                    ? null
+                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
+                error_description: "No changes to update"
+              });
               showMessage({
                 type: "warning",
                 message: translate("No changes to update"),
@@ -393,6 +429,22 @@ class CreateBusinessAccount extends Component {
           }
         }
       } else {
+        analytics.track(
+          this.state.editBusinessInfo
+            ? `a_update_buisness_info`
+            : `a_create_buiness_account`,
+          {
+            source_action: this.state.editBusinessInfo
+              ? "open_business_info"
+              : "open_create_business_account",
+            source_action: this.state.editBusinessInfo
+              ? `a_update_buisness_info`
+              : `a_create_buiness_account`,
+            action_status: "failure",
+            timestamp: new Date().getTime(),
+            error_description: "Please complete all the required fields"
+          }
+        );
         showMessage({
           message: translate("Please complete all the required fields"),
           type: "warning"
