@@ -85,7 +85,7 @@ class MessageBubble extends PureComponent {
           {this.props.message.attachments.length !== 0 && (
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.push("ImagePreview", {
+                this.props.navigation.navigate("ImagePreview", {
                   image: this.props.message.attachments[0].url,
                   id: this.props.message.id,
                 })
