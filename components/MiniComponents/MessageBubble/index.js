@@ -1,30 +1,43 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { Text, View, ActivityIndicator, I18nManager } from "react-native";
+import { Text, View, I18nManager, TouchableOpacity } from "react-native";
 import dateFormat from "dateformat";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
+import { Transition } from "react-navigation-fluid-transitions";
 
 import OrangeTriangle from "../../../assets/SVGs/ChatBubbleOrangeTriangle";
 import TransparentTriangle from "../../../assets/SVGs/ChatBubbleTransparentTriangle";
+import RNImageOrCacheImage from "../RNImageOrCacheImage";
+import isNull from "lodash/isNull";
 
-class MessageBubble extends Component {
+class MessageBubble extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      height: 0
+      height: 0,
     };
   }
   render() {
     let userFormatter = "#6C63FF";
     var align = "flex-start";
-    // console.log("message...", this.props.message);
-
+    let body = "";
+    // to format the color and direction of the bubble
     if (this.props.message.author.type === "user") {
       userFormatter = globalColors.orange;
       align = "flex-end";
     }
+    //originally the message body is sent in html but because I parse it into text
+    //the text comes with an [Attachment:] array conjoined with the text as a string
+    //so I just remove it if that's the case
+
+    if (
+      !isNull(this.props.message.body) &&
+      this.props.message.body.includes("[Attachment:")
+    ) {
+      body = this.props.message.body.split("[Attachment:")[0].trim();
+    } else body = this.props.message.body;
 
     return (
       <View style={styles.messageBubbleOuterView}>
@@ -34,8 +47,8 @@ class MessageBubble extends Component {
               styles.dateText,
               {
                 textAlign:
-                  this.props.message.author.type === "user" ? "right" : "left"
-              }
+                  this.props.message.author.type === "user" ? "right" : "left",
+              },
             ]}
           >
             {dateFormat(
@@ -44,78 +57,101 @@ class MessageBubble extends Component {
             )}
           </Text>
         )}
+        {/* Triangle for admin */}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
-          {this.props.message.author.type === "admin" && (
-            <View
-              style={[
-                I18nManager.isRTL
-                  ? rtlStyles.transparentTriangleView
-                  : styles.transparentTriangleView,
-                {
-                  left: I18nManager.isRTL
-                    ? this.state.height > 50
-                      ? -5
-                      : -6
-                    : this.state.height > 50
-                    ? -8
-                    : -6,
-                  top:
-                    this.state.height > 100
-                      ? "75%"
+          {this.props.message.author.type === "admin" &&
+            !isNull(this.props.message.body) &&
+            this.props.message.body !== "" && (
+              <View
+                style={[
+                  I18nManager.isRTL
+                    ? rtlStyles.transparentTriangleView
+                    : styles.transparentTriangleView,
+                  {
+                    zIndex: 5,
+                    left: I18nManager.isRTL
+                      ? this.state.height > 50
+                        ? -5
+                        : -6
                       : this.state.height > 50
-                      ? "65%"
-                      : 20
-                }
-              ]}
-            >
-              <TransparentTriangle height={18} width={22} />
-            </View>
-          )}
-          <View
-            style={[
-              styles.messageView,
-              {
-                paddingVertical: this.state.height < 50 ? 10 : 18,
-                paddingHorizontal: this.state.height < 50 ? 20 : 25,
-                backgroundColor: userFormatter,
-                alignSelf: align
+                      ? -8
+                      : -6,
+                  },
+                ]}
+              >
+                <TransparentTriangle height={22} width={22} />
+              </View>
+            )}
+          {this.props.message.attachments.length !== 0 && (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.push("ImagePreview", {
+                  image: this.props.message.attachments[0].url,
+                  id: this.props.message.id,
+                })
               }
-            ]}
-            onLayout={event => {
-              var { x, y, width, height } = event.nativeEvent.layout;
-              // console.log('width', width);
-              // console.log('height', height);
-              this.setState({
-                height: height
-              });
-            }}
-          >
-            <Text selectable={true} style={styles.messageText}>
-              {this.props.message.body}
-            </Text>
-          </View>
-          {this.props.message.author.type === "user" && (
+              style={{ paddingBottom: 5 }}
+            >
+              <Transition
+                style={{ height: "100%", opacity: 1 }}
+                shared={this.props.message.id}
+              >
+                <RNImageOrCacheImage
+                  media={this.props.message.attachments[0].url}
+                  style={styles.image}
+                  resizeMode="center"
+                />
+              </Transition>
+            </TouchableOpacity>
+          )}
+          {!isNull(this.props.message.body) && this.props.message.body !== "" && (
             <View
               style={[
-                I18nManager.isRTL
-                  ? rtlStyles.orangeTriangleView
-                  : styles.orangeTriangleView,
+                styles.messageView,
                 {
-                  right: this.state.height > 50 ? 5 : 0
-                }
+                  paddingVertical: this.state.height < 50 ? 10 : 18,
+                  paddingHorizontal: this.state.height < 50 ? 20 : 25,
+                  backgroundColor: userFormatter,
+                  alignSelf: align,
+                },
               ]}
+              onLayout={(event) => {
+                var { height } = event.nativeEvent.layout;
+                this.setState({
+                  height: height,
+                });
+              }}
             >
-              <OrangeTriangle width={22} height={22} />
+              <Text selectable={true} style={styles.messageText}>
+                {body}
+              </Text>
             </View>
           )}
+          {/* Triangle for user */}
+          {this.props.message.author.type === "user" &&
+            !isNull(this.props.message.body) &&
+            this.props.message.body !== "" && (
+              <View
+                style={[
+                  I18nManager.isRTL
+                    ? rtlStyles.orangeTriangleView
+                    : styles.orangeTriangleView,
+                  {
+                    right: 0,
+                  },
+                ]}
+              >
+                <OrangeTriangle width={22} height={22} />
+              </View>
+            )}
         </View>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.messenger.user
+const mapStateToProps = (state) => ({
+  user: state.messenger.user,
 });
 
 export default connect(mapStateToProps)(MessageBubble);

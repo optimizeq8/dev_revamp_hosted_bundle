@@ -333,9 +333,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
-  - Sentry (5.1.0):
-    - Sentry/Core (= 5.1.0)
-  - Sentry/Core (5.1.0)
+  - Sentry (5.1.1):
+    - Sentry/Core (= 5.1.1)
+  - Sentry/Core (5.1.1)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -678,7 +678,7 @@ SPEC CHECKSUMS:
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
-  Sentry: 01008d590825eb1c02a796cbdced2cd3625f61e4
+  Sentry: a8e37dc33aedb8a53540e36607fc2eaef7c31b4f
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
