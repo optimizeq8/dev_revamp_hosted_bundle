@@ -365,7 +365,9 @@ export const update_conversatusion_read_status = () => {
       .then((data) => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
-          payload: true,
+         payload: {	
+            unread_converstaion: 0,
+          }
         });
       })
       .catch((err) => {
