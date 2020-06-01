@@ -53,7 +53,6 @@ export const connect_user_to_intercom = (user_id) => {
           position: "top",
         });
 
-        console.log("get_user", err.message || err.response);
         return dispatch({
           type: actionTypes.ERROR_SET_CURRENT_MESSENGER,
         });
@@ -124,7 +123,6 @@ export const create_user_on_intercom = () => {
           type: "danger",
           position: "top",
         });
-        console.log("create_user_on_intercom", err.message || err.response);
       });
   };
 };
@@ -154,10 +152,6 @@ export const get_conversation = (user_id) => {
             payload: false,
           });
         } else {
-          // console.log(
-          //   "conversation list: ",
-          //   data.messages[data.messages.length - 1]
-          // );
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
@@ -179,7 +173,6 @@ export const get_conversation = (user_id) => {
           position: "top",
         });
 
-        console.log("get_conversation", err.message || err.response);
         return dispatch({
           type: actionTypes.ERROR_SET_CONVERSATION,
         });
@@ -234,7 +227,6 @@ export const start_conversation = (message, callback) => {
           type: "danger",
           position: "top",
         });
-        console.log("start_conversation", err.message || err.response);
       });
   };
 };
@@ -289,7 +281,6 @@ export const reply = (message, upload) => {
           type: "danger",
           position: "top",
         });
-        console.log("reply", err.message || err.response);
       });
   };
 };
@@ -346,10 +337,6 @@ export const get_conversatusion_read_status = () => {
           type: "danger",
           position: "top",
         });
-        console.log(
-          "get_conversatusion_read_status err",
-          err.message || err.response
-        );
       });
   };
 };
@@ -379,7 +366,6 @@ export const update_conversatusion_read_status = () => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
           payload: true,
-          // getState().messenger.messages.length === data.intercom_chat_link
         });
       })
       .catch((err) => {
@@ -391,10 +377,6 @@ export const update_conversatusion_read_status = () => {
           type: "danger",
           position: "top",
         });
-        console.log(
-          "update_conversatusion_read_status err",
-          err.message || err.response
-        );
       });
   };
 };
@@ -429,7 +411,6 @@ export const set_as_seen = (check) => {
             type: "danger",
             position: "top",
           });
-          console.log("set_as_seen err", err.message || err.response);
         });
     else {
       return dispatch({
@@ -468,7 +449,6 @@ export const update_last_seen = () => {
           type: "danger",
           position: "top",
         });
-        console.log("update_last_seen", err.message || err.response);
       });
   };
 };
@@ -529,7 +509,6 @@ export const upload_media = (media) => {
           type: "danger",
           position: "top",
         });
-        console.log("upload_media", err.message || err.response);
         return dispatch({
           type: actionTypes.SET_LOADING_MESSAGE,
           payload: false,
@@ -603,7 +582,6 @@ export const update_user_on_intercom = (body) => {
           type: "danger",
           position: "top",
         });
-        console.log("create_user_on_intercom", err.message || err.response);
       });
   };
 };

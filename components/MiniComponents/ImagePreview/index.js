@@ -80,36 +80,13 @@ class ImagePreview extends Component {
                   imageUrls={[{ url: image }]}
                 />
               </View>
-              {/* <RNImageOrCacheImage
-                media={image}
-                style={styles.placeholder}
-                resizeMode={"cover"}
-              /> */}
+            
             </Transition>
-            {/* <TouchableOpacity
-              style={{
-                backgroundColor: "orange",
-                borderRadius: 30
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 30,
-                  fontFamily: "montserrat-bold",
-                  alignSelf: "center",
-                  padding
-                }}
-              >
-                Submit
-              </Text>
-            </TouchableOpacity> */}
 
             {!isNull(upload) && (
               <View style={{ alignSelf: "center" }}>
                 <Text
                   style={[
-                    // styles.text,
                     {
                       textAlign: "center",
                       color: "#fff",
