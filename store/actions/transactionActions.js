@@ -5,8 +5,8 @@ import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 
-export const setCampaignInfoForTransaction = data => {
-  return dispatch => {
+export const setCampaignInfoForTransaction = (data) => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION,
       payload: data,
@@ -15,7 +15,7 @@ export const setCampaignInfoForTransaction = data => {
 };
 
 export const reset_transaction_reducer = () => {
-  return dispatch => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.RESET_TRANSACTION_DATA,
     });
@@ -30,10 +30,10 @@ export const getTransactions = () => {
     });
     createBaseUrl()
       .get(`paymentHistory/${getState().account.mainBusiness.businessid}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("payment list:", data);
 
         return dispatch({
@@ -41,7 +41,7 @@ export const getTransactions = () => {
           payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
           message:
@@ -69,16 +69,16 @@ export const getWalletAmount = (retries = 3) => {
       .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`, {
         timeout: 3000,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_WALLET_AMOUNT,
           payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
         showMessage({
           message:
@@ -124,10 +124,10 @@ export const addWalletAmount = (
         },
         { timeout: 10000 }
       )
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         analytics.track(`a_top_up_wallet`, {
           source: "payment_mode",
           source_action: "a_top_up_wallet",
@@ -142,7 +142,7 @@ export const addWalletAmount = (
         });
       })
       .then(() => openBrowser())
-      .catch(err => {
+      .catch((err) => {
         // console.log("addWalletAmount Error: ", err.message || err.response);
         analytics.track(`a_top_up_wallet`, {
           source: "payment_mode",
@@ -184,23 +184,23 @@ export const addWalletAmount = (
   };
 };
 export const getWalletAmountInKwd = (amount, retries = 3) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true,
     });
     createBaseUrl()
       .get(`kdamount/${amount}`, { timeout: 10000 })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.GET_WALLET_AMOUNT_IN_KWD,
           payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "getWalletAmountInKwd Error: ",
         //   err.message || err.response
@@ -240,10 +240,10 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
       info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
       .post(`useWallet`, info, { timeout: 10000 })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: "info",
@@ -261,7 +261,7 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
           });
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("useWallet Error: ", err.message);
 
         if (retries > 0) {
@@ -307,10 +307,10 @@ export const removeWalletAmount = (
 
     createBaseUrl()
       .post(`removeWallet`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
           payload: data,
@@ -322,7 +322,7 @@ export const removeWalletAmount = (
             names: names,
           });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);
         if (retries > 0) {
           removeWalletAmount(
@@ -366,10 +366,10 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
     createBaseUrl()
       .post(`checkoutwithWallet`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         analytics.track(`payment_processing`, {
           source: "payment_mode",
           source_action: "a_payment_processing",
@@ -383,10 +383,11 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
           source: "payment_processing",
           source_action: "a_payment_processing",
           payment_mode: "WALLET",
+          checkoutwithWallet: true,
         });
       })
 
-      .then(data => {
+      .then((data) => {
         // console.log("CHECKOUT_WITH_WALLET data", data);
         return dispatch({
           type: actionTypes.CHECKOUT_WITH_WALLET,
@@ -394,7 +395,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
         });
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
         analytics.track(`payment_processing`, {
           source: "payment_mode",
@@ -435,8 +436,8 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
       });
   };
 };
-export const filterTransactions = query => {
-  return dispatch =>
+export const filterTransactions = (query) => {
+  return (dispatch) =>
     dispatch({
       type: actionTypes.FILTER_TRANSACTION,
       payload: query,
@@ -461,10 +462,10 @@ export const payment_request_knet = (
 
     createBaseUrl()
       .get(url)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.knet_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
@@ -497,7 +498,7 @@ export const payment_request_knet = (
           openBrowser();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("payment_request_knet", err || err);
         showMessage({
           message:
@@ -537,10 +538,10 @@ export const payment_request_credit_card = (
 
     createBaseUrl()
       .post(url)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.cc_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
@@ -573,7 +574,7 @@ export const payment_request_credit_card = (
           openBrowser();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("payment_request_cc", err.message || err.response);
         showMessage({
           message:
@@ -607,17 +608,17 @@ export const getWalletTransactionsHistory = () => {
     });
     createBaseUrl()
       .get(`walletpaymentHistory/${getState().account.mainBusiness.businessid}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("payment list:", data);
         return dispatch({
           type: actionTypes.SET_WALLET_TRANSACTION_LIST,
           payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
           message:

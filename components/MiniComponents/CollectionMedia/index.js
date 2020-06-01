@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Linking } from "expo";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Segment from "expo-analytics-segment";
@@ -14,6 +13,7 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
+  Linking,
 } from "react-native";
 import {
   Button,
@@ -34,7 +34,7 @@ import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -113,9 +113,7 @@ class CollectionMedia extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
-        const pkg = Constants.manifest.releaseChannel
-          ? Constants.manifest.android.package // When published, considered as using standalone build
-          : "host.exp.exponent"; // In expo client mode
+        const pkg = "com.optimizeapp.optimizeapp"; // In expo client mode
 
         showMessage({
           message: translate(
@@ -513,9 +511,7 @@ class CollectionMedia extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       this.onToggleModal(false);
-      const pkg = Constants.manifest.releaseChannel
-        ? Constants.manifest.android.package // When published, considered as using standalone build
-        : "host.exp.exponent"; // In expo client mode
+      const pkg = "com.optimizeapp.optimizeapp";
 
       showMessage({
         message: translate(

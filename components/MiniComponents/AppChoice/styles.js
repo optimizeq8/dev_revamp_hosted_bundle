@@ -12,8 +12,8 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   scrollViewContainer: {
-    width: "100%",
-    flex: 1
+    width: "100%"
+    // flex: 1
   },
   container: {
     backgroundColor: "#0000",
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   bottomView: {
-    // justifyContent: "flex-end"
+    // alignSelf: "flex-end"
   },
   animateView1: {
     flexDirection: "row",
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-regular",
-    paddingBottom: 16,
+    paddingVertical: 16,
     textDecorationLine: "underline",
     textAlign: "center"
   },

@@ -1,14 +1,13 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
-import { Platform } from "react-native";
+import { Platform, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import segmentEventTrack from "../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
-import { Linking } from "expo";
+
 import { PESDK } from "react-native-photoeditorsdk";
 import {
   VESDK,
@@ -21,13 +20,12 @@ import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
-export const askForPermssion = async screenProps => {
+export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
-    const pkg = Constants.manifest.releaseChannel
-      ? Constants.manifest.android.package // When published, considered as using standalone build
-      : "host.exp.exponent"; // In expo client mode
+    const pkg = "com.optimizeapp.optimizeapp";
+
     showMessage({
       message: translate("Please allow access to the gallery to upload media"),
       position: "top",
@@ -103,7 +101,7 @@ export const _pickImage = async (
             ? mediaEditor.serialization
             : null
         )
-          .then(async manipResult => {
+          .then(async (manipResult) => {
             let serialization = {};
             if (manipResult) {
               serialization = manipResult.serialization;
@@ -308,7 +306,7 @@ export const _pickImage = async (
                 });
             }
           })
-          .catch(error => {
+          .catch((error) => {
             // console.log(error);
 
             onToggleModal(false);
@@ -343,7 +341,7 @@ export const _pickImage = async (
             exportType: SerializationExportType.OBJECT,
           },
         };
-        uneditedImageUri = result.uri;
+        let uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
           transform: {
@@ -369,7 +367,7 @@ export const _pickImage = async (
             : null
         )
 
-          .then(async manipResult => {
+          .then(async (manipResult) => {
             // console.log("manipResult", manipResult);
 
             if (manipResult) {
@@ -672,6 +670,8 @@ export const _pickImage = async (
                     media: result.uri,
                     type: result.type.toUpperCase(),
                     fileReadyToUpload: true,
+                    uneditedImageUri,
+                    serialization: result.serialization,
                   });
                 setTheState({ sourceChanging: false });
               } else {
@@ -690,7 +690,7 @@ export const _pickImage = async (
 
             return;
           })
-          .catch(err => {
+          .catch((err) => {
             // console.log(err);
             analytics.track(`a_error`, {
               error_page: "ad_design",

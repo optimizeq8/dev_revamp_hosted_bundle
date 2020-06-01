@@ -20,7 +20,7 @@ import { connect } from "react-redux";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   componentDidMount() {
     this.segment();
@@ -44,7 +44,7 @@ class SwipeUpChoice extends Component {
         Segment.screenWithProperties("Snap Ad Website SwipeUp", {
           category: "Campaign Creation",
           channel: "snapchat",
-          label: "Lead Generation Objective"
+          label: "Lead Generation Objective",
         });
         analytics.track(`ad_swipe_up_destination`, {
           source,
@@ -53,7 +53,7 @@ class SwipeUpChoice extends Component {
           campaign_swipe_up_destination: "website",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
-          campaign_ad_type
+          campaign_ad_type,
         });
         // Segment.trackWithProperties(
         //   "Selected Lead Generation Website Swipeup",
@@ -66,7 +66,7 @@ class SwipeUpChoice extends Component {
         Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
           category: "Campaign Creation",
           channel: "snapchat",
-          label: "Video Views Objective"
+          label: "Video Views Objective",
         });
         analytics.track(`ad_swipe_up_destination`, {
           source,
@@ -75,14 +75,14 @@ class SwipeUpChoice extends Component {
           campaign_swipe_up_destination: "website",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
-          campaign_ad_type
+          campaign_ad_type,
         });
         break;
       case "WEB_CONVERSION":
         Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
           category: "Campaign Creation",
           channel: "snapchat",
-          label: "SME Growth Campaign Objective"
+          label: "SME Growth Campaign Objective",
         });
 
         analytics.track(`ad_swipe_up_destination`, {
@@ -92,14 +92,14 @@ class SwipeUpChoice extends Component {
           campaign_swipe_up_destination: "website",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
-          campaign_ad_type
+          campaign_ad_type,
         });
         break;
       default:
         Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
           category: "Campaign Creation",
           channel: "snapchat",
-          label: "App Install Objective"
+          label: "App Install Objective",
         });
         analytics.track(`ad_swipe_up_destination`, {
           source,
@@ -108,7 +108,7 @@ class SwipeUpChoice extends Component {
           campaign_swipe_up_destination: "App Install",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
-          campaign_ad_type
+          campaign_ad_type,
         });
     }
   };
@@ -208,35 +208,28 @@ class SwipeUpChoice extends Component {
     if (this.props.adType === "CollectionAd") return menu;
     else
       return (
-        <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+        <SafeAreaView
+          style={styles.safeAreaContainer}
+          forceInset={{ top: "always" }}
+        >
           <NavigationEvents onDidFocus={this.segment} />
+          <CustomeHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            screenProps={this.props.screenProps}
+            title={"Swipe Up destination"}
+            navigation={this.props.navigation}
+          />
 
-          <Container style={styles.container}>
-            <CustomeHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              screenProps={this.props.screenProps}
-              title={"Swipe Up destination"}
-              navigation={this.props.navigation}
-            />
-            <Content contentContainerStyle={styles.contentContainer}>
-              <KeyBoardShift
-                // resetScrollToCoords={{ x: 0, y: 0 }}
-                // scrollEnabled={false}
-                style={styles.contentContainer}
-              >
-                {() => menu}
-              </KeyBoardShift>
-            </Content>
-          </Container>
+          {menu}
         </SafeAreaView>
       );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

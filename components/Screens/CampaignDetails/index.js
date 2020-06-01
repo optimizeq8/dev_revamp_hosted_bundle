@@ -99,7 +99,8 @@ class CampaignDetails extends Component {
       this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
       this.props.loading !== nextProps.loading ||
       this.props.languagesListLoading !== nextProps.languagesListLoading ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
+      JSON.stringify(this.state) !== JSON.stringify(nextState) ||
+      this.props.campaignEnded !== nextProps.campaignEnded
     );
   }
 
@@ -439,7 +440,6 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
-        console.log(selectedCampaign);
       }
 
       return (
@@ -676,46 +676,48 @@ class CampaignDetails extends Component {
                                   </Text>
                                 </View>
                               ) : (
-                                <View padder style={styles.toggleSpace}>
-                                  <View style={{ alignSelf: "center" }}>
-                                    {selectedCampaign && (
-                                      <Toggle
-                                        buttonTextStyle={
-                                          styles.switchButtonText
-                                        }
-                                        buttonText={
-                                          this.state.toggleText !== "PAUSED"
-                                            ? "LIVE"
-                                            : "PAUSED"
-                                        }
-                                        containerStyle={styles.toggleStyle}
-                                        switchOn={this.state.toggle}
-                                        onPress={() => {
-                                          this.state.toggle
-                                            ? this.setState({
-                                                modalVisible: true,
-                                              })
-                                            : this.updateStatus();
-                                        }}
-                                        backgroundColorOff="rgba(255,255,255,0.1)"
-                                        backgroundColorOn="rgba(255,255,255,0.1)"
-                                        circleColorOff="#FF9D00"
-                                        circleColorOn="#66D072"
-                                        duration={500}
-                                        circleStyle={styles.switchCircle}
-                                      />
-                                    )}
-                                    <Text style={styles.statusText}>
-                                      {translate(
-                                        `${
-                                          this.state.toggle
-                                            ? "Tap to pause AD"
-                                            : "Tap to activate AD"
-                                        }`
+                                !this.props.campaignEnded && (
+                                  <View padder style={styles.toggleSpace}>
+                                    <View style={{ alignSelf: "center" }}>
+                                      {selectedCampaign && (
+                                        <Toggle
+                                          buttonTextStyle={
+                                            styles.switchButtonText
+                                          }
+                                          buttonText={
+                                            this.state.toggleText !== "PAUSED"
+                                              ? "LIVE"
+                                              : "PAUSED"
+                                          }
+                                          containerStyle={styles.toggleStyle}
+                                          switchOn={this.state.toggle}
+                                          onPress={() => {
+                                            this.state.toggle
+                                              ? this.setState({
+                                                  modalVisible: true,
+                                                })
+                                              : this.updateStatus();
+                                          }}
+                                          backgroundColorOff="rgba(255,255,255,0.1)"
+                                          backgroundColorOn="rgba(255,255,255,0.1)"
+                                          circleColorOff="#FF9D00"
+                                          circleColorOn="#66D072"
+                                          duration={500}
+                                          circleStyle={styles.switchCircle}
+                                        />
                                       )}
-                                    </Text>
+                                      <Text style={styles.statusText}>
+                                        {translate(
+                                          `${
+                                            this.state.toggle
+                                              ? "Tap to pause AD"
+                                              : "Tap to activate AD"
+                                          }`
+                                        )}
+                                      </Text>
+                                    </View>
                                   </View>
-                                </View>
+                                )
                               )
                             ) : null)}
                         </View>

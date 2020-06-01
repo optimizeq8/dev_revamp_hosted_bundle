@@ -257,67 +257,46 @@ class Deep_Link extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     return (
       <SafeAreaView
-        style={styles.safeAreaContainer}
+        style={[
+          styles.safeAreaContainer,
+          { paddingHorizontal: this.props.toggleSideMenu ? 15 : 26 }
+        ]}
         forceInset={{ top: "always" }}
       >
-        <Container style={[styles.container]}>
-          {this.props.adType === "CollectionAd" && (
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              title={"Swipe Up destination"}
-              navigation={this.props.navigation}
-            />
-          )}
-          <Content
-            style={styles.container}
-            scrollEnabled={true}
-            contentContainerStyle={[
-              styles.deepLinkContainer,
-              {
-                alignItems: "center",
-                // width: !this.props.toggleSideMenu ? "100%" : "100%",
-                paddingHorizontal: !this.props.toggleSideMenu ? 30 : 20
-              }
-            ]}
-          >
-            <KeyboardShift style={styles.keyboardContainer}>
-              {() => (
-                <>
-                  <View style={styles.deepLinkHeader}>
-                    <AppInstallIcon style={styles.icon} />
-                    <View style={styles.textcontainer}>
-                      <Text style={styles.titletext}>
-                        {translate("Deep Link")}
-                      </Text>
-                      <Text style={styles.subtext}>
-                        {translate(
-                          "Send Snapchatters to a specific page in your app"
-                        )}
-                      </Text>
-                    </View>
-                  </View>
-                  <AppChoice
-                    handleCallaction={this.handleCallaction}
-                    navigation={this.props.navigation}
-                    selectApp={this.selectApp}
-                    listNum={3}
-                    attachment={this.state.attachment}
-                    callaction={this.state.callaction}
-                    swipeUpDestination={this.props.swipeUpDestination}
-                    deep_link_uri={this.state.attachment.deep_link_uri}
-                    toggleSideMenu={this.props.toggleSideMenu}
-                    _handleSubmission={this._handleSubmission}
-                    deepLink={true}
-                    screenProps={this.props.screenProps}
-                    appSelections={{ iosAppSelected, androidAppSelected }}
-                    setTheState={this.setTheState}
-                  />
-                </>
-              )}
-            </KeyboardShift>
-          </Content>
-        </Container>
+        {this.props.adType === "CollectionAd" && (
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            title={"Swipe Up destination"}
+            navigation={this.props.navigation}
+          />
+        )}
+
+        <View style={styles.deepLinkHeader}>
+          <AppInstallIcon style={styles.icon} />
+          <View style={styles.textcontainer}>
+            <Text style={styles.titletext}>{translate("Deep Link")}</Text>
+            <Text style={styles.subtext}>
+              {translate("Send Snapchatters to a specific page in your app")}
+            </Text>
+          </View>
+        </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          navigation={this.props.navigation}
+          selectApp={this.selectApp}
+          listNum={3}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          swipeUpDestination={this.props.swipeUpDestination}
+          deep_link_uri={this.state.attachment.deep_link_uri}
+          toggleSideMenu={this.props.toggleSideMenu}
+          _handleSubmission={this._handleSubmission}
+          deepLink={true}
+          screenProps={this.props.screenProps}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </SafeAreaView>
     );
   }

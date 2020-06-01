@@ -1,7 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
@@ -17,6 +17,8 @@ import {
   AppState,
   AsyncStorage,
   ActivityIndicator,
+  Linking,
+  Dimensions,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
@@ -42,13 +44,8 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import {
-  AppLoading,
-  Linking,
-  SplashScreen,
-  Notifications,
-  Updates,
-} from "expo";
+import * as Updates from "expo-updates";
+import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
@@ -81,6 +78,7 @@ import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -138,10 +136,13 @@ class App extends React.Component {
       appState: AppState.currentState,
       prevAppState: AppState.currentState,
       anonymous_userId: "",
+      translateY: new Animated.Value(1),
+      bootSplashIsVisible: true,
+      bootSplashLogoIsLoaded: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
-    SplashScreen.preventAutoHide();
+    // SplashScreen.preventAutoHide();
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
       !__DEV__
@@ -166,7 +167,7 @@ class App extends React.Component {
       this._handleFinishLoading();
     }
   };
-  setLocale = locale => {
+  setLocale = (locale) => {
     this.setState({ locale });
   };
 
@@ -191,6 +192,7 @@ class App extends React.Component {
       },
       debug: true,
     });
+    RNBootSplash.hide({ duration: 350 });
     const anonymous_userId = await analytics.getAnonymousId();
     this.setState({
       anonymous_userId,
@@ -204,7 +206,7 @@ class App extends React.Component {
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken());
-    this._notificationSubscription = Notifications.addListener(
+    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -215,12 +217,12 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
-  _handleAppStateChange = async nextAppState => {
+  _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      await analytics.track("app_open", {
+      analytics.track("app_open", {
         userid:
           (store.getState().auth &&
             store.getState().auth.userInfo &&
@@ -257,7 +259,7 @@ class App extends React.Component {
     });
   };
 
-  _handleNotification = async handleScreen => {
+  _handleNotification = async (handleScreen) => {
     segmentEventTrack("Notification received");
     console.log("handleScreen app", handleScreen);
     store.dispatch(
@@ -295,7 +297,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received") {
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
     }
     if (handleScreen.origin === "selected") {
       store.dispatch(
@@ -334,7 +336,7 @@ class App extends React.Component {
     Adjust.componentWillUnmount();
   }
 
-  getCurrentRouteName = navigationState => {
+  getCurrentRouteName = (navigationState) => {
     if (!navigationState) {
       return null;
     }
@@ -355,56 +357,52 @@ class App extends React.Component {
       <ActivityIndicator size="large" />
     </View>
   );
+
+  anim = () => {
+    // Animated.stagger(250, [
+    //   Animated.spring(this.state.translateY, {
+    //     useNativeDriver,
+    //     toValue: -50,
+    //   }),
+    //  ,
+    // ]).start();
+    Animated.timing(this.state.translateY, {
+      toValue: heightPercentageToDP(100),
+      // duration: 1000,
+    }).start(() => {
+      this.setState({ isLoadingComplete: true });
+    });
+  };
   render() {
     if (!this.state.isLoadingComplete) {
       return (
         <>
-          {/* <View
-            style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
-          /> */}
-          <AppLoading
-            startAsync={this._loadResourcesAsync}
-            onFinish={() => {
-              this.setState({ isLoadingComplete: true });
-            }}
-            autoHideSplash={true}
-            // onError={console.warn}
+          <LinearGradient
+            colors={["#6200FF", "#8900FF"]}
+            locations={[1, 0.3]}
+            style={styles.gradient}
           />
-          {/* <View
-            style={{
-              flex: 1
-            }}
-          >
-            <Image
-              source={require("./assets/images/splash.png")}
-              style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                resizeMode: "cover"
-                // opacity: this.state.splashAnimation.interpolate({
-                //   inputRange: [0, 1],
-                //   outputRange: [0, 1]
-                // })
-              }}
-              onLoadEnd={() => {
-                // wait for image's content to fully load [`Image#onLoadEnd`] (https://facebook.github.io/react-native/docs/image#onloadend)
-                console.log("Image#onLoadEnd: hiding SplashScreen");
-                SplashScreen.hide(); // Image is fully presented, instruct SplashScreen to hide
-              }}
+          <View style={styles.logoContainer}>
+            <Animated.Image
+              source={require("./assets/logo.png")}
+              style={[
+                styles.logo,
+                // {
+                //   transform: [
+                //     {
+                //       translateY: this.state.translateY,
+                //     },
+                //   ],
+                // },
+              ]}
               fadeDuration={0}
             />
           </View>
-         */}
         </>
       );
     }
     {
-      const prefix = Linking.makeUrl("/");
+      // const prefix = Linking.makeUrl("/");
 
       return (
         <Provider store={store}>
@@ -428,6 +426,7 @@ class App extends React.Component {
                 backgroundColor: "transparent",
                 marginTop: 0,
                 paddingTop: 0,
+                paddingTop: StatusBar.currentHeight,
               }}
             />
             <View style={styles.container}>
@@ -440,8 +439,8 @@ class App extends React.Component {
                     this.setState({ currentScreen });
                     // console.log("screeen name", currentScreen);
                   }}
-                  uriPrefix={prefix}
-                  ref={navigatorRef => {
+                  // uriPrefix={prefix}
+                  ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                   screenProps={{
@@ -534,7 +533,7 @@ class App extends React.Component {
   };
 
   _animateOut = () => {
-    SplashScreen.hide();
+    // SplashScreen.hide();
     Animated.sequence([
       Animated.timing(this.state.splashAnimation, {
         toValue: 1,
@@ -586,7 +585,7 @@ class App extends React.Component {
   _loadResourcesAsync = async () => {
     await this._loadAppLanguage();
     const images = [require("./assets/images/splash.png")];
-    const cacheImages = images.map(image =>
+    const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
     );
 
@@ -639,10 +638,13 @@ class App extends React.Component {
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       }),
-    ]);
+    ]).then(() => {
+      //was used to animate the logo
+      //  this.anim()
+    });
   };
 
-  _handleLoadingError = error => {
+  _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
@@ -664,7 +666,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     justifyContent: "center",
   },
+  logoContainer: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    backgroundColor: "#0000",
+  },
+  logo: {
+    width: "35%",
+    height: "35%",
+    alignSelf: "center",
+    resizeMode: "contain",
+    top: 10,
 
+    // opacity: this.state.splashAnimation
+  },
   text: { color: "#fff" },
 
   gradient: {

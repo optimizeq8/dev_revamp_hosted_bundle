@@ -1,17 +1,17 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
-import { Platform } from "react-native";
+import { Platform, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import segmentEventTrack from "../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
-import { Linking } from "expo";
+
 import { PESDK, Configuration, TintMode } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
-export const askForPermssion = async screenProps => {
+export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
@@ -31,7 +31,7 @@ export const askForPermssion = async screenProps => {
               { data: "package:" + pkg }
             ),
       duration: 5000,
-      description: translate("Press here to open settings")
+      description: translate("Press here to open settings"),
     });
   }
   return status;
@@ -45,7 +45,7 @@ export const pick = async (mediaTypes, screenProps) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: false,
       exif: false,
-      quality: 0.8
+      quality: 0.8,
     });
   }
 
@@ -66,13 +66,13 @@ export const _pickImage = async (
       height: 1,
       serialization: result && result.hasOwnProperty("serialization"),
       transform: {
-        items: [{ width: 1, height: 1, name: "Square" }]
-      }
+        items: [{ width: 1, height: 1, name: "Square" }],
+      },
     });
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
+        size: true,
       });
     }
     const { translate } = screenProps;
@@ -85,7 +85,7 @@ export const _pickImage = async (
           ? result.serialization
           : null
       )
-        .then(async manipResult => {
+        .then(async (manipResult) => {
           let serialization = {};
           if (manipResult) {
             serialization = manipResult.serialization;
@@ -99,28 +99,28 @@ export const _pickImage = async (
                 {
                   resize: {
                     width: 500,
-                    height: 500
-                  }
-                }
+                    height: 500,
+                  },
+                },
               ],
               {
-                compress: 1
+                compress: 1,
               }
             );
             let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
-              size: true
+              size: true,
             });
 
             if (newSize.size > 5000000) {
               segmentEventTrack("Error selecting business logo", {
-                error_businesslogo: "Image must be less than 5 MBs"
+                error_businesslogo: "Image must be less than 5 MBs",
               });
               showMessage({
                 message: translate("Image must be less than {{fileSize}} MBs", {
-                  fileSize: 5
+                  fileSize: 5,
                 }),
                 position: "top",
-                type: "warning"
+                type: "warning",
               });
 
               return Promise.reject("Image must be less than 5 MBs");
@@ -139,19 +139,19 @@ export const _pickImage = async (
           showMessage({
             message: translate("Image has been selected successfully"),
             position: "top",
-            type: "success"
+            type: "success",
           });
           var res = result.uri.split("/");
           res = res[res.length - 1];
           var photo = {
             uri: result.uri,
             type: "IMAGE" + "/" + format,
-            name: res
+            name: res,
           };
           let format = res.split(".")[1];
           startUpload(photo);
         })
-        .catch(error => {
+        .catch((error) => {
           // console.log(error);
 
           showMessage({
@@ -162,7 +162,7 @@ export const _pickImage = async (
                   "The dimensions are too large, please choose a different image"
                 ),
             position: "top",
-            type: "warning"
+            type: "warning",
           });
         });
     } else {

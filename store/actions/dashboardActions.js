@@ -7,32 +7,32 @@ import store from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { get_languages } from "./campaignActions";
 
-export const filterCampaigns = query => {
+export const filterCampaigns = (query) => {
   return {
     type: actionTypes.FILTER_CAMPAIGNS,
-    payload: query
+    payload: query,
   };
 };
 
 export const getCampaignDetails = (id, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(get_languages());
     dispatch({
       type: actionTypes.SET_CAMPAIGN_LOADING,
-      payload: { loading: true, data: {} }
+      payload: { loading: true, data: {} },
     });
 
     navigation.navigate("CampaignDetails", {
       source: "dashboard",
-      source_action: "a_open_campaign"
+      source_action: "a_open_campaign",
     });
 
     createBaseUrl()
       .get(`campaigndetail/${id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (
           typeof data === "string" &&
           data.toLowerCase() === "connection-failure"
@@ -47,15 +47,20 @@ export const getCampaignDetails = (id, navigation) => {
           campaign_id: id,
           campaign_type: "snapchat",
           campaign_ad_type: data.data && data.data.campaign_type,
-          error_description: !data.sucess && data.message
+          error_description: !data.sucess && data.message,
         });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
-          payload: { loading: false, data: data.data }
+          payload: { loading: false, data: data.data },
         });
+        dispatch({
+          type: actionTypes.END_CAMPAIGN,
+          payload: data.data.campaign_end === "1",
+        });
+
         return data.data;
       })
-      .then(data => {
+      .then((data) => {
         let endDate = new Date(data.end_time);
         endDate.setDate(endDate.getDate() + 2);
         if (
@@ -66,7 +71,7 @@ export const getCampaignDetails = (id, navigation) => {
           dispatch(checkRemainingBudget(data.campaign_id));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         analytics.track(`a_error`, {
           error_page: "dashboard",
           source_action: "a_open_campaign_details",
@@ -77,7 +82,7 @@ export const getCampaignDetails = (id, navigation) => {
           error_description:
             err.message ||
             err.response ||
-            "Something went wrong, please try again."
+            "Something went wrong, please try again.",
         });
         // console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
@@ -86,11 +91,11 @@ export const getCampaignDetails = (id, navigation) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
-          payload: { loading: false }
+          payload: { loading: false },
         });
       });
   };
@@ -113,10 +118,10 @@ export const getCampaignStats = (campaign, duration) => {
     )}-${("0" + result.getDate()).slice(-2)}`;
   };
 
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_STATS_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(`getcampaignStatsNew`, {
@@ -135,23 +140,23 @@ export const getCampaignStats = (campaign, duration) => {
         campaign_id: campaign.snap_campaign_id,
         start_time: duration.start_time.split("T")[0],
         end_time: addDays(duration.end_time, 1),
-        hour: 0
+        hour: 0,
         //timeDiff + 1 <= 5 ? 1 : 0
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_STATS,
-          payload: { loading: false, data: data }
+          payload: { loading: false, data: data },
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getCampaignStats error", err.message || err.response);
         dispatch({
           type: actionTypes.SET_CAMPAIGN_STATS,
-          payload: { loading: false, data: {}, err }
+          payload: { loading: false, data: {}, err },
         });
         showMessage({
           message:
@@ -159,37 +164,37 @@ export const getCampaignStats = (campaign, duration) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
       });
   };
 };
 
 export const getCampaignList = (id, increasePage, cancelToken) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: {
         isListEnd: false,
         fetching_from_server: false,
-        loadingCampaigns: true
-      }
+        loadingCampaigns: true,
+      },
     });
     createBaseUrl()
       .get(`campaignlist/${id}/${1}`, {
-        cancelToken
+        cancelToken,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         increasePage(true);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_LIST,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getCampaignListError: ", err.message || err.response); // => prints: Api is being canceled????
         {
           !err.message.includes("Api") &&
@@ -199,7 +204,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
                 err.response ||
                 "Something went wrong, please try again.",
               type: "danger",
-              position: "top"
+              position: "top",
             });
         }
         return dispatch({
@@ -207,39 +212,39 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
           payload: {
             isListEnd: false,
             fetching_from_server: false,
-            loadingCampaigns: false
-          }
+            loadingCampaigns: false,
+          },
         });
       });
   };
 };
 
 export const updateCampaignList = (id, page, increasePage) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
-      payload: { isListEnd: false, fetching_from_server: true }
+      payload: { isListEnd: false, fetching_from_server: true },
     });
     createBaseUrl()
       .get(`campaignlist/${id}/${page}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(JSONobj => {
+      .then((JSONobj) => {
         if (JSONobj.data.length > 0) {
           increasePage();
           return dispatch({
             type: actionTypes.UPDATE_CAMPAIGN_LIST,
-            payload: { data: JSONobj.data, fetching_from_server: false }
+            payload: { data: JSONobj.data, fetching_from_server: false },
           });
         } else {
           return dispatch({
             type: actionTypes.GOT_ALL_CAMPAIGNS,
-            payload: { isListEnd: true, fetching_from_server: false }
+            payload: { isListEnd: true, fetching_from_server: false },
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("updateCampaignList", err.message || err.response);
         showMessage({
           message:
@@ -247,61 +252,61 @@ export const updateCampaignList = (id, page, increasePage) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_UPDATE_CAMPAIGN_LIST,
           payload: {
             isListEnd: false,
-            fetching_from_server: false
-          }
+            fetching_from_server: false,
+          },
         });
       });
   };
 };
 
-export const checkRemainingBudget = campaign_id => {
-  return dispatch => {
+export const checkRemainingBudget = (campaign_id) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`checkRemainingSpend`, { campaign_id })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
       .then(
-        data =>
+        (data) =>
           data.success &&
           data.transfer &&
           showMessage({
             message: data.message,
             type: "success",
-            position: "top"
+            position: "top",
           })
       )
-      .catch(err => {
+      .catch((err) => {
         // console.log(err.response)
       });
   };
 };
 
-export const setRejectedCampaignData = rejCampaign => {
-  return dispatch => {
+export const setRejectedCampaignData = (rejCampaign) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.SET_REJECTED_CAMPAIGN, payload: rejCampaign });
   };
 };
 
 export const resetRejectedCampaignData = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
   };
 };
 export const downloadCSV = (campaign_id, email, showModalMessage) => {
-  return dispatch => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`exportData`, { campaign_id, email })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         showModalMessage(data.message, data.success ? "success" : "warning");
       })
-      .catch(err => showModalMessage(err));
+      .catch((err) => showModalMessage(err));
   };
 };

@@ -4,13 +4,13 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  BackHandler
+  BackHandler,
+  Linking,
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
-import { Linking } from "expo";
 
 import { BlurView } from "expo-blur";
 import * as Segment from "expo-analytics-segment";
@@ -42,7 +42,7 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class PaymentForm extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -56,12 +56,12 @@ class PaymentForm extends Component {
       showModal: false,
       browserLoading: false,
       showWalletModal: false,
-      showRemoveWalletAmount: false
+      showRemoveWalletAmount: false,
     };
   }
   componentDidMount() {
     this.setState({
-      browserLoading: false
+      browserLoading: false,
     });
     this.props.getWalletAmount();
 
@@ -75,7 +75,7 @@ class PaymentForm extends Component {
       this.setState({
         addingCredits: this.props.navigation.getParam("addingCredits", true),
         amount: this.props.navigation.getParam("amount", 0),
-        browserLoading: false
+        browserLoading: false,
       });
     }
   }
@@ -104,7 +104,7 @@ class PaymentForm extends Component {
   showRemoveAmountModal = () => {
     this.setState(
       {
-        showRemoveWalletAmount: !this.state.showRemoveWalletAmount
+        showRemoveWalletAmount: !this.state.showRemoveWalletAmount,
       },
       () => {
         if (this.state.showRemoveWalletAmount) {
@@ -121,7 +121,7 @@ class PaymentForm extends Component {
         source_action: "a_payment_processing",
         amount: this.props.navigation.getParam("amount", 0),
         mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
-        campaign_id: this.props.campaign_id
+        campaign_id: this.props.campaign_id,
       });
       if (this.state.choice === 2) {
         this.props.navigation.navigate("WebView", {
@@ -130,7 +130,7 @@ class PaymentForm extends Component {
             : this.props.payment_data.knet_payment_url,
           title: "Knet Payment",
           source: "payment_processing",
-          source_action: "a_payment_processing"
+          source_action: "a_payment_processing",
         });
         // await WebBrowser.openBrowserAsync(
         //   this.state.addingCredits
@@ -144,7 +144,7 @@ class PaymentForm extends Component {
         // });
         Segment.screenWithProperties("Knet Payment", {
           businessname: this.props.mainBusiness.businessname,
-          campaign_id: this.props.campaign_id
+          campaign_id: this.props.campaign_id,
         });
       }
       if (this.state.choice === 3) {
@@ -154,7 +154,7 @@ class PaymentForm extends Component {
             : this.props.payment_data.cc_payment_url,
           title: "Credit Card Payment",
           source: "payment_processing",
-          source_action: "a_payment_processing"
+          source_action: "a_payment_processing",
         });
         // await WebBrowser.openBrowserAsync(
         //   this.state.addingCredits
@@ -168,7 +168,7 @@ class PaymentForm extends Component {
         // });
         Segment.screenWithProperties("Credit Card Payment", {
           businessname: this.props.mainBusiness.businessname,
-          campaign_id: this.props.campaign_id
+          campaign_id: this.props.campaign_id,
         });
       }
       this.closeBrowserLoading();
@@ -180,17 +180,17 @@ class PaymentForm extends Component {
         mode_of_payment: this.state.choice === 2 ? "KNET" : "CREDIT CARD",
         action_status: "failure",
         error_description: "Something went wrong",
-        campaign_id: this.props.campaign_id
+        campaign_id: this.props.campaign_id,
       });
 
       showMessage({
         message: "Something went wrong!",
         type: "warning",
         position: "top",
-        description: "Please try again later."
+        description: "Please try again later.",
       });
       this.setState({
-        browserLoading: false
+        browserLoading: false,
       });
     }
   };
@@ -202,7 +202,7 @@ class PaymentForm extends Component {
     Linking.removeEventListener("url", this._handleRedirect);
   };
 
-  _handleRedirect = event => {
+  _handleRedirect = (event) => {
     WebBrowser.dismissBrowser();
     // this.setState({
     //   browserLoading: false
@@ -220,7 +220,7 @@ class PaymentForm extends Component {
     if (this.state.choice === 1) {
       if (this.props.wallet && this.props.wallet !== "0")
         this.setState({
-          showWalletModal: true
+          showWalletModal: true,
         });
       else {
         showMessage({ message: "No ammount in wallet", type: "warning" });
@@ -232,7 +232,7 @@ class PaymentForm extends Component {
         this.props.addWalletAmount(
           {
             amount: this.state.amount,
-            payment_type: this.state.payment_type
+            payment_type: this.state.payment_type,
           },
           this._openWebBrowserAsync,
           this.state.choice === 2 ? "KNET" : "CREDIT CARD"
@@ -242,7 +242,7 @@ class PaymentForm extends Component {
           step: 6,
           business_name: this.props.mainBusiness.businessname,
           checkout_id: this.props.campaign_id,
-          paymentMethod: "KNET"
+          paymentMethod: "KNET",
         });
         this.props.payment_request_knet(
           this.props.campaign_id,
@@ -255,7 +255,7 @@ class PaymentForm extends Component {
           step: 6,
           business_name: this.props.mainBusiness.businessname,
           checkout_id: this.props.campaign_id,
-          paymentMethod: "CREDIT CARD"
+          paymentMethod: "CREDIT CARD",
         });
         this.props.payment_request_credit_card(
           this.props.campaign_id,
@@ -269,7 +269,7 @@ class PaymentForm extends Component {
 
   showModal = () => {
     this.setState({
-      showModal: !this.state.showModal
+      showModal: !this.state.showModal,
     });
   };
   removeWalletAmountAndGoBack = () => {
@@ -283,7 +283,7 @@ class PaymentForm extends Component {
     }
     if (!this.props.loading) {
       this.props.navigation.setParams({
-        names: this.props.navigation.getParam("names", [])
+        names: this.props.navigation.getParam("names", []),
       });
     }
     this.props.navigation.goBack();
@@ -301,7 +301,7 @@ class PaymentForm extends Component {
     } else {
       if (!this.props.loading) {
         this.props.navigation.setParams({
-          names: this.props.navigation.getParam("names", [])
+          names: this.props.navigation.getParam("names", []),
         });
       }
       this.props.navigation.goBack();
@@ -309,20 +309,20 @@ class PaymentForm extends Component {
     }
   };
 
-  _handleChoice = choice => {
+  _handleChoice = (choice) => {
     segmentEventTrack("Selected Payment Type", {
       payment_type:
-        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD"
+        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD",
     });
     analytics.track(`a_select_payment_mode`, {
       source: "payment_mode",
       source_action: "a_select_payment_mode",
       payment_mode_type:
-        choice === 1 ? "WALLET" : choice === 2 ? "KNET" : "CREDIT CARD"
+        choice === 1 ? "WALLET" : choice === 2 ? "KNET" : "CREDIT CARD",
     });
     this.setState({
       choice,
-      payment_type: choice === 3 ? 2 : 1
+      payment_type: choice === 3 ? 2 : 1,
     });
   };
   _handleAgencyFee = () => {
@@ -338,12 +338,12 @@ class PaymentForm extends Component {
     this.setState({ browserLoading: false });
   };
 
-  setShowWalletModal = value => {
+  setShowWalletModal = (value) => {
     if (value) {
       Segment.screen("Payment through WALLET");
     }
     this.setState({
-      showWalletModal: value
+      showWalletModal: value,
     });
   };
 
@@ -370,7 +370,7 @@ class PaymentForm extends Component {
       analytics.track(`payment_mode`, {
         source,
         source_action,
-        top_up_amount: amount
+        top_up_amount: amount,
       });
       // Segment.screenWithProperties("Payment Selection", {
       //   category: "Wallet Top Up"
@@ -384,7 +384,7 @@ class PaymentForm extends Component {
         campaign_channel: this.state.addingCredits
           ? "wallet_top_up"
           : campaign_channel,
-        campaign_budget: this.props.campaign_budget
+        campaign_budget: this.props.campaign_budget,
       });
       // Segment.screenWithProperties("Payment Selection", {
       //   businessname: this.props.mainBusiness.businessname,
@@ -438,7 +438,7 @@ class PaymentForm extends Component {
             closeButton={false}
             segment={{
               str: "Payment Method Screen Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname }
+              obj: { businessname: this.props.mainBusiness.businessname },
             }}
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
@@ -458,7 +458,7 @@ class PaymentForm extends Component {
                   style={[styles.whitebutton]}
                   textStyle={[
                     styles.whitebuttontext,
-                    this.state.choice === 1 && globalStyles.whiteTextColor
+                    this.state.choice === 1 && globalStyles.whiteTextColor,
                   ]}
                   onPressAction={() => this._handleChoice(1)}
                   text={translate("Wallet")}
@@ -473,7 +473,7 @@ class PaymentForm extends Component {
                   style={[styles.whitebutton2]}
                   textStyle={[
                     styles.whitebuttontext,
-                    this.state.choice === 2 && globalStyles.whiteTextColor
+                    this.state.choice === 2 && globalStyles.whiteTextColor,
                   ]}
                   onPressAction={() => this._handleChoice(2)}
                   text={translate("KNET")}
@@ -486,7 +486,7 @@ class PaymentForm extends Component {
                 style={[styles.whitebutton3]}
                 textStyle={[
                   styles.whitebuttontext,
-                  this.state.choice === 3 && globalStyles.whiteTextColor
+                  this.state.choice === 3 && globalStyles.whiteTextColor,
                 ]}
                 onPressAction={() => this._handleChoice(3)}
                 text={translate("Credit Card")}
@@ -542,7 +542,7 @@ class PaymentForm extends Component {
                       style={[
                         styles.money,
                         styles.dollarAmountText,
-                        styles.colorOrange
+                        styles.colorOrange,
                       ]}
                     >
                       ${/* {"\t "} */}
@@ -585,7 +585,7 @@ class PaymentForm extends Component {
                 <GradientButton
                   onPressAction={this._handleSubmission}
                   style={[
-                    styles.mainCard
+                    styles.mainCard,
                     // { opacity: this.props.loadingTrans ? 0.5 : 1 }
                   ]}
                   disabled={this.props.loadingTrans}
@@ -616,7 +616,7 @@ class PaymentForm extends Component {
                   url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions",
                   source: "payment_mode",
-                  source_action: "a_open_app_TNC"
+                  source_action: "a_open_app_TNC",
                 })
               }
               disabled={this.state.choice === 1 && this.props.wallet === "0"}
@@ -634,7 +634,7 @@ class PaymentForm extends Component {
                       url: "https://www.optimizeapp.com/terms_conditions",
                       title: "Terms & Conditions",
                       source: "payment_mode",
-                      source_action: "a_open_app_TNC"
+                      source_action: "a_open_app_TNC",
                     });
                     // this.setState({ browserLoading: true });
                     // openTerms(this.closeBrowserLoading);
@@ -708,7 +708,7 @@ class PaymentForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   campaign_budget: state.transA.campaign_budget,
   mainBusiness: state.account.mainBusiness,
@@ -725,9 +725,9 @@ const mapStateToProps = state => ({
   loading: state.transA.loading_transaction,
   loadingTrans: state.transA.loading,
   wallet: state.transA.wallet,
-  channel: state.transA.channel
+  channel: state.transA.channel,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
 
   payment_request_knet: (
@@ -763,6 +763,6 @@ const mapDispatchToProps = dispatch => ({
         navigation,
         closeBrowserLoading
       )
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);

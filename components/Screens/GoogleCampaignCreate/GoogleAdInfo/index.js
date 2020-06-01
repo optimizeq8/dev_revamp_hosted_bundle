@@ -189,8 +189,6 @@ class GoogleAdInfo extends Component {
   };
 
   _handleCountryChange = val => {
-    console.log("val", val);
-
     this.setState({ country: val, location: [val] });
     segmentEventTrack("Selected Campaign Country", {
       campaign_country: val

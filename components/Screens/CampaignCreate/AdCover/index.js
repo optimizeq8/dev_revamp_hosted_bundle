@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { Linking } from "expo";
+
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { BlurView } from "expo-blur";
@@ -9,7 +9,13 @@ import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Platform,
+  BackHandler,
+  Linking,
+} from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -19,7 +25,7 @@ import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -123,9 +129,7 @@ class AdCover extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
-        const pkg = Constants.manifest.releaseChannel
-          ? Constants.manifest.android.package // When published, considered as using standalone build
-          : "host.exp.exponent"; // In expo client mode
+        const pkg = "com.optimizeapp.optimizeapp"; // In expo client mode
 
         showMessage({
           message: translate(
@@ -161,7 +165,7 @@ class AdCover extends Component {
     } else if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
-        .map(key => {
+        .map((key) => {
           if (this.props.data.hasOwnProperty(key)) return true;
         })
         .includes(true)
@@ -186,9 +190,7 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     if (status !== "granted") {
       this.onToggleModal(false);
-      const pkg = Constants.manifest.releaseChannel
-        ? Constants.manifest.android.package // When published, considered as using standalone build
-        : "host.exp.exponent"; // In expo client mode
+      const pkg = "com.optimizeapp.optimizeapp";
 
       showMessage({
         message: translate(
@@ -215,7 +217,7 @@ class AdCover extends Component {
     this.setState({ mediaModalVisible: visible, selectingLogo });
   };
 
-  changeHeadline = coverHeadline => {
+  changeHeadline = (coverHeadline) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -271,7 +273,7 @@ class AdCover extends Component {
           ? mediaEditor.serialization
           : null
       )
-        .then(async manipResult => {
+        .then(async (manipResult) => {
           if (manipResult) {
             serialization = manipResult.serialization;
             if (logo.height !== 284 && logo.width !== 993)
@@ -310,7 +312,7 @@ class AdCover extends Component {
           }
           return manipResult;
         })
-        .catch(error => {
+        .catch((error) => {
           analytics.track(`a_error`, {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
@@ -432,7 +434,7 @@ class AdCover extends Component {
               ? mediaEditor.serialization
               : null
           )
-            .then(async manipResult => {
+            .then(async (manipResult) => {
               let serialization = {};
               serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
@@ -535,7 +537,7 @@ class AdCover extends Component {
                   coverSerialization: result.serialization,
                 });
             })
-            .catch(error => {
+            .catch((error) => {
               this.onToggleModal(false);
               analytics.track(`a_error`, {
                 campaign_channel: "snapchat",
@@ -676,7 +678,7 @@ class AdCover extends Component {
     });
   };
 
-  _getUploadState = loading => {
+  _getUploadState = (loading) => {
     this.setState({
       loaded: loading,
     });
@@ -756,7 +758,7 @@ class AdCover extends Component {
       }
     }
   };
-  onToggleModal = visibile => {
+  onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
   handleUpload = () => {
@@ -786,8 +788,7 @@ class AdCover extends Component {
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
-
-      source: "",
+      source: "", //TODO:
     });
   };
   handleLogo = () => {
@@ -1074,7 +1075,7 @@ class AdCover extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
@@ -1084,7 +1085,7 @@ const mapStateToProps = state => ({
   rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   uploadStoryAdCover: (
     info,
     loading,
@@ -1105,8 +1106,9 @@ const mapDispatchToProps = dispatch => ({
         segmentInfo
       )
     ),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData()),
 });

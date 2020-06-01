@@ -12,7 +12,7 @@ export default StyleSheet.create({
     // paddingHorizontal: 18,
     display: "flex",
     alignItems: "center",
-    marginVertical: 15
+    marginVertical: 15,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -22,7 +22,7 @@ export default StyleSheet.create({
     textAlign: I18nManager.isRTL ? "right" : "left",
     // marginBottom: -20,
     textTransform: "uppercase",
-    marginTop: 10
+    marginTop: 10,
   },
   inputText: {
     fontFamily: "montserrat-light-english",
@@ -33,20 +33,21 @@ export default StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 0,
     paddingRight: 0,
-    height: 20
+    height: 20,
+    paddingVertical: 0,
   },
   downicon: {
     fontSize: 20,
     color: "#fff",
-    marginLeft: -20
+    marginLeft: -20,
   },
   downiconEnd: {
     fontSize: 20,
     color: "#fff",
-    marginLeft: -80
+    marginLeft: -80,
   },
   modalBar: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   networkLabel: {
     fontFamily: "montserrat-bold",
@@ -54,32 +55,32 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     top: 2,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   networkStringButton: {
     width: 85,
     height: 54,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 0
+    marginHorizontal: 0,
   },
   colView: {
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
     marginLeft: 13,
-    width: "100%"
+    width: "100%",
   },
   rowView: {
     flexDirection: "row",
     flex: 1,
     width: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   iconSize: {
-    fontSize: 16 / PixelRatio.getFontScale()
+    fontSize: 16 / PixelRatio.getFontScale(),
   },
   icon: {
-    marginLeft: 15
-  }
+    marginLeft: 15,
+  },
 });

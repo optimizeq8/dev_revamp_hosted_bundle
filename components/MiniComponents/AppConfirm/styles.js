@@ -45,10 +45,9 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   advertiseOSView: {
-    flexDirection: "column",
-    paddingVertical: 20,
-    borderRadius: 35,
-    backgroundColor: "rgba(0,0,0,0.2)"
+    flexDirection: "column"
+
+    // backgroundColor: "rgba(0,0,0,0.2)"
   },
   changeAppText: {
     paddingTop: 20,
@@ -60,8 +59,9 @@ const styles = StyleSheet.create({
   },
   advertiseOSButtonView: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center"
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15
   },
   androidButton: {
     paddingHorizontal: 0
@@ -322,9 +322,12 @@ const styles = StyleSheet.create({
     marginBottom: -10
   },
   appStoreButtons: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.16)",
+    width: "48%",
+    // marginHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 35
     // justifyContent: 'center',
   },
   appStoreButtonsText: {
