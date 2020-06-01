@@ -325,7 +325,7 @@ export const get_conversatusion_read_status = () => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
           payload:
-            getState().messenger.messages.length === data.intercom_chat_link,
+getState().messenger.messages.length - data.intercom_chat_link,
         });
       })
       .catch((err) => {
