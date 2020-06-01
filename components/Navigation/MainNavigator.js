@@ -55,6 +55,8 @@ import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
+import ImagePreview from "../MiniComponents/ImagePreview";
+
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -85,16 +87,16 @@ export default FluidNavigator(
     LongFormVideoPreview: LongFormVideoPreview,
     ErrorRedirect: {
       screen: ErrorRedirect,
-      path: "error/"
+      path: "error/",
     },
     SuccessRedirect: {
       screen: SuccessRedirect,
-      path: "success/"
+      path: "success/",
     },
     Messenger: Messenger,
     MessengerLoading: {
       screen: MessengerLoading,
-      path: "MessengerLoading/"
+      path: "MessengerLoading/",
     },
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
@@ -121,7 +123,8 @@ export default FluidNavigator(
     WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
     WebsiteSetting: WebsiteSetting,
     MyWebsite: MyWebsite,
-    TutorialWeb: TutorialWeb
+    TutorialWeb: TutorialWeb,
+    ImagePreview: ImagePreview,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
@@ -134,17 +137,17 @@ export default FluidNavigator(
     navigationOptions: {
       gesturesEnabled: true,
       headerStyle: {
-        backgroundColor: "#0000"
+        backgroundColor: "#0000",
       },
       headerTintColor: "#0000",
       headerTextStyle: {
-        fontWeight: "bold"
-      }
+        fontWeight: "bold",
+      },
     },
     cardStyle: {
       backgroundColor: "#0000",
-      opacity: 1
-    }
+      opacity: 1,
+    },
   }
 );
 
@@ -152,6 +155,6 @@ const transConfig = () => ({
   transitionSpec: {
     duration: 0,
     timing: Animated.timing,
-    easing: Easing.step0
-  }
+    easing: Easing.step0,
+  },
 });

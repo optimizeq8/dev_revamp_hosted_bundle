@@ -119,8 +119,6 @@ class Dashboard extends Component {
       }
     }
     Segment.screen("Dashboard");
-    this.props.userInfo &&
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
