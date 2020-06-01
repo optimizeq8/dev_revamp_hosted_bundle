@@ -174,7 +174,7 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  async componentDidMount() {
+  componentDidMount() {
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [Mixpanel],
       // Record screen views automatically!
@@ -193,9 +193,10 @@ class App extends React.Component {
       debug: true,
     });
     RNBootSplash.hide({ duration: 350 });
-    const anonymous_userId = await analytics.getAnonymousId();
-    this.setState({
-      anonymous_userId,
+    analytics.getAnonymousId().then((anonId) => {
+      this.setState({
+        anonymous_userId: anonId,
+      });
     });
 
     // Segment.initialize({
