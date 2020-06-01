@@ -22,14 +22,14 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 class SuccessRedirect extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       media: require("../../../assets/images/logo01.png"),
-      successLogo: require("../../../assets/animation/success.json")
+      successLogo: require("../../../assets/animation/success.json"),
     };
   }
 
@@ -42,7 +42,7 @@ class SuccessRedirect extends Component {
       label:
         this.props.navigation.getParam("isWallet") === "1"
           ? "Wallet Transaction"
-          : "Campaign Transaction"
+          : "Campaign Transaction",
     });
     // this.animation.play();
 
@@ -67,7 +67,7 @@ class SuccessRedirect extends Component {
         this.props.navigation.state.params.paymentId
       );
       Adjust.trackEvent(adjustWalletPaymentTracker);
-    } else {
+    } else if (!this.props.navigation.getParam("checkoutwithWallet", false)) {
       let adjustPaymentTracker = new AdjustEvent("kdnzgg");
       adjustPaymentTracker.addPartnerParameter(
         this.props.channel === "google"
@@ -108,9 +108,9 @@ class SuccessRedirect extends Component {
               name: "Snapchat Snap Ad",
               price: this.props.campaign_budget,
               quantity: 1,
-              category: "Advertisement"
-            }
-          ]
+              category: "Advertisement",
+            },
+          ],
         });
       }
       if (
@@ -148,22 +148,6 @@ class SuccessRedirect extends Component {
         />
 
         <View style={styles.view}>
-          {/* <View
-            style={{
-              width: widthPercentageToDP(50),
-              height: heightPercentageToDP(20)
-              //   justifyContent: "flex-start"
-            }}
-          >
-            <LottieView
-              ref={animation => {
-                this.animation = animation;
-              }}
-              style={[styles.lottieViewContainer]}
-              //   resizeMode="cover"
-              source={this.state.successLogo}
-            />
-          </View> */}
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
             {translate("Success!")}
@@ -207,20 +191,20 @@ class SuccessRedirect extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   campaign_id: state.transA.campaign_id,
   campaign_budget: state.transA.campaign_budget,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   channel: state.transA.channel,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   reset_transaction_reducer: () =>
     dispatch(actionCreators.reset_transaction_reducer()),
   rest_google_campaign_data: () =>
-    dispatch(actionCreators.rest_google_campaign_data())
+    dispatch(actionCreators.rest_google_campaign_data()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);
