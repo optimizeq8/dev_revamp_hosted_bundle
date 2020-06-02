@@ -325,13 +325,14 @@ export const removeWalletAmount = (
         });
       })
       .then(() => {
-        if (goBack)
+        if (goBack) {
           //TODO: check for google
           navigation.navigate("AdPaymentReview", {
             names: names,
             source: "payment_mode",
             source_action: "a_remove_wallet_amount",
           });
+        }
       })
       .catch((err) => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);

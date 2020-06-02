@@ -152,7 +152,6 @@ export const get_conversation = (user_id) => {
             payload: false,
           });
         } else {
-
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
             payload: data,
@@ -314,10 +313,9 @@ export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
       .get(
-        // getState().login.admin
-        //   ?
-        "https://optimizekwtestingserver.com/optimize/public/chatLink"
-        // : "https://www.optimizeapp.com/optimize/public/chatLink"
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
+          : "https://www.optimizeapp.com/optimize/public/chatLink"
       )
       .then((res) => {
         return res.data;
@@ -326,7 +324,7 @@ export const get_conversatusion_read_status = () => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
           payload:
-getState().messenger.messages.length - data.intercom_chat_link,
+            getState().messenger.messages.length - data.intercom_chat_link,
         });
       })
       .catch((err) => {
@@ -352,10 +350,9 @@ export const update_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
       .post(
-        // getState().login.admin
-        //   ?
-        "https://optimizekwtestingserver.com/optimize/public/chatLink",
-        //   : "https://www.optimizeapp.com/optimize/public/chatLink",
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
+          : "https://www.optimizeapp.com/optimize/public/chatLink",
 
         {
           intercom_chat_link: getState().messenger.messages.length,
@@ -367,9 +364,9 @@ export const update_conversatusion_read_status = () => {
       .then((data) => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
-         payload: {	
+          payload: {
             unread_converstaion: 0,
-          }
+          },
         });
       })
       .catch((err) => {

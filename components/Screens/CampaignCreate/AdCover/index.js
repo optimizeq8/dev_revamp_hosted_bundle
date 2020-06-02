@@ -788,7 +788,8 @@ class AdCover extends Component {
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support",
-      source: "", //TODO:
+      source: "ad_cover",
+      source_action: "a_help",
     });
   };
   handleLogo = () => {
