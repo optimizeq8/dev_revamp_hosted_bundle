@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, RefreshControl } from "react-native";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
 import { SafeAreaView, ScrollView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
@@ -9,11 +8,59 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import styles from "./Styles";
 import AddMember from "./AddMemberButton";
 import TeamMember from "./TeamMember";
+import analytics from "@segment/analytics-react-native";
 
 class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
   componentDidMount() {
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`team_management_members`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
+
+  }
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`team_management_members`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
+    this.props.getTeamMembers(this.props.mainBusiness.businessid)
+
+  }
+  onRefresh = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = "a_refresh_list"
+
+    analytics.track(`a_refresh_list`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      refresh_type: "members"
+    });
+    this.props.getTeamMembers(this.props.mainBusiness.businessid)
+
   }
   render() {
     let team = (this.props.agencyTeamMembers.length > 0
@@ -50,9 +97,7 @@ class ManageTeam extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
-          onDidFocus={() => {
-            Segment.track("Manage Team");
-          }}
+          onDidFocus={this.onDidFocus}
         />
         <Header
           screenProps={this.props.screenProps}
@@ -70,8 +115,7 @@ class ManageTeam extends Component {
             <RefreshControl
               tintColor={"white"}
               refreshing={this.props.loadingTeamMembers}
-              onRefresh={() =>
-                this.props.getTeamMembers(this.props.mainBusiness.businessid)
+              onRefresh={this.onRefresh
               }
             />
           }
