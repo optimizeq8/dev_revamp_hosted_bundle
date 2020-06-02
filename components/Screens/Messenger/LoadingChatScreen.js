@@ -32,7 +32,7 @@ class LoadingChatScreen extends React.Component {
       this.props.screenProps.prevAppState
     );
 
-    analytics.track(`open_support`, {
+    analytics.track(`open_support_loading`, {
       source,
       source_action,
       support_type: "intercom",
@@ -60,6 +60,10 @@ class LoadingChatScreen extends React.Component {
         let continueRoutes = ["Dashboard", "Messenger"].map((route) =>
           NavigationActions.navigate({
             routeName: route,
+            params: {
+              source: "open_support_loading",
+              source_action: "a_connecting_to_messenger",
+            },
           })
         );
         //resets the navigation stack
@@ -86,6 +90,7 @@ class LoadingChatScreen extends React.Component {
             title={"Support"}
             navigation={this.props.navigation}
           />
+
           <View style={styles.flexView}>
             <LottieView
               ref={(animation) => {
@@ -94,69 +99,15 @@ class LoadingChatScreen extends React.Component {
               style={styles.loadingAnimation}
               resizeMode="contain"
               source={require("../../../assets/animation/update_loader.json")}
-              loop={false}
+              loop={true}
               autoPlay
-              onAnimationFinish={() => {
-                if (this.state.loading) {
-                  analytics.track(`a_help`, {
-                    source: this.props.navigation.getParam(
-                      "source",
-                      this.props.screenProps.prevAppState
-                    ),
-                    source_action: "a_help",
-                    action_status: "success",
-                    support_type: "intercom",
-                  });
-                  this.props.navigation.navigate("Messenger", {
-                    source: this.props.navigation.getParam(
-                      "source",
-                      this.props.screenProps.prevAppState
-                    ),
-                    source_action: this.props.navigation.getParam(
-                      "source_action",
-                      this.props.screenProps.prevAppState
-                    ),
-                  });
-                } else {
-                  analytics.track(`a_help`, {
-                    source: this.props.navigation.getParam(
-                      "source",
-                      this.props.screenProps.prevAppState
-                    ),
-                    source_action: "a_help",
-                    action_status: "failure",
-                    support_type: "intercom",
-                    error_description: "Something went wrong",
-                  });
-                  showMessage({
-                    message: translate("Something went wrong!"),
-                    type: "warning",
-                    position: "top",
-                    duration: 4500,
-                    description: translate("Try again in sometime!"),
-                  });
-                }
-              }}
             />
-            <View style={styles.flexView}>
-              <LottieView
-                ref={(animation) => {
-                  this.animation = animation;
-                }}
-                style={styles.loadingAnimation}
-                resizeMode="contain"
-                source={require("../../../assets/animation/update_loader.json")}
-                loop={true}
-                autoPlay
-                onAnimationFinish={() => {}}
-              />
-              <Text style={styles.connectingAgentText}>
-                {translate("Connecting you to Your Agent")}
-              </Text>
-            </View>
-            <View style={styles.chatBotView}>
-              <ChatBot />
-            </View>
+            <Text style={styles.connectingAgentText}>
+              {translate("Connecting you to Your Agent")}
+            </Text>
+          </View>
+          <View style={styles.chatBotView}>
+            <ChatBot />
           </View>
         </Container>
       </SafeAreaView>
