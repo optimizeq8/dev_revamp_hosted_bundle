@@ -374,16 +374,24 @@ class AppChoice extends Component {
         />
 
         {this.props.deepLink && (
-          <WebsiteField
-            setWebsiteValue={this.setWebsiteValue}
-            stateName="deep_link_uri"
-            screenProps={this.props.screenProps}
-            label="Deep Link"
-            website={this.state.deep_link_uri}
-            stateNameError={this.state.deep_link_uriError}
-            placeholder={"Enter Deep Link URL"}
-            getValidInfo={this.getValidInfo}
-          />
+          <>
+            <WebsiteField
+              setWebsiteValue={this.setWebsiteValue}
+              stateName="deep_link_uri"
+              screenProps={this.props.screenProps}
+              label="Deep Link"
+              website={this.state.deep_link_uri}
+              stateNameError={this.state.deep_link_uriError}
+              placeholder={"Enter Deep Link URL"}
+              deepLink={true}
+              getValidInfo={this.getValidInfo}
+            />
+            <Text style={styles.warningText}>
+              {translate(
+                "Please make sure not to include social media sites such as Facebook, Instagram, Youtube, SnapChat, etc"
+              )}
+            </Text>
+          </>
         )}
         <AppSearchModal
           mainState={this.state}
