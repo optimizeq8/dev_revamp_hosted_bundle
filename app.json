@@ -5,11 +5,8 @@
     "description": "Digital Marketing made easy.",
     "slug": "optimize_app",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "0.3.60",
+    "platforms": ["ios", "android"],
+    "version": "0.3.70",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -24,27 +21,19 @@
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_ERROR_RECOVERY"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
       "buildNumber": "65",
       "supportsTablet": false
     },
     "packagerOpts": {
-      "sourceExts": [
-        "js",
-        "jsx",
-        "ts",
-        "tsx",
-        "svg"
-      ],
+      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"],
       "config": "metro.config.js"
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 47,
+      "versionCode": 49,
       "googleServicesFile": "./google-services.json"
     },
     "hooks": {

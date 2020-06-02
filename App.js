@@ -384,7 +384,15 @@ class App extends React.Component {
             style={styles.gradient}
           />
           <View style={styles.logoContainer}>
-            <Animated.Image
+            <Image
+              source={require("./assets/splash.png")}
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+              resizeMode="cover"
+            />
+            {/* <Animated.Image
               source={require("./assets/logo.png")}
               style={[
                 styles.logo,
@@ -397,7 +405,7 @@ class App extends React.Component {
                 // },
               ]}
               fadeDuration={0}
-            />
+            /> */}
           </View>
         </>
       );
