@@ -1,8 +1,14 @@
 import React from "react";
 import { SafeAreaView } from "react-navigation";
-import { Text, View, Clipboard, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Clipboard,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
 import {
   widthPercentageToDP,
@@ -20,6 +26,19 @@ import Award from "../../../assets/SVGs/award";
 class WebsiteRegistartionSuccess extends React.Component {
   componentDidMount() {
     Segment.screen("Website Registartion Complete");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_success_registration`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
   }
   render() {
     const { translate } = this.props.screenProps;
@@ -32,7 +51,7 @@ class WebsiteRegistartionSuccess extends React.Component {
           bottom: "never"
         }}
       >
-        <View style={styles.mainView}>
+        <ScrollView style={styles.mainView}>
           <GreenCheckmark
             width={widthPercentageToDP(20)}
             height={heightPercentageToDP(10)}
@@ -41,13 +60,18 @@ class WebsiteRegistartionSuccess extends React.Component {
             {translate("YOUR WEBSITE IS READY!")}
           </Text>
 
-          <Award />
+          <Award style={styles.award} height={heightPercentageToDP(40)} />
           <Text style={styles.yourLinkText}>
             {translate("This is your link")}
           </Text>
           <TouchableOpacity
             style={styles.businessNameView}
             onPress={() => {
+              analytics.track(`a_copy_my_website_url`, {
+                source: "my_website_success_registration",
+                source_action: "a_copy_my_website_url",
+                weburl: mainBusiness.weburl
+              });
               Clipboard.setString(mainBusiness.weburl);
             }}
           >
@@ -63,10 +87,13 @@ class WebsiteRegistartionSuccess extends React.Component {
             text={"Take me to my website settings"}
             onPressAction={() => {
               segmentEventTrack("Button Clicked to navigate to MyWebsite");
-              this.props.navigation.navigate("MyWebsite");
+              this.props.navigation.navigate("MyWebsite", {
+                source: "my_website_success_registration",
+                source_action: "a_open_my_website"
+              });
             }}
           />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

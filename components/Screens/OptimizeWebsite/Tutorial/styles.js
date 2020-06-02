@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
     color: "#9204FE",
     textTransform: "uppercase",
     paddingTop: 5,
-    width: "60%"
+    width: "60%",
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
+    textAlign: I18nManager.isRTL ? "right" : "left"
   },
   customerWhatsappView: {
     flexDirection: "column",
@@ -164,6 +166,9 @@ const styles = StyleSheet.create({
     bottom: "-5%",
     left: I18nManager.isRTL ? "12%" : "-12%",
     zIndex: -1
+  },
+  handsArrowIcon: {
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start"
   }
 });
 

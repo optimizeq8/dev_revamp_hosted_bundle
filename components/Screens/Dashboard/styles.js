@@ -68,11 +68,9 @@ const styles = StyleSheet.create({
   adButtonText: {
     textAlign: "center",
     color: globalColors.white,
-    fontFamily: "montserrat-bold",
-    fontSize: 10,
-    paddingTop: 0,
-    textTransform: "uppercase"
-
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    paddingTop: 0
     // top: 20
   },
   container: { backgroundColor: "#0000" },
@@ -322,8 +320,7 @@ const styles = StyleSheet.create({
   adButtonView: {
     flexDirection: "column",
     backgroundColor: "#0000",
-    justifyContent: "space-around",
-    alignItems: "center"
+    justifyContent: "space-around"
   },
   languageText: {
     color: "#FFF",

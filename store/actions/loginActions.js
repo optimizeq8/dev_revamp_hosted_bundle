@@ -1,11 +1,12 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage, Animated } from "react-native";
+import { AsyncStorage, Animated, AppState } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import { saveBusinessInvitee } from "./accountManagementActions";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
-import { Notifications } from "expo";
+import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
@@ -13,11 +14,11 @@ import { update_app_status_chat_notification } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
 
-export const chanege_base_url = admin => {
-  return dispatch => {
+export const chanege_base_url = (admin) => {
+  return (dispatch) => {
     if (admin)
       dispatch({
-        type: actionTypes.SET_BASEURL
+        type: actionTypes.SET_BASEURL,
       });
   };
 };
@@ -25,27 +26,27 @@ export const chanege_base_url = admin => {
 export const send_push_notification = () => {
   return (dispatch, getState) => {
     Permissions.getAsync(Permissions.NOTIFICATIONS)
-      .then(permission => {
+      .then((permission) => {
         if (permission.status === "granted") {
           Notifications.getDevicePushTokenAsync({
-            gcmSenderId: "707133061105"
-          }).then(token => {
+            gcmSenderId: "707133061105",
+          }).then((token) => {
             createBaseUrl()
               .post(`updatepushToken`, {
                 token: token.data,
                 token_type: token.type,
-                userid: getState().auth.userInfo.userid
+                userid: getState().auth.userInfo.userid,
               })
-              .then(res => {
+              .then((res) => {
                 return res.data;
               })
-              .then(data => {
+              .then((data) => {
                 dispatch({
                   type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
-                  payload: data
+                  payload: data,
                 });
               })
-              .catch(err => {
+              .catch((err) => {
                 // console.log(
                 //   "send_push_notification",
                 //   err.message || err.response
@@ -56,25 +57,25 @@ export const send_push_notification = () => {
                     err.response ||
                     "Something went wrong, please try again.",
                   type: "danger",
-                  position: "top"
+                  position: "top",
                 });
                 dispatch({
-                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
+                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN,
                 });
               });
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("Token Error", err);
       });
   };
 };
 
-export const checkForExpiredToken = navigation => {
+export const checkForExpiredToken = (navigation) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
-    return SecureStore.getItemAsync("token").then(token => {
+    return SecureStore.getItemAsync("token").then((token) => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
@@ -87,7 +88,7 @@ export const checkForExpiredToken = navigation => {
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
               "shorook@optimizekw.com",
-              "samy@optimizeapp.com"
+              "samy@optimizeapp.com",
             ].includes(user.email)
           )
             dispatch(chanege_base_url(true));
@@ -95,17 +96,17 @@ export const checkForExpiredToken = navigation => {
           createBaseUrl()
             .get("verifyAccessToken", {
               headers: {
-                Authorization: `Bearer ${token}`
-              }
+                Authorization: `Bearer ${token}`,
+              },
             })
-            .then(responseToken => {
+            .then((responseToken) => {
               if (responseToken.data.success) {
                 setAuthToken(token)
                   .then(() =>
                     dispatch(
                       setCurrentUser({
                         user: user,
-                        message: "Logged-in Successfully"
+                        message: "Logged-in Successfully",
                       })
                     )
                   )
@@ -114,7 +115,11 @@ export const checkForExpiredToken = navigation => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    navigation && NavigationService.navigate("Dashboard");
+                    navigation &&
+                      NavigationService.navigate("Dashboard", {
+                        source: AppState.currentState,
+                        source_action: "a_check_expired_token",
+                      });
                   });
               } else {
                 dispatch(clearPushToken(navigation, user.userid));
@@ -123,10 +128,14 @@ export const checkForExpiredToken = navigation => {
             .then(() => {
               dispatch({
                 type: actionTypes.CHECKING_FOR_TOKEN,
-                payload: false
+                payload: false,
               });
 
-              navigation && NavigationService.navigate("Dashboard");
+              navigation &&
+                NavigationService.navigate("Dashboard", {
+                  source: AppState.currentState,
+                  source_action: "a_check_expired_token",
+                });
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
@@ -134,7 +143,7 @@ export const checkForExpiredToken = navigation => {
       } else
         dispatch({
           type: actionTypes.CHECKING_FOR_TOKEN,
-          payload: false
+          payload: false,
         });
     });
   };
@@ -149,21 +158,21 @@ export const login = (userData, navigation) => {
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
         "shorook@optimizekw.com",
-        "samy@optimizeapp.com"
+        "samy@optimizeapp.com",
       ].includes(userData.email)
     ) {
       dispatch(chanege_base_url(true));
     }
     dispatch({
       type: actionTypes.SET_LOADING_USER,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post("userLogin", userData)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(async user => {
+      .then(async (user) => {
         let decodedUser = null;
         if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
@@ -174,18 +183,18 @@ export const login = (userData, navigation) => {
           showMessage({
             message: user.message,
             type: "warning",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_LOADING_USER,
-            payload: false
+            payload: false,
           });
           const obj = { user: decodedUser, message: user.message };
           return obj;
         }
         // }
       })
-      .then(decodedUser => {
+      .then((decodedUser) => {
         if (decodedUser && decodedUser.user) {
           dispatch(setCurrentUser(decodedUser));
         }
@@ -194,20 +203,24 @@ export const login = (userData, navigation) => {
         if (getState().auth.userInfo) {
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
-              temp_pwd: true
+              temp_pwd: true,
+              source: "sign_in",
+              source_action: "a_sign_in",
             });
           } else {
             dispatch(
               saveBusinessInvitee({
                 tempInviteId: navigation.getParam("v", ""),
                 businessInvitee: navigation.getParam("business", ""),
-                invitedEmail: navigation.getParam("email", "")
+                invitedEmail: navigation.getParam("email", ""),
               })
             );
             navigation.navigate("Dashboard", {
               v: navigation.getParam("v", ""),
               business: navigation.getParam("business", ""),
-              email: navigation.getParam("email", "")
+              email: navigation.getParam("email", ""),
+              source: "sign_in",
+              source_action: "a_sign_in",
             });
           }
 
@@ -215,10 +228,10 @@ export const login = (userData, navigation) => {
           dispatch(send_push_notification());
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch({
           type: actionTypes.SET_LOADING_USER,
-          payload: false
+          payload: false,
         });
         // console.log("login error", err.message || err.response);
         showMessage({
@@ -227,13 +240,13 @@ export const login = (userData, navigation) => {
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
-          position: "top"
+          position: "top",
         });
       });
   };
 };
 
-export const logout = navigation => {
+export const logout = (navigation) => {
   return (dispatch, getState) => {
     setAuthToken()
       .then(() => {
@@ -248,7 +261,7 @@ export const logout = navigation => {
               getState().account.businessInvitee,
             email:
               (navigation && navigation.getParam("email", "")) ||
-              getState().account.invitedEmail
+              getState().account.invitedEmail,
           });
       })
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
@@ -257,22 +270,22 @@ export const logout = navigation => {
 };
 
 export const forgotPassword = (email, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     // dispatch({
     //   type: actionTypes.CHANGE_PASSWORD,
     //   payload: { success: false }
     // });
     createBaseUrl()
       .post("forgotPassword", {
-        email: email
+        email: email,
       })
-      .then(response => {
+      .then((response) => {
         showMessage({
           message: response.data.success
             ? "An email with a random generated password has been sent to your email account."
             : "No account exists with the provided email.",
           type: response.data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
         if (response.data.success) navigation.goBack();
         // return dispatch({
@@ -280,7 +293,7 @@ export const forgotPassword = (email, navigation) => {
         //   payload: response.data
         // });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("forgotPassword error", err.message || err.response);
       });
   };
@@ -290,48 +303,49 @@ export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.CLEAR_PUSH_NOTIFICATION_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(`updatepushToken`, {
         token: null,
-        userid: userid
+        userid: userid,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         dispatch(logout(navigation)); //Call this first so that it navigates first then turns everything to null
         //so that the error componenet doesn't show up in the dashboard
       })
       .then(() => {
         dispatch({
-          type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN
+          type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN,
         });
       })
       .then(() => dispatch(update_app_status_chat_notification(false)))
-      .catch(err => {
+      .catch((err) => {
         // console.log("clear push notification", err.message || err.response);
         dispatch({
-          type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
+          type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN,
         });
       });
   };
 };
 
-export const setCurrentUser = user => {
-  return dispatch => {
+export const setCurrentUser = (user) => {
+  return (dispatch) => {
     // console.log("user:", user);
 
     if (user) {
       return dispatch({
         type: actionTypes.SET_CURRENT_USER,
-        payload: user
+        payload: user,
       });
     } else {
+      // analytics.reset();
       return dispatch({
         type: actionTypes.LOGOUT_USER,
-        payload: { user }
+        payload: { user },
       });
     }
   };
@@ -340,26 +354,33 @@ export const setCurrentUser = user => {
 export const changePassword = (currentPass, newPass, navigation, userEmail) => {
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
-    "Content-Type": "application/x-www-form-urlencoded"
+    "Content-Type": "application/x-www-form-urlencoded",
   };
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.CHANGE_PASSWORD,
-      payload: { success: false, loading: true }
+      payload: { success: false, loading: true },
     });
     createBaseUrl()
       .put("changePassword", {
         current_password: currentPass,
-        password: newPass
+        password: newPass,
       })
-      .then(response => {
+      .then((response) => {
         const temPwd = navigation.getParam("temp_pwd", false);
         // if tempPwd change relogin for setting new auth token
         if (temPwd && response.data.success) {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message,
+          });
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
           dispatch(
             login(
@@ -367,7 +388,7 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
                 email: userEmail,
                 emailError: null,
                 password: newPass,
-                passwordError: ""
+                passwordError: "",
               },
               navigation
             )
@@ -376,8 +397,8 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
             type: actionTypes.CHANGE_PASSWORD,
             payload: {
               success: response.data.success,
-              loading: false
-            }
+              loading: false,
+            },
           });
         }
         //   let time = new Animated.Value(0);
@@ -385,41 +406,52 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
 
         Animated.timing(time, {
           toValue: 1,
-          duration: 2000
+          duration: 2000,
           //   easing: Easing.linear
         }).start(() => {
+          analytics.track(`a_change_password`, {
+            source: "change_password",
+            source_action: "a_change_password",
+            timestamp: new Date().getTime(),
+            action_status: response.data.success ? "success" : "failure",
+            error_description: !response.data.success && response.data.message,
+          });
+
           showMessage({
             message: response.data.message,
             type: response.data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "change_password",
+              source_action: "a_change_password",
+            });
           }
           return dispatch({
             type: actionTypes.CHANGE_PASSWORD,
             payload: {
               success: response.data.success,
-              loading: false
-            }
+              loading: false,
+            },
           });
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("changePasswordError", err.message || err.response);
 
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
 
         return dispatch({
           type: actionTypes.ERROR_CHANGE_PASSWORD,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };

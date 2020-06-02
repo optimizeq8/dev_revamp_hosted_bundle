@@ -16,7 +16,7 @@ class MessageBubble extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      height: 0
+      height: 0,
     };
   }
   render() {
@@ -47,8 +47,8 @@ class MessageBubble extends PureComponent {
               styles.dateText,
               {
                 textAlign:
-                  this.props.message.author.type === "user" ? "right" : "left"
-              }
+                  this.props.message.author.type === "user" ? "right" : "left",
+              },
             ]}
           >
             {dateFormat(
@@ -57,6 +57,7 @@ class MessageBubble extends PureComponent {
             )}
           </Text>
         )}
+        {/* Triangle for admin */}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
           {this.props.message.author.type === "admin" &&
             !isNull(this.props.message.body) &&
@@ -74,8 +75,8 @@ class MessageBubble extends PureComponent {
                         : -6
                       : this.state.height > 50
                       ? -8
-                      : -6
-                  }
+                      : -6,
+                  },
                 ]}
               >
                 <TransparentTriangle height={22} width={22} />
@@ -84,9 +85,9 @@ class MessageBubble extends PureComponent {
           {this.props.message.attachments.length !== 0 && (
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.push("ImagePreview", {
+                this.props.navigation.navigate("ImagePreview", {
                   image: this.props.message.attachments[0].url,
-                  id: this.props.message.id
+                  id: this.props.message.id,
                 })
               }
               style={{ paddingBottom: 5 }}
@@ -111,13 +112,13 @@ class MessageBubble extends PureComponent {
                   paddingVertical: this.state.height < 50 ? 10 : 18,
                   paddingHorizontal: this.state.height < 50 ? 20 : 25,
                   backgroundColor: userFormatter,
-                  alignSelf: align
-                }
+                  alignSelf: align,
+                },
               ]}
-              onLayout={event => {
+              onLayout={(event) => {
                 var { height } = event.nativeEvent.layout;
                 this.setState({
-                  height: height
+                  height: height,
                 });
               }}
             >
@@ -136,8 +137,8 @@ class MessageBubble extends PureComponent {
                     ? rtlStyles.orangeTriangleView
                     : styles.orangeTriangleView,
                   {
-                    right: 0
-                  }
+                    right: 0,
+                  },
                 ]}
               >
                 <OrangeTriangle width={22} height={22} />
@@ -149,8 +150,8 @@ class MessageBubble extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.messenger.user
+const mapStateToProps = (state) => ({
+  user: state.messenger.user,
 });
 
 export default connect(mapStateToProps)(MessageBubble);

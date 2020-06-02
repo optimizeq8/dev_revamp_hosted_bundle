@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   mainContent: {
     // flex: 1,
     // justifyContent: 'flex-start',
+    paddingHorizontal: 26,
     paddingBottom: hp(14),
     paddingTop: 20
   },
@@ -63,10 +64,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    borderRadius: 30,
-    marginBottom: I18nManager.isRTL ? -16 : -10
+    alignSelf: "flex-start",
+    textAlign: I18nManager.isRTL ? "right" : "left",
+    // marginBottom: -20,
+    textTransform: "uppercase",
+    marginTop: 10
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -124,8 +126,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 30,
     alignSelf: "center",
-    width: 300,
-    height: 50,
+    width: "100%",
+    // width: 300,
+    height: 54,
     justifyContent: "center"
     // borderWidth: 0.5,
   },
@@ -153,13 +156,15 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center"
+    // justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 20
   },
   dateColumn: {
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignSelf: "flex-start"
   },
   topContainer: {
     paddingVertical: 10,

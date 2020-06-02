@@ -1,7 +1,7 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 export const globalColors = {
   orange: "#FF790A",
@@ -14,132 +14,133 @@ export const globalColors = {
   black: "#000000",
   transparent: "#0000",
   lightGray: "#C6C6C6",
+  lightGray: "#C6C6C6",
   darkGray: "#717171",
-  gray: "#A0A0A0"
+  gray: "#A0A0A0",
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
-    backgroundColor: "#751AFF"
+    backgroundColor: "#751AFF",
   },
   linearGradientBackground2: {
-    backgroundColor: "#6268FF"
+    backgroundColor: "#6268FF",
   },
   orangeTextColor: {
-    color: "#FF790A"
+    color: "#FF790A",
   },
   orangeBorderColor: {
-    borderColor: "#FF9D00"
+    borderColor: "#FF9D00",
   },
   orangeBackgroundColor: {
-    backgroundColor: "#FF9D00"
+    backgroundColor: "#FF9D00",
   },
   whiteTextColor: {
-    color: "#FFFFFF"
+    color: "#FFFFFF",
   },
   whiteBackgroundColor: {
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   whiteBorderColor: {
-    borderColor: "#FFFFFF"
+    borderColor: "#FFFFFF",
   },
   blackTextColor: {
-    color: "#000"
+    color: "#000",
   },
   blackBackgroundColor: {
-    backgroundColor: "#000"
+    backgroundColor: "#000",
   },
   purpleTextColor: {
-    color: "#751AFF"
+    color: "#751AFF",
   },
   purpleBackgroundColor: {
-    backgroundColor: "#751AFF"
+    backgroundColor: "#751AFF",
   },
   transparentBackgroundColor: {
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   transparentTextColor: {
-    color: "#0000"
+    color: "#0000",
   },
   darkGrayBackgroundColor: {
-    backgroundColor: "#717171"
+    backgroundColor: "#717171",
   },
   darkGrayTextColor: {
-    color: "#717171"
+    color: "#717171",
   },
   grayTextColor: {
-    color: "#a0a0a0"
+    color: "#a0a0a0",
   },
   grayBackgroundColor: {
-    backgroundColor: "#A0A0A0"
+    backgroundColor: "#A0A0A0",
   },
   grayBorderColor: {
-    borderColor: "#A0A0A0"
+    borderColor: "#A0A0A0",
   },
   redTextColor: {
-    color: "#EA514B"
+    color: "#EA514B",
   },
   redBorderColor: {
-    borderColor: "red"
+    borderColor: "red",
   },
   transparentBorderColor: {
-    borderColor: "#0000"
+    borderColor: "#0000",
   },
   lightGrayTextColor: {
-    color: "#C6C6C6"
+    color: "#C6C6C6",
   },
   lightGrayBorderColor: {
-    borderColor: "#D9D9D9"
+    borderColor: "#D9D9D9",
   },
   purpleBorderColor: {
-    borderColor: "#7039FF"
+    borderColor: "#7039FF",
   },
   container: {
     marginTop: 30,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   row: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   column: {
-    flexDirection: "column"
+    flexDirection: "column",
   },
   title: {
     fontSize: 20 / PixelRatio.getFontScale(),
     color: "#fff",
     paddingVertical: 10,
     fontFamily: "montserrat-bold",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
     fontSize: 16 / PixelRatio.getFontScale(),
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   backButton: {
     top: hp(5),
@@ -149,21 +150,21 @@ const globalStyles = StyleSheet.create({
     zIndex: 10,
     elevation: 2,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   backDrop: {
     position: "absolute",
     top: -hp(45),
-    alignSelf: "center"
+    alignSelf: "center",
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   background: {
     position: "absolute",
     opacity: 0.4,
     top: "25%",
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });
 export default globalStyles;

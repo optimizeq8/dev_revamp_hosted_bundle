@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginTop: 0,
     flex: 1,
-    width: "100%"
+    // width: "100%"
+    paddingHorizontal: 26
     // width: "96%"
   },
   contentContainer: {

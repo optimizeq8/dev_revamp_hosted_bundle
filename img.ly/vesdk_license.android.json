@@ -1,0 +1,28 @@
+{
+  "api_token": "HQpiiMC4841aM2B-bNZxRA",
+  "app_identifiers": ["com.optimizeapp.optimizeapp"],
+  "available_actions": [],
+  "domains": ["https://api.photoeditorsdk.com"],
+  "enterprise_license": false,
+  "expires_at": null,
+  "features": [
+    "camera",
+    "library",
+    "export",
+    "whitelabel",
+    "customassets",
+    "frame",
+    "sticker",
+    "text",
+    "textdesign",
+    "transform",
+    "trim"
+  ],
+  "issued_at": 1589451806,
+  "minimum_sdk_version": "1.0",
+  "owner": "Optimize Advertising and Marketing Company WLL",
+  "platform": "Android",
+  "products": ["vesdk"],
+  "version": "2.4",
+  "signature": "F5Odff6tvqw6c261nmzhm4ehMqrLsZQopYHhdC2/FDj8oAcWm/gVrsxug/sipDKML5T+gThADJdOVWd0WQeBnkwGMOmLZugoEB1mUo9Jg7ZmT6nA+2TB17t1d22GL+e5nexBDgjrQOhLM52I1DrPbrALIVCz0kQyD65+AYanUiEWExpNVvBTK0/WeFPPNEtlRErBUOJEBab4r7jlLv9nV9GgkyzgPQO28q7mey5AJ+fYUGCKy2wtAvZ3tSWaf24Lx3NLehOT8Y2H7L+y6uytJntPwfATzYkhmeQjvkXMfRy9bpRAzImi0KzG5Ugnw8+eUBAQ3vo/R3JkI2C60ynXzP4hQrN7q57DjdNhuc9ooie5nGJNAMs+PTLxrs19/+07GrkBTmpOAcQFGTxQP/Y6yKrv08uLeWTgFoMHHT2wFHcmoCTejdg2O3CLvlz/yTcvwBpidfI/O1m+g28U5J52ggfIPBMqNM2FiypzL0a2TPpjGJYm6qTy4uxz9iBz7E5aEn8vDCSEOlQtJ5fA40JF2IdWuqNqbfLoXxGjtH7UqD11/xCJC7+fBvXQdnqAvlj4eYaPikdj3B7iUxSDookKCmh73Qi+Vri5lNvnmvhvcGJT6CzGqgGOWwvvYAxFrABA7TK6agoL4n70hLBW7cTHJgMIn3mXm20oJ1wvW7DNkXM="
+}

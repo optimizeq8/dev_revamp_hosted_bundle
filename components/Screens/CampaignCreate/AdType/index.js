@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -48,6 +49,24 @@ class AdType extends Component {
   };
 
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const device_id = this.props.screenProps.device_id;
+
+    analytics.track(`ad_type`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id,
+      userId: this.props.userInfo.userid,
+      campaign_channel: this.state.active
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -59,11 +78,22 @@ class AdType extends Component {
     Segment.trackWithProperties("Closed Ad Type", {
       business_name: this.props.mainBusiness.businessname
     });
-    this.props.navigation.navigate("Dashboard");
+    this.props.navigation.navigate("Dashboard", {
+      source: "ad_type",
+      source_action: "a_back_button"
+    });
     return true;
   };
 
   navigationHandler = adType => {
+    const device_id = this.props.screenProps.device_id;
+    analytics.track(`a_campaign_ad_type`, {
+      source: "ad_type",
+      source_action: "a_campaign_ad_type",
+      campaign_channel: adType.mediaType,
+      campaign_ad_type: adType.value,
+      device_id
+    });
     //Check if account is verified or not
     const { fb_connected } = this.props.mainBusiness;
     if (
@@ -75,7 +105,10 @@ class AdType extends Component {
         business_name: this.props.mainBusiness.businessname,
         campaign_type: adType.value
       });
-      this.props.navigation.navigate("VerifyAccount");
+      this.props.navigation.navigate("VerifyAccount", {
+        source: "ad_type",
+        source_action: "a_campaign_ad_type"
+      });
     } else {
       Segment.trackWithProperties("Selected Ad Type", {
         business_name: this.props.mainBusiness.businessname,
@@ -101,12 +134,18 @@ class AdType extends Component {
         !this.props.mainBusiness.snap_ad_account_id &&
         adType.mediaType === "snapchat"
       ) {
-        this.props.navigation.navigate("SnapchatCreateAdAcc");
+        this.props.navigation.navigate("SnapchatCreateAdAcc", {
+          source: "ad_type",
+          source_action: "a_campaign_ad_type"
+        });
       } else if (
         !this.props.mainBusiness.google_account_id &&
         adType.mediaType === "google"
       ) {
-        this.props.navigation.navigate("GoogleCreateAdAcc");
+        this.props.navigation.navigate("GoogleCreateAdAcc", {
+          source: "ad_type",
+          source_action: "a_campaign_ad_type"
+        });
       } else if (
         this.props.mainBusiness.google_account_id &&
         adType.mediaType === "google" &&
@@ -120,7 +159,9 @@ class AdType extends Component {
         });
       } else
         this.props.navigation.navigate(adType.rout, {
-          tempAdType: adType.value
+          tempAdType: adType.value,
+          source: "ad_type",
+          source_action: "a_campaign_ad_type"
         });
     }
   };
@@ -160,8 +201,26 @@ class AdType extends Component {
   };
 
   setActiveCampaignType = title => {
-    Segment.screenWithProperties(`Ad Type ${title}`, {
-      category: "Campaign Creation"
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const device_id = this.props.screenProps.device_id;
+    analytics.track(`a_campaign_channel`, {
+      source,
+      source_action: "a_campaign_channel",
+      timestamp: new Date().getTime(),
+      device_id,
+      userId: this.props.userInfo.userid,
+      campaign_channel: title
+    });
+    analytics.track(`ad_type`, {
+      source,
+      source_action: "a_campaign_channel",
+      timestamp: new Date().getTime(),
+      device_id,
+      userId: this.props.userInfo.userid,
+      campaign_channel: title.toLowerCase()
     });
     this.setState({
       active: title
@@ -401,7 +460,6 @@ class AdType extends Component {
 
 const mapStateToProps = state => ({
   adType: state.campaignC.adType,
-  adTypeInstagram: state.instagramAds.adType,
   incompleteCampaign: state.campaignC.incompleteCampaign,
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo

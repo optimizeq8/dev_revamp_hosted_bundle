@@ -3,7 +3,7 @@ import { BackHandler } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
-
+import analytics from "@segment/analytics-react-native";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
 import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
@@ -68,6 +68,20 @@ class AddressForm extends Component {
   };
   componentDidMount() {
     this.props.getAddressDetail();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+   this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_business_address`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      ...this.props.address
+    });
     this.setState(
       {
         from: this.props.navigation.getParam("from", null),
@@ -135,7 +149,8 @@ class AddressForm extends Component {
     this.props.addressForm(
       this.state.address,
       this.props.navigation,
-      this.state.addressId
+      this.state.addressId,
+      this.props.screenProps.translate
     );
   };
 
@@ -185,8 +200,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addressForm: (address, navigation, addressId) =>
-    dispatch(actionCreators.addressForm(address, navigation, addressId)),
+  addressForm: (address, navigation, addressId, translate) =>
+    dispatch(
+      actionCreators.addressForm(address, navigation, addressId, translate)
+    ),
   getAddressDetail: () => dispatch(actionCreators.getAddressForm())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Text, Container, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents, ScrollView } from "react-navigation";
@@ -43,9 +44,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
 
+// segment
+import segmentEventTrack from "../../segmentEventTrack";
+
 class CampaignDetails extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -61,7 +65,7 @@ class CampaignDetails extends Component {
       expand: false,
       minHeight: 0,
       maxHeight: heightPercentageToDP(50),
-      CSVModalVisible: false
+      CSVModalVisible: false,
     };
   }
 
@@ -83,7 +87,7 @@ class CampaignDetails extends Component {
     ) {
       this.setState({
         toggleText: this.props.selectedCampaign.status,
-        toggle: this.props.selectedCampaign.status !== "PAUSED"
+        toggle: this.props.selectedCampaign.status !== "PAUSED",
       });
     }
   }
@@ -95,25 +99,30 @@ class CampaignDetails extends Component {
       this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
       this.props.loading !== nextProps.loading ||
       this.props.languagesListLoading !== nextProps.languagesListLoading ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
+      JSON.stringify(this.state) !== JSON.stringify(nextState) ||
+      this.props.campaignEnded !== nextProps.campaignEnded
     );
   }
 
   handleStartDatePicked = date => {
     this.setState({
-      start_time: date
+      start_time: date,
     });
   };
   handleEndDatePicked = date => {
     this.setState({
-      end_time: date
+      end_time: date,
     });
   };
   handleToggle = status => {
+    segmentEventTrack(
+      `Button pressed to ${status} campiagn`,
+      this.props.selectedCampaign
+    );
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
-      toggleText: status
+      toggleText: status,
     });
   };
 
@@ -122,7 +131,7 @@ class CampaignDetails extends Component {
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
-        status: this.state.toggleText === "PAUSED" ? "ACTIVE" : "PAUSED"
+        status: this.state.toggleText === "PAUSED" ? "ACTIVE" : "PAUSED",
       },
       this.handleToggle
     );
@@ -133,7 +142,7 @@ class CampaignDetails extends Component {
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
-        status: "PAUSED"
+        status: "PAUSED",
       },
       this.handleToggle
     );
@@ -160,7 +169,7 @@ class CampaignDetails extends Component {
     this.setState({ start_time, end_time });
     this.props.getCampaignStats(this.props.selectedCampaign, {
       start_time,
-      end_time
+      end_time,
     });
   };
 
@@ -178,7 +187,7 @@ class CampaignDetails extends Component {
 
   handleChartToggle = () => {
     this.setState(prevState => ({
-      expand: !prevState.expand
+      expand: !prevState.expand,
     }));
     this.scroll.scrollTo({ x: 0, y: 0, animated: true });
     this.toggle();
@@ -186,7 +195,7 @@ class CampaignDetails extends Component {
 
   toggle = () => {
     Animated.spring(this.state.chartAnimation, {
-      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight
+      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight,
     }).start();
   };
 
@@ -210,8 +219,54 @@ class CampaignDetails extends Component {
   onLayout = event => {
     const layout = event.nativeEvent.layout;
     this.setState({
-      maxHeight: hp(87) - layout.height
+      maxHeight: hp(87) - layout.height,
     });
+  };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    if (
+      (!this.props.loading &&
+        !this.props.languagesListLoading &&
+        !this.props.selectedCampaign) ||
+      this.props.campaignError ||
+      this.props.languagesListError
+    ) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: "error",
+        error_description:
+          (!this.props.loading &&
+            !this.props.languagesListLoading &&
+            !this.props.selectedCampaign) ||
+          this.props.campaignError ||
+          this.props.languagesListError,
+      });
+    }
+
+    if (this.props.selectedCampaign) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: this.props.selectedCampaign.campaign_id,
+      });
+      Segment.screenWithProperties("Campaign Details", {
+        campaign_id: this.props.selectedCampaign.campaign_id,
+      });
+    }
   };
   render() {
     let loading = this.props.loading;
@@ -224,11 +279,14 @@ class CampaignDetails extends Component {
       this.props.languagesListError
     ) {
       return (
-        <ErrorComponent
-          loading={loading}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
+        <>
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <ErrorComponent
+            loading={loading}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        </>
       );
     } else {
       let selectedCampaign = null;
@@ -302,7 +360,7 @@ class CampaignDetails extends Component {
         audienceOverViewData.push({
           heading: "Gender",
           icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
-          content: gender
+          content: gender,
         });
         const ageMin = targeting && targeting.demographics[0].min_age;
         const ageMax = targeting && targeting.demographics[0].max_age;
@@ -316,7 +374,7 @@ class CampaignDetails extends Component {
               name="human-male-girl"
             />
           ),
-          content: ageMin + " - " + ageMax
+          content: ageMin + " - " + ageMax,
         });
         interesetNames =
           targeting && targeting.hasOwnProperty("interests")
@@ -359,7 +417,7 @@ class CampaignDetails extends Component {
           content:
             langaugeNames && langaugeNames.length > 0
               ? langaugeNames.join(", ")
-              : ""
+              : "",
         });
         countryName =
           targeting &&
@@ -372,7 +430,7 @@ class CampaignDetails extends Component {
         audienceOverViewData.push({
           heading: "Location",
           icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
-          content: countryName + ": " + (region_names ? region_names : "")
+          content: countryName + ": " + (region_names ? region_names : ""),
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
           end_time = new Date(selectedCampaign.end_time.split("T")[0]);
@@ -401,15 +459,7 @@ class CampaignDetails extends Component {
             style={[{ height: "100%" }]}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                if (this.props.selectedCampaign) {
-                  Segment.screenWithProperties("Campaign Details", {
-                    campaign_id: this.props.selectedCampaign.campaign_id
-                  });
-                }
-              }}
-            />
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <Container style={[styles.container]}>
               <View
                 style={[
@@ -417,8 +467,8 @@ class CampaignDetails extends Component {
                   {
                     borderBottomStartRadius: 30,
                     borderBottomEndRadius: 30,
-                    overflow: "hidden"
-                  }
+                    overflow: "hidden",
+                  },
                 ]}
               >
                 <LinearGradient
@@ -448,7 +498,7 @@ class CampaignDetails extends Component {
                   textAlign: "left",
                   fontSize: 15,
                   paddingTop: 3,
-                  flex: 1
+                  flex: 1,
                 }}
                 campaignStatus={loading ? null : selectedCampaign.status}
               />
@@ -463,8 +513,8 @@ class CampaignDetails extends Component {
                       style={[
                         styles.circleIcon,
                         {
-                          color: globalColors.orange
-                        }
+                          color: globalColors.orange,
+                        },
                       ]}
                       name={"circle"}
                       type={"FontAwesome"}
@@ -472,7 +522,7 @@ class CampaignDetails extends Component {
                     <Text
                       style={[
                         styles.reviewText,
-                        { color: globalColors.orange }
+                        { color: globalColors.orange },
                       ]}
                     >
                       {translate("Campaign ended")}
@@ -492,8 +542,8 @@ class CampaignDetails extends Component {
                             ? globalColors.red
                             : selectedCampaign.status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                       name={
                         selectedCampaign.review_status.includes("REJECTED")
@@ -518,8 +568,8 @@ class CampaignDetails extends Component {
                                 "PENDING"
                               ) && selectedCampaign.status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                     >
                       {translate(
@@ -592,6 +642,7 @@ class CampaignDetails extends Component {
                         navigation={this.props.navigation}
                         loading={loading}
                         screenProps={this.props.screenProps}
+                        source={"campaign_detail"}
                       />
                       <AudienceOverview
                         screenProps={this.props.screenProps}
@@ -625,46 +676,48 @@ class CampaignDetails extends Component {
                                   </Text>
                                 </View>
                               ) : (
-                                <View padder style={styles.toggleSpace}>
-                                  <View style={{ alignSelf: "center" }}>
-                                    {selectedCampaign && (
-                                      <Toggle
-                                        buttonTextStyle={
-                                          styles.switchButtonText
-                                        }
-                                        buttonText={
-                                          this.state.toggleText !== "PAUSED"
-                                            ? "LIVE"
-                                            : "PAUSED"
-                                        }
-                                        containerStyle={styles.toggleStyle}
-                                        switchOn={this.state.toggle}
-                                        onPress={() => {
-                                          this.state.toggle
-                                            ? this.setState({
-                                                modalVisible: true
-                                              })
-                                            : this.updateStatus();
-                                        }}
-                                        backgroundColorOff="rgba(255,255,255,0.1)"
-                                        backgroundColorOn="rgba(255,255,255,0.1)"
-                                        circleColorOff="#FF9D00"
-                                        circleColorOn="#66D072"
-                                        duration={500}
-                                        circleStyle={styles.switchCircle}
-                                      />
-                                    )}
-                                    <Text style={styles.statusText}>
-                                      {translate(
-                                        `${
-                                          this.state.toggle
-                                            ? "Tap to pause AD"
-                                            : "Tap to activate AD"
-                                        }`
+                                !this.props.campaignEnded && (
+                                  <View padder style={styles.toggleSpace}>
+                                    <View style={{ alignSelf: "center" }}>
+                                      {selectedCampaign && (
+                                        <Toggle
+                                          buttonTextStyle={
+                                            styles.switchButtonText
+                                          }
+                                          buttonText={
+                                            this.state.toggleText !== "PAUSED"
+                                              ? "LIVE"
+                                              : "PAUSED"
+                                          }
+                                          containerStyle={styles.toggleStyle}
+                                          switchOn={this.state.toggle}
+                                          onPress={() => {
+                                            this.state.toggle
+                                              ? this.setState({
+                                                  modalVisible: true,
+                                                })
+                                              : this.updateStatus();
+                                          }}
+                                          backgroundColorOff="rgba(255,255,255,0.1)"
+                                          backgroundColorOn="rgba(255,255,255,0.1)"
+                                          circleColorOff="#FF9D00"
+                                          circleColorOn="#66D072"
+                                          duration={500}
+                                          circleStyle={styles.switchCircle}
+                                        />
                                       )}
-                                    </Text>
+                                      <Text style={styles.statusText}>
+                                        {translate(
+                                          `${
+                                            this.state.toggle
+                                              ? "Tap to pause AD"
+                                              : "Tap to activate AD"
+                                          }`
+                                        )}
+                                      </Text>
+                                    </View>
                                   </View>
-                                </View>
+                                )
                               )
                             ) : null)}
                         </View>
@@ -687,7 +740,7 @@ class CampaignDetails extends Component {
             <Animated.View
               style={[
                 { backgroundColor: "#000", overflow: "hidden" },
-                { height: this.state.chartAnimation }
+                { height: this.state.chartAnimation },
               ]}
             >
               {this.state.expand &&
@@ -728,7 +781,7 @@ const mapStateToProps = state => ({
   languages: state.campaignC.languagesList,
   mainBusiness: state.account.mainBusiness,
   languagesListLoading: state.campaignC.languagesListLoading,
-  languagesListError: state.campaignC.languagesListError
+  languagesListError: state.campaignC.languagesListError,
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
@@ -739,6 +792,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
-    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage))
+    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

@@ -64,7 +64,6 @@ import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
-import InstagramAdPaymentReview from "../Screens/InstagramCampaignCreate/Feed/AdPaymentReview";
 
 export default FluidNavigator(
   {
@@ -96,16 +95,16 @@ export default FluidNavigator(
     LongFormVideoPreview: LongFormVideoPreview,
     ErrorRedirect: {
       screen: ErrorRedirect,
-      path: "error/"
+      path: "error/",
     },
     SuccessRedirect: {
       screen: SuccessRedirect,
-      path: "success/"
+      path: "success/",
     },
     Messenger: Messenger,
     MessengerLoading: {
       screen: MessengerLoading,
-      path: "MessengerLoading/"
+      path: "MessengerLoading/",
     },
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
@@ -126,8 +125,6 @@ export default FluidNavigator(
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
-    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
-    ImagePreview: ImagePreview,
     AcceptTermsConditionLoading: AcceptTermsConditionLoading,
     VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
     OptimizeWebsite: OptimizeWebsite,
@@ -142,7 +139,8 @@ export default FluidNavigator(
     InstagramSwipeUpDestination: InstagramSwipeUpDestination,
     InstagramFeedAdTargetting: InstagramFeedAdTargetting,
     AdFeedDesignReview: AdFeedDesignReview,
-    InstagramAdPaymentReview: InstagramAdPaymentReview
+    InstagramAdPaymentReview: InstagramAdPaymentReview,
+    ImagePreview: ImagePreview,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
@@ -155,17 +153,17 @@ export default FluidNavigator(
     navigationOptions: {
       gesturesEnabled: true,
       headerStyle: {
-        backgroundColor: "#0000"
+        backgroundColor: "#0000",
       },
       headerTintColor: "#0000",
       headerTextStyle: {
-        fontWeight: "bold"
-      }
+        fontWeight: "bold",
+      },
     },
     cardStyle: {
       backgroundColor: "#0000",
-      opacity: 1
-    }
+      opacity: 1,
+    },
   }
 );
 
@@ -173,6 +171,6 @@ const transConfig = () => ({
   transitionSpec: {
     duration: 0,
     timing: Animated.timing,
-    easing: Easing.step0
-  }
+    easing: Easing.step0,
+  },
 });

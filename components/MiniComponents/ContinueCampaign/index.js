@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as Segment from "expo-analytics-segment";
@@ -9,7 +10,7 @@ import * as actionCreators from "../../../store/actions";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
 import CustomHeader from "../Header";
 import { persistor } from "../../../store/";
@@ -29,9 +30,16 @@ class ContinueCampaign extends Component {
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
-    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
-      Segment.screen("Continue Campaign Modal");
-    this.continueCampaign();
+    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted) {
+      analytics.track("continue_campaign_modal", {
+        source: "ad_objective",
+        // source_action: ""
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        timestamp: new Date().getTime(),
+      });
+      this.continueCampaign();
+    }
   }
 
   /**
@@ -42,14 +50,20 @@ class ContinueCampaign extends Component {
     //Array of navigation routes to set in the stack
     let continueRoutes = this.props.currentCampaignSteps.map(route => {
       segmentEventTrack(`Navigate to ${route}`);
-      NavigationActions.navigate({
-        routeName: route
-      });
+      return NavigationActions.navigate(
+        {
+          routeName: route,
+        },
+        {
+          source: "continue_campaign_modal",
+          source_action: "a_continue_campaign",
+        }
+      );
     });
     //resets the navigation stack
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1, //index of the last screen route
-      actions: continueRoutes
+      actions: continueRoutes,
     });
 
     this.props.navigation.dispatch(resetAction);
@@ -92,24 +106,24 @@ class ContinueCampaign extends Component {
     //checks if the old campaign dates are still applicable or not so
     //it doesn't create a campaign with old dates
     let updated_transaction_data = {
-      channel: ""
+      channel: "",
     };
     if (this.props.currentCampaignSteps.includes("AdObjective")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_id: this.props.data.campaign_id
+        campaign_id: this.props.data.campaign_id,
       };
     }
     if (this.props.currentCampaignSteps.includes("AdDetails")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget: this.props.data.lifetime_budget_micro
+        campaign_budget: this.props.data.lifetime_budget_micro,
       };
     }
     if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget_kdamount: this.props.data.kdamount
+        campaign_budget_kdamount: this.props.data.kdamount,
       };
     }
     this.props.setCampaignInfoForTransaction(updated_transaction_data);
@@ -121,12 +135,12 @@ class ContinueCampaign extends Component {
       segmentEventTrack("Dates are no longer applicable", {
         campaign_old_start_data: this.props.data.start_time,
         campaign_old_end_data: this.props.data.end_time,
-        campaign_id: this.props.data.campaign_id
+        campaign_id: this.props.data.campaign_id,
       });
       showMessage({
         message: "The dates are no longer applicable",
         description: "Please choose new dates",
-        type: "warning"
+        type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal(true);
@@ -188,8 +202,8 @@ class ContinueCampaign extends Component {
                   styles.text,
                   {
                     fontFamily: "montserrat-regular",
-                    width: 250
-                  }
+                    width: 250,
+                  },
                 ]}
               >
                 {translate(
@@ -228,7 +242,7 @@ const mapStateToProps = state => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   oldTempAdType: state.campaignC.oldTempAdType,
   oldTempData: state.campaignC.oldTempData,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -242,6 +256,6 @@ const mapDispatchToProps = dispatch => ({
   overWriteObjectiveData: value =>
     dispatch(actionCreators.overWriteObjectiveData(value)),
   setCampaignInfoForTransaction: data =>
-    dispatch(actionCreators.setCampaignInfoForTransaction(data))
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-
+import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -26,7 +26,30 @@ class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
-  state = { verified: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      verified: false
+    };
+  }
+  componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam("source_action", null);
+    const device_id = this.props.screenProps.device_id;
+    const anonymous_userId = this.props.screenProps.anonymous_userId;
+
+    analytics.track(`registration_detail`, {
+      source,
+      source_action,
+      device_id,
+      anonymous_userId,
+      timestamp: new Date().getTime(),
+      email: this.props.userInfo.email
+    });
+  }
   /**
    * Gets called whenever a user presses on an invite registeration deep link
    */
@@ -49,16 +72,6 @@ class MainForm extends Component {
         screenProps={this.props.screenProps}
       />
     );
-
-    if (this.props.successPersonalInfo && !this.state.businessInvite) {
-      content = (
-        <CreateBusinessAccount
-          registering={true}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
-      );
-    }
 
     return (
       <SafeAreaView
@@ -85,87 +98,37 @@ class MainForm extends Component {
             </View>
             <View style={styles.content}>
               <View style={styles.badgeView}>
-                <Badge
-                  style={
-                    (!this.props.successPersonalInfo &&
-                      this.props.successEmail &&
-                      !this.props.registered) ||
-                    this.state.businessInvite === "0" // Since there's only 1 badge for the invited member, this'll make it active
-                      ? styles.activeBadege
-                      : styles.badge
+                <Badge style={styles.activeBadege}>
+                  <Text style={styles.activeBadegeText}>{translate("1")}</Text>
+                </Badge>
+                <Text style={styles.activeTitleText}>
+                  {translate("Details")}
+                </Text>
+              </View>
+
+              <View
+                style={[
+                  styles.dash,
+                  {
+                    marginRight: -4,
+                    marginLeft: -4
                   }
-                >
-                  <Text
-                    style={
-                      (!this.props.successPersonalInfo &&
-                        this.props.successEmail &&
-                        !this.props.registered) ||
-                      this.state.businessInvite === "0"
-                        ? styles.activeBadegeText
-                        : styles.badgeText
-                    }
-                  >
-                    {translate("1")}
-                  </Text>
+                ]}
+              />
+              <View style={styles.badgeView}>
+                <Badge style={styles.badge}>
+                  <Text style={styles.badgeText}>{translate("2")}</Text>
                 </Badge>
                 <Text
                   style={
-                    (!this.props.successPersonalInfo &&
-                      this.props.successEmail &&
-                      !this.props.registered) ||
-                    this.state.businessInvite === "0"
+                    this.props.successPersonalInfo && !this.props.registered
                       ? styles.activeTitleText
                       : styles.titleText
                   }
                 >
-                  {translate("Personal")}
+                  {translate("Complete")}
                 </Text>
               </View>
-              {this.state.businessInvite !== "0" && (
-                <>
-                  <View
-                    style={[
-                      styles.dash,
-                      // { width: 30 },
-                      this.props.successPersonalInfo && !this.props.registered
-                        ? { marginRight: -8 }
-                        : {
-                            marginRight: -4,
-                            marginLeft: -4
-                          }
-                    ]}
-                  />
-                  <View style={styles.badgeView}>
-                    <Badge
-                      style={
-                        this.props.successPersonalInfo && !this.props.registered
-                          ? styles.activeBadege
-                          : styles.badge
-                      }
-                    >
-                      <Text
-                        style={
-                          this.props.successPersonalInfo &&
-                          !this.props.registered
-                            ? styles.activeBadegeText
-                            : styles.badgeText
-                        }
-                      >
-                        {translate("2")}
-                      </Text>
-                    </Badge>
-                    <Text
-                      style={
-                        this.props.successPersonalInfo && !this.props.registered
-                          ? styles.activeTitleText
-                          : styles.titleText
-                      }
-                    >
-                      {translate("Business")}
-                    </Text>
-                  </View>
-                </>
-              )}
             </View>
           </View>
           {content}
@@ -181,6 +144,7 @@ const mapStateToProps = state => ({
   successEmail: state.register.successEmail,
   verified: state.register.verified,
   registered: state.register.registered,
+  userInfo: state.register.userInfo,
   successPersonalInfo: state.register.successPersonalInfo
 });
 

@@ -1,6 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import isUndefined from "lodash/isUndefined";
-
+import analytics from "@segment/analytics-react-native";
 const initialState = {
   campaignList: null,
   filteredCampaigns: [],
@@ -197,6 +197,16 @@ const reducer = (state = initialState, action) => {
             return campaign;
         });
       }
+      analytics.track(`a_filter`, {
+        source: "dashboard",
+        source_action: "a_filter",
+        no_of_results: filtered && filtered.length,
+        filter_type: "campaigns",
+        keywords: action.payload.value,
+        start_date: startSearch,
+        end_date: endSearch,
+        campaign_status: action.payload.selected
+      });
       return {
         ...state,
         filterValue: action.payload.value,

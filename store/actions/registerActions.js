@@ -3,42 +3,49 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import { getUniqueId } from "react-native-device-info";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import { setAuthToken, getBusinessAccounts } from "./genericActions";
+import {
+  setAuthToken,
+  getBusinessAccounts,
+  getAnonymousUserId,
+} from "./genericActions";
 import { setCurrentUser, chanege_base_url } from "./loginActions";
 import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
+
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import analytics from "@segment/analytics-react-native";
 
 export const verifyBusinessName = (
   businessname,
   _handleBusinessName,
   submission
 ) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.CHECKING_BUSINESSNAME, payload: true });
     createBaseUrl()
       .post(`verifyBusinessName`, { businessname })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         (data.success ? !submission : true) &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
         _handleBusinessName(data.success);
         return dispatch({
           type: actionTypes.VERIFY_BUSINESSNAME,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch({ type: actionTypes.CHECKING_BUSINESSNAME, payload: false });
 
         // console.log("verifyBusinessName", err.message || err.response);
@@ -48,13 +55,13 @@ export const verifyBusinessName = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
@@ -115,14 +122,14 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
         `${businessInvite === "0" ? "registerMemberUser" : "registerUserV2"}`,
         userInfo
       )
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(async user => {
+      .then(async (user) => {
         if (user.success === true) {
           Segment.trackWithProperties("Register Business Info", {
             category: "Sign Up",
-            label: "Step 3 of Registration"
+            label: "Step 3 of Registration",
           });
 
           const decodedUser = jwt_decode(user.token);
@@ -132,7 +139,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           //this will throw an error and stop the regiteration process
         } else return Promise.reject({ message: user.message });
       })
-      .then(decodedUser => {
+      .then((decodedUser) => {
         if (decodedUser && decodedUser.user) {
           if (
             [
@@ -141,7 +148,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
               "shorook@optimizekw.com",
-              "samy@optimizeapp.com"
+              "samy@optimizeapp.com",
             ].includes(decodedUser.user.email)
           ) {
             dispatch(chanege_base_url(true));
@@ -153,7 +160,7 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
         if (getState().auth.userInfo) {
           dispatch({
             type: actionTypes.SAVING_REGISTER_ACCOUNT,
-            payload: false
+            payload: false,
           });
           navigation.navigate("RegistrationSuccess");
           dispatch(send_push_notification());
@@ -162,11 +169,11 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
           AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("registerUser error", err.message || err.response);
         dispatch({
           type: actionTypes.SAVING_REGISTER_ACCOUNT,
-          payload: false
+          payload: false,
         });
         showMessage({
           message:
@@ -174,147 +181,170 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
             err.response ||
             "Something went wrong while registering, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
       });
   };
 };
 
 export const resetRegister = () => {
-  return dispatch => {
+  return (dispatch) => {
     setAuthToken().then(() => dispatch(setCurrentUser(null)));
   };
 };
 
-export const sendMobileNo = mobileNo => {
+export const sendMobileNo = (mobileNo) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .post(`addMobile`, mobileNo)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.success === true) {
           segmentEventTrack("Successfully code sent on mobile", {
             category: "Account Verification",
-            label: "Step 1 of Account Verification"
+            label: "Step 1 of Account Verification",
           });
         }
 
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SEND_MOBILE_NUMBER,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("sendMobileNo error", err.message || err.response);
         return dispatch({
           type: actionTypes.ERROR_SEND_MOBILE_NO,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
 };
 
-export const verifyMobileCode = mobileAuth => {
-  return dispatch => {
+export const verifyMobileCode = (mobileAuth, verification_channel) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(async data => {
-        if (data.success === true) {
-          let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
-          Adjust.trackEvent(adjustVerifyAccountTracker);
-          segmentEventTrack("Successfully Verified Account", {
-            category: "Account Verification",
-            label: "Step 2 of Account Verification"
-          });
-        }
-
+      .then(async (data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
         if (!data.success) {
+          analytics.track(`a_otp_verify`, {
+            source: "otp_verify",
+            source_action: "a_otp_verify",
+            device_id: getUniqueId(),
+            timestamp: new Date().getTime(),
+            verification_channel,
+            action_status: "failure",
+          });
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
-            payload: data
+            payload: data,
           });
         }
         dispatch({
           type: actionTypes.VERIFY_MOBILE_NUMBER,
-          payload: data
+          payload: data,
         });
 
         await setAuthToken(data.token);
         const decodedUser = jwt_decode(data.token);
+
         return { user: decodedUser, message: data.message };
       })
-      .then(decodedUser => {
+      .then((decodedUser) => {
         if (decodedUser && decodedUser.user) {
+          analytics.track(`a_otp_verify`, {
+            source: "otp_verify",
+            source_action: "a_otp_verify",
+            device_id: getUniqueId(),
+            timestamp: new Date().getTime(),
+            userId: decodedUser.user.userid,
+            verification_channel,
+            action_status: "success",
+          });
           dispatch(setCurrentUser(decodedUser));
         }
       })
       .then(() => {
         let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
         Adjust.trackEvent(adjustVerifyAccountTracker);
-        NavigationService.navigate("Dashboard");
+        NavigationService.navigate("Dashboard", {
+          source: "otp_verify",
+          source_action: "a_otp_verify",
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
+        analytics.track(`a_error`, {
+          error_page: "otp_verify",
+          action_status: "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_otp_verify",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         showMessage({
           message:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_MOBILE_NUMBER,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
 };
 
-export const resendVerifyMobileCode = mobileAuth => {
-  return dispatch => {
+export const resendVerifyMobileCode = (mobileAuth) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`resendVerificationCode`, mobileAuth)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.success === true)
           Segment.trackWithProperties("Resend Verification Code by Phone No.", {
             category: "Sign Up",
-            label: "Request a new Verification Code"
+            label: "Request a new Verification Code",
           });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
 
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("resendVerifyMobileCode", err.message || err.response);
         showMessage({
           message:
@@ -322,45 +352,45 @@ export const resendVerifyMobileCode = mobileAuth => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
 
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
 };
 
-export const resendVerifyMobileCodeByEmail = mobileAuth => {
-  return dispatch => {
+export const resendVerifyMobileCodeByEmail = (mobileAuth) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`resendVerificationCodebyEmail`, mobileAuth)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.success === true) {
           Segment.trackWithProperties("Resend Verification Code by Email", {
             category: "Account Verification",
-            label: "Request a new Verification Code"
+            label: "Request a new Verification Code",
           });
         }
 
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION_EMAIL,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "resendVerifyMobileCodeByEmail error",
         //   err.message || err.response
@@ -371,89 +401,114 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_RESEND_VERIFICATION_EMAIL,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
 };
 
 export const verifyEmail = (email, userInfo, navigation) => {
-  return dispatch => {
+  return async (dispatch) => {
+    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
       .post(`verifyEmail`, { email: email })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         dispatch({
           type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.success, userInfo }
+          payload: { success: data.success, userInfo },
         });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_create_account`, {
+          mode_of_sign_up: "email",
+          source: "email_registration",
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId,
+          // source_action: "" Not sure
+        });
         if (data.success) {
-          Segment.trackWithProperties("Register Email Info", {
-            category: "Sign Up",
-            label: "Step 1 of Registration"
+          // Segment.trackWithProperties("Register Email Info", {
+          //   category: "Sign Up",
+          //   label: "Step 1 of Registration",
+          // });
+          navigation.push("MainForm", {
+            source: "email_registration",
+            source_action: "a_create_account",
           });
-          navigation.push("MainForm");
         }
         if (!data.success) {
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("verifyEmail ERROR", err.message || err.response);
+        analytics.track(`a_error`, {
+          error_page: "email_registration",
+          action_status: "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+
+          source_action: "a_create_account",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         showMessage({
           message:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
-          payload: { success: false, userInfo }
+          payload: { success: false, userInfo },
         });
       });
   };
 };
 
-export const verifyInviteCode = verificationCode => {
-  return dispatch => {
+export const verifyInviteCode = (verificationCode) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`verifyInvitationCode`, { verificationCode })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         !data.success &&
           showMessage({
             message: data.message,
             type: "danger",
-            position: "top"
+            position: "top",
           });
         data.success &&
           NavigationService.navigate("MainForm", {
-            invite: true
+            invite: true,
           });
         return dispatch({
           type: actionTypes.SET_INVITE_CODE,
-          payload: { data, verificationCode }
+          payload: { data, verificationCode },
         });
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("verifyInviteCodeError", err.message || err.response);
         showMessage({
           message:
@@ -461,29 +516,29 @@ export const verifyInviteCode = verificationCode => {
             err.response ||
             "Something went wrong, please try again",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_INVITE_CODE,
-          payload: null
+          payload: null,
         });
       });
   };
 };
 
-export const requestInvitationCode = info => {
-  return dispatch => {
+export const requestInvitationCode = (info) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`requestinvitationCode`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: "Request successful!",
           description: "We will contact you as soon as possible.",
           type: "success",
-          position: "top"
+          position: "top",
         });
 
         // return dispatch({
@@ -492,7 +547,7 @@ export const requestInvitationCode = info => {
         // });
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("requestInvitationCodeError", err.message || err.response);
         showMessage({
           message:
@@ -500,14 +555,14 @@ export const requestInvitationCode = info => {
             err.response ||
             "Something went wrong, please try again",
           type: "danger",
-          position: "top"
+          position: "top",
         });
       });
   };
 };
 
 /**
- * To register a user as guest user on personal info registeration
+ * To register a user on the app
  * @param {*} userInfo
  * @param {*} businessInvite
  * @param {*} navigation
@@ -517,51 +572,116 @@ export const registerGuestUser = (
   businessInvite = "1",
   navigation
 ) => {
-  return dispatch => {
+  return async (dispatch, getState) => {
+    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
-      .post(`saveUserInfo`, userInfo)
-      .then(res => {
+      .post(`saveUserInfoV2`, userInfo)
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
-        if (data.success === true) {
-          Segment.trackWithProperties("Register Personal Info", {
-            category: "Sign Up",
-            label: "Step 2 of Registration"
-          });
-        }
+      .then((data) => {
+        analytics.track(`a_sign_up`, {
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId,
+          source: "registration_detail",
+          source_action: "a_sign_up",
+          action_status: data.success ? "success" : "failure",
+          email: userInfo.email,
+        });
+
         let adjustRegiserTracker = new AdjustEvent("eivlhl");
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
+          // Segment.trackWithProperties("Register Details Error", {
+          //   category: "Sign Up",
+          //   label: "Step 2 of Registration",
+          //   error: data.message
+          // });
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
         }
-        if (businessInvite === "0") {
-          dispatch(registerUser(userInfo, navigation, businessInvite));
-        }
+        // TODO: NEED A SOLUTION FOR THIS
+        // if (businessInvite === "0") {
+        //   dispatch(registerUser(userInfo, navigation, businessInvite));
+        // }
 
-        return dispatch({
-          type: actionTypes.REGISTER_GUEST_USER,
-          payload: { success: data.success, userInfo }
-        });
+        // dispatch({
+        //   type: actionTypes.REGISTER_GUEST_USER,
+        //   payload: { success: data.success, userInfo }
+        // });
+        return data;
       })
-      .catch(err => {
+      .then(async (user) => {
+        if (user.success === true) {
+          const decodedUser = jwt_decode(user.token);
+          let peomise = await setAuthToken(user.token);
+          return { user: decodedUser, message: user.message };
+          //if something goes wrong with the registeration process or Front-end verification
+          //this will throw an error and stop the regiteration process
+        } else return Promise.reject({ message: user.message });
+      })
+      .then((decodedUser) => {
+        if (decodedUser && decodedUser.user) {
+          if (
+            [
+              "nouf@optimizeapp.com",
+              "sam.omran@hotmail.com",
+              "imran@optimizekw.com",
+              "saadiya@optimizekw.com",
+              "shorook@optimizekw.com",
+              "samy@optimizeapp.com",
+            ].includes(decodedUser.user.email)
+          ) {
+            dispatch(chanege_base_url(true));
+          }
+          dispatch(setCurrentUser(decodedUser));
+        }
+      })
+      .then(() => {
+        if (getState().auth.userInfo) {
+          dispatch({
+            type: actionTypes.SAVING_REGISTER_ACCOUNT,
+            payload: false,
+          });
+          navigation.navigate("RegistrationSuccess", {
+            source: "registration_detail",
+            source_action: "a_sign_up",
+          });
+          dispatch(send_push_notification());
+          dispatch(getBusinessAccounts());
+          dispatch(connect_user_to_intercom(getState().auth.userInfo.userid));
+          AsyncStorage.setItem("registeredWithInvite", "true");
+        }
+      })
+      .catch((err) => {
         // console.log("registerGuestUser ERROR", err.message || err.response);
+        analytics.track(`a_error`, {
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          anonymous_userId,
+          error_page: "registration_detail",
+          source_action: "a_sign_up",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         showMessage({
           message:
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_REGISTER_GUEST_USER,
-          payload: { success: false, userInfo }
+          payload: { success: false, userInfo },
         });
       });
   };
@@ -571,9 +691,9 @@ export const registerGuestUser = (
  * To check reset the steps for account verification when user back press the button
  */
 export const resetVerificationCode = () => {
-  return dispatch => {
+  return (dispatch) => {
     return dispatch({
-      type: actionTypes.RESET_VERIFICATION_CODE
+      type: actionTypes.RESET_VERIFICATION_CODE,
     });
   };
 };
@@ -582,31 +702,31 @@ export const resetVerificationCode = () => {
  * To check if the deep link url verificationCode is expired or not
  */
 export const verifyEmailCodeLink = (verificationCode, country_code, mobile) => {
-  return dispatch => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`verifyEmailCodeLink`, {
         verificationCode,
         country_code,
-        mobile
+        mobile,
       })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         // console.log("data verifyEmailCodeLink", data);
         showMessage({
           type: "warning",
-          message: data.message
+          message: data.message,
         });
         return dispatch({
           type: actionTypes.VERIFY_EMAIL_CODE_LINK,
-          payload: data
+          payload: data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         return dispatch({
           type: actionTypes.VERIFY_EMAIL_CODE_LINK,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };

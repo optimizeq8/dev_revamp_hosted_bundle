@@ -9,7 +9,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import find from "lodash/find";
-import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -97,15 +97,19 @@ class ProductSelect extends React.Component {
     }
   }
   handleSubmission = () => {
-    segmentEventTrack("Submit Products to hide", {
-      businessid: this.props.mainBusiness.businessid,
-      products_to_hide_list: this.state.cartList
-    });
+    // segmentEventTrack("Submit Products to hide", {
+    //   businessid: this.props.mainBusiness.businessid,
+    //   products_to_hide_list: this.state.cartList
+    // });
+
+    const businesslogo = this.props.edit
+      ? this.props.mainBusiness.businesslogo
+      : this.props.businessLogo;
     this.props.saveWebProductsToHide(
       this.props.edit,
       this.state.cartList,
       this.props.mainBusiness.businessid,
-      this.props.mainBusiness.businesslogo,
+      businesslogo,
       this.state.no_of_products_to_show
     );
   };
@@ -120,6 +124,12 @@ class ProductSelect extends React.Component {
       newCartList.push(item.imageId);
       segmentEventTrack("Add product to hide", {
         products_list_item: newCartList
+      });
+      analytics.track(`a_products_to_hide_in_cart`, {
+        source: this.props.source,
+        source_action: "a_add_products",
+        timestamp: new Date().getTime(),
+        products_to_hide_list: newCartList
       });
       const counterNew = this.state.counter;
       this.setState({
@@ -136,6 +146,12 @@ class ProductSelect extends React.Component {
       segmentEventTrack("Remove product to hide", {
         products_list_item: newCartList
       });
+      analytics.track(`a_products_to_hide_in_cart`, {
+        source: this.props.source,
+        source_action: "a_remove_products",
+        timestamp: new Date().getTime(),
+        products_to_hide_list: newCartList
+      });
       this.setState({
         cartList: newCartList,
         counter: counterNew - 1
@@ -143,7 +159,7 @@ class ProductSelect extends React.Component {
     }
   };
   onScrollHandler = () => {
-    segmentEventTrack("Button clicked to view more instagram post");
+    // segmentEventTrack("Button clicked to view more instagram post");
     this.props.loadMoreInstagramPostWebsite(
       this.props.instaHandleId,
       this.props.instaEndCursor

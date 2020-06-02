@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -22,18 +23,46 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 class SuccessRedirect extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       media: require("../../../assets/images/logo01.png"),
-      successLogo: require("../../../assets/animation/success.json")
+      successLogo: require("../../../assets/animation/success.json"),
     };
   }
 
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`payment_end`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      campaign_channel:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === ""
+          ? "snapchat"
+          : this.props.channel.toLowerCase(),
+      amount: parseFloat(this.props.navigation.state.params.amount),
+      campaign_ad_type:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === "google"
+          ? "GoogleSEAd"
+          : this.props.adType,
+      payment_status: "success",
+      payment_mode: this.props.navigation.getParam("payment_mode"),
+    });
     Segment.screenWithProperties("Payment Success", {
       category:
         this.props.navigation.getParam("isWallet") === "1"
@@ -42,7 +71,7 @@ class SuccessRedirect extends Component {
       label:
         this.props.navigation.getParam("isWallet") === "1"
           ? "Wallet Transaction"
-          : "Campaign Transaction"
+          : "Campaign Transaction",
     });
     // this.animation.play();
 
@@ -67,7 +96,7 @@ class SuccessRedirect extends Component {
         this.props.navigation.state.params.paymentId
       );
       Adjust.trackEvent(adjustWalletPaymentTracker);
-    } else {
+    } else if (!this.props.navigation.getParam("checkoutwithWallet", false)) {
       let adjustPaymentTracker = new AdjustEvent("kdnzgg");
       adjustPaymentTracker.addPartnerParameter(
         this.props.channel === "google"
@@ -108,23 +137,19 @@ class SuccessRedirect extends Component {
               name: "Snapchat Snap Ad",
               price: this.props.campaign_budget,
               quantity: 1,
-              category: "Advertisement"
-            }
-          ]
+              category: "Advertisement",
+            },
+          ],
         });
       }
       if (
-        //added checking for channel in case it turns to null and crashes the app on this screen
         (this.props.channel && this.props.channel === "") ||
-        this.props.channel.toLowerCase() === "snapchat"
+        (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
       ) {
         this.props.resetCampaignInfo();
       }
       if (this.props.channel === "google") {
         this.props.rest_google_campaign_data();
-      }
-      if (this.props.channel === "instagram") {
-        this.props.resetCampaignInfoInstagram();
       }
       this.props.reset_transaction_reducer();
     });
@@ -133,8 +158,6 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   render() {
-    console.log(this.props.navigation.state.params);
-
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -154,22 +177,6 @@ class SuccessRedirect extends Component {
         />
 
         <View style={styles.view}>
-          {/* <View
-            style={{
-              width: widthPercentageToDP(50),
-              height: heightPercentageToDP(20)
-              //   justifyContent: "flex-start"
-            }}
-          >
-            <LottieView
-              ref={animation => {
-                this.animation = animation;
-              }}
-              style={[styles.lottieViewContainer]}
-              //   resizeMode="cover"
-              source={this.state.successLogo}
-            />
-          </View> */}
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
             {translate("Success!")}
@@ -200,7 +207,15 @@ class SuccessRedirect extends Component {
             style={styles.button}
             onPressAction={() => {
               this.props.navigation.reset(
-                [NavigationActions.navigate({ routeName: "Dashboard" })],
+                [
+                  NavigationActions.navigate({
+                    routeName: "Dashboard",
+                    params: {
+                      source: "payment_end",
+                      source_action: "a_go_to_home",
+                    },
+                  }),
+                ],
                 0
               );
             }}
@@ -213,22 +228,20 @@ class SuccessRedirect extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   campaign_id: state.transA.campaign_id,
   campaign_budget: state.transA.campaign_budget,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   channel: state.transA.channel,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
-  resetCampaignInfoInstagram: () =>
-    dispatch(actionCreators.resetCampaignInfoInstagram()),
   reset_transaction_reducer: () =>
     dispatch(actionCreators.reset_transaction_reducer()),
   rest_google_campaign_data: () =>
-    dispatch(actionCreators.rest_google_campaign_data())
+    dispatch(actionCreators.rest_google_campaign_data()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

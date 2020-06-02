@@ -11,6 +11,14 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  customStyleInput: { width: "95%", alignSelf: "flex-start" },
+  customAnimate: { width: "50%" },
+  inputView: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
   button: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
@@ -39,7 +47,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5
   },
   contentScrollViewContainer: {
-    paddingBottom: "70%"
+    paddingBottom: "70%",
+    paddingHorizontal: 26
   },
   marginVertical: {
     marginBottom: 25

@@ -2,14 +2,16 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
+import { getUniqueId } from "react-native-device-info";
 
 export const resetCampaignInfo = (resetAdType = false) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
   };
 };
@@ -18,55 +20,55 @@ export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .post(`snapaudiencesize`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_SNAP_AUDIENCE_SIZE,
-          payload: data
+          payload: data,
         });
       })
       .then(() => dispatch(get_total_reach(totalReach)))
-      .catch(err => {
+      .catch((err) => {
         // console.log("snap_ad_audience_size", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE
+          type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE,
         });
       });
   };
 };
 
-export const get_total_reach = info => {
-  return dispatch => {
+export const get_total_reach = (info) => {
+  return (dispatch) => {
     createBaseUrl()
       .post("snapaudiencesize", info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_total_reach", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE
+          type: actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE,
         });
       });
   };
 };
 
-export const verifyBusinessUrl = weburl => {
-  return dispatch => {
+export const verifyBusinessUrl = (weburl) => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`verifyBusinessUrl`, { weburl })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         // Segment.trackWithProperties("Register Business Info", {
         //   category: "Sign Up",
         //   label: "Step 4 of Registration"
@@ -75,22 +77,22 @@ export const verifyBusinessUrl = weburl => {
           message: data.message,
           type: data.success ? "success" : "warning",
           position: "top",
-          duration: 1000
+          duration: 1000,
         });
 
         return dispatch({
           type: actionTypes.VERIFY_BUSINESSURL,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("verifyBusinessName", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
           payload: {
-            success: false
-          }
+            success: false,
+          },
         });
       });
   };
@@ -100,56 +102,68 @@ export const ad_objective = (info, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_OBJ,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(`savecampaign`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         data.success
           ? dispatch({
               type: actionTypes.SET_AD_OBJECTIVE,
-              payload: data
+              payload: data,
             })
           : dispatch({
               type: actionTypes.SET_AD_LOADING_OBJ,
-              payload: false
+              payload: false,
             });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "snapchat",
+          action_status: data.success ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo,
+        });
         if (data.success) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          navigation.navigate(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign",
+            {
+              source: "ad_objective",
+              source_action: "a_submit_ad_objective",
+            }
           );
         } else showMessage({ message: data.message, position: "top" });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("ad_objective", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_OBJECTIVE
+          type: actionTypes.ERROR_SET_AD_OBJECTIVE,
         });
       });
   };
 };
 
-export const getMinimumCash = values => {
-  return dispatch =>
+export const getMinimumCash = (values) => {
+  return (dispatch) =>
     dispatch({
       type: actionTypes.SET_MINIMUN_CASH,
-      payload: values
+      payload: values,
     });
 };
 
-export const save_campaign_info = info => {
-  return dispatch => {
+export const save_campaign_info = (info) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_CAMPAIGN_INFO,
-      payload: info
+      payload: info,
     });
   };
 };
@@ -159,47 +173,52 @@ export const ad_design = (
   loading,
   navigation,
   onToggleModal,
-  appChoice,
   rejected,
   cancelUplaod,
-  longVideo,
-  iosUploadVideo
+  segmentInfo
 ) => {
   onToggleModal(true);
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,
-      payload: true
+      payload: true,
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
-      "Content-Type": "multipart/form-data"
+      "Content-Type": "multipart/form-data",
     };
     createBaseUrl()
       .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
-        onUploadProgress: ProgressEvent =>
+        onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
+        cancelToken: cancelUplaod.token,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
         rejected &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
-            position: "top"
+            position: "top",
           });
         if (!rejected)
           return dispatch({
             type: actionTypes.SET_AD_DESIGN,
-            payload: data
+            payload: data,
           });
         else
           dispatch({
             type: actionTypes.SET_AD_LOADING_DESIGN,
-            payload: false
+            payload: false,
           });
       })
       .then(() => {
@@ -208,30 +227,34 @@ export const ad_design = (
         !rejected && dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
-        if (!rejected) navigation.push("AdDetails");
+        if (!rejected)
+          navigation.navigate("AdDetails", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         else {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
           dispatch({
-            type: actionTypes.RESET_CAMPAING_INFO
+            type: actionTypes.RESET_CAMPAING_INFO,
           });
-          navigation.navigate("Dashboard");
-          persistor.purge();
-          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         loading(0);
         onToggleModal(false);
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN,
-          payload: false
+          payload: false,
         });
         // console.log("ad_design error", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_DESIGN
+          type: actionTypes.ERROR_SET_AD_DESIGN,
         });
       });
   };
@@ -244,36 +267,43 @@ export const uploadStoryAdCover = (
   onToggleModal,
   rejected,
   cancelUplaod,
-  selectedCampaign
+  segmentInfo
 ) => {
   onToggleModal(true);
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_COVER_LOADING_DESIGN,
-      payload: true
+      payload: true,
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
-      "Content-Type": "multipart/form-data"
+      "Content-Type": "multipart/form-data",
     };
     createBaseUrl()
       .post(`savestorypreviewmedia`, info, {
-        onUploadProgress: ProgressEvent =>
+        onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
+        cancelToken: cancelUplaod.token,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_cover`, {
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
+          resubmit: rejected,
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SET_COVER_DESIGN,
-          payload: data
+          payload: data,
         });
       })
       .then(() => {
@@ -281,32 +311,34 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        navigation.push("AdDesign", {
-          rejected
+        navigation.navigate("AdDesign", {
+          rejected,
+          source: "ad_cover",
+          source_action: "a_submit_ad_cover",
         });
       })
-      .catch(err => {
+      .catch((err) => {
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_COVER_DESIGN
+          type: actionTypes.ERROR_SET_COVER_DESIGN,
         });
       });
   };
 };
 
 export const addSnapCard = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
-      type: actionTypes.ADD_SNAP_CARD
+      type: actionTypes.ADD_SNAP_CARD,
     });
   };
 };
 
-export const setStoryAdAttechment = info => {
-  return dispatch => {
+export const setStoryAdAttechment = (info) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.STORYAD_ATTACHMENT, payload: info });
   };
 };
@@ -322,40 +354,40 @@ export const uploadStoryAdCard = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
-      payload: { uploading: true, index: card.index, progress: 0.0 }
+      payload: { uploading: true, index: card.index, progress: 0.0 },
     });
     dispatch({
       type: actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED,
-      payload: { card }
+      payload: { card },
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
-      "Content-Type": "multipart/form-data"
+      "Content-Type": "multipart/form-data",
     };
     createBaseUrl()
       .post(`savestorymedia`, info, {
-        onUploadProgress: ProgressEvent => {
+        onUploadProgress: (ProgressEvent) => {
           dispatch({
             type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
             payload: {
               uploading: true,
               index: card.index,
-              progress: (ProgressEvent.loaded / ProgressEvent.total) * 100
-            }
+              progress: (ProgressEvent.loaded / ProgressEvent.total) * 100,
+            },
           });
-        }
+        },
 
         // cancelToken: cancelUpload.token
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         rejected &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
-            position: "top"
+            position: "top",
           });
 
         //This is to call the final upload process once all cards are done uploading
@@ -370,51 +402,51 @@ export const uploadStoryAdCard = (
         }
         return dispatch({
           type: actionTypes.SET_STORYADMEDIA_DESIGN,
-          payload: { data: data.data, card }
+          payload: { data: data.data, card },
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // loading(0);
         dispatch({
           type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
-          payload: { uploading: false, index: card.index }
+          payload: { uploading: false, index: card.index },
         });
         // console.log("ad_design", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_DESIGN
+          type: actionTypes.ERROR_SET_AD_DESIGN,
         });
       });
   };
 };
 
 export const deleteStoryAdCard = (story_id, card, removeCrad) => {
-  return dispatch => {
+  return (dispatch) => {
     !story_id
       ? dispatch({
           type: actionTypes.DELETE_STORY_AD_CARD,
-          payload: { card }
+          payload: { card },
         })
       : dispatch({
           type: actionTypes.SET_DELETE_CARD_LOADING,
-          payload: { deleteing: true, index: card.index }
+          payload: { deleteing: true, index: card.index },
         });
     createBaseUrl()
       .delete(`savestorymedia/${story_id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.DELETE_STORY_AD_CARD,
-          payload: { data: data, card }
+          payload: { data: data, card },
         });
       })
 
-      .catch(err => {
+      .catch((err) => {
         dispatch({
           type: actionTypes.SET_DELETE_CARD_LOADING,
-          payload: { deleteing: false, index: card.index }
+          payload: { deleteing: false, index: card.index },
         });
         // console.log("getVideoUploadUrl", err.message || err.response);
         errorMessageHandler(err);
@@ -422,80 +454,80 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
   };
 };
 
-export const handleStoryAdVideo = card => {
-  return dispatch => {
+export const handleStoryAdVideo = (card) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.HANDLE_STORY_VIDEO, payload: card });
   };
 };
 export const getVideoUploadUrl = (campaign_id, openBrowser) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.GET_VIDEO_URL_LOADING, payload: true });
     createBaseUrl()
       .get(`uploadMedia/${campaign_id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_VIDEO_URL,
-          payload: data
+          payload: data,
         });
       })
       .then(() => openBrowser())
-      .catch(err => {
+      .catch((err) => {
         // console.log("getVideoUploadUrl", err.message || err.response);
         errorMessageHandler(err);
       });
   };
 };
 
-export const get_interests = countryCode => {
+export const get_interests = (countryCode) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .get(`interestsbycountry/${countryCode}`)
-      .then(res => {
+      .then((res) => {
         return res.data.interests;
       })
-      .then(data => {
+      .then((data) => {
         let interests = [];
         Object.keys(data).forEach((key, i) => {
           if (data[key].length > 0) {
-            interests = data[key].filter(obj => obj.hasChild === 0);
+            interests = data[key].filter((obj) => obj.hasChild === 0);
           }
         });
         return dispatch({
           type: actionTypes.SET_INTERESTS,
-          payload: interests
+          payload: interests,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_interests", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_INTERESTS
+          type: actionTypes.ERROR_SET_INTERESTS,
         });
       });
   };
 };
 
-export const get_device_brands = os => {
+export const get_device_brands = (os) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .get(`deviceBrands${os}`)
-      .then(res => {
+      .then((res) => {
         return res.data.targeting_dimensions;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_DEVICE_MAKES,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_device_brands", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_DEVICE_MAKES
+          type: actionTypes.ERROR_SET_DEVICE_MAKES,
         });
       });
   };
@@ -505,20 +537,20 @@ export const get_ios_versions = () => {
   return (dispatch, getState) => {
     createBaseUrl()
       .get(`osversion/iOS`)
-      .then(res => {
+      .then((res) => {
         return res.data.targeting_dimensions;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_IOS_VERSIONS,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_ios_versions", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_IOS_VERSIONS
+          type: actionTypes.ERROR_SET_IOS_VERSIONS,
         });
       });
   };
@@ -528,20 +560,20 @@ export const get_android_versions = () => {
   return (dispatch, getState) => {
     createBaseUrl()
       .get(`osversion/ANDROID`)
-      .then(res => {
+      .then((res) => {
         return res.data.targeting_dimensions;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_ANDROID_VERSIONS,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_android_versions", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_ANDROID_VERSIONS
+          type: actionTypes.ERROR_SET_ANDROID_VERSIONS,
         });
       });
   };
@@ -551,59 +583,78 @@ export const ad_details = (info, names, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(`savetargeting`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         dispatch(
           setCampaignInfoForTransaction({
             campaign_id: getState().campaignC.campaign_id,
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_budget_kdamount: data.kdamount,
-            channel: ""
+            channel: "",
           })
         );
-        return dispatch({
+        dispatch({
           type: actionTypes.SET_AD_DETAILS,
-          payload: { data, names }
+          payload: { data, names },
+        });
+        return data;
+      })
+      .then((data) => {
+        analytics.track(`a_submit_ad_targeting`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          timestamp: new Date().getTime(),
+          action_status: data.success ? "success" : "failure",
+          campaign_budget: data.data.lifetime_budget_micro,
+          ...segmentInfo,
+        });
+        navigation.navigate("AdPaymentReview", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
         });
       })
-      .then(() => {
-        Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-        navigation.navigate("AdPaymentReview");
-      })
-      .catch(err => {
+      .catch((err) => {
         // console.log("ad_details", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_DETAILS
+          type: actionTypes.ERROR_SET_AD_DETAILS,
         });
       });
   };
 };
 
-export const updateCampaign = (info, businessid, navigation) => {
+export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .put(`savetargeting`, { ...info, businessid })
-      .then(res => {
+      .then((res) => {
         // console.log("back end info", res.data);
 
         return res.data;
       })
-      .then(data => {})
-      .then(() => {
-        navigation.navigate("Dashboard");
+      .then((data) => {
+        analytics.track(`a_submit_update_campaign_details`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          ...segmentInfo,
+          action_status: data.success ? "success" : "failure",
+        });
+        navigation.navigate("Dashboard", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("updateCampaign", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS
+          type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS,
         });
       });
   };
@@ -614,20 +665,28 @@ export const updateStatus = (info, handleToggle) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .put(`updateCampaignStatus`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
         handleToggle(data.status);
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
         }
         return dispatch({
           type: actionTypes.UPDATE_CAMPAIGN_STATUS,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
@@ -635,23 +694,31 @@ export const updateStatus = (info, handleToggle) => {
 };
 
 export const endCampaign = (info, handleToggle) => {
-  return dispatch => {
+  return (dispatch) => {
     createBaseUrl()
       .put(`endCampaign`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         handleToggle(data.status);
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: info.campaign_id,
+          campaign_spend: info.spend,
+          campaign_status: data.status,
+          action_status: data.success ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
         if (data.message) {
           showMessage({ message: data.message, type: "info", position: "top" });
         }
         return dispatch({
           type: actionTypes.END_CAMPAIGN,
-          payload: data.success
+          payload: data.success,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
@@ -659,54 +726,54 @@ export const endCampaign = (info, handleToggle) => {
 };
 
 export const get_languages = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.GET_LANGUAGES_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`language`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST,
-          payload: { data, loading: false }
+          payload: { data, loading: false },
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_language", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_LANGUAGE_LIST
+          type: actionTypes.ERROR_SET_LANGUAGE_LIST,
         });
       });
   };
 };
 
-export const set_adType = data => {
-  return dispatch => {
+export const set_adType = (data) => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.SET_AD_TYPE,
-      payload: data
+      payload: data,
     });
   };
 };
 
-export const set_collectionAd_link_form = data => {
-  return dispatch => {
+export const set_collectionAd_link_form = (data) => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.SET_COLLECTION_AD_LINK_FORM,
-      payload: data
+      payload: data,
     });
   };
 };
 
 export const reset_collections = () => {
-  return dispatch => {
+  return (dispatch) => {
     return dispatch({
-      type: actionTypes.RESET_COLLECTIONS
+      type: actionTypes.RESET_COLLECTIONS,
     });
   };
 };
@@ -720,33 +787,33 @@ export const save_collection_media = (
   onToggleModal
 ) => {
   onToggleModal(true);
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_COLLECTION_MEDIA,
-      payload: true
+      payload: true,
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
-      "Content-Type": "multipart/form-data"
+      "Content-Type": "multipart/form-data",
     };
     createBaseUrl()
       .post(`savecollectionmedia`, media, {
-        onUploadProgress: ProgressEvent =>
+        onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
+        cancelToken: cancelUplaod.token,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SET_AD_COLLECTION_MEDIA,
-          payload: { ...data.data, localUri }
+          payload: { ...data.data, localUri },
         });
       })
       .then(() => {
@@ -756,7 +823,7 @@ export const save_collection_media = (
         segmentEventTrack("Submitted Collection Ad media successfully");
         navigation.navigate("AdDesign");
       })
-      .catch(err => {
+      .catch((err) => {
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
@@ -764,48 +831,48 @@ export const save_collection_media = (
           campaign_error_collection_media_submit:
             err.message ||
             err.response ||
-            "Something went wrong, please try again."
+            "Something went wrong, please try again.",
         });
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA
+          type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA,
         });
       });
   };
 };
 
-export const setRejectedStoryAds = data => {
-  return dispatch => {
+export const setRejectedStoryAds = (data) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_REJECTED_STORYADS,
-      payload: data
+      payload: data,
     });
   };
 };
 
-export const setRejectedCollectionAds = data => {
-  return dispatch => {
+export const setRejectedCollectionAds = (data) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_REJECTED_COLLECTIONADS,
-      payload: data
+      payload: data,
     });
   };
 };
 
-export const setRejectedAdType = data => {
-  return dispatch => {
+export const setRejectedAdType = (data) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_REJECTED_ADTYPE,
-      payload: data
+      payload: data,
     });
   };
 };
-export const verifyInstagramHandle = insta_handle => {
-  return async dispatch => {
+export const verifyInstagramHandle = (insta_handle) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.SET_INSTAGRAM_POST_LOADING,
-        payload: false
+        payload: false,
       });
       var response = await axios.get(
         `https://www.instagram.com/${insta_handle}`
@@ -823,16 +890,16 @@ export const verifyInstagramHandle = insta_handle => {
             type: actionTypes.ERROR_GET_INSTAGRAM_POST,
             payload: {
               error: true,
-              errorMessage: `${insta_handle} is a private account Try with some other account`
-            }
+              errorMessage: `${insta_handle} is a private account Try with some other account`,
+            },
           });
         } else {
           return dispatch({
             type: actionTypes.ERROR_GET_INSTAGRAM_POST,
             payload: {
               error: false,
-              errorMessage: null
-            }
+              errorMessage: null,
+            },
           });
         }
       }
@@ -842,20 +909,20 @@ export const verifyInstagramHandle = insta_handle => {
         type: actionTypes.ERROR_GET_INSTAGRAM_POST,
         payload: {
           error: true,
-          errorMessage: `${insta_handle} doesn't exist Try another account name`
-        }
+          errorMessage: `${insta_handle} doesn't exist Try another account name`,
+        },
       });
     }
   };
 };
-export const getInstagramPostInitial = insta_handle => {
+export const getInstagramPostInitial = (insta_handle) => {
   // console.log("insta_handle", insta_handle);
 
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.SET_INSTAGRAM_POST_LOADING,
-        payload: true
+        payload: true,
       });
       // console.log('getInstagramPost insta_handle', insta_handle);
       var response = await axios.get(
@@ -882,7 +949,7 @@ export const getInstagramPostInitial = insta_handle => {
         // console.log("mediaArrayLength", mediaArray.length);
 
         if (mediaArray && mediaArray.length > 0) {
-          var imagesList = mediaArray.map(media => {
+          var imagesList = mediaArray.map((media) => {
             // console.log('media', media);
             // if (!media.node.is_video)
             return {
@@ -893,7 +960,7 @@ export const getInstagramPostInitial = insta_handle => {
                 media.node.edge_media_to_caption.edges.length > 0
                   ? media.node.edge_media_to_caption.edges[0].node.text
                   : "",
-              isVideo: media.node.is_video
+              isVideo: media.node.is_video,
             };
           });
 
@@ -908,8 +975,8 @@ export const getInstagramPostInitial = insta_handle => {
               imagesList: imagesList,
               instaHandleId: data.id,
               instaHasNextPage: hasNextPage,
-              instaEndCursor: end_cursor
-            }
+              instaEndCursor: end_cursor,
+            },
           });
           // console.log('imageListAfterSize', imagesList.length);
         }
@@ -921,8 +988,8 @@ export const getInstagramPostInitial = insta_handle => {
             imagesList: [],
             instaHandleId: null,
             instaHasNextPage: null,
-            instaEndCursor: null
-          }
+            instaEndCursor: null,
+          },
         });
       }
     } catch (error) {
@@ -931,25 +998,25 @@ export const getInstagramPostInitial = insta_handle => {
         type: actionTypes.ERROR_GET_INSTAGRAM_POST,
         payload: {
           error: true,
-          errorMessage: null
-        }
+          errorMessage: null,
+        },
       });
     }
   };
 };
 
-export const getWebProducts = campaign_id => {
+export const getWebProducts = (campaign_id) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.GET_WEB_PRODUCTS_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`webProducts/${campaign_id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // showMessage({
         //     message: data.message,
         //     type: data.success ? 'success': 'warning'
@@ -959,18 +1026,18 @@ export const getWebProducts = campaign_id => {
         if (data.success) {
           return dispatch({
             type: actionTypes.GET_WEB_PRODUCTS,
-            payload: data.productsinfo
+            payload: data.productsinfo,
           });
         }
         return dispatch({
           type: actionTypes.GET_WEB_PRODUCTS,
           payload: {
             id: null,
-            webproducts: []
-          }
+            webproducts: [],
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("error getWebProduct", error.response || error.message);
 
         return dispatch({
@@ -978,8 +1045,8 @@ export const getWebProducts = campaign_id => {
           payload: {
             id: null,
             webproducts: [],
-            error: true
-          }
+            error: true,
+          },
         });
       });
   };
@@ -996,7 +1063,7 @@ export const saveWebProducts = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-      payload: true
+      payload: true,
     });
     // if productInfoId doesn't exist
     if (!productInfoId) {
@@ -1005,28 +1072,28 @@ export const saveWebProducts = (
           businessid: getState().account.mainBusiness.businessid,
           webproducts: cartList,
           campaign_id,
-          businesslogo: businessLogo
+          businesslogo: businessLogo,
         })
-        .then(res => {
+        .then((res) => {
           return res.data;
         })
-        .then(data => {
+        .then((data) => {
           // console.log('saveWebProducts data', data);
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
-            duration: 2000
+            duration: 2000,
           });
           dispatch({
             type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
             payload: {
               id: data.id,
-              webproducts: cartList
-            }
+              webproducts: cartList,
+            },
           });
           return data;
         })
-        .then(data => {
+        .then((data) => {
           if (data.success) {
             segmentEventTrack("Submitted SME Growth Products List Success");
             navigation.navigate("AdDesign");
@@ -1036,17 +1103,17 @@ export const saveWebProducts = (
         .then(() => {
           return dispatch({
             type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-            payload: false
+            payload: false,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           // console.log("saveWebProducts error", error.response || error.message);
           segmentEventTrack("Error Submit SME Growth Products List", {
-            campaign_error_sme_products_list: error.response || error.message
+            campaign_error_sme_products_list: error.response || error.message,
           });
 
           return dispatch({
-            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS,
           });
         });
     } else {
@@ -1057,28 +1124,28 @@ export const saveWebProducts = (
           webproducts: cartList,
           campaign_id,
           id: productInfoId,
-          businesslogo: businessLogo
+          businesslogo: businessLogo,
         })
-        .then(res => {
+        .then((res) => {
           return res.data;
         })
-        .then(data => {
+        .then((data) => {
           // console.log('updateWebProducts data', data);
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
-            duration: 2000
+            duration: 2000,
           });
           dispatch({
             type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
             payload: {
               id: data.id,
-              webproducts: cartList
-            }
+              webproducts: cartList,
+            },
           });
           return data;
         })
-        .then(data => {
+        .then((data) => {
           if (data.success && from) {
             navigation.navigate("AdDesign");
           }
@@ -1086,16 +1153,16 @@ export const saveWebProducts = (
         .then(() => {
           return dispatch({
             type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-            payload: false
+            payload: false,
           });
         })
-        .catch(error => {
+        .catch((error) => {
           // console.log(
           //   "updateWebProducts error",
           //   error.response || error.message
           // );
           return dispatch({
-            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS,
           });
         });
     }
@@ -1108,32 +1175,32 @@ export const getMediaUploadUrl = (
   headline,
   adType
 ) => {
-  return dispatch => {
+  return (dispatch) => {
     createBaseUrl()
       .post(`/webuploadlink`, {
         campaign_id,
         brand_name,
         headline,
-        adType
+        adType,
       })
-      .then(res => {
+      .then((res) => {
         // console.log("webuploadlink", res.data);
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("webuploadlink", data);
         if (data.success) {
           return dispatch({
             type: actionTypes.GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
             payload: {
               weblink: data.weblink,
-              accessCode: data.accessCode
-            }
+              accessCode: data.accessCode,
+            },
           });
         }
         showMessage({
           message: data.message,
-          type: "danger"
+          type: "danger",
         });
         return dispatch({
           type:
@@ -1141,11 +1208,11 @@ export const getMediaUploadUrl = (
           payload: {
             weblink: "",
             accessCode: "",
-            error: data.message
-          }
+            error: data.message,
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("getMediaUploadUrl error", error.response || error.message);
         return dispatch({
           type:
@@ -1153,8 +1220,8 @@ export const getMediaUploadUrl = (
           payload: {
             weblink: "",
             accessCode: "",
-            error: error.response || error.message
-          }
+            error: error.response || error.message,
+          },
         });
       });
   };
@@ -1164,20 +1231,20 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`/webuploadlinkmedia/${campaign_id}/${adType}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         // console.log("data webuploadlinkmedia", data);
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
         });
         dispatch({
           type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
-          payload: false
+          payload: false,
         });
         // handle cases for story ad / snap ad / collection ad
         if (data.success) {
@@ -1191,7 +1258,7 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 (story, index) => {
                   return {
                     ...storyAdsArray2[index],
-                    ...story
+                    ...story,
                   };
                 }
               );
@@ -1206,8 +1273,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
               return dispatch({
                 type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS,
                 payload: {
-                  adsArray: [...storyAdsArray3]
-                }
+                  adsArray: [...storyAdsArray3],
+                },
               });
               break;
 
@@ -1216,8 +1283,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
                 payload: {
                   mediaWebLink: data.media,
-                  mediaTypeWebLink: data.media_type
-                }
+                  mediaTypeWebLink: data.media_type,
+                },
               });
 
             case "CollectionAd":
@@ -1229,7 +1296,7 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                   return {
                     ...copyCollectionAdArray[index],
                     ...collection,
-                    id: index
+                    id: index,
                   };
                 }
               );
@@ -1238,8 +1305,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 payload: {
                   collectionMainMediaWebLink: data.media,
                   collectionMainMediaTypeWebLink: data.media_type,
-                  collectionMediaArray: [...collectionArray]
-                }
+                  collectionMediaArray: [...collectionArray],
+                },
               });
             default:
               break;
@@ -1250,8 +1317,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
               return dispatch({
                 type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS,
                 payload: {
-                  adsArray: []
-                }
+                  adsArray: [],
+                },
               });
 
             case "SnapAd":
@@ -1259,8 +1326,8 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
                 payload: {
                   mediaWebLink: "",
-                  mediaTypeWebLink: ""
-                }
+                  mediaTypeWebLink: "",
+                },
               });
             case "CollectionAd":
               return dispatch({
@@ -1268,45 +1335,45 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 payload: {
                   collectionMainMediaWebLink: "",
                   collectionMainMediaTypeWebLink: "",
-                  collectionMediaArray: []
-                }
+                  collectionMediaArray: [],
+                },
               });
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("getWebUploadLinkMedia", error.response || error.message);
         return dispatch({
-          type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA
+          type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA,
         });
       });
   };
 };
 
-export const saveCampaignSteps = step => {
-  return dispatch => {
+export const saveCampaignSteps = (step) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_CAMPAIGN_STEP,
-      payload: step
+      payload: step,
     });
   };
 };
 
-export const setCampaignInProgress = value => {
-  return dispatch => {
+export const setCampaignInProgress = (value) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_CAMPAIGN_IN_PROGRESS,
-      payload: value
+      payload: value,
     });
   };
 };
 
 export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.LOADING_MORE_INSTAGRAM_POST,
-        payload: true
+        payload: true,
       });
       const responseMedia = await axios.get(
         `https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${instaHandleId}","first":12,"after":"${instaEndCursor}"}`
@@ -1314,7 +1381,7 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
       // console.log("responseMediA", responseMedia.data);
 
       let mediaArray = [
-        ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges
+        ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges,
       ];
 
       let hasNextPage =
@@ -1325,7 +1392,7 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
           .end_cursor;
 
       if (mediaArray && mediaArray.length > 0) {
-        var imagesList = mediaArray.map(media => {
+        var imagesList = mediaArray.map((media) => {
           return {
             imageUrl: media.node.display_url,
             shortcode: media.node.shortcode,
@@ -1334,7 +1401,7 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
               media.node.edge_media_to_caption.edges.length > 0
                 ? media.node.edge_media_to_caption.edges[0].node.text
                 : "",
-            isVideo: media.node.is_video
+            isVideo: media.node.is_video,
           };
         });
 
@@ -1346,8 +1413,8 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
           payload: {
             imagesList: imagesList,
             instaHasNextPage: hasNextPage,
-            instaEndCursor: end_cursor
-          }
+            instaEndCursor: end_cursor,
+          },
         });
       }
     } catch (error) {
@@ -1358,16 +1425,16 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
         payload: {
           imagesList: [],
           instaHasNextPage: null,
-          instaEndCursor: null
-        }
+          instaEndCursor: null,
+        },
       });
     }
     // console.log('imageListAfterSize', imagesList.length);
   };
 };
 
-export const updateStoryADS = storyAdsArray => {
-  return dispatch => {
+export const updateStoryADS = (storyAdsArray) => {
+  return (dispatch) => {
     const arrayCopy = storyAdsArray.map((storyAd, index) => {
       return {
         index: index,
@@ -1375,7 +1442,7 @@ export const updateStoryADS = storyAdsArray => {
         call_to_action: { label: "BLANK", value: "BLANK" },
         media: storyAd.media,
         destination: "BLANK",
-        attachment: "BLANK"
+        attachment: "BLANK",
       };
     });
     arrayCopy.push({
@@ -1384,20 +1451,20 @@ export const updateStoryADS = storyAdsArray => {
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",
       destination: "BLANK",
-      attachment: "BLANK"
+      attachment: "BLANK",
     });
     dispatch({
       type: actionTypes.UPDATE_STORY_ADS_ARRAY,
-      payload: arrayCopy
+      payload: arrayCopy,
     });
   };
 };
 
-export const setCollectionAdMediaArray = collectionMediaArray => {
+export const setCollectionAdMediaArray = (collectionMediaArray) => {
   return (dispatch, getState) => {
     const data = getState().campaignC.data;
     const collectionAdLinkForm = getState().campaignC.collectionAdLinkForm;
-    const newArray = collectionMediaArray.map(collection => {
+    const newArray = collectionMediaArray.map((collection) => {
       return {
         ...collection,
         collection_order: collection.id,
@@ -1406,12 +1473,12 @@ export const setCollectionAdMediaArray = collectionMediaArray => {
         localUri: collection.media,
         collection_destination:
           collectionAdLinkForm === 1 ? "REMOTE_WEBPAGE" : "DEEP_LINK",
-        collection_attachment: "BLANK"
+        collection_attachment: "BLANK",
       };
     });
     return dispatch({
       type: actionTypes.SET_COLLECTION_AD_ARRAY,
-      payload: [...newArray]
+      payload: [...newArray],
     });
   };
 };
@@ -1421,11 +1488,11 @@ export const setCollectionAdMediaArray = collectionMediaArray => {
  * @param {Object} value what ever values in campaign's data to overwrite
  *
  */
-export const overWriteObjectiveData = value => {
-  return dispatch => {
+export const overWriteObjectiveData = (value) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.OVERWRITE_OBJ_DATA,
-      payload: value
+      payload: value,
     });
   };
 };

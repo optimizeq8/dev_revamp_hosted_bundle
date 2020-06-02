@@ -1,8 +1,10 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import createBaseUrl from "./createBaseUrl";
+import analytics from "@segment/analytics-react-native";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const verifyInstagramHandleWebsite = insta_handle => {
   return async dispatch => {
@@ -168,7 +170,12 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
       let end_cursor =
         responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
           .end_cursor;
-
+      analytics.track(`a_load_more_posts`, {
+        source: "my_website_products",
+        source_action: "a_load_more_posts",
+        action_status:
+          mediaArray && mediaArray.length > 0 ? "success" : "failure"
+      });
       if (mediaArray && mediaArray.length > 0) {
         var imagesList = mediaArray.map(media => {
           return {
@@ -246,9 +253,25 @@ export const saveWebProductsToHide = (
           return response.data;
         })
         .then(data => {
+          analytics.track(`a_submit_my_website_products`, {
+            source: "open_my_website",
+            source_action: "a_submit_my_website_products",
+            new: false,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success && data.message,
+            webproductsToHide,
+            businesslogo,
+            products_to_hide_id,
+            insta_handle
+          });
           showMessage({
             type: data.success ? "success" : "warning",
             message: data.message
+          });
+          segmentEventTrack(data.message, {
+            businessid,
+            insta_handle,
+            businesslogo
           });
           if (data.success) {
             dispatch({
@@ -260,7 +283,11 @@ export const saveWebProductsToHide = (
           return data;
         })
         .then(data => {
-          data.success && NavigationService.navigate("MyWebsite");
+          data.success &&
+            NavigationService.navigate("MyWebsite", {
+              source: "open_my_website",
+              source_action: "a_submit_my_website_products"
+            });
         })
         .catch(error => {
           // console.log("saveWebProductsToHide", error.response || error.message);
@@ -278,6 +305,22 @@ export const saveWebProductsToHide = (
           return response.data;
         })
         .then(data => {
+          analytics.track(`a_submit_my_website_products`, {
+            source: "my_website_products",
+            source_action: "a_submit_my_website_products",
+            new: true,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success && data.message,
+            webproductsToHide,
+            businesslogo,
+            insta_handle,
+            weburl: data.weburl
+          });
+          segmentEventTrack(data.message, {
+            businessid,
+            insta_handle,
+            businesslogo
+          });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -291,7 +334,10 @@ export const saveWebProductsToHide = (
           // console.log("businesswebProducts data", data);
 
           if (data.success) {
-            NavigationService.navigate("WebsiteRegistartionSuccess");
+            NavigationService.navigate("WebsiteRegistartionSuccess", {
+              source: "my_website_products",
+              source_action: "a_submit_my_website_products"
+            });
           }
         })
         .catch(error => {

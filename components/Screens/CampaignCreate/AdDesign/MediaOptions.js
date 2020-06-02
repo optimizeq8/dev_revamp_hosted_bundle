@@ -24,22 +24,19 @@ export default class MediaOptions extends Component {
       segmentEventTrack("Option download media from different device selected");
       this.props.setDownloadMediaModal(true);
       this.props.getWebUploadLinkMedia();
-    } else if (title === "Image" || title === "Video") {
+    } else if (title === "Media") {
       segmentEventTrack(
-        ` ${
-          title === "Image" ? "Image" : "Video"
-        } Picker option selected to open gallery to upload ${
-          title === "Image" ? "Image" : "Video"
-        } `
+        ` Media Picker option selected to open gallery to upload Media `
       );
-      this.props._pickImage(title === "Image" ? "Images" : "Videos");
+      this.props._pickImage("All");
     } else {
       segmentEventTrack(` Image edit option selected`);
       this.props._pickImage(
-        "Images",
+     "All",
         {
           mediaUri: this.props.mediaUri,
-          serialization: this.props.serialization
+          serialization: this.props.serialization,
+          media_type: this.props.media_type,
         },
         true
       );
@@ -49,7 +46,7 @@ export default class MediaOptions extends Component {
     let { title } = this.props;
     const { translate } = this.props.screenProps;
     let imageIcon = null;
-    if (title === "Image") {
+    if (title === "Media") {
       imageIcon = (
         <CameraIcon width={30} height={25} fill={globalColors.orange} />
       );

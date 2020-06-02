@@ -8,12 +8,12 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
-  Linking
+  Linking,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-
-import { Updates } from "expo";
+import analytics from "@segment/analytics-react-native";
+import * as Updates from "expo-updates";
 import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -21,8 +21,6 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
-import InstagramCampaignCard from "../../MiniComponents/InstagramCampaignCard";
-
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
@@ -45,7 +43,8 @@ import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationI
 import styles from "./styles";
 
 //data
-import { snapAds, googleAds, instagramAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds } from "../../Data/adTypes.data";
+import businessCategoriesList from "../../Data/businessCategoriesList.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -54,7 +53,7 @@ import slowlog from "react-native-slowlog";
 //Functions
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
@@ -73,11 +72,12 @@ whyDidYouRender(React);
 
 class Dashboard extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   signal = Axios.CancelToken.source();
   constructor(props) {
     super(props);
+    const { translate } = this.props.screenProps;
     this.state = {
       sidemenustate: false,
       isListEnd: false,
@@ -87,7 +87,8 @@ class Dashboard extends Component {
       open: false,
       anim: false,
       play: false,
-      componentMounting: true
+      componentMounting: true,
+      items: businessCategoriesList(translate),
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -121,13 +122,8 @@ class Dashboard extends Component {
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
-    if (this.props.campaignProgressStarted && this.props.incompleteCampaign)
+    if (this.props.campaignInProgress && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
-    if (
-      this.props.instagramCampaignProgressStarted &&
-      this.props.instagramIncompleteCampaign
-    )
-      this.props.setCampaignInProgressInstagram(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -148,6 +144,7 @@ class Dashboard extends Component {
     ) {
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -164,7 +161,7 @@ class Dashboard extends Component {
     }
     if (this.props.adType !== prevProps.adType) {
       this.setState({
-        adTypeChanged: true
+        adTypeChanged: true,
       });
     }
   }
@@ -180,7 +177,7 @@ class Dashboard extends Component {
     Animated.timing(this.state.menu, {
       toValue: 1,
       duration: 350,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start(() => {
       this.setState({ open: true });
     });
@@ -191,7 +188,7 @@ class Dashboard extends Component {
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
     if (Menu) {
       Menu = null;
@@ -202,7 +199,7 @@ class Dashboard extends Component {
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
-  _handleSideMenuState = status => {
+  _handleSideMenuState = (status) => {
     if (status) {
       FilterMenu = require("../../MiniComponents/FilterMenu").default;
     } else {
@@ -211,16 +208,23 @@ class Dashboard extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
 
-  navigationHandler = adType => {
+  navigationHandler = (adType) => {
     const { fb_connected } = this.props.mainBusiness;
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title
+      campaign_type: adType.title,
+    });
+    analytics.track(`a_campaign_ad_type`, {
+      source: "dashboard",
+      source_action: "a_campaign_ad_type",
+      campaign_channel: adType.mediaType,
+      campaign_ad_type: adType.value,
+      device_id: this.props.screenProps.device_id,
     });
     Segment.trackWithProperties("Completed Checkout Step", {
       step: 1,
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title
+      campaign_type: adType.title,
     });
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
@@ -233,12 +237,18 @@ class Dashboard extends Component {
       !this.props.mainBusiness.snap_ad_account_id &&
       adType.mediaType === "snapchat"
     ) {
-      this.props.navigation.navigate("SnapchatCreateAdAcc");
+      this.props.navigation.navigate("SnapchatCreateAdAcc", {
+        source: "dashboard",
+        source_action: "a_campaign_ad_type",
+      });
     } else if (
       !this.props.mainBusiness.google_account_id &&
       adType.mediaType === "google"
     ) {
-      this.props.navigation.navigate("GoogleCreateAdAcc");
+      this.props.navigation.navigate("GoogleCreateAdAcc", {
+        source: "dashboard",
+        source_action: "a_campaign_ad_type",
+      });
     } else {
       if (
         adType.mediaType === "google" &&
@@ -248,7 +258,7 @@ class Dashboard extends Component {
       else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
-          title: "Instagram"
+          title: "Instagram",
         });
       }
       {
@@ -257,7 +267,7 @@ class Dashboard extends Component {
           Adjust.trackEvent(adjustEvent);
         }
         this.props.navigation.navigate(adType.rout, {
-          tempAdType: adType.value
+          tempAdType: adType.value,
         });
       }
     }
@@ -292,6 +302,7 @@ class Dashboard extends Component {
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.set_as_seen(false);
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -310,7 +321,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (item.channel === "snapchat") {
+    } else
       return (
         <CampaignCard
           channel={"snapchat"}
@@ -320,58 +331,82 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       );
-    } else if (item.channel === "instagram") {
-      return (
-        <InstagramCampaignCard
-          channel={"instagram"}
-          campaign={item}
-          navigation={this.props.navigation}
-          key={item.campaign_id}
-          screenProps={this.props.screenProps}
-        />
-      );
-    }
   };
 
   handleNewCampaign = () => {
     let adjustEvent = new AdjustEvent("7kk0e6");
     Adjust.trackEvent(adjustEvent);
-    if (!this.props.mainBusiness.snap_ad_account_id) {
-      Segment.trackWithProperties("Create SnapAd Acount", {
-        category: "Ad Account",
-        label: "New SnapAd Account",
-        business_name: this.props.mainBusiness.businessname,
-        business_id: this.props.mainBusiness.businessid
-      });
-      this.props.navigation.navigate("SnapchatCreateAdAcc");
-    } else {
-      Segment.trackWithProperties("Create Campaign", {
-        category: "Campaign Creation"
-      });
-      this.props.navigation.navigate("AdType");
+    const device_id = this.props.screenProps.device_id;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`a_create_campaign`, {
+      source,
+      source_action: "a_create_campaign",
+      timestamp: new Date().getTime(),
+      userId: this.props.userInfo.userid,
+      device_id,
+    });
+    this.props.navigation.navigate("AdType", {
+      source: "dashboard",
+      source_action: "a_create_campaign",
+    });
+  };
+  /**
+   *
+   *
+   * To find business category name from list
+   */
+  getBusinessCategoryName = () => {
+    const { mainBusiness } = this.props;
+    let businesscategoryName = "";
+    if (mainBusiness && mainBusiness.businesscategory) {
+      businesscategoryName = this.state.items.find(
+        (category) => category.value === mainBusiness.businesscategory
+      ).label;
     }
+    return businesscategoryName;
   };
 
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`dashboard`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+    });
+    // Segment.screen("Dashboard");
+    this.props.setCampaignInProgress(false);
+  };
   render() {
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
-        top: hp(100)
+        top: hp(100),
       },
       to: {
-        top: 0
-      }
+        top: 0,
+      },
     };
     const mySlideOutDown = {
       from: {
-        top: 0
+        top: 0,
       },
       to: {
-        top: hp(100)
-      }
+        top: hp(100),
+      },
     };
-
-    let placeHolderCards = [1, 2, 3, 4].map(x => (
+    const businesscategoryName = this.getBusinessCategoryName();
+    let placeHolderCards = [1, 2, 3, 4].map((x) => (
       <View key={x} style={styles.placeHolderCardsStyle} />
     ));
     let menu =
@@ -382,7 +417,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [...instagramAds].map(adType => (
+    let adButtons = [...snapAds, ...googleAds].map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
@@ -430,8 +465,8 @@ class Dashboard extends Component {
               style={[
                 styles.mainView,
                 {
-                  display: this.state.sidemenustate ? "none" : "flex"
-                }
+                  display: this.state.sidemenustate ? "none" : "flex",
+                },
               ]}
             >
               <TouchableOpacity
@@ -454,9 +489,12 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.push("MessengerLoading")
-                    }
+                    onPress={() => {
+                      this.props.navigation.push("MessengerLoading", {
+                        source: "dashboard",
+                        source_action: "a_help",
+                      });
+                    }}
                     style={[styles.headerIcons]}
                   >
                     {this.props.unread_converstaion === 0 ? (
@@ -479,7 +517,7 @@ class Dashboard extends Component {
                   onPress={() => {
                     segmentEventTrack("Button clicked to change app language", {
                       app_language:
-                        this.props.appLanguage === "en" ? "ar" : "en"
+                        this.props.appLanguage === "en" ? "ar" : "en",
                     });
                     this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
@@ -522,8 +560,8 @@ class Dashboard extends Component {
               style={[
                 styles.animateView,
                 {
-                  display: this.state.open ? "none" : "flex"
-                }
+                  display: this.state.open ? "none" : "flex",
+                },
               ]}
             >
               {(!this.props.loadingCampaigns &&
@@ -534,6 +572,7 @@ class Dashboard extends Component {
                 !this.props.userInfo.verified_account) ? (
                 <EmptyCampaigns
                   translate={translate}
+                  screenProps={this.props.screenProps}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
@@ -543,7 +582,7 @@ class Dashboard extends Component {
               ) : (
                 <Container style={styles.container}>
                   <Sidemenu
-                    onChange={isOpen => {
+                    onChange={(isOpen) => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
                     menuPosition={I18nManager.isRTL ? "left" : "right"}
@@ -565,9 +604,9 @@ class Dashboard extends Component {
                               this.props.mainBusiness.businessname
                             )
                               ? {
-                                  fontFamily: "montserrat-bold-english"
+                                  fontFamily: "montserrat-bold-english",
                                 }
-                              : {}
+                              : {},
                           ]}
                         >
                           {this.props.mainBusiness
@@ -580,16 +619,14 @@ class Dashboard extends Component {
                           style={[
                             styles.brandStyle,
                             this.props.mainBusiness &&
-                            !isStringArabic(this.props.mainBusiness.brandname)
+                            !isStringArabic(businesscategoryName)
                               ? {
-                                  fontFamily: "montserrat-regular-english"
+                                  fontFamily: "montserrat-regular-english",
                                 }
-                              : {}
+                              : {},
                           ]}
                         >
-                          {this.props.mainBusiness
-                            ? this.props.mainBusiness.brandname
-                            : ""}
+                          {businesscategoryName}
                         </Text>
                       </View>
                       <View style={styles.sideMenuCard}>
@@ -598,7 +635,7 @@ class Dashboard extends Component {
                             <>
                               <View
                                 style={{
-                                  flexDirection: "column"
+                                  flexDirection: "column",
                                 }}
                               >
                                 <GradientButton
@@ -624,7 +661,7 @@ class Dashboard extends Component {
                               <ScrollView
                                 style={{
                                   // height: 90,
-                                  top: I18nManager.isRTL ? 5 : 0
+                                  top: I18nManager.isRTL ? 5 : 0,
                                 }}
                                 horizontal
                               >
@@ -642,7 +679,10 @@ class Dashboard extends Component {
                         <TouchableOpacity
                           style={styles.websiteCard}
                           onPress={() => {
-                            this.props.navigation.navigate("OptimizeWebsite");
+                            this.props.navigation.navigate("TutorialWeb", {
+                              source: "dashboard",
+                              source_action: "a_open_website_tutorial",
+                            });
                           }}
                         >
                           <LinearGradient
@@ -688,7 +728,7 @@ class Dashboard extends Component {
                             screenProps={this.props.screenProps}
                             customInputStyle={{
                               backgroundColor: "rgba(0,0,0,0.13)",
-                              height: "100%"
+                              height: "100%",
                             }}
                             strokeColor={"#909090"}
                             renderSearchBar={this.renderSearchBar}
@@ -713,7 +753,7 @@ class Dashboard extends Component {
                             contentContainerStyle={
                               styles.flatlistContainerStyle
                             }
-                            keyExtractor={item =>
+                            keyExtractor={(item) =>
                               JSON.stringify(item.campaign_id)
                             }
                             data={this.props.filteredCampaigns}
@@ -730,13 +770,7 @@ class Dashboard extends Component {
                   </Sidemenu>
                 </Container>
               )}
-              <NavigationEvents
-                onDidFocus={() => {
-                  Segment.screen("Dashboard");
-                  this.props.setCampaignInProgress(false);
-                  this.props.setCampaignInProgressInstagram(false);
-                }}
-              />
+              <NavigationEvents onDidFocus={this.onDidFocus} />
             </Animatable.View>
 
             <Animatable.View
@@ -744,7 +778,7 @@ class Dashboard extends Component {
               onAnimationEnd={() => {
                 if (this.state.anim) {
                   Segment.screenWithProperties("Home Menu", {
-                    category: "User Menu"
+                    category: "User Menu",
                   });
                 } else {
                   Segment.screen("Dashboard");
@@ -782,7 +816,7 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.dashboard.loading,
   adType: state.campaignC.adType,
@@ -799,36 +833,33 @@ const mapStateToProps = state => ({
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
-  instagramCampaignProgressStarted:
-    state.instagramAds.instagramCampaignProgressStarted,
-  instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns,
-  clearTokenLoading: state.login.clearTokenLoading
+  clearTokenLoading: state.login.clearTokenLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
-  onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
+  onSelect: (query) => dispatch(actionCreators.filterCampaignsStatus(query)),
   getCampaignList: (id, increasePage, cancelToken) =>
     dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken)),
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: resetAdType =>
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  setCampaignInProgressInstagram: value =>
-    dispatch(actionCreators.setCampaignInProgressInstagram(value)),
-  connect_user_to_intercom: user_id =>
+  connect_user_to_intercom: (user_id) =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  getLanguageListPOEdit: language =>
-    dispatch(actionCreators.getLanguageListPOEdit(language))
+  set_as_seen: (check) => dispatch(actionCreators.set_as_seen(check)),
+  getLanguageListPOEdit: (language) =>
+    dispatch(actionCreators.getLanguageListPOEdit(language)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

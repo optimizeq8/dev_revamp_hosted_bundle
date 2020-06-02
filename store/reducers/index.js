@@ -11,7 +11,6 @@ import messengerReducer from "./messengerReducer";
 import languageReducer from "./languageReducer";
 import googleAdsReducer from "./googleAdsCampaignReducer";
 import websiteReducer from "./optimizeWebsiteReducer";
-import instagramAdsReducer from "./instagramCampaignReducer";
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -26,7 +25,6 @@ const appReducer = combineReducers({
   language: languageReducer,
   googleAds: googleAdsReducer,
   website: websiteReducer,
-  instagramAds: instagramAdsReducer
 });
 
 const rootReducer = (state, action) => {

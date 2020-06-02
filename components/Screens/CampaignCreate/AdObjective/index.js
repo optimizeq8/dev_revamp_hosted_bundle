@@ -7,25 +7,14 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import {
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
+import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
-import {
-  SafeAreaView,
-  NavigationEvents,
-  NavigationActions
-} from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -49,23 +38,22 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
-import segmentEventTrack from "../../../segmentEventTrack";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
-import InputField from "../../../MiniComponents/InputField";
-import ModalField from "../../../MiniComponents/ModalField";
+import InputField from "../../../MiniComponents/InputFieldNew";
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
 
 class AdObjective extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -75,7 +63,7 @@ class AdObjective extends Component {
         name: "",
         objective: "",
         start_time: "",
-        end_time: ""
+        end_time: "",
       },
       collectionAdLinkForm: 0,
       minValueBudget: 0,
@@ -89,7 +77,7 @@ class AdObjective extends Component {
       objectiveError: "",
       start_timeError: "",
       end_timeError: "",
-      incomplete: false
+      incomplete: false,
     };
   }
   componentWillUnmount() {
@@ -115,9 +103,9 @@ class AdObjective extends Component {
         ad_account_id:
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
         businessid:
-          this.props.mainBusiness && this.props.mainBusiness.businessid
+          this.props.mainBusiness && this.props.mainBusiness.businessid,
       },
-      objectiveLabel: "Select Objective"
+      objectiveLabel: "Select Objective",
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -160,7 +148,7 @@ class AdObjective extends Component {
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
-        .map(key => {
+        .map((key) => {
           if (this.props.data.hasOwnProperty(key)) return true;
         })
         .includes(true)
@@ -176,7 +164,7 @@ class AdObjective extends Component {
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : "",
-        end_time: this.props.data.end_time ? this.props.data.end_time : ""
+        end_time: this.props.data.end_time ? this.props.data.end_time : "",
       };
       this.setState({
         collectionAdLinkForm: this.props.collectionAdLinkForm,
@@ -191,7 +179,7 @@ class AdObjective extends Component {
         objectiveError: this.props.data.objectiveError,
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
-        campaignInfo: { ...rep }
+        campaignInfo: { ...rep },
       });
     } else {
       this.setState({
@@ -204,7 +192,7 @@ class AdObjective extends Component {
           name: "",
           objective: "",
           start_time: "",
-          end_time: ""
+          end_time: "",
         },
         collectionAdLinkForm: 0,
         minValueBudget: 0,
@@ -215,80 +203,112 @@ class AdObjective extends Component {
         nameError: "",
         objectiveError: "",
         start_timeError: "",
-        end_timeError: ""
+        end_timeError: "",
       });
     }
   };
-  setObjective = choice => {
+  setObjective = (choice) => {
     this.setState({
       ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
-        objective: choice.value
+        objective: choice.value,
       },
-      objectiveLabel: choice.label
+      objectiveLabel: choice.label,
     });
-    segmentEventTrack("Selected Ad Objective", {
-      campaign_objective: choice.label
+    analytics.track(`a_select_ad_objective`, {
+      source: "ad_objective_modal",
+      source_action: "a_select_ad_objective",
+      campaign_id: this.props.campaign_id,
+      campaign_objective: choice.value,
     });
+
     this.props.save_campaign_info({
       objective: choice.value,
       objectiveLabel: choice.label,
-      reset: true
+      reset: true,
     });
   };
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "ad_TNC_loading") {
+      this.props.navigation.navigate("AdType", {
+        source: "ad_objective",
+        source_action: "a_go_back",
+      });
+    } else this.props.navigation.goBack();
+
     return true;
   };
-  handleStartDatePicked = date => {
+  handleStartDatePicked = (date) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_time: date
-      }
+        start_time: date,
+      },
     });
-    segmentEventTrack("Selected Campaign Start Date", {
-      campaign_start_date: date
+    analytics.track(`a_ad_start_date`, {
+      campaign_start_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_start_date",
+      campaign_id: this.props.data.campaign_id,
+      campaign_start_date: date,
     });
+
     this.props.save_campaign_info({ start_time: date });
   };
-  handleEndDatePicked = date => {
+  handleEndDatePicked = (date) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date
-      }
+        end_time: date,
+      },
     });
-    segmentEventTrack("Selected Campaign End Date", {
-      campaign_end_date: date
+    analytics.track(`a_ad_end_date`, {
+      campaign_end_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_end_date",
+      campaign_id: this.props.data.campaign_id,
+      campaign_end_date: date,
     });
     this.props.save_campaign_info({
       end_time: date,
-      campaignDateChanged: true
+      campaignDateChanged: true,
     });
   };
-  setModalVisible = visible => {
-    if (visible) {
-      Segment.screen("Instagram Feed Ad Objective Modal");
-    }
+  setModalVisible = (visible) => {
+    analytics.track(`ad_objective_modal`, {
+      source: "ad_objective",
+      source_action: "a_toggle_modal",
+      campaign_id: this.props.data.campaign_id,
+      modal_visible: visible,
+    });
+
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = days => {
+  getMinimumCash = (days) => {
     let minValueBudget = days !== 0 ? 25 * days : 25;
     let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     this.setState({
       minValueBudget,
-      maxValueBudget
+      maxValueBudget,
     });
     this.props.save_campaign_info({
       minValueBudget,
-      maxValueBudget
+      maxValueBudget,
     });
   };
 
-  _handleCollectionAdLinkForm = val => {
+  _handleCollectionAdLinkForm = (val) => {
+    analytics.track(`a_change_collection_ad_link_form`, {
+      source: "ad_objective",
+      source_action: "a_change_collection_ad_link_form",
+      campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
+    });
     this.setState({ collectionAdLinkForm: val });
   };
 
@@ -302,7 +322,7 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError,
       objectiveError,
-      nameError
+      nameError,
     });
     // In case error in any field keep track
     if (
@@ -311,15 +331,18 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_ad_objective: objectiveError ? objectiveError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
+      analytics.track(`a_error`, {
+        error_page: "ad_objective",
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        source_action: "a_submit_ad_objective",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError,
       });
     }
     if (
@@ -329,18 +352,25 @@ class AdObjective extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.campaignInfo.end_time) -
+              new Date(this.state.campaignInfo.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_ad_type: this.props.adType,
+        campaign_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
-        campaign_collection_ad_link_form:
+        campaign_collectionAdLinkForm:
           this.props.adType === "CollectionAd"
             ? this.state.collectionAdLinkForm === 1
               ? "Website"
               : "App DeepLink"
-            : null
+            : null,
       };
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -352,12 +382,12 @@ class AdObjective extends Component {
           this.props.navigation.getParam("tempAdType", "SnapAd")
         );
         this.props.save_campaign_info({
-          reset: true
+          reset: true,
         });
         //Set closedContinueModal back to false so that
         //if the user navigates back and submits again then this process doesn't happen again
         this.setState({
-          closedContinueModal: false
+          closedContinueModal: false,
         });
         persistor.purge();
       }
@@ -366,25 +396,25 @@ class AdObjective extends Component {
         this.props.save_campaign_info({
           destination: "BLANK",
           call_to_action: { label: "BLANK", value: "BLANK" },
-          attachment: "BLANK"
+          attachment: "BLANK",
         });
       }
       this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
 
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
-        ...this.state.campaignInfo
+        ...this.state.campaignInfo,
       });
       let info = {
         campaign_type: this.props.adType,
-        ...this.state.campaignInfo
+        ...this.state.campaignInfo,
       };
 
       this.props.ad_objective(
         {
           ...info,
           campaign_id:
-            this.props.campaign_id !== "" ? this.props.campaign_id : 0
+            this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         this.props.navigation,
         segmentInfo
@@ -400,6 +430,14 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
+    analytics.track(`a_ad_name`, {
+      source: "ad_objective",
+      source_action: "a_ad_name",
+      campaign_id: this.props.campaign_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
+      campaign_name: value,
+    });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info({ name: value });
   };
@@ -409,35 +447,40 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      segmentEventTrack(`Error in ${stateError}`, {
-        campaign_error: validObj
+      analytics.track(`a_error`, {
+        error_page: "ad_objective",
+        error_description: `Error in ${stateError}: ${validObj}`,
+        source: "ad_objective",
+        source_action: "a_ad_name",
+        campaign_channel: "snapchat",
+        campaign_ad_type: this.props.adType,
       });
     }
+
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
   handleAdOnjectiveFocus = () => {
-    Segment.screenWithProperties(
-      (this.props.adType === "SnapAd"
-        ? "Snap Ad"
-        : this.props.adType === "StoryAd"
-        ? "Story Ad"
-        : "Collection Ad") + " Objective",
-      {
-        category: "Campaign Creation",
-        channel: "snapchat"
-      }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
     );
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      campaign_channel: "snapchat",
+      campaign_ad_type: this.props.adType,
     });
-
     let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustAdObjectiveTracker.addPartnerParameter(
       `snap_${
@@ -453,7 +496,7 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-    const list = ObjectiveData[this.props.adType].map(o => (
+    const list = ObjectiveData[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -492,10 +535,10 @@ class AdObjective extends Component {
                   obj: {
                     businessname:
                       this.props.mainBusiness &&
-                      this.props.mainBusiness.businessname
-                  }
+                      this.props.mainBusiness.businessname,
+                  },
                 }}
-                navigation={this.props.navigation}
+                actionButton={this.handleBackButton}
                 title={[
                   adType === "SnapAd"
                     ? "Snap Ad"
@@ -503,7 +546,7 @@ class AdObjective extends Component {
                     ? "Story Ad"
                     : "Collection Ad",
 
-                  "Campaign"
+                  "Campaign",
                 ]}
               />
               <PhoneIcon
@@ -525,6 +568,7 @@ class AdObjective extends Component {
                   disabled={this.props.loading}
                   stateName1={"name"}
                   value={this.state.campaignInfo.name}
+                  placeholder1={"Enter Your campaign’s name"}
                   valueError1={this.state.nameError}
                   maxLength={34}
                   autoFocus={false}
@@ -536,7 +580,7 @@ class AdObjective extends Component {
                   onAnimationEnd={() =>
                     this.setState({
                       start_timeError: null,
-                      end_timeError: null
+                      end_timeError: null,
                     })
                   }
                   duration={200}
@@ -547,12 +591,13 @@ class AdObjective extends Component {
                       : "shake"
                   }
                 >
-                  <View style={[styles.dateTextLabel]}>
+                  {/* <View style={[styles.dateTextLabel]}>
                     <Text uppercase style={[styles.inputLabel]}>
                       {translate("Date")}
                     </Text>
-                  </View>
+                  </View> */}
                   <Duration
+                    label={"Campaign Duration"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}
@@ -566,21 +611,20 @@ class AdObjective extends Component {
                 {/* <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text> */}
-                <View style={[styles.input2]}>
-                  <ModalField
-                    stateName={"objective"}
-                    setModalVisible={this.setModalVisible}
-                    modal={true}
-                    label={"Objective"}
-                    valueError={this.state.objectiveError}
-                    getValidInfo={this.getValidInfo}
-                    disabled={this.props.loading}
-                    valueText={this.state.objectiveLabel}
-                    value={this.state.campaignInfo.objective}
-                    incomplete={this.state.incomplete}
-                    translate={this.props.screenProps.translate}
-                  />
-                </View>
+
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.loading}
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
@@ -593,15 +637,9 @@ class AdObjective extends Component {
                           this.state.collectionAdLinkForm === 1
                             ? styles.activeButton
                             : styles.button,
-                          styles.collectionAdLinkForm1
+                          styles.collectionAdLinkForm1,
                         ]}
                         onPress={() => {
-                          segmentEventTrack(
-                            "Selected Collection Ad Link Form ",
-                            {
-                              campaign_collection_ad_link_form: "Website"
-                            }
-                          );
                           this._handleCollectionAdLinkForm(1);
                         }}
                       >
@@ -610,7 +648,7 @@ class AdObjective extends Component {
                           style={[
                             this.state.collectionAdLinkForm === 1
                               ? styles.activeText
-                              : styles.inactiveText
+                              : styles.inactiveText,
                           ]}
                         >
                           {translate("Website")}
@@ -620,7 +658,7 @@ class AdObjective extends Component {
                             this.state.collectionAdLinkForm === 1
                               ? styles.activeText
                               : styles.inactiveText,
-                            styles.buttonSubText
+                            styles.buttonSubText,
                           ]}
                         >
                           {translate("Links to your site")}
@@ -631,15 +669,9 @@ class AdObjective extends Component {
                           this.state.collectionAdLinkForm === 2
                             ? styles.activeButton
                             : styles.button,
-                          styles.collectionAdLinkForm2
+                          styles.collectionAdLinkForm2,
                         ]}
                         onPress={() => {
-                          segmentEventTrack(
-                            "Selected Collection Ad Link Form ",
-                            {
-                              campaign_collection_ad_link_form: "App DeepLink"
-                            }
-                          );
                           this._handleCollectionAdLinkForm(2);
                         }}
                       >
@@ -648,7 +680,7 @@ class AdObjective extends Component {
                           style={[
                             this.state.collectionAdLinkForm === 2
                               ? styles.activeText
-                              : styles.inactiveText
+                              : styles.inactiveText,
                           ]}
                         >
                           {translate("App DeepLink")}
@@ -658,7 +690,7 @@ class AdObjective extends Component {
                             this.state.collectionAdLinkForm === 2
                               ? styles.activeText
                               : styles.inactiveText,
-                            styles.buttonSubText
+                            styles.buttonSubText,
                           ]}
                         >
                           {translate("Links to your App")}
@@ -690,7 +722,7 @@ class AdObjective extends Component {
 
           <DateFields
             getMinimumCash={this.getMinimumCash}
-            onRef={ref => (this.dateField = ref)}
+            onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.campaignInfo.start_time}
@@ -747,7 +779,7 @@ class AdObjective extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   campaignProcessSteps: state.campaignC.campaignProcessSteps,
   mainBusiness: state.account.mainBusiness,
@@ -758,22 +790,23 @@ const mapStateToProps = state => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  campaignProgressStarted: state.campaignC.campaignProgressStarted
+  campaignProgressStarted: state.campaignC.campaignProgressStarted,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ad_objective: (info, navigation, segmentInfo) =>
     dispatch(actionCreators.ad_objective(info, navigation, segmentInfo)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
-  set_collectionAd_link_form: value =>
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  getMinimumCash: (values) => dispatch(actionCreators.getMinimumCash(values)),
+  set_collectionAd_link_form: (value) =>
     dispatch(actionCreators.set_collectionAd_link_form(value)),
   reset_collections: () => dispatch(actionCreators.reset_collections()),
-  resetCampaignInfo: resetAdType =>
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
 
-  set_adType: value => dispatch(actionCreators.set_adType(value))
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdObjective);

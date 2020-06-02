@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Linking } from "expo";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Segment from "expo-analytics-segment";
@@ -13,7 +12,8 @@ import {
   Platform,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
+  Linking,
 } from "react-native";
 import {
   Button,
@@ -23,7 +23,7 @@ import {
   Input,
   Container,
   Footer,
-  Icon
+  Icon,
 } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -34,7 +34,7 @@ import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -73,7 +73,7 @@ class CollectionMedia extends Component {
             : "DEEP_LINK",
         collection_attachment: "",
         collection_media: null,
-        collection_order: 0
+        collection_order: 0,
       },
       urlError: "",
       // networkString: "http://",
@@ -90,7 +90,7 @@ class CollectionMedia extends Component {
       rejectionColUpload: false,
       mediaModalVisible: false,
       uneditedImageUri: "",
-      serialization: {}
+      serialization: {},
     };
   }
 
@@ -104,8 +104,8 @@ class CollectionMedia extends Component {
         collection_order: order,
         collection_name: this.props.collectionAdMedia[order]
           ? this.props.collectionAdMedia[order].name
-          : this.props.data.name + "_" + order
-      }
+          : this.props.data.name + "_" + order,
+      },
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -113,9 +113,7 @@ class CollectionMedia extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
-        const pkg = Constants.manifest.releaseChannel
-          ? Constants.manifest.android.package // When published, considered as using standalone build
-          : "host.exp.exponent"; // In expo client mode
+        const pkg = "com.optimizeapp.optimizeapp"; // In expo client mode
 
         showMessage({
           message: translate(
@@ -132,14 +130,14 @@ class CollectionMedia extends Component {
                   { data: "package:" + pkg }
                 ),
           duration: 5000,
-          description: translate("Press here to open settings")
+          description: translate("Press here to open settings"),
         });
       }
     }
     let collAds = this.props.collectionAdMedia;
     if (
       Object.keys(this.state.collection)
-        .map(key => {
+        .map((key) => {
           if (collAds[order] && collAds[order].hasOwnProperty(key)) return true;
         })
         .includes(true)
@@ -152,11 +150,11 @@ class CollectionMedia extends Component {
             ...collAds[order],
             collection_attachment: "",
             collection_media:
-              collAds[order][collAds[order].localUri ? "localUri" : "media"]
+              collAds[order][collAds[order].localUri ? "localUri" : "media"],
           },
           localUri:
             collAds[order][collAds[order].localUri ? "localUri" : "media"],
-          rejectionColUpload: true
+          rejectionColUpload: true,
         });
       } else if (
         (this.props.collectionAdLinkForm === 1 &&
@@ -185,11 +183,11 @@ class CollectionMedia extends Component {
                 ? url.split("?utm_source")[0]
                 : url,
               collection_media:
-                collAds[order][collAds[order].localUri ? "localUri" : "media"]
+                collAds[order][collAds[order].localUri ? "localUri" : "media"],
             },
             // networkString: url[0] + "://",
             localUri:
-              collAds[order][collAds[order].localUri ? "localUri" : "media"]
+              collAds[order][collAds[order].localUri ? "localUri" : "media"],
           });
         } else {
           const deep_link_uri = JSON.parse(
@@ -206,10 +204,10 @@ class CollectionMedia extends Component {
               ...collAds[order],
               collection_attachment: deep_link_uri,
               collection_media:
-                collAds[order][collAds[order].localUri ? "localUri" : "media"]
+                collAds[order][collAds[order].localUri ? "localUri" : "media"],
             },
             localUri:
-              collAds[order][collAds[order].localUri ? "localUri" : "media"]
+              collAds[order][collAds[order].localUri ? "localUri" : "media"],
           });
         }
       }
@@ -231,14 +229,14 @@ class CollectionMedia extends Component {
       this.state.collection.collection_media
     );
     this.setState({
-      imageError
+      imageError,
     });
     if (imageError) {
       showMessage({
         message: translate("Please choose an image"),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
@@ -253,7 +251,7 @@ class CollectionMedia extends Component {
       this.state.collection.collection_attachment
     );
     this.setState({
-      urlError
+      urlError,
     });
     if (urlError) {
       const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
@@ -268,7 +266,7 @@ class CollectionMedia extends Component {
         ),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
@@ -276,13 +274,13 @@ class CollectionMedia extends Component {
     }
   };
 
-  onToggleModal = visibile => {
+  onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
 
-  _getUploadState = loading => {
+  _getUploadState = (loading) => {
     this.setState({
-      loaded: loading
+      loaded: loading,
     });
   };
 
@@ -303,7 +301,7 @@ class CollectionMedia extends Component {
         mediaTypes: "Images",
         base64: false,
         exif: false,
-        quality: 0.8
+        quality: 0.8,
       });
     }
 
@@ -319,13 +317,13 @@ class CollectionMedia extends Component {
         result = {
           uri: mediaEditor.mediaUri,
           cancelled: false,
-          type: "image"
+          type: "image",
         };
       let configuration = PhotoEditorConfiguration({ width: 1, height: 1 });
       let file = {};
       if (result) {
         file = await FileSystem.getInfoAsync(result.uri, {
-          size: true
+          size: true,
         });
         this.setState({ directory: "/ImagePicker/" });
         await this.validateImage();
@@ -341,7 +339,7 @@ class CollectionMedia extends Component {
             ? mediaEditor.serialization
             : null
         )
-          .then(async manipResult => {
+          .then(async (manipResult) => {
             if (manipResult) {
               serialization = manipResult.serialization;
               let newDimensions = await ImageManipulator.manipulateAsync(
@@ -354,18 +352,18 @@ class CollectionMedia extends Component {
                     "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
                   collection: {
                     ...this.state.collection,
-                    collection_media: null
-                  }
+                    collection_media: null,
+                  },
                 });
                 segmentEventTrack("Error Collection Ad Media", {
                   campaign_error_collection_media_image:
-                    "User undid the cropping,Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
+                    "User undid the cropping,Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px",
                 });
                 this.onToggleModal(false);
 
                 return Promise.reject({
                   wrongAspect: true,
-                  message: "Image's aspect ratio must be 1:1"
+                  message: "Image's aspect ratio must be 1:1",
                 });
               }
               if (newDimensions.width > 1200) {
@@ -376,37 +374,39 @@ class CollectionMedia extends Component {
                 );
               }
               this.setState({
-                directory: "/ImageManipulator/"
+                directory: "/ImageManipulator/",
               });
               result.uri = newDimensions.uri;
               result.height = newDimensions.height;
               result.width = newDimensions.width;
               result.serialization = serialization;
+            } else {
+              return Promise.reject({});
             }
           })
           .then(async () => {
             file = await FileSystem.getInfoAsync(result.uri, {
-              size: true
+              size: true,
             });
             if (file.size > 2000000) {
               this.setState({
                 imageError: "Image must be less than 2 MBs.",
                 collection: {
                   ...this.state.collection,
-                  collection_media: null
-                }
+                  collection_media: null,
+                },
               });
               segmentEventTrack("Error Collection Ad Media", {
                 campaign_error_collection_media_image:
-                  "Image must be less than 2 MBs"
+                  "Image must be less than 2 MBs",
               });
               this.onToggleModal(false);
               showMessage({
                 message: translate("Image must be less than {{fileSize}} MBs", {
-                  fileSize: 2
+                  fileSize: 2,
                 }),
                 position: "top",
-                type: "warning"
+                type: "warning",
               });
 
               return;
@@ -416,30 +416,30 @@ class CollectionMedia extends Component {
                 imageError: null,
                 collection: {
                   ...this.state.collection,
-                  collection_media: result.uri
+                  collection_media: result.uri,
                 },
                 localUri: result.uri,
                 rejectionColUpload: true,
                 uneditedImageUri,
-                serialization: result.serialization || {}
+                serialization: result.serialization || {},
               });
               segmentEventTrack("Selected Collection Ad Image successfully");
               segmentEventTrack("Selected Collection Ad Image serialization", {
-                ...result.serialization
+                ...result.serialization,
               });
               this.onToggleModal(false);
               showMessage({
                 message: translate("Image has been selected successfully"),
                 position: "top",
-                type: "success"
+                type: "success",
               });
             }
           })
-          .catch(error => {
+          .catch((error) => {
             // console.log(error);
             segmentEventTrack("Error Collection Ad Media", {
               campaign_error_collection_media_image:
-                "Please choose another image"
+                "Please choose another image",
             });
             this.onToggleModal(false);
             showMessage({
@@ -447,7 +447,7 @@ class CollectionMedia extends Component {
                 ? error.message
                 : translate("Please choose another image"),
               position: "top",
-              type: "warning"
+              type: "warning",
             });
             return;
           });
@@ -457,12 +457,12 @@ class CollectionMedia extends Component {
               "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
             collection: {
               ...this.state.collection,
-              collection_media: null
-            }
+              collection_media: null,
+            },
           });
           segmentEventTrack("Error Collection Ad Media", {
             campaign_error_collection_media_image:
-              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
+              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px",
           });
           this.onToggleModal(false);
           showMessage({
@@ -470,7 +470,7 @@ class CollectionMedia extends Component {
               "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px"
             ),
             position: "top",
-            type: "warning"
+            type: "warning",
           });
           return;
         }
@@ -480,19 +480,19 @@ class CollectionMedia extends Component {
         isNull(this.state.collection.collection_media)
       ) {
         segmentEventTrack("Error Collection Ad Media", {
-          campaign_error_collection_media_image: "Please choose a media file"
+          campaign_error_collection_media_image: "Please choose a media file",
         });
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
-          type: "warning"
+          type: "warning",
         });
         this.setState({
           imageError: "Please choose a media file.",
           collection: {
             ...this.state.collection,
-            collection_media: null
-          }
+            collection_media: null,
+          },
         });
         this.onToggleModal(false);
         return;
@@ -511,9 +511,7 @@ class CollectionMedia extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       this.onToggleModal(false);
-      const pkg = Constants.manifest.releaseChannel
-        ? Constants.manifest.android.package // When published, considered as using standalone build
-        : "host.exp.exponent"; // In expo client mode
+      const pkg = "com.optimizeapp.optimizeapp";
 
       showMessage({
         message: translate(
@@ -530,7 +528,7 @@ class CollectionMedia extends Component {
                 { data: "package:" + pkg }
               ),
         duration: 5000,
-        description: translate("Press here to open settings")
+        description: translate("Press here to open settings"),
       });
     }
     return status;
@@ -546,7 +544,7 @@ class CollectionMedia extends Component {
     var photo = {
       uri: this.state.localUri,
       type: "IMAGE" + "/" + format[1],
-      name: res
+      name: res,
     };
     body.append("collection_name", this.state.collection.collection_name);
     body.append(
@@ -559,14 +557,14 @@ class CollectionMedia extends Component {
         JSON.stringify({
           url:
             // this.state.networkString +
-            this.state.collection.collection_attachment
+            this.state.collection.collection_attachment,
         })
       );
     } else {
       body.append(
         "collection_attachment",
         JSON.stringify({
-          deep_link_uri: this.state.collection.collection_attachment
+          deep_link_uri: this.state.collection.collection_attachment,
         })
       );
     }
@@ -595,7 +593,7 @@ class CollectionMedia extends Component {
     );
 
     this.setState({
-      formatted: body
+      formatted: body,
     });
   }
 
@@ -607,7 +605,7 @@ class CollectionMedia extends Component {
         if (!validUrl || !validImage) {
           segmentEventTrack("Error Collection Media Submit", {
             campaign_error_collection_media_image: this.state.imageError,
-            campaign_error_collection_ad_website_url: this.state.urlError
+            campaign_error_collection_ad_website_url: this.state.urlError,
           });
         }
         if (validUrl && validImage) {
@@ -628,7 +626,7 @@ class CollectionMedia extends Component {
           segmentEventTrack("Error Collection Media Submit", {
             campaign_error_collection_media_image: this.state.imageError,
             campaign_error_collection_media_deeplink_url: this.state
-              .deep_link_uriError
+              .deep_link_uriError,
           });
         }
         if (validDeepLinkURL && validImage) {
@@ -656,7 +654,7 @@ class CollectionMedia extends Component {
       this.state.collection.collection_attachment
     );
     this.setState({
-      deep_link_uriError
+      deep_link_uriError,
     });
     if (deep_link_uriError) {
       showMessage({
@@ -666,7 +664,7 @@ class CollectionMedia extends Component {
         ),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
@@ -707,7 +705,7 @@ class CollectionMedia extends Component {
     }
   };
 
-  setMediaModalVisible = visible => {
+  setMediaModalVisible = (visible) => {
     this.setState({ mediaModalVisible: visible });
   };
   handleAdCollectionMediaFocus = () => {
@@ -727,7 +725,7 @@ class CollectionMedia extends Component {
             closeButton={false}
             segment={{
               str: "Go Back from Collection Media Upload",
-              obj: { businessname: this.props.mainBusiness.businessname }
+              obj: { businessname: this.props.mainBusiness.businessname },
             }}
             navigation={this.props.navigation}
             title={"Compose Collection Ad"}
@@ -785,7 +783,7 @@ class CollectionMedia extends Component {
                       </View>
                       <Item
                         style={[
-                          styles.input
+                          styles.input,
                           // this.state.deep_link_uriError
                           //   ? GlobalStyles.redBorderColor
                           //   : GlobalStyles.transparentBorderColor
@@ -798,12 +796,12 @@ class CollectionMedia extends Component {
                           placeholderTextColor="white"
                           autoCorrect={false}
                           autoCapitalize="none"
-                          onChangeText={value => {
+                          onChangeText={(value) => {
                             this.setState({
                               collection: {
                                 ...this.state.collection,
-                                collection_attachment: value
-                              }
+                                collection_attachment: value,
+                              },
                             });
                           }}
                           onBlur={async () => {
@@ -811,7 +809,7 @@ class CollectionMedia extends Component {
                               "Changed Collection Media deep link url Attachment",
                               {
                                 campaign_collection_attachment: this.state
-                                  .collection.collection_attachment
+                                  .collection.collection_attachment,
                               }
                             );
                             const valid = await this.validateDeepLinkUrl();
@@ -820,7 +818,7 @@ class CollectionMedia extends Component {
                                 "Error Collection on blur deep link url",
                                 {
                                   campaign_error_collection_deeplink_url: this
-                                    .state.deep_link_uriError
+                                    .state.deep_link_uriError,
                                 }
                               );
                             }
@@ -839,7 +837,7 @@ class CollectionMedia extends Component {
                           </View>
                           <Item
                             style={[
-                              styles.input
+                              styles.input,
                               // this.state.urlError
                               //     ? GlobalStyles.redBorderColor
                               //     : GlobalStyles.transparentBorderColor
@@ -903,13 +901,13 @@ class CollectionMedia extends Component {
                               }
                               autoCorrect={false}
                               autoCapitalize="none"
-                              onChangeText={value =>
+                              onChangeText={(value) =>
                                 this.setState({
                                   collection: {
                                     ...this.state.collection,
-                                    collection_attachment: value
+                                    collection_attachment: value,
                                   },
-                                  rejectionColUpload: true
+                                  rejectionColUpload: true,
                                 })
                               }
                               onBlur={async () => {
@@ -917,7 +915,7 @@ class CollectionMedia extends Component {
                                   "Changed Collection Media Website url",
                                   {
                                     campaign_collection_ad_website_url: this
-                                      .state.collection.collection_attachment
+                                      .state.collection.collection_attachment,
                                   }
                                 );
                                 const valid = await this.validateUrl();
@@ -926,7 +924,7 @@ class CollectionMedia extends Component {
                                     "Error on Blur Collection Ad Website URL ",
                                     {
                                       campaign_error_collection_ad_website_url: this
-                                        .state.urlError
+                                        .state.urlError,
                                     }
                                   );
                                 }
@@ -964,7 +962,7 @@ class CollectionMedia extends Component {
           mediaModalVisible={this.state.mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
           mediaUri={{
-            media: this.state.uneditedImageUri
+            media: this.state.uneditedImageUri,
           }}
           serialization={
             this.state.serialization.hasOwnProperty("image")
@@ -1021,7 +1019,7 @@ class CollectionMedia extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
@@ -1029,10 +1027,10 @@ const mapStateToProps = state => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   collectionAdMedia: state.campaignC.collectionAdMedia,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   save_collection_media: (
     media,
     localUri,
@@ -1050,6 +1048,6 @@ const mapDispatchToProps = dispatch => ({
         cancelUplaod,
         onToggleModal
       )
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionMedia);

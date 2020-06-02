@@ -1,22 +1,22 @@
 import { StyleSheet, PixelRatio, Platform } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 const IsIOS = Platform.OS === "ios";
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
-    flex: 1
+    flex: 1,
   },
   container: {
     backgroundColor: "#0000",
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
     marginTop: 5,
-    flex: 1
+    flex: 1,
   },
   textInputContainer: {
     flexDirection: "row",
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     position: "relative",
-    marginTop: 10
+    marginTop: 10,
   },
   textInput: {
     textAlign: "right",
@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 20,
     marginBottom: 17,
-    width: "100%"
+    width: "100%",
   },
   cameraIcon: {
-    marginBottom: 17
+    marginBottom: 17,
   },
   submitButton: {
     position: "absolute",
@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
     right: heightPercentageToDP(5) > 40 ? 10 : "2%",
     transform: [
       {
-        rotateY: "180deg"
+        rotateY: "180deg",
       },
       {
-        translateX: 0
+        translateX: 0,
       },
       {
-        translateY: heightPercentageToDP(5) > 40 ? -2 : -5
-      }
+        translateY: heightPercentageToDP(5) > 40 ? -2 : -5,
+      },
     ],
     alignSelf: "center",
     shadowColor: "#000",
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     marginBottom: 25,
-    marginRight: 18
+    marginRight: 18,
   },
   connectingAgentText: {
     color: "white",
@@ -84,30 +84,30 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     letterSpacing: 0,
     maxWidth: 150,
-    textAlign: "center"
+    textAlign: "center",
   },
   flexView: {
     display: "flex",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   loadingAnimation: {
     width: 100,
-    height: 100
+    height: 100,
   },
   chatBotView: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   chatBotViewSmall: {
     alignSelf: "flex-start",
     flex: 1,
     justifyContent: "flex-end",
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   flexEmptyView: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default styles;

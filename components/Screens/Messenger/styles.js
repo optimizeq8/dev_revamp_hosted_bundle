@@ -3,15 +3,15 @@ const IsIOS = Platform.OS === "ios";
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
-    flex: 1
+    flex: 1,
   },
   container: {
     backgroundColor: "#0000",
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
     marginTop: 5,
-    flex: 1
+    flex: 1,
   },
   textInputContainer: {
     flexDirection: "row",
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     position: "relative",
-    marginTop: 10
+    marginTop: 10,
   },
   textInput: {
     textAlign: "left",
@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 20,
     marginBottom: 17,
-    width: "100%"
+    width: "100%",
   },
   cameraIcon: {
-    marginBottom: 17
+    marginBottom: 17,
   },
   submitButton: {
     marginBottom: 25,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginRight: 5
+    marginRight: 5,
   },
   connectingAgentText: {
     color: "white",
@@ -63,39 +63,39 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     letterSpacing: 0,
     maxWidth: 150,
-    textAlign: "center"
+    textAlign: "center",
   },
   flexView: {
     display: "flex",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   loadingAnimation: {
     width: 100,
-    height: 100
+    height: 100,
   },
   chatBotView: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   chatBotViewSmall: {
     alignSelf: "flex-start",
     flex: 1,
     justifyContent: "flex-end",
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   flexEmptyView: {
-    flex: 1
+    flex: 1,
   },
   activityIndicator: {
     height: 72,
     width: 62,
-    marginBottom: 10
+    marginBottom: 10,
   },
   cameraButton: {
     padding: 5,
-    paddingRight: 10
-  }
+    paddingRight: 10,
+  },
 });
 
 export default styles;

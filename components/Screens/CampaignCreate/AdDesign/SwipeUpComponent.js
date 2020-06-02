@@ -31,36 +31,46 @@ export default class SwipeUpComponent extends Component {
               _changeDestination: this.props._changeDestination,
               objective: objective,
               collectionAdLinkForm: collectionAdLinkForm,
-              adType: adType
+              adType: adType,
+              source: "ad_design",
+              source_action: "a_swipe_up_destination"
             });
           } else if (adType === "StoryAd") {
             objective === "BRAND_AWARENESS"
-              ? this.props.navigation.push("SwipeUpDestination", {
+              ? this.props.navigation.navigate("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
                   objective,
                   adType,
                   destination,
-                  media
+                  media,
+                  source: "ad_design",
+                  source_action: "a_swipe_up_destination"
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
                   objective,
                   adType,
-                  collectionAdLinkForm
+                  collectionAdLinkForm,
+                  source: "ad_design",
+                  source_action: "a_swipe_up_destination"
                 });
           } else {
             objective === "TRAFFIC"
-              ? this.props.navigation.push("SwipeUpDestination", {
+              ? this.props.navigation.navigate("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
                   objective,
                   adType,
                   destination,
-                  media
+                  media,
+                  source: "ad_design",
+                  source_action: "a_swipe_up_destination"
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
                   objective,
-                  collectionAdLinkForm
+                  collectionAdLinkForm,
+                  source: "ad_design",
+                  source_action: "a_swipe_up_destination"
                 });
           }
         }}

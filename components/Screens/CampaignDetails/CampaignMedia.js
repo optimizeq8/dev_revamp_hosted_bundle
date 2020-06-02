@@ -40,6 +40,13 @@ export const previewHandler = (selectedCampaign, navigation) => {
         ? JSON.parse(selectedCampaign.attachment).icon_media_url
         : "";
   }
+  analytics.track(`a_preview_ad`, {
+    source: "campaign_details",
+    source_action: "a_preview_ad",
+    action_status: "success",
+    campaign_channel: "snapchat",
+    campaign_ad_type: selectedCampaign.campaign_type
+  });
   navigation.push(
     selectedCampaign.campaign_type !== "StoryAd"
       ? "AdDesignReview"
@@ -56,7 +63,9 @@ export const previewHandler = (selectedCampaign, navigation) => {
       adType: selectedCampaign.campaign_type,
       coverHeadline: selectedCampaign.story_headline,
       storyAdsArray: selectedCampaign.story_creatives,
-      collectionAdMedia: selectedCampaign.collection_creatives
+      collectionAdMedia: selectedCampaign.collection_creatives,
+      source: this.props.source,
+      source_action: "a_preview_ad"
     }
   );
 };

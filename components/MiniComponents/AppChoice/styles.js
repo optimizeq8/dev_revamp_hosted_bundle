@@ -1,83 +1,83 @@
 import { StyleSheet, Platform, PixelRatio } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   scrollViewContainer: {
     width: "100%",
-    flex: 1
+    // flex: 1
   },
   container: {
     backgroundColor: "#0000",
-    flex: 1
+    flex: 1,
   },
   keyboardContainer: {
     flex: 1,
-    height: "100%"
+    height: "100%",
   },
   bottomView: {
-    // justifyContent: "flex-end"
+    // alignSelf: "flex-end"
   },
   animateView1: {
     flexDirection: "row",
     alignSelf: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   buttonAndroid: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
   },
   buttonBoth: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
   },
 
   listImage: {
-    marginHorizontal: 0
+    marginHorizontal: 0,
   },
   flatListStyle: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   flatListContentContainerStyle: {
-    paddingBottom: 30
+    paddingBottom: 30,
   },
   itemCallToAction: {
-    marginTop: 20
+    marginTop: 20,
   },
   itemCallToActionText: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    color: "#fff"
+    color: "#fff",
   },
   activityIndicator: {
-    height: 150
+    height: 150,
   },
   searchView: {
     height: heightPercentageToDP(30),
-    width: "100%"
+    width: "100%",
   },
   animateView2: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     // justifyContent: "space-around",
-    flex: 1
+    flex: 1,
     // width: "100%"
   },
   optionsRowView: {
-    backgroundColor: "rgba(0,0,0,0.4)"
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   iconDown: {
     color: "#fff",
-    fontSize: 20
+    fontSize: 20,
     // left: 25
   },
   listText: {
@@ -85,35 +85,35 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fff",
     // flex: 1,
-    width: 170
+    width: 170,
   },
   footerText: {
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-regular",
-    paddingBottom: 16,
+    paddingVertical: 16,
     textDecorationLine: "underline",
-    textAlign: "center"
+    textAlign: "center",
   },
   icon: {
     alignSelf: "center",
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   mainCard: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   text: {
     color: "#fff",
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    alignSelf: "center"
+    alignSelf: "center",
   },
 
   gradient: {
     ...StyleSheet.absoluteFillObject,
-    height: heightPercentageToDP(105)
+    height: heightPercentageToDP(105),
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -125,14 +125,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     // marginVertical: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center",
-    color: "#fff"
+    color: "#fff",
   },
   pickerText: {
     fontFamily: "montserrat-light-english",
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    color: "#fff"
+    color: "#fff",
   },
   media: {
     width: 30,
     height: 30,
     borderRadius: 13,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   campaignButton: {
     flexDirection: "row",
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 20,
     borderBottomEndRadius: 20,
     backgroundColor: "#FF9D00",
-    height: heightPercentageToDP(7.3)
+    height: heightPercentageToDP(7.3),
   },
   OS: {
     padding: widthPercentageToDP(4),
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     height: parseInt(heightPercentageToDP(7.2)),
     width: parseInt(widthPercentageToDP(16)),
-    justifyContent: "center"
+    justifyContent: "center",
   },
   OSText: {
     fontSize: widthPercentageToDP(2.9),
@@ -182,14 +182,14 @@ const styles = StyleSheet.create({
     // width: parseInt(widthPercentageToDP(16)),
     width: 70,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   OSText: {
     // fontSize: widthPercentageToDP(2.9),
     textAlign: "left",
     fontSize: 12,
     fontFamily: "montserrat-bold",
-    textAlignVertical: "top"
+    textAlignVertical: "top",
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -210,13 +210,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
   },
   searchContainer: {
     backgroundColor: "rgba(0,0,0,0.3)",
     marginVertical: 10,
     width: "80%",
-    height: "8%"
+    height: "8%",
   },
   appStyle: {
     fontFamily: "montserrat-bold",
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     color: globalColors.orange,
     top: 5,
     width: 120,
-    textAlign: "center"
+    textAlign: "center",
   },
   proceedButtonRTL: {
     width: 65,
@@ -233,9 +233,15 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 4
+    paddingLeft: 4,
     // padding: 20
-  }
+  },
+  warningText: {
+    color: "#fff",
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+  },
 });
 
 export default styles;

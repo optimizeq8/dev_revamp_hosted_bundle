@@ -9,7 +9,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Container, Content } from "native-base";
 import RNImageOrCacheImage from "../RNImageOrCacheImage";
@@ -33,11 +33,11 @@ import isNull from "lodash/isNull";
 
 const preview = {
   uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 class ImagePreview extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -80,36 +80,13 @@ class ImagePreview extends Component {
                   imageUrls={[{ url: image }]}
                 />
               </View>
-              {/* <RNImageOrCacheImage
-                media={image}
-                style={styles.placeholder}
-                resizeMode={"cover"}
-              /> */}
+            
             </Transition>
-            {/* <TouchableOpacity
-              style={{
-                backgroundColor: "orange",
-                borderRadius: 30
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 30,
-                  fontFamily: "montserrat-bold",
-                  alignSelf: "center",
-                  padding
-                }}
-              >
-                Submit
-              </Text>
-            </TouchableOpacity> */}
 
             {!isNull(upload) && (
               <View style={{ alignSelf: "center" }}>
                 <Text
                   style={[
-                    // styles.text,
                     {
                       textAlign: "center",
                       color: "#fff",
@@ -118,8 +95,8 @@ class ImagePreview extends Component {
                       paddingVertical: 10,
                       bottom: 5,
                       fontFamily: "montserrat-regular",
-                      width: 250
-                    }
+                      width: 250,
+                    },
                   ]}
                 >
                   would you like to upload this image?
@@ -129,7 +106,7 @@ class ImagePreview extends Component {
                   style={{
                     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
                     alignSelf: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
                   }}
                 >
                   <LowerButton

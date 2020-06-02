@@ -1,19 +1,19 @@
 import { StyleSheet } from "react-native";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
   messageText: {
     color: "white",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   messageView: {
     position: "relative",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    maxWidth: "95%"
+    maxWidth: "95%",
     // borderRadius: 50
   },
   transparentTriangleView: {
@@ -23,19 +23,19 @@ const styles = StyleSheet.create({
     // top: '75%',
     // marginTop: 0,
     // marginRight: -10,
-    transform: [{ rotate: "10deg" }]
+    transform: [{ rotate: "10deg" }],
   },
   orangeTriangleView: {
     alignSelf: "flex-end",
     position: "absolute",
     bottom: 0,
-    transform: [{ rotate: "195deg" }]
+    transform: [{ rotate: "195deg" }],
   },
   messageBubbleOuterView: {
     marginLeft: 18,
     marginRight: 18,
     marginVertical: 5,
-    flexDirection: "column"
+    flexDirection: "column",
     // alignSelf: align,
   },
   dateText: {
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     fontSize: 10,
     paddingBottom: 5,
     paddingLeft: 5,
-    paddingRight: 5
+    paddingRight: 5,
   },
   messageFullView: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   image: {
     borderRadius: 30,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     zIndex: 0,
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 export default styles;

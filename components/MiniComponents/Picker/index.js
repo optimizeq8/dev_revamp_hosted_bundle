@@ -24,9 +24,6 @@ export default class Picker extends Component {
         loading={isNull(this.props.data) ? true : false}
         items={this.props.data}
         single={this.props.single}
-        highlightChildren={
-          this.props.highlightChildren ? this.props.highlightChildren : false
-        }
         uniqueKey={this.props.uniqueKey}
         displayKey={this.props.displayKey}
         renderSelectText={() => {

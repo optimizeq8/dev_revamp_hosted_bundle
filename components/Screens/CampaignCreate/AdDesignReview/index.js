@@ -247,7 +247,7 @@ class AdDesignReview extends Component {
                             { paddingRight: 0, marginBottom: 5 }
                           ]}
                         >
-                          <ArrowUpIcon stroke="#FFF" />
+                          <ArrowUpIcon />
                         </View>
                       )}
 

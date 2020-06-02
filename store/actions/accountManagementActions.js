@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
 import { persistor } from "../index";
@@ -10,18 +11,26 @@ import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import segmentEventTrack from "../../components/segmentEventTrack";
-
+import { getUniqueId } from "react-native-device-info";
 import { update_user_on_intercom } from "./messengerActions";
-export const changeBusiness = business => {
+
+export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
     Segment.identifyWithTraits(getState().auth.userid, {
-      businessname: business.businessname
+      businessname: business.businessname,
+      businessid: business.businessid,
+      revenue: business.revenue,
     });
-
+    analytics.identify(getState().auth.userid, {
+      businessname: business.businessname,
+      businessid: business.businessid,
+      revenue: business.revenue,
+      ltv: business.ltv,
+    });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-      payload: { ...business }
+      payload: { ...business },
     });
   };
 };
@@ -30,99 +39,137 @@ export const createBusinessAccount = (account, navigation) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
-      .post(`businessaccount`, account)
-      .then(res => {
+      .post(`businessaccountV2`, account) //businessaccount OLD API
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_create_buiness_account`, {
+          source: "open_create_business_account",
+          source_action: `a_create_buiness_account`,
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          ...account,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
         });
         //incase of an error?? need handling
         if (data.success) {
           dispatch({
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-            payload: { ...data.data, ...account }
+            payload: { ...data.data, ...account },
           });
-          NavigationService.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "open_create_business_account",
+            source_action: `a_create_buiness_account`,
+          });
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
               ...data.data,
-              ...account
-            }
+              ...account,
+            },
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("error creating new bsn", err.message || err.response);
         errorMessageHandler(err);
 
         dispatch({
           type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
 };
 
-export const addressForm = (address, navigation, addressId) => {
+export const addressForm = (address, navigation, addressId, translate) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
         type: actionTypes.SET_BILLING_ADDRESS_LOADING,
-        payload: true
+        payload: true,
       });
       const response = await createBaseUrl().put("businessaddress", {
         businessid: getState().account.mainBusiness.businessid,
         id: addressId,
-        ...address
+        ...address,
       });
       var time = new Animated.Value(0);
       if (response.data && response.data.message === "Address ID missing") {
         const respData = await createBaseUrl().post("businessaddress", {
           businessid: getState().account.mainBusiness.businessid,
-          ...address
+          ...address,
         });
-
+        analytics.track(`a_business_address`, {
+          source: "open_business_address",
+          source_action: "a_business_address",
+          timestamp: new Date().getTime(),
+          new: true,
+          error_description: !respData.data.success
+            ? respData.data.message
+            : null,
+          action_status: respData.data.success ? "success" : "failed",
+          ...address,
+        });
         Animated.timing(time, {
           toValue: 1,
-          duration: 2000
+          duration: 2000,
         }).start(() => {
           showMessage({
             message: respData.data.message,
             type: respData.data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
-          if (respData.data.success) navigation.goBack();
+          if (respData.data.success)
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address",
+            });
           return dispatch({
             type: actionTypes.ADD_ADDRESS,
-            payload: respData.data
+            payload: respData.data,
           });
         });
       } else {
         Animated.timing(time, {
           toValue: 1,
-          duration: 2000
+          duration: 2000,
         }).start(() => {
+          analytics.track(`a_business_address`, {
+            source: "open_business_address",
+            source_action: "a_business_address",
+            timestamp: new Date().getTime(),
+            new: false,
+            error_description: !response.data.success
+              ? response.data.message
+              : null,
+            ...address,
+            action_status: response.data.success ? "success" : "failed",
+          });
           showMessage({
-            message: response.data.message,
+            message: translate(response.data.message),
             type: response.data.success ? "success" : "warning",
-            position: "top"
+            position: "top",
           });
           if (response.data.success) {
-            navigation.goBack();
+            navigation.navigate("Dashboard", {
+              source: "open_business_address",
+              source_action: "a_business_address",
+            });
           }
           return dispatch({
             type: actionTypes.ADD_ADDRESS,
-            payload: response.data
+            payload: response.data,
           });
         });
       }
@@ -131,7 +178,7 @@ export const addressForm = (address, navigation, addressId) => {
       errorMessageHandler(err);
 
       return dispatch({
-        type: actionTypes.ERROR_ADD_ADDRESS
+        type: actionTypes.ERROR_ADD_ADDRESS,
       });
     }
   };
@@ -141,11 +188,11 @@ export const getAddressForm = () => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.GET_BILLING_ADDRESS_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`businessaddresses/${getState().account.mainBusiness.businessid}`)
-      .then(response => {
+      .then((response) => {
         if (response.data && response.data.success)
           if (!response.data.business_accounts) {
             return dispatch({
@@ -157,78 +204,91 @@ export const getAddressForm = () => {
                 street: "",
                 building: "",
                 office: "",
-                avenue: ""
-              }
+                avenue: "",
+              },
             });
           }
         return dispatch({
           type: actionTypes.GET_BILLING_ADDRESS,
-          payload: response.data.business_accounts
+          payload: response.data.business_accounts,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("Get Billing Address Error: ", err.message || err.response);
         errorMessageHandler(err);
 
         return dispatch({
           type: actionTypes.ERROR_GET_BILLING_ADDRESS,
-          payload: {}
+          payload: {},
         });
       });
   };
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_snapchat_ad_account = (id, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post("snapadaccounts", { businessid: id })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: id,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success) {
-          Segment.trackWithProperties(
-            "Snapchat Ad Account Created Successfully",
-            { businessid: id }
-          );
           let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
           Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
-            payload: { data: data, navigation: navigation.navigate }
+            payload: { data: data },
           });
         } else {
-          Segment.trackWithProperties("Error Snapchat Ad Account Create", {
-            error_snap_ad_account_create: data.message,
-            businessid: id
-          });
           showMessage({
             message: data.message,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
-            payload: false
+            payload: false,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
+        analytics.track(`a_error`, {
+          error_page: "ad_TNC",
+          action_status: "failure",
+          campaign_channel: "snapchat",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_ad_TNC",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         errorMessageHandler(err);
 
         return dispatch({
           type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -238,45 +298,58 @@ export const updateUserInfo = (info, navigation) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .put("profile", { ...info })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_update_personal_info`, {
+          source: "open_personal_details",
+          source_action: "a_update_personal_info",
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success ? data.message : null,
+          ...info,
+        });
         if (data.success) {
           setAuthToken(data.accessToken);
           Segment.track("Profile updated Successfully");
           showMessage({
             message: data.message,
             type: "success",
-            position: "top"
+            position: "top",
           });
           const updateInfo = {
             ...info,
-            mobile: info.country_code + info.mobile
+            mobile: info.country_code + info.mobile,
           };
-          navigation.goBack();
-          dispatch({
+          analytics.identify(getState().auth.userid, {
+            ...updateInfo,
+          });
+          navigation.navigate("Dashboard", {
+            source: "open_personal_details",
+            source_action: "a_update_personal_info",
+          });
+          return dispatch({
             type: actionTypes.UPDATE_USERINFO,
-            payload: { ...updateInfo }
+            payload: { ...updateInfo },
           });
         } else {
           showMessage({
             message: data.message,
             type: "info",
-            position: "top"
+            position: "top",
           });
         }
         dispatch({
           type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
-          payload: false
+          payload: false,
         });
         return data.success;
       })
-      .then(success => {
+      .then((success) => {
         if (success) {
           var user = getState().auth.userInfo;
           return dispatch(
@@ -284,12 +357,13 @@ export const updateUserInfo = (info, navigation) => {
               user_id: user.userid,
               name: `${user.firstname} ${user.lastname}`,
               email: user.email,
-              phone: user.mobile
+              phone: user.mobile,
             })
           );
         }
       })
-      .catch(err => {
+
+      .catch((err) => {
         // console.log(
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
@@ -298,7 +372,7 @@ export const updateUserInfo = (info, navigation) => {
 
         dispatch({
           type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -312,22 +386,22 @@ export const updateUserInfo = (info, navigation) => {
  * @returns {Function} the function that calls the axios request 'deleteBusiness/${business_id}' and redux actions of
  * (DELETE_BUSINESS_LOADING,DELETE_BUSINESS_ACCOUNT)
  */
-export const deleteBusinessAccount = business_id => {
-  return dispatch => {
+export const deleteBusinessAccount = (business_id) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: true });
     createBaseUrl()
       .delete(`deleteBusiness/${business_id}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         if (data.success) {
           showMessage({ message: data.message, type: "success" });
           dispatch({
             type: actionTypes.DELETE_BUSINESS_ACCOUNT,
-            payload: business_id
+            payload: business_id,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: false });
 
         errorMessageHandler(err);
@@ -350,20 +424,20 @@ export const deleteBusinessAccount = business_id => {
  * @returns {Function} the function the calls the axios request 'memberaccount'
  */
 
-export const inviteTeamMember = info => {
-  return dispatch => {
+export const inviteTeamMember = (info) => {
+  return (dispatch) => {
     createBaseUrl()
       .post("memberaccount", info)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
         });
         return data;
       })
-      .then(data => data.success && NavigationService.navigate("ManageTeam"))
-      .catch(err => {
+      .then((data) => data.success && NavigationService.navigate("ManageTeam"))
+      .catch((err) => {
         errorMessageHandler(err);
       });
   };
@@ -386,43 +460,54 @@ export const inviteTeamMember = info => {
  * @returns for success navigates back to menu screen
  */
 export const updateBusinessInfo = (userid, info, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
-      .put("businessAccount", {
+      .put("businessaccountV2", {
+        // businessAccount OLD API
         userid,
-        ...info
+        ...info,
       })
-      .then(resp => {
+      .then((resp) => {
         return resp.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
+        });
+        analytics.track(`a_update_buisness_info`, {
+          source_action: "open_business_info",
+          source_action: "a_update_buisness_info",
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          ...info,
         });
         if (data.success) {
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {
+            source: "open_business_info",
+            source_action: "a_update_buisness_info",
+          });
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
-              ...info
-            }
+              ...info,
+            },
           });
         }
         return dispatch({
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: data.success,
-            errorMessage: data.message
-          }
+            errorMessage: data.message,
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log(
         //   "updateBusinessInfo error",
         //   error.response || error.message
@@ -431,8 +516,8 @@ export const updateBusinessInfo = (userid, info, navigation) => {
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response || error.message
-          }
+            errorMessage: error.response || error.message,
+          },
         });
       });
   };
@@ -448,18 +533,18 @@ export const updateBusinessInfo = (userid, info, navigation) => {
  * @returns {Function} the function that calls the axios request 'memberaccount/${member_id}' and redux action of (SET_TEMP_USERINFO)
  */
 
-export const getTempUserInfo = member_id => {
-  return dispatch => {
+export const getTempUserInfo = (member_id) => {
+  return (dispatch) => {
     createBaseUrl()
       .get(`memberaccount/${member_id}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         //if the user tries again to open the same deep link after registering
         //it will return {message:'invalid Account,success:false}
         if (data.success)
           dispatch({
             type: actionTypes.SET_TEMP_USERINFO,
-            payload: data.data
+            payload: data.data,
           });
         else {
           showMessage({ message: data.message, type: "warning" });
@@ -467,11 +552,11 @@ export const getTempUserInfo = member_id => {
           NavigationService.navigate("SwitchLanguage");
           dispatch({
             type: actionTypes.SET_TEMP_USERINFO,
-            payload: null
+            payload: null,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         errorMessageHandler(err);
       });
@@ -492,16 +577,16 @@ export const getTempUserInfo = member_id => {
  *                      and redux actions of (SET_TEAMINV_LOADING)
  */
 
-export const handleTeamInvite = status => {
+export const handleTeamInvite = (status) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.SET_TEAMINV_LOADING, payload: true });
     createBaseUrl()
       .post(`acceptInvitation`, { ...status })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
         });
         if (data.success) {
           dispatch(getBusinessAccounts());
@@ -510,16 +595,16 @@ export const handleTeamInvite = status => {
         dispatch(resetBusinessInvitee());
         dispatch({
           type: actionTypes.SET_TEAMINV_LOADING,
-          payload: false
+          payload: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(err);
         errorMessageHandler(err);
 
         dispatch({
           type: actionTypes.SET_TEAMINV_LOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -532,26 +617,26 @@ export const handleTeamInvite = status => {
  * @param {String} business_id the id of the business to retrieve its members
  * @returns {Function} the function that calls the axios request 'businessMembers', and redux actions of (SET_TEAM_MEMBERS_LOADING,SET_TEAM_MEMBERS)
  */
-export const getTeamMembers = business_id => {
-  return dispatch => {
+export const getTeamMembers = (business_id) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
     createBaseUrl()
       .get(`businessMembers/${business_id}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_TEAM_MEMBERS,
           payload: {
             teamMembers: data.data,
-            pendingTeamInvites: data.pending_invitation_data
-          }
+            pendingTeamInvites: data.pending_invitation_data,
+          },
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getTeamMembers", err);
         dispatch({
           type: actionTypes.SET_TEAM_MEMBERS_LOADING,
-          payload: false
+          payload: false,
         });
         errorMessageHandler(err);
       });
@@ -569,35 +654,35 @@ export const getTeamMembers = business_id => {
  * @returns {Function} the function that calls the axios request 'userRole', and redux actions of (SET_TEAM_MEMBERS_LOADING,SET_UPDATED_TEAM_MEMBER)
  */
 
-export const updateTeamMembers = memberInfo => {
-  return dispatch => {
+export const updateTeamMembers = (memberInfo) => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
     createBaseUrl()
       .put(`userRole`, { ...memberInfo })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
         });
         if (data.success) {
           dispatch({
             type: actionTypes.SET_UPDATED_TEAM_MEMBER,
-            payload: memberInfo
+            payload: memberInfo,
           });
         } else
           dispatch({
             type: actionTypes.SET_TEAM_MEMBERS_LOADING,
-            payload: false
+            payload: false,
           });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("updateTeamMembers", err)
         errorMessageHandler(err);
 
         dispatch({
           type: actionTypes.SET_TEAM_MEMBERS_LOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -614,38 +699,38 @@ export const updateTeamMembers = memberInfo => {
  *                      dispatches getTeamMembers() and redux actions of (SET_TEAM_MEMBERS_LOADING,DELETE_TEAM_MEMBER)
  */
 export const deleteTeamMembers = (memberId, businessid, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
     createBaseUrl()
       .delete(`/businessMembers/${memberId}/${businessid}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
         });
         if (data.success) {
           dispatch({
             type: actionTypes.DELETE_TEAM_MEMBER,
-            payload: { data }
+            payload: { data },
           });
           dispatch(getTeamMembers(businessid));
         } else
           dispatch({
             type: actionTypes.SET_TEAM_MEMBERS_LOADING,
-            payload: false
+            payload: false,
           });
       })
       .then(() => {
         navigation.goBack();
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("deleteTeamMembers", err);
         errorMessageHandler(err);
 
         dispatch({
           type: actionTypes.SET_TEAM_MEMBERS_LOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -658,19 +743,19 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
  * @param {String} inviteeInfo.invitedEmail the email of the invited account
  * @param {String} inviteeInfo.tempInviteId the temp id to send back to the backend
  */
-export const saveBusinessInvitee = inviteeInfo => {
-  return dispatch => {
+export const saveBusinessInvitee = (inviteeInfo) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_INVITEE_INFO,
-      payload: inviteeInfo
+      payload: inviteeInfo,
     });
   };
 };
 
 export const resetBusinessInvitee = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
-      type: actionTypes.RESET_INVITEE_INFO
+      type: actionTypes.RESET_INVITEE_INFO,
     });
   };
 };
@@ -720,52 +805,62 @@ export const resetBusinessInvitee = () => {
  * @param {*} submitNextStep Needed to go to next step of registration
  */
 export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
-      payload: true
+      payload: true,
     });
 
     createBaseUrl()
       .put("businesswebInfo", info)
-      .then(resp => {
+      .then((resp) => {
         return resp.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
         });
         if (data.success) {
           dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
-              ...info
-            }
+              ...info,
+            },
           });
         } else {
           dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
               success: data.success,
-              errorMessage: data.message
-            }
+              errorMessage: data.message,
+            },
           });
         }
-
+        analytics.track(`a_submit_my_website_detail`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: submitNextStep ? true : false,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success && data.message,
+          ...info,
+        });
         return data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.success && submitNextStep) {
           segmentEventTrack("Successfully register website information");
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
           segmentEventTrack("Successfully update website information");
-          NavigationService.navigateBack("MyWebsite");
+          NavigationService.navigateBack("MyWebsite", "MyWebsite", {
+            source: "my_website_detail",
+            source_action: "a_submit_my_website_detail",
+          });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log(
         //   "updateWebInfoForBusiness error",
         //   error.response || error.message
@@ -774,8 +869,8 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response || error.message
-          }
+            errorMessage: error.response || error.message,
+          },
         });
       });
   };
@@ -789,30 +884,30 @@ export const changeBusinessLogo = (
 ) => {
   onToggleModal(true);
 
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
-      payload: true
+      payload: true,
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
-      "Content-Type": "multipart/form-data;"
+      "Content-Type": "multipart/form-data;",
     };
 
     createBaseUrl()
       .post("uploadBusinessLogo", info, {
-        onUploadProgress: ProgressEvent =>
+        onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
+        cancelToken: cancelUplaod.token,
       })
-      .then(resp => {
+      .then((resp) => {
         return resp.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
         });
         onToggleModal(false);
 
@@ -821,8 +916,8 @@ export const changeBusinessLogo = (
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
-              businesslogo: data.businesslogo
-            }
+              businesslogo: data.businesslogo,
+            },
           });
         } else {
           segmentEventTrack(data.message);
@@ -830,12 +925,12 @@ export const changeBusinessLogo = (
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
               success: data.success,
-              errorMessage: data.message
-            }
+              errorMessage: data.message,
+            },
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         loading(0);
         onToggleModal(false);
         // console.log(
@@ -846,8 +941,8 @@ export const changeBusinessLogo = (
           type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
           payload: {
             success: false,
-            errorMessage: error.response || error.message
-          }
+            errorMessage: error.response || error.message,
+          },
         });
       });
   };

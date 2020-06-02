@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -16,15 +17,26 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   title: {
-    fontFamily: "montserrat-medium",
-    color: "#C6C6C6",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 30
+    fontFamily: "montserrat-bold",
+    color: "#5F5F5F",
+    textTransform: "uppercase",
+    fontSize: 19,
+    textAlign: "left",
+    marginTop: 28,
+    paddingHorizontal: "11%"
   },
   container: {
     backgroundColor: "#0000",
     zIndex: 10
+  },
+  noInviteText: {
+    alignSelf: "center",
+    color: "#A496AC",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "center",
+    position: "absolute",
+    bottom: hp(30)
   },
   mainCard: {
     borderTopStartRadius: 30,
@@ -40,21 +52,31 @@ const styles = StyleSheet.create({
   },
   bottomCard: {
     borderRadius: 50,
-    height: hp(9),
-    width: hp(9),
+    height: 54,
+    width: wp(70),
     position: "absolute",
-    right: "5%",
-    justifyContent: "center"
+    alignSelf: "center",
+    bottom: hp(5) > 40 ? hp(7) : hp(12)
+  },
+  bottomCard2: {
+    borderRadius: 50,
+    height: 54,
+    width: wp(70),
+    position: "absolute",
+    alignSelf: "center",
+    bottom: hp(20),
+    borderColor: "#D2C6D8",
+    borderWidth: 1
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
   subtext: {
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingBottom: 20,
-    alignSelf: "center",
-    color: "#fff"
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    // paddingBottom: 20,
+    color: "#A496AC"
+    // color: "#FF790A"
   },
   contentContainer: {
     paddingTop: 20,
@@ -69,12 +91,85 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   customInputStyle: {
-    backgroundColor: "#0001",
+    backgroundColor: "#FFF",
     height: "100%",
-    width: "90%"
+    // borderColor: "#A0A0A0",
+    // borderWidth: 0.2,
+    alignSelf: "center",
+    marginLeft: "10%",
+    marginRight: "10%",
+    elevation: 5
+
+    // marginHorizontal: "10%"
+  },
+  customSearchBarStyle: {
+    marginTop: 20,
+    shadowColor: "#000000",
+    shadowOpacity: 0.16,
+    shadowRadius: 2,
+    elevation: 5,
+    shadowOffset: {
+      height: 3,
+      width: 0
+    }
   },
   flatlistWrapper: { height: hp(55), marginTop: 10 },
-  iconStyle: { color: "#fff", alignSelf: "center" }
+  iconStyle: {
+    fontSize: 15,
+    color: "#fff"
+  },
+  tabView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingHorizontal: "10%"
+  },
+  tabText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#A0A0A0",
+    textTransform: "uppercase"
+  },
+  touchTabView: {
+    marginRight: 15,
+    paddingHorizontal: 5,
+    borderBottomColor: "#0000",
+    paddingBottom: 3,
+    borderBottomWidth: 5,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10
+  },
+  activeTab: {
+    borderBottomColor: "#FF790A",
+    color: "#FF790A"
+  },
+  pendingInviteNumber: {
+    fontFamily: "montserrat-bold-english",
+    color: globalColors.white,
+    fontSize: 10,
+    textAlign: "center"
+  },
+  pendingInviteView: {
+    backgroundColor: globalColors.orange,
+    width: 17,
+    paddingVertical: 3,
+    borderRadius: 30,
+    alignSelf: "flex-end",
+    marginRight: -10,
+    marginBottom: -5
+  },
+  flex: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    flex: 1
+  },
+  addNewBusinessText: {
+    fontSize: 16,
+    color: globalColors.white,
+    fontFamily: "montserrat-medium"
+  }
 });
 
 export default styles;

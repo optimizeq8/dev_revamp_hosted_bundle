@@ -5,9 +5,10 @@ import {
   BackHandler,
   Text,
   Image,
-  ScrollView
+  ScrollView,
+  I18nManager,
 } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
@@ -31,22 +32,22 @@ import segmentEventTrack from "../../segmentEventTrack";
 const regsiterSteps = [
   {
     id: 1,
-    name: "Details"
+    name: "Details",
   },
   {
     id: 2,
-    name: "Products"
+    name: "Products",
   },
   {
     id: 3,
-    name: "Done"
-  }
+    name: "Done",
+  },
 ];
 class OptimizeWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 2
+      activeStep: 2,
     };
   }
   componentWillUnmount() {
@@ -69,17 +70,36 @@ class OptimizeWebsite extends Component {
   };
   componentDidMount() {
     Segment.screen("Website Registration Detail");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_detail`, {
+      source,
+      source_action,
+      new: true,
+      timestamp: new Date().getTime(),
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  submitNextStep = activeStep => {
+  submitNextStep = (activeStep) => {
     this.setState({
-      activeStep
+      activeStep,
     });
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeStep === 1 && this.state.activeStep === 2) {
       Segment.screen("Website Registration Product Select");
+      analytics.track(`my_website_products`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        timestamp: new Date().getTime(),
+      });
     }
   }
 
@@ -92,7 +112,14 @@ class OptimizeWebsite extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <View style={styles.headerCardView}>
-          <TouchableOpacity onPress={this.handleBackPress}>
+          <TouchableOpacity
+            style={[
+              I18nManager.isRTL && {
+                transform: [{ rotateY: "180deg" }, { translateX: -13 }],
+              },
+            ]}
+            onPress={this.handleBackPress}
+          >
             <BackIcon stroke={"#4CA2E0"} width={25} />
           </TouchableOpacity>
           <Text style={styles.headerText}>
@@ -100,20 +127,20 @@ class OptimizeWebsite extends Component {
             {activeStep === 2 && translate("Add Products")}
           </Text>
           <View style={styles.badgeView}>
-            {regsiterSteps.map(step => {
+            {regsiterSteps.map((step) => {
               return (
                 <>
                   <View key={step.id} style={styles.badgeViewInner}>
                     <View
                       style={[
                         styles.stepNoView,
-                        activeStep === step.id && styles.activeStepView
+                        activeStep === step.id && styles.activeStepView,
                       ]}
                     >
                       <Text
                         style={[
                           styles.stepNoText,
-                          activeStep === step.id && styles.activeStepText
+                          activeStep === step.id && styles.activeStepText,
                         ]}
                       >
                         {step.id}
@@ -123,10 +150,10 @@ class OptimizeWebsite extends Component {
                     <Text
                       style={[
                         styles.stepNameText,
-                        activeStep === step.id && styles.activeStepText
+                        activeStep === step.id && styles.activeStepText,
                       ]}
                     >
-                      {step.name}
+                      {translate(step.name)}
                     </Text>
                   </View>
                   {step.id !== 3 && <View style={styles.horzintalLine} />}
@@ -136,10 +163,18 @@ class OptimizeWebsite extends Component {
           </View>
         </View>
         <OnlineStoreHome style={styles.onlineStoreHomeIcon} />
-
+        {activeStep === 2 && (
+          <View style={styles.livePreviewView}>
+            <Text style={styles.livePreviewText}>
+              {translate("Live Preview")}
+            </Text>
+          </View>
+        )}
         <ScrollView
-          contentContainerStyle={[activeStep === 2 && styles.step2OuterView]}
-          style={[styles.outerView, activeStep === 2 && styles.step2OuterView]}
+          contentContainerStyle={[
+            activeStep === 1 && styles.outerView,
+            // activeStep === 2 && styles.step2OuterView
+          ]}
         >
           {activeStep === 1 && (
             <LinearGradient
@@ -148,69 +183,62 @@ class OptimizeWebsite extends Component {
               style={styles.gradient}
             />
           )}
+
           {activeStep === 2 && (
-            <View style={styles.livePreviewView}>
-              <Text style={styles.livePreviewText}>
-                {translate("Live Preview")}
+            <View style={styles.previewOuterView}>
+              <LinearGradient
+                colors={["#9300FF", "#5600CB"]}
+                locations={[0, 0.75]}
+                style={styles.gradient}
+              />
+              <Image
+                style={styles.profileIcon}
+                source={{
+                  uri: this.props.businessLogo,
+                }}
+              />
+              <Text style={styles.bsnNameText}>
+                {this.props.mainBusiness.businessname}
               </Text>
+              <View style={styles.socialMediaView}>
+                <PhoneIcon width={40} styles={styles.socialMediaIcon} />
+
+                <InstagramIcon width={40} styles={styles.socialMediaIcon} />
+
+                <WhatsApp width={40} styles={styles.socialMediaIcon} />
+              </View>
             </View>
           )}
-          <>
-            {activeStep === 2 && (
-              <View style={styles.previewOuterView}>
-                <LinearGradient
-                  colors={["#9300FF", "#5600CB"]}
-                  locations={[0, 0.75]}
-                  style={styles.gradient}
-                />
-                <Image
-                  style={styles.profileIcon}
-                  source={{
-                    uri: this.props.businessLogo
-                  }}
-                />
-                <Text style={styles.bsnNameText}>
-                  {this.props.mainBusiness.businessname}
-                </Text>
-                <View style={styles.socialMediaView}>
-                  <PhoneIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <InstagramIcon width={40} styles={styles.socialMediaIcon} />
-
-                  <WhatsApp width={40} styles={styles.socialMediaIcon} />
-                </View>
-              </View>
-            )}
-            {activeStep === 1 && (
-              <Text style={styles.createWebsiteText}>
-                {translate(
-                  "We’ll create a mini website for your business Just fill in the info below"
-                )}
-              </Text>
-            )}
-            {activeStep === 1 && (
-              <RegisterForm
-                screenProps={this.props.screenProps}
-                submitNextStep={this.submitNextStep}
-              />
-            )}
-            {activeStep === 2 && (
-              <ProductSelect
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-              />
-            )}
-          </>
+          {activeStep === 1 && (
+            <Text style={styles.createWebsiteText}>
+              {translate(
+                "We’ll create a mini website for your business Just fill in the info below"
+              )}
+            </Text>
+          )}
+          {activeStep === 1 && (
+            <RegisterForm
+              screenProps={this.props.screenProps}
+              submitNextStep={this.submitNextStep}
+            />
+          )}
+          {activeStep === 2 && (
+            <ProductSelect
+              source={"my_website_products"}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          )}
         </ScrollView>
       </SafeAreaView>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  businessLogo: state.website.businessLogo
+  businessLogo: state.website.businessLogo,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(OptimizeWebsite);

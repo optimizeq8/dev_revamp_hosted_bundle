@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
-  Modal
+  Modal,
 } from "react-native";
 import axios from "axios";
 import { SafeAreaView } from "react-navigation";
@@ -226,7 +226,7 @@ import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper"
 //         instagramTrafficCampaign
 //       );
 
-//       this.props.navigation.navigate("AdDesign");
+//       this\.props\.navigation\.navigate\("AdDesign"\);
 //     }
 //   };
 
@@ -428,16 +428,13 @@ const mapStateToProps = state => ({
   errorInstaHandle: state.campaignC.errorInstaHandle,
   errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
   productInfoId: state.campaignC.productInfoId,
-  businessLogo: state.campaignC.businessLogo
+  businessLogo: state.campaignC.businessLogo,
 });
 
 const mapDispatchToProps = dispatch => ({
   verifyBusinessUrl: weburl =>
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
   verifyInstagramHandle: insta_handle =>
-    dispatch(actionCreators.verifyInstagramHandle(insta_handle))
+    dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LocationMap);
+export default connect(mapStateToProps, mapDispatchToProps)(LocationMap);

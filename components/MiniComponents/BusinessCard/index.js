@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -50,7 +51,15 @@ class BusinessCard extends Component {
   ];
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
-      segmentEventTrack("Switched business", this.props.business);
+      // segmentEventTrack("Switched business", this.props.business);
+      analytics.track(`a_switch_account`, {
+        prev_businessid: this.props.mainBusiness.businessid,
+        new_businessid: this.props.business.businessid,
+        source: "open_hamburger",
+        source_action: "a_switch_account",
+        timestamp: new Date().getTime(),
+        action_status: "success"
+      });
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
       this.props.rest_google_campaign_data();
@@ -60,16 +69,19 @@ class BusinessCard extends Component {
     //this.props.manageTeam was to be used in BusinessModal to choose multiple businesses but
     //it's not being used anymore until further notice
     let changeState = {
-      color: this.props.manageTeam ? "#C6C6C6" : "#5F5F5F"
+      color: "#c6c6c6",
+      textColor: "#5F5F5F"
     };
     if (
       !this.props.manageTeam &&
       this.props.mainBusiness &&
       this.props.mainBusiness.businessid === this.props.business.businessid
     ) {
-      changeState.color = "#FF9D00";
+      changeState.color = "#FF790A";
+      changeState.textColor = "#FF790A";
     } else if (this.props.isSelected) {
-      changeState.color = "#FF9D00";
+      changeState.color = "#FF790A";
+      changeState.textColor = "#FF790A";
     }
     let BusinessIcon = this.businessCategory.icon;
     return (
@@ -99,7 +111,7 @@ class BusinessCard extends Component {
             <Text
               style={[
                 styles.titletext,
-                { color: changeState.color },
+                { color: changeState.textColor },
                 !isStringArabic(this.props.business.businessname)
                   ? {
                       fontFamily: "montserrat-bold-english"
@@ -109,7 +121,7 @@ class BusinessCard extends Component {
             >
               {this.props.business.businessname}
             </Text>
-            <Text style={[styles.subtext, { color: changeState.color }]}>
+            <Text style={[styles.subtext, { color: changeState.textColor }]}>
               {this.businessCategory && this.businessCategory.label}
             </Text>
           </View>

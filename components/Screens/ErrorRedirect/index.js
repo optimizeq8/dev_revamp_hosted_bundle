@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler, ScrollView } from "react-native";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
@@ -36,6 +37,33 @@ class ErrorRedirect extends Component {
   }
 
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      "payment_processing"
+    );
+    const source_action = this.props.navigation.getParam(
+      "a_payment_processing",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`payment_end`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      campaign_channel:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === ""
+          ? "snapchat"
+          : this.props.channel.toLowerCase(),
+      amount: parseFloat(this.props.navigation.state.params.amount),
+      campaign_ad_type:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "wallet"
+          : this.props.channel === "google"
+          ? "GoogleSEAd"
+          : this.props.adType,
+      payment_status: "failure"
+    });
     Segment.screenWithProperties("Payment Error", {
       category:
         this.props.navigation.getParam("isWallet") === "1"
@@ -146,11 +174,15 @@ class ErrorRedirect extends Component {
                 if (this.props.navigation.getParam("isWallet") === "1") {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: true,
-                    amount: this.props.navigation.getParam("amount", 0)
+                    amount: this.props.navigation.getParam("amount", 0),
+                    source: "payment_mode",
+                    source_action: "a_retry_payment"
                   });
                 } else {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: false,
+                    source: "payment_mode",
+                    source_action: "a_retry_payment",
                     amount: this.props.navigation.getParam("amount", 0)
                   });
                 }
@@ -170,12 +202,19 @@ class ErrorRedirect extends Component {
                 //   this.props.reset_transaction_reducer();
                 // }
                 this.props.navigation.reset(
-                  [NavigationActions.navigate({ routeName: "Dashboard" })],
+                  [
+                    NavigationActions.navigate({
+                      routeName: "Dashboard",
+                      params: {
+                        source: "payment_end",
+                        source_action: "a_go_to_home"
+                      }
+                    })
+                  ],
                   0
                 );
               }}
               style={styles.whiteButton}
-              onPress={() => this.props.navigation.navigate("Dashboard")}
             >
               <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
             </Button>

@@ -74,7 +74,7 @@ class ErrorComponent extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    if (this.props.loading || !this.state.deepLinkChecked) {
+    if (this.props.loading) {
       return (
         <>
           <LinearGradient
@@ -92,7 +92,7 @@ class ErrorComponent extends Component {
         forceInset={{ top: "always", bottom: "never" }}
       >
         <LinearGradient
-          colors={["#6200FF", "#8900FF"]}
+          colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
           style={styles.gradient}
         />

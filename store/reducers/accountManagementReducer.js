@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
 import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 
 import { AsyncStorage, Animated } from "react-native";
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
     street: "",
     building: "",
     office: "",
-    avenue: ""
+    avenue: "",
   },
   errorLoadingBillingAddress: false,
   businessLoadError: false,
@@ -36,7 +37,7 @@ const initialState = {
   businessInvitee: "",
   invitedEmail: "",
   teamInviteLoading: false,
-  pendingTeamInvites: []
+  pendingTeamInvites: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -48,12 +49,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         businessAccounts: arr,
-        loading: false
+        loading: false,
       };
     case actionTypes.ERROR_ADD_BUSINESS_ACCOUNT:
       return {
         ...state,
-        loading: action.payload.loading
+        loading: action.payload.loading,
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       let main = {};
@@ -62,9 +63,16 @@ const reducer = (state = initialState, action) => {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
+        analytics.identify(action.payload.userid, {
+          businessid: main.businessid,
+          businessname: main.businessname,
+          revenue: main.revenue,
+          ltv: main.ltv,
+        });
         Segment.identifyWithTraits(action.payload.userid, {
           businessid: main.businessid,
-          businessname: main.businessname
+          businessname: main.businessname,
+          revenue: main.revenue,
         });
       }
 
@@ -73,13 +81,13 @@ const reducer = (state = initialState, action) => {
         mainBusiness: main,
         businessAccounts: setNewBusinessAccounts,
         businessesLoading: false,
-        businessLoadError: false
+        businessLoadError: false,
       };
     case actionTypes.ERROR_SET_BUSINESS_ACCOUNTS:
       return {
         ...state,
         loading: false,
-        businessLoadError: true
+        businessLoadError: true,
       };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
       let newSetMainBusiness = action.payload;
@@ -89,56 +97,56 @@ const reducer = (state = initialState, action) => {
       );
       return {
         ...state,
-        mainBusiness: newSetMainBusiness
+        mainBusiness: newSetMainBusiness,
       };
     case actionTypes.ERROR_SET_CURRENT_BUSINESS_ACCOUNT:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.CHANGE_PASSWORD:
       return {
         ...state,
         passwordChanged: action.payload.success,
         loadingPasswordChanged: action.payload.loading,
-        progress: new Animated.Value(0)
+        progress: new Animated.Value(0),
       };
     case actionTypes.ERROR_CHANGE_PASSWORD:
       return {
         ...state,
         passwordChanged: action.payload.success,
-        loadingPasswordChanged: false
+        loadingPasswordChanged: false,
       };
     case actionTypes.ADD_ADDRESS:
       return {
         ...state,
         address: action.payload.data,
         savingBillingAddress: action.payload.data.success,
-        progressSaving: new Animated.Value(0)
+        progressSaving: new Animated.Value(0),
       };
     case actionTypes.ERROR_ADD_ADDRESS:
       return {
         ...state,
         savingBillingAddress: false,
-        errorLoadingBillingAddress: true
+        errorLoadingBillingAddress: true,
       };
 
     case actionTypes.GET_BILLING_ADDRESS:
       return {
         ...state,
         address: action.payload, // returns empty address object
-        loadingBillingAddress: false
+        loadingBillingAddress: false,
       };
     case actionTypes.ERROR_GET_BILLING_ADDRESS:
       return {
         ...state,
         address: action.payload,
         loadingBillingAddress: false,
-        errorLoadingBillingAddress: true
+        errorLoadingBillingAddress: true,
       };
     case actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT:
       let newMainBusiness = find(
         state.businessAccounts,
-        bus => bus.businessid === state.mainBusiness.businessid
+        (bus) => bus.businessid === state.mainBusiness.businessid
       );
       if (newMainBusiness) {
         newMainBusiness.snap_ad_account_id = action.payload.data.ad_account_id;
@@ -147,12 +155,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainBusiness: newMainBusiness,
         businessAccounts: [...state.businessAccounts],
-        loading: false
+        loading: false,
       };
     case actionTypes.CREATE_GOOGLE_AD_ACCOUNT:
       var mb = find(
         state.businessAccounts,
-        bus => bus.businessid === state.mainBusiness.businessid
+        (bus) => bus.businessid === state.mainBusiness.businessid
       );
       if (mb) {
         mb.google_account_id = action.payload.data.google_account_id;
@@ -161,44 +169,44 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainBusiness: mb,
         businessAccounts: [...state.businessAccounts],
-        loading: false
+        loading: false,
       };
     case actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT:
       return {
         ...state,
         // mainBusiness: newMainBusiness,
         // businessAccounts: [...state.businessAccounts],
-        loading: action.payload.loading
+        loading: action.payload.loading,
       };
     case actionTypes.ERROR_CREATE_GOOGLE_AD_ACCOUNT:
       return {
         ...state,
         // mainBusiness: newMainBusiness,
         // businessAccounts: [...state.businessAccounts],
-        loading: action.payload.loading
+        loading: action.payload.loading,
       };
     case actionTypes.SET_BILLING_ADDRESS_LOADING:
       return {
         ...state,
         savingBillingAddress: action.payload,
-        errorLoadingBillingAddress: false
+        errorLoadingBillingAddress: false,
       };
     case actionTypes.GET_BILLING_ADDRESS_LOADING:
       return {
         ...state,
         address: { ...initialState.address },
         loadingBillingAddress: action.payload,
-        errorLoadingBillingAddress: false
+        errorLoadingBillingAddress: false,
       };
     case actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     case actionTypes.SET_LOADING_BUSINESS_LIST:
       return {
         ...state,
-        businessesLoading: action.payload
+        businessesLoading: action.payload,
       };
     case actionTypes.UPDATE_MAINBUSINESS:
       let updatedMainBusiness = {
@@ -207,11 +215,11 @@ const reducer = (state = initialState, action) => {
         weburl: action.payload.weburl,
         callnumber: action.payload.callnumber,
         source: action.payload.source,
-        googlemaplink: action.payload.googlemaplink
+        googlemaplink: action.payload.googlemaplink,
       };
     case actionTypes.DELETE_BUSINESS_ACCOUNT:
       let newBusinessAccounts = state.businessAccounts.filter(
-        business => business.businessid !== action.payload
+        (business) => business.businessid !== action.payload
       );
       let mainBusiness = state.mainBusiness;
       //if the business that was deleted is the mainBusiness then reset mainBusiness to the first business in the lsit
@@ -223,23 +231,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         businessAccounts: newBusinessAccounts,
-        mainBusiness: mainBusiness
+        mainBusiness: mainBusiness,
       };
     case actionTypes.DELETE_BUSINESS_LOADING:
       return {
         ...state,
-        deletingBusinessLoading: action.payload
+        deletingBusinessLoading: action.payload,
       };
     //the temp info of the invited user eg. first and last name and email
     case actionTypes.SET_TEMP_USERINFO:
       return {
         ...state,
-        tempUserInfo: action.payload
+        tempUserInfo: action.payload,
       };
     case actionTypes.UPDATE_BUSINESS_INFO_LOADING:
       return {
         ...state,
-        editBusinessInfoLoading: action.payload
+        editBusinessInfoLoading: action.payload,
       };
     case actionTypes.UPDATE_BUSINESS_INFO_SUCCESS:
       return {
@@ -247,14 +255,14 @@ const reducer = (state = initialState, action) => {
         editBusinessInfoLoading: false,
         mainBusiness: {
           ...state.mainBusiness,
-          ...action.payload
-        }
+          ...action.payload,
+        },
       };
     case actionTypes.UPDATE_BUSINESS_INFO_ERROR:
       return {
         ...state,
         editBusinessInfoLoading: false,
-        editBusinessInfoErrorMessage: action.payload.editBusinessErrorMessage
+        editBusinessInfoErrorMessage: action.payload.editBusinessErrorMessage,
       };
     case actionTypes.SET_TEAM_MEMBERS:
       let newMainBusinessRole = state.mainBusiness;
@@ -263,7 +271,7 @@ const reducer = (state = initialState, action) => {
       //if a role of a member is updated by an admin,
       //update the user_role key in mainBusiness whenever they open the team list or refreash the list
       mainBusinessUser = action.payload.teamMembers.find(
-        member => member.userid === state.mainBusiness.userid
+        (member) => member.userid === state.mainBusiness.userid
       );
       if (mainBusinessUser)
         newMainBusinessRole["user_role"] = mainBusinessUser.user_role;
@@ -274,12 +282,12 @@ const reducer = (state = initialState, action) => {
         agencyTeamMembers: action.payload.teamMembers,
         mainBusiness: { ...state.mainBusiness, ...newMainBusinessRole },
         pendingTeamInvites: pendingTeamInvites,
-        loadingTeamMembers: false
+        loadingTeamMembers: false,
       };
     case actionTypes.SET_UPDATED_TEAM_MEMBER:
       // update the userrole key in agencyTeamMembers when a member is updated
       //so they don't have to refresh the list again
-      let newTeamMembers = state.agencyTeamMembers.map(member => {
+      let newTeamMembers = state.agencyTeamMembers.map((member) => {
         if (member.userid === action.payload.userid) {
           return { ...member, user_role: action.payload.userrole };
         } else {
@@ -295,16 +303,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         agencyTeamMembers: [...newTeamMembers],
         mainBusiness: { ...state.mainBusiness, ...updatedMainBusinessRole },
-        loadingTeamMembers: false
+        loadingTeamMembers: false,
       };
     case actionTypes.DELETE_TEAM_MEMBER:
       let filteredAgencyTeamMembers = state.agencyTeamMembers.filter(
-        memebr => memebr.userid !== action.payload.userid
+        (memebr) => memebr.userid !== action.payload.userid
       );
       return {
         ...state,
         agencyTeamMembers: [...filteredAgencyTeamMembers],
-        loadingTeamMembers: false
+        loadingTeamMembers: false,
       };
     case actionTypes.SET_TEAM_MEMBERS_LOADING:
       return { ...state, loadingTeamMembers: action.payload };
@@ -312,14 +320,14 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SAVE_INVITEE_INFO:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case actionTypes.RESET_INVITEE_INFO:
       return {
         ...state,
         businessInvitee: "",
         tempInviteId: "",
-        invitedEmail: ""
+        invitedEmail: "",
       };
     case actionTypes.SET_TEAMINV_LOADING:
       return { ...state, teamInviteLoading: action.payload };

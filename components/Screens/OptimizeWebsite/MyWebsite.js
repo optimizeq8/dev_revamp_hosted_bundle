@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
@@ -29,6 +29,7 @@ import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
 
 import Header from "../../MiniComponents/Header";
+import Website from "../../MiniComponents/InputFieldNew/Website";
 import ProductSelect from "./ProductSelect";
 import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
@@ -63,13 +64,29 @@ class MyWebsite extends Component {
       businessid: this.props.mainBusiness.businessid,
       businessname: this.props.mainBusiness.businessname
     });
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_my_website`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime()
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   goToManageProducts = () => {
     this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    this.props.navigation.navigate("WebsiteSetting");
+    this.props.navigation.navigate("WebsiteSetting", {
+      source: "open_my_website",
+      source_action: "a_open_my_website_detail"
+    });
   };
   goBack = () => {
     this.props.navigation.navigate("Dashboard");
@@ -159,24 +176,39 @@ class MyWebsite extends Component {
               {translate("Change Logo")}
             </Text>
           </TouchableOpacity>
-
-          <View style={styles.labelView}>
-            <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
-          </View>
           <View style={styles.weburlView}>
-            <Text selectable style={styles.weburl}>
-              {website}
-            </Text>
+            <Website
+              website={website}
+              disabled={true}
+              screenProps={this.props.screenProps}
+            />
             <TouchableOpacity
+              style={styles.copyIcon2}
               onPress={() => {
+                analytics.track(`a_copy_my_website_url`, {
+                  source: "open_my_website",
+                  source_action: "a_copy_my_website_url",
+                  weburl: website
+                });
                 Clipboard.setString(website);
               }}
             >
               <CopyIcon style={styles.copyIcon} />
             </TouchableOpacity>
+
+            {/* <View style={styles.colView}>
+              <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
+              <Text selectable style={styles.weburl}>
+                {website}
+              </Text>
+            </View> */}
           </View>
 
-          <ProductSelect edit={true} screenProps={this.props.screenProps} />
+          <ProductSelect
+            source={"open_my_website"}
+            edit={true}
+            screenProps={this.props.screenProps}
+          />
         </ScrollView>
         <LoadingModal
           videoUrlLoading={false}

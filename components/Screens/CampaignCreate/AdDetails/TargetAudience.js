@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   MaskedViewIOS,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -30,7 +30,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import segmentEventTrack from "../../../segmentEventTrack";
 export class TargetAudience extends Component {
   state = { scrollY: 1, advance: true };
-  handleFading = event => {
+  handleFading = (event) => {
     let y = event.nativeEvent.contentOffset.y;
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
   };
@@ -49,13 +49,13 @@ export class TargetAudience extends Component {
       segmentEventTrack(
         "Error occured on button click to open sidemenu for " + selector,
         {
-          campaign_interest_error: "Please select a country first"
+          campaign_interest_error: "Please select a country first",
         }
       );
       showMessage({
         message: translate("Please select a country first"),
         position: "top",
-        type: "warning"
+        type: "warning",
       });
     } else if (this.props.startEditing)
       this.props._renderSideMenu(selector, option);
@@ -71,7 +71,7 @@ export class TargetAudience extends Component {
       OSType,
       mainState,
       editCampaign,
-      startEditing
+      startEditing,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -89,12 +89,12 @@ export class TargetAudience extends Component {
           <ScrollView
             scrollEventThrottle={100}
             onScroll={this.handleFading}
-            ref={ref => (this.scrollView = ref)}
+            ref={(ref) => (this.scrollView = ref)}
             indicatorStyle="white"
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? "100%" : "50%" }
+              { height: editCampaign ? heightPercentageToDP(70) : "50%" },
             ]}
           >
             <TouchableOpacity
@@ -122,8 +122,7 @@ export class TargetAudience extends Component {
                 ))}
             </TouchableOpacity>
 
-            {((!startEditing && editCampaign && regions_names) ||
-              (!editCampaign && mainState.showRegions)) && (
+            {mainState.showRegions ? ( //for campaign creation
               <TouchableOpacity
                 onPress={() => this.callFunction("regions")}
                 style={styles.targetTouchable}
@@ -142,8 +141,8 @@ export class TargetAudience extends Component {
                           paddingRight:
                             Platform.OS === "android" && I18nManager.isRTL
                               ? 15
-                              : 0
-                        }
+                              : 0,
+                        },
                       ]}
                     >
                       {translate("Regions")}
@@ -164,7 +163,7 @@ export class TargetAudience extends Component {
                     <PlusCircleIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
-            )}
+            ) : null}
             <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("gender")}
@@ -176,7 +175,7 @@ export class TargetAudience extends Component {
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
                     {translate(
-                      gender.find(r => {
+                      gender.find((r) => {
                         if (r.value === targeting.demographics[0].gender)
                           return r;
                       }).label
@@ -185,12 +184,13 @@ export class TargetAudience extends Component {
                 </View>
               </View>
               <View style={globalStyles.column}>
-                {targeting.demographics[0].gender === "" ||
-                (startEditing && targeting.demographics[0].gender) ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                )}
+                {startEditing &&
+                  (targeting.demographics[0].gender === "" ||
+                  targeting.demographics[0].gender ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  ))}
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -209,7 +209,8 @@ export class TargetAudience extends Component {
                   <Text style={styles.menutext}>{translate("Age")}</Text>
                   <Text style={styles.menudetails}>
                     {targeting.demographics[0].min_age} -{" "}
-                    {targeting.demographics[0].max_age}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
                   </Text>
                 </View>
               </View>
@@ -297,7 +298,7 @@ export class TargetAudience extends Component {
                   </Text>
                   <Text style={styles.menudetails}>
                     {translate(
-                      OSType.find(r => {
+                      OSType.find((r) => {
                         if (r.value === targeting.devices[0].os_type) return r;
                       }).label
                     )}
@@ -305,59 +306,58 @@ export class TargetAudience extends Component {
                 </View>
               </View>
 
-              {targeting.devices[0].os_type === "" ||
-              (startEditing && targeting.devices[0].os_type) ? (
-                <GreenCheckmarkIcon width={30} height={30} />
-              ) : (
-                <PlusCircleIcon width={30} height={30} />
-              )}
+              {startEditing &&
+                (targeting.devices[0].os_type === "" ||
+                targeting.devices[0].os_type ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
             </TouchableOpacity>
 
-            {(startEditing &&
+            {((!startEditing &&
               editCampaign &&
               targeting.devices[0].os_version_min) ||
               ((!editCampaign || startEditing) &&
-                targeting.devices[0].os_type !== "" && (
-                  <TouchableOpacity
-                    disabled={loading}
-                    onPress={() =>
-                      this.callFunction("selectors", "deviceVersions")
-                    }
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <Icon
-                        name="versions"
-                        type="Octicons"
-                        width={25}
-                        height={25}
-                        style={{
-                          color: globalColors.orange,
-                          right: 2
-                        }}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("OS Versions")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {targeting.devices[0].os_version_min +
-                            ", " +
-                            targeting.devices[0].os_version_max}
-                        </Text>
-                      </View>
-                    </View>
+                targeting.devices[0].os_type !== "")) && (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("selectors", "deviceVersions")}
+                style={styles.targetTouchable}
+              >
+                <View style={[globalStyles.row, styles.flex]}>
+                  <Icon
+                    name="versions"
+                    type="Octicons"
+                    width={25}
+                    height={25}
+                    style={{
+                      color: globalColors.orange,
+                      right: 2,
+                    }}
+                  />
+                  <View style={[globalStyles.column, styles.flex]}>
+                    <Text style={styles.menutext}>
+                      {translate("OS Versions")}
+                    </Text>
+                    <Text style={styles.menudetails}>
+                      {targeting.devices[0].os_version_min +
+                        ", " +
+                        targeting.devices[0].os_version_max}
+                    </Text>
+                  </View>
+                </View>
 
-                    {startEditing &&
-                      (targeting.devices[0].os_version_min !== "" ? (
-                        <GreenCheckmarkIcon width={30} height={30} />
-                      ) : (
-                        <PlusCircleIcon width={30} height={30} />
-                      ))}
-                  </TouchableOpacity>
-                ))}
+                {startEditing &&
+                  (targeting.devices[0].os_version_min !== "" ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  ))}
+              </TouchableOpacity>
+            )}
 
-            {((startEditing &&
+            {((!startEditing &&
               editCampaign &&
               targeting.devices[0].marketing_name.length > 0) ||
               !editCampaign ||
@@ -417,7 +417,7 @@ export class TargetAudience extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 

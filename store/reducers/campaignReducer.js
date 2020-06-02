@@ -32,29 +32,29 @@ const initialState = {
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",
       destination: "BLANK",
-      attachment: "BLANK"
+      attachment: "BLANK",
     },
     {
       id: 1,
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",
       destination: "BLANK",
-      attachment: "BLANK"
+      attachment: "BLANK",
     },
     {
       id: 2,
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",
       destination: "BLANK",
-      attachment: "BLANK"
+      attachment: "BLANK",
     },
     {
       id: 3,
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",
       destination: "BLANK",
-      attachment: "BLANK"
-    } //Last object is an add button to add more story snap cards
+      attachment: "BLANK",
+    }, //Last object is an add button to add more story snap cards
   ],
   loadingStoryAdsArray: [],
   coverLoading: false,
@@ -77,7 +77,7 @@ const initialState = {
   storyAdAttachment: {
     destination: "BLANK",
     call_to_action: { labe: "BLANK", value: "BLANK" },
-    attachment: "BLANK"
+    attachment: "BLANK",
   },
   uploadMediaDifferentDeviceURL: "",
   uploadMediaDifferentDeviceAccessCode: "",
@@ -99,7 +99,7 @@ const initialState = {
   oldTempAdType: "",
   oldTempData: null,
   languagesListLoading: false,
-  languagesListError: false
+  languagesListError: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -107,12 +107,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AD_TYPE:
       return {
         ...state,
-        adType: action.payload
+        adType: action.payload,
       };
     case actionTypes.SET_COLLECTION_AD_LINK_FORM:
       return {
         ...state,
-        collectionAdLinkForm: action.payload
+        collectionAdLinkForm: action.payload,
       };
     case actionTypes.SET_AD_OBJECTIVE:
       return {
@@ -124,23 +124,23 @@ const reducer = (state = initialState, action) => {
         incompleteCampaign: true,
         //saves this part just in case anything is changed in AdObjective and not submitting
         oldTempData: { ...state.data, ...action.payload.data },
-        oldTempAdType: state.adType
+        oldTempAdType: state.adType,
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
         ...state,
         minValueBudget: action.payload.minValueBudget,
-        maxValueBudget: action.payload.maxValueBudget
+        maxValueBudget: action.payload.maxValueBudget,
       };
     case actionTypes.ERROR_SET_AD_OBJECTIVE:
       return {
         ...state,
-        loadingObj: false
+        loadingObj: false,
       };
     case actionTypes.SET_AD_LOADING_COLLECTION_MEDIA:
       return {
         ...state,
-        collectionLoader: action.payload
+        collectionLoader: action.payload,
       };
     case actionTypes.SET_AD_COLLECTION_MEDIA:
       let arr = state.collectionAdMedia;
@@ -148,12 +148,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         collectionLoader: false,
-        collectionAdMedia: [...arr]
+        collectionAdMedia: [...arr],
       };
     case actionTypes.ERROR_SET_AD_COLLECTION_MEDIA:
       return {
         ...state,
-        collectionLoader: false
+        collectionLoader: false,
       };
     case actionTypes.SET_AD_DESIGN:
       return {
@@ -163,7 +163,7 @@ const reducer = (state = initialState, action) => {
           ...action.payload.data,
           call_to_action: {
             value: action.payload.data.call_to_action,
-            label: action.payload.data.call_to_action.replace(/_/g, " ")
+            label: action.payload.data.call_to_action.replace(/_/g, " "),
           },
           attachment:
             action.payload.data.attachment !== "BLANK"
@@ -171,11 +171,11 @@ const reducer = (state = initialState, action) => {
               : action.payload.data.attachment,
           //added checking if data is not null becuase it was throwing an error for
           //re-uploading for rejected ads
-          media: state.data && state.data.media
+          media: state.data && state.data.media,
         },
         message: action.payload.message,
 
-        loadingDesign: false
+        loadingDesign: false,
       };
     case actionTypes.SAVE_CAMPAIGN_INFO:
       let resetSwipeUps = {};
@@ -184,10 +184,10 @@ const reducer = (state = initialState, action) => {
           attachment: "BLANK",
           call_to_action: {
             label: "BLANK",
-            value: "BLANK"
+            value: "BLANK",
           },
           destination: "BLANK",
-          reset: false
+          reset: false,
         };
       }
       return {
@@ -195,34 +195,34 @@ const reducer = (state = initialState, action) => {
         data: {
           ...state.data,
           ...action.payload,
-          ...resetSwipeUps
+          ...resetSwipeUps,
         },
         storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? //If objective is changed then AdDesign should be the current step again to set the swipe ups
               state.currentCampaignSteps.filter(
-                step => step !== "AdDetails" && step !== "AdPaymentReview"
+                (step) => step !== "AdDetails" && step !== "AdPaymentReview"
               )
             : []
           : state.currentCampaignSteps,
         oldTempData: {
           ...state.data,
           ...action.payload,
-          ...resetSwipeUps
-        }
+          ...resetSwipeUps,
+        },
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {
         ...state,
-        loadingDesign: false
+        loadingDesign: false,
       };
 
     case actionTypes.SET_VIDEO_URL:
       return {
         ...state,
         videoUrl: action.payload.media_upload_url,
-        videoUrlLoading: !action.payload.success
+        videoUrlLoading: !action.payload.success,
       };
     // case actionTypes.HANDLE_STORY_VIDEO:
     //   let videoStoryAds = state.storyAdsArray;
@@ -246,7 +246,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_VIDEO_URL_LOADING:
       return {
         ...state,
-        videoUrlLoading: action.payload
+        videoUrlLoading: action.payload,
       };
     case actionTypes.SET_AD_DETAILS:
       return {
@@ -258,12 +258,12 @@ const reducer = (state = initialState, action) => {
         regionNames: action.payload.names.regionNames,
         message: action.payload.data.message,
         kdamount: action.payload.data.kdamount,
-        loadingDetail: false
+        loadingDetail: false,
       };
     case actionTypes.ERROR_SET_AD_DETAILS:
       return {
         ...state,
-        loadingDetail: false
+        loadingDetail: false,
       };
 
     case actionTypes.UPDATE_CAMPAIGN_DETAILS:
@@ -271,107 +271,107 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
-        kdamount: action.payload.kdamount
+        kdamount: action.payload.kdamount,
       };
     case actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.END_CAMPAIGN:
       return {
         ...state,
-        campaignEnded: action.payload
+        campaignEnded: action.payload,
       };
     case actionTypes.SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,
-        average_reach: action.payload.average_reach
+        average_reach: action.payload.average_reach,
       };
     case actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,
-        average_reach: 0
+        average_reach: 0,
       };
 
     case actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE:
       return {
         ...state,
-        total_reach: (state.average_reach / action.payload.average_reach) * 100
+        total_reach: (state.average_reach / action.payload.average_reach) * 100,
       };
     case actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE:
       return {
         ...state,
-        total_reach: 0
+        total_reach: 0,
       };
     case actionTypes.SET_INTERESTS:
       return {
         ...state,
-        interests: action.payload
+        interests: action.payload,
       };
     case actionTypes.ERROR_SET_INTERESTS:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.SET_DEVICE_MAKES:
       return {
         ...state,
-        deviceBrands: action.payload
+        deviceBrands: action.payload,
       };
     case actionTypes.ERROR_SET_DEVICE_MAKES:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.SET_IOS_VERSIONS:
       return {
         ...state,
-        isoVersions: action.payload
+        isoVersions: action.payload,
       };
     case actionTypes.ERROR_SET_IOS_VERSIONS:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.SET_ANDROID_VERSIONS:
       return {
         ...state,
-        androidVersions: action.payload
+        androidVersions: action.payload,
       };
     case actionTypes.ERROR_SET_ANDROID_VERSIONS:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.SET_AD_LOADING_OBJ:
       return {
         ...state,
-        loadingObj: action.payload
+        loadingObj: action.payload,
       };
     case actionTypes.SET_AD_LOADING_DESIGN:
       return {
         ...state,
-        loadingDesign: action.payload
+        loadingDesign: action.payload,
       };
     case actionTypes.SET_AD_LOADING_DETAIL:
       return {
         ...state,
-        loadingDetail: action.payload
+        loadingDetail: action.payload,
       };
     case actionTypes.SET_COVER_LOADING_DESIGN:
       return {
         ...state,
-        coverLoading: action.payload
+        coverLoading: action.payload,
       };
     case actionTypes.ERROR_SET_COVER_DESIGN:
       return {
         ...state,
-        coverLoading: false
+        coverLoading: false,
       };
     case actionTypes.SET_COVER_DESIGN:
       return {
         ...state,
         storyAdCover: {
           ...action.payload.data,
-          preview_media_id: action.payload.preview_media_id
+          preview_media_id: action.payload.preview_media_id,
         },
-        coverLoading: false
+        coverLoading: false,
       };
     case actionTypes.ADD_SNAP_CARD:
       let newSnapCard = {
@@ -379,14 +379,14 @@ const reducer = (state = initialState, action) => {
         call_to_action: { label: "BLANK", value: "BLANK" },
         media: "//",
         destination: "BLANK",
-        attachment: "BLANK"
+        attachment: "BLANK",
       };
 
       let newStoryAdsArray = state.storyAdsArray;
       newStoryAdsArray.push(newSnapCard);
       return {
         ...state,
-        storyAdsArray: [...newStoryAdsArray]
+        storyAdsArray: [...newStoryAdsArray],
       };
     case actionTypes.SET_STORYADMEDIA_DESIGN:
       let storyAds = state.storyAdsArray;
@@ -394,7 +394,7 @@ const reducer = (state = initialState, action) => {
         ...storyAds[action.payload.data.story_order],
         ...action.payload.data,
         ...action.payload.card,
-        uploaded: true
+        uploaded: true,
       };
       let loadingAr = state.loadingStoryAdsArray;
       loadingAr[action.payload.data.story_order] = false;
@@ -402,21 +402,21 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingStoryAdsArray: [...loadingAr],
-        storyAdsArray: [...storyAds]
+        storyAdsArray: [...storyAds],
       };
     case actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED:
       let storyAdsUploaded = state.storyAdsArray;
       storyAdsUploaded[action.payload.card.index] = {
         ...action.payload.card,
-        uploaded: false
+        uploaded: false,
       };
       return {
         ...state,
-        storyAdsArray: [...storyAdsUploaded]
+        storyAdsArray: [...storyAdsUploaded],
       };
     case actionTypes.DELETE_STORY_AD_CARD:
       let deleteStoryAds = state.storyAdsArray;
-      deleteStoryAds = deleteStoryAds.filter(ad => {
+      deleteStoryAds = deleteStoryAds.filter((ad) => {
         if (
           (action.payload.card.hasOwnProperty("item") &&
             action.payload.card.item.id !== ad.id) ||
@@ -430,46 +430,46 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingStoryAdsArray: [...deletedLoadingAr],
-        storyAdsArray: [...deleteStoryAds]
+        storyAdsArray: [...deleteStoryAds],
       };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
       let storyPro = state.storyAdsArray;
       storyPro[action.payload.index] = {
         ...storyPro[action.payload.index],
-        progress: action.payload.progress
+        progress: action.payload.progress,
       };
       ar[action.payload.index] = action.payload.uploading;
       return {
         ...state,
         loadingStoryAdsArray: [...ar],
-        storyAdsArray: [...storyPro]
+        storyAdsArray: [...storyPro],
       };
     case actionTypes.SET_DELETE_CARD_LOADING:
       let deleteLoadAr = state.loadingStoryAdsArray;
       deleteLoadAr[action.payload.index] = action.payload.deleteing;
       return {
         ...state,
-        loadingStoryAdsArray: [...deleteLoadAr]
+        loadingStoryAdsArray: [...deleteLoadAr],
       };
     case actionTypes.SET_LANGUAGE_LIST:
       return {
         ...state,
         languagesList: action.payload.data,
-        languagesListLoading: action.payload.loading
+        languagesListLoading: action.payload.loading,
       };
     case actionTypes.ERROR_SET_LANGUAGE_LIST:
       return {
         ...state,
         languagesList: [],
         languagesListLoading: false,
-        languagesListError: true
+        languagesListError: true,
       };
     case actionTypes.RESET_COLLECTIONS:
       return {
         ...state,
         collectionLoader: false,
-        collectionAdMedia: []
+        collectionAdMedia: [],
       };
     case actionTypes.RESET_CAMPAING_INFO:
       let resetAdType = action.payload;
@@ -528,29 +528,29 @@ const reducer = (state = initialState, action) => {
             call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
             destination: "BLANK",
-            attachment: "BLANK"
+            attachment: "BLANK",
           },
           {
             id: 1,
             call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
             destination: "BLANK",
-            attachment: "BLANK"
+            attachment: "BLANK",
           },
           {
             id: 2,
             call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
             destination: "BLANK",
-            attachment: "BLANK"
+            attachment: "BLANK",
           },
           {
             id: 3,
             call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
             destination: "BLANK",
-            attachment: "BLANK"
-          }
+            attachment: "BLANK",
+          },
         ],
         loadingStoryAdsArray: [],
         coverLoading: false,
@@ -561,15 +561,15 @@ const reducer = (state = initialState, action) => {
         storyAdAttachment: {
           destination: "BLANK",
           call_to_action: { labe: "BLANK", value: "BLANK" },
-          attachment: "BLANK"
+          attachment: "BLANK",
         },
         incompleteCampaign: incompleteCampaign,
-        currentCampaignSteps: currentCampaignSteps
+        currentCampaignSteps: currentCampaignSteps,
       };
     case actionTypes.VERIFY_BUSINESSURL:
       return {
         ...state,
-        weburlAvalible: action.payload.success
+        weburlAvalible: action.payload.success,
       };
     case actionTypes.SET_REJECTED_STORYADS:
       let rejAds = action.payload;
@@ -590,15 +590,15 @@ const reducer = (state = initialState, action) => {
           id: ad.story_id,
           call_to_action: {
             label: ad.call_to_action.replace("_", " "),
-            value: ad.call_to_action
+            value: ad.call_to_action,
           },
-          attachment: atch
+          attachment: atch,
         };
       });
       oldStoryAdAttachment = {
         attachment: oldStoryAdsArray[0].attachment,
         call_to_action: oldStoryAdsArray[0].call_to_action,
-        destination: oldStoryAdsArray[0].destination
+        destination: oldStoryAdsArray[0].destination,
       };
       oldStoryAdsArray = [
         ...oldStoryAdsArray,
@@ -609,13 +609,13 @@ const reducer = (state = initialState, action) => {
           call_to_action: { label: "BLANK", value: "BLANK" },
           media: "//",
           destination: "BLANK",
-          attachment: "BLANK"
-        }
+          attachment: "BLANK",
+        },
       ];
       return {
         ...state,
         storyAdsArray: oldStoryAdsArray,
-        storyAdAttachment: oldStoryAdAttachment
+        storyAdAttachment: oldStoryAdAttachment,
       };
     case actionTypes.SET_REJECTED_COLLECTIONADS:
       let rejColAds = action.payload.collectionAdMedia;
@@ -635,19 +635,19 @@ const reducer = (state = initialState, action) => {
       oldData = {
         ...oldData,
         attachment: atch,
-        call_to_action: collCall_to_action
+        call_to_action: collCall_to_action,
       };
       return {
         ...state,
         collectionAdMedia: rejColAds,
         collectionAdLinkForm:
           rejColAds[0].interaction_type === "WEB_VIEW" ? 1 : 2,
-        data: oldData
+        data: oldData,
       };
     case actionTypes.SET_REJECTED_ADTYPE:
       return {
         ...state,
-        adType: action.payload
+        adType: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_POST_LOADING:
       return {
@@ -659,7 +659,7 @@ const reducer = (state = initialState, action) => {
         businessLogo: "",
         instaHandleId: null,
         instaHasNextPage: null,
-        instaEndCursor: null
+        instaEndCursor: null,
       };
     case actionTypes.SET_INSTAGRAM_POST:
       return {
@@ -669,7 +669,7 @@ const reducer = (state = initialState, action) => {
         instagramPostLoading: false,
         instaHandleId: action.payload.instaHandleId,
         instaHasNextPage: action.payload.instaHasNextPage,
-        instaEndCursor: action.payload.instaEndCursor
+        instaEndCursor: action.payload.instaEndCursor,
       };
     case actionTypes.ERROR_GET_INSTAGRAM_POST:
       return {
@@ -682,24 +682,24 @@ const reducer = (state = initialState, action) => {
         // errorInstaHandle: true,
         errorInstaHandle: action.payload.error,
         instagramPostLoading: false,
-        errorInstaHandleMessage: action.payload.errorMessage
+        errorInstaHandleMessage: action.payload.errorMessage,
       };
     case actionTypes.SAVE_WEB_PRODUCTS_LOADING:
       return {
         ...state,
-        savingWebProducts: action.payload
+        savingWebProducts: action.payload,
       };
     case actionTypes.SUCCESS_SAVE_WEB_PRODUCTS:
       return {
         ...state,
         // savingWebProducts: false,
         productInfoId: action.payload.id,
-        selectedInstagramProducts: action.payload.webproducts
+        selectedInstagramProducts: action.payload.webproducts,
       };
     case actionTypes.ERROR_SAVE_WEB_PRODUCTS:
       return {
         ...state,
-        savingWebProducts: false
+        savingWebProducts: false,
       };
     case actionTypes.GET_WEB_PRODUCTS:
       return {
@@ -707,7 +707,7 @@ const reducer = (state = initialState, action) => {
         getWebProductsLoading: false,
         selectedInstagramProducts: JSON.parse(action.payload.webproducts),
         productInfoId: action.payload.id,
-        errorGetWebProducts: false
+        errorGetWebProducts: false,
       };
     case actionTypes.ERROR_GET_WEB_PRODUCTS:
       return {
@@ -715,13 +715,13 @@ const reducer = (state = initialState, action) => {
         selectedInstagramProducts: action.payload.webproducts,
         productInfoId: action.payload.id,
         errorGetWebProducts: action.payload.error,
-        getWebProductsLoading: false
+        getWebProductsLoading: false,
       };
 
     case actionTypes.GET_WEB_PRODUCTS_LOADING: {
       return {
         ...state,
-        getWebProductsLoading: action.payload
+        getWebProductsLoading: action.payload,
       };
     }
     case actionTypes.STORYAD_ATTACHMENT:
@@ -735,27 +735,27 @@ const reducer = (state = initialState, action) => {
             action.payload.attachment.longformvideo_media,
           [Object.keys(action.payload.attachment)[1]]:
             action.payload.attachment.longformvideo_media_type,
-          rejectionLongVidUpload: true
+          rejectionLongVidUpload: true,
         };
       } else {
         sAttachment = { ...action.payload };
       }
       return {
         ...state,
-        storyAdAttachment: sAttachment
+        storyAdAttachment: sAttachment,
       };
     case actionTypes.GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
       return {
         ...state,
         uploadMediaDifferentDeviceURL: action.payload.weblink,
-        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode
+        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode,
       };
     case actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
       return {
         ...state,
         uploadMediaDifferentDeviceURL: action.payload.weblink,
         uploadMediaDifferentDeviceAccessCode: action.payload.accessCode,
-        errorUploadMediaDiffernetDevice: action.payload.error
+        errorUploadMediaDiffernetDevice: action.payload.error,
       };
     case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA:
       return {
@@ -766,29 +766,29 @@ const reducer = (state = initialState, action) => {
         //   type: action.payload.mediaTypeWebLink
         // },
         mediaWebLink: action.payload.mediaWebLink,
-        mediaTypeWebLink: action.payload.mediaTypeWebLink
+        mediaTypeWebLink: action.payload.mediaTypeWebLink,
       };
     case actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA:
       return {
         ...state,
         mediaWebLink: "",
         mediaTypeWebLink: "",
-        webUploadLinkMediaLoading: false
+        webUploadLinkMediaLoading: false,
       };
     case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING:
       return {
         ...state,
-        webUploadLinkMediaLoading: action.payload
+        webUploadLinkMediaLoading: action.payload,
       };
     case actionTypes.SAVE_CAMPAIGN_STEP:
       return {
         ...state,
-        currentCampaignSteps: action.payload
+        currentCampaignSteps: action.payload,
       };
     case actionTypes.SET_CAMPAIGN_IN_PROGRESS:
       return {
         ...state,
-        campaignProgressStarted: action.payload
+        campaignProgressStarted: action.payload,
       };
     case actionTypes.GET_MORE_INSTAGRAM_POST:
       const list = [...state.instagramPostList, ...action.payload.imagesList];
@@ -798,31 +798,31 @@ const reducer = (state = initialState, action) => {
         instaHasNextPage: action.payload.instaHasNextPage,
         instaEndCursor: action.payload.instaEndCursor,
         instagramPostList: list,
-        loadingMoreInstaPost: false
+        loadingMoreInstaPost: false,
       };
     case actionTypes.ERROR_GET_MORE_INSTAGRAM_POST:
       return {
         ...state,
         instaHasNextPage: null,
         instaEndCursor: null,
-        loadingMoreInstaPost: false
+        loadingMoreInstaPost: false,
       };
     case actionTypes.LOADING_MORE_INSTAGRAM_POST: {
       return {
         ...state,
-        loadingMoreInstaPost: action.payload
+        loadingMoreInstaPost: action.payload,
       };
     }
     case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS: {
       return {
         ...state,
-        mediaStoryAdsDifferentDevice: [...action.payload.adsArray]
+        mediaStoryAdsDifferentDevice: [...action.payload.adsArray],
       };
     }
     case actionTypes.UPDATE_STORY_ADS_ARRAY: {
       return {
         ...state,
-        storyAdsArray: [...action.payload]
+        storyAdsArray: [...action.payload],
       };
     }
     case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_COLLECTION_ADS: {
@@ -831,26 +831,26 @@ const reducer = (state = initialState, action) => {
         collectionAdMediaLinks: [...action.payload.collectionMediaArray],
         collectionMainMediaTypeWebLink:
           action.payload.collectionMainMediaTypeWebLink,
-        collectionMainMediaWebLink: action.payload.collectionMainMediaWebLink
+        collectionMainMediaWebLink: action.payload.collectionMainMediaWebLink,
       };
     }
     case actionTypes.SET_COLLECTION_AD_ARRAY: {
       return {
         ...state,
-        collectionAdMedia: [...action.payload]
+        collectionAdMedia: [...action.payload],
       };
     }
     case actionTypes.OVERWRITE_OBJ_DATA:
       return {
         ...state,
-        data: { ...state.data, ...state.oldTempData, ...action.payload }
+        data: { ...state.data, ...state.oldTempData, ...action.payload },
       };
     case actionTypes.GET_LANGUAGES_LOADING: {
       return {
         ...state,
         languagesList: [],
         languagesListLoading: action.payload,
-        languagesListError: false
+        languagesListError: false,
       };
     }
     default:
