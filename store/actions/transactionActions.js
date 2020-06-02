@@ -311,16 +311,28 @@ export const removeWalletAmount = (
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_remove_wallet_amount`, {
+          source: "payment_mode",
+          source_action: "a_remove_wallet_amount",
+          action_status: data.success ? "success" : "failure",
+          campaign_id,
+          campaign_channel:
+            getState().transA.channel === "google" ? "google" : "snapchat",
+        });
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
           payload: data,
         });
       })
       .then(() => {
-        if (goBack)
+        if (goBack) {
+          //TODO: check for google
           navigation.navigate("AdPaymentReview", {
             names: names,
+            source: "payment_mode",
+            source_action: "a_remove_wallet_amount",
           });
+        }
       })
       .catch((err) => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);

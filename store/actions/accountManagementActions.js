@@ -26,6 +26,7 @@ export const changeBusiness = (business) => {
       businessname: business.businessname,
       businessid: business.businessid,
       revenue: business.revenue,
+      ltv: business.ltv,
     });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,

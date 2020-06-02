@@ -132,7 +132,6 @@ export const ad_objective = (info, navigation, segmentInfo) => {
           ...segmentInfo,
         });
         if (data.success) {
-          // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
           navigation.navigate(
             getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign",
             {
@@ -630,7 +629,7 @@ export const ad_details = (info, names, navigation, segmentInfo) => {
   };
 };
 
-export const updateCampaign = (info, businessid, navigation) => {
+export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     createBaseUrl()
       .put(`savetargeting`, { ...info, businessid })
@@ -639,7 +638,13 @@ export const updateCampaign = (info, businessid, navigation) => {
 
         return res.data;
       })
-      .then(() => {
+      .then((data) => {
+        analytics.track(`a_submit_update_campaign_details`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          ...segmentInfo,
+          action_status: data.success ? "success" : "failure",
+        });
         navigation.navigate("Dashboard", {
           source: "ad_targeting",
           source_action: "a_submit_ad_targeting",
