@@ -5,11 +5,10 @@ import {
   BackHandler,
   Text,
   I18nManager,
-  Image
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
 import BackIcon from "../../../../assets/SVGs/BackButton";
@@ -22,17 +21,16 @@ import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../GlobalStyles";
-import segmentEventTrack from "../../../segmentEventTrack";
 const slidesData = [
   {
-    id: 0
+    id: 0,
   },
   {
-    id: 1
+    id: 1,
   },
   {
-    id: 2
-  }
+    id: 2,
+  },
 ];
 export default class TutorialWeb extends React.Component {
   constructor(props) {
@@ -43,7 +41,7 @@ export default class TutorialWeb extends React.Component {
       slidesData:
         I18nManager.isRTL && Platform.OS === "android"
           ? slidesData.reverse()
-          : slidesData // To properly show reversed data for RTL and Adnroid setting it in initial state
+          : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
     };
   }
   componentWillUnmount() {
@@ -51,7 +49,10 @@ export default class TutorialWeb extends React.Component {
   }
 
   handleBackPress = () => {
-    segmentEventTrack("Back button pressed on Website introduction screen");
+    analytics.track(`a_go_back`, {
+      source: "my_website_tutorial",
+      source_action: "a_go_back",
+    });
     this.props.navigation.goBack();
     return true;
   };
@@ -68,7 +69,7 @@ export default class TutorialWeb extends React.Component {
     analytics.track(`my_website_tutorial`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -153,16 +154,15 @@ export default class TutorialWeb extends React.Component {
     );
   };
   // To change slide
-  navigationRouteHandler = index => {
+  navigationRouteHandler = (index) => {
     this.setState({
-      activeSlide: index
+      activeSlide: index,
     });
   };
   getStartWebsiteReg = () => {
-    segmentEventTrack("Button clicked to start Website Registration");
     this.props.navigation.navigate("OptimizeWebsite", {
       source: "my_website_tutorial",
-      source_action: "a_open_my_website_detail"
+      source_action: "a_open_my_website_detail",
     });
   };
 
@@ -180,8 +180,8 @@ export default class TutorialWeb extends React.Component {
               width={25}
               style={[
                 I18nManager.isRTL && {
-                  transform: [{ rotateY: "180deg" }]
-                }
+                  transform: [{ rotateY: "180deg" }],
+                },
               ]}
             />
           </TouchableOpacity>
@@ -201,8 +201,8 @@ export default class TutorialWeb extends React.Component {
                 height={11}
                 style={[
                   I18nManager.isRTL && {
-                    transform: [{ rotateY: "180deg" }]
-                  }
+                    transform: [{ rotateY: "180deg" }],
+                  },
                 ]}
               />
             </View>
@@ -211,10 +211,10 @@ export default class TutorialWeb extends React.Component {
         <View>
           <Carousel
             firstItem={0}
-            ref={c => {
+            ref={(c) => {
               this._carousel = c;
             }}
-            onSnapToItem={indx => this.navigationRouteHandler(indx)}
+            onSnapToItem={(indx) => this.navigationRouteHandler(indx)}
             data={this.state.slidesData}
             renderItem={this.Slide}
             sliderWidth={widthPercentageToDP(100)}

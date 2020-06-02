@@ -11,7 +11,6 @@ import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCircleChart from "../../MiniComponents/GoogleCampaignCircleCharts";
@@ -55,7 +54,6 @@ import genderData from "../../Data/gender.googleSE.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import segmentEventTrack from "../../segmentEventTrack";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
 import CSVModal from "../CampaignDetails/CSVModal";
@@ -193,6 +191,11 @@ class GoogleCampaignDetails extends Component {
     );
   };
   showCSVModal = (isVisible) => {
+    analytics.track(`csv_modal`, {
+      source: "ad_detail",
+      source_action: "a_toggle_csv_modal",
+      campaign_channel: "google",
+    });
     this.setState({ CSVModalVisible: isVisible });
   };
   onLayout = (event) => {
@@ -200,6 +203,40 @@ class GoogleCampaignDetails extends Component {
     this.setState({
       maxHeight: hp(87) - layout.height,
     });
+  };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    if (this.props.campaignError) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: "error",
+        error_description: this.props.campaignError,
+        campaign_channel: "google",
+      });
+    }
+
+    if (!this.props.loading && this.props.selectedCampaign) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
+        campaign_channel: "google",
+      });
+    }
   };
   render() {
     let loading = this.props.loading;
@@ -209,11 +246,14 @@ class GoogleCampaignDetails extends Component {
 
     if (this.props.campaignError) {
       return (
-        <ErrorComponent
-          loading={loading}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
+        <>
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <ErrorComponent
+            loading={loading}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        </>
       );
     } else {
       let selectedCampaign = null;
@@ -315,14 +355,7 @@ class GoogleCampaignDetails extends Component {
             style={{ flex: 1 }}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                Segment.screenWithProperties("Google Campaign Details", {
-                  category: "Campaign Details",
-                  channel: "google",
-                });
-              }}
-            />
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <Container style={styles.container}>
               <View
                 style={[

@@ -278,7 +278,6 @@ class AdDetails extends Component {
   ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
-    console.log("newCountry", newCountry);
 
     if (
       typeof newCountry !== "undefined" &&

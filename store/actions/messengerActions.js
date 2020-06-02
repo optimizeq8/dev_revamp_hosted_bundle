@@ -4,6 +4,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import isNull from "lodash/isNull";
+import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
@@ -479,6 +480,12 @@ export const upload_media = (media) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_upload_media_chat`, {
+          ...media,
+          source: "open_support",
+          source_action: "a_upload_media",
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success) {
           if (getState().messenger.open_conversation) {
             return dispatch(reply(null, [data.media_link]));

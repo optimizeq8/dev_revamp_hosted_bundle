@@ -12,7 +12,6 @@ import {
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import { ActivityIndicator } from "react-native-paper";
@@ -31,7 +30,7 @@ import rtlStyles from "./rtlStyles";
 import { globalColors } from "../../../GlobalStyles";
 
 //Redux
-import * as actionCreators from "../../../store/actions/";
+import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions/actionTypes";
 
@@ -81,22 +80,6 @@ class Messenger extends Component {
     };
   }
   componentDidMount() {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-
-    analytics.track(`open_support`, {
-      source,
-      source_action,
-      support_type: "intercom",
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-    });
     // after the scoket is connected, it will intercept any "AdminReply" activity for the
     // room the user is subscribed to based on their id
     // the conversation is set as seen/read whe they open the messenger
@@ -183,13 +166,22 @@ class Messenger extends Component {
       });
 
       if (!result.cancelled)
-        this.setState({ media: result }, () =>
-          this.props.navigation.push("ImagePreview", {
+        this.setState({ media: result }, () => {
+          analytics.track(`a_select_media`, {
+            source: "open_support",
+            source_action: "a_select_media",
+            image_for: "Messenger chat",
+            ...result,
+          });
+          this.props.navigation.navigate("ImagePreview", {
             image: this.state.media.uri,
             id: "upload",
             upload: this.formatMedia.bind(this),
-          })
-        );
+            source: "open_support",
+            source_action: "a_select_media",
+            returnData: this.returnData.bind(this),
+          });
+        });
     } catch (error) {
       showMessage({
         message: translate("Something went wrong!"),
@@ -236,6 +228,28 @@ class Messenger extends Component {
       }
     );
   }
+  returnData(source, source_action) {
+    this.onDidFocus(source, source_action);
+  }
+  onDidFocus = (src, src_action) => {
+    const source = this.props.navigation.getParam(
+      "source",
+      src || this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      src_action
+    );
+
+    analytics.track(`open_support`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      timestamp: new Date().getTime(),
+    });
+    let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
+    Adjust.trackEvent(adjustSupportTrackeer);
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { height } = this.state;
@@ -247,13 +261,7 @@ class Messenger extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen("Support");
-            let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
-            Adjust.trackEvent(adjustSupportTrackeer);
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <CustomHeader
           screenProps={this.props.screenProps}
           closeButton={true}
@@ -261,7 +269,12 @@ class Messenger extends Component {
           titelStyle={{
             bottom: 8,
           }}
-          actionButton={() => this.props.navigation.navigate("Dashboard")}
+          actionButton={() =>
+            this.props.navigation.navigate("Dashboard", {
+              source: "open_support",
+              source_action: "a_go_back",
+            })
+          }
         />
         <View style={styles.contentContainer}>
           <KeyboardAvoidingView

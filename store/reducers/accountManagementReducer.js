@@ -68,6 +68,7 @@ const reducer = (state = initialState, action) => {
           businessname: main.businessname,
           revenue: main.revenue,
           ltv: main.ltv,
+          wallet_amount: main.wallet_amount,
         });
         Segment.identifyWithTraits(action.payload.userid, {
           businessid: main.businessid,

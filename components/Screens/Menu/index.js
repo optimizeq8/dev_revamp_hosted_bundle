@@ -421,6 +421,10 @@ class Menu extends Component {
 
               <TouchableOpacity
                 onPress={() => {
+                  analytics.track(`a_logout`, {
+                    source: "open_hamburger",
+                    source_action: "a_logout",
+                  });
                   this.props.clearPushToken(
                     this.props.navigation,
                     this.props.userInfo.userid

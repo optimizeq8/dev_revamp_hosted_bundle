@@ -1,10 +1,10 @@
 import * as Permissions from "expo-permissions";
 import { showMessage } from "react-native-flash-message";
 import { Platform, Linking } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
-import segmentEventTrack from "../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 
@@ -112,9 +112,13 @@ export const _pickImage = async (
             });
 
             if (newSize.size > 5000000) {
-              segmentEventTrack("Error selecting business logo", {
-                error_businesslogo: "Image must be less than 5 MBs",
+              analytics.track(`a_error`, {
+                source: "open_my_website",
+                source_action: "a_select_media",
+                error_description: "Image must be less than 5 MBs",
+                image_for: "Business Logo",
               });
+
               showMessage({
                 message: translate("Image must be less than {{fileSize}} MBs", {
                   fileSize: 5,
@@ -131,11 +135,23 @@ export const _pickImage = async (
             result.width = manipResult.width;
             result.serialization = serialization;
           } else {
+            analytics.track(`a_select_media`, {
+              source: "open_my_website",
+              source_action: "a_select_media",
+              action_status: "failure",
+              image_for: "Business Logo",
+            });
             return Promise.reject("Editing canceled");
           }
         })
         .then(() => {
-          segmentEventTrack("Business logo image selected successfully");
+          analytics.track(`a_select_media`, {
+            source: "open_my_website",
+            source_action: "a_select_media",
+            action_status: "success",
+            image_for: "Business Logo",
+          });
+
           showMessage({
             message: translate("Image has been selected successfully"),
             position: "top",
@@ -153,6 +169,17 @@ export const _pickImage = async (
         })
         .catch((error) => {
           // console.log(error);
+          analytics.track(`a_error`, {
+            source: "open_my_website",
+            source_action: "a_select_media",
+            error_description: error.wrongAspect
+              ? error.message
+              : error ||
+                translate(
+                  "The dimensions are too large, please choose a different image"
+                ),
+            image_for: "Business Logo",
+          });
 
           showMessage({
             message: error.wrongAspect
