@@ -1,10 +1,10 @@
 rootProject.name = 'OptimizeApp'
-include ':@segment_analytics-react-native-mixpanel'
-project(':@segment_analytics-react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-mixpanel/android')
+// include ':@segment_analytics-react-native-mixpanel'
+// project(':@segment_analytics-react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-mixpanel/android')
 include ':react-native-device-info'
 project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
-include ':@segment_analytics-react-native'
-project(':@segment_analytics-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native/android')
+// include ':@segment_analytics-react-native'
+// project(':@segment_analytics-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native/android')
 
 include ':react-native-bootsplash'
 project(':react-native-bootsplash').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bootsplash/android')
