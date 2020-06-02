@@ -931,6 +931,13 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
       )
       .then((res) => res.data)
       .then((data) => {
+        analytics.track(`a_share_csv`, {
+          channel: "email",
+          source: "ad_detail",
+          source_action: "a_share_csv",
+          campaign_channel: "google",
+          action_status: data.message ? "success" : "failure",
+        });
         if (data.message) showModalMessage(data.message, "success");
       })
       .catch((err) => showModalMessage(err));
