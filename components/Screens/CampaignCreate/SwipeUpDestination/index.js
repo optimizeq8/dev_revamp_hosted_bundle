@@ -57,10 +57,10 @@ class SwipeUpDestination extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
-    Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
-      category: "Campaign Creation",
-      channel: "snapchat",
-    });
+    // Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
+    //   category: "Campaign Creation",
+    //   channel: "snapchat",
+    // });
     let media = this.props.navigation.getParam("media", "");
     let destination = this.props.navigation.getParam("destination", false);
     const source = this.props.navigation.getParam(
@@ -71,13 +71,10 @@ class SwipeUpDestination extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    const campaign_ad_type = this.props.navigation.getParam(
-      "adType",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track(`swipe_up_destionation`, {
+    const campaign_ad_type = this.props.navigation.getParam("adType", "SnapAd");
+    analytics.track(`ad_swipe_up_destination`, {
       source,
-      destination,
+      campaign_swipe_up_destination: destination,
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type,
@@ -111,13 +108,23 @@ class SwipeUpDestination extends Component {
       sidemenustate: false,
     });
   };
-  handleChoice = value => {
+  handleChoice = (value) => {
     this.setState(
       {
         selected: value,
         sidemenustate: true,
       },
       () => {
+        analytics.track(`a_swipe_up_destination`, {
+          campaign_swipe_up_destination: value,
+          source: "ad_swipe_up_destination",
+          source_action: "a_swipe_up_destination",
+          campaign_channel: "snapchat",
+          campaign_objective: this.props.data
+            ? this.props.data.objective
+            : this.props.navigation.getParam("objective", "objective"),
+          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
+        });
         Segment.trackWithProperties("Selected " + value + " Swipeup", {
           category: "Campaign Creation",
           channel: "snapchat",
@@ -135,7 +142,7 @@ class SwipeUpDestination extends Component {
     let storyAd = this.adType === "StoryAd";
     let attachmentOptionsCard = this.state.attachmentOptions
       .slice(0, storyAd ? this.state.attachmentOptions.length : 2)
-      .map(opt => (
+      .map((opt) => (
         <AttachmentCard
           key={opt.label}
           handleChoice={this.handleChoice}
@@ -229,9 +236,23 @@ class SwipeUpDestination extends Component {
       >
         <Container style={styles.container}>
           <Sidemenu
-            onChange={isOpen => {
+            onChange={(isOpen) => {
               if (isOpen === false)
                 this.setState({ sidemenustate: isOpen }, () => {
+                  analytics.track(`ad_swipe_up_destination`, {
+                    campaign_channel: "snapchat",
+                    campaign_ad_type: this.props.navigation.getParam(
+                      "adType",
+                      "SnapAd"
+                    ),
+                    source: "ad_swipe_up_destination",
+                    source_action: "a_swipe_up_destination",
+                    campaign_swipe_up_destination: "",
+                    campaign_objective: this.props.navigation.getParam(
+                      "objective",
+                      objective
+                    ),
+                  });
                   Segment.screenWithProperties(
                     "Snap Ad Traffic SwipeUp Selection",
                     {
@@ -242,16 +263,34 @@ class SwipeUpDestination extends Component {
                 });
               else {
                 if (this.state.selected === "REMOTE_WEBPAGE")
-                  Segment.screenWithProperties("Snap Ad Website SwipeUp", {
-                    category: "Campaign Creation",
-                    channel: "snapchat",
-                    label: "Traffic Objective",
+                  analytics.track(`ad_swipe_up_destination`, {
+                    campaign_channel: "snapchat",
+                    campaign_ad_type: this.props.navigation.getParam(
+                      "adType",
+                      "SnapAd"
+                    ),
+                    source: "ad_swipe_up_destination",
+                    source_action: "a_swipe_up_destination",
+                    campaign_swipe_up_destination: "Website",
+                    campaign_objective: this.props.navigation.getParam(
+                      "objective",
+                      objective
+                    ),
                   });
                 else
-                  Segment.screenWithProperties("Snap Ad Deep link SwipeUp", {
-                    category: "Campaign Creation",
-                    channel: "snapchat",
-                    label: "Traffic Objective",
+                  analytics.track(`ad_swipe_up_destination`, {
+                    campaign_channel: "snapchat",
+                    campaign_ad_type: this.props.navigation.getParam(
+                      "adType",
+                      "SnapAd"
+                    ),
+                    source: "ad_swipe_up_destination",
+                    source_action: "a_swipe_up_destination",
+                    campaign_swipe_up_destination: "Deep link",
+                    campaign_objective: this.props.navigation.getParam(
+                      "objective",
+                      objective
+                    ),
                   });
               }
             }}
@@ -291,12 +330,12 @@ class SwipeUpDestination extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SwipeUpDestination);

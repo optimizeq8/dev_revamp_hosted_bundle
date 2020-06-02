@@ -3,7 +3,6 @@ import { ImageBackground, View, BackHandler } from "react-native";
 import { Content, Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { Video } from "expo-av";
-import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import startCase from "lodash/startCase";
 import lowerCase from "lodash/lowerCase";
@@ -112,18 +111,7 @@ class AdPaymentReview extends Component {
             "AdPaymentReview",
           ]
     );
-    Segment.screenWithProperties("Snap Ad Payment Review", {
-      category: "Campaign Creation",
-      channel: "snapchat",
-      adType: this.props.adType,
-      business_id: this.props.mainBusiness.businessid,
-      campaign_id: this.props.campaign_id,
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 5,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id,
-    });
+
     let adjustAdReviewTracker = new AdjustEvent("rag8r1");
     adjustAdReviewTracker.addPartnerParameter(
       `Snap_${this.props.adType}`,
@@ -136,7 +124,7 @@ class AdPaymentReview extends Component {
     let targeting = this.props.data.campaignInfo.targeting;
     let interestNames = [];
     if (this.props.interestNames.length > 0) {
-      interestNames = this.props.interestNames.map(interest => interest.name);
+      interestNames = this.props.interestNames.map((interest) => interest.name);
     }
     let end_time = new Date(this.props.data.end_time || "01-01-1970");
     let start_time = new Date(this.props.data.start_time || "01-01-1970");
@@ -147,7 +135,9 @@ class AdPaymentReview extends Component {
       : "All";
     let countryName = this.props.countryName;
     if (this.props.regionNames) {
-      var regionNames = this.props.regionNames.map(region => translate(region));
+      var regionNames = this.props.regionNames.map((region) =>
+        translate(region)
+      );
     } else regionNames = [""];
 
     // if (
@@ -169,10 +159,10 @@ class AdPaymentReview extends Component {
       this.props.languages.length > 0 &&
       targeting &&
       targeting.demographics[0] &&
-      targeting.demographics[0].languages.map(languageId => {
+      targeting.demographics[0].languages.map((languageId) => {
         return translate(
           this.props.languages &&
-            this.props.languages.find(lang => lang.id === languageId).name
+            this.props.languages.find((lang) => lang.id === languageId).name
         );
       });
 
@@ -208,7 +198,9 @@ class AdPaymentReview extends Component {
         ) + 1,
       campaign_name: this.props.data.name,
       campaign_id: this.props.data.campaign_id,
-      campaign_brand_name: this.props.data.brand_name,
+      campaign_brand_name: this.props.data.campaignbrand_name,
+      campaign_end_date: this.props.data.end_time,
+      campaign_start_date: this.props.data.start_time,
       campaign_headline: this.props.data.headline,
       campaign_attachment: this.props.data.attachment,
       campaign_cta: this.props.data.call_to_action,
@@ -231,15 +223,6 @@ class AdPaymentReview extends Component {
       timestamp: new Date().getTime(),
       ...segmentInfo,
     });
-    // Segment.trackWithProperties("Select Ad Payment Review Button", {
-    //   business_name: this.props.mainBusiness.businessname,
-    //   campaign_budget: this.props.data.lifetime_budget_micro
-    // });
-    // Segment.trackWithProperties("Completed Checkout Step", {
-    //   step: 5,
-    //   business_name: this.props.mainBusiness.businessname,
-    //   checkout_id: this.props.campaign_id
-    // });
 
     this.props.navigation.navigate("PaymentForm", {
       source: "ad_review",
@@ -499,7 +482,7 @@ class AdPaymentReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
@@ -515,9 +498,10 @@ const mapStateToProps = state => ({
   languagesListLoading: state.campaignC.languagesListLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
   get_languages: () => dispatch(actionCreators.get_languages()),
 });
 

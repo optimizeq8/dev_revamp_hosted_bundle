@@ -273,6 +273,11 @@ class PaymentForm extends Component {
     });
   };
   removeWalletAmountAndGoBack = () => {
+    analytics.track(`a_remove_wallet_amount`, {
+      source: "payment_mode",
+      source_action: "a_remove_wallet_amount",
+      campaign_id: this.props.campaign_id,
+    });
     if (this.props.walletUsed) {
       this.props.removeWalletAmount(
         this.props.campaign_id,
@@ -310,10 +315,6 @@ class PaymentForm extends Component {
   };
 
   _handleChoice = (choice) => {
-    segmentEventTrack("Selected Payment Type", {
-      payment_type:
-        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD",
-    });
     analytics.track(`a_select_payment_mode`, {
       source: "payment_mode",
       source_action: "a_select_payment_mode",
