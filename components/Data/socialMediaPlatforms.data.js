@@ -2,8 +2,8 @@ import React from "react";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import Twitter from "../../assets/SVGs/AdType/Twitter";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
-// import Instagram from "../../assets/images/AdTypes/InstagramLogo";
-// import InstagramMain from "../../assets/SVGs/AdType/AdTypeScren/InstagramMain";
+import Instagram from "../../assets/images/AdTypes/InstagramLogo";
+import InstagramMain from "../../assets/SVGs/AdType/AdTypeScren/InstagramMain";
 import SnapchatMain from "../../assets/SVGs/AdType/AdTypeScren/SnapchatMain";
 import GoogleMain from "../../assets/SVGs/AdType/AdTypeScren/GoogleMain";
 
@@ -41,6 +41,6 @@ export const SocialPlatforms = [
   //   rout: "AdObjective",
   //   icon: <Instagram />,
   //   title: "",
-  //   media: require("../../assets/images/AdTypes/CollectionAd.gif")
-  // }
+  //   media: require("../../assets/images/AdTypes/CollectionAd.gif"),
+  // },
 ];

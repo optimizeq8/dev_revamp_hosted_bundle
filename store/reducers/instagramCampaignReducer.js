@@ -31,7 +31,7 @@ const initialState = {
   campaignProgressStarted: false,
   currentCampaignSteps: [],
   oldTempAdType: "",
-  oldTempData: null
+  oldTempData: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,24 +46,24 @@ const reducer = (state = initialState, action) => {
         incompleteCampaign: true,
         //saves this part just in case anything is changed in AdObjective and not submitting
         oldTempData: { ...state.data, ...action.payload.data },
-        oldTempAdType: state.adType
+        oldTempAdType: state.adType,
       };
 
     case actionTypes.SET_AD_TYPE_INSTAGRAM:
       return {
         ...state,
-        adType: action.payload
+        adType: action.payload,
       };
     case actionTypes.SET_MINIMUN_CASH_INSTAGRAM:
       return {
         ...state,
         minValueBudget: action.payload.minValueBudget,
-        maxValueBudget: action.payload.maxValueBudget
+        maxValueBudget: action.payload.maxValueBudget,
       };
     case actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM:
       return {
         ...state,
-        loadingObj: false
+        loadingObj: false,
       };
 
     case actionTypes.SET_AD_DESIGN_INSTAGRAM:
@@ -74,7 +74,7 @@ const reducer = (state = initialState, action) => {
           ...action.payload.data,
           call_to_action: {
             value: action.payload.data.call_to_action,
-            label: action.payload.data.call_to_action.replace(/_/g, " ")
+            label: action.payload.data.call_to_action.replace(/_/g, " "),
           },
           attachment:
             action.payload.data.attachment !== "BLANK"
@@ -82,11 +82,11 @@ const reducer = (state = initialState, action) => {
               : action.payload.data.attachment,
           //added checking if data is not null becuase it was throwing an error for
           //re-uploading for rejected ads
-          media: state.data && state.data.media
+          media: state.data && state.data.media,
         },
         message: action.payload.message,
 
-        loadingDesign: false
+        loadingDesign: false,
       };
     case actionTypes.SAVE_CAMPAIGN_INFO_INSTAGRAM:
       let resetSwipeUps = {};
@@ -95,10 +95,10 @@ const reducer = (state = initialState, action) => {
           attachment: "BLANK",
           call_to_action: {
             label: "BLANK",
-            value: "BLANK"
+            value: "BLANK",
           },
           destination: "BLANK",
-          reset: false
+          reset: false,
         };
       }
       return {
@@ -106,13 +106,13 @@ const reducer = (state = initialState, action) => {
         data: {
           ...state.data,
           ...action.payload,
-          ...resetSwipeUps
+          ...resetSwipeUps,
         },
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? //If objective is changed then AdDesign should be the current step again to set the swipe ups
               state.currentCampaignSteps.filter(
-                step =>
+                (step) =>
                   step !== "InstagramFeedAdDetails" &&
                   step !== "InstagramFeedAdPaymentReview"
               )
@@ -121,8 +121,8 @@ const reducer = (state = initialState, action) => {
         oldTempData: {
           ...state.data,
           ...action.payload,
-          ...resetSwipeUps
-        }
+          ...resetSwipeUps,
+        },
       };
 
     case actionTypes.RESET_CAMPAING_INFO_INSTAGRAM:
@@ -178,54 +178,54 @@ const reducer = (state = initialState, action) => {
         regionNames: regionNames,
 
         incompleteCampaign: incompleteCampaign,
-        currentCampaignSteps: currentCampaignSteps
+        currentCampaignSteps: currentCampaignSteps,
       };
     case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
       return {
         ...state,
-        loadingDesign: action.payload
+        loadingDesign: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_INTERESTS:
       return {
         ...state,
-        interests: action.payload
+        interests: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_OS_VERSIONS:
       return {
         ...state,
         isoVersions: action.payload.isoVersions,
-        androidVersions: action.payload.androidVersions
+        androidVersions: action.payload.androidVersions,
       };
     case actionTypes.SET_INSTAGRAM_DEVICE_BRANDS:
       return {
         ...state,
-        deviceBrands: action.payload
+        deviceBrands: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_AUDIENCE_SIZE:
       return {
         ...state,
-        average_reach: action.payload.average_reach
+        average_reach: action.payload.average_reach,
       };
     case actionTypes.ERROR_SET_INSTAGRAM_AUDIENCE_SIZE:
       return {
         ...state,
-        average_reach: 0
+        average_reach: 0,
       };
 
     case actionTypes.SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE:
       return {
         ...state,
-        total_reach: (state.average_reach / action.payload.average_reach) * 100
+        total_reach: (state.average_reach / action.payload.average_reach) * 100,
       };
     case actionTypes.ERROR_SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE:
       return {
         ...state,
-        total_reach: 0
+        total_reach: 0,
       };
     case actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM:
       return {
         ...state,
-        loadingDetail: action.payload
+        loadingDetail: action.payload,
       };
     case actionTypes.SET_AD_DETAILS_INSTAGRAM:
       return {
@@ -233,22 +233,22 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data.data },
         message: action.payload.data.message,
         kdamount: action.payload.data.kdamount,
-        loadingDetail: false
+        loadingDetail: false,
       };
     case actionTypes.ERROR_SET_AD_DETAILS_INSTAGRAM:
       return {
         ...state,
-        loadingDetail: false
+        loadingDetail: false,
       };
     case actionTypes.SAVE_CAMPAIGN_STEP_INSTAGRAM:
       return {
         ...state,
-        currentCampaignSteps: action.payload
+        currentCampaignSteps: action.payload,
       };
     case actionTypes.SET_CAMPAIGN_IN_PROGRESS_INSTAGRAM:
       return {
         ...state,
-        campaignProgressStarted: action.payload
+        campaignProgressStarted: action.payload,
       };
     default:
       return state;

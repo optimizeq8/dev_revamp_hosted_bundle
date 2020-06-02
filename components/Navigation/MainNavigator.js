@@ -58,6 +58,7 @@ import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
 import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
 import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/AdTargetting";
+import InstagramAdPaymentReview from "../Screens/InstagramCampaignCreate/Feed/AdPaymentReview";
 import AdFeedDesignReview from "../Screens/InstagramCampaignCreate/Feed/AdReview";
 
 import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";

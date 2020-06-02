@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -34,7 +34,7 @@ import * as actionCreators from "../../../../../store/actions";
 import segmentEventTrack from "../../../../segmentEventTrack";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampaign";
 import { persistor } from "../../../../../store";
@@ -43,7 +43,7 @@ import ModalField from "../../../../MiniComponents/ModalField";
 
 class AdObjective extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -53,7 +53,7 @@ class AdObjective extends Component {
         name: "",
         objective: "",
         start_time: "",
-        end_time: ""
+        end_time: "",
       },
       minValueBudget: 0,
       maxValueBudget: 0,
@@ -66,7 +66,7 @@ class AdObjective extends Component {
       objectiveError: "",
       start_timeError: "",
       end_timeError: "",
-      incomplete: false
+      incomplete: false,
     };
   }
   componentWillUnmount() {
@@ -100,7 +100,7 @@ class AdObjective extends Component {
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
-        .map(key => {
+        .map((key) => {
           if (this.props.data.hasOwnProperty(key)) return true;
         })
         .includes(true)
@@ -115,7 +115,7 @@ class AdObjective extends Component {
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : "",
-        end_time: this.props.data.end_time ? this.props.data.end_time : ""
+        end_time: this.props.data.end_time ? this.props.data.end_time : "",
       };
       this.setState({
         minValueBudget: this.props.data.minValueBudget,
@@ -129,7 +129,7 @@ class AdObjective extends Component {
         objectiveError: this.props.data.objectiveError,
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
-        campaignInfo: { ...rep }
+        campaignInfo: { ...rep },
       });
     } else {
       this.setState({
@@ -139,7 +139,7 @@ class AdObjective extends Component {
           name: "",
           objective: "",
           start_time: "",
-          end_time: ""
+          end_time: "",
         },
         minValueBudget: 0,
         maxValueBudget: 0,
@@ -149,76 +149,76 @@ class AdObjective extends Component {
         nameError: "",
         objectiveError: "",
         start_timeError: "",
-        end_timeError: ""
+        end_timeError: "",
       });
     }
   };
-  setObjective = choice => {
+  setObjective = (choice) => {
     this.setState({
       ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
-        objective: choice.value
+        objective: choice.value,
       },
-      objectiveLabel: choice.label
+      objectiveLabel: choice.label,
     });
     segmentEventTrack("Selected Instagram Feed Ad Objective", {
-      campaign_objective: choice.label
+      campaign_objective: choice.label,
     });
     this.props.save_campaign_info_instagram({
       objective: choice.value,
       objectiveLabel: choice.label,
-      reset: true
+      reset: true,
     });
   };
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
   };
-  handleStartDatePicked = date => {
+  handleStartDatePicked = (date) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_time: date
-      }
+        start_time: date,
+      },
     });
     segmentEventTrack("Selected Instagram Feed Campaign Start Date", {
-      campaign_start_date: date
+      campaign_start_date: date,
     });
     this.props.save_campaign_info_instagram({ start_time: date });
   };
-  handleEndDatePicked = date => {
+  handleEndDatePicked = (date) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date
-      }
+        end_time: date,
+      },
     });
     segmentEventTrack("Selected Instagram Feed Campaign End Date", {
-      campaign_end_date: date
+      campaign_end_date: date,
     });
     this.props.save_campaign_info_instagram({
       end_time: date,
-      campaignDateChanged: true
+      campaignDateChanged: true,
     });
   };
-  setModalVisible = visible => {
+  setModalVisible = (visible) => {
     if (visible) {
       Segment.screen("Instagram Feed Ad Objective Modal");
     }
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = days => {
+  getMinimumCash = (days) => {
     let minValueBudget = days !== 0 ? 25 * days : 25;
     let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     this.setState({
       minValueBudget,
-      maxValueBudget
+      maxValueBudget,
     });
     this.props.save_campaign_info_instagram({
       minValueBudget,
-      maxValueBudget
+      maxValueBudget,
     });
   };
 
@@ -229,7 +229,7 @@ class AdObjective extends Component {
 
     this.setState({
       start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      end_timeError: dateErrors.end_timeError,
     });
     // In case error in any field keep track
     if (
@@ -248,7 +248,7 @@ class AdObjective extends Component {
             : "",
           campaign_error_ad_end_date: dateErrors.end_timeError
             ? dateErrors.end_timeError
-            : ""
+            : "",
         }
       );
     }
@@ -264,7 +264,7 @@ class AdObjective extends Component {
         campaign_ad_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
-        campaign_objective: this.state.campaignInfo.objective
+        campaign_objective: this.state.campaignInfo.objective,
       };
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -276,30 +276,30 @@ class AdObjective extends Component {
           this.props.navigation.getParam("tempAdType", "InstagramFeedAd")
         );
         this.props.save_campaign_info_instagram({
-          reset: true
+          reset: true,
         });
         //Set closedContinueModal back to false so that
         //if the user navigates back and submits again then this process doesn't happen again
         this.setState({
-          closedContinueModal: false
+          closedContinueModal: false,
         });
         persistor.purge();
       }
 
       this.props.save_campaign_info_instagram({
         campaign_id: this.props.campaign_id,
-        ...this.state.campaignInfo
+        ...this.state.campaignInfo,
       });
       let info = {
         campaign_type: "InstagramFeedAd",
-        ...this.state.campaignInfo
+        ...this.state.campaignInfo,
       };
 
       this.props.ad_objective_instagram(
         {
           ...info,
           campaign_id:
-            this.props.campaign_id !== "" ? this.props.campaign_id : 0
+            this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         "InstagramFeedAdDesign",
         segmentInfo
@@ -325,18 +325,18 @@ class AdObjective extends Component {
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
       segmentEventTrack(`Error in  Instagram Feed ${stateError}`, {
-        campaign_error: validObj
+        campaign_error: validObj,
       });
     }
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
   render() {
-    const list = instagramAdObjectives["InstagramFeedAd"].map(o => (
+    const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -371,7 +371,7 @@ class AdObjective extends Component {
               closeButton={false}
               segment={{
                 str: "Instagram Feed Ad Objective Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
+                obj: { businessname: this.props.mainBusiness.businessname },
               }}
               navigation={this.props.navigation}
               title={"Instagram Feed Campaign"}
@@ -401,7 +401,7 @@ class AdObjective extends Component {
                 onAnimationEnd={() =>
                   this.setState({
                     start_timeError: null,
-                    end_timeError: null
+                    end_timeError: null,
                   })
                 }
                 duration={200}
@@ -466,7 +466,7 @@ class AdObjective extends Component {
 
         <DateFields
           getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
+          onRef={(ref) => (this.dateField = ref)}
           handleStartDatePicked={this.handleStartDatePicked}
           handleEndDatePicked={this.handleEndDatePicked}
           start_time={this.state.campaignInfo.start_time}
@@ -526,9 +526,9 @@ class AdObjective extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  campaignProcessSteps: state.instagramAds.campaignProcessSteps,
+  // campaignProcessSteps: state.instagramAds.campaignProcessSteps,
   mainBusiness: state.account.mainBusiness,
   loading: state.instagramAds.loadingObj,
   campaign_id: state.instagramAds.campaign_id,
@@ -536,22 +536,22 @@ const mapStateToProps = state => ({
   adType: state.instagramAds.adType,
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
-  campaignProgressStarted: state.instagramAds.campaignProgressStarted
+  campaignProgressStarted: state.instagramAds.campaignProgressStarted,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ad_objective_instagram: (info, navigation_route, segmentInfo) =>
     dispatch(
       actionCreators.ad_objective_instagram(info, navigation_route, segmentInfo)
     ),
-  save_campaign_info_instagram: info =>
+  save_campaign_info_instagram: (info) =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
-  resetCampaignInfo: resetAdType =>
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
 
-  set_adType_instagram: value =>
-    dispatch(actionCreators.set_adType_instagram(value))
+  set_adType_instagram: (value) =>
+    dispatch(actionCreators.set_adType_instagram(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdObjective);

@@ -18,10 +18,7 @@ export {
   resetBusinessInvitee,
   updateWebInfoForBusiness,
   changeBusinessLogo,
-<<<<<<< HEAD
-  updateBusinessConnectedToFacebook
-=======
->>>>>>> development
+  updateBusinessConnectedToFacebook,
 } from "./accountManagementActions";
 
 export {
@@ -189,5 +186,5 @@ export {
   getDeviceBrand,
   instagram_ad_audience_size,
   get_total_reach_instagram,
-  ad_details_instagram
+  ad_details_instagram,
 } from "./instagramCampaignActions";

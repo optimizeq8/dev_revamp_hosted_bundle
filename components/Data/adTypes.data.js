@@ -1,13 +1,13 @@
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
-// import Instagram from "../../assets/images/AdTypes/logoIg";
+import Instagram from "../../assets/images/AdTypes/logoIg";
 import SnapAd from "../../assets/SVGs/AdType/Snapchat/SnapAd";
 import StoryAd from "../../assets/SVGs/AdType/Snapchat/StoryAd";
 import CollectionAd from "../../assets/SVGs/AdType/Snapchat/CollectionAd";
 import GoogleSearchAd from "../../assets/SVGs/AdType/Google/GoogleSearchAd";
-// import InstagramFeedAd from "../../assets/images/AdTypes/Instagram/InstagramFeedAd";
-// import InstagramStoryAd from "../../assets/images/AdTypes/Instagram/InstagramStoryAd";
+import InstagramFeedAd from "../../assets/images/AdTypes/Instagram/InstagramFeedAd";
+import InstagramStoryAd from "../../assets/images/AdTypes/Instagram/InstagramStoryAd";
 
 // ICONS for description:
 
@@ -124,63 +124,63 @@ export const googleAds = [
   },
 ];
 
-// export const instagramAds = [
-//   {
-//     id: 1,
-//     mediaType: "instagram",
-//     text: "Create Your Ad Now!",
-//     rout: "InstagramFeedAdObjective",
-//     createRout: "InstagramFeedAdObjective",
-//     title: "Feed",
-//     value: "InstagramFeedAd",
-//     media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
-//       .default,
-//     icon: AdIcons.InstagramFeed,
-//     channelIcon: Instagram,
-//     image: InstagramFeedAd,
-//     description: " ",
-//     suitableFor: [
-//       {
-//         icon: Mortgage,
-//         name: "Home Businesses",
-//       },
-//       {
-//         icon: Hand,
-//         name: "Service Providers",
-//       },
-//       {
-//         icon: StartUp,
-//         name: "Startups & SMEs",
-//       },
-//     ],
-//   },
-//   // {
-//   //   id: 2,
-//   //   mediaType: "instagram",
-//   //   text: "Create Your Ad Now!",
-//   //   rout: "InstagramStoryAdObjective",
-//   //   createRout: "InstagramStoryAdObjective",
-//   //   title: "Story",
-//   //   value: "InstagramStoryAd",
-//   //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
-//   //     .default,
-//   //   icon: AdIcons.InstagramStory,
-//   //   channelIcon: Instagram,
-//   //   image: InstagramStoryAd,
-//   //   description: "",
-//   //   suitableFor: [
-//   //     {
-//   //       icon: Mortgage,
-//   //       name: "Home Businesses"
-//   //     },
-//   //     {
-//   //       icon: Hand,
-//   //       name: "Service Providers"
-//   //     },
-//   //     {
-//   //       icon: StartUp,
-//   //       name: "Startups & SMEs"
-//   //     }
-//   //   ]
-//   // }
-// ];
+export const instagramAds = [
+  {
+    id: 1,
+    mediaType: "instagram",
+    text: "Create Your Ad Now!",
+    rout: "InstagramFeedAdObjective",
+    createRout: "InstagramFeedAdObjective",
+    title: "Feed",
+    value: "InstagramFeedAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramFeedAd.svg")
+      .default,
+    icon: AdIcons.InstagramFeed,
+    channelIcon: Instagram,
+    image: InstagramFeedAd,
+    description: " ",
+    suitableFor: [
+      {
+        icon: Mortgage,
+        name: "Home Businesses",
+      },
+      {
+        icon: Hand,
+        name: "Service Providers",
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs",
+      },
+    ],
+  },
+  // {
+  //   id: 2,
+  //   mediaType: "instagram",
+  //   text: "Create Your Ad Now!",
+  //   rout: "InstagramStoryAdObjective",
+  //   createRout: "InstagramStoryAdObjective",
+  //   title: "Story",
+  //   value: "InstagramStoryAd",
+  //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
+  //     .default,
+  //   icon: AdIcons.InstagramStory,
+  //   channelIcon: Instagram,
+  //   image: InstagramStoryAd,
+  //   description: "",
+  //   suitableFor: [
+  //     {
+  //       icon: Mortgage,
+  //       name: "Home Businesses"
+  //     },
+  //     {
+  //       icon: Hand,
+  //       name: "Service Providers"
+  //     },
+  //     {
+  //       icon: StartUp,
+  //       name: "Startups & SMEs"
+  //     }
+  //   ]
+  // }
+];
