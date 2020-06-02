@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 
 import {
   BackHandler,
@@ -40,6 +40,23 @@ class ImagePreview extends Component {
     header: null,
   };
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`media_preview`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      image: this.props.navigation.getParam("image"),
+      id: this.props.navigation.getParam("id"),
+      timestamp: new Date().getTime(),
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
@@ -54,7 +71,7 @@ class ImagePreview extends Component {
     const image = this.props.navigation.getParam("image");
     const id = this.props.navigation.getParam("id");
     const upload = this.props.navigation.getParam("upload", null);
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -80,7 +97,6 @@ class ImagePreview extends Component {
                   imageUrls={[{ url: image }]}
                 />
               </View>
-            
             </Transition>
 
             {!isNull(upload) && (
@@ -99,7 +115,7 @@ class ImagePreview extends Component {
                     },
                   ]}
                 >
-                  would you like to upload this image?
+                  {translate("would you like to upload this image?")}
                 </Text>
 
                 <View
@@ -112,13 +128,22 @@ class ImagePreview extends Component {
                   <LowerButton
                     cross={true}
                     bottom={0}
-                    function={() => this.props.navigation.goBack()}
+                    function={() => {
+                      this.props.navigation.state.params.returnData(
+                        "media_preview",
+                        "a_cancel_media_upload"
+                      );
+                      this.props.navigation.goBack();
+                    }}
                   />
                   <LowerButton
                     bottom={0}
                     function={() => {
                       upload();
-
+                      this.props.navigation.state.params.returnData(
+                        "media_preview",
+                        "a_select_media"
+                      );
                       this.props.navigation.goBack();
                     }}
                   />

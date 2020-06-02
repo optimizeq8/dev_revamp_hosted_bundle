@@ -47,6 +47,8 @@ class SuccessRedirect extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
+      businessname: this.props.mainBusiness.businessname,
       campaign_channel:
         this.props.navigation.getParam("isWallet") === "1"
           ? "wallet"
@@ -61,18 +63,21 @@ class SuccessRedirect extends Component {
           ? "GoogleSEAd"
           : this.props.adType,
       payment_status: "success",
+      wallet_amount:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? this.props.navigation.state.params.amount
+          : null,
+      campaign_ltv:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? null
+          : this.props.navigation.state.params.campaign_ltv,
+      campaign_revenue:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? null
+          : this.props.navigation.state.params.campaign_revenue,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
-    Segment.screenWithProperties("Payment Success", {
-      category:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? "Wallet Top Up"
-          : "Campaign Creation",
-      label:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? "Wallet Transaction"
-          : "Campaign Transaction",
-    });
+
     // this.animation.play();
 
     // Segment.trackWithProperties("Viewed Checkout Step", {
@@ -121,27 +126,6 @@ class SuccessRedirect extends Component {
       //   paymentMethod: ""
       // });
 
-      if (this.props.data && this.props.channel === "") {
-        Segment.trackWithProperties("Order Completed", {
-          label: "Campaign Purchase Completed",
-          category: "Checkout",
-          business_name: this.props.mainBusiness.businessname,
-          order_id: this.props.campaign_id,
-          currency: "USD",
-          label: "Campaign Purchase Completed",
-          category: "Checkout",
-          revenue: this.props.campaign_budget,
-          products: [
-            {
-              products_id: 1,
-              name: "Snapchat Snap Ad",
-              price: this.props.campaign_budget,
-              quantity: 1,
-              category: "Advertisement",
-            },
-          ],
-        });
-      }
       if (
         (this.props.channel && this.props.channel === "") ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")

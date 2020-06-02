@@ -8,7 +8,6 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import segmentEventTrack from "../../components/segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 GoogleBackendURL = () =>
@@ -648,16 +647,19 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
         return data;
       })
       .then((data) => {
+        analytics.track(`a_update_ad_targeting`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          error_description:
+            data.error &&
+            (data.error || "Oops! Something went wrong. Please try again"),
+        });
         if (!data.error) {
-          segmentEventTrack(
-            "Successfully updated google audience targeting",
-            segmentInfo
-          );
-          NavigationService.navigate("Dashboard");
-        } else {
-          segmentEventTrack("Error updating google audience targeting", {
-            campaign_error_targeting: data.error,
+          NavigationService.navigate("Dashboard", {
+            source: "ad_targeting",
+            source_action: "a_update_ad_targeting",
           });
+        } else {
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
@@ -667,8 +669,11 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
         }
       })
       .catch((err) => {
-        segmentEventTrack("Error updating google audience targeting", {
-          campaign_error_targeting: err.message || err.response,
+        analytics.track(`a_error`, {
+          ...segmentInfo,
+          error_page: segmentInfo.source,
+          action_status: "failure",
+          error_description: err.message || err.response,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -708,15 +713,26 @@ export const update_google_keywords = (info, segmentInfo) => {
         return data;
       })
       .then((data) => {
+        analytics.track(`a_update_ad_keywords`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          error_description:
+            data.error &&
+            (data.error || "Oops! Something went wrong. Please try again"),
+        });
         if (!data.error) {
-          segmentEventTrack(
-            "Successfully updated google keywords",
-            segmentInfo
-          );
-          NavigationService.navigate("Dashboard");
+          NavigationService.navigate("Dashboard", {
+            source: segmentInfo.source,
+            source_action: segmentInfo.source_action,
+          });
         } else {
-          segmentEventTrack("Error updating google keywords", {
-            campaign_error_keywords: data.error,
+          analytics.track(`a_error`, {
+            ...segmentInfo,
+            error_page: segmentInfo.source,
+            action_status: !data.error ? "success" : "failure",
+            error_description:
+              data.error &&
+              (data.error || "Oops! Something went wrong. Please try again"),
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
@@ -727,8 +743,11 @@ export const update_google_keywords = (info, segmentInfo) => {
         }
       })
       .catch((err) => {
-        segmentEventTrack("Error updating google keywords", {
-          campaign_error_keywords: err.message || err.response,
+        analytics.track(`a_error`, {
+          ...segmentInfo,
+          error_page: segmentInfo.source,
+          action_status: !data.error ? "success" : "failure",
+          error_description: err.message || err.response,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -770,7 +789,6 @@ export const create_google_keywords = (info, segmentInfo) => {
           ...segmentInfo,
         });
         if (!data.error) {
-          segmentEventTrack("Completed Checkout Step", segmentInfo);
           NavigationService.navigate("GoogleAdPaymentReview", {
             source: "ad_design",
             source_action: "a_submit_ad_design",
@@ -931,6 +949,13 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
       )
       .then((res) => res.data)
       .then((data) => {
+        analytics.track(`a_share_csv`, {
+          channel: "email",
+          source: "ad_detail",
+          source_action: "a_share_csv",
+          campaign_channel: "google",
+          action_status: data.message ? "success" : "failure",
+        });
         if (data.message) showModalMessage(data.message, "success");
       })
       .catch((err) => showModalMessage(err));

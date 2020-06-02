@@ -23,11 +23,10 @@ import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
 import InputField from "../../MiniComponents/InputFieldNew";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class RegisterForm extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -45,7 +44,7 @@ class RegisterForm extends Component {
       showChangeInstaHandle: false,
       submissionLoading: false,
       googlemaplink: "",
-      googleMapLinkError: null
+      googleMapLinkError: null,
     };
   }
   componentWillUnmount() {
@@ -61,7 +60,7 @@ class RegisterForm extends Component {
       insta_handle,
       googlemaplink,
       whatsappnumber,
-      callnumber
+      callnumber,
     } = this.props.mainBusiness;
     const countryCode =
       callnumber && callnumber !== "" && callnumber.substring(0, 3);
@@ -72,7 +71,7 @@ class RegisterForm extends Component {
       googlemaplink,
       insta_handle,
       whatsappnumber:
-        whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : ""
+        whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
     });
     // Segment.screenWithProperties("Personal Info", {
     //   category: "User Menu"
@@ -87,7 +86,7 @@ class RegisterForm extends Component {
       phoneNum: number,
       countryCode: countryCode,
       valid,
-      type
+      type,
     });
     // }
   };
@@ -107,9 +106,8 @@ class RegisterForm extends Component {
         whatsappnumber,
         insta_handle: this.state.insta_handle,
         callnumber,
-        googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : ""
+        googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : "",
       };
-      segmentEventTrack("Submit website regsiter", info);
 
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
     } else {
@@ -121,7 +119,7 @@ class RegisterForm extends Component {
         error_description:
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
-          this.state.googleMapLinkError
+          this.state.googleMapLinkError,
       });
     }
   };
@@ -130,20 +128,16 @@ class RegisterForm extends Component {
     const { translate } = this.props.screenProps;
     const valid = this.validate();
     if (!valid || this.props.errorInstaHandle) {
-      analytics.track(`a_submit_my_website_detail`, {
+      analytics.track(`a_error`, {
         source: "my_website_detail",
+        error_page: "my_website_detail",
         source_action: "a_submit_my_website_detail",
         new: false,
         action_status: "failure",
         error_description:
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
-          this.state.googleMapLinkError
-      });
-      segmentEventTrack("Error on Submit update website information", {
-        error_insta_handle:
-          this.props.errorInstaHandleMessage || this.state.insta_handleError,
-        error_googlemaplink: this.state.googleMapLinkError
+          this.state.googleMapLinkError,
       });
     } else if (valid && !this.props.errorInstaHandle) {
       const whatsappnumber =
@@ -186,62 +180,71 @@ class RegisterForm extends Component {
           callnumber,
           googlemaplink: this.state.googlemaplink
             ? this.state.googlemaplink
-            : ""
+            : "",
         };
-        segmentEventTrack("Submit update website information", info);
+
         this.props.updateWebInfoForBusiness(info, false);
       } else {
-        analytics.track(`a_submit_my_website_detail`, {
+        analytics.track(`a_error`, {
           source: "my_website_detail",
           source_action: "a_submit_my_website_detail",
           new: false,
           action_status: "failure",
-          error_description: "No changes to update"
+          error_description: "No changes to update",
         });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
-          position: "top"
+          position: "top",
         });
       }
     }
   };
 
   changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
-    if (validNumber) {
-      segmentEventTrack("Change WhatsApp number", value);
-    }
+    analytics.track(`a_business_whatsapp`, {
+      source: "my_website_detail",
+      source_action: "a_business_whatsapp",
+      new: this.props.edit ? false : true,
+      whatsappnumber: value,
+      action_status: validNumber ? "success" : "failure",
+    });
+
     this.setState({
       whatsappnumber: validNumber ? value : "",
-      validWhatsAppNumber: validNumber
+      validWhatsAppNumber: validNumber,
     });
   };
   changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
-    if (validNumber) {
-      segmentEventTrack("Change Call number", value);
-    }
+    analytics.track(`a_business_callnumber`, {
+      source: "my_website_detail",
+      source_action: "a_business_callnumber",
+      new: this.props.edit ? false : true,
+      callnumber: value,
+      action_status: validNumber ? "success" : "failure",
+    });
     this.setState({
       callnumber: validNumber ? value : "",
-      validCallNumber: validNumber
+      validCallNumber: validNumber,
     });
   };
-  changeInstaHandle = value => {
+  changeInstaHandle = (value) => {
     this.setState({
-      insta_handle: value
+      insta_handle: value,
     });
   };
 
-  changeGoogleMapLocation = value => {
+  changeGoogleMapLocation = (value) => {
     // truncate before https: everything
     if (value.includes("https:")) {
       const link = value.substring(value.indexOf("https:") + 1);
       // console.log("link", "h" + link);
       this.setState({
-        googlemaplink: value === "" ? "" : "h" + link
+        googlemaplink: value === "" ? "" : "h" + link,
       });
     } else {
       this.setState({
-        googlemaplink: value
+        googlemaplink: value,
       });
     }
   };
@@ -255,14 +258,14 @@ class RegisterForm extends Component {
         this.state.googlemaplink
       );
     this.setState({
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (googleMapLinkError) {
       showMessage({
         message: translate("Please provide a valid location link"),
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
@@ -285,7 +288,7 @@ class RegisterForm extends Component {
 
     this.setState({
       insta_handleError,
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (insta_handleError || googleMapLinkError) {
       showMessage({
@@ -296,7 +299,7 @@ class RegisterForm extends Component {
           : "",
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
@@ -304,9 +307,9 @@ class RegisterForm extends Component {
     }
   };
 
-  setModalInstagramChangedVisible = value => {
+  setModalInstagramChangedVisible = (value) => {
     this.setState({
-      showChangeInstaHandle: value
+      showChangeInstaHandle: value,
     });
   };
 
@@ -320,19 +323,27 @@ class RegisterForm extends Component {
   getValidInfo = async (stateError, validWrap) => {
     let state = {};
     if (stateError === "insta_handleError") {
-      segmentEventTrack("Change Instagram Handle", {
-        insta_handle: this.state.insta_handle
+      analytics.track(`a_business_insta_handle`, {
+        source: "my_website_detail",
+        source_action: "a_business_insta_handle",
+        new: this.props.edit ? false : true,
+        insta_handle: this.state.insta_handle,
       });
       await this.props.verifyInstagramHandle(this.state.insta_handle);
       if (this.props.errorInstaHandle) {
-        segmentEventTrack("Error on blur insta handle", {
-          error_insta_handle: this.props.errorInstaHandleMessage
+        analytics.track(`a_error`, {
+          error_page: "my_website_detail",
+          source: "my_website_detail",
+          source_action: "a_business_insta_handle",
+          new: this.props.edit ? false : true,
+          insta_handle: this.state.insta_handle,
+          error_description: this.props.errorInstaHandleMessage,
         });
       }
     }
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   render() {
@@ -422,15 +433,23 @@ class RegisterForm extends Component {
                 value={this.state.googlemaplink}
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={value => this.changeGoogleMapLocation(value)}
+                onChangeText={(value) => this.changeGoogleMapLocation(value)}
                 onBlur={async () => {
-                  segmentEventTrack("Changed Google Map Location", {
-                    googlemaplink: this.state.googleMapLinkError
+                  analytics.track(`a_business_googlemaplink`, {
+                    source: "my_website_detail",
+                    source_action: "a_business_googlemaplink",
+                    new: this.props.edit ? false : true,
+                    googlemaplink: this.state.googlemaplink,
                   });
                   await this.validateUrl();
                   if (this.state.googleMapLinkError) {
-                    segmentEventTrack("Error on blur  google map location", {
-                      error_googlemaplink: this.state.googleMapLinkError
+                    analytics.track(`a_error`, {
+                      error_page: "my_website_detail",
+                      source: "my_website_detail",
+                      source_action: "a_business_googlemaplink",
+                      new: this.props.edit ? false : true,
+                      googlemaplink: this.state.insta_handle,
+                      error_description: this.state.googleMapLinkError,
                     });
                   }
                 }}
@@ -459,20 +478,20 @@ class RegisterForm extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loadingUpdateInfo: state.auth.loadingUpdateInfo,
   errorInstaHandle: state.website.errorInstaHandle,
   errorInstaHandleMessage: state.website.errorInstaHandleMessage,
   productInfoId: state.website.productInfoId,
   businessLogo: state.website.businessLogo,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  verifyInstagramHandle: insta_handle =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyInstagramHandle: (insta_handle) =>
     dispatch(actionCreators.verifyInstagramHandleWebsite(insta_handle)),
   updateWebInfoForBusiness: (info, submitNextStep) =>
-    dispatch(actionCreators.updateWebInfoForBusiness(info, submitNextStep))
+    dispatch(actionCreators.updateWebInfoForBusiness(info, submitNextStep)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

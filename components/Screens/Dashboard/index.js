@@ -301,6 +301,11 @@ class Dashboard extends Component {
   };
 
   reloadData = () => {
+    analytics.track(`a_refresh_list`, {
+      source: "dashboard",
+      source_action: "a_refresh_list",
+      refresh_type: "campaigns",
+    });
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
     this.props.getCampaignList(

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 
 //Redux
@@ -28,7 +27,6 @@ import PhoneIcon from "../../../assets/SVGs/PhoneBlackBackground";
 import styles from "./styles";
 import RegisterForm from "./RegisterForm";
 import ProductSelect from "./ProductSelect";
-import segmentEventTrack from "../../segmentEventTrack";
 const regsiterSteps = [
   {
     id: 1,
@@ -47,7 +45,7 @@ class OptimizeWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 2,
+      activeStep: 1,
     };
   }
   componentWillUnmount() {
@@ -56,20 +54,21 @@ class OptimizeWebsite extends Component {
 
   handleBackPress = () => {
     if (this.state.activeStep === 1) {
-      segmentEventTrack(
-        "Back button pressed on Website Registration Detail screen"
-      );
+      analytics.track(`a_go_back`, {
+        source: "my_website_detail",
+        source_action: "a_go_back",
+      });
     } else {
-      segmentEventTrack(
-        "Back button pressed on Website Registration Product Select screen"
-      );
+      analytics.track(`a_go_back`, {
+        source: "my_website_products",
+        source_action: "a_go_back",
+      });
     }
 
     this.props.navigation.goBack();
     return true;
   };
   componentDidMount() {
-    Segment.screen("Website Registration Detail");
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -88,13 +87,16 @@ class OptimizeWebsite extends Component {
   }
 
   submitNextStep = (activeStep) => {
+    analytics.track(`a_go_to_my_website_products`, {
+      source: "my_website_detail",
+      source_action: "a_submit_my_website_detail",
+    });
     this.setState({
       activeStep,
     });
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeStep === 1 && this.state.activeStep === 2) {
-      Segment.screen("Website Registration Product Select");
       analytics.track(`my_website_products`, {
         source: "my_website_detail",
         source_action: "a_submit_my_website_detail",

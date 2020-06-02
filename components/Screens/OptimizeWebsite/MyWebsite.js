@@ -6,14 +6,12 @@ import {
   Text,
   Clipboard,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
-
-import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -35,7 +33,6 @@ import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "./PickImage";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -43,7 +40,7 @@ class MyWebsite extends Component {
     this.state = {
       signal: null,
       loaded: 0,
-      isVisible: false
+      isVisible: false,
     };
   }
   componentWillUnmount() {
@@ -54,16 +51,12 @@ class MyWebsite extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  _getUploadState = loading => {
+  _getUploadState = (loading) => {
     this.setState({
-      loaded: loading
+      loaded: loading,
     });
   };
   componentDidMount() {
-    Segment.screenWithProperties("My Website", {
-      businessid: this.props.mainBusiness.businessid,
-      businessname: this.props.mainBusiness.businessname
-    });
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -75,7 +68,7 @@ class MyWebsite extends Component {
     analytics.track(`open_my_website`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -85,13 +78,16 @@ class MyWebsite extends Component {
   topRightButtonFunction = () => {
     this.props.navigation.navigate("WebsiteSetting", {
       source: "open_my_website",
-      source_action: "a_open_my_website_detail"
+      source_action: "a_open_my_website_detail",
     });
   };
   goBack = () => {
-    this.props.navigation.navigate("Dashboard");
+    this.props.navigation.navigate("Dashboard", {
+      source: "open_my_website",
+      source_action: "a_go_back",
+    });
   };
-  startUpload = media => {
+  startUpload = (media) => {
     var body = new FormData();
     body.append("businessid", this.props.mainBusiness.businessid);
     body.append("businesslogo", media);
@@ -110,10 +106,9 @@ class MyWebsite extends Component {
   };
 
   uploadPhoto = () => {
-    segmentEventTrack("Button clicked to change business logo");
     _pickImage("Images", this.props.screenProps, this.startUpload);
   };
-  onToggleModal = visibile => {
+  onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
 
@@ -139,7 +134,7 @@ class MyWebsite extends Component {
           closeButton={false}
           segment={{
             str: "MyWebsite Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname }
+            obj: { businessname: this.props.mainBusiness.businessname },
           }}
           showTopRightButtonIcon={"settings"}
           // navigation={this.props.navigation}
@@ -152,10 +147,10 @@ class MyWebsite extends Component {
             <Image
               style={{
                 width: 95,
-                height: 95
+                height: 95,
               }}
               source={{
-                uri: mainBusiness.businesslogo || this.props.businessLogo
+                uri: mainBusiness.businesslogo || this.props.businessLogo,
               }}
             />
           </View>
@@ -167,7 +162,7 @@ class MyWebsite extends Component {
               flexDirection: "row",
               alignSelf: "center",
               alignItems: "center",
-              marginBottom: 13
+              marginBottom: 13,
             }}
             onPress={this.uploadPhoto}
           >
@@ -188,7 +183,7 @@ class MyWebsite extends Component {
                 analytics.track(`a_copy_my_website_url`, {
                   source: "open_my_website",
                   source_action: "a_copy_my_website_url",
-                  weburl: website
+                  weburl: website,
                 });
                 Clipboard.setString(website);
               }}
@@ -223,13 +218,13 @@ class MyWebsite extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
-  businessLogo: state.website.businessLogo
+  businessLogo: state.website.businessLogo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updateUserInfo: (info, navigation) =>
     dispatch(actionCreators.updateUserInfo(info, navigation)),
   changeBusinessLogo: (info, loading, cancelUpload, onToggleModal) =>
@@ -240,6 +235,6 @@ const mapDispatchToProps = dispatch => ({
         cancelUpload,
         onToggleModal
       )
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

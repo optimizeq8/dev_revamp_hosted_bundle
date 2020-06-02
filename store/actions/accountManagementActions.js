@@ -10,23 +10,19 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
-import segmentEventTrack from "../../components/segmentEventTrack";
 import { getUniqueId } from "react-native-device-info";
 import { update_user_on_intercom } from "./messengerActions";
 
 export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
-    Segment.identifyWithTraits(getState().auth.userid, {
-      businessname: business.businessname,
-      businessid: business.businessid,
-      revenue: business.revenue,
-    });
+
     analytics.identify(getState().auth.userid, {
       businessname: business.businessname,
       businessid: business.businessid,
       revenue: business.revenue,
       ltv: business.ltv,
+      wallet_amount: business.wallet_amount,
     });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
@@ -822,6 +818,14 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
           type: data.success ? "success" : "danger",
           position: "top",
         });
+        analytics.track(`a_submit_my_website_detail`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: submitNextStep ? true : false,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success && data.message,
+          ...info,
+        });
         if (data.success) {
           dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -838,22 +842,13 @@ export const updateWebInfoForBusiness = (info, submitNextStep = false) => {
             },
           });
         }
-        analytics.track(`a_submit_my_website_detail`, {
-          source: "my_website_detail",
-          source_action: "a_submit_my_website_detail",
-          new: submitNextStep ? true : false,
-          action_status: data.success ? "success" : "failure",
-          error_description: !data.success && data.message,
-          ...info,
-        });
+
         return data;
       })
       .then((data) => {
         if (data.success && submitNextStep) {
-          segmentEventTrack("Successfully register website information");
           submitNextStep(2);
         } else if (data.success && !submitNextStep) {
-          segmentEventTrack("Successfully update website information");
           NavigationService.navigateBack("MyWebsite", "MyWebsite", {
             source: "my_website_detail",
             source_action: "a_submit_my_website_detail",
@@ -910,9 +905,14 @@ export const changeBusinessLogo = (
           position: "top",
         });
         onToggleModal(false);
-
+        analytics.track(`a_upload_business_logo`, {
+          source: "open_my_website",
+          source_action: "a_select_media",
+          ...info,
+          action_status: data.success ? success : "failure",
+          error_description: !data.success && data.message,
+        });
         if (data.success) {
-          segmentEventTrack(data.message);
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
             payload: {
@@ -920,7 +920,6 @@ export const changeBusinessLogo = (
             },
           });
         } else {
-          segmentEventTrack(data.message);
           return dispatch({
             type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
             payload: {
@@ -933,6 +932,12 @@ export const changeBusinessLogo = (
       .catch((error) => {
         loading(0);
         onToggleModal(false);
+        analytics.track(`a_error`, {
+          source: "open_my_website",
+          source_action: "a_upload_business_logo",
+          action_status: "failure",
+          error_description: error.response || error.message,
+        });
         // console.log(
         //   "changeBusinessLogo error",
         //   error.response || error.message
