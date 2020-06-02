@@ -16,16 +16,13 @@ import { update_user_on_intercom } from "./messengerActions";
 export const changeBusiness = (business) => {
   return (dispatch, getState) => {
     persistor.purge();
-    Segment.identifyWithTraits(getState().auth.userid, {
-      businessname: business.businessname,
-      businessid: business.businessid,
-      revenue: business.revenue,
-    });
+
     analytics.identify(getState().auth.userid, {
       businessname: business.businessname,
       businessid: business.businessid,
       revenue: business.revenue,
       ltv: business.ltv,
+      wallet_amount: business.wallet_amount,
     });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
