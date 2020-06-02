@@ -250,7 +250,7 @@ class SwipeUpDestination extends Component {
                     campaign_swipe_up_destination: "",
                     campaign_objective: this.props.navigation.getParam(
                       "objective",
-                      objective
+                      "objective"
                     ),
                   });
                   Segment.screenWithProperties(
@@ -274,7 +274,7 @@ class SwipeUpDestination extends Component {
                     campaign_swipe_up_destination: "Website",
                     campaign_objective: this.props.navigation.getParam(
                       "objective",
-                      objective
+                      "objective"
                     ),
                   });
                 else
@@ -289,7 +289,7 @@ class SwipeUpDestination extends Component {
                     campaign_swipe_up_destination: "Deep link",
                     campaign_objective: this.props.navigation.getParam(
                       "objective",
-                      objective
+                      "objective"
                     ),
                   });
               }

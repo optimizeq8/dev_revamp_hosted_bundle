@@ -4,7 +4,7 @@ import {
   View,
   BackHandler,
   ScrollView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
@@ -46,7 +46,7 @@ class AppChoice extends Component {
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
-        icon_media_url: ""
+        icon_media_url: "",
       },
       iosApp_name: "",
       androidApp_name: "",
@@ -57,8 +57,8 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: list.SnapAd[1].call_to_action_list[0],
-      callactions: list.SnapAd[1].call_to_action_list,
+      callaction: list.SnapAd[this.props.listNum || 1].call_to_action_list[0],
+      callactions: list.SnapAd[this.props.listNum || 1].call_to_action_list,
       nameError: "",
       callToActionError: "",
       AppError: "",
@@ -67,7 +67,7 @@ class AppChoice extends Component {
       inputCallToAction: false,
       isVisible: false,
       androidAppSelected: false,
-      iosAppSelected: false
+      iosAppSelected: false,
     };
   }
 
@@ -95,7 +95,7 @@ class AppChoice extends Component {
         {
           attachment: {
             ...this.state.attachment,
-            ...this.props.attachment
+            ...this.props.attachment,
           },
           deep_link_uri: this.props.attachment.deep_link_uri,
           callaction: this.props.callaction
@@ -108,7 +108,7 @@ class AppChoice extends Component {
               ? list[this.props.adType][0].call_to_action_list
               : list.SnapAd[this.props.listNum].call_to_action_list,
           iosAppSelected: this.props.appSelections.iosAppSelected,
-          androidAppSelected: this.props.appSelections.androidAppSelected
+          androidAppSelected: this.props.appSelections.androidAppSelected,
         },
         () => this.props.handleCallaction({ ...this.state.callaction })
       );
@@ -123,7 +123,7 @@ class AppChoice extends Component {
               ? this.props.data.iosApp_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
-            : ""
+            : "",
         });
       }
       //only update the androidApp name if it was changed instead of updating everything
@@ -137,7 +137,7 @@ class AppChoice extends Component {
               ? this.props.data.androidApp_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
-            : ""
+            : "",
         });
       }
     }
@@ -146,33 +146,33 @@ class AppChoice extends Component {
     }
   }
 
-  _getIosAppIds = app => {
+  _getIosAppIds = (app) => {
     this.setState({
       ...this.state,
       attachment: {
         ...this.state.attachment,
         app_name: app.title,
         ios_app_id: app.id,
-        icon_media_url: app.icon
+        icon_media_url: app.icon,
       },
       iosApp_name: app.title,
       iosApp_icon: app.icon,
-      iosAppSelected: true
+      iosAppSelected: true,
     });
   };
 
-  _getAndroidAppIds = app => {
+  _getAndroidAppIds = (app) => {
     this.setState({
       ...this.state,
       attachment: {
         ...this.state.attachment,
         app_name: app.title,
         icon_media_url: app.icon,
-        android_app_url: app.id ? app.id : app.application_id
+        android_app_url: app.id ? app.id : app.application_id,
       },
       androidApp_name: app.title,
       androidApp_icon: app.icon,
-      androidAppSelected: true
+      androidAppSelected: true,
     });
   };
 
@@ -183,9 +183,9 @@ class AppChoice extends Component {
     this.setState({ isVisible, appSelection: os });
   };
 
-  setTheState = state => {
+  setTheState = (state) => {
     this.setState({
-      ...state
+      ...state,
     });
   };
   handleAppError = () => this.setState({ AppError: null });
@@ -208,7 +208,7 @@ class AppChoice extends Component {
       showMessage({
         message: translate("Please choose an application to promote"),
         type: "warning",
-        position: "top"
+        position: "top",
       });
     }
     if (!AppError && !nameError && !callToActionError) {
@@ -222,7 +222,7 @@ class AppChoice extends Component {
       this.state.deep_link_uri
     );
     this.setState({
-      deep_link_uriError
+      deep_link_uriError,
     });
     const { translate } = this.props.screenProps;
     if (deep_link_uriError) {
@@ -233,40 +233,40 @@ class AppChoice extends Component {
         ),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
       return true;
     }
   };
-  onSelectedCallToActionIdChange = value => {
+  onSelectedCallToActionIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
   closeCallToActionModal = () => {
     this.setState({
-      inputCallToAction: false
+      inputCallToAction: false,
     });
   };
 
-  onSelectedCallToActionChange = value => {
+  onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
       segmentEventTrack("Selected App Choice Call to Action", {
-        campaign_call_to_action: value[0].label
+        campaign_call_to_action: value[0].label,
       });
       this.setState(
         {
           callaction: {
             label: value[0].label,
-            value: value[0].value
-          }
+            value: value[0].value,
+          },
         },
         () => {
           this.closeCallToActionModal();
           this.props.handleCallaction({
             label: value[0].label,
-            value: value[0].value
+            value: value[0].value,
           });
         }
       );
@@ -282,7 +282,7 @@ class AppChoice extends Component {
   /**
    * toggles the app selection for iOS or Android both in the state and App_install or Deep_link
    */
-  toggleAppSelection = android => {
+  toggleAppSelection = (android) => {
     this.setState(
       android
         ? { androidAppSelected: !this.state.androidAppSelected }
@@ -308,22 +308,22 @@ class AppChoice extends Component {
 
     if (stateError === "deep_link_uriError" && error) {
       segmentEventTrack("Changed Deep Link Url", {
-        campaign_deep_link_url: this.state.deep_link_uri
+        campaign_deep_link_url: this.state.deep_link_uri,
       });
 
       if (error) {
         segmentEventTrack("Error on Blur Deep Link URL", {
-          campaign_error_deep_link_url: this.state.deep_link_uriError
+          campaign_error_deep_link_url: this.state.deep_link_uriError,
         });
       }
     }
     this.setState({
-      [stateError]: error
+      [stateError]: error,
     });
   };
-  setWebsiteValue = value => {
+  setWebsiteValue = (value) => {
     this.setState({
-      deep_link_uri: value
+      deep_link_uri: value,
     });
   };
   render() {
@@ -415,14 +415,14 @@ class AppChoice extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   rejCampaign: state.dashboard.rejCampaign,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(AppChoice);

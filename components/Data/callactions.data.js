@@ -5,66 +5,66 @@ var list = {
       call_to_action_list: [
         {
           label: "APPLY NOW",
-          value: "APPLY_NOW"
+          value: "APPLY_NOW",
         },
         {
           label: "BOOK NOW",
-          value: "BOOK_NOW"
+          value: "BOOK_NOW",
         },
         {
           label: "BUY TICKETS",
-          value: "BUY_TICKETS"
+          value: "BUY_TICKETS",
         },
         {
           label: "GET NOW",
-          value: "GET_NOW"
+          value: "GET_NOW",
         },
         {
           label: "LISTEN",
-          value: "LISTEN"
+          value: "LISTEN",
         },
         {
           label: "MORE",
-          value: "MORE"
+          value: "MORE",
         },
         {
           label: "ORDER NOW",
-          value: "ORDER_NOW"
+          value: "ORDER_NOW",
         },
         {
           label: "PLAY",
-          value: "PLAY"
+          value: "PLAY",
         },
         {
           label: "READ",
-          value: "READ"
+          value: "READ",
         },
         {
           label: "SHOP NOW",
-          value: "SHOP_NOW"
+          value: "SHOP_NOW",
         },
         {
           label: "SHOW",
-          value: "SHOW"
+          value: "SHOW",
         },
         {
           label: "SHOWTIMES",
-          value: "SHOWTIMES"
+          value: "SHOWTIMES",
         },
         {
           label: "SIGN UP",
-          value: "SIGN_UP"
+          value: "SIGN_UP",
         },
         {
           label: "VIEW",
-          value: "VIEW"
+          value: "VIEW",
         },
         {
           label: "WATCH",
-          value: "WATCH"
-        }
-      ]
-    }
+          value: "WATCH",
+        },
+      ],
+    },
   ],
   SnapAd: [
     {
@@ -72,179 +72,231 @@ var list = {
       call_to_action_list: [
         {
           label: "APPLY NOW",
-          value: "APPLY_NOW"
+          value: "APPLY_NOW",
         },
         {
           label: "BOOK NOW",
-          value: "BOOK_NOW"
+          value: "BOOK_NOW",
         },
         {
           label: "BUY TICKETS",
-          value: "BUY_TICKETS"
+          value: "BUY_TICKETS",
         },
         {
           label: "GET NOW",
-          value: "GET_NOW"
+          value: "GET_NOW",
         },
         {
           label: "LISTEN",
-          value: "LISTEN"
+          value: "LISTEN",
         },
         {
           label: "MORE",
-          value: "MORE"
+          value: "MORE",
         },
         {
           label: "ORDER NOW",
-          value: "ORDER_NOW"
+          value: "ORDER_NOW",
         },
         {
           label: "PLAY",
-          value: "PLAY"
+          value: "PLAY",
         },
         {
           label: "READ",
-          value: "READ"
+          value: "READ",
         },
         {
           label: "SHOP NOW",
-          value: "SHOP_NOW"
+          value: "SHOP_NOW",
         },
         {
           label: "SHOW",
-          value: "SHOW"
+          value: "SHOW",
         },
         {
           label: "SHOWTIMES",
-          value: "SHOWTIMES"
+          value: "SHOWTIMES",
         },
         {
           label: "SIGN UP",
-          value: "SIGN_UP"
+          value: "SIGN_UP",
         },
         {
           label: "VIEW",
-          value: "VIEW"
+          value: "VIEW",
         },
         {
           label: "WATCH",
-          value: "WATCH"
-        }
-      ]
+          value: "WATCH",
+        },
+      ],
     },
     {
       type: "APP_INSTALL",
       call_to_action_list: [
         {
           label: "DOWNLOAD",
-          value: "DOWNLOAD"
+          value: "DOWNLOAD",
         },
         {
           label: "INSTALL NOW",
-          value: "INSTALL_NOW"
+          value: "INSTALL_NOW",
         },
         {
           label: "PLAY",
-          value: "PLAY"
+          value: "PLAY",
         },
         {
           label: "SHOP NOW",
-          value: "SHOP_NOW"
+          value: "SHOP_NOW",
         },
         {
           label: "SIGN UP",
-          value: "SIGN_UP"
+          value: "SIGN_UP",
         },
         {
-          label: "USE APP",
-          value: "USE_APP"
-        }
-      ]
+          label: "BOOK NOW",
+          value: "BOOK_NOW",
+        },
+        {
+          label: "GET NOW",
+          value: "GET_NOW",
+        },
+        {
+          label: "ORDER NOW",
+          value: "ORDER NOW",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+      ],
     },
     {
       type: "LONGFORM_VIDEO",
       call_to_action_list: [
         {
           label: "WATCH",
-          value: "WATCH"
+          value: "WATCH",
         },
         {
           label: "WATCH EPISODE",
-          value: "WATCH_EPISODE"
-        }
-      ]
+          value: "WATCH_EPISODE",
+        },
+      ],
     },
     {
       type: "DEEP_LINK",
       call_to_action_list: [
         {
-          label: "DOWNLOAD",
-          value: "DOWNLOAD"
-        },
-        {
-          label: "INSTALL NOW",
-          value: "INSTALL_NOW"
-        },
-        {
           label: "USE APP",
-          value: "USE_APP"
+          value: "USE_APP",
         },
         {
           label: "PLAY",
-          value: "PLAY"
+          value: "PLAY",
         },
         {
           label: "SHOP NOW",
-          value: "SHOP_NOW"
+          value: "SHOP_NOW",
         },
         {
-          label: "SIGN UP",
-          value: "SIGN_UP"
-        }
-      ]
+          label: "MORE",
+          value: "MORE",
+        },
+        {
+          label: "TRY",
+          value: "TRY",
+        },
+        {
+          label: "OPEN APP",
+          value: "OPEN_APP",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+      ],
     },
     {
       type: "WEB_CONVERSION",
       call_to_action_list: [
         {
           label: "ORDER NOW",
-          value: "ORDER_NOW"
+          value: "ORDER_NOW",
         },
         {
           label: "BOOK NOW",
-          value: "BOOK_NOW"
+          value: "BOOK_NOW",
         },
         {
           label: "GET NOW",
-          value: "GET_NOW"
+          value: "GET_NOW",
         },
 
         {
           label: "MORE",
-          value: "MORE"
+          value: "MORE",
         },
 
         {
           label: "SHOP NOW",
-          value: "SHOP_NOW"
+          value: "SHOP_NOW",
         },
 
         {
           label: "VIEW",
-          value: "VIEW"
-        }
-      ]
-    }
-  ]
+          value: "VIEW",
+        },
+        {
+          label: "APPLY",
+          value: "APPLY",
+        },
+        {
+          label: "BUY TICKETS",
+          value: "BUY_TICKETS",
+        },
+        {
+          label: "LISTEN",
+          value: "LISTEN",
+        },
+        {
+          label: "PLAY",
+          value: "PLAY",
+        },
+        {
+          label: "READ",
+          value: "READ",
+        },
+        {
+          label: "SHOW",
+          value: "SHOW",
+        },
+        {
+          label: "SHOWTIMES",
+          value: "SHOWTIMES",
+        },
+        {
+          label: "SIGN UP",
+          value: "SIGN_UP",
+        },
+        {
+          label: "WATCH",
+          value: "WATCH",
+        },
+      ],
+    },
+  ],
 };
 export const netLoc = [
   {
     label: "http://",
-    value: "http://"
+    value: "http://",
   },
   {
     label: "https://",
-    value: "https://"
-  }
+    value: "https://",
+  },
 ];
 export default list;
