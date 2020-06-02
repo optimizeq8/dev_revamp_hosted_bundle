@@ -30,7 +30,7 @@ class AddOrEditTeamMember extends Component {
     isVisible: false,
     firstNameError: "",
     lastNameError: "",
-    emailError: ""
+    emailError: "",
   };
   translate = this.props.screenProps.translate;
 
@@ -41,7 +41,7 @@ class AddOrEditTeamMember extends Component {
         firstName: teamMeber.firstname,
         lastName: teamMeber.lastname,
         email: teamMeber.email,
-        userRole: parseInt(teamMeber.user_role)
+        userRole: parseInt(teamMeber.user_role),
       });
     }
   }
@@ -72,7 +72,7 @@ class AddOrEditTeamMember extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
@@ -81,17 +81,16 @@ class AddOrEditTeamMember extends Component {
    *
    * @param {Int} userRole a number to indicate which user role is selected
    */
-  handleMemberType = userRole => {
+  handleMemberType = (userRole) => {
     analytics.track(`a_change_team_member_role`, {
-      source: 'team_management_member_details',
-      source_action: 'a_change_team_member_role',
+      source: "team_management_member_details",
+      source_action: "a_change_team_member_role",
       timestamp: new Date().getTime(),
-      user_role: userRole === this.state.userRole ? 0 : userRole
-
+      user_role: userRole === this.state.userRole ? 0 : userRole,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
-      userRole: userRole === this.state.userRole ? 0 : userRole
+      userRole: userRole === this.state.userRole ? 0 : userRole,
     });
   };
 
@@ -106,7 +105,7 @@ class AddOrEditTeamMember extends Component {
       userRole,
       emailError,
       lastNameError,
-      firstNameError
+      firstNameError,
     } = this.state;
     let currentUserEmail = email === this.props.userInfo.email;
     //if userRole is 0 then it means none of the switches are selected
@@ -117,7 +116,7 @@ class AddOrEditTeamMember extends Component {
         message: this.translate(
           "You can't add yourself to the same business account."
         ),
-        type: "warning"
+        type: "warning",
       });
     } else if (
       !firstNameError &&
@@ -129,17 +128,20 @@ class AddOrEditTeamMember extends Component {
         let adjustClientTracker = new AdjustEvent("2eqii1");
         Adjust.trackEvent(adjustClientTracker);
       }
-      this.props.inviteTeamMember({
-        firstname: firstName,
-        lastname: lastName,
-        email,
-        user_role: userRole,
-        businessid: this.props.mainBusiness.businessid
-      }, false);
+      this.props.inviteTeamMember(
+        {
+          firstname: firstName,
+          lastname: lastName,
+          email,
+          user_role: userRole,
+          businessid: this.props.mainBusiness.businessid,
+        },
+        false
+      );
     } else {
       showMessage({
         message: this.translate("Please complete all of the fields"),
-        type: "warning"
+        type: "warning",
       });
       //incomplete is set to signal the child components to play the animations of shaking
       this.setState({ incomplete: true });
@@ -159,15 +161,15 @@ class AddOrEditTeamMember extends Component {
       this.props.updateTeamMembers({
         userrole: userRole,
         userid: teamMember.userid,
-        businessid: this.props.mainBusiness.businessid
+        businessid: this.props.mainBusiness.businessid,
       });
     } else {
       segmentEventTrack("Error updating team member", {
-        error_manage_team: "Please Choose a role for the team member"
+        error_manage_team: "Please Choose a role for the team member",
       });
       showMessage({
         message: this.translate("Please Choose a role for the team member"),
-        type: "warning"
+        type: "warning",
       });
       //incomplete is set to signal the child components to play the animations of shaking
       this.setState({ incomplete: true });
@@ -182,7 +184,7 @@ class AddOrEditTeamMember extends Component {
       [
         {
           text: this.translate("Cancel"),
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: this.translate("Delete"),
@@ -193,8 +195,8 @@ class AddOrEditTeamMember extends Component {
               this.props.navigation
             );
           },
-          style: "destructive"
-        }
+          style: "destructive",
+        },
       ]
       // { cancelable: false }
     );
@@ -216,10 +218,10 @@ class AddOrEditTeamMember extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
-      new_team_member: !editTeamMember,
-      ...teamMeber
+      new_team_member: this.props.navigation.getParam("editTeamMember", false),
+      ...teamMeber,
     });
-  }
+  };
 
   render() {
     let {
@@ -231,7 +233,7 @@ class AddOrEditTeamMember extends Component {
       userRoleError,
       firstNameError,
       lastNameError,
-      emailError
+      emailError,
     } = this.state;
     let editTeamMember = this.props.navigation.getParam(
       "editTeamMember",
@@ -243,9 +245,7 @@ class AddOrEditTeamMember extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={this.onDidFocus}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           title={editTeamMember ? "Edit team member" : "Add team member"}
@@ -254,7 +254,7 @@ class AddOrEditTeamMember extends Component {
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={{
-            paddingHorizontal: 26
+            paddingHorizontal: 26,
           }}
         >
           <AddTeamIcon
@@ -271,7 +271,7 @@ class AddOrEditTeamMember extends Component {
               firstNameError,
               lastNameError,
               incomplete,
-              editTeamMember
+              editTeamMember,
             },
             this.setValue,
             this.getValidInfo,
@@ -311,7 +311,7 @@ class AddOrEditTeamMember extends Component {
               onPress={this.handleDelete}
               style={[
                 styles.deleteTeamMember,
-                { backgroundColor: globalColors.red }
+                { backgroundColor: globalColors.red },
               ]}
             >
               <Text uppercase style={[styles.deleteText]}>
@@ -320,30 +320,34 @@ class AddOrEditTeamMember extends Component {
             </Button>
           </View>
         ) : (
-            <AddMember
-              translate={this.translate}
-              sendInvite={true}
-              submitFunction={this.handleInvite}
-            />
-          )}
+          <AddMember
+            screenProps={this.props.screenProps}
+            translate={this.translate}
+            sendInvite={true}
+            submitFunction={this.handleInvite}
+          />
+        )}
       </SafeAreaView>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   businessAccounts: state.account.businessAccounts,
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  numberOfTeamAdmins: state.account.numberOfTeamAdmins
+  numberOfTeamAdmins: state.account.numberOfTeamAdmins,
 });
-const mapDispatchToProps = dispatch => ({
-  inviteTeamMember: (info, resend) => dispatch(actionCreators.inviteTeamMember(info, resend)),
-  updateTeamMembers: memberInfo =>
+const mapDispatchToProps = (dispatch) => ({
+  inviteTeamMember: (info, resend) =>
+    dispatch(actionCreators.inviteTeamMember(info, resend)),
+  updateTeamMembers: (memberInfo) =>
     dispatch(actionCreators.updateTeamMembers(memberInfo)),
-  updateTeamMemberForBusinesses: memberInfo =>
+  updateTeamMemberForBusinesses: (memberInfo) =>
     dispatch(actionCreators.updateTeamMemberForBusinesses(memberInfo)),
   deleteTeamMembers: (memberId, businessid, navigation) =>
-    dispatch(actionCreators.deleteTeamMembers(memberId, businessid, navigation))
+    dispatch(
+      actionCreators.deleteTeamMembers(memberId, businessid, navigation)
+    ),
 });
 
 export default connect(

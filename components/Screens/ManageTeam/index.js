@@ -24,31 +24,30 @@ class ManageTeam extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`team_management_members`, {
+    analytics.track(`team_management_members_list`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
-  }
+  };
 
   onRefresh = () => {
-    const source = 'team_management_members_list'
-    const source_action = "a_refresh_list"
+    const source = "team_management_members_list";
+    const source_action = "a_refresh_list";
 
     analytics.track(`a_refresh_list`, {
       source,
       source_action,
       timestamp: new Date().getTime(),
-      refresh_type: "members"
+      refresh_type: "members",
     });
-    this.props.getTeamMembers(this.props.mainBusiness.businessid)
-
-  }
+    this.props.getTeamMembers(this.props.mainBusiness.businessid);
+  };
   render() {
     let team = (this.props.agencyTeamMembers.length > 0
       ? this.props.agencyTeamMembers
       : [{ userid: 1 }, { userid: 2 }]
-    ).map(member => (
+    ).map((member) => (
       <TeamMember
         key={member.userid}
         navigation={this.props.navigation}
@@ -60,7 +59,7 @@ class ManageTeam extends Component {
     ));
     let pendingInvites = [];
     if (this.props.pendingTeamInvites)
-      pendingInvites = this.props.pendingTeamInvites.map(invite => (
+      pendingInvites = this.props.pendingTeamInvites.map((invite) => (
         <TeamMember
           key={invite.appuserid}
           navigation={this.props.navigation}
@@ -78,9 +77,7 @@ class ManageTeam extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={this.onDidFocus}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           title={"Manage Team"}
@@ -109,30 +106,32 @@ class ManageTeam extends Component {
             </View>
           )}
         </ScrollView>
-        {
-          mainBusiness.user_role === "1" &&
+        {this.props.mainBusiness.user_role === "1" && (
           <AddMember
+            screenProps={this.props.screenProps}
             mainBusiness={this.props.mainBusiness}
             navigation={this.props.navigation}
             translate={this.translate}
-          />}
+          />
+        )}
       </SafeAreaView>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   agencyTeamMembers: state.account.agencyTeamMembers,
   pendingTeamInvites: state.account.pendingTeamInvites,
-  loadingTeamMembers: state.account.loadingTeamMembers
+  loadingTeamMembers: state.account.loadingTeamMembers,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getTeamMembers: businessId =>
+const mapDispatchToProps = (dispatch) => ({
+  getTeamMembers: (businessId) =>
     dispatch(actionCreators.getTeamMembers(businessId)),
-  inviteTeamMember: (info, resend) => dispatch(actionCreators.inviteTeamMember(info, resend))
+  inviteTeamMember: (info, resend) =>
+    dispatch(actionCreators.inviteTeamMember(info, resend)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageTeam);

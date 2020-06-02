@@ -426,21 +426,22 @@ export const deleteBusinessAccount = (business_id) => {
 
 export const inviteTeamMember = (info, resend) => {
   return (dispatch) => {
-    const source = resend ? 'team_management_members_list' : 'team_management_members_details'
-    const source_action = 'a_invite_team_member'
+    const source = resend
+      ? "team_management_members_list"
+      : "team_management_members_details";
+    const source_action = "a_invite_team_member";
 
     createBaseUrl()
       .post("memberaccount", info)
       .then((res) => res.data)
       .then((data) => {
-
         analytics.track(`a_invite_team_member`, {
           source,
           source_action,
           timestamp: new Date().getTime(),
           resend_invite: resend,
           action_status: data.success ? "success" : "failure",
-          ...info
+          ...info,
         });
         showMessage({
           message: data.message,
@@ -448,10 +449,14 @@ export const inviteTeamMember = (info, resend) => {
         });
         return data;
       })
-      .then((data) => data.success && NavigationService.navigate("ManageTeam", {
-        source,
-        source_action
-      }))
+      .then(
+        (data) =>
+          data.success &&
+          NavigationService.navigate("ManageTeam", {
+            source,
+            source_action,
+          })
+      )
       .catch((err) => {
         analytics.track(`a_error`, {
           error_page: source,
@@ -616,7 +621,9 @@ export const handleTeamInvite = (status) => {
         if (data.success) {
           dispatch(getBusinessAccounts());
         }
-        NavigationService.navigate("Dashboard");
+        NavigationService.navigate("Dashboard", {
+          source: "", //TODO:
+        });
         dispatch(resetBusinessInvitee());
         dispatch({
           type: actionTypes.SET_TEAMINV_LOADING,
@@ -687,12 +694,11 @@ export const updateTeamMembers = (memberInfo) => {
       .then((res) => res.data)
       .then((data) => {
         analytics.track(`a_update_team_member_role`, {
-          source: 'team_management_member_details',
-          source_action: 'a_update_team_member_role',
+          source: "team_management_member_details",
+          source_action: "a_update_team_member_role",
           timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
-          ...memberInfo
-
+          ...memberInfo,
         });
 
         showMessage({
@@ -735,8 +741,8 @@ export const updateTeamMembers = (memberInfo) => {
 export const deleteTeamMembers = (memberId, businessid, navigation) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
-    const source = 'team_management_members_details'
-    const source_action = 'a_delete_team_member'
+    const source = "team_management_members_details";
+    const source_action = "a_delete_team_member";
 
     createBaseUrl()
       .delete(`/businessMembers/${memberId}/${businessid}`)
@@ -748,7 +754,7 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
           timestamp: new Date().getTime(),
           action_status: data.success ? "success" : "failure",
           member_id: memberId,
-          business_id: businessid
+          business_id: businessid,
         });
 
         showMessage({
