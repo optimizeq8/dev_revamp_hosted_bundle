@@ -14,20 +14,6 @@ class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
   componentDidMount() {
     this.props.getTeamMembers(this.props.mainBusiness.businessid);
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track(`team_management_members`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime()
-    });
-
   }
   onDidFocus = () => {
     const source = this.props.navigation.getParam(
@@ -43,14 +29,10 @@ class ManageTeam extends Component {
       source_action,
       timestamp: new Date().getTime()
     });
-    this.props.getTeamMembers(this.props.mainBusiness.businessid)
-
   }
+
   onRefresh = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
+    const source = 'team_management_members_list'
     const source_action = "a_refresh_list"
 
     analytics.track(`a_refresh_list`, {
@@ -115,8 +97,7 @@ class ManageTeam extends Component {
             <RefreshControl
               tintColor={"white"}
               refreshing={this.props.loadingTeamMembers}
-              onRefresh={this.onRefresh
-              }
+              onRefresh={this.onRefresh}
             />
           }
         >
@@ -128,11 +109,13 @@ class ManageTeam extends Component {
             </View>
           )}
         </ScrollView>
-        <AddMember
-          mainBusiness={this.props.mainBusiness}
-          navigation={this.props.navigation}
-          translate={this.translate}
-        />
+        {
+          mainBusiness.user_role === "1" &&
+          <AddMember
+            mainBusiness={this.props.mainBusiness}
+            navigation={this.props.navigation}
+            translate={this.translate}
+          />}
       </SafeAreaView>
     );
   }
@@ -149,7 +132,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getTeamMembers: businessId =>
     dispatch(actionCreators.getTeamMembers(businessId)),
-  inviteTeamMember: info => dispatch(actionCreators.inviteTeamMember(info))
+  inviteTeamMember: (info, resend) => dispatch(actionCreators.inviteTeamMember(info, resend))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageTeam);
