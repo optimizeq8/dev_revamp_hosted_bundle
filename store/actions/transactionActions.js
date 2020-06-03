@@ -390,6 +390,12 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
           campaign_id,
           action_status: data.success ? "success" : "failure",
         });
+
+        // Update the new wallet amount for that user's profile buiness
+        data.success &&
+          analytics.identify(getState().auth.userid, {
+            wallet_amount: data.wallet_amount,
+          });
         NavigationService.navigate("SuccessRedirect", {
           ...data,
           source: "payment_processing",

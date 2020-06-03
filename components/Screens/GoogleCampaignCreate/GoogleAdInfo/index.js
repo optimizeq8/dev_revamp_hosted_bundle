@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -83,22 +82,6 @@ class GoogleAdInfo extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track(`ad_objective`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
-      campaign_channel: "google",
-      campaign_ad_type: "GoogleSEAd",
-    });
     if (!this.props.campaign.incompleteCampaign) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
@@ -172,9 +155,14 @@ class GoogleAdInfo extends Component {
   };
 
   setModalVisible = (visible) => {
-    if (visible) {
-      Segment.screen("Select Country Modal");
-    }
+    analytics.track(`country_modal`, {
+      source: "ad_objective",
+      source_action: "a_toggle_country_modal",
+      visible,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
+
     this.setState({ modalVisible: visible });
   };
 
@@ -305,7 +293,7 @@ class GoogleAdInfo extends Component {
         device_id: this.props.screenProps.device_id,
         error_description:
           nameError ||
-          objectiveError ||
+          countryError ||
           dateErrors.start_timeError ||
           dateErrors.end_timeError,
       });
@@ -371,18 +359,23 @@ class GoogleAdInfo extends Component {
   };
 
   handleGoogleAdInfoFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
-    Segment.screenWithProperties("Google SE Info AD", {
-      category: "Campaign Creation",
-      channel: "google",
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name:
-        this.props.mainBusiness && this.props.mainBusiness.businessname,
-    });
     let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustGoogleAdObjectiveTracker.addPartnerParameter(
       `Google_SEM`,
