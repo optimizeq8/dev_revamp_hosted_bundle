@@ -4,7 +4,6 @@ import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
-
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -40,14 +39,13 @@ class ErrorRedirect extends Component {
       "source_action",
       "a_payment_processing"
     );
-   let segmentInfo = {};
+    let segmentInfo = {};
     if (this.props.navigation.getParam("isWallet") === "1") {
       segmentInfo = {
         amount: parseFloat(this.props.navigation.state.params.amount),
         payment_status: "failure",
         top_wallet_amount: this.props.navigation.state.params.amount,
       };
-     
     } else {
       segmentInfo = {
         payment_status: "failure",
@@ -73,7 +71,7 @@ class ErrorRedirect extends Component {
       ...segmentInfo,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
-​
+
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
       adjustWalletPaymentTracker.addPartnerParameter(

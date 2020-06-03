@@ -604,6 +604,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.optimizeapp.optimizeapp;
 				PRODUCT_NAME = optimizeapp;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
