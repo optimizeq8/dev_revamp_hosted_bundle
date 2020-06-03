@@ -298,33 +298,43 @@ class AddOrEditTeamMember extends Component {
           >
             {MemberTypes(this.handleMemberType, userRole, this.translate)}
           </Animatable.View>
+
+          {editTeamMember && (
+            <View
+              style={{
+                flex: 0.25,
+              }}
+            >
+              <Button
+                onPress={this.updateMember}
+                style={styles.deleteTeamMember}
+              >
+                <Text uppercase style={styles.deleteText}>
+                  {this.translate("Update")}
+                </Text>
+              </Button>
+              <Button
+                onPress={this.handleDelete}
+                style={[
+                  styles.deleteTeamMember,
+                  { backgroundColor: globalColors.red },
+                ]}
+              >
+                <Text uppercase style={[styles.deleteText]}>
+                  {this.translate("Delete")}
+                </Text>
+              </Button>
+            </View>
+          )}
         </InputScrollView>
 
-        {editTeamMember ? (
-          <View style={{ flex: 0.25 }}>
-            <Button onPress={this.updateMember} style={styles.deleteTeamMember}>
-              <Text uppercase style={styles.deleteText}>
-                {this.translate("Update")}
-              </Text>
-            </Button>
-            <Button
-              onPress={this.handleDelete}
-              style={[
-                styles.deleteTeamMember,
-                { backgroundColor: globalColors.red },
-              ]}
-            >
-              <Text uppercase style={[styles.deleteText]}>
-                {this.translate("Delete")}
-              </Text>
-            </Button>
-          </View>
-        ) : (
+        {!editTeamMember && (
           <AddMember
             screenProps={this.props.screenProps}
             translate={this.translate}
             sendInvite={true}
             submitFunction={this.handleInvite}
+            navigation={this.props.navigation}
           />
         )}
       </SafeAreaView>
