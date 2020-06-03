@@ -68,7 +68,15 @@ class TeamInvite extends Component {
       else logout(navigation);
     } else {
       //Accept invite
-      this.props.handleTeamInvite({ status: 1, v: tempInviteId });
+      this.props.handleTeamInvite(
+        { status: 1, v: tempInviteId },
+        {
+          source: "team_invite",
+          source_action: "a_accept_invite",
+          invite_status: 1,
+          invite_v: tempInviteId,
+        }
+      );
     }
   };
   onDidFocus = () => {
@@ -81,10 +89,10 @@ class TeamInvite extends Component {
       this.props.screenProps.prevAppState
     );
     let { businessInvitee } = this.props;
-    analytics.track(`accept_team_invite`, {
+    analytics.track(`team_invite`, {
       source,
       source_action,
-      ...businessInvitee,
+      invite_business: businessInvitee,
     });
     this.checkTeamInvite();
   };
@@ -107,6 +115,8 @@ class TeamInvite extends Component {
               v: this.props.tempInviteId,
               email: this.props.invitedEmail,
               business: this.props.businessInvitee,
+              source: "team_invite",
+              source_action: "a_go_back",
             });
           }}
         />
@@ -148,7 +158,15 @@ class TeamInvite extends Component {
               radius={30}
               transparent={true}
               onPressAction={() =>
-                this.props.handleTeamInvite({ status: 0, v: tempInviteId })
+                this.props.handleTeamInvite(
+                  { status: 0, v: tempInviteId },
+                  {
+                    source: "team_invite",
+                    source_action: "a_decline_invite",
+                    invite_status: 0,
+                    invite_v: tempInviteId,
+                  }
+                )
               }
               style={[styles.button, styles.borderWhite]}
               textStyle={styles.textButton}
@@ -173,8 +191,8 @@ const mapDispatchToProps = (dispatch) => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
   logout: (nav) => dispatch(actionCreators.logout(nav)),
-  handleTeamInvite: (status) =>
-    dispatch(actionCreators.handleTeamInvite(status)),
+  handleTeamInvite: (status, segmentInfo) =>
+    dispatch(actionCreators.handleTeamInvite(status, segmentInfo)),
   saveBusinessInvitee: (inviteeInfo) =>
     dispatch(actionCreators.saveBusinessInvitee(inviteeInfo)),
 });

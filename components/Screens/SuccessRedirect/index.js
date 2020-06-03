@@ -51,14 +51,14 @@ class SuccessRedirect extends Component {
       businessname: this.props.mainBusiness.businessname,
       campaign_channel:
         this.props.navigation.getParam("isWallet") === "1"
-          ? "wallet"
+          ? null
           : this.props.channel === ""
           ? "snapchat"
           : this.props.channel.toLowerCase(),
       amount: parseFloat(this.props.navigation.state.params.amount),
       campaign_ad_type:
         this.props.navigation.getParam("isWallet") === "1"
-          ? "wallet"
+          ? null
           : this.props.channel === "google"
           ? "GoogleSEAd"
           : this.props.adType,
