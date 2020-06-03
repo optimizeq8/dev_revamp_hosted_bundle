@@ -53,7 +53,17 @@ export default class InvitationRow extends Component {
         >
           <LowerButton
             cross
-            function={() => handleTeamInvite({ status: 0, v: v }, {})} //TODO:
+            function={() =>
+              handleTeamInvite(
+                { status: 0, v: v },
+                {
+                  source: "open_hamburger",
+                  source_action: "a_decline_invite",
+                  invite_status: 0,
+                  invite_v: v,
+                }
+              )
+            }
             width={30}
             height={30}
             style={[
