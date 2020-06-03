@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -354,14 +353,7 @@ class GoogleAdDesign extends Component {
         "GoogleAdInfo",
         "GoogleAdDesign",
       ]);
-    // Segment.screenWithProperties("Google SE Design AD", {
-    //   category: "Campaign Creation",
-    //   channel: "google"
-    // });
-    // Segment.trackWithProperties("Viewed Checkout Step", {
-    //   step: 3,
-    //   business_name: this.props.mainBusiness.businessname
-    // });
+
     this.setState({ unmounted: false });
     let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");

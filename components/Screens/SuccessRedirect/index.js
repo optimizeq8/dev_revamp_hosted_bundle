@@ -6,20 +6,20 @@ import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import GradientButton from "../../MiniComponents/GradientButton";
-
+​
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
+​
 //styles
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-
+​
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
 import { persistor } from "../../../store";
 import { AdjustEvent, Adjust } from "react-native-adjust";
-
+​
 class SuccessRedirect extends Component {
   static navigationOptions = {
     header: null,
@@ -27,13 +27,13 @@ class SuccessRedirect extends Component {
   };
   constructor(props) {
     super(props);
-
+​
     this.state = {
       media: require("../../../assets/images/logo01.png"),
       successLogo: require("../../../assets/animation/success.json"),
     };
   }
-
+​
   componentDidMount() {
     const source = this.props.navigation.getParam(
       "source",
@@ -43,48 +43,44 @@ class SuccessRedirect extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
+​
+    let segmentInfo = {};
+    if (this.props.navigation.getParam("isWallet") === "1") {
+      segmentInfo = {
+        amount: parseFloat(this.props.navigation.state.params.amount),
+        payment_status: "success",
+        top_wallet_amount: this.props.navigation.state.params.amount,
+      };
+      analytics.identify(this.props.userInfo.userid, {
+        wallet_amount: this.props.navigation.state.params.amount,
+      });
+    } else {
+      segmentInfo = {
+        payment_status: "success",
+        campaign_channel:
+          this.props.channel === "" ? "snapchat" : this.props.channel,
+        amount: parseFloat(this.props.navigation.state.params.amount),
+        campaign_ad_type:
+          this.props.channel === "google" ? "GoogleSEAd" : this.props.adType,
+​
+        campaign_ltv: parseFloat(
+          this.props.navigation.state.params.campaign_ltv
+        ),
+        campaign_revenue: parseFloat(
+          this.props.navigation.state.params.campaign_revenue
+        ),
+      };
+    }
     analytics.track(`payment_end`, {
       source,
       source_action,
       timestamp: new Date().getTime(),
       businessid: this.props.mainBusiness.businessid,
       businessname: this.props.mainBusiness.businessname,
-      campaign_channel:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? null
-          : this.props.channel === ""
-          ? "snapchat"
-          : this.props.channel.toLowerCase(),
-      amount: parseFloat(this.props.navigation.state.params.amount),
-      campaign_ad_type:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? null
-          : this.props.channel === "google"
-          ? "GoogleSEAd"
-          : this.props.adType,
-      payment_status: "success",
-      wallet_amount:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? this.props.navigation.state.params.amount
-          : null,
-      campaign_ltv:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? null
-          : this.props.navigation.state.params.campaign_ltv,
-      campaign_revenue:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? null
-          : this.props.navigation.state.params.campaign_revenue,
+      ...segmentInfo,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
-
-    // this.animation.play();
-
-    // Segment.trackWithProperties("Viewed Checkout Step", {
-    //   step: 7,
-    //   business_name: this.props.mainBusiness.businessname,
-    //   checkout_id: this.props.campaign_id
-    // });
+​
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
       adjustWalletPaymentTracker.addPartnerParameter(
@@ -125,7 +121,7 @@ class SuccessRedirect extends Component {
       //   checkout_id: this.props.campaign_id,
       //   paymentMethod: ""
       // });
-
+​
       if (
         this.props.channel === "" ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
@@ -153,13 +149,13 @@ class SuccessRedirect extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
-
+​
         <Image
           style={styles.media}
           source={this.state.media}
           resizeMode="contain"
         />
-
+​
         <View style={styles.view}>
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
