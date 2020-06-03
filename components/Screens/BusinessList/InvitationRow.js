@@ -17,7 +17,7 @@ export default class InvitationRow extends Component {
       businessname,
       invitedEmail,
       navigation,
-      userEmail
+      userEmail,
     } = this.props;
     let role = ["Admin", "Campaign Manager", "Client"][parseInt(user_role) - 1];
     return (
@@ -35,9 +35,9 @@ export default class InvitationRow extends Component {
               businessCardStyles.titletext,
               !isStringArabic(businessname)
                 ? {
-                    fontFamily: "montserrat-bold-english"
+                    fontFamily: "montserrat-bold-english",
                   }
-                : {}
+                : {},
             ]}
           >
             {businessname}
@@ -48,20 +48,20 @@ export default class InvitationRow extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "space-around",
-            width: "30%"
+            width: "30%",
           }}
         >
           <LowerButton
             cross
-            function={() => handleTeamInvite({ status: 0, v: v })}
+            function={() => handleTeamInvite({ status: 0, v: v }, {})} //TODO:
             width={30}
             height={30}
             style={[
               {
                 width: 32,
                 height: 32,
-                ...globalStyles.orangeBorderColor
-              }
+                ...globalStyles.orangeBorderColor,
+              },
             ]}
           />
           <LowerButton
@@ -73,12 +73,14 @@ export default class InvitationRow extends Component {
                 email:
                   navigation.getParam("email", false) ||
                   invitedEmail ||
-                  userEmail
+                  userEmail,
+                source: "open_hamburger",
+                source_action: "a_open_team_invite",
               })
             }
             style={{
               width: 32,
-              height: 32
+              height: 32,
             }}
             width={30}
             height={30}

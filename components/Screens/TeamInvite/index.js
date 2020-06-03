@@ -7,8 +7,7 @@ import AddTeamIcon from "../../../assets/SVGs/AddTeam";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
 import GradientButton from "../../MiniComponents/GradientButton";
-import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 import { Bold } from "../../MiniComponents/StyledComponents";
 import Loading from "../../MiniComponents/LoadingScreen";
 class TeamInvite extends Component {
@@ -20,7 +19,7 @@ class TeamInvite extends Component {
       this.props.navigation.setParams({
         v: this.props.tempInviteId,
         email: this.props.invitedEmail,
-        business: this.props.businessInvitee
+        business: this.props.businessInvitee,
       });
       this.checkTeamInvite();
     }
@@ -37,7 +36,7 @@ class TeamInvite extends Component {
       this.props.saveBusinessInvitee({
         tempInviteId: this.props.navigation.getParam("v", ""),
         businessInvitee: this.props.navigation.getParam("business", ""),
-        invitedEmail: this.props.navigation.getParam("email", false)
+        invitedEmail: this.props.navigation.getParam("email", false),
       });
       if (!this.props.userInfo) {
         this.setState({ loggedOut: true });
@@ -47,7 +46,7 @@ class TeamInvite extends Component {
           this.props.userInfo.email
       ) {
         this.setState({
-          wrongEmail: true
+          wrongEmail: true,
         });
       }
     }
@@ -62,7 +61,7 @@ class TeamInvite extends Component {
       userInfo,
       clearPushToken,
       logout,
-      tempInviteId
+      tempInviteId,
     } = this.props;
     if (this.state.wrongEmail || this.state.loggedOut) {
       if (userInfo) clearPushToken(navigation, userInfo.userid);
@@ -71,6 +70,23 @@ class TeamInvite extends Component {
       //Accept invite
       this.props.handleTeamInvite({ status: 1, v: tempInviteId });
     }
+  };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    let { businessInvitee } = this.props;
+    analytics.track(`accept_team_invite`, {
+      source,
+      source_action,
+      ...businessInvitee,
+    });
+    this.checkTeamInvite();
   };
   render() {
     let { wrongEmail, loggedOut } = this.state;
@@ -83,19 +99,14 @@ class TeamInvite extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen("TeamInvite");
-            this.checkTeamInvite();
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           actionButton={() => {
             this.props.navigation.navigate(userInfo ? "Dashboard" : "Signin", {
               v: this.props.tempInviteId,
               email: this.props.invitedEmail,
-              business: this.props.businessInvitee
+              business: this.props.businessInvitee,
             });
           }}
         />
@@ -150,21 +161,22 @@ class TeamInvite extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   businessInvitee: state.account.businessInvitee,
   tempInviteId: state.account.tempInviteId,
   invitedEmail: state.account.invitedEmail,
-  teamInviteLoading: state.account.teamInviteLoading
+  teamInviteLoading: state.account.teamInviteLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
-  logout: nav => dispatch(actionCreators.logout(nav)),
-  handleTeamInvite: status => dispatch(actionCreators.handleTeamInvite(status)),
-  saveBusinessInvitee: inviteeInfo =>
-    dispatch(actionCreators.saveBusinessInvitee(inviteeInfo))
+  logout: (nav) => dispatch(actionCreators.logout(nav)),
+  handleTeamInvite: (status) =>
+    dispatch(actionCreators.handleTeamInvite(status)),
+  saveBusinessInvitee: (inviteeInfo) =>
+    dispatch(actionCreators.saveBusinessInvitee(inviteeInfo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamInvite);
