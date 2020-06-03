@@ -412,12 +412,14 @@ class AdObjective extends Component {
                     : "shake"
                 }
               >
+                {/** TODO: Design change */}
                 <View style={[styles.dateTextLabel]}>
                   <Text uppercase style={[styles.inputLabel]}>
                     {translate("Date")}
                   </Text>
                 </View>
                 <Duration
+                  label={"Date"}
                   screenProps={this.props.screenProps}
                   loading={this.props.loading}
                   dismissKeyboard={Keyboard.dismiss}

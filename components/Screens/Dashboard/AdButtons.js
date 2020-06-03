@@ -32,11 +32,11 @@ export default class AdButtons extends Component {
                 styles.channelIcon,
                 I18nManager.isRTL
                   ? {
-                      right: -20
+                      right: -20,
                     }
                   : {
-                      left: -20
-                    }
+                      left: -20,
+                    },
               ]}
               fill={ad.mediaType === "google" && "#0000"}
             />
@@ -47,11 +47,11 @@ export default class AdButtons extends Component {
             styles.adButtonText,
             !isStringArabic(this.props.translate(ad.title))
               ? {
-                  fontFamily: "montserrat-regular-english"
+                  fontFamily: "montserrat-regular-english",
                 }
               : {
-                  fontFamily: "montserrat-regular"
-                }
+                  fontFamily: "montserrat-regular",
+                },
           ]}
         >
           {this.props.translate(ad.title)}

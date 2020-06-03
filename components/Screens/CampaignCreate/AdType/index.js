@@ -40,7 +40,7 @@ class AdType extends Component {
   };
   state = {
     active: "Snapchat",
-    ad_type_array: instagramAds,
+    ad_type_array: snapAds,
     socialMediaPlatforms:
       Platform.OS === "android" && I18nManager.isRTL
         ? [...SocialPlatforms].reverse()

@@ -43,7 +43,7 @@ import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationI
 import styles from "./styles";
 
 //data
-import { snapAds, googleAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds, instagramAds } from "../../Data/adTypes.data";
 import businessCategoriesList from "../../Data/businessCategoriesList.data";
 
 //Redux
@@ -422,7 +422,11 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [...snapAds, ...googleAds].map((adType) => (
+    let adButtons = [
+      ...snapAds,
+      ...googleAds,
+      // ...instagramAds,
+    ].map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
