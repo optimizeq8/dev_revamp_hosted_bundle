@@ -47,8 +47,6 @@ target 'OptimizeApp' do
 
   use_native_modules!
 
-
-
   pod 'RNAnalytics', :path => '../node_modules/@segment/analytics-react-native'
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'

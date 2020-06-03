@@ -48,7 +48,7 @@ class CampaignCard extends Component {
       source: "dashboard",
       source_action: "a_open_campaign_card",
       timestamp: new Date().getTime(),
-      campaign_id: this.props.campaign.campaign_id
+      campaign_id: this.props.campaign.campaign_id,
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,
@@ -73,6 +73,7 @@ class CampaignCard extends Component {
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
+
     return (
       <LinearGradient
         colors={["#9300FF", "#9300FF", "#4E00CB"]}

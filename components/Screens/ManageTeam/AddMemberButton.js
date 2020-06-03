@@ -2,38 +2,35 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 import AddTeamIcon from "../../../assets/SVGs/AddTeam";
-import segmentEventTrack from "../../segmentEventTrack";
 
-import { showMessage } from "react-native-flash-message";
 export default class AddMember extends Component {
   render() {
     let {
       sendInvite,
       submitFunction,
       navigation,
-      mainBusiness,
       translate
     } = this.props;
 
     return (
       <TouchableOpacity
         onPress={() => {
-          segmentEventTrack("Button Add Team Member Clicked");
-          sendInvite
-            ? segmentEventTrack("Send Invite")
-            : mainBusiness.user_role === "1"
-            ? segmentEventTrack("Navigate To Add/Edit TeamMember")
-            : segmentEventTrack("Error Add Team Member", {
-                error_manage_team: "Only an admin can add team members"
-              });
+          const source = this.props.navigation.getParam(
+            "source",
+            this.props.screenProps.prevAppState
+          );
+          const source_action = this.props.navigation.getParam(
+            "source_action",
+            this.props.screenProps.prevAppState
+          );
+
           sendInvite
             ? submitFunction()
-            : mainBusiness.user_role === "1"
-            ? navigation.push("AddOrEditTeamMember")
-            : showMessage({
-                message: translate("Only an admin can add team members"),
-                type: "info"
-              });
+            : navigation.navigate("AddOrEditTeamMember", {
+              source,
+              source_action
+            })
+
         }}
         style={styles.addMember}
       >

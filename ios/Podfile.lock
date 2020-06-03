@@ -321,7 +321,7 @@ PODS:
     - Segment-Mixpanel
   - RNBootSplash (2.2.4):
     - React
-  - RNDeviceInfo (5.5.8):
+  - RNDeviceInfo (5.6.1):
     - React
   - RNGestureHandler (1.6.1):
     - React
@@ -333,9 +333,9 @@ PODS:
     - React
   - RNScreens (2.2.0):
     - React
-  - RNSentry (1.4.1):
+  - RNSentry (1.4.2):
     - React
-    - Sentry (~> 5.1.0)
+    - Sentry (~> 5.1.1)
   - RNSVG (11.0.1):
     - React
   - RNVectorIcons (6.6.0):
@@ -698,12 +698,12 @@ SPEC CHECKSUMS:
   RNAnalytics: 030981001ebba8772df04f5eef8c660092dbc4df
   RNAnalyticsIntegration-Mixpanel: 677a26dc71d345112ad5f8d417db87c1887dd55c
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
-  RNDeviceInfo: 655265668063a05fff096c6819da0b7289753ef7
+  RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
-  RNSentry: df6946b5fe880a9097f6994c9028f939710b3000
+  RNSentry: c4bdecef182912b8d8bb5b626f45da314f047dbd
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
@@ -725,6 +725,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 9e05e612ea89aa5870dc419965f9d6aef519655c
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 1aee3caa858e52a676e4fce3ba6022194653e0d4
+PODFILE CHECKSUM: e4c309695dd6874eefa8d99ed99bca0e891d5afd
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

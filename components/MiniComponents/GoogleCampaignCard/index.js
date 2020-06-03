@@ -26,16 +26,16 @@ class GoogleCampaignCard extends Component {
       false,
       {
         source: "dashboard",
-        source_action: "a_open_campaign_details"
+        source_action: "a_open_campaign_details",
       }
     );
     this.props.navigation.navigate("GoogleCampaignDetails", {
       campaign: this.props.campaign,
       source: "dashboard",
-      source_action: "a_open_campaign_details"
+      source_action: "a_open_campaign_details",
     });
     Segment.trackWithProperties("Pressed Google Campaign Card", {
-      campaign_id: this.props.campaign.campaign_id
+      campaign_id: this.props.campaign.campaign_id,
     });
   };
   render() {
@@ -68,9 +68,9 @@ class GoogleCampaignCard extends Component {
                       styles.titleText,
                       !isStringArabic(campaign.name)
                         ? {
-                            fontFamily: "montserrat-bold-english"
+                            fontFamily: "montserrat-bold-english",
                           }
-                        : {}
+                        : {},
                     ]}
                   >
                     {campaign.name}
@@ -84,8 +84,8 @@ class GoogleCampaignCard extends Component {
                             color:
                               campaign.status === "REMOVED"
                                 ? globalColors.orange
-                                : globalColors.green
-                          }
+                                : globalColors.green,
+                          },
                         ]}
                         name={"circle"}
                         type={"FontAwesome"}
@@ -97,8 +97,8 @@ class GoogleCampaignCard extends Component {
                             color:
                               campaign.status === "REMOVED"
                                 ? globalColors.orange
-                                : globalColors.green
-                          }
+                                : globalColors.green,
+                          },
                         ]}
                       >
                         {translate(
@@ -132,8 +132,8 @@ class GoogleCampaignCard extends Component {
                         style={[
                           styles.circleIcon,
                           {
-                            color: globalColors.red
-                          }
+                            color: globalColors.red,
+                          },
                         ]}
                         name={"circle-slash"}
                         type={"Octicons"}
@@ -150,8 +150,8 @@ class GoogleCampaignCard extends Component {
                         style={[
                           styles.circleIcon,
                           {
-                            color: globalColors.orange
-                          }
+                            color: globalColors.orange,
+                          },
                         ]}
                         name={"circle"}
                         type={"FontAwesome"}
@@ -160,8 +160,8 @@ class GoogleCampaignCard extends Component {
                         style={[
                           styles.reviewText,
                           {
-                            color: globalColors.orange
-                          }
+                            color: globalColors.orange,
+                          },
                         ]}
                       >
                         {translate("In Review")}
@@ -181,9 +181,9 @@ class GoogleCampaignCard extends Component {
                       {
                         marginLeft: "auto",
                         // left: "75%",
-                        color: globalColors.green
+                        color: globalColors.green,
                         // position: "absolute"
-                      }
+                      },
                     ]}
                   />
                 )}
@@ -219,7 +219,7 @@ class GoogleCampaignCard extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   get_google_campiagn_details: (
     id,
     start_time,
@@ -235,6 +235,6 @@ const mapDispatchToProps = dispatch => ({
         getStats,
         segmentInfo
       )
-    )
+    ),
 });
 export default connect(null, mapDispatchToProps)(GoogleCampaignCard);
