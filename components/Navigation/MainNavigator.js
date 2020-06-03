@@ -55,6 +55,15 @@ import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
+import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
+import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
+import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/AdTargetting";
+import InstagramAdPaymentReview from "../Screens/InstagramCampaignCreate/Feed/AdPaymentReview";
+import AdFeedDesignReview from "../Screens/InstagramCampaignCreate/Feed/AdReview";
+
+import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
+import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
+import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
 
 export default FluidNavigator(
@@ -71,7 +80,7 @@ export default FluidNavigator(
     MultiSelect: MultiSelect,
     TransactionList: TransactionList,
     Wallet: Wallet,
-    AdType: AdType,
+    AdType: { screen: AdType, path: "ad_type/" },
     AdObjective: { screen: AdObjective, path: "AdObjective/" },
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
@@ -124,6 +133,14 @@ export default FluidNavigator(
     WebsiteSetting: WebsiteSetting,
     MyWebsite: MyWebsite,
     TutorialWeb: TutorialWeb,
+    InstagramFeedAdObjective: InstagramFeedAdObjective,
+    InstagramFeedAdDesign: InstagramFeedAdDesign,
+    InstagramStoryAdObjective: InstagramStoryAdObjective,
+    InstagramStoryAdDesign: InstagramStoryAdDesign,
+    InstagramSwipeUpDestination: InstagramSwipeUpDestination,
+    InstagramFeedAdTargetting: InstagramFeedAdTargetting,
+    AdFeedDesignReview: AdFeedDesignReview,
+    InstagramAdPaymentReview: InstagramAdPaymentReview,
     ImagePreview: ImagePreview,
     //     PaymentForm: {
     //       screen: PaymentForm

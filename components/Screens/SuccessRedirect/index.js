@@ -122,7 +122,7 @@ class SuccessRedirect extends Component {
       // });
 
       if (
-        this.props.channel === "" ||
+        (this.props.channel && this.props.channel === "") ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
       ) {
         this.props.resetCampaignInfo();

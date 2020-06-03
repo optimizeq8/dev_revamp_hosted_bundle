@@ -142,7 +142,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 35,
     borderTopLeftRadius: 35
   },
-  mainIcon: { position: "absolute", zIndex: -2 }
+  mainIcon: { position: "absolute", zIndex: -2 },
+  loginBtn: {
+    height: 50,
+    marginTop: 20,
+    marginHorizontal: 20
+  }
 });
 
 export default styles;

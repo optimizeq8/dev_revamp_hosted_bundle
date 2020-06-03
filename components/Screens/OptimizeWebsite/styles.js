@@ -1,68 +1,68 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
     // position: "absolute"
   },
   personalInfoIcon: {
     alignSelf: "center",
-    marginTop: 20
+    marginTop: 20,
   },
   dataContainer: {
     paddingHorizontal: 35,
     paddingTop: 20,
-    alignItems: "center"
+    alignItems: "center",
   },
   nameText: {
     color: "#5F5F5F",
     fontFamily: "montserrat-medium",
     fontSize: 23,
     textAlign: "left",
-    paddingBottom: 60
+    paddingBottom: 60,
   },
   itemMobileNo: {
-    marginBottom: 30
+    marginBottom: 30,
   },
   labelMobileNo: {
-    fontSize: 14 / PixelRatio.getFontScale()
+    fontSize: 14 / PixelRatio.getFontScale(),
   },
   labelEmail: {
     bottom: 5,
     // alignSelf: "center",
-    fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14
+    fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14,
   },
   mainCard: {
-    flex: 1
+    flex: 1,
   },
   button: {
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   contentContainer: {
     paddingVertical: 20,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   label: {
     color: "#FF9D00",
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    textAlign: "left"
+    textAlign: "left",
   },
   inputText: {
     fontFamily: "montserrat-regular-english",
     textAlign: I18nManager.isRTL ? "right" : "left",
     fontSize: 21 / PixelRatio.getFontScale(),
-    color: "#4B4B4B"
+    color: "#4B4B4B",
   },
   input: {
     // bottom: 25,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     // alignSelf: "center",
     // width: "90%",
     // height: 45,
-    borderColor: "#7039FF"
+    borderColor: "#7039FF",
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 54
+    height: 54,
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 0,
     paddingRight: 0,
-    height: 20
+    height: 20,
   },
   fullNameView: {
-    width: "100%"
+    width: "100%",
   },
   phoneInput: {
     borderRadius: 0,
@@ -102,11 +102,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     paddingBottom: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   mobileView: {
     width: "100%",
-    marginBottom: 30
+    marginBottom: 30,
   },
   emailItem: { width: "100%", marginTop: 25 },
   inputLabel: {
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textTransform: "uppercase",
     marginTop: 10,
-    zIndex: 1
+    zIndex: 1,
   },
   labelView: {
     height: 15,
@@ -128,56 +128,56 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     paddingTop: 2,
     marginBottom: 0,
-    backgroundColor: "rgba(0,0,0,0.15)"
+    backgroundColor: "rgba(0,0,0,0.15)",
   },
   flagIcon: {
     fontSize: 12,
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
   },
   flagStyle: {
-    height: 15
+    height: 15,
   },
   stepNoView: {
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 7,
     borderRadius: 20,
-    borderColor: "#C6C6C6"
+    borderColor: "#C6C6C6",
   },
   stepNoText: {
     fontFamily: "montserrat-regular",
     fontSize: 10,
-    color: "#C6C6C6"
+    color: "#C6C6C6",
   },
   stepNameText: {
     fontFamily: "montserrat-regular",
     fontSize: 8,
-    color: "#C6C6C6"
+    color: "#C6C6C6",
   },
   horzintalLine: {
     borderWidth: 0.5,
     borderColor: "#C6C6C6",
     width: 30,
     alignSelf: "center",
-    marginTop: -10
+    marginTop: -10,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
     borderTopLeftRadius: 35,
-    borderTopRightRadius: 35
+    borderTopRightRadius: 35,
     // overflow: "hidden"
   },
   whatsAppDetailContainer: {
     paddingTop: 20,
     paddingBottom: "30%",
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
     // minHeight: '100%',
     // justifyContent: 'space-around',
     // flex: 1,
   },
   marginVertical: {
-    marginVertical: 10
+    marginVertical: 10,
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -190,19 +190,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   createWebsiteText: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
     color: "#FFF",
     width: widthPercentageToDP(75),
-    textAlign: "center"
+    textAlign: "center",
   },
   bottonViewWebsite: {
     marginBottom: 10,
     alignSelf: "flex-end",
-    left: -10
+    left: -10,
   },
   itemView: {
     width: 25,
@@ -213,11 +213,11 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     alignSelf: "flex-end",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   itemFoundText: {
     textAlign: "center",
-    color: "#FFF"
+    color: "#FFF",
   },
   itemProductView: {
     display: "flex",
@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     // marginHorizontal: "auto",
     paddingHorizontal: 8,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   imageProduct: {
     width: 95,
     height: 95,
-    borderRadius: 20
+    borderRadius: 20,
   },
   viewMoreText: {
     fontFamily: "montserrat-bold",
@@ -245,25 +245,25 @@ const styles = StyleSheet.create({
     borderColor: globalColors.orange,
     borderRadius: 20,
     marginHorizontal: 60,
-    marginVertical: 30
+    marginVertical: 30,
   },
   submitText: {
     fontFamily: "montserrat-bold",
     color: "#FFF",
     fontSize: 14,
-    lineHeight: 18
+    lineHeight: 18,
   },
   registerSuccessIcon: {
     marginLeft: I18nManager.isRTL
       ? widthPercentageToDP(-5)
       : widthPercentageToDP(-55),
-    marginTop: heightPercentageToDP(5)
+    marginTop: heightPercentageToDP(5),
   },
   successText: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
     color: "#FFF",
-    textAlign: "left"
+    textAlign: "left",
   },
   registerCompleteText: {
     fontFamily: "montserrat-bold",
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textAlign: "left",
     paddingTop: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   yourLinkText: {
     fontFamily: "montserrat-bold",
@@ -279,63 +279,63 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
     paddingVertical: 10,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   getStartedBtn: {
     height: 54,
-    marginHorizontal: 0
+    marginHorizontal: 0,
   },
 
   mainView: {
     display: "flex",
     paddingHorizontal: 30,
     paddingTop: 10,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   businessNameView: {
     flexDirection: "column",
     padding: 20,
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 70,
-    marginBottom: 20
+    marginBottom: 20,
   },
   websiteUrl: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     lineHeight: 19,
     color: globalColors.orange,
-    textAlign: "center"
+    textAlign: "center",
   },
   tapCopyText: {
     fontFamily: "montserrat-regular",
     fontSize: 13,
     color: globalColors.white,
-    textAlign: "center"
+    textAlign: "center",
   },
   activeStepView: {
-    borderColor: "#4CA2E0"
+    borderColor: "#4CA2E0",
   },
   activeStepText: {
     color: "#4CA2E0",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   headerText: {
     fontFamily: "montserrat-bold",
     fontSize: 18,
     color: "#4CA2E0",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   badgeView: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   scrollView: {
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
     marginTop: -110,
-    backgroundColor: "#9300FF"
+    backgroundColor: "#9300FF",
   },
   outerView: {
     flex: 1,
@@ -346,21 +346,21 @@ const styles = StyleSheet.create({
     elevation: 1,
     paddingHorizontal: 20,
     // backgroundColor: "#9300FF",
-    paddingTop: 20
+    paddingTop: 20,
   },
   onlineStoreHomeIcon: {
     left: -10,
     zIndex: -5,
     elevation: 0,
     backgroundColor: "#FFF",
-    marginBottom: heightPercentageToDP(-15)
+    marginBottom: heightPercentageToDP(-15),
   },
   list: {
     // paddingTop: 20
     // display: "flex",
     // flexGrow: 1,
     // justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
     // marginBottom: 40
   },
   submitProducts: {
@@ -368,26 +368,26 @@ const styles = StyleSheet.create({
     height: 40,
     marginHorizontal: 60,
     alignSelf: "center",
-    marginBottom: 30
+    marginBottom: 30,
   },
   headerCardView: {
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
   },
   badgeViewInner: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   changeLogoText: {
     textAlign: "center",
     fontSize: 11,
     fontFamily: "montserrat-regular",
     color: globalColors.orange,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   instagramErrorText: {
     // paddingTop: 12,
@@ -395,40 +395,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "montserrat-regular",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   errorIcon: {
     position: "absolute",
     right: 15,
     alignSelf: "center",
-    top: I18nManager.isRTL ? 35 : 30
+    top: I18nManager.isRTL ? 35 : 30,
   },
   socialMediaIcon: {
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   selectProductText: {
     fontSize: 12,
     fontFamily: "montserrat-regular",
     color: "#999999",
     paddingHorizontal: 50,
-    textAlign: "left"
+    textAlign: "left",
   },
   hideProductText: {
     fontFamily: "montserrat-bold",
-    color: globalColors.orange
+    color: globalColors.orange,
   },
   productsText: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "#909090",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   step2OuterView: {
     overflow: "visible",
     paddingHorizontal: 0,
     paddingTop: 0,
     flex: 0,
-    zIndex: 2
+    zIndex: 2,
   },
   livePreviewView: {
     backgroundColor: "#42EB56",
@@ -438,12 +438,12 @@ const styles = StyleSheet.create({
     width: 120,
     zIndex: 22,
     left: 30,
-    marginBottom: -15
+    marginBottom: -15,
   },
   livePreviewText: {
     fontSize: 12,
     fontFamily: "montserrat-bold",
-    color: "#FFF"
+    color: "#FFF",
   },
   previewOuterView: {
     display: "flex",
@@ -452,12 +452,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
     paddingTop: 25,
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   profileIcon: {
     width: 62,
     height: 62,
-    borderRadius: 70
+    borderRadius: 70,
   },
   bsnNameText: {
     textAlign: "center",
@@ -465,17 +465,16 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
     color: "#FFF",
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   socialMediaView: {
     display: "flex",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   productSelectOuterView: {
     // flex: 1,
-
-    backgroundColor: "#5600CB"
+    backgroundColor: "#5600CB",
   },
   productsTextView: {
     alignSelf: "center",
@@ -486,28 +485,28 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 150,
     borderBottomRightRadius: 25,
     marginBottom: -4,
-    zIndex: 1
+    zIndex: 1,
   },
   selectProductTextView: {
     // flex: 1,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop: 20
+    paddingTop: 20,
   },
   lowerBtn: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   eachItem: {
     width: 65,
     height: 65,
-    borderRadius: 20
+    borderRadius: 20,
   },
   itemFound: {
-    opacity: 0.26
+    opacity: 0.26,
   },
   itemFoundView: {
-    backgroundColor: "#D84D28"
+    backgroundColor: "#D84D28",
   },
   businesslogoView: {
     width: 95,
@@ -516,11 +515,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.16)",
     marginVertical: 10,
     borderRadius: 100,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   businessLogo: {
     width: 140,
-    height: 140
+    height: 140,
   },
   yourUrlText: {
     fontFamily: "montserrat-bold",
@@ -529,40 +528,40 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     textAlign: "left",
     marginTop: 10,
-    zIndex: 1
+    zIndex: 1,
   },
   weburl: {
     fontFamily: "montserrat-regular-english",
     fontSize: 14,
     color: "#FFF",
-    textAlign: "left"
+    textAlign: "left",
   },
   weburlView: {
-    marginHorizontal: 26
+    marginHorizontal: 26,
     // flexDirection: "row"
   },
   copyIcon: {
     alignSelf: "flex-end",
-    left: 10
+    left: 10,
   },
   copyIcon2: {
     position: "absolute",
     right: 20,
-    top: I18nManager.isRTL ? 35 : 30
+    top: I18nManager.isRTL ? 35 : 30,
   },
   urlView: {
-    marginBottom: 13
+    marginBottom: 13,
   },
   award: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   colView: {
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
     marginLeft: 13,
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 export default styles;

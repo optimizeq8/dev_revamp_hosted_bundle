@@ -18,6 +18,7 @@ export {
   resetBusinessInvitee,
   updateWebInfoForBusiness,
   changeBusinessLogo,
+  updateBusinessConnectedToFacebook,
 } from "./accountManagementActions";
 
 export {
@@ -170,3 +171,20 @@ export {
   saveWebProductsToHide,
   getWebProductsToHide,
 } from "./optimizeWebsiteActions";
+
+export {
+  ad_objective_instagram,
+  set_adType_instagram,
+  save_campaign_info_instagram,
+  setCampaignInProgressInstagram,
+  saveCampaignStepsInstagram,
+  resetCampaignInfoInstagram,
+  overWriteObjectiveDataInstagram,
+  saveBrandMediaInstagram,
+  get_interests_instagram,
+  getOSVersion,
+  getDeviceBrand,
+  instagram_ad_audience_size,
+  get_total_reach_instagram,
+  ad_details_instagram,
+} from "./instagramCampaignActions";

@@ -47,7 +47,7 @@ import AppChoiceBusiness from "../../MiniComponents/AppChoiceBusiness";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -64,13 +64,13 @@ class CreateBusinessAccount extends Component {
         appstorelink: {
           app_name: "",
           ios_app_id: "",
-          icon_media_url: ""
+          icon_media_url: "",
         },
         playstorelink: {
           app_name: "",
           icon_media_url: "",
-          android_app_url: ""
-        }
+          android_app_url: "",
+        },
       },
       inputT: false,
       inputN: false,
@@ -89,28 +89,28 @@ class CreateBusinessAccount extends Component {
       countries: [
         {
           label: translate("Kuwait"),
-          value: "Kuwait"
+          value: "Kuwait",
         },
         {
           label: translate("UAE"),
-          value: "UAE"
+          value: "UAE",
         },
         {
           label: translate("KSA"),
-          value: "KSA"
+          value: "KSA",
         },
         {
           label: translate("Bahrain"),
-          value: "Bahrain"
+          value: "Bahrain",
         },
         {
           label: translate("Qatar"),
-          value: "Qatar"
+          value: "Qatar",
         },
         {
           label: translate("Oman"),
-          value: "Oman"
-        }
+          value: "Oman",
+        },
       ],
       editBusinessInfo: false,
       // networkString: "http://",
@@ -128,7 +128,7 @@ class CreateBusinessAccount extends Component {
       checkingBusinessNameSubmission: false,
       androidAppSelected: false,
       iosAppSelected: false,
-      createNewBusiness: false
+      createNewBusiness: false,
     };
   }
   componentDidMount() {
@@ -161,7 +161,7 @@ class CreateBusinessAccount extends Component {
           source,
           source_action,
           timestamp: new Date().getTime(),
-          ...this.props.mainBusiness
+          ...this.props.mainBusiness,
         }
       );
     }
@@ -172,7 +172,7 @@ class CreateBusinessAccount extends Component {
         ? "Business Info Registration"
         : "Create New Business",
       {
-        category: this.props.registering ? "Sign Up" : "User Menu"
+        category: this.props.registering ? "Sign Up" : "User Menu",
       }
     );
 
@@ -189,7 +189,7 @@ class CreateBusinessAccount extends Component {
         businessAccount: {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
-          websitelink: website ? website : ""
+          websitelink: website ? website : "",
         },
         editBusinessInfo,
         // networkString: networkString ? networkString : "http://",
@@ -198,7 +198,7 @@ class CreateBusinessAccount extends Component {
           this.props.mainBusiness.appstorelink.ios_app_id !== "",
         androidAppSelected:
           this.props.mainBusiness.playstorelink &&
-          this.props.mainBusiness.playstorelink.android_app_url !== ""
+          this.props.mainBusiness.playstorelink.android_app_url !== "",
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -210,12 +210,12 @@ class CreateBusinessAccount extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  _handleBusinessCategories = async type => {
+  _handleBusinessCategories = async (type) => {
     await this.setState({
       businessAccount: {
         ...this.state.businessAccount,
-        businesstype: type
-      }
+        businesstype: type,
+      },
     });
   };
 
@@ -230,10 +230,10 @@ class CreateBusinessAccount extends Component {
       return this.props.successName;
     }
   };
-  _handleBusinessName = value => {
+  _handleBusinessName = (value) => {
     this.setState({
       businessnameAvalible: value,
-      checkingBusinessNameSubmission: false
+      checkingBusinessNameSubmission: false,
     });
   };
 
@@ -272,12 +272,12 @@ class CreateBusinessAccount extends Component {
       businesscategoryError,
       countryError,
       businesscategoryOtherError,
-      websitelinkError
+      websitelinkError,
     });
     if (websitelinkError) {
       showMessage({
         message: translate("Please enter a valid URL"),
-        type: "warning"
+        type: "warning",
       });
     } else {
       if (
@@ -291,8 +291,8 @@ class CreateBusinessAccount extends Component {
           await this.setState({
             businessAccount: {
               ...this.state.businessAccount,
-              brandname: this.state.businessAccount.businessname
-            }
+              brandname: this.state.businessAccount.businessname,
+            },
           });
         }
         if (
@@ -314,7 +314,7 @@ class CreateBusinessAccount extends Component {
               let appstorelink = {
                 app_name: "",
                 ios_app_id: "",
-                icon_media_url: ""
+                icon_media_url: "",
               };
               businessAccount = { ...businessAccount, appstorelink };
             }
@@ -322,7 +322,7 @@ class CreateBusinessAccount extends Component {
               let playstorelink = {
                 app_name: "",
                 icon_media_url: "",
-                android_app_url: ""
+                android_app_url: "",
               };
               businessAccount = { ...businessAccount, playstorelink };
             }
@@ -337,7 +337,7 @@ class CreateBusinessAccount extends Component {
             let userInfo = {
               ...this.props.userInfoR,
               ...business,
-              websitelink
+              websitelink,
             };
             this.props.registerUser(userInfo, this.props.navigation);
           }
@@ -348,7 +348,7 @@ class CreateBusinessAccount extends Component {
               let appstorelink = {
                 app_name: "",
                 ios_app_id: "",
-                icon_media_url: ""
+                icon_media_url: "",
               };
               businessAccount = { ...businessAccount, appstorelink };
             }
@@ -356,7 +356,7 @@ class CreateBusinessAccount extends Component {
               let playstorelink = {
                 app_name: "",
                 icon_media_url: "",
-                android_app_url: ""
+                android_app_url: "",
               };
               businessAccount = { ...businessAccount, playstorelink };
             }
@@ -375,7 +375,7 @@ class CreateBusinessAccount extends Component {
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
-                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
               },
               this.props.mainBusiness
             );
@@ -388,7 +388,7 @@ class CreateBusinessAccount extends Component {
                   otherBusinessCategory:
                     this.state.businessAccount.businesscategory !== "43"
                       ? null
-                      : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                      : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 },
                 this.props.navigation
               );
@@ -404,12 +404,12 @@ class CreateBusinessAccount extends Component {
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
                     : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
-                error_description: "No changes to update"
+                error_description: "No changes to update",
               });
               showMessage({
                 type: "warning",
                 message: translate("No changes to update"),
-                position: "top"
+                position: "top",
               });
             }
           } else {
@@ -420,7 +420,7 @@ class CreateBusinessAccount extends Component {
                 this.state.businessAccount.businesscategory !== "43"
                   ? null
                   : this.state.businessAccount.otherBusinessCategory,
-              country: this.state.businessAccount.country
+              country: this.state.businessAccount.country,
             };
             this.props.createBusinessAccount(
               businessAccountInfo,
@@ -442,18 +442,18 @@ class CreateBusinessAccount extends Component {
               : `a_create_buiness_account`,
             action_status: "failure",
             timestamp: new Date().getTime(),
-            error_description: "Please complete all the required fields"
+            error_description: "Please complete all the required fields",
           }
         );
         showMessage({
           message: translate("Please complete all the required fields"),
-          type: "warning"
+          type: "warning",
         });
       }
     }
   };
 
-  onSelectedBusinessCategoryIdChange = value => {
+  onSelectedBusinessCategoryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
@@ -463,18 +463,18 @@ class CreateBusinessAccount extends Component {
         "mandatory",
         this.state.businessAccount.businesscategory
       ),
-      inputT: false
+      inputT: false,
     });
   };
 
-  onSelectedBusinessCategoryChange = value => {
+  onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            businesscategory: value[0].value
-          }
+            businesscategory: value[0].value,
+          },
         },
         () => {
           this.closeCategoryModal();
@@ -483,7 +483,7 @@ class CreateBusinessAccount extends Component {
     }
   };
 
-  onSelectedCountryIdChange = value => {
+  onSelectedCountryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("country", value);
   };
@@ -493,18 +493,18 @@ class CreateBusinessAccount extends Component {
         "mandatory",
         this.state.businessAccount.country
       ),
-      inputC: false
+      inputC: false,
     });
   };
 
-  onSelectedCountryChange = value => {
+  onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            country: value[0].value
-          }
+            country: value[0].value,
+          },
         },
         () => {
           this.closeCountryModal();
@@ -512,18 +512,18 @@ class CreateBusinessAccount extends Component {
       );
     }
   };
-  focusTheField = fieldName => {
+  focusTheField = (fieldName) => {
     this.inputs[fieldName]._root.focus();
   };
   inputs = {};
 
-  setWebsiteValue = value => {
+  setWebsiteValue = (value) => {
     const businessAccount = {
       ...this.state.businessAccount,
-      websitelink: value
+      websitelink: value,
     };
     this.setState({
-      businessAccount
+      businessAccount,
     });
   };
   // setNetworkString = value => {
@@ -533,7 +533,7 @@ class CreateBusinessAccount extends Component {
   // };
   getValidInfo = (stateError, error) => {
     this.setState({
-      [stateError]: error
+      [stateError]: error,
     });
   };
 
@@ -541,7 +541,7 @@ class CreateBusinessAccount extends Component {
     this.setState({ isVisible, appSelection: os });
   };
 
-  toggleAppSelection = android => {
+  toggleAppSelection = (android) => {
     this.setState(
       android
         ? { androidAppSelected: !this.state.androidAppSelected }
@@ -549,7 +549,7 @@ class CreateBusinessAccount extends Component {
     );
   };
 
-  _getIosAppIds = app => {
+  _getIosAppIds = (app) => {
     this.setState({
       ...this.state,
       businessAccount: {
@@ -557,19 +557,19 @@ class CreateBusinessAccount extends Component {
         appstorelink: {
           app_name: app.title,
           ios_app_id: app.id,
-          icon_media_url: app.icon
-        }
+          icon_media_url: app.icon,
+        },
       },
       attachment: {
         app_name: app.title,
         ios_app_id: app.id,
-        icon_media_url: app.icon
+        icon_media_url: app.icon,
       },
-      iosAppSelected: true
+      iosAppSelected: true,
     });
   };
 
-  _getAndroidAppIds = app => {
+  _getAndroidAppIds = (app) => {
     this.setState({
       ...this.state,
       businessAccount: {
@@ -577,20 +577,20 @@ class CreateBusinessAccount extends Component {
         playstorelink: {
           app_name: app.title,
           icon_media_url: app.icon,
-          android_app_url: app.id ? app.id : app.application_id
-        }
+          android_app_url: app.id ? app.id : app.application_id,
+        },
       },
       attachment: {
         app_name: app.title,
         icon_media_url: app.icon,
-        android_app_url: app.id ? app.id : app.application_id
+        android_app_url: app.id ? app.id : app.application_id,
       },
-      androidAppSelected: true
+      androidAppSelected: true,
     });
   };
-  setTheState = state => {
+  setTheState = (state) => {
     this.setState({
-      ...state
+      ...state,
     });
   };
   //Doesn't do anything here but needed for campaign
@@ -618,12 +618,12 @@ class CreateBusinessAccount extends Component {
       this.props.businessAccount.businesscategory !== ""
     ) {
       category = this.state.items.find(
-        i => i.value === this.props.businessAccount.businesscategory
+        (i) => i.value === this.props.businessAccount.businesscategory
       ).label;
     } else if (this.state.businessAccount.businesscategory !== "") {
       // if from create business account or edit screen
       category = this.state.items.find(
-        i => i.value === this.state.businessAccount.businesscategory
+        (i) => i.value === this.state.businessAccount.businesscategory
       ).label;
     }
     return category;
@@ -649,7 +649,7 @@ class CreateBusinessAccount extends Component {
 
     let businessAccount = {
       ...this.state.businessAccount,
-      ...state
+      ...state,
     };
     this.setState({ businessAccount });
   };
@@ -662,7 +662,7 @@ class CreateBusinessAccount extends Component {
 
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
@@ -691,7 +691,7 @@ class CreateBusinessAccount extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{
           bottom: "never",
-          top: this.props.registering ? "never" : "always"
+          top: this.props.registering ? "never" : "always",
         }}
       >
         {!this.props.registering && (
@@ -710,7 +710,7 @@ class CreateBusinessAccount extends Component {
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[
-            !this.props.registering && styles.businessView
+            !this.props.registering && styles.businessView,
           ]}
         >
           {!this.state.editBusinessInfo && (
@@ -887,13 +887,13 @@ class CreateBusinessAccount extends Component {
           {this.state.editBusinessInfo && (
             <Website
               register={true}
-              ref={ref => (this.websiteInput = ref)}
+              ref={(ref) => (this.websiteInput = ref)}
               inputs={this.inputs}
               stateName={"websitelink"}
               screenProps={this.props.screenProps}
               customStyle={{
                 // width: widthPercentageToDP(85),
-                paddingHorizontal: 0
+                paddingHorizontal: 0,
               }}
               optional={true}
               website={this.state.businessAccount.websitelink}
@@ -933,7 +933,7 @@ class CreateBusinessAccount extends Component {
               style={{
                 top: 5,
                 width: 60,
-                height: 60
+                height: 60,
               }}
             />
           ) : this.state.editBusinessInfo ? (
@@ -1009,7 +1009,7 @@ class CreateBusinessAccount extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   userInfoR: state.register.userInfo,
   countryCode: state.register.countryCode,
@@ -1018,10 +1018,10 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   loadingUpdateBusinessInfo: state.account.editBusinessInfoLoading,
   savingRegister: state.register.savingRegister,
-  checkingBusinessName: state.register.checkingBusinessName
+  checkingBusinessName: state.register.checkingBusinessName,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   registerUser: (userInfo, navigation) =>
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   createBusinessAccount: (account, navigation) =>
@@ -1035,7 +1035,7 @@ const mapDispatchToProps = dispatch => ({
       )
     ),
   updateBusinessInfo: (userid, info, navigation) =>
-    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation))
+    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation)),
 });
 export default connect(
   mapStateToProps,

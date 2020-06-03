@@ -1018,3 +1018,14 @@ export const changeBusinessLogo = (
       });
   };
 };
+
+export const updateBusinessConnectedToFacebook = fb_connected => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+      payload: {
+        fb_connected: fb_connected
+      }
+    });
+  };
+};

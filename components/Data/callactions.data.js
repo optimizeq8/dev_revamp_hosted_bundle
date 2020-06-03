@@ -288,6 +288,28 @@ var list = {
       ],
     },
   ],
+  InstagramFeedAd: [
+    {
+      type: "BRAND_AWARENESS",
+      call_to_action_list: [
+        { value: "GET_QUOTE", label: "GET QUOTE" },
+        { value: "GET_SHOWTIMES", label: "GET SHOWTIMES" },
+        { value: "LEARN_MORE", label: "LEARN MORE" },
+        { value: "LISTEN_NOW", label: "LISTEN NOW" },
+        { value: "REQUEST_TIME", label: "REQUEST TIME" },
+        { value: "SEE_MENU", label: "SEE MENU" },
+        { value: "SHOP_NOW", label: "SHOP NOW" },
+        { value: "SIGN_UP", label: "SIGN UP" },
+        { value: "SUBSCRIBE", label: "SUBSCRIBE" },
+        { value: "WATCH_MORE", label: "WATCH MORE" },
+        { value: "MESSAGE_PAGE", label: "SEND MESSAGE" },
+        { value: "APPLY_NOW", label: "APPLY NOW" },
+        { value: "BOOK_TRAVEL", label: "BOOK NOW" },
+        { value: "CONTACT_US", label: "CONTACT US" },
+        { value: "DOWNLOAD", label: "DOWNLOAD" },
+      ],
+    },
+  ],
 };
 export const netLoc = [
   {
