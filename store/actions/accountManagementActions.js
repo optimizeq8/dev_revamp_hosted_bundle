@@ -603,7 +603,7 @@ export const getTempUserInfo = (member_id) => {
  *                      and redux actions of (SET_TEAMINV_LOADING)
  */
 
-export const handleTeamInvite = (status) => {
+export const handleTeamInvite = (status, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.SET_TEAMINV_LOADING, payload: true });
     createBaseUrl()
@@ -614,11 +614,16 @@ export const handleTeamInvite = (status) => {
           message: data.message,
           type: data.success ? "success" : "warning",
         });
+        analytics.track("a_handle_team_invite", {
+          ...segmentInfo,
+          action_status: data.success ? "success" : "failure",
+        });
         if (data.success) {
           dispatch(getBusinessAccounts());
         }
         NavigationService.navigate("Dashboard", {
-          source: "", //TODO:
+          source: segmentInfo.source,
+          source_action: segmentInfo.source_action,
         });
         dispatch(resetBusinessInvitee());
         dispatch({

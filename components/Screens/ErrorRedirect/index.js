@@ -48,7 +48,7 @@ class ErrorRedirect extends Component {
       businessname: this.props.mainBusiness.businessname,
       campaign_channel:
         this.props.navigation.getParam("isWallet") === "1"
-          ? "wallet"
+          ? null
           : this.props.channel === ""
           ? "snapchat"
           : this.props.channel.toLowerCase(),
@@ -59,21 +59,19 @@ class ErrorRedirect extends Component {
           : this.props.channel === "google"
           ? "GoogleSEAd"
           : this.props.adType,
-      payment_status: "failure",
+      payment_status: "success",
       wallet_amount:
         this.props.navigation.getParam("isWallet") === "1"
           ? this.props.navigation.state.params.amount
-          : this.props.navigation.getParam("checkoutwithWallet", false)
-          ? this.props.navigation.state.params.wallet_amount
-          : 0,
+          : null,
       campaign_ltv:
-        this.props.navigation.getParam("isWallet") !== "1"
-          ? this.props.navigation.state.params.campaign_ltv
-          : 0,
+        this.props.navigation.getParam("isWallet") === "1"
+          ? null
+          : this.props.navigation.state.params.campaign_ltv,
       campaign_revenue:
-        this.props.navigation.getParam("isWallet") !== "1"
-          ? this.props.navigation.state.params.campaign_revenue
-          : 0,
+        this.props.navigation.getParam("isWallet") === "1"
+          ? null
+          : this.props.navigation.state.params.campaign_revenue,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
 
