@@ -86,6 +86,22 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
+import { MixpanelInstance } from "react-native-mixpanel";
+
+const MixpanelSDK = new MixpanelInstance(
+  "ec32f65bd795aee09177e60f6f5f6d25",
+  false,
+  false
+);
+MixpanelSDK.initialize().then((value) => {
+  console.log("MixpanelSDK.sharedInstanceWithToken", value);
+  MixpanelSDK.getDistinctId().then((value) => {
+    MixpanelSDK.identify(value);
+    console.log("getDistinctId", value);
+  });
+  MixpanelSDK.showInAppMessageIfAvailable();
+});
+
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 
