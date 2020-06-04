@@ -4,7 +4,7 @@ import {
   BackHandler,
   Text,
   I18nManager,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
@@ -34,7 +34,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 class Transactions extends Component {
   state = {
     sidemenustate: false,
-    open: false
+    open: false,
   };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -58,12 +58,12 @@ class Transactions extends Component {
     analytics.track(`open_transactions`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     this.props.getTransactions();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-  _handleSideMenuState = status => {
+  _handleSideMenuState = (status) => {
     this.setState({ sidemenustate: status });
     FilterMenu = require("../../MiniComponents/FilterMenu").default;
   };
@@ -97,7 +97,7 @@ class Transactions extends Component {
       ) : null;
       return (
         <Sidemenu
-          onChange={isOpen => {
+          onChange={(isOpen) => {
             if (isOpen === false) this._handleSideMenuState(isOpen);
           }}
           disableGestures={true}
@@ -114,6 +114,10 @@ class Transactions extends Component {
               screenProps={this.props.screenProps}
               title={"Transactions"}
               navigation={this.props.navigation}
+              segment={{
+                source: "open_transactions",
+                source_action: "a_go_back",
+              }}
             />
             <View style={styles.mainContainer}>
               <View style={styles.headerBlock}>
@@ -122,7 +126,7 @@ class Transactions extends Component {
                     screenProps={this.props.screenProps}
                     transactionSearch={true}
                     customInputStyle={{
-                      backgroundColor: "#0004"
+                      backgroundColor: "#0004",
                     }}
                   />
                 </View>
@@ -146,7 +150,7 @@ class Transactions extends Component {
                 renderItem={this.renderTransactionCard}
                 data={this.props.filteredTransactions}
                 contentContainerStyle={styles.contentContainer}
-                keyExtractor={item => item.payment_id}
+                keyExtractor={(item) => item.payment_id}
               />
             </View>
           </SafeAreaView>
@@ -155,17 +159,17 @@ class Transactions extends Component {
     }
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.transA.loading,
   mainBusiness: state.account.mainBusiness,
   transactionList: state.transA.transactionList,
   filteredTransactions: state.transA.filteredTransactions,
-  errorTransactionList: state.transA.errorTransactionList
+  errorTransactionList: state.transA.errorTransactionList,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
-  getTransactions: () => dispatch(actionCreators.getTransactions())
+const mapDispatchToProps = (dispatch) => ({
+  onSelect: (query) => dispatch(actionCreators.filterCampaignsStatus(query)),
+  getTransactions: () => dispatch(actionCreators.getTransactions()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions);

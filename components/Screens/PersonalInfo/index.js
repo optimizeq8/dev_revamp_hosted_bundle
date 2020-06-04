@@ -4,7 +4,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
@@ -34,7 +34,7 @@ import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
 
 class PersonalInfo extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -51,7 +51,7 @@ class PersonalInfo extends Component {
       inputE: false,
       firstnameError: "",
       lastnameError: "",
-      emailError: ""
+      emailError: "",
     };
   }
   componentWillUnmount() {
@@ -67,7 +67,7 @@ class PersonalInfo extends Component {
     this.setState({
       phoneNum: "+" + this.props.userInfo.mobile,
       valid: true,
-      countryCode: countryCode
+      countryCode: countryCode,
     });
     const source = this.props.navigation.getParam(
       "source",
@@ -80,7 +80,7 @@ class PersonalInfo extends Component {
     analytics.track(`open_personal_details`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     // Segment.screenWithProperties("Personal Info", {
     //   category: "User Menu"
@@ -95,7 +95,7 @@ class PersonalInfo extends Component {
       phoneNum: number,
       countryCode: countryCode,
       valid,
-      type
+      type,
     });
     // }
   };
@@ -110,7 +110,7 @@ class PersonalInfo extends Component {
       firstnameError,
       lastnameError,
       emailError,
-      emailErrorMandatory
+      emailErrorMandatory,
     });
     const { translate } = this.props.screenProps;
     // validate all fields and shows error if any
@@ -133,7 +133,7 @@ class PersonalInfo extends Component {
                   ? "last name"
                   : (emailError || emailErrorMandatory) && "email"
               }`
-        )
+        ),
       });
       return false;
     } else return true;
@@ -156,7 +156,7 @@ class PersonalInfo extends Component {
             firstname: this.state.firstname,
             lastname: this.state.lastname,
             country_code,
-            mobile
+            mobile,
           },
           this.props.navigation
         );
@@ -165,12 +165,12 @@ class PersonalInfo extends Component {
           source: "open_personal_details",
           source_action: "a_update_personal_info",
           action_status: "failure",
-          error_description: "No changes to update"
+          error_description: "No changes to update",
         });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
-          position: "top"
+          position: "top",
         });
       }
     } else {
@@ -178,7 +178,7 @@ class PersonalInfo extends Component {
         source: "open_personal_details",
         source_action: "a_update_personal_info",
         action_status: "failure",
-        error_description: "Please complete required fields"
+        error_description: "Please complete required fields",
       });
     }
   };
@@ -196,7 +196,7 @@ class PersonalInfo extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   render() {
@@ -210,6 +210,10 @@ class PersonalInfo extends Component {
           screenProps={this.props.screenProps}
           title={"Personal Info"}
           navigation={this.props.navigation}
+          segment={{
+            source: "open_personal_details",
+            source_action: "a_go_back",
+          }}
         />
         <View style={styles.mainCard}>
           <InputScrollView
@@ -276,13 +280,13 @@ class PersonalInfo extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  loadingUpdateInfo: state.auth.loadingUpdateInfo
+  loadingUpdateInfo: state.auth.loadingUpdateInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation))
+    dispatch(actionCreators.updateUserInfo(info, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);

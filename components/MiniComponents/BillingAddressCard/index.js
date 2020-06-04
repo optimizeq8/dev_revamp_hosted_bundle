@@ -47,12 +47,12 @@ class BillingAddressCard extends React.Component {
       blockError: "",
       streetError: "",
       buildingError: "",
-      countries: Countries.map(country => {
+      countries: Countries.map((country) => {
         return {
           label: translate(country.label),
-          value: country.value
+          value: country.value,
         };
-      })
+      }),
     };
   }
 
@@ -67,15 +67,15 @@ class BillingAddressCard extends React.Component {
       this.setState({
         country_code: this.props.country_code,
         selectedItems: [],
-        selectedObjectets: []
+        selectedObjectets: [],
       });
 
       this.onSelectedCountryChange(
         [
           {
             label: this.props.address.country,
-            value: this.props.country_code
-          }
+            value: this.props.country_code,
+          },
         ],
         true
       );
@@ -86,12 +86,12 @@ class BillingAddressCard extends React.Component {
     let replace = this.props.address;
     if (selectedItem && selectedItem.length > 0) {
       replace.country = Countries.find(
-        country => country.value === selectedItem[0].value
+        (country) => country.value === selectedItem[0].value
       ).label;
 
       if (!mounting) replace.area = "";
       let area = allAreas.find(
-        c => c.country_code.toLowerCase() === selectedItem[0].value
+        (c) => c.country_code.toLowerCase() === selectedItem[0].value
       );
 
       this.props._handleAddressChange(
@@ -104,21 +104,21 @@ class BillingAddressCard extends React.Component {
         country_code: selectedItem[0].value,
         areas: area ? area.list : [],
         countryError: "",
-        inputC: false
+        inputC: false,
       });
     }
   };
 
-  onSelectedRegionChange = async selectedItem => {
+  onSelectedRegionChange = async (selectedItem) => {
     if (selectedItem) {
       await this.setState({
         region_id: [selectedItem],
         selectedItems: selectedItem,
-        areaError: ""
+        areaError: "",
       });
     }
   };
-  onSelectedRegionNameChange = async selectedItem => {
+  onSelectedRegionNameChange = async (selectedItem) => {
     let replace = this.props.address;
     if (selectedItem && selectedItem.length > 0) {
       replace.area = selectedItem[0].name;
@@ -131,16 +131,16 @@ class BillingAddressCard extends React.Component {
       await this.setState({
         selectedObjectets: selectedItem,
         areaError: "",
-        inputA: false
+        inputA: false,
       });
     }
   };
 
-  onSelectedRegionSelected = async selectedItem => {
+  onSelectedRegionSelected = async (selectedItem) => {
     if (selectedItem) {
       await this.setState({
         areas: selectedItem,
-        areaError: ""
+        areaError: "",
       });
     }
   };
@@ -162,7 +162,7 @@ class BillingAddressCard extends React.Component {
       areaError,
       blockError,
       streetError,
-      buildingError
+      buildingError,
     });
     if (
       !countryError &&
@@ -177,7 +177,7 @@ class BillingAddressCard extends React.Component {
         source: "open_business_address",
         source_action: "a_business_address",
         error_desctiption: "Please complete the mandatory fields",
-        action_status: "failure"
+        action_status: "failure",
       });
     }
   };
@@ -185,10 +185,10 @@ class BillingAddressCard extends React.Component {
     this.setState({
       countryError: validateWrapper("mandatory", this.props.address.country),
       inputC: false,
-      inputA: false
+      inputA: false,
     });
   };
-  onSelectedCountryIdChange = value => {
+  onSelectedCountryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("country", value);
   };
@@ -199,7 +199,7 @@ class BillingAddressCard extends React.Component {
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
   feildsComponent = () => {
@@ -210,7 +210,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.block,
         valueError1: this.state.blockError,
         maxLength: 10,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Building/House",
@@ -218,7 +218,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.building,
         valueError1: this.state.buildingError,
         maxLength: 15,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Street",
@@ -226,7 +226,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.street,
         valueError1: this.state.streetError,
         maxLength: 70,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Office No",
@@ -234,7 +234,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.office,
         valueError1: this.state.officeError,
         maxLength: 10,
-        incomplete: false
+        incomplete: false,
       },
       {
         label: "Avenue",
@@ -242,9 +242,9 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.avenue,
         valueError1: this.state.avenueError,
         maxLength: 10,
-        incomplete: true
-      }
-    ].map(feild => {
+        incomplete: true,
+      },
+    ].map((feild) => {
       return (
         <InputField
           animateCustomStyle={styles.customAnimate}
@@ -268,13 +268,13 @@ class BillingAddressCard extends React.Component {
   };
   openCountryModal = () => {
     this.setState({
-      inputC: true
+      inputC: true,
     });
   };
 
   openAreaModal = () => {
     this.setState({
-      inputA: true
+      inputA: true,
     });
   };
   render() {
@@ -286,6 +286,10 @@ class BillingAddressCard extends React.Component {
           screenProps={this.props.screenProps}
           title={"Billing Address"}
           navigation={this.props.navigation}
+          segment={{
+            source: "open_business_address",
+            source_action: "a_go_back",
+          }}
         />
 
         <InputScrollView
@@ -381,8 +385,8 @@ class BillingAddressCard extends React.Component {
               style={[
                 styles.button,
                 {
-                  opacity: this.props.errorLoading ? 0.5 : 1
-                }
+                  opacity: this.props.errorLoading ? 0.5 : 1,
+                },
               ]}
               disabled={this.props.errorLoading}
             />

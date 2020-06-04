@@ -22,13 +22,13 @@ import { globalColors } from "../../../GlobalStyles";
 
 class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
 
     this.state = {
-      accept: false
+      accept: false,
     };
   }
 
@@ -49,7 +49,7 @@ class SnapchatCreateAdAcc extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id
+      device_id: this.props.screenProps.device_id,
     });
   }
 
@@ -68,7 +68,7 @@ class SnapchatCreateAdAcc extends Component {
         style={{
           height: "100%",
           flex: 1,
-          backgroundColor: "#0000"
+          backgroundColor: "#0000",
         }}
         forceInset={{ bottom: "never", top: "always" }}
       >
@@ -78,8 +78,10 @@ class SnapchatCreateAdAcc extends Component {
             segment={{
               str: "Dashboard",
               obj: {
-                businessname: this.props.mainBusiness.businessname
-              }
+                businessname: this.props.mainBusiness.businessname,
+              },
+              source: "ad_TNC",
+              source_action: "a_go_back",
             }}
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
@@ -100,7 +102,7 @@ class SnapchatCreateAdAcc extends Component {
               source={{
                 uri: I18nManager.isRTL
                   ? "https://www.snap.com/ar/ad-policies"
-                  : "https://www.snap.com/en-GB/ad-policies"
+                  : "https://www.snap.com/en-GB/ad-policies",
               }}
               renderLoading={() => (
                 <ActivityIndicator
@@ -111,7 +113,7 @@ class SnapchatCreateAdAcc extends Component {
               )}
               style={styles.webview}
               contentContainerStyle={[styles.contentWebView]}
-              ref={ref => (this.webview = ref)}
+              ref={(ref) => (this.webview = ref)}
             />
 
             <View style={styles.bottomContainer}>
@@ -125,7 +127,7 @@ class SnapchatCreateAdAcc extends Component {
                     "AcceptTermsConditionLoading",
                     {
                       source: "ad_TNC",
-                      source_action: "a_accept_ad_TNC"
+                      source_action: "a_accept_ad_TNC",
                     }
                   );
                   this.props.create_snapchat_ad_account(
@@ -144,15 +146,15 @@ class SnapchatCreateAdAcc extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   loading: state.account.loading,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   create_snapchat_ad_account: (id, navigation) =>
-    dispatch(actionCreators.create_snapchat_ad_account(id, navigation))
+    dispatch(actionCreators.create_snapchat_ad_account(id, navigation)),
 });
 export default connect(
   mapStateToProps,

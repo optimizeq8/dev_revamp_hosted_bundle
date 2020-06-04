@@ -1,5 +1,6 @@
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
+import analytics from "@segment/analytics-react-native";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
@@ -8,7 +9,7 @@ import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 const preview = {
   uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 export const previewHandler = (selectedCampaign, navigation) => {
   let media =
@@ -16,7 +17,7 @@ export const previewHandler = (selectedCampaign, navigation) => {
       ? { media: selectedCampaign.media }
       : {
           cover: selectedCampaign.story_preview_media,
-          logo: selectedCampaign.story_logo_media
+          logo: selectedCampaign.story_logo_media,
         };
   let storyOrCollection =
     selectedCampaign.story_creatives || selectedCampaign.collection_creatives;
@@ -45,7 +46,7 @@ export const previewHandler = (selectedCampaign, navigation) => {
     source_action: "a_preview_ad",
     action_status: "success",
     campaign_channel: "snapchat",
-    campaign_ad_type: selectedCampaign.campaign_type
+    campaign_ad_type: selectedCampaign.campaign_type,
   });
   navigation.push(
     selectedCampaign.campaign_type !== "StoryAd"
@@ -65,11 +66,11 @@ export const previewHandler = (selectedCampaign, navigation) => {
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
       source: this.props.source,
-      source_action: "a_preview_ad"
+      source_action: "a_preview_ad",
     }
   );
 };
-export default props => {
+export default (props) => {
   let { loading, selectedCampaign, navigation } = props;
   const { translate } = props.screenProps;
   let storyOrCollection =
@@ -78,7 +79,7 @@ export default props => {
   return (
     <View
       style={{
-        width: "40%"
+        width: "40%",
       }}
     >
       <>
@@ -103,7 +104,9 @@ export default props => {
               {...{
                 preview,
                 uri:
-                  !loading && selectedCampaign ? storyOrCollection[1].media : ""
+                  !loading && selectedCampaign
+                    ? storyOrCollection[1].media
+                    : "",
               }}
               style={[styles.storyOrCollectionStyle]}
             />
@@ -122,14 +125,14 @@ export default props => {
                   uri:
                     !loading && selectedCampaign
                       ? selectedCampaign.media
-                      : "../../../assets/images/emptyPlaceHolder.png"
+                      : "../../../assets/images/emptyPlaceHolder.png",
                 }}
                 isMuted
                 shouldPlay={true}
                 resizeMode="cover"
                 style={{
                   width: "100%",
-                  height: "100%"
+                  height: "100%",
                 }}
               />
             </TouchableOpacity>
@@ -142,12 +145,12 @@ export default props => {
                 {...{
                   preview,
                   uri:
-                    !loading && selectedCampaign ? selectedCampaign.media : ""
+                    !loading && selectedCampaign ? selectedCampaign.media : "",
                 }}
                 style={{
                   borderRadius: 40,
                   width: !loading ? "100%" : 0,
-                  height: !loading ? "100%" : 0
+                  height: !loading ? "100%" : 0,
                 }}
               />
             </TouchableOpacity>
