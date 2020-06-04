@@ -49,24 +49,6 @@ class AdType extends Component {
   };
 
   componentDidMount() {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    const device_id = this.props.screenProps.device_id;
-
-    analytics.track(`ad_type`, {
-      source,
-      source_action,
-      timestamp: new Date().getTime(),
-      device_id,
-      userId: this.props.userInfo.userid,
-      campaign_channel: this.state.active,
-    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -256,6 +238,20 @@ class AdType extends Component {
         )}
         <NavigationEvents
           onDidFocus={() => {
+            const source = this.props.navigation.getParam(
+              "source",
+              this.props.screenProps.prevAppState
+            );
+            const source_action = this.props.navigation.getParam(
+              "source_action",
+              this.props.screenProps.prevAppState
+            );
+
+            analytics.track(`ad_type`, {
+              source,
+              source_action,
+              campaign_channel: this.state.active.toLowerCase(),
+            });
             const changeFbConnectStatus = this.props.navigation.getParam(
               "success",
               false
@@ -266,13 +262,6 @@ class AdType extends Component {
             ) {
               this.props.updateBusinessConnectedToFacebook("1");
             }
-            Segment.screenWithProperties(`Ad Type ${this.state.active}`, {
-              category: "Campaign Creation",
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 1,
-              business_name: this.props.mainBusiness.businessname,
-            });
           }}
         />
 
@@ -284,6 +273,8 @@ class AdType extends Component {
           segment={{
             str: "Ad Type Close",
             obj: { businessname: this.props.mainBusiness.businessname },
+            source: "ad_type",
+            source_action: "a_go_back",
           }}
           navigation={this.props.navigation}
         />

@@ -528,6 +528,8 @@ class AdObjective extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={false}
                 segment={{
+                  source: "ad_objective",
+                  source_action: "a_go_back",
                   str: "Ad Objective Back Button",
                   obj: {
                     businessname:
