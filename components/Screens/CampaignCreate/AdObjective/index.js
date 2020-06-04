@@ -153,7 +153,7 @@ class AdObjective extends Component {
         })
         .includes(true)
     ) {
-      rep = {
+      let rep = {
         ...this.state.campaignInfo,
         ad_account_id:
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
@@ -254,7 +254,6 @@ class AdObjective extends Component {
       campaign_start_date: date,
       source: "ad_objective",
       source_action: "a_ad_start_date",
-      campaign_id: this.props.data.campaign_id,
       campaign_start_date: date,
     });
 
@@ -271,7 +270,6 @@ class AdObjective extends Component {
       campaign_end_date: date,
       source: "ad_objective",
       source_action: "a_ad_end_date",
-      campaign_id: this.props.data.campaign_id,
       campaign_end_date: date,
     });
     this.props.save_campaign_info({
@@ -283,7 +281,6 @@ class AdObjective extends Component {
     analytics.track(`ad_objective_modal`, {
       source: "ad_objective",
       source_action: "a_toggle_modal",
-      campaign_id: this.props.data.campaign_id,
       modal_visible: visible,
     });
 
