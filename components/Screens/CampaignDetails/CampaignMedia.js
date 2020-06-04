@@ -6,7 +6,6 @@ import { Video } from "expo-av";
 import styles from "./styles";
 import { ActivityIndicator } from "react-native-paper";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
-import analytics from "@segment/analytics-react-native";
 
 const preview = {
   uri:
