@@ -146,7 +146,6 @@ class SuccessRedirect extends Component {
           source={this.state.media}
           resizeMode="contain"
         />
-
         <View style={styles.view}>
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
