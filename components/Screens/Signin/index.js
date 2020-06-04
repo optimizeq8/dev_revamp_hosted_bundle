@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -41,7 +41,7 @@ import { showMessage } from "react-native-flash-message";
 
 class Signin extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -52,7 +52,7 @@ class Signin extends Component {
       passwordError: "",
       newEmail: "",
       newEmailError: "",
-      activeTab: 0
+      activeTab: 0,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -62,7 +62,7 @@ class Signin extends Component {
     const passwordError = validateWrapper("password", this.state.password);
     this.setState({
       emailError: emailError,
-      passwordError: passwordError
+      passwordError: passwordError,
     });
     if (!emailError && !passwordError) {
       this.props.login(this.state, this.props.navigation);
@@ -81,27 +81,27 @@ class Signin extends Component {
       source,
       source_action,
       anonymous_userId,
-      device_id
+      device_id,
     });
     this.setState({
       source,
-      source_action
+      source_action,
     });
     if (Platform.OS === "ios") {
       Linking.addEventListener("url", this.handleDeepLink);
-      Linking.getInitialURL().then(url => {
-        if (url.includes("adj")) {
+      Linking.getInitialURL().then((url) => {
+        if (url && url.includes("adj")) {
           this.handleDeepLink({ url });
         }
       });
     }
     if (this.props.userInfo) this.props.navigation.navigate("Dashboard");
   }
-  handleDeepLink = url => {
+  handleDeepLink = (url) => {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
       screen = screen[1].split("/")[0];
-      if (url.url.includes("adType")) {
+      if (url && url.url.includes("adType")) {
         let adTypePart = url.url
           .split("/main_navigator/")[1]
           .split("adType=")[1];
@@ -110,13 +110,15 @@ class Signin extends Component {
       }
 
       this.props.navigation.navigate(screen);
-      Linking.removeEventListener("url", evnt =>
+      Linking.removeEventListener("url", (evnt) =>
         console.log("unmounted", evnt)
       );
     }
   };
   componentWillUnmount() {
-    Linking.removeEventListener("url", evnt => console.log("unmounted", evnt));
+    Linking.removeEventListener("url", (evnt) =>
+      console.log("unmounted", evnt)
+    );
   }
   setValue = (stateName, value) => {
     let state = {};
@@ -128,7 +130,7 @@ class Signin extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   createNewAccount = () => {
@@ -142,7 +144,7 @@ class Signin extends Component {
         action_status: "success",
         timestamp: new Date().getTime(),
         device_id,
-        anonymous_userId
+        anonymous_userId,
         // source_action: "" Not sure
       });
       this.props.verifyEmail(
@@ -159,12 +161,12 @@ class Signin extends Component {
         timestamp: new Date().getTime(),
         device_id,
         anonymous_userId,
-        source_action: "a_error"
+        source_action: "a_error",
       });
 
       showMessage({
         message: this.state.newEmailError,
-        type: "warning"
+        type: "warning",
       });
     }
   };
@@ -183,7 +185,7 @@ class Signin extends Component {
       anonymous_userId,
       device_id,
       source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
 
     // Screeen event
@@ -192,10 +194,10 @@ class Signin extends Component {
       source_action: `a_${activeTabSignUp ? "sign_up" : "sign_in"}_tab`,
       anonymous_userId,
       device_id,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     this.setState({
-      activeTab: activeTabSignUp ? 1 : 0
+      activeTab: activeTabSignUp ? 1 : 0,
     });
   };
   render() {
@@ -233,7 +235,7 @@ class Signin extends Component {
                       onPress={this.changeActiveTab}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 0 && styles.activeTabView
+                        this.state.activeTab === 0 && styles.activeTabView,
                       ]}
                     >
                       <Text
@@ -243,8 +245,8 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 0
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)"
-                          }
+                                : "rgba(255,255,255,0.65)",
+                          },
                         ]}
                       >
                         {translate("SIGN UP")}
@@ -254,7 +256,7 @@ class Signin extends Component {
                       onPress={this.changeActiveTab}
                       style={[
                         styles.tabView,
-                        this.state.activeTab === 1 && styles.activeTabView
+                        this.state.activeTab === 1 && styles.activeTabView,
                       ]}
                     >
                       <Text
@@ -264,8 +266,8 @@ class Signin extends Component {
                             color:
                               this.state.activeTab === 1
                                 ? "#FFF"
-                                : "rgba(255,255,255,0.65)"
-                          }
+                                : "rgba(255,255,255,0.65)",
+                          },
                         ]}
                       >
                         {translate("Sign in")}
@@ -371,20 +373,20 @@ class Signin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.auth.loading,
-  checkingForToken: state.login.checkingForToken
+  checkingForToken: state.login.checkingForToken,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   verifyEmail: (email, userInfo, navigation) =>
     dispatch(actionCreators.verifyEmail(email, userInfo, navigation)),
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
-  checkForExpiredToken: navigation =>
+  checkForExpiredToken: (navigation) =>
     dispatch(actionCreators.checkForExpiredToken(navigation)),
-  set_adType: value => dispatch(actionCreators.set_adType(value))
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

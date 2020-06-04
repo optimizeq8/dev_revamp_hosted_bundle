@@ -234,7 +234,7 @@ class App extends React.Component {
         device_id: getUniqueId(),
         timestamp: new Date().getTime(),
       });
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -463,7 +463,12 @@ class App extends React.Component {
                 />
               </Root>
             </View>
-            <FlashMessage icon="auto" duration={4000} position="top" />
+            <FlashMessage
+              icon="auto"
+              duration={4000}
+              position={"top"}
+              floating={"true"}
+            />
           </PersistGate>
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>

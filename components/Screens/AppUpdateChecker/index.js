@@ -68,7 +68,7 @@ class AppUpdateChecker extends PureComponent {
         await Updates.fetchUpdateAsync({
           eventListener: this.handleOTAListener,
         });
-        Updates.reloadFromCache();
+        Updates.reloadAsync();
       } else {
         if (!(this.props.customMessage_en && this.props.customMessage_ar))
           this.setState({ updateDownloaded: true });

@@ -153,7 +153,7 @@ class AdObjective extends Component {
         })
         .includes(true)
     ) {
-      rep = {
+      let rep = {
         ...this.state.campaignInfo,
         ad_account_id:
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,

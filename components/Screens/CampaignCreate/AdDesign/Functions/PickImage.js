@@ -391,9 +391,11 @@ export const _pickImage = async (
               };
               let newSize = await FileSystem.getInfoAsync(actualUri);
               if (
-                Math.floor(newResult.width / 9) !==
+                (Math.floor(newResult.width / 9) !==
                   Math.floor(newResult.height / 16) ||
-                (newResult.width < 1080 && newResult.height < 1920)
+                  (newResult.width < 1080 && newResult.height < 1920)) &&
+                newResult.duration <= 10.999 &&
+                newResult.duration >= 3.0
               ) {
                 let outputUri = actualUri.split("/");
 
@@ -432,48 +434,7 @@ export const _pickImage = async (
                 );
               }
               videoIsExporting(false);
-              if (
-                Math.floor(newResult.width / 9) !==
-                  Math.floor(newResult.height / 16) ||
-                (newResult.width < 1080 && newResult.height < 1920)
-              ) {
-                analytics.track(`a_error`, {
-                  campaign_channel: "snapchat",
-                  campaign_ad_type: adType,
-                  error_page: "ad_design",
-                  error_description:
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-                });
-                setTheState({
-                  mediaError:
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-                  media: "//",
-                  sourceChanging: true,
-                  uneditedImageUri: "//",
-                });
-                !rejected &&
-                  save_campaign_info({
-                    media: "//",
-                    type: "",
-                  });
-                onToggleModal(false);
-                segmentEventTrack("Selected Video Error", {
-                  campaign_error_video:
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920",
-                });
-
-                showMessage({
-                  message: translate(
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
-                  ),
-                  // message:
-                  //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-                  position: "top",
-                  type: "warning",
-                });
-                setTheState({ sourceChanging: false });
-                return false;
-              } else if (newResult.duration > 10.999) {
+              if (newResult.duration > 10.999) {
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
                   error_description: "Maximum video duration  is 10 seconds.",
@@ -538,6 +499,47 @@ export const _pickImage = async (
                   type: "warning",
                 });
                 onToggleModal(false);
+                setTheState({ sourceChanging: false });
+                return false;
+              } else if (
+                Math.floor(newResult.width / 9) !==
+                  Math.floor(newResult.height / 16) ||
+                (newResult.width < 1080 && newResult.height < 1920)
+              ) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "snapchat",
+                  campaign_ad_type: adType,
+                  error_page: "ad_design",
+                  error_description:
+                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                });
+                setTheState({
+                  mediaError:
+                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                  media: "//",
+                  sourceChanging: true,
+                  uneditedImageUri: "//",
+                });
+                !rejected &&
+                  save_campaign_info({
+                    media: "//",
+                    type: "",
+                  });
+                onToggleModal(false);
+                segmentEventTrack("Selected Video Error", {
+                  campaign_error_video:
+                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920",
+                });
+
+                showMessage({
+                  message: translate(
+                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+                  ),
+                  // message:
+                  //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                  position: "top",
+                  type: "warning",
+                });
                 setTheState({ sourceChanging: false });
                 return false;
               } else if (newSize.size > 32000000) {

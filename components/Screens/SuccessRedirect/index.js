@@ -46,27 +46,27 @@ class SuccessRedirect extends Component {
     let segmentInfo = {};
     if (this.props.navigation.getParam("isWallet") === "1") {
       segmentInfo = {
-        amount: parseFloat(this.props.navigation.state.params.amount),
+        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
         payment_status: "success",
-        top_wallet_amount: this.props.navigation.state.params.amount,
+        top_wallet_amount: this.props.navigation.getParam("amount", "null"),
       };
       analytics.identify(this.props.userInfo.userid, {
-        wallet_amount: this.props.navigation.state.params.amount,
+        wallet_amount: this.props.navigation.getParam("amount", "null"),
       });
     } else {
       segmentInfo = {
         payment_status: "success",
         campaign_channel:
           this.props.channel === "" ? "snapchat" : this.props.channel,
-        amount: parseFloat(this.props.navigation.state.params.amount),
+        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
         campaign_ad_type:
           this.props.channel === "google" ? "GoogleSEAd" : this.props.adType,
 
         campaign_ltv: parseFloat(
-          this.props.navigation.state.params.campaign_ltv
+          this.props.navigation.getParam("campaign_ltv", "null")
         ),
         campaign_revenue: parseFloat(
-          this.props.navigation.state.params.campaign_revenue
+          this.props.navigation.getParam("campaign_revenue", "null")
         ),
       };
     }
@@ -89,11 +89,11 @@ class SuccessRedirect extends Component {
         this.props.channel === "google" ? "google_sem" : this.props.adType
       );
       adjustWalletPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.state.params.amount),
+        parseFloat(this.props.navigation.getParam("amount", "null")),
         "USD"
       );
       adjustWalletPaymentTracker.setTransactionId(
-        this.props.navigation.state.params.paymentId
+        this.props.navigation.getParam("paymentId", "null")
       );
       Adjust.trackEvent(adjustWalletPaymentTracker);
     } else if (!this.props.navigation.getParam("checkoutwithWallet", false)) {
@@ -105,11 +105,11 @@ class SuccessRedirect extends Component {
         this.props.channel === "google" ? "google_sem" : this.props.adType
       );
       adjustPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.state.params.amount),
+        parseFloat(this.props.navigation.getParam("amount", "null")),
         "USD"
       );
       adjustPaymentTracker.setTransactionId(
-        this.props.navigation.state.params.paymentId
+        this.props.navigation.getParam("paymentId", "null")
       );
       Adjust.trackEvent(adjustPaymentTracker);
     }
