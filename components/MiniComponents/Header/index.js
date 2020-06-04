@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, I18nManager } from "react-native";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
@@ -33,12 +34,12 @@ export default class Header extends Component {
       showTopRightButtonIcon = false,
       disabled = false,
       changeHeaderColor = false,
-      iconColor = "#FFF"
+      iconColor = "#FFF",
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
       if (title && typeof title === "object") {
-        title = title.map(text => translate(text));
+        title = title.map((text) => translate(text));
         if (I18nManager.isRTL) {
           title = title.reverse();
         }
@@ -52,16 +53,21 @@ export default class Header extends Component {
         <TouchableOpacity
           disabled={disabled}
           onPress={() => {
-            if (!isUndefined(segment))
+            if (!isUndefined(segment)) {
+              analytics.track(segment.source_action, {
+                source: segment.source,
+                source_action: segment.source_action,
+              });
               Segment.trackWithProperties(segment.str, segment.obj);
+            }
             if (!isUndefined(navigation)) navigation.goBack();
             else actionButton();
           }}
           style={[
             styles.left,
             I18nManager.isRTL && {
-              transform: [{ rotateY: "180deg" }, { translateX: -13 }]
-            }
+              transform: [{ rotateY: "180deg" }, { translateX: -13 }],
+            },
           ]}
         >
           {closeButton ? (
@@ -82,7 +88,7 @@ export default class Header extends Component {
         )}
         {title && typeof title === "object" ? (
           <View style={[styles.titleView]}>
-            {title.map(text => (
+            {title.map((text) => (
               <Text
                 key={text}
                 uppercase
@@ -90,10 +96,10 @@ export default class Header extends Component {
                   styles.titleText,
                   !isStringArabic(text)
                     ? {
-                        fontFamily: "montserrat-bold-english"
+                        fontFamily: "montserrat-bold-english",
                       }
                     : {},
-                  titelStyle
+                  titelStyle,
                 ]}
               >
                 {text}
@@ -109,10 +115,10 @@ export default class Header extends Component {
                 styles.titleText,
                 !isStringArabic(title)
                   ? {
-                      fontFamily: "montserrat-bold-english"
+                      fontFamily: "montserrat-bold-english",
                     }
                   : {},
-                titelStyle
+                titelStyle,
               ]}
             >
               {title}

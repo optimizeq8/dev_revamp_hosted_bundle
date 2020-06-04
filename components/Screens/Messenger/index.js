@@ -269,6 +269,10 @@ class Messenger extends Component {
           titelStyle={{
             bottom: 8,
           }}
+          segment={{
+            source: "open_support",
+            source_action: "a_go_back",
+          }}
           actionButton={() =>
             this.props.navigation.navigate("Dashboard", {
               source: "open_support",

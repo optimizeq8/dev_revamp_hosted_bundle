@@ -14,7 +14,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 
 class GoogleSEAPreviewScreen extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -45,7 +45,7 @@ class GoogleSEAPreviewScreen extends Component {
           onDidFocus={() => {
             Segment.screenWithProperties("Google SE Design AD Review", {
               category: "Campaign Creation",
-              channel: "google"
+              channel: "google",
             });
           }}
         />
@@ -54,7 +54,9 @@ class GoogleSEAPreviewScreen extends Component {
             closeButton={false}
             segment={{
               str: "Google SE Design Preview Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname }
+              obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_preview",
+              source_action: "a_go_back",
             }}
             navigation={this.props.navigation}
             title={"Search Engine Ad Preview"}
@@ -108,10 +110,10 @@ class GoogleSEAPreviewScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
 export default connect(mapStateToProps)(GoogleSEAPreviewScreen);

@@ -141,6 +141,10 @@ class Wallet extends Component {
             screenProps={this.props.screenProps}
             title={"Wallet"}
             navigation={this.props.navigation}
+            segment={{
+              source: "open_wallet",
+              source_action: "a_go_back",
+            }}
           />
           <WalletIcon style={styles.walletIcon} width={60} height={60} />
           <View
@@ -242,6 +246,10 @@ class Wallet extends Component {
                 screenProps={this.props.screenProps}
                 title={"Top up wallet"}
                 actionButton={this.handleModalVisibility}
+                segment={{
+                  source: "add_top_up_wallet",
+                  source_action: "a_close_modal",
+                }}
               />
 
               <TouchableWithoutFeedback

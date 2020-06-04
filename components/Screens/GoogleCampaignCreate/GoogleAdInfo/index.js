@@ -130,7 +130,6 @@ class GoogleAdInfo extends Component {
       campaign_start_date: date,
       source: "ad_objective",
       source_action: "a_ad_start_date",
-      campaign_id: this.props.campaign.id,
       campaign_start_date: date,
     });
     this.setState({
@@ -144,7 +143,6 @@ class GoogleAdInfo extends Component {
       campaign_end_date: date,
       source: "ad_objective",
       source_action: "a_ad_end_date",
-      campaign_id: this.props.campaign.id,
       campaign_end_date: date,
     });
     this.setState({
@@ -384,16 +382,16 @@ class GoogleAdInfo extends Component {
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   getValidInfo = (stateError, validObj) => {
-    if (validObj) {
-      analytics.track(`a_error`, {
-        error_page: "ad_objective",
-        error_description: `Error in ${stateError}: ${validObj}`,
-        source: "ad_objective",
-        source_action: "a_ad_name",
-        campaign_channel: "google",
-        campaign_ad_type: "GoogleSEAd",
-      });
-    }
+    // if (validObj) {
+    //   analytics.track(`a_error`, {
+    //     error_page: "ad_objective",
+    //     error_description: `Error in ${stateError}: ${validObj}`,
+    //     source: "ad_objective",
+    //     source_action: "a_ad_name",
+    //     campaign_channel: "google",
+    //     campaign_ad_type: "GoogleSEAd",
+    //   });
+    // }
     let state = {};
     state[stateError] = validObj;
     this.setState({
@@ -406,7 +404,6 @@ class GoogleAdInfo extends Component {
     analytics.track(`a_ad_name`, {
       source: "ad_objective",
       source_action: "a_ad_name",
-      campaign_id: this.props.campaign_id,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
       campaign_name: value,
@@ -435,6 +432,8 @@ class GoogleAdInfo extends Component {
                     this.props.mainBusiness &&
                     this.props.mainBusiness.businessname,
                 },
+                source: "ad_objective",
+                source_action: "a_go_back",
               }}
               actionButton={() => {
                 this.handleBackButton();

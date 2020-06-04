@@ -7,6 +7,7 @@ import {
   BackHandler,
   TouchableOpacity,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import Header from "../../MiniComponents/Header";

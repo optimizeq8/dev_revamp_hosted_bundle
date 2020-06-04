@@ -440,6 +440,8 @@ class PaymentForm extends Component {
             segment={{
               str: "Payment Method Screen Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
+              source: "payment_mode",
+              source_action: "a_go_back",
             }}
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
