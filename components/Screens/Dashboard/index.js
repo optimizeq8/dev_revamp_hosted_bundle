@@ -425,7 +425,7 @@ class Dashboard extends Component {
     let adButtons = [
       ...snapAds,
       ...googleAds,
-      ...instagramAds,
+      // ...instagramAds,
     ].map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
