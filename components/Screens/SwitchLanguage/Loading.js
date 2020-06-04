@@ -15,7 +15,7 @@ import { globalColors } from "../../../GlobalStyles";
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
-      Updates.reloadFromCache();
+      Updates.reloadAsync();
     }
   }
   render() {
