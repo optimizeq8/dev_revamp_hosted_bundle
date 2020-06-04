@@ -38,8 +38,8 @@ import {
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampaign";
 import { persistor } from "../../../../../store";
-import InputField from "../../../../MiniComponents/InputField";
-import ModalField from "../../../../MiniComponents/ModalField";
+import InputField from "../../../../MiniComponents/InputFieldNew";
+import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -387,7 +387,6 @@ class AdObjective extends Component {
                 setValue={this.setValue}
                 getValidInfo={this.getValidInfo}
                 disabled={this.props.loading}
-                disabled={this.props.loading}
                 stateName1={"name"}
                 value={this.state.campaignInfo.name}
                 valueError1={this.state.nameError}
@@ -412,12 +411,6 @@ class AdObjective extends Component {
                     : "shake"
                 }
               >
-                {/** TODO: Design change */}
-                <View style={[styles.dateTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Date")}
-                  </Text>
-                </View>
                 <Duration
                   label={"Date"}
                   screenProps={this.props.screenProps}
@@ -433,21 +426,20 @@ class AdObjective extends Component {
               <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text>
-              <View style={[styles.input2]}>
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
-                  incomplete={this.state.incomplete}
-                  translate={this.props.screenProps.translate}
-                />
-              </View>
+
+              <ModalField
+                stateName={"objective"}
+                setModalVisible={this.setModalVisible}
+                modal={true}
+                label={"Objective"}
+                valueError={this.state.objectiveError}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.loading}
+                valueText={this.state.objectiveLabel}
+                value={this.state.campaignInfo.objective}
+                incomplete={this.state.incomplete}
+                translate={this.props.screenProps.translate}
+              />
 
               {this.props.loading ? (
                 <ForwardLoading

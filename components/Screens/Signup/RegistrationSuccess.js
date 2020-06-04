@@ -7,10 +7,9 @@ import RegisterSuccess from "../../../assets/SVGs/RegisterSuccess";
 import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import GradientButton from "../../MiniComponents/GradientButton";
-import segmentEventTrack from "../../segmentEventTrack";
 import styles from "./MainForm/styles";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import { connect } from "react-redux";
@@ -33,7 +32,7 @@ class RegistartionSuccess extends React.Component {
       anonymous_userId,
       timestamp: new Date().getTime(),
       userId: userInfo.userid,
-      ...userInfo
+      ...userInfo,
     });
 
     let adjustRegiserTracker = new AdjustEvent("z1mpdo");
@@ -49,11 +48,11 @@ class RegistartionSuccess extends React.Component {
       timestamp: new Date().getTime(),
       userId: this.props.userInfo.userid,
       device_id,
-      anonymous_userId
+      anonymous_userId,
     });
     this.props.navigation.navigate("Dashboard", {
       source: "success_registration",
-      source_action: "a_get_start_dashboard"
+      source_action: "a_get_start_dashboard",
     });
   };
   render() {
@@ -62,7 +61,7 @@ class RegistartionSuccess extends React.Component {
       <SafeAreaView
         forceInset={{
           top: "always",
-          bottom: "never"
+          bottom: "never",
         }}
       >
         <View style={styles.mainView}>
@@ -92,8 +91,8 @@ class RegistartionSuccess extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+const mapStateToProps = (state) => ({
+  userInfo: state.auth.userInfo,
 });
 
 export default connect(mapStateToProps, null)(RegistartionSuccess);
