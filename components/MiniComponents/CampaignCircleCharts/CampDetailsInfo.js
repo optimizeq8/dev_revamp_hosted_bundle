@@ -9,7 +9,7 @@ import { Text } from "native-base";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import { globalColors } from "../../../GlobalStyles";
 import isNaN from "lodash/isNaN";
-export default props => {
+export default (props) => {
   let { campaign, loading, screenProps } = props;
   let { translate } = screenProps;
   let statusOfCampaign = campaign
@@ -21,7 +21,8 @@ export default props => {
       ? "ends"
       : "ended"
     : "";
-  let currentDate = new Date().toLocaleDateString();
+  let currentDate = new Date().toISOString();
+
   return (
     <View style={{ alignSelf: "center", top: 10 }}>
       {loading ? (
@@ -63,7 +64,7 @@ export default props => {
           {statusOfCampaign !== "ended" && (
             <Text style={[styles.chartSubtext, { alignSelf: "flex-start" }]}>
               {translate(`Campaign {{statusOfCampaign}} on`, {
-                statusOfCampaign: translate(statusOfCampaign)
+                statusOfCampaign: translate(statusOfCampaign),
               }) +
                 " " +
                 dateFormat(

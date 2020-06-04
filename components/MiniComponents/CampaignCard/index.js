@@ -245,7 +245,8 @@ class CampaignCard extends Component {
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
                       <Text style={globalStyles.numbers}>
-                        {TimeDifferance(new Date(), campaign.end_time) + 1}
+                        {TimeDifferance(this.currentDate(), campaign.end_time) +
+                          1}
                       </Text>
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
