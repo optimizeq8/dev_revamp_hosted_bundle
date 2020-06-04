@@ -119,7 +119,7 @@ class EditKeywords extends Component {
         segmentInfo
       );
     } else {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_keywords",
         error_description: keywordsError,
         source: "ad_targeting",

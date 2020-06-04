@@ -328,13 +328,11 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_objective",
         campaign_channel: "snapchat",
         campaign_ad_type: this.props.adType,
         source_action: "a_submit_ad_objective",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
         error_description:
           nameError ||
           objectiveError ||
@@ -444,7 +442,7 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_objective",
         error_description: `Error in ${stateError}: ${validObj}`,
         source: "ad_objective",
@@ -473,8 +471,6 @@ class AdObjective extends Component {
     analytics.track(`ad_objective`, {
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
     });

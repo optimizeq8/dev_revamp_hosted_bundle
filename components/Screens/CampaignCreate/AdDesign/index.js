@@ -796,12 +796,10 @@ class AdDesign extends Component {
       this.state.mediaError ||
       this.state.swipeUpError
     ) {
-      analytics.track(`a_submit_ad_design`, {
+      analytics.track(`a_error_form`, {
         source: "ad_design",
         source_action: "a_submit_ad_design",
-        timestamp: new Date().getTime(),
         campaign_id: this.props.data.campaign_id,
-        action_status: "failure",
         error_description:
           this.state.brand_nameError ||
           this.state.headlineError ||

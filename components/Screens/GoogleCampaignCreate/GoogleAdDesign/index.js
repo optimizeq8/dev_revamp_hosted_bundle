@@ -294,7 +294,7 @@ class GoogleAdDesign extends Component {
       },
       () => {
         if (this.state[error]) {
-          analytics.track(`a_error`, {
+          analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,

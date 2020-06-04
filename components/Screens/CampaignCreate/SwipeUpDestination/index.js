@@ -307,7 +307,7 @@ class SwipeUpDestination extends Component {
               title={"Swipe Up destination"}
               navigation={this.props.navigation}
               segment={{
-                source: "swipe_up_destination",
+                source: "ad_swipe_up_destination",
                 source_action: "a_go_back",
               }}
             />

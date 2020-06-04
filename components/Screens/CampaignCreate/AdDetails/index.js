@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -390,7 +389,7 @@ class AdDetails extends Component {
     }
 
     if (replace.targeting.demographics[0].languages.length === 0) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_ad_languages",
         error_description: "Please choose a language",
@@ -581,7 +580,7 @@ class AdDetails extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error`, {
+          analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
@@ -739,7 +738,7 @@ class AdDetails extends Component {
         this.state.budgetOption
       )
     ) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
         timestamp: new Date().getTime(),
@@ -853,10 +852,6 @@ class AdDetails extends Component {
         campaign_reach: formatNumber(this.props.average_reach, true),
       };
       if (this.editCampaign) {
-        // Segment.trackWithProperties("Updated Ad Details", {
-        //   business_name: this.props.mainBusiness.businessname,
-        //   campaign_id: this.props.campaign_id,
-        // });
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -864,12 +859,6 @@ class AdDetails extends Component {
           segmentInfo
         );
       } else {
-        // Segment.trackWithProperties("Submitted Ad Details", {
-        //   business_name: this.props.mainBusiness.businessname,
-        //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
-        //   campaign_id: this.props.campaign_id,
-        // });
-
         // this.props.setCampaignInfoForTransaction({
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
@@ -931,20 +920,6 @@ class AdDetails extends Component {
         : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
     );
 
-    if (this.editCampaign) {
-      Segment.screenWithProperties("Snap Ad Targetting Update", {
-        category: "Campaign Update",
-      });
-    } else {
-      Segment.screenWithProperties("Snap Ad Targetting", {
-        category: "Campaign Creation",
-        channel: "snapchat",
-      });
-      Segment.trackWithProperties("Viewed Checkout Step", {
-        checkout_id: this.props.campaign_id,
-        step: 4,
-      });
-    }
     let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
     adjustAdDetailsTracker.addPartnerParameter(
       `Snap_${this.props.adType}`,

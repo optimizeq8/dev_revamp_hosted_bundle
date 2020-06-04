@@ -715,11 +715,11 @@ export const _pickImage = async (
         position: "top",
         type: "warning",
       });
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_design",
         error_description: "Image Picker closed without selecting a media file",
       });
-      segmentEventTrack("Image Picker closed without selecting a media file");
+
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//",

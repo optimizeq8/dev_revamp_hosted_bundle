@@ -158,7 +158,7 @@ class Website extends Component {
         campaign_website_url: this.state.campaignInfo.attachment,
       });
       this.props.navigation.navigate("AdDesign", {
-        source: "swipe_up_destination",
+        source: "ad_swipe_up_destination",
         source_action: "a_swipe_up_destination",
       });
     }
@@ -224,7 +224,7 @@ class Website extends Component {
               title={"Swipe Up destination"}
               segment={{
                 str: "Swipe up Destination CollectionAd  Back Button",
-                source: "swipe_up_destination",
+                source: "ad_swipe_up_destination",
                 source_action: "a_go_back",
               }}
               navigation={this.props.navigation}
