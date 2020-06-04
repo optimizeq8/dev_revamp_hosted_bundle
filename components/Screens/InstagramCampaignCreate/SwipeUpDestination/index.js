@@ -11,12 +11,16 @@ import Website from "./Website";
 import styles from "../styles/swipeUpDestination.styles";
 
 class SwipeUpDestination extends React.Component {
+  getSwipeUpDestination = () => {
+    console.log("data", this.props.data);
+  };
   render() {
+    this.getSwipeUpDestination();
     return (
       <SafeAreaView
         forceInset={{
           top: "always",
-          bottom: "never"
+          bottom: "never",
         }}
         style={styles.safeAreaContainer}
       >
@@ -41,14 +45,14 @@ class SwipeUpDestination extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   adType: state.instagramAds.adType,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
-  admin: state.login.admin
+  admin: state.login.admin,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SwipeUpDestination);

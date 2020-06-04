@@ -372,6 +372,8 @@ class AdObjective extends Component {
               segment={{
                 str: "Instagram Feed Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_objective",
+                source_action: "a_go_back",
               }}
               navigation={this.props.navigation}
               title={"Instagram Feed Campaign"}

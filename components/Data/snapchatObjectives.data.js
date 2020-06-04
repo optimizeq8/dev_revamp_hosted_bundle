@@ -108,12 +108,12 @@ export const instagramAdObjectives = {
     //   info: "Get more people to view your video content",
     //   icon: ObjIcons.Video
     // },
-    // {
-    //   label: "Traffic",
-    //   value: "LINK_CLICKS",
-    //   info: "Send more people to a destination such as a website or app",
-    //   icon: ObjIcons.BRAND_AWARENESS
-    // },
+    {
+      label: "Traffic",
+      value: "LINK_CLICKS",
+      info: "Send more people to a destination such as a website or app",
+      icon: ObjIcons.BRAND_AWARENESS,
+    },
     // {
     //   label: "Messages",
     //   value: "MESSAGES",
