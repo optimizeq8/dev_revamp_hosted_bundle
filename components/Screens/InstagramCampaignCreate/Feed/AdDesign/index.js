@@ -12,7 +12,7 @@ import {
   I18nManager,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { Content, Text, Container, Footer, Button, Input } from "native-base";
@@ -29,7 +29,7 @@ import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage"
 
 const preview = {
   uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 //Redux
 import { connect } from "react-redux";
@@ -56,7 +56,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../../GlobalStyles";
@@ -74,7 +74,7 @@ import SingleImage from "./SingleImage";
 
 class AdDesign extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -86,11 +86,11 @@ class AdDesign extends Component {
         call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK",
         message: "",
-        media_type: ""
+        media_type: "",
       },
       storyAdCards: {
         storyAdSelected: false,
-        selectedStoryAd: { media: "//", call_to_action: {} }
+        selectedStoryAd: { media: "//", call_to_action: {} },
         // numOfAds: 0
       },
 
@@ -111,7 +111,7 @@ class AdDesign extends Component {
       isVisible: false,
       expanded: false,
       animation: new Animated.Value(100),
-      isVideoLoading: false
+      isVideoLoading: false,
     };
   }
 
@@ -131,7 +131,7 @@ class AdDesign extends Component {
         attachment,
         message = "",
         media_type,
-        media = "//"
+        media = "//",
       } = this.props.data;
       let destination = "";
       if (
@@ -157,12 +157,12 @@ class AdDesign extends Component {
           call_to_action,
           attachment,
           message,
-          media_type
+          media_type,
         },
-        media
+        media,
       });
       this.props.save_campaign_info_instagram({
-        destination
+        destination,
       });
     }
   }
@@ -171,31 +171,31 @@ class AdDesign extends Component {
       toValue: !this.state.expanded ? 100 : 1,
       velocity: 3,
       tension: 2,
-      friction: 8
+      friction: 8,
     }).start();
   };
-  selectImageOption = media_option => {
+  selectImageOption = (media_option) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        media_option
-      }
+        media_option,
+      },
     });
     this.props.save_campaign_info_instagram({
-      media_option
+      media_option,
     });
   };
-  setTheState = state => {
+  setTheState = (state) => {
     this.setState({ ...state });
   };
-  videoIsLoading = value => {
+  videoIsLoading = (value) => {
     this.setState({
-      isVideoLoading: value
+      isVideoLoading: value,
     });
   };
-  _getUploadState = loading => {
+  _getUploadState = (loading) => {
     this.setState({
-      loaded: loading
+      loaded: loading,
     });
   };
 
@@ -217,7 +217,7 @@ class AdDesign extends Component {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
         position: "top",
-        type: "warning"
+        type: "warning",
       });
       swipeUpError = "Choose A Swipe Up Destination";
     }
@@ -226,21 +226,21 @@ class AdDesign extends Component {
       showMessage({
         message: translate("Please add caption to proceed"),
         position: "top",
-        type: "warning"
+        type: "warning",
       });
     }
     if (mediaError) {
       showMessage({
         message: translate("Please add media to proceed"),
         position: "top",
-        type: "warning"
+        type: "warning",
       });
     }
 
     this.setState({
       messageError,
       mediaError,
-      swipeUpError
+      swipeUpError,
     });
 
     return !mediaError && !swipeUpError && !messageError;
@@ -251,7 +251,7 @@ class AdDesign extends Component {
   cancelUpload = () => {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
-  onToggleModal = visibile => {
+  onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
   handleSubmission = async () => {
@@ -290,10 +290,10 @@ class AdDesign extends Component {
       }
     }
   };
-  handleCaptionExpand = value => {
+  handleCaptionExpand = (value) => {
     this.setState(
       {
-        expanded: value
+        expanded: value,
       },
       () => {
         this.toggle();
@@ -328,7 +328,9 @@ class AdDesign extends Component {
           closeButton={false}
           segment={{
             str: "Instagram Feed Ad Design Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname }
+            obj: { businessname: this.props.mainBusiness.businessname },
+            source: "ad_design",
+            source_action: "a_go_back",
           }}
           navigation={this.props.navigation}
           title={"Compose"}
@@ -343,17 +345,17 @@ class AdDesign extends Component {
               this.props.saveCampaignSteps([
                 "Dashboard",
                 "InstagramFeedAdObjective",
-                "InstagramFeedAdDesign"
+                "InstagramFeedAdDesign",
               ]);
             }
             Segment.screenWithProperties("Instagram Feed Ad Design", {
               category: "Campaign Creation",
-              channel: "instagram"
+              channel: "instagram",
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               checkout_id: this.props.campaign_id,
               step: 3,
-              business_name: this.props.mainBusiness.businessname
+              business_name: this.props.mainBusiness.businessname,
             });
           }}
         />
@@ -390,7 +392,7 @@ class AdDesign extends Component {
                     source={{
                       // uri: this.state.campaignInfo.instagram_profile_pic
                       uri:
-                        "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC"
+                        "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
                     }}
                   />
                   <View style={styles.bsnNameView}>
@@ -458,7 +460,7 @@ class AdDesign extends Component {
             onPress={() => {
               this.setState(
                 {
-                  expanded: false
+                  expanded: false,
                 },
                 () => {
                   this.toggle();
@@ -467,14 +469,14 @@ class AdDesign extends Component {
             }}
             style={[
               { height: heightPercentageToDP(60) },
-              { transform: [{ translateY: this.state.animation }] }
+              { transform: [{ translateY: this.state.animation }] },
             ]}
           >
             <LowerButton
               style={{
                 alignSelf: "flex-end",
                 marginHorizontal: 50,
-                marginBottom: 10
+                marginBottom: 10,
               }}
               function={() => {
                 this.handleCaptionExpand(false);
@@ -497,14 +499,14 @@ class AdDesign extends Component {
                   numberOfLines={12}
                   style={styles.message}
                   value={this.state.campaignInfo.message}
-                  onChangeText={value => {
+                  onChangeText={(value) => {
                     let replace = this.state.campaignInfo;
                     replace.message = value;
                     this.setState({
-                      campaignInfo: replace
+                      campaignInfo: replace,
                     });
                     this.props.save_campaign_info_instagram({
-                      message: value
+                      message: value,
                     });
                   }}
                 />
@@ -526,7 +528,7 @@ class AdDesign extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   storyAdsArray: state.instagramAds.storyAdsArray,
   loadingStoryAdsArray: state.instagramAds.loadingStoryAdsArray,
@@ -536,11 +538,11 @@ const mapStateToProps = state => ({
   videoUrlLoading: state.instagramAds.videoUrlLoading,
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   admin: state.login.admin,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({
-  save_campaign_info_instagram: info =>
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info_instagram: (info) =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
   saveBrandMediaInstagram: (
     naigationPath,
@@ -558,7 +560,7 @@ const mapDispatchToProps = dispatch => ({
         cancelUpload
       )
     ),
-  saveCampaignSteps: step =>
-    dispatch(actionCreators.saveCampaignStepsInstagram(step))
+  saveCampaignSteps: (step) =>
+    dispatch(actionCreators.saveCampaignStepsInstagram(step)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

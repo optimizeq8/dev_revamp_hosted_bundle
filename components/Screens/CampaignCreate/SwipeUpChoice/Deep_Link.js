@@ -273,6 +273,10 @@ class Deep_Link extends Component {
             closeButton={false}
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
+            segment={{
+              source: "swipe_up_destination",
+              source_action: "a_go_back",
+            }}
           />
         )}
 

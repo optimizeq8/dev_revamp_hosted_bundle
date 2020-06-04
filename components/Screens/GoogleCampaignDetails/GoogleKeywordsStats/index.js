@@ -5,7 +5,7 @@ import {
   BackHandler,
   TouchableWithoutFeedback,
   ScrollView,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { Text, Item, Input, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -15,7 +15,7 @@ import KeywordRow from "./KeywordRow";
 import KeywordValues from "./KeywordValues";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
@@ -31,7 +31,7 @@ import isUndefined from "lodash/isUndefined";
 
 class GoogleKeywordsStats extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor() {
     super();
@@ -41,12 +41,12 @@ class GoogleKeywordsStats extends Component {
       expanded: false,
       minHeight: 0,
       maxHeight: 300,
-      animation: new Animated.Value(0)
+      animation: new Animated.Value(0),
     };
   }
   componentDidMount() {
     this.setState({
-      filteredKeywords: this.props.selectedCampaign.keywords
+      filteredKeywords: this.props.selectedCampaign.keywords,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -58,11 +58,11 @@ class GoogleKeywordsStats extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
-  handleSelectedKeyword = keyword => {
+  handleSelectedKeyword = (keyword) => {
     this.setState(
       {
         selected: keyword,
-        expanded: isUndefined(keyword.keyword)
+        expanded: isUndefined(keyword.keyword),
       },
       () => {
         this.toggle();
@@ -74,13 +74,13 @@ class GoogleKeywordsStats extends Component {
     Animated.spring(this.state.animation, {
       toValue: !this.state.expanded
         ? this.state.maxHeight
-        : this.state.minHeight
+        : this.state.minHeight,
     }).start();
   };
 
   render() {
     const { translate } = this.props.screenProps;
-    let keywordslist = this.state.filteredKeywords.map(k => {
+    let keywordslist = this.state.filteredKeywords.map((k) => {
       return (
         <KeywordRow
           content={k}
@@ -100,7 +100,7 @@ class GoogleKeywordsStats extends Component {
           onDidFocus={() => {
             Segment.screenWithProperties("Google Keywords Stats", {
               category: "Campaign Details",
-              channel: "google"
+              channel: "google",
             });
           }}
         />
@@ -112,8 +112,8 @@ class GoogleKeywordsStats extends Component {
                 {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
-                  overflow: "hidden"
-                }
+                  overflow: "hidden",
+                },
               ]}
             >
               <LinearGradient
@@ -129,6 +129,10 @@ class GoogleKeywordsStats extends Component {
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
               navigation={this.props.navigation}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
               titelStyle={{
                 textAlign: "left",
                 fontSize: 15,
@@ -136,7 +140,7 @@ class GoogleKeywordsStats extends Component {
                 alignSelf: "center",
                 justifyContent: "center",
                 flex: 1,
-                alignItems: "center"
+                alignItems: "center",
               }}
               topRightButtonText={"Edit"}
               showTopRightButton={
@@ -161,7 +165,7 @@ class GoogleKeywordsStats extends Component {
                   borderColor: "#0000",
                   backgroundColor: "rgba(0,0,0,0.15)",
                   borderRadius: 30,
-                  paddingHorizontal: 15
+                  paddingHorizontal: 15,
                 }}
               >
                 <SearchIcon width={18} height={18} stroke="#fff" style={{}} />
@@ -170,9 +174,10 @@ class GoogleKeywordsStats extends Component {
                   placeholder={translate("Search Keyword") + "..."}
                   style={styles.searchInputText}
                   placeholderTextColor="#fff"
-                  onChangeText={value => {
+                  onChangeText={(value) => {
                     let filteredKeywords = this.props.selectedCampaign.keywords.filter(
-                      c => c.keyword.toLowerCase().includes(value.toLowerCase())
+                      (c) =>
+                        c.keyword.toLowerCase().includes(value.toLowerCase())
                     );
                     this.setState({ filteredKeywords: filteredKeywords });
                   }}
@@ -184,7 +189,7 @@ class GoogleKeywordsStats extends Component {
                   justifyContent: "space-between",
                   alignItems: "center",
                   alignContent: "center",
-                  paddingHorizontal: 10
+                  paddingHorizontal: 10,
                 }}
               >
                 <Text
@@ -193,8 +198,8 @@ class GoogleKeywordsStats extends Component {
                     styles.title,
                     {
                       flex: 1,
-                      textAlign: "left"
-                    }
+                      textAlign: "left",
+                    },
                   ]}
                 >
                   {translate("Keywords")}
@@ -205,7 +210,7 @@ class GoogleKeywordsStats extends Component {
                     flexDirection: "row",
                     justifyContent: "space-around",
                     alignItems: "center",
-                    alignContent: "center"
+                    alignContent: "center",
                   }}
                 >
                   <SpendIcon
@@ -231,8 +236,8 @@ class GoogleKeywordsStats extends Component {
                   styles.scrollContainer,
                   !isUndefined(this.state.selected.keyword) && {
                     maxHeight: hp("45%"),
-                    paddingBottom: "5%"
-                  }
+                    paddingBottom: "5%",
+                  },
                 ]}
               >
                 <ScrollView>{keywordslist}</ScrollView>
@@ -244,7 +249,7 @@ class GoogleKeywordsStats extends Component {
         <Animated.View
           style={[
             { backgroundColor: "#000", overflow: "hidden" },
-            { height: this.state.animation }
+            { height: this.state.animation },
           ]}
         >
           {!isUndefined(this.state.selected.keyword) && (
@@ -258,7 +263,7 @@ class GoogleKeywordsStats extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  selectedCampaign: state.dashboard.selectedCampaign
+const mapStateToProps = (state) => ({
+  selectedCampaign: state.dashboard.selectedCampaign,
 });
 export default connect(mapStateToProps)(GoogleKeywordsStats);

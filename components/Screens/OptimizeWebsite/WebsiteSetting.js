@@ -40,7 +40,7 @@ export default class MyWebsite extends Component {
       source,
       source_action,
       new: false,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -55,10 +55,10 @@ export default class MyWebsite extends Component {
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
-          // segment={{
-          //   str: "Ad Design Back Button",
-          //   obj: { businessname: this.props.mainBusiness.businessname }
-          // }}
+          segment={{
+            source: "my_website_detail",
+            source_action: "a_go_back",
+          }}
           navigation={this.props.navigation}
           title={"WEBSITE SETTINGS"}
         />

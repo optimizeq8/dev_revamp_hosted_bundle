@@ -135,6 +135,8 @@ class MyWebsite extends Component {
           segment={{
             str: "MyWebsite Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
+            source: "open_my_website",
+            source_action: "a_go_back",
           }}
           showTopRightButtonIcon={"settings"}
           // navigation={this.props.navigation}

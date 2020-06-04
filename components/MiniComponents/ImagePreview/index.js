@@ -81,6 +81,10 @@ class ImagePreview extends Component {
           <CustomHeader
             screenProps={this.props.screenProps}
             title={""}
+            segment={{
+              source: "image_preview",
+              source_action: "a_go_back",
+            }}
             navigation={this.props.navigation}
           />
         )}

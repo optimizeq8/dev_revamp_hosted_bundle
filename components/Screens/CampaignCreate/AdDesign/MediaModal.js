@@ -60,6 +60,10 @@ export default class MediaModal extends Component {
                   this.props.setMediaModalVisible(false);
                 }}
                 title={"UPLOAD MEDIA"}
+                segment={{
+                  source: "upload_media",
+                  source_action: "a_go_back",
+                }}
               />
               <Content
                 indicatorStyle="white"

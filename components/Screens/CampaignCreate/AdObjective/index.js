@@ -760,6 +760,10 @@ class AdObjective extends Component {
                       this.setModalVisible(false);
                     }}
                     title={"Campaign Objective"}
+                    segment={{
+                      source: "ad_objective_modal",
+                      source_action: "a_go_back",
+                    }}
                   />
                   <Content
                     padder

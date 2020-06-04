@@ -182,6 +182,10 @@ class EditKeywords extends Component {
               translateTitle={false}
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
               navigation={!rejected ? this.props.navigation : undefined}
               actionButton={rejected && this.handleModalToggle}
               titelStyle={{

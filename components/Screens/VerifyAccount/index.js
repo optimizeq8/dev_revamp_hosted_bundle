@@ -29,7 +29,7 @@ class VerifyAccount extends Component {
       verifyByMobile: true,
       userInfo: {
         country_code: "",
-        mobile: ""
+        mobile: "",
       },
       mobileEdit: false,
       emailEdit: false,
@@ -38,10 +38,10 @@ class VerifyAccount extends Component {
       country_code: "",
       valid: false,
       showErrorComponent: false,
-      resend_otp: false
+      resend_otp: false,
     };
   }
-  handleDidFocusLink = appState => {
+  handleDidFocusLink = (appState) => {
     if (appState === "active") {
       const countryCode = this.props.userInfo.mobile.substring(0, 3);
       const mobile = this.props.userInfo.mobile.substring(3);
@@ -52,7 +52,7 @@ class VerifyAccount extends Component {
 
       if (linkEmail && linkEmail !== this.props.userInfo.email) {
         this.setState({
-          showErrorComponent: true
+          showErrorComponent: true,
         });
       } else if (linkEmail === this.props.userInfo.email) {
         const code = this.props.navigation.getParam("code", null);
@@ -69,7 +69,7 @@ class VerifyAccount extends Component {
 
         this.setState({
           code: code,
-          verifyByMobile: false
+          verifyByMobile: false,
         });
       }
     }
@@ -91,7 +91,7 @@ class VerifyAccount extends Component {
       userId: this.props.userInfo.userid,
       timestamp: new Date().getTime(),
       verification_channel: "Mobile",
-      channel_changed: false
+      channel_changed: false,
     });
     // USING APP STATE To see if screen is focused or not
     AppState.addEventListener("change", this.handleDidFocusLink);
@@ -99,7 +99,7 @@ class VerifyAccount extends Component {
     this.props.resetVerificationCode();
     if (this.props.userInfo) {
       this.setState({
-        userInfo: { ...this.props.userInfo }
+        userInfo: { ...this.props.userInfo },
       });
 
       const countryCode = this.props.userInfo.mobile.substring(0, 3);
@@ -108,7 +108,7 @@ class VerifyAccount extends Component {
       this.setState({
         phoneNum: "+" + this.props.userInfo.mobile,
         valid: true,
-        country_code: countryCode
+        country_code: countryCode,
       });
       this.handleDidFocusLink("active");
     }
@@ -121,7 +121,7 @@ class VerifyAccount extends Component {
   toggleVerify = () => {
     this.setState(
       {
-        verifyByMobile: !this.state.verifyByMobile
+        verifyByMobile: !this.state.verifyByMobile,
       },
       () => {
         analytics.track(
@@ -137,7 +137,7 @@ class VerifyAccount extends Component {
               this.state.verifyByMobile ? "Mobile" : "Email"
             }`,
             channel_changed: true,
-            userId: this.props.userInfo.userid
+            userId: this.props.userInfo.userid,
           }
         );
       }
@@ -146,7 +146,7 @@ class VerifyAccount extends Component {
 
   editField = (stateName, value) => {
     this.setState({
-      [`${stateName}Edit`]: value
+      [`${stateName}Edit`]: value,
     });
   };
 
@@ -155,13 +155,13 @@ class VerifyAccount extends Component {
       phoneNum: number,
       country_code: countryCode,
       valid,
-      type
+      type,
     });
   };
 
-  _handleSentCode = code => {
+  _handleSentCode = (code) => {
     this.setState({
-      code
+      code,
     });
   };
 
@@ -174,13 +174,13 @@ class VerifyAccount extends Component {
     if (!this.state.valid) {
       showMessage({
         message: translate("Please enter a valid number!"),
-        type: "warning"
+        type: "warning",
       });
     } else {
       const mobile = this.state.phoneNum.substring(4);
       this.props.sendMobileNo({
         country_code: this.state.country_code,
-        mobile
+        mobile,
       });
     }
   };
@@ -196,7 +196,7 @@ class VerifyAccount extends Component {
     this.props.resendVerifyMobileCodeByEmail({
       country_code: this.state.country_code,
       mobile,
-      email: this.state.userInfo.email
+      email: this.state.userInfo.email,
     });
   };
 
@@ -219,7 +219,7 @@ class VerifyAccount extends Component {
         device_id: this.props.screenProps.device_id,
         verification_channel: "Mobile",
         channel_changed: true,
-        userId: this.props.userInfo.userid
+        userId: this.props.userInfo.userid,
       });
     } else if (
       !this.props.successNo &&
@@ -233,7 +233,7 @@ class VerifyAccount extends Component {
         device_id: this.props.screenProps.device_id,
         verification_channel: "Email",
         channel_changed: true,
-        userId: this.props.userInfo.userid
+        userId: this.props.userInfo.userid,
       });
     } else if (!prevProps.successNo && this.props.successNo) {
       analytics.track(`otp_verify`, {
@@ -245,7 +245,7 @@ class VerifyAccount extends Component {
         device_id: this.props.screenProps.device_id,
         verification_channel: verifyByMobile ? "Mobile" : "Email",
         userId: this.props.userInfo.userid,
-        resend_otp: this.state.resend_otp
+        resend_otp: this.state.resend_otp,
       });
     }
   }
@@ -261,7 +261,7 @@ class VerifyAccount extends Component {
       device_id: this.props.screenProps.device_id,
       verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
       userId: this.props.userInfo.userid,
-      resend_otp: true
+      resend_otp: true,
     });
     analytics.track(`a_resend_otp`, {
       source: "otp_verify",
@@ -269,18 +269,18 @@ class VerifyAccount extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
       verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
-      userId: this.props.userInfo.userid
+      userId: this.props.userInfo.userid,
     });
     if (this.state.verifyByMobile) {
       this.props.resendVerifyMobileCode({
         mobile: this.props.mobileNo,
-        country_code: this.props.countryCode
+        country_code: this.props.countryCode,
       });
     } else {
       this.sendEmail();
     }
     this.setState({
-      resendOTP: true
+      resendOTP: true,
     });
   };
 
@@ -294,7 +294,7 @@ class VerifyAccount extends Component {
         mobile: this.state.phoneNum.substring(4),
         country_code: this.state.country_code,
         verificationCode: this.state.code,
-        userid: this.props.userInfo.userid
+        userid: this.props.userInfo.userid,
       },
       this.state.verifyByMobile ? "Mobile" : "Email"
     );
@@ -371,15 +371,15 @@ class VerifyAccount extends Component {
           <View style={{ marginVertical: 10 }}>
             <CodeInput
               cellProps={{
-                style: styles.cellProps
+                style: styles.cellProps,
               }}
               inputProps={{
-                style: styles.inputProps
+                style: styles.inputProps,
               }}
               autoFocus
               keyboardType="numeric"
               space={5}
-              onFulfill={code => this._handleSentCode(code)}
+              onFulfill={(code) => this._handleSentCode(code)}
               ref={this.inputRef}
               defaultCode={this.state.code}
             />
@@ -404,6 +404,10 @@ class VerifyAccount extends Component {
           screenProps={this.props.screenProps}
           title={"Verify Account"}
           navigation={this.props.navigation}
+          segment={{
+            source: "otp_verify",
+            source_action: "a_go_back",
+          }}
         />
         <Text style={styles.headingText}>
           {translate(
@@ -416,7 +420,7 @@ class VerifyAccount extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   verified: state.register.verified,
@@ -424,21 +428,21 @@ const mapStateToProps = state => ({
   countryCode: state.register.countryCode,
   verificationCode: state.register.verificationCode,
   successNo: state.register.successNo,
-  emailLinkCodeExpired: state.register.emailLinkCodeExpired
+  emailLinkCodeExpired: state.register.emailLinkCodeExpired,
 });
 
-const mapDispatchToProps = dispatch => ({
-  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo)),
+const mapDispatchToProps = (dispatch) => ({
+  sendMobileNo: (mobileNo) => dispatch(actionCreators.sendMobileNo(mobileNo)),
   verifyMobileCode: (mobileAuth, verification_channel) =>
     dispatch(actionCreators.verifyMobileCode(mobileAuth, verification_channel)),
-  resendVerifyMobileCode: mobileAuth =>
+  resendVerifyMobileCode: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
-  resendVerifyMobileCodeByEmail: mobileAuth =>
+  resendVerifyMobileCodeByEmail: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
   resetVerificationCode: () => dispatch(actionCreators.resetVerificationCode()),
   verifyEmailCodeLink: (verificationCode, country_code, mobile) =>
     dispatch(
       actionCreators.verifyEmailCodeLink(verificationCode, country_code, mobile)
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyAccount);

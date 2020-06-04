@@ -27,6 +27,10 @@ class SwipeUpDestination extends React.Component {
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
+          segment={{
+            source: "swipe_up_destination",
+            source_action: "a_go_back",
+          }}
           // segment={
           //   {
           //     // str: "Instagram Feed Ad Objective Back Button",

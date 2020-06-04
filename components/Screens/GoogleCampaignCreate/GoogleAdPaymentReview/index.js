@@ -255,6 +255,8 @@ class AdPaymentReview extends Component {
             obj: {
               businessname: this.props.mainBusiness.businessname,
             },
+            source: "ad_review",
+            source_action: "a_go_back",
           }}
           navigation={this.props.navigation}
           title={"Review your Selection"}

@@ -641,6 +641,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Regions"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "regions_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <RegionsSelector
@@ -675,6 +679,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Country"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "country_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <CountrySelector

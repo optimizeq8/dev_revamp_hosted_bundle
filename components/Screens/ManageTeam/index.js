@@ -82,6 +82,10 @@ class ManageTeam extends Component {
           screenProps={this.props.screenProps}
           title={"Manage Team"}
           navigation={this.props.navigation}
+          segment={{
+            source: "team_management_members_list",
+            source_action: "a_go_back",
+          }}
         />
         <Icons.GroupTransparentIcon
           style={styles.groupIconStyle}

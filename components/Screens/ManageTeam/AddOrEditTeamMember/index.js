@@ -250,6 +250,10 @@ class AddOrEditTeamMember extends Component {
           screenProps={this.props.screenProps}
           title={editTeamMember ? "Edit team member" : "Add team member"}
           navigation={this.props.navigation}
+          segment={{
+            source: "team_management_member_details",
+            source_action: "a_go_back",
+          }}
         />
         <InputScrollView
           {...ScrollView.props}

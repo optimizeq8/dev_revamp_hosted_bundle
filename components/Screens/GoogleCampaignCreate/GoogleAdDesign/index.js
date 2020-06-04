@@ -435,6 +435,8 @@ class GoogleAdDesign extends Component {
               segment={{
                 str: "Google SE Design Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_design",
+                source_action: "a_go_back",
               }}
               actionButton={rejected && this.handleModalToggle}
               navigation={!rejected ? this.props.navigation : undefined}

@@ -703,6 +703,12 @@ class CreateBusinessAccount extends Component {
                 this.state.editBusinessInfo ? "Business Info" : "New Business"
               }
               closeButton={!this.state.editBusinessInfo}
+              segment={{
+                source: this.state.editBusinessInfo
+                  ? "open_business_info"
+                  : "open_create_business_account",
+                source_action: "a_go_back",
+              }}
             />
           </View>
         )}

@@ -859,6 +859,8 @@ class AdCover extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_cover",
+              source_action: "a_go_back",
             }}
             actionButton={this.handleRejectionData}
             title={"Compose Ad"}
@@ -1044,6 +1046,10 @@ class AdCover extends Component {
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
                   title={"Uploading Image"}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_cancel_upload",
+                  }}
                 />
               )}
               {!this.props.coverLoading && (
@@ -1051,6 +1057,10 @@ class AdCover extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_go_back",
+                  }}
                 />
               )}
 

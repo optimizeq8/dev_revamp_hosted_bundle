@@ -691,6 +691,10 @@ class GoogleAdTargetting extends Component {
                         }}
                         title="Select Regions"
                         screenProps={this.props.screenProps}
+                        segment={{
+                          source: "regions_modal",
+                          source_action: "a_go_back",
+                        }}
                       />
                       <Content scrollEnabled={false} indicatorStyle="white">
                         <RegionsSelector
@@ -724,6 +728,10 @@ class GoogleAdTargetting extends Component {
                         closeButton={false}
                         actionButton={() => {
                           this.setModalVisible(false);
+                        }}
+                        segment={{
+                          source: "country_modal",
+                          source_action: "a_go_back",
                         }}
                         title="Select Country"
                         screenProps={this.props.screenProps}

@@ -9,7 +9,7 @@ import * as actionCreators from "../../../store/actions";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
 import CustomHeader from "../Header";
 import { persistor } from "../../../store";
@@ -29,7 +29,7 @@ class ContinueCampaign extends Component {
     this.state = {
       isVisible: false,
       resumeLoading: false,
-      outdatedDates: false
+      outdatedDates: false,
     };
   }
   componentDidMount() {
@@ -44,15 +44,15 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    let continueRoutes = this.props.data.campaignSteps.map(route =>
+    let continueRoutes = this.props.data.campaignSteps.map((route) =>
       NavigationActions.navigate({
-        routeName: route
+        routeName: route,
       })
     );
     //resets the navigation stack
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1, //index of the last screen route
-      actions: continueRoutes
+      actions: continueRoutes,
     });
 
     this.props.navigation.dispatch(resetAction);
@@ -94,24 +94,24 @@ class ContinueCampaign extends Component {
     const { translate } = this.props.screenProps;
     segmentEventTrack("Button Clicked to resume previous campaign");
     let updated_transaction_data = {
-      channel: "google"
+      channel: "google",
     };
     if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_id: this.props.data.id
+        campaign_id: this.props.data.id,
       };
     }
     if (this.props.data.campaignSteps.includes("GoogleAdTargetting")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget: this.props.data.budget
+        campaign_budget: this.props.data.budget,
       };
     }
     if (this.props.data.campaignSteps.includes("GoogleAdPaymentReview")) {
       updated_transaction_data = {
         ...updated_transaction_data,
-        campaign_budget_kdamount: this.props.data.kdamount
+        campaign_budget_kdamount: this.props.data.kdamount,
       };
     }
     this.props.setCampaignInfoForTransaction(updated_transaction_data);
@@ -127,7 +127,7 @@ class ContinueCampaign extends Component {
       showMessage({
         message: translate("The dates are no longer applicable"),
         description: translate("Please choose new dates"),
-        type: "warning"
+        type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.setState({ outdatedDates: true });
@@ -182,6 +182,10 @@ class ContinueCampaign extends Component {
             closeButton={true}
             navigation={this.props.navigation}
             title={"Continue Ad Creation"}
+            segment={{
+              source: "continue_campaign_modal",
+              source_action: "a_go_back",
+            }}
           />
           <Text style={[styles.text, styles.warningText]}>
             {translate(
@@ -213,19 +217,19 @@ class ContinueCampaign extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.googleAds,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   rest_google_campaign_data: () =>
     dispatch(actionCreators.rest_google_campaign_data()),
-  set_google_campaign_resumed: value =>
+  set_google_campaign_resumed: (value) =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
-  save_google_campaign_data: info =>
+  save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  setCampaignInfoForTransaction: data =>
-    dispatch(actionCreators.setCampaignInfoForTransaction(data))
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);

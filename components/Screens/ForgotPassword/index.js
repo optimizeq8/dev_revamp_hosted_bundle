@@ -4,7 +4,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Text, Item, Input } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -32,20 +32,20 @@ import Logo from "../../../assets/SVGs/Optimize";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
-      emailError: ""
+      emailError: "",
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
     Segment.screenWithProperties("Forgot Password", {
-      category: "Sign In"
+      category: "Sign In",
     });
   }
   // componentDidUpdate(prevProps) {
@@ -66,7 +66,7 @@ class ForgotPassword extends Component {
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
     this.setState({
-      emailError: emailError
+      emailError: emailError,
     });
     if (!emailError) {
       this.props.forgotPassword(this.state.email, this.props.navigation);
@@ -86,6 +86,10 @@ class ForgotPassword extends Component {
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
           closeButton={true}
+          segment={{
+            source: "forgot_password",
+            source_action: "a_go_back",
+          }}
         />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
           <View style={styles.mainCard}>
@@ -113,7 +117,7 @@ class ForgotPassword extends Component {
                         styles.input,
                         this.state.emailError
                           ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor
+                          : globalStyles.transparentBorderColor,
                       ]}
                     >
                       <Input
@@ -121,9 +125,9 @@ class ForgotPassword extends Component {
                         autoCorrect={false}
                         autoCapitalize="none"
                         style={styles.inputText}
-                        onChangeText={value => {
+                        onChangeText={(value) => {
                           this.setState({
-                            email: value
+                            email: value,
                           });
                         }}
                         onBlur={() => {
@@ -131,7 +135,7 @@ class ForgotPassword extends Component {
                             emailError: validateWrapper(
                               "email",
                               this.state.email
-                            )
+                            ),
                           });
                         }}
                         placeholder={translate("Email")}
@@ -153,10 +157,10 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   forgotPassword: (email, navigation) =>
-    dispatch(actionCreators.forgotPassword(email, navigation))
+    dispatch(actionCreators.forgotPassword(email, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
