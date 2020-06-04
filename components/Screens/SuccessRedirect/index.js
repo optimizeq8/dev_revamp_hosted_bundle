@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Image } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
@@ -114,13 +113,6 @@ class SuccessRedirect extends Component {
       Adjust.trackEvent(adjustPaymentTracker);
     }
     this.setState(this.props.navigation.state.params, () => {
-      // Segment.trackWithProperties("Completed Checkout Step", {
-      //   step: 7,
-      //   business_name: this.props.mainBusiness.businessname,
-      //   checkout_id: this.props.campaign_id,
-      //   paymentMethod: ""
-      // });
-
       if (
         (this.props.channel && this.props.channel === "") ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
@@ -148,13 +140,13 @@ class SuccessRedirect extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
-        ​
+
         <Image
           style={styles.media}
           source={this.state.media}
           resizeMode="contain"
         />
-        ​
+
         <View style={styles.view}>
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
