@@ -148,13 +148,12 @@ class SuccessRedirect extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
-        ​
+
         <Image
           style={styles.media}
           source={this.state.media}
           resizeMode="contain"
         />
-        ​
         <View style={styles.view}>
           <SuccessIcon width={80} height={80} />
           <Text uppercase style={styles.title}>
