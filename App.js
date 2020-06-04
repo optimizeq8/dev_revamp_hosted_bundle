@@ -96,10 +96,14 @@ const MixpanelSDK = new MixpanelInstance(
 MixpanelSDK.initialize().then((value) => {
   console.log("MixpanelSDK.sharedInstanceWithToken", value);
   MixpanelSDK.getDistinctId().then((value) => {
-    MixpanelSDK.identify(value);
+    MixpanelSDK.identify(value).then((value) => {
+      MixpanelSDK.showInAppMessageIfAvailable();
+      MixpanelSDK.getPushRegistrationId().then((value) =>
+        console.log("android token", value)
+      );
+    });
     console.log("getDistinctId", value);
   });
-  MixpanelSDK.showInAppMessageIfAvailable();
 });
 
 // Sentry.captureException(new Error("Oops!"));
