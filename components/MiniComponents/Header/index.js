@@ -54,10 +54,11 @@ export default class Header extends Component {
           disabled={disabled}
           onPress={() => {
             if (!isUndefined(segment)) {
-              analytics.track(segment.source_action, {
-                source: segment.source,
-                source_action: segment.source_action,
-              });
+              //TODO: In later build
+              // analytics.track(segment.source_action, {
+              //   source: segment.source,
+              //   source_action: segment.source_action,
+              // });
               Segment.trackWithProperties(segment.str, segment.obj);
             }
             if (!isUndefined(navigation)) navigation.goBack();

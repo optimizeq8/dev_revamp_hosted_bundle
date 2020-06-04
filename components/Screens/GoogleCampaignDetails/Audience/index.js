@@ -343,8 +343,6 @@ class GoogleAdTargetting extends Component {
     analytics.track(`ad_targeting`, {
       source,
       source_action,
-      timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id,
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
     });
@@ -461,6 +459,8 @@ class GoogleAdTargetting extends Component {
                   obj: {
                     businessname: this.props.mainBusiness.businessname,
                   },
+                  source: "ad_targeting",
+                  source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
                 title={"Audience"}

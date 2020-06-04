@@ -724,6 +724,9 @@ class CollectionMedia extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
+              source: "ad_objective",
+              source_action: "a_go_back",
+              str: "Ad Objective Back Button",
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname },
             }}
