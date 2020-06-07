@@ -524,8 +524,11 @@ class Dashboard extends Component {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
-                    segmentEventTrack("Button clicked to change app language", {
-                      app_language:
+                    analytics.track(`a_switch_language`, {
+                      source: "dashboard",
+                      source_action: "a_switch_language",
+                      prev_langauage: this.props.appLanguage,
+                      new_language:
                         this.props.appLanguage === "en" ? "ar" : "en",
                     });
                     this.props.getLanguageListPOEdit(
