@@ -344,7 +344,7 @@ class App extends React.Component {
         Permissions.NOTIFICATIONS
       );
     } else {
-      let anonId = await analytics.getAnonymousId();
+      let anonId = getUniqueId();
       let token = await Notifications.getDevicePushTokenAsync();
       if (Platform.OS === "android") {
         analytics.identify(anonId, { $android_devices: [token.data] });
