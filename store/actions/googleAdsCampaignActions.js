@@ -6,7 +6,6 @@ import store from "../index";
 import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
-import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
@@ -337,7 +336,12 @@ export const create_google_SE_campaign_ad_design = (
  * @param {String} businessid
  * @returns {Function} an action to set an array of search results for the lookedup keyword
  */
-export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
+export const get_google_SE_keywords = (
+  keyword,
+  campaign_id,
+  businessid,
+  segmentInfo
+) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_LOADING,
@@ -353,6 +357,13 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
         } else return res.data;
       })
       .then((data) => {
+        analytics.track(`a_keywords_search`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "error",
+          keywords: keyword,
+          no_of_results: data.keywords && data.keywords.length,
+          error_description: data.error,
+        });
         if (!data.error) {
           return dispatch({
             type: actionTypes.SET_GOOGLE_SE_KEYWORDS,
@@ -911,7 +922,6 @@ export const get_budget = (info, segmentInfo, navigation) => {
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data,
           });
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
           navigation.push("GoogleAdDesign", {
             source: "ad_objective",
             source_action: "a_submit_ad_objective",

@@ -4,7 +4,7 @@ import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 import styles from "./styles";
 
-export default function(props) {
+export default function (props) {
   const { loading, keywords } = props;
   const { translate } = props.screenProps;
 
@@ -18,7 +18,7 @@ export default function(props) {
       }
       return null;
     });
-    listKeyWords = listKeyWords.filter(key => key !== null);
+    listKeyWords = listKeyWords.filter((key) => key !== null);
   } else {
     listKeyWords = [...keywords];
   }
@@ -37,7 +37,11 @@ export default function(props) {
       <TouchableOpacity
         style={styles.targetingContainer}
         onPress={() => {
-          !loading && props.navigation.push("GoogleKeywordsStats");
+          !loading &&
+            props.navigation.push("GoogleKeywordsStats", {
+              source: "campaign_detail",
+              source_action: "a_open_keywords_performance",
+            });
         }}
       >
         {listKeyWords && listKeyWords.length > 0 && (
@@ -48,7 +52,7 @@ export default function(props) {
             <PlaceholderLine />
           </View>
         ) : listKeyWords && listKeyWords.length > 0 ? (
-          listKeyWords.map(key => (
+          listKeyWords.map((key) => (
             <View key={key.keyword} style={styles.keywordView}>
               <Text numberOfLines={1} style={styles.keyword}>
                 {key.keyword}
