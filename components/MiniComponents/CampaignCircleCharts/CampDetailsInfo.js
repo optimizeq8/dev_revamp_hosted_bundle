@@ -13,11 +13,11 @@ export default (props) => {
   let { campaign, loading, screenProps } = props;
   let { translate } = screenProps;
   let statusOfCampaign = campaign
-    ? new Date().setHours(0, 0, 0, 0) <
-      new Date(campaign.start_time).setHours(0, 0, 0, 0)
+    ? new Date().setUTCHours(0, 0, 0, 0) <
+      new Date(campaign.start_time).setUTCHours(0, 0, 0, 0)
       ? "starts"
-      : new Date().setHours(0, 0, 0, 0) <=
-        new Date(campaign.end_time).setHours(0, 0, 0, 0)
+      : new Date().setUTCHours(0, 0, 0, 0) <=
+        new Date(campaign.end_time).setUTCHours(0, 0, 0, 0)
       ? "ends"
       : "ended"
     : "";
@@ -30,15 +30,13 @@ export default (props) => {
       ) : (
         <View>
           {statusOfCampaign !== "starts" &&
-            (new Date().setHours(0, 0, 0, 0) <=
-              new Date(campaign.end_time).setHours(0, 0, 0, 0) &&
-            new Date().setHours(0, 0, 0, 0) >=
-              new Date(campaign.start_time).setHours(0, 0, 0, 0) &&
+            (new Date().setUTCHours(0, 0, 0, 0) <=
+              new Date(campaign.end_time).setUTCHours(0, 0, 0, 0) &&
+            new Date().setUTCHours(0, 0, 0, 0) >=
+              new Date(campaign.start_time).setUTCHours(0, 0, 0, 0) &&
             campaign.campaign_end === "0" ? (
               <Text style={[styles.subtext]}>
-                {TimeDifferance(currentDate, campaign.end_time) === 0
-                  ? 1
-                  : TimeDifferance(currentDate, campaign.end_time)}{" "}
+                {TimeDifferance(currentDate, campaign.end_time) + 1}{" "}
                 {translate("Day(s) left")}
               </Text>
             ) : (
