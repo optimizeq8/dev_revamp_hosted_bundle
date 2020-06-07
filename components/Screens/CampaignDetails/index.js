@@ -611,7 +611,7 @@ class CampaignDetails extends Component {
                 )
               )}
               <ScrollView
-                contentContainerStyle={{ height: hp(100) }}
+                contentContainerStyle={{ height: hp(115) }}
                 scrollEnabled={!this.state.expand}
                 ref={(ref) => (this.scroll = ref)}
                 style={{ maxHeight: "100%" }}

@@ -12,6 +12,7 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import segmentEventTrack from "../../segmentEventTrack";
+import formatNumber from "../../formatNumber";
 class UseWallet extends Component {
   //   state = { showModal: false };
 
@@ -27,7 +28,7 @@ class UseWallet extends Component {
         step: 6,
         business_name: this.props.mainBusiness.businessname,
         checkout_id: this.props.campaign_id,
-        paymentMethod: "WALLET"
+        paymentMethod: "WALLET",
       });
       this.props.checkoutwithWallet(this.props.campaign_id);
     } else {
@@ -35,7 +36,7 @@ class UseWallet extends Component {
         step: 6,
         business_name: this.props.mainBusiness.businessname,
         checkout_id: this.props.campaign_id,
-        paymentMethod: "KNET"
+        paymentMethod: "KNET",
       });
       this.props._changeToKnet();
     }
@@ -71,8 +72,8 @@ class UseWallet extends Component {
         <Text style={styles.text}>{translate("Wallet Balance")}</Text>
         <Text style={[GlobalStyles.numbers, styles.walltetAmountText]}>
           {this.props.walletUsed
-            ? this.props.wallet_balance_amount
-            : this.props.wallet}
+            ? formatNumber(this.props.wallet_balance_amount, true)
+            : formatNumber(this.props.wallet, true)}
           <Text style={styles.text}>$</Text>
         </Text>
         <Text style={styles.errortext}>
@@ -151,7 +152,7 @@ class UseWallet extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   wallet: state.transA.wallet,
   loading: state.transA.loading,
   wallet_amount_applied: state.transA.wallet_amount_applied,
@@ -160,13 +161,15 @@ const mapStateToProps = state => ({
   campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
   walletUsed: state.transA.walletUsed,
   campaign_id: state.transA.campaign_id,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   useWallet: (info, setShowWalletModal) =>
     dispatch(actionCreators.useWallet(info, setShowWalletModal)),
-  removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
-  checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
+  removeWalletAmount: (info) =>
+    dispatch(actionCreators.removeWalletAmount(info)),
+  checkoutwithWallet: (info) =>
+    dispatch(actionCreators.checkoutwithWallet(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(UseWallet);

@@ -25,6 +25,11 @@ export default class index extends Component {
       timestamp: new Date().getTime(),
     });
   }
+  state = { viewLoader: true };
+
+  hideLoader = () => {
+    this.setState({ viewLoader: false });
+  };
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
@@ -62,17 +67,28 @@ export default class index extends Component {
             // padder
           > */}
           <WebView
-            startInLoadingState={true}
-            renderLoading={() => (
-              <View style={{ height: "100%", backgroundColor: "#0000" }}>
-                <Loading top={40} />
-              </View>
-            )}
+            // startInLoadingState={true}
+            onLoad={() => this.hideLoader()}
+            // renderLoading={() => (
+            //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
+            //     <Loading top={40} />
+            //   </View>
+            // )}
             style={{ backgroundColor: "transparent" }}
             contentContainerStyle={{ backgroundColor: "transparent" }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
           />
+          {this.state.viewLoader && (
+            <View
+              style={{
+                height: "100%",
+                backgroundColor: "#0000",
+              }}
+            >
+              <Loading top={40} />
+            </View>
+          )}
           {/* </Content> */}
         </Container>
       </SafeAreaView>

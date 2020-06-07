@@ -51,7 +51,7 @@ class PaymentForm extends Component {
     this.state = {
       addingCredits: this.props.navigation.getParam("addingCredits", false),
       amount: this.props.navigation.getParam("amount", 0),
-      payment_type: 1,
+      payment_type: this.showKnet ? 1 : 2,
       choice: this.showKnet ? 2 : 3,
       showModal: false,
       browserLoading: false,
