@@ -144,6 +144,12 @@ class AdDesign extends Component {
           case "BRAND_AWARENESS":
             destination = "link";
             break;
+          case "LINK_CLICKS":
+            destination = "link";
+            break;
+          case "LEAD_GENERATION":
+            destination = "link";
+            break;
           default:
             destination = "BLANK";
         }
@@ -441,7 +447,7 @@ class AdDesign extends Component {
                   }
                   style={styles.destinationView}
                 >
-                  <ArrowUp stroke={globalColors.orange} />
+                  <ArrowUp fill={globalColors.orange} />
                   <Text style={styles.destinationText}>
                     {translate("Destination")}
                   </Text>

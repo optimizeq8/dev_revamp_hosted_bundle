@@ -53,7 +53,11 @@ class ErrorRedirect extends Component {
           this.props.channel === "" ? "snapchat" : this.props.channel,
         amount: parseFloat(this.props.navigation.getParam("amount", "null")),
         campaign_ad_type:
-          this.props.channel === "google" ? "GoogleSEAd" : this.props.adType,
+          this.props.channel === "google"
+            ? "GoogleSEAd"
+            : this.props.channel === "google"
+            ? this.props.adTypeInstagram
+            : this.props.adType,
         campaign_ltv: parseFloat(
           this.props.navigation.getParam("campaign_ltv", "null")
         ),
@@ -71,7 +75,7 @@ class ErrorRedirect extends Component {
       ...segmentInfo,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
-
+    //TODO: add adjust analytics accordingly
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
       adjustWalletPaymentTracker.addPartnerParameter(
@@ -230,6 +234,7 @@ const mapStateToProps = (state) => ({
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   channel: state.transA.channel,
   adType: state.campaignC.adType,
+  adTypeInstagram: state.instagramAds.adType,
 });
 const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
