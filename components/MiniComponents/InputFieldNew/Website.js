@@ -14,7 +14,7 @@ import WebsiteIcon from "../../../assets/SVGs/SwipeUps/Website";
 
 export default class WebsiteComponent extends React.Component {
   state = {
-    highlight: false
+    highlight: false,
   };
   validateUrl = () => {
     const { translate } = this.props.screenProps;
@@ -23,8 +23,6 @@ export default class WebsiteComponent extends React.Component {
       deepLink ? "deepLink" : register ? "url" : "website",
       this.props.website
     );
-    console.log("urlError", urlError);
-
     this.props.getValidInfo &&
       this.props.getValidInfo(stateName + "Error", urlError);
     if (urlError && this.props.website) {
@@ -45,7 +43,7 @@ export default class WebsiteComponent extends React.Component {
           : "",
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
     }
     this.setState({ highlight: false });
@@ -63,6 +61,14 @@ export default class WebsiteComponent extends React.Component {
   focusFeild = () => {
     this.setState({ highlight: true });
   };
+
+  /**
+   * Even field is touched outside bring it to focus
+   */
+  bringFieldToFocus = () => {
+    this.refs["websiteField"]._root.focus();
+    this.setState({ highlight: true });
+  };
   render() {
     const { translate } = this.props.screenProps;
     const {
@@ -72,7 +78,7 @@ export default class WebsiteComponent extends React.Component {
       setNetworkString,
       disabled,
       label = "Website",
-      placeholder = "Enter your website's URL"
+      placeholder = "Enter your website's URL",
     } = this.props;
     return (
       <Animatable.View
@@ -81,7 +87,11 @@ export default class WebsiteComponent extends React.Component {
         easing={"ease"}
         animation={stateNameError ? "shake" : ""}
       >
-        <Item disabled={disabled} style={[styles.input1, customStyle]}>
+        <Item
+          onPress={this.bringFieldToFocus}
+          disabled={disabled}
+          style={[styles.input1, customStyle]}
+        >
           <WebsiteIcon
             width={23}
             height={24}
@@ -96,7 +106,7 @@ export default class WebsiteComponent extends React.Component {
                 styles.inputLabel,
                 this.state.highlight
                   ? [GlobalStyles.orangeTextColor]
-                  : GlobalStyles.whiteTextColor
+                  : GlobalStyles.whiteTextColor,
               ]}
             >
               {translate(label)}
@@ -104,12 +114,10 @@ export default class WebsiteComponent extends React.Component {
             </Text>
             <Input
               style={[
-                styles.inputText
+                styles.inputText,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
               ]}
-              ref={input => {
-                this.props.inputs && (this.props.inputs["inputWeb"] = input);
-              }}
+              ref={"websiteField"}
               disabled={disabled}
               onFocus={this.focusFeild}
               placeholder={translate(placeholder)}
@@ -117,7 +125,7 @@ export default class WebsiteComponent extends React.Component {
               value={this.props.website}
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.props.setWebsiteValue(value)}
+              onChangeText={(value) => this.props.setWebsiteValue(value)}
               onBlur={this.validateUrl}
             />
           </View>
