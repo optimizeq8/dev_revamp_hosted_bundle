@@ -155,8 +155,8 @@ android {
         applicationId 'com.optimizeapp.optimizeapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 49
-        versionName "0.3.70"
+        versionCode 50
+        versionName "0.3.81"
         multiDexEnabled true
 
     }
