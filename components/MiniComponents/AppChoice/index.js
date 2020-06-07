@@ -256,7 +256,7 @@ class AppChoice extends Component {
       analytics.track(`a_change_cta`, {
         source: "ad_swipe_up_destination",
         source_action: "a_change_cta",
-        campaign_cta: value,
+        campaign_swipe_up_CTA: value,
       });
       this.setState(
         {

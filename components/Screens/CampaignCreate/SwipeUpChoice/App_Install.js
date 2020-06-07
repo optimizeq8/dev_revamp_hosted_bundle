@@ -189,7 +189,7 @@ class App_Install extends Component {
     analytics.track(`a_change_cta`, {
       source: "ad_swipe_up_destination",
       source_action: "a_change_cta",
-      campaign_cta: callaction,
+      campaign_swipe_up_CTA: callaction,
     });
     this.setState({
       callaction,
