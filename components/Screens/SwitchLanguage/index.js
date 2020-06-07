@@ -27,24 +27,24 @@ import * as actionCreators from "../../../store/actions";
 
 class SwitchLanguage extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   state = {
     languageOpened: null,
-    language: "en"
+    language: "en",
   };
   async componentDidMount() {
     const appLanguage = await AsyncStorage.getItem("appLanguage");
     if (appLanguage !== this.state.language) {
       // in case the app language is ARABIC to set the button properly
       this.setState({
-        language: appLanguage
+        language: appLanguage,
       });
     }
     const anonymous_userId = this.props.screenProps.anonymous_userId;
     const device_id = this.props.screenProps.device_id;
     AsyncStorage.getItem("languageOpened")
-      .then(async value => {
+      .then(async (value) => {
         if (isNull(value)) {
           AsyncStorage.setItem("languageOpened", "false").then(async () => {
             await analytics.track("first_app_open", {
@@ -52,7 +52,7 @@ class SwitchLanguage extends Component {
               source: this.props.screenProps.prevAppState,
               // source_action: "", Not sure what will come here
               timestamp: new Date().getTime(),
-              device_id
+              device_id,
               // country: "",
             });
             await analytics.track("app_language", {
@@ -60,10 +60,10 @@ class SwitchLanguage extends Component {
               device_id,
               // source_action: "", // Not sure what will come here ??
               timestamp: new Date().getTime(),
-              anonymous_userId
+              anonymous_userId,
             });
             this.setState({
-              languageOpened: false
+              languageOpened: false,
             });
           });
         } else if (value === "true") {
@@ -73,13 +73,13 @@ class SwitchLanguage extends Component {
             selected_language: this.state.language,
             timestamp: new Date().getTime(),
             anonymous_userId,
-            device_id
+            device_id,
             // county: "",
             // locations: //,
           });
           this.props.navigation.replace("Tutorial", {
             source: "app_lanaguage",
-            source_action: "a_app_language_select"
+            source_action: "a_app_language_select",
           });
         } else {
           await analytics.track("app_language", {
@@ -87,33 +87,33 @@ class SwitchLanguage extends Component {
             device_id,
             // source_action: "", // Not sure what will come here ??
             timestamp: new Date().getTime(),
-            anonymous_userId
+            anonymous_userId,
           });
           this.setState({
-            languageOpened: false
+            languageOpened: false,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Something went wrong!",
           type: "warning",
           position: "top",
-          description: "Please try again later."
+          description: "Please try again later.",
         });
         //  console.log(err)
       });
   }
-  handleLanguageChange = language => {
+  handleLanguageChange = (language) => {
     analytics.track(`a_change_language`, {
       source: `app_language`,
       selected_language: language,
       source_action: `a_change_language`,
       anonymous_userId: this.props.screenProps.anonymous_userId,
-      device_id: this.props.screenProps.device_id
+      device_id: this.props.screenProps.device_id,
     });
     this.setState({
-      language
+      language,
     });
   };
   handleSubmitLanguage = async () => {
@@ -124,7 +124,10 @@ class SwitchLanguage extends Component {
     if (appLanguage !== this.state.language) {
       // if app language not same as the state language then set it as the app language and reloading the app
       this.props.getLanguageListPOEdit(this.state.language);
-      this.props.navigation.navigate("SwitchLanguageLoading");
+      this.props.navigation.navigate("SwitchLanguageLoading", {
+        source: "app_language",
+        source_action: "a_app_language_select",
+      });
     } else {
       // to show  tutorial if app langugage is same as app language
       analytics.track("a_app_language_select", {
@@ -133,13 +136,13 @@ class SwitchLanguage extends Component {
         selected_language: this.state.language,
         timestamp: new Date().getTime(),
         anonymous_userId,
-        device_id
+        device_id,
         // county: "",
         // locations: //,
       });
       this.props.navigation.replace("Tutorial", {
         source: "app_language",
-        source_action: "a_app_language_select"
+        source_action: "a_app_language_select",
       });
     }
   };
@@ -184,8 +187,8 @@ class SwitchLanguage extends Component {
                     fontFamily:
                       language === "ar"
                         ? "changa-bold-arabic"
-                        : "montserrat-bold-english"
-                  }
+                        : "montserrat-bold-english",
+                  },
                 ]}
               >
                 {language === "ar" ? "مرحبا بك في" : "Welcome to"}
@@ -201,8 +204,8 @@ class SwitchLanguage extends Component {
                   fontFamily:
                     language === "ar"
                       ? "montserrat-regular-arabic"
-                      : "montserrat-regular-english"
-                }
+                      : "montserrat-regular-english",
+                },
               ]}
             >
               {/* {translate("Choose your language")} */}
@@ -218,7 +221,7 @@ class SwitchLanguage extends Component {
                 text={"English"}
                 textStyle={[
                   styles.englishText,
-                  this.state.language !== "en" && styles.inactiveText
+                  this.state.language !== "en" && styles.inactiveText,
                 ]}
               />
               <GradientButton
@@ -228,7 +231,7 @@ class SwitchLanguage extends Component {
                 text={"العربية"}
                 textStyle={[
                   styles.arabicText,
-                  this.state.language !== "ar" && styles.inactiveText
+                  this.state.language !== "ar" && styles.inactiveText,
                 ]}
               />
             </View>
@@ -250,10 +253,10 @@ class SwitchLanguage extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({
-  getLanguageListPOEdit: language =>
-    dispatch(actionCreators.getLanguageListPOEdit(language))
+const mapDispatchToProps = (dispatch) => ({
+  getLanguageListPOEdit: (language) =>
+    dispatch(actionCreators.getLanguageListPOEdit(language)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SwitchLanguage);

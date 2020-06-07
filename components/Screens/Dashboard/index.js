@@ -524,18 +524,21 @@ class Dashboard extends Component {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
-                    analytics.track(`a_switch_language`, {
+                    analytics.track(`a_change_language`, {
                       source: "dashboard",
-                      source_action: "a_switch_language",
+                      source_action: "a_change_language",
                       prev_langauage: this.props.appLanguage,
-                      new_language:
+                      selected_language:
                         this.props.appLanguage === "en" ? "ar" : "en",
                     });
                     this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
                     );
                     this.props.screenProps.setLocale(this.props.appLanguage);
-                    this.props.navigation.navigate("SwitchLanguageLoading");
+                    this.props.navigation.navigate("SwitchLanguageLoading", {
+                      source: "dashboard",
+                      source_action: "a_change_language",
+                    });
                     // RNRestart.Restart();
                     // Updates.reload();
                   }}
