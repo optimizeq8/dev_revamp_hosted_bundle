@@ -47,7 +47,7 @@ import BackButton from "../../../../assets/SVGs/BackButton";
 import styles from "./styles";
 
 //Functions
-import isEqual from "lodash/isEqual";
+import isEqual from "react-fast-compare";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
@@ -136,10 +136,10 @@ class AdDesign extends Component {
 
   componentWillUnmount() {
     //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    // BackHandler.removeEventListener(
+    //   "hardwareBackPressDesign",
+    //   this.toggleAdSelection
+    // );
   }
   async componentDidMount() {
     this._notificationSubscription = Notifications.addNotificationReceivedListener(
@@ -303,7 +303,6 @@ class AdDesign extends Component {
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
-    BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
   }
 
   _handleNotification = async (uploadMediaNotification) => {
@@ -861,11 +860,15 @@ class AdDesign extends Component {
           message: "Please crop the image to the right dimensions",
           type: "warning",
         });
+        console.log(
+          this.rejected,
+          this.props.data && !this.props.data.hasOwnProperty("formatted"),
+          isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
+        );
       } else if (
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
-        JSON.stringify(this.props.data.formatted) !==
-          JSON.stringify(this.state.formatted)
+        isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
       ) {
         const segmentInfo = {
           campaign_channel: "snapchat",
@@ -919,6 +922,11 @@ class AdDesign extends Component {
    * since they're mostly the same
    */
   toggleAdSelection = () => {
+    // console.log("toggleAdSelec", this.props.navigation.isFocused());
+
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     this.state.storyAdCards.storyAdSelected
       ? this.setState({
           ...this.state,
@@ -930,6 +938,7 @@ class AdDesign extends Component {
           videoIsLoading: false,
         })
       : this.props.navigation.goBack();
+    console.log("asssss");
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
@@ -1091,7 +1100,17 @@ class AdDesign extends Component {
       });
   };
 
+  handleAdDesignBlur = () => {
+    // BackHandler.removeEventListener(
+    //   "hardwareBackPressDesign",
+    //   this.toggleAdSelection
+    // );
+  };
   handleAdDesignFocus = () => {
+    // BackHandler.addEventListener(
+    //   "hardwareBackPressDesign",
+    //   this.toggleAdSelection
+    // );
     if (!this.props.currentCampaignSteps.includes("AdDetails")) {
       this.props.saveCampaignSteps(
         this.adType === "StoryAd"
@@ -1219,7 +1238,10 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents onDidFocus={this.handleAdDesignFocus} />
+        <NavigationEvents
+          onDidFocus={this.handleAdDesignFocus}
+          onDidBlur={this.handleAdDesignBlur}
+        />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}

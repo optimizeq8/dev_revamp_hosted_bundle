@@ -97,12 +97,18 @@ class AdCover extends Component {
   }
 
   handleBackButton = () => {
-    this.props.resetRejectedCampaignData();
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
+    this.handleRejectionData();
     return true;
   };
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdCover",
+      this.handleBackButton
+    );
   }
   async componentDidMount() {
     this.setState({
@@ -182,7 +188,6 @@ class AdCover extends Component {
         },
       });
     }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   askForPermssion = async () => {
@@ -794,6 +799,10 @@ class AdCover extends Component {
   };
 
   handleAdCoverFocus = () => {
+    BackHandler.addEventListener(
+      "hardwareBackPressAdCover",
+      this.handleBackButton
+    );
     if (!this.props.currentCampaignSteps.includes("AdDesign")) {
       this.props.saveCampaignSteps(["Dashboard", "AdObjective", "AdCover"]);
     }
@@ -823,6 +832,13 @@ class AdCover extends Component {
     let adjustAdCoverTracker = new AdjustEvent("s62u9o");
     Adjust.trackEvent(adjustAdCoverTracker);
   };
+
+  handleAdCoverBlur = () => {
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdCover",
+      this.handleBackButton
+    );
+  };
   render() {
     let { cover, coverHeadlineError, logoSerialization } = this.state;
 
@@ -833,7 +849,10 @@ class AdCover extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents onDidFocus={this.handleAdCoverFocus} />
+        <NavigationEvents
+          onDidFocus={this.handleAdCoverFocus}
+          onDidBlur={this.handleAdCoverBlur}
+        />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}

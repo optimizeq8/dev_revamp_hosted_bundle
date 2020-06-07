@@ -124,10 +124,12 @@ class Dashboard extends Component {
     //Reset campaignProgressStarted only if there was a campaing in progress
     if (this.props.campaignInProgress && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
     // this.props.navigation.goBack();
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     BackHandler.exitApp();
     return true;
   };
@@ -375,6 +377,7 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -391,6 +394,9 @@ class Dashboard extends Component {
     });
     // Segment.screen("Dashboard");
     this.props.setCampaignInProgress(false);
+  };
+  onDidBlur = () => {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -785,7 +791,10 @@ class Dashboard extends Component {
                   </Sidemenu>
                 </Container>
               )}
-              <NavigationEvents onDidFocus={this.onDidFocus} />
+              <NavigationEvents
+                onDidFocus={this.onDidFocus}
+                onDidBlur={this.onDidBlur}
+              />
             </Animatable.View>
 
             <Animatable.View

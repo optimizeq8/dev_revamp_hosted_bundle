@@ -74,7 +74,7 @@ export default class MediaModal extends Component {
                 }}
               >
                 {options}
-                {(media !== "//" ||
+                {((!storyAdCards.storyAdSelected && media !== "//") ||
                   storyAdCards.selectedStoryAd.media !== "//") && (
                   <MediaOptions
                     _pickImage={this.props._pickImage}

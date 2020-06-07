@@ -57,6 +57,9 @@ class AdType extends Component {
   }
 
   handleBackButton = () => {
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     Segment.trackWithProperties("Closed Ad Type", {
       business_name: this.props.mainBusiness.businessname,
     });

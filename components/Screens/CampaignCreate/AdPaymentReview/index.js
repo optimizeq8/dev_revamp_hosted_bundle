@@ -32,16 +32,22 @@ class AdPaymentReview extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     this.props.navigation.goBack();
     return true;
   };
   componentDidMount() {
     this.props.save_campaign_info({ campaignDateChanged: false });
     this.props.get_languages();
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
+  handlePaymentReviewBlur = () => {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  };
   handlePaymentReviewFocus = () => {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     const {
       interestNames,
       gender,
@@ -241,7 +247,10 @@ class AdPaymentReview extends Component {
     ) {
       return (
         <>
-          <NavigationEvents onDidFocus={this.handlePaymentReviewFocus} />
+          <NavigationEvents
+            onDidFocus={this.handlePaymentReviewFocus}
+            onDidBlur={this.handlePaymentReviewBlur}
+          />
           <LoadingScreen top={50} />
         </>
       );

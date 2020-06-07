@@ -102,7 +102,10 @@ class AdDetails extends Component {
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdDetails",
+      this.handleBackButton
+    );
   }
   componentDidUpdate(prevProps, prevState) {
     // if(this.prevProps)
@@ -118,6 +121,9 @@ class AdDetails extends Component {
     }
   }
   handleBackButton = () => {
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     this.props.navigation.goBack();
     return true;
   };
@@ -235,8 +241,6 @@ class AdDetails extends Component {
         );
       }
     }
-
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   _handleMaxAge = (value) => {
@@ -879,6 +883,10 @@ class AdDetails extends Component {
   };
 
   handleAdDetailsFocus = () => {
+    BackHandler.addEventListener(
+      "hardwareBackPressAdDetails",
+      this.handleBackButton
+    );
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -928,6 +936,12 @@ class AdDetails extends Component {
     Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
+  handleAdDetailsBlur = () => {
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdDetails",
+      this.handleBackButton
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1150,7 +1164,10 @@ class AdDetails extends Component {
           ]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents onDidFocus={this.handleAdDetailsFocus} />
+          <NavigationEvents
+            onDidFocus={this.handleAdDetailsFocus}
+            onBlur={this.handleAdDetailsBlur}
+          />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader

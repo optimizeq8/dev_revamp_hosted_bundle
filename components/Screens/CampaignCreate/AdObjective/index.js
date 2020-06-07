@@ -81,13 +81,15 @@ class AdObjective extends Component {
     };
   }
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdObjective",
+      this.handleBackButton
+    );
   }
   componentDidMount() {
     if (this.props.navigation.getParam("adType", false)) {
       this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
     }
-    this.setCampaignInfo();
     if (this.props.adType === "CollectionAd") {
       if (this.props.collectionAdLinkForm !== 0) {
         this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
@@ -107,7 +109,7 @@ class AdObjective extends Component {
       },
       objectiveLabel: "Select Objective",
     });
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    this.setCampaignInfo();
   }
 
   componentDidUpdate(prevProps) {
@@ -230,6 +232,9 @@ class AdObjective extends Component {
     });
   };
   handleBackButton = () => {
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -240,7 +245,6 @@ class AdObjective extends Component {
         source_action: "a_go_back",
       });
     } else this.props.navigation.goBack();
-
     return true;
   };
   handleStartDatePicked = (date) => {
@@ -460,6 +464,10 @@ class AdObjective extends Component {
   };
 
   handleAdOnjectiveFocus = () => {
+    BackHandler.addEventListener(
+      "hardwareBackPressAdObjective",
+      this.handleBackButton
+    );
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -487,6 +495,13 @@ class AdObjective extends Component {
     );
     Adjust.trackEvent(adjustAdObjectiveTracker);
   };
+
+  handleAdOnjectiveBlur = () => {
+    BackHandler.removeEventListener(
+      "hardwareBackPressAdObjective",
+      this.handleBackButton
+    );
+  };
   render() {
     let adType = this.props.adType;
     const list = ObjectiveData[this.props.adType].map((o) => (
@@ -513,7 +528,10 @@ class AdObjective extends Component {
           style={styles.safeAreaView}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents onDidFocus={this.handleAdOnjectiveFocus} />
+          <NavigationEvents
+            onDidFocus={this.handleAdOnjectiveFocus}
+            onDidBlur={this.handleAdOnjectiveBlur}
+          />
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
