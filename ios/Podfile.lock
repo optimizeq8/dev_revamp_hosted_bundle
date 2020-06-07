@@ -1,8 +1,8 @@
 PODS:
-  - Adjust (4.21.3):
-    - Adjust/Core (= 4.21.3)
-  - Adjust/Core (4.21.3)
-  - Analytics (3.8.2)
+  - Adjust (4.22.1):
+    - Adjust/Core (= 4.22.1)
+  - Adjust/Core (4.22.1)
+  - Analytics (3.9.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - EXApplication (2.1.1):
@@ -92,15 +92,15 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - imglyKit (10.13.0)
+  - imglyKit (10.13.1)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.4.0):
     - lottie-ios (~> 3.1.3)
     - React
   - Mixpanel (3.6.1)
   - mobile-ffmpeg-https (4.3.1.LTS)
-  - PhotoEditorSDK (10.13.0):
-    - imglyKit (= 10.13.0)
+  - PhotoEditorSDK (10.13.1):
+    - imglyKit (= 10.13.1)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -264,8 +264,8 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-adjust (4.21.0):
-    - Adjust (~> 4.21.0)
+  - react-native-adjust (4.22.0):
+    - Adjust (= 4.22.1)
     - React
   - react-native-ffmpeg/https-lts (0.4.4):
     - mobile-ffmpeg-https (= 4.3.1.LTS)
@@ -311,10 +311,10 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeAutogrowTextinput (5.4.0):
     - React
-  - RNAnalytics (1.1.1-beta.5):
-    - Analytics (~> 3.8)
+  - RNAnalytics (1.1.1-beta.6):
+    - Analytics (= 3.9.0)
     - React
-  - RNAnalyticsIntegration-Mixpanel (1.1.1-beta.5):
+  - RNAnalyticsIntegration-Mixpanel (1.1.1-beta.6):
     - Analytics
     - React
     - RNAnalytics
@@ -333,9 +333,9 @@ PODS:
     - React
   - RNScreens (2.2.0):
     - React
-  - RNSentry (1.4.2):
+  - RNSentry (1.4.4):
     - React
-    - Sentry (~> 5.1.1)
+    - Sentry (~> 5.1.4)
   - RNSVG (11.0.1):
     - React
   - RNVectorIcons (6.6.0):
@@ -347,9 +347,9 @@ PODS:
   - Segment-Mixpanel (1.6.0):
     - Analytics (~> 3.0)
     - Mixpanel (~> 3.5)
-  - Sentry (5.1.1):
-    - Sentry/Core (= 5.1.1)
-  - Sentry/Core (5.1.1)
+  - Sentry (5.1.4):
+    - Sentry/Core (= 5.1.4)
+  - Sentry/Core (5.1.4)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -367,8 +367,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.1.0)
   - UMTaskManagerInterface (5.1.0)
-  - VideoEditorSDK (10.13.0):
-    - imglyKit (= 10.13.0)
+  - VideoEditorSDK (10.13.1):
+    - imglyKit (= 10.13.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -633,8 +633,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 4e8fe76a28dd413c183ba621df50493dcd10e28b
-  Analytics: 4c482aea5efcecaeb03adfc7fc22e350f5ca575c
+  Adjust: 7cd2d1cf61dff44d2d15541d83ffde87abbcd193
+  Analytics: 67cce2129e4b0df5b532bf0c043043f292b32f5f
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXApplication: 7cf81de6fafccff42f5d1caa5c24a159db6b9437
@@ -665,12 +665,12 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  imglyKit: 11ed6ada802295c824793a1ef4b98c4f26358216
+  imglyKit: e9aad13dd136e82d1a69cb7ee79e0169a2ccda53
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   Mixpanel: 61e6d8c0717c8e94ccc6d3a1ae8677b9a78f64c5
   mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
-  PhotoEditorSDK: 2787b647a1b95a8789be1e2d427ed53f462f28a5
+  PhotoEditorSDK: eba8c2e128c6679580ba82b2a063a0174f40903b
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -680,7 +680,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-adjust: b8deb332aa430e38b3ded84872d30116a9049ff2
+  react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
@@ -695,20 +695,20 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
-  RNAnalytics: 030981001ebba8772df04f5eef8c660092dbc4df
-  RNAnalyticsIntegration-Mixpanel: 677a26dc71d345112ad5f8d417db87c1887dd55c
+  RNAnalytics: 0176cbd15962b36479c9ab76a2c613be9a34528c
+  RNAnalyticsIntegration-Mixpanel: 2a7b237e57efc5b5a17fd028820b55d1dd0b1afb
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
-  RNSentry: c4bdecef182912b8d8bb5b626f45da314f047dbd
+  RNSentry: b456e5a6c48517dad1756d5bccffbdc0d2766dcb
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
-  Sentry: a8e37dc33aedb8a53540e36607fc2eaef7c31b4f
+  Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
@@ -722,7 +722,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 126da3486c1a1f11945b649d557d6c2ebb9407b2
   UMSensorsInterface: 48941f70175e2975af1a9386c6d6cb16d8126805
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
-  VideoEditorSDK: 9e05e612ea89aa5870dc419965f9d6aef519655c
+  VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: e4c309695dd6874eefa8d99ed99bca0e891d5afd
