@@ -877,7 +877,7 @@ class AdDesign extends Component {
           campaign_brand_name: this.state.campaignInfo.brand_name,
           campaign_headline: this.state.campaignInfo.headline,
           campaign_attachment: this.state.campaignInfo.attachment,
-          campaign_cta: this.state.campaignInfo.call_to_action,
+          campaign_swipe_up_CTA: this.state.campaignInfo.call_to_action,
           campaign_swipe_up_destination: this.state.campaignInfo.destination,
           campaign_media: this.state.media,
           campaign_media_type: this.state.type,

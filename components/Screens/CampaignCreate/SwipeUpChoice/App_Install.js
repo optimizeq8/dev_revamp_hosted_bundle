@@ -19,7 +19,6 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import * as actionsCreators from "../../../../store/actions";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { showMessage } from "react-native-flash-message";
 
 class App_Install extends Component {
@@ -137,10 +136,6 @@ class App_Install extends Component {
     androidApp_icon
   ) => {
     if (nameError || callActionError) {
-      segmentEventTrack("Error App Install", {
-        campaign_error_app_link: nameError,
-        campaign_error_call_to_action: callActionError,
-      });
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: nameError || callActionError,
@@ -149,9 +144,14 @@ class App_Install extends Component {
       });
     }
     if (!nameError && !callActionError) {
-      segmentEventTrack(`Submitted Selected App Success for ${appChoice}`, {
+      analytics.track(`a_select_campaign_app`, {
+        source: "ad_swipe_up_destination",
+        source_action: "a_select_campaign_app",
+        campaign_swipe_up_destination: "App Install",
+        campaign_app_OS: appChoice,
         campaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name,
       });
+
       this.setState({
         attachment,
         callaction,
@@ -186,6 +186,11 @@ class App_Install extends Component {
   };
 
   handleCallaction = (callaction) => {
+    analytics.track(`a_change_cta`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_change_cta",
+      campaign_swipe_up_CTA: callaction,
+    });
     this.setState({
       callaction,
     });
@@ -206,16 +211,9 @@ class App_Install extends Component {
       appError,
     });
     if (appError) {
-      segmentEventTrack("Error Submit App Install", {
-        campaign_error_app_install: validateWrapper(
-          "mandatory",
-          this.state.attachment.ios_app_id ||
-            this.state.attachment.android_app_url
-        ),
-      });
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
-        error_description: campaign_error_app_install,
+        error_description: appError,
         campaign_channel: "snapchat",
         campaign_objective: "APP_INSTALL",
       });
@@ -240,10 +238,7 @@ class App_Install extends Component {
         attachment,
         appChoice
       );
-      segmentEventTrack("Submited App Install SwipeUp Success", {
-        campaign_app_choice: this.state.appChoice,
-        campaign_attachment: this.state.attachment,
-      });
+
       this.props.navigation.navigate("AdDesign", {
         source: "ad_swipe_up_destination",
         source_action: "a_swipe_up_destination",

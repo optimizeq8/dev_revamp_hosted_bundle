@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, FlatList } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
@@ -20,7 +20,6 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../segmentEventTrack";
 export default class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
@@ -64,14 +63,15 @@ export default class AppSearchModal extends Component {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
-        segmentEventTrack("Error received android apps list", {
-          error_message_android_app_list:
+        analytics.track(`a_error`, {
+          error_page: "app_search_modal",
+          error_description:
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          error_description_android_app_list: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later",
+          source: "ad_swipe_up_destination",
+          source_action: "a_app_search_modal",
+          campaign_app_OS: "ANDROID",
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -121,14 +121,15 @@ export default class AppSearchModal extends Component {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
-        segmentEventTrack("Error received iOS apps list", {
-          error_message_ios_app_list:
+        analytics.track(`a_error`, {
+          error_page: "app_search_modal",
+          error_description:
             err.response && err.response.data
               ? err.response.data.error
               : "Something went wrong!",
-          error_description_ios_app_list: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later",
+          source: "ad_swipe_up_destination",
+          source_action: "a_app_search_modal",
+          campaign_app_OS: "iOS",
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -203,7 +204,7 @@ export default class AppSearchModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 segment={{
-                  source: "app_select",
+                  source: "app_search_modal",
                   source_action: "a_go_back",
                 }}
                 actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,
@@ -275,9 +276,11 @@ export default class AppSearchModal extends Component {
                     }
                     onBlur={() => {
                       if (appValue !== "") {
-                        segmentEventTrack("Searched on blur for App", {
-                          campaign_app_choice_value: appValue,
-                          campaign_app_os_type: appSelection,
+                        analytics.track(`a_app_search`, {
+                          keywords: appValue,
+                          source: "app_search_modal",
+                          source_action: "a_app_search",
+                          campaign_app_OS: appSelection,
                         });
                         switch (appSelection) {
                           case "iOS":

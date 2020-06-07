@@ -909,7 +909,7 @@ class AdDetails extends Component {
       campaign_brand_name: this.props.data.brand_name,
       campaign_headline: this.props.data.headline,
       campaign_attachment: this.props.data.attachment,
-      campaign_cta: this.props.data.call_to_action,
+      campaign_swipe_up_CTA: this.props.data.call_to_action,
       campaign_swipe_up_destination: this.props.data.destination,
       campaign_media: this.props.data.media,
       campaign_media_type: this.props.data.media_type,

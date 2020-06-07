@@ -137,6 +137,11 @@ class Deep_Link extends Component {
   }
 
   handleCallaction = (callaction) => {
+    analytics.track(`a_change_cta`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_change_cta",
+      campaign_swipe_up_CTA: callaction,
+    });
     this.setState({
       callaction,
     });

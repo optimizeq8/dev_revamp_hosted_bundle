@@ -1,17 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  BackHandler,
-  ScrollView,
-  KeyboardAvoidingView,
-} from "react-native";
+import { BackHandler } from "react-native";
 import isEmpty from "lodash/isEmpty";
-import { Item, Icon, Input, Text } from "native-base";
+import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-import Axios from "axios";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import ModalField from "../InputFieldNew/ModalField";
@@ -33,7 +27,6 @@ import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../segmentEventTrack";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
 
@@ -177,9 +170,12 @@ class AppChoice extends Component {
   };
 
   setModalVisible = (isVisible, os) => {
-    if (isVisible) {
-      segmentEventTrack(`Button clicked to open search APP modal for ${os}`);
-    }
+    analytics.track(`app_search_modal`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_app_search_modal",
+      campaign_app_OS: os,
+      visible: isVisible,
+    });
     this.setState({ isVisible, appSelection: os });
   };
 
@@ -245,6 +241,11 @@ class AppChoice extends Component {
     // console.log("businescatId", value);
   };
   closeCallToActionModal = () => {
+    analytics.track(`cta_modal`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_cta_modal",
+      visible: false,
+    });
     this.setState({
       inputCallToAction: false,
     });
@@ -252,8 +253,10 @@ class AppChoice extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      segmentEventTrack("Selected App Choice Call to Action", {
-        campaign_call_to_action: value[0].label,
+      analytics.track(`a_change_cta`, {
+        source: "ad_swipe_up_destination",
+        source_action: "a_change_cta",
+        campaign_swipe_up_CTA: value,
       });
       this.setState(
         {
@@ -295,25 +298,27 @@ class AppChoice extends Component {
     );
   };
   openCallToActionModal = () => {
-    segmentEventTrack("Button Clicked to open Call to action Modal");
-    this.setState({ inputCallToAction: true }, () => {
-      if (this.state.inputCallToAction) {
-        Segment.screen("Call to Action Modal");
-      }
+    analytics.track(`cta_modal`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_cta_modal",
+      visible: true,
     });
+    this.setState({ inputCallToAction: true }, () => {});
   };
   getValidInfo = (stateError, error) => {
-    console.log("stateError", stateError);
-    console.log("error", error);
-
     if (stateError === "deep_link_uriError" && error) {
-      segmentEventTrack("Changed Deep Link Url", {
+      analytics.track("a_deep_link_uri", {
+        source: "ad_swipe_up_destination",
+        source_action: "a_deep_link_uri",
         campaign_deep_link_url: this.state.deep_link_uri,
       });
 
       if (error) {
-        segmentEventTrack("Error on Blur Deep Link URL", {
-          campaign_error_deep_link_url: this.state.deep_link_uriError,
+        analytics.track("a_error_form", {
+          source: "ad_swipe_up_destination",
+          error_page: "ad_swipe_up_destination",
+          source_action: "a_deep_link_uri",
+          error_description: this.state.deep_link_uriError,
         });
       }
     }
@@ -407,13 +412,7 @@ class AppChoice extends Component {
         />
 
         {this.props.swipeUpDestination && (
-          <Text
-            style={styles.footerText}
-            onPress={() => {
-              segmentEventTrack("Clicked Change Swipe-up Destination");
-              this.props.toggleSideMenu();
-            }}
-          >
+          <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
             {translate("Change Swipe-up Destination")}
           </Text>
         )}
