@@ -55,7 +55,7 @@ class ErrorRedirect extends Component {
         campaign_ad_type:
           this.props.channel === "google"
             ? "GoogleSEAd"
-            : this.props.channel === "google"
+            : this.props.channel === "instagram"
             ? this.props.adTypeInstagram
             : this.props.adType,
         campaign_ltv: parseFloat(
