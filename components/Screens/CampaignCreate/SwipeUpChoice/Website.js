@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, BackHandler, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
-import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -27,7 +27,6 @@ import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../../segmentEventTrack";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 class Website extends Component {
@@ -134,9 +133,11 @@ class Website extends Component {
       ? this.props.storyAdAttachment.destination
       : this.props.objective;
     if (!this.validateUrl()) {
-      segmentEventTrack("Error Submit Website SwipeUp", {
-        campaign_website_url: this.state.campaignInfo.attachment,
-        campaign_error_website_url: this.state.urlError,
+      analytics.track(`a_error_form`, {
+        error_page: "ad_swipe_up_destination",
+        error_description: this.state.urlError,
+        campaign_channel: "snapchat",
+        campaign_url: this.state.campaignInfo.attachment,
       });
     }
     if (this.validateUrl()) {
@@ -154,9 +155,7 @@ class Website extends Component {
           url: this.state.campaignInfo.attachment,
         }
       );
-      segmentEventTrack("Submitted Website SwipeUp Success", {
-        campaign_website_url: this.state.campaignInfo.attachment,
-      });
+
       this.props.navigation.navigate("AdDesign", {
         source: "ad_swipe_up_destination",
         source_action: "a_swipe_up_destination",
@@ -168,6 +167,11 @@ class Website extends Component {
     // console.log("businescatId", value);
   };
   closeCallToActionModal = () => {
+    analytics.track(`cta_modal`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_cta_modal",
+      visible: false,
+    });
     this.setState({
       inputCallToAction: false,
     });
@@ -175,8 +179,10 @@ class Website extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      segmentEventTrack("Selected Website Call to Action", {
-        campaign_call_to_action: value[0].label,
+      analytics.track(`a_change_cta`, {
+        source: "ad_swipe_up_destination",
+        source_action: "a_change_cta",
+        campaign_cta: value,
       });
       this.setState(
         {
@@ -202,12 +208,12 @@ class Website extends Component {
     });
   };
   openCallToActionModal = () => {
-    segmentEventTrack("Button Clicked to open Call to action Modal");
-    this.setState({ inputCallToAction: true }, () => {
-      if (this.state.inputCallToAction) {
-        Segment.screen("Call to Action Modal");
-      }
+    analytics.track(`cta_modal`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_cta_modal",
+      visible: true,
     });
+    this.setState({ inputCallToAction: true });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -306,10 +312,7 @@ class Website extends Component {
             {this.props.swipeUpDestination && (
               <Text
                 style={styles.footerText}
-                onPress={() => {
-                  segmentEventTrack("Clicked Change Swipe-up Destination");
-                  this.props.toggleSideMenu();
-                }}
+                onPress={this.props.toggleSideMenu}
               >
                 {translate("Change Swipe-up Destination")}
               </Text>

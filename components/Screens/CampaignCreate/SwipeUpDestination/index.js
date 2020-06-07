@@ -104,6 +104,10 @@ class SwipeUpDestination extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   toggleSideMenu = () => {
+    analytics.track(`a_toggle_side_menu`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_toggle_side_menu",
+    });
     this.setState({
       sidemenustate: false,
     });
@@ -124,14 +128,6 @@ class SwipeUpDestination extends Component {
             ? this.props.data.objective
             : this.props.navigation.getParam("objective", "objective"),
           campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
-        });
-        Segment.trackWithProperties("Selected " + value + " Swipeup", {
-          category: "Campaign Creation",
-          channel: "snapchat",
-          label: this.props.data
-            ? this.props.data.objective
-            : this.props.navigation.getParam("objective", "objective") +
-              " Objective",
         });
       }
     );
