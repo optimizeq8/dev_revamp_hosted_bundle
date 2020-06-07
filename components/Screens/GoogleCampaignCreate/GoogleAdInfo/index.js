@@ -6,18 +6,12 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  I18nManager
-} from "react-native";
-import {
-  Content,
+  I18nManager,
   Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
-import * as Segment from "expo-analytics-segment";
+  TouchableOpacity,
+} from "react-native";
+import { Content, Container } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -26,6 +20,8 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
+import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import InputField from "../../../MiniComponents/InputFieldNew";
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -35,6 +31,7 @@ import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampai
 //Icons
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
+import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
@@ -46,18 +43,17 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
-import segmentEventTrack from "../../../segmentEventTrack";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdInfo extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -78,7 +74,8 @@ class GoogleAdInfo extends Component {
       start_timeError: "",
       end_timeError: "",
       selectRegion: false,
-      closedContinueModal: false
+      closedContinueModal: false,
+      incomplete: false,
     };
   }
   componentWillUnmount() {
@@ -100,52 +97,74 @@ class GoogleAdInfo extends Component {
     }
   }
   setCampaignInfo = () => {
-    let keys = Object.keys(this.state).filter(key => {
+    let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
     let data = { ...this.state };
-    keys.filter(key => {
+    keys.filter((key) => {
       data = {
         ...data,
-        [key]: this.props.campaign[key]
+        [key]: this.props.campaign[key],
       };
     }, {});
     this.setState({ ...data });
   };
 
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    if (source === "ad_TNC") {
+      this.props.navigation.navigate("AdType", {
+        source: "ad_objective",
+        source_action: "a_go_back",
+      });
+    } else this.props.navigation.goBack();
+
     return true;
   };
 
-  handleStartDatePicked = date => {
-    this.setState({
-      start_time: date
+  handleStartDatePicked = (date) => {
+    analytics.track(`a_ad_start_date`, {
+      campaign_start_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_start_date",
+      campaign_start_date: date,
     });
-    segmentEventTrack("Selected Campaign Start Date", {
-      campaign_start_date: date
+    this.setState({
+      start_time: date,
     });
     this.props.save_google_campaign_data({ start_time: date });
   };
 
-  handleEndDatePicked = date => {
+  handleEndDatePicked = (date) => {
+    analytics.track(`a_ad_end_date`, {
+      campaign_end_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_end_date",
+      campaign_end_date: date,
+    });
     this.setState({
-      end_time: date
+      end_time: date,
     });
-    segmentEventTrack("Selected Campaign End Date", {
-      campaign_end_date: date
-    });
+
     this.props.save_google_campaign_data({ end_time: date });
   };
 
-  setModalVisible = visible => {
-    if (visible) {
-      Segment.screen("Select Country Modal");
-    }
+  setModalVisible = (visible) => {
+    analytics.track(`country_modal`, {
+      source: "ad_objective",
+      source_action: "a_toggle_country_modal",
+      visible,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
+
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = days => {
+  getMinimumCash = (days) => {
     // let minValueBudget = days !== 0 ? 50 * days : 50;
     // let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     // this.setState({
@@ -158,20 +177,28 @@ class GoogleAdInfo extends Component {
     // });
   };
 
-  _handleLanguageChange = val => {
+  _handleLanguageChange = (val) => {
+    analytics.track(`a_ad_languages`, {
+      source_action: `a_ad_languages`,
+      source: "ad_objective",
+      campaign_language: val === "1000" ? "English" : "Arabic",
+    });
     this.setState({ language: val });
     this.props.save_google_campaign_data({ language: val });
   };
 
-  _handleCountryChange = val => {
+  _handleCountryChange = (val) => {
     this.setState({ country: val, location: [val] });
-    segmentEventTrack("Selected Campaign Country", {
-      campaign_country: val
+
+    analytics.track(`a_ad_country`, {
+      source: "ad_objective",
+      source_action: "a_ad_country",
+      campaign_country_name: val,
     });
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
 
-  _handleSelectedRegions = val => {
+  _handleSelectedRegions = (val) => {
     /**
      * this is to set the main value of the location array as
      * the country value if "all" was selected
@@ -180,12 +207,15 @@ class GoogleAdInfo extends Component {
 
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] });
-      segmentEventTrack("Selected Campaign Regions", {
-        campaign_regions: val
+
+      analytics.track(`a_ad_regions`, {
+        source: "ad_objective",
+        source_action: "a_ad_regions",
+        campaign_region_names: val,
       });
       this.props.save_google_campaign_data({
         country: val,
-        location: [val]
+        location: [val],
       });
     } else {
       /**
@@ -193,16 +223,18 @@ class GoogleAdInfo extends Component {
        * to either add it or remove it from the list
        */
       var res;
-      if (isUndefined(this.state.location.find(l => l === val))) {
-        res = this.state.location.filter(l => l !== val);
-        res = this.state.location.filter(l => l !== this.state.country);
+      if (isUndefined(this.state.location.find((l) => l === val))) {
+        res = this.state.location.filter((l) => l !== val);
+        res = this.state.location.filter((l) => l !== this.state.country);
         this.setState({ location: [...res, val] }, () => {
-          segmentEventTrack("Selected Campaign Regions", {
-            campaign_regions: [...res, val]
+          analytics.track(`a_ad_regions`, {
+            source: "ad_objective",
+            source_action: "a_ad_regions",
+            campaign_region_names: [...res, val],
           });
         });
         this.props.save_google_campaign_data({
-          location: [...res, val]
+          location: [...res, val],
         });
       } else {
         /**
@@ -210,18 +242,22 @@ class GoogleAdInfo extends Component {
          * if the array becomes empty, the country value gets set in the location array as all
          * the country value gets removed if another value gets set
          */
-        res = this.state.location.filter(l => l !== val);
+        res = this.state.location.filter((l) => l !== val);
         if (res.length === 0) {
           res = [this.state.country];
         } else if (res.length - 1 !== 0) {
-          res = res.filter(l => l !== this.state.country);
+          res = res.filter((l) => l !== this.state.country);
         }
-        segmentEventTrack("Selected Campaign Regions", {
-          campaign_regions: res
+
+        analytics.track(`a_ad_regions`, {
+          source: "ad_objective",
+          source_action: "a_ad_regions",
+          campaign_region_names: res,
         });
+
         this.setState({ location: res });
         this.props.save_google_campaign_data({
-          location: res
+          location: res,
         });
       }
     }
@@ -238,7 +274,7 @@ class GoogleAdInfo extends Component {
       nameError,
       countryError,
       start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      end_timeError: dateErrors.end_timeError,
     });
     // segment track on submit
     if (
@@ -247,15 +283,15 @@ class GoogleAdInfo extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad info screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_country: countryError ? countryError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : ""
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        campaign_channel: "google",
+        source_action: "a_submit_ad_objective",
+        error_description:
+          nameError ||
+          countryError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError,
       });
     }
     if (
@@ -265,16 +301,19 @@ class GoogleAdInfo extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name:
-          this.props.mainBusiness && this.props.mainBusiness.businessname,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.end_time) - new Date(this.state.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
         campaign_name: this.state.name,
         campaign_language: this.state.language,
         campaign_start_date: this.state.start_time,
         campaign_end_date: this.state.end_time,
         campaign_location: this.state.location,
         campaign_country: this.state.country,
-        checkout_id: this.props.campaign.id
       };
 
       /**
@@ -292,7 +331,7 @@ class GoogleAdInfo extends Component {
           language: this.state.language,
           start_time: this.state.start_time,
           end_time: this.state.end_time,
-          location: this.state.location
+          location: this.state.location,
         },
         this.props.navigation,
         segmentInfo
@@ -306,7 +345,7 @@ class GoogleAdInfo extends Component {
         location: this.state.location,
         country: this.state.country,
         minValueBudget: this.state.minValueBudget,
-        maxValueBudget: this.state.maxValueBudget
+        maxValueBudget: this.state.maxValueBudget,
       });
     }
   };
@@ -316,24 +355,59 @@ class GoogleAdInfo extends Component {
   };
 
   handleGoogleAdInfoFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
-    Segment.screenWithProperties("Google SE Info AD", {
-      category: "Campaign Creation",
-      channel: "google"
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name:
-        this.props.mainBusiness && this.props.mainBusiness.businessname
-    });
     let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
     adjustGoogleAdObjectiveTracker.addPartnerParameter(
       `Google_SEM`,
       "google_sem"
     );
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
+  };
+  getValidInfo = (stateError, validObj) => {
+    if (validObj) {
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        error_description: `Error in ${stateError}: ${validObj}`,
+        source: "ad_objective",
+        source_action: "a_ad_name",
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+      });
+    }
+    let state = {};
+    state[stateError] = validObj;
+    this.setState({
+      ...state,
+    });
+  };
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    analytics.track(`a_ad_name`, {
+      source: "ad_objective",
+      source_action: "a_ad_name",
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_name: value,
+    });
+    this.setState({ ...state });
+    this.props.save_google_campaign_data({ name: value });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -354,11 +428,13 @@ class GoogleAdInfo extends Component {
                 obj: {
                   businessname:
                     this.props.mainBusiness &&
-                    this.props.mainBusiness.businessname
-                }
+                    this.props.mainBusiness.businessname,
+                },
+                source: "ad_objective",
+                source_action: "a_go_back",
               }}
               actionButton={() => {
-                this.props.navigation.goBack();
+                this.handleBackButton();
                 this.props.set_google_campaign_resumed(false);
               }}
               disabled={this.props.campaign.uploading}
@@ -375,72 +451,26 @@ class GoogleAdInfo extends Component {
               scrollEnabled={true}
               style={styles.scrollViewStyle}
             >
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ nameError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.nameError ? "" : "shake"}
-              >
-                <View style={styles.inputViewContainer}>
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputN
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Ad Name")}
-                  </Text>
-                </View>
-                <Item style={[styles.input1]}>
-                  <Input
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.campaign.uploading}
-                    value={this.state.name}
-                    style={[styles.inputText]}
-                    autoCorrect={false}
-                    maxLength={34}
-                    autoCapitalize="none"
-                    onChangeText={value => {
-                      this.setState({
-                        name: value
-                      });
-                      this.props.save_google_campaign_data({ name: value });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputN: true });
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("Name Field on Blur", {
-                        campaign_name: this.state.name
-                      });
-                      this.setState({ inputN: false });
-                      this.setState(
-                        {
-                          nameError: validateWrapper(
-                            "mandatory",
-                            this.state.name
-                          )
-                        },
-                        () => {
-                          if (this.state.nameError) {
-                            segmentEventTrack("Error Name Field on Blur", {
-                              campaign_error_ad_name: this.state.nameError
-                            });
-                          }
-                        }
-                      );
-                    }}
-                  />
-                </Item>
-              </Animatable.View>
+              <InputField
+                label={"Ad Name"}
+                setValue={this.setValue}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.campaign.uploading}
+                stateName1={"name"}
+                value={this.state.name}
+                placeholder1={"Enter Your campaign’s name"}
+                valueError1={this.state.nameError}
+                maxLength={34}
+                autoFocus={false}
+                incomplete={this.state.incomplete}
+                valueText={this.state.name}
+                translate={this.props.screenProps.translate}
+              />
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({
                     start_timeError: null,
-                    end_timeError: null
+                    end_timeError: null,
                   })
                 }
                 duration={200}
@@ -451,12 +481,8 @@ class GoogleAdInfo extends Component {
                     : "shake"
                 }
               >
-                <View style={[styles.dateTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Date")}
-                  </Text>
-                </View>
                 <Duration
+                  label={"Campaign Duration"}
                   screenProps={this.props.screenProps}
                   loading={this.props.campaign.uploading}
                   dismissKeyboard={Keyboard.dismiss}
@@ -473,92 +499,79 @@ class GoogleAdInfo extends Component {
                 easing={"ease"}
                 animation={!this.state.countryError ? "" : "shake"}
               >
-                <View style={[styles.countryTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Country")}
-                  </Text>
-                </View>
-                <Item
-                  disabled={this.props.campaign.uploading}
-                  // rounded
-                  style={[styles.input2]}
-                  onPress={() => {
-                    Keyboard.dismiss();
+                <ModalField
+                  stateName={"country"}
+                  setModalVisible={() => {
                     this.setModalVisible(true);
                   }}
-                >
-                  <Text style={styles.label}>
-                    {this.state.country !== ""
-                      ? translate(
-                          CountriesList.find(
-                            c => c.criteria_id === this.state.country
-                          ).name
-                        )
-                      : translate("Select Country") +
-                        "/" +
-                        translate("Regions")}
-                  </Text>
-                  <Icon type="AntDesign" name="down" style={styles.downicon} />
-                </Item>
+                  modal={true}
+                  label={"Country"}
+                  valueError={this.state.countryError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.campaign.uploading}
+                  valueText={
+                    this.state.country !== ""
+                      ? CountriesList.find(
+                          (c) => c.criteria_id === this.state.country
+                        ).name
+                      : "Select Country/Regions"
+                  }
+                  value={this.state.country}
+                  incomplete={false}
+                  translate={this.props.screenProps.translate}
+                  icon={LocationIcon}
+                  isVisible={this.state.modalVisible}
+                  isTranslate={false}
+                />
               </Animatable.View>
 
               <View style={styles.languageChoiceView}>
-                <Text uppercase style={styles.languageChoiceText}>
+                <Text style={styles.languageChoiceText}>
                   {translate("Ad Language")}
                 </Text>
                 <View style={styles.topContainer}>
-                  <Button
-                    block
+                  <TouchableOpacity
                     style={[
                       this.state.language === "1000"
                         ? styles.activeButton
                         : styles.inactiveButton,
-                      styles.choiceButtonLeft
+                      styles.choiceButtonLeft,
                     ]}
                     onPress={() => {
-                      segmentEventTrack("Selected campaign language", {
-                        campaign_language: "English"
-                      });
                       this._handleLanguageChange("1000");
                     }}
                   >
                     <Text
-                      uppercase
                       style={[
                         this.state.language === "1000"
                           ? styles.activeText
-                          : styles.inactiveText
+                          : styles.inactiveText,
                       ]}
                     >
                       {translate("English")}
                     </Text>
-                  </Button>
-                  <Button
-                    block
+                  </TouchableOpacity>
+                  <TouchableOpacity
                     style={[
                       this.state.language === "1019"
                         ? styles.activeButton
                         : styles.inactiveButton,
-                      styles.choiceButtonRight
+                      styles.choiceButtonRight,
                     ]}
                     onPress={() => {
-                      segmentEventTrack("Selected campaign language", {
-                        campaign_language: "Arabic"
-                      });
                       this._handleLanguageChange("1019");
                     }}
                   >
                     <Text
-                      uppercase
                       style={[
                         this.state.language === "1019"
                           ? styles.activeText
-                          : styles.inactiveText
+                          : styles.inactiveText,
                       ]}
                     >
                       {translate("Arabic")}
                     </Text>
-                  </Button>
+                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -581,7 +594,7 @@ class GoogleAdInfo extends Component {
 
         <DateField
           getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
+          onRef={(ref) => (this.dateField = ref)}
           handleStartDatePicked={this.handleStartDatePicked}
           handleEndDatePicked={this.handleEndDatePicked}
           start_time={this.state.start_time}
@@ -626,6 +639,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Regions"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "regions_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <RegionsSelector
@@ -660,6 +677,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Country"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "country_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <CountrySelector
@@ -674,21 +695,25 @@ class GoogleAdInfo extends Component {
                       style={styles.proceedButtonRTL}
                       function={() => {
                         if (this.state.country) {
-                          segmentEventTrack(
-                            "Button clicked to get google SE location list reach and to show regions modal",
-                            {
-                              campaign_country: this.state.country
-                            }
-                          );
+                          analytics.track(`a_ad_country`, {
+                            source: "ad_objective",
+                            source_action: "a_ad_country",
+                            campaign_country_name: this.state.country,
+                          });
+
                           this.props.get_google_SE_location_list_reach(
                             this.state.country
                           );
                           this.setState(
                             {
-                              selectRegion: true
+                              selectRegion: true,
                             },
                             () => {
-                              Segment.screen("Select Regions Modal");
+                              analytics.track(`ad_regions_modal`, {
+                                source: "ad_objective",
+                                source_action: "a_open_region_modal",
+                                visible: true,
+                              });
                             }
                           );
                         }
@@ -705,13 +730,13 @@ class GoogleAdInfo extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   create_google_SE_campaign_info: (info, navigation, segmentInfo) =>
     dispatch(
       actionCreators.create_google_SE_campaign_info(
@@ -720,13 +745,13 @@ const mapDispatchToProps = dispatch => ({
         segmentInfo
       )
     ),
-  get_google_SE_location_list_reach: country =>
+  get_google_SE_location_list_reach: (country) =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
-  save_google_campaign_data: info =>
+  save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  set_google_campaign_resumed: value =>
+  set_google_campaign_resumed: (value) =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
-  save_google_campaign_steps: value =>
-    dispatch(actionCreators.save_google_campaign_steps(value))
+  save_google_campaign_steps: (value) =>
+    dispatch(actionCreators.save_google_campaign_steps(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdInfo);

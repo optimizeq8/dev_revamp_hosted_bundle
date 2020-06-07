@@ -6,10 +6,10 @@ import {
   Platform,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Text, Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -35,11 +35,10 @@ import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
 import WalletCard from "../../MiniComponents/WalletTopUpCard";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class Wallet extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -48,7 +47,7 @@ class Wallet extends Component {
       topUp: false,
       inputA: false,
       amountError: "",
-      modalVisible: false
+      modalVisible: false,
     };
   }
   componentDidMount() {
@@ -70,26 +69,56 @@ class Wallet extends Component {
     if (!amountError) {
       this.setState(
         {
-          modalVisible: false
+          modalVisible: false,
         },
         () => {
           this.props.getWalletAmountInKwd(this.state.amount);
           this.props.navigation.navigate("PaymentForm", {
             amount: this.state.amount,
-            addingCredits: true
+            addingCredits: true,
+            source: "open_wallet",
+            source_action: "a_top_up_wallet",
           });
         }
       );
+    } else {
+      analytics.track(`a_top_up_wallet`, {
+        source: `open_wallet`,
+        source_action: "a_top_up_wallet",
+        action_status: "failure",
+        error_description: amountError,
+      });
     }
   };
   handleModalVisibility = () => {
     this.setState({ modalVisible: !this.state.modalVisible }, () => {
       if (this.state.modalVisible) {
-        Segment.screen("Wallet Top Up Modal");
+        analytics.track(`add_top_up_wallet`, {
+          source: "open_wallet",
+          source_action: "a_open_wallet_top_up_modal",
+          timestamp: new Date().getTime(),
+        });
       }
     });
   };
-
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_wallet`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+    });
+    // Segment.screenWithProperties("Wallet", {
+    //   category: "Wallet Top Up"
+    // });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -98,33 +127,31 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Wallet", {
-              category: "Wallet Top Up"
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Container
           style={[
             styles.container,
             {
               opacity:
-                this.state.modalVisible && Platform.OS === "android" ? 0.05 : 1
-            }
+                this.state.modalVisible && Platform.OS === "android" ? 0.05 : 1,
+            },
           ]}
         >
           <CustomHeader
             screenProps={this.props.screenProps}
             title={"Wallet"}
             navigation={this.props.navigation}
+            segment={{
+              source: "open_wallet",
+              source_action: "a_go_back",
+            }}
           />
           <WalletIcon style={styles.walletIcon} width={60} height={60} />
           <View
             style={{
               flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <Text style={[globalStyles.numbers, styles.walletAmountText]}>
@@ -192,7 +219,7 @@ class Wallet extends Component {
             this.props.walletTransactionList &&
             this.props.walletTransactionList.length > 0 && (
               <ScrollView contentContainerStyle={styles.contentScrollView}>
-                {this.props.walletTransactionList.map(transaction => {
+                {this.props.walletTransactionList.map((transaction) => {
                   return (
                     <WalletCard
                       key={transaction.id}
@@ -219,6 +246,10 @@ class Wallet extends Component {
                 screenProps={this.props.screenProps}
                 title={"Top up wallet"}
                 actionButton={this.handleModalVisibility}
+                segment={{
+                  source: "add_top_up_wallet",
+                  source_action: "a_close_modal",
+                }}
               />
 
               <TouchableWithoutFeedback
@@ -251,7 +282,7 @@ class Wallet extends Component {
                     <Item
                       style={[
                         styles.input,
-                        globalStyles.transparentBorderColor
+                        globalStyles.transparentBorderColor,
                         // this.state.inputA
                         //   ? globalStyles.purpleBorderColor
                         //   : this.state.amountError
@@ -269,9 +300,9 @@ class Wallet extends Component {
                         value={`${
                           isNaN(this.state.amount) ? "" : this.state.amount
                         }`}
-                        onChangeText={amount =>
+                        onChangeText={(amount) =>
                           this.setState({
-                            amount: parseFloat(amount)
+                            amount: parseFloat(amount),
                           })
                         }
                         onFocus={() => this.setState({ inputA: true })}
@@ -281,7 +312,7 @@ class Wallet extends Component {
                             amountError: validateWrapper(
                               "Budget",
                               this.state.amount
-                            )
+                            ),
                           })
                         }
                       />
@@ -298,7 +329,7 @@ class Wallet extends Component {
                   <GradientButton
                     style={[
                       styles.buttonTransparent,
-                      globalStyles.whiteBorderColor
+                      globalStyles.whiteBorderColor,
                     ]}
                     onPressAction={() => this.handleModalVisibility()}
                     text={translate("Cancel")}
@@ -316,20 +347,20 @@ class Wallet extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   wallet: state.transA.wallet,
   loading: state.transA.loading,
   walletTransactionList: state.transA.walletTransactionList,
-  walletTransactionListLoading: state.transA.walletTransactionListLoading
+  walletTransactionListLoading: state.transA.walletTransactionListLoading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getWalletAmountInKwd: amount =>
+const mapDispatchToProps = (dispatch) => ({
+  getWalletAmountInKwd: (amount) =>
     dispatch(actionCreators.getWalletAmountInKwd(amount)),
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   getWalletTransactionsHistory: () =>
-    dispatch(actionCreators.getWalletTransactionsHistory())
+    dispatch(actionCreators.getWalletTransactionsHistory()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

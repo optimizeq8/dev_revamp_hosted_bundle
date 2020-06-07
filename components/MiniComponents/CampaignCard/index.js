@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -29,12 +30,25 @@ class CampaignCard extends Component {
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
 
+  //New date returns the current date with a timezone of -3
+  //So I add back the offset so the dates from the backend are compared properly
+  currentDate = () => {
+    let date = new Date();
+    date.setTime(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
+    return date;
+  };
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   handleCampaignPress = () => {
     Segment.trackWithProperties("Pressed Campaign Card", {
-      campaign_id: this.props.campaign.campaign_id
+      campaign_id: this.props.campaign.campaign_id,
+    });
+    analytics.track(`a_open_campaign_card`, {
+      source: "dashboard",
+      source_action: "a_open_campaign_card",
+      timestamp: new Date().getTime(),
+      campaign_id: this.props.campaign.campaign_id,
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,
@@ -47,19 +61,19 @@ class CampaignCard extends Component {
     let campaignEndedOrNot =
       this.review_status.includes("APPROVED") &&
       new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= new Date()
+        this.currentDate().setHours(0, 0, 0, 0) &&
+      new Date(campaign.end_time) >= this.currentDate()
         ? null
         : campaign.campaign_end === "1" ||
-          new Date(campaign.end_time) < new Date();
+          new Date(campaign.end_time) < this.currentDate();
     return campaignEndedOrNot;
   };
-
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
+
     return (
       <LinearGradient
         colors={["#9300FF", "#9300FF", "#4E00CB"]}
@@ -71,6 +85,7 @@ class CampaignCard extends Component {
         <TouchableOpacity
           onPress={this.handleCampaignPress}
           style={styles.campaignButton}
+          disabled={campaign.channel === "instagram"}
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
@@ -80,7 +95,7 @@ class CampaignCard extends Component {
                   display: "flex",
                   flexDirection: "column",
                   paddingHorizontal: 10,
-                  flex: 1
+                  flex: 1,
                 }}
               >
                 <Text
@@ -90,11 +105,11 @@ class CampaignCard extends Component {
                     styles.titleText,
                     !isStringArabic(this.props.campaign.name)
                       ? {
-                          fontFamily: "montserrat-bold-english"
+                          fontFamily: "montserrat-bold-english",
                         }
                       : {
-                          fontFamily: "changa-bold-arabic"
-                        }
+                          fontFamily: "changa-bold-arabic",
+                        },
                   ]}
                 >
                   {this.props.campaign.name}
@@ -105,8 +120,8 @@ class CampaignCard extends Component {
                       style={[
                         styles.circleIcon,
                         {
-                          color: globalColors.orange
-                        }
+                          color: globalColors.orange,
+                        },
                       ]}
                       name={"circle"}
                       type={"FontAwesome"}
@@ -114,7 +129,7 @@ class CampaignCard extends Component {
                     <Text
                       style={[
                         styles.reviewText,
-                        { color: globalColors.orange }
+                        { color: globalColors.orange },
                       ]}
                     >
                       {translate("Campaign ended")}
@@ -131,8 +146,8 @@ class CampaignCard extends Component {
                             : this.campaign_status === "LIVE" &&
                               !this.review_status.includes("PENDING")
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                       name={
                         this.review_status.includes("REJECTED")
@@ -154,8 +169,8 @@ class CampaignCard extends Component {
                             : !this.review_status.includes("PENDING") &&
                               this.campaign_status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                     >
                       {translate(
@@ -170,7 +185,7 @@ class CampaignCard extends Component {
                                 0,
                                 0,
                                 0
-                              ) > new Date().setHours(0, 0, 0, 0)
+                              ) > this.currentDate().setHours(0, 0, 0, 0)
                               ? "Scheduled for"
                               : "LIVE"
                             : "Campaign Paused"
@@ -179,7 +194,7 @@ class CampaignCard extends Component {
                         " " +
                         (this.campaign_status === "LIVE" &&
                         !this.review_status.includes("PENDING") &&
-                        new Date(campaign.start_time) > new Date()
+                        new Date(campaign.start_time) > this.currentDate()
                           ? dateFormat(new Date(campaign.start_time), "mmm dS")
                           : "")}
                     </Text>
@@ -188,7 +203,7 @@ class CampaignCard extends Component {
               </View>
               {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
-                endDate < new Date() && (
+                endDate < this.currentDate() && (
                   <Icon
                     type="MaterialCommunityIcons"
                     name="alert"
@@ -197,9 +212,9 @@ class CampaignCard extends Component {
                       {
                         marginLeft: "auto",
                         // left: "75%",
-                        color: globalColors.green
+                        color: globalColors.green,
                         // position: "absolute"
-                      }
+                      },
                     ]}
                   />
                 )}
@@ -209,7 +224,7 @@ class CampaignCard extends Component {
               this.review_status.includes("REJECTED") &&
               !(
                 campaign.campaign_end === "1" ||
-                new Date(campaign.end_time) < new Date()
+                new Date(campaign.end_time) < this.currentDate()
               ) && (
                 <Text style={[styles.subtext]}>
                   {translate("Tap to submit your Ad again")}
@@ -230,7 +245,8 @@ class CampaignCard extends Component {
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
                       <Text style={globalStyles.numbers}>
-                        {TimeDifferance(new Date(), campaign.end_time)}
+                        {TimeDifferance(this.currentDate(), campaign.end_time) +
+                          1}
                       </Text>
                       <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
@@ -247,9 +263,9 @@ class CampaignCard extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getCampaignDetails: (id, naviagtion) =>
-    dispatch(actionCreators.getCampaignDetails(id, naviagtion))
+    dispatch(actionCreators.getCampaignDetails(id, naviagtion)),
 });
 export default connect(null, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;

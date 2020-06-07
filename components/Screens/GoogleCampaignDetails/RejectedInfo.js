@@ -7,7 +7,7 @@ import CustomButtons from "../../MiniComponents/CustomButtons";
 
 import styles from "./styles";
 
-export default RejectedInfo = props => {
+export default RejectedInfo = (props) => {
   const {
     review_status_reason,
     review_status_help,
@@ -15,13 +15,15 @@ export default RejectedInfo = props => {
     campaign_id,
     ad,
     errors,
-    error_type
+    error_type,
   } = props;
   const { translate } = props.screenProps;
   handleSupportPage = () => {
-    props.navigation.push("WebView", {
+    props.navigation.navigate("WebView", {
       url: review_status_help,
-      title: "Support"
+      title: "Support",
+      source: "ad_detail",
+      source_action: "a_help",
     });
   };
   let list = errors.map((e, i) => (
@@ -36,7 +38,7 @@ export default RejectedInfo = props => {
         selectable={true}
         style={[
           styles.reviewStatusText,
-          { fontFamily: "montserrat-regular-english" }
+          { fontFamily: "montserrat-regular-english" },
         ]}
       >
         {e.description}
@@ -66,23 +68,29 @@ export default RejectedInfo = props => {
            *
            */
           if (error_type === 1)
-            navigation.push("GoogleAdDesign", {
+            navigation.navigate("GoogleAdDesign", {
               rejected: true,
               id: campaign_id,
               ad: ad,
-              error_type: error_type
+              error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
           else if (error_type === 2)
-            props.navigation.push("GoogleEditKeywords", {
+            props.navigation.navigate("GoogleEditKeywords", {
               rejected: true,
-              error_type: error_type
+              error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
           else
-            props.navigation.push("GoogleAdDesign", {
+            props.navigation.navigate("GoogleAdDesign", {
               rejected: true,
               id: campaign_id,
               ad: ad,
-              error_type: error_type
+              error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
         }}
         content="Review Ad"

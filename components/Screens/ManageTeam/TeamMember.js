@@ -16,25 +16,25 @@ export default class TeamMember extends Component {
       email,
       user_role,
       businessid: this.props.mainBusiness.businessid
-    });
+    }, true);
   };
-  handleUserRole = () =>
-    this.props.mainBusiness.user_role === "1"
-      ? this.props.navigation.push("AddOrEditTeamMember", {
-          member: this.props.member,
-          editTeamMember: true
-        })
-      : showMessage({
-          message: "Only an admin can edit team members.",
-          type: "info"
-        });
+
+  handleUserRole = () => {
+    this.props.navigation.navigate("AddOrEditTeamMember", {
+      member: this.props.member,
+      editTeamMember: true,
+      source: 'team_management_members_list',
+      source_action: 'a_open_team_member_details',
+    });
+  }
+
   render() {
     const { translate } = this.props.screenProps;
     let { member, loadingTeamMembers, isPending } = this.props;
     let userRoles = ["Admin", "Campaign manager", "Client"];
     return (
       <TouchableOpacity
-        disabled={isPending}
+        disabled={isPending || this.props.mainBusiness.user_role !== "1"}
         onPress={this.handleUserRole}
         style={styles.teamMember}
       >
@@ -47,20 +47,20 @@ export default class TeamMember extends Component {
           {loadingTeamMembers ? (
             <PlaceholderLine width={"90%"} />
           ) : (
-            <Text
-              uppercase
-              style={styles.teamText}
-              ellipsizeMode="tail"
-              numberOfLines={4}
-            >
-              {member.firstname + " " + member.lastname}{" "}
-              <Text style={styles.teamText}>
-                ({translate(userRoles[parseInt(member.user_role - 1)])})
+              <Text
+                uppercase
+                style={styles.teamText}
+                ellipsizeMode="tail"
+                numberOfLines={4}
+              >
+                {member.firstname + " " + member.lastname}{" "}
+                <Text style={styles.teamText}>
+                  ({translate(userRoles[parseInt(member.user_role - 1)])})
               </Text>
-              {"\n"}
-              <Text style={styles.teamEmail}>{member.email}</Text>
-            </Text>
-          )}
+                {"\n"}
+                <Text style={styles.teamEmail}>{member.email}</Text>
+              </Text>
+            )}
         </View>
         {isPending ? (
           <TouchableOpacity
@@ -70,8 +70,8 @@ export default class TeamMember extends Component {
             <Text style={styles.resendStyle}>resend</Text>
           </TouchableOpacity>
         ) : (
-          <PenIcon width={20} height={20} />
-        )}
+            <PenIcon width={20} height={20} />
+          )}
       </TouchableOpacity>
     );
   }

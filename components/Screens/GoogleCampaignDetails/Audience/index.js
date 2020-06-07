@@ -6,7 +6,7 @@ import {
   ScrollView,
   Keyboard,
   BackHandler,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -14,8 +14,7 @@ import * as Animatable from "react-native-animatable";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -52,14 +51,14 @@ import isEqual from "lodash/isEqual";
 
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { isRTL } from "expo-localization";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
@@ -82,7 +81,7 @@ class GoogleAdTargetting extends Component {
       total_reach_percentage: 0,
       avg_reach: 0,
       editCampaign: false,
-      campaignInfo: {}
+      campaignInfo: {},
     };
   }
 
@@ -91,6 +90,10 @@ class GoogleAdTargetting extends Component {
   }
 
   handleBackButton = () => {
+    analytics.track(`a_go_back`, {
+      source: "ad_targeting",
+      source_action: "a_go_back",
+    });
     this.props.navigation.goBack();
     return true;
   };
@@ -105,7 +108,7 @@ class GoogleAdTargetting extends Component {
     let genderVal = "";
 
     genderVal = gender.find(
-      gen =>
+      (gen) =>
         gen.label === campaignTargettingInfo.campaign.gender ||
         gen.value === campaignTargettingInfo.campaign.gender
     ).value;
@@ -114,19 +117,19 @@ class GoogleAdTargetting extends Component {
     const countryName =
       campaignTargettingInfo &&
       campaignTargettingInfo.campaign.location
-        .map(value => value.country)
+        .map((value) => value.country)
         .filter((value, index, _arr) => _arr.indexOf(value) == index);
 
     let criteria_id =
       countryName &&
-      CountriesList.find(country => country.name === countryName[0])
+      CountriesList.find((country) => country.name === countryName[0])
         .criteria_id;
     this._handleCountryChange(criteria_id);
 
     // regions
     const regionCriteriaId =
       campaignTargettingInfo &&
-      campaignTargettingInfo.campaign.location.map(loc => loc.criteria_id);
+      campaignTargettingInfo.campaign.location.map((loc) => loc.criteria_id);
 
     // language
     const language = campaignTargettingInfo.campaign.language;
@@ -135,7 +138,7 @@ class GoogleAdTargetting extends Component {
       language,
       gender: genderVal,
       location: regionCriteriaId ? [...regionCriteriaId] : [],
-      campaignInfo: campaignTargettingInfo.campaign
+      campaignInfo: campaignTargettingInfo.campaign,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -159,17 +162,17 @@ class GoogleAdTargetting extends Component {
 
       this.setState(
         {
-          total_reach
+          total_reach,
         },
         () => this._handleReachChange()
       );
     }
   }
-  formatNumber = num => {
+  formatNumber = (num) => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
 
-  _handleSideMenuState = status => {
+  _handleSideMenuState = (status) => {
     this.setState({ sidemenustate: status }, () => {});
   };
 
@@ -178,48 +181,48 @@ class GoogleAdTargetting extends Component {
       this._handleSideMenuState(true)
     );
   };
-  _handleGenderSelection = gender => {
+  _handleGenderSelection = (gender) => {
     this.setState({ gender: gender });
   };
 
-  _handleAgeSelection = val => {
+  _handleAgeSelection = (val) => {
     if (val === "Undetermined") {
       this.setState({ age: [val] });
     } else {
       var res;
-      if (isUndefined(this.state.age.find(l => l === val))) {
-        res = this.state.age.filter(l => l !== val);
-        res = this.state.age.filter(l => l !== "Undetermined");
+      if (isUndefined(this.state.age.find((l) => l === val))) {
+        res = this.state.age.filter((l) => l !== val);
+        res = this.state.age.filter((l) => l !== "Undetermined");
         this.setState({ age: [...res, val] });
       } else {
-        res = this.state.age.filter(l => l !== val);
+        res = this.state.age.filter((l) => l !== val);
         if (res.length === 0) {
           res = ["Undetermined"];
         } else if (res.length - 1 !== 0) {
-          res = res.filter(l => l !== "Undetermined");
+          res = res.filter((l) => l !== "Undetermined");
         }
         this.setState({ age: res });
       }
     }
   };
 
-  _handleCountryChange = val => {
+  _handleCountryChange = (val) => {
     if (this.state.country !== val) {
       this.props.get_google_SE_location_list_reach(val);
     }
     this.setState({
       country: val,
-      location: [val]
+      location: [val],
     });
   };
 
-  _handleReachChange = val => {
+  _handleReachChange = (val) => {
     // find locationList
-    let list = this.state.location.map(loc =>
-      this.props.campaign.locationsFetchedList.find(lctn => lctn.id === loc)
+    let list = this.state.location.map((loc) =>
+      this.props.campaign.locationsFetchedList.find((lctn) => lctn.id === loc)
     );
     // to remove undefined values
-    list = list.filter(val => val);
+    list = list.filter((val) => val);
     // regions selcted
     if (list && list.length > 0) {
       var avg_reach = list.reduce(
@@ -239,33 +242,33 @@ class GoogleAdTargetting extends Component {
     const percentage_reach = (avg_reach / this.state.total_reach) * 100;
     this.setState({
       total_reach_percentage: percentage_reach,
-      avg_reach
+      avg_reach,
     });
   };
-  _handleSelectedRegions = async val => {
+  _handleSelectedRegions = async (val) => {
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] }, () => {
         this._handleReachChange(val);
       });
     } else {
       var res;
-      if (isUndefined(this.state.location.find(l => l === val))) {
-        res = this.state.location.filter(l => l !== val);
-        res = this.state.location.filter(l => l !== this.state.country);
+      if (isUndefined(this.state.location.find((l) => l === val))) {
+        res = this.state.location.filter((l) => l !== val);
+        res = this.state.location.filter((l) => l !== this.state.country);
         this.setState(
           {
-            location: [...res, val]
+            location: [...res, val],
           },
           () => {
             this._handleReachChange(val);
           }
         );
       } else {
-        res = this.state.location.filter(l => l !== val);
+        res = this.state.location.filter((l) => l !== val);
         if (res.length === 0) {
           res = [this.state.country];
         } else if (res.length - 1 !== 0) {
-          res = res.filter(l => l !== this.state.country);
+          res = res.filter((l) => l !== this.state.country);
         }
 
         this.setState({ location: res }, () => {
@@ -274,7 +277,7 @@ class GoogleAdTargetting extends Component {
       }
     }
   };
-  _handleLanguageChange = val => {
+  _handleLanguageChange = (val) => {
     this.setState({ language: val });
   };
   _handleSubmission = () => {
@@ -284,37 +287,40 @@ class GoogleAdTargetting extends Component {
       age: this.state.age,
       gender: this.state.gender,
       location: this.state.location,
-      language: this.state.language
+      language: this.state.language,
     };
     const segmentInfo = {
-      businessid: this.props.mainBusiness.businessid,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
       campaign_id: this.state.campaignInfo.id,
       campaign_age: this.state.age,
       campaign_gender: this.state.gender,
       campaign_location: this.state.location,
-      campaign_language: this.state.language
+      campaign_language: this.state.language,
+      source: "ad_targeting",
+      source_action: "a_update_ad_targeting",
     };
     this.props.update_google_audience_targeting(info, segmentInfo);
   };
-  setModalVisible = visible => {
+  setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   };
   regionNames = () => {
     const { translate } = this.props.screenProps;
     if (this.state.location.length > 0) {
-      return this.state.location.map(loc => {
+      return this.state.location.map((loc) => {
         if (
           this.props.campaign &&
           this.props.campaign.locationsFetchedList &&
-          this.props.campaign.locationsFetchedList.find(reg => reg.id === loc)
+          this.props.campaign.locationsFetchedList.find((reg) => reg.id === loc)
         ) {
           let textLoc = "";
           const locationName = this.props.campaign.locationsFetchedList.find(
-            reg => reg.id === loc
+            (reg) => reg.id === loc
           ).location;
           if (locationName.includes(", ")) {
             let splitArr = locationName.split(", ");
-            splitArr = splitArr.map(lctn => translate(lctn));
+            splitArr = splitArr.map((lctn) => translate(lctn));
             textLoc = splitArr.join(", ");
             return textLoc;
           } else {
@@ -323,7 +329,23 @@ class GoogleAdTargetting extends Component {
         }
       });
     }
-    return "Hello";
+    return "";
+  };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_targeting`, {
+      source,
+      source_action,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -384,7 +406,7 @@ class GoogleAdTargetting extends Component {
                 screenProps={this.props.screenProps}
                 data={[
                   { label: "English", value: "1000" },
-                  { label: "Arabic", value: "1019" }
+                  { label: "Arabic", value: "1019" },
                 ]}
                 _handleChange={this._handleLanguageChange}
                 selected={this.state.language}
@@ -406,7 +428,7 @@ class GoogleAdTargetting extends Component {
 
     return (
       <Sidemenu
-        onChange={isOpen => {
+        onChange={(isOpen) => {
           if (isOpen === false) {
             this._handleSideMenuState(isOpen);
           }
@@ -421,17 +443,7 @@ class GoogleAdTargetting extends Component {
           style={[styles.safeArea]}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              Segment.screenWithProperties(
-                "Google Campaign Audience Targetting",
-                {
-                  category: "Campaign Details",
-                  channel: "google"
-                }
-              );
-            }}
-          />
+          <NavigationEvents onDidFocus={this.onDidFocus} />
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
@@ -445,8 +457,10 @@ class GoogleAdTargetting extends Component {
                 segment={{
                   str: "Google SE Audience Back Button",
                   obj: {
-                    businessname: this.props.mainBusiness.businessname
-                  }
+                    businessname: this.props.mainBusiness.businessname,
+                  },
+                  source: "ad_targeting",
+                  source_action: "a_go_back",
                 }}
                 navigation={this.props.navigation}
                 title={"Audience"}
@@ -457,7 +471,7 @@ class GoogleAdTargetting extends Component {
                 }
                 topRightButtonFunction={() => {
                   this.setState({
-                    editCampaign: true
+                    editCampaign: true,
                   });
                 }}
                 screenProps={this.props.screenProps}
@@ -471,7 +485,7 @@ class GoogleAdTargetting extends Component {
                   {translate("Who would you like to reach?")}
                 </Text>
                 <ScrollView
-                  ref={ref => (this.scrollView = ref)}
+                  ref={(ref) => (this.scrollView = ref)}
                   indicatorStyle="white"
                   style={styles.targetList}
                 >
@@ -491,7 +505,7 @@ class GoogleAdTargetting extends Component {
                         </Text>
                         <Text style={styles.menudetails}>
                           {translate(
-                            gender.find(r => {
+                            gender.find((r) => {
                               if (r.value === this.state.gender) return r;
                             }).label
                           )}
@@ -562,8 +576,8 @@ class GoogleAdTargetting extends Component {
                         style={[
                           globalStyles.column,
                           {
-                            width: "80%"
-                          }
+                            width: "80%",
+                          },
                         ]}
                       >
                         <Text uppercase style={styles.menutext}>
@@ -573,7 +587,7 @@ class GoogleAdTargetting extends Component {
                           {this.state.country !== ""
                             ? translate(
                                 CountriesList.find(
-                                  c => c.criteria_id === this.state.country
+                                  (c) => c.criteria_id === this.state.country
                                 ).name
                               ) + ": "
                             : translate("Select Country") +
@@ -677,6 +691,10 @@ class GoogleAdTargetting extends Component {
                         }}
                         title="Select Regions"
                         screenProps={this.props.screenProps}
+                        segment={{
+                          source: "regions_modal",
+                          source_action: "a_go_back",
+                        }}
                       />
                       <Content scrollEnabled={false} indicatorStyle="white">
                         <RegionsSelector
@@ -711,6 +729,10 @@ class GoogleAdTargetting extends Component {
                         actionButton={() => {
                           this.setModalVisible(false);
                         }}
+                        segment={{
+                          source: "country_modal",
+                          source_action: "a_go_back",
+                        }}
                         title="Select Country"
                         screenProps={this.props.screenProps}
                       />
@@ -728,7 +750,7 @@ class GoogleAdTargetting extends Component {
                         function={() => {
                           if (this.state.country) {
                             this.setState({
-                              selectRegion: true
+                              selectRegion: true,
                             });
                           }
                         }}
@@ -745,18 +767,18 @@ class GoogleAdTargetting extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   update_google_audience_targeting: (info, segmentInfo) =>
     dispatch(
       actionCreators.update_google_audience_targeting(info, segmentInfo)
     ),
-  get_google_SE_location_list_reach: country =>
-    dispatch(actionCreators.get_google_SE_location_list_reach(country))
+  get_google_SE_location_list_reach: (country) =>
+    dispatch(actionCreators.get_google_SE_location_list_reach(country)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargetting);

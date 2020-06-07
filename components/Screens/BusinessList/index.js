@@ -1,6 +1,7 @@
 //Components
 import React, { Component, Fragment } from "react";
 import { View, FlatList, TouchableOpacity } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Text, Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
@@ -18,16 +19,16 @@ import segmentEventTrack from "../../segmentEventTrack";
 const tabs = [
   {
     name: "Businesses",
-    key: "0"
+    key: "0",
   },
   {
     name: "INVITATION",
-    key: "-1"
-  }
+    key: "-1",
+  },
 ];
 class BusinessList extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ class BusinessList extends Component {
         //adding that dummy data so that i can show the invitation cards in the flatlist
         this.props.businessAccounts
       ),
-      activeTab: "Businesses"
+      activeTab: "Businesses",
     };
   }
   componentDidUpdate(prevProps) {
@@ -45,9 +46,9 @@ class BusinessList extends Component {
       this.filterBusinesses(this.state.value);
     }
   }
-  filterBusinesses = value => {
+  filterBusinesses = (value) => {
     let filteredBusinesses = this.props.businessAccounts.filter(
-      bus =>
+      (bus) =>
         bus.businessname
           .trim()
           .toLowerCase()
@@ -56,11 +57,11 @@ class BusinessList extends Component {
     );
     this.setState({
       filteredBusinesses: [{ businessid: "-1" }].concat(filteredBusinesses),
-      value
+      value,
     });
   };
 
-  renderBusinessCards = item => {
+  renderBusinessCards = (item) => {
     let business = item.item;
     const { translate } = this.props.screenProps;
     if (this.state.activeTab === "INVITATION" && business.businessid === "-1") {
@@ -98,22 +99,32 @@ class BusinessList extends Component {
    * Gets height and y postion of the Text component so that  the plus button is
    * a close postion on different phones
    */
-  handleButtonOffset = event => {
+  handleButtonOffset = (event) => {
     const layout = event.nativeEvent.layout;
     this.setState({
-      bottomOffset: layout.height + layout.y
+      bottomOffset: layout.height + layout.y,
     });
   };
 
   changeActiveTab = () => {
     this.setState({
       activeTab:
-        this.state.activeTab === "Businesses" ? "INVITATION" : "Businesses"
+        this.state.activeTab === "Businesses" ? "INVITATION" : "Businesses",
     });
   };
   createNewBuiness = () => {
-    segmentEventTrack("Button Clicked to add a new business");
-    this.props.navigation.navigate("CreateBusinessAccount");
+    // segmentEventTrack("Button Clicked to add a new business");
+    analytics.track(`a_create_buiness_account`, {
+      source: "open_hamburger",
+      source_action: `a_create_buiness_account`,
+      action_status: "success",
+      timestamp: new Date().getTime(),
+    });
+    this.props.navigation.navigate("CreateBusinessAccount", {
+      createNewBusiness: true,
+      source: "open_hamburger",
+      source_action: `a_create_buiness_account`,
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -121,44 +132,42 @@ class BusinessList extends Component {
       <Container style={styles.container}>
         <View style={[styles.mainCard]}>
           <Text style={styles.title}>{translate("Switch Business")}</Text>
-          {(!this.props.businessInvites ||
-            (this.props.businessInvites &&
-              this.props.businessInvites.length > 0)) && (
-            <View style={styles.tabView}>
-              {tabs.map(tab => {
-                return (
-                  <TouchableOpacity
-                    key={tab.key}
+
+          <View style={styles.tabView}>
+            {tabs.map((tab) => {
+              return (
+                <TouchableOpacity
+                  key={tab.key}
+                  style={[
+                    styles.touchTabView,
+                    tab.name === this.state.activeTab && styles.activeTab,
+                  ]}
+                  onPress={this.changeActiveTab}
+                >
+                  {tab.name === "INVITATION" &&
+                  this.props.businessInvites &&
+                  this.props.businessInvites.length > 0 ? (
+                    <View style={styles.pendingInviteView}>
+                      <Text style={styles.pendingInviteNumber}>
+                        {this.props.businessInvites.length}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={{ width: 17, paddingVertical: 7 }} />
+                  )}
+                  <Text
                     style={[
-                      styles.touchTabView,
-                      tab.name === this.state.activeTab && styles.activeTab
+                      styles.tabText,
+                      tab.name === this.state.activeTab && styles.activeTab,
                     ]}
-                    onPress={this.changeActiveTab}
                   >
-                    {tab.name === "INVITATION" &&
-                    this.props.businessInvites &&
-                    this.props.businessInvites.length > 0 ? (
-                      <View style={styles.pendingInviteView}>
-                        <Text style={styles.pendingInviteNumber}>
-                          {this.props.businessInvites.length}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View style={{ width: 17, paddingVertical: 7 }} />
-                    )}
-                    <Text
-                      style={[
-                        styles.tabText,
-                        tab.name === this.state.activeTab && styles.activeTab
-                      ]}
-                    >
-                      {translate(tab.name)}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          )}
+                    {translate(tab.name)}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
           {this.state.activeTab === "Businesses" && (
             <SearchBar
               screenProps={this.props.screenProps}
@@ -174,7 +183,7 @@ class BusinessList extends Component {
           <View style={styles.flatlistWrapper}>
             <FlatList
               contentContainerStyle={styles.contentContainer}
-              keyExtractor={item => item.businessid}
+              keyExtractor={(item) => item.businessid}
               data={this.state.filteredBusinesses}
               initialNumToRender={10}
               renderItem={this.renderBusinessCards}
@@ -182,29 +191,58 @@ class BusinessList extends Component {
               refreshing={this.props.businessesLoading}
             />
           </View>
-          <GradientButton
-            style={[styles.bottomCard]}
-            radius={50}
-            onPressAction={this.createNewBuiness}
-          >
-            <View style={styles.flex}>
-              <Icon
-                name="plus"
-                type="MaterialCommunityIcons"
-                style={styles.iconStyle}
-              />
-              <Text style={styles.addNewBusinessText}>
-                {translate("Add a new Business")}
+          {this.state.activeTab === "INVITATION" &&
+            (!this.props.businessInvites ||
+              (this.props.businessInvites &&
+                this.props.businessInvites.length === 0)) && (
+              <Text style={[styles.noInviteText]}>
+                {translate("No Invitations available")}
               </Text>
-            </View>
-          </GradientButton>
+            )}
+          {this.state.activeTab === "INVITATION" &&
+            (!this.props.businessInvites ||
+              (this.props.businessInvites &&
+                this.props.businessInvites.length === 0)) && (
+              <GradientButton
+                uppercase
+                transparent
+                style={[styles.bottomCard2]}
+                radius={50}
+                textStyle={{
+                  fontFamily: "montserrat-bold",
+                  fontSize: 14,
+                  color: "#D2C6D8",
+                }}
+                text={"Refresh"}
+                onPressAction={this.props.getBusinessAccounts}
+              />
+            )}
+          {this.state.activeTab === "Businesses" && (
+            <GradientButton
+              // purpleViolet
+              style={[styles.bottomCard]}
+              radius={50}
+              onPressAction={this.createNewBuiness}
+            >
+              <View style={styles.flex}>
+                <Icon
+                  name="plus"
+                  type="MaterialCommunityIcons"
+                  style={styles.iconStyle}
+                />
+                <Text style={styles.addNewBusinessText}>
+                  {translate("Add a new Business")}
+                </Text>
+              </View>
+            </GradientButton>
+          )}
         </View>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   businessAccounts: state.account.businessAccounts,
@@ -212,12 +250,13 @@ const mapStateToProps = state => ({
   businessInvitee: state.account.businessInvitee,
   tempInviteId: state.account.tempInviteId,
   invitedEmail: state.account.invitedEmail,
-  businessInvites: state.account.businessInvites
+  businessInvites: state.account.businessInvites,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
-  handleTeamInvite: status => dispatch(actionCreators.handleTeamInvite(status))
+  updateCampaignList: (id) => dispatch(actionCreators.updateCampaignList(id)),
+  handleTeamInvite: (status, segmentInfo) =>
+    dispatch(actionCreators.handleTeamInvite(status, segmentInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessList);

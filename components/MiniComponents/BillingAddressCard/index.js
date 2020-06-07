@@ -2,14 +2,15 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
 import isUndefined from "lodash/isUndefined";
-import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 
 import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
 import Picker from "../Picker";
-import InputField from "../InputField";
+import InputField from "../InputFieldNew";
+import ModalField from "../InputFieldNew/ModalField";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -46,12 +47,12 @@ class BillingAddressCard extends React.Component {
       blockError: "",
       streetError: "",
       buildingError: "",
-      countries: Countries.map(country => {
+      countries: Countries.map((country) => {
         return {
           label: translate(country.label),
-          value: country.value
+          value: country.value,
         };
-      })
+      }),
     };
   }
 
@@ -66,15 +67,15 @@ class BillingAddressCard extends React.Component {
       this.setState({
         country_code: this.props.country_code,
         selectedItems: [],
-        selectedObjectets: []
+        selectedObjectets: [],
       });
 
       this.onSelectedCountryChange(
         [
           {
             label: this.props.address.country,
-            value: this.props.country_code
-          }
+            value: this.props.country_code,
+          },
         ],
         true
       );
@@ -85,12 +86,12 @@ class BillingAddressCard extends React.Component {
     let replace = this.props.address;
     if (selectedItem && selectedItem.length > 0) {
       replace.country = Countries.find(
-        country => country.value === selectedItem[0].value
+        (country) => country.value === selectedItem[0].value
       ).label;
 
       if (!mounting) replace.area = "";
       let area = allAreas.find(
-        c => c.country_code.toLowerCase() === selectedItem[0].value
+        (c) => c.country_code.toLowerCase() === selectedItem[0].value
       );
 
       this.props._handleAddressChange(
@@ -103,21 +104,21 @@ class BillingAddressCard extends React.Component {
         country_code: selectedItem[0].value,
         areas: area ? area.list : [],
         countryError: "",
-        inputC: false
+        inputC: false,
       });
     }
   };
 
-  onSelectedRegionChange = async selectedItem => {
+  onSelectedRegionChange = async (selectedItem) => {
     if (selectedItem) {
       await this.setState({
         region_id: [selectedItem],
         selectedItems: selectedItem,
-        areaError: ""
+        areaError: "",
       });
     }
   };
-  onSelectedRegionNameChange = async selectedItem => {
+  onSelectedRegionNameChange = async (selectedItem) => {
     let replace = this.props.address;
     if (selectedItem && selectedItem.length > 0) {
       replace.area = selectedItem[0].name;
@@ -130,16 +131,16 @@ class BillingAddressCard extends React.Component {
       await this.setState({
         selectedObjectets: selectedItem,
         areaError: "",
-        inputA: false
+        inputA: false,
       });
     }
   };
 
-  onSelectedRegionSelected = async selectedItem => {
+  onSelectedRegionSelected = async (selectedItem) => {
     if (selectedItem) {
       await this.setState({
         areas: selectedItem,
-        areaError: ""
+        areaError: "",
       });
     }
   };
@@ -161,7 +162,7 @@ class BillingAddressCard extends React.Component {
       areaError,
       blockError,
       streetError,
-      buildingError
+      buildingError,
     });
     if (
       !countryError &&
@@ -171,16 +172,23 @@ class BillingAddressCard extends React.Component {
       !buildingError
     ) {
       this.props._handleSubmission();
+    } else {
+      analytics.track(`a_business_address`, {
+        source: "open_business_address",
+        source_action: "a_business_address",
+        error_desctiption: "Please complete the mandatory fields",
+        action_status: "failure",
+      });
     }
   };
   closeCountryModal = () => {
     this.setState({
       countryError: validateWrapper("mandatory", this.props.address.country),
       inputC: false,
-      inputA: false
+      inputA: false,
     });
   };
-  onSelectedCountryIdChange = value => {
+  onSelectedCountryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("country", value);
   };
@@ -191,7 +199,7 @@ class BillingAddressCard extends React.Component {
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
   feildsComponent = () => {
@@ -202,7 +210,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.block,
         valueError1: this.state.blockError,
         maxLength: 10,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Building/House",
@@ -210,7 +218,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.building,
         valueError1: this.state.buildingError,
         maxLength: 15,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Street",
@@ -218,7 +226,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.street,
         valueError1: this.state.streetError,
         maxLength: 70,
-        incomplete: true
+        incomplete: true,
       },
       {
         label: "Office No",
@@ -226,7 +234,7 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.office,
         valueError1: this.state.officeError,
         maxLength: 10,
-        incomplete: false
+        incomplete: false,
       },
       {
         label: "Avenue",
@@ -234,11 +242,13 @@ class BillingAddressCard extends React.Component {
         value: this.props.address.avenue,
         valueError1: this.state.avenueError,
         maxLength: 10,
-        incomplete: true
-      }
-    ].map(feild => {
+        incomplete: true,
+      },
+    ].map((feild) => {
       return (
         <InputField
+          animateCustomStyle={styles.customAnimate}
+          customStyles={styles.customStyleInput}
           key={feild.label}
           label={feild.label}
           setValue={this.setValue}
@@ -256,6 +266,17 @@ class BillingAddressCard extends React.Component {
     });
     return feilds;
   };
+  openCountryModal = () => {
+    this.setState({
+      inputC: true,
+    });
+  };
+
+  openAreaModal = () => {
+    this.setState({
+      inputA: true,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -265,147 +286,93 @@ class BillingAddressCard extends React.Component {
           screenProps={this.props.screenProps}
           title={"Billing Address"}
           navigation={this.props.navigation}
+          segment={{
+            source: "open_business_address",
+            source_action: "a_go_back",
+          }}
         />
 
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={styles.contentScrollViewContainer}
         >
-          <View style={styles.marginVertical}>
-            <Picker
-              showIcon={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Country")}
-              data={this.state.countries}
-              uniqueKey={"value"}
-              displayKey={"label"}
-              open={this.state.inputC}
-              onSelectedItemsChange={this.onSelectedCountryIdChange}
-              onSelectedItemObjectsChange={this.onSelectedCountryChange}
-              selectedItems={[this.state.country_code]}
-              single={true}
-              screenName={"Billing Address"}
-              closeCategoryModal={this.closeCountryModal}
-            />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputC
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Country")}
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              onPress={() => {
-                this.setState({
-                  inputC: true
-                });
-              }}
-              style={[
-                styles.input,
-                this.state.countryError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={styles.locationIcon}
-                stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
-              />
-              <Text
-                style={[
-                  styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
-                ]}
-              >
-                {this.props.address.country === ""
-                  ? translate("Select Country")
-                  : translate(this.props.address.country)}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
+          <Picker
+            showIcon={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Country")}
+            data={this.state.countries}
+            uniqueKey={"value"}
+            displayKey={"label"}
+            open={this.state.inputC}
+            onSelectedItemsChange={this.onSelectedCountryIdChange}
+            onSelectedItemObjectsChange={this.onSelectedCountryChange}
+            selectedItems={[this.state.country_code]}
+            single={true}
+            screenName={"Billing Address"}
+            closeCategoryModal={this.closeCountryModal}
+          />
 
-          <View style={styles.marginVertical}>
-            <Picker
-              showDropDowns={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Area")}
-              data={this.state.areas}
-              uniqueKey={"id"}
-              displayKey={"name"}
-              subKey="areas"
-              single={true}
-              open={this.state.inputA}
-              onSelectedItemsChange={this.onSelectedRegionChange}
-              onSelectedItemObjectsChange={this.onSelectedRegionNameChange}
-              selectedItems={this.state.selectedItems}
-              single={true}
-              screenName={"Billing Address"}
-              closeCategoryModal={this.closeCountryModal}
-              readOnlyHeadings={true}
-              showIcon={false}
-            />
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputA
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Area")}
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              onPress={() => {
-                this.state.country_code === ""
-                  ? showMessage({
-                      message: translate("Please select a country first"),
-                      type: "warning",
-                      position: "top"
-                    })
-                  : this.setState({
-                      inputA: true
-                    });
-              }}
-              style={[
-                styles.input,
-                this.state.areaError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <LocationIcon
-                style={styles.locationIcon}
-                stroke={this.state.inputA ? "#FF9D00" : "#FFF"}
-              />
-              <Text
-                style={[
-                  styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
-                ]}
-              >
-                {isUndefined(this.props.address.area) ||
-                this.props.address.area === ""
-                  ? translate("Select Area")
-                  : this.props.address.area}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.iconDown} />
-            </Item>
-          </View>
-          {this.feildsComponent()}
+          <ModalField
+            stateName={"country"}
+            setModalVisible={this.openCountryModal}
+            modal={true}
+            label={"Country"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
+            disabled={this.props.saving}
+            valueText={
+              this.props.address.country === ""
+                ? "Select Country"
+                : this.props.address.country
+            }
+            value={this.props.address.country}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={this.state.inputC}
+          />
+
+          <Picker
+            showDropDowns={true}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Area")}
+            data={this.state.areas}
+            uniqueKey={"id"}
+            displayKey={"name"}
+            subKey="areas"
+            single={true}
+            open={this.state.inputA}
+            onSelectedItemsChange={this.onSelectedRegionChange}
+            onSelectedItemObjectsChange={this.onSelectedRegionNameChange}
+            selectedItems={this.state.selectedItems}
+            single={true}
+            screenName={"Billing Address"}
+            closeCategoryModal={this.closeCountryModal}
+            readOnlyHeadings={true}
+            showIcon={false}
+          />
+
+          <ModalField
+            stateName={"area"}
+            setModalVisible={this.openAreaModal}
+            modal={true}
+            label={"Area"}
+            valueError={this.state.countryError}
+            getValidInfo={this.getValidInfo}
+            disabled={this.props.saving}
+            valueText={
+              isUndefined(this.props.address.area) ||
+              this.props.address.area === ""
+                ? "Select Area"
+                : this.props.address.area
+            }
+            value={this.props.address.area}
+            incomplete={false}
+            translate={this.props.screenProps.translate}
+            icon={LocationIcon}
+            isVisible={this.state.inputA}
+          />
+          <View style={styles.inputView}>{this.feildsComponent()}</View>
           {this.props.saving ? (
             <CheckmarkLoading
               style={{ bottom: -5, width: 70, height: 70 }}
@@ -418,8 +385,8 @@ class BillingAddressCard extends React.Component {
               style={[
                 styles.button,
                 {
-                  opacity: this.props.errorLoading ? 0.5 : 1
-                }
+                  opacity: this.props.errorLoading ? 0.5 : 1,
+                },
               ]}
               disabled={this.props.errorLoading}
             />

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -50,7 +51,15 @@ class BusinessCard extends Component {
   ];
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
-      segmentEventTrack("Switched business", this.props.business);
+      // segmentEventTrack("Switched business", this.props.business);
+      analytics.track(`a_switch_account`, {
+        prev_businessid: this.props.mainBusiness.businessid,
+        new_businessid: this.props.business.businessid,
+        source: "open_hamburger",
+        source_action: "a_switch_account",
+        timestamp: new Date().getTime(),
+        action_status: "success"
+      });
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
       this.props.rest_google_campaign_data();

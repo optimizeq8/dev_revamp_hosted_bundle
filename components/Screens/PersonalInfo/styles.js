@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignItems: "center"
   },
+  marginVertical: {
+    marginVertical: 10
+  },
   nameText: {
     color: "#5F5F5F",
     fontFamily: "montserrat-medium",
@@ -104,6 +107,12 @@ const styles = StyleSheet.create({
   },
   flagStyle: {
     height: 15
+  },
+  businessView: {
+    paddingBottom: "30%",
+    paddingTop: 13,
+    paddingHorizontal: 20
+    // flex: 1
   }
 });
 

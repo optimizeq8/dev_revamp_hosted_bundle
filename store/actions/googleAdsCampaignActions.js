@@ -1,20 +1,19 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import store from "../index";
 import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
-import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import segmentEventTrack from "../../components/segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
-
+import { getUniqueId } from "react-native-device-info";
 GoogleBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "http://goog.optimizeapp.com/"
-      : "http://googliver.optimizeapp.com/"
+      : "http://googliver.optimizeapp.com/",
   });
 
 /**
@@ -24,61 +23,77 @@ GoogleBackendURL = () =>
  * @returns {Function} returns an action to create an ad account under google
  */
 export const create_google_ad_account = (info, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post(`create/account/`, { businessid: info.businessid })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_accept_ad_TNC`, {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          businessid: info.businessid,
+          action_status: data.error ? "failure" : "success",
+        });
         if (data.error) {
-          Segment.trackWithProperties("Error Google Ad Account Create", {
-            error_google_ad_account_create: data.error,
-            businessid: info.businessid
-          });
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
-            payload: false
+            payload: false,
           });
         } else {
-          Segment.trackWithProperties(
-            "Google Ad Account Created Successfully",
-            {
-              businessid: info.businessid
-            }
-          );
           let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
           Adjust.trackEvent(adjustGoogleAdAccTracker);
-          return dispatch({
+          dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
-            payload: { data: data }
+            payload: { data: data },
           });
         }
+        return data;
       })
-      .then(() => {
-        navigation.goBack();
+      .then((data) => {
+        if (!data.error)
+          navigation.navigate("GoogleAdInfo", {
+            source: "ad_TNC",
+            source_action: "a_accept_ad_TNC",
+          });
       })
-      .catch(err => {
+      .catch((err) => {
+        analytics.track(`a_error`, {
+          error_page: "ad_TNC",
+          action_status: "failure",
+          campaign_channel: "google",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          source_action: "a_accept_ad_TNC",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_CREATE_GOOGLE_AD_ACCOUNT,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -89,55 +104,55 @@ export const create_google_ad_account = (info, navigation) => {
  * @param {String} country country code
  * @returns {Function} an action to set the values of the regions with thier reach
  */
-export const get_google_SE_location_list_reach = country => {
-  return dispatch => {
+export const get_google_SE_location_list_reach = (country) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_LOADING,
-      payload: true
+      payload: true,
     });
     //set initial state to []
     dispatch({
       type: actionTypes.SET_GOOGLE_COUNTRY_REGIONS_REACH,
       payload: {
         data: [],
-        loading: true
-      }
+        loading: true,
+      },
     });
     GoogleBackendURL()
       .get(`country/reach/?country=${country}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.error) {
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_GOOGLE_LOADING,
-            payload: false
+            payload: false,
           });
         } else {
           return dispatch({
             type: actionTypes.SET_GOOGLE_COUNTRY_REGIONS_REACH,
-            payload: { data: data, loading: false }
+            payload: { data: data, loading: false },
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_GOOGLE_COUNTRY_REGIONS_REACH,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -157,42 +172,51 @@ export const create_google_SE_campaign_info = (
   navigation,
   segmentInfo
 ) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post("campaign/", info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          ...segmentInfo,
+        });
         if (data.error) {
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_GOOGLE_UPLOADING,
-            payload: false
+            payload: false,
           });
         } else {
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_INFO,
-            payload: { data: data }
+            payload: { data: data },
           });
         }
         return data;
       })
-      .then(data => {
+      .then((data) => {
         if (!data.error) {
           dispatch(
             get_budget(
               {
                 businessid: info.businessid,
-                id: data.id
+                id: data.id,
               },
               { ...segmentInfo, checkout_id: data.id },
               navigation
@@ -200,18 +224,18 @@ export const create_google_SE_campaign_info = (
           );
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_INFO,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -231,61 +255,72 @@ export const create_google_SE_campaign_ad_design = (
   rejected,
   segmentInfo
 ) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post("create/ad/", info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          timestamp: new Date().getTime(),
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_resumbit: rejected,
+          campaign_error: data.error,
+        });
         if (!data.error) {
           //do not set the reducer if it is a rejected data
           if (!rejected) {
-            segmentEventTrack("Successfully Submitted Ad Info");
             dispatch({
               type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
-              payload: { data: data }
+              payload: { data: data },
             });
-          } else segmentEventTrack("Successfully re-Submitted rejected ad");
+          }
         } else {
-          segmentEventTrack("Error Submitting Ad Info", {
-            campaign_error: data.error
-          });
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
         }
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
         return data;
       })
-      .then(data => {
-        if (rejected && !data.error) NavigationService.navigate("Dashboard");
+      .then((data) => {
+        if (rejected && !data.error)
+          NavigationService.navigate("Dashboard", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         else if (!rejected && !data.error) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdTargetting");
+          NavigationService.navigate("GoogleAdTargetting", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_DESIGN,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -301,54 +336,66 @@ export const create_google_SE_campaign_ad_design = (
  * @param {String} businessid
  * @returns {Function} an action to set an array of search results for the lookedup keyword
  */
-export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
-  return dispatch => {
+export const get_google_SE_keywords = (
+  keyword,
+  campaign_id,
+  businessid,
+  segmentInfo
+) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_LOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .get(
         `keywords/?keyword=${keyword}&id=${campaign_id}&businessid=${businessid}`
       )
-      .then(res => {
+      .then((res) => {
         if (isUndefined(res.data.keywords)) {
           return { keywords: [res.data] };
         } else return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_keywords_search`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "error",
+          keywords: keyword,
+          no_of_results: data.keywords && data.keywords.length,
+          error_description: data.error,
+        });
         if (!data.error) {
           return dispatch({
             type: actionTypes.SET_GOOGLE_SE_KEYWORDS,
             payload: {
               data: data.keywords,
-              loading: false
-            }
+              loading: false,
+            },
           });
         } else {
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_GOOGLE_LOADING,
-            payload: false
+            payload: false,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_GOOGLE_SE_KEYWORDS,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -363,21 +410,25 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
  * @returns {Function} an action to set the targeting info and the campaign transactions info
  */
 export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .put("campaign/", info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_submit_ad_targeting`, {
+          ...segmentInfo,
+          action_status: data.error ? "failure" : "success",
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING,
-            payload: { data: data }
+            payload: { data: data },
           });
           //sets the transaction reducer if there is chanage in the data
           dispatch(
@@ -385,37 +436,43 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
               campaign_id: data.id,
               campaign_budget: data.budget,
               campaign_budget_kdamount: data.kdamount,
-              channel: "google"
+              channel: "google",
             })
           );
         } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+            error_description:
+              data.error || "Something went wrong. Please try again",
+          });
           showMessage({
             message: data.error,
             type: "info",
-            position: "top"
+            position: "top",
           });
           dispatch({
             type: actionTypes.SET_GOOGLE_UPLOADING,
-            payload: false
+            payload: false,
           });
         }
         return data;
       })
-      .then(data => {
+      .then((data) => {
         if (!data.error) dispatch(create_google_keywords(info, segmentInfo));
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETING,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -435,18 +492,19 @@ export const get_google_campiagn_details = (
   id,
   start_time,
   end_time,
-  getStats = false
+  getStats = false,
+  segmentInfo
 ) => {
   return (dispatch, getState) => {
     if (getStats)
       dispatch({
         type: actionTypes.SET_STATS_LOADING,
-        payload: true
+        payload: true,
       });
     else
       dispatch({
         type: actionTypes.SET_CAMPAIGN_LOADING,
-        payload: { loading: true, data: {} }
+        payload: { loading: true, data: {} },
       });
 
     GoogleBackendURL()
@@ -455,26 +513,34 @@ export const get_google_campiagn_details = (
           getState().account.mainBusiness.businessid
         }`
       )
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // added to handle in case of error
+        analytics.track(`a_open_campaign_details`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          campaign_id: id,
+          campaign_type: "google",
+          campaign_ad_type: "GoogleSEAd",
+          error_description: data.error,
+        });
         if (data.error) {
           showMessage({
             message: data.error,
             type: "danger",
-            position: "top"
+            position: "top",
           });
           return dispatch({
             type: actionTypes.ERROR_SET_CAMPAIGN,
-            payload: { loading: false }
+            payload: { loading: false },
           });
         }
         if (getStats)
           return dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_STATS,
-            payload: { loading: false, data: data }
+            payload: { loading: false, data: data },
           });
         else {
           let endDate = new Date(data.campaign.end_time);
@@ -488,20 +554,20 @@ export const get_google_campiagn_details = (
           }
           return dispatch({
             type: actionTypes.SET_CAMPAIGN,
-            payload: { loading: false, data: data }
+            payload: { loading: false, data: data },
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
-          payload: { loading: false }
+          payload: { loading: false },
         });
       });
   };
@@ -514,11 +580,11 @@ export const get_google_campiagn_details = (
  * @param {Object} info
  * @returns {Function} an action to set the data in the reducer
  */
-export const save_google_campaign_data = info => {
-  return dispatch => {
+export const save_google_campaign_data = (info) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_GOOGLE_CAMPAIGN_DATA,
-      payload: info
+      payload: info,
     });
   };
 };
@@ -530,11 +596,11 @@ export const save_google_campaign_data = info => {
  * @param {Array} steps array has the names of the screens that were passed starting from the dashboard
  * @returns {Function} an action to set the list in the reducer
  */
-export const save_google_campaign_steps = steps => {
-  return dispatch => {
+export const save_google_campaign_steps = (steps) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_GOOGLE_CAMPAIGN_STEPS,
-      payload: steps
+      payload: steps,
     });
   };
 };
@@ -547,11 +613,11 @@ export const save_google_campaign_steps = steps => {
  * @param {Boolean} value
  * @returns {Function} an action to set the resume state of the campaign
  */
-export const set_google_campaign_resumed = value => {
-  return dispatch => {
+export const set_google_campaign_resumed = (value) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_CAMPAIGN_RESUMED,
-      payload: value
+      payload: value,
     });
   };
 };
@@ -562,9 +628,9 @@ export const set_google_campaign_resumed = value => {
  * @returns {Function} an action to reset the reducer
  */
 export const rest_google_campaign_data = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
-      type: actionTypes.RESET_GOOGLE_CAMPAIGN
+      type: actionTypes.RESET_GOOGLE_CAMPAIGN,
     });
   };
 };
@@ -576,53 +642,59 @@ export const rest_google_campaign_data = () => {
  * @param {Object} info (gender/age/location/language/campiagnid)
  */
 export const update_google_audience_targeting = (info, segmentInfo) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post(`campaign/edit/`, info)
-      .then(resp => resp.data)
-      .then(data => {
+      .then((resp) => resp.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_update_ad_targeting`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          error_description:
+            data.error &&
+            (data.error || "Oops! Something went wrong. Please try again"),
+        });
         if (!data.error) {
-          segmentEventTrack(
-            "Successfully updated google audience targeting",
-            segmentInfo
-          );
-          NavigationService.navigate("Dashboard");
-        } else {
-          segmentEventTrack("Error updating google audience targeting", {
-            campaign_error_targeting: data.error
+          NavigationService.navigate("Dashboard", {
+            source: "ad_targeting",
+            source_action: "a_update_ad_targeting",
           });
+        } else {
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
-            position: "top"
+            position: "top",
           });
         }
       })
-      .catch(err => {
-        segmentEventTrack("Error updating google audience targeting", {
-          campaign_error_targeting: err.message || err.response
+      .catch((err) => {
+        analytics.track(`a_error`, {
+          ...segmentInfo,
+          error_page: segmentInfo.source,
+          action_status: "failure",
+          error_description: err.message || err.response,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -636,54 +708,68 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
  * @param {Boolean} info.completed this was created to keep track of the rejection process
  */
 export const update_google_keywords = (info, segmentInfo) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post(`keywords/`, info)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_update_ad_keywords`, {
+          ...segmentInfo,
+          action_status: !data.error ? "success" : "failure",
+          error_description:
+            data.error &&
+            (data.error || "Oops! Something went wrong. Please try again"),
+        });
         if (!data.error) {
-          segmentEventTrack(
-            "Successfully updated google keywords",
-            segmentInfo
-          );
-          NavigationService.navigate("Dashboard");
+          NavigationService.navigate("Dashboard", {
+            source: segmentInfo.source,
+            source_action: segmentInfo.source_action,
+          });
         } else {
-          segmentEventTrack("Error updating google keywords", {
-            campaign_error_keywords: data.error
+          analytics.track(`a_error`, {
+            ...segmentInfo,
+            error_page: segmentInfo.source,
+            action_status: !data.error ? "success" : "failure",
+            error_description:
+              data.error &&
+              (data.error || "Oops! Something went wrong. Please try again"),
           });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
-            position: "top"
+            position: "top",
           });
         }
       })
-      .catch(err => {
-        segmentEventTrack("Error updating google keywords", {
-          campaign_error_keywords: err.message || err.response
+      .catch((err) => {
+        analytics.track(`a_error`, {
+          ...segmentInfo,
+          error_page: segmentInfo.source,
+          action_status: !data.error ? "success" : "failure",
+          error_description: err.message || err.response,
         });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
 
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -696,39 +782,53 @@ export const update_google_keywords = (info, segmentInfo) => {
  * @param {Object} info
  */
 export const create_google_keywords = (info, segmentInfo) => {
-  return dispatch => {
+  return (dispatch) => {
     GoogleBackendURL()
       .post(`keywords/`, info)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_ad_keywords`, {
+          timestamp: new Date().getTime(),
+          action_status: data.error ? "failure" : "success",
+          ...segmentInfo,
+        });
         if (!data.error) {
-          segmentEventTrack("Completed Checkout Step", segmentInfo);
-          NavigationService.navigate("GoogleAdPaymentReview");
-        } else
+          NavigationService.navigate("GoogleAdPaymentReview", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
+        } else {
+          analytics.track(`a_error`, {
+            error_page: "ad_targeting",
+            source_action: "a_ad_keywords",
+            error_description:
+              data.error || "Something went wrong. Please try again",
+          });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
-            position: "top"
+            position: "top",
           });
+        }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -753,76 +853,97 @@ export const enable_end_or_pause_google_campaign = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_STATUS_LOADING,
-      payload: true
+      payload: true,
     });
     GoogleBackendURL()
       .post(
         `${endCampaign ? "end" : pauseOrEnable ? "enable" : "pause"}/campaign/`,
         {
           id: campaign_id,
-          businessid: getState().account.mainBusiness.businessid
+          businessid: getState().account.mainBusiness.businessid,
         }
       )
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_update_campaign_status`, {
+          campaign_id: campaign_id,
+          campaign_status: endCampaign
+            ? "END"
+            : pauseOrEnable
+            ? "LIVE"
+            : "PAUSE",
+          action_status: !data.error ? "sucsess" : "failure",
+          source: "campaign_detail",
+          source_action: "a_update_campaign_status",
+        });
         dispatch({
           type: actionTypes.UPDATE_GOOGLE_CAMPAIGN_STATUS,
-          payload: data
+          payload: data,
         });
         dispatch({
           type: actionTypes.SET_GOOGLE_STATUS_LOADING,
-          payload: false
+          payload: false,
         });
         handleModalToggle(data.status);
       })
-      .catch(err => {
+      .catch((err) => {
         errorMessageHandler(err);
         dispatch({
           type: actionTypes.SET_GOOGLE_STATUS_LOADING,
-          payload: false
+          payload: false,
         });
       });
   };
 };
 
 export const get_budget = (info, segmentInfo, navigation) => {
-  return dispatch => {
+  return (dispatch) => {
     GoogleBackendURL()
       .post(`campaign/budget/`, info)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
         return data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_get_budget`, {
+          ...segmentInfo,
+          campaign_channel: "google",
+          action_status: !data.error ? "success" : "failure",
+          source: "ad_objective",
+          source_action: "a_get_budget",
+          timestamp: new Date().getTime(),
+        });
         if (!data.error) {
           dispatch({
             type: actionTypes.SET_BUDGET_RANGE,
-            payload: data
+            payload: data,
           });
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push("GoogleAdDesign");
+          navigation.push("GoogleAdDesign", {
+            source: "ad_objective",
+            source_action: "a_submit_ad_objective",
+          });
         } else
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
-            position: "top"
+            position: "top",
           });
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
-          payload: false
+          payload: false,
         });
       });
   };
@@ -836,27 +957,34 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
           getState().account.mainBusiness.businessid
         }&id=${campaign_id}&email=${email}`
       )
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_share_csv`, {
+          channel: "email",
+          source: "ad_detail",
+          source_action: "a_share_csv",
+          campaign_channel: "google",
+          action_status: data.message ? "success" : "failure",
+        });
         if (data.message) showModalMessage(data.message, "success");
       })
-      .catch(err => showModalMessage(err));
+      .catch((err) => showModalMessage(err));
   };
 };
 
-export const refundGoogleCampaignAmount = campaign_id => {
+export const refundGoogleCampaignAmount = (campaign_id) => {
   return (dispatch, getState) => {
     GoogleBackendURL()
       .post(`request/refund/`, {
         businessid: getState().account.mainBusiness.businessid,
-        id: campaign_id
+        id: campaign_id,
       })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         if (data.message)
           showMessage({ message: data.message, type: "success" });
       })
-      .catch(err => {
+      .catch((err) => {
         errorMessageHandler(err);
       });
   };

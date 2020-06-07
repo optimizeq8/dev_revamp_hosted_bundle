@@ -8,6 +8,7 @@ import {
   I18nManager,
 } from "react-native";
 import { Text, Container, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 // import BusinessList from "../BusinessList";
 let BusinessList = null;
@@ -29,6 +30,9 @@ import rtlStyles from "./rtlStyles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
+//data
+import businessCategoriesList from "../../Data/businessCategoriesList.data";
+
 //Functions
 import isStringArabic from "../../isStringArabic";
 import {
@@ -42,6 +46,8 @@ import segmentEventTrack from "../../segmentEventTrack";
 class Menu extends Component {
   constructor(props) {
     super(props);
+    const { translate } = this.props.screenProps;
+
     this.state = {
       slidePanel: false,
       _draggedValue: new Animated.Value(0),
@@ -50,6 +56,7 @@ class Menu extends Component {
         top: hp("100") - 100,
         bottom: -10,
       },
+      items: businessCategoriesList(translate),
     };
   }
   componentDidMount() {
@@ -84,12 +91,12 @@ class Menu extends Component {
       BusinessList = require("../BusinessList").default;
     }
   };
-  handleNavigation = (route, checkForBusinessId = false) => {
+  handleNavigation = (route, checkForBusinessId = false, params) => {
     segmentEventTrack(`Clicked ${route}`);
     const { translate } = this.props.screenProps;
     if (checkForBusinessId) {
       if (this.props.mainBusiness.hasOwnProperty("businessid")) {
-        this.props.navigation.navigate(route);
+        this.props.navigation.navigate(route, params);
       } else {
         showMessage({
           message: translate("Please create a business account first"),
@@ -97,7 +104,7 @@ class Menu extends Component {
         });
       }
     } else {
-      this.props.navigation.navigate(route);
+      this.props.navigation.navigate(route, params);
     }
   };
 
@@ -114,9 +121,30 @@ class Menu extends Component {
       },
     });
   };
+
+  /**
+   *
+   *
+   * To find business category name from list
+   */
+  getBusinessCategoryName = () => {
+    const { mainBusiness } = this.props;
+    let businesscategoryName = "";
+    if (mainBusiness && mainBusiness.businesscategory) {
+      // check if category === "43" ie other then show the otherCategory name
+      if (mainBusiness.businesscategory === "43") {
+        businesscategoryName = mainBusiness.otherBusinessCategory;
+      } else
+        businesscategoryName = this.state.items.find(
+          (category) => category.value === mainBusiness.businesscategory
+        ).label;
+    }
+    return businesscategoryName;
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
+    const businesscategoryName = this.getBusinessCategoryName();
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -135,23 +163,6 @@ class Menu extends Component {
               style={[
                 styles.businessTitle,
                 this.props.mainBusiness &&
-                this.props.mainBusiness.brandname &&
-                !isStringArabic(this.props.mainBusiness.brandname)
-                  ? {
-                      fontFamily: "montserrat-regular-english",
-                    }
-                  : {},
-              ]}
-            >
-              {!this.props.mainBusiness
-                ? ""
-                : this.props.mainBusiness.brandname}
-            </Text>
-            <Text
-              onLayout={this.handlePanelOffset}
-              style={[
-                styles.businessname,
-                this.props.mainBusiness &&
                 this.props.mainBusiness.businessname &&
                 !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
@@ -163,6 +174,21 @@ class Menu extends Component {
               {!this.props.mainBusiness
                 ? ""
                 : this.props.mainBusiness.businessname}
+            </Text>
+            <Text
+              onLayout={this.handlePanelOffset}
+              style={[
+                styles.businessname,
+                this.props.mainBusiness &&
+                this.props.mainBusiness.businesscategory &&
+                !isStringArabic(businesscategoryName)
+                  ? {
+                      fontFamily: "montserrat-regular-english",
+                    }
+                  : {},
+              ]}
+            >
+              {businesscategoryName}
             </Text>
 
             <GradientButton
@@ -192,7 +218,12 @@ class Menu extends Component {
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("PersonalInfo")}
+                onPress={() =>
+                  this.handleNavigation("PersonalInfo", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info",
+                  })
+                }
               >
                 <Icons.PersonalInfo style={styles.icons} />
                 <Text
@@ -208,6 +239,8 @@ class Menu extends Component {
                   // this.props.navigation.navigate("BusinessInfo")
                   this.props.navigation.navigate("CreateBusinessAccount", {
                     editBusinessInfo: true,
+                    source: "open_hamburger",
+                    source_action: "a_open_business_info",
                   });
                 }}
               >
@@ -232,9 +265,15 @@ class Menu extends Component {
                     mainBusiness.weburl &&
                     mainBusiness.weburl !== ""
                   ) {
-                    this.props.navigation.navigate("MyWebsite");
+                    this.props.navigation.navigate("MyWebsite", {
+                      source: "open_hamburger",
+                      source_action: "a_open_my_website",
+                    });
                   } else {
-                    this.props.navigation.navigate("TutorialWeb");
+                    this.props.navigation.navigate("TutorialWeb", {
+                      source: "open_hamburger",
+                      source_action: "a_open_website_tutorial",
+                    });
                   }
                 }}
               >
@@ -248,7 +287,12 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("Wallet", true)}
+                onPress={() =>
+                  this.handleNavigation("Wallet", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_wallet",
+                  })
+                }
               >
                 <Icons.Wallet style={styles.icons} />
                 <Text
@@ -260,7 +304,12 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.handleNavigation("TransactionList")}
+                onPress={() =>
+                  this.handleNavigation("TransactionList", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_transactions_list",
+                  })
+                }
               >
                 <Icons.TransactionIcon style={styles.icons} />
                 <Text
@@ -271,7 +320,12 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.handleNavigation("ChangePassword")}
+                onPress={() =>
+                  this.handleNavigation("ChangePassword", false, {
+                    source: "open_hamburger",
+                    source_action: "a_open_change_password",
+                  })
+                }
                 style={styles.options}
               >
                 <Icons.ChangePassIcon style={styles.icons} />
@@ -284,7 +338,12 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("AddressForm", true)}
+                onPress={() =>
+                  this.handleNavigation("AddressForm", true, {
+                    source: "open_hamburger",
+                    source_action: "a_open_personal_info",
+                  })
+                }
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
@@ -297,7 +356,7 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.handleNavigation("ManageTeam", true)}
+                onPress={() => this.handleNavigation("ManageTeam", true, {})}
                 style={styles.options}
               >
                 <Icons.GroupIcon style={styles.icons} />
@@ -315,6 +374,8 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/privacy",
                     title: "Privacy Policy",
+                    source: "app_privacy_policy",
+                    source_action: "a_open_app_privacy_policy",
                   })
                 }
               >
@@ -337,6 +398,8 @@ class Menu extends Component {
                   this.props.navigation.navigate("WebView", {
                     url: "https://www.optimizeapp.com/terms_conditions",
                     title: "Terms & Conditions",
+                    source: "app_TNC",
+                    source_action: "a_open_app_TNC",
                   })
                 }
               >
@@ -358,6 +421,10 @@ class Menu extends Component {
 
               <TouchableOpacity
                 onPress={() => {
+                  analytics.track(`a_logout`, {
+                    source: "open_hamburger",
+                    source_action: "a_logout",
+                  });
                   this.props.clearPushToken(
                     this.props.navigation,
                     this.props.userInfo.userid
@@ -375,10 +442,8 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/66/
-                {Constants.manifest.ios.buildNumber}/
-                {Constants.manifest.android.versionCode}
-                {Constants.manifest.releaseChannel}
+                {Constants.nativeAppVersion}/83/
+                {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>
           </View>

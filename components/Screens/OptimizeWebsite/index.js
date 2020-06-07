@@ -6,11 +6,10 @@ import {
   Text,
   Image,
   ScrollView,
-  I18nManager
+  I18nManager,
 } from "react-native";
-
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 
 //Redux
@@ -28,26 +27,25 @@ import PhoneIcon from "../../../assets/SVGs/PhoneBlackBackground";
 import styles from "./styles";
 import RegisterForm from "./RegisterForm";
 import ProductSelect from "./ProductSelect";
-import segmentEventTrack from "../../segmentEventTrack";
 const regsiterSteps = [
   {
     id: 1,
-    name: "Details"
+    name: "Details",
   },
   {
     id: 2,
-    name: "Products"
+    name: "Products",
   },
   {
     id: 3,
-    name: "Done"
-  }
+    name: "Done",
+  },
 ];
 class OptimizeWebsite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 1
+      activeStep: 1,
     };
   }
   componentWillUnmount() {
@@ -56,31 +54,54 @@ class OptimizeWebsite extends Component {
 
   handleBackPress = () => {
     if (this.state.activeStep === 1) {
-      segmentEventTrack(
-        "Back button pressed on Website Registration Detail screen"
-      );
+      analytics.track(`a_go_back`, {
+        source: "my_website_detail",
+        source_action: "a_go_back",
+      });
     } else {
-      segmentEventTrack(
-        "Back button pressed on Website Registration Product Select screen"
-      );
+      analytics.track(`a_go_back`, {
+        source: "my_website_products",
+        source_action: "a_go_back",
+      });
     }
 
     this.props.navigation.goBack();
     return true;
   };
   componentDidMount() {
-    Segment.screen("Website Registration Detail");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_detail`, {
+      source,
+      source_action,
+      new: true,
+      timestamp: new Date().getTime(),
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  submitNextStep = activeStep => {
+  submitNextStep = (activeStep) => {
+    analytics.track(`a_go_to_my_website_products`, {
+      source: "my_website_detail",
+      source_action: "a_submit_my_website_detail",
+    });
     this.setState({
-      activeStep
+      activeStep,
     });
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeStep === 1 && this.state.activeStep === 2) {
-      Segment.screen("Website Registration Product Select");
+      analytics.track(`my_website_products`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        timestamp: new Date().getTime(),
+      });
     }
   }
 
@@ -96,8 +117,8 @@ class OptimizeWebsite extends Component {
           <TouchableOpacity
             style={[
               I18nManager.isRTL && {
-                transform: [{ rotateY: "180deg" }, { translateX: -13 }]
-              }
+                transform: [{ rotateY: "180deg" }, { translateX: -13 }],
+              },
             ]}
             onPress={this.handleBackPress}
           >
@@ -108,20 +129,20 @@ class OptimizeWebsite extends Component {
             {activeStep === 2 && translate("Add Products")}
           </Text>
           <View style={styles.badgeView}>
-            {regsiterSteps.map(step => {
+            {regsiterSteps.map((step) => {
               return (
                 <>
                   <View key={step.id} style={styles.badgeViewInner}>
                     <View
                       style={[
                         styles.stepNoView,
-                        activeStep === step.id && styles.activeStepView
+                        activeStep === step.id && styles.activeStepView,
                       ]}
                     >
                       <Text
                         style={[
                           styles.stepNoText,
-                          activeStep === step.id && styles.activeStepText
+                          activeStep === step.id && styles.activeStepText,
                         ]}
                       >
                         {step.id}
@@ -131,7 +152,7 @@ class OptimizeWebsite extends Component {
                     <Text
                       style={[
                         styles.stepNameText,
-                        activeStep === step.id && styles.activeStepText
+                        activeStep === step.id && styles.activeStepText,
                       ]}
                     >
                       {translate(step.name)}
@@ -153,7 +174,7 @@ class OptimizeWebsite extends Component {
         )}
         <ScrollView
           contentContainerStyle={[
-            activeStep === 1 && styles.outerView
+            activeStep === 1 && styles.outerView,
             // activeStep === 2 && styles.step2OuterView
           ]}
         >
@@ -175,7 +196,7 @@ class OptimizeWebsite extends Component {
               <Image
                 style={styles.profileIcon}
                 source={{
-                  uri: this.props.businessLogo
+                  uri: this.props.businessLogo,
                 }}
               />
               <Text style={styles.bsnNameText}>
@@ -205,6 +226,7 @@ class OptimizeWebsite extends Component {
           )}
           {activeStep === 2 && (
             <ProductSelect
+              source={"my_website_products"}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
             />
@@ -214,11 +236,11 @@ class OptimizeWebsite extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  businessLogo: state.website.businessLogo
+  businessLogo: state.website.businessLogo,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(OptimizeWebsite);

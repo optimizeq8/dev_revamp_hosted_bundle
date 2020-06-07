@@ -55,6 +55,17 @@ import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
+import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
+import InstagramFeedAdDesign from "../Screens/InstagramCampaignCreate/Feed/AdDesign";
+import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/AdTargetting";
+import InstagramAdPaymentReview from "../Screens/InstagramCampaignCreate/Feed/AdPaymentReview";
+import AdFeedDesignReview from "../Screens/InstagramCampaignCreate/Feed/AdReview";
+
+import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
+import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
+import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
+import ImagePreview from "../MiniComponents/ImagePreview";
+
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -69,7 +80,7 @@ export default FluidNavigator(
     MultiSelect: MultiSelect,
     TransactionList: TransactionList,
     Wallet: Wallet,
-    AdType: AdType,
+    AdType: { screen: AdType, path: "ad_type/" },
     AdObjective: { screen: AdObjective, path: "AdObjective/" },
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
@@ -85,16 +96,16 @@ export default FluidNavigator(
     LongFormVideoPreview: LongFormVideoPreview,
     ErrorRedirect: {
       screen: ErrorRedirect,
-      path: "error/"
+      path: "error/",
     },
     SuccessRedirect: {
       screen: SuccessRedirect,
-      path: "success/"
+      path: "success/",
     },
     Messenger: Messenger,
     MessengerLoading: {
       screen: MessengerLoading,
-      path: "MessengerLoading/"
+      path: "MessengerLoading/",
     },
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
@@ -121,7 +132,16 @@ export default FluidNavigator(
     WebsiteRegistartionSuccess: WebsiteRegistartionSuccess,
     WebsiteSetting: WebsiteSetting,
     MyWebsite: MyWebsite,
-    TutorialWeb: TutorialWeb
+    TutorialWeb: TutorialWeb,
+    InstagramFeedAdObjective: InstagramFeedAdObjective,
+    InstagramFeedAdDesign: InstagramFeedAdDesign,
+    InstagramStoryAdObjective: InstagramStoryAdObjective,
+    InstagramStoryAdDesign: InstagramStoryAdDesign,
+    InstagramSwipeUpDestination: InstagramSwipeUpDestination,
+    InstagramFeedAdTargetting: InstagramFeedAdTargetting,
+    AdFeedDesignReview: AdFeedDesignReview,
+    InstagramAdPaymentReview: InstagramAdPaymentReview,
+    ImagePreview: ImagePreview,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
@@ -134,17 +154,17 @@ export default FluidNavigator(
     navigationOptions: {
       gesturesEnabled: true,
       headerStyle: {
-        backgroundColor: "#0000"
+        backgroundColor: "#0000",
       },
       headerTintColor: "#0000",
       headerTextStyle: {
-        fontWeight: "bold"
-      }
+        fontWeight: "bold",
+      },
     },
     cardStyle: {
       backgroundColor: "#0000",
-      opacity: 1
-    }
+      opacity: 1,
+    },
   }
 );
 
@@ -152,6 +172,6 @@ const transConfig = () => ({
   transitionSpec: {
     duration: 0,
     timing: Animated.timing,
-    easing: Easing.step0
-  }
+    easing: Easing.step0,
+  },
 });

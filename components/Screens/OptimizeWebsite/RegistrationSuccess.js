@@ -5,17 +5,15 @@ import {
   View,
   Clipboard,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
-import * as Segment from "expo-analytics-segment";
-
+import analytics from "@segment/analytics-react-native";
 import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import GradientButton from "../../MiniComponents/GradientButton";
-import segmentEventTrack from "../../segmentEventTrack";
 import styles from "./styles";
 
 //Redux
@@ -25,8 +23,30 @@ import { connect } from "react-redux";
 import Award from "../../../assets/SVGs/award";
 class WebsiteRegistartionSuccess extends React.Component {
   componentDidMount() {
-    Segment.screen("Website Registartion Complete");
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`my_website_success_registration`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+    });
   }
+  goToMyWebsite = () => {
+    analytics.track(`a_open_my_website`, {
+      source: "my_website_success_registration",
+      source_action: "a_open_my_website",
+    });
+    this.props.navigation.navigate("MyWebsite", {
+      source: "my_website_success_registration",
+      source_action: "a_open_my_website",
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     const mainBusiness = this.props.mainBusiness;
@@ -35,7 +55,7 @@ class WebsiteRegistartionSuccess extends React.Component {
       <SafeAreaView
         forceInset={{
           top: "always",
-          bottom: "never"
+          bottom: "never",
         }}
       >
         <ScrollView style={styles.mainView}>
@@ -54,6 +74,11 @@ class WebsiteRegistartionSuccess extends React.Component {
           <TouchableOpacity
             style={styles.businessNameView}
             onPress={() => {
+              analytics.track(`a_copy_my_website_url`, {
+                source: "my_website_success_registration",
+                source_action: "a_copy_my_website_url",
+                weburl: mainBusiness.weburl,
+              });
               Clipboard.setString(mainBusiness.weburl);
             }}
           >
@@ -67,10 +92,7 @@ class WebsiteRegistartionSuccess extends React.Component {
             radius={50}
             textStyle={styles.getStartedText}
             text={"Take me to my website settings"}
-            onPressAction={() => {
-              segmentEventTrack("Button Clicked to navigate to MyWebsite");
-              this.props.navigation.navigate("MyWebsite");
-            }}
+            onPressAction={this.goToMyWebsite}
           />
         </ScrollView>
       </SafeAreaView>
@@ -78,8 +100,8 @@ class WebsiteRegistartionSuccess extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  mainBusiness: state.account.mainBusiness
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
 });
 
 export default connect(mapStateToProps, null)(WebsiteRegistartionSuccess);

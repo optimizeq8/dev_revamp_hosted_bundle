@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Linking } from "expo";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Segment from "expo-analytics-segment";
@@ -14,6 +13,7 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
+  Linking,
 } from "react-native";
 import {
   Button,
@@ -34,7 +34,7 @@ import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
 import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -113,9 +113,7 @@ class CollectionMedia extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
-        const pkg = Constants.manifest.releaseChannel
-          ? Constants.manifest.android.package // When published, considered as using standalone build
-          : "host.exp.exponent"; // In expo client mode
+        const pkg = "com.optimizeapp.optimizeapp"; // In expo client mode
 
         showMessage({
           message: translate(
@@ -513,9 +511,7 @@ class CollectionMedia extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       this.onToggleModal(false);
-      const pkg = Constants.manifest.releaseChannel
-        ? Constants.manifest.android.package // When published, considered as using standalone build
-        : "host.exp.exponent"; // In expo client mode
+      const pkg = "com.optimizeapp.optimizeapp";
 
       showMessage({
         message: translate(
@@ -728,6 +724,8 @@ class CollectionMedia extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
+              source: "ad_collection_media",
+              source_action: "a_go_back",
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname },
             }}
@@ -991,6 +989,10 @@ class CollectionMedia extends Component {
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
                   title={"Uploading Image"}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_cancel_upload",
+                  }}
                 />
               )}
               {!this.props.loading && (
@@ -998,6 +1000,10 @@ class CollectionMedia extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_go_back",
+                  }}
                 />
               )}
 

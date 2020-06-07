@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   BackHandler,
   Image as RNImage,
-  Platform
+  Platform,
 } from "react-native";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
@@ -27,7 +27,7 @@ import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage"
 
 class StoryAdDesignReview extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   state = { videoIsLoading: false };
   componentDidMount() {
@@ -35,7 +35,7 @@ class StoryAdDesignReview extends Component {
 
     Segment.screenWithProperties("Ad Preview", {
       category: "Campaign Creation",
-      channel: "snapchat"
+      channel: "snapchat",
     });
   }
   handleBackButton = () => {
@@ -56,7 +56,7 @@ class StoryAdDesignReview extends Component {
       adDesign: this.props.navigation.getParam("adDesign", false),
       adType: this.props.navigation.getParam("adType", false),
       destination: this.props.navigation.getParam("destination", false),
-      call_to_action: this.props.navigation.getParam("call_to_action", false)
+      call_to_action: this.props.navigation.getParam("call_to_action", false),
     });
   };
   render() {
@@ -69,7 +69,7 @@ class StoryAdDesignReview extends Component {
     let coverHeadline = this.props.navigation.getParam("coverHeadline", "");
     let preview = {
       uri:
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
     };
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
@@ -87,7 +87,9 @@ class StoryAdDesignReview extends Component {
             closeButton={false}
             segment={{
               str: "Stroy Ad Design Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname }
+              obj: { businessname: this.props.mainBusiness.businessname },
+              source: campaignDetails ? "ad_cover" : "ad_design",
+              source_action: "a_go_back",
             }}
             actionButton={this.props.navigation.goBack}
             title={campaignDetails ? "Cover Review" : "Compose Ad"}
@@ -104,7 +106,7 @@ class StoryAdDesignReview extends Component {
                     <View
                       style={{
                         backgroundColor: "#9E4CDD",
-                        height: "35%"
+                        height: "35%",
                       }}
                     >
                       <DiscoverBar style={{ bottom: 5 }} />
@@ -113,7 +115,7 @@ class StoryAdDesignReview extends Component {
                       style={{
                         backgroundColor: "#1A1A1A",
                         borderRadius: 15,
-                        height: "70%"
+                        height: "70%",
                       }}
                     >
                       <Text style={styles.heading}>{translate("Friends")}</Text>
@@ -165,7 +167,7 @@ class StoryAdDesignReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  mainBusiness: state.account.mainBusiness
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
 });
 export default connect(mapStateToProps, null)(StoryAdDesignReview);

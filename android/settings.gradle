@@ -1,15 +1,30 @@
-include ':app'
-include ':@sentry_react-native'
-project(':@sentry_react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@sentry/react-native/android')
+rootProject.name = 'OptimizeApp'
+// include ':@segment_analytics-react-native-mixpanel'
+// project(':@segment_analytics-react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-mixpanel/android')
+include ':react-native-device-info'
+project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
+// include ':@segment_analytics-react-native'
+// project(':@segment_analytics-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native/android')
+
+include ':react-native-bootsplash'
+project(':react-native-bootsplash').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bootsplash/android')
 include ':react-native-adjust'
 project(':react-native-adjust').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-adjust/android')
 include ':react-native-photoeditorsdk'
 project(':react-native-photoeditorsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-photoeditorsdk/android')
 
+include ':react-native-videoeditorsdk'
+project(':react-native-videoeditorsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-videoeditorsdk/android')
+include ':react-native-ffmpeg'
+project(':react-native-ffmpeg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ffmpeg/android')
+include ':lottie-react-native'
+project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
 
-// Import gradle helpers for unimodules.
+
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
+includeUnimodulesProjects()
 
-// Include unimodules.
-includeUnimodulesProjects(
-)
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+applyNativeModulesSettingsGradle(settings)
+
+include ':app'

@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 import { showMessage } from "react-native-flash-message";
+import analytics from "@segment/analytics-react-native";
 import store from "../../../../../store";
 export const _handleSubmission = async (
   adType,
@@ -18,9 +19,9 @@ export const _handleSubmission = async (
   if (adType === "StoryAd") {
     //Break down to different functions
 
-    validStoryAds = storyAdsArray.filter(ad => ad.media !== "//" && ad.media);
+    validStoryAds = storyAdsArray.filter((ad) => ad.media !== "//" && ad.media);
     if (
-      !validStoryAds.every(ad => ad.uploaded) ||
+      !validStoryAds.every((ad) => ad.uploaded) ||
       storyAdCards.storyAdSelected ||
       storyAdAttachChanged
     ) {
@@ -34,26 +35,26 @@ export const _handleSubmission = async (
             ...storyAdCards,
             storyAdSelected: false,
 
-            numOfAds: storyAdCards.numOfAds + 1 //???
+            numOfAds: storyAdCards.numOfAds + 1, //???
           },
           type: "",
-          videoIsLoading: false
+          videoIsLoading: false,
         });
         return;
       } else if (storyAdCards.storyAdSelected) {
         showMessage({
           message: translate("Please add media to proceed"),
           position: "top",
-          type: "warning"
+          type: "warning",
         });
       }
       if (
         validator() &&
         (validStoryAds.length >= 3 ||
           storyAdAttachChanged ||
-          !validStoryAds.every(ad => ad.uploaded))
+          !validStoryAds.every((ad) => ad.uploaded))
       ) {
-        await validStoryAds.forEach(ad => {
+        await validStoryAds.forEach((ad) => {
           formatStoryAdParams.handleUpload();
           if (!ad.uploaded || storyAdAttachChanged)
             formatStoryAd(
@@ -107,7 +108,7 @@ export const formatMedia = (
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
   if (fileReadyToUpload && adType === "StoryAd") {
-    storyAd = storyAdsArray.find(card => {
+    storyAd = storyAdsArray.find((card) => {
       if (card && card.media !== "//" && !card.media.includes("https://"))
         cardMedia = card.media;
       if (card && card.media !== "//" && card.media.includes("https://"))
@@ -129,8 +130,9 @@ export const formatMedia = (
     var photo = {
       uri: adType !== "StoryAd" ? media : storyAd.media,
       type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
-      name: res
+      name: res,
     };
+
     body.append("media", photo);
     body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
   }
@@ -140,7 +142,7 @@ export const formatMedia = (
     var video = {
       uri: longformvideo_media,
       type: longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1]
+      name: resVideo[1],
     };
 
     body.append("longformvideo_media", video);
@@ -192,7 +194,7 @@ export const formatMedia = (
   }
 
   setTheState({
-    formatted: body
+    formatted: body,
   });
 };
 
@@ -210,6 +212,16 @@ export const _changeDestination = (
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
+    analytics.track(`a_swipe_up_destination`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: attachment,
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+    });
     if (whatsAppCampaign) {
       !store.getState().dashboard.rejCampaign &&
         save_campaign_info({
@@ -217,14 +229,14 @@ export const _changeDestination = (
           whatsappnumber: whatsAppCampaign.whatsappnumber,
           weburl: whatsAppCampaign.weburl,
           callnumber: whatsAppCampaign.callnumber,
-          source: whatsAppCampaign.source
+          source: whatsAppCampaign.source,
         });
     }
 
     setStoryAdAttachment({
       attachment,
       call_to_action,
-      destination
+      destination,
     });
     setTheState({ swipeUpError: null, storyAdAttachChanged: true });
   } else if (attachment.hasOwnProperty("longformvideo_media")) {
@@ -232,19 +244,32 @@ export const _changeDestination = (
       campaignInfo: {
         ...campaignInfo,
         destination,
-        call_to_action: call_to_action
+        call_to_action: call_to_action,
       },
 
       [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-      [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
     };
+    analytics.track(`a_swipe_up_destination`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: {
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+      },
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+    });
     setTheState(newData);
 
     !store.getState().dashboard.rejCampaign &&
       save_campaign_info({
         ...newData.campaignInfo,
         [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
       });
   } else {
     newData = {
@@ -252,11 +277,26 @@ export const _changeDestination = (
         ...campaignInfo,
         destination,
         call_to_action,
-        attachment
+        attachment,
       },
       appChoice,
-      swipeUpError: null
+      swipeUpError: null,
     };
+
+    analytics.track(`a_swipe_up_destination`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_swipe_up_destination",
+      campaign_channel: "snapchat",
+      campaign_ad_type: adType,
+      ...campaignInfo,
+      campaign_attachment: {
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+      },
+      campaign_swipe_up_CTA: call_to_action,
+      campaign_swipe_up_destination: destination,
+      campaign_app_choice: appChoice,
+    });
     if (whatsAppCampaign) {
       newData = {
         ...newData,
@@ -267,8 +307,8 @@ export const _changeDestination = (
           weburl: whatsAppCampaign.weburl,
           callnumber: whatsAppCampaign.callnumber,
           source: whatsAppCampaign.source,
-          googlemaplink: whatsAppCampaign.googlemaplink
-        }
+          googlemaplink: whatsAppCampaign.googlemaplink,
+        },
       };
       !store.getState().dashboard.rejCampaign &&
         save_campaign_info({
@@ -277,7 +317,7 @@ export const _changeDestination = (
           weburl: whatsAppCampaign.weburl,
           callnumber: whatsAppCampaign.callnumber,
           source: whatsAppCampaign.source,
-          googlemaplink: whatsAppCampaign.googlemaplink
+          googlemaplink: whatsAppCampaign.googlemaplink,
         });
     }
 
@@ -285,7 +325,7 @@ export const _changeDestination = (
     !store.getState().dashboard.rejCampaign &&
       save_campaign_info({
         ...newData.campaignInfo,
-        appChoice
+        appChoice,
       });
   }
 };

@@ -60,6 +60,10 @@ class UploadMediaFromDifferentDevice extends Component {
                   this.props.setUploadFromDifferentDeviceModal(false);
                 }}
                 title={"UPLOAD MEDIA"}
+                segment={{
+                  source: "upload_media",
+                  source_action: "a_go_back",
+                }}
               />
               <Text style={styles.uploadDifferentDeviceHeader}>
                 {translate("from a different device")}
@@ -137,7 +141,7 @@ class UploadMediaFromDifferentDevice extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getMediaUploadUrl: (campaign_id, brand_name, headline, adType) =>
     dispatch(
       actionCreators.getMediaUploadUrl(
@@ -146,9 +150,9 @@ const mapDispatchToProps = dispatch => ({
         headline,
         adType
       )
-    )
+    ),
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   adType: state.campaignC.adType,
   mainBusiness: state.account.mainBusiness,
@@ -158,7 +162,7 @@ const mapStateToProps = state => ({
     state.campaignC.uploadMediaDifferentDeviceAccessCode,
   errorUploadMediaDiffernetDevice:
     state.campaignC.errorUploadMediaDiffernetDevice,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 export default connect(

@@ -3,17 +3,17 @@ import {
   View,
   BackHandler,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { Container } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
 
 //components
@@ -34,23 +34,19 @@ import isUndefined from "lodash/isUndefined";
 
 class EditKeywords extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
     this.state = {
       keywords: [],
-      modalVisible: false
+      modalVisible: false,
     };
   }
   componentDidMount() {
-    Segment.screenWithProperties("Update keywords", {
-      channel: "google",
-      category: "Campaign Updating"
-    });
-    let keywords = this.props.selectedCampaign.keywords.map(k => k.keyword);
+    let keywords = this.props.selectedCampaign.keywords.map((k) => k.keyword);
     this.setState({
-      keywords: keywords
+      keywords: keywords,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -63,27 +59,32 @@ class EditKeywords extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
-  _handleAddKeyword = keyword => {
+  _handleAddKeyword = (keyword) => {
     if (keyword === "Reset") {
       segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       return;
     }
-    var res = this.state.keywords.filter(l => l !== keyword);
-    if (isUndefined(this.state.keywords.find(l => l === keyword))) {
+    var res = this.state.keywords.filter((l) => l !== keyword);
+    if (isUndefined(this.state.keywords.find((l) => l === keyword))) {
       segmentEventTrack("Selected Campaign keywords", {
-        campaign_keywords: [...res, keyword]
+        campaign_keywords: [...res, keyword],
       });
       this.setState({ keywords: [...res, keyword] });
     } else {
       segmentEventTrack("Selected Campaign keywords", {
-        campaign_keywords: res
+        campaign_keywords: res,
       });
       this.setState({ keywords: res });
     }
   };
 
   handleModalToggle = () => {
+    analytics.track(`ad_edit_modal`, {
+      visible: !this.state.modalVisible,
+      source: "ad_keywords",
+      source_action: "a_toggle_modal",
+    });
     this.setState({ modalVisible: !this.state.modalVisible });
   };
 
@@ -95,9 +96,12 @@ class EditKeywords extends Component {
         : null;
     if (!keywordsError) {
       const segmentInfo = {
-        businessid: this.props.mainBusiness.businessid,
         campaign_id: this.props.selectedCampaign.campaign.id,
-        campaign_keywords: this.state.keywords
+        campaign_keywords: this.state.keywords,
+        source: "ad_keywords",
+        source_action: "a_update_ad_keywords",
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
       };
       /**
        * if it was navigated from the AdDesign screen through a rejection review process
@@ -110,22 +114,42 @@ class EditKeywords extends Component {
           id: this.props.selectedCampaign.campaign.id,
           keywords: this.state.keywords,
           completed: true,
-          ...AdData
+          ...AdData,
         },
         segmentInfo
       );
     } else {
-      segmentEventTrack("Error on submit updating keywords", {
-        campaign_error_keywords: keywordsError
+      analytics.track(`a_error_form`, {
+        error_page: "ad_keywords",
+        error_description: keywordsError,
+        source: "ad_targeting",
+        source_action: "a_update_ad_keywords",
       });
       showMessage({
         message: translate(keywordsError),
         type: "warning",
-        position: "top"
+        position: "top",
       });
     }
   };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.prevAppState
+    );
 
+    analytics.track(`ad_keywords`, {
+      source,
+      source_action,
+      campaign_keywords: this.props.selectedCampaign.keywords.map(
+        (k) => k.keyword
+      ),
+    });
+  };
   render() {
     let rejected = this.props.navigation.getParam("rejected", false);
     return (
@@ -133,6 +157,7 @@ class EditKeywords extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <View
@@ -141,8 +166,8 @@ class EditKeywords extends Component {
                 {
                   borderBottomStartRadius: 30,
                   borderBottomEndRadius: 30,
-                  overflow: "hidden"
-                }
+                  overflow: "hidden",
+                },
               ]}
             >
               <LinearGradient
@@ -157,6 +182,10 @@ class EditKeywords extends Component {
               translateTitle={false}
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
               navigation={!rejected ? this.props.navigation : undefined}
               actionButton={rejected && this.handleModalToggle}
               titelStyle={{
@@ -166,7 +195,7 @@ class EditKeywords extends Component {
                 alignSelf: "center",
                 justifyContent: "center",
                 flex: 1,
-                alignItems: "center"
+                alignItems: "center",
               }}
             />
             <KeywordsSelectionList
@@ -178,6 +207,7 @@ class EditKeywords extends Component {
               data={this.props.campaign.fetchedKeywords}
               campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
+              source={"ad_keywords"}
             />
             {this.props.campaign.uploading ? (
               <ForwardLoading
@@ -186,7 +216,7 @@ class EditKeywords extends Component {
                 style={{ width: wp(7), height: hp(7) }}
               />
             ) : (
-              <LowerButton function={() => this._handleSubmission()} />
+              <LowerButton function={this._handleSubmission} />
             )}
           </Container>
         </TouchableWithoutFeedback>
@@ -202,19 +232,24 @@ class EditKeywords extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   update_google_keywords: (info, segmentInfo) =>
     dispatch(actionCreators.update_google_keywords(info, segmentInfo)),
-  get_google_SE_keywords: (keyword, campaign_id, businessid) =>
+  get_google_SE_keywords: (keyword, campaign_id, businessid, segmentInfo) =>
     dispatch(
-      actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)
-    )
+      actionCreators.get_google_SE_keywords(
+        keyword,
+        campaign_id,
+        businessid,
+        segmentInfo
+      )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditKeywords);

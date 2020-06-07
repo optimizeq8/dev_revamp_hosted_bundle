@@ -6,10 +6,10 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import find from "lodash/find";
-import { LinearGradient } from "expo-linear-gradient";
+import analytics from "@segment/analytics-react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -26,7 +26,6 @@ import CloseIcon from "../../../assets/SVGs/EyeCut";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import segmentEventTrack from "../../segmentEventTrack";
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(
@@ -44,12 +43,12 @@ class ProductSelect extends React.Component {
       counter: 0,
       posts: [],
       no_of_products_to_show: 60,
-      productsToShowArray: [12, 24, 36, 48, 60]
+      productsToShowArray: [12, 24, 36, 48, 60],
     };
   }
 
   checkIfRecordExist = (newRecords, imageId) => {
-    return newRecords.findIndex(img => img.imageId === imageId) === -1;
+    return newRecords.findIndex((img) => img.imageId === imageId) === -1;
   };
   componentDidUpdate(prevProps) {
     // console.log(
@@ -72,7 +71,7 @@ class ProductSelect extends React.Component {
     ) {
       this.setState({
         cartList: this.props.products_to_hide_list,
-        counter: this.props.products_to_hide_list.length + 1
+        counter: this.props.products_to_hide_list.length + 1,
       });
     }
     if (
@@ -82,7 +81,7 @@ class ProductSelect extends React.Component {
         this.props.products_to_hide_list.length
     ) {
       this.setState({
-        cartList: [...this.props.products_to_hide_list]
+        cartList: [...this.props.products_to_hide_list],
       });
     }
 
@@ -92,16 +91,11 @@ class ProductSelect extends React.Component {
       prevProps.instagramPostList.length !== this.props.instagramPostList.length
     ) {
       this.setState({
-        posts: [...this.props.instagramPostList]
+        posts: [...this.props.instagramPostList],
       });
     }
   }
   handleSubmission = () => {
-    segmentEventTrack("Submit Products to hide", {
-      businessid: this.props.mainBusiness.businessid,
-      products_to_hide_list: this.state.cartList
-    });
-
     const businesslogo = this.props.edit
       ? this.props.mainBusiness.businesslogo
       : this.props.businessLogo;
@@ -113,22 +107,26 @@ class ProductSelect extends React.Component {
       this.state.no_of_products_to_show
     );
   };
-  addToCart = item => {
+  addToCart = (item) => {
     const newCartList = [...this.state.cartList];
     const checkifALreadyExist = find(
       this.state.cartList,
-      imageId => imageId === item.imageId
+      (imageId) => imageId === item.imageId
     );
     // console.log("checkifALreadyExist", checkifALreadyExist);
     if (!checkifALreadyExist) {
       newCartList.push(item.imageId);
-      segmentEventTrack("Add product to hide", {
-        products_list_item: newCartList
+
+      analytics.track(`a_products_to_hide_in_cart`, {
+        source: this.props.source,
+        source_action: "a_add_products",
+        timestamp: new Date().getTime(),
+        products_to_hide_list: newCartList,
       });
       const counterNew = this.state.counter;
       this.setState({
         cartList: newCartList,
-        counter: counterNew + 1
+        counter: counterNew + 1,
       });
     } else {
       const index = newCartList.indexOf(checkifALreadyExist);
@@ -137,28 +135,31 @@ class ProductSelect extends React.Component {
       const counterNew = this.state.counter;
 
       newCartList.splice(index, 1);
-      segmentEventTrack("Remove product to hide", {
-        products_list_item: newCartList
+
+      analytics.track(`a_products_to_hide_in_cart`, {
+        source: this.props.source,
+        source_action: "a_remove_products",
+        timestamp: new Date().getTime(),
+        products_to_hide_list: newCartList,
       });
       this.setState({
         cartList: newCartList,
-        counter: counterNew - 1
+        counter: counterNew - 1,
       });
     }
   };
   onScrollHandler = () => {
-    segmentEventTrack("Button clicked to view more instagram post");
     this.props.loadMoreInstagramPostWebsite(
       this.props.instaHandleId,
       this.props.instaEndCursor
     );
   };
-  renderItem = item => {
+  renderItem = (item) => {
     if (item) {
       // console.log("itemFound", itemFound);
       const itemFound =
-        this.state.cartList.filter(imageId => imageId === item.imageId).length >
-        0;
+        this.state.cartList.filter((imageId) => imageId === item.imageId)
+          .length > 0;
       return (
         <TouchableOpacity
           key={item.imageId}
@@ -174,7 +175,7 @@ class ProductSelect extends React.Component {
           )}
           <Image
             source={{
-              uri: item.imageUrl
+              uri: item.imageUrl,
             }}
             width={65}
             height={65}
@@ -241,7 +242,7 @@ class ProductSelect extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   instagramPostList: state.website.instagramPostList,
   instagramPostLoading: state.website.instagramPostLoading,
   selectedInstagramProducts: state.website.selectedInstagramProducts,
@@ -253,11 +254,11 @@ const mapStateToProps = state => ({
   loadingMoreInstaPost: state.website.loadingMoreInstaPost,
   businessLogo: state.website.businessLogo,
   mainBusiness: state.account.mainBusiness,
-  products_to_hide_list: state.website.products_to_hide_list
+  products_to_hide_list: state.website.products_to_hide_list,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getInstagramPostInitialWebsite: insta_handle =>
+const mapDispatchToProps = (dispatch) => ({
+  getInstagramPostInitialWebsite: (insta_handle) =>
     dispatch(actionCreators.getInstagramPostInitialWebsite(insta_handle)),
   loadMoreInstagramPostWebsite: (instaHandleId, instaEndCursor) =>
     dispatch(
@@ -279,7 +280,7 @@ const mapDispatchToProps = dispatch => ({
         no_of_products_to_show
       )
     ),
-  getWebProductsToHide: businessid =>
-    dispatch(actionCreators.getWebProductsToHide(businessid))
+  getWebProductsToHide: (businessid) =>
+    dispatch(actionCreators.getWebProductsToHide(businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductSelect);

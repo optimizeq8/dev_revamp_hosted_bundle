@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler, ScrollView } from "react-native";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -25,27 +20,58 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class ErrorRedirect extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
 
     this.state = {
-      logoImage: require("../../../assets/images/logo01.png")
+      logoImage: require("../../../assets/images/logo01.png"),
     };
   }
 
   componentDidMount() {
-    Segment.screenWithProperties("Payment Error", {
-      category:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? "Wallet"
-          : "Campaign",
-      label:
-        this.props.navigation.getParam("isWallet") === "1"
-          ? "Wallet Transaction"
-          : "Campaign Transaction"
+    const source = this.props.navigation.getParam(
+      "source",
+      "payment_processing"
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      "a_payment_processing"
+    );
+    let segmentInfo = {};
+    if (this.props.navigation.getParam("isWallet") === "1") {
+      segmentInfo = {
+        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        payment_status: "failure",
+        top_wallet_amount: this.props.navigation.getParam("amount", "null"),
+      };
+    } else {
+      segmentInfo = {
+        payment_status: "failure",
+        campaign_channel:
+          this.props.channel === "" ? "snapchat" : this.props.channel,
+        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        campaign_ad_type:
+          this.props.channel === "google" ? "GoogleSEAd" : this.props.adType,
+        campaign_ltv: parseFloat(
+          this.props.navigation.getParam("campaign_ltv", "null")
+        ),
+        campaign_revenue: parseFloat(
+          this.props.navigation.getParam("campaign_revenue", "null")
+        ),
+      };
+    }
+    analytics.track(`payment_end`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      businessid: this.props.mainBusiness.businessid,
+      businessname: this.props.mainBusiness.businessname,
+      ...segmentInfo,
+      payment_mode: this.props.navigation.getParam("payment_mode"),
     });
+
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
       adjustWalletPaymentTracker.addPartnerParameter(
@@ -55,11 +81,11 @@ class ErrorRedirect extends Component {
         this.props.channel === "google" ? "google_sem" : this.props.adType
       );
       adjustWalletPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.state.params.amount),
+        parseFloat(this.props.navigation.getParam("amount", "null")),
         "USD"
       );
       adjustWalletPaymentTracker.setTransactionId(
-        this.props.navigation.state.params.paymentId
+        this.props.navigation.getParam("paymentId", "null")
       );
       Adjust.trackEvent(adjustWalletPaymentTracker);
     } else {
@@ -71,11 +97,11 @@ class ErrorRedirect extends Component {
         this.props.channel === "google" ? "google_sem" : this.props.adType
       );
       adjustPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.state.params.amount),
+        parseFloat(this.props.navigation.getParam("amount", "null")),
         "USD"
       );
       adjustPaymentTracker.setTransactionId(
-        this.props.navigation.state.params.paymentId
+        this.props.navigation.getParam("paymentId", "null")
       );
       Adjust.trackEvent(adjustPaymentTracker);
     }
@@ -146,12 +172,16 @@ class ErrorRedirect extends Component {
                 if (this.props.navigation.getParam("isWallet") === "1") {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: true,
-                    amount: this.props.navigation.getParam("amount", 0)
+                    amount: this.props.navigation.getParam("amount", 0),
+                    source: "payment_mode",
+                    source_action: "a_retry_payment",
                   });
                 } else {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: false,
-                    amount: this.props.navigation.getParam("amount", 0)
+                    source: "payment_mode",
+                    source_action: "a_retry_payment",
+                    amount: this.props.navigation.getParam("amount", 0),
                   });
                 }
               }}
@@ -170,12 +200,19 @@ class ErrorRedirect extends Component {
                 //   this.props.reset_transaction_reducer();
                 // }
                 this.props.navigation.reset(
-                  [NavigationActions.navigate({ routeName: "Dashboard" })],
+                  [
+                    NavigationActions.navigate({
+                      routeName: "Dashboard",
+                      params: {
+                        source: "payment_end",
+                        source_action: "a_go_to_home",
+                      },
+                    }),
+                  ],
                   0
                 );
               }}
               style={styles.whiteButton}
-              onPress={() => this.props.navigation.navigate("Dashboard")}
             >
               <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
             </Button>
@@ -185,15 +222,20 @@ class ErrorRedirect extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  channel: state.transA.channel
+  mainBusiness: state.account.mainBusiness,
+  campaign_id: state.transA.campaign_id,
+  campaign_budget: state.transA.campaign_budget,
+  campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
+  channel: state.transA.channel,
+  adType: state.campaignC.adType,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   rest_google_campaign_data: () =>
     dispatch(actionCreators.rest_google_campaign_data()),
   reset_transaction_reducer: () =>
-    dispatch(actionCreators.reset_transaction_reducer())
+    dispatch(actionCreators.reset_transaction_reducer()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorRedirect);

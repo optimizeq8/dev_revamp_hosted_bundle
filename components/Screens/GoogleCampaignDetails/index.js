@@ -5,13 +5,13 @@ import {
   Animated,
   ScrollView,
   BackHandler,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCircleChart from "../../MiniComponents/GoogleCampaignCircleCharts";
@@ -43,7 +43,7 @@ import formatNumber from "../../formatNumber";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import dateFormat from "dateformat";
 
@@ -55,7 +55,6 @@ import genderData from "../../Data/gender.googleSE.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import segmentEventTrack from "../../segmentEventTrack";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
 import CSVModal from "../CampaignDetails/CSVModal";
@@ -63,7 +62,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 
 class GoogleCampaignDetails extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -78,7 +77,7 @@ class GoogleCampaignDetails extends Component {
       expand: false,
       minHeight: 0,
       maxHeight: hp(50),
-      CSVModalVisible: false
+      CSVModalVisible: false,
     };
   }
 
@@ -102,30 +101,44 @@ class GoogleCampaignDetails extends Component {
     ) {
       this.setState({
         toggleText: this.props.selectedCampaign.campaign.status,
-        toggle: this.props.selectedCampaign.campaign.status !== "PAUSED"
+        toggle: this.props.selectedCampaign.campaign.status !== "PAUSED",
       });
     }
   }
 
-  handleStartDatePicked = date => {
-    segmentEventTrack("Selected Campaign Start Date", {
-      campaign_start_date: date
+  handleStartDatePicked = (date) => {
+    analytics.track(`a_ad_start_date`, {
+      campaign_start_date: date,
+      source: "ad_detail",
+      source_action: "a_ad_start_date",
+      campaign_id: this.props.campaign.id,
+      campaign_start_date: date,
     });
     this.setState({
-      start_time: date
+      start_time: date,
     });
   };
 
-  handleEndDatePicked = date => {
-    segmentEventTrack("Selected Campaign Start Date", {
-      campaign_start_date: date
+  handleEndDatePicked = (date) => {
+    analytics.track(`a_ad_end_date`, {
+      campaign_end_date: date,
+      source: "ad_detail",
+      source_action: "a_ad_end_date",
+      campaign_id: this.props.campaign.id,
+      campaign_end_date: date,
     });
     this.setState({
-      end_time: date
+      end_time: date,
     });
   };
 
-  showModal = visible => {
+  showModal = (visible) => {
+    analytics.track(`ad_status_modal`, {
+      campaign_status: "rejected",
+      visible,
+      source: "campaign_detail",
+      source_action: "a_update_campaign_status",
+    });
     this.setState({ modalVisible: visible });
   };
 
@@ -135,32 +148,38 @@ class GoogleCampaignDetails extends Component {
       this.props.selectedCampaign.campaign.id,
       start_time,
       end_time,
-      true
+      true,
+      {
+        source: "campaign_details",
+        source_action: "a_change_campaign_duration",
+      }
     );
   };
 
   handleChartToggle = () => {
-    this.setState(prevState => ({
-      expand: !prevState.expand
+    this.setState((prevState) => ({
+      expand: !prevState.expand,
     }));
     this.toggle();
   };
 
   toggle = () => {
     Animated.spring(this.state.chartAnimation, {
-      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight
+      toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight,
     }).start();
   };
 
-  handleModalToggle = status => {
-    segmentEventTrack(
-      `Button pressed to ${status} campiagn`,
-      this.props.selectedCampaign
-    );
+  handleModalToggle = (status) => {
+    analytics.track(`ad_status_modal`, {
+      campaign_status: status,
+      visible: false,
+      source: "campaign_detail",
+      source_action: "a_update_campaign_status",
+    });
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
-      toggleText: status
+      toggleText: status,
     });
   };
 
@@ -172,14 +191,53 @@ class GoogleCampaignDetails extends Component {
       this.handleModalToggle
     );
   };
-  showCSVModal = isVisible => {
+  showCSVModal = (isVisible) => {
+    analytics.track(`csv_modal`, {
+      source: "ad_detail",
+      source_action: "a_toggle_csv_modal",
+      campaign_channel: "google",
+    });
     this.setState({ CSVModalVisible: isVisible });
   };
-  onLayout = event => {
+  onLayout = (event) => {
     const layout = event.nativeEvent.layout;
     this.setState({
-      maxHeight: hp(87) - layout.height
+      maxHeight: hp(87) - layout.height,
     });
+  };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    if (this.props.campaignError) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: "error",
+        error_description: this.props.campaignError,
+        campaign_channel: "google",
+      });
+    }
+
+    if (!this.props.loading && this.props.selectedCampaign) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
+        campaign_channel: "google",
+      });
+    }
   };
   render() {
     let loading = this.props.loading;
@@ -189,11 +247,14 @@ class GoogleCampaignDetails extends Component {
 
     if (this.props.campaignError) {
       return (
-        <ErrorComponent
-          loading={loading}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
+        <>
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <ErrorComponent
+            loading={loading}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        </>
       );
     } else {
       let selectedCampaign = null;
@@ -201,7 +262,7 @@ class GoogleCampaignDetails extends Component {
       let end_time = "";
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = {
-          ...this.props.selectedCampaign
+          ...this.props.selectedCampaign,
         };
         if (
           selectedCampaign.campaign.start_time &&
@@ -217,10 +278,10 @@ class GoogleCampaignDetails extends Component {
         // mapping data for AUDIENCE OVERVIEW
         if (selectedCampaign.campaign) {
           // age
-          let ageArray = ageData.filter(age =>
-            selectedCampaign.campaign.age.find(sca => sca === age.value)
+          let ageArray = ageData.filter((age) =>
+            selectedCampaign.campaign.age.find((sca) => sca === age.value)
           );
-          ageArray = ageArray.map(age => translate(age.label));
+          ageArray = ageArray.map((age) => translate(age.label));
           audienceOverviewData.push({
             heading: "Age range",
             icon: (
@@ -230,7 +291,7 @@ class GoogleCampaignDetails extends Component {
                 name="human-male-girl"
               />
             ),
-            content: ageArray.join(", ")
+            content: ageArray.join(", "),
           });
 
           //language
@@ -243,7 +304,7 @@ class GoogleCampaignDetails extends Component {
             content:
               selectedCampaign.campaign.language === "1019"
                 ? translate("Arabic")
-                : translate("English")
+                : translate("English"),
           });
 
           //gender
@@ -255,16 +316,16 @@ class GoogleCampaignDetails extends Component {
           audienceOverviewData.push({
             heading: "Gender",
             icon: <GenderIcon width={31} height={31} fill={"#FF790A"} />,
-            content: translate(gender)
+            content: translate(gender),
           });
 
           let countryName = selectedCampaign.campaign.location.map(
-            loc => loc.country
+            (loc) => loc.country
           );
           countryName = countryName.filter((v, i, a) => a.indexOf(v) === i);
 
           let regionNames = selectedCampaign.campaign.location.map(
-            loc => loc.name && translate(loc.name)
+            (loc) => loc.name && translate(loc.name)
           );
 
           const location =
@@ -273,7 +334,7 @@ class GoogleCampaignDetails extends Component {
           audienceOverviewData.push({
             heading: "Location",
             icon: <LocationIcon width={31} height={31} fill={"#FF790A"} />,
-            content: location
+            content: location,
           });
         }
       }
@@ -281,7 +342,7 @@ class GoogleCampaignDetails extends Component {
       return (
         <>
           <DateFields
-            onRef={ref => (this.dateField = ref)}
+            onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.start_time}
@@ -295,14 +356,7 @@ class GoogleCampaignDetails extends Component {
             style={{ flex: 1 }}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                Segment.screenWithProperties("Google Campaign Details", {
-                  category: "Campaign Details",
-                  channel: "google"
-                });
-              }}
-            />
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <Container style={styles.container}>
               <View
                 style={[
@@ -310,8 +364,8 @@ class GoogleCampaignDetails extends Component {
                   {
                     borderBottomStartRadius: 30,
                     borderBottomEndRadius: 30,
-                    overflow: "hidden"
-                  }
+                    overflow: "hidden",
+                  },
                 ]}
               >
                 <LinearGradient
@@ -326,6 +380,10 @@ class GoogleCampaignDetails extends Component {
                 translateTitle={false}
                 title={loading ? "" : selectedCampaign.campaign.name}
                 icon={"google"}
+                segment={{
+                  source: "campaign_detail",
+                  source_action: "a_go_back",
+                }}
                 navigation={
                   !this.state.expand ? this.props.navigation : undefined
                 }
@@ -344,7 +402,7 @@ class GoogleCampaignDetails extends Component {
                   alignSelf: "center",
                   justifyContent: "center",
                   flex: 1,
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               />
 
@@ -359,8 +417,8 @@ class GoogleCampaignDetails extends Component {
                     style={[
                       styles.circleIcon,
                       {
-                        color: globalColors.orange
-                      }
+                        color: globalColors.orange,
+                      },
                     ]}
                     name={"circle"}
                     type={"FontAwesome"}
@@ -386,8 +444,8 @@ class GoogleCampaignDetails extends Component {
                               "PENDING"
                             )
                           ? globalColors.green
-                          : globalColors.orange
-                      }
+                          : globalColors.orange,
+                      },
                     ]}
                     name={
                       selectedCampaign.campaign.review_status.includes(
@@ -416,8 +474,8 @@ class GoogleCampaignDetails extends Component {
                               "PENDING"
                             ) && selectedCampaign.campaign.status === "ENABLED"
                           ? globalColors.green
-                          : globalColors.orange
-                      }
+                          : globalColors.orange,
+                      },
                     ]}
                   >
                     {translate(
@@ -441,7 +499,7 @@ class GoogleCampaignDetails extends Component {
               <ScrollView
                 scrollEnabled={!this.state.expand}
                 contentContainerStyle={[
-                  styles.mainCard
+                  styles.mainCard,
                   // { height: heightPercentageToDP(100) }
                 ]}
                 style={{
@@ -449,7 +507,7 @@ class GoogleCampaignDetails extends Component {
                   height: "100%",
                   overflow: "hidden",
                   borderBottomStartRadius: 30,
-                  borderBottomEndRadius: 30
+                  borderBottomEndRadius: 30,
                 }}
               >
                 {this.state.expand && (
@@ -510,7 +568,7 @@ class GoogleCampaignDetails extends Component {
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
-                          paddingHorizontal: 20
+                          paddingHorizontal: 20,
                         }}
                       >
                         <Text uppercase style={styles.subHeadings}>
@@ -521,7 +579,7 @@ class GoogleCampaignDetails extends Component {
                         onPress={() =>
                           this.props.navigation.push("GoogleSEAPreviewScreen", {
                             campaign: selectedCampaign.ad,
-                            language: selectedCampaign.campaign.language
+                            language: selectedCampaign.campaign.language,
                           })
                         }
                       >
@@ -602,9 +660,27 @@ class GoogleCampaignDetails extends Component {
                                     switchOn={this.state.toggle}
                                     onPress={() => {
                                       this.state.toggle
-                                        ? this.setState({
-                                            modalVisible: true
-                                          })
+                                        ? this.setState(
+                                            {
+                                              modalVisible: true,
+                                            },
+                                            () => {
+                                              analytics.track(
+                                                `ad_status_modal`,
+                                                {
+                                                  campaign_status:
+                                                    this.state.toggleText !==
+                                                    "PAUSED"
+                                                      ? "LIVE"
+                                                      : "PAUSED",
+                                                  visible: true,
+                                                  source: "campaign_detail",
+                                                  source_action:
+                                                    "a_update_campaign_status",
+                                                }
+                                              );
+                                            }
+                                          )
                                         : this.updateStatus();
                                     }}
                                     backgroundColorOff="rgba(255,255,255,0.1)"
@@ -646,7 +722,7 @@ class GoogleCampaignDetails extends Component {
             <Animated.View
               style={[
                 { backgroundColor: "#000", overflow: "hidden" },
-                { height: this.state.chartAnimation }
+                { height: this.state.chartAnimation },
               ]}
             >
               {this.state.expand &&
@@ -680,15 +756,15 @@ class GoogleCampaignDetails extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   googleCampaignStats: state.dashboard.googleCampaignStats,
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   loading: state.dashboard.loadingCampaignDetails,
   campaignStatusLoading: state.googleAds.campaignStatusLoading,
-  campaignError: state.dashboard.campaignError
+  campaignError: state.dashboard.campaignError,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   get_google_campiagn_details: (id, start_time, end_time, getStats) =>
     dispatch(
       actionCreators.get_google_campiagn_details(
@@ -715,7 +791,7 @@ const mapDispatchToProps = dispatch => ({
   downloadGoogleCSV: (campaign_id, email, showModalMessage) =>
     dispatch(
       actionCreators.downloadGoogleCSV(campaign_id, email, showModalMessage)
-    )
+    ),
 });
 export default connect(
   mapStateToProps,

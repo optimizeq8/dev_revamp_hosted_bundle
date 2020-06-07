@@ -1,13 +1,19 @@
 import React from "react";
 import { View, Text, BackHandler } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
+import {
+  SafeAreaView,
+  NavigationEvents,
+  NavigationActions,
+  StackActions,
+} from "react-navigation";
 import { Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import LottieView from "lottie-react-native";
 import { showMessage } from "react-native-flash-message";
 
 import ChatBot from "../../../assets/SVGs/ChatBot";
 import CustomHeader from "../../MiniComponents/Header";
+import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 import styles from "./styles";
 
@@ -16,13 +22,24 @@ import * as actionCreators from "../../../store/actions/";
 import { connect } from "react-redux";
 
 class LoadingChatScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false
-    };
-  }
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`open_support_loading`, {
+      source,
+      source_action,
+      support_type: "intercom",
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+    });
+
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -36,13 +53,26 @@ class LoadingChatScreen extends React.Component {
   };
   componentDidUpdate(prevProps) {
     if (
-      (!prevProps.loading && this.props.loading) ||
-      (!prevProps.loading_con && this.props.loading_con)
+      prevProps.loading_con !== this.props.loading_con &&
+      !this.props.loading_con
     ) {
-      // this.props.navigation.navigate('Messenger');
-      this.setState({
-        loading: true
-      });
+      if (!this.props.loading_failed) {
+        let continueRoutes = ["Dashboard", "Messenger"].map((route) =>
+          NavigationActions.navigate({
+            routeName: route,
+            params: {
+              source: "open_support_loading",
+              source_action: "a_connecting_to_messenger",
+            },
+          })
+        );
+        //resets the navigation stack
+        resetAction = StackActions.reset({
+          index: continueRoutes.length - 1, //index of the last screen route
+          actions: continueRoutes,
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     }
   }
 
@@ -53,41 +83,28 @@ class LoadingChatScreen extends React.Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen("Support");
-          }}
-        />
         <Container style={[styles.container]}>
           <CustomHeader
             screenProps={this.props.screenProps}
             closeButton={true}
             title={"Support"}
             navigation={this.props.navigation}
+            segment={{
+              source: "open_support",
+              source_action: "a_go_back",
+            }}
           />
+
           <View style={styles.flexView}>
             <LottieView
-              ref={animation => {
+              ref={(animation) => {
                 this.animation = animation;
               }}
               style={styles.loadingAnimation}
               resizeMode="contain"
               source={require("../../../assets/animation/update_loader.json")}
-              loop={false}
+              loop={true}
               autoPlay
-              onAnimationFinish={() => {
-                if (this.state.loading) {
-                  this.props.navigation.navigate("Messenger");
-                } else {
-                  showMessage({
-                    message: translate("Something went wrong!"),
-                    type: "warning",
-                    position: "top",
-                    duration: 4500,
-                    description: translate("Try again in sometime!")
-                  });
-                }
-              }}
             />
             <Text style={styles.connectingAgentText}>
               {translate("Connecting you to Your Agent")}
@@ -102,22 +119,19 @@ class LoadingChatScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  loading: state.messenger.loading,
+  loading_failed: state.messenger.loading_failed,
   user: state.messenger.user,
   messages: state.messenger.messages,
   loading_con: state.messenger.loading_con,
   subscribed: state.messenger.subscribed,
-  open_conversation: state.messenger.open_conversation
+  open_conversation: state.messenger.open_conversation,
 });
 
-const mapDispatchToProps = dispatch => ({
-  connect_user_to_intercom: user_id =>
-    dispatch(actionCreators.connect_user_to_intercom(user_id))
+const mapDispatchToProps = (dispatch) => ({
+  connect_user_to_intercom: (user_id) =>
+    dispatch(actionCreators.connect_user_to_intercom(user_id)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoadingChatScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingChatScreen);

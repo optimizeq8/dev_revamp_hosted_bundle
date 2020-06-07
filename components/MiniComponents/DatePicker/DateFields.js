@@ -372,6 +372,10 @@ class DateFields extends Component {
               <View style={{ alignItems: "center" }}>
                 <CustomHeader
                   screenProps={this.props.screenProps}
+                  segment={{
+                    source: "date_modal",
+                    source_action: "a_go_back",
+                  }}
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });

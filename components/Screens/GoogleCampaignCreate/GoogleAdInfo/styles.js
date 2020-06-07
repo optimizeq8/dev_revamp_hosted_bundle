@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     paddingBottom: hp(35),
-    paddingTop: 20
+    paddingTop: 20,
+    paddingHorizontal: 26
   },
   scrollViewStyle: {
     marginTop: 15
@@ -97,7 +98,8 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     paddingVertical: 10,
-    width: 300,
+    // width: 300,
+    width: "100%",
     flexDirection: "row",
     alignSelf: "center"
   },
@@ -105,25 +107,27 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 0,
     borderBottomStartRadius: 0,
     borderBottomEndRadius: 40,
-    borderTopEndRadius: 40
+    borderTopEndRadius: 40,
+    width: "50%",
+    height: 60
   },
   choiceButtonLeft: {
     borderBottomEndRadius: 0,
     borderTopEndRadius: 0,
     borderBottomStartRadius: 40,
-    borderTopStartRadius: 40
+    borderTopStartRadius: 40,
+    width: "50%",
+
+    height: 60
   },
   inactiveButton: {
     backgroundColor: "rgba(0,0,0,0.2)",
-    width: 150,
-    height: 60,
     justifyContent: "center",
     flexDirection: "column"
   },
   activeButton: {
     backgroundColor: "#FF9D00",
-    height: 60,
-    width: 150,
+
     justifyContent: "center",
     flexDirection: "column"
   },
@@ -131,13 +135,15 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "rgba(255,255,255,0.4)",
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "uppercase"
   },
   activeText: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "uppercase"
   },
 
   dateTextLabel: {
@@ -172,7 +178,8 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 12,
     fontFamily: "montserrat-bold",
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "uppercase"
   },
   proceedButtonRTL: {
     width: 55,

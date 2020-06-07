@@ -8,25 +8,25 @@ import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
 
-export const setAuthToken = token => {
+export const setAuthToken = (token) => {
   if (token) {
     return SecureStore.setItemAsync("token", token)
       .then(
         () => (axios.defaults.headers.common.Authorization = `Bearer ${token}`)
       )
-      .catch(err => {
+      .catch((err) => {
         //  console.log("setAuthToken setItem token", err.message || err.response )
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
           position: "top",
-          description: err.message || err.response
+          description: err.message || err.response,
         });
       });
   } else {
     return SecureStore.deleteItemAsync("token")
       .then(() => delete axios.defaults.headers.common.Authorization)
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "setAuthToken removeItem token",
         //   err.message || err.response
@@ -35,25 +35,25 @@ export const setAuthToken = token => {
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
           position: "top",
-          description: err.message || err.response
+          description: err.message || err.response,
         });
       });
   }
 };
 
 export const checkForUpdate = (retries = 3) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: true });
     createBaseUrl()
       .get(`appVersion`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           type: actionTypes.SET_ACTUAL_VERSION,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         if (retries > 0) {
           dispatch(checkForUpdate(retries - 1));
           return;
@@ -63,37 +63,36 @@ export const checkForUpdate = (retries = 3) => {
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
           position: "top",
-          description: err && (err.message || err.response)
+          description: err && (err.message || err.response),
         });
       });
   };
 };
-export const update_app_status_chat_notification = app_state => {
+export const update_app_status_chat_notification = (app_state) => {
   return (dispatch, getState) => {
     axios
       .post(
         getState().login.admin
           ? "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS"
           : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS",
-
         {
           app_state: app_state,
-          userid: getState().auth.userInfo && getState().auth.userInfo.userid
+          userid: getState().auth.userInfo && getState().auth.userInfo.userid,
         }
       )
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("updated read status", data);
 
         return dispatch({
           type: actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS,
-          payload: app_state
+          payload: app_state,
           // getState().messenger.messages.length === data.intercom_chat_link
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "sendChatNotificationbySMS err",
         //   err.message || err.response
@@ -107,32 +106,32 @@ export const getBusinessAccounts = () => {
     dispatch(getBusinessInvites());
     dispatch({
       type: actionTypes.SET_LOADING_BUSINESS_LIST,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`businessaccounts`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // showMessage({
         //   message: data.message,
         //   type: response.data.success ? "success" : "warning"
         // })
-        AsyncStorage.getItem("indexOfMainBusiness").then(value => {
+        AsyncStorage.getItem("indexOfMainBusiness").then((value) => {
           return dispatch({
             type: actionTypes.SET_BUSINESS_ACCOUNTS,
             payload: {
               data: data,
               index: value ? value : 0,
-              userid: getState().auth.userInfo.userid
-            }
+              userid: getState().auth.userInfo.userid,
+            },
           });
         });
         return;
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("getBusinessAccountsError", err.message || err.response);
         // errorMessageHandler(err);
         showMessage({
@@ -141,11 +140,11 @@ export const getBusinessAccounts = () => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
 
         return dispatch({
-          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
+          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS,
         });
       });
   };
@@ -155,11 +154,11 @@ export const getBusinessInvites = () => {
   return (dispatch, getState) => {
     createBaseUrl()
       .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         dispatch({
           payload: data.data,
-          type: actionTypes.SET_BUSINESS_INVITES
+          type: actionTypes.SET_BUSINESS_INVITES,
         });
       });
   };
@@ -168,7 +167,7 @@ export const checkNotification = (message, data) => {
   return (dispatch, getState) => {
     dispatch({
       payload: { message, data },
-      type: actionTypes.CHECK_NOTIFICATION
+      type: actionTypes.CHECK_NOTIFICATION,
     });
   };
 };

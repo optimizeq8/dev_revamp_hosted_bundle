@@ -27,7 +27,7 @@ class DownloadMediaFromDifferentDevice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoIsLoading: false
+      videoIsLoading: false,
     };
   }
 
@@ -45,8 +45,8 @@ class DownloadMediaFromDifferentDevice extends Component {
               style={[
                 styles.downloadMediaTopView,
                 {
-                  flex: this.props.mediaWebLink !== "" ? 0 : 1
-                }
+                  flex: this.props.mediaWebLink !== "" ? 0 : 1,
+                },
               ]}
             >
               <CameraIcon height={60} width={60} fill={"#FFF"} />
@@ -64,7 +64,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                   <>
                     <Video
                       source={{
-                        uri: this.props.mediaWebLink
+                        uri: this.props.mediaWebLink,
                       }}
                       shouldPlay
                       isLooping
@@ -124,8 +124,8 @@ class DownloadMediaFromDifferentDevice extends Component {
                     this.props.mediaStoryAdsDifferentDevice &&
                     this.props.mediaStoryAdsDifferentDevice.length > 0
                       ? 0
-                      : 1
-                }
+                      : 1,
+                },
               ]}
             >
               <CameraIcon height={60} width={60} fill={"#FFF"} />
@@ -157,7 +157,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                           <>
                             <Video
                               source={{
-                                uri: storyMedia.media
+                                uri: storyMedia.media,
                               }}
                               shouldPlay
                               isLooping
@@ -221,8 +221,8 @@ class DownloadMediaFromDifferentDevice extends Component {
                     this.props.collectionAdMediaLinks &&
                     this.props.collectionAdMediaLinks.length > 0
                       ? 0
-                      : 1
-                }
+                      : 1,
+                },
               ]}
             >
               <CameraIcon height={60} width={60} fill={"#FFF"} />
@@ -245,7 +245,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                     <>
                       <Video
                         source={{
-                          uri: this.props.collectionMainMediaWebLink
+                          uri: this.props.collectionMainMediaWebLink,
                         }}
                         shouldPlay
                         isLooping
@@ -285,37 +285,39 @@ class DownloadMediaFromDifferentDevice extends Component {
                   )}
               </View>
             </ScrollView>
-            {// this.props.collectionMainMediaWebLink &&
-            this.props.collectionAdMediaLinks &&
-              this.props.collectionAdMediaLinks.length > 0 && (
-                <View style={styles.downloadMediaBottomContainer}>
-                  <CloseCircle
-                    style={styles.marginH20}
-                    fill={"#FFF"}
-                    onPress={() => {
-                      segmentEventTrack(
-                        "Button clicked to close Download media from different device"
-                      );
-                      this.props.setDownloadMediaModal(false);
-                    }}
-                    // onPress={() => this.props.handleDownloadMedia("//", "")}
-                  />
-                  <LowerButton
-                    checkmark
-                    function={() => {
-                      segmentEventTrack(
-                        "Button clicked downloads the media file to own device that has been uploaded from a different device"
-                      );
-                      this.props.handleDownloadMediaCollectionAds(
-                        this.props.collectionMainMediaWebLink,
-                        this.props.collectionMainMediaTypeWebLink,
-                        this.props.collectionAdMediaLinks
-                      );
-                    }}
-                    style={styles.marginH20}
-                  />
-                </View>
-              )}
+            {
+              // this.props.collectionMainMediaWebLink &&
+              this.props.collectionAdMediaLinks &&
+                this.props.collectionAdMediaLinks.length > 0 && (
+                  <View style={styles.downloadMediaBottomContainer}>
+                    <CloseCircle
+                      style={styles.marginH20}
+                      fill={"#FFF"}
+                      onPress={() => {
+                        segmentEventTrack(
+                          "Button clicked to close Download media from different device"
+                        );
+                        this.props.setDownloadMediaModal(false);
+                      }}
+                      // onPress={() => this.props.handleDownloadMedia("//", "")}
+                    />
+                    <LowerButton
+                      checkmark
+                      function={() => {
+                        segmentEventTrack(
+                          "Button clicked downloads the media file to own device that has been uploaded from a different device"
+                        );
+                        this.props.handleDownloadMediaCollectionAds(
+                          this.props.collectionMainMediaWebLink,
+                          this.props.collectionMainMediaTypeWebLink,
+                          this.props.collectionAdMediaLinks
+                        );
+                      }}
+                      style={styles.marginH20}
+                    />
+                  </View>
+                )
+            }
           </>
         );
         break;
@@ -342,10 +344,11 @@ class DownloadMediaFromDifferentDevice extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
-                  segmentEventTrack(
-                    "Button clicked to close Download media from different device"
-                  );
                   this.props.setDownloadMediaModal(false);
+                }}
+                segment={{
+                  source: "download_media_modal",
+                  source_action: "a_go_back",
                 }}
                 title={"DOWNLOAD MEDIA"}
               />
@@ -362,11 +365,11 @@ class DownloadMediaFromDifferentDevice extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getMediaUploadUrl: campaign_id =>
-    dispatch(actionCreators.getMediaUploadUrl(campaign_id))
+const mapDispatchToProps = (dispatch) => ({
+  getMediaUploadUrl: (campaign_id) =>
+    dispatch(actionCreators.getMediaUploadUrl(campaign_id)),
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   adType: state.campaignC.adType,
   mainBusiness: state.account.mainBusiness,
@@ -380,7 +383,7 @@ const mapStateToProps = state => ({
   collectionMainMediaWebLink: state.campaignC.collectionMainMediaWebLink,
   collectionMainMediaTypeWebLink:
     state.campaignC.collectionMainMediaTypeWebLink,
-  collectionAdMediaLinks: state.campaignC.collectionAdMediaLinks
+  collectionAdMediaLinks: state.campaignC.collectionAdMediaLinks,
 });
 
 export default connect(

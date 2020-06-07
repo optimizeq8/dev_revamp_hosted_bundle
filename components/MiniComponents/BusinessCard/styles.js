@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 0,
     textTransform: "uppercase",
-    color: "#5F5F5F"
+    color: "#75647C"
   }
 });
 

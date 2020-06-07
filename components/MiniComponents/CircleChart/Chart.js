@@ -46,7 +46,7 @@ export default Chart = props => {
                   style={styles.chartText}
                   adjustsFontSizeToFit={true}
                 >
-                  ${formatNumber(spends.toFixed(2), true)}
+                  ${formatNumber(parseFloat(spends).toFixed(2), true)}
                 </Text>
                 {!detail && (
                   <Text uppercase style={[styles.chartSubtext]}>

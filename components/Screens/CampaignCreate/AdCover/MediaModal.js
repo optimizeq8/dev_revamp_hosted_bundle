@@ -38,13 +38,17 @@ export default class MediaModal extends Component {
                   this.props.setMediaModalVisible(false);
                 }}
                 title={"UPLOAD MEDIA"}
+                segment={{
+                  source: "media_options_type",
+                  source_action: "a_go_back",
+                }}
               />
               <Content
                 indicatorStyle="white"
                 contentContainerStyle={{
                   marginTop: 15,
                   paddingTop: 15,
-                  marginBottom: 15
+                  marginBottom: 15,
                 }}
               >
                 <MediaOptions

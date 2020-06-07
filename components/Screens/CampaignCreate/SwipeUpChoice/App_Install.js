@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
@@ -15,15 +16,14 @@ import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import * as actionsCreators from "../../../../store/actions";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { showMessage } from "react-native-flash-message";
 
 class App_Install extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -33,7 +33,7 @@ class App_Install extends Component {
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
-        icon_media_url: ""
+        icon_media_url: "",
       },
       appChoice: "",
       data: [],
@@ -44,7 +44,7 @@ class App_Install extends Component {
       android_app_urlError: "",
       showList: false,
       androidAppSelected: false,
-      iosAppSelected: false
+      iosAppSelected: false,
     };
   }
 
@@ -54,9 +54,9 @@ class App_Install extends Component {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.rejCampaign.attachment
+          ...this.props.rejCampaign.attachment,
         },
-        callaction: this.props.rejCampaign.call_to_action
+        callaction: this.props.rejCampaign.call_to_action,
       });
     } else if (
       this.props.data &&
@@ -69,7 +69,7 @@ class App_Install extends Component {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.data.attachment
+          ...this.props.data.attachment,
         },
         callaction: this.props.data.call_to_action,
         appChoice:
@@ -78,13 +78,13 @@ class App_Install extends Component {
             ? null
             : this.props.data.appChoice,
         iosAppSelected: this.props.data.attachment.ios_app_id !== "",
-        androidAppSelected: this.props.data.attachment.android_app_url !== ""
+        androidAppSelected: this.props.data.attachment.android_app_url !== "",
       });
     } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.storyAdAttachment.attachment
+          ...this.props.storyAdAttachment.attachment,
         },
         callaction: this.props.storyAdAttachment.call_to_action,
         appChoice:
@@ -96,7 +96,7 @@ class App_Install extends Component {
         iosAppSelected:
           this.props.storyAdAttachment.attachment.ios_app_id !== "",
         androidAppSelected:
-          this.props.storyAdAttachment.attachment.android_app_url !== ""
+          this.props.storyAdAttachment.attachment.android_app_url !== "",
       });
     } else if (
       (this.props.mainBusiness.appstorelink &&
@@ -108,7 +108,7 @@ class App_Install extends Component {
         attachment: {
           ...this.state.attachment,
           ...this.props.mainBusiness.appstorelink,
-          ...this.props.mainBusiness.playstorelink
+          ...this.props.mainBusiness.playstorelink,
         },
         iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
         androidAppSelected:
@@ -119,7 +119,7 @@ class App_Install extends Component {
             ? null
             : this.props.mainBusiness.playstorelink.android_app_url !== ""
             ? "ANDROID"
-            : "iOS"
+            : "iOS",
       });
     }
   }
@@ -136,15 +136,22 @@ class App_Install extends Component {
     androidApp_icon
   ) => {
     if (nameError || callActionError) {
-      segmentEventTrack("Error App Install", {
-        campaign_error_app_link: nameError,
-        campaign_error_call_to_action: callActionError
+      analytics.track(`a_error_form`, {
+        error_page: "ad_swipe_up_destination",
+        error_description: nameError || callActionError,
+        campaign_channel: "snapchat",
+        campaign_objective: "APP_INSTALL",
       });
     }
     if (!nameError && !callActionError) {
-      segmentEventTrack(`Submitted Selected App Success for ${appChoice}`, {
-        caampaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name
+      analytics.track(`a_select_campaign_app`, {
+        source: "ad_swipe_up_destination",
+        source_action: "a_select_campaign_app",
+        campaign_swipe_up_destination: "App Install",
+        campaign_app_OS: appChoice,
+        campaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name,
       });
+
       this.setState({
         attachment,
         callaction,
@@ -166,26 +173,31 @@ class App_Install extends Component {
             ? true
             : this.state.iosAppSelected && this.state.androidAppSelected)
             ? true
-            : appChoice !== "iOS"
+            : appChoice !== "iOS",
       });
       !this.props.rejCampaign &&
         this.props.save_campaign_info({
           iosApp_name,
           androidApp_name,
           iosApp_icon,
-          androidApp_icon
+          androidApp_icon,
         });
     }
   };
 
-  handleCallaction = callaction => {
+  handleCallaction = (callaction) => {
+    analytics.track(`a_change_cta`, {
+      source: "ad_swipe_up_destination",
+      source_action: "a_change_cta",
+      campaign_swipe_up_CTA: callaction,
+    });
     this.setState({
-      callaction
+      callaction,
     });
   };
-  setTheState = state => {
+  setTheState = (state) => {
     this.setState({
-      ...state
+      ...state,
     });
   };
   _handleSubmission = () => {
@@ -196,15 +208,14 @@ class App_Install extends Component {
     );
 
     this.setState({
-      appError
+      appError,
     });
     if (appError) {
-      segmentEventTrack("Error Submit App Install", {
-        campaign_error_app_install: validateWrapper(
-          "mandatory",
-          this.state.attachment.ios_app_id ||
-            this.state.attachment.android_app_url
-        )
+      analytics.track(`a_error_form`, {
+        error_page: "ad_swipe_up_destination",
+        error_description: appError,
+        campaign_channel: "snapchat",
+        campaign_objective: "APP_INSTALL",
       });
     }
     let attachment = this.state.attachment;
@@ -227,15 +238,15 @@ class App_Install extends Component {
         attachment,
         appChoice
       );
-      segmentEventTrack("Submited App Install SwipeUp Success", {
-        campaign_app_choice: this.state.appChoice,
-        campaign_attachment: this.state.attachment
+
+      this.props.navigation.navigate("AdDesign", {
+        source: "ad_swipe_up_destination",
+        source_action: "a_swipe_up_destination",
       });
-      this.props.navigation.navigate("AdDesign");
     } else {
       showMessage({
         message: translate("Please select at least one app"),
-        type: "warning"
+        type: "warning",
       });
     }
   };
@@ -246,54 +257,51 @@ class App_Install extends Component {
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
+        style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}
       >
-        <Container style={styles.container}>
-          <View style={styles.appInstallContent}>
-            <AppInstallIcon
-              width={widthPercentageToDP(18)}
-              height={heightPercentageToDP(10)}
-              style={styles.icon}
-            />
-            <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>{translate("App Install")}</Text>
-              <Text style={styles.subtext}>
-                {translate(
-                  "Send Snapchatters to the app store to download your app"
-                )}
-              </Text>
-            </View>
-            <AppChoice
-              handleCallaction={this.handleCallaction}
-              listNum={1}
-              selectApp={this.selectApp}
-              navigation={this.props.navigation}
-              deepLink={false}
-              attachment={this.state.attachment}
-              callaction={this.state.callaction}
-              _handleSubmission={this._handleSubmission}
-              screenProps={this.props.screenProps}
-              appChoice={this.state.appChoice}
-              appSelections={{ iosAppSelected, androidAppSelected }}
-              setTheState={this.setTheState}
-            />
-          </View>
-        </Container>
+        <AppInstallIcon
+          width={widthPercentageToDP(18)}
+          height={heightPercentageToDP(10)}
+          style={styles.icon}
+        />
+        <View style={styles.textcontainer}>
+          <Text style={styles.titletext}>{translate("App Install")}</Text>
+          <Text style={styles.subtext}>
+            {translate(
+              "Send Snapchatters to the app store to download your app"
+            )}
+          </Text>
+        </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          listNum={1}
+          selectApp={this.selectApp}
+          navigation={this.props.navigation}
+          deepLink={false}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          _handleSubmission={this._handleSubmission}
+          screenProps={this.props.screenProps}
+          appChoice={this.state.appChoice}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </SafeAreaView>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   rejCampaign: state.dashboard.rejCampaign,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (info) =>
+    dispatch(actionsCreators.save_campaign_info(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App_Install);

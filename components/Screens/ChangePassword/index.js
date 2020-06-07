@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { TouchableOpacity, BackHandler, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
-import InputField from "../../MiniComponents/InputField";
+import InputField from "../../MiniComponents/InputFieldNew";
 
 //icons
 import PasswordOutline from "../../../assets/SVGs/PasswordOutline";
@@ -24,14 +24,14 @@ import LowerButton from "../../MiniComponents/LowerButton";
 
 class ChangePassword extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
     this.state = {
       userInfo: {
         currentPassword: "",
-        password: ""
+        password: "",
       },
 
       inputF: false,
@@ -44,13 +44,26 @@ class ChangePassword extends Component {
       currentPasswordError: "",
       passwordError: "",
 
-      repasswordError: ""
+      repasswordError: "",
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    Segment.screenWithProperties("Change Password", {
-      category: "User Menu"
+    // Segment.screenWithProperties("Change Password", {
+    //   category: "User Menu"
+    // });
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      false
+    );
+    analytics.track(`change_password`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -72,7 +85,7 @@ class ChangePassword extends Component {
       showMessage({
         type: "danger",
         message: translate("Your Passwords don't match"),
-        position: "top"
+        position: "top",
       });
       this.setState({ repasswordError: "Your Passwords don't match." });
       return false;
@@ -96,7 +109,7 @@ class ChangePassword extends Component {
 
     this.setState({
       currentPasswordError,
-      passwordError
+      passwordError,
     });
     if (this._passwordVarification() && !this.state.passwordError) {
       this.props.changePassword(
@@ -105,6 +118,15 @@ class ChangePassword extends Component {
         this.props.navigation,
         this.props.user.email
       );
+    } else {
+      analytics.track(`a_change_password`, {
+        source: "change_password",
+        source_action: "a_change_password",
+        timestamp: new Date().getTime(),
+        action_status: "failure",
+        error_description:
+          this.state.repasswordError || this.state.passwordError,
+      });
     }
   };
   setValue = (stateName, value) => {
@@ -112,14 +134,14 @@ class ChangePassword extends Component {
       let state = {};
       state[stateName] = value;
       this.setState({
-        ...state
+        ...state,
       });
     } else {
       this.setState({
         userInfo: {
           ...this.state.userInfo,
-          [stateName]: value
-        }
+          [stateName]: value,
+        },
       });
     }
   };
@@ -135,12 +157,12 @@ class ChangePassword extends Component {
       showMessage({
         type: "danger",
         message: this.props.screenProps.translate(validObj),
-        position: "top"
+        position: "top",
       });
     }
 
     this.setState({
-      ...state
+      ...state,
     });
   };
   feildsComponent = () => {
@@ -152,7 +174,7 @@ class ChangePassword extends Component {
         value: this.state.userInfo.currentPassword,
         valueError1: this.state.currentPasswordError,
         incomplete: true,
-        icon: PasswordOutline
+        icon: PasswordOutline,
       },
       {
         label: "New Password",
@@ -160,16 +182,16 @@ class ChangePassword extends Component {
         value: this.state.userInfo.password,
         valueError1: this.state.passwordError,
         incomplete: true,
-        icon: PasswordOutline
+        icon: PasswordOutline,
       },
       {
         label: "Re-enter Password",
         stateName1: "repassword",
         value: this.state.repassword,
         valueError1: this.state.repasswordError,
-        incomplete: true
-      }
-    ].map(feild => {
+        incomplete: true,
+      },
+    ].map((feild) => {
       return (
         <InputField
           icon={feild.icon}
@@ -200,6 +222,10 @@ class ChangePassword extends Component {
           screenProps={this.props.screenProps}
           title={"Change Password"}
           navigation={this.props.navigation}
+          segment={{
+            source: "change_password",
+            source_action: "a_go_back",
+          }}
         />
 
         <InputScrollView
@@ -222,18 +248,18 @@ class ChangePassword extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   changePassword: (currentPass, newPass, navigation, userEmail) =>
     dispatch(
       actionCreators.changePassword(currentPass, newPass, navigation, userEmail)
     ),
-  logout: navigation => dispatch(actionCreators.logout(navigation))
+  logout: (navigation) => dispatch(actionCreators.logout(navigation)),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.userInfo,
   loading: state.account.loadingPasswordChanged,
-  progress: state.account.progress
+  progress: state.account.progress,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

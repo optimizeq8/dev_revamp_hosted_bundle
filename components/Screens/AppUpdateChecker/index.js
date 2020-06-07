@@ -1,11 +1,10 @@
 //Components
 import React, { PureComponent } from "react";
-import { Linking, Updates } from "expo";
 import Constants from "expo-constants";
 import * as Animatable from "react-native-animatable";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
-import { View, Text, Platform, I18nManager } from "react-native";
+import { View, Text, Platform, I18nManager, Linking } from "react-native";
 import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -16,10 +15,10 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import * as Sentry from "@sentry/react-native";
-
+import * as Updates from "expo-updates";
 class AppUpdateChecker extends PureComponent {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -29,24 +28,24 @@ class AppUpdateChecker extends PureComponent {
       status2: "",
       statusLoading: false,
       updateIsAvalible: false,
-      OTAAvalibe: false
+      OTAAvalibe: false,
     };
   }
 
   componentDidMount() {
-    Constants.manifest.version[Constants.manifest.version.length - 1] === "0"
+    Constants.nativeAppVersion[Constants.nativeAppVersion.length - 1] === "0"
       ? this.handleUpdates()
       : this.props.checkForUpdate();
   }
   componentDidUpdate(prevProps) {
     if (
       prevProps.actualVersion !== this.props.actualVersion &&
-      this.props.actualVersion === Constants.manifest.version
+      this.props.actualVersion === Constants.nativeAppVersion
     ) {
       if (!this.props.underMaintenanceMessage_en) this.handleUpdates();
     } else if (
       prevProps.actualVersion !== this.props.actualVersion &&
-      this.props.actualVersion !== Constants.manifest.version &&
+      this.props.actualVersion !== Constants.nativeAppVersion &&
       this.props.actualVersion
     ) {
       this.setState({ updateIsAvalible: true });
@@ -58,18 +57,18 @@ class AppUpdateChecker extends PureComponent {
     try {
       this.setState({
         status: "",
-        statusLoading: true
+        statusLoading: true,
       });
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
         this.setState({
           status: translate("New update found"),
-          OTAAvalibe: true
+          OTAAvalibe: true,
         });
         await Updates.fetchUpdateAsync({
-          eventListener: this.handleOTAListener
+          eventListener: this.handleOTAListener,
         });
-        Updates.reloadFromCache();
+        Updates.reloadAsync();
       } else {
         if (!(this.props.customMessage_en && this.props.customMessage_ar))
           this.setState({ updateDownloaded: true });
@@ -83,16 +82,16 @@ class AppUpdateChecker extends PureComponent {
         status: "",
         statusLoading: false,
         OTAAvalibe: false,
-        updateIsAvalible: false
+        updateIsAvalible: false,
       });
     }
   };
 
-  handleOTAListener = event => {
+  handleOTAListener = (event) => {
     const { translate } = this.props.screenProps;
     if (event.type === Updates.EventType.DOWNLOAD_STARTED) {
       this.setState({
-        status2: translate("downloading")
+        status2: translate("downloading"),
       });
     }
   };
@@ -123,6 +122,10 @@ class AppUpdateChecker extends PureComponent {
                   actionButton={() => {
                     this.setState({ updateIsAvalible: false });
                   }}
+                  segment={{
+                    source: "app_update_checker",
+                    source_action: "a_go_back",
+                  }}
                 />
               )}
               <Animatable.View
@@ -146,7 +149,7 @@ class AppUpdateChecker extends PureComponent {
                 <Text
                   style={[
                     styles.textUpdate,
-                    { fontFamily: "montserrat-light" }
+                    { fontFamily: "montserrat-light" },
                   ]}
                 >
                   {this.props.loadingChecker
@@ -181,7 +184,7 @@ class AppUpdateChecker extends PureComponent {
               </Animatable.View>
               {this.props.loadingChecker || this.state.statusLoading ? (
                 <LottieView
-                  ref={animation => {
+                  ref={(animation) => {
                     this.animation = animation;
                   }}
                   style={styles.loadingStyle}
@@ -214,7 +217,7 @@ class AppUpdateChecker extends PureComponent {
                       onPressAction={() =>
                         this.setState({
                           updateIsAvalible: false,
-                          OTAAvalibe: false
+                          OTAAvalibe: false,
                         })
                       }
                       style={styles.updateButton}
@@ -233,7 +236,7 @@ class AppUpdateChecker extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   actualVersion: state.generic.actualVersion,
   underMaintenanceMessage_ar: state.generic.underMaintenanceMessage_ar,
   underMaintenanceMessage_en: state.generic.underMaintenanceMessage_en,
@@ -241,10 +244,10 @@ const mapStateToProps = state => ({
   updateMessage_en: state.generic.updateMessage_en,
   customMessage_en: state.generic.customMessage_en,
   customMessage_ar: state.generic.customMessage_ar,
-  loadingChecker: state.generic.loadingChecker
+  loadingChecker: state.generic.loadingChecker,
 });
 
-const mapDispatchToProps = dispatch => ({
-  checkForUpdate: () => dispatch(actionCreators.checkForUpdate())
+const mapDispatchToProps = (dispatch) => ({
+  checkForUpdate: () => dispatch(actionCreators.checkForUpdate()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppUpdateChecker);

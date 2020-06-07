@@ -7,11 +7,10 @@ import {
   BackHandler,
   ScrollView,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
-import { Text, Item, Input, Container, Textarea } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -35,15 +34,14 @@ import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -67,7 +65,7 @@ class GoogleAdDesign extends Component {
       descriptionError: "",
       description2Error: "",
       finalurlError: "",
-      modalVisible: false
+      modalVisible: false,
     };
     this.translate = this.props.screenProps.translate;
   }
@@ -81,14 +79,14 @@ class GoogleAdDesign extends Component {
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
       rejectedCampaign = this.props.navigation.getParam("ad", {});
-      let keys = Object.keys(this.state).filter(key => {
+      let keys = Object.keys(this.state).filter((key) => {
         if (rejectedCampaign.hasOwnProperty(key)) return key;
       });
       let data = { ...this.state };
-      keys.filter(key => {
+      keys.filter((key) => {
         data = {
           ...data,
-          [key]: rejectedCampaign[key]
+          [key]: rejectedCampaign[key],
         };
       }, {});
 
@@ -96,17 +94,17 @@ class GoogleAdDesign extends Component {
         data.finalurl = data.finalurl + "/" + rejectedCampaign.path1;
       if (rejectedCampaign.path2) data.finalurl += "/" + rejectedCampaign.path2;
       this.setState({
-        ...data
+        ...data,
       });
     } else {
-      let keys = Object.keys(this.state).filter(key => {
+      let keys = Object.keys(this.state).filter((key) => {
         if (this.props.campaign.hasOwnProperty(key)) return key;
       });
       let data = { ...this.state };
-      keys.filter(key => {
+      keys.filter((key) => {
         data = {
           ...data,
-          [key]: this.props.campaign[key]
+          [key]: this.props.campaign[key],
         };
       }, {});
       if (this.props.campaign.path1)
@@ -114,7 +112,7 @@ class GoogleAdDesign extends Component {
       if (this.props.campaign.path2)
         data.finalurl += "/" + this.props.campaign.path2;
       this.setState({
-        ...data
+        ...data,
       });
     }
 
@@ -151,7 +149,7 @@ class GoogleAdDesign extends Component {
       // headline3Error,
       descriptionError,
       // description2Error,
-      finalurlError
+      finalurlError,
     });
     let { correctPathsLength, onlyTwoPaths } = this.validatePaths();
     // set segment track for error
@@ -164,15 +162,26 @@ class GoogleAdDesign extends Component {
     ) {
       showMessage({
         message: this.translate("Please complete all of the fields"),
-        type: "warning"
+        type: "warning",
       });
-      segmentEventTrack("Error occured on ad design screen sumbit button", {
-        campaign_error_headline1: headline1Error,
-        campaign_error_headline2: headline2Error,
-        // campaign_error_headline3: headline3Error,
-        campaign_error_description: descriptionError,
-        // campaign_error_description2: description2Error,
-        campaign_error_finalurl: finalurlError
+      const segmentInfo = {
+        campaign_headline1: this.state.headline1,
+        campaign_headline2: this.state.headline2,
+        campaign_headline3: this.state.headline3,
+        campaign_description: this.state.description,
+        campaign_description2: this.state.description2,
+        campaign_finalurl: this.state.finalurl,
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_id: this.props.campaign.id,
+      };
+      analytics.track(`a_error`, {
+        error_page: "ad_design",
+        source_action: "a_submit_ad_design",
+        timestamp: new Date().getTime(),
+        ...segmentInfo,
+        error_description:
+          headline1Error || headline2Error || descriptionError || finalurlError,
       });
     }
     if (
@@ -195,18 +204,18 @@ class GoogleAdDesign extends Component {
         finalurl:
           finalurl[finalurl.length - 1] === "/" //gets rid of a trailing /
             ? finalurl.slice(0, -1)
-            : finalurl
+            : finalurl,
       };
       const segmentInfo = {
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
         campaign_headline1: this.state.headline1,
         campaign_headline2: this.state.headline2,
         campaign_headline3: this.state.headline3,
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        checkout_id: this.props.campaign.id
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        campaign_id: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -220,14 +229,14 @@ class GoogleAdDesign extends Component {
             ...data,
             id: this.props.campaign.id,
             businessid: this.props.mainBusiness.businessid,
-            completed: error_type
+            completed: error_type,
           },
           rejectedVal,
           segmentInfo
         );
         this.props.save_google_campaign_data({
           ...data,
-          id: this.props.campaign.id
+          id: this.props.campaign.id,
         });
       } else {
         /**
@@ -240,24 +249,26 @@ class GoogleAdDesign extends Component {
               ...data,
               id: this.props.navigation.getParam("id", null),
               businessid: this.props.mainBusiness.businessid,
-              completed: error_type
+              completed: error_type,
             },
             rejectedVal,
             segmentInfo
           );
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
-            adData: data
+            adData: data,
+            source: "ad_design",
+            source_action: "a_ad_keywords",
           });
       }
     }
   };
-  focusTheField = fieldName => {
+  focusTheField = (fieldName) => {
     this.inputs[fieldName]._root.focus();
   };
   handleModalToggle = () => {
     this.setState({
-      modalVisible: !this.state.modalVisible
+      modalVisible: !this.state.modalVisible,
     });
   };
   inputs = {};
@@ -266,8 +277,11 @@ class GoogleAdDesign extends Component {
     campaign_ = "campaign_" + value;
     error = value + "Error";
     campaign_error_ = "campaign_error_" + value;
-    segmentEventTrack([value] + "Field on Blur", {
-      [campaign_]: this.state[value]
+
+    analytics.track(`a_ad_${value}`, {
+      source: "ad_design",
+      source_action: `a_ad_${value}`,
+      [campaign_]: this.state[value],
     });
     this.setState({ [booleanKey]: false });
     this.setState(
@@ -278,12 +292,14 @@ class GoogleAdDesign extends Component {
           !this.state.finalurl.toLowerCase().includes("http")
             ? this.state.networkString
             : "") + this.state[value]
-        )
+        ),
       },
       () => {
         if (this.state[error]) {
-          segmentEventTrack("Error at" + [value] + "field on blur", {
-            [campaign_error_]: this.state[error]
+          analytics.track(`a_error_form`, {
+            error_page: "ad_targeting",
+            error_description: this.state[error],
+            source_action: `a_ad_${value}`,
           });
         }
         if (value === "finalurl") this.validatePaths();
@@ -301,20 +317,45 @@ class GoogleAdDesign extends Component {
   };
 
   handleGoogleAdDesignFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const segmentInfo = {
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.campaign.name,
+      campaign_language: this.props.campaign.language,
+      campaign_start_date: this.props.campaign.start_time,
+      campaign_end_date: this.props.campaign.end_time,
+      campaign_location: this.props.campaign.location,
+      campaign_country: this.props.campaign.country,
+      campaign_id: this.props.campaign.id,
+    };
+    analytics.track("ad_design", {
+      timestamp: new Date().getTime(),
+      source,
+      source_action,
+      ...segmentInfo,
+    });
+
     if (!this.props.navigation.getParam("rejected", false))
       this.props.save_google_campaign_steps([
         "Dashboard",
         "GoogleAdInfo",
-        "GoogleAdDesign"
+        "GoogleAdDesign",
       ]);
-    Segment.screenWithProperties("Google SE Design AD", {
-      category: "Campaign Creation",
-      channel: "google"
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 3,
-      business_name: this.props.mainBusiness.businessname
-    });
+
     this.setState({ unmounted: false });
     let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
@@ -353,7 +394,7 @@ class GoogleAdDesign extends Component {
       showMessage({
         message: this.translate("Please enter a valid URL"),
         type: "warning",
-        description: this.translate("Eg") + "'https://url.com/path1/path2'"
+        description: this.translate("Eg") + "'https://url.com/path1/path2'",
       });
     else if (!correctPathsLength || !onlyTwoPaths) {
       this.setState({ finalurlError: true });
@@ -370,7 +411,7 @@ class GoogleAdDesign extends Component {
           this.translate("Eg") +
           "'https://www.example.com/path1/path2'",
         type: "warning",
-        duration: 6000
+        duration: 6000,
       });
     }
     return { correctPathsLength, onlyTwoPaths };
@@ -395,7 +436,9 @@ class GoogleAdDesign extends Component {
               closeButton={false}
               segment={{
                 str: "Google SE Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
+                obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_design",
+                source_action: "a_go_back",
               }}
               actionButton={rejected && this.handleModalToggle}
               navigation={!rejected ? this.props.navigation : undefined}
@@ -409,7 +452,7 @@ class GoogleAdDesign extends Component {
               {...ScrollView.props}
               contentContainerStyle={[
                 styles.mainContent,
-                { paddingBottom: "80%" }
+                { paddingBottom: "80%" },
               ]}
             >
               <View style={{ marginBottom: 35 }}>
@@ -438,15 +481,19 @@ class GoogleAdDesign extends Component {
                   flex: 1,
                   alignSelf: "flex-end",
                   marginHorizontal: 25,
-                  flexDirection: "row"
+                  flexDirection: "row",
                 }}
               >
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
-                    segmentEventTrack(
-                      "Button clicked to preview Google Ad Design"
-                    );
+                    analytics.track(`a_preview_ad`, {
+                      source: "ad_design",
+                      source_action: "a_preview_ad",
+                      action_status: "success",
+                      campaign_channel: "google",
+                      campaign_ad_type: "GoogleSEAd",
+                    });
                     this.props.navigation.push("GoogleSEAPreviewScreen", {
                       campaign: {
                         headline1: this.state.headline1,
@@ -454,9 +501,9 @@ class GoogleAdDesign extends Component {
                         headline3: this.state.headline3,
                         finalurl: this.state.finalurl,
                         description: this.state.description,
-                        description2: this.state.description2
+                        description2: this.state.description2,
                       },
-                      language: this.props.campaign.language
+                      language: this.props.campaign.language,
                     });
                   }}
                 >
@@ -491,13 +538,13 @@ class GoogleAdDesign extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   create_google_SE_campaign_ad_design: (info, rejected, segmentInfo) =>
     dispatch(
       actionCreators.create_google_SE_campaign_ad_design(
@@ -506,9 +553,9 @@ const mapDispatchToProps = dispatch => ({
         segmentInfo
       )
     ),
-  save_google_campaign_data: info =>
+  save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  save_google_campaign_steps: value =>
-    dispatch(actionCreators.save_google_campaign_steps(value))
+  save_google_campaign_steps: (value) =>
+    dispatch(actionCreators.save_google_campaign_steps(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdDesign);

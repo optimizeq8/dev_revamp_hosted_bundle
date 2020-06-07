@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
-import { Updates } from "expo";
+import * as Updates from "expo-updates";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { ActivityIndicator } from "react-native-paper";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
 
@@ -15,9 +15,21 @@ import { globalColors } from "../../../GlobalStyles";
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
-      Updates.reloadFromCache();
+      Updates.reloadAsync();
     }
   }
+  onDidFocus = () => {
+    analytics.track(`switch_language_loading`, {
+      source: this.props.navigation.getParam(
+        "source",
+        this.props.screenProps.prevAppState
+      ),
+      source_action: this.props.navigation.getParam(
+        "source_action",
+        this.props.screenProps.prevAppState
+      ),
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -25,11 +37,7 @@ class SwitchLanguageLoading extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.track("Switch Language Loading");
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />
           <Text style={styles.loadingText}>
@@ -41,8 +49,8 @@ class SwitchLanguageLoading extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  languageChangeLoading: state.language.languageChangeLoading
+const mapStateToProps = (state) => ({
+  languageChangeLoading: state.language.languageChangeLoading,
 });
 
 export default connect(mapStateToProps, null)(SwitchLanguageLoading);

@@ -1,7 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
@@ -17,7 +17,12 @@ import {
   AppState,
   AsyncStorage,
   ActivityIndicator,
+  Linking,
+  Dimensions,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
+import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -39,13 +44,8 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import {
-  AppLoading,
-  Linking,
-  SplashScreen,
-  Notifications,
-  Updates,
-} from "expo";
+import * as Updates from "expo-updates";
+import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
@@ -76,7 +76,9 @@ import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
+import { VESDK } from "react-native-videoeditorsdk";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -119,7 +121,8 @@ const myErrorHandler = (e, isFatal) => {
 // i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
 //don't think we can get back the trial version once this was triggered
-if (!__DEV__) PESDK.unlockWithLicense(require("./pesdk_license"));
+if (!__DEV__) PESDK.unlockWithLicense(require("./img.ly/pesdk_license"));
+if (!__DEV__) VESDK.unlockWithLicense(require("./img.ly/vesdk_license"));
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -131,10 +134,15 @@ class App extends React.Component {
       isAppReady: false,
       currentScreen: "",
       appState: AppState.currentState,
+      prevAppState: AppState.currentState,
+      anonymous_userId: "",
+      translateY: new Animated.Value(1),
+      bootSplashIsVisible: true,
+      bootSplashLogoIsLoaded: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
-    SplashScreen.preventAutoHide();
+    // SplashScreen.preventAutoHide();
     const adjustConfig = new AdjustConfig(
       "c698tyk65u68",
       !__DEV__
@@ -166,16 +174,40 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  async componentDidMount() {
-    Segment.initialize({
-      androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+  componentDidMount() {
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+      using: [Mixpanel],
+      // Record screen views automatically!
+      recordScreenViews: true,
+      // Record certain application events automatically!
+      trackAppLifecycleEvents: true,
+      trackAttributionData: true,
+      android: {
+        flushInterval: 60,
+        collectDeviceId: true,
+      },
+      ios: {
+        trackAdvertising: true,
+        trackDeepLinks: true,
+      },
+      debug: true,
     });
+    RNBootSplash.hide({ duration: 350 });
+    analytics.getAnonymousId().then((anonId) => {
+      this.setState({
+        anonymous_userId: anonId,
+      });
+    });
+
+    // Segment.initialize({
+    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    // });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
     store.dispatch(actionCreators.checkForExpiredToken());
-    this._notificationSubscription = Notifications.addListener(
+    this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -191,7 +223,18 @@ class App extends React.Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      analytics.track("app_open", {
+        userid:
+          (store.getState().auth &&
+            store.getState().auth.userInfo &&
+            store.getState().auth.userInfo.userid) ||
+          this.state.anonymous_userId,
+        anonymous_userId: this.state.anonymous_userId,
+        source: this.state.appState,
+        device_id: getUniqueId(),
+        timestamp: new Date().getTime(),
+      });
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
       if (
         store.getState().auth.userInfo &&
@@ -211,7 +254,10 @@ class App extends React.Component {
 
       store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
-    this.setState({ appState: nextAppState });
+    this.setState({
+      prevAppState: this.state.appState,
+      appState: nextAppState,
+    });
   };
 
   _handleNotification = async (handleScreen) => {
@@ -252,7 +298,7 @@ class App extends React.Component {
     }
 
     if (handleScreen.origin === "received") {
-      Platform.OS === "ios" && Notifications.setBadgeNumberAsync(0);
+      Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
     }
     if (handleScreen.origin === "selected") {
       store.dispatch(
@@ -312,56 +358,60 @@ class App extends React.Component {
       <ActivityIndicator size="large" />
     </View>
   );
+
+  anim = () => {
+    // Animated.stagger(250, [
+    //   Animated.spring(this.state.translateY, {
+    //     useNativeDriver,
+    //     toValue: -50,
+    //   }),
+    //  ,
+    // ]).start();
+    Animated.timing(this.state.translateY, {
+      toValue: heightPercentageToDP(100),
+      // duration: 1000,
+    }).start(() => {
+      this.setState({ isLoadingComplete: true });
+    });
+  };
   render() {
     if (!this.state.isLoadingComplete) {
       return (
         <>
-          {/* <View
-            style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
-          /> */}
-          <AppLoading
-            startAsync={this._loadResourcesAsync}
-            onFinish={() => {
-              this.setState({ isLoadingComplete: true });
-            }}
-            autoHideSplash={true}
-            // onError={console.warn}
+          <LinearGradient
+            colors={["#6200FF", "#8900FF"]}
+            locations={[1, 0.3]}
+            style={styles.gradient}
           />
-          {/* <View
-            style={{
-              flex: 1
-            }}
-          >
+          <View style={styles.logoContainer}>
             <Image
-              source={require("./assets/images/splash.png")}
+              source={require("./assets/splash.png")}
               style={{
                 width: "100%",
                 height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                resizeMode: "cover"
-                // opacity: this.state.splashAnimation.interpolate({
-                //   inputRange: [0, 1],
-                //   outputRange: [0, 1]
-                // })
               }}
-              onLoadEnd={() => {
-                // wait for image's content to fully load [`Image#onLoadEnd`] (https://facebook.github.io/react-native/docs/image#onloadend)
-                console.log("Image#onLoadEnd: hiding SplashScreen");
-                SplashScreen.hide(); // Image is fully presented, instruct SplashScreen to hide
-              }}
-              fadeDuration={0}
+              resizeMode="cover"
             />
+            {/* <Animated.Image
+              source={require("./assets/logo.png")}
+              style={[
+                styles.logo,
+                // {
+                //   transform: [
+                //     {
+                //       translateY: this.state.translateY,
+                //     },
+                //   ],
+                // },
+              ]}
+              fadeDuration={0}
+            /> */}
           </View>
-         */}
         </>
       );
     }
     {
-      const prefix = Linking.makeUrl("/");
+      // const prefix = Linking.makeUrl("/");
 
       return (
         <Provider store={store}>
@@ -397,7 +447,7 @@ class App extends React.Component {
                     this.setState({ currentScreen });
                     // console.log("screeen name", currentScreen);
                   }}
-                  uriPrefix={prefix}
+                  // uriPrefix={prefix}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
@@ -405,11 +455,19 @@ class App extends React.Component {
                     translate: this.t,
                     locale: this.state.locale,
                     setLocale: this.setLocale,
+                    device_id: getUniqueId(),
+                    anonymous_userId: this.state.anonymous_userId,
+                    prevAppState: this.state.prevAppState,
                   }}
+                />
+                <FlashMessage
+                  icon="auto"
+                  duration={4000}
+                  position={"top"}
+                  floating={true}
                 />
               </Root>
             </View>
-            <FlashMessage icon="auto" duration={4000} position="top" />
           </PersistGate>
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>
@@ -488,7 +546,7 @@ class App extends React.Component {
   };
 
   _animateOut = () => {
-    SplashScreen.hide();
+    // SplashScreen.hide();
     Animated.sequence([
       Animated.timing(this.state.splashAnimation, {
         toValue: 1,
@@ -593,7 +651,10 @@ class App extends React.Component {
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       }),
-    ]);
+    ]).then(() => {
+      //was used to animate the logo
+      //  this.anim()
+    });
   };
 
   _handleLoadingError = (error) => {
@@ -617,8 +678,23 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     backgroundColor: "#0000",
     justifyContent: "center",
+    paddingTop: StatusBar.currentHeight,
   },
+  logoContainer: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    backgroundColor: "#0000",
+  },
+  logo: {
+    width: "35%",
+    height: "35%",
+    alignSelf: "center",
+    resizeMode: "contain",
+    top: 10,
 
+    // opacity: this.state.splashAnimation
+  },
   text: { color: "#fff" },
 
   gradient: {

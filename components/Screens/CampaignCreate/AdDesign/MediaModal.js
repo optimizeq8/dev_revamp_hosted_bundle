@@ -12,11 +12,10 @@ import segmentEventTrack from "../../../segmentEventTrack";
 export default class MediaModal extends Component {
   render() {
     var options = [
-      "Image",
-      "Video",
+      "Media",
       "Upload media from a different device",
-      "Download media from a different device"
-    ].map(op => {
+      "Download media from a different device",
+    ].map((op) => {
       return (
         <MediaOptions
           getVideoUploadUrl={this.props.getVideoUploadUrl}
@@ -30,6 +29,7 @@ export default class MediaModal extends Component {
           getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
           setDownloadMediaModal={this.props.setDownloadMediaModal}
           screenProps={this.props.screenProps}
+          media_type={media_type}
         />
       );
     });
@@ -60,35 +60,36 @@ export default class MediaModal extends Component {
                   this.props.setMediaModalVisible(false);
                 }}
                 title={"UPLOAD MEDIA"}
+                segment={{
+                  source: "upload_media",
+                  source_action: "a_go_back",
+                }}
               />
               <Content
                 indicatorStyle="white"
                 contentContainerStyle={{
                   marginTop: 15,
                   paddingTop: 15,
-                  marginBottom: 15
+                  marginBottom: 15,
                 }}
               >
                 {options}
-                {media_type === "IMAGE" &&
-                  (media !== "//" ||
-                    storyAdCards.selectedStoryAd.media !== "//") && (
-                    <MediaOptions
-                      _pickImage={this.props._pickImage}
-                      title={"Edit Image"}
-                      setUploadFromDifferentDeviceModal={
-                        this.props.setUploadFromDifferentDeviceModal
-                      }
-                      setMediaModalVisible={this.props.setMediaModalVisible}
-                      screenProps={this.props.screenProps}
-                      mediaUri={
-                        media !== "//"
-                          ? media
-                          : storyAdCards.selectedStoryAd.uneditedImageUri
-                      }
-                      serialization={this.props.serialization}
-                    />
-                  )}
+                {((!storyAdCards.storyAdSelected && media !== "//") ||
+                  storyAdCards.selectedStoryAd.media !== "//") && (
+                  <MediaOptions
+                    _pickImage={this.props._pickImage}
+                    title={"Edit Media"}
+                    setMediaModalVisible={this.props.setMediaModalVisible}
+                    screenProps={this.props.screenProps}
+                    mediaUri={
+                      media !== "//"
+                        ? media
+                        : storyAdCards.selectedStoryAd.uneditedImageUri
+                    }
+                    media_type={media_type}
+                    serialization={this.props.serialization}
+                  />
+                )}
               </Content>
             </View>
           </SafeAreaView>

@@ -2,80 +2,88 @@ import { StyleSheet, PixelRatio, Dimensions, I18nManager } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
-    flex: 1
+    flex: 1,
   },
   bottomInviteViewContainer: { bottom: "5%" },
   textInviteCode: { fontFamily: "montserrat-bold" },
   logoContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   signTextContainer: {
     display: "flex",
     flexDirection: "row",
     marginLeft: "auto",
-    alignItems: "center"
+    alignItems: "center",
   },
   signInButton: {
     height: 50,
     width: "100%",
-    marginHorizontal: 0
+    marginHorizontal: 0,
   },
   signText: {
     fontSize: 14,
     fontFamily: "montserrat-regular",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   activeTabView: {
     borderBottomWidth: 5,
     paddingBottom: 5,
     borderBottomColor: "#FFF",
-    borderRadius: 5
+    borderRadius: 5,
   },
   tabView: {
     paddingBottom: 10,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   dontHaveAccountText: {
     paddingBottom: 5,
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
   },
 
   keyboardShiftContainer: { flex: 1, alignItems: "center" },
   outView: {
-    flex: 1
+    // flex: 1
   },
   forgotPasswordLink: { paddingVertical: 10, fontSize: 12, zIndex: 10 },
   SignInCoverImage: {
     position: "absolute",
-    zIndex: -1,
-    elevation: 1, //For android to show up
+    alignSelf: "flex-end",
     bottom: 0,
-    left: I18nManager.isRTL ? widthPercentageToDP(-25) : widthPercentageToDP(18)
+    zIndex: 1,
+    borderColor: "transparent",
+    left: I18nManager.isRTL
+      ? widthPercentageToDP(-25)
+      : widthPercentageToDP(18),
   },
   title: { color: "#000", fontSize: 48 },
   container: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
-
+  gradientBtn: {
+    height: 54,
+    width: "100%",
+    marginHorizontal: 0,
+  },
+  gradientBtnText: { fontSize: 14 },
   logoText: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium-english"
+    fontFamily: "montserrat-medium-english",
     // bottom: "21%"
   },
 
   mainView: {
-    flex: 1,
+    // flex: 1,
     paddingTop: 40,
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
   },
   heading: {
     textAlign: "left",
@@ -84,7 +92,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     fontSize: 25,
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   text: {
     textAlign: "center",
@@ -93,12 +101,12 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 24,
     paddingHorizontal: 10,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   buttonText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14
+    fontSize: 14,
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -107,7 +115,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     paddingHorizontal: widthPercentageToDP(20),
-    marginRight: 15
+    marginRight: 15,
   },
   input: {
     marginTop: 10,
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignSelf: "center",
     width: 275,
-    height: 50
+    height: 50,
   },
   button: {
     shadowColor: "#6C6C6C",
@@ -129,13 +137,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    marginTop: 10
+    marginTop: 10,
   },
   link: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 12
+    fontSize: 12,
   },
   bottomView: {
     backgroundColor: globalColors.orange,
@@ -146,27 +154,27 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     width: 200,
     height: 40,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   createOneText: {
     fontFamily: "montserrat-bold-english",
     fontSize: 18,
     color: globalColors.darkOrange,
     textAlign: "center",
-    lineHeight: 22
+    lineHeight: 22,
   },
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    color: "#FFF"
+    color: "#FFF",
   },
   proceedButtonRTL: {
     width: 55,
-    height: 55
-  }
+    height: 55,
+  },
 });
 
 export default styles;

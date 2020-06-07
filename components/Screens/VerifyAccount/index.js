@@ -2,7 +2,7 @@ import React, { Component, createRef } from "react";
 import { Text, View, TouchableOpacity, AppState } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CodeInput from "react-native-confirmation-code-field";
-
+import analytics from "@segment/analytics-react-native";
 //components
 import Header from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -29,7 +29,7 @@ class VerifyAccount extends Component {
       verifyByMobile: true,
       userInfo: {
         country_code: "",
-        mobile: ""
+        mobile: "",
       },
       mobileEdit: false,
       emailEdit: false,
@@ -37,10 +37,11 @@ class VerifyAccount extends Component {
       phoneNum: "",
       country_code: "",
       valid: false,
-      showErrorComponent: false
+      showErrorComponent: false,
+      resend_otp: false,
     };
   }
-  handleDidFocusLink = appState => {
+  handleDidFocusLink = (appState) => {
     if (appState === "active") {
       const countryCode = this.props.userInfo.mobile.substring(0, 3);
       const mobile = this.props.userInfo.mobile.substring(3);
@@ -51,7 +52,7 @@ class VerifyAccount extends Component {
 
       if (linkEmail && linkEmail !== this.props.userInfo.email) {
         this.setState({
-          showErrorComponent: true
+          showErrorComponent: true,
         });
       } else if (linkEmail === this.props.userInfo.email) {
         const code = this.props.navigation.getParam("code", null);
@@ -68,19 +69,37 @@ class VerifyAccount extends Component {
 
         this.setState({
           code: code,
-          verifyByMobile: false
+          verifyByMobile: false,
         });
       }
     }
   };
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const device_id = this.props.screenProps.device_id;
+    analytics.track(`start_verify`, {
+      source,
+      source_action,
+      device_id,
+      userId: this.props.userInfo.userid,
+      timestamp: new Date().getTime(),
+      verification_channel: "Mobile",
+      channel_changed: false,
+    });
     // USING APP STATE To see if screen is focused or not
     AppState.addEventListener("change", this.handleDidFocusLink);
     // RESET THE SUCCESSNO to FALSE
     this.props.resetVerificationCode();
     if (this.props.userInfo) {
       this.setState({
-        userInfo: { ...this.props.userInfo }
+        userInfo: { ...this.props.userInfo },
       });
 
       const countryCode = this.props.userInfo.mobile.substring(0, 3);
@@ -89,7 +108,7 @@ class VerifyAccount extends Component {
       this.setState({
         phoneNum: "+" + this.props.userInfo.mobile,
         valid: true,
-        country_code: countryCode
+        country_code: countryCode,
       });
       this.handleDidFocusLink("active");
     }
@@ -100,14 +119,34 @@ class VerifyAccount extends Component {
   }
 
   toggleVerify = () => {
-    this.setState({
-      verifyByMobile: !this.state.verifyByMobile
-    });
+    this.setState(
+      {
+        verifyByMobile: !this.state.verifyByMobile,
+      },
+      () => {
+        analytics.track(
+          `a_verification_by_${this.state.verifyByMobile ? "mobile" : "email"}`,
+          {
+            source: "start_verify",
+            source_action: `a_verification_by_${
+              this.state.verifyByMobile ? "mobile" : "email"
+            }`,
+            timestamp: new Date().getTime(),
+            device_id: this.props.screenProps.device_id,
+            verification_channel: `${
+              this.state.verifyByMobile ? "Mobile" : "Email"
+            }`,
+            channel_changed: true,
+            userId: this.props.userInfo.userid,
+          }
+        );
+      }
+    );
   };
 
   editField = (stateName, value) => {
     this.setState({
-      [`${stateName}Edit`]: value
+      [`${stateName}Edit`]: value,
     });
   };
 
@@ -116,13 +155,13 @@ class VerifyAccount extends Component {
       phoneNum: number,
       country_code: countryCode,
       valid,
-      type
+      type,
     });
   };
 
-  _handleSentCode = code => {
+  _handleSentCode = (code) => {
     this.setState({
-      code
+      code,
     });
   };
 
@@ -135,13 +174,13 @@ class VerifyAccount extends Component {
     if (!this.state.valid) {
       showMessage({
         message: translate("Please enter a valid number!"),
-        type: "warning"
+        type: "warning",
       });
     } else {
       const mobile = this.state.phoneNum.substring(4);
       this.props.sendMobileNo({
         country_code: this.state.country_code,
-        mobile
+        mobile,
       });
     }
   };
@@ -157,31 +196,109 @@ class VerifyAccount extends Component {
     this.props.resendVerifyMobileCodeByEmail({
       country_code: this.state.country_code,
       mobile,
-      email: this.state.userInfo.email
+      email: this.state.userInfo.email,
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { verifyByMobile } = this.state;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
     // Segments to keep track of screens
     if (
       !this.props.successNo &&
       !prevState.verifyByMobile &&
       this.state.verifyByMobile
     ) {
-      Segment.screen("Verify Account by Mobile");
+      analytics.track(`start_verify`, {
+        source,
+        source_action: `a_verification_by_mobile`,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        verification_channel: "Mobile",
+        channel_changed: true,
+        userId: this.props.userInfo.userid,
+      });
     } else if (
       !this.props.successNo &&
       !verifyByMobile &&
       prevState.verifyByMobile
     ) {
-      Segment.screen("Verify Account by Email");
+      analytics.track(`start_verify`, {
+        source,
+        source_action: `a_verification_by_email`,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        verification_channel: "Email",
+        channel_changed: true,
+        userId: this.props.userInfo.userid,
+      });
     } else if (!prevProps.successNo && this.props.successNo) {
-      Segment.screen(
-        `Verify  OTP code by ${verifyByMobile ? "Mobile" : "Email"}`
-      );
+      analytics.track(`otp_verify`, {
+        source: this.state.resend_otp ? "otp_verify" : "start_verify",
+        source_action: this.state.resend_otp
+          ? `a_resend_otp`
+          : `a_verification_by_${verifyByMobile ? "mobile" : "email"}`,
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        verification_channel: verifyByMobile ? "Mobile" : "Email",
+        userId: this.props.userInfo.userid,
+        resend_otp: this.state.resend_otp,
+      });
     }
   }
+
+  /**
+   * To resend OTP
+   */
+  resendOTP = () => {
+    analytics.track(`otp_verify`, {
+      source: "otp_verify",
+      source_action: `a_resend_otp`,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
+      userId: this.props.userInfo.userid,
+      resend_otp: true,
+    });
+    analytics.track(`a_resend_otp`, {
+      source: "otp_verify",
+      source_action: `a_resend_otp`,
+      timestamp: new Date().getTime(),
+      device_id: this.props.screenProps.device_id,
+      verification_channel: this.state.verifyByMobile ? "Mobile" : "Email",
+      userId: this.props.userInfo.userid,
+    });
+    if (this.state.verifyByMobile) {
+      this.props.resendVerifyMobileCode({
+        mobile: this.props.mobileNo,
+        country_code: this.props.countryCode,
+      });
+    } else {
+      this.sendEmail();
+    }
+    this.setState({
+      resendOTP: true,
+    });
+  };
+
+  /**
+   * VERIFY OTP
+   */
+  verifyOTP = () => {
+    segmentEventTrack("Button Pressed to verify mobile code");
+    this.props.verifyMobileCode(
+      {
+        mobile: this.state.phoneNum.substring(4),
+        country_code: this.state.country_code,
+        verificationCode: this.state.code,
+        userid: this.props.userInfo.userid,
+      },
+      this.state.verifyByMobile ? "Mobile" : "Email"
+    );
+  };
 
   render() {
     const { translate } = this.props.screenProps;
@@ -254,15 +371,15 @@ class VerifyAccount extends Component {
           <View style={{ marginVertical: 10 }}>
             <CodeInput
               cellProps={{
-                style: styles.cellProps
+                style: styles.cellProps,
               }}
               inputProps={{
-                style: styles.inputProps
+                style: styles.inputProps,
               }}
               autoFocus
               keyboardType="numeric"
               space={5}
-              onFulfill={code => this._handleSentCode(code)}
+              onFulfill={(code) => this._handleSentCode(code)}
               ref={this.inputRef}
               defaultCode={this.state.code}
             />
@@ -273,34 +390,9 @@ class VerifyAccount extends Component {
             uppercase
             text={translate("Verify")}
             disabled={this.state.code === ""}
-            onPressAction={() => {
-              segmentEventTrack("Button Pressed to verify mobile code");
-              this.props.verifyMobileCode({
-                mobile: this.state.phoneNum.substring(4),
-                country_code: this.state.country_code,
-                verificationCode: this.state.code,
-                userid: this.props.userInfo.userid
-              });
-            }}
+            onPressAction={this.verifyOTP}
           />
-          <TouchableOpacity
-            onPress={() => {
-              if (this.state.verifyByMobile) {
-                segmentEventTrack(
-                  "Button Pressed to resend mobile code on mobile"
-                );
-                this.props.resendVerifyMobileCode({
-                  mobile: this.props.mobileNo,
-                  country_code: this.props.countryCode
-                });
-              } else {
-                segmentEventTrack(
-                  "Button Pressed to resend mobile code on email"
-                );
-                this.sendEmail();
-              }
-            }}
-          >
+          <TouchableOpacity onPress={this.resendOTP}>
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
         </View>
@@ -312,10 +404,9 @@ class VerifyAccount extends Component {
           screenProps={this.props.screenProps}
           title={"Verify Account"}
           navigation={this.props.navigation}
-        />
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen("Verify Account by Mobile");
+          segment={{
+            source: "otp_verify",
+            source_action: "a_go_back",
           }}
         />
         <Text style={styles.headingText}>
@@ -329,7 +420,7 @@ class VerifyAccount extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   verified: state.register.verified,
@@ -337,21 +428,21 @@ const mapStateToProps = state => ({
   countryCode: state.register.countryCode,
   verificationCode: state.register.verificationCode,
   successNo: state.register.successNo,
-  emailLinkCodeExpired: state.register.emailLinkCodeExpired
+  emailLinkCodeExpired: state.register.emailLinkCodeExpired,
 });
 
-const mapDispatchToProps = dispatch => ({
-  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo)),
-  verifyMobileCode: mobileAuth =>
-    dispatch(actionCreators.verifyMobileCode(mobileAuth)),
-  resendVerifyMobileCode: mobileAuth =>
+const mapDispatchToProps = (dispatch) => ({
+  sendMobileNo: (mobileNo) => dispatch(actionCreators.sendMobileNo(mobileNo)),
+  verifyMobileCode: (mobileAuth, verification_channel) =>
+    dispatch(actionCreators.verifyMobileCode(mobileAuth, verification_channel)),
+  resendVerifyMobileCode: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
-  resendVerifyMobileCodeByEmail: mobileAuth =>
+  resendVerifyMobileCodeByEmail: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
   resetVerificationCode: () => dispatch(actionCreators.resetVerificationCode()),
   verifyEmailCodeLink: (verificationCode, country_code, mobile) =>
     dispatch(
       actionCreators.verifyEmailCodeLink(verificationCode, country_code, mobile)
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(VerifyAccount);

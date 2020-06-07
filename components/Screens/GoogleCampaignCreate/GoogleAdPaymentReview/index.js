@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { View, BackHandler, TouchableOpacity } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import { View, BackHandler } from "react-native";
+import { Content, Text } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
@@ -25,7 +25,7 @@ import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ class AdPaymentReview extends Component {
       gender: "",
       end_time: "",
       start_time: "",
-      age: "All"
+      age: "All",
     };
   }
   componentWillUnmount() {
@@ -44,19 +44,19 @@ class AdPaymentReview extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  componentDidMount() {
+  formatAttribute = () => {
     const { translate } = this.props.screenProps;
     let regionsNames = [];
     if (this.props.campaign.location.length > 0) {
-      regionsNames = this.props.campaign.location.map(r => {
+      regionsNames = this.props.campaign.location.map((r) => {
         let regionName = this.props.campaign.locationsFetchedList.find(
-          x => x.id === r
+          (x) => x.id === r
         );
         if (!isUndefined(regionName)) {
           if (regionName.location && regionName.location.includes(", ")) {
             let textLoc = "";
             let splitArr = regionName.location.split(", ");
-            splitArr = splitArr.map(lctn => translate(lctn));
+            splitArr = splitArr.map((lctn) => translate(lctn));
             textLoc = splitArr.join("-");
             return textLoc;
           } else {
@@ -73,13 +73,59 @@ class AdPaymentReview extends Component {
     let age =
       this.props.campaign.age.join(", ") === "Undetermined"
         ? translate("All")
-        : this.props.campaign.age.map(a => translate(a) + ", ");
+        : this.props.campaign.age.map((a) => translate(a) + ", ");
     let end_time = new Date(this.props.campaign.end_time || "01-01-1970");
     let start_time = new Date(this.props.campaign.start_time || "01-01-1970");
     end_time = dateFormat(end_time, "d mmm yyyy");
     start_time = dateFormat(start_time, "d mmm yyyy");
     let country = CountriesList.find(
-      c => c.criteria_id === this.props.campaign.country
+      (c) => c.criteria_id === this.props.campaign.country
+    ).name;
+    return {
+      end_time,
+      start_time,
+      gender,
+      age,
+      regionsNames,
+      country,
+    };
+  };
+  componentDidMount() {
+    const { translate } = this.props.screenProps;
+    let regionsNames = [];
+    if (this.props.campaign.location.length > 0) {
+      regionsNames = this.props.campaign.location.map((r) => {
+        let regionName = this.props.campaign.locationsFetchedList.find(
+          (x) => x.id === r
+        );
+        if (!isUndefined(regionName)) {
+          if (regionName.location && regionName.location.includes(", ")) {
+            let textLoc = "";
+            let splitArr = regionName.location.split(", ");
+            splitArr = splitArr.map((lctn) => translate(lctn));
+            textLoc = splitArr.join("-");
+            return textLoc;
+          } else {
+            return translate(regionName.location);
+          }
+        }
+      });
+    }
+
+    let gender =
+      this.props.campaign.gender === "Undetermined"
+        ? "All"
+        : this.props.campaign.gender;
+    let age =
+      this.props.campaign.age.join(", ") === "Undetermined"
+        ? translate("All")
+        : this.props.campaign.age.map((a) => translate(a) + ", ");
+    let end_time = new Date(this.props.campaign.end_time || "01-01-1970");
+    let start_time = new Date(this.props.campaign.start_time || "01-01-1970");
+    end_time = dateFormat(end_time, "d mmm yyyy");
+    start_time = dateFormat(start_time, "d mmm yyyy");
+    let country = CountriesList.find(
+      (c) => c.criteria_id === this.props.campaign.country
     ).name;
 
     this.setState({
@@ -88,30 +134,109 @@ class AdPaymentReview extends Component {
       gender: gender,
       age: age,
       regionsNames: regionsNames,
-      country: country
+      country: country,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   handleGooglePaymentReviewFocus = () => {
+    const { gender, age, regionsNames, country } = this.formatAttribute();
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    const segmentInfo = {
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.campaign.name,
+      campaign_id: this.props.campaign_id,
+      campaign_headline1: this.props.campaign.headline1,
+      campaign_headline2: this.props.campaign.headline2,
+      campaign_headline3: this.props.campaign.headline3,
+      campaign_finalurl: this.props.campaign.finalurl,
+      campaign_description: this.props.campaign.description,
+      campaign_description2: this.props.campaign.description2,
+      campaign_gender: gender,
+      campaign_age: age,
+      campaign_country: country,
+      campaign_region: [...regionsNames].join(","),
+      campaign_language:
+        this.props.campaign.language === "1000" ? "English" : "Arabic",
+      campaign_budget: formatNumber(this.props.campaign_budget, true),
+      campaign_keywords: this.props.campaign.keywords.join(", "),
+    };
+    analytics.track(`ad_review`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      ...segmentInfo,
+    });
     this.props.save_google_campaign_steps([
       "Dashboard",
       "GoogleAdInfo",
       "GoogleAdDesign",
       "GoogleAdTargetting",
-      "GoogleAdPaymentReview"
+      "GoogleAdPaymentReview",
     ]);
-    Segment.screenWithProperties("Google Ad Payment Review", {
-      category: "Campaign Creation"
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 5,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
-    });
+
     let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
     adjustGoogleAdReviewTracker.addPartnerParameter(`Google_SEM`, "google_sem");
     Adjust.trackEvent(adjustGoogleAdReviewTracker);
+  };
+  goToPayment = () => {
+    const { gender, age, regionsNames, country } = this.formatAttribute();
+    const segmentInfo = {
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_name: this.props.campaign.name,
+      campaign_id: this.props.campaign_id,
+      campaign_start_date: this.props.campaign.start_time,
+      campaign_end_date: this.props.campaign.end_time,
+      campaign_headline1: this.props.campaign.headline1,
+      campaign_headline2: this.props.campaign.headline2,
+      campaign_headline3: this.props.campaign.headline3,
+      campaign_finalurl: this.props.campaign.finalurl,
+      campaign_description: this.props.campaign.description,
+      campaign_description2: this.props.campaign.description2,
+      campaign_gender: gender,
+      campaign_age: age,
+      campaign_country: country,
+      campaign_region: [...regionsNames].join(","),
+      campaign_language:
+        this.props.campaign.language === "1000" ? "English" : "Arabic",
+      campaign_budget: this.props.campaign_budget,
+      campaign_keywords: this.props.campaign.keywords.join(", "),
+    };
+    analytics.track(`a_submit_ad_review`, {
+      source: "ad_review",
+      source_action: "a_submit_ad_review",
+      action_status: "success",
+      timestamp: new Date().getTime(),
+      ...segmentInfo,
+    });
+
+    this.props.navigation.navigate("PaymentForm", {
+      source: "ad_review",
+      source_action: `a_submit_ad_review`,
+      campaign_channel: "google",
+      campaign_ad_type: "GoogleSEAd",
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -128,8 +253,10 @@ class AdPaymentReview extends Component {
           segment={{
             str: "Ad Payment Review Back Button",
             obj: {
-              businessname: this.props.mainBusiness.businessname
-            }
+              businessname: this.props.mainBusiness.businessname,
+            },
+            source: "ad_review",
+            source_action: "a_go_back",
           }}
           navigation={this.props.navigation}
           title={"Review your Selection"}
@@ -142,14 +269,14 @@ class AdPaymentReview extends Component {
             flex: 1,
             paddingHorizontal: 20,
             marginVertical: 20,
-            borderRadius: 30
+            borderRadius: 30,
           }}
         >
           <View
             style={{
               borderRadius: 30,
               flex: 1,
-              backgroundColor: "rgba(0,0,0,0.6)"
+              backgroundColor: "rgba(0,0,0,0.6)",
             }}
           >
             <Content>
@@ -168,7 +295,7 @@ class AdPaymentReview extends Component {
                   title="Duration"
                   subtitles={[
                     { title: "Start", content: this.state.start_time },
-                    { title: "End", content: this.state.end_time }
+                    { title: "End", content: this.state.end_time },
                   ]}
                 />
                 <ReviewItemCard
@@ -177,28 +304,28 @@ class AdPaymentReview extends Component {
                   subtitles={[
                     {
                       title: ["Headline", "1"],
-                      content: this.props.campaign.headline1
+                      content: this.props.campaign.headline1,
                     },
                     {
                       title: ["Headline", "2"],
-                      content: this.props.campaign.headline2
+                      content: this.props.campaign.headline2,
                     },
                     {
                       title: ["Headline", "3"],
-                      content: this.props.campaign.headline3
+                      content: this.props.campaign.headline3,
                     },
                     {
                       title: ["Landing Page"],
-                      content: this.props.campaign.finalurl
+                      content: this.props.campaign.finalurl,
                     },
                     {
                       title: ["Description", "1"],
-                      content: this.props.campaign.description
+                      content: this.props.campaign.description,
                     },
                     {
                       title: ["Description", "2"],
-                      content: this.props.campaign.description2
-                    }
+                      content: this.props.campaign.description2,
+                    },
                   ]}
                 />
 
@@ -208,30 +335,30 @@ class AdPaymentReview extends Component {
                   subtitles={[
                     {
                       title: "Gender",
-                      content: translate(this.state.gender)
+                      content: translate(this.state.gender),
                     },
                     {
                       title: "Location",
                       content:
                         translate(this.state.country) +
                         ": " +
-                        [...this.state.regionsNames].join(", ")
+                        [...this.state.regionsNames].join(", "),
                     },
                     {
                       title: "Language",
                       content:
                         this.props.campaign.language === "1000"
                           ? translate("English")
-                          : translate("Arabic")
+                          : translate("Arabic"),
                     },
                     {
                       title: "Age group",
-                      content: this.state.age
+                      content: this.state.age,
                     },
                     {
                       title: "Products",
-                      content: this.props.campaign.keywords.join(", ")
-                    }
+                      content: this.props.campaign.keywords.join(", "),
+                    },
                   ]}
                 />
               </Content>
@@ -263,19 +390,7 @@ class AdPaymentReview extends Component {
             </View>
           </View>
           <GradientButton
-            onPressAction={() => {
-              Segment.trackWithProperties("Select Ad Payment Review Button", {
-                business_name: this.props.mainBusiness.businessname,
-                campaign_budget: this.props.campaign_budget
-              });
-              Segment.trackWithProperties("Completed Checkout Step", {
-                step: 5,
-                business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_id
-              });
-
-              this.props.navigation.navigate("PaymentForm");
-            }}
+            onPressAction={this.goToPayment}
             style={[styles.mainCard]}
             text={translate("Payment Info")}
             textStyle={styles.payNowText}
@@ -286,17 +401,17 @@ class AdPaymentReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.transA.campaign_id,
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   campaign_budget: state.transA.campaign_budget,
   userInfo: state.auth.userInfo,
   campaign: state.googleAds,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  save_google_campaign_steps: value =>
-    dispatch(actionCreators.save_google_campaign_steps(value))
+const mapDispatchToProps = (dispatch) => ({
+  save_google_campaign_steps: (value) =>
+    dispatch(actionCreators.save_google_campaign_steps(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdPaymentReview);

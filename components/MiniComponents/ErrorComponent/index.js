@@ -22,14 +22,14 @@ import { showMessage } from "react-native-flash-message";
 const imageLogo = require("../../../assets/images/logo01.png");
 class ErrorComponent extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       logoImage: require("../../../assets/images/logo01.png"),
-      deepLinkChecked: false
+      deepLinkChecked: false,
     };
   }
 
@@ -38,8 +38,8 @@ class ErrorComponent extends Component {
     //On android, the deep link for optimize://main_navigator from adjust goes to the dashboard, if there is no userInfo
     //then the error component mounts so I check for the deep link and navigate accordingly. On iOS it just opens the app without navigating
     Linking.addEventListener("url", this.handleDeepLink);
-    Linking.getInitialURL().then(url => {
-      if (url.includes("adj")) {
+    Linking.getInitialURL().then((url) => {
+      if (url && url.includes("adj")) {
         this.handleDeepLink({ url });
       }
     });
@@ -47,15 +47,15 @@ class ErrorComponent extends Component {
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  handleDeepLink = url => {
+  handleDeepLink = (url) => {
     const { translate } = this.props.screenProps;
-    if (url.url.includes("adj")) {
+    if (url && url.url.includes("adj")) {
       if (this.props.userInfo) {
         this.props.navigation.navigate("Dashboard");
       } else {
         showMessage({
           message: translate("Please sign in first"),
-          type: "warning"
+          type: "warning",
         });
         this.props.navigation.navigate("Signin");
       }
@@ -64,7 +64,7 @@ class ErrorComponent extends Component {
   componentWillUnmount() {
     Linking.removeEventListener("url");
     this.setState({
-      deepLinkChecked: true
+      deepLinkChecked: true,
     });
     // BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -144,12 +144,12 @@ class ErrorComponent extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+const mapStateToProps = (state) => ({
+  userInfo: state.auth.userInfo,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
-  logout: nav => dispatch(actionCreators.logout(nav))
+  logout: (nav) => dispatch(actionCreators.logout(nav)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorComponent);

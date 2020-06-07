@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Text, Container, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents, ScrollView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 
@@ -42,9 +42,6 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
 import CSVModal from "./CSVModal";
-
-// segment
-import segmentEventTrack from "../../segmentEventTrack";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -98,25 +95,36 @@ class CampaignDetails extends Component {
       this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
       this.props.loading !== nextProps.loading ||
       this.props.languagesListLoading !== nextProps.languagesListLoading ||
-      JSON.stringify(this.state) !== JSON.stringify(nextState)
+      JSON.stringify(this.state) !== JSON.stringify(nextState) ||
+      this.props.campaignEnded !== nextProps.campaignEnded
     );
   }
 
   handleStartDatePicked = (date) => {
+    analytics.track(`a_ad_start_date`, {
+      campaign_start_date: date,
+      source: "ad_detail",
+      source_action: "a_ad_start_date",
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      campaign_start_date: date,
+    });
     this.setState({
       start_time: date,
     });
   };
   handleEndDatePicked = (date) => {
+    analytics.track(`a_ad_end_date`, {
+      campaign_end_date: date,
+      source: "ad_detail",
+      source_action: "a_ad_end_date",
+      campaign_id: this.props.selectedCampaign.campaign_id,
+      campaign_end_date: date,
+    });
     this.setState({
       end_time: date,
     });
   };
   handleToggle = (status) => {
-    segmentEventTrack(
-      `Button pressed to ${status} campiagn`,
-      this.props.selectedCampaign
-    );
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
@@ -147,6 +155,13 @@ class CampaignDetails extends Component {
   };
 
   showModal = (visible) => {
+    analytics.track(`ad_status_modal`, {
+      campaign_status: "rejected",
+      visible,
+      source: "campaign_detail",
+      campaign_channel: "snapchat",
+      source_action: "a_update_campaign_status",
+    });
     this.setState({ modalVisible: visible });
   };
 
@@ -198,6 +213,11 @@ class CampaignDetails extends Component {
   };
 
   showCSVModal = (isVisible) => {
+    analytics.track(`csv_modal`, {
+      source: "ad_detail",
+      source_action: "a_toggle_csv_modal",
+      campaign_channel: "snapchat",
+    });
     this.setState({ CSVModalVisible: isVisible });
   };
   campaignEndedOrNot = (campaign) => {
@@ -220,6 +240,51 @@ class CampaignDetails extends Component {
       maxHeight: hp(87) - layout.height,
     });
   };
+  onDidFocus = () => {
+    const { translate } = this.props.screenProps;
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    if (
+      (!this.props.loading &&
+        !this.props.languagesListLoading &&
+        !this.props.selectedCampaign) ||
+      this.props.campaignError ||
+      this.props.languagesListError
+    ) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        campaign_channel: "snapchat",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: "error",
+        error_description:
+          (!this.props.loading &&
+            !this.props.languagesListLoading &&
+            !this.props.selectedCampaign) ||
+          this.props.campaignError ||
+          this.props.languagesListError,
+      });
+    }
+
+    if (this.props.selectedCampaign) {
+      analytics.track(`campaign_detail`, {
+        source,
+        source_action,
+        campaign_channel: "snapchat",
+        timestamp: new Date().getTime(),
+        device_id: this.props.screenProps.device_id,
+        campaign_id: this.props.selectedCampaign.campaign_id,
+      });
+    }
+  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -231,11 +296,14 @@ class CampaignDetails extends Component {
       this.props.languagesListError
     ) {
       return (
-        <ErrorComponent
-          loading={loading}
-          navigation={this.props.navigation}
-          screenProps={this.props.screenProps}
-        />
+        <>
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <ErrorComponent
+            loading={loading}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        </>
       );
     } else {
       let selectedCampaign = null;
@@ -408,15 +476,7 @@ class CampaignDetails extends Component {
             style={[{ height: "100%" }]}
             forceInset={{ bottom: "never", top: "always" }}
           >
-            <NavigationEvents
-              onDidFocus={() => {
-                if (this.props.selectedCampaign) {
-                  Segment.screenWithProperties("Campaign Details", {
-                    campaign_id: this.props.selectedCampaign.campaign_id,
-                  });
-                }
-              }}
-            />
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <Container style={[styles.container]}>
               <View
                 style={[
@@ -456,6 +516,10 @@ class CampaignDetails extends Component {
                   fontSize: 15,
                   paddingTop: 3,
                   flex: 1,
+                }}
+                segment={{
+                  source: "campaign_detail",
+                  source_action: "a_go_back",
                 }}
                 campaignStatus={loading ? null : selectedCampaign.status}
               />
@@ -599,6 +663,7 @@ class CampaignDetails extends Component {
                         navigation={this.props.navigation}
                         loading={loading}
                         screenProps={this.props.screenProps}
+                        source={"campaign_detail"}
                       />
                       <AudienceOverview
                         screenProps={this.props.screenProps}
@@ -632,46 +697,48 @@ class CampaignDetails extends Component {
                                   </Text>
                                 </View>
                               ) : (
-                                <View padder style={styles.toggleSpace}>
-                                  <View style={{ alignSelf: "center" }}>
-                                    {selectedCampaign && (
-                                      <Toggle
-                                        buttonTextStyle={
-                                          styles.switchButtonText
-                                        }
-                                        buttonText={
-                                          this.state.toggleText !== "PAUSED"
-                                            ? "LIVE"
-                                            : "PAUSED"
-                                        }
-                                        containerStyle={styles.toggleStyle}
-                                        switchOn={this.state.toggle}
-                                        onPress={() => {
-                                          this.state.toggle
-                                            ? this.setState({
-                                                modalVisible: true,
-                                              })
-                                            : this.updateStatus();
-                                        }}
-                                        backgroundColorOff="rgba(255,255,255,0.1)"
-                                        backgroundColorOn="rgba(255,255,255,0.1)"
-                                        circleColorOff="#FF9D00"
-                                        circleColorOn="#66D072"
-                                        duration={500}
-                                        circleStyle={styles.switchCircle}
-                                      />
-                                    )}
-                                    <Text style={styles.statusText}>
-                                      {translate(
-                                        `${
-                                          this.state.toggle
-                                            ? "Tap to pause AD"
-                                            : "Tap to activate AD"
-                                        }`
+                                !this.props.campaignEnded && (
+                                  <View padder style={styles.toggleSpace}>
+                                    <View style={{ alignSelf: "center" }}>
+                                      {selectedCampaign && (
+                                        <Toggle
+                                          buttonTextStyle={
+                                            styles.switchButtonText
+                                          }
+                                          buttonText={
+                                            this.state.toggleText !== "PAUSED"
+                                              ? "LIVE"
+                                              : "PAUSED"
+                                          }
+                                          containerStyle={styles.toggleStyle}
+                                          switchOn={this.state.toggle}
+                                          onPress={() => {
+                                            this.state.toggle
+                                              ? this.setState({
+                                                  modalVisible: true,
+                                                })
+                                              : this.updateStatus();
+                                          }}
+                                          backgroundColorOff="rgba(255,255,255,0.1)"
+                                          backgroundColorOn="rgba(255,255,255,0.1)"
+                                          circleColorOff="#FF9D00"
+                                          circleColorOn="#66D072"
+                                          duration={500}
+                                          circleStyle={styles.switchCircle}
+                                        />
                                       )}
-                                    </Text>
+                                      <Text style={styles.statusText}>
+                                        {translate(
+                                          `${
+                                            this.state.toggle
+                                              ? "Tap to pause AD"
+                                              : "Tap to activate AD"
+                                          }`
+                                        )}
+                                      </Text>
+                                    </View>
                                   </View>
-                                </View>
+                                )
                               )
                             ) : null)}
                         </View>

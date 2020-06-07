@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, ScrollView } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
+import InputScrollView from "react-native-input-scroll-view";
 import AddTeamIcon from "../../../../assets/SVGs/AddTeam";
 import Header from "../../../MiniComponents/Header";
 import AddMember from "../AddMemberButton";
@@ -16,6 +16,7 @@ import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
 import segmentEventTrack from "../../../segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import analytics from "@segment/analytics-react-native";
 
 class AddOrEditTeamMember extends Component {
   state = {
@@ -29,7 +30,7 @@ class AddOrEditTeamMember extends Component {
     isVisible: false,
     firstNameError: "",
     lastNameError: "",
-    emailError: ""
+    emailError: "",
   };
   translate = this.props.screenProps.translate;
 
@@ -40,7 +41,7 @@ class AddOrEditTeamMember extends Component {
         firstName: teamMeber.firstname,
         lastName: teamMeber.lastname,
         email: teamMeber.email,
-        userRole: parseInt(teamMeber.user_role)
+        userRole: parseInt(teamMeber.user_role),
       });
     }
   }
@@ -71,7 +72,7 @@ class AddOrEditTeamMember extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
@@ -80,13 +81,16 @@ class AddOrEditTeamMember extends Component {
    *
    * @param {Int} userRole a number to indicate which user role is selected
    */
-  handleMemberType = userRole => {
-    segmentEventTrack("Changed Member Type User Role", {
-      userRole: userRole === this.state.userRole ? 0 : userRole
+  handleMemberType = (userRole) => {
+    analytics.track(`a_change_team_member_role`, {
+      source: "team_management_member_details",
+      source_action: "a_change_team_member_role",
+      timestamp: new Date().getTime(),
+      user_role: userRole === this.state.userRole ? 0 : userRole,
     });
     this.setState({
       //if none of the switches are selected then set the state to 0
-      userRole: userRole === this.state.userRole ? 0 : userRole
+      userRole: userRole === this.state.userRole ? 0 : userRole,
     });
   };
 
@@ -101,7 +105,7 @@ class AddOrEditTeamMember extends Component {
       userRole,
       emailError,
       lastNameError,
-      firstNameError
+      firstNameError,
     } = this.state;
     let currentUserEmail = email === this.props.userInfo.email;
     //if userRole is 0 then it means none of the switches are selected
@@ -112,7 +116,7 @@ class AddOrEditTeamMember extends Component {
         message: this.translate(
           "You can't add yourself to the same business account."
         ),
-        type: "warning"
+        type: "warning",
       });
     } else if (
       !firstNameError &&
@@ -124,17 +128,20 @@ class AddOrEditTeamMember extends Component {
         let adjustClientTracker = new AdjustEvent("2eqii1");
         Adjust.trackEvent(adjustClientTracker);
       }
-      this.props.inviteTeamMember({
-        firstname: firstName,
-        lastname: lastName,
-        email,
-        user_role: userRole,
-        businessid: this.props.mainBusiness.businessid
-      });
+      this.props.inviteTeamMember(
+        {
+          firstname: firstName,
+          lastname: lastName,
+          email,
+          user_role: userRole,
+          businessid: this.props.mainBusiness.businessid,
+        },
+        false
+      );
     } else {
       showMessage({
         message: this.translate("Please complete all of the fields"),
-        type: "warning"
+        type: "warning",
       });
       //incomplete is set to signal the child components to play the animations of shaking
       this.setState({ incomplete: true });
@@ -145,7 +152,6 @@ class AddOrEditTeamMember extends Component {
    * Handles updating an existing team member, mostly same concept as handleInvite
    */
   updateMember = () => {
-    segmentEventTrack("Button Clicked to update member");
     //Receives an object for the member from the list of team members
     let teamMember = this.props.navigation.getParam("member", {});
     let { userRole } = this.state;
@@ -155,15 +161,15 @@ class AddOrEditTeamMember extends Component {
       this.props.updateTeamMembers({
         userrole: userRole,
         userid: teamMember.userid,
-        businessid: this.props.mainBusiness.businessid
+        businessid: this.props.mainBusiness.businessid,
       });
     } else {
       segmentEventTrack("Error updating team member", {
-        error_manage_team: "Please Choose a role for the team member"
+        error_manage_team: "Please Choose a role for the team member",
       });
       showMessage({
         message: this.translate("Please Choose a role for the team member"),
-        type: "warning"
+        type: "warning",
       });
       //incomplete is set to signal the child components to play the animations of shaking
       this.setState({ incomplete: true });
@@ -178,23 +184,43 @@ class AddOrEditTeamMember extends Component {
       [
         {
           text: this.translate("Cancel"),
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: this.translate("Delete"),
           onPress: () => {
-            segmentEventTrack("Button clicked Confirm to delete Member");
             this.props.deleteTeamMembers(
               this.props.navigation.getParam("member", {}).userid,
               this.props.mainBusiness.businessid,
               this.props.navigation
             );
           },
-          style: "destructive"
-        }
+          style: "destructive",
+        },
       ]
       // { cancelable: false }
     );
+  };
+
+  onDidFocus = () => {
+    let teamMeber = this.props.navigation.getParam("member", {});
+
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`team_management_member_details`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+      new_team_member: this.props.navigation.getParam("editTeamMember", false),
+      ...teamMeber,
+    });
   };
 
   render() {
@@ -207,7 +233,7 @@ class AddOrEditTeamMember extends Component {
       userRoleError,
       firstNameError,
       lastNameError,
-      emailError
+      emailError,
     } = this.state;
     let editTeamMember = this.props.navigation.getParam(
       "editTeamMember",
@@ -219,19 +245,22 @@ class AddOrEditTeamMember extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screen(
-              editTeamMember ? "Edit team member" : "Add team member"
-            );
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
           title={editTeamMember ? "Edit team member" : "Add team member"}
           navigation={this.props.navigation}
+          segment={{
+            source: "team_management_member_details",
+            source_action: "a_go_back",
+          }}
         />
-        <Content contentContainerStyle={{ flex: 1 }}>
+        <InputScrollView
+          {...ScrollView.props}
+          contentContainerStyle={{
+            paddingHorizontal: 26,
+          }}
+        >
           <AddTeamIcon
             style={{ alignSelf: "center", marginBottom: 10 }}
             width={50}
@@ -246,7 +275,7 @@ class AddOrEditTeamMember extends Component {
               firstNameError,
               lastNameError,
               incomplete,
-              editTeamMember
+              editTeamMember,
             },
             this.setValue,
             this.getValidInfo,
@@ -273,52 +302,66 @@ class AddOrEditTeamMember extends Component {
           >
             {MemberTypes(this.handleMemberType, userRole, this.translate)}
           </Animatable.View>
-        </Content>
 
-        {editTeamMember ? (
-          <View style={{ flex: 0.25 }}>
-            <Button onPress={this.updateMember} style={styles.deleteTeamMember}>
-              <Text uppercase style={styles.deleteText}>
-                {this.translate("Update")}
-              </Text>
-            </Button>
-            <Button
-              onPress={this.handleDelete}
-              style={[
-                styles.deleteTeamMember,
-                { backgroundColor: globalColors.red }
-              ]}
+          {editTeamMember && (
+            <View
+              style={{
+                flex: 0.25,
+              }}
             >
-              <Text uppercase style={[styles.deleteText]}>
-                {this.translate("Delete")}
-              </Text>
-            </Button>
-          </View>
-        ) : (
+              <Button
+                onPress={this.updateMember}
+                style={styles.deleteTeamMember}
+              >
+                <Text uppercase style={styles.deleteText}>
+                  {this.translate("Update")}
+                </Text>
+              </Button>
+              <Button
+                onPress={this.handleDelete}
+                style={[
+                  styles.deleteTeamMember,
+                  { backgroundColor: globalColors.red },
+                ]}
+              >
+                <Text uppercase style={[styles.deleteText]}>
+                  {this.translate("Delete")}
+                </Text>
+              </Button>
+            </View>
+          )}
+        </InputScrollView>
+
+        {!editTeamMember && (
           <AddMember
+            screenProps={this.props.screenProps}
             translate={this.translate}
             sendInvite={true}
             submitFunction={this.handleInvite}
+            navigation={this.props.navigation}
           />
         )}
       </SafeAreaView>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   businessAccounts: state.account.businessAccounts,
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  numberOfTeamAdmins: state.account.numberOfTeamAdmins
+  numberOfTeamAdmins: state.account.numberOfTeamAdmins,
 });
-const mapDispatchToProps = dispatch => ({
-  inviteTeamMember: info => dispatch(actionCreators.inviteTeamMember(info)),
-  updateTeamMembers: memberInfo =>
+const mapDispatchToProps = (dispatch) => ({
+  inviteTeamMember: (info, resend) =>
+    dispatch(actionCreators.inviteTeamMember(info, resend)),
+  updateTeamMembers: (memberInfo) =>
     dispatch(actionCreators.updateTeamMembers(memberInfo)),
-  updateTeamMemberForBusinesses: memberInfo =>
+  updateTeamMemberForBusinesses: (memberInfo) =>
     dispatch(actionCreators.updateTeamMemberForBusinesses(memberInfo)),
   deleteTeamMembers: (memberId, businessid, navigation) =>
-    dispatch(actionCreators.deleteTeamMembers(memberId, businessid, navigation))
+    dispatch(
+      actionCreators.deleteTeamMembers(memberId, businessid, navigation)
+    ),
 });
 
 export default connect(
@@ -334,8 +377,8 @@ export default connect(
 //   });
 // }
 
-/*To add members to multiple accounts at the same time, commented for now in 
-    case we want to use it in the future   
+/*To add members to multiple accounts at the same time, commented for now in
+    case we want to use it in the future
 
   setModalVisible = isVisible => {
     this.setState({ isVisible });

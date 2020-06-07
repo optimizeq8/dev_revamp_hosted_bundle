@@ -3,10 +3,12 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler
+  BackHandler,
+  ScrollView,
 } from "react-native";
-import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
+import InputScrollView from "react-native-input-scroll-view";
 import * as Segment from "expo-analytics-segment";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 //Redux
@@ -27,12 +29,12 @@ import globalStyles from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
-import InputFeild from "../../MiniComponents/InputField";
-import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
+import InputFeild from "../../MiniComponents/InputFieldNew";
+import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
 
 class PersonalInfo extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -49,7 +51,7 @@ class PersonalInfo extends Component {
       inputE: false,
       firstnameError: "",
       lastnameError: "",
-      emailError: ""
+      emailError: "",
     };
   }
   componentWillUnmount() {
@@ -65,11 +67,24 @@ class PersonalInfo extends Component {
     this.setState({
       phoneNum: "+" + this.props.userInfo.mobile,
       valid: true,
-      countryCode: countryCode
+      countryCode: countryCode,
     });
-    Segment.screenWithProperties("Personal Info", {
-      category: "User Menu"
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_personal_details`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
     });
+    // Segment.screenWithProperties("Personal Info", {
+    //   category: "User Menu"
+    // });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -80,7 +95,7 @@ class PersonalInfo extends Component {
       phoneNum: number,
       countryCode: countryCode,
       valid,
-      type
+      type,
     });
     // }
   };
@@ -95,7 +110,7 @@ class PersonalInfo extends Component {
       firstnameError,
       lastnameError,
       emailError,
-      emailErrorMandatory
+      emailErrorMandatory,
     });
     const { translate } = this.props.screenProps;
     // validate all fields and shows error if any
@@ -118,7 +133,7 @@ class PersonalInfo extends Component {
                   ? "last name"
                   : (emailError || emailErrorMandatory) && "email"
               }`
-        )
+        ),
       });
       return false;
     } else return true;
@@ -141,16 +156,30 @@ class PersonalInfo extends Component {
             firstname: this.state.firstname,
             lastname: this.state.lastname,
             country_code,
-            mobile
+            mobile,
           },
           this.props.navigation
         );
-      } else
+      } else {
+        analytics.track(`a_update_personal_info`, {
+          source: "open_personal_details",
+          source_action: "a_update_personal_info",
+          action_status: "failure",
+          error_description: "No changes to update",
+        });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
-          position: "top"
+          position: "top",
         });
+      }
+    } else {
+      analytics.track(`a_update_personal_info`, {
+        source: "open_personal_details",
+        source_action: "a_update_personal_info",
+        action_status: "failure",
+        error_description: "Please complete required fields",
+      });
     }
   };
 
@@ -167,7 +196,7 @@ class PersonalInfo extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   render() {
@@ -181,93 +210,83 @@ class PersonalInfo extends Component {
           screenProps={this.props.screenProps}
           title={"Personal Info"}
           navigation={this.props.navigation}
+          segment={{
+            source: "open_personal_details",
+            source_action: "a_go_back",
+          }}
         />
-
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.mainCard}>
-            <KeyboardShift>
-              {() => (
-                <View style={styles.contentContainer}>
-                  <View style={styles.dataContainer}>
-                    <View style={styles.fullNameView}>
-                      <InputFeild
-                        key={"Full Name"}
-                        getValidInfo={this.getValidInfo}
-                        setValue={this.setValue}
-                        incomplete={false}
-                        translate={this.props.screenProps.translate}
-                        stateName1="firstname"
-                        stateName2="lastname"
-                        label="Full name"
-                        placeholder1="First Name"
-                        placeholder2="Last Name"
-                        value={this.state.firstname}
-                        value2={this.state.lastname}
-                        valueError1={this.state.firstnameError}
-                        valueError2={this.state.lastnameError}
-                        icon={PersonTransparentIcon}
-                        disabled={this.props.loadingUpdateInfo}
-                        maxLength={30}
-                      />
-                    </View>
-                    <View style={styles.mobileView}>
-                      <View style={[styles.labelView]}>
-                        <Text uppercase style={[styles.inputLabel]}>
-                          {translate("Mobile No")}
-                        </Text>
-                      </View>
-
-                      <PhoneNoField
-                        disabled={this.props.loadingUpdateInfo}
-                        screenProps={this.props.screenProps}
-                        valid={this.state.valid}
-                        changeNo={this.changePersonalNo}
-                        phoneNum={this.state.phoneNum}
-                      />
-                    </View>
-                    <InputFeild
-                      disabled={this.props.loadingUpdateInfo}
-                      incomplete={false}
-                      translate={this.props.screenProps.translate}
-                      stateName1="email"
-                      label="Email"
-                      placeholder1="Enter their email"
-                      value={this.state.email}
-                      valueError1={this.state.emailError}
-                      icon={EmailTransparentIcon}
-                      setValue={this.setValue}
-                      getValidInfo={this.getValidInfo}
-                      key={"Email"}
-                    />
-                  </View>
-
-                  {this.props.loadingUpdateInfo ? (
-                    <CheckMarkLoading
-                      style={{ top: "100%", width: 60, height: 60 }}
-                    />
-                  ) : (
-                    <LowerButton
-                      checkmark
-                      bottom={-20}
-                      function={this._handleSubmission}
-                    />
-                  )}
-                </View>
-              )}
-            </KeyboardShift>
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.mainCard}>
+          <InputScrollView
+            {...ScrollView.props}
+            contentContainerStyle={[styles.businessView]}
+          >
+            <InputFeild
+              key={"Full Name"}
+              getValidInfo={this.getValidInfo}
+              setValue={this.setValue}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="firstname"
+              stateName2="lastname"
+              label="Full name"
+              placeholder1="First Name"
+              placeholder2="Last Name"
+              value={this.state.firstname}
+              value2={this.state.lastname}
+              valueError1={this.state.firstnameError}
+              valueError2={this.state.lastnameError}
+              icon={PersonTransparentIcon}
+              disabled={this.props.loadingUpdateInfo}
+              maxLength={30}
+            />
+            <InputFeild
+              disabled={this.props.loadingUpdateInfo}
+              incomplete={false}
+              translate={this.props.screenProps.translate}
+              stateName1="email"
+              label="Email"
+              placeholder1="Enter their email"
+              value={this.state.email}
+              valueError1={this.state.emailError}
+              icon={EmailTransparentIcon}
+              setValue={this.setValue}
+              getValidInfo={this.getValidInfo}
+              key={"Email"}
+            />
+            <View style={styles.marginVertical}>
+              <PhoneNoField
+                disabled={this.props.loadingUpdateInfo}
+                screenProps={this.props.screenProps}
+                valid={this.state.valid}
+                changeNo={this.changePersonalNo}
+                phoneNum={this.state.phoneNum}
+                label={"Mobile No"}
+              />
+            </View>
+            {this.props.loadingUpdateInfo ? (
+              <CheckMarkLoading
+                style={{ top: "100%", width: 60, height: 60 }}
+              />
+            ) : (
+              <LowerButton
+                checkmark
+                bottom={-10}
+                function={this._handleSubmission}
+              />
+            )}
+          </InputScrollView>
+        </View>
       </SafeAreaView>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  loadingUpdateInfo: state.auth.loadingUpdateInfo
+  loadingUpdateInfo: state.auth.loadingUpdateInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation))
+    dispatch(actionCreators.updateUserInfo(info, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);

@@ -3,7 +3,7 @@ import { View, ScrollView, BackHandler, Text } from "react-native";
 import InputScrollView from "react-native-input-scroll-view";
 
 import { Item, Input } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -21,12 +21,12 @@ import styles from "./styles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
-import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
-import segmentEventTrack from "../../segmentEventTrack";
+import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
+import InputField from "../../MiniComponents/InputFieldNew";
 
 class RegisterForm extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ class RegisterForm extends Component {
       showChangeInstaHandle: false,
       submissionLoading: false,
       googlemaplink: "",
-      googleMapLinkError: null
+      googleMapLinkError: null,
     };
   }
   componentWillUnmount() {
@@ -60,7 +60,7 @@ class RegisterForm extends Component {
       insta_handle,
       googlemaplink,
       whatsappnumber,
-      callnumber
+      callnumber,
     } = this.props.mainBusiness;
     const countryCode =
       callnumber && callnumber !== "" && callnumber.substring(0, 3);
@@ -71,7 +71,7 @@ class RegisterForm extends Component {
       googlemaplink,
       insta_handle,
       whatsappnumber:
-        whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : ""
+        whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
     });
     // Segment.screenWithProperties("Personal Info", {
     //   category: "User Menu"
@@ -86,7 +86,7 @@ class RegisterForm extends Component {
       phoneNum: number,
       countryCode: countryCode,
       valid,
-      type
+      type,
     });
     // }
   };
@@ -106,21 +106,38 @@ class RegisterForm extends Component {
         whatsappnumber,
         insta_handle: this.state.insta_handle,
         callnumber,
-        googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : ""
+        googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : "",
       };
-      segmentEventTrack("Submit website regsiter", info);
+
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
+    } else {
+      analytics.track(`a_submit_my_website_detail`, {
+        source: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        new: true,
+        action_status: "failure",
+        error_description:
+          this.props.errorInstaHandle ||
+          this.state.insta_handleError ||
+          this.state.googleMapLinkError,
+      });
     }
   };
 
   _handleSubmissionUpdate = () => {
     const { translate } = this.props.screenProps;
     const valid = this.validate();
-    if (!valid) {
-      segmentEventTrack("Error on Submit update website information", {
-        error_insta_handle:
-          this.props.errorInstaHandleMessage || this.state.insta_handleError,
-        error_googlemaplink: this.state.googleMapLinkError
+    if (!valid || this.props.errorInstaHandle) {
+      analytics.track(`a_error_form`, {
+        source: "my_website_detail",
+        error_page: "my_website_detail",
+        source_action: "a_submit_my_website_detail",
+        new: false,
+        action_status: "failure",
+        error_description:
+          this.props.errorInstaHandle ||
+          this.state.insta_handleError ||
+          this.state.googleMapLinkError,
       });
     } else if (valid && !this.props.errorInstaHandle) {
       const whatsappnumber =
@@ -163,54 +180,71 @@ class RegisterForm extends Component {
           callnumber,
           googlemaplink: this.state.googlemaplink
             ? this.state.googlemaplink
-            : ""
+            : "",
         };
-        segmentEventTrack("Submit update website information", info);
+
         this.props.updateWebInfoForBusiness(info, false);
-      } else
+      } else {
+        analytics.track(`a_error_form`, {
+          source: "my_website_detail",
+          source_action: "a_submit_my_website_detail",
+          new: false,
+          action_status: "failure",
+          error_description: "No changes to update",
+        });
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
-          position: "top"
+          position: "top",
         });
+      }
     }
   };
 
   changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
-    if (validNumber) {
-      segmentEventTrack("Change WhatsApp number", value);
-    }
+    analytics.track(`a_business_whatsapp`, {
+      source: "my_website_detail",
+      source_action: "a_business_whatsapp",
+      new: this.props.edit ? false : true,
+      whatsappnumber: value,
+      action_status: validNumber ? "success" : "failure",
+    });
+
     this.setState({
       whatsappnumber: validNumber ? value : "",
-      validWhatsAppNumber: validNumber
+      validWhatsAppNumber: validNumber,
     });
   };
   changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
-    if (validNumber) {
-      segmentEventTrack("Change Call number", value);
-    }
+    analytics.track(`a_business_callnumber`, {
+      source: "my_website_detail",
+      source_action: "a_business_callnumber",
+      new: this.props.edit ? false : true,
+      callnumber: value,
+      action_status: validNumber ? "success" : "failure",
+    });
     this.setState({
       callnumber: validNumber ? value : "",
-      validCallNumber: validNumber
+      validCallNumber: validNumber,
     });
   };
-  changeInstaHandle = value => {
+  changeInstaHandle = (value) => {
     this.setState({
-      insta_handle: value
+      insta_handle: value,
     });
   };
 
-  changeGoogleMapLocation = value => {
+  changeGoogleMapLocation = (value) => {
     // truncate before https: everything
     if (value.includes("https:")) {
       const link = value.substring(value.indexOf("https:") + 1);
       // console.log("link", "h" + link);
       this.setState({
-        googlemaplink: value === "" ? "" : "h" + link
+        googlemaplink: value === "" ? "" : "h" + link,
       });
     } else {
       this.setState({
-        googlemaplink: value
+        googlemaplink: value,
       });
     }
   };
@@ -224,14 +258,14 @@ class RegisterForm extends Component {
         this.state.googlemaplink
       );
     this.setState({
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (googleMapLinkError) {
       showMessage({
         message: translate("Please provide a valid location link"),
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
@@ -254,7 +288,7 @@ class RegisterForm extends Component {
 
     this.setState({
       insta_handleError,
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (insta_handleError || googleMapLinkError) {
       showMessage({
@@ -265,7 +299,7 @@ class RegisterForm extends Component {
           : "",
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
@@ -273,9 +307,43 @@ class RegisterForm extends Component {
     }
   };
 
-  setModalInstagramChangedVisible = value => {
+  setModalInstagramChangedVisible = (value) => {
     this.setState({
-      showChangeInstaHandle: value
+      showChangeInstaHandle: value,
+    });
+  };
+
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+
+    this.setState({ ...state });
+  };
+
+  getValidInfo = async (stateError, validWrap) => {
+    let state = {};
+    if (stateError === "insta_handleError") {
+      analytics.track(`a_business_insta_handle`, {
+        source: "my_website_detail",
+        source_action: "a_business_insta_handle",
+        new: this.props.edit ? false : true,
+        insta_handle: this.state.insta_handle,
+      });
+      await this.props.verifyInstagramHandle(this.state.insta_handle);
+      if (this.props.errorInstaHandle) {
+        analytics.track(`a_error_form`, {
+          error_page: "my_website_detail",
+          source: "my_website_detail",
+          source_action: "a_business_insta_handle",
+          new: this.props.edit ? false : true,
+          insta_handle: this.state.insta_handle,
+          error_description: this.props.errorInstaHandleMessage,
+        });
+      }
+    }
+    state[stateError] = validWrap;
+    this.setState({
+      ...state,
     });
   };
   render() {
@@ -285,92 +353,46 @@ class RegisterForm extends Component {
         {...ScrollView.props}
         contentContainerStyle={[styles.whatsAppDetailContainer]}
       >
-        <View style={styles.marginVertical}>
-          <View style={[styles.callToActionLabelView]}>
-            <Text style={[styles.inputLabel]}>{translate("instagram")}*</Text>
-          </View>
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                paddingHorizontal: 0
-              }
-              //   this.state.insta_handleError
-              //     ? GlobalStyles.redBorderColor
-              //     : GlobalStyles.transparentBorderColor
-            ]}
-          >
-            <InstagramIcon
-              width={25}
-              height={25}
-              style={{ marginLeft: 15 }}
-              fill="#FFF"
-            />
-            <Input
-              style={styles.inputtext}
-              placeholder="Handle"
-              placeholderTextColor="#fff"
-              value={this.state.insta_handle}
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value => this.changeInstaHandle(value)}
-              onBlur={async () => {
-                segmentEventTrack("Change Instagram Handle", {
-                  insta_handle: this.state.insta_handle
-                });
-                this.validate();
-                await this.props.verifyInstagramHandle(this.state.insta_handle);
-                if (this.props.errorInstaHandle) {
-                  segmentEventTrack("Error on blurinsta handle", {
-                    error_insta_handle: this.props.errorInstaHandleMessage
-                  });
-                }
-              }}
-            />
-            {this.props.errorInstaHandle && (
-              <ErrorIcon
-                width={25}
-                height={25}
-                style={{ marginRight: 10 }}
-                fill={"#EA514B"}
-              />
-            )}
-            {!this.props.errorInstaHandle && (
-              <SuccessIcon width={25} height={25} style={{ marginRight: 10 }} />
-            )}
-          </Item>
+        <InputField
+          // disabled={this.props.loadingUpdateInfo}
+          // customStyles={{ width: "100%", marginLeft: 0 }}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="insta_handle"
+          label="instagram"
+          placeholder1="Handle"
+          value={this.state.insta_handle}
+          valueError1={this.state.insta_handleError}
+          icon={InstagramIcon}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          key={"insta_handle"}
+          compulsory={true}
+        />
+
+        {this.props.errorInstaHandle && (
+          <ErrorIcon
+            width={25}
+            height={25}
+            style={styles.errorIcon}
+            fill={"#EA514B"}
+          />
+        )}
+        {!this.props.errorInstaHandle && (
+          <SuccessIcon width={25} height={25} style={styles.errorIcon} />
+        )}
+        {this.props.errorInstaHandleMessage && (
           <Text style={styles.instagramErrorText}>
-            {this.props.errorInstaHandleMessage &&
-              translate(
-                `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
-                  this.props.errorInstaHandleMessage.indexOf(" ") + 1
-                )}`,
-                { insta_handle: this.state.insta_handle }
-              )}
+            {translate(
+              `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+                this.props.errorInstaHandleMessage.indexOf(" ") + 1
+              )}`,
+              { insta_handle: this.state.insta_handle }
+            )}
           </Text>
-        </View>
+        )}
+
         <View style={styles.marginVertical}>
-          <View
-            style={[
-              styles.callToActionLabelView,
-              {
-                backgroundColor: "rgba(0,0,0,0.15)"
-              }
-            ]}
-          >
-            <Text
-              style={[
-                styles.inputLabel,
-                {
-                  fontFamily: "montserrat-bold-english",
-                  marginTop: 0
-                }
-              ]}
-            >
-              {translate("WhatsApp Number")}
-            </Text>
-          </View>
           <PhoneNoField
             valid={this.state.validWhatsAppNumber}
             screenProps={this.props.screenProps}
@@ -378,20 +400,10 @@ class RegisterForm extends Component {
             phoneNum={this.state.whatsappnumber}
             changeNo={this.changeWhatsAppPhoneNo}
             invite={true}
+            label={"WhatsApp Number"}
           />
         </View>
         <View style={styles.marginVertical}>
-          <View
-            style={[
-              styles.callToActionLabelView,
-              {
-                backgroundColor: "rgba(0,0,0,0.15)"
-              }
-            ]}
-          >
-            <Text style={[styles.inputLabel]}>{translate("Phone Number")}</Text>
-          </View>
-          {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
           <PhoneNoField
             valid={this.state.validCallNumber}
             screenProps={this.props.screenProps}
@@ -399,51 +411,50 @@ class RegisterForm extends Component {
             phoneNum={this.state.callnumber}
             changeNo={this.changeCallNumberPhoneNo}
             invite={true}
+            label={"Phone Number"}
           />
         </View>
         <View style={styles.marginVertical}>
-          <View style={[styles.callToActionLabelView]}>
-            <Text style={[styles.inputLabel]}>{translate("LOCATION URL")}</Text>
-          </View>
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                paddingHorizontal: 0
-                // width: "75%"
-              }
-              //   this.state.insta_handleError
-              //     ? GlobalStyles.redBorderColor
-              //     : GlobalStyles.transparentBorderColor
-            ]}
-          >
+          <Item rounded style={[styles.input]}>
             <LocationIcon
               // width={50}
               // height={50}
-              style={{ marginLeft: 12 }}
+              style={{ marginLeft: 18 }}
               stroke={"#FFF"}
             />
-            <Input
-              style={styles.inputtext}
-              placeholder={translate("Add Location URL")}
-              placeholderTextColor="#fff"
-              value={this.state.googlemaplink}
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value => this.changeGoogleMapLocation(value)}
-              onBlur={async () => {
-                segmentEventTrack("Changed Google Map Location", {
-                  googlemaplink: this.state.googleMapLinkError
-                });
-                await this.validateUrl();
-                if (this.state.googleMapLinkError) {
-                  segmentEventTrack("Error on blur  google map location", {
-                    error_googlemaplink: this.state.googleMapLinkError
+            <View style={styles.colView}>
+              <Text style={[styles.inputLabel]}>
+                {translate("LOCATION URL")}
+              </Text>
+              <Input
+                style={styles.inputtext}
+                placeholder={translate("Add Location URL")}
+                placeholderTextColor="#fff"
+                value={this.state.googlemaplink}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={(value) => this.changeGoogleMapLocation(value)}
+                onBlur={async () => {
+                  analytics.track(`a_business_googlemaplink`, {
+                    source: "my_website_detail",
+                    source_action: "a_business_googlemaplink",
+                    new: this.props.edit ? false : true,
+                    googlemaplink: this.state.googlemaplink,
                   });
-                }
-              }}
-            />
+                  await this.validateUrl();
+                  if (this.state.googleMapLinkError) {
+                    analytics.track(`a_error_form`, {
+                      error_page: "my_website_detail",
+                      source: "my_website_detail",
+                      source_action: "a_business_googlemaplink",
+                      new: this.props.edit ? false : true,
+                      googlemaplink: this.state.insta_handle,
+                      error_description: this.state.googleMapLinkError,
+                    });
+                  }
+                }}
+              />
+            </View>
           </Item>
         </View>
         {this.props.edit ? (
@@ -467,20 +478,20 @@ class RegisterForm extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loadingUpdateInfo: state.auth.loadingUpdateInfo,
   errorInstaHandle: state.website.errorInstaHandle,
   errorInstaHandleMessage: state.website.errorInstaHandleMessage,
   productInfoId: state.website.productInfoId,
   businessLogo: state.website.businessLogo,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  verifyInstagramHandle: insta_handle =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyInstagramHandle: (insta_handle) =>
     dispatch(actionCreators.verifyInstagramHandleWebsite(insta_handle)),
   updateWebInfoForBusiness: (info, submitNextStep) =>
-    dispatch(actionCreators.updateWebInfoForBusiness(info, submitNextStep))
+    dispatch(actionCreators.updateWebInfoForBusiness(info, submitNextStep)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

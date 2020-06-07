@@ -9,35 +9,34 @@ import GreenCheckmarkIcon from "../../../assets/SVGs/GreenCheckmark.svg";
 import PlusCircleIcon from "../../../assets/SVGs/PlusCircleOutline.svg";
 import globalStyles from "../../../GlobalStyles";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
-import segmentEventTrack from "../../segmentEventTrack";
 
 export default class KeywordsSelectionList extends Component {
   constructor() {
     super();
     this.state = {
       filteredList: [],
-      keyword: ""
+      keyword: "",
     };
   }
   componentDidMount() {
     this.setState({
-      filteredList: this.props.data
+      filteredList: this.props.data,
     });
   }
   componentDidUpdate(prevProps) {
     if (prevProps.data[0] !== this.props.data[0]) {
       this.setState({
-        filteredList: this.props.data
+        filteredList: this.props.data,
       });
     }
   }
 
   render() {
     const { translate } = this.props.screenProps;
-    let list = this.state.filteredList.map(x => {
+    let list = this.state.filteredList.map((x) => {
       var found;
       if (isArray(this.props.selected)) {
-        found = !isUndefined(this.props.selected.find(l => l === x));
+        found = !isUndefined(this.props.selected.find((l) => l === x));
       } else {
         found = this.props.selected === x;
       }
@@ -64,7 +63,7 @@ export default class KeywordsSelectionList extends Component {
       );
     });
 
-    let selectedlist = this.props.selected.map(x => {
+    let selectedlist = this.props.selected.map((x) => {
       return (
         <TouchableOpacity
           key={x}
@@ -82,8 +81,8 @@ export default class KeywordsSelectionList extends Component {
                 paddingRight: 10,
                 fontSize: 11,
                 fontFamily: "montserrat-bold",
-                alignSelf: "center"
-              }
+                alignSelf: "center",
+              },
             ]}
             numberOfLines={1}
           >
@@ -103,13 +102,10 @@ export default class KeywordsSelectionList extends Component {
             placeholder={translate("Search Products") + "..."}
             style={styles.searchInputText}
             placeholderTextColor="#fff"
-            onChangeText={value => {
+            onChangeText={(value) => {
               this.setState({ keyword: value });
             }}
             onBlur={() => {
-              segmentEventTrack("Search keyword field on Blur", {
-                campaign_keyword_search: this.state.keyword
-              });
               if (
                 this.state.keyword.indexOf(" ") !== 0 &&
                 this.state.keyword !== ""
@@ -117,7 +113,11 @@ export default class KeywordsSelectionList extends Component {
                 this.props._handleSearch(
                   this.state.keyword,
                   this.props.campaign_id,
-                  this.props.businessid
+                  this.props.businessid,
+                  {
+                    source: this.props.source,
+                    source_action: "a_keywords_search",
+                  }
                 );
               }
             }}

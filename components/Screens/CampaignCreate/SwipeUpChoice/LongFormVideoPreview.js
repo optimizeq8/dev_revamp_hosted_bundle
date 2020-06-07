@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { BackHandler, View, StatusBar } from "react-native";
 import * as Segment from "expo-analytics-segment";
-import { ScreenOrientation } from "expo";
+import * as ScreenOrientation from "expo-screen-orientation";
 import { Video } from "expo-av";
 import CustomHeader from "../../../MiniComponents/Header";
 import styles from "./styles";
@@ -40,7 +40,7 @@ export default class LongFormVideoPreview extends Component {
         style={[
           styles.safeAreaContainer,
           globalStyles.blackBackgroundColor,
-          styles.safeAreaViewLongFormVideoPreview
+          styles.safeAreaViewLongFormVideoPreview,
         ]}
       >
         <NavigationEvents
@@ -51,17 +51,19 @@ export default class LongFormVideoPreview extends Component {
           actionButton={this.actionButton}
           closeButton={true}
           segment={{
-            str: "LongForm Video Preview Back Button"
+            str: "LongForm Video Preview Back Button",
+            source: "ad_swipe_up_destination",
+            source_action: "a_go_back",
           }}
         />
         <View style={styles.videoPreviewView}>
           <Video
-            ref={ref => {
+            ref={(ref) => {
               this.videoRef = ref;
             }}
             style={styles.videoStyle}
             source={{
-              uri: videoUrl
+              uri: videoUrl,
             }}
             shouldPlay={true}
             isLooping={true}

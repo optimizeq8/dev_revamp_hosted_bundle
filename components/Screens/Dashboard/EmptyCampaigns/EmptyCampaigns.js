@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
+import analytics from "@segment/analytics-react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
 
-import * as Segment from "expo-analytics-segment";
 import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
 
@@ -24,15 +23,39 @@ import Logo from "../../../../assets/SVGs/Optimize";
 export default class EmptyCampaigns extends Component {
   redirectToCampaignAdTypeOrCreateBsn = () => {
     if (this.props.mainBusiness.hasOwnProperty("businessid")) {
-      Segment.trackWithProperties("Create Campaign", {
-        category: "Campaign Creation"
+      const device_id = this.props.screenProps.device_id;
+      const { userInfo } = this.props;
+      analytics.track(`a_create_campaign`, {
+        source: "dashboard",
+        source_action: "a_create_campaign",
+        timestamp: new Date().getTime(),
+        userId: userInfo.userid,
+        device_id
       });
-      this.props.navigation.navigate("AdType");
+      this.props.navigation.navigate("AdType", {
+        source: "dashboard",
+        source_action: "a_create_campaign"
+      });
     } else {
       this.props.navigation.navigate("CreateBusinessAccount");
     }
   };
 
+  goToVerifyAccount = () => {
+    const device_id = this.props.screenProps.device_id;
+    const { userInfo } = this.props;
+    analytics.track(`a_verify_account`, {
+      source: "dashboard",
+      source_action: "a_verify_account",
+      timestamp: new Date().getTime(),
+      device_id,
+      userId: userInfo.userid
+    });
+    this.props.navigation.navigate("VerifyAccount", {
+      source: "dashboard",
+      source_action: "a_verify_account"
+    });
+  };
   render() {
     let { mainBusiness, translate, userInfo } = this.props;
     const { verified_account } = userInfo;
@@ -54,9 +77,7 @@ export default class EmptyCampaigns extends Component {
             <Text style={[styles.accountNotVerifiedText]}>
               {translate("Your account is not verified yet")}
             </Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.push("VerifyAccount")}
-            >
+            <TouchableOpacity onPress={this.goToVerifyAccount}>
               <Text style={[styles.verifyAccountText]}>
                 {translate("Verify Account")}
               </Text>
@@ -144,7 +165,10 @@ export default class EmptyCampaigns extends Component {
               <TouchableOpacity
                 style={styles.websiteCard}
                 onPress={() => {
-                  this.props.navigation.navigate("TutorialWeb");
+                  this.props.navigation.navigate("TutorialWeb", {
+                    source: "dashboard",
+                    source_action: "a_open_website_tutorial"
+                  });
                 }}
               >
                 <LinearGradient

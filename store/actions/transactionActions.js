@@ -1,22 +1,23 @@
 import axios from "axios";
+import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 
-export const setCampaignInfoForTransaction = data => {
-  return dispatch => {
+export const setCampaignInfoForTransaction = (data) => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION,
-      payload: data
+      payload: data,
     });
   };
 };
 
 export const reset_transaction_reducer = () => {
-  return dispatch => {
+  return (dispatch) => {
     return dispatch({
-      type: actionTypes.RESET_TRANSACTION_DATA
+      type: actionTypes.RESET_TRANSACTION_DATA,
     });
   };
 };
@@ -25,22 +26,22 @@ export const getTransactions = () => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`paymentHistory/${getState().account.mainBusiness.businessid}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("payment list:", data);
 
         return dispatch({
           type: actionTypes.SET_TRANSACTION_LIST,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
           message:
@@ -48,10 +49,10 @@ export const getTransactions = () => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_SET_TRANSACTION_LIST
+          type: actionTypes.ERROR_SET_TRANSACTION_LIST,
         });
       });
   };
@@ -61,23 +62,23 @@ export const getWalletAmount = (retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
 
     createBaseUrl()
       .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`, {
-        timeout: 3000
+        timeout: 3000,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
         showMessage({
           message:
@@ -90,47 +91,75 @@ export const getWalletAmount = (retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         if (retries > 0) {
           dispatch(getWalletAmount(retries - 1));
           return;
         }
         return dispatch({
-          type: actionTypes.ERROR_SET_WALLET_AMOUNT
+          type: actionTypes.ERROR_SET_WALLET_AMOUNT,
         });
       });
   };
 };
 
-export const addWalletAmount = (info, openBrowser, retries = 3) => {
+export const addWalletAmount = (
+  info,
+  openBrowser,
+  payment_mode,
+  retries = 3
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .post(
         `purchaseBusinessWalletAmount`,
         {
           ...info,
-          businessid: getState().account.mainBusiness.businessid
+          businessid: getState().account.mainBusiness.businessid,
         },
         { timeout: 10000 }
       )
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_top_up_wallet`, {
+          source: "payment_mode",
+          source_action: "a_top_up_wallet",
+          top_up_amount: info.amount,
+          mode_of_payment: payment_mode,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success ? data.message : null,
+        });
         return dispatch({
           type: actionTypes.ADD_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
       .then(() => openBrowser())
-      .catch(err => {
+      .catch((err) => {
         // console.log("addWalletAmount Error: ", err.message || err.response);
-
+        analytics.track(`a_top_up_wallet`, {
+          source: "payment_mode",
+          source_action: "a_top_up_wallet",
+          top_up_amount: info.amount,
+          mode_of_payment: payment_mode,
+          action_status: "failure",
+          error_description:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         if (retries > 0) {
           dispatch(addWalletAmount(info, openBrowser, retries - 1));
           return;
@@ -146,32 +175,32 @@ export const addWalletAmount = (info, openBrowser, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_ADD_WALLET_AMOUNT
+          type: actionTypes.ERROR_ADD_WALLET_AMOUNT,
         });
       });
   };
 };
 export const getWalletAmountInKwd = (amount, retries = 3) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`kdamount/${amount}`, { timeout: 10000 })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.GET_WALLET_AMOUNT_IN_KWD,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(
         //   "getWalletAmountInKwd Error: ",
         //   err.message || err.response
@@ -192,10 +221,10 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD
+          type: actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD,
         });
       });
   };
@@ -204,35 +233,35 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
       info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
       .post(`useWallet`, info, { timeout: 10000 })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: "info",
-          position: "top"
+          position: "top",
         });
         if (!data.success) {
           return dispatch({
             type: actionTypes.SET_TRAN_LOADING,
-            payload: false
+            payload: false,
           });
         } else
           return dispatch({
             type: actionTypes.USE_WALLET_AMOUNT,
-            payload: data
+            payload: data,
           });
       })
 
-      .catch(err => {
+      .catch((err) => {
         // console.log("useWallet Error: ", err.message);
 
         if (retries > 0) {
@@ -250,11 +279,11 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         setWalletModal(false);
         return dispatch({
-          type: actionTypes.ERROR_USE_WALLET_AMOUNT
+          type: actionTypes.ERROR_USE_WALLET_AMOUNT,
         });
       });
   };
@@ -270,7 +299,7 @@ export const removeWalletAmount = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
@@ -278,22 +307,34 @@ export const removeWalletAmount = (
 
     createBaseUrl()
       .post(`removeWallet`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
+        analytics.track(`a_remove_wallet_amount`, {
+          source: "payment_mode",
+          source_action: "a_remove_wallet_amount",
+          action_status: data.success ? "success" : "failure",
+          campaign_id,
+          campaign_channel:
+            getState().transA.channel === "google" ? "google" : "snapchat",
+        });
         return dispatch({
           type: actionTypes.REMOVE_WALLET_AMOUNT,
-          payload: data
+          payload: data,
         });
       })
       .then(() => {
-        if (goBack)
+        if (goBack) {
+          //TODO: check for google
           navigation.navigate("AdPaymentReview", {
-            names: names
+            names: names,
+            source: "payment_mode",
+            source_action: "a_remove_wallet_amount",
           });
+        }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);
         if (retries > 0) {
           removeWalletAmount(
@@ -316,10 +357,10 @@ export const removeWalletAmount = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT
+          type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT,
         });
       });
   };
@@ -329,7 +370,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
-      payload: true
+      payload: true,
     });
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
@@ -337,21 +378,59 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
     createBaseUrl()
       .post(`checkoutwithWallet`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))
+      .then((data) => {
+        analytics.track(`payment_processing`, {
+          source: "payment_mode",
+          source_action: "a_payment_processing",
+          mode_of_payment: "WALLET",
+          amount: data.amount,
+          campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
 
-      .then(data => {
-        // console.log("CHECKOUT_WITH_WALLET data", data);
-        return dispatch({
-          type: actionTypes.CHECKOUT_WITH_WALLET,
-          payload: data
+        // Update the new wallet amount for that user's profile buiness
+        data.success &&
+          analytics.identify(getState().auth.userid, {
+            wallet_amount: data.wallet_amount,
+          });
+        NavigationService.navigate("SuccessRedirect", {
+          ...data,
+          source: "payment_processing",
+          source_action: "a_payment_processing",
+          payment_mode: "WALLET",
+          checkoutwithWallet: true,
         });
       })
 
-      .catch(err => {
+      .then((data) => {
+        // console.log("CHECKOUT_WITH_WALLET data", data);
+        return dispatch({
+          type: actionTypes.CHECKOUT_WITH_WALLET,
+          payload: data,
+        });
+      })
+
+      .catch((err) => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
+        analytics.track(`payment_processing`, {
+          source: "payment_mode",
+          source_action: "a_payment_processing",
+          mode_of_payment: "WALLET",
+          campaign_id,
+          action_status: "failure",
+          error_description:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+        });
         if (retries > 0) {
           checkoutwithWallet(campaign_id, retries - 1);
           return;
@@ -367,19 +446,19 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_CHECKOUT_WITH_WALLET
+          type: actionTypes.ERROR_CHECKOUT_WITH_WALLET,
         });
       });
   };
 };
-export const filterTransactions = query => {
-  return dispatch =>
+export const filterTransactions = (query) => {
+  return (dispatch) =>
     dispatch({
       type: actionTypes.FILTER_TRANSACTION,
-      payload: query
+      payload: query,
     });
 };
 
@@ -392,7 +471,7 @@ export const payment_request_knet = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
-      payload: true
+      payload: true,
     });
     var url =
       getState().transA.channel === ""
@@ -401,20 +480,34 @@ export const payment_request_knet = (
 
     createBaseUrl()
       .get(url)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.knet_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         } else {
-          navigation.navigate("SuccessRedirect", data);
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "KNET",
+            campaign_id,
+            amount: data.amount,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null,
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing",
+            payment_mode: "KNET",
+          });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         }
       })
@@ -423,7 +516,7 @@ export const payment_request_knet = (
           openBrowser();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("payment_request_knet", err || err);
         showMessage({
           message:
@@ -431,14 +524,14 @@ export const payment_request_knet = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         closeBrowserLoading();
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -453,7 +546,7 @@ export const payment_request_credit_card = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
-      payload: true
+      payload: true,
     });
 
     var url =
@@ -463,20 +556,34 @@ export const payment_request_credit_card = (
 
     createBaseUrl()
       .post(url)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.cc_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         } else {
-          navigation.navigate("SuccessRedirect", data);
+          analytics.track(`payment_processing`, {
+            source: "payment_mode",
+            source_action: "a_payment_processing",
+            mode_of_payment: "CREDIT CARD",
+            amount: data.amount,
+            campaign_id,
+            action_status: data.success ? "success" : "failure",
+            error_description: !data.success ? data.status : null,
+          });
+          navigation.navigate("SuccessRedirect", {
+            ...data,
+            source: "payment_processing",
+            source_action: "a_payment_processing",
+            payment_mode: "CREDIT CARD",
+          });
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
+            payload: data,
           });
         }
       })
@@ -485,7 +592,7 @@ export const payment_request_credit_card = (
           openBrowser();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("payment_request_cc", err.message || err.response);
         showMessage({
           message:
@@ -493,14 +600,14 @@ export const payment_request_credit_card = (
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         closeBrowserLoading();
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
-            loading: false
-          }
+            loading: false,
+          },
         });
       });
   };
@@ -515,21 +622,21 @@ export const getWalletTransactionsHistory = () => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_WALLET_LOADING,
-      payload: true
+      payload: true,
     });
     createBaseUrl()
       .get(`walletpaymentHistory/${getState().account.mainBusiness.businessid}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("payment list:", data);
         return dispatch({
           type: actionTypes.SET_WALLET_TRANSACTION_LIST,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
           message:
@@ -537,10 +644,10 @@ export const getWalletTransactionsHistory = () => {
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
-          position: "top"
+          position: "top",
         });
         return dispatch({
-          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST
+          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST,
         });
       });
   };
