@@ -170,10 +170,10 @@ class AppChoice extends Component {
   };
 
   setModalVisible = (isVisible, os) => {
-    analytics.track(`app_select_modal`, {
+    analytics.track(`app_search_modal`, {
       source: "ad_swipe_up_destination",
       source_action: "a_toggle_app_search_modal",
-      campaign_app_os: os,
+      campaign_app_OS: os,
       visible: isVisible,
     });
     this.setState({ isVisible, appSelection: os });
