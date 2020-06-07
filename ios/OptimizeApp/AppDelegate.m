@@ -16,7 +16,6 @@
 #import <EXScreenOrientation/EXScreenOrientationViewController.h>
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
-
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -58,7 +57,6 @@
 #endif
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-
   return YES;
 }
 

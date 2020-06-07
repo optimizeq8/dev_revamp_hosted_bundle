@@ -93,18 +93,7 @@ const MixpanelSDK = new MixpanelInstance(
   false,
   false
 );
-MixpanelSDK.initialize().then((value) => {
-  console.log("MixpanelSDK.sharedInstanceWithToken", value);
-  MixpanelSDK.getDistinctId().then((value) => {
-    MixpanelSDK.identify(value).then((value) => {
-      MixpanelSDK.showInAppMessageIfAvailable();
-      MixpanelSDK.getPushRegistrationId().then((value) =>
-        console.log("android token", value)
-      );
-    });
-    console.log("getDistinctId", value);
-  });
-});
+MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
 
 // Sentry.captureException(new Error("Oops!"));
 // crash;
@@ -354,6 +343,14 @@ class App extends React.Component {
       const newPermission = await Permissions.askAsync(
         Permissions.NOTIFICATIONS
       );
+    } else {
+      let anonId = await analytics.getAnonymousId();
+      let token = await Notifications.getDevicePushTokenAsync();
+      if (Platform.OS === "android") {
+        analytics.identify(anonId, { $android_devices: [token.data] });
+      } else {
+        analytics.identify(anonId, { $ios_devices: [token.data] });
+      }
     }
   };
 
