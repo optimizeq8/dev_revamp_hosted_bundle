@@ -294,7 +294,7 @@ class GoogleAdDesign extends Component {
       },
       () => {
         if (this.state[error]) {
-          analytics.track(`a_error`, {
+          analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             error_description: this.state[error],
             source_action: `a_ad_${value}`,
@@ -435,6 +435,8 @@ class GoogleAdDesign extends Component {
               segment={{
                 str: "Google SE Design Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_design",
+                source_action: "a_go_back",
               }}
               actionButton={rejected && this.handleModalToggle}
               navigation={!rejected ? this.props.navigation : undefined}

@@ -36,7 +36,7 @@ import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 import { BudgetCards } from "./BudgetCards";
@@ -47,7 +47,7 @@ import segmentEventTrack from "../../../../segmentEventTrack";
 class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
   };
   constructor(props) {
     super(props);
@@ -59,15 +59,15 @@ class InstagramFeedAdTargetting extends Component {
           genders: [""],
           flexible_spec: [
             {
-              interests: []
-            }
+              interests: [],
+            },
           ],
           user_os: [""],
           user_device: [],
           os_version_min: "",
           os_version_max: "",
-          geo_locations: { countries: [], regions: [] }
-        }
+          geo_locations: { countries: [], regions: [] },
+        },
       },
       selectedCountriesAndRegions: [],
       filteredRegions: [],
@@ -88,7 +88,7 @@ class InstagramFeedAdTargetting extends Component {
 
       recBudget: 0,
       budgetOption: 1,
-      startEditing: true
+      startEditing: true,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -105,7 +105,7 @@ class InstagramFeedAdTargetting extends Component {
       //   );
       this.setState({
         // campaignInfo: campaign,
-        filteredLanguages: this.props.languages
+        filteredLanguages: this.props.languages,
       });
     }
   }
@@ -164,12 +164,12 @@ class InstagramFeedAdTargetting extends Component {
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: recBudget
+          lifetime_budget_micro: recBudget,
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
         value: this.formatNumber(recBudget),
-        recBudget: recBudget
+        recBudget: recBudget,
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -184,7 +184,7 @@ class InstagramFeedAdTargetting extends Component {
               ...rep,
               lifetime_budget_micro: this.props.data.campaignDateChanged
                 ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
+                : this.props.data.campaignInfo.lifetime_budget_micro,
             },
             value: this.formatNumber(
               this.props.data.campaignDateChanged
@@ -195,7 +195,7 @@ class InstagramFeedAdTargetting extends Component {
 
             budgetOption: this.props.data.campaignDateChanged
               ? 1
-              : this.props.data.budgetOption
+              : this.props.data.budgetOption,
           },
           () => {
             if (this.props.data.appChoice) {
@@ -206,7 +206,7 @@ class InstagramFeedAdTargetting extends Component {
               let rep = this.state.campaignInfo;
               rep.targeting.devices[0].os_type = navAppChoice;
               this.setState({
-                campaignInfo: rep
+                campaignInfo: rep,
               });
             }
             this._calcReach();
@@ -247,11 +247,11 @@ class InstagramFeedAdTargetting extends Component {
   //   });
   // };
 
-  onSelectedInterestsChange = selectedItems => {
+  onSelectedInterestsChange = (selectedItems) => {
     // No more used, kept for PICKER component
   };
 
-  onSelectedDevicesChange = selectedItems => {
+  onSelectedDevicesChange = (selectedItems) => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.user_device = selectedItems;
     if (selectedItems.length > 0) {
@@ -262,35 +262,35 @@ class InstagramFeedAdTargetting extends Component {
       // segmentEventTrack(`Selected No Devices`);
     }
     this.setState({
-      campaignInfo: replace
+      campaignInfo: replace,
     });
     //  !this.editCampaign &&
     this.props.save_campaign_info_instagram({
-      campaignInfo: replace
+      campaignInfo: replace,
     });
   };
-  onSelectedInterestsNamesChange = selectedItems => {
+  onSelectedInterestsNamesChange = (selectedItems) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let interestArray =
       selectedItems.length > 0 &&
-      selectedItems.map(item => {
+      selectedItems.map((item) => {
         return { name: item.name, id: item.id };
       });
     replace.targeting.flexible_spec[0].interests = interestArray;
     this.setState({});
     this.setState({
       interestNames: selectedItems,
-      campaignInfo: replace
+      campaignInfo: replace,
     });
     let names = [];
-    names = selectedItems.length > 0 && selectedItems.map(item => item.name);
+    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
     if (names && names.length > 0)
       // segmentEventTrack(`Selected Interests`, {
       //   campaign_interests_names: names.join(", ")
       // });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
-        campaignInfo: replace
+        campaignInfo: replace,
       });
   };
 
@@ -338,7 +338,7 @@ class InstagramFeedAdTargetting extends Component {
   //   this.props.save_campaign_info_instagram({ campaignInfo: replace });
   // };
 
-  onSelectedOSChange = selectedItem => {
+  onSelectedOSChange = (selectedItem) => {
     let replace = this.state.campaignInfo;
     replace.targeting.user_os = [selectedItem];
     replace.targeting.user_device = [];
@@ -349,15 +349,15 @@ class InstagramFeedAdTargetting extends Component {
     //   campaign_os_type: selectedItem === "" ? "ALL" : selectedItem
     // });
     this.setState({
-      campaignInfo: { ...replace }
+      campaignInfo: { ...replace },
     });
     //  !this.editCampaign &&
     this.props.save_campaign_info_instagram({
-      campaignInfo: { ...replace }
+      campaignInfo: { ...replace },
     });
   };
 
-  onSelectedVersionsChange = selectedItem => {
+  onSelectedVersionsChange = (selectedItem) => {
     let replace = this.state.campaignInfo;
     replace.targeting.os_version_min = selectedItem[0];
     replace.targeting.os_version_max = selectedItem[1];
@@ -366,19 +366,19 @@ class InstagramFeedAdTargetting extends Component {
     //   campaign_max_version: selectedItem[1]
     // });
     this.setState({
-      campaignInfo: { ...replace }
+      campaignInfo: { ...replace },
     });
     //  !this.editCampaign &&
     this.props.save_campaign_info_instagram({
-      campaignInfo: { ...replace }
+      campaignInfo: { ...replace },
     });
   };
-  onSelectedBudgetChange = budget => {
+  onSelectedBudgetChange = (budget) => {
     if (budget === this.state.maxValueBudget) {
       showMessage({
         message: "You can also enter your budget manually.",
         type: "success",
-        position: "top"
+        position: "top",
       });
     }
     let replace = this.state.campaignInfo;
@@ -388,11 +388,11 @@ class InstagramFeedAdTargetting extends Component {
     // });
     this.setState({
       campaignInfo: replace,
-      value: this.formatNumber(budget)
+      value: this.formatNumber(budget),
     });
     //  !this.editCampaign &&
     this.props.save_campaign_info_instagram({
-      campaignInfo: replace
+      campaignInfo: replace,
     });
   };
 
@@ -457,7 +457,7 @@ class InstagramFeedAdTargetting extends Component {
   //   }
   // };
 
-  formatNumber = num => {
+  formatNumber = (num) => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
   _handleBudget = (value, rawValue, onBlur, budgetOption) => {
@@ -470,18 +470,18 @@ class InstagramFeedAdTargetting extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue
+          lifetime_budget_micro: rawValue,
         },
         value: value,
-        budgetOption
+        budgetOption,
       });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue
+          lifetime_budget_micro: rawValue,
         },
-        budgetOption
+        budgetOption,
       });
       return true;
     } else {
@@ -500,7 +500,7 @@ class InstagramFeedAdTargetting extends Component {
             : translate("Budget can't be less than the minimum"),
           description: "$" + this.state.minValueBudget,
           type: "warning",
-          position: "top"
+          position: "top",
         });
       }
       // segmentEventTrack("Custom Campaign Budget Change", {
@@ -509,25 +509,25 @@ class InstagramFeedAdTargetting extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue
+          lifetime_budget_micro: rawValue,
         },
         value: value,
-        budgetOption
+        budgetOption,
       });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: this.state.minValueBudget
+          lifetime_budget_micro: this.state.minValueBudget,
         },
-        budgetOption
+        budgetOption,
       });
 
       return false;
     }
   };
 
-  onSelectedGenderChange = gender => {
+  onSelectedGenderChange = (gender) => {
     let replace = this.state.campaignInfo;
     replace.targeting.genders = [gender];
     // segmentEventTrack(`Selected Gender`, {
@@ -542,7 +542,7 @@ class InstagramFeedAdTargetting extends Component {
   //   this.setState({ filteredLanguages: value });
   // };
 
-  _handleSideMenuState = status => {
+  _handleSideMenuState = (status) => {
     this.setState({ sidemenustate: status }, () => {});
   };
 
@@ -560,8 +560,8 @@ class InstagramFeedAdTargetting extends Component {
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
-        regions: r.geo_locations.regions
-      }
+        regions: r.geo_locations.regions,
+      },
     };
     if (r.geo_locations.countries.length === 0) {
       delete r.geo_locations.countries;
@@ -603,7 +603,7 @@ class InstagramFeedAdTargetting extends Component {
     }
     const obj = {
       targeting: JSON.stringify(r),
-      ad_account_id: 123456789012
+      ad_account_id: 123456789012,
       //  this.props.mainBusiness.snap_ad_account_id
     };
     // console.log("obj", obj);
@@ -622,7 +622,7 @@ class InstagramFeedAdTargetting extends Component {
     }
     const obj2 = {
       targeting: JSON.stringify(totalReach),
-      ad_account_id: 123456789012
+      ad_account_id: 123456789012,
       // this.props.mainBusiness.snap_ad_account_id
     };
     // console.log("obj2", obj2);
@@ -641,7 +641,7 @@ class InstagramFeedAdTargetting extends Component {
       showMessage({
         message: translate("Please choose a country"),
         type: "warning",
-        position: "top"
+        position: "top",
       });
     }
     // segment track for error on final submit
@@ -659,7 +659,7 @@ class InstagramFeedAdTargetting extends Component {
         campaign_budget_error: validateWrapper(
           "Budget",
           this.state.campaignInfo.lifetime_budget_micro
-        )
+        ),
       });
     }
     if (
@@ -677,7 +677,7 @@ class InstagramFeedAdTargetting extends Component {
         this.state.campaignInfo.targeting.flexible_spec[0].interests.length > 0
       ) {
         interestNamesList = this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
-          interest => interest.name
+          (interest) => interest.name
         );
       }
 
@@ -728,7 +728,7 @@ class InstagramFeedAdTargetting extends Component {
       Segment.trackWithProperties("Submitted Instagram Feed Ad Details", {
         business_name: this.props.mainBusiness.businessname,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
-        campaign_id: this.props.campaign_id
+        campaign_id: this.props.campaign_id,
       });
 
       const segmentInfo = {
@@ -773,7 +773,7 @@ class InstagramFeedAdTargetting extends Component {
         campaign_instagram_interests_names:
           interestNamesList && interestNamesList.length > 0
             ? interestNamesList.join(", ")
-            : null
+            : null,
       };
       // this.props.setCampaignInfoForTransaction({
       //   campaign_id: this.props.campaign_id,
@@ -785,44 +785,44 @@ class InstagramFeedAdTargetting extends Component {
     }
   };
 
-  selectedItemsId = array => {
+  selectedItemsId = (array) => {
     if (array && array.length > 0) {
-      return array.map(item => item.id || item.key);
+      return array.map((item) => item.id || item.key);
     }
     return [];
   };
   // For picker not to crash
-  onSelectedCountryRegionChange = item => {
+  onSelectedCountryRegionChange = (item) => {
     let replace = this.state.campaignInfo;
-    let countryArrayFromSelectedArray = countries.filter(country =>
+    let countryArrayFromSelectedArray = countries.filter((country) =>
       item.includes(country.value)
     );
     let regionArrayFromSelectedArray = item;
     // check if country exist
     if (countryArrayFromSelectedArray.length > 0) {
       countryArrayFromSelectedArray = countryArrayFromSelectedArray.map(
-        country => country.value
+        (country) => country.value
       );
       // filter out regions from selected items array
       regionArrayFromSelectedArray = item.filter(
-        key => !countryArrayFromSelectedArray.includes(key)
+        (key) => !countryArrayFromSelectedArray.includes(key)
       );
     }
     replace.targeting.geo_locations.countries = countryArrayFromSelectedArray;
 
     // name the regions appropriately
-    regionArrayFromSelectedArray = allRegions.filter(reg =>
+    regionArrayFromSelectedArray = allRegions.filter((reg) =>
       regionArrayFromSelectedArray.includes(reg.key)
     );
 
     replace.targeting.geo_locations.regions = regionArrayFromSelectedArray;
-    countries.map(country => {
+    countries.map((country) => {
       // filter regionsBasedOnCountries
       let filteredRegionsOnCountry = regionArrayFromSelectedArray.filter(
-        reg => reg.country === country.value
+        (reg) => reg.country === country.value
       );
       const findOriginalRegionLength = country_regions.find(
-        cR => cR.key === country.value
+        (cR) => cR.key === country.value
       );
 
       if (
@@ -832,7 +832,7 @@ class InstagramFeedAdTargetting extends Component {
       ) {
         //  country name selcted so remove regions from regions array
         replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
-          reg => reg.country !== country.value
+          (reg) => reg.country !== country.value
         );
       } else if (
         findOriginalRegionLength &&
@@ -854,14 +854,14 @@ class InstagramFeedAdTargetting extends Component {
 
     this.setState({
       selectedCountriesAndRegions: item,
-      campaignInfo: replace
+      campaignInfo: replace,
     });
     this.props.save_campaign_info_instagram({
       campaignInfo: { ...replace },
-      selectedCountriesAndRegions: item //to save the selection of countries and regions if they resumed
+      selectedCountriesAndRegions: item, //to save the selection of countries and regions if they resumed
     });
   };
-  onSelectedCountryRegionsObjectsChange = items => {};
+  onSelectedCountryRegionsObjectsChange = (items) => {};
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -968,7 +968,7 @@ class InstagramFeedAdTargetting extends Component {
             }
             selectedVersions={[
               this.state.campaignInfo.targeting.os_version_min,
-              this.state.campaignInfo.targeting.os_version_max
+              this.state.campaignInfo.targeting.os_version_max,
             ]}
             onSelectedVersionsChange={this.onSelectedVersionsChange}
             OSType={this.state.campaignInfo.targeting.user_os[0]}
@@ -979,11 +979,11 @@ class InstagramFeedAdTargetting extends Component {
       }
     }
     let countries_names = [];
-    countries.forEach(r => {
+    countries.forEach((r) => {
       if (
         this.state.campaignInfo.targeting.geo_locations.countries &&
         this.state.campaignInfo.targeting.geo_locations.countries.find(
-          i => i === r.value
+          (i) => i === r.value
         )
       ) {
         countries_names.push(translate(r.label));
@@ -1004,7 +1004,7 @@ class InstagramFeedAdTargetting extends Component {
     // });
     if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
-        reg => reg.name
+        (reg) => reg.name
       );
     }
     regions_names = regions_names.join(", ");
@@ -1026,7 +1026,7 @@ class InstagramFeedAdTargetting extends Component {
       this.state.campaignInfo.targeting.flexible_spec[0].interests.length > 0
     ) {
       interests_names = this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
-        interest => interest.name
+        (interest) => interest.name
       );
     }
     interests_names = interests_names.join(", ");
@@ -1039,7 +1039,7 @@ class InstagramFeedAdTargetting extends Component {
         : this.props.navigation.getParam("media", "//");
     return (
       <Sidemenu
-        onChange={isOpen => {
+        onChange={(isOpen) => {
           if (isOpen === false) {
             this._handleSideMenuState(isOpen);
             this._calcReach();
@@ -1066,7 +1066,7 @@ class InstagramFeedAdTargetting extends Component {
             <View style={[styles.backgroundViewWrapper]}>
               <Video
                 source={{
-                  uri: this.editCampaign ? campaign.media : media
+                  uri: this.editCampaign ? campaign.media : media,
                 }}
                 shouldPlay
                 isLooping
@@ -1082,14 +1082,14 @@ class InstagramFeedAdTargetting extends Component {
                 styles.imageBackgroundViewWrapper,
                 this.state.sidemenustate && !I18nManager.isRTL
                   ? {
-                      borderTopRightRadius: 30
+                      borderTopRightRadius: 30,
                     }
                   : {},
                 this.state.sidemenustate && I18nManager.isRTL
                   ? {
-                      borderTopLeftRadius: 30
+                      borderTopLeftRadius: 30,
                     }
-                  : {}
+                  : {},
               ]}
             />
           ))}
@@ -1100,8 +1100,8 @@ class InstagramFeedAdTargetting extends Component {
             {
               backgroundColor: this.editCampaign
                 ? "transparent"
-                : "rgba(0,0,0,0.75)"
-            }
+                : "rgba(0,0,0,0.75)",
+            },
           ]}
           forceInset={{ bottom: "never", top: "always" }}
         >
@@ -1116,17 +1116,17 @@ class InstagramFeedAdTargetting extends Component {
                   "Dashboard",
                   "InstagramFeedAdObjective",
                   "InstagramFeedAdDesign",
-                  "InstagramFeedAdTargetting"
+                  "InstagramFeedAdTargetting",
                 ]);
               }
               Segment.screenWithProperties("Instagram Feed Ad Targeting", {
                 category: "Campaign Creation",
-                channel: "instagram"
+                channel: "instagram",
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 checkout_id: this.props.campaign_id,
                 step: 3,
-                business_name: this.props.mainBusiness.businessname
+                business_name: this.props.mainBusiness.businessname,
               });
             }}
           />
@@ -1138,8 +1138,12 @@ class InstagramFeedAdTargetting extends Component {
                 segment={{
                   str: "Instagram Feed Ad Details Back Button",
                   obj: {
-                    businessname: this.props.mainBusiness.businessname
-                  }
+                    businessname: this.props.mainBusiness.businessname,
+                  },
+                }}
+                segment={{
+                  source: "ad_targeting",
+                  source_action: "a_go_back",
                 }}
                 actionButton={
                   this.editCampaign
@@ -1271,7 +1275,7 @@ class InstagramFeedAdTargetting extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   minValueBudget: state.instagramAds.minValueBudget,
   maxValueBudget: state.instagramAds.maxValueBudget,
@@ -1283,23 +1287,23 @@ const mapStateToProps = state => ({
   languages: state.instagramAds.languagesList,
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   interests: state.instagramAds.interests,
-  campaignDateChanged: state.instagramAds.campaignDateChanged
+  campaignDateChanged: state.instagramAds.campaignDateChanged,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ad_details_instagram: (info, navigation, segmentInfo) =>
     dispatch(
       actionCreators.ad_details_instagram(info, navigation, segmentInfo)
     ),
   // updateCampaign: (info, businessid, navigation) =>
   //   dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
-  save_campaign_info_instagram: info =>
+  save_campaign_info_instagram: (info) =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
   instagram_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.instagram_ad_audience_size(info, totalReach)),
   // get_languages: () => dispatch(actionCreators.get_languages()),
-  saveCampaignSteps: step =>
-    dispatch(actionCreators.saveCampaignStepsInstagram(step))
+  saveCampaignSteps: (step) =>
+    dispatch(actionCreators.saveCampaignStepsInstagram(step)),
   // setCampaignInfoForTransaction: data =>
   //   dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   // resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),

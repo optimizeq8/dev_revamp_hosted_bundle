@@ -32,21 +32,21 @@ import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 class Website extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
     this.state = {
       campaignInfo: {
         attachment: "",
-        callaction: list.SnapAd[0].call_to_action_list[0]
+        callaction: list.SnapAd[0].call_to_action_list[0],
       },
       callActionLabel: "",
       // networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions: list.SnapAd[0].call_to_action_list,
       urlError: "",
-      inputCallToAction: false
+      inputCallToAction: false,
     };
   }
 
@@ -62,8 +62,8 @@ class Website extends Component {
       this.setState({
         campaignInfo: {
           attachment: url,
-          callaction: this.props.data.call_to_action
-        }
+          callaction: this.props.data.call_to_action,
+        },
         // networkString: url[0] + "://"
       });
     } else if (
@@ -74,8 +74,8 @@ class Website extends Component {
       this.setState({
         campaignInfo: {
           attachment: url,
-          callaction: this.props.storyAdAttachment.call_to_action
-        }
+          callaction: this.props.storyAdAttachment.call_to_action,
+        },
         // networkString: url[0] + "://"
       });
     }
@@ -96,7 +96,7 @@ class Website extends Component {
     );
 
     this.setState({
-      urlError
+      urlError,
     });
 
     if (urlError) {
@@ -111,20 +111,20 @@ class Website extends Component {
         ),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
       return true;
     }
   };
-  setWebsiteValue = value => {
+  setWebsiteValue = (value) => {
     const campaignInfo = {
       ...this.state.campaignInfo,
-      attachment: value
+      attachment: value,
     };
     this.setState({
-      campaignInfo
+      campaignInfo,
     });
   };
   _handleSubmission = () => {
@@ -136,7 +136,7 @@ class Website extends Component {
     if (!this.validateUrl()) {
       segmentEventTrack("Error Submit Website SwipeUp", {
         campaign_website_url: this.state.campaignInfo.attachment,
-        campaign_error_website_url: this.state.urlError
+        campaign_error_website_url: this.state.urlError,
       });
     }
     if (this.validateUrl()) {
@@ -151,32 +151,32 @@ class Website extends Component {
 
         this.state.campaignInfo.callaction,
         {
-          url: this.state.campaignInfo.attachment
+          url: this.state.campaignInfo.attachment,
         }
       );
       segmentEventTrack("Submitted Website SwipeUp Success", {
-        campaign_website_url: this.state.campaignInfo.attachment
+        campaign_website_url: this.state.campaignInfo.attachment,
       });
       this.props.navigation.navigate("AdDesign", {
-        source: "swipe_up_destination",
-        source_action: "a_swipe_up_destination"
+        source: "ad_swipe_up_destination",
+        source_action: "a_swipe_up_destination",
       });
     }
   };
-  onSelectedCallToActionIdChange = value => {
+  onSelectedCallToActionIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
   closeCallToActionModal = () => {
     this.setState({
-      inputCallToAction: false
+      inputCallToAction: false,
     });
   };
 
-  onSelectedCallToActionChange = value => {
+  onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
       segmentEventTrack("Selected Website Call to Action", {
-        campaign_call_to_action: value[0].label
+        campaign_call_to_action: value[0].label,
       });
       this.setState(
         {
@@ -184,9 +184,9 @@ class Website extends Component {
             ...this.state.campaignInfo,
             callaction: {
               label: value[0].label,
-              value: value[0].value
-            }
-          }
+              value: value[0].value,
+            },
+          },
         },
         () => {
           this.closeCallToActionModal();
@@ -198,7 +198,7 @@ class Website extends Component {
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
   openCallToActionModal = () => {
@@ -223,7 +223,9 @@ class Website extends Component {
               closeButton={false}
               title={"Swipe Up destination"}
               segment={{
-                str: "Swipe up Destination CollectionAd  Back Button"
+                str: "Swipe up Destination CollectionAd  Back Button",
+                source: "ad_swipe_up_destination",
+                source_action: "a_go_back",
               }}
               navigation={this.props.navigation}
             />
@@ -236,8 +238,8 @@ class Website extends Component {
             styles.scrollViewContainer,
             {
               paddingHorizontal:
-                this.props.objective === "LEAD_GENERATION" ? 26 : 10
-            }
+                this.props.objective === "LEAD_GENERATION" ? 26 : 10,
+            },
           ]}
         >
           <WebsiteIcon style={styles.icon} fill={"#FFF"} />
@@ -324,12 +326,12 @@ class Website extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Website);

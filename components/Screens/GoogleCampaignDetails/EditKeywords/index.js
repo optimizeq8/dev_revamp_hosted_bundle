@@ -119,7 +119,7 @@ class EditKeywords extends Component {
         segmentInfo
       );
     } else {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_keywords",
         error_description: keywordsError,
         source: "ad_targeting",
@@ -182,6 +182,10 @@ class EditKeywords extends Component {
               translateTitle={false}
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
               navigation={!rejected ? this.props.navigation : undefined}
               actionButton={rejected && this.handleModalToggle}
               titelStyle={{

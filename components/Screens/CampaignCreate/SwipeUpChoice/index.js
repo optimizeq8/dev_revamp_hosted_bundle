@@ -41,11 +41,6 @@ class SwipeUpChoice extends Component {
 
     switch (this.props.navigation.getParam("objective")) {
       case "LEAD_GENERATION":
-        Segment.screenWithProperties("Snap Ad Website SwipeUp", {
-          category: "Campaign Creation",
-          channel: "snapchat",
-          label: "Lead Generation Objective",
-        });
         analytics.track(`ad_swipe_up_destination`, {
           source,
           source_action,
@@ -72,24 +67,18 @@ class SwipeUpChoice extends Component {
           source,
           source_action,
           timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "website",
+          campaign_swipe_up_destination: "video_views",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
         break;
       case "WEB_CONVERSION":
-        Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
-          category: "Campaign Creation",
-          channel: "snapchat",
-          label: "SME Growth Campaign Objective",
-        });
-
         analytics.track(`ad_swipe_up_destination`, {
           source,
           source_action,
           timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "website",
+          campaign_swipe_up_destination: "sme_growth",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
           campaign_ad_type,
@@ -105,7 +94,7 @@ class SwipeUpChoice extends Component {
           source,
           source_action,
           timestamp: new Date().getTime(),
-          campaign_swipe_up_destination: "App Install",
+          campaign_swipe_up_destination: "app_install",
           campaign_objective: this.props.navigation.getParam("objective"),
           campaign_channel: "snapchat",
           campaign_ad_type,

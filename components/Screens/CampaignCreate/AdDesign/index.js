@@ -267,7 +267,7 @@ class AdDesign extends Component {
     } else if (
       (this.props.data &&
         Object.keys(this.state.campaignInfo)
-          .map(key => {
+          .map((key) => {
             if (this.props.data.hasOwnProperty(key)) return true;
           })
           .includes(true)) ||
@@ -306,7 +306,7 @@ class AdDesign extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
   }
 
-  _handleNotification = async uploadMediaNotification => {
+  _handleNotification = async (uploadMediaNotification) => {
     // console.log("uploadMediaNotification", uploadMediaNotification);
     if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
       segmentEventTrack(
@@ -356,13 +356,13 @@ class AdDesign extends Component {
         this.selectedCampaign.story_creatives[0].media.split("/")[
           this.selectedCampaign.story_creatives[0].media.split("/").length - 1
         ]
-    ).then(media => {
-      FileSystem.getInfoAsync(media.uri, { md5: true }).then(info => {
+    ).then((media) => {
+      FileSystem.getInfoAsync(media.uri, { md5: true }).then((info) => {
         this.setState({
           ...this.state,
           tempImage: media.uri,
           tempImageloading: false,
-          tempType: ["MKV", "AVI", "MP4", "MPEG"].some(el =>
+          tempType: ["MKV", "AVI", "MP4", "MPEG"].some((el) =>
             media.uri.includes(el.toLowerCase())
           )
             ? "VIDEO"
@@ -377,14 +377,14 @@ class AdDesign extends Component {
     });
   };
 
-  setMediaModalVisible = visible => {
+  setMediaModalVisible = (visible) => {
     if (visible) {
       Segment.screen("Upload Media Modal");
     }
     this.setState({ mediaModalVisible: visible });
   };
 
-  changeBusinessName = brand_name => {
+  changeBusinessName = (brand_name) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -410,7 +410,7 @@ class AdDesign extends Component {
         brand_name: brand_name.replace("@", ""),
       });
   };
-  changeHeadline = headline => {
+  changeHeadline = (headline) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -518,7 +518,7 @@ class AdDesign extends Component {
     Linking.removeEventListener("url", this._handleRedirect);
   };
 
-  _handleRedirect = event => {
+  _handleRedirect = (event) => {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
@@ -577,7 +577,7 @@ class AdDesign extends Component {
     }
   };
 
-  _getUploadState = loading => {
+  _getUploadState = (loading) => {
     this.setState({
       loaded: loading,
     });
@@ -637,7 +637,7 @@ class AdDesign extends Component {
     }
   };
 
-  validator = mount => {
+  validator = (mount) => {
     const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -655,8 +655,8 @@ class AdDesign extends Component {
     const validCards =
       this.adType === "StoryAd"
         ? this.rejected
-          ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
-          : this.props.storyAdsArray.filter(ad => ad.media !== "//")
+          ? this.selectedCampaign.story_creatives.filter((ad) => ad.story_id)
+          : this.props.storyAdsArray.filter((ad) => ad.media !== "//")
         : [1, 2, 3];
     const collectionError =
       this.adType === "CollectionAd"
@@ -668,7 +668,7 @@ class AdDesign extends Component {
       this.adType === "CollectionAd" &&
       this.props.collectionAdMedia &&
       this.props.collectionAdMedia
-        .map(collection => collection.collection_attachment)
+        .map((collection) => collection.collection_attachment)
         .includes("BLANK");
     let swipeUpError = null;
     if (
@@ -690,7 +690,7 @@ class AdDesign extends Component {
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
-        this.props.storyAdsArray.forEach(ad =>
+        this.props.storyAdsArray.forEach((ad) =>
           ad.hasOwnProperty("destination")
         ))
     ) {
@@ -766,7 +766,7 @@ class AdDesign extends Component {
     );
   };
 
-  _handleStoryAdCards = card => {
+  _handleStoryAdCards = (card) => {
     this.setState({ sourceChanging: true });
     this.setState({
       ...this.state,
@@ -780,7 +780,7 @@ class AdDesign extends Component {
     });
   };
 
-  setTheState = state => {
+  setTheState = (state) => {
     if (state.hasOwnProperty("serialization")) {
       state = {
         ...state,
@@ -796,12 +796,10 @@ class AdDesign extends Component {
       this.state.mediaError ||
       this.state.swipeUpError
     ) {
-      analytics.track(`a_submit_ad_design`, {
+      analytics.track(`a_error_form`, {
         source: "ad_design",
         source_action: "a_submit_ad_design",
-        timestamp: new Date().getTime(),
         campaign_id: this.props.data.campaign_id,
-        action_status: "failure",
         error_description:
           this.state.brand_nameError ||
           this.state.headlineError ||
@@ -901,7 +899,7 @@ class AdDesign extends Component {
       }
     }
   };
-  onToggleModal = visibile => {
+  onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
   handleUpload = () => {
@@ -934,7 +932,7 @@ class AdDesign extends Component {
       : this.props.navigation.goBack();
   };
 
-  setUploadFromDifferentDeviceModal = val => {
+  setUploadFromDifferentDeviceModal = (val) => {
     if (val) {
       Segment.screen(`Upload media from Different Device Modal`);
     }
@@ -951,7 +949,7 @@ class AdDesign extends Component {
     );
     this.setMediaModalVisible(false);
   };
-  setDownloadMediaModal = val => {
+  setDownloadMediaModal = (val) => {
     if (val) {
       Segment.screen("Download media from Different Device Modal");
     }
@@ -985,7 +983,7 @@ class AdDesign extends Component {
         type: mediaTypeWebLink,
       });
   };
-  handleDownloadMediaStoryAds = async storyAdsArray => {
+  handleDownloadMediaStoryAds = async (storyAdsArray) => {
     // update storyads array
     await this.props.updateStoryADS(storyAdsArray);
     let cards = this.props.storyAdsArray;
@@ -1145,7 +1143,8 @@ class AdDesign extends Component {
     );
     Adjust.trackEvent(adjustAdDesignTracker);
   };
-  videoIsExporting = isLoading => this.setState({ videoIsLoading: isLoading });
+  videoIsExporting = (isLoading) =>
+    this.setState({ videoIsLoading: isLoading });
 
   render() {
     let {
@@ -1168,8 +1167,8 @@ class AdDesign extends Component {
     let validCards =
       this.adType === "StoryAd"
         ? this.rejected
-          ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
-          : this.props.storyAdsArray.filter(ad => ad.media !== "//")
+          ? this.selectedCampaign.story_creatives.filter((ad) => ad.story_id)
+          : this.props.storyAdsArray.filter((ad) => ad.media !== "//")
         : 3;
 
     let {
@@ -1180,7 +1179,7 @@ class AdDesign extends Component {
       call_to_action,
     } = this.state.campaignInfo;
 
-    let inputFields = ["Business Name", "Promotional Message"].map(field => (
+    let inputFields = ["Business Name", "Promotional Message"].map((field) => (
       <PenIconBrand
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
@@ -1195,7 +1194,7 @@ class AdDesign extends Component {
       />
     ));
 
-    let collection = [0, 1, 2, 3].map(collIdx => (
+    let collection = [0, 1, 2, 3].map((collIdx) => (
       <CollectionComp
         key={collIdx}
         navigation={this.props.navigation}
@@ -1233,6 +1232,8 @@ class AdDesign extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_design",
+              source_action: "a_go_back",
             }}
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
@@ -1529,7 +1530,7 @@ class AdDesign extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   adType: state.campaignC.adType,
   storyAdsArray: state.campaignC.storyAdsArray,
@@ -1555,7 +1556,7 @@ const mapStateToProps = state => ({
   rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   uploadStoryAdCard: (
     info,
     card,
@@ -1596,19 +1597,20 @@ const mapDispatchToProps = dispatch => ({
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>
     dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser)),
-  setRejectedStoryAds: data =>
+  setRejectedStoryAds: (data) =>
     dispatch(actionCreators.setRejectedStoryAds(data)),
-  setRejectedCollectionAds: data =>
+  setRejectedCollectionAds: (data) =>
     dispatch(actionCreators.setRejectedCollectionAds(data)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  setStoryAdAttachment: info =>
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  setStoryAdAttachment: (info) =>
     dispatch(actionCreators.setStoryAdAttechment(info)),
   getWebUploadLinkMedia: (campaign_id, adType) =>
     dispatch(actionCreators.getWebUploadLinkMedia(campaign_id, adType)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
-  updateStoryADS: storyAdsArray =>
+  saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
+  updateStoryADS: (storyAdsArray) =>
     dispatch(actionCreators.updateStoryADS(storyAdsArray)),
-  setCollectionAdMediaArray: collectionAdsArray =>
+  setCollectionAdMediaArray: (collectionAdsArray) =>
     dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

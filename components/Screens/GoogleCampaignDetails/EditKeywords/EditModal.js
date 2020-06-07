@@ -33,13 +33,17 @@ export default class StatusModal extends Component {
               actionButton={() => {
                 this.props.handleModalToggle();
               }}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
             />
             <View style={styles.popupOverlay}>
               <View
                 style={{
                   justifyContent: "center",
                   flex: 1,
-                  alignSelf: "center"
+                  alignSelf: "center",
                 }}
               >
                 <PauseIcon

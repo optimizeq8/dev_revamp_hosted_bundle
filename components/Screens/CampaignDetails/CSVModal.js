@@ -16,14 +16,14 @@ export default class CSVModal extends Component {
     let state = {};
     state[stateName] = value;
     this.setState({
-      ...state
+      ...state,
     });
   };
   getValidInfo = (stateError, validObj) => {
     let state = {};
     state[stateError] = validObj;
     this.setState({
-      ...state
+      ...state,
     });
   };
 
@@ -53,7 +53,7 @@ export default class CSVModal extends Component {
   showModalMessage = (message, type) => {
     this.refs.modalFlash.showMessage({
       message: message,
-      type: type
+      type: type,
     });
   };
   render() {
@@ -77,12 +77,16 @@ export default class CSVModal extends Component {
               actionButton={this.actionButton}
               screenProps={screenProps}
               title={"Export CSV"}
+              segment={{
+                source: "csv_modal",
+                source_action: "a_go_back",
+              }}
             />
             <Text style={styles.CSVText}>
               {translate("Send a detailed CSV file of your ads performance")}
             </Text>
             <InputField
-              ref={ref => (this.InFref = ref)}
+              ref={(ref) => (this.InFref = ref)}
               stateName1={"email"}
               value={this.state.email}
               valueError1={this.state.emailError}
@@ -116,5 +120,5 @@ export default class CSVModal extends Component {
 }
 
 const CSVStyle = StyleSheet.create({
-  customButtonStyle: { height: 50, width: "70%" }
+  customButtonStyle: { height: 50, width: "70%" },
 });

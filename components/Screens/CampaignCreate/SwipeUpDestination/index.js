@@ -306,6 +306,10 @@ class SwipeUpDestination extends Component {
               closeButton={false}
               title={"Swipe Up destination"}
               navigation={this.props.navigation}
+              segment={{
+                source: "ad_swipe_up_destination",
+                source_action: "a_go_back",
+              }}
             />
 
             <Content contentContainerStyle={styles.contentContainer}>

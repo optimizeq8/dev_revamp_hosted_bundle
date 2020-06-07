@@ -128,7 +128,7 @@ class RegisterForm extends Component {
     const { translate } = this.props.screenProps;
     const valid = this.validate();
     if (!valid || this.props.errorInstaHandle) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         source: "my_website_detail",
         error_page: "my_website_detail",
         source_action: "a_submit_my_website_detail",
@@ -185,7 +185,7 @@ class RegisterForm extends Component {
 
         this.props.updateWebInfoForBusiness(info, false);
       } else {
-        analytics.track(`a_error`, {
+        analytics.track(`a_error_form`, {
           source: "my_website_detail",
           source_action: "a_submit_my_website_detail",
           new: false,
@@ -331,7 +331,7 @@ class RegisterForm extends Component {
       });
       await this.props.verifyInstagramHandle(this.state.insta_handle);
       if (this.props.errorInstaHandle) {
-        analytics.track(`a_error`, {
+        analytics.track(`a_error_form`, {
           error_page: "my_website_detail",
           source: "my_website_detail",
           source_action: "a_business_insta_handle",
@@ -443,7 +443,7 @@ class RegisterForm extends Component {
                   });
                   await this.validateUrl();
                   if (this.state.googleMapLinkError) {
-                    analytics.track(`a_error`, {
+                    analytics.track(`a_error_form`, {
                       error_page: "my_website_detail",
                       source: "my_website_detail",
                       source_action: "a_business_googlemaplink",

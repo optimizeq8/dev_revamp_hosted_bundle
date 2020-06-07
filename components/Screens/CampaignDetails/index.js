@@ -517,6 +517,10 @@ class CampaignDetails extends Component {
                   paddingTop: 3,
                   flex: 1,
                 }}
+                segment={{
+                  source: "campaign_detail",
+                  source_action: "a_go_back",
+                }}
                 campaignStatus={loading ? null : selectedCampaign.status}
               />
               {loading ? (

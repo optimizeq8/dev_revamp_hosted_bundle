@@ -15,7 +15,7 @@ export default class LoadingModal extends Component {
       isVisible,
       onToggleModal,
       cancelUpload,
-      loaded
+      loaded,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -35,6 +35,10 @@ export default class LoadingModal extends Component {
                 closeButton={true}
                 actionButton={() => cancelUpload()}
                 title={"Uploading Media"}
+                segment={{
+                  source: "upload_media",
+                  source_action: "a_cancel_upload",
+                }}
               />
             )}
             {!loading && (
@@ -42,6 +46,10 @@ export default class LoadingModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => onToggleModal(false)}
+                segment={{
+                  source: "upload_media",
+                  source_action: "a_go_back",
+                }}
               />
             )}
 

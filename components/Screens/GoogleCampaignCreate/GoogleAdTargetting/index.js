@@ -261,7 +261,7 @@ class GoogleAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          analytics.track(`a_error`, {
+          analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
             error_description:
@@ -349,7 +349,7 @@ class GoogleAdTargetting extends Component {
       );
       this.props.save_google_campaign_data(data);
     } else {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
         error_description: isNull(keywordsError)
@@ -534,6 +534,8 @@ class GoogleAdTargetting extends Component {
               obj: {
                 businessname: this.props.mainBusiness.businessname,
               },
+              source: "ad_targeting",
+              source_action: "a_go_back",
             }}
             navigation={this.props.navigation}
             title={"Campaign details"}

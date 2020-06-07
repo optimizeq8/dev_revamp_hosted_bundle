@@ -52,6 +52,8 @@ export default class LongFormVideoPreview extends Component {
           closeButton={true}
           segment={{
             str: "LongForm Video Preview Back Button",
+            source: "ad_swipe_up_destination",
+            source_action: "a_go_back",
           }}
         />
         <View style={styles.videoPreviewView}>

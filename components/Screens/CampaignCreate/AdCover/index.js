@@ -690,7 +690,7 @@ class AdCover extends Component {
       this.state.logoError ||
       this.state.coverError
     ) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_cover",
         source_action: "a_submit_ad_cover",
         action_status: "failure",
@@ -699,25 +699,12 @@ class AdCover extends Component {
           this.state.logoError ||
           this.state.coverError,
       });
-      segmentEventTrack("Error Story Ad Cover screen Submit button", {
-        campaign_error_story_ad_cover_image: this.state.coverError,
-        campaign_error_stoty_ad_cover_headline: this.state.coverHeadlineError,
-        campaign_error_story_ad_logo: this.state.logoError,
-      });
     }
     if (
       !this.state.coverHeadlineError &&
       !this.state.logoError &&
       !this.state.coverError
     ) {
-      Segment.trackWithProperties("Ad Cover Submitted", {
-        business_name: this.props.mainBusiness.businessname,
-      });
-      Segment.trackWithProperties("Completed Checkout Step", {
-        checkout_id: this.props.campaign_id,
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
-      });
       await this.handleUpload();
       await this.formatMedia();
       if (
@@ -859,6 +846,8 @@ class AdCover extends Component {
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_cover",
+              source_action: "a_go_back",
             }}
             actionButton={this.handleRejectionData}
             title={"Compose Ad"}
@@ -1044,6 +1033,10 @@ class AdCover extends Component {
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
                   title={"Uploading Image"}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_cancel_upload",
+                  }}
                 />
               )}
               {!this.props.coverLoading && (
@@ -1051,6 +1044,10 @@ class AdCover extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_go_back",
+                  }}
                 />
               )}
 

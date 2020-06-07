@@ -27,7 +27,7 @@ export default class AppSearchModal extends Component {
     if (pervProps.appSelection !== this.props.appSelection)
       this.showConfirmBtn(false);
   }
-  showConfirmBtn = value => {
+  showConfirmBtn = (value) => {
     this.setState({ showBtn: value });
   };
   _searchAndroidApps = () => {
@@ -37,9 +37,9 @@ export default class AppSearchModal extends Component {
       baseURL: "https://api.apptweak.com/android",
       headers: {
         common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
-        }
-      }
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
+        },
+      },
     });
     let appIdorName = this.props.mainState.appValue.includes(".");
     instance
@@ -49,18 +49,18 @@ export default class AppSearchModal extends Component {
         }${appIdorName ? "/metadata.json" : "&num=20"}`
         // `/applications/com.espn.score_center/metadata.json`
       )
-      .then(res => {
+      .then((res) => {
         // console.log(res);
         return !appIdorName ? res.data.content : [res.data.content];
       })
-      .then(data =>
+      .then((data) =>
         this.props.setTheState({
           androidData: data,
           showList: true,
-          loading: false
+          loading: false,
         })
       )
-      .catch(err => {
+      .catch((err) => {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
@@ -71,7 +71,7 @@ export default class AppSearchModal extends Component {
               : "Something went wrong!",
           error_description_android_app_list: err.response.data
             ? "Please make sure the app id is correct"
-            : "Please try again later"
+            : "Please try again later",
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -83,7 +83,7 @@ export default class AppSearchModal extends Component {
           duration: 4500,
           description: err.response.data
             ? translate("Please make sure the app id is correct")
-            : translate("Please try again later")
+            : translate("Please try again later"),
         });
         // console.log(err.response.data);
       });
@@ -96,9 +96,9 @@ export default class AppSearchModal extends Component {
       baseURL: "https://api.apptweak.com/ios",
       headers: {
         common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
-        }
-      }
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
+        },
+      },
     });
     let appIdorName = /^\d+$/.test(this.props.appValue);
     instance
@@ -107,17 +107,17 @@ export default class AppSearchModal extends Component {
           this.props.mainState.appValue
         }${appIdorName ? "/metadata.json" : "&num=20"}`
       )
-      .then(res => {
+      .then((res) => {
         return !appIdorName ? res.data.content : [res.data.content];
       })
-      .then(data =>
+      .then((data) =>
         this.props.setTheState({
           data: data,
           showList: true,
-          loading: false
+          loading: false,
         })
       )
-      .catch(err => {
+      .catch((err) => {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
@@ -128,7 +128,7 @@ export default class AppSearchModal extends Component {
               : "Something went wrong!",
           error_description_ios_app_list: err.response.data
             ? "Please make sure the app id is correct"
-            : "Please try again later"
+            : "Please try again later",
         });
         this.refs.modalFlash.showMessage({
           message:
@@ -141,12 +141,12 @@ export default class AppSearchModal extends Component {
           description:
             err.response && err.response.data
               ? translate("Please make sure the app id is correct")
-              : translate("Please try again later")
+              : translate("Please try again later"),
         });
         // console.log(err.response)
       });
   };
-  submitApp = close => {
+  submitApp = (close) => {
     let { mainState, selectApp, setModalVisible } = this.props;
     let {
       nameError,
@@ -155,7 +155,7 @@ export default class AppSearchModal extends Component {
       iosApp_name,
       androidApp_name,
       callaction,
-      appSelection
+      appSelection,
     } = mainState;
     (!nameError || close) && setModalVisible(false);
     selectApp(
@@ -174,7 +174,7 @@ export default class AppSearchModal extends Component {
       setTheState,
       _getIosAppIds,
       _getAndroidAppIds,
-      handleAppError
+      handleAppError,
     } = this.props;
     let {
       isVisible,
@@ -188,7 +188,7 @@ export default class AppSearchModal extends Component {
       data,
       androidData,
       iosApp_name,
-      androidApp_name
+      androidApp_name,
     } = mainState;
     const { translate } = this.props.screenProps;
     return (
@@ -202,6 +202,10 @@ export default class AppSearchModal extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
+                segment={{
+                  source: "app_select",
+                  source_action: "a_go_back",
+                }}
                 actionButton={() => this.submitApp(true)} //when a user selects and closes the modal,
                 //it will change in it AppChoice but won't change in App_installs or Deep_link
               />
@@ -209,7 +213,7 @@ export default class AppSearchModal extends Component {
                 style={{
                   flex: 1,
                   //   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 {appSelection === "iOS" ? (
@@ -219,7 +223,7 @@ export default class AppSearchModal extends Component {
                       uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
-                        { fontSize: 14, maxWidth: 100 }
+                        { fontSize: 14, maxWidth: 100 },
                       ]}
                     >
                       {translate(`apple\napp store`)}
@@ -236,7 +240,7 @@ export default class AppSearchModal extends Component {
                       uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
-                        { fontSize: 14, maxWidth: 100 }
+                        { fontSize: 14, maxWidth: 100 },
                       ]}
                     >
                       {translate(`google\nplay store`)}
@@ -251,7 +255,7 @@ export default class AppSearchModal extends Component {
                       ? globalStyles.redBorderColor
                       : globalStyles.transparentBorderColor,
 
-                    styles.searchContainer
+                    styles.searchContainer,
                   ]}
                 >
                   <SearchIcon stroke="#fff" />
@@ -264,16 +268,16 @@ export default class AppSearchModal extends Component {
                     placeholderTextColor="white"
                     autoCorrect={false}
                     autoCapitalize="none"
-                    onChangeText={value =>
+                    onChangeText={(value) =>
                       setTheState({
-                        appValue: value
+                        appValue: value,
                       })
                     }
                     onBlur={() => {
                       if (appValue !== "") {
                         segmentEventTrack("Searched on blur for App", {
                           campaign_app_choice_value: appValue,
-                          campaign_app_os_type: appSelection
+                          campaign_app_os_type: appSelection,
                         });
                         switch (appSelection) {
                           case "iOS":
@@ -291,7 +295,7 @@ export default class AppSearchModal extends Component {
                       }
                       setTheState({
                         nameError: validateWrapper("mandatory", appValue),
-                        showList: appValue !== ""
+                        showList: appValue !== "",
                       });
                     }}
                   />

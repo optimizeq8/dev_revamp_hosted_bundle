@@ -283,12 +283,10 @@ class GoogleAdInfo extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_objective",
         campaign_channel: "google",
         source_action: "a_submit_ad_objective",
-        timestamp: new Date().getTime(),
-        device_id: this.props.screenProps.device_id,
         error_description:
           nameError ||
           countryError ||
@@ -382,16 +380,16 @@ class GoogleAdInfo extends Component {
     Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   getValidInfo = (stateError, validObj) => {
-    // if (validObj) {
-    //   analytics.track(`a_error`, {
-    //     error_page: "ad_objective",
-    //     error_description: `Error in ${stateError}: ${validObj}`,
-    //     source: "ad_objective",
-    //     source_action: "a_ad_name",
-    //     campaign_channel: "google",
-    //     campaign_ad_type: "GoogleSEAd",
-    //   });
-    // }
+    if (validObj) {
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        error_description: `Error in ${stateError}: ${validObj}`,
+        source: "ad_objective",
+        source_action: "a_ad_name",
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+      });
+    }
     let state = {};
     state[stateError] = validObj;
     this.setState({
@@ -641,6 +639,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Regions"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "regions_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <RegionsSelector
@@ -675,6 +677,10 @@ class GoogleAdInfo extends Component {
                       }}
                       title="Select Country"
                       screenProps={this.props.screenProps}
+                      segment={{
+                        source: "country_modal",
+                        source_action: "a_go_back",
+                      }}
                     />
                     <Content scrollEnabled={false} indicatorStyle="white">
                       <CountrySelector

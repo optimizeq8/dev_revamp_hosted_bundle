@@ -22,11 +22,11 @@ import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 
 class AdFeedDesignReview extends React.Component {
   state = {
-    isVideoLoading: false
+    isVideoLoading: false,
   };
-  videoIsLoading = value => {
+  videoIsLoading = (value) => {
     this.setState({
-      isVideoLoading: value
+      isVideoLoading: value,
     });
   };
   render() {
@@ -37,7 +37,7 @@ class AdFeedDesignReview extends React.Component {
       call_to_action,
       media_type,
       media_option,
-      media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+      media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
     } = this.props.data;
     const { translate } = this.props.screenProps;
     let mediaView = null;
@@ -46,7 +46,7 @@ class AdFeedDesignReview extends React.Component {
         <Image
           style={styles.imagePreview}
           source={{
-            uri: media
+            uri: media,
           }}
         />
       );
@@ -68,6 +68,10 @@ class AdFeedDesignReview extends React.Component {
             closeButton={true}
             navigation={this.props.navigation}
             title={"Preview"}
+            segment={{
+              source: "ad_preview",
+              source_action: "a_go_back",
+            }}
           />
 
           <View style={styles.container}>
@@ -79,7 +83,7 @@ class AdFeedDesignReview extends React.Component {
                 source={{
                   // uri: instagram_profile_pic
                   uri:
-                    "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC"
+                    "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
                 }}
               />
               <View style={styles.detailProfileView}>
@@ -127,12 +131,12 @@ class AdFeedDesignReview extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   loading: state.instagramAds.loadingDesign,
-  admin: state.login.admin
+  admin: state.login.admin,
 });
 
 export default connect(mapStateToProps, null)(AdFeedDesignReview);

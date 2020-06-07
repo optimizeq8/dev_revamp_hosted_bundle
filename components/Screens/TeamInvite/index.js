@@ -119,6 +119,10 @@ class TeamInvite extends Component {
               source_action: "a_go_back",
             });
           }}
+          segment={{
+            source: "team_invite",
+            source_action: "a_go_back",
+          }}
         />
         <View style={styles.containerView}>
           <AddTeamIcon style={{ alignSelf: "center" }} />

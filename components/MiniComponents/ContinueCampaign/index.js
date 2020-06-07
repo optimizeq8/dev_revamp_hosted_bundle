@@ -48,7 +48,7 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    let continueRoutes = this.props.currentCampaignSteps.map(route => {
+    let continueRoutes = this.props.currentCampaignSteps.map((route) => {
       segmentEventTrack(`Navigate to ${route}`);
       return NavigationActions.navigate(
         {
@@ -191,6 +191,10 @@ class ContinueCampaign extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
+                segment={{
+                  source: "continue_campaign_modal",
+                  source_action: "a_go_back",
+                }}
                 actionButton={() => {
                   this.props.navigation.goBack();
                   //this.handleClosing();
@@ -234,7 +238,7 @@ class ContinueCampaign extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   data: state.campaignC.data,
   incompleteCampaign: state.campaignC.incompleteCampaign,
@@ -245,17 +249,17 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetCampaignInfo: resetAdType =>
+const mapDispatchToProps = (dispatch) => ({
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: value =>
+  set_adType: (value) => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: (value) =>
     dispatch(actionCreators.save_campaign_info(value)),
-  overWriteObjectiveData: value =>
+  overWriteObjectiveData: (value) =>
     dispatch(actionCreators.overWriteObjectiveData(value)),
-  setCampaignInfoForTransaction: data =>
+  setCampaignInfoForTransaction: (data) =>
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);

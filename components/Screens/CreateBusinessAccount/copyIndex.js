@@ -48,7 +48,7 @@ import AppChoiceBusiness from "../../MiniComponents/AppChoiceBusiness";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -65,13 +65,13 @@ class CreateBusinessAccount extends Component {
         appstorelink: {
           app_name: "",
           ios_app_id: "",
-          icon_media_url: ""
+          icon_media_url: "",
         },
         playstorelink: {
           app_name: "",
           icon_media_url: "",
-          android_app_url: ""
-        }
+          android_app_url: "",
+        },
       },
       inputT: false,
       inputN: false,
@@ -91,28 +91,28 @@ class CreateBusinessAccount extends Component {
       countries: [
         {
           label: translate("Kuwait"),
-          value: "Kuwait"
+          value: "Kuwait",
         },
         {
           label: translate("UAE"),
-          value: "UAE"
+          value: "UAE",
         },
         {
           label: translate("KSA"),
-          value: "KSA"
+          value: "KSA",
         },
         {
           label: translate("Bahrain"),
-          value: "Bahrain"
+          value: "Bahrain",
         },
         {
           label: translate("Qatar"),
-          value: "Qatar"
+          value: "Qatar",
         },
         {
           label: translate("Oman"),
-          value: "Oman"
-        }
+          value: "Oman",
+        },
       ],
       editBusinessInfo: false,
       // networkString: "http://",
@@ -129,7 +129,7 @@ class CreateBusinessAccount extends Component {
       androidData: [],
       checkingBusinessNameSubmission: false,
       androidAppSelected: false,
-      iosAppSelected: false
+      iosAppSelected: false,
     };
   }
   componentDidMount() {
@@ -145,7 +145,7 @@ class CreateBusinessAccount extends Component {
         ? "Business Info Registration"
         : "Create New Business",
       {
-        category: this.props.registering ? "Sign Up" : "User Menu"
+        category: this.props.registering ? "Sign Up" : "User Menu",
       }
     );
     // prefilling the values in case of updating business info
@@ -161,7 +161,7 @@ class CreateBusinessAccount extends Component {
         businessAccount: {
           ...this.state.businessAccount,
           ...this.props.mainBusiness,
-          websitelink: website ? website : ""
+          websitelink: website ? website : "",
         },
         editBusinessInfo,
         // networkString: networkString ? networkString : "http://",
@@ -170,7 +170,7 @@ class CreateBusinessAccount extends Component {
           this.props.mainBusiness.appstorelink.ios_app_id !== "",
         androidAppSelected:
           this.props.mainBusiness.playstorelink &&
-          this.props.mainBusiness.playstorelink.android_app_url !== ""
+          this.props.mainBusiness.playstorelink.android_app_url !== "",
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -182,12 +182,12 @@ class CreateBusinessAccount extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  _handleBusinessCategories = async type => {
+  _handleBusinessCategories = async (type) => {
     await this.setState({
       businessAccount: {
         ...this.state.businessAccount,
-        businesstype: type
-      }
+        businesstype: type,
+      },
     });
   };
 
@@ -202,10 +202,10 @@ class CreateBusinessAccount extends Component {
       return this.props.successName;
     }
   };
-  _handleBusinessName = value => {
+  _handleBusinessName = (value) => {
     this.setState({
       businessnameAvalible: value,
-      checkingBusinessNameSubmission: false
+      checkingBusinessNameSubmission: false,
     });
   };
 
@@ -251,12 +251,12 @@ class CreateBusinessAccount extends Component {
       businesscategoryError,
       countryError,
       businesscategoryOtherError,
-      websitelinkError
+      websitelinkError,
     });
     if (websitelinkError) {
       showMessage({
         message: translate("Please enter a valid URL"),
-        type: "warning"
+        type: "warning",
       });
     } else {
       if (
@@ -271,15 +271,17 @@ class CreateBusinessAccount extends Component {
           await this.setState({
             businessAccount: {
               ...this.state.businessAccount,
-              brandname: this.state.businessAccount.businessname
-            }
+              brandname: this.state.businessAccount.businessname,
+            },
           });
         }
         if (
-          (this.state.editBusinessInfo
-          ? this.state.businessAccount.businessname !==
-            this.props.mainBusiness.businessname
-          : true)
+          (
+            this.state.editBusinessInfo
+              ? this.state.businessAccount.businessname !==
+                this.props.mainBusiness.businessname
+              : true
+          )
             ? await this._verifyBusinessName(
                 this.state.businessAccount.businessname,
                 true
@@ -292,7 +294,7 @@ class CreateBusinessAccount extends Component {
               let appstorelink = {
                 app_name: "",
                 ios_app_id: "",
-                icon_media_url: ""
+                icon_media_url: "",
               };
               businessAccount = { ...businessAccount, appstorelink };
             }
@@ -300,7 +302,7 @@ class CreateBusinessAccount extends Component {
               let playstorelink = {
                 app_name: "",
                 icon_media_url: "",
-                android_app_url: ""
+                android_app_url: "",
               };
               businessAccount = { ...businessAccount, playstorelink };
             }
@@ -315,7 +317,7 @@ class CreateBusinessAccount extends Component {
             let userInfo = {
               ...this.props.userInfoR,
               ...business,
-              websitelink
+              websitelink,
             };
             this.props.registerUser(userInfo, this.props.navigation);
           }
@@ -326,7 +328,7 @@ class CreateBusinessAccount extends Component {
               let appstorelink = {
                 app_name: "",
                 ios_app_id: "",
-                icon_media_url: ""
+                icon_media_url: "",
               };
               businessAccount = { ...businessAccount, appstorelink };
             }
@@ -334,7 +336,7 @@ class CreateBusinessAccount extends Component {
               let playstorelink = {
                 app_name: "",
                 icon_media_url: "",
-                android_app_url: ""
+                android_app_url: "",
               };
               businessAccount = { ...businessAccount, playstorelink };
             }
@@ -353,7 +355,7 @@ class CreateBusinessAccount extends Component {
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
-                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
               },
               this.props.mainBusiness
             );
@@ -366,7 +368,7 @@ class CreateBusinessAccount extends Component {
                   otherBusinessCategory:
                     this.state.businessAccount.businesscategory !== "43"
                       ? null
-                      : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                      : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
                 },
                 this.props.navigation
               );
@@ -374,7 +376,7 @@ class CreateBusinessAccount extends Component {
               showMessage({
                 type: "warning",
                 message: translate("No changes to update"),
-                position: "top"
+                position: "top",
               });
             }
           } else {
@@ -383,7 +385,7 @@ class CreateBusinessAccount extends Component {
               let appstorelink = {
                 app_name: "",
                 ios_app_id: "",
-                icon_media_url: ""
+                icon_media_url: "",
               };
               businessAccount = { ...businessAccount, appstorelink };
             }
@@ -391,7 +393,7 @@ class CreateBusinessAccount extends Component {
               let playstorelink = {
                 app_name: "",
                 icon_media_url: "",
-                android_app_url: ""
+                android_app_url: "",
               };
               businessAccount = { ...businessAccount, playstorelink };
             }
@@ -408,7 +410,7 @@ class CreateBusinessAccount extends Component {
                 otherBusinessCategory:
                   this.state.businessAccount.businesscategory !== "43"
                     ? null
-                    : this.state.businessAccount.otherBusinessCategory // to handle other business category field
+                    : this.state.businessAccount.otherBusinessCategory, // to handle other business category field
               },
               this.props.navigation
             );
@@ -417,13 +419,13 @@ class CreateBusinessAccount extends Component {
       } else {
         showMessage({
           message: translate("Please complete all the required fields"),
-          type: "warning"
+          type: "warning",
         });
       }
     }
   };
 
-  onSelectedBusinessCategoryIdChange = value => {
+  onSelectedBusinessCategoryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
@@ -433,18 +435,18 @@ class CreateBusinessAccount extends Component {
         "mandatory",
         this.state.businessAccount.businesscategory
       ),
-      inputT: false
+      inputT: false,
     });
   };
 
-  onSelectedBusinessCategoryChange = value => {
+  onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            businesscategory: value[0].value
-          }
+            businesscategory: value[0].value,
+          },
         },
         () => {
           this.closeCategoryModal();
@@ -453,7 +455,7 @@ class CreateBusinessAccount extends Component {
     }
   };
 
-  onSelectedCountryIdChange = value => {
+  onSelectedCountryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("country", value);
   };
@@ -463,18 +465,18 @@ class CreateBusinessAccount extends Component {
         "mandatory",
         this.state.businessAccount.country
       ),
-      inputC: false
+      inputC: false,
     });
   };
 
-  onSelectedCountryChange = value => {
+  onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            country: value[0].value
-          }
+            country: value[0].value,
+          },
         },
         () => {
           this.closeCountryModal();
@@ -482,18 +484,18 @@ class CreateBusinessAccount extends Component {
       );
     }
   };
-  focusTheField = fieldName => {
+  focusTheField = (fieldName) => {
     this.inputs[fieldName]._root.focus();
   };
   inputs = {};
 
-  setWebsiteValue = value => {
+  setWebsiteValue = (value) => {
     const businessAccount = {
       ...this.state.businessAccount,
-      websitelink: value
+      websitelink: value,
     };
     this.setState({
-      businessAccount
+      businessAccount,
     });
   };
   // setNetworkString = value => {
@@ -503,7 +505,7 @@ class CreateBusinessAccount extends Component {
   // };
   getValidInfo = (stateError, error) => {
     this.setState({
-      [stateError]: error
+      [stateError]: error,
     });
   };
 
@@ -511,7 +513,7 @@ class CreateBusinessAccount extends Component {
     this.setState({ isVisible, appSelection: os });
   };
 
-  toggleAppSelection = android => {
+  toggleAppSelection = (android) => {
     this.setState(
       android
         ? { androidAppSelected: !this.state.androidAppSelected }
@@ -519,7 +521,7 @@ class CreateBusinessAccount extends Component {
     );
   };
 
-  _getIosAppIds = app => {
+  _getIosAppIds = (app) => {
     this.setState({
       ...this.state,
       businessAccount: {
@@ -527,19 +529,19 @@ class CreateBusinessAccount extends Component {
         appstorelink: {
           app_name: app.title,
           ios_app_id: app.id,
-          icon_media_url: app.icon
-        }
+          icon_media_url: app.icon,
+        },
       },
       attachment: {
         app_name: app.title,
         ios_app_id: app.id,
-        icon_media_url: app.icon
+        icon_media_url: app.icon,
       },
-      iosAppSelected: true
+      iosAppSelected: true,
     });
   };
 
-  _getAndroidAppIds = app => {
+  _getAndroidAppIds = (app) => {
     this.setState({
       ...this.state,
       businessAccount: {
@@ -547,20 +549,20 @@ class CreateBusinessAccount extends Component {
         playstorelink: {
           app_name: app.title,
           icon_media_url: app.icon,
-          android_app_url: app.id ? app.id : app.application_id
-        }
+          android_app_url: app.id ? app.id : app.application_id,
+        },
       },
       attachment: {
         app_name: app.title,
         icon_media_url: app.icon,
-        android_app_url: app.id ? app.id : app.application_id
+        android_app_url: app.id ? app.id : app.application_id,
       },
-      androidAppSelected: true
+      androidAppSelected: true,
     });
   };
-  setTheState = state => {
+  setTheState = (state) => {
     this.setState({
-      ...state
+      ...state,
     });
   };
   //Doesn't do anything here but needed for campaign
@@ -582,7 +584,7 @@ class CreateBusinessAccount extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{
           bottom: "never",
-          top: this.props.registering ? "never" : "always"
+          top: this.props.registering ? "never" : "always",
         }}
       >
         {!this.props.registering && (
@@ -624,7 +626,7 @@ class CreateBusinessAccount extends Component {
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activeButton
                   : styles.button,
-                isStringArabic(translate("Startup")) ? { width: "40%" } : {}
+                isStringArabic(translate("Startup")) ? { width: "40%" } : {},
               ]}
               onPressAction={() => {
                 this._handleBusinessCategories("1");
@@ -642,7 +644,7 @@ class CreateBusinessAccount extends Component {
                 style={[
                   this.state.businessAccount.businesstype === "1"
                     ? styles.activeText
-                    : styles.inactiveText
+                    : styles.inactiveText,
                 ]}
               >
                 {translate("SME")}
@@ -662,7 +664,7 @@ class CreateBusinessAccount extends Component {
               style={[
                 this.state.businessAccount.businesstype === "2"
                   ? styles.activeButton
-                  : styles.button
+                  : styles.button,
               ]}
               onPressAction={() => {
                 this._handleBusinessCategories("2");
@@ -679,7 +681,7 @@ class CreateBusinessAccount extends Component {
                 style={[
                   this.state.businessAccount.businesstype === "2"
                     ? styles.activeText
-                    : styles.inactiveText
+                    : styles.inactiveText,
                 ]}
               >
                 {translate("Agency")}
@@ -697,7 +699,7 @@ class CreateBusinessAccount extends Component {
               style={[
                 this.state.businessAccount.businesstype === "3"
                   ? styles.activeButton
-                  : styles.button
+                  : styles.button,
               ]}
               onPressAction={() => {
                 this._handleBusinessCategories("3");
@@ -715,7 +717,7 @@ class CreateBusinessAccount extends Component {
                 style={[
                   this.state.businessAccount.businesstype === "3"
                     ? styles.activeText
-                    : styles.inactiveText
+                    : styles.inactiveText,
                 ]}
               >
                 {translate("Corporate")}
@@ -731,7 +733,7 @@ class CreateBusinessAccount extends Component {
                   styles.inputLabel,
                   this.state.inputN
                     ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
+                    : globalStyles.whiteTextColor,
                 ]}
               >
                 {this.state.businessAccount.businesstype === "1"
@@ -751,15 +753,15 @@ class CreateBusinessAccount extends Component {
                     globalStyles.redBorderColor
                   : globalStyles.transparentBorderColor,
                 {
-                  paddingHorizontal: 0
+                  paddingHorizontal: 0,
                   // width: "50%"
-                }
+                },
               ]}
             >
               <CorporateIcon
                 style={{
                   position: "absolute",
-                  marginLeft: 15
+                  marginLeft: 15,
                 }}
                 fill={this.state.inputN ? "#FF9D00" : "#FFF"}
               />
@@ -769,7 +771,7 @@ class CreateBusinessAccount extends Component {
                 }}
                 maxLength={25}
                 autoCorrect={false}
-                ref={input => {
+                ref={(input) => {
                   this.inputs["inputN"] = input;
                 }}
                 blurOnSubmit={false}
@@ -781,7 +783,7 @@ class CreateBusinessAccount extends Component {
                 }
                 style={[styles.inputText]}
                 value={this.state.businessAccount.businessname}
-                onChangeText={value => {
+                onChangeText={(value) => {
                   value = value.replace(
                     /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
                     ""
@@ -789,8 +791,8 @@ class CreateBusinessAccount extends Component {
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
-                      businessname: value
-                    }
+                      businessname: value,
+                    },
                   });
                 }}
                 onFocus={() => {
@@ -801,8 +803,8 @@ class CreateBusinessAccount extends Component {
                     inputN: false,
                     businessAccount: {
                       ...this.state.businessAccount,
-                      businessname: this.state.businessAccount.businessname.trim()
-                    }
+                      businessname: this.state.businessAccount.businessname.trim(),
+                    },
                   });
                   this._verifyBusinessName(
                     this.state.businessAccount.businessname
@@ -820,7 +822,7 @@ class CreateBusinessAccount extends Component {
                   styles.inputLabel,
                   this.state.inputBN
                     ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
+                    : globalStyles.whiteTextColor,
                 ]}
               >
                 {this.state.businessAccount.businesstype === "1"
@@ -836,9 +838,9 @@ class CreateBusinessAccount extends Component {
                 styles.input,
                 globalStyles.transparentBorderColor,
                 {
-                  paddingHorizontal: 0
+                  paddingHorizontal: 0,
                   // width: "50%"
-                }
+                },
               ]}
             >
               <Input
@@ -846,7 +848,7 @@ class CreateBusinessAccount extends Component {
                   if (this.inputs["inputE"]) this.focusTheField("inputE");
                 }}
                 blurOnSubmit={!this.inputs["inputE"]}
-                ref={input => {
+                ref={(input) => {
                   this.inputs["inputBN"] = input;
                 }}
                 returnKeyType={this.inputs["inputE"] ? "next" : "default"}
@@ -858,7 +860,7 @@ class CreateBusinessAccount extends Component {
                   this.props.savingRegister
                 }
                 value={this.state.businessAccount.brandname}
-                onChangeText={value => {
+                onChangeText={(value) => {
                   value = value.replace(
                     /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
                     ""
@@ -866,8 +868,8 @@ class CreateBusinessAccount extends Component {
                   this.setState({
                     businessAccount: {
                       ...this.state.businessAccount,
-                      brandname: value
-                    }
+                      brandname: value,
+                    },
                   });
                 }}
                 maxLength={25}
@@ -879,8 +881,8 @@ class CreateBusinessAccount extends Component {
                     inputBN: false,
                     businessAccount: {
                       ...this.state.businessAccount,
-                      brandname: this.state.businessAccount.brandname.trim()
-                    }
+                      brandname: this.state.businessAccount.brandname.trim(),
+                    },
                   });
                 }}
               />
@@ -896,7 +898,7 @@ class CreateBusinessAccount extends Component {
                     styles.inputLabel,
                     this.state.inputE
                       ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
+                      : globalStyles.whiteTextColor,
                   ]}
                 >
                   {translate("Email")}
@@ -911,28 +913,28 @@ class CreateBusinessAccount extends Component {
                     ? globalStyles.redBorderColor
                     : globalStyles.transparentBorderColor,
                   {
-                    paddingHorizontal: 0
+                    paddingHorizontal: 0,
                     // width: "50%"
-                  }
+                  },
                 ]}
               >
                 <EmailIcon
                   style={{
                     // position: "absolute",
-                    marginLeft: 15
+                    marginLeft: 15,
                   }}
                   fill={this.state.inputE ? "#FF9D00" : "#FFF"}
                 />
                 <Input
-                  ref={input => {
+                  ref={(input) => {
                     this.inputs["inputE"] = input;
                   }}
                   blurOnSubmit={true}
                   style={[
                     styles.inputText,
                     {
-                      fontFamily: "montserrat-regular-english"
-                    }
+                      fontFamily: "montserrat-regular-english",
+                    },
                   ]}
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -942,12 +944,12 @@ class CreateBusinessAccount extends Component {
                     this.props.savingRegister
                   }
                   value={this.state.businessAccount.businessemail}
-                  onChangeText={value =>
+                  onChangeText={(value) =>
                     this.setState({
                       businessAccount: {
                         ...this.state.businessAccount,
-                        businessemail: value
-                      }
+                        businessemail: value,
+                      },
                     })
                   }
                   onFocus={() => {
@@ -958,12 +960,12 @@ class CreateBusinessAccount extends Component {
                       inputE: false,
                       businessAccount: {
                         ...this.state.businessAccount,
-                        businessemail: this.state.businessAccount.businessemail.trim()
+                        businessemail: this.state.businessAccount.businessemail.trim(),
                       },
                       businessemailError: validateWrapper(
                         "email",
                         this.state.businessAccount.businessemail.trim()
-                      )
+                      ),
                     });
                   }}
                 />
@@ -994,7 +996,7 @@ class CreateBusinessAccount extends Component {
                   styles.inputLabel,
                   this.state.inputC
                     ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
+                    : globalStyles.whiteTextColor,
                 ]}
               >
                 {translate("Country")}
@@ -1014,20 +1016,20 @@ class CreateBusinessAccount extends Component {
                 this.state.countryError
                   ? globalStyles.redBorderColor
                   : globalStyles.transparentBorderColor,
-                styles.itemView
+                styles.itemView,
               ]}
             >
               <LocationIcon
                 style={{
                   // position: "absolute",
-                  marginLeft: 15
+                  marginLeft: 15,
                 }}
                 stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
               />
               <Text
                 style={[
                   styles.pickerText,
-                  { fontFamily: "montserrat-regular" }
+                  { fontFamily: "montserrat-regular" },
                 ]}
               >
                 {this.state.businessAccount.country !== ""
@@ -1067,7 +1069,7 @@ class CreateBusinessAccount extends Component {
                   styles.inputLabel,
                   this.state.inputT
                     ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
+                    : globalStyles.whiteTextColor,
                 ]}
               >
                 {translate("Business Type")}
@@ -1089,13 +1091,13 @@ class CreateBusinessAccount extends Component {
                   : this.state.businesscategoryError
                   ? globalStyles.redBorderColor
                   : globalStyles.transparentBorderColor,
-                styles.itemView
+                styles.itemView,
               ]}
             >
               <BusinessIcon
                 style={{
                   // position: "absolute",
-                  marginLeft: 15
+                  marginLeft: 15,
                 }}
                 fill={this.state.inputT ? "#FF9D00" : "#FFF"}
               />
@@ -1107,7 +1109,7 @@ class CreateBusinessAccount extends Component {
                     ? translate("Client Industry")
                     : translate("Industry")
                   : this.state.items.find(
-                      i =>
+                      (i) =>
                         i.value === this.state.businessAccount.businesscategory
                     ).label}
               </Text>
@@ -1123,11 +1125,11 @@ class CreateBusinessAccount extends Component {
                   style={[
                     styles.inputLabel,
                     {
-                      width: 200
+                      width: 200,
                     },
                     this.state.inputBusinessCategoryOther
                       ? globalStyles.orangeTextColor
-                      : globalStyles.whiteTextColor
+                      : globalStyles.whiteTextColor,
                   ]}
                 >
                   {translate("Other Business Category")}
@@ -1144,13 +1146,13 @@ class CreateBusinessAccount extends Component {
                     : this.state.businesscategoryOtherError
                     ? globalStyles.redBorderColor
                     : globalStyles.transparentBorderColor,
-                  styles.itemView
+                  styles.itemView,
                 ]}
               >
                 <BusinessIcon
                   style={{
                     // position: "absolute",
-                    marginLeft: 15
+                    marginLeft: 15,
                   }}
                   fill={
                     this.state.inputBusinessCategoryOther ? "#FF9D00" : "#FFF"
@@ -1160,24 +1162,24 @@ class CreateBusinessAccount extends Component {
                   onSubmitEditing={() => {
                     this.focusTheField("inputWeb");
                   }}
-                  ref={input => {
+                  ref={(input) => {
                     this.inputs["inputO"] = input;
                   }}
                   blurOnSubmit={false}
                   returnKeyType={"next"}
                   style={styles.inputText}
                   autoCorrect={false}
-                  onChangeText={value =>
+                  onChangeText={(value) =>
                     this.setState({
                       businessAccount: {
                         ...this.state.businessAccount,
-                        otherBusinessCategory: value
-                      }
+                        otherBusinessCategory: value,
+                      },
                     })
                   }
                   onFocus={() => {
                     this.setState({
-                      inputBusinessCategoryOther: true
+                      inputBusinessCategoryOther: true,
                     });
                   }}
                   onBlur={() => {
@@ -1187,8 +1189,8 @@ class CreateBusinessAccount extends Component {
                         ...this.state.businessAccount,
                         otherBusinessCategory:
                           this.state.businessAccount.otherBusinessCategory &&
-                          this.state.businessAccount.otherBusinessCategory.trim()
-                      }
+                          this.state.businessAccount.otherBusinessCategory.trim(),
+                      },
                     });
                   }}
                   value={this.state.businessAccount.otherBusinessCategory}
@@ -1206,13 +1208,13 @@ class CreateBusinessAccount extends Component {
           <View style={styles.marginVertical}>
             <Website
               register={true}
-              ref={ref => (this.websiteInput = ref)}
+              ref={(ref) => (this.websiteInput = ref)}
               inputs={this.inputs}
               stateName={"websitelink"}
               screenProps={this.props.screenProps}
               customStyle={{
                 width: widthPercentageToDP(85),
-                paddingHorizontal: 0
+                paddingHorizontal: 0,
               }}
               optional={true}
               website={this.state.businessAccount.websitelink}
@@ -1254,7 +1256,7 @@ class CreateBusinessAccount extends Component {
               style={{
                 top: 5,
                 width: 60,
-                height: 60
+                height: 60,
               }}
             />
           ) : this.state.editBusinessInfo ? (
@@ -1319,7 +1321,7 @@ class CreateBusinessAccount extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   userInfoR: state.register.userInfo,
   countryCode: state.register.countryCode,
@@ -1328,10 +1330,10 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   loadingUpdateBusinessInfo: state.account.editBusinessInfoLoading,
   savingRegister: state.register.savingRegister,
-  checkingBusinessName: state.register.checkingBusinessName
+  checkingBusinessName: state.register.checkingBusinessName,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   registerUser: (userInfo, navigation) =>
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   createBusinessAccount: (account, navigation) =>
@@ -1345,7 +1347,7 @@ const mapDispatchToProps = dispatch => ({
       )
     ),
   updateBusinessInfo: (userid, info, navigation) =>
-    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation))
+    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation)),
 });
 export default connect(
   mapStateToProps,

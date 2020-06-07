@@ -14,7 +14,7 @@ export default class LoadingModal extends Component {
       isVisible,
       onToggleModal,
       cancelUpload,
-      loaded
+      loaded,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -34,6 +34,10 @@ export default class LoadingModal extends Component {
                 closeButton={true}
                 actionButton={() => cancelUpload()}
                 title={"Uploading Image"}
+                segment={{
+                  source: "upload_image",
+                  source_action: "a_cancel_upload",
+                }}
                 // title="Uploading Image"
               />
             )}
@@ -42,6 +46,10 @@ export default class LoadingModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => onToggleModal(false)}
+                segment={{
+                  source: "upload_image",
+                  source_action: "a_go_back",
+                }}
               />
             )}
 
@@ -70,19 +78,19 @@ const styles = StyleSheet.create({
   loadingSafeArea: {
     width: "100%",
     height: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    top: "15%"
+    top: "15%",
   },
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   uplaodText: {
     justifyContent: "center",
@@ -91,6 +99,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     alignSelf: "center",
     paddingTop: 10,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

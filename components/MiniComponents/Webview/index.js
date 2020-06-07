@@ -22,7 +22,7 @@ export default class index extends Component {
     analytics.track(`web_view`, {
       source,
       source_action,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
     });
   }
   render() {
@@ -47,6 +47,13 @@ export default class index extends Component {
             navigation={this.props.navigation}
             // containerStyle={{ height: "3%" }}
             // titelStyle={{ top: 5, left: 0 }}
+            segment={{
+              source: this.props.navigation.getParam(
+                "source",
+                this.props.screenProps.prevAppState
+              ),
+              source_action: "a_go_back",
+            }}
             title={title}
           />
           {/* <Content
@@ -63,7 +70,7 @@ export default class index extends Component {
             )}
             style={{ backgroundColor: "transparent" }}
             contentContainerStyle={{ backgroundColor: "transparent" }}
-            ref={ref => (this.webview = ref)}
+            ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
           />
           {/* </Content> */}

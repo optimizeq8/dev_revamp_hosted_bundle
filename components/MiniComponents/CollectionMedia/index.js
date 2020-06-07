@@ -724,9 +724,8 @@ class CollectionMedia extends Component {
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
-              source: "ad_objective",
+              source: "ad_collection_media",
               source_action: "a_go_back",
-              str: "Ad Objective Back Button",
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname },
             }}
@@ -990,6 +989,10 @@ class CollectionMedia extends Component {
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
                   title={"Uploading Image"}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_cancel_upload",
+                  }}
                 />
               )}
               {!this.props.loading && (
@@ -997,6 +1000,10 @@ class CollectionMedia extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
+                  segment={{
+                    source: "upload_image",
+                    source_action: "a_go_back",
+                  }}
                 />
               )}
 

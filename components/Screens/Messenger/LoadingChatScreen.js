@@ -89,6 +89,10 @@ class LoadingChatScreen extends React.Component {
             closeButton={true}
             title={"Support"}
             navigation={this.props.navigation}
+            segment={{
+              source: "open_support",
+              source_action: "a_go_back",
+            }}
           />
 
           <View style={styles.flexView}>

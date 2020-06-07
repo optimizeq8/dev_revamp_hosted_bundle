@@ -8,7 +8,7 @@ import * as actionCreators from "../../../store/actions";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
 import CustomHeader from "../Header";
 import { persistor } from "../../../store/";
@@ -39,15 +39,15 @@ class ContinueCampaign extends Component {
     //Array of navigation routes to set in the stack
     console.log("campaignSteps", this.props.currentCampaignSteps);
 
-    let continueRoutes = this.props.currentCampaignSteps.map(route =>
+    let continueRoutes = this.props.currentCampaignSteps.map((route) =>
       NavigationActions.navigate({
-        routeName: route
+        routeName: route,
       })
     );
     //resets the navigation stack
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1, //index of the last screen route
-      actions: continueRoutes
+      actions: continueRoutes,
     });
 
     this.props.navigation.dispatch(resetAction);
@@ -95,7 +95,7 @@ class ContinueCampaign extends Component {
       showMessage({
         message: "The dates are no longer applicable",
         description: "Please choose new dates",
-        type: "warning"
+        type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal();
@@ -103,14 +103,14 @@ class ContinueCampaign extends Component {
     } else {
       this.setState({ resumeLoading: true });
       let updated_transaction_data = {
-        channel: ""
+        channel: "",
       };
       if (
         this.props.currentCampaignSteps.includes("InstagramFeedAdObjective")
       ) {
         updated_transaction_data = {
           ...updated_transaction_data,
-          campaign_id: this.props.data.campaign_id
+          campaign_id: this.props.data.campaign_id,
         };
       }
       // if (this.props.currentCampaignSteps.includes("AdDetails")) {
@@ -173,6 +173,10 @@ class ContinueCampaign extends Component {
                   this.props.navigation.goBack();
                   //this.handleClosing();
                 }}
+                segment={{
+                  source: "continue_campaign_modal",
+                  source_action: "a_go_back",
+                }}
                 title={"Continue Ad Creation"}
               />
               <Text
@@ -180,8 +184,8 @@ class ContinueCampaign extends Component {
                   styles.text,
                   {
                     fontFamily: "montserrat-regular",
-                    width: 250
-                  }
+                    width: 250,
+                  },
                 ]}
               >
                 {translate(
@@ -212,7 +216,7 @@ class ContinueCampaign extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   adType: state.instagramAds.adType,
   data: state.instagramAds.data,
   incompleteCampaign: state.instagramAds.incompleteCampaign,
@@ -220,21 +224,21 @@ const mapStateToProps = state => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   oldTempAdType: state.instagramAds.oldTempAdType,
   oldTempData: state.instagramAds.oldTempData,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
 });
 
-const mapDispatchToProps = dispatch => ({
-  resetCampaignInfo: resetAdType =>
+const mapDispatchToProps = (dispatch) => ({
+  resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType)),
-  setCampaignInProgress: value =>
+  setCampaignInProgress: (value) =>
     dispatch(actionCreators.setCampaignInProgressInstagram(value)),
-  set_adType_instagram: value =>
+  set_adType_instagram: (value) =>
     dispatch(actionCreators.set_adType_instagram(value)),
-  save_campaign_info: value =>
+  save_campaign_info: (value) =>
     dispatch(actionCreators.save_campaign_info_instagram(value)),
-  overWriteObjectiveData: value =>
+  overWriteObjectiveData: (value) =>
     dispatch(actionCreators.overWriteObjectiveDataInstagram(value)),
-  setCampaignInfoForTransaction: data =>
-    dispatch(actionCreators.setCampaignInfoForTransaction(data))
+  setCampaignInfoForTransaction: (data) =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);

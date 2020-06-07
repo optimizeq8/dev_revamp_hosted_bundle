@@ -380,6 +380,10 @@ class GoogleCampaignDetails extends Component {
                 translateTitle={false}
                 title={loading ? "" : selectedCampaign.campaign.name}
                 icon={"google"}
+                segment={{
+                  source: "campaign_detail",
+                  source_action: "a_go_back",
+                }}
                 navigation={
                   !this.state.expand ? this.props.navigation : undefined
                 }

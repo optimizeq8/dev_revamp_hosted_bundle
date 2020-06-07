@@ -15,7 +15,7 @@ import * as actionCreators from "../../../../../store/actions";
 import styles from "./styles";
 import countries, {
   gender as genderValues,
-  country_regions
+  country_regions,
 } from "../AdTargetting/data";
 //Redux
 import { connect } from "react-redux";
@@ -27,7 +27,7 @@ import dateFormat from "dateformat";
 
 class InstagramAdPaymentReview extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   componentWillUnmount() {
@@ -75,38 +75,38 @@ class InstagramAdPaymentReview extends Component {
                 {
                   country: "SA",
                   key: "3203",
-                  name: "Al-Qassim Region"
+                  name: "Al-Qassim Region",
                 },
                 {
                   country: "SA",
                   key: "3199",
-                  name: "Al Bahah Region"
-                }
-              ]
+                  name: "Al Bahah Region",
+                },
+              ],
             },
             flexible_spec: [
               {
                 interests: [
                   {
                     id: "6003030029655",
-                    name: "Chinese cuisine"
+                    name: "Chinese cuisine",
                   },
                   {
                     id: "6003102988840",
-                    name: "Latin American cuisine"
+                    name: "Latin American cuisine",
                   },
                   {
                     id: "6003134986700",
-                    name: "Baking"
-                  }
-                ]
-              }
+                    name: "Baking",
+                  },
+                ],
+              },
             ],
             user_device: ["2.1", "6.1 plus", "a1000"],
-            user_os: ["Android"]
+            user_os: ["Android"],
           },
-          lifetime_budget_micro: "75"
-        }
+          lifetime_budget_micro: "75",
+        },
       };
       let campaignInfo = data.campaignInfo;
 
@@ -116,7 +116,7 @@ class InstagramAdPaymentReview extends Component {
 
       if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
         interestNames = targeting.flexible_spec[0].interests.map(
-          interest => interest.name
+          (interest) => interest.name
         );
       }
       let end_time = new Date(data.end_time || "01-01-1970");
@@ -128,21 +128,21 @@ class InstagramAdPaymentReview extends Component {
         ? startCase(
             lowerCase(
               genderValues.find(
-                genderValue => genderValue.value === targeting.genders[0]
+                (genderValue) => genderValue.value === targeting.genders[0]
               ).label
             )
           )
         : "All";
       let countrySelections = [];
-      targeting.geo_locations.countries.forEach(selectedCountry => {
+      targeting.geo_locations.countries.forEach((selectedCountry) => {
         countrySelections.push(
-          countries.find(countryData => countryData.value === selectedCountry)
+          countries.find((countryData) => countryData.value === selectedCountry)
             .label
         );
       });
 
       if (targeting.geo_locations.hasOwnProperty("regions")) {
-        var regionNames = targeting.geo_locations.regions.map(reg => {
+        var regionNames = targeting.geo_locations.regions.map((reg) => {
           return reg.name;
         });
       } else regionNames = [""];
@@ -206,24 +206,24 @@ class InstagramAdPaymentReview extends Component {
                       "AdCover",
                       "AdDesign",
                       "AdDetails",
-                      "AdPaymentReview"
+                      "AdPaymentReview",
                     ]
                   : [
                       "Dashboard",
                       "AdObjective",
                       "AdDesign",
                       "AdDetails",
-                      "AdPaymentReview"
+                      "AdPaymentReview",
                     ]
               );
               Segment.screenWithProperties("Snap Ad Payment Review", {
                 category: "Campaign Creation",
-                channel: "snapchat"
+                channel: "snapchat",
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 step: 5,
                 business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_ids
+                checkout_id: this.props.campaign_ids,
               });
             }}
           />
@@ -235,8 +235,10 @@ class InstagramAdPaymentReview extends Component {
               segment={{
                 str: "Ad Payment Review Back Button",
                 obj: {
-                  businessname: this.props.mainBusiness.businessname
-                }
+                  businessname: this.props.mainBusiness.businessname,
+                },
+                source: "ad_review",
+                source_action: "a_go_back",
               }}
               navigation={this.props.navigation}
               title={"Review your Selection"}
@@ -246,10 +248,10 @@ class InstagramAdPaymentReview extends Component {
               scrollEnabled={false}
               contentContainerStyle={{
                 flex: 1,
-                marginVertical: 20
+                marginVertical: 20,
               }}
               style={{
-                marginHorizontal: 20
+                marginHorizontal: 20,
               }}
             >
               {(media.includes(".mp4") ||
@@ -259,7 +261,7 @@ class InstagramAdPaymentReview extends Component {
                 <View style={[styles.backgroundViewWrapper, styles.videoView]}>
                   <Video
                     source={{
-                      uri: media
+                      uri: media,
                     }}
                     shouldPlay
                     isLooping
@@ -282,7 +284,7 @@ class InstagramAdPaymentReview extends Component {
                     media.includes(".JPEG") ||
                     media.includes(".PNG")
                       ? media
-                      : "www.go.com"
+                      : "www.go.com",
                 }}
               >
                 <Content contentContainerStyle={styles.contentContainerStyle1}>
@@ -304,8 +306,8 @@ class InstagramAdPaymentReview extends Component {
                         { title: "End", content: end_time },
                         {
                           title: "Objective",
-                          content: translate(data.objectiveLabel)
-                        }
+                          content: translate(data.objectiveLabel),
+                        },
                       ]}
                     />
                     <ReviewItemCard
@@ -314,16 +316,16 @@ class InstagramAdPaymentReview extends Component {
                       subtitles={[
                         {
                           title: "Business Name",
-                          content: instagram_business_name
+                          content: instagram_business_name,
                         },
                         {
                           title: "Headline",
-                          content: message
+                          content: message,
                         },
                         {
                           title: "Swipe Up destination",
-                          content: link
-                        }
+                          content: link,
+                        },
                       ]}
                     />
 
@@ -333,15 +335,15 @@ class InstagramAdPaymentReview extends Component {
                       subtitles={[
                         {
                           title: "Gender",
-                          content: translate(gender)
+                          content: translate(gender),
                         },
                         {
                           title: "Countries",
-                          content: countrySelections.join(", ")
+                          content: countrySelections.join(", "),
                         },
                         {
                           title: "Regions",
-                          content: regionNames.join(", ")
+                          content: regionNames.join(", "),
                         },
                         // {
                         //   title: "Language",
@@ -353,17 +355,17 @@ class InstagramAdPaymentReview extends Component {
                         // },
                         interestNames.length > 0 && {
                           title: "Interests",
-                          content: interestNames + ""
+                          content: interestNames + "",
                         },
 
                         user_devices.length > 0 && {
                           title: "Devices",
-                          content: user_devices.join(", ")
+                          content: user_devices.join(", "),
                         },
                         targeting.hasOwnProperty("user_os") &&
                           targeting.user_os[0] !== "" && {
                             title: "OS Type",
-                            content: translate(OSContnet)
+                            content: translate(OSContnet),
                           },
                         targeting.hasOwnProperty("os_version_max") &&
                           targeting.os_version_max !== "" && {
@@ -372,8 +374,8 @@ class InstagramAdPaymentReview extends Component {
                               targeting.hasOwnProperty("os_version_min") &&
                               targeting.os_version_min +
                                 ", " +
-                                targeting.os_version_max
-                          }
+                                targeting.os_version_max,
+                          },
                       ]}
                     />
                   </Content>
@@ -413,13 +415,13 @@ class InstagramAdPaymentReview extends Component {
                       "Select Ad Payment Review Button",
                       {
                         business_name: this.props.mainBusiness.businessname,
-                        campaign_budget: data.lifetime_budget_micro
+                        campaign_budget: data.lifetime_budget_micro,
                       }
                     );
                     Segment.trackWithProperties("Completed Checkout Step", {
                       step: 5,
                       business_name: this.props.mainBusiness.businessname,
-                      checkout_id: this.props.campaign_id
+                      checkout_id: this.props.campaign_id,
                     });
 
                     this.props.navigation.navigate("PaymentForm");
@@ -448,7 +450,7 @@ class InstagramAdPaymentReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.instagramAds.data,
@@ -462,13 +464,14 @@ const mapStateToProps = state => ({
   adType: state.instagramAds.adType,
   languages: state.instagramAds.languagesList,
   languagesListLoading: state.instagramAds.languagesListLoading,
-  data: state.instagramAds.data
+  data: state.instagramAds.data,
 });
 
-const mapDispatchToProps = dispatch => ({
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
-  get_languages: () => dispatch(actionCreators.get_languages())
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
+  saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
+  get_languages: () => dispatch(actionCreators.get_languages()),
 });
 
 export default connect(

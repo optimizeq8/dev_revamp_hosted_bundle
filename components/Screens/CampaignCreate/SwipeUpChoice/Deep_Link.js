@@ -153,7 +153,7 @@ class Deep_Link extends Component {
     androidApp_icon
   ) => {
     if (nameError || callActionError) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: nameError || callActionError,
         campaign_swipe_up_destination: "Deep Link",
@@ -210,7 +210,7 @@ class Deep_Link extends Component {
       appError,
     });
     if (appError) {
-      analytics.track(`a_error`, {
+      analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         campaign_swipe_up_destination: "Deep Link",
         error_description: appError,
@@ -273,6 +273,10 @@ class Deep_Link extends Component {
             closeButton={false}
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
+            segment={{
+              source: "ad_swipe_up_destination",
+              source_action: "a_go_back",
+            }}
           />
         )}
 

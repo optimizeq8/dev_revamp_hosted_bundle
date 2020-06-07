@@ -195,8 +195,8 @@ class Long_Form_Video extends Component {
       });
 
       this.props.navigation.navigate("AdDesign", {
-        source: "swipe_up_destination",
-        source_action: "a_swipe_up_destination"
+        source: "ad_swipe_up_destination",
+        source_action: "a_swipe_up_destination",
       });
     }
   };
