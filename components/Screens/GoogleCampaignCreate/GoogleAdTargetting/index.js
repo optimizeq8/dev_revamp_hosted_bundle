@@ -209,9 +209,9 @@ class GoogleAdTargetting extends Component {
     var res = this.state.keywords.filter((l) => l !== keyword);
     if (isUndefined(this.state.keywords.find((l) => l === keyword))) {
       this.setState({ keywords: [...res, keyword] });
-      analytics.track(`a_keywords`, {
+      analytics.track(`a_ad_keywords`, {
         source: "ad_targeting",
-        source_actions: "a_keywords",
+        source_actions: "a_ad_keywords",
         campaign_keywords: [...res, keyword],
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
@@ -220,9 +220,9 @@ class GoogleAdTargetting extends Component {
         keywords: [...res, keyword],
       });
     } else {
-      analytics.track(`a_keywords`, {
+      analytics.track(`a_ad_keywords`, {
         source: "ad_targeting",
-        source_actions: "a_keywords",
+        source_actions: "a_ad_keywords",
         campaign_keywords: res,
         campaign_channel: "google",
         campaign_ad_type: "GoogleSEAd",
@@ -495,6 +495,7 @@ class GoogleAdTargetting extends Component {
                 campaign_id={this.props.campaign.id}
                 businessid={this.props.mainBusiness.businessid}
                 screenProps={this.props.screenProps}
+                source={"ad_targeting"}
               />
             }
             icon={""}
@@ -696,9 +697,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.create_google_SE_campaign_ad_targeting(info, segmentInfo)
     ),
-  get_google_SE_keywords: (keyword, campaign_id, businessid) =>
+  get_google_SE_keywords: (keyword, campaign_id, businessid, segmentInfo) =>
     dispatch(
-      actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)
+      actionCreators.get_google_SE_keywords(
+        keyword,
+        campaign_id,
+        businessid,
+        segmentInfo
+      )
     ),
   save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),

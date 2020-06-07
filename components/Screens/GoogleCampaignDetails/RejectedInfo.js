@@ -68,23 +68,29 @@ export default RejectedInfo = (props) => {
            *
            */
           if (error_type === 1)
-            navigation.push("GoogleAdDesign", {
+            navigation.navigate("GoogleAdDesign", {
               rejected: true,
               id: campaign_id,
               ad: ad,
               error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
           else if (error_type === 2)
-            props.navigation.push("GoogleEditKeywords", {
+            props.navigation.navigate("GoogleEditKeywords", {
               rejected: true,
               error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
           else
-            props.navigation.push("GoogleAdDesign", {
+            props.navigation.navigate("GoogleAdDesign", {
               rejected: true,
               id: campaign_id,
               ad: ad,
               error_type: error_type,
+              source: "campaign_detail",
+              source_action: "a_review_ad",
             });
         }}
         content="Review Ad"

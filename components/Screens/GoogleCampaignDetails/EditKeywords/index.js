@@ -207,6 +207,7 @@ class EditKeywords extends Component {
               data={this.props.campaign.fetchedKeywords}
               campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
+              source={"ad_keywords"}
             />
             {this.props.campaign.uploading ? (
               <ForwardLoading
@@ -241,9 +242,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   update_google_keywords: (info, segmentInfo) =>
     dispatch(actionCreators.update_google_keywords(info, segmentInfo)),
-  get_google_SE_keywords: (keyword, campaign_id, businessid) =>
+  get_google_SE_keywords: (keyword, campaign_id, businessid, segmentInfo) =>
     dispatch(
-      actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)
+      actionCreators.get_google_SE_keywords(
+        keyword,
+        campaign_id,
+        businessid,
+        segmentInfo
+      )
     ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditKeywords);

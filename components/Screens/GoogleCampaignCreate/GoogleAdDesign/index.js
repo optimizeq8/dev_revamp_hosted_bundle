@@ -257,6 +257,8 @@ class GoogleAdDesign extends Component {
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
             adData: data,
+            source: "ad_design",
+            source_action: "a_ad_keywords",
           });
       }
     }
