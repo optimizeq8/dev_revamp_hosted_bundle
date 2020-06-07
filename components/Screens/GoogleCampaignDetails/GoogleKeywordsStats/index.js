@@ -7,6 +7,7 @@ import {
   ScrollView,
   Keyboard,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Text, Item, Input, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
@@ -18,7 +19,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Segment from "expo-analytics-segment";
 // Style
 import styles from "./styles";
 
@@ -59,6 +59,12 @@ class GoogleKeywordsStats extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleSelectedKeyword = (keyword) => {
+    console.log("keyword", keyword);
+    analytics.track(`a_open_keyword_performance`, {
+      source: "ad_keywords_performance",
+      source_action: "a_open_keyword_performance",
+      ...keyword,
+    });
     this.setState(
       {
         selected: keyword,
@@ -77,7 +83,19 @@ class GoogleKeywordsStats extends Component {
         : this.state.minHeight,
     }).start();
   };
-
+  onDidFocus = () => {
+    analytics.track(`ad_keywords_performance`, {
+      source: this.props.navigation.getParam(
+        "source",
+        this.props.screenProps.prevAppState
+      ),
+      source_action: this.props.navigation.getParam(
+        "source_action",
+        this.props.screenProps.prevAppState
+      ),
+      keywords_performance: this.state.filteredKeywords,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     let keywordslist = this.state.filteredKeywords.map((k) => {
@@ -96,14 +114,7 @@ class GoogleKeywordsStats extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Google Keywords Stats", {
-              category: "Campaign Details",
-              channel: "google",
-            });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <View
@@ -130,7 +141,7 @@ class GoogleKeywordsStats extends Component {
               icon={"google"}
               navigation={this.props.navigation}
               segment={{
-                source: "ad_keywords",
+                source: "ad_keywords_performance",
                 source_action: "a_go_back",
               }}
               titelStyle={{
@@ -152,7 +163,10 @@ class GoogleKeywordsStats extends Component {
                   : true
               }
               topRightButtonFunction={() => {
-                this.props.navigation.push("GoogleEditKeywords");
+                this.props.navigation.navigate("GoogleEditKeywords", {
+                  source: "ad_keywords_performance",
+                  source_action: "a_ad_keywords",
+                });
               }}
             />
 
