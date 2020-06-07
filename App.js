@@ -435,7 +435,6 @@ class App extends React.Component {
                 backgroundColor: "transparent",
                 marginTop: 0,
                 paddingTop: 0,
-                paddingTop: StatusBar.currentHeight,
               }}
             />
             <View style={styles.container}>
@@ -461,14 +460,14 @@ class App extends React.Component {
                     prevAppState: this.state.prevAppState,
                   }}
                 />
+                <FlashMessage
+                  icon="auto"
+                  duration={4000}
+                  position={"top"}
+                  floating={true}
+                />
               </Root>
             </View>
-            <FlashMessage
-              icon="auto"
-              duration={4000}
-              position={"top"}
-              floating={"true"}
-            />
           </PersistGate>
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>
@@ -679,6 +678,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     backgroundColor: "#0000",
     justifyContent: "center",
+    paddingTop: StatusBar.currentHeight,
   },
   logoContainer: {
     height: "100%",
