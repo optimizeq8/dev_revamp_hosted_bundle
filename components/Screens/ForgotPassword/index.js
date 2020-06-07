@@ -7,7 +7,7 @@ import {
   I18nManager,
 } from "react-native";
 import { Text, Item, Input } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-navigation";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -44,8 +44,15 @@ class ForgotPassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    Segment.screenWithProperties("Forgot Password", {
-      category: "Sign In",
+    analytics.track(`forget_password`, {
+      source: this.props.navigation.getParam(
+        "source",
+        this.props.screenProps.prevAppState
+      ),
+      source_action: this.props.navigation.getParam(
+        "source_action",
+        this.props.screenProps.prevAppState
+      ),
     });
   }
   // componentDidUpdate(prevProps) {
@@ -70,6 +77,14 @@ class ForgotPassword extends Component {
     });
     if (!emailError) {
       this.props.forgotPassword(this.state.email, this.props.navigation);
+    } else {
+      analytics.track(`a_error_form`, {
+        source: "forget_password",
+        error_page: "forget_password",
+        source_action: "a_forget_password",
+        error_description: emailError,
+        email: this.state.email,
+      });
     }
   };
 

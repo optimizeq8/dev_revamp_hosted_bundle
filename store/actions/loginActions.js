@@ -280,6 +280,12 @@ export const forgotPassword = (email, navigation) => {
         email: email,
       })
       .then((response) => {
+        analytics.track(`a_forget_password`, {
+          source: "forget_password",
+          source_action: "a_forget_password",
+          email,
+          action_status: response.data.success ? "success" : "failure",
+        });
         showMessage({
           message: response.data.success
             ? "An email with a random generated password has been sent to your email account."
@@ -287,7 +293,13 @@ export const forgotPassword = (email, navigation) => {
           type: response.data.success ? "success" : "warning",
           position: "top",
         });
-        if (response.data.success) navigation.goBack();
+        if (response.data.success) {
+          analytics.track(`a_go_back`, {
+            source: "forget_password",
+            source_action: "a_go_back",
+          });
+          navigation.goBack();
+        }
         // return dispatch({
         //   type: actionTypes.CHANGE_PASSWORD,
         //   payload: response.data
