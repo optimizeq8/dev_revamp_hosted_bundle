@@ -61,7 +61,7 @@ class CampaignCard extends Component {
     let campaignEndedOrNot =
       this.review_status.includes("APPROVED") &&
       new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
+        this.currentDate().setHours(0, 0, 0, 0) &&
       new Date(campaign.end_time) >= this.currentDate()
         ? null
         : campaign.campaign_end === "1" ||
@@ -185,7 +185,7 @@ class CampaignCard extends Component {
                                 0,
                                 0,
                                 0
-                              ) > new Date().setHours(0, 0, 0, 0)
+                              ) > this.currentDate().setHours(0, 0, 0, 0)
                               ? "Scheduled for"
                               : "LIVE"
                             : "Campaign Paused"
@@ -194,7 +194,7 @@ class CampaignCard extends Component {
                         " " +
                         (this.campaign_status === "LIVE" &&
                         !this.review_status.includes("PENDING") &&
-                        new Date(campaign.start_time) > new Date()
+                        new Date(campaign.start_time) > this.currentDate()
                           ? dateFormat(new Date(campaign.start_time), "mmm dS")
                           : "")}
                     </Text>
@@ -203,7 +203,7 @@ class CampaignCard extends Component {
               </View>
               {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
-                endDate < new Date() && (
+                endDate < this.currentDate() && (
                   <Icon
                     type="MaterialCommunityIcons"
                     name="alert"
