@@ -175,7 +175,11 @@ class App extends React.Component {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
   componentDidMount() {
-    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+    // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
+    // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
+    // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
+
+    analytics.setup("hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp", {
       using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,
@@ -234,6 +238,7 @@ class App extends React.Component {
         device_id: getUniqueId(),
         timestamp: new Date().getTime(),
       });
+      analytics.identify(null, { logged_out: false });
       Platform.OS === "ios" && Notifications.setBadgeCountAsync(0);
       // console.log("App has come to the foreground!");
       if (

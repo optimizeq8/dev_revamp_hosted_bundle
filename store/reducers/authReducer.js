@@ -8,14 +8,14 @@ const initialState = {
   userid: null,
   userInfo: null,
   loading: false,
-  loadingUpdateInfo: false
+  loadingUpdateInfo: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
       AsyncStorage.getItem("appLanguage")
-        .then(language => {
+        .then((language) => {
           // analytics.alias(action.payload.user.userid);
           analytics.identify(action.payload.user.userid, {
             ...action.payload.user,
@@ -23,15 +23,19 @@ const reducer = (state = initialState, action) => {
               action.payload.user.firstname +
               " " +
               action.payload.user.lastname,
-            selected_language: language
+            selected_language: language,
+            logged_out: false,
           });
         })
-        .catch(error => {
-          // analytics.alias(action.payload.user.userid);
+        .catch((error) => {
+          analytics.alias(action.payload.user.userid);
           analytics.identify(action.payload.user.userid, {
             ...action.payload.user,
             $name:
-              action.payload.user.firstname + " " + action.payload.user.lastname
+              action.payload.user.firstname +
+              " " +
+              action.payload.user.lastname,
+            logged_out: false,
           });
         });
 
@@ -39,24 +43,24 @@ const reducer = (state = initialState, action) => {
         ...state,
         userid: action.payload.user.userid,
         userInfo: action.payload.user,
-        loading: false
+        loading: false,
       };
 
     case actionTypes.UPDATE_USERINFO:
       return {
         ...state,
         loadingUpdateInfo: false,
-        userInfo: { ...state.userInfo, ...action.payload }
+        userInfo: { ...state.userInfo, ...action.payload },
       };
     case actionTypes.SET_LOADING_USER:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     case actionTypes.SET_LOADING_ACCOUNT_UPDATE:
       return {
         ...state,
-        loadingUpdateInfo: action.payload
+        loadingUpdateInfo: action.payload,
       };
     default:
       return state;
