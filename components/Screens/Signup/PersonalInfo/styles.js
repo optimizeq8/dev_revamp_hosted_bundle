@@ -4,23 +4,23 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   marginVertical: {
-    marginBottom: 30
+    marginBottom: 30,
   },
   personalInfoView: {
     backgroundColor: "#0000",
     display: "flex",
     justifyContent: "space-between",
     flex: 1,
-    paddingTop: 0
+    paddingTop: 0,
   },
   mobileView: {
     width: "100%",
     alignSelf: "center",
-    marginBottom: 25
+    marginBottom: 25,
   },
   inputLabel: {
     // marginBottom: -10,
@@ -29,33 +29,33 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#FFF",
     textAlign: "left",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   labelEmail: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   labelPassword: {
-    bottom: 5
+    bottom: 5,
   },
   labelIcon: {
-    fontSize: 20 / PixelRatio.getFontScale()
+    fontSize: 20 / PixelRatio.getFontScale(),
   },
   repeatPassword: {
     marginBottom: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   scrollViewStyleContainer: {
     flex: 1,
-    marginVertical: 10
+    marginVertical: 10,
   },
   labelInputText: {
     // bottom: 5,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   iconSize: {
     // position: "absolute",
     // marginLeft: 15,
-    fontSize: 16 / PixelRatio.getFontScale()
+    fontSize: 16 / PixelRatio.getFontScale(),
   },
   emailerrorText: {
     textAlign: "center",
@@ -64,19 +64,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     // bottom: 40,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   passwordErrorText: {
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   repassworderrorText: {
     bottom: 15,
     paddingTop: 0,
     marginBottom: 0,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   container: {
-    paddingTop: 20
+    paddingTop: 20,
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   contentContainer: {
     paddingVertical: 40,
     flex: 1,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   icon: {
     fontSize: 45,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     alignSelf: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   text: {
     textAlign: "center",
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
     // paddingVertical: 10,
     // marginBottom: 40
   },
@@ -122,13 +122,16 @@ const styles = StyleSheet.create({
     // alignSelf: "left",
     textAlign: "left",
     color: "#FFF",
-    marginBottom: 10
+    marginBottom: 10,
+    width: "100%",
+    paddingVertical: 0,
   },
   colView: {
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
-    marginLeft: 13
+    marginLeft: 13,
+    width: "90%",
   },
   // input: {
   //   // bottom: 25,
@@ -150,10 +153,10 @@ const styles = StyleSheet.create({
     height: 56,
     paddingHorizontal: 20,
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   labelView: {
     borderTopLeftRadius: 150,
@@ -165,26 +168,26 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   submitButton: {
     height: 54,
     width: "100%",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   subHeading: {
     fontSize: 19,
     color: "#FFF",
     fontFamily: "montserrat-bold",
     marginLeft: 16,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   subHeadView: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     // paddingHorizontal: 26,
-    marginVertical: 15
+    marginVertical: 15,
   },
   link: {
     textAlign: "center",
@@ -194,14 +197,14 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   tNcLink: {
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
     // color: "blue"
   },
   buttonLink: {
-    lineHeight: 20
+    lineHeight: 20,
   },
   textAgreement: {
     // bottom: 10,
@@ -209,11 +212,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   agreementLink: {
-    zIndex: 10
-  }
+    zIndex: 10,
+  },
 });
 
 export default styles;
