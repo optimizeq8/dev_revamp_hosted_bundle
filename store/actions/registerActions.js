@@ -639,6 +639,7 @@ export const registerGuestUser = (
           ) {
             dispatch(chanege_base_url(true));
           }
+          analytics.alias(decodedUser.user.userid);
           dispatch(setCurrentUser(decodedUser));
         }
       })

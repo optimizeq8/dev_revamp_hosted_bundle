@@ -250,6 +250,7 @@ export const logout = (navigation) => {
   return (dispatch, getState) => {
     setAuthToken()
       .then(() => {
+        analytics.identify(getState().auth.userid, { logged_out: true });
         navigation &&
           navigation.navigate("SwitchLanguage", {
             loggedout: true,
@@ -354,7 +355,7 @@ export const setCurrentUser = (user) => {
         payload: user,
       });
     } else {
-      // analytics.reset();
+      analytics.reset();
       return dispatch({
         type: actionTypes.LOGOUT_USER,
         payload: { user },
