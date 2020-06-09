@@ -1,21 +1,22 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   campaignInfoStyle: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   campaignInfoCard: {
     flexDirection: "row",
     top: 10,
-    flex: 3
+    flex: 3,
   },
   titleContainer: {
     flexDirection: "row",
@@ -23,23 +24,23 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     alignItems: "center",
     width: "100%",
-    height: 50
+    height: 50,
   },
   title: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: globalColors.white,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   adPerformanceLowerButton: {
     width: 35,
-    height: 35
+    height: 35,
   },
   subtext: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
   },
   chartSubtext: {
     alignSelf: "center",
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   metricsStyle: {
     flexDirection: "row",
@@ -56,39 +57,39 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     marginRight: 10,
     backgroundColor: "#0004",
-    width: 160,
+    width: widthPercentageToDP(42),
     borderRadius: 20,
-    height: 50
+    height: 50,
   },
   metricsCardStyle: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 3,
     backgroundColor: "#0000",
-    borderRadius: 20
+    borderRadius: 20,
   },
   metricIcon: {
-    marginRight: 10
+    marginRight: 10,
   },
   metricView: {
-    display: "flex"
+    display: "flex",
   },
   metricText: {
     color: "#fff",
     fontSize: 12,
-    textAlign: "left"
+    textAlign: "left",
   },
   numbers: {
     textAlign: "left",
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
     fontSize: 16 / PixelRatio.getFontScale(),
-    textAlign: "left"
+    textAlign: "left",
   },
   metricRow: {
     flexDirection: "row",
-    marginVertical: 5
-  }
+    marginVertical: 5,
+  },
 });
 
 export default styles;

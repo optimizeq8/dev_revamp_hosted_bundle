@@ -14,7 +14,7 @@ export default class ChartChoices extends Component {
       "Impressions",
       selectedCampaign && selectedCampaign.objective === "BRAND_AWARENESS"
         ? "CPM"
-        : "Swipe Ups"
+        : "Swipe Ups",
     ];
     if (
       selectedCampaign &&
@@ -22,7 +22,7 @@ export default class ChartChoices extends Component {
       "website interactions"
     )
       choices.push("website interactions");
-    choices = choices.map(choice => (
+    choices = choices.map((choice) => (
       <GradientButton
         key={choice}
         onPressAction={() => {
@@ -42,8 +42,8 @@ export default class ChartChoices extends Component {
             color:
               this.state.selectedChoice !== choice
                 ? globalColors.orange
-                : "#fff"
-          }
+                : "#fff",
+          },
         ]}
       />
     ));
@@ -53,13 +53,14 @@ export default class ChartChoices extends Component {
         style={{
           alignSelf: "center",
           alignContent: "center",
-          width: "100%"
+          width: "100%",
+          // paddingHorizontal: 20,
         }}
         contentContainerStyle={[
           styles.chartChoicesViewContainer,
           {
-            width: choices.length === 4 ? null : "100%"
-          }
+            width: choices.length === 4 ? null : "100%",
+          },
         ]}
       >
         {choices}

@@ -9,23 +9,27 @@ export default StyleSheet.create({
     color: globalColors.orange,
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    textTransform: "uppercase"
+    textAlign: "center",
+
+    textTransform: "uppercase",
   },
   chartSubtext: {
     textTransform: "uppercase",
     fontSize: 12,
     color: "#fff",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textAlign: "center",
   },
   chartBudgetSubtext: {
     fontSize: 12,
     color: "#fff",
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
+    textAlign: "center",
   },
   innerStyle: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%"
-  }
+    width: "90%",
+  },
 });

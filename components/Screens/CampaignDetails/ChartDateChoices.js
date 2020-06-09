@@ -11,7 +11,7 @@ export default class ChartDateChoices extends Component {
    * Handles filtering the data with which dates are chosen
    * @param choice A string either All, today or yesterday
    */
-  handleDateButtons = choice => {
+  handleDateButtons = (choice) => {
     let newDate = new Date();
     switch (choice) {
       case "All":
@@ -39,7 +39,7 @@ export default class ChartDateChoices extends Component {
         break;
     }
   };
-  renderDateChoices = choice => {
+  renderDateChoices = (choice) => {
     const { translate } = this.props.screenProps;
 
     return (
@@ -47,7 +47,7 @@ export default class ChartDateChoices extends Component {
         key={choice}
         onPress={() => {
           this.setState({
-            selectedChoice: choice
+            selectedChoice: choice,
           });
           if (choice === "Custom") {
             this.props.dateField.showModal();
@@ -65,15 +65,17 @@ export default class ChartDateChoices extends Component {
               this.state.selectedChoice === choice
                 ? globalColors.orange
                 : "transparent",
-            width: 65,
-            height: 30,
+            // width: 65,
+
+            width: "25%",
+            // height: 30,
             opacity:
               choice === "Today" || choice === "Yesterday"
                 ? new Date(this.props.selectedCampaign.end_time) < new Date()
                   ? 0.5
                   : 1
-                : 1
-          }
+                : 1,
+          },
         ]}
       >
         <Text style={[styles.choiceText, { fontSize: 12 }]}>
@@ -83,7 +85,7 @@ export default class ChartDateChoices extends Component {
     );
   };
   render() {
-    let choices = ["All", "Today", "Yesterday", "Custom"].map(choice =>
+    let choices = ["All", "Today", "Yesterday", "Custom"].map((choice) =>
       this.renderDateChoices(choice)
     );
 
