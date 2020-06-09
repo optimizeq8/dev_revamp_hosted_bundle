@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 
 //Redux
 import { connect } from "react-redux";
@@ -12,10 +12,25 @@ import styles from "../styles/swipeUpDestination.styles";
 
 class SwipeUpDestination extends React.Component {
   getSwipeUpDestination = () => {
-    console.log("data", this.props.data);
+    let listIndex = 0;
+    switch (this.props.data.objective) {
+      case "BRAND_AWARENESS":
+        listIndex = 0;
+        break;
+      case "LEAD_GENERATION":
+        listIndex = 2;
+        break;
+      case "LINK_CLICKS":
+        listIndex = 1;
+        break;
+      default:
+        listIndex = 0;
+        break;
+    }
+    return { listIndex };
   };
   render() {
-    this.getSwipeUpDestination();
+    const { listIndex } = this.getSwipeUpDestination();
     return (
       <SafeAreaView
         forceInset={{
@@ -31,18 +46,13 @@ class SwipeUpDestination extends React.Component {
             source: "ad_swipe_up_destination",
             source_action: "a_go_back",
           }}
-          // segment={
-          //   {
-          //     // str: "Instagram Feed Ad Objective Back Button",
-          //     // obj: { businessname: this.props.mainBusiness.businessname }
-          //   }
-          // }
           navigation={this.props.navigation}
           title={"Swipe Up destination"}
         />
         <Website
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
+          listNum={listIndex}
         />
       </SafeAreaView>
     );

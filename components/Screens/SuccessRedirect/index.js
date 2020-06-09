@@ -59,7 +59,11 @@ class SuccessRedirect extends Component {
           this.props.channel === "" ? "snapchat" : this.props.channel,
         amount: parseFloat(this.props.navigation.getParam("amount", "null")),
         campaign_ad_type:
-          this.props.channel === "google" ? "GoogleSEAd" : this.props.adType,
+          this.props.channel === "google"
+            ? "GoogleSEAd"
+            : this.props.channel === "instagram"
+            ? this.props.adTypeInstagram
+            : this.props.adType,
 
         campaign_ltv: parseFloat(
           this.props.navigation.getParam("campaign_ltv", "null")
@@ -78,7 +82,7 @@ class SuccessRedirect extends Component {
       ...segmentInfo,
       payment_mode: this.props.navigation.getParam("payment_mode"),
     });
-
+    //TODO: For adjust please add the analytics keywords accordinlgy for instagram channel
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
       adjustWalletPaymentTracker.addPartnerParameter(
@@ -121,6 +125,9 @@ class SuccessRedirect extends Component {
       }
       if (this.props.channel === "google") {
         this.props.rest_google_campaign_data();
+      }
+      if (this.props.channel === "instagram") {
+        this.props.resetCampaignInfoInstagram();
       }
       this.props.reset_transaction_reducer();
     });
@@ -206,6 +213,7 @@ const mapStateToProps = (state) => ({
   campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
   channel: state.transA.channel,
   adType: state.campaignC.adType,
+  adTypeInstagram: state.instagramAds.adType,
 });
 const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
@@ -213,5 +221,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.reset_transaction_reducer()),
   rest_google_campaign_data: () =>
     dispatch(actionCreators.rest_google_campaign_data()),
+  resetCampaignInfoInstagram: () =>
+    dispatch(actionCreators.resetCampaignInfoInstagram()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

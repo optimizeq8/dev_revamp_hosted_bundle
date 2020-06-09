@@ -395,7 +395,7 @@ class AdObjective extends Component {
                 maxLength={34}
                 autoFocus={false}
                 incomplete={this.state.incomplete}
-                valueText={this.state.objectiveLabel}
+                valueText={this.state.campaignInfo.name}
                 translate={this.props.screenProps.translate}
               />
               <Animatable.View
