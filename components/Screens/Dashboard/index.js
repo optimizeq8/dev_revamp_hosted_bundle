@@ -89,6 +89,7 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true,
       items: businessCategoriesList(translate),
+      adButtons: [...snapAds, ...googleAds],
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -106,6 +107,13 @@ class Dashboard extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
     ) {
+      // to set for instagram accounts
+      if (this.props.mainBusiness.instagram_access === "1") {
+        let adButtons = [...this.state.adButtons, ...instagramAds];
+        this.setState({
+          adButtons,
+        });
+      }
       // this.props.getWalletAmount();
       if (!this.props.campaignList || this.props.campaignList.length === 0) {
         this.props.getCampaignList(
@@ -118,7 +126,6 @@ class Dashboard extends Component {
         this.props.getBusinessAccounts();
       }
     }
-    Segment.screen("Dashboard");
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
@@ -212,10 +219,6 @@ class Dashboard extends Component {
 
   navigationHandler = (adType) => {
     const { fb_connected } = this.props.mainBusiness;
-    Segment.trackWithProperties("Selected Ad Type", {
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title,
-    });
     analytics.track(`a_campaign_ad_type`, {
       source: "dashboard",
       source_action: "a_campaign_ad_type",
@@ -255,15 +258,16 @@ class Dashboard extends Component {
       if (
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
-      )
+      ) {
         this.props.navigation.navigate("SuspendedWarning");
-      else if (adType.mediaType === "instagram" && fb_connected === "0") {
+      } else if (adType.mediaType === "instagram" && fb_connected === "1") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
+          source: "dashboard",
+          source_action: "a_campaign_ad_type",
         });
-      }
-      {
+      } else {
         if (adType.value === "SnapAd") {
           let adjustEvent = new AdjustEvent("kd8uvi");
           Adjust.trackEvent(adjustEvent);
@@ -428,11 +432,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [
-      ...snapAds,
-      ...googleAds,
-      ...instagramAds,
-    ].map((adType) => (
+    let adButtons = this.state.adButtons.map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}

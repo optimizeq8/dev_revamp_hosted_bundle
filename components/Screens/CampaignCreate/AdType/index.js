@@ -49,6 +49,23 @@ class AdType extends Component {
   };
 
   componentDidMount() {
+    // If user doesn't have instagram access remove from tabs
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.instagram_access === "1"
+    ) {
+      let socialMediaPlatforms =
+        Platform.OS === "android" && I18nManager.isRTL
+          ? [...SocialPlatforms].reverse()
+          : [...SocialPlatforms];
+      const index = socialMediaPlatforms.findIndex(
+        (el) => el.title === "Instagram"
+      );
+      socialMediaPlatforms.splice(index, 1);
+      this.setState({
+        socialMediaPlatforms,
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -60,9 +77,7 @@ class AdType extends Component {
     if (!this.props.navigation.isFocused()) {
       return false;
     }
-    Segment.trackWithProperties("Closed Ad Type", {
-      business_name: this.props.mainBusiness.businessname,
-    });
+
     this.props.navigation.navigate("Dashboard", {
       source: "ad_type",
       source_action: "a_back_button",
@@ -141,6 +156,8 @@ class AdType extends Component {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
+          source: "ad_type",
+          source_action: "a_campaign_ad_type",
         });
       } else
         this.props.navigation.navigate(adType.rout, {
@@ -294,7 +311,7 @@ class AdType extends Component {
             {translate("Create a new")}
           </Text>
           <ScrollView horizontal contentContainerStyle={{ width: "100%" }}>
-            {SocialPlatforms.map((social) => {
+            {this.state.socialMediaPlatforms.map((social) => {
               let MediaIcon = social.icon.type;
               return (
                 <TouchableOpacity
@@ -379,19 +396,21 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
-          {/* {this.state.active === "Instagram" && (
+          {this.state.active === "Instagram" && (
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
                   url: "https://optimizeapp.com/facebooklogin/login.php",
-                  title: "Instagram"
+                  title: "Instagram",
+                  source: "ad_type",
+                  source_action: "a_connect_to_facebook",
                 })
               }
               style={styles.loginBtn}
               uppercase
               text={translate("Login with Facebook")}
             />
-          )} */}
+          )}
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
               activeSlide: I18nManager.isRTL ? " " : this.state.active,

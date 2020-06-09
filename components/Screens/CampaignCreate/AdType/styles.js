@@ -140,8 +140,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#F4F4F4",
     borderTopRightRadius: 35,
     borderTopLeftRadius: 35,
+    zIndex: 10,
+    elevation: 10,
   },
-  mainIcon: { position: "absolute", zIndex: -2 },
+  mainIcon: {
+    position: "absolute",
+    zIndex: -2,
+    elevation: 0.15,
+  },
   loginBtn: {
     height: 50,
     marginTop: 20,
