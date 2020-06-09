@@ -29,6 +29,7 @@ class AppUpdateChecker extends PureComponent {
       statusLoading: false,
       updateIsAvalible: false,
       OTAAvalibe: false,
+      checkedForUpdate: false,
     };
   }
 
@@ -65,8 +66,13 @@ class AppUpdateChecker extends PureComponent {
           status: translate("New update found"),
           OTAAvalibe: true,
         });
-        await Updates.fetchUpdateAsync({
-          eventListener: this.handleOTAListener,
+        await Updates.fetchUpdateAsync();
+        this.setState({
+          status: "",
+          statusLoading: false,
+          OTAAvalibe: false,
+          updateIsAvalible: false,
+          checkedForUpdate: Platform.OS === "android",
         });
         Updates.reloadAsync();
       } else {
@@ -83,6 +89,7 @@ class AppUpdateChecker extends PureComponent {
         statusLoading: false,
         OTAAvalibe: false,
         updateIsAvalible: false,
+        checkedForUpdate: false,
       });
     }
   };
@@ -105,6 +112,9 @@ class AppUpdateChecker extends PureComponent {
   };
   render() {
     const { translate } = this.props.screenProps;
+    if (this.state.checkedForUpdate) {
+      return null;
+    }
     return (
       <Modal
         animationIn="fadeIn"
