@@ -6,12 +6,18 @@ import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
 
-export default Chart = props => {
+export default Chart = (props) => {
   const { translate } = props.screenProps;
   let { detail, budget, spends } = props;
   let x = (spends / budget) * 100;
   return (
-    <View style={{ alignSelf: "center", marginVertical: 10 }}>
+    <View
+      style={{
+        alignSelf: "center",
+        marginVertical: 10,
+        paddingHorizontal: detail ? 20 : 0,
+      }}
+    >
       <AnimatedCircularProgress
         size={detail ? 160 : 80}
         width={detail ? 12 : 5}
@@ -25,14 +31,14 @@ export default Chart = props => {
         tintColorThirdy={globalColors.green}
         tintColor={globalColors.yellow}
       >
-        {fill => (
+        {(fill) => (
           <>
             <View style={styles.innerStyle}>
               {detail && <SpendingIcon />}
               <View
                 style={{
                   justifyContent: "center",
-                  marginLeft: 4
+                  marginLeft: 4,
                 }}
               >
                 {detail && (

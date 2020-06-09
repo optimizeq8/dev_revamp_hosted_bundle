@@ -3,7 +3,7 @@ import { StyleSheet, PixelRatio } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
@@ -11,43 +11,44 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   campaignInfoStyle: {},
   titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignSelf: "flex-start",
     alignItems: "center",
     width: "100%",
-    height: 50
+    paddingHorizontal: 20,
+    height: 50,
   },
   title: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: globalColors.white,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   subtext: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
     textTransform: "uppercase",
-    textAlign: "left"
+    textAlign: "left",
   },
   subtextDetail: {
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
   },
   chart: {
     alignItems: "center",
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   chartText: {
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 16,
-    marginLeft: 10
+    marginLeft: 10,
   },
   chartSubtext: {
     alignSelf: "center",
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
   },
   campaignIcons: {
     flexDirection: "row",
@@ -66,23 +67,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: 160,
-    height: 50
+    width: wp(42),
+    marginRight: 5,
+    height: 50,
   },
   campaignNumbers: {
     paddingHorizontal: 0,
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
     fontSize: 15 / PixelRatio.getFontScale(),
-    textAlign: "left"
+    textAlign: "left",
     // paddingHorizontal: 10
   },
   campaignNumbersDetail: {
     fontFamily: "montserrat-regular-english",
-    fontSize: 16 / PixelRatio.getFontScale()
+    fontSize: 16 / PixelRatio.getFontScale(),
   },
   campaignInfo: {
     flexDirection: "column",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
     // alignItems: "center"
     // width: wp(40),
     // left: 10
@@ -90,17 +93,17 @@ const styles = StyleSheet.create({
   campaignInfoCard: {
     flexDirection: "row",
     top: 10,
-    flex: 3
+    flex: 3,
   },
   campaignCard: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
     // paddingHorizontal: 10
   },
   adPerformanceLowerBUtton: {
     width: 35,
-    height: 35
-  }
+    height: 35,
+  },
 });
 
 export default styles;

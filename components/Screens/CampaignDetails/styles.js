@@ -1,26 +1,26 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   container: {
     // height: "100%",
-    backgroundColor: "#000"
+    backgroundColor: "#000",
   },
   media: {
     alignSelf: "center",
     height: hp("5"),
-    width: hp("5")
+    width: hp("5"),
   },
   reviewtext: {
     fontFamily: "montserrat-medium",
     fontSize: 13,
     padding: 3,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   adStatus: {
     borderRadius: 16,
@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
     left: "22%",
     alignItems: "center",
     position: "absolute",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   mainCard: {
     height: "100%",
     overflow: "hidden",
     borderBottomStartRadius: 30,
-    borderBottomEndRadius: 30
+    borderBottomEndRadius: 30,
   },
   text: {
     textAlign: "center",
@@ -46,17 +46,17 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 13,
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   buttontext: {
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: 14,
   },
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
 
   button: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     position: "absolute",
     bottom: hp("5%"),
-    elevation: 0
+    elevation: 0,
   },
 
   categories: {
@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   categoryView: {
     flexDirection: "row",
-    padding: 5
+    padding: 5,
     // alignSelf: "flex-start"
   },
   subHeadings: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 15,
-    paddingVertical: hp("1")
+    paddingVertical: hp("1"),
   },
 
   title: {
@@ -93,41 +93,42 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 11,
     textAlign: "left",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   titleMedia: {
     fontSize: 16,
     color: "#fff",
     paddingVertical: 10,
     fontFamily: "montserrat-bold",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    textAlign: "center",
   },
   chartTitle: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 20,
-    width: 150
+    width: 150,
   },
   subtext: {
     fontFamily: "montserrat-light",
     fontSize: 15,
-    color: "#fff"
+    color: "#fff",
   },
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium-english",
-    fontSize: 16
+    fontSize: 16,
   },
   toggleSpace: {
     top: hp("2"),
-    height: hp("10")
+    height: hp("10"),
   },
   icon: {
     flexDirection: "column",
     alignSelf: "center",
     color: "#FF790A",
-    fontSize: 33
+    fontSize: 33,
   },
   gender: {
     // ...StyleSheet.absoluteFillObject,
@@ -135,19 +136,19 @@ const styles = StyleSheet.create({
 
     top: 5,
 
-    transform: [{ rotate: "-45deg" }]
+    transform: [{ rotate: "-45deg" }],
   },
   optionalTargets: {
     flexDirection: "column",
-    marginBottom: 10
+    marginBottom: 10,
     // alignSelf: "center"
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#000"
+    backgroundColor: "#000",
   },
   backgroundViewWrapper: {
     justifyContent: "center",
@@ -155,23 +156,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#0004",
     width: "100%",
     height: "100%",
-    borderRadius: 40
+    borderRadius: 40,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)"
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   toggleStyle: {
     marginTop: 0,
     width: wp("28"),
     height: hp("4"),
     borderRadius: 25,
-    padding: 0
+    padding: 0,
   },
   circleStyle: {
     width: 25,
     height: 25,
-    borderRadius: 19
+    borderRadius: 19,
   },
 
   btnClose: {
@@ -179,23 +180,23 @@ const styles = StyleSheet.create({
     top: hp("5%"),
     left: wp("10%"),
     height: 100,
-    width: 100
+    width: 100,
   },
   BlurView: {
     height: "100%",
-    paddingTop: hp("15%")
+    paddingTop: hp("15%"),
   },
   pauseDes: {
     fontFamily: "montserrat-light",
     fontSize: 14,
 
     marginVertical: 20,
-    padding: 20
+    padding: 20,
   },
   dragHandler: {
     alignItems: "center",
     justifyContent: "center",
-    flex: 1
+    flex: 1,
   },
   bottomContainer: {
     width: wp("100"),
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   tab: {
     // position: "absolute",
@@ -212,13 +213,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: wp("63%"),
     borderRadius: 30,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   handlerIcon: {
     position: "absolute",
     left: wp("26%"),
     top: -10,
-    zIndex: 2
+    zIndex: 2,
   },
   handlerText: {
     textAlign: "center",
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
     paddingBottom: I18nManager.isRTL ? 0 : 20,
     fontFamily: "montserrat-medium",
     fontSize: 18,
-    bottom: I18nManager.isRTL ? -5 : 5
+    bottom: I18nManager.isRTL ? -5 : 5,
     // zIndex: 1
   },
   boxStats: {
@@ -236,82 +237,86 @@ const styles = StyleSheet.create({
     paddingVertical: "4%",
     paddingHorizontal: "5%",
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 15
+    borderRadius: 15,
   },
   wideBoxStat: {
     width: "83%",
     alignSelf: "center",
     paddingVertical: "3%",
-    top: "18%"
+    top: "18%",
   },
   stats: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 14,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   editButton: {
     position: "absolute",
     left: wp(85),
     top: hp(10),
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
   },
   switchButtonTex: {
     fontFamily: "montserrat-medium",
     fontSize: 10,
     color: "#fff",
     top: 7,
-    textAlign: "center"
+    textAlign: "center",
   },
   switchCircle: {
     width: wp("13"),
     height: hp("3.8"),
     borderRadius: 25,
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   statusText: {
     fontFamily: "montserrat-medium",
     fontSize: 10,
     paddingTop: 5,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   choicesStyles: {
     elevation: 11,
     zIndex: 11,
     position: "absolute",
-    width: "80%",
+    // width: "100%",
+    left: 20,
+    right: 20,
+    // width: "100%",
+    // marginHorizontal: 20,
     flexDirection: "row",
     alignSelf: "center",
     justifyContent: "space-between",
-    borderRadius: 30
+    borderRadius: 30,
   },
   choiceButtons: {
     elevation: 0,
     borderRadius: 30,
     width: 100,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   choiceText: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   boxStatsRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    top: hp(4)
+    top: hp(4),
   },
   mainMetrics: {
     // top: 50,
-    flex: 1
+    flex: 1,
   },
   statusButtonsText: {
     fontFamily: "montserrat-medium",
     color: "#fff",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   statusButtons: {
     borderRadius: 10,
@@ -321,13 +326,13 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
     width: "40%",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   switchButtonText: {
     fontSize: 10,
     color: "#fff",
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   placeHolderChart: {
     position: "absolute",
@@ -339,14 +344,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    borderRadius: 15
+    borderRadius: 15,
   },
   ScrollChartArea: {
-    height: 35
+    height: 35,
   },
   placeHolderChartText: {
     fontFamily: "montserrat-medium",
-    color: "#fff"
+    color: "#fff",
   },
   dot: {
     top: 10,
@@ -354,14 +359,14 @@ const styles = StyleSheet.create({
     height: 10,
     marginHorizontal: 10,
     borderRadius: 50,
-    backgroundColor: globalColors.orange
+    backgroundColor: globalColors.orange,
   },
   reviewButton: {
     alignSelf: "center",
     borderRadius: 12,
     top: "10%",
     padding: 20,
-    backgroundColor: globalColors.orange
+    backgroundColor: globalColors.orange,
   },
   campaignMediaAndInfo: {
     flexDirection: "row",
@@ -369,12 +374,12 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: hp(8),
     marginVertical: 10,
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
   },
   titleHeader: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: "100%"
+    width: "100%",
   },
   targetingContainer: {
     flexDirection: "column",
@@ -382,7 +387,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 40,
     justifyContent: "center",
-    padding: 10
+    padding: 10,
   },
   storyOrCollectionStyle: {
     borderRadius: 40,
@@ -391,7 +396,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "16%",
     left: "7%",
-    opacity: 0.4
+    opacity: 0.4,
   },
   metricsStyle: {
     flexDirection: "row",
@@ -403,26 +408,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#0004",
     width: 160,
     borderRadius: 20,
-    height: 50
+    height: 50,
     // padding: "3%"
   },
   chartChoices: {
-    justifyContent: "center"
+    justifyContent: "center",
   },
   chartChoiceButtons: {
     // width: I18nManager.isRTL ? null : "20%",
-    height: 35
+    height: 35,
   },
   chartChoiceText: {
     fontSize: 10 / PixelRatio.getFontScale(),
-    width: "125%"
+    width: "125%",
   },
   pauseModalTitle: {
     fontFamily: "montserrat-bold",
     color: "#fff",
     textTransform: "uppercase",
     fontSize: 20,
-    textAlign: "center"
+    textAlign: "center",
   },
   mediaPreviewLowerButton: {
     width: 35,
@@ -431,22 +436,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FF9D00",
-    borderRadius: 25
+    borderRadius: 25,
   },
   placeholderView: {
-    margin: 5
+    margin: 5,
   },
   xAxisStyle: {
     position: "absolute",
     backgroundColor: "#000",
-    width: "15%"
+    width: "15%",
   },
   CSVText: {
     fontFamily: "montserrat-regular",
     color: "#fff",
     textAlign: "center",
     width: "80%",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   circleIcon: { color: "#fff", fontSize: 14 },
   reviewText: {
@@ -454,7 +459,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     paddingHorizontal: 5,
     color: "#fff",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   campaignStatus: {
     borderRadius: 16,
@@ -463,13 +468,13 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
     alignSelf: "center",
-    backgroundColor: "#66D072"
+    backgroundColor: "#66D072",
   },
   chartChoicesView: {
     height: "10%",
     width: "85%",
     alignSelf: "center",
-    marginTop: 10
+    marginTop: 10,
   },
   chartChoicesViewContainer: {
     elevation: 11,
@@ -482,8 +487,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     // justifyContent: "space-around",
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default styles;
