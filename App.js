@@ -343,15 +343,16 @@ class App extends React.Component {
       const newPermission = await Permissions.askAsync(
         Permissions.NOTIFICATIONS
       );
-    } else {
-      let anonId = getUniqueId();
-      let token = await Notifications.getDevicePushTokenAsync();
-      if (Platform.OS === "android") {
-        analytics.identify(anonId, { $android_devices: [token.data] });
-      } else {
-        analytics.identify(anonId, { $ios_devices: [token.data] });
-      }
     }
+    // else {
+    // let anonId = getUniqueId();
+    // let token = await Notifications.getDevicePushTokenAsync();
+    // if (Platform.OS === "android") {
+    //   analytics.identify(anonId, { $android_devices: [token.data] });
+    // } else {
+    //   analytics.identify(anonId, { $ios_devices: [token.data] });
+    // }
+    // }
   };
 
   componentWillUnmount() {
