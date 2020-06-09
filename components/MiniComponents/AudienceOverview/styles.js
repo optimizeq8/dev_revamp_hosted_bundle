@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   categoryView: {
     display: "flex",
@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     // alignSelf: "flex-start",
     alignItems: "center",
     // justifyContent: "center",
-    marginVertical: 5
+    marginVertical: 5,
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 16
+    fontSize: 16,
     // paddingRight: 30
     // paddingVertical: hp("1")
   },
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 6,
     lineHeight: 17,
-    color: "#fff"
+    color: "#fff",
   },
   title: {
-    fontSize: 16
+    fontSize: 16,
   },
   targetingContainer: {
     height: "100%",
@@ -47,20 +47,20 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     // justifyContent: "center",
     paddingVertical: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   audienceOverview: {
     height: "100%",
-    width: "40%"
+    width: "40%",
   },
   audienceHeadingView: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
     // paddingHorizontal: 20
   },
   placeholderView: {
-    margin: 5
+    margin: 5,
   },
   proceedLowerButton: {
     width: 35,
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: globalColors.orange,
-    borderRadius: 30
-  }
+    borderRadius: 30,
+  },
 });
 
 export default styles;
