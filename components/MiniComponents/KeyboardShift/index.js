@@ -17,7 +17,6 @@ export default class KeyboardShift extends Component {
     shift: new Animated.Value(0),
   };
 
-  componentDidMount() {}
 
   handleKeyboardFocus = () => {
     this.keyboardDidShowSub = Keyboard.addListener(
