@@ -65,6 +65,8 @@ target 'OptimizeApp' do
 
   pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
 
+  pod 'react-native-mixpanel', :path => '../node_modules/react-native-mixpanel'
+
 end
 
 post_install do |installer|

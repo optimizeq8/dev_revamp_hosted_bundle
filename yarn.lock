@@ -13368,6 +13368,11 @@ react-native-masked-text@^1.13.0:
     date-and-time "0.9.0"
     tinymask "1.0.2"
 
+react-native-mixpanel@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-mixpanel/-/react-native-mixpanel-1.2.0.tgz#17c24151cf2039482cd20decc54ccf0e49ccebc5"
+  integrity sha512-Xy+KEIEVFidWuASBdexZquXTJBb3JCyFM7xSgnIOZt5PRzpARGFrYMDErTUZ1wSPK+KFaf1oylInOoC2DddI/Q==
+
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.1"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-7.6.1.tgz#463eaece1af98aa0b2fce00dab6cd203f89b86da"
