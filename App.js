@@ -179,7 +179,7 @@ class App extends React.Component {
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
 
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,
