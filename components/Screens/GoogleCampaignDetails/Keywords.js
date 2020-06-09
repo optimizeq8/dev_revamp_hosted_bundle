@@ -30,7 +30,12 @@ export default function (props) {
           <PlaceholderLine />
         </View>
       ) : (
-        <Text style={[styles.subHeading, { paddingVertical: 10 }]}>
+        <Text
+          style={[
+            styles.subHeading,
+            { paddingVertical: 10, textAlign: "center" },
+          ]}
+        >
           {translate("Keywords")}
         </Text>
       )}
