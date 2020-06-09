@@ -115,7 +115,6 @@ export const checkForExpiredToken = (navigation) => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    analytics.alias(getState().auth.userInfo.userid);
                     analytics.identify(getState().auth.userInfo.userid, {
                       logged_out: false,
                     });
@@ -205,7 +204,6 @@ export const login = (userData, navigation) => {
       })
       .then(async () => {
         if (getState().auth.userInfo) {
-          analytics.alias(getState().auth.userInfo.userid);
           analytics.identify(getState().auth.userInfo.userid, {
             logged_out: false,
           });
