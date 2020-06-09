@@ -29,12 +29,14 @@ platform :android do
 
   desc "Submit a new Beta Build to Play Store"
   lane :beta do
-    store_password = prompt(text: "Signing Store Password: ", secure_text: true)
-    key_password = prompt(text: "Alias Key Password: ", secure_text: true)
+    store_password = "479faadc55dc4146a6d3e4f111b4da91"
+    # prompt(text: "Signing Store Password: ", secure_text: true)
+    key_password ="9eac1a3547cc43daa09ed9abb0485a1a"
+    # prompt(text: "Alias Key Password: ", secure_text: true)
     releaseFilePath = File.join(Dir.pwd, "..", "optimize_app.bak.jks")
     gradle(task: 'clean')
     gradle(
-      task: 'assemble',
+      task: 'bundle',
       build_type: 'Release',
       print_command: false,
       properties: {

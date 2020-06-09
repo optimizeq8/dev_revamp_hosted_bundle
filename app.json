@@ -24,7 +24,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "76",
+      "buildNumber": "77",
       "supportsTablet": false
     },
     "packagerOpts": {
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 50,
+      "versionCode": 51,
       "googleServicesFile": "./google-services.json"
     },
     "hooks": {

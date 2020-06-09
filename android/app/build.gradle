@@ -155,7 +155,7 @@ android {
         applicationId 'com.optimizeapp.optimizeapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 50
+        versionCode 51
         versionName "0.3.80"
         multiDexEnabled true
 
@@ -205,6 +205,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-mixpanel')
 // implementation project(':@segment_analytics-react-native-mixpanel')
     implementation project(':react-native-device-info')
 //    implementation project(':@segment_analytics-react-native')

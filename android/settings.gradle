@@ -1,4 +1,6 @@
 rootProject.name = 'OptimizeApp'
+include ':react-native-mixpanel'
+project(':react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mixpanel/android')
 // include ':@segment_analytics-react-native-mixpanel'
 // project(':@segment_analytics-react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-mixpanel/android')
 include ':react-native-device-info'

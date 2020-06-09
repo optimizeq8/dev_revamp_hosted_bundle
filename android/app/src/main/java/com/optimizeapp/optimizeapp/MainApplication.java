@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.zoontek.rnbootsplash.RNBootSplashPackage;
 import com.adjust.nativemodule.AdjustPackage;
 import ly.img.react_native.pesdk.RNPhotoEditorSDKPackage;

@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 import * as Segment from "expo-analytics-segment";
 import { getUniqueId } from "react-native-device-info";
 import analytics from "@segment/analytics-react-native";
+import * as Notifications from "expo-notifications";
 
 const initialState = {
   userid: null,
@@ -16,8 +17,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_USER:
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
-          // analytics.alias(action.payload.user.userid);
-          analytics.identify(action.payload.user.userid, {
+          let userTraits = {
             ...action.payload.user,
             $name:
               action.payload.user.firstname +
@@ -25,6 +25,14 @@ const reducer = (state = initialState, action) => {
               action.payload.user.lastname,
             selected_language: language,
             logged_out: false,
+          };
+          Notifications.getDevicePushTokenAsync().then((token) => {
+            if (Platform.OS === "android") {
+              userTraits["$android_devices"] = [token.data];
+            } else {
+              userTraits["$ios_devices"] = [token.data];
+            }
+            analytics.identify(action.payload.user.userid, userTraits);
           });
         })
         .catch((error) => {
