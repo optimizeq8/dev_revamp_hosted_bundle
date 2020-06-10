@@ -50,8 +50,14 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: list.SnapAd[this.props.listNum || 1].call_to_action_list[0],
-      callactions: list.SnapAd[this.props.listNum || 1].call_to_action_list,
+      callaction:
+        list[this.props.socialMediaPlatform || "SnapAd"][
+          this.props.listNum || 1
+        ].call_to_action_list[0],
+      callactions:
+        list[this.props.socialMediaPlatform || "SnapAd"][
+          this.props.listNum || 1
+        ].call_to_action_list,
       nameError: "",
       callToActionError: "",
       AppError: "",
@@ -84,6 +90,7 @@ class AppChoice extends Component {
       prevProps.attachment !== this.props.attachment &&
       this.props.attachment.app_name
     ) {
+      console.log(this.props.callaction);
       this.setState(
         {
           attachment: {
@@ -95,11 +102,15 @@ class AppChoice extends Component {
             ? this.props.callaction
             : this.props.adType === "CollectionAd"
             ? list[this.props.adType][0].call_to_action_list[0]
-            : list.SnapAd[this.props.listNum].call_to_action_list[0],
+            : list[this.props.socialMediaPlatform || "SnapAd"][
+                this.props.listNum
+              ].call_to_action_list[0],
           callactions:
             this.props.adType === "CollectionAd"
               ? list[this.props.adType][0].call_to_action_list
-              : list.SnapAd[this.props.listNum].call_to_action_list,
+              : list[this.props.socialMediaPlatform || "SnapAd"][
+                  this.props.listNum
+                ].call_to_action_list,
           iosAppSelected: this.props.appSelections.iosAppSelected,
           androidAppSelected: this.props.appSelections.androidAppSelected,
         },
@@ -424,6 +435,7 @@ class AppChoice extends Component {
 }
 const mapStateToProps = (state) => ({
   data: state.campaignC.data,
+  instaData: state.instagramAds.data,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,
