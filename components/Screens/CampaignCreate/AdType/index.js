@@ -397,7 +397,7 @@ class AdType extends Component {
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: "https://optimizeapp.com/facebooklogin/login.php",
+                  url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
                   title: "Instagram",
                   source: "ad_type",
                   source_action: "a_connect_to_facebook",
