@@ -220,6 +220,10 @@ class Signin extends Component {
             <LoadingScreen dash={true} />
           ) : (
             <View style={{ flex: 1 }}>
+              <SignInCover
+                style={styles.SignInCoverImage}
+                height={heightPercentageToDP(42)}
+              />
               <InputScrollView
                 {...ScrollView.props}
                 contentContainerStyle={styles.mainView}
@@ -362,10 +366,6 @@ class Signin extends Component {
                 )}
               </InputScrollView>
               <AppUpdateChecker screenProps={this.props.screenProps} />
-              <SignInCover
-                style={styles.SignInCoverImage}
-                height={heightPercentageToDP(42)}
-              />
             </View>
           )}
         </SafeAreaView>
