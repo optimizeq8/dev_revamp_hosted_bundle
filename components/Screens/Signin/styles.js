@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     bottom: 0,
-    zIndex: 1,
+    zIndex: 0,
     borderColor: "transparent",
     left: I18nManager.isRTL
       ? widthPercentageToDP(-25)
