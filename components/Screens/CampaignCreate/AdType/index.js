@@ -261,6 +261,7 @@ class AdType extends Component {
       ad_type_array,
     } = this.getValuebasedOnActiveSlide();
 
+    const { fb_connected } = this.props.mainBusiness;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -392,7 +393,7 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
-          {this.state.active === "Instagram" && (
+          {this.state.active === "Instagram" && fb_connected === "0" && (
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
