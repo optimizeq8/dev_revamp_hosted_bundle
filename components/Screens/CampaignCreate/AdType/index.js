@@ -49,23 +49,6 @@ class AdType extends Component {
   };
 
   componentDidMount() {
-    // If user doesn't have instagram access remove from tabs
-    if (
-      this.props.mainBusiness &&
-      this.props.mainBusiness.instagram_access === "1"
-    ) {
-      let socialMediaPlatforms =
-        Platform.OS === "android" && I18nManager.isRTL
-          ? [...SocialPlatforms].reverse()
-          : [...SocialPlatforms];
-      const index = socialMediaPlatforms.findIndex(
-        (el) => el.title === "Instagram"
-      );
-      socialMediaPlatforms.splice(index, 1);
-      this.setState({
-        socialMediaPlatforms,
-      });
-    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -229,6 +212,46 @@ class AdType extends Component {
     });
   };
 
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`ad_type`, {
+      source,
+      source_action,
+      campaign_channel: this.state.active.toLowerCase(),
+    });
+    const changeFbConnectStatus = this.props.navigation.getParam(
+      "success",
+      false
+    );
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.instagram_access === "0"
+    ) {
+      let socialMediaPlatforms =
+        Platform.OS === "android" && I18nManager.isRTL
+          ? [...SocialPlatforms].reverse()
+          : [...SocialPlatforms];
+      const index = socialMediaPlatforms.findIndex(
+        (el) => el.title === "Instagram"
+      );
+      socialMediaPlatforms.splice(index, 1);
+      this.setState({
+        socialMediaPlatforms,
+      });
+    }
+    if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
+      this.props.updateBusinessConnectedToFacebook("1");
+    }
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     const {
@@ -256,34 +279,7 @@ class AdType extends Component {
             style={styles.gradient}
           />
         )}
-        <NavigationEvents
-          onDidFocus={() => {
-            const source = this.props.navigation.getParam(
-              "source",
-              this.props.screenProps.prevAppState
-            );
-            const source_action = this.props.navigation.getParam(
-              "source_action",
-              this.props.screenProps.prevAppState
-            );
-
-            analytics.track(`ad_type`, {
-              source,
-              source_action,
-              campaign_channel: this.state.active.toLowerCase(),
-            });
-            const changeFbConnectStatus = this.props.navigation.getParam(
-              "success",
-              false
-            );
-            if (
-              changeFbConnectStatus &&
-              changeFbConnectStatus.includes("true")
-            ) {
-              this.props.updateBusinessConnectedToFacebook("1");
-            }
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
 
         <CustomHeader
           screenProps={this.props.screenProps}
