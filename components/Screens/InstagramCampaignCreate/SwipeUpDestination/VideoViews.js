@@ -15,7 +15,13 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-
+import {
+  VESDK,
+  Configuration,
+  VideoFormat,
+  SerializationExportType,
+  TintMode,
+} from "react-native-videoeditorsdk";
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
@@ -30,6 +36,8 @@ import list from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { RNFFprobe } from "react-native-ffmpeg";
+import * as actionCreators from "../../../../store/actions";
 
 class VideoViews extends Component {
   static navigationOptions = {
@@ -57,7 +65,7 @@ class VideoViews extends Component {
     return true;
   };
   async componentDidMount() {
-    ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -100,51 +108,93 @@ class VideoViews extends Component {
   _pickImage = async () => {
     let result = await this.pick();
     const { translate } = this.props.screenProps;
+    let vConfiguration: Configuration = {
+      forceCrop: true,
+      transform: {
+        items: [
+          { width: 16, height: 9, toggleable: true },
+          { width: 9, height: 16, toggleable: true },
+          { width: 4, height: 5 },
+          { width: 1, height: 1 },
+        ],
+      },
+      sticker: {
+        personalStickers: true,
+        categories: [{ identifier: "imgly_sticker_category_shapes" }],
+      },
+    };
+    console.log("result", result);
 
     if (result && !result.cancelled) {
-      if (result.duration >= 15000) {
-        FileSystem.getInfoAsync(result.uri, { size: true }).then((file) => {
-          if (file.size > 524288000) {
-            showMessage({
-              message: translate("Video must be less than 500 Megabytes"),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate("Video must be less than 500 Megabytes"),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else if (
-            (result.width < 1080 && result.height < 1920) ||
-            (result.width < 1920 && result.height < 1080)
-          ) {
-            showMessage({
-              message: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else {
-            this.setState({
-              longformvideo_media: result.uri,
-              longformvideo_media_type: result.type.toUpperCase(),
-              width: result.width,
-              height: result.height,
-              durationError: null,
-              videoError: null,
-              videoLoading: false,
-            });
-          }
-        });
+      if (result.duration >= 1000) {
+        let editedVideo = await VESDK.openEditor(
+          { uri: result.uri },
+          vConfiguration
+          // mediaEditor && mediaEditor.hasOwnProperty("serialization")
+          //   ? mediaEditor.serialization
+          //   : null
+        );
+        result.uri = editedVideo.hasChanges
+          ? editedVideo.video
+            ? editedVideo.video
+            : editedVideo.image
+          : result.uri;
+        let file = await FileSystem.getInfoAsync(result.uri, { size: true });
+        if (editedVideo.hasChanges) {
+          let newResult = await RNFFprobe.getMediaInformation(result.uri);
+          result.width =
+            newResult.streams[
+              newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+            ].width;
+          result.height =
+            newResult.streams[
+              newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+            ].height;
+          result.duration = newResult.duration / 1000;
+          console.log(JSON.stringify(result, null, 2));
+        }
+
+        if (file.size > 524288000) {
+          showMessage({
+            message: translate("Video must be less than 500 Megabytes"),
+            type: "warning",
+            position: "top",
+          });
+          this.setState({
+            videoError: translate("Video must be less than 500 Megabytes"),
+            longformvideo_media: null,
+            videoLoading: false,
+          });
+        } else if (
+          //   (result.width < 1080 && result.height < 1920) ||
+          //   (result.width < 1920 && result.height < 1080)
+          false
+        ) {
+          showMessage({
+            message: translate(
+              "Video's dimensions must be equal or over 1080x1920 or 1080x1920"
+            ),
+            type: "warning",
+            position: "top",
+          });
+          this.setState({
+            videoError: translate(
+              "Video's dimensions must be equal or over 1080x1920 or 1080x1920"
+            ),
+            longformvideo_media: null,
+            videoLoading: false,
+          });
+        } else {
+          this.setState({
+            longformvideo_media: result.uri,
+            longformvideo_media_type: result.type.toUpperCase(),
+            width: result.width,
+            height: result.height,
+            durationError: null,
+            videoError: null,
+            videoLoading: false,
+          });
+        }
       } else {
         validateWrapper("duration", this.state.duration) &&
           showMessage({
@@ -188,12 +238,16 @@ class VideoViews extends Component {
         campaign_call_to_action: this.state.callaction,
         campaign_longform_video_media_type: this.state.longformvideo_media_type,
       });
-      this.props._changeDestination("LONGFORM_VIDEO", this.state.callaction, {
-        longformvideo_media: this.state.longformvideo_media,
-        longformvideo_media_type: this.state.longformvideo_media_type,
+      this.props.save_campaign_info_instagram({
+        ...this.props.data,
+        call_to_action: this.state.callaction,
+        attachment: {
+          longformvideo_media: this.state.longformvideo_media,
+          longformvideo_media_type: this.state.longformvideo_media_type,
+        },
       });
 
-      this.props.navigation.navigate("AdDesign", {
+      this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
         source: "ad_swipe_up_destination",
         source_action: "a_swipe_up_destination",
       });
@@ -378,9 +432,12 @@ class VideoViews extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.campaignC.data,
+  data: state.instagramAds.data,
   storyAdAttachment: state.campaignC.storyAdAttachment,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info_instagram: (info) =>
+    dispatch(actionCreators.save_campaign_info_instagram(info)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(VideoViews);
