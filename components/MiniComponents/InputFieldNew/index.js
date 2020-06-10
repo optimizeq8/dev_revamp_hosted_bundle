@@ -16,7 +16,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 export default class InputField extends Component {
   typingTimeout = null;
   state = {
-    highlight: false
+    highlight: false,
   };
 
   componentDidUpdate(prevProps) {
@@ -69,12 +69,12 @@ export default class InputField extends Component {
       showMessage({
         message: valueError,
         position: "top",
-        type: "warning"
+        type: "warning",
       });
     }
     //Set the error in state so that the animation plays
     this.setState({
-      valueError
+      valueError,
     });
   };
 
@@ -86,8 +86,11 @@ export default class InputField extends Component {
    */
   handleTextChange = (value, secondHalf = false) => {
     const { stateName1 } = this.props;
-    // Remove validation on timeout while typing for email fields
+    if (stateName1 === "email" || stateName1 === "newEmail") {
+      value = value.trim();
+    }
     if (stateName1 !== "email" && stateName1 !== "newEmail") {
+      // Remove validation on timeout while typing for email fields
       clearTimeout(this.typingTimeout);
     }
 
@@ -120,13 +123,13 @@ export default class InputField extends Component {
     if (secondHalf) {
       // set segments
       segmentEventTrack(`${this.props.stateName2} Field on Blur`, {
-        [`campaign_${this.props.stateName2}`]: this.props.value2
+        [`campaign_${this.props.stateName2}`]: this.props.value2,
       });
       this.props.setValue(this.props.stateName2, this.props.value2);
     } else {
       // set segments
       segmentEventTrack(`${this.props.stateName1} Field on Blur`, {
-        [`campaign_${this.props.stateName1}`]: this.props.value
+        [`campaign_${this.props.stateName1}`]: this.props.value,
       });
       this.props.setValue(this.props.stateName1, this.props.value);
     }
@@ -159,7 +162,7 @@ export default class InputField extends Component {
       secureTextEntry,
       customStyles,
       compulsory,
-      animateCustomStyle
+      animateCustomStyle,
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -191,7 +194,7 @@ export default class InputField extends Component {
                 styles.inputLabel,
                 this.state.highlight
                   ? [GlobalStyles.orangeTextColor]
-                  : GlobalStyles.whiteTextColor
+                  : GlobalStyles.whiteTextColor,
               ]}
             >
               {translate(label)}
@@ -206,14 +209,14 @@ export default class InputField extends Component {
                 style={[
                   styles.inputText,
                   stateName2 ? { maxWidth: "45%" } : {},
-                  disabled ? { opacity: 0.6 } : {}
+                  disabled ? { opacity: 0.6 } : {},
                 ]}
                 secureTextEntry={secureTextEntry}
                 autoCorrect={false}
                 maxLength={maxLength ? maxLength : 34}
                 autoFocus={autoFocus}
                 autoCapitalize="none"
-                onChangeText={value => this.handleTextChange(value)}
+                onChangeText={(value) => this.handleTextChange(value)}
                 onFocus={this.focusFeild}
                 onBlur={() => this.handleBlur(false)}
               />
@@ -222,7 +225,7 @@ export default class InputField extends Component {
                   style={{
                     width: 1,
                     height: "90%",
-                    backgroundColor: "#fff5"
+                    backgroundColor: "#fff5",
                   }}
                 />
               )}
@@ -236,12 +239,12 @@ export default class InputField extends Component {
                     styles.inputText,
                     { marginLeft: 8 },
                     stateName2 ? { maxWidth: "45%" } : {},
-                    disabled ? { opacity: 0.6 } : {}
+                    disabled ? { opacity: 0.6 } : {},
                   ]}
                   autoCorrect={false}
                   maxLength={maxLength ? maxLength : 34}
                   autoCapitalize="none"
-                  onChangeText={value2 => this.handleTextChange(value2, true)}
+                  onChangeText={(value2) => this.handleTextChange(value2, true)}
                   onFocus={this.focusFeild}
                   onBlur={() => this.handleBlur(true)}
                 />
@@ -289,5 +292,5 @@ InputField.propTypes = {
   //the value that shows on the input field when modal is being used
   valueText: PropTypes.string,
   maxLength: PropTypes.number,
-  autoFocus: PropTypes.bool
+  autoFocus: PropTypes.bool,
 };
