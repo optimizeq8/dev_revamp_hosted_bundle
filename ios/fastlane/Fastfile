@@ -23,7 +23,7 @@ platform :ios do
     build_app(workspace: "OptimizeApp.xcworkspace", scheme: "OptimizeApp",
       clean: true,
     )
-    upload_symbols_to_sentry(
+    sentry_upload_dsym(
       auth_token: 'cea83a7cc6f54a4b8a67f3db6a1ad43951b1145659c444f8b0f3931ec6e914c1',
       org_slug: 'optimize',
       project_slug: 'optimizeapp',
