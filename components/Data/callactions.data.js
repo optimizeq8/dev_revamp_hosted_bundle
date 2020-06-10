@@ -342,6 +342,29 @@ var list = {
         { value: "SUBSCRIBE", label: "SUBSCRIBE" },
       ],
     },
+    {
+      type: "APP_INSTALLS",
+      call_to_action_list: [],
+    },
+    {
+      type: "VIDEO_VIEWS",
+      call_to_action_list: [
+        { value: "APPLY_NOW", label: "APPLY NOW" },
+        { value: "BOOK_NOW", label: "BOOK NOW" },
+        { value: "DOWNLOAD", label: "DOWNLOAD" },
+        { value: "GET_OFFER", label: "GET OFFER" },
+        { value: "GET_QUOTE", label: "GET QUOTE" },
+        { value: "LEARN_MORE", label: "LEARN MORE" },
+        { value: "SIGN_UP", label: "SIGN UP" },
+        { value: "LISTEN_NOW", label: "LISTEN NOW" },
+        { value: "SEND_MESSAGE", label: "SEND MESSAGE" },
+        { value: "SHOP_NOW", label: "SHOP NOW" },
+        { value: "GET_SHOWTIMES", label: "GET SHOWTIMES" },
+        { value: "SUBSCRIBE", label: "SUBSCRIBE" },
+        { value: "WATCH_MORE", label: "WATCH_MORE" },
+        { value: "SEND_WHATSAPP_MESSAGE", label: "SEND WHATSAPP MESSAGE" },
+      ],
+    },
   ],
 };
 export const netLoc = [
