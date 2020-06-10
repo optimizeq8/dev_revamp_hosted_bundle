@@ -86,11 +86,16 @@ class AppChoice extends Component {
   //most of them to componentDidUpdate to eleminate unnecessary repitition of code
   //from app_installs and deep_link's componentDidmounts
   componentDidUpdate(prevProps) {
+    //for some reason passing the data object from InstaApp_install as a prop
+    // doesn't update the data in sync with the store update
+    this.data =
+      this.props.socialMediaPlatform === "InstagramFeedAd"
+        ? this.props.instaData
+        : this.props.data;
     if (
       prevProps.attachment !== this.props.attachment &&
       this.props.attachment.app_name
     ) {
-      console.log(this.props.callaction);
       this.setState(
         {
           attachment: {
@@ -114,7 +119,10 @@ class AppChoice extends Component {
           iosAppSelected: this.props.appSelections.iosAppSelected,
           androidAppSelected: this.props.appSelections.androidAppSelected,
         },
-        () => this.props.handleCallaction({ ...this.state.callaction })
+        () =>
+          this.props.handleCallaction({
+            ...this.state.callaction,
+          })
       );
 
       //only update the iosApp name if it was changed instead of updating everything
@@ -123,8 +131,8 @@ class AppChoice extends Component {
       ) {
         this.setState({
           iosApp_name: this.props.attachment.ios_app_id
-            ? this.props.data.iosApp_name
-              ? this.props.data.iosApp_name
+            ? this.data.iosApp_name
+              ? this.data.iosApp_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
             : "",
@@ -137,8 +145,8 @@ class AppChoice extends Component {
       ) {
         this.setState({
           androidApp_name: this.props.attachment.android_app_url
-            ? this.props.data.androidApp_name
-              ? this.props.data.androidApp_name
+            ? this.data.androidApp_name
+              ? this.data.androidApp_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
             : "",
@@ -146,7 +154,9 @@ class AppChoice extends Component {
       }
     }
     if (prevProps.deep_link_uri !== this.props.deep_link_uri) {
-      this.setState({ deep_link_uri: this.props.deep_link_uri });
+      this.setState({
+        deep_link_uri: this.props.deep_link_uri,
+      });
     }
   }
 

@@ -18,7 +18,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
-import * as actionsCreators from "../../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 import { showMessage } from "react-native-flash-message";
 
 class InstaApp_Install extends Component {
@@ -63,7 +63,7 @@ class InstaApp_Install extends Component {
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK" &&
       (this.props.data.objective === "APP_INSTALLS" ||
-        this.props.data.destination === "APP_INSTALL")
+        this.props.data.destination === "APP_INSTALLS")
     ) {
       this.setState({
         attachment: {
@@ -174,13 +174,13 @@ class InstaApp_Install extends Component {
             ? true
             : appChoice !== "iOS",
       });
-      !this.props.rejCampaign &&
-        this.props.save_campaign_info({
-          iosApp_name,
-          androidApp_name,
-          iosApp_icon,
-          androidApp_icon,
-        });
+      this.props.save_campaign_info_instagram({
+        iosApp_name,
+        androidApp_name,
+        iosApp_icon,
+        androidApp_icon,
+        appChoice,
+      });
     }
   };
 
@@ -231,14 +231,14 @@ class InstaApp_Install extends Component {
       (this.state.iosAppSelected || this.state.androidAppSelected) &&
       !appError
     ) {
-      this.props._changeDestination(
-        "APP_INSTALL",
-        this.state.callaction,
+      this.props.save_campaign_info_instagram({
+        ...this.props.data,
+        call_to_action: this.state.callaction,
         attachment,
-        appChoice
-      );
+        appChoice,
+      });
 
-      this.props.navigation.navigate("AdDesign", {
+      this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
         source: "ad_swipe_up_destination",
         source_action: "a_swipe_up_destination",
       });
@@ -285,6 +285,7 @@ class InstaApp_Install extends Component {
           appSelections={{ iosAppSelected, androidAppSelected }}
           setTheState={this.setTheState}
           socialMediaPlatform={"InstagramFeedAd"}
+          data={this.props.data}
         />
       </SafeAreaView>
     );
@@ -301,7 +302,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  save_campaign_info: (info) =>
-    dispatch(actionsCreators.save_campaign_info(info)),
+  save_campaign_info_instagram: (info) =>
+    dispatch(actionCreators.save_campaign_info_instagram(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(InstaApp_Install);
