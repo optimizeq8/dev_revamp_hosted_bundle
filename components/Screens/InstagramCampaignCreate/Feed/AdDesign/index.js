@@ -150,6 +150,12 @@ class AdDesign extends Component {
           case "LEAD_GENERATION":
             destination = "link";
             break;
+          case "APP_INSTALSS":
+            destination = "APP_INSTALSS";
+            break;
+          case "VIDEO_VIEWS":
+            destination = "VIDEO_VIEWS";
+            break;
           default:
             destination = "BLANK";
         }
