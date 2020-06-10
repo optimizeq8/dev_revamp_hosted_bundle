@@ -32,6 +32,7 @@ const initialState = {
   currentCampaignSteps: [],
   oldTempAdType: "",
   oldTempData: null,
+  storyAdAttachment: {},
 };
 
 const reducer = (state = initialState, action) => {
