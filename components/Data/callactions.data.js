@@ -344,7 +344,18 @@ var list = {
     },
     {
       type: "APP_INSTALLS",
-      call_to_action_list: [],
+      call_to_action_list: [
+        { value: "BOOK_NOW", label: "BOOK NOW" },
+        { value: "PLAY_GAME", label: "PLAY GAME" },
+        { value: "SHOP NOW", label: "SHOP NOW" },
+        { value: "LEARN_MORE", label: "LEARN MORE" },
+        { value: "SIGN_UP", label: "SIGN UP" },
+        { value: "SUBSCRIBE", label: "SUBSCRIBE" },
+        { value: "WATCH_MORE", label: "WATCH MORE" },
+        { value: "INSTALL_NOW", label: "INSTALL NOW" },
+        { value: "USE_APP", label: "USE APP" },
+        { value: "LISTEN_NOW", label: "LISTEN NOW" },
+        { value: "DOWNLOAD", label: "DOWNLOAD" },
     },
     {
       type: "VIDEO_VIEWS",

@@ -11,7 +11,7 @@ const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
-export const previewHandler = (selectedCampaign, navigation) => {
+export const previewHandler = (selectedCampaign, navigation, source) => {
   let media =
     selectedCampaign.campaign_type !== "StoryAd"
       ? { media: selectedCampaign.media }
@@ -65,13 +65,13 @@ export const previewHandler = (selectedCampaign, navigation) => {
       coverHeadline: selectedCampaign.story_headline,
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
-      source: this.props.source,
+      source: source,
       source_action: "a_preview_ad",
     }
   );
 };
 export default (props) => {
-  let { loading, selectedCampaign, navigation } = props;
+  let { loading, selectedCampaign, navigation, source } = props;
   const { translate } = props.screenProps;
   let storyOrCollection =
     !loading &&
@@ -116,7 +116,9 @@ export default (props) => {
           !selectedCampaign.media.includes(".jpg") &&
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
-              onPress={() => previewHandler(selectedCampaign, navigation)}
+              onPress={() =>
+                previewHandler(selectedCampaign, navigation, source)
+              }
               style={[styles.backgroundViewWrapper]}
             >
               <Video
@@ -138,7 +140,9 @@ export default (props) => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              onPress={() => previewHandler(selectedCampaign, navigation)}
+              onPress={() =>
+                previewHandler(selectedCampaign, navigation, source)
+              }
               style={styles.backgroundViewWrapper}
             >
               <Image

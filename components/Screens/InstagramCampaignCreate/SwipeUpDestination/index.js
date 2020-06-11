@@ -8,6 +8,7 @@ import * as actionCreators from "../../../../store/actions";
 
 import Header from "../../../MiniComponents/Header";
 import Website from "./Website";
+import InstaApp_Install from "./InstaApp_Install";
 import styles from "../styles/swipeUpDestination.styles";
 import VideoViews from "./VideoViews";
 
@@ -53,6 +54,15 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+          />
+        );
+        break;
+      case "APP_INSTALLS":
+        listIndex = 3;
+         content = (
+          <InstaApp_Install
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
           />
         );
         break;
