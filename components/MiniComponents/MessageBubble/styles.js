@@ -14,15 +14,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     maxWidth: "95%",
-    // borderRadius: 50
   },
   transparentTriangleView: {
     alignSelf: "flex-end",
     position: "absolute",
     bottom: 0,
-    // top: '75%',
-    // marginTop: 0,
-    // marginRight: -10,
+
     transform: [{ rotate: "10deg" }],
   },
   orangeTriangleView: {
