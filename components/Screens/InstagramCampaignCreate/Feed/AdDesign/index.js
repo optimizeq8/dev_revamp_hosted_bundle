@@ -453,9 +453,20 @@ class AdDesign extends Component {
                   }
                   style={styles.destinationView}
                 >
-                  <ArrowUp fill={globalColors.orange} />
+                  <ArrowUp stroke={globalColors.orange} />
                   <Text style={styles.destinationText}>
-                    {translate("Destination")}
+                    {this.props.data.attachment !== "BLANK" ||
+                    (this.props.data.attachment === "BLANK" &&
+                      this.props.data.link &&
+                      this.state.campaignInfo.destination === "link")
+                      ? this.state.campaignInfo.destination === "link"
+                        ? translate("Website")
+                        : this.state.campaignInfo.destination === "APP_INSTALLS"
+                        ? translate("App Installs")
+                        : this.state.campaignInfo.destination === "VIDEO_VIEWS"
+                        ? translate("Video Views")
+                        : translate("Destination")
+                      : translate("Destination")}
                   </Text>
                 </TouchableOpacity>
               </View>
