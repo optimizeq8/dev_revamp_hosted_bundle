@@ -85,7 +85,7 @@ export const getWalletAmount = (retries = 3) => {
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -154,7 +154,7 @@ export const addWalletAmount = (
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -169,7 +169,7 @@ export const addWalletAmount = (
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -215,7 +215,7 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long to retrieve wallet amount in KWD, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -236,7 +236,10 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google" || getState().transA.channel === "instagram")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
       .post(`useWallet`, info, { timeout: 10000 })
@@ -273,7 +276,7 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -302,7 +305,10 @@ export const removeWalletAmount = (
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google" || getState().transA.channel === "instagram")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
 
     createBaseUrl()
@@ -351,7 +357,8 @@ export const removeWalletAmount = (
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"}`) ||
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
@@ -372,7 +379,10 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google" || getState().transA.channel === "instagram")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
 
     createBaseUrl()
@@ -425,7 +435,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
@@ -440,7 +450,7 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
             (err.message &&
               err.message.includes("timeout") &&
               `Request took too long, ${
-              retries > 0 ? "re-trying again." : "try again later"
+                retries > 0 ? "re-trying again." : "try again later"
               }`) ||
             err.message ||
             err.response ||
