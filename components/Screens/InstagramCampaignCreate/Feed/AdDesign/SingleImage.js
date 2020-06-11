@@ -21,7 +21,8 @@ export default class SingleImage extends React.PureComponent {
       screenProps,
       save_campaign_info_instagram,
       media_type = "IMAGE",
-      videoIsLoading
+      videoIsLoading,
+      setMediaModalVisible,
     } = this.props;
     const { translate } = this.props.screenProps;
 
@@ -36,12 +37,13 @@ export default class SingleImage extends React.PureComponent {
 
         <TouchableOpacity
           onPress={() =>
-            _pickImage(
-              "All",
-              save_campaign_info_instagram,
-              setTheState,
-              screenProps
-            )
+            // _pickImage(
+            //   "All",
+            //   save_campaign_info_instagram,
+            //   setTheState,
+            //   screenProps
+            // )
+            setMediaModalVisible(true)
           }
           style={{ alignSelf: "center" }}
         >

@@ -66,6 +66,7 @@ import { _pickImage } from "./Functions/PickImages";
 import { formatMedia } from "./Functions/index";
 
 import SingleImage from "./SingleImage";
+import MediaModal from "./MediaModal";
 // import {
 //   _handleSubmission,
 //   formatMedia,
@@ -112,6 +113,9 @@ class AdDesign extends Component {
       expanded: false,
       animation: new Animated.Value(100),
       isVideoLoading: false,
+      mediaModalVisible: false,
+      uneditedImageUri: "",
+      serialization: null,
     };
   }
 
@@ -171,6 +175,7 @@ class AdDesign extends Component {
           message,
           media_type,
         },
+        media_type,
         media,
       });
       this.props.save_campaign_info_instagram({
@@ -318,9 +323,28 @@ class AdDesign extends Component {
       this.props.navigation.push("AdFeedDesignReview");
     }
   };
+  setMediaModalVisible = (visibile) => {
+    this.setState({ mediaModalVisible: visibile });
+  };
+
+  adDesignPickImage = (mediaTypes, mediaEditor, editImage) =>
+    _pickImage(
+      mediaTypes,
+      this.props.save_campaign_info_instagram,
+      this.setTheState,
+      this.props.screenProps,
+      this.setMediaModalVisible,
+      mediaEditor,
+      editImage
+      // this.state.storyAdCards,
+      // this.props.storyAdsArray,
+      // this.adType,
+      // this.rejected,
+      // this.videoIsExporting
+    );
   render() {
     const { translate } = this.props.screenProps;
-    var { media } = this.state;
+    var { media, mediaModalVisible, media_type } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
       this.props.data &&
@@ -424,9 +448,7 @@ class AdDesign extends Component {
                   </View>
                   {this.state.campaignInfo.media_option === "single" && (
                     <SingleImage
-                      media_type={
-                        this.state.media_type || this.props.data.media_type
-                      }
+                      media_type={media_type || this.props.data.media_type}
                       media={media}
                       save_campaign_info_instagram={
                         this.props.save_campaign_info_instagram
@@ -434,6 +456,7 @@ class AdDesign extends Component {
                       setTheState={this.setTheState}
                       screenProps={this.props.screenProps}
                       videoIsLoading={this.videoIsLoading}
+                      setMediaModalVisible={this.setMediaModalVisible}
                     />
                   )}
 
@@ -546,6 +569,34 @@ class AdDesign extends Component {
             </Animated.View>
           )}
         </View>
+        <MediaModal
+          _pickImage={(mediaTypes, mediaEditor, editImage) =>
+            this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
+          }
+          mediaModalVisible={mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+          mediaUri={{
+            media:
+              // storyAdCards.storyAdSelected
+              //   ? storyAdCards.selectedStoryAd.uneditedImageUri
+              //   :
+              this.state.uneditedImageUri,
+            // storyAdCards: this.state.storyAdCards,
+          }}
+          media_type={
+            // storyAdCards.storyAdSelected
+            //   ? storyAdCards.selectedStoryAd.media_type
+            //   :
+            media_type
+          }
+          serialization={
+            // this.state.serialization.hasOwnProperty("image")
+            // ?
+            this.state.serialization
+            // : this.state.storyAdCards.selectedStoryAd.serialization
+          }
+          screenProps={this.props.screenProps}
+        />
         <LoadingModal
           videoUrlLoading={this.state.videoUrlLoading}
           loading={this.props.loading}
