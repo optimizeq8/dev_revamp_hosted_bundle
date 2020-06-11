@@ -250,7 +250,6 @@ class Messenger extends Component {
     let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
     Adjust.trackEvent(adjustSupportTrackeer);
   };
-  //remove loading screen from live chat
   render() {
     const { translate } = this.props.screenProps;
     const { height } = this.state;
