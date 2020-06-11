@@ -203,6 +203,10 @@ export const saveBrandMediaInstagram = (
       .catch((error) => {
         loading(0);
         onToggleModal(false);
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false,
+        });
         // console.log("error saveBrandMedia ", error.response || error.message);
       });
   };
