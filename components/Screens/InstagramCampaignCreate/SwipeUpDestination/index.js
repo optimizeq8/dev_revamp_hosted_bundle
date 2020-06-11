@@ -10,54 +10,56 @@ import Header from "../../../MiniComponents/Header";
 import Website from "./Website";
 import InstaApp_Install from "./InstaApp_Install";
 import styles from "../styles/swipeUpDestination.styles";
+import VideoViews from "./VideoViews";
 
 class SwipeUpDestination extends React.Component {
   getSwipeUpDestination = () => {
     let listIndex = 0;
+    let content = <></>;
     switch (this.props.data.objective) {
       case "BRAND_AWARENESS":
         listIndex = 0;
-        break;
-      case "LEAD_GENERATION":
-        listIndex = 2;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
         break;
       case "LINK_CLICKS":
         listIndex = 1;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "LEAD_GENERATION":
+        listIndex = 2;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "VIDEO_VIEWS":
+        listIndex = 3;
+        content = (
+          <VideoViews
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
         break;
       case "APP_INSTALLS":
         listIndex = 3;
-        break;
-      default:
-        listIndex = 0;
-        break;
-    }
-    return { listIndex };
-  };
-  render() {
-    const { listIndex } = this.getSwipeUpDestination();
-    let { objective } = this.props.data;
-    let content = <></>;
-    switch (objective) {
-      case "BRAND_AWARENESS":
-        content = (
-          <Website
-            screenProps={this.props.screenProps}
-            navigation={this.props.navigation}
-            listNum={listIndex}
-          />
-        );
-        break;
-      case "LINK_CLICKS":
-        content = (
-          <Website
-            screenProps={this.props.screenProps}
-            navigation={this.props.navigation}
-            listNum={listIndex}
-          />
-        );
-        break;
-      case "APP_INSTALLS":
-        content = (
+         content = (
           <InstaApp_Install
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
@@ -65,9 +67,13 @@ class SwipeUpDestination extends React.Component {
         );
         break;
       default:
+        listIndex = 0;
         break;
     }
-
+    return { content };
+  };
+  render() {
+    const { content } = this.getSwipeUpDestination();
     return (
       <SafeAreaView
         forceInset={{
