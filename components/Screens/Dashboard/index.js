@@ -108,7 +108,7 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid")
     ) {
       // to set for instagram accounts
-      if (this.props.mainBusiness.instagram_access === "1") {
+      if (this.props.mainBusiness.instagram_access === "1" || true) {
         let adButtons = [...this.state.adButtons, ...instagramAds];
         this.setState({
           adButtons,
@@ -131,6 +131,13 @@ class Dashboard extends Component {
     //Reset campaignProgressStarted only if there was a campaing in progress
     if (this.props.campaignInProgress && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
+
+    if (
+      this.props.instagramCampaignProgressStarted &&
+      this.props.instagramIncompleteCampaign
+    ) {
+      this.props.setCampaignInProgressInstagram(false);
+    }
   }
   handleBackPress = () => {
     // this.props.navigation.goBack();
@@ -151,6 +158,13 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
+      // to set for instagram accounts
+      if (this.props.mainBusiness.instagram_access === "1" || true) {
+        let adButtons = [...this.state.adButtons, ...instagramAds];
+        this.setState({
+          adButtons,
+        });
+      }
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
@@ -398,6 +412,7 @@ class Dashboard extends Component {
     });
     // Segment.screen("Dashboard");
     this.props.setCampaignInProgress(false);
+    this.props.setCampaignInProgressInstagram(false);
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -860,6 +875,8 @@ const mapStateToProps = (state) => ({
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns,
   clearTokenLoading: state.login.clearTokenLoading,
+  instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
+  instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -884,6 +901,8 @@ const mapDispatchToProps = (dispatch) => ({
   set_as_seen: (check) => dispatch(actionCreators.set_as_seen(check)),
   getLanguageListPOEdit: (language) =>
     dispatch(actionCreators.getLanguageListPOEdit(language)),
+  setCampaignInProgressInstagram: (value) =>
+    dispatch(actionCreators.setCampaignInProgressInstagram(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

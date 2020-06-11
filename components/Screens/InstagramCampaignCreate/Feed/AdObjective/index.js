@@ -24,7 +24,7 @@ import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
 // Style
 import styles from "../../styles/adObjectives.styles";
 //Data
-import { instagramAdObjectives } from "../../../../Data/snapchatObjectives.data";
+import { instagramAdObjectives } from "../../../../Data/instagramObjectives.data";
 
 //Redux
 import { connect } from "react-redux";

@@ -50,8 +50,14 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: list.SnapAd[this.props.listNum || 1].call_to_action_list[0],
-      callactions: list.SnapAd[this.props.listNum || 1].call_to_action_list,
+      callaction:
+        list[this.props.socialMediaPlatform || "SnapAd"][
+          this.props.listNum || 1
+        ].call_to_action_list[0],
+      callactions:
+        list[this.props.socialMediaPlatform || "SnapAd"][
+          this.props.listNum || 1
+        ].call_to_action_list,
       nameError: "",
       callToActionError: "",
       AppError: "",
@@ -80,6 +86,12 @@ class AppChoice extends Component {
   //most of them to componentDidUpdate to eleminate unnecessary repitition of code
   //from app_installs and deep_link's componentDidmounts
   componentDidUpdate(prevProps) {
+    //for some reason passing the data object from InstaApp_install as a prop
+    // doesn't update the data in sync with the store update
+    this.data =
+      this.props.socialMediaPlatform === "InstagramFeedAd"
+        ? this.props.instaData
+        : this.props.data;
     if (
       prevProps.attachment !== this.props.attachment &&
       this.props.attachment.app_name
@@ -95,15 +107,22 @@ class AppChoice extends Component {
             ? this.props.callaction
             : this.props.adType === "CollectionAd"
             ? list[this.props.adType][0].call_to_action_list[0]
-            : list.SnapAd[this.props.listNum].call_to_action_list[0],
+            : list[this.props.socialMediaPlatform || "SnapAd"][
+                this.props.listNum
+              ].call_to_action_list[0],
           callactions:
             this.props.adType === "CollectionAd"
               ? list[this.props.adType][0].call_to_action_list
-              : list.SnapAd[this.props.listNum].call_to_action_list,
+              : list[this.props.socialMediaPlatform || "SnapAd"][
+                  this.props.listNum
+                ].call_to_action_list,
           iosAppSelected: this.props.appSelections.iosAppSelected,
           androidAppSelected: this.props.appSelections.androidAppSelected,
         },
-        () => this.props.handleCallaction({ ...this.state.callaction })
+        () =>
+          this.props.handleCallaction({
+            ...this.state.callaction,
+          })
       );
 
       //only update the iosApp name if it was changed instead of updating everything
@@ -112,8 +131,8 @@ class AppChoice extends Component {
       ) {
         this.setState({
           iosApp_name: this.props.attachment.ios_app_id
-            ? this.props.data.iosApp_name
-              ? this.props.data.iosApp_name
+            ? this.data.iosApp_name
+              ? this.data.iosApp_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
             : "",
@@ -126,8 +145,8 @@ class AppChoice extends Component {
       ) {
         this.setState({
           androidApp_name: this.props.attachment.android_app_url
-            ? this.props.data.androidApp_name
-              ? this.props.data.androidApp_name
+            ? this.data.androidApp_name
+              ? this.data.androidApp_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
             : "",
@@ -135,7 +154,9 @@ class AppChoice extends Component {
       }
     }
     if (prevProps.deep_link_uri !== this.props.deep_link_uri) {
-      this.setState({ deep_link_uri: this.props.deep_link_uri });
+      this.setState({
+        deep_link_uri: this.props.deep_link_uri,
+      });
     }
   }
 
@@ -424,6 +445,7 @@ class AppChoice extends Component {
 }
 const mapStateToProps = (state) => ({
   data: state.campaignC.data,
+  instaData: state.instagramAds.data,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment,

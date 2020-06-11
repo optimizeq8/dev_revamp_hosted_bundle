@@ -198,8 +198,16 @@ class Website extends Component {
           valueError={this.state.callToActionError}
           getValidInfo={this.getValidInfo}
           disabled={false}
-          valueText={this.state.campaignInfo.call_to_action.label}
-          value={this.state.campaignInfo.call_to_action.label}
+          valueText={
+            this.state.campaignInfo.call_to_action.label === "BLANK"
+              ? "No Button"
+              : this.state.campaignInfo.call_to_action.label
+          }
+          value={
+            this.state.campaignInfo.call_to_action.label === "BLANK"
+              ? "No Button"
+              : this.state.campaignInfo.call_to_action.label
+          }
           incomplete={false}
           translate={this.props.screenProps.translate}
           icon={WindowIcon}
@@ -208,7 +216,7 @@ class Website extends Component {
 
         <WebsiteField
           stateName={"url"}
-          customStyle={{ paddingHorizontal: 0, height: 50 }}
+          customStyle={{ paddingHorizontal: 0, height: 60 }}
           screenProps={this.props.screenProps}
           website={this.state.campaignInfo.link}
           setWebsiteValue={this.setWebsiteValue}
