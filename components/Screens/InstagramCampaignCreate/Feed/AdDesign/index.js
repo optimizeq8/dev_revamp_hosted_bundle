@@ -499,6 +499,13 @@ class AdDesign extends Component {
                           : translate("Destination")
                         : translate("Destination")}
                     </Text>
+                    {this.props.data.attachment === "BLANK" &&
+                    this.props.data.link &&
+                    this.state.campaignInfo.destination === "link" ? (
+                      <Text style={styles.websiteLink}>
+                        {this.props.data.link}
+                      </Text>
+                    ) : null}
                   </TouchableOpacity>
                 </View>
                 <View style={styles.lowerBtn}>

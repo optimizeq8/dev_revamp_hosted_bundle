@@ -103,6 +103,7 @@ const reducer = (state = initialState, action) => {
             value: "BLANK",
           },
           destination: "BLANK",
+          link: "",
           reset: false,
         };
       }
