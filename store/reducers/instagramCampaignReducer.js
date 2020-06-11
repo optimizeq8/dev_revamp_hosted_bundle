@@ -66,7 +66,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingObj: false,
       };
-
+    case actionTypes.SET_AD_OBJECTIVE_INSTAGARM_FEED:
+      return {
+        ...state,
+        loadingObj: action.payload,
+      };
     case actionTypes.SET_AD_DESIGN_INSTAGRAM:
       return {
         ...state,

@@ -13,7 +13,7 @@ InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
-      : "http://optimizeapp.com/optimize/instagram/"
+      : "http://optimizeapp.com/optimize/instagram/",
   });
 
 /**
@@ -25,27 +25,27 @@ InstagramBackendURL = () =>
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_AD_LOADING_OBJ,
-      payload: true
+      type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
+      payload: true,
     });
     InstagramBackendURL()
       .post(`saveinstacampaign`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         data.success
           ? dispatch({
               type: actionTypes.SET_AD_OBJECTIVE_INSTAGARM,
-              payload: data
+              payload: data,
             })
           : dispatch({
-              type: actionTypes.SET_AD_LOADING_OBJ,
-              payload: false
+              type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
+              payload: false,
             });
         return data;
       })
-      .then(data => {
+      .then((data) => {
         if (data.success) {
           // segmentEventTrack("Completed Checkout Step", segmentInfo);
           // console.log("data success", data);
@@ -58,15 +58,15 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
           showMessage({
             message: data.message,
             position: "top",
-            type: "warning"
+            type: "warning",
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("ad_objective", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM
+          type: actionTypes.ERROR_SET_AD_OBJECTIVE_INSTAGRAM,
         });
       });
   };
@@ -76,11 +76,11 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
  *
  * @param {*} data One of [IntagramFeedAd , InstagramStoryAd]
  */
-export const set_adType_instagram = data => {
-  return dispatch => {
+export const set_adType_instagram = (data) => {
+  return (dispatch) => {
     return dispatch({
       type: actionTypes.SET_AD_TYPE_INSTAGRAM,
-      payload: data
+      payload: data,
     });
   };
 };
@@ -89,11 +89,11 @@ export const set_adType_instagram = data => {
  *
  * @param {*} info To locally store the data
  */
-export const save_campaign_info_instagram = info => {
-  return dispatch => {
+export const save_campaign_info_instagram = (info) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_CAMPAIGN_INFO_INSTAGRAM,
-      payload: info
+      payload: info,
     });
   };
 };
@@ -103,29 +103,29 @@ export const save_campaign_info_instagram = info => {
  * @param {*} step save campaigns steps instagram
  * // need to rethink as there will will be 2 separte routes now
  */
-export const saveCampaignStepsInstagram = step => {
-  return dispatch => {
+export const saveCampaignStepsInstagram = (step) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_CAMPAIGN_STEP_INSTAGRAM,
-      payload: step
+      payload: step,
     });
   };
 };
 
-export const setCampaignInProgressInstagram = value => {
-  return dispatch => {
+export const setCampaignInProgressInstagram = (value) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_CAMPAIGN_IN_PROGRESS_INSTAGRAM,
-      payload: value
+      payload: value,
     });
   };
 };
 
 export const resetCampaignInfoInstagram = (resetAdType = false) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.RESET_CAMPAING_INFO_INSTAGRAM,
-      payload: resetAdType
+      payload: resetAdType,
     });
   };
 };
@@ -135,11 +135,11 @@ export const resetCampaignInfoInstagram = (resetAdType = false) => {
  * @param {Object} value what ever values in campaign's data to overwrite
  *
  */
-export const overWriteObjectiveDataInstagram = value => {
-  return dispatch => {
+export const overWriteObjectiveDataInstagram = (value) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.OVERWRITE_OBJ_DATA_INSTAGRAM,
-      payload: value
+      payload: value,
     });
   };
 };
@@ -166,26 +166,27 @@ export const saveBrandMediaInstagram = (
   onToggleModal,
   cancelUplaod
 ) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
-      payload: true
+      payload: true,
     });
 
     InstagramBackendURL()
       .post(`saveinstabrandmedia`, info, {
-        onUploadProgress: ProgressEvent =>
+        onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
+        cancelToken: cancelUplaod.token,
       })
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
-        // console.log("saveBrandMedia data", data);
+      .then((data) => {
+        console.log("saveBrandMedia data", JSON.stringify(data, null, 2));
+
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
-          payload: false
+          payload: false,
         });
 
         if (data.success) {
@@ -195,11 +196,11 @@ export const saveBrandMediaInstagram = (
           NavigationService.navigate("InstagramFeedAdTargetting");
           return dispatch({
             type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
-            payload: data
+            payload: data,
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         loading(0);
         onToggleModal(false);
         // console.log("error saveBrandMedia ", error.response || error.message);
@@ -211,23 +212,23 @@ export const saveBrandMediaInstagram = (
  *  To get interest list
  */
 export const get_interests_instagram = () => {
-  return dispatch => {
+  return (dispatch) => {
     InstagramBackendURL()
       .get(`categorizedinterests`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         if (data && data.interests) {
           return dispatch({
             type: actionTypes.SET_INSTAGRAM_INTERESTS,
-            payload: data.interests
+            payload: data.interests,
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("error get_interests_instagram", error);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_INTERESTS,
-          payload: []
+          payload: [],
         });
       });
   };
@@ -237,12 +238,12 @@ export const get_interests_instagram = () => {
  * To get OS versions list
  * @param {*} osType  One of [Android, iOS]
  */
-export const getOSVersion = osType => {
-  return dispatch => {
+export const getOSVersion = (osType) => {
+  return (dispatch) => {
     InstagramBackendURL()
       .get(`osversion/${osType}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         if (data && data.osversion) {
           let osVersionArray = data.osversion.description.split(";");
 
@@ -251,8 +252,8 @@ export const getOSVersion = osType => {
               type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
               payload: {
                 isoVersions: [],
-                androidVersions: osVersionArray
-              }
+                androidVersions: osVersionArray,
+              },
             });
           }
           if (osType === "iOS") {
@@ -260,20 +261,20 @@ export const getOSVersion = osType => {
               type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
               payload: {
                 isoVersions: osVersionArray,
-                androidVersions: []
-              }
+                androidVersions: [],
+              },
             });
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("getOSVersion error", error.response || error.message);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_OS_VERSIONS,
           payload: {
             isoVersions: [],
-            androidVersions: []
-          }
+            androidVersions: [],
+          },
         });
       });
   };
@@ -283,29 +284,29 @@ export const getOSVersion = osType => {
  * To get device brands name
  * @param {*} osType One of [Android, iOS]
  */
-export const getDeviceBrand = osType => {
-  return dispatch => {
+export const getDeviceBrand = (osType) => {
+  return (dispatch) => {
     InstagramBackendURL()
       .get(`deviceBrands/${osType}`)
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         if (data.device_make) {
-          const deviceBrands = data.device_make.map(device => {
+          const deviceBrands = data.device_make.map((device) => {
             return {
-              name: device.name
+              name: device.name,
             };
           });
           return dispatch({
             type: actionTypes.SET_INSTAGRAM_DEVICE_BRANDS,
-            payload: deviceBrands
+            payload: deviceBrands,
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log("getDeviceBrand error", error.response || error.message);
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_DEVICE_BRANDS,
-          payload: []
+          payload: [],
         });
       });
   };
@@ -317,24 +318,24 @@ export const getDeviceBrand = osType => {
  * @param {*} totalReach // For country total rach
  */
 export const instagram_ad_audience_size = (info, totalReach) => {
-  return dispatch => {
+  return (dispatch) => {
     InstagramBackendURL()
       .post(`audiencesize`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_AUDIENCE_SIZE,
-          payload: data
+          payload: data,
         });
       })
       .then(() => dispatch(get_total_reach_instagram(totalReach)))
-      .catch(err => {
+      .catch((err) => {
         // console.log("instagram_ad_audience_size", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_INSTAGRAM_AUDIENCE_SIZE
+          type: actionTypes.ERROR_SET_INSTAGRAM_AUDIENCE_SIZE,
         });
       });
   };
@@ -344,24 +345,24 @@ export const instagram_ad_audience_size = (info, totalReach) => {
  * To get total reach based on country
  * @param {*} info
  */
-export const get_total_reach_instagram = info => {
-  return dispatch => {
+export const get_total_reach_instagram = (info) => {
+  return (dispatch) => {
     InstagramBackendURL()
       .post("audiencesize", info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE,
-          payload: data
+          payload: data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("get_total_reach_instagram ", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE
+          type: actionTypes.ERROR_SET_INSTAGRAM_TOTAL_AUDIENCE_SIZE,
         });
       });
   };
@@ -377,30 +378,30 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL_INSTAGRAM,
-      payload: true
+      payload: true,
     });
     InstagramBackendURL()
       .post(`saveinstatargeting`, info)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
-          position: "top"
+          position: "top",
         });
         dispatch(
           setCampaignInfoForTransaction({
             campaign_id: getState().instagramAds.campaign_id,
             campaign_budget: data.data.lifetime_budget_micro,
             campaign_budget_kdamount: data.kdamount,
-            channel: "instagram"
+            channel: "instagram",
           })
         );
         return dispatch({
           type: actionTypes.SET_AD_DETAILS_INSTAGRAM,
-          payload: { data }
+          payload: { data },
         });
       })
       .then(() => {
@@ -408,11 +409,11 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
         // Ad the route here for
         navigation.navigate("InstagramAdPaymentReview");
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log("ad_details_instagram error", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
-          type: actionTypes.ERROR_SET_AD_DETAILS_INSTAGRAM
+          type: actionTypes.ERROR_SET_AD_DETAILS_INSTAGRAM,
         });
       });
   };
