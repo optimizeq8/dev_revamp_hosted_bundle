@@ -356,6 +356,7 @@ var list = {
         { value: "USE_APP", label: "USE APP" },
         { value: "LISTEN_NOW", label: "LISTEN NOW" },
         { value: "DOWNLOAD", label: "DOWNLOAD" },
+      ],
     },
     {
       type: "VIDEO_VIEWS",
