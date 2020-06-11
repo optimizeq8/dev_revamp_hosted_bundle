@@ -20,7 +20,7 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
 //icons
-import ForwardButton from "../../../assets/SVGs/ForwardButton";
+import ForwardButton from "../../../assets/SVGs/ForwardMSGButton";
 import Camera from "../../../assets/SVGs/Camera";
 import ChatBot from "../../../assets/SVGs/ChatBot";
 
@@ -263,11 +263,12 @@ class Messenger extends Component {
       >
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <CustomHeader
+          backButton="messenger"
           screenProps={this.props.screenProps}
           closeButton={true}
           title={"Support"}
           titelStyle={{
-            bottom: 8,
+            color: "#75647C",
           }}
           segment={{
             source: "open_support",
@@ -279,6 +280,9 @@ class Messenger extends Component {
               source_action: "a_go_back",
             })
           }
+          containerStyle={{
+            backgroundColor: "#F4F2F5",
+          }}
         />
         <View style={styles.contentContainer}>
           <KeyboardAvoidingView
@@ -322,8 +326,8 @@ class Messenger extends Component {
                   <Camera
                     fill={globalColors.orange}
                     style={styles.cameraIcon}
-                    width={heightPercentageToDP(3)}
-                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(4.5)}
+                    height={heightPercentageToDP(4.5)}
                   />
                 </TouchableOpacity>
                 <TextInput
@@ -334,6 +338,16 @@ class Messenger extends Component {
                   style={[
                     I18nManager.isRTL ? rtlStyles.textInput : styles.textInput,
                     newStyle,
+                    {
+                      elevation: 2,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 5,
+                        height: 5,
+                      },
+                      shadowRadius: 15,
+                      shadowOpacity: 0.2,
+                    },
                   ]}
                   placeholder={translate("Type Your Message")}
                   placeholderTextColor="#909090"
@@ -366,8 +380,8 @@ class Messenger extends Component {
                     onPress={this._handleSubmission}
                   >
                     <ForwardButton
-                      width={heightPercentageToDP(7)}
-                      height={heightPercentageToDP(7)}
+                      width={heightPercentageToDP(4.5)}
+                      height={heightPercentageToDP(4.5)}
                       bottom={-10}
                     />
                   </TouchableOpacity>

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   messageView: {
     position: "relative",
-    borderRadius: 20,
+    borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
     maxWidth: "95%",
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     // alignSelf: align,
   },
   dateText: {
-    color: "white",
+    color: "#A496AC",
     fontSize: 10,
     paddingBottom: 5,
     paddingLeft: 5,

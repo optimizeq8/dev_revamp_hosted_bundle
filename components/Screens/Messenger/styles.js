@@ -4,9 +4,10 @@ const IsIOS = Platform.OS === "ios";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
+    backgroundColor: "#F4F2F5",
   },
   container: {
-    backgroundColor: "#0000",
+    backgroundColor: "#F4F2F5",
     flex: 1,
   },
   contentContainer: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 10,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "#FCFBFC",
     paddingVertical: 8,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     marginRight: 5,
+    paddingLeft: 5,
   },
   connectingAgentText: {
     color: "white",
