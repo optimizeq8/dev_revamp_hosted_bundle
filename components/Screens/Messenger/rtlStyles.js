@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     textAlign: "right",
-    marginTop: 5,
     paddingLeft: 15,
     paddingTop: Platform.OS === "ios" ? 15 : 0,
     paddingRight: 15,
@@ -47,7 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 0,
     borderRadius: 20,
-    marginBottom: 17,
     width: "100%",
   },
   cameraIcon: {

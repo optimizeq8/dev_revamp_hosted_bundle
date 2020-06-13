@@ -7,6 +7,18 @@ const styles = StyleSheet.create({
   messageText: {
     color: "white",
     alignSelf: "center",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+  },
+  consultant: {
+    lineHeight: 25,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+  },
+  nameTag: {
+    lineHeight: 25,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
   },
   messageView: {
     position: "relative",

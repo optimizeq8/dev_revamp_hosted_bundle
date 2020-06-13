@@ -505,7 +505,7 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.navigation.push("MessengerLoading", {
+                      this.props.navigation.push("Messenger", {
                         source: "dashboard",
                         source_action: "a_help",
                       });

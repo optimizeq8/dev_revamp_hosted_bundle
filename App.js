@@ -284,11 +284,14 @@ class App extends React.Component {
       )
     );
     if (handleScreen.data) {
-      if (handleScreen.data.screenName === "MessengerLoading") {
+      if (
+        handleScreen.data.screenName === "Messenger" ||
+        handleScreen.data.screenName === "MessengerLoading"
+      ) {
         store.dispatch(actionCreators.set_as_seen(false));
 
         if (AppState.currentState !== "active")
-          NavigationService.navigate(handleScreen.data.screenName);
+          NavigationService.navigate("Messenger");
         else if (
           // this.state.currentScreen !== "MessengerLoading" ||
           this.state.currentScreen !== "Messenger"

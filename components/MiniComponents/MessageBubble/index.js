@@ -123,6 +123,17 @@ class MessageBubble extends PureComponent {
               }}
             >
               <Text selectable={true} style={styles.messageText}>
+                {this.props.message.author.type === "admin" && (
+                  <Text selectable={true} style={styles.nameTag}>
+                    {this.props.message.author.name.split(" ")[0]}
+                  </Text>
+                )}
+                {this.props.message.author.type === "admin" && (
+                  <Text selectable={true} style={styles.consultant}>
+                    {" "}
+                    Optimize Consultant{"\n"}
+                  </Text>
+                )}
                 {body}
               </Text>
             </View>
