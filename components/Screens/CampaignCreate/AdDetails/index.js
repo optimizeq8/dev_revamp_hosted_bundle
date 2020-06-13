@@ -895,27 +895,29 @@ class AdDetails extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    const segmentInfo = {
-      campaign_channel: "snapchat",
-      campaign_ad_type: this.props.adType,
-      campaign_duration:
-        Math.ceil(
-          (new Date(this.props.data.end_time) -
-            new Date(this.props.data.start_time)) /
-            (1000 * 60 * 60 * 24)
-        ) + 1,
-      campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
-      campaign_brand_name: this.props.data.brand_name,
-      campaign_headline: this.props.data.headline,
-      campaign_attachment: this.props.data.attachment,
-      campaign_swipe_up_CTA: this.props.data.call_to_action,
-      campaign_swipe_up_destination: this.props.data.destination,
-      campaign_media: this.props.data.media,
-      campaign_media_type: this.props.data.media_type,
-      campaign_appChoice: this.props.data.appChoice,
-      campaign_objective: this.props.data.objective,
-    };
+    const segmentInfo = this.props.data
+      ? {
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.props.adType,
+          campaign_duration:
+            Math.ceil(
+              (new Date(this.props.data.end_time) -
+                new Date(this.props.data.start_time)) /
+                (1000 * 60 * 60 * 24)
+            ) + 1,
+          campaign_name: this.props.data.name,
+          campaign_id: this.props.data.campaign_id,
+          campaign_brand_name: this.props.data.brand_name,
+          campaign_headline: this.props.data.headline,
+          campaign_attachment: this.props.data.attachment,
+          campaign_swipe_up_CTA: this.props.data.call_to_action,
+          campaign_swipe_up_destination: this.props.data.destination,
+          campaign_media: this.props.data.media,
+          campaign_media_type: this.props.data.media_type,
+          campaign_appChoice: this.props.data.appChoice,
+          campaign_objective: this.props.data.objective,
+        }
+      : {};
     analytics.track("ad_targeting", {
       timestamp: new Date().getTime(),
       source,
