@@ -4,6 +4,7 @@ import { Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
+import MSGBackIcon from "../../../assets/SVGs/MSGBackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
 import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds";
@@ -30,6 +31,7 @@ export default class Header extends Component {
       containerStyle,
       titelStyle,
       icon,
+      backButton,
       translateTitle = true,
       showTopRightButtonIcon = false,
       disabled = false,
@@ -71,7 +73,11 @@ export default class Header extends Component {
           ]}
         >
           {closeButton ? (
-            <CloseIcon width={23} height={23} stroke={iconColor} />
+            backButton === "messenger" ? (
+              <MSGBackIcon width={40} height={40} />
+            ) : (
+              <CloseIcon width={23} height={23} stroke={iconColor} />
+            )
           ) : (
             <BackIcon width={24} height={24} stroke={iconColor} />
           )}

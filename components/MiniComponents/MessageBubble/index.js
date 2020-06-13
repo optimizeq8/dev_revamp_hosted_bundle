@@ -20,12 +20,12 @@ class MessageBubble extends PureComponent {
     };
   }
   render() {
-    let userFormatter = "#6C63FF";
+    let userFormatter = "#A496AC";
     var align = "flex-start";
     let body = "";
     // to format the color and direction of the bubble
     if (this.props.message.author.type === "user") {
-      userFormatter = globalColors.orange;
+      userFormatter = "#9300FF";
       align = "flex-end";
     }
     //originally the message body is sent in html but because I parse it into text
@@ -123,6 +123,17 @@ class MessageBubble extends PureComponent {
               }}
             >
               <Text selectable={true} style={styles.messageText}>
+                {this.props.message.author.type === "admin" && (
+                  <Text selectable={true} style={styles.nameTag}>
+                    {this.props.message.author.name.split(" ")[0]}
+                  </Text>
+                )}
+                {this.props.message.author.type === "admin" && (
+                  <Text selectable={true} style={styles.consultant}>
+                    {" "}
+                    Optimize Consultant{"\n"}
+                  </Text>
+                )}
                 {body}
               </Text>
             </View>
