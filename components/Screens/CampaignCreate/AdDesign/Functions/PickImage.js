@@ -405,7 +405,7 @@ export const _pickImage = async (
                     Math.floor(newResult.height / 16)
                       ? "1080:1920"
                       : "-1:1920" //-1 means scale inly by 1920 to keep aspect ratio
-                  } ${FileSystem.documentDirectory}${
+                  } -vcodec libx264 ${FileSystem.documentDirectory}${
                     outputUri[outputUri.length - 1]
                   }`
                 );
