@@ -777,6 +777,7 @@ class AdDesign extends Component {
       type: card.media_type,
       sourceChanging: false,
     });
+    this.setMediaModalVisible(true);
   };
 
   setTheState = (state) => {
@@ -1271,10 +1272,10 @@ class AdDesign extends Component {
                       media={
                         this.adType !== "StoryAd" && media !== "//"
                           ? media
-                          : storyAdCards.selectedStoryAd.media &&
-                            storyAdCards.storyAdSelected
-                          ? storyAdCards.selectedStoryAd.media
-                          : preview.uri
+                          : // : storyAdCards.selectedStoryAd.media &&
+                            //   storyAdCards.storyAdSelected
+                            // ? storyAdCards.selectedStoryAd.media
+                            preview.uri
                       }
                       style={styles.placeholder1}
                     />
@@ -1287,8 +1288,7 @@ class AdDesign extends Component {
                     </View>
                   )}
                   {inputFields}
-                  {this.adType === "StoryAd" &&
-                  !storyAdCards.storyAdSelected ? (
+                  {this.adType === "StoryAd" ? (
                     <StoryAdCards
                       screenProps={this.props.screenProps}
                       rejected={this.rejected}
@@ -1377,7 +1377,6 @@ class AdDesign extends Component {
               ) : (
                 <>
                   {this.adType === "StoryAd" ? (
-                    !storyAdCards.storyAdSelected &&
                     validCards.length >= 3 && (
                       <TouchableOpacity
                         style={styles.button}

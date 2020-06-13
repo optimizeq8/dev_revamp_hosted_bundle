@@ -33,8 +33,7 @@ class SwipeCompCondition extends Component {
         call_to_action_label={this.props.call_to_action.label}
       />
     ) : this.props.adType === "StoryAd" &&
-      this.props.objective !== "WEB_CONVERSION" &&
-      this.props.storyAdCards.storyAdSelected ? (
+      this.props.objective !== "WEB_CONVERSION" ? (
       <SwipeUpComponent
         screenProps={this.props.screenProps}
         _changeDestination={this.props._changeDestination}
@@ -48,8 +47,7 @@ class SwipeCompCondition extends Component {
       />
     ) : (
       this.props.adType === "StoryAd" &&
-      this.props.objective === "WEB_CONVERSION" &&
-      !this.props.storyAdCards.storyAdSelected && (
+      this.props.objective === "WEB_CONVERSION" && (
         <SwipeUpComponent
           screenProps={this.props.screenProps}
           _changeDestination={this.props._changeDestination}
@@ -69,10 +67,10 @@ class SwipeCompCondition extends Component {
     return <>{this.swipeUpComp()}</>;
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   storyAdAttachment: state.campaignC.storyAdAttachment,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SwipeCompCondition);

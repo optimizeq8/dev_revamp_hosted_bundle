@@ -25,29 +25,29 @@ export const _handleSubmission = async (
       storyAdCards.storyAdSelected ||
       storyAdAttachChanged
     ) {
-      if (
-        storyAdCards.storyAdSelected &&
-        storyAdCards.selectedStoryAd.media !== "//"
-      ) {
-        //seperate the buttons
-        setTheState({
-          storyAdCards: {
-            ...storyAdCards,
-            storyAdSelected: false,
+      // if (
+      //   storyAdCards.storyAdSelected &&
+      //   storyAdCards.selectedStoryAd.media !== "//"
+      // ) {
+      //   //seperate the buttons
+      //   setTheState({
+      //     storyAdCards: {
+      //       ...storyAdCards,
+      //       storyAdSelected: false,
 
-            numOfAds: storyAdCards.numOfAds + 1, //???
-          },
-          type: "",
-          videoIsLoading: false,
-        });
-        return;
-      } else if (storyAdCards.storyAdSelected) {
-        showMessage({
-          message: translate("Please add media to proceed"),
-          position: "top",
-          type: "warning",
-        });
-      }
+      //       numOfAds: storyAdCards.numOfAds + 1, //???
+      //     },
+      //     type: "",
+      //     videoIsLoading: false,
+      //   });
+      //   return;
+      // } else if (storyAdCards.storyAdSelected) {
+      //   showMessage({
+      //     message: translate("Please add media to proceed"),
+      //     position: "top",
+      //     type: "warning",
+      //   });
+      // }
       if (
         validator() &&
         (validStoryAds.length >= 3 ||

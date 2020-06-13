@@ -241,7 +241,7 @@ export const _pickImage = async (
               setTheState({
                 storyAdCards: {
                   ...storyAdCards,
-                  // storyAdSelected: false,
+                  storyAdSelected: false,
                   selectedStoryAd: {
                     ...card,
                   },
