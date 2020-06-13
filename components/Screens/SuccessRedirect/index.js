@@ -118,10 +118,10 @@ class SuccessRedirect extends Component {
     }
     this.setState(this.props.navigation.state.params, () => {
       if (
-        (this.props.channel && this.props.channel === "") ||
+        this.props.channel === "" ||
         (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
       ) {
-        this.props.resetCampaignInfo();
+        this.props.resetCampaignInfo(false);
       }
       if (this.props.channel === "google") {
         this.props.rest_google_campaign_data();
