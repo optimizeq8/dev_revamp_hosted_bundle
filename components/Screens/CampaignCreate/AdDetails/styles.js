@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1,
     // ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.75)",
+    backgroundColor: "#0000",
   },
   mainContainer: {
     // backgroundColor: 'rgba(255, 255, 255, 0.3)',

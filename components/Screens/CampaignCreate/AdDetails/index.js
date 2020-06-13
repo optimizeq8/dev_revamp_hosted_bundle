@@ -1111,57 +1111,8 @@ class AdDetails extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        {!this.editCampaign &&
-          (media.includes(".mp4") ||
-          media.includes(".mov") ||
-          media.includes(".MP4") ||
-          media.includes(".MOV") ||
-          (campaign.media &&
-            (campaign.media.includes(".mp4") ||
-              campaign.media.includes(".MP4"))) ||
-          (campaign.media &&
-            (campaign.media.includes(".mov") ||
-              campaign.media.includes(".MOV"))) ? (
-            <View style={[styles.backgroundViewWrapper]}>
-              <Video
-                source={{
-                  uri: this.editCampaign ? campaign.media : media,
-                }}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode="cover"
-                style={styles.videoBackgroundViewWrapper}
-              />
-            </View>
-          ) : (
-            <RNImageOrCacheImage
-              media={media}
-              style={[
-                styles.imageBackgroundViewWrapper,
-                this.state.sidemenustate && !I18nManager.isRTL
-                  ? {
-                      borderTopRightRadius: 30,
-                    }
-                  : {},
-                this.state.sidemenustate && I18nManager.isRTL
-                  ? {
-                      borderTopLeftRadius: 30,
-                    }
-                  : {},
-              ]}
-            />
-          ))}
-
         <SafeAreaView
-          style={[
-            styles.safeArea,
-            {
-              backgroundColor: this.editCampaign
-                ? "transparent"
-                : "rgba(0,0,0,0.75)",
-            },
-          ]}
+          style={[styles.safeArea]}
           forceInset={{ bottom: "never", top: "always" }}
         >
           <NavigationEvents
