@@ -81,9 +81,7 @@ class AdFeedDesignReview extends React.Component {
                 width={32}
                 height={32}
                 source={{
-                  // uri: instagram_profile_pic
-                  uri:
-                    "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
+                  uri: instagram_profile_pic,
                 }}
               />
               <View style={styles.detailProfileView}>
