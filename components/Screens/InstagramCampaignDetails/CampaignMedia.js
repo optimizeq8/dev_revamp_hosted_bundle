@@ -50,11 +50,11 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
   });
   navigation.push(
     selectedCampaign.campaign_type !== "StoryAd"
-      ? "AdDesignReview"
+      ? "AdFeedDesignReview"
       : "StoryAdDesignReview",
     {
       ...media,
-      type: type,
+      media_type: type,
       call_to_action: call_to_action,
       headline: selectedCampaign.headline,
       brand_name: selectedCampaign.brand_name,
@@ -65,6 +65,8 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
       coverHeadline: selectedCampaign.story_headline,
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
+      instagram_business_name: selectedCampaign.instagram_business_name,
+      message: selectedCampaign.message,
       source: source,
       source_action: "a_preview_ad",
     }

@@ -14,6 +14,7 @@ import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
+import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 
 export default class Header extends Component {
   render() {
@@ -90,6 +91,11 @@ export default class Header extends Component {
         {icon === "google" && (
           <View style={{ paddingHorizontal: 5 }}>
             <GoogleSE width={30} style={styles.googleIcon} />
+          </View>
+        )}
+        {icon === "instagram" && (
+          <View style={{ paddingHorizontal: 5 }}>
+            <InstagramIcon width={30} height={24} fill="#fff" />
           </View>
         )}
         {title && typeof title === "object" ? (

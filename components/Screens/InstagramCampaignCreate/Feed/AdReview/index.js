@@ -38,7 +38,7 @@ class AdFeedDesignReview extends React.Component {
       media_type,
       media_option,
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = this.props.data;
+    } = this.props.data || this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_type === "IMAGE" && media) {
@@ -101,7 +101,7 @@ class AdFeedDesignReview extends React.Component {
             <View style={styles.mediaView}>{mediaView}</View>
             <View style={styles.swipeUpView}>
               <Text style={styles.callToActionText}>
-                {call_to_action.label}
+                {call_to_action.label || call_to_action}
               </Text>
               <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
             </View>
