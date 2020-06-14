@@ -34,17 +34,15 @@ export default class GenderOptions extends Component {
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
+                    this.props.campaignInfo.targeting.genders[0] === "MALE"
                       ? "circle"
                       : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
+                    this.props.campaignInfo.targeting.genders[0] === "MALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -61,17 +59,15 @@ export default class GenderOptions extends Component {
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
+                    this.props.campaignInfo.targeting.genders[0] === "FEMALE"
                       ? "circle"
                       : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
+                    this.props.campaignInfo.targeting.genders[0] === "FEMALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -88,17 +84,15 @@ export default class GenderOptions extends Component {
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
+                    this.props.campaignInfo.targeting.genders[0] === ""
                       ? "circle"
                       : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
+                    this.props.campaignInfo.targeting.genders[0] === ""
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text

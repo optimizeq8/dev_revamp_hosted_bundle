@@ -61,7 +61,7 @@ class SelectDevices extends Component {
               </GradientButton>
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
-                  ref={ref => (this.DeviceSection = ref)}
+                  ref={(ref) => (this.DeviceSection = ref)}
                   loading={isNull(this.props.deviceBrands) ? true : false}
                   items={this.props.deviceBrands}
                   modalWithSafeAreaView={true}
@@ -70,7 +70,7 @@ class SelectDevices extends Component {
                   selectChildren={true}
                   filterItems={(searchText, items) => {
                     if (this.props.deviceBrands.length !== 0) {
-                      return items.filter(device =>
+                      return items.filter((device) =>
                         device.name
                           .toLowerCase()
                           .includes(searchText.toLowerCase())
@@ -122,7 +122,7 @@ class SelectDevices extends Component {
                   colors={colors}
                   searchPlaceholderText={translate("Search Devices")}
                   searchTextFontFamily={{
-                    fontFamily: "montserrat-regular"
+                    fontFamily: "montserrat-regular",
                   }}
                   searchIconComponent={
                     <Icon
@@ -144,7 +144,7 @@ class SelectDevices extends Component {
                     this.props.onSelectedItemsChange([], "devices");
                   }}
                   modalAnimationType="fade"
-                  onSelectedItemsChange={items =>
+                  onSelectedItemsChange={(items) =>
                     this.props.onSelectedItemsChange(items, "devices")
                   }
                   selectedItems={this.props.selectedItems}
@@ -166,13 +166,13 @@ class SelectDevices extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  deviceBrands: state.instagramAds.deviceBrands
+  deviceBrands: state.instagramAds.deviceBrands,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getDeviceBrand: os => dispatch(actionCreators.getDeviceBrand(os))
+const mapDispatchToProps = (dispatch) => ({
+  getDeviceBrand: (os) => dispatch(actionCreators.getDeviceBrand(os)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SelectDevices);
