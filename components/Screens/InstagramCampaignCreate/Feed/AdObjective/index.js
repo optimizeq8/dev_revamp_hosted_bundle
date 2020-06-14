@@ -7,6 +7,7 @@ import {
   BackHandler,
   ScrollView,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
@@ -161,8 +162,11 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label,
     });
-    segmentEventTrack("Selected Instagram Feed Ad Objective", {
-      campaign_objective: choice.label,
+    analytics.track(`a_select_ad_objective`, {
+      source: "ad_objective_modal",
+      source_action: "a_select_ad_objective",
+      campaign_id: this.props.campaign_id,
+      campaign_objective: choice.value,
     });
     this.props.save_campaign_info_instagram({
       objective: choice.value,
@@ -181,8 +185,10 @@ class AdObjective extends Component {
         start_time: date,
       },
     });
-    segmentEventTrack("Selected Instagram Feed Campaign Start Date", {
+    analytics.track(`a_ad_start_date`, {
       campaign_start_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_start_date",
     });
     this.props.save_campaign_info_instagram({ start_time: date });
   };
@@ -193,8 +199,10 @@ class AdObjective extends Component {
         end_time: date,
       },
     });
-    segmentEventTrack("Selected Instagram Feed Campaign End Date", {
+    analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_end_date",
     });
     this.props.save_campaign_info_instagram({
       end_time: date,
@@ -202,9 +210,11 @@ class AdObjective extends Component {
     });
   };
   setModalVisible = (visible) => {
-    if (visible) {
-      Segment.screen("Instagram Feed Ad Objective Modal");
-    }
+    analytics.track(`ad_objective_modal`, {
+      source: "ad_objective",
+      source_action: "a_toggle_modal",
+      modal_visible: visible,
+    });
     this.setState({ modalVisible: visible });
   };
 
@@ -237,19 +247,17 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack(
-        "Error occured on  Instagram Feed ad objective screen sumbit button",
-        {
-          campaign_error_ad_name: nameError ? nameError : "",
-          campaign_error_ad_objective: objectiveError ? objectiveError : "",
-          campaign_error_ad_start_date: dateErrors.start_timeError
-            ? dateErrors.start_timeError
-            : "",
-          campaign_error_ad_end_date: dateErrors.end_timeError
-            ? dateErrors.end_timeError
-            : "",
-        }
-      );
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
+        source_action: "a_submit_ad_objective",
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError,
+      });
     }
     if (
       !nameError &&
@@ -258,9 +266,16 @@ class AdObjective extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.campaignInfo.end_time) -
+              new Date(this.state.campaignInfo.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_ad_type: this.props.adType,
+        campaign_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
@@ -314,6 +329,14 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
+    analytics.track(`a_ad_name`, {
+      source: "ad_objective",
+      source_action: "a_ad_name",
+      campaign_id: this.props.campaign_id,
+      campaign_channel: "instagram",
+      campaign_ad_type: this.props.adType,
+      campaign_name: value,
+    });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info_instagram({ name: value });
   };
@@ -323,14 +346,35 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      segmentEventTrack(`Error in  Instagram Feed ${stateError}`, {
-        campaign_error: validObj,
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        error_description: `Error in ${stateError}: ${validObj}`,
+        source: "ad_objective",
+        source_action: "a_ad_name",
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
       });
     }
     let state = {};
     state[stateError] = validObj;
     this.setState({
       ...state,
+    });
+  };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      campaign_channel: "instagram",
+      campaign_ad_type: this.props.adType,
     });
   };
 
@@ -350,18 +394,7 @@ class AdObjective extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            // Segment.screenWithProperties("Instagram Story Ad Objective", {
-            //   category: "Campaign Creation",
-            //   channel: "instagram"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   step: 2,
-            //   business_name: this.props.mainBusiness.businessname
-            // });
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             {/* <BackdropIcon style={styles.backDrop} height={hp("100%")} /> */}

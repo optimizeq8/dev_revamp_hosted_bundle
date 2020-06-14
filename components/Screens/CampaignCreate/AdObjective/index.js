@@ -255,7 +255,6 @@ class AdObjective extends Component {
       },
     });
     analytics.track(`a_ad_start_date`, {
-      campaign_start_date: date,
       source: "ad_objective",
       source_action: "a_ad_start_date",
       campaign_start_date: date,
@@ -274,7 +273,6 @@ class AdObjective extends Component {
       campaign_end_date: date,
       source: "ad_objective",
       source_action: "a_ad_end_date",
-      campaign_end_date: date,
     });
     this.props.save_campaign_info({
       end_time: date,
@@ -516,11 +514,17 @@ class AdObjective extends Component {
     const { translate } = this.props.screenProps;
     if (!this.props.userInfo) {
       return (
-        <ErrorComponent
-          screenProps={this.props.screenProps}
-          loading={this.props.loading}
-          navigation={this.props.navigation}
-        />
+        <>
+          <NavigationEvents
+            onDidFocus={this.handleAdOnjectiveFocus}
+            onDidBlur={this.handleAdOnjectiveBlur}
+          />
+          <ErrorComponent
+            screenProps={this.props.screenProps}
+            loading={this.props.loading}
+            navigation={this.props.navigation}
+          />
+        </>
       );
     } else
       return (

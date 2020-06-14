@@ -37,7 +37,6 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    console.log("campaignSteps", this.props.currentCampaignSteps);
 
     let continueRoutes = this.props.currentCampaignSteps.map((route) =>
       NavigationActions.navigate({

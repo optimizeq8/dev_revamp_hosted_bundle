@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -254,13 +255,13 @@ class InstagramFeedAdTargetting extends Component {
   onSelectedDevicesChange = (selectedItems) => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.user_device = selectedItems;
-    if (selectedItems.length > 0) {
-      // segmentEventTrack(`Selected Devices`, {
-      //   campaign_devices_name: selectedItems.join(", ")
-      // });
-    } else {
-      // segmentEventTrack(`Selected No Devices`);
-    }
+    analytics.track(`a_ad_devices`, {
+      source: "ad_targeting",
+      source_action: "a_ad_devices",
+      campaign_devices_name:
+        selectedItems.length > 0 ? selectedItems.join(", ") : "",
+    });
+
     this.setState({
       campaignInfo: replace,
     });
@@ -284,10 +285,12 @@ class InstagramFeedAdTargetting extends Component {
     });
     let names = [];
     names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    analytics.track(`a_ad_interests`, {
+      source: "ad_targeting",
+      source_action: "a_ad_interests",
+      campaign_interests_names: names && names.length > 0 && names.join(", "),
+    });
     if (names && names.length > 0)
-      // segmentEventTrack(`Selected Interests`, {
-      //   campaign_interests_names: names.join(", ")
-      // });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: replace,
@@ -348,6 +351,13 @@ class InstagramFeedAdTargetting extends Component {
     // segmentEventTrack(`Selected OS Type`, {
     //   campaign_os_type: selectedItem === "" ? "ALL" : selectedItem
     // });
+    analytics.track(`a_ad_OS_type`, {
+      source: "ad_targeting",
+      source_action: "a_ad_OS_type",
+      campaign_os_type: selectedItem === "" ? "ALL" : selectedItem,
+      campaign_os_min_ver: "",
+      campaign_os_max_ver: "",
+    });
     this.setState({
       campaignInfo: { ...replace },
     });
@@ -361,10 +371,13 @@ class InstagramFeedAdTargetting extends Component {
     let replace = this.state.campaignInfo;
     replace.targeting.os_version_min = selectedItem[0];
     replace.targeting.os_version_max = selectedItem[1];
-    // segmentEventTrack(`Selected OS Version`, {
-    //   campaign_min_version: selectedItem[0],
-    //   campaign_max_version: selectedItem[1]
-    // });
+    analytics.track(`a_ad_OS_version`, {
+      source: "ad_targeting",
+      source_action: "a_ad_OS_version",
+      campaign_os_min_ver: selectedItem[0],
+      campaign_os_max_ver: selectedItem[1],
+    });
+
     this.setState({
       campaignInfo: { ...replace },
     });
@@ -475,6 +488,12 @@ class InstagramFeedAdTargetting extends Component {
         value: value,
         budgetOption,
       });
+      analytics.track(`a_handle_budget`, {
+        source: "ad_targeting",
+        source_action: "a_handle_budget",
+        custom_budget: false,
+        campaign_budget: rawValue,
+      });
       //  !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: {
@@ -487,12 +506,14 @@ class InstagramFeedAdTargetting extends Component {
     } else {
       if (onBlur) {
         if (validateWrapper("Budget", rawValue)) {
-          // segmentEventTrack("Error Campaign Budget Change", {
-          //   campaign_budget_error:
-          //     validateWrapper("Budget", rawValue) +
-          //     " $" +
-          //     this.state.minValueBudget
-          // });
+          analytics.track(`a_error_form`, {
+            error_page: "ad_targeting",
+            source_action: "a_change_campaign_custom_budget",
+            error_description:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget,
+          });
         }
         showMessage({
           message: validateWrapper("Budget", rawValue)
@@ -530,9 +551,12 @@ class InstagramFeedAdTargetting extends Component {
   onSelectedGenderChange = (gender) => {
     let replace = this.state.campaignInfo;
     replace.targeting.genders = [gender];
-    // segmentEventTrack(`Selected Gender`, {
-    //   campaign_gender: gender === "" ? "ALL" : gender
-    // });
+
+    analytics.track(`a_ad_gender`, {
+      source: "ad_targeting",
+      source_action: "a_ad_gender",
+      campaign_gender: replace.targeting.genders,
+    });
     this.setState({ campaignInfo: { ...replace } });
     //  !this.editCampaign &&
     this.props.save_campaign_info_instagram({ campaignInfo: { ...replace } });
@@ -651,12 +675,18 @@ class InstagramFeedAdTargetting extends Component {
         this.state.budgetOption
       )
     ) {
-      segmentEventTrack("Error on submit instagram feed ad details", {
-        campaign_country_error: countryRegionError,
-        campaign_budget_error: validateWrapper(
-          "Budget",
-          this.state.campaignInfo.lifetime_budget_micro
-        ),
+      analytics.track(`a_error_form`, {
+        error_page: "ad_targeting",
+        source_action: "a_submit_ad_targeting",
+        campaign_id: this.props.data.campaign_id,
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        error_description:
+          countryRegionError ||
+          validateWrapper(
+            "Budget",
+            this.state.campaignInfo.lifetime_budget_micro
+          ),
       });
     }
     if (
@@ -722,52 +752,30 @@ class InstagramFeedAdTargetting extends Component {
       //   );
       // } else {
 
-      Segment.trackWithProperties("Submitted Instagram Feed Ad Details", {
-        business_name: this.props.mainBusiness.businessname,
-        campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
-        campaign_id: this.props.campaign_id,
-      });
-
       const segmentInfo = {
-        checkout_id: this.props.campaign_id,
-        step: 4,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_instagram_budget: this.state.campaignInfo
-          .lifetime_budget_micro,
-        campaign_instagram_gender:
+        campaign_id: this.props.campaign_id,
+        campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
+        campaign_gender:
           this.state.campaignInfo.targeting.genders[0] === ""
             ? "ALL"
             : this.state.campaignInfo.targeting.genders[0],
-        // campaign_instagram_max_age: this.state.campaignInfo.targeting.demographics[0]
-        //   .max_age,
-        // campaign_instagram_min_age: this.state.campaignInfo.targeting.demographics[0]
-        //   .min_age,
-        // campaign_instagram_country_name: this.state.countryName,
-        campaign_instagram_region_names:
+        campaign_region_names:
           this.state.regionNames && this.state.regionNames.length > 0
             ? this.state.regionNames.join(", ")
             : null,
-        // campaign_instagram_languages:
-        //   this.state.campaignInfo.targeting.demographics[0].languages &&
-        //   this.state.campaignInfo.targeting.demographics[0].languages.length > 0
-        //     ? this.state.campaignInfo.targeting.demographics[0].languages.join(
-        //         ", "
-        //       )
-        //     : null,
-        campaign_instagram_min_version: this.state.campaignInfo.targeting
-          .os_version_min,
-        campaign_instagram_max_version: this.state.campaignInfo.targeting
-          .os_version_max,
-        campaign_instagram_os_type:
+
+        campaign_min_version: this.state.campaignInfo.targeting.os_version_min,
+        campaign_max_version: this.state.campaignInfo.targeting.os_version_max,
+        campaign_os_type:
           this.state.campaignInfo.targeting.user_os[0] === ""
             ? "ALL"
             : this.state.campaignInfo.targeting.user_os[0],
-        campaign_instagram_devices_name:
+        campaign_devices_name:
           this.state.campaignInfo.targeting.user_device &&
           this.state.campaignInfo.targeting.user_device.length > 0
             ? this.state.campaignInfo.targeting.user_device.join(", ")
             : null,
-        campaign_instagram_interests_names:
+        campaign_interests_names:
           interestNamesList && interestNamesList.length > 0
             ? interestNamesList.join(", ")
             : null,
@@ -847,6 +855,11 @@ class InstagramFeedAdTargetting extends Component {
           );
         }
       }
+    });
+    analytics.track(`a_ad_regions`, {
+      source: "ad_targeting",
+      source_action: "a_ad_regions",
+      campaign_region_names: replace.targeting.geo_locations.regions,
     });
 
     this.setState({

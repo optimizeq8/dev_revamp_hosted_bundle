@@ -14,7 +14,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
+
 import { Content, Text, Container, Footer, Button, Input } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -293,21 +294,43 @@ class AdDesign extends Component {
         JSON.stringify(this.props.data.formatted) !==
           JSON.stringify(this.state.formatted)
       ) {
+        const segmentInfo = {
+          campaign_channel: "instagram",
+          campaign_ad_type: "InstagramFeedAd",
+          campaign_id: this.props.data.campaign_id,
+          campaign_business_name: this.state.campaignInfo.brand_name,
+          campaign_caption: this.state.campaignInfo.headline,
+          campaign_attachment: this.state.campaignInfo.attachment,
+          campaign_swipe_up_CTA: this.state.campaignInfo.call_to_action,
+          campaign_swipe_up_destination: this.state.campaignInfo.destination,
+          campaign_media: this.state.media,
+          campaign_media_type: this.state.type,
+          // campaign_appChoice: this.state.appChoice,
+        };
         if (!this.props.loading) {
           await this.props.saveBrandMediaInstagram(
             "InstagramFeedAdDesign",
             this.state.formatted,
             this._getUploadState,
             this.onToggleModal,
-            this.state.signal
+            this.state.signal,
+            segmentInfo
           );
         }
       } else {
-        this.props.navigation.push("InstagramFeedAdTargetting");
+        this.props.navigation.navigate("InstagramFeedAdTargetting", {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+        });
       }
     }
   };
   handleCaptionExpand = (value) => {
+    analytics.track(`instagram_caption`, {
+      visibile: value,
+      source: "ad_design",
+      source_action: "a_toggle_caption",
+    });
     this.setState(
       {
         expanded: value,
@@ -319,8 +342,19 @@ class AdDesign extends Component {
   };
   handleReview = async () => {
     const noError = this.validator();
+
+    analytics.track(`a_preview_ad`, {
+      source: "ad_design",
+      source_action: "a_preview_ad",
+      action_status: noError ? "success" : "failure",
+      campaign_channel: "instagram",
+      campaign_ad_type: "InstagramFeedAd",
+    });
     if (noError) {
-      this.props.navigation.push("AdFeedDesignReview");
+      this.props.navigation.navigate("AdFeedDesignReview", {
+        source: "ad_objective",
+        source_action: "a_preview_ad",
+      });
     }
   };
   setMediaModalVisible = (visibile) => {
@@ -342,6 +376,40 @@ class AdDesign extends Component {
       // this.rejected,
       // this.videoIsExporting
     );
+  onDidFocus = () => {
+    if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
+      this.props.saveCampaignSteps([
+        "Dashboard",
+        "InstagramFeedAdObjective",
+        "InstagramFeedAdDesign",
+      ]);
+    }
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_design`, {
+      source,
+      source_action,
+      campaign_channel: "instagram",
+      campaign_ad_type: "InstagramFeedAd",
+      campaign_name: this.props.data.name,
+      campaign_id: this.props.data.campaign_id,
+      campaign_objective: this.props.data.objective,
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.data.end_time) -
+            new Date(this.props.data.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
+      campaign_start_date: this.props.data.start_time,
+      campaign_end_date: this.props.data.end_time,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     var { media, mediaModalVisible, media_type } = this.state;
@@ -377,30 +445,7 @@ class AdDesign extends Component {
             navigation={this.props.navigation}
             title={"Compose"}
           />
-          <NavigationEvents
-            onDidFocus={() => {
-              if (
-                !this.props.currentCampaignSteps.includes(
-                  "InstagramFeedAdDetails"
-                )
-              ) {
-                this.props.saveCampaignSteps([
-                  "Dashboard",
-                  "InstagramFeedAdObjective",
-                  "InstagramFeedAdDesign",
-                ]);
-              }
-              Segment.screenWithProperties("Instagram Feed Ad Design", {
-                category: "Campaign Creation",
-                channel: "instagram",
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign_id,
-                step: 3,
-                business_name: this.props.mainBusiness.businessname,
-              });
-            }}
-          />
+          <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (
             <Transition style={styles.transition} shared="image">
               <View style={styles.mainView}>
@@ -476,7 +521,13 @@ class AdDesign extends Component {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.push("InstagramSwipeUpDestination")
+                      this.props.navigation.navigate(
+                        "InstagramSwipeUpDestination",
+                        {
+                          source: "ad_objective",
+                          source_action: "a_swipe_up_destination",
+                        }
+                      )
                     }
                     style={styles.destinationView}
                   >
@@ -639,7 +690,8 @@ const mapDispatchToProps = (dispatch) => ({
     info,
     loading,
     onToggleModal,
-    cancelUpload
+    cancelUpload,
+    segmentInfo
   ) =>
     dispatch(
       actionCreators.saveBrandMediaInstagram(
@@ -647,7 +699,8 @@ const mapDispatchToProps = (dispatch) => ({
         info,
         loading,
         onToggleModal,
-        cancelUpload
+        cancelUpload,
+        segmentInfo
       )
     ),
   saveCampaignSteps: (step) =>
