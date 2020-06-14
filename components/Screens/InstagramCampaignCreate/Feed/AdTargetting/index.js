@@ -603,10 +603,8 @@ class InstagramFeedAdTargetting extends Component {
     }
     const obj = {
       targeting: JSON.stringify(r),
-      ad_account_id: 123456789012,
-      //  this.props.mainBusiness.snap_ad_account_id
+      ad_account_id: this.props.mainBusiness.fb_ad_account_id,
     };
-    // console.log("obj", obj);
 
     if (totalReach.geo_locations.countries.length === 0) {
       delete totalReach.geo_locations.countries;
@@ -622,8 +620,7 @@ class InstagramFeedAdTargetting extends Component {
     }
     const obj2 = {
       targeting: JSON.stringify(totalReach),
-      ad_account_id: 123456789012,
-      // this.props.mainBusiness.snap_ad_account_id
+      ad_account_id: this.props.mainBusiness.fb_ad_account_id,
     };
     // console.log("obj2", obj2);
 

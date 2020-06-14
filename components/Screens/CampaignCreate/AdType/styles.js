@@ -135,6 +135,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     textAlign: "left",
   },
+  fbUnderProcessText: {
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#575757",
+    paddingTop: 20,
+    paddingHorizontal: 28,
+    textAlign: "left",
+  },
   mainView: {
     flex: 1,
     backgroundColor: "#F4F4F4",

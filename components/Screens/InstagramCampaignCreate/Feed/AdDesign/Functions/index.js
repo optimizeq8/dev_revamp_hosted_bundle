@@ -14,13 +14,13 @@ export const formatMedia = (
   var photo = {
     uri: media,
     type: media_type + "/" + format,
-    name: res
+    name: res,
   };
   body.append("media", photo);
   body.append("media_type", media_type);
 
   // body.append("ad_account_id", mainBusiness.snap_ad_account_id);
-  body.append("ad_account_id", 123456789012);
+  body.append("ad_account_id", mainBusiness.fb_ad_account_id);
 
   body.append("businessid", mainBusiness.businessid);
   body.append("campaign_id", campaignInfo.campaign_id);
@@ -38,6 +38,6 @@ export const formatMedia = (
   );
 
   setTheState({
-    formatted: body
+    formatted: body,
   });
 };

@@ -31,6 +31,7 @@ import Axios from "axios";
 let Menu = null; //Doing an inline require for big components helps with performance
 import * as Animatable from "react-native-animatable";
 import AdButtons from "./AdButtons";
+import { showMessage } from "react-native-flash-message";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
@@ -66,6 +67,7 @@ import LowerButton from "../../MiniComponents/LowerButton";
 
 import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import isNull from "lodash/isNull";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -232,7 +234,8 @@ class Dashboard extends Component {
   };
 
   navigationHandler = (adType) => {
-    const { fb_connected } = this.props.mainBusiness;
+    const { translate } = this.props.screenProps;
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     analytics.track(`a_campaign_ad_type`, {
       source: "dashboard",
       source_action: "a_campaign_ad_type",
@@ -274,12 +277,24 @@ class Dashboard extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
-      } else if (adType.mediaType === "instagram" && fb_connected === "1") {
+      } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
           source: "dashboard",
           source_action: "a_campaign_ad_type",
+        });
+      } else if (
+        adType.mediaType === "instagram" &&
+        fb_connected === "1" &&
+        (isNull(fb_ad_account_id) || fb_ad_account_id === "")
+      ) {
+        showMessage({
+          message: translate(
+            `Your Instagram Account request is in process by OptimizeApp`
+          ),
+          type: "warning",
+          position: "top",
         });
       } else {
         if (adType.value === "SnapAd") {

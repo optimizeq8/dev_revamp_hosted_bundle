@@ -49,7 +49,7 @@ class AdObjective extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        ad_account_id: 123456789012,
+        ad_account_id: "",
         name: "",
         objective: "",
         start_time: "",
@@ -107,8 +107,7 @@ class AdObjective extends Component {
     ) {
       rep = {
         ...this.state.campaignInfo,
-        // ad_account_id: this.props.mainBusiness.snap_ad_account_id, //123456789012
-        ad_account_id: 123456789012,
+        ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
         name: this.props.data.name,
         objective: this.props.data.objective ? this.props.data.objective : "",
@@ -134,7 +133,7 @@ class AdObjective extends Component {
     } else {
       this.setState({
         campaignInfo: {
-          ad_account_id: 123456789012,
+          ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: "",
           objective: "",
