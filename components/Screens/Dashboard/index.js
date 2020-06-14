@@ -110,7 +110,7 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid")
     ) {
       // to set for instagram accounts
-      if (this.props.mainBusiness.instagram_access === "1" || true) {
+      if (this.props.mainBusiness.instagram_access === "1") {
         let adButtons = [...this.state.adButtons, ...instagramAds];
         this.setState({
           adButtons,

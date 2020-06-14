@@ -51,6 +51,22 @@ class AdType extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.instagram_access === "0"
+    ) {
+      let socialMediaPlatforms =
+        Platform.OS === "android" && I18nManager.isRTL
+          ? [...SocialPlatforms].reverse()
+          : [...SocialPlatforms];
+      const index = socialMediaPlatforms.findIndex(
+        (el) => el.title === "Instagram"
+      );
+      socialMediaPlatforms.splice(index, 1);
+      this.setState({
+        socialMediaPlatforms,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -138,7 +154,7 @@ class AdType extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
-      } else if (this.state.active === "Instagram" && fb_connected === "0") {
+      } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
@@ -148,7 +164,7 @@ class AdType extends Component {
       } else if (
         adType.mediaType === "instagram" &&
         fb_connected === "1" &&
-        (isNull(fb_ad_account_id) || fb_ad_account_id === "")
+        (isNull() || fb_ad_account_id === "")
       ) {
         showMessage({
           message: translate(
@@ -246,22 +262,7 @@ class AdType extends Component {
       "success",
       false
     );
-    if (
-      this.props.mainBusiness &&
-      this.props.mainBusiness.instagram_access === "0"
-    ) {
-      let socialMediaPlatforms =
-        Platform.OS === "android" && I18nManager.isRTL
-          ? [...SocialPlatforms].reverse()
-          : [...SocialPlatforms];
-      const index = socialMediaPlatforms.findIndex(
-        (el) => el.title === "Instagram"
-      );
-      socialMediaPlatforms.splice(index, 1);
-      this.setState({
-        socialMediaPlatforms,
-      });
-    }
+
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
       this.props.updateBusinessConnectedToFacebook("1");
     }
