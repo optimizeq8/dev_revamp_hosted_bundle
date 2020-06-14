@@ -459,162 +459,164 @@ export const getInstagramCampaignDetails = (id, navigation) => {
       source_action: "a_open_campaign",
     });
 
-    createBaseUrl()
+    InstagramBackendURL()
       .get(`campaigndetail/${id}`)
       .then((res) => {
         return res.data;
       })
       .then((data) => {
-        data = {
-          instagram_profile_pic:
-            "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
-          message:
-            "This is the caption part of the ad\nDon't forget to finsish this",
-          link: "https://optimizeapp.com",
-          call_to_action: "DOWNLOAD NOW",
-          instagram_business_name: "OptimizeApp",
-          media_option: "single",
-          campaign_id: "6493",
-          name: "WEEE",
-          brand_name: "SamyOptimize",
-          campaign_type: "SnapAd",
-          snap_ad_id: null,
-          snap_campaign_id: null,
-          snap_adsquads_id: null,
-          headline: "WEEE",
-          objective: "BRAND_AWARENESS",
-          lifetime_budget_micro_after_deduction: "67.5",
-          lifetime_budget_micro: 75,
-          agency_fee: "7.5",
-          status: "LIVE",
-          start_time: "2020-06-14T00:00:00",
-          end_time: "2020-06-15T23:59:59",
-          media:
-            "https://optimizekwtestingserver.com/optimize/snap-media/4E6AFCFE-FB11-4838-9942-96062E7BA22A.jpg",
-          media_type: "IMAGE",
+        console.log(JSON.stringify(data, null, 2));
 
-          targeting: {
-            flexible_spec: [
-              {
-                interests: [
-                  {
-                    name: "Small business",
-                    id: "6002884511422",
-                  },
-                  {
-                    name: "Aviation",
-                    id: "6002963523717",
-                  },
-                  {
-                    name: "Investment banking",
-                    id: "6003063638807",
-                  },
-                  {
-                    name: "Insurance",
-                    id: "6003217093576",
-                  },
-                  {
-                    name: "Fashion design",
-                    id: "6003266266843",
-                  },
-                  {
-                    name: "Web development",
-                    id: "6003290005325",
-                  },
-                  {
-                    name: "Search engine optimization",
-                    id: "6003370636074",
-                  },
-                  {
-                    name: "Web hosting",
-                    id: "6003387418453",
-                  },
-                  {
-                    name: "Health care",
-                    id: "6003464109203",
-                  },
-                  {
-                    name: "Online advertising",
-                    id: "6003526234370",
-                  },
-                  {
-                    name: "Economics",
-                    id: "6003656112304",
-                  },
-                  {
-                    name: "Retail",
-                    id: "6003778400853",
-                  },
-                  {
-                    name: "Concerts",
-                    id: "6002970406974",
-                  },
-                  {
-                    name: "Movies",
-                    id: "6003139266461",
-                  },
-                  {
-                    name: "Bollywood movies",
-                    id: "6003157824284",
-                  },
-                  {
-                    name: "TV talkshows",
-                    id: "6003172448161",
-                  },
-                ],
-              },
-            ],
-            user_os: ["ANDROID"],
-            geo_locations: {
-              countries: ["SA"],
-              regions: [
-                {
-                  key: "10",
-                  name: "Dubai",
-                  country: "AE",
-                },
-                {
-                  key: "13",
-                  name: "Sharjah Emirate",
-                  country: "AE",
-                },
-                {
-                  key: "9",
-                  name: "Ajman Emirate",
-                  country: "AE",
-                },
-                {
-                  key: "12",
-                  name: "Ras Al Khaimah",
-                  country: "AE",
-                },
-                {
-                  key: "11",
-                  name: "Fujairah",
-                  country: "AE",
-                },
-              ],
-            },
-          },
-          lifetime_budget_micro: 75,
-          campaign_id: "274",
+        // data = {
+        //   instagram_profile_pic:
+        //     "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
+        //   message:
+        //     "This is the caption part of the ad\nDon't forget to finsish this",
+        //   link: "https://optimizeapp.com",
+        //   call_to_action: "DOWNLOAD NOW",
+        //   instagram_business_name: "OptimizeApp",
+        //   media_option: "single",
+        //   campaign_id: "6493",
+        //   name: "WEEE",
+        //   brand_name: "SamyOptimize",
+        //   campaign_type: "SnapAd",
+        //   snap_ad_id: null,
+        //   snap_campaign_id: null,
+        //   snap_adsquads_id: null,
+        //   headline: "WEEE",
+        //   objective: "BRAND_AWARENESS",
+        //   lifetime_budget_micro_after_deduction: "67.5",
+        //   lifetime_budget_micro: 75,
+        //   agency_fee: "7.5",
+        //   status: "LIVE",
+        //   start_time: "2020-06-14T00:00:00",
+        //   end_time: "2020-06-15T23:59:59",
+        //   media:
+        //     "https://optimizekwtestingserver.com/optimize/snap-media/4E6AFCFE-FB11-4838-9942-96062E7BA22A.jpg",
+        //   media_type: "IMAGE",
 
-          completed: "1",
-          campaign_end: "0",
-          call_to_action: "BLANK",
-          source: null,
-          attachment: "BLANK",
-          destination: "link",
-          review_status: "PENDING",
-          review_status_reason: [],
-          impressions: 0,
-          spends: 0,
-          swipes: 0,
-          video_views: 0,
-          reach: 0,
-          paid_frequency: 0,
-          cpm: 0,
-        };
+        //   targeting: {
+        //     flexible_spec: [
+        //       {
+        //         interests: [
+        //           {
+        //             name: "Small business",
+        //             id: "6002884511422",
+        //           },
+        //           {
+        //             name: "Aviation",
+        //             id: "6002963523717",
+        //           },
+        //           {
+        //             name: "Investment banking",
+        //             id: "6003063638807",
+        //           },
+        //           {
+        //             name: "Insurance",
+        //             id: "6003217093576",
+        //           },
+        //           {
+        //             name: "Fashion design",
+        //             id: "6003266266843",
+        //           },
+        //           {
+        //             name: "Web development",
+        //             id: "6003290005325",
+        //           },
+        //           {
+        //             name: "Search engine optimization",
+        //             id: "6003370636074",
+        //           },
+        //           {
+        //             name: "Web hosting",
+        //             id: "6003387418453",
+        //           },
+        //           {
+        //             name: "Health care",
+        //             id: "6003464109203",
+        //           },
+        //           {
+        //             name: "Online advertising",
+        //             id: "6003526234370",
+        //           },
+        //           {
+        //             name: "Economics",
+        //             id: "6003656112304",
+        //           },
+        //           {
+        //             name: "Retail",
+        //             id: "6003778400853",
+        //           },
+        //           {
+        //             name: "Concerts",
+        //             id: "6002970406974",
+        //           },
+        //           {
+        //             name: "Movies",
+        //             id: "6003139266461",
+        //           },
+        //           {
+        //             name: "Bollywood movies",
+        //             id: "6003157824284",
+        //           },
+        //           {
+        //             name: "TV talkshows",
+        //             id: "6003172448161",
+        //           },
+        //         ],
+        //       },
+        //     ],
+        //     user_os: ["ANDROID"],
+        //     geo_locations: {
+        //       countries: ["SA"],
+        //       regions: [
+        //         {
+        //           key: "10",
+        //           name: "Dubai",
+        //           country: "AE",
+        //         },
+        //         {
+        //           key: "13",
+        //           name: "Sharjah Emirate",
+        //           country: "AE",
+        //         },
+        //         {
+        //           key: "9",
+        //           name: "Ajman Emirate",
+        //           country: "AE",
+        //         },
+        //         {
+        //           key: "12",
+        //           name: "Ras Al Khaimah",
+        //           country: "AE",
+        //         },
+        //         {
+        //           key: "11",
+        //           name: "Fujairah",
+        //           country: "AE",
+        //         },
+        //       ],
+        //     },
+        //   },
+        //   lifetime_budget_micro: 75,
+        //   campaign_id: "274",
+
+        //   completed: "1",
+        //   campaign_end: "0",
+        //   call_to_action: "BLANK",
+        //   source: null,
+        //   attachment: "BLANK",
+        //   destination: "link",
+        //   review_status: "PENDING",
+        //   review_status_reason: [],
+        //   impressions: 0,
+        //   spends: 0,
+        //   swipes: 0,
+        //   video_views: 0,
+        //   reach: 0,
+        //   paid_frequency: 0,
+        //   cpm: 0,
+        // };
         if (
           typeof data === "string" &&
           data.toLowerCase() === "connection-failure"
@@ -633,14 +635,14 @@ export const getInstagramCampaignDetails = (id, navigation) => {
         // });
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
-          payload: { loading: false, data: data },
+          payload: { loading: false, data: data.data },
         });
         dispatch({
           type: actionTypes.END_CAMPAIGN,
-          payload: data.campaign_end === "1",
+          payload: data.data.campaign_end === "1",
         });
 
-        return data;
+        return data.data;
       })
       .then((data) => {
         let endDate = new Date(data.end_time);
@@ -666,7 +668,7 @@ export const getInstagramCampaignDetails = (id, navigation) => {
         //     err.response ||
         //     "Something went wrong, please try again.",
         // });
-        // console.log("getCampaignDetails error", err.message || err.response);
+        console.log("getCampaignDetails error", err.message || err);
         showMessage({
           message:
             err.message ||
@@ -691,7 +693,7 @@ export const updateInstagramCampaign = (
 ) => {
   return (dispatch, getState) => {
     InstagramBackendURL()
-      .put(`saveinstatargeting`, { ...info, businessid })
+      .post(`saveinstatargeting`, { ...info, businessid })
       .then((res) => {
         // console.log("back end info", res.data);
 
@@ -714,6 +716,75 @@ export const updateInstagramCampaign = (
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS,
+        });
+      });
+  };
+};
+
+export const getInstagraCampaignStats = (campaign, duration) => {
+  let timeDiff = Math.round(
+    Math.abs(
+      (new Date(duration.start_time).getTime() -
+        new Date(duration.end_time).getTime()) /
+        86400000
+    )
+  );
+
+  let addDays = (date, days) => {
+    let result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(
+      -2
+    )}-${("0" + result.getDate()).slice(-2)}`;
+  };
+
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_STATS_LOADING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`getInstagraCampaignStatsNew`, {
+        //testing
+        // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
+        // start_time: "2019-05-09",
+        // end_time: "2019-05-25",
+
+        // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
+        // //duration.start_time,
+        // start_time: "2019-05-18",
+        // //duration.end_time,
+        // end_time: addDays("2019-05-25", 1),
+
+        //Actual api
+        campaign_id: campaign.snap_campaign_id,
+        start_time: duration.start_time.split("T")[0],
+        end_time: addDays(duration.end_time, 1),
+        hour: 0,
+        //timeDiff + 1 <= 5 ? 1 : 0
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: data },
+        });
+      })
+      .catch((err) => {
+        // console.log("getCampaignStats error", err.message || err.response);
+        dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: {}, err },
+        });
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
         });
       });
   };
