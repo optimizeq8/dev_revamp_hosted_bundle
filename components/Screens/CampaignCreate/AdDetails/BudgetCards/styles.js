@@ -4,7 +4,7 @@ export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 5
+    paddingTop: 15,
   },
   budgetCardsStyle: { alignSelf: "center" },
   budgetCardStyle: {
@@ -16,12 +16,12 @@ export default StyleSheet.create({
     borderWidth: 2.5,
     height: 50,
     marginHorizontal: 5,
-    width: 105
+    width: 105,
   },
   budgetTextStyle: {
     color: globalColors.orange,
     fontFamily: "montserrat-bold",
-    fontSize: 18
+    fontSize: 18,
   },
   budget: {
     alignSelf: "center",
@@ -31,17 +31,17 @@ export default StyleSheet.create({
     textAlign: "center",
     width: "100%",
     paddingBottom: 0,
-    width: "100%"
+    width: "100%",
   },
   recIcon: {
     position: "absolute",
     left: "47%",
     bottom: "70%",
-    backgroundColor: globalColors.green,
+    backgroundColor: globalColors.orange,
     borderRadius: 50,
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
