@@ -432,9 +432,7 @@ class AdDesign extends Component {
                     <RNImage
                       style={styles.businessProfilePic}
                       source={{
-                        // uri: this.state.campaignInfo.instagram_profile_pic
-                        uri:
-                          "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
+                        uri: this.state.campaignInfo.instagram_profile_pic,
                       }}
                     />
                     <View style={styles.bsnNameView}>
@@ -484,10 +482,11 @@ class AdDesign extends Component {
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
-                      {this.props.data.attachment !== "BLANK" ||
-                      (this.props.data.attachment === "BLANK" &&
-                        this.props.data.link &&
-                        this.state.campaignInfo.destination === "link")
+                      {this.props.data &&
+                      (this.props.data.attachment !== "BLANK" ||
+                        (this.props.data.attachment === "BLANK" &&
+                          this.props.data.link &&
+                          this.state.campaignInfo.destination === "link"))
                         ? this.state.campaignInfo.destination === "link"
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===
@@ -499,7 +498,8 @@ class AdDesign extends Component {
                           : translate("Destination")
                         : translate("Destination")}
                     </Text>
-                    {this.props.data.attachment === "BLANK" &&
+                    {this.props.data &&
+                    this.props.data.attachment === "BLANK" &&
                     this.props.data.link &&
                     this.state.campaignInfo.destination === "link" ? (
                       <Text style={styles.websiteLink}>
