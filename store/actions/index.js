@@ -187,4 +187,5 @@ export {
   instagram_ad_audience_size,
   get_total_reach_instagram,
   ad_details_instagram,
+  getInstagramCampaignDetails,
 } from "./instagramCampaignActions";

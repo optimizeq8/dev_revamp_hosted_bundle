@@ -33,10 +33,10 @@ class CampaignCard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   handleCampaignPress = () => {
-    Segment.trackWithProperties("Pressed Campaign Card", {
-      campaign_id: this.props.campaign.campaign_id
-    });
-    this.props.getCampaignDetails(
+    // Segment.trackWithProperties("Pressed Campaign Card", {
+    //   campaign_id: this.props.campaign.campaign_id,
+    // });
+    this.props.getInstagramCampaignDetails(
       this.props.campaign.campaign_id,
       this.props.navigation
     );
@@ -70,7 +70,7 @@ class CampaignCard extends Component {
         style={styles.cardStyle}
       >
         <TouchableOpacity
-          disabled={true}
+          // disabled={true}
           onPress={this.handleCampaignPress}
           style={styles.campaignButton}
         >
@@ -82,7 +82,7 @@ class CampaignCard extends Component {
                   display: "flex",
                   flexDirection: "column",
                   paddingHorizontal: 10,
-                  flex: 1
+                  flex: 1,
                 }}
               >
                 <Text
@@ -92,11 +92,11 @@ class CampaignCard extends Component {
                     styles.titleText,
                     !isStringArabic(this.props.campaign.name)
                       ? {
-                          fontFamily: "montserrat-bold-english"
+                          fontFamily: "montserrat-bold-english",
                         }
                       : {
-                          fontFamily: "changa-bold-arabic"
-                        }
+                          fontFamily: "changa-bold-arabic",
+                        },
                   ]}
                 >
                   {this.props.campaign.name}
@@ -107,8 +107,8 @@ class CampaignCard extends Component {
                       style={[
                         styles.circleIcon,
                         {
-                          color: globalColors.orange
-                        }
+                          color: globalColors.orange,
+                        },
                       ]}
                       name={"circle"}
                       type={"FontAwesome"}
@@ -116,7 +116,7 @@ class CampaignCard extends Component {
                     <Text
                       style={[
                         styles.reviewText,
-                        { color: globalColors.orange }
+                        { color: globalColors.orange },
                       ]}
                     >
                       {translate("Campaign ended")}
@@ -133,8 +133,8 @@ class CampaignCard extends Component {
                             : this.campaign_status === "LIVE" &&
                               !this.review_status.includes("PENDING")
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                       name={
                         this.review_status.includes("REJECTED")
@@ -156,8 +156,8 @@ class CampaignCard extends Component {
                             : !this.review_status.includes("PENDING") &&
                               this.campaign_status === "LIVE"
                             ? globalColors.green
-                            : globalColors.orange
-                        }
+                            : globalColors.orange,
+                        },
                       ]}
                     >
                       {translate(
@@ -194,9 +194,9 @@ class CampaignCard extends Component {
                       {
                         marginLeft: "auto",
                         // left: "75%",
-                        color: globalColors.green
+                        color: globalColors.green,
                         // position: "absolute"
-                      }
+                      },
                     ]}
                   />
                 )}
@@ -244,9 +244,9 @@ class CampaignCard extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getCampaignDetails: (id, naviagtion) =>
-    dispatch(actionCreators.getCampaignDetails(id, naviagtion))
+const mapDispatchToProps = (dispatch) => ({
+  getInstagramCampaignDetails: (id, naviagtion) =>
+    dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
 });
 export default connect(null, mapDispatchToProps)(CampaignCard);
 CampaignCard.whyDidYouRender = false;
