@@ -111,7 +111,7 @@ class Dashboard extends Component {
     ) {
       // to set for instagram accounts
       if (this.props.mainBusiness.instagram_access === "1") {
-        let adButtons = [...this.state.adButtons, ...instagramAds];
+        let adButtons = [...snapAds, ...googleAds, ...instagramAds];
         this.setState({
           adButtons,
         });
@@ -162,7 +162,12 @@ class Dashboard extends Component {
     ) {
       // to set for instagram accounts
       if (this.props.mainBusiness.instagram_access === "1") {
-        let adButtons = [...this.state.adButtons, ...instagramAds];
+        let adButtons = [...snapAds, ...googleAds, ...instagramAds];
+        this.setState({
+          adButtons,
+        });
+      } else if (this.props.mainBusiness.instagram_access === "0") {
+        let adButtons = [...snapAds, ...googleAds];
         this.setState({
           adButtons,
         });
