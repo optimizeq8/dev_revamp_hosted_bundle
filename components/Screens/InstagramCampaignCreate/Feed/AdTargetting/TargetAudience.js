@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   MaskedViewIOS,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -30,7 +30,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import segmentEventTrack from "../../../../segmentEventTrack";
 export class TargetAudience extends Component {
   state = { scrollY: 1, advance: true };
-  handleFading = event => {
+  handleFading = (event) => {
     let y = event.nativeEvent.contentOffset.y;
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
   };
@@ -55,7 +55,7 @@ export class TargetAudience extends Component {
       OSType,
       mainState,
       editCampaign,
-      startEditing
+      startEditing,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -73,12 +73,12 @@ export class TargetAudience extends Component {
           <ScrollView
             scrollEventThrottle={100}
             onScroll={this.handleFading}
-            ref={ref => (this.scrollView = ref)}
+            ref={(ref) => (this.scrollView = ref)}
             indicatorStyle="white"
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? "100%" : "50%" }
+              { height: editCampaign ? "100%" : "50%" },
             ]}
           >
             <TouchableOpacity
@@ -86,7 +86,7 @@ export class TargetAudience extends Component {
               onPress={() => this.callFunction("selectors", "countries")}
               style={styles.targetTouchable}
             >
-              <View style={globalStyles.row}>
+              <View style={[globalStyles.row, { width: "80%" }]}>
                 <LocationIcon width={30} height={30} style={styles.icon} />
 
                 <View style={globalStyles.column}>
@@ -114,23 +114,30 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
-                    {translate(
-                      gender.find(r => {
-                        if (r.value === targeting.genders[0]) return r;
-                      }).label
-                    )}
+                    {
+                      translate(
+                        targeting.genders[0] === ""
+                          ? "All"
+                          : targeting.genders[0]
+                      )
+                      // translate(
+                      //   gender.find((r) => {
+                      //     if (r.value === targeting.genders[0]) return r;
+                      //   }).label
+                      // )
+                    }
                   </Text>
                 </View>
               </View>
-              <View style={globalStyles.column}>
-                {targeting.genders[0] === "" ||
-                  (startEditing &&
-                    (targeting.genders ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PlusCircleIcon width={30} height={30} />
-                    )))}
-              </View>
+              {startEditing && (
+                <View style={globalStyles.column}>
+                  {targeting.genders[0] === "" || targeting.genders ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  )}
+                </View>
+              )}
             </TouchableOpacity>
             {/* 
             Later will be used
@@ -246,7 +253,7 @@ export class TargetAudience extends Component {
                 onPress={() => this.callFunction("selectors", "interests")}
                 style={styles.targetTouchable}
               >
-                <View style={[globalStyles.row, styles.flex]}>
+                <View style={[globalStyles.row, { width: "80%" }]}>
                   <InterestsIcon width={30} height={30} style={styles.icon} />
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text style={styles.menutext}>
@@ -260,14 +267,14 @@ export class TargetAudience extends Component {
                     </Text>
                   </View>
                 </View>
-                <View style={globalStyles.column}>
-                  {startEditing &&
-                    (targeting.flexible_spec[0].interests.length !== 0 ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PlusCircleIcon width={30} height={30} />
-                    ))}
-                </View>
+
+                {startEditing &&
+                  (targeting.flexible_spec[0].interests &&
+                  targeting.flexible_spec[0].interests.length !== 0 ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  ))}
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -288,21 +295,23 @@ export class TargetAudience extends Component {
                   </Text>
                   <Text style={styles.menudetails}>
                     {translate(
-                      OSType.find(r => {
+                      targeting.user_os[0] === "" ? "All" : targeting.user_os[0]
+                    )}
+                    {/* {translate(
+                      OSType.find((r) => {
                         if (r.value === targeting.user_os[0]) return r;
                       }).label
-                    )}
+                    )} */}
                   </Text>
                 </View>
               </View>
 
-              {targeting.user_os[0] === "" ||
-                (startEditing &&
-                  (targeting.user_os[0] ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
-                  ) : (
-                    <PlusCircleIcon width={30} height={30} />
-                  )))}
+              {startEditing &&
+                (targeting.user_os[0] === "" || targeting.user_os[0] ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
             </TouchableOpacity>
 
             {(startEditing && editCampaign && targeting.os_version_min) ||
@@ -322,7 +331,7 @@ export class TargetAudience extends Component {
                       height={25}
                       style={{
                         color: globalColors.orange,
-                        right: 2
+                        right: 2,
                       }}
                     />
                     <View style={[globalStyles.column, styles.flex]}>
@@ -407,7 +416,7 @@ export class TargetAudience extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 

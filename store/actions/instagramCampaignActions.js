@@ -466,6 +466,14 @@ export const getInstagramCampaignDetails = (id, navigation) => {
       })
       .then((data) => {
         data = {
+          instagram_profile_pic:
+            "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
+          message:
+            "This is the caption part of the ad\nDon't forget to finsish this",
+          link: "https://optimizeapp.com",
+          call_to_action: "DOWNLOAD NOW",
+          instagram_business_name: "OptimizeApp",
+          media_option: "single",
           campaign_id: "6493",
           name: "WEEE",
           brand_name: "SamyOptimize",
@@ -484,149 +492,119 @@ export const getInstagramCampaignDetails = (id, navigation) => {
           media:
             "https://optimizekwtestingserver.com/optimize/snap-media/4E6AFCFE-FB11-4838-9942-96062E7BA22A.jpg",
           media_type: "IMAGE",
+
           targeting: {
-            demographics: [
+            flexible_spec: [
               {
-                gender: "FEMALE",
-                languages: ["ar", "en"],
-                min_age: 13,
-                max_age: 45,
-              },
-            ],
-            interests: [
-              {
-                category_id: [
-                  "SLC_1",
-                  "SLC_10",
-                  "SLC_100",
-                  "SLC_101",
-                  "SLC_102",
-                  "SLC_103",
-                  "SLC_104",
-                  "SLC_105",
-                  "SLC_109",
-                  "SLC_11",
-                  "SLC_121",
-                  "SLC_122",
-                  "SLC_123",
-                  "SLC_126",
-                  "SLC_124",
-                  "SLC_13",
-                  "SLC_14",
-                  "SLC_15",
-                  "SLC_150",
-                  "SLC_162",
-                  "SLC_17",
-                  "SLC_176",
-                  "SLC_180",
-                  "SLC_181",
-                  "SLC_183",
-                  "SLC_184",
-                  "SLC_19",
-                  "SLC_2",
-                  "SLC_20",
-                  "SLC_21",
-                  "SLC_22",
-                  "SLC_23",
-                  "SLC_24",
-                  "SLC_29",
-                  "SLC_3",
-                  "SLC_30",
-                  "SLC_31",
-                  "SLC_34",
-                  "SLC_35",
-                  "SLC_37",
-                  "SLC_38",
-                  "SLC_39",
-                  "SLC_4",
-                  "SLC_40",
-                  "SLC_42",
-                  "SLC_46",
-                  "SLC_44",
-                  "SLC_48",
-                  "SLC_5",
-                  "SLC_51",
-                  "SLC_53",
-                  "SLC_54",
-                  "SLC_55",
-                  "SLC_56",
-                  "SLC_57",
-                  "SLC_58",
-                  "SLC_6",
-                  "SLC_60",
-                  "SLC_59",
-                  "SLC_63",
-                  "SLC_64",
-                  "SLC_65",
-                  "SLC_68",
-                  "SLC_69",
-                  "SLC_7",
-                  "SLC_71",
-                  "SLC_73",
-                  "SLC_76",
-                  "SLC_77",
-                  "SLC_78",
-                  "SLC_79",
-                  "SLC_8",
-                  "SLC_80",
-                  "SLC_83",
-                  "SLC_87",
-                  "SLC_88",
-                  "SLC_9",
-                  "SLC_90",
-                  "SLC_91",
-                  "SLC_96",
+                interests: [
+                  {
+                    name: "Small business",
+                    id: "6002884511422",
+                  },
+                  {
+                    name: "Aviation",
+                    id: "6002963523717",
+                  },
+                  {
+                    name: "Investment banking",
+                    id: "6003063638807",
+                  },
+                  {
+                    name: "Insurance",
+                    id: "6003217093576",
+                  },
+                  {
+                    name: "Fashion design",
+                    id: "6003266266843",
+                  },
+                  {
+                    name: "Web development",
+                    id: "6003290005325",
+                  },
+                  {
+                    name: "Search engine optimization",
+                    id: "6003370636074",
+                  },
+                  {
+                    name: "Web hosting",
+                    id: "6003387418453",
+                  },
+                  {
+                    name: "Health care",
+                    id: "6003464109203",
+                  },
+                  {
+                    name: "Online advertising",
+                    id: "6003526234370",
+                  },
+                  {
+                    name: "Economics",
+                    id: "6003656112304",
+                  },
+                  {
+                    name: "Retail",
+                    id: "6003778400853",
+                  },
+                  {
+                    name: "Concerts",
+                    id: "6002970406974",
+                  },
+                  {
+                    name: "Movies",
+                    id: "6003139266461",
+                  },
+                  {
+                    name: "Bollywood movies",
+                    id: "6003157824284",
+                  },
+                  {
+                    name: "TV talkshows",
+                    id: "6003172448161",
+                  },
                 ],
               },
             ],
-            devices: [
-              {
-                marketing_name: [
-                  "Apple/iPhone 11 Pro Max/",
-                  "Apple/iPhone 11 Pro/",
-                  "Apple/iPhone 11/",
-                  "Apple/iPhone 4s/",
-                  "Apple/iPhone 5/",
-                  "Apple/iPhone 5c/",
-                  "Apple/iPhone 5s/",
-                  "Apple/iPhone 6 Plus/",
-                  "Apple/iPhone 6/",
-                  "Apple/iPhone 6s Plus/",
-                  "Apple/iPhone 6s/",
-                  "Apple/iPhone 7 Plus/",
-                  "Apple/iPhone 7/",
-                  "Apple/iPhone 8 Plus/",
-                  "Apple/iPhone SE/",
-                  "Apple/iPhone 8/",
-                  "Apple/iPhone X/",
-                  "Apple/iPhone XR/",
-                  "Apple/iPhone XS Max/",
-                  "Apple/iPhone XS/",
-                ],
-                os_type: "iOS",
-              },
-            ],
-            geos: [
-              {
-                country_code: "ae",
-                region_id: [
-                  "25151",
-                  "25152",
-                  "25153",
-                  "25154",
-                  "25156",
-                  "25157",
-                ],
-              },
-            ],
-            enable_targeting_expansion: "true",
+            user_os: ["ANDROID"],
+            geo_locations: {
+              countries: ["SA"],
+              regions: [
+                {
+                  key: "10",
+                  name: "Dubai",
+                  country: "AE",
+                },
+                {
+                  key: "13",
+                  name: "Sharjah Emirate",
+                  country: "AE",
+                },
+                {
+                  key: "9",
+                  name: "Ajman Emirate",
+                  country: "AE",
+                },
+                {
+                  key: "12",
+                  name: "Ras Al Khaimah",
+                  country: "AE",
+                },
+                {
+                  key: "11",
+                  name: "Fujairah",
+                  country: "AE",
+                },
+              ],
+            },
           },
+          lifetime_budget_micro: 75,
+          campaign_id: "274",
+
           completed: "1",
           campaign_end: "0",
           call_to_action: "BLANK",
           source: null,
           attachment: "BLANK",
-          destination: "SNAP_AD",
+          destination: "link",
           review_status: "PENDING",
           review_status_reason: [],
           impressions: 0,
@@ -700,6 +678,42 @@ export const getInstagramCampaignDetails = (id, navigation) => {
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
           payload: { loading: false },
+        });
+      });
+  };
+};
+
+export const updateInstagramCampaign = (
+  info,
+  businessid,
+  navigation,
+  segmentInfo
+) => {
+  return (dispatch, getState) => {
+    InstagramBackendURL()
+      .put(`saveinstatargeting`, { ...info, businessid })
+      .then((res) => {
+        // console.log("back end info", res.data);
+
+        return res.data;
+      })
+      .then((data) => {
+        analytics.track(`a_submit_update_campaign_details`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          ...segmentInfo,
+          action_status: data.success ? "success" : "failure",
+        });
+        navigation.navigate("Dashboard", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
+      })
+      .catch((err) => {
+        // console.log("updateCampaign", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS,
         });
       });
   };
