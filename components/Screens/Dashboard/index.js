@@ -33,6 +33,7 @@ import * as Animatable from "react-native-animatable";
 import AdButtons from "./AdButtons";
 import { showMessage } from "react-native-flash-message";
 
+import InstagramCampaignCard from "../../MiniComponents/InstagramCampaignCard";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
@@ -359,6 +360,16 @@ class Dashboard extends Component {
     if (item.channel === "google") {
       return (
         <GoogleCampaignCard
+          channel={"google"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+    } else if (item.channel === "instagram") {
+      return (
+        <InstagramCampaignCard
           channel={"google"}
           campaign={item}
           navigation={this.props.navigation}
