@@ -13,10 +13,11 @@ import {
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-
+import isNull from "lodash/isNull";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import { showMessage } from "react-native-flash-message";
 
 //Style
 import styles from "./styles";
@@ -69,6 +70,8 @@ class AdType extends Component {
   };
 
   navigationHandler = (adType) => {
+    const { translate } = this.props.screenProps;
+
     const device_id = this.props.screenProps.device_id;
     analytics.track(`a_campaign_ad_type`, {
       source: "ad_type",
@@ -78,7 +81,7 @@ class AdType extends Component {
       device_id,
     });
     //Check if account is verified or not
-    const { fb_connected } = this.props.mainBusiness;
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     if (
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
@@ -141,6 +144,18 @@ class AdType extends Component {
           title: "Instagram",
           source: "ad_type",
           source_action: "a_campaign_ad_type",
+        });
+      } else if (
+        adType.mediaType === "instagram" &&
+        fb_connected === "1" &&
+        isNull(fb_ad_account_id)
+      ) {
+        showMessage({
+          message: translate(
+            `Your Instagram Account request is in process by OptimizeApp`
+          ),
+          type: "warning",
+          position: "top",
         });
       } else
         this.props.navigation.navigate(adType.rout, {
@@ -261,7 +276,8 @@ class AdType extends Component {
       ad_type_array,
     } = this.getValuebasedOnActiveSlide();
 
-    const { fb_connected } = this.props.mainBusiness;
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -408,6 +424,15 @@ class AdType extends Component {
               text={translate("Login with Facebook")}
             />
           )}
+          {this.state.active === "Instagram" &&
+            fb_connected === "1" &&
+            isNull(fb_ad_account_id) && (
+              <Text style={styles.fbUnderProcessText}>
+                {translate(
+                  `Your Instagram Account request is in process by OptimizeApp`
+                )}
+              </Text>
+            )}
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
               activeSlide: I18nManager.isRTL ? " " : this.state.active,
