@@ -148,7 +148,7 @@ class AdType extends Component {
       } else if (
         adType.mediaType === "instagram" &&
         fb_connected === "1" &&
-        isNull(fb_ad_account_id)
+        (isNull(fb_ad_account_id) || fb_ad_account_id === "")
       ) {
         showMessage({
           message: translate(
@@ -426,7 +426,7 @@ class AdType extends Component {
           )}
           {this.state.active === "Instagram" &&
             fb_connected === "1" &&
-            isNull(fb_ad_account_id) && (
+            (isNull(fb_ad_account_id) || fb_ad_account_id === "") && (
               <Text style={styles.fbUnderProcessText}>
                 {translate(
                   `Your Instagram Account request is in process by OptimizeApp`
