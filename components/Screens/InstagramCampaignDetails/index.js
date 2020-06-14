@@ -173,8 +173,8 @@ class InstagramCampaignDetails extends Component {
         (targeting.hasOwnProperty("devices") &&
           (targeting.devices[0].hasOwnProperty("os_type") ||
             targeting.devices[0].hasOwnProperty("os_version_max"))) ||
-        (targeting.geos[0].hasOwnProperty("region_id") &&
-          targeting.geos[0].region_id.length > 0))
+        (targeting.geo_locations.hasOwnProperty("region_id") &&
+          targeting.geo_locations.region_id.length > 0))
     );
   };
 
@@ -308,6 +308,7 @@ class InstagramCampaignDetails extends Component {
     } else {
       let selectedCampaign = null;
       let targeting = null;
+      let flexible_spec = null;
       let audienceOverViewData = [];
       let deviceMakes = [];
       let countryName = "";
@@ -343,7 +344,7 @@ class InstagramCampaignDetails extends Component {
         targeting = selectedCampaign.targeting
           ? selectedCampaign.targeting
           : {};
-
+        flexible_spec = targeting.flexible_spec[0];
         deviceMakes =
           targeting &&
           targeting.hasOwnProperty("devices") &&
@@ -352,98 +353,32 @@ class InstagramCampaignDetails extends Component {
             : [];
 
         region_names =
-          targeting.geos[0].hasOwnProperty("region_id") &&
-          targeting.geos[0].region_id
-            .map((id) =>
-              translate(
-                regionsCountries
-                  .find(
-                    (country) =>
-                      country.country_code === targeting.geos[0].country_code
-                  )
-                  .regions.find((reg) => reg.id === id).name
-              )
-            )
+          targeting.geo_locations.hasOwnProperty("regions") &&
+          targeting.geo_locations.regions
+            .map((reg) => translate(reg.name))
             .join(", ");
 
         // gender
         const gender =
           targeting &&
-          (targeting.demographics[0].gender === "" ||
-            !targeting.demographics[0].hasOwnProperty("gender"))
+          (!targeting.hasOwnProperty("genders") || targeting.genders[0] === "")
             ? translate("All")
-            : targeting &&
-              translate(startCase(toLower(targeting.demographics[0].gender)));
+            : targeting && translate(startCase(toLower(targeting.genders[0])));
         audienceOverViewData.push({
           heading: "Gender",
           icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
           content: gender,
         });
-        const ageMin = targeting && targeting.demographics[0].min_age;
-        const ageMax = targeting && targeting.demographics[0].max_age;
-        // age range
-        audienceOverViewData.push({
-          heading: "Age range",
-          icon: (
-            <Icon
-              style={styles.icon}
-              type="MaterialCommunityIcons"
-              name="human-male-girl"
-            />
-          ),
-          content: ageMin + " - " + ageMax,
-        });
         interesetNames =
-          targeting && targeting.hasOwnProperty("interests")
-            ? targeting.interests[0].category_id.map((interest) => {
-                if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
-                  return ` ${
-                    interestNames.interests.scls.find(
-                      (interestObj) => interestObj.id === interest
-                    ).name
-                  }`;
-                } else {
-                  return (
-                    interest !== "scls" &&
-                    interestNames.interests.scls.find(
-                      (interestObj) => interestObj.id === interest
-                    ) &&
-                    `${
-                      interestNames.interests.scls.find(
-                        (interestObj) => interestObj.id === interest
-                      ).name
-                    }`
-                  );
-                }
-              })
+          flexible_spec && flexible_spec.hasOwnProperty("interests")
+            ? flexible_spec.interests.map((interest) => interest.name)
             : [];
 
-        langaugeNames =
-          !this.props.languagesListLoading &&
-          this.props.languages.length > 0 &&
-          targeting &&
-          targeting.demographics[0] &&
-          targeting.demographics[0].languages.map((languageId) => {
-            return translate(
-              this.props.languages.find((lang) => lang.id === languageId).name
-            );
-          });
-        audienceOverViewData.push({
-          heading: "Language",
-          icon: <Icon style={styles.icon} type="FontAwesome" name="language" />,
-          content:
-            langaugeNames && langaugeNames.length > 0
-              ? langaugeNames.join(", ")
-              : "",
+        countryName = targeting.geo_locations.countries.map((country) => {
+          return countries.find(
+            (count) => country.toLowerCase() === count.value
+          ).label;
         });
-        countryName =
-          targeting &&
-          targeting.geos[0].country_code &&
-          translate(
-            countries.find(
-              (country) => country.value === targeting.geos[0].country_code
-            ).label
-          );
         audienceOverViewData.push({
           heading: "Location",
           icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
@@ -499,7 +434,7 @@ class InstagramCampaignDetails extends Component {
               closeButton={false}
               translateTitle={false}
               title={loading ? "" : selectedCampaign.name}
-              icon={"snapchat"}
+              icon={"instagram"}
               actionButton={this.state.expand && this.handleChartToggle}
               navigation={
                 !this.state.expand ? this.props.navigation : undefined
@@ -665,7 +600,7 @@ class InstagramCampaignDetails extends Component {
                       editCampaign={true}
                       // targeting={targeting}
                       loading={loading}
-                      navigatingRoutePath={"AdDetails"}
+                      navigatingRoutePath={"InstagramFeedAdTargetting"}
                       selectedCampaign={selectedCampaign}
                     />
                   </View>
