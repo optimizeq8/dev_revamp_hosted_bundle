@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Platform } from "react-native";
 
 //icons
-import CameraIcon from "../../../../assets/SVGs/Camera";
+import CameraIcon from "../../../../assets/SVGs/CameraOption";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import UploadIcon from "../../../../assets/SVGs/UploadDevice";
 import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
@@ -32,7 +32,7 @@ export default class MediaOptions extends Component {
     } else {
       segmentEventTrack(` Image edit option selected`);
       this.props._pickImage(
-     "All",
+        "All",
         {
           mediaUri: this.props.mediaUri,
           serialization: this.props.serialization,
