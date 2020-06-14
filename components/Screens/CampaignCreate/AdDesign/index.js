@@ -861,15 +861,11 @@ class AdDesign extends Component {
           message: "Please crop the image to the right dimensions",
           type: "warning",
         });
-        console.log(
-          this.rejected,
-          this.props.data && !this.props.data.hasOwnProperty("formatted"),
-          isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
-        );
       } else if (
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
-        isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
+          JSON.stringify(this.props.data.formatted) !==
+          JSON.stringify(this.state.formatted)
       ) {
         const segmentInfo = {
           campaign_channel: "snapchat",
