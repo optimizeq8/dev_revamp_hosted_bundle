@@ -9,7 +9,6 @@ import { errorMessageHandler } from "./ErrorActions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import segmentEventTrack from "../../components/segmentEventTrack";
-import analytics from "@segment/analytics-react-native";
 
 InstagramBackendURL = () =>
   axios.create({
