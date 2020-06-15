@@ -188,4 +188,6 @@ export {
   get_total_reach_instagram,
   ad_details_instagram,
   getInstagramCampaignDetails,
+  updateInstagramCampaign,
+  getInstagraCampaignStats,
 } from "./instagramCampaignActions";

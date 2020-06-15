@@ -11,14 +11,14 @@ export default class CustomLabel extends Component {
           {...this.props}
           y={this.props.y - 5}
           text={`${this.props.chartChoice === "Spend" ? "$" : ""}${formatNumber(
-            this.props.datum.y.toFixed(
+            parseFloat(this.props.datum.y).toFixed(
               Number.isInteger(this.props.datum.y) ? 0 : 2
             ),
             true
           )}`}
           style={{
             fill: "#FF9D00",
-            fontSize: 20
+            fontSize: 20,
           }}
           orientation="top"
           pointerLength={15}
@@ -30,7 +30,7 @@ export default class CustomLabel extends Component {
           flyoutStyle={{
             fill: "#fff",
             stroke: "#fff",
-            marginBottom: 10
+            marginBottom: 10,
           }}
         />
         <VictoryTooltip

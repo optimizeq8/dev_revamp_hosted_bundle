@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import SingleMetric from "./SingleMetric";
 
 class CampaignStats extends PureComponent {
-  renderMetrics = item => {
+  renderMetrics = (item) => {
     const { translate } = this.props.screenProps;
 
     return (
@@ -37,71 +37,73 @@ class CampaignStats extends PureComponent {
   };
 
   render() {
-    let { selectedCampaign, campaignMetrics } = this.props;
+    let { instaCampaignMetrics } = this.props;
 
     let metrics = [];
     let objectiveMetric = [];
+    objectiveMetric = instaCampaignMetrics;
     // filters out the unrelated metrics based on each objective
-    switch (selectedCampaign.objective) {
-      case "BRAND_AWARENESS":
-        objectiveMetric = campaignMetrics.filter(
-          metric =>
-            ![
-              "video views",
-              "swipes",
-              "eCPSU",
-              "eCPV",
-              "swipeup rate",
-              "impressions",
-              "spend"
-            ].includes(metric.metric)
-        );
-        break;
+    // switch (selectedCampaign.objective) {
+    //   case "BRAND_AWARENESS":
+    //     objectiveMetric = instaCampaignMetrics.filter(
+    //       (metric) =>
+    //         ![
+    //           "video views",
+    //           "swipes",
+    //           "eCPSU",
+    //           "eCPV",
+    //           "swipeup rate",
+    //           "impressions",
+    //           "spend",
+    //         ].includes(metric.metric)
+    //     );
+    //     break;
 
-      case "TRAFFIC":
-        objectiveMetric = campaignMetrics.filter(
-          metric =>
-            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
-        );
-        break;
-      case "WEB_CONVERSION":
-        objectiveMetric = campaignMetrics.filter(
-          metric =>
-            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
-        );
-        break;
-      case "APP_INSTALLS":
-        objectiveMetric = campaignMetrics.filter(
-          metric =>
-            !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
-        );
-        break;
-      case "VIDEO_VIEWS":
-        objectiveMetric = campaignMetrics.filter(
-          metric => !["eCPSU", "spend", "swipes"].includes(metric.metric)
-        );
-        break;
-      default:
-        break;
-    }
+    // case "TRAFFIC":
+    //   objectiveMetric = instaCampaignMetrics.filter(
+    //     (metric) =>
+    //       !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
+    //   );
+    //   break;
+    // case "WEB_CONVERSION":
+    //   objectiveMetric = instaCampaignMetrics.filter(
+    //     (metric) =>
+    //       !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
+    //   );
+    //   break;
+    // case "APP_INSTALLS":
+    //   objectiveMetric = instaCampaignMetrics.filter(
+    //     (metric) =>
+    //       !["video views", "eCPV", "spend", "swipes"].includes(metric.metric)
+    //   );
+    //   break;
+    // case "VIDEO_VIEWS":
+    // objectiveMetric = instaCampaignMetrics.filter(
+    //   (metric) => !["eCPSU", "spend", "swipes"].includes(metric.metric)
+    // );
+    // break;
+    //   default:
+    //     break;
+    // }
     while (objectiveMetric.length > 0)
       metrics.push(objectiveMetric.splice(0, 3));
+    console.log("instaCampaignMetrics", instaCampaignMetrics);
 
     return (
       <View
         style={{
           flexDirection: "row",
-          marginVertical: 5
+          marginVertical: 5,
         }}
       >
-        {metrics.map(metric => this.renderMetrics(metric))}
+        {metrics.map((metric) => this.renderMetrics(metric))}
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
-  campaignMetrics: state.dashboard.campaignMetrics
+  instaCampaignMetrics: state.dashboard.instaCampaignMetrics,
 });
 export default connect(mapStateToProps, null)(CampaignStats);

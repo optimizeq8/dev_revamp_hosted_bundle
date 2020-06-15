@@ -19,6 +19,8 @@ import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
 import GenderIcon from "../../../assets/SVGs/Gender";
+import InterestsIcon from "../../../assets/SVGs/Interests";
+import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
 
 // Style
 import styles from "./styles";
@@ -92,7 +94,8 @@ class InstagramCampaignDetails extends Component {
     return (
       this.props.selectedCampaign.campaign_id !==
         nextProps.selectedCampaign.campaign_id ||
-      this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
+      this.props.selectedCampaign.spends !==
+        nextProps.selectedCampaign.spends ||
       this.props.loading !== nextProps.loading ||
       this.props.languagesListLoading !== nextProps.languagesListLoading ||
       JSON.stringify(this.state) !== JSON.stringify(nextState) ||
@@ -180,7 +183,7 @@ class InstagramCampaignDetails extends Component {
 
   durationChange = (start_time, end_time) => {
     this.setState({ start_time, end_time });
-    this.props.getCampaignStats(this.props.selectedCampaign, {
+    this.props.getInstagraCampaignStats(this.props.selectedCampaign, {
       start_time,
       end_time,
     });
@@ -348,10 +351,8 @@ class InstagramCampaignDetails extends Component {
           targeting.hasOwnProperty("flexible_spec") &&
           targeting.flexible_spec[0];
         deviceMakes =
-          targeting &&
-          targeting.hasOwnProperty("devices") &&
-          targeting.devices[0].hasOwnProperty("marketing_name")
-            ? targeting.devices[0].marketing_name.join(", \n")
+          targeting && targeting.hasOwnProperty("user_device")
+            ? targeting.user_device.join(", ")
             : [];
 
         region_names =
@@ -375,7 +376,6 @@ class InstagramCampaignDetails extends Component {
           flexible_spec && flexible_spec.hasOwnProperty("interests")
             ? flexible_spec.interests.map((interest) => interest.name)
             : [];
-
         countryName = targeting.geo_locations.countries.map((country) => {
           return countries.find(
             (count) => country.toLowerCase() === count.value
@@ -384,7 +384,17 @@ class InstagramCampaignDetails extends Component {
         audienceOverViewData.push({
           heading: "Location",
           icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
-          content: countryName + ": " + (region_names ? region_names : ""),
+          content: countryName + ", " + (region_names ? region_names : ""),
+        });
+        audienceOverViewData.push({
+          heading: "Interests",
+          icon: <InterestsIcon fill={"#FF790A"} width={31} height={31} />,
+          content: interesetNames,
+        });
+        audienceOverViewData.push({
+          heading: "Devices",
+          icon: <DeviceMakeIcon fill={"#FF790A"} width={31} height={31} />,
+          content: deviceMakes,
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
           end_time = new Date(selectedCampaign.end_time.split("T")[0]);
@@ -566,7 +576,7 @@ class InstagramCampaignDetails extends Component {
                         />
                       )}
                       <CampaignCircleChart
-                        channel={"snapchat"}
+                        channel={"instagram"}
                         campaign={selectedCampaign}
                         detail={true}
                         screenProps={this.props.screenProps}
@@ -706,7 +716,7 @@ class InstagramCampaignDetails extends Component {
                   dateField={this.dateField}
                   selectedCampaign={selectedCampaign}
                   hideCharts={this.hideCharts}
-                  getCampaignStats={this.props.getCampaignStats}
+                  getInstagraCampaignStats={this.props.getInstagraCampaignStats}
                   chartAnimation={this.state.chartAnimation}
                 />
               )}
@@ -740,8 +750,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.updateStatus(info, handleToggle)),
   endCampaign: (info, handleToggle) =>
     dispatch(actionCreators.endCampaign(info, handleToggle)),
-  getCampaignStats: (info, range) =>
-    dispatch(actionCreators.getCampaignStats(info, range)),
+  getInstagraCampaignStats: (info, range) =>
+    dispatch(actionCreators.getInstagraCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
     dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),

@@ -9,13 +9,13 @@ import {
   VictoryVoronoiContainer,
   VictoryAxis,
   VictoryArea,
-  VictoryScatter
+  VictoryScatter,
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
@@ -23,10 +23,10 @@ class LineGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      valuesGreaterThanThousand: false // Keep track of all values on xAxis  > 999
+      valuesGreaterThanThousand: false, // Keep track of all values on xAxis  > 999
     };
   }
-  kFormatter = num => {
+  kFormatter = (num) => {
     // OR condition added so that it shows up values properly
     return Math.abs(num) > 999 || this.state.valuesGreaterThanThousand
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
@@ -42,7 +42,7 @@ class LineGraph extends Component {
       this.state.valuesGreaterThanThousand
     ) {
       this.setState({
-        valuesGreaterThanThousand: false
+        valuesGreaterThanThousand: false,
       });
     }
   }
@@ -52,53 +52,44 @@ class LineGraph extends Component {
     let category = [];
     let tickValues = 0;
     let independentTickValues = [];
-    if (this.props.campaignStats.length > 0) {
+    if (this.props.campaignStats && this.props.campaignStats.length > 0) {
       data = this.props.campaignStats.map((stat, i) => {
-        let date = new Date(stat.end_time.split("-07:00")[0]);
-        let startDate = new Date(stat.start_time.split("-07:00")[0]);
+        let date = new Date(stat.date_stop);
 
-        let day = new Date(stat.end_time.split("T")[0]).getDate();
+        let day = new Date(stat.date_stop).getDate();
         let month = date.getMonth();
-        let hour = `${startDate.getHours()}:00 / ${date.getHours()}:00
-${day}/${shortMonths[month]}`;
-        if (this.props.granularity !== "DAY") category.push(hour);
 
         //For swipeups/ Impression check the swipe/impression  values so that it can be formatted proper as 0.5K,1K... when majority values greater than 999
         if (
-          ((this.props.chartChoice === "Swipe Ups" &&
-            stat.stats.swipes !== 0 &&
-            stat.stats.swipes > 999) ||
+          ((this.props.chartChoice === "Clicks" &&
+            stat.swipes !== 0 &&
+            stat.swipes > 999) ||
             (this.props.chartChoice === "Impressions" &&
-              stat.stats.impressions !== 0 &&
-              stat.stats.impressions > 999)) &&
+              stat.impressions !== 0 &&
+              stat.impressions > 999)) &&
           !this.state.valuesGreaterThanThousand
         ) {
           this.setState({
-            valuesGreaterThanThousand: true
+            valuesGreaterThanThousand: true,
           });
         }
 
         tickValues =
           this.props.chartChoice === "Spend"
-            ? stat.stats.spend / 1000000
+            ? stat.spend
             : this.props.chartChoice === "Impressions"
-            ? stat.stats.impressions
-            : this.props.chartChoice === "Swipe Ups"
-            ? stat.stats.swipes
+            ? stat.impressions
+            : this.props.chartChoice === "Clicks"
+            ? stat.clicks
             : this.props.chartChoice === "CPM"
-            ? (parseFloat(stat.stats.spend / 1000000) /
-                parseFloat(
-                  stat.stats.impressions !== 0 ? stat.stats.impressions : 1
-                )) *
+            ? (parseFloat(stat.spend) /
+                parseFloat(stat.impressions !== 0 ? stat.impressions : 1)) *
               1000
             : 0;
         independentTickValues.push(tickValues);
         return {
-          x:
-            this.props.granularity !== "DAY"
-              ? i
-              : `${day}/${shortMonths[month]}`,
-          y: tickValues
+          x: `${day}/${shortMonths[month]}`,
+          y: parseFloat(tickValues),
         };
       });
     }
@@ -107,15 +98,17 @@ ${day}/${shortMonths[month]}`;
       <View
         style={{
           paddingLeft: I18nManager.isRTL ? wp(12) : wp(5),
-          paddingRight: I18nManager.isRTL ? wp(15) : wp(5)
+          paddingRight: I18nManager.isRTL ? wp(15) : wp(5),
         }}
       >
         <ScrollView
-          scrollEnabled={this.props.campaignStats.length > 1}
+          scrollEnabled={
+            this.props.campaignStats && this.props.campaignStats.length > 1
+          }
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {this.props.campaignStats.length < 1 ? (
+          {this.props.campaignStats && this.props.campaignStats.length < 1 ? (
             <BlurView
               intensity={70}
               tint="dark"
@@ -132,8 +125,11 @@ ${day}/${shortMonths[month]}`;
                 styles.ScrollChartArea,
                 {
                   width:
-                    this.props.campaignStats.length <= 4 ? wp(100) : wp(150)
-                }
+                    this.props.campaignStats &&
+                    this.props.campaignStats.length <= 4
+                      ? wp(100)
+                      : wp(150),
+                },
               ]}
             />
           )}
@@ -141,7 +137,7 @@ ${day}/${shortMonths[month]}`;
             domainPadding={{ y: 17 }}
             height={heightPercentageToDP(38)}
             domain={
-              this.props.campaignStats.length === 1
+              this.props.campaignStats && this.props.campaignStats.length === 1
                 ? { y: [0, Math.max(...independentTickValues) * 1.05] }
                 : {}
             }
@@ -162,11 +158,19 @@ ${day}/${shortMonths[month]}`;
             }
             padding={{
               top: 60,
-              bottom: this.props.campaignStats.length === 1 ? 50 : 30,
+              bottom:
+                this.props.campaignStats &&
+                this.props.campaignStats.length === 1
+                  ? 50
+                  : 30,
               left: 60,
-              right: 50
+              right: 50,
             }}
-            width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
+            width={
+              this.props.campaignStats && this.props.campaignStats.length <= 4
+                ? wp(100)
+                : wp(120)
+            }
           >
             <Defs>
               <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
@@ -175,15 +179,16 @@ ${day}/${shortMonths[month]}`;
                 <Stop offset="60%" stopColor="#000" />
               </LinearGradient>
             </Defs>
-            {this.props.campaignStats.length === 1 ? (
+            {this.props.campaignStats &&
+            this.props.campaignStats.length === 1 ? (
               <VictoryScatter
                 categories={{ x: category }}
                 style={{
                   data: {
                     stroke: "#FF7D08",
                     fill: "url(#myGradient)",
-                    strokeWidth: 5
-                  }
+                    strokeWidth: 5,
+                  },
                 }}
                 size={8}
                 data={data}
@@ -196,8 +201,8 @@ ${day}/${shortMonths[month]}`;
                   data: {
                     stroke: "#FF7D08",
                     fill: "url(#myGradient)",
-                    strokeWidth: 5
-                  }
+                    strokeWidth: 5,
+                  },
                 }}
                 data={data}
               />
@@ -214,23 +219,31 @@ ${day}/${shortMonths[month]}`;
           style={[
             styles.xAxisStyle,
             I18nManager.isRTL && {
-              width: 0
-            }
+              width: 0,
+            },
           ]}
         >
           <VictoryAxis
             height={heightPercentageToDP(38)}
             domainPadding={{
-              y: this.props.campaignStats.length === 1 ? 60 : 40
+              y:
+                this.props.campaignStats &&
+                this.props.campaignStats.length === 1
+                  ? 60
+                  : 40,
             }}
             dependentAxis
-            tickFormat={t => this.kFormatter(t)}
+            tickFormat={(t) => this.kFormatter(t)}
             tickCount={5}
             padding={{
               top: 20,
-              bottom: this.props.campaignStats.length === 1 ? 50 : 30,
+              bottom:
+                this.props.campaignStats &&
+                this.props.campaignStats.length === 1
+                  ? 50
+                  : 30,
               left: 60,
-              right: 60
+              right: 60,
             }}
             domain={
               independentTickValues.length > 0
@@ -253,14 +266,13 @@ let tickLabelStyles = {
     fontSize: 12,
     padding: 6,
     fontFamily: "Helvetica",
-    fontWeight: "100"
+    fontWeight: "100",
   },
-  ticks: { stroke: "#fff", size: 6, padding: 0 }
+  ticks: { stroke: "#fff", size: 6, padding: 0 },
 };
 
-const mapStateToProps = state => ({
-  campaignStats: state.dashboard.campaignStats,
-  granularity: state.dashboard.granularity
+const mapStateToProps = (state) => ({
+  campaignStats: state.dashboard.instaCampaignStats,
 });
 
 export default connect(mapStateToProps, null)(LineGraph);
