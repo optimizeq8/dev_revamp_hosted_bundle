@@ -315,86 +315,83 @@ export class TargetAudience extends Component {
             </TouchableOpacity>
 
             {(startEditing && editCampaign && targeting.os_version_min) ||
-              ((!editCampaign || startEditing) && targeting.user_os[0] !== "" && (
-                <TouchableOpacity
-                  disabled={loading}
-                  onPress={() =>
-                    this.callFunction("selectors", "deviceVersions")
-                  }
-                  style={styles.targetTouchable}
-                >
-                  <View style={[globalStyles.row, styles.flex]}>
-                    <Icon
-                      name="versions"
-                      type="Octicons"
-                      width={25}
-                      height={25}
-                      style={{
-                        color: globalColors.orange,
-                        right: 2,
-                      }}
-                    />
-                    <View style={[globalStyles.column, styles.flex]}>
-                      <Text style={styles.menutext}>
-                        {translate("OS Versions")}
-                      </Text>
-                      <Text style={styles.menudetails}>
-                        {targeting.os_version_min +
-                          ", " +
-                          targeting.os_version_max}
-                      </Text>
-                    </View>
+            ((!editCampaign || startEditing) && targeting.user_os[0] !== "") ? (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("selectors", "deviceVersions")}
+                style={styles.targetTouchable}
+              >
+                <View style={[globalStyles.row, styles.flex]}>
+                  <Icon
+                    name="versions"
+                    type="Octicons"
+                    width={25}
+                    height={25}
+                    style={{
+                      color: globalColors.orange,
+                      right: 2,
+                    }}
+                  />
+                  <View style={[globalStyles.column, styles.flex]}>
+                    <Text style={styles.menutext}>
+                      {translate("OS Versions")}
+                    </Text>
+                    <Text style={styles.menudetails}>
+                      {targeting.os_version_min +
+                        ", " +
+                        targeting.os_version_max}
+                    </Text>
                   </View>
+                </View>
 
-                  {startEditing &&
-                    (targeting.os_version_min !== "" ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PlusCircleIcon width={30} height={30} />
-                    ))}
-                </TouchableOpacity>
-              ))}
+                {startEditing &&
+                  (targeting.os_version_min !== "" ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  ))}
+              </TouchableOpacity>
+            ) : null}
 
             {((startEditing &&
               editCampaign &&
               targeting.user_device.length > 0) ||
               !editCampaign ||
-              startEditing) &&
-              targeting.user_os[0] !== "" && (
-                <TouchableOpacity
-                  disabled={loading}
-                  onPress={() => this.callFunction("selectors", "deviceBrands")}
-                  style={styles.targetTouchable}
-                >
-                  <View style={[globalStyles.row, styles.flex]}>
-                    <DeviceMakeIcon
-                      width={25}
-                      height={25}
-                      style={styles.icon}
-                      fill={globalColors.orange}
-                    />
+              (startEditing && targeting.user_os[0] !== "")) && (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("selectors", "deviceBrands")}
+                style={styles.targetTouchable}
+              >
+                <View style={[globalStyles.row, styles.flex]}>
+                  <DeviceMakeIcon
+                    width={25}
+                    height={25}
+                    style={styles.icon}
+                    fill={globalColors.orange}
+                  />
 
-                    <View style={[globalStyles.column, styles.flex]}>
-                      <Text style={styles.menutext}>
-                        {translate("Device Make")}
-                      </Text>
-                      <Text
-                        numberOfLines={startEditing ? 1 : 10}
-                        style={styles.menudetails}
-                      >
-                        {targeting.user_device.join(", ")}
-                      </Text>
-                    </View>
+                  <View style={[globalStyles.column, styles.flex]}>
+                    <Text style={styles.menutext}>
+                      {translate("Device Make")}
+                    </Text>
+                    <Text
+                      numberOfLines={startEditing ? 1 : 10}
+                      style={styles.menudetails}
+                    >
+                      {targeting.user_device.join(", ")}
+                    </Text>
                   </View>
+                </View>
 
-                  {startEditing &&
-                    (targeting.user_device.length !== 0 ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
-                    ) : (
-                      <PlusCircleIcon width={30} height={30} />
-                    ))}
-                </TouchableOpacity>
-              )}
+                {startEditing &&
+                  (targeting.user_device.length !== 0 ? (
+                    <GreenCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PlusCircleIcon width={30} height={30} />
+                  ))}
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </MaskedViewIOS>
         {this.state.scrollY < 12 &&

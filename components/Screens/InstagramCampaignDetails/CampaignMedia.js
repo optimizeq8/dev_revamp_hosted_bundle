@@ -11,7 +11,12 @@ const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
-export const previewHandler = (selectedCampaign, navigation, source) => {
+export const previewHandler = (
+  selectedCampaign,
+  navigation,
+  source,
+  campaignDetails
+) => {
   let media =
     selectedCampaign.campaign_type !== "StoryAd"
       ? { media: selectedCampaign.media }
@@ -68,12 +73,20 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
       instagram_business_name: selectedCampaign.instagram_business_name,
       message: selectedCampaign.message,
       source: source,
+      campaignDetails: campaignDetails,
       source_action: "a_preview_ad",
     }
   );
 };
 export default (props) => {
-  let { loading, selectedCampaign, navigation, source } = props;
+  let {
+    loading,
+    selectedCampaign,
+    navigation,
+    source,
+    campaignDetails,
+  } = props;
+
   const { translate } = props.screenProps;
   let storyOrCollection =
     !loading &&
@@ -119,7 +132,12 @@ export default (props) => {
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
               onPress={() =>
-                previewHandler(selectedCampaign, navigation, source)
+                previewHandler(
+                  selectedCampaign,
+                  navigation,
+                  source,
+                  campaignDetails
+                )
               }
               style={[styles.backgroundViewWrapper]}
             >
@@ -143,7 +161,12 @@ export default (props) => {
           ) : (
             <TouchableOpacity
               onPress={() =>
-                previewHandler(selectedCampaign, navigation, source)
+                previewHandler(
+                  selectedCampaign,
+                  navigation,
+                  source,
+                  campaignDetails
+                )
               }
               style={styles.backgroundViewWrapper}
             >

@@ -344,7 +344,9 @@ class InstagramCampaignDetails extends Component {
         targeting = selectedCampaign.targeting
           ? selectedCampaign.targeting
           : {};
-        flexible_spec = targeting.flexible_spec[0];
+        flexible_spec =
+          targeting.hasOwnProperty("flexible_spec") &&
+          targeting.flexible_spec[0];
         deviceMakes =
           targeting &&
           targeting.hasOwnProperty("devices") &&
@@ -592,6 +594,7 @@ class InstagramCampaignDetails extends Component {
                       navigation={this.props.navigation}
                       loading={loading}
                       screenProps={this.props.screenProps}
+                      campaignDetails={true}
                       source={"campaign_detail"}
                     />
                     <AudienceOverview

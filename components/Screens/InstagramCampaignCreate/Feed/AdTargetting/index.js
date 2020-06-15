@@ -115,7 +115,6 @@ class InstagramFeedAdTargetting extends Component {
     return true;
   };
   async componentDidMount() {
-    console.log(this.props.campaign_id);
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -149,6 +148,12 @@ class InstagramFeedAdTargetting extends Component {
       );
       editCountryAndRegionSelection.push(...editCountryRegions);
       this.onSelectedCountryRegionChange(editCountryAndRegionSelection);
+      editedCampaign.targeting["user_os"] = this.props.navigation.getParam(
+        "campaign",
+        {
+          targeting: { user_os: [""] },
+        }
+      ).targeting.user_os;
       this.setState(
         {
           campaignInfo: editedCampaign,
@@ -1068,48 +1073,6 @@ class InstagramFeedAdTargetting extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        {!this.editCampaign &&
-          (media.includes(".mp4") ||
-          media.includes(".mov") ||
-          media.includes(".MP4") ||
-          media.includes(".MOV") ||
-          (campaign.media &&
-            (campaign.media.includes(".mp4") ||
-              campaign.media.includes(".MP4"))) ||
-          (campaign.media &&
-            (campaign.media.includes(".mov") ||
-              campaign.media.includes(".MOV"))) ? (
-            <View style={[styles.backgroundViewWrapper]}>
-              <Video
-                source={{
-                  uri: this.editCampaign ? campaign.media : media,
-                }}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode="cover"
-                style={styles.videoBackgroundViewWrapper}
-              />
-            </View>
-          ) : (
-            <RNImageOrCacheImage
-              media={media}
-              style={[
-                styles.imageBackgroundViewWrapper,
-                this.state.sidemenustate && !I18nManager.isRTL
-                  ? {
-                      borderTopRightRadius: 30,
-                    }
-                  : {},
-                this.state.sidemenustate && I18nManager.isRTL
-                  ? {
-                      borderTopLeftRadius: 30,
-                    }
-                  : {},
-              ]}
-            />
-          ))}
-
         <SafeAreaView
           style={[
             styles.safeArea,
@@ -1126,7 +1089,8 @@ class InstagramFeedAdTargetting extends Component {
               if (
                 !this.props.currentCampaignSteps.includes(
                   "InstagramAdPaymentReview"
-                )
+                ) &&
+                !this.editCampaign
               ) {
                 this.props.saveCampaignSteps([
                   "Dashboard",
