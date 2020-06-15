@@ -3,8 +3,8 @@ import { showMessage } from "react-native-flash-message";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import analytics from "@segment/analytics-react-native";
 import * as ImageManipulator from "expo-image-manipulator";
-import segmentEventTrack from "../../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
@@ -76,7 +76,6 @@ export const _pickImage = async (
         cancelled: false,
         type: mediaEditor.media_type === "IMAGE" ? "image" : "video",
       };
-    console.log("resss", result);
 
     let uneditedImageUri = result.uri;
     let serialization = null;
@@ -137,10 +136,6 @@ export const _pickImage = async (
                   media_type: "",
                 });
 
-                segmentEventTrack("Selected Image Error", {
-                  campaign_instagram_error_image:
-                    "Image's aspect ratio must be 1:1 with a minimum size of 500px x 500px",
-                });
                 return Promise.reject({
                   wrongAspect: true,
                   message:
@@ -185,10 +180,7 @@ export const _pickImage = async (
                   position: "top",
                   type: "warning",
                 });
-                segmentEventTrack("Selected Instagram Image Error", {
-                  campaign_instagram_error_image:
-                    "Image must be less than 5 MBs",
-                });
+
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
@@ -214,12 +206,22 @@ export const _pickImage = async (
               serialization,
             });
 
+            analytics.track(`a_media_editor`, {
+              campaign_channel: "instagram",
+              campaign_ad_type: "InstagramFeedAd",
+              source: "ad_design",
+              source_action: "a_media_editor",
+              action_status: "success",
+              tool_used: "PESDK",
+              media_type: "IMAGE",
+              ...serialization,
+              image_for: "campaign_ad",
+            });
             showMessage({
               message: translate("Image has been selected successfully"),
               position: "top",
               type: "success",
             });
-            segmentEventTrack("Selected Image Successful");
 
             save_campaign_info_instagram({
               media: result.uri,
@@ -228,11 +230,16 @@ export const _pickImage = async (
             });
           })
           .catch((error) => {
-            segmentEventTrack(error);
-
-            segmentEventTrack("Seleeted Image Error", {
-              campaign_instagram_error_image: "The dimensions are too large",
+            analytics.track(`a_error`, {
+              campaign_channel: "instagram",
+              campaign_ad_type: "InstagramFeedAd",
+              error_page: "ad_design",
+              error_description: error.wrongAspect
+                ? error.message
+                : error ||
+                  "The dimensions are too large, please choose a different image",
             });
+
             showMessage({
               message: error.wrongAspect
                 ? error.message
@@ -257,9 +264,12 @@ export const _pickImage = async (
             media: "//",
             media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video:
-              "Maximum video duration is 120 seconds",
+
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Maximum video duration is 120 seconds",
           });
           showMessage({
             message: translate("Maximum video duration is 120 seconds"),
@@ -286,10 +296,13 @@ export const _pickImage = async (
             media: "//",
             media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video:
-              "Minimum video duration is 3 seconds",
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Minimum video duration is 3 seconds",
           });
+
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
             description:
@@ -314,10 +327,13 @@ export const _pickImage = async (
             media: "//",
             media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video:
-              "Allowed video size is up to 30 MBs",
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Allowed video size is up to 30 MBs",
           });
+
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
               fileSize: 30,
@@ -341,8 +357,18 @@ export const _pickImage = async (
             sourceChanging: true,
             fileReadyToUpload: true,
           });
+          analytics.track(`a_media_editor`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            source: "ad_design",
+            source_action: "a_media_editor",
+            action_status: "success",
+            tool_used: "",
+            media_type: "VIDEO",
+            ...serialization,
+            image_for: "campaign_ad",
+          });
 
-          segmentEventTrack("Selected Video Successfully");
           showMessage({
             message: translate("Video has been selected successfully"),
             position: "top",
@@ -371,8 +397,11 @@ export const _pickImage = async (
           media_type: "",
         });
 
-        segmentEventTrack("Selected Video Error", {
-          campaign_instagram_error_video:
+        analytics.track(`a_error`, {
+          campaign_channel: "instagram",
+          campaign_ad_type: "InstagramFeedAd",
+          error_page: "ad_design",
+          error_description:
             "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625",
         });
 
@@ -394,7 +423,14 @@ export const _pickImage = async (
         position: "top",
         type: "warning",
       });
-      segmentEventTrack("Image Picker closed without selecting a media file");
+
+      analytics.track(`a_error`, {
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        error_page: "ad_design",
+        error_description: "Image Picker closed without selecting a media file",
+      });
+
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//",
