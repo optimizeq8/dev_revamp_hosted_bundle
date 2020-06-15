@@ -417,7 +417,7 @@ class AdDetails extends Component {
   };
 
   onSelectedOSChange = (selectedItem) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].os_type = selectedItem;
     replace.targeting.devices[0].os_version_min = "";
     replace.targeting.devices[0].os_version_max = "";
@@ -631,7 +631,7 @@ class AdDetails extends Component {
   };
 
   onSelectedGenderChange = (gender) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.demographics[0].gender = gender;
     analytics.track(`a_ad_gender`, {
       campaign_gender: gender === "" ? "ALL" : gender,

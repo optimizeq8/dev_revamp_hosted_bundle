@@ -362,11 +362,22 @@ class InstagramCampaignDetails extends Component {
             .join(", ");
 
         // gender
-        const gender =
-          targeting &&
-          (!targeting.hasOwnProperty("genders") || targeting.genders[0] === "")
-            ? translate("All")
-            : targeting && translate(startCase(toLower(targeting.genders[0])));
+        let gender = "All";
+        if (targeting && targeting.hasOwnProperty("genders")) {
+          let genderName = "";
+          switch (targeting.genders[0]) {
+            case "1":
+              genderName = "MALE";
+              break;
+            case "2":
+              genderName = "FEMALE";
+              break;
+            default:
+              genderName = "All";
+              break;
+          }
+          gender = translate(startCase(toLower(genderName)));
+        }
         audienceOverViewData.push({
           heading: "Gender",
           icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,

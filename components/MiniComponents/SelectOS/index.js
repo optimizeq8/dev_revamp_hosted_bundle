@@ -15,6 +15,9 @@ export default class SelectOS extends Component {
     Segment.screen("OS Type Options");
   }
   render() {
+    let devices = this.props.campaignInfo.targeting.hasOwnProperty("devices")
+      ? this.props.campaignInfo.targeting.devices[0].os_type
+      : this.props.campaignInfo.targeting.user_os[0];
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -40,15 +43,9 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.user_os[0] === ""
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.user_os[0] === ""
-                      ? styles.activetext
-                      : styles.inactivetext,
+                    devices === "" ? styles.activetext : styles.inactivetext,
                     styles.optionsIconSize,
                   ]}
                 />
@@ -63,15 +60,9 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.user_os[0] === "iOS"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "iOS" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.user_os[0] === "iOS"
-                      ? styles.activetext
-                      : styles.inactivetext,
+                    devices === "iOS" ? styles.activetext : styles.inactivetext,
                     styles.optionsIconSize,
                   ]}
                 />
@@ -97,13 +88,9 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.user_os[0] === "ANDROID"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "ANDROID" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.user_os[0] === "ANDROID"
+                    devices === "ANDROID"
                       ? styles.activetext
                       : styles.inactivetext,
                     styles.optionsIconSize,

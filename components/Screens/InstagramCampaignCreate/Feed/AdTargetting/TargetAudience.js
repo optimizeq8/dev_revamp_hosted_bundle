@@ -115,14 +115,10 @@ export class TargetAudience extends Component {
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
                     {
-                      translate(
-                        targeting.genders[0] === ""
-                          ? "All"
-                          : targeting.genders[0]
-                      )
+                      translate(gender === "" ? "All" : gender)
                       // translate(
                       //   gender.find((r) => {
-                      //     if (r.value === targeting.genders[0]) return r;
+                      //     if (r.value === gender) return r;
                       //   }).label
                       // )
                     }
@@ -131,7 +127,7 @@ export class TargetAudience extends Component {
               </View>
               {startEditing && (
                 <View style={globalStyles.column}>
-                  {targeting.genders[0] === "" || targeting.genders ? (
+                  {gender === "" || targeting.genders ? (
                     <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PlusCircleIcon width={30} height={30} />
