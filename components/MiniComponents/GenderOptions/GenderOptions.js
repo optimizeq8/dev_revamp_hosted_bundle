@@ -12,8 +12,10 @@ export default class GenderOptions extends Component {
     Segment.screen("Gender Options");
   }
   render() {
-    let selectedGender = this.props.campaignInfo.hasOwnProperty("demographics")
-      ? this.props.campaignInfo.demographics[0].gender // snapchat
+    let selectedGender = this.props.campaignInfo.targeting.hasOwnProperty(
+      "demographics"
+    )
+      ? this.props.campaignInfo.targeting.demographics[0].gender // snapchat
       : this.props.selectedGender; //instagram
     const { translate } = this.props.screenProps;
     return (
