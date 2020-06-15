@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
+import analytics from "@segment/analytics-react-native";
 import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
@@ -34,6 +35,13 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_submit_ad_objective`, {
+          source: "ad_objective",
+          campaign_channel: "instagram",
+          action_status: data.success ? "success" : "failure",
+          source_action: "a_submit_ad_objective",
+          ...segmentInfo,
+        });
         data.success
           ? dispatch({
               type: actionTypes.SET_AD_OBJECTIVE_INSTAGARM,
@@ -47,14 +55,11 @@ export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
       })
       .then((data) => {
         if (data.success) {
-          // segmentEventTrack("Completed Checkout Step", segmentInfo);
-          // console.log("data success", data);
-          NavigationService.navigate(navigation_route);
+          NavigationService.navigate(navigation_route, {
+            source: "ad_objective",
+            source_action: "a_submit_ad_objective",
+          });
         } else {
-          // segmentEventTrack("Error Submitting Instagram Ad Objective", {
-          //   campaign_error: data.message
-          // });
-
           showMessage({
             message: data.message,
             position: "top",
@@ -164,7 +169,8 @@ export const saveBrandMediaInstagram = (
   info,
   loading,
   onToggleModal,
-  cancelUplaod
+  cancelUplaod,
+  segmentInfo
 ) => {
   return (dispatch) => {
     dispatch({
@@ -182,18 +188,24 @@ export const saveBrandMediaInstagram = (
         return res.data;
       })
       .then((data) => {
-        console.log("saveBrandMedia data", JSON.stringify(data, null, 2));
-
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
         if (data.success) {
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
           // console.log("data", data.data);
-          NavigationService.navigate("InstagramFeedAdTargetting");
+          NavigationService.navigate("InstagramFeedAdTargetting", {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
           return dispatch({
             type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
             payload: data,
@@ -390,6 +402,13 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
         return res.data;
       })
       .then((data) => {
+        analytics.track(`a_submit_ad_targeting`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          action_status: data.success ? "success" : "failure",
+          campaign_budget: data.data.lifetime_budget_micro,
+          ...segmentInfo,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "danger",
@@ -411,7 +430,10 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
       .then(() => {
         // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
-        navigation.navigate("InstagramAdPaymentReview");
+        navigation.navigate("InstagramAdPaymentReview", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
       })
       .catch((err) => {
         // console.log("ad_details_instagram error", err.message || err.response);
