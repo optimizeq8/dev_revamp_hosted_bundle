@@ -444,3 +444,187 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
       });
   };
 };
+
+export const getInstagramCampaignDetails = (id, navigation) => {
+  return (dispatch) => {
+    // dispatch(get_languages());
+    dispatch({
+      type: actionTypes.SET_CAMPAIGN_LOADING,
+      payload: { loading: true, data: {} },
+    });
+
+    navigation.navigate("InstagramCampaignDetails", {
+      source: "dashboard",
+      source_action: "a_open_campaign",
+    });
+
+    InstagramBackendURL()
+      .get(`campaigndetail/${id}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (
+          typeof data === "string" &&
+          data.toLowerCase() === "connection-failure"
+        ) {
+          throw TypeError("Connection-Failure, Please try again later");
+        }
+
+        // analytics.track(`a_open_campaign_details`, {
+        //   source: "dashboard",
+        //   source_action: "a_open_campaign_details",
+        //   action_status: data.sucess ? "success" : "failure",
+        //   campaign_id: id,
+        //   campaign_type: "snapchat",
+        //   campaign_ad_type: data.data && data.data.campaign_type,
+        //   error_description: !data.sucess && data.message,
+        // });
+        dispatch({
+          type: actionTypes.SET_CAMPAIGN,
+          payload: { loading: false, data: data.data },
+        });
+        dispatch({
+          type: actionTypes.END_CAMPAIGN,
+          payload: data.data.campaign_end === "1",
+        });
+
+        return data.data;
+      })
+      .then((data) => {
+        let endDate = new Date(data.end_time);
+        endDate.setDate(endDate.getDate() + 2);
+        if (
+          data.snap_ad_id &&
+          data.campaign_end === "0" &&
+          endDate < new Date()
+        ) {
+          dispatch(checkRemainingBudget(data.campaign_id));
+        }
+      })
+      .catch((err) => {
+        // analytics.track(`a_error`, {
+        //   error_page: "dashboard",
+        //   source_action: "a_open_campaign_details",
+        //   action_status: "failure",
+        //   campaign_id: id,
+        //   campaign_type: "snapchat",
+        //   campaign_ad_type: null,
+        //   error_description:
+        //     err.message ||
+        //     err.response ||
+        //     "Something went wrong, please try again.",
+        // });
+        // console.log("getCampaignDetails error", err.message || err);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_CAMPAIGN,
+          payload: { loading: false },
+        });
+      });
+  };
+};
+
+export const updateInstagramCampaign = (
+  info,
+  businessid,
+  navigation,
+  segmentInfo
+) => {
+  return (dispatch, getState) => {
+    InstagramBackendURL()
+      .post(`saveinstatargeting`, { ...info, businessid })
+      .then((res) => {
+        // console.log("back end info", res.data);
+
+        return res.data;
+      })
+      .then((data) => {
+        analytics.track(`a_submit_update_campaign_details`, {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+          ...segmentInfo,
+          action_status: data.success ? "success" : "failure",
+        });
+        navigation.navigate("Dashboard", {
+          source: "ad_targeting",
+          source_action: "a_submit_ad_targeting",
+        });
+      })
+      .catch((err) => {
+        // console.log("updateCampaign", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS,
+        });
+      });
+  };
+};
+
+export const getInstagraCampaignStats = (campaign, duration) => {
+  let timeDiff = Math.round(
+    Math.abs(
+      (new Date(duration.start_time).getTime() -
+        new Date(duration.end_time).getTime()) /
+        86400000
+    )
+  );
+
+  let addDays = (date, days) => {
+    let result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(
+      -2
+    )}-${("0" + result.getDate()).slice(-2)}`;
+  };
+
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_INSTA_STATS_LOADING,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`instaCampaignStats`, {
+        //testing
+        // campaign_id: "23844374617170638",
+        // start_date: "2020-03-01",
+        // end_date: "2020-06-30",
+
+        //Actual api
+        campaign_id: campaign.instagram_campaign_id,
+        start_date: duration.start_time.split("T")[0],
+        end_date: addDays(duration.end_time, 1),
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.SET_INSTA_CAMPAIGN_STATS,
+          payload: { loading: false, data: data },
+        });
+      })
+      .catch((err) => {
+        // console.log("getCampaignStats error", err.message || err.response);
+        dispatch({
+          type: actionTypes.SET_INSTA_CAMPAIGN_STATS,
+          payload: { loading: false, data: {}, err },
+        });
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+        });
+      });
+  };
+};

@@ -14,6 +14,7 @@ import {
 } from "react-native-responsive-screen";
 import { Text, Button, Icon } from "native-base";
 import CampaignStats from "../../Screens/CampaignDetails/CampStats/CampaignStats";
+import InstaCampaignStats from "../../Screens/InstagramCampaignDetails/CampStats/CampaignStats";
 import CampDetailsInfo from "./CampDetailsInfo";
 import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
@@ -89,7 +90,7 @@ class CampaignCircleChart extends Component {
           {!loading && (
             <Chart
               budget={
-                channel === "snapchat"
+                channel === "snapchat" || channel === "instagram"
                   ? campaign.lifetime_budget_micro
                   : campaign.budget
               }
@@ -139,6 +140,8 @@ class CampaignCircleChart extends Component {
                     campaign
                       ? !detail || campaign.objective === "BRAND_AWARENESS"
                         ? campaign.impressions
+                        : channel === "instagram"
+                        ? campaign.clicks
                         : campaign.swipes
                       : 0,
                     true
@@ -151,6 +154,8 @@ class CampaignCircleChart extends Component {
                   {!detail ||
                   (campaign && campaign.objective === "BRAND_AWARENESS")
                     ? translate("Impressions")
+                    : channel === "instagram"
+                    ? translate("Clicks")
                     : translate("Swipe Ups")}
                 </Text>
               </View>
@@ -247,12 +252,19 @@ class CampaignCircleChart extends Component {
               </View>
             )}
           </View>
-          {detail && chartExpanded && (
-            <CampaignStats
-              selectedCampaign={campaign}
-              screenProps={this.props.screenProps}
-            />
-          )}
+          {detail &&
+            chartExpanded &&
+            (channel === "instagram" ? (
+              <InstaCampaignStats
+                selectedCampaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            ) : (
+              <CampaignStats
+                selectedCampaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            ))}
         </ScrollView>
         {detail &&
           !(

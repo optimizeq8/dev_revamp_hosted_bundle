@@ -533,11 +533,12 @@ class AdDesign extends Component {
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
-                      {this.props.data &&
-                      (this.props.data.attachment !== "BLANK" ||
-                        (this.props.data.attachment === "BLANK" &&
-                          this.props.data.link &&
-                          this.state.campaignInfo.destination === "link"))
+                      {(this.props.data &&
+                        this.props.data.attachment !== "BLANK") ||
+                      (this.props.data &&
+                        this.props.data.attachment === "BLANK" &&
+                        this.props.data.link &&
+                        this.state.campaignInfo.destination === "link")
                         ? this.state.campaignInfo.destination === "link"
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===

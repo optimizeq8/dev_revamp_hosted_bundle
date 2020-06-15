@@ -924,12 +924,13 @@ class AdDetails extends Component {
       source_action,
       ...segmentInfo,
     });
-    this.props.saveCampaignSteps(
-      this.props.adType === "StoryAd"
-        ? ["Dashboard", "AdObjective", "AdCover", "AdDesign", "AdDetails"]
-        : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
-    );
-
+    if (!this.editCampaign) {
+      this.props.saveCampaignSteps(
+        this.props.adType === "StoryAd"
+          ? ["Dashboard", "AdObjective", "AdCover", "AdDesign", "AdDetails"]
+          : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
+      );
+    }
     let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
     adjustAdDetailsTracker.addPartnerParameter(
       `Snap_${this.props.adType}`,

@@ -30,6 +30,10 @@ class AdFeedDesignReview extends React.Component {
     });
   };
   render() {
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
     const {
       instagram_business_name,
       instagram_profile_pic,
@@ -38,7 +42,7 @@ class AdFeedDesignReview extends React.Component {
       media_type,
       media_option,
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = this.props.data;
+    } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_type === "IMAGE" && media) {
@@ -101,7 +105,9 @@ class AdFeedDesignReview extends React.Component {
             <View style={styles.mediaView}>{mediaView}</View>
             <View style={styles.swipeUpView}>
               <Text style={styles.callToActionText}>
-                {call_to_action.label}
+                {call_to_action.hasOwnProperty("label")
+                  ? call_to_action.label
+                  : call_to_action}
               </Text>
               <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
             </View>

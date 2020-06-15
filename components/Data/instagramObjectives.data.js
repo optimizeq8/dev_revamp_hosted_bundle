@@ -9,18 +9,18 @@ export const instagramAdObjectives = {
         "Increase awareness for your brand by reaching people who are more likely to be interested in it",
       icon: ObjIcons.Awareness,
     },
-    {
-      label: "App Installs",
-      value: "APP_INSTALLS",
-      info: "Get more people to install your app",
-      icon: ObjIcons.Download,
-    },
-    {
-      label: "Video Views",
-      value: "VIDEO_VIEWS",
-      info: "Get more people to view your video content",
-      icon: ObjIcons.Video,
-    },
+    // {
+    //   label: "App Installs",
+    //   value: "APP_INSTALLS",
+    //   info: "Get more people to install your app",
+    //   icon: ObjIcons.Download,
+    // },
+    // {
+    //   label: "Video Views",
+    //   value: "VIDEO_VIEWS",
+    //   info: "Get more people to view your video content",
+    //   icon: ObjIcons.Video,
+    // },
     {
       label: "Traffic",
       value: "LINK_CLICKS",
