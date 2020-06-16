@@ -115,6 +115,9 @@ export const checkForExpiredToken = (navigation) => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
+                    analytics.identify(getState().auth.userInfo.userid, {
+                      logged_out: false,
+                    });
                     navigation &&
                       NavigationService.navigate("Dashboard", {
                         source: AppState.currentState,
@@ -199,8 +202,11 @@ export const login = (userData, navigation) => {
           dispatch(setCurrentUser(decodedUser));
         }
       })
-      .then(() => {
+      .then(async () => {
         if (getState().auth.userInfo) {
+          analytics.identify(getState().auth.userInfo.userid, {
+            logged_out: false,
+          });
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", {
               temp_pwd: true,
@@ -326,7 +332,8 @@ export const clearPushToken = (navigation, userid) => {
       .then((res) => {
         return res.data;
       })
-      .then((data) => {
+      .then(async (data) => {
+        analytics.identify(userid, { logged_out: true });
         dispatch(logout(navigation)); //Call this first so that it navigates first then turns everything to null
         //so that the error componenet doesn't show up in the dashboard
       })

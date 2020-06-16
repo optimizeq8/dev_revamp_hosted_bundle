@@ -777,6 +777,7 @@ class AdDesign extends Component {
       type: card.media_type,
       sourceChanging: false,
     });
+    this.setMediaModalVisible(true);
   };
 
   setTheState = (state) => {
@@ -860,15 +861,11 @@ class AdDesign extends Component {
           message: "Please crop the image to the right dimensions",
           type: "warning",
         });
-        console.log(
-          this.rejected,
-          this.props.data && !this.props.data.hasOwnProperty("formatted"),
-          isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
-        );
       } else if (
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
-        isEqual(this.props.data.formatted) !== isEqual(this.state.formatted)
+        JSON.stringify(this.props.data.formatted) !==
+          JSON.stringify(this.state.formatted)
       ) {
         const segmentInfo = {
           campaign_channel: "snapchat",
@@ -1271,10 +1268,10 @@ class AdDesign extends Component {
                       media={
                         this.adType !== "StoryAd" && media !== "//"
                           ? media
-                          : storyAdCards.selectedStoryAd.media &&
-                            storyAdCards.storyAdSelected
-                          ? storyAdCards.selectedStoryAd.media
-                          : preview.uri
+                          : // : storyAdCards.selectedStoryAd.media &&
+                            //   storyAdCards.storyAdSelected
+                            // ? storyAdCards.selectedStoryAd.media
+                            preview.uri
                       }
                       style={styles.placeholder1}
                     />
@@ -1287,8 +1284,7 @@ class AdDesign extends Component {
                     </View>
                   )}
                   {inputFields}
-                  {this.adType === "StoryAd" &&
-                  !storyAdCards.storyAdSelected ? (
+                  {this.adType === "StoryAd" ? (
                     <StoryAdCards
                       screenProps={this.props.screenProps}
                       rejected={this.rejected}
@@ -1377,7 +1373,6 @@ class AdDesign extends Component {
               ) : (
                 <>
                   {this.adType === "StoryAd" ? (
-                    !storyAdCards.storyAdSelected &&
                     validCards.length >= 3 && (
                       <TouchableOpacity
                         style={styles.button}

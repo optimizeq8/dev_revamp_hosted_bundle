@@ -3,21 +3,24 @@ import { showMessage } from "react-native-flash-message";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import analytics from "@segment/analytics-react-native";
 import * as ImageManipulator from "expo-image-manipulator";
-import segmentEventTrack from "../../../../../segmentEventTrack";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
-import { PESDK, Configuration, TintMode } from "react-native-photoeditorsdk";
+import {
+  PESDK,
+  Configuration,
+  TintMode,
+  SerializationExportType,
+} from "react-native-photoeditorsdk";
 
 // ADD TRANSLATE PROP
-export const askForPermssion = async screenProps => {
+export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
-    const pkg = Constants.manifest.releaseChannel
-      ? Constants.manifest.android.package // When published, considered as using standalone build
-      : "host.exp.exponent"; // In expo client mode
+    const pkg = "com.optimizeapp.optimizeapp";
     showMessage({
       message: translate("Please allow access to the gallery to upload media"),
       position: "top",
@@ -31,7 +34,7 @@ export const askForPermssion = async screenProps => {
               { data: "package:" + pkg }
             ),
       duration: 5000,
-      description: translate("Press here to open settings")
+      description: translate("Press here to open settings"),
     });
   }
   return status;
@@ -47,7 +50,7 @@ export const pick = async (mediaTypes, screenProps) => {
       base64: false,
       exif: false,
       quality: 0.8,
-      allowsEditing: Platform.OS === "ios" && mediaTypes === "Videos"
+      allowsEditing: Platform.OS === "ios" && mediaTypes === "Videos",
     });
   }
 
@@ -59,54 +62,61 @@ export const _pickImage = async (
   save_campaign_info_instagram,
   setTheState,
   screenProps,
-  rejected
+  setMediaModalVisible,
+  // rejected,
+  mediaEditor = {},
+  editImage
 ) => {
   try {
-    let result = await pick(mediaTypes, screenProps);
+    let result = {};
+    if (!editImage) result = await pick(mediaTypes, screenProps);
+    else
+      result = {
+        uri: mediaEditor.mediaUri,
+        cancelled: false,
+        type: mediaEditor.media_type === "IMAGE" ? "image" : "video",
+      };
+
+    let uneditedImageUri = result.uri;
+    let serialization = null;
     let configuration: Configuration = {
       forceCrop: true,
+      export: {
+        serialization: {
+          enabled: true,
+          exportType: SerializationExportType.OBJECT,
+        },
+      },
       transform: {
-        items: [{ width: 1, height: 1 }]
+        items: [{ width: 1, height: 1 }],
       },
       sticker: {
         personalStickers: true,
         defaultPersonalStickerTintMode: TintMode.COLORIZED,
-        categories: [
-          { identifier: "imgly_sticker_category_emoticons" },
-          { identifier: "imgly_sticker_category_shapes" },
-          {
-            identifier: "demo_sticker_category",
-            name: "Logos",
-            thumbnailURI: require("../../../../../../assets/logo.png"),
-            items: [
-              {
-                identifier: "demo_sticker_logo",
-                name: "Optimize Logo",
-                stickerURI: require("../../../../../../assets/logo.png")
-              },
-              {
-                identifier: "demo_sticker_icon",
-                name: "Optimize Icon",
-                stickerURI: require("../../../../../../assets/icon.png")
-              }
-            ]
-          }
-        ]
-      }
+        categories: [{ identifier: "imgly_sticker_category_shapes" }],
+      },
     };
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
+        size: true,
       });
       setTheState({ directory: "/ImagePicker/" });
     }
+    setMediaModalVisible(false);
     const { translate } = screenProps;
     if (result && !result.cancelled) {
       if (result.type === "image") {
-        PESDK.openEditor(result.uri, configuration)
-          .then(async manipResult => {
+        PESDK.openEditor(
+          result.uri,
+          configuration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
+          .then(async (manipResult) => {
             if (manipResult) {
+              serialization = manipResult.serialization;
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.image
               );
@@ -118,22 +128,18 @@ export const _pickImage = async (
                   mediaError:
                     "Image's aspect ratio must be 1:1\nwith a minimum size of 500px x 500px.",
                   media: "//",
-                  media_type: ""
+                  media_type: "",
                 });
 
                 save_campaign_info_instagram({
                   media: "//",
-                  media_type: ""
+                  media_type: "",
                 });
 
-                segmentEventTrack("Selected Image Error", {
-                  campaign_instagram_error_image:
-                    "Image's aspect ratio must be 1:1 with a minimum size of 500px x 500px"
-                });
                 return Promise.reject({
                   wrongAspect: true,
                   message:
-                    "Image's aspect ratio must be 1:1\nwith a minimum size of 500px x 500px"
+                    "Image's aspect ratio must be 1:1\nwith a minimum size of 500px x 500px",
                 });
               }
               manipResult = await ImageManipulator.manipulateAsync(
@@ -142,47 +148,44 @@ export const _pickImage = async (
                   {
                     resize: {
                       width: 500,
-                      height: 500
-                    }
-                  }
+                      height: 500,
+                    },
+                  },
                 ],
                 {
-                  compress: 1
+                  compress: 1,
                 }
               );
               let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
-                size: true
+                size: true,
               });
 
               if (newSize.size > 5000000) {
                 setTheState({
                   mediaError: "Image must be less than 5 MBs",
-                  image: "//"
+                  image: "//",
                 });
 
                 save_campaign_info_instagram({
                   media: "//",
-                  media_type: ""
+                  media_type: "",
                 });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
                     {
-                      fileSize: 5
+                      fileSize: 5,
                     }
                   ),
                   position: "top",
-                  type: "warning"
+                  type: "warning",
                 });
-                segmentEventTrack("Selected Instagram Image Error", {
-                  campaign_instagram_error_image:
-                    "Image must be less than 5 MBs"
-                });
+
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
               setTheState({
-                directory: "/ImageManipulator/"
+                directory: "/ImageManipulator/",
               });
               result.uri = manipResult.uri;
               result.height = manipResult.height;
@@ -198,28 +201,45 @@ export const _pickImage = async (
               mediaError: null,
               result: result.uri,
               iosVideoUploaded: false,
-              fileReadyToUpload: true
+              fileReadyToUpload: true,
+              uneditedImageUri,
+              serialization,
             });
 
+            analytics.track(`a_media_editor`, {
+              campaign_channel: "instagram",
+              campaign_ad_type: "InstagramFeedAd",
+              source: "ad_design",
+              source_action: "a_media_editor",
+              action_status: "success",
+              tool_used: "PESDK",
+              media_type: "IMAGE",
+              ...serialization,
+              image_for: "campaign_ad",
+            });
             showMessage({
               message: translate("Image has been selected successfully"),
               position: "top",
-              type: "success"
+              type: "success",
             });
-            segmentEventTrack("Selected Image Successful");
 
             save_campaign_info_instagram({
               media: result.uri,
               media_type: result.type.toUpperCase(),
-              fileReadyToUpload: true
+              fileReadyToUpload: true,
             });
           })
-          .catch(error => {
-            segmentEventTrack(error);
-
-            segmentEventTrack("Seleeted Image Error", {
-              campaign_instagram_error_image: "The dimensions are too large"
+          .catch((error) => {
+            analytics.track(`a_error`, {
+              campaign_channel: "instagram",
+              campaign_ad_type: "InstagramFeedAd",
+              error_page: "ad_design",
+              error_description: error.wrongAspect
+                ? error.message
+                : error ||
+                  "The dimensions are too large, please choose a different image",
             });
+
             showMessage({
               message: error.wrongAspect
                 ? error.message
@@ -228,7 +248,7 @@ export const _pickImage = async (
                     "The dimensions are too large, please choose a different image"
                   ),
               position: "top",
-              type: "warning"
+              type: "warning",
             });
           });
       } else if (result.type === "video") {
@@ -237,16 +257,19 @@ export const _pickImage = async (
             mediaError: "Maximum video duration  is 120 seconds.",
             media: "//",
             media_type: "",
-            sourceChanging: true
+            sourceChanging: true,
           });
 
           save_campaign_info_instagram({
             media: "//",
-            media_type: ""
+            media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video:
-              "Maximum video duration is 120 seconds"
+
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Maximum video duration is 120 seconds",
           });
           showMessage({
             message: translate("Maximum video duration is 120 seconds"),
@@ -255,28 +278,31 @@ export const _pickImage = async (
               (result.duration / 1000).toFixed(2) +
               translate("seconds"),
             position: "top",
-            type: "warning"
+            type: "warning",
           });
 
           setTheState({
-            sourceChanging: false
+            sourceChanging: false,
           });
           return;
         } else if (result.duration < 3000) {
           setTheState({
             mediaError: "Minimum video duration  is 3 seconds.",
             media: "//",
-            sourceChanging: true
+            sourceChanging: true,
           });
 
           save_campaign_info_instagram({
             media: "//",
-            media_type: ""
+            media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video:
-              "Minimum video duration is 3 seconds"
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Minimum video duration is 3 seconds",
           });
+
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
             description:
@@ -285,7 +311,7 @@ export const _pickImage = async (
               translate("seconds"),
 
             position: "top",
-            type: "warning"
+            type: "warning",
           });
 
           setTheState({ sourceChanging: false });
@@ -294,22 +320,26 @@ export const _pickImage = async (
           setTheState({
             mediaError: "Allowed video size is up to 30 MBs.",
             media: "//",
-            media_type: ""
+            media_type: "",
           });
 
           save_campaign_info_instagram({
             media: "//",
-            media_type: ""
+            media_type: "",
           });
-          segmentEventTrack("Selected Video Error", {
-            campaign_instagram_error_video: "Allowed video size is up to 30 MBs"
+          analytics.track(`a_error`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            error_page: "ad_design",
+            error_description: "Allowed video size is up to 30 MBs",
           });
+
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
-              fileSize: 30
+              fileSize: 30,
             }),
             position: "top",
-            type: "warning"
+            type: "warning",
           });
 
           return;
@@ -325,21 +355,31 @@ export const _pickImage = async (
             result: result.uri,
             iosVideoUploaded: false,
             sourceChanging: true,
-            fileReadyToUpload: true
+            fileReadyToUpload: true,
+          });
+          analytics.track(`a_media_editor`, {
+            campaign_channel: "instagram",
+            campaign_ad_type: "InstagramFeedAd",
+            source: "ad_design",
+            source_action: "a_media_editor",
+            action_status: "success",
+            tool_used: "",
+            media_type: "VIDEO",
+            ...serialization,
+            image_for: "campaign_ad",
           });
 
-          segmentEventTrack("Selected Video Successfully");
           showMessage({
             message: translate("Video has been selected successfully"),
             position: "top",
-            type: "success"
+            type: "success",
           });
         }
 
         save_campaign_info_instagram({
           media: result.uri,
           media_type: result.type.toUpperCase(),
-          fileReadyToUpload: true
+          fileReadyToUpload: true,
         });
         setTheState({ sourceChanging: false });
         return;
@@ -349,17 +389,20 @@ export const _pickImage = async (
             "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625.",
           media: "//",
           media_type: "",
-          sourceChanging: true
+          sourceChanging: true,
         });
 
         save_campaign_info_instagram({
           media: "//",
-          media_type: ""
+          media_type: "",
         });
 
-        segmentEventTrack("Selected Video Error", {
-          campaign_instagram_error_video:
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625"
+        analytics.track(`a_error`, {
+          campaign_channel: "instagram",
+          campaign_ad_type: "InstagramFeedAd",
+          error_page: "ad_design",
+          error_description:
+            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625",
         });
 
         showMessage({
@@ -369,7 +412,7 @@ export const _pickImage = async (
           // message:
           //   "Video's aspect ratio must be 1:1\nwith a minimum size of 1080 x 1920.",
           position: "top",
-          type: "warning"
+          type: "warning",
         });
         setTheState({ sourceChanging: false });
         return;
@@ -378,18 +421,25 @@ export const _pickImage = async (
       showMessage({
         message: translate("Please choose a media file"),
         position: "top",
-        type: "warning"
+        type: "warning",
       });
-      segmentEventTrack("Image Picker closed without selecting a media file");
+
+      analytics.track(`a_error`, {
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        error_page: "ad_design",
+        error_description: "Image Picker closed without selecting a media file",
+      });
+
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//",
-        media_type: ""
+        media_type: "",
       });
 
       save_campaign_info_instagram({
         media: "//",
-        media_type: ""
+        media_type: "",
       });
 
       return;

@@ -10,35 +10,57 @@ const initialState = {};
 const middleware = [thunk];
 
 let blacklistTransform = createTransform((inboundState, key) => {
-  if (key === "campaignC") {
-    inboundState = { ...inboundState, loadingStoryAdsArray: [] };
-    return omit(inboundState, [
-      "loadingObj",
-      "loadingDesign",
-      "loadingDetail",
-      "loading",
-      "videoUrlLoading",
-      "coverLoading",
-      "instagramPostLoading",
-      "getWebProductsLoading",
-      "webUploadLinkMediaLoading",
-      "collectionLoader",
-      "loadingMoreInstaPost",
-      "campaignProgressStarted"
-    ]);
+  switch (key) {
+    case "campaignC":
+      inboundState = { ...inboundState, loadingStoryAdsArray: [] };
+      inboundState = omit(inboundState, [
+        "loadingObj",
+        "loadingDesign",
+        "loadingDetail",
+        "loading",
+        "videoUrlLoading",
+        "coverLoading",
+        "instagramPostLoading",
+        "getWebProductsLoading",
+        "webUploadLinkMediaLoading",
+        "collectionLoader",
+        "loadingMoreInstaPost",
+        "campaignProgressStarted",
+      ]);
+      break;
+    case "googleAds":
+      inboundState = { ...inboundState, uploading: false, loading: false };
+      inboundState = omit(inboundState, ["campaignResumed"]);
+      break;
+    case "instagramAds":
+      inboundState = { ...inboundState, loadingStoryAdsArray: [] };
+      inboundState = omit(inboundState, [
+        "loadingObj",
+        "loadingDesign",
+        "loadingDetail",
+        "loading",
+        "videoUrlLoading",
+        "coverLoading",
+        "instagramPostLoading",
+        "getWebProductsLoading",
+        "webUploadLinkMediaLoading",
+        "collectionLoader",
+        "loadingMoreInstaPost",
+        "campaignProgressStarted",
+      ]);
+      break;
+    default:
+      inboundState = inboundState;
+      break;
   }
-  if (key === "googleAds") {
-    inboundState = { ...inboundState, uploading: false, loading: false };
-    return omit(inboundState, ["campaignResumed"]);
-  } else {
-    return inboundState;
-  }
+
+  return inboundState;
 });
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["campaignC", "googleAds"],
-  transforms: [blacklistTransform]
+  whitelist: ["campaignC", "googleAds", "instagramAds"],
+  transforms: [blacklistTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -38,7 +38,6 @@ export default class LoadingModal extends Component {
                   source: "upload_image",
                   source_action: "a_cancel_upload",
                 }}
-                // title="Uploading Image"
               />
             )}
             {!loading && (

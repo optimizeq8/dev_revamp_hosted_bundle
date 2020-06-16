@@ -7,22 +7,31 @@ const styles = StyleSheet.create({
   messageText: {
     color: "white",
     alignSelf: "center",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+  },
+  consultant: {
+    lineHeight: 25,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+  },
+  nameTag: {
+    lineHeight: 25,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
   },
   messageView: {
     position: "relative",
-    borderRadius: 20,
+    borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
     maxWidth: "95%",
-    // borderRadius: 50
   },
   transparentTriangleView: {
     alignSelf: "flex-end",
     position: "absolute",
     bottom: 0,
-    // top: '75%',
-    // marginTop: 0,
-    // marginRight: -10,
+
     transform: [{ rotate: "10deg" }],
   },
   orangeTriangleView: {
@@ -39,7 +48,7 @@ const styles = StyleSheet.create({
     // alignSelf: align,
   },
   dateText: {
-    color: "white",
+    color: "#A496AC",
     fontSize: 10,
     paddingBottom: 5,
     paddingLeft: 5,

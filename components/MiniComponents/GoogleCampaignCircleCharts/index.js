@@ -23,7 +23,7 @@ class CampaignCircleChart extends Component {
       loading,
       handleChartToggle,
       chartExpanded,
-      googleCampaignOverall
+      googleCampaignOverall,
     } = this.props;
     return (
       <View style={detail ? styles.campaignInfoStyle : styles.campaignInfoCard}>
@@ -51,11 +51,11 @@ class CampaignCircleChart extends Component {
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
             justifyContent: "flex-start",
-            paddingRight: 30
+            paddingRight: 30,
           }}
           style={{
             maxHeight: "100%",
-            paddingLeft: detail ? 20 : 0
+            // paddingLeft: detail ? 20 : 0
           }}
         >
           {!loading && (
@@ -70,7 +70,7 @@ class CampaignCircleChart extends Component {
               detail={detail}
             />
           )}
-          <View style={{ paddingLeft: 12, alignSelf: "center" }}>
+          <View style={{ paddingLeft: 0, alignSelf: "center" }}>
             {detail && (
               <SingleMetric
                 detail={detail}
@@ -127,9 +127,9 @@ class CampaignCircleChart extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   googleCampaignOverall: state.dashboard.googleCampaignOverall,
   googleCampaignStats: state.dashboard.googleCampaignStats,
-  loadingCampaignStats: state.dashboard.loadingCampaignStats
+  loadingCampaignStats: state.dashboard.loadingCampaignStats,
 });
 export default connect(mapStateToProps, null)(CampaignCircleChart);

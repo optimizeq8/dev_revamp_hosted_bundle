@@ -86,6 +86,15 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
+import { MixpanelInstance } from "react-native-mixpanel";
+
+const MixpanelSDK = new MixpanelInstance(
+  "ec32f65bd795aee09177e60f6f5f6d25",
+  false,
+  false
+);
+MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
+
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 
@@ -179,7 +188,7 @@ class App extends React.Component {
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
 
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,
@@ -275,11 +284,14 @@ class App extends React.Component {
       )
     );
     if (handleScreen.data) {
-      if (handleScreen.data.screenName === "MessengerLoading") {
+      if (
+        handleScreen.data.screenName === "Messenger" ||
+        handleScreen.data.screenName === "MessengerLoading"
+      ) {
         store.dispatch(actionCreators.set_as_seen(false));
 
         if (AppState.currentState !== "active")
-          NavigationService.navigate(handleScreen.data.screenName);
+          NavigationService.navigate("Messenger");
         else if (
           // this.state.currentScreen !== "MessengerLoading" ||
           this.state.currentScreen !== "Messenger"
@@ -335,6 +347,15 @@ class App extends React.Component {
         Permissions.NOTIFICATIONS
       );
     }
+    // else {
+    // let anonId = getUniqueId();
+    // let token = await Notifications.getDevicePushTokenAsync();
+    // if (Platform.OS === "android") {
+    //   analytics.identify(anonId, { $android_devices: [token.data] });
+    // } else {
+    //   analytics.identify(anonId, { $ios_devices: [token.data] });
+    // }
+    // }
   };
 
   componentWillUnmount() {

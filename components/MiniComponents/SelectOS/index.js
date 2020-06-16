@@ -15,6 +15,9 @@ export default class SelectOS extends Component {
     Segment.screen("OS Type Options");
   }
   render() {
+    let devices = this.props.campaignInfo.targeting.hasOwnProperty("devices")
+      ? this.props.campaignInfo.targeting.devices[0].os_type
+      : this.props.campaignInfo.targeting.user_os[0];
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -40,16 +43,10 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.devices[0].os_type === ""
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type === ""
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize
+                    devices === "" ? styles.activetext : styles.inactivetext,
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text style={[styles.inactivetext, { fontSize: 14 }]}>
@@ -63,18 +60,10 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "iOS"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "iOS" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "iOS"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize
+                    devices === "iOS" ? styles.activetext : styles.inactivetext,
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -84,9 +73,9 @@ export default class SelectOS extends Component {
                     I18nManager.isRTL && !isStringArabic(translate("iOS"))
                       ? {
                           marginTop: 0,
-                          marginBottom: 15
+                          marginBottom: 15,
                         }
-                      : {}
+                      : {},
                   ]}
                 >
                   {translate("iOS")}
@@ -99,18 +88,12 @@ export default class SelectOS extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "ANDROID"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={devices === "ANDROID" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.devices[0].os_type ===
-                    "ANDROID"
+                    devices === "ANDROID"
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -119,9 +102,9 @@ export default class SelectOS extends Component {
                     styles.optionsTextContainer,
                     I18nManager.isRTL && !isStringArabic(translate("ANDROID"))
                       ? {
-                          marginBottom: 20
+                          marginBottom: 20,
                         }
-                      : {}
+                      : {},
                   ]}
                 >
                   {translate("ANDROID")}

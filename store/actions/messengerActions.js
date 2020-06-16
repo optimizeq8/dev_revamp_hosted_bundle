@@ -219,6 +219,10 @@ export const start_conversation = (message, callback) => {
       })
       .then(() => dispatch(callback()))
       .catch((err) => {
+        dispatch({
+          type: actionTypes.SET_LOADING_MESSAGE,
+          payload: false,
+        });
         showMessage({
           message:
             err.message ||

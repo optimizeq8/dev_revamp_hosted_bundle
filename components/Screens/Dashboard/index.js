@@ -31,7 +31,9 @@ import Axios from "axios";
 let Menu = null; //Doing an inline require for big components helps with performance
 import * as Animatable from "react-native-animatable";
 import AdButtons from "./AdButtons";
+import { showMessage } from "react-native-flash-message";
 
+import InstagramCampaignCard from "../../MiniComponents/InstagramCampaignCard";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
@@ -66,6 +68,7 @@ import LowerButton from "../../MiniComponents/LowerButton";
 
 import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+import isNull from "lodash/isNull";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -89,6 +92,7 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true,
       items: businessCategoriesList(translate),
+      adButtons: [...snapAds, ...googleAds],
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -106,6 +110,13 @@ class Dashboard extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
     ) {
+      // to set for instagram accounts
+      if (this.props.mainBusiness.instagram_access === "1") {
+        let adButtons = [...snapAds, ...googleAds, ...instagramAds];
+        this.setState({
+          adButtons,
+        });
+      }
       // this.props.getWalletAmount();
       if (!this.props.campaignList || this.props.campaignList.length === 0) {
         this.props.getCampaignList(
@@ -118,12 +129,18 @@ class Dashboard extends Component {
         this.props.getBusinessAccounts();
       }
     }
-    Segment.screen("Dashboard");
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
     if (this.props.campaignInProgress && this.props.incompleteCampaign)
       this.props.setCampaignInProgress(false);
+
+    if (
+      this.props.instagramCampaignProgressStarted &&
+      this.props.instagramIncompleteCampaign
+    ) {
+      this.props.setCampaignInProgressInstagram(false);
+    }
   }
   handleBackPress = () => {
     // this.props.navigation.goBack();
@@ -144,6 +161,18 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
+      // to set for instagram accounts
+      if (this.props.mainBusiness.instagram_access === "1") {
+        let adButtons = [...snapAds, ...googleAds, ...instagramAds];
+        this.setState({
+          adButtons,
+        });
+      } else if (this.props.mainBusiness.instagram_access === "0") {
+        let adButtons = [...snapAds, ...googleAds];
+        this.setState({
+          adButtons,
+        });
+      }
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
@@ -211,11 +240,8 @@ class Dashboard extends Component {
   };
 
   navigationHandler = (adType) => {
-    const { fb_connected } = this.props.mainBusiness;
-    Segment.trackWithProperties("Selected Ad Type", {
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title,
-    });
+    const { translate } = this.props.screenProps;
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     analytics.track(`a_campaign_ad_type`, {
       source: "dashboard",
       source_action: "a_campaign_ad_type",
@@ -255,15 +281,28 @@ class Dashboard extends Component {
       if (
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
-      )
+      ) {
         this.props.navigation.navigate("SuspendedWarning");
-      else if (adType.mediaType === "instagram" && fb_connected === "0") {
+      } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
+          source: "dashboard",
+          source_action: "a_campaign_ad_type",
         });
-      }
-      {
+      } else if (
+        adType.mediaType === "instagram" &&
+        fb_connected === "1" &&
+        (isNull(fb_ad_account_id) || fb_ad_account_id === "")
+      ) {
+        showMessage({
+          message: translate(
+            `Your Instagram Account request is in process by OptimizeApp`
+          ),
+          type: "warning",
+          position: "top",
+        });
+      } else {
         if (adType.value === "SnapAd") {
           let adjustEvent = new AdjustEvent("kd8uvi");
           Adjust.trackEvent(adjustEvent);
@@ -321,6 +360,16 @@ class Dashboard extends Component {
     if (item.channel === "google") {
       return (
         <GoogleCampaignCard
+          channel={"google"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+    } else if (item.channel === "instagram") {
+      return (
+        <InstagramCampaignCard
           channel={"google"}
           campaign={item}
           navigation={this.props.navigation}
@@ -394,6 +443,7 @@ class Dashboard extends Component {
     });
     // Segment.screen("Dashboard");
     this.props.setCampaignInProgress(false);
+    this.props.setCampaignInProgressInstagram(false);
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -428,11 +478,7 @@ class Dashboard extends Component {
           screenProps={this.props.screenProps}
         />
       ) : null;
-    let adButtons = [
-      ...snapAds,
-      ...googleAds,
-      // ...instagramAds,
-    ].map((adType) => (
+    let adButtons = this.state.adButtons.map((adType) => (
       <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
@@ -505,7 +551,7 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.navigation.push("MessengerLoading", {
+                      this.props.navigation.push("Messenger", {
                         source: "dashboard",
                         source_action: "a_help",
                       });
@@ -860,6 +906,8 @@ const mapStateToProps = (state) => ({
   businessAccounts: state.account.businessAccounts,
   loadingCampaigns: state.dashboard.loadingCampaigns,
   clearTokenLoading: state.login.clearTokenLoading,
+  instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
+  instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -884,6 +932,8 @@ const mapDispatchToProps = (dispatch) => ({
   set_as_seen: (check) => dispatch(actionCreators.set_as_seen(check)),
   getLanguageListPOEdit: (language) =>
     dispatch(actionCreators.getLanguageListPOEdit(language)),
+  setCampaignInProgressInstagram: (value) =>
+    dispatch(actionCreators.setCampaignInProgressInstagram(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

@@ -65,6 +65,7 @@ import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
+import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
 
 export default FluidNavigator(
   {
@@ -102,10 +103,9 @@ export default FluidNavigator(
       screen: SuccessRedirect,
       path: "success/",
     },
-    Messenger: Messenger,
-    MessengerLoading: {
-      screen: MessengerLoading,
-      path: "MessengerLoading/",
+    Messenger: {
+      screen: Messenger,
+      path: "Messenger/",
     },
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
@@ -142,6 +142,7 @@ export default FluidNavigator(
     AdFeedDesignReview: AdFeedDesignReview,
     InstagramAdPaymentReview: InstagramAdPaymentReview,
     ImagePreview: ImagePreview,
+    InstagramCampaignDetails: InstagramCampaignDetails,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

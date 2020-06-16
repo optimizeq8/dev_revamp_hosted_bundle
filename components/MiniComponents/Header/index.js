@@ -4,6 +4,7 @@ import { Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
+import MSGBackIcon from "../../../assets/SVGs/MSGBackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
 import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds";
@@ -13,6 +14,7 @@ import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
+import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 
 export default class Header extends Component {
   render() {
@@ -30,6 +32,7 @@ export default class Header extends Component {
       containerStyle,
       titelStyle,
       icon,
+      backButton,
       translateTitle = true,
       showTopRightButtonIcon = false,
       disabled = false,
@@ -71,7 +74,11 @@ export default class Header extends Component {
           ]}
         >
           {closeButton ? (
-            <CloseIcon width={23} height={23} stroke={iconColor} />
+            backButton === "messenger" ? (
+              <MSGBackIcon width={40} height={40} />
+            ) : (
+              <CloseIcon width={23} height={23} stroke={iconColor} />
+            )
           ) : (
             <BackIcon width={24} height={24} stroke={iconColor} />
           )}
@@ -84,6 +91,11 @@ export default class Header extends Component {
         {icon === "google" && (
           <View style={{ paddingHorizontal: 5 }}>
             <GoogleSE width={30} style={styles.googleIcon} />
+          </View>
+        )}
+        {icon === "instagram" && (
+          <View style={{ paddingHorizontal: 5 }}>
+            <InstagramIcon width={30} height={24} fill="#fff" />
           </View>
         )}
         {title && typeof title === "object" ? (

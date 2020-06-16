@@ -98,7 +98,7 @@ PODS:
     - lottie-ios (~> 3.1.3)
     - React
   - Mixpanel (3.6.1)
-  - mobile-ffmpeg-https (4.3.1.LTS)
+  - mobile-ffmpeg-https-gpl (4.3.1.LTS)
   - PhotoEditorSDK (10.13.1):
     - imglyKit (= 10.13.1)
   - RCTRequired (0.61.5)
@@ -267,10 +267,13 @@ PODS:
   - react-native-adjust (4.22.0):
     - Adjust (= 4.22.1)
     - React
-  - react-native-ffmpeg/https-lts (0.4.4):
-    - mobile-ffmpeg-https (= 4.3.1.LTS)
+  - react-native-ffmpeg/https-gpl-lts (0.4.4):
+    - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
   - react-native-maps (0.26.1):
+    - React
+  - react-native-mixpanel (1.2.0):
+    - Mixpanel (~> 3.6.0)
     - React
   - react-native-webview (8.1.1):
     - React
@@ -340,7 +343,7 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - RNVideoEditorSDK (2.4.1):
+  - RNVideoEditorSDK (2.4.2):
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
@@ -414,8 +417,9 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-adjust (from `../node_modules/react-native-adjust`)
-  - react-native-ffmpeg/https-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
+  - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -464,7 +468,7 @@ SPEC REPOS:
     - imglyKit
     - lottie-ios
     - Mixpanel
-    - mobile-ffmpeg-https
+    - mobile-ffmpeg-https-gpl
     - PhotoEditorSDK
     - Segment-Mixpanel
     - Sentry
@@ -555,6 +559,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-mixpanel:
+    :path: "../node_modules/react-native-mixpanel"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -669,7 +675,7 @@ SPEC CHECKSUMS:
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   Mixpanel: 61e6d8c0717c8e94ccc6d3a1ae8677b9a78f64c5
-  mobile-ffmpeg-https: aebe327c4cdacde636defa4118465413f099667d
+  mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   PhotoEditorSDK: eba8c2e128c6679580ba82b2a063a0174f40903b
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
@@ -683,6 +689,7 @@ SPEC CHECKSUMS:
   react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
+  react-native-mixpanel: d644efe1ca33d2646d5cba29e24a13ebc9b37209
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -706,7 +713,7 @@ SPEC CHECKSUMS:
   RNSentry: b456e5a6c48517dad1756d5bccffbdc0d2766dcb
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
+  RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
   Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
@@ -725,6 +732,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: e4c309695dd6874eefa8d99ed99bca0e891d5afd
+PODFILE CHECKSUM: c038fa4f6fe64af8ca697844f69a2d164731ed93
 
 COCOAPODS: 1.8.4

@@ -4,7 +4,8 @@ export const formatMedia = (
   mainBusiness,
   campaignInfo,
   data,
-  setTheState
+  setTheState,
+  objective
 ) => {
   var body = new FormData();
 
@@ -14,21 +15,26 @@ export const formatMedia = (
   var photo = {
     uri: media,
     type: media_type + "/" + format,
-    name: res
+    name: res,
   };
   body.append("media", photo);
   body.append("media_type", media_type);
 
   // body.append("ad_account_id", mainBusiness.snap_ad_account_id);
-  body.append("ad_account_id", 123456789012);
+  body.append("ad_account_id", mainBusiness.fb_ad_account_id);
 
   body.append("businessid", mainBusiness.businessid);
   body.append("campaign_id", campaignInfo.campaign_id);
   body.append("campaign_name", data.name);
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
   body.append("message", campaignInfo.message);
-  body.append("destination", campaignInfo.destination);
-  body.append("link", data.link); // webiste link for destination as link
+  body.append(
+    "destination",
+    objective === "BRAND_AWARENESS" && data.link
+      ? "link"
+      : campaignInfo.destination
+  );
+  body.append("link", data.link ? data.link : "BLANK"); // webiste link for destination as link
   body.append("call_to_action", data.call_to_action.value);
   body.append(
     "attachment",
@@ -38,6 +44,6 @@ export const formatMedia = (
   );
 
   setTheState({
-    formatted: body
+    formatted: body,
   });
 };

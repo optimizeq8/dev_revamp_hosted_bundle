@@ -6,7 +6,7 @@
     "slug": "optimize_app",
     "privacy": "public",
     "platforms": ["ios", "android"],
-    "version": "0.3.82",
+    "version": "0.3.820",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
     "notification": {
@@ -24,7 +24,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "77",
+      "buildNumber": "78",
       "supportsTablet": false
     },
     "packagerOpts": {
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 51,
+      "versionCode": 52,
       "googleServicesFile": "./google-services.json"
     },
     "hooks": {

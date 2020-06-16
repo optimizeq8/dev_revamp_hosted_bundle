@@ -236,7 +236,10 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
       .post(`useWallet`, info, { timeout: 10000 })
@@ -302,7 +305,10 @@ export const removeWalletAmount = (
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
 
     createBaseUrl()
@@ -373,7 +379,10 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
       payload: true,
     });
     var info = { campaign_id: campaign_id };
-    if (getState().transA.channel === "google")
+    if (
+      getState().transA.channel === "google" ||
+      getState().transA.channel === "instagram"
+    )
       info = { ...info, channel: getState().transA.channel };
 
     createBaseUrl()
@@ -415,8 +424,9 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
       .catch((err) => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
-        analytics.track(`payment_processing`, {
+        analytics.track(`a_error`, {
           source: "payment_mode",
+          error_page: "payment_mode",
           source_action: "a_payment_processing",
           mode_of_payment: "WALLET",
           campaign_id,

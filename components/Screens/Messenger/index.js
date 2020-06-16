@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   View,
+  Text,
   BackHandler,
   FlatList,
   TouchableOpacity,
@@ -18,9 +19,10 @@ import { ActivityIndicator } from "react-native-paper";
 import socketIOClient from "socket.io-client";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import LottieView from "lottie-react-native";
 
 //icons
-import ForwardButton from "../../../assets/SVGs/ForwardButton";
+import ForwardButton from "../../../assets/SVGs/ForwardMSGButton";
 import Camera from "../../../assets/SVGs/Camera";
 import ChatBot from "../../../assets/SVGs/ChatBot";
 
@@ -84,6 +86,7 @@ class Messenger extends Component {
     // room the user is subscribed to based on their id
     // the conversation is set as seen/read whe they open the messenger
     // at the same time the update_conversatusion_read_status gets called tp update the notifications indicator
+    this.props.connect_user_to_intercom(this.props.userInfo.userid);
 
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     socket.connect();
@@ -263,11 +266,12 @@ class Messenger extends Component {
       >
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <CustomHeader
+          backButton="messenger"
           screenProps={this.props.screenProps}
           closeButton={true}
           title={"Support"}
           titelStyle={{
-            bottom: 8,
+            color: "#75647C",
           }}
           segment={{
             source: "open_support",
@@ -279,102 +283,135 @@ class Messenger extends Component {
               source_action: "a_go_back",
             })
           }
+          containerStyle={{
+            backgroundColor: "#F4F2F5",
+          }}
         />
         <View style={styles.contentContainer}>
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={heightPercentageToDP("10%")}
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : ""}
-          >
-            <>
-              <View style={styles.flexEmptyView} />
-              <FlatList
-                inverted
-                ref={(ref) => {
-                  this.flatList = ref;
+          {this.props.loading_con ? (
+            <View style={styles.flexView}>
+              <LottieView
+                ref={(animation) => {
+                  this.animation = animation;
                 }}
-                data={this.props.messages}
-                keyExtractor={this._keyExtractor}
-                renderItem={(msg, index) => {
-                  if (
-                    !isNull(msg.item.body) ||
-                    msg.item.attachments.length !== 0
-                  )
-                    return (
-                      <MessageBubble
-                        navigation={this.props.navigation}
-                        key={msg.item.id}
-                        message={msg.item}
-                      />
-                    );
-                }}
+                style={styles.loadingAnimation}
+                resizeMode="contain"
+                source={require("../../../assets/animation/update_loader.json")}
+                loop={true}
+                autoPlay
               />
-              {isEmpty(this.props.messages) && (
-                <View style={styles.chatBotViewSmall}>
-                  <ChatBot width={100} height={100} />
-                </View>
-              )}
-              <View style={styles.textInputContainer}>
-                <TouchableOpacity
-                  style={styles.cameraButton}
-                  onPress={() => this.pick(this.props.screenProps)}
-                >
-                  <Camera
-                    fill={globalColors.orange}
-                    style={styles.cameraIcon}
-                    width={heightPercentageToDP(3)}
-                    height={heightPercentageToDP(3)}
-                  />
-                </TouchableOpacity>
-                <TextInput
-                  editable={true}
-                  multiline={true}
-                  value={this.state.textValue}
-                  onChange={(event) => this._onChange(event)}
-                  style={[
-                    I18nManager.isRTL ? rtlStyles.textInput : styles.textInput,
-                    newStyle,
-                  ]}
-                  placeholder={translate("Type Your Message")}
-                  placeholderTextColor="#909090"
-                  placeholderLineHeight={30}
-                  maxHeight={100}
-                  minHeight={45}
-                  maxWidth={300}
-                  enableScrollToCaret
-                  ref={(r) => {
-                    this._textInput = r;
+              <Text style={styles.connectingAgentText}>
+                {translate("Connecting you to Your Agent")}
+              </Text>
+            </View>
+          ) : (
+            <KeyboardAvoidingView
+              keyboardVerticalOffset={heightPercentageToDP("10%")}
+              style={styles.container}
+              behavior={Platform.OS === "ios" ? "padding" : ""}
+            >
+              <>
+                <View style={styles.flexEmptyView} />
+                <FlatList
+                  inverted
+                  ref={(ref) => {
+                    this.flatList = ref;
                   }}
-                  onContentSizeChange={(e) =>
-                    this.updateSize(e.nativeEvent.contentSize.height)
-                  }
+                  data={this.props.messages}
+                  keyExtractor={this._keyExtractor}
+                  renderItem={(msg, index) => {
+                    if (
+                      !isNull(msg.item.body) ||
+                      msg.item.attachments.length !== 0
+                    )
+                      return (
+                        <MessageBubble
+                          navigation={this.props.navigation}
+                          key={msg.item.id}
+                          message={msg.item}
+                        />
+                      );
+                  }}
                 />
-                {this.props.loading_msg ? (
-                  <ActivityIndicator
-                    color="orange"
-                    size="small"
-                    style={styles.activityIndicator}
-                  />
-                ) : (
+                {isEmpty(this.props.messages) && (
+                  <View style={styles.chatBotViewSmall}>
+                    <ChatBot width={100} height={100} />
+                  </View>
+                )}
+                <View style={styles.textInputContainer}>
                   <TouchableOpacity
-                    style={[
-                      styles.submitButton,
-                      I18nManager.isRTL
-                        ? { transform: [{ rotateY: "180deg" }] }
-                        : {},
-                    ]}
-                    onPress={this._handleSubmission}
+                    style={styles.cameraButton}
+                    onPress={() => this.pick(this.props.screenProps)}
                   >
-                    <ForwardButton
-                      width={heightPercentageToDP(7)}
-                      height={heightPercentageToDP(7)}
-                      bottom={-10}
+                    <Camera
+                      fill={globalColors.orange}
+                      style={styles.cameraIcon}
+                      width={heightPercentageToDP(4.5)}
+                      height={heightPercentageToDP(4.5)}
                     />
                   </TouchableOpacity>
-                )}
-              </View>
-            </>
-          </KeyboardAvoidingView>
+                  <TextInput
+                    editable={true}
+                    multiline={true}
+                    value={this.state.textValue}
+                    onChange={(event) => this._onChange(event)}
+                    style={[
+                      I18nManager.isRTL
+                        ? rtlStyles.textInput
+                        : styles.textInput,
+                      newStyle,
+                      {
+                        elevation: 2,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 5,
+                          height: 5,
+                        },
+                        shadowRadius: 15,
+                        shadowOpacity: 0.2,
+                      },
+                    ]}
+                    placeholder={translate("Type Your Message")}
+                    placeholderTextColor="#909090"
+                    placeholderLineHeight={30}
+                    maxHeight={100}
+                    minHeight={45}
+                    maxWidth={300}
+                    enableScrollToCaret
+                    ref={(r) => {
+                      this._textInput = r;
+                    }}
+                    onContentSizeChange={(e) =>
+                      this.updateSize(e.nativeEvent.contentSize.height)
+                    }
+                  />
+                  {this.props.loading_msg ? (
+                    <ActivityIndicator
+                      color="orange"
+                      size="small"
+                      style={styles.activityIndicator}
+                    />
+                  ) : (
+                    <TouchableOpacity
+                      style={[styles.submitButton]}
+                      onPress={this._handleSubmission}
+                    >
+                      <Text
+                        style={{
+                          color: "#9300FF",
+                          fontFamily: "montserrat-bold",
+                          fontSize: 12,
+                          alignSelf: "center",
+                        }}
+                      >
+                        {translate("Send")}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </>
+            </KeyboardAvoidingView>
+          )}
         </View>
       </SafeAreaView>
     );

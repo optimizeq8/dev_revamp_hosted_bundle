@@ -46,8 +46,8 @@ class SwitchLanguage extends Component {
     AsyncStorage.getItem("languageOpened")
       .then(async (value) => {
         if (isNull(value)) {
-          AsyncStorage.setItem("languageOpened", "false").then(async () => {
-            await analytics.track("first_app_open", {
+          AsyncStorage.setItem("languageOpened", "false").then(() => {
+            analytics.track("first_app_open", {
               anonymous_userId,
               source: this.props.screenProps.prevAppState,
               // source_action: "", Not sure what will come here
@@ -55,9 +55,10 @@ class SwitchLanguage extends Component {
               device_id,
               // country: "",
             });
-            await analytics.track("app_language", {
+            analytics.track("app_language", {
               source: this.props.screenProps.prevAppState,
               device_id,
+              selected_language: this.state.language,
               // source_action: "", // Not sure what will come here ??
               timestamp: new Date().getTime(),
               anonymous_userId,
@@ -82,9 +83,10 @@ class SwitchLanguage extends Component {
             source_action: "a_app_language_select",
           });
         } else {
-          await analytics.track("app_language", {
+          analytics.track("app_language", {
             source: this.props.screenProps.prevAppState,
             device_id,
+            selected_language: this.state.language,
             // source_action: "", // Not sure what will come here ??
             timestamp: new Date().getTime(),
             anonymous_userId,

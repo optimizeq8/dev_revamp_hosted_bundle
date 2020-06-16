@@ -241,7 +241,7 @@ export const _pickImage = async (
               setTheState({
                 storyAdCards: {
                   ...storyAdCards,
-                  // storyAdSelected: false,
+                  storyAdSelected: false,
                   selectedStoryAd: {
                     ...card,
                   },
@@ -377,18 +377,27 @@ export const _pickImage = async (
                   : manipResult.image
                 : result.uri;
               videoIsExporting(true);
-              let newResult = await RNFFprobe.getMediaInformation(actualUri);
-              newResult = {
-                width:
-                  newResult.streams[
-                    newResult.streams[0].hasOwnProperty("width") ? 0 : 1
-                  ].width,
-                height:
-                  newResult.streams[
-                    newResult.streams[0].hasOwnProperty("height") ? 0 : 1
-                  ].height,
-                duration: newResult.duration / 1000,
-              };
+              let newResult = {};
+              if (manipResult.hasChanges) {
+                newResult = await RNFFprobe.getMediaInformation(actualUri);
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                };
+              } else {
+                newResult = {
+                  width: result.width,
+                  height: result.height,
+                  duration: result.duration / 1000,
+                };
+              }
               let newSize = await FileSystem.getInfoAsync(actualUri);
               if (
                 (Math.floor(newResult.width / 9) !==
@@ -405,7 +414,7 @@ export const _pickImage = async (
                     Math.floor(newResult.height / 16)
                       ? "1080:1920"
                       : "-1:1920" //-1 means scale inly by 1920 to keep aspect ratio
-                  } ${FileSystem.documentDirectory}${
+                  } -vcodec libx264 ${FileSystem.documentDirectory}${
                     outputUri[outputUri.length - 1]
                   }`
                 );

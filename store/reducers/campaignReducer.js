@@ -483,7 +483,7 @@ const reducer = (state = initialState, action) => {
       let maxValueBudget = 0;
       let incompleteCampaign = false;
       let currentCampaignSteps = [];
-      if (resetAdType) {
+      if (resetAdType && state.incompleteCampaign) {
         currentCampaignSteps = state.currentCampaignSteps;
         incompleteCampaign = state.incompleteCampaign;
         adType = state.adType;

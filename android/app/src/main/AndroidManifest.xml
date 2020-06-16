@@ -21,9 +21,9 @@
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://optimizeq8.github.io/optimizeapp_live_v2_hosted_bundle/android-index.json" />
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@samyoptimize/optimize_app" />
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="37.0.0" />
-    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="ej-dev" />
+    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="development" />
 
     <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:launchMode="singleTask" android:windowSoftInputMode="adjustPan" android:theme="@style/Theme.App.SplashScreen" android:screenOrientation="portrait" android:exported="true">
       <intent-filter>
@@ -44,6 +44,12 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <service android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService" android:enabled="true" android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity" android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
 
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
   </application>

@@ -43,7 +43,7 @@ target 'OptimizeApp' do
 
   # react-native-cli autolinking
   # pod 'react-native-ffmpeg', :path => '../node_modules/react-native-ffmpeg'
-  pod 'react-native-ffmpeg/https-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
+  pod 'react-native-ffmpeg/https-gpl-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
 
   use_native_modules!
 
@@ -64,6 +64,8 @@ target 'OptimizeApp' do
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
   pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
+
+  pod 'react-native-mixpanel', :path => '../node_modules/react-native-mixpanel'
 
 end
 

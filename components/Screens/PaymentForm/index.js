@@ -351,11 +351,11 @@ class PaymentForm extends Component {
   handlePaymentFormFocus = () => {
     const source = this.props.navigation.getParam(
       "source",
-      this.props.screenProps.prevAppState
+      "payment_processing"
     );
     const source_action = this.props.navigation.getParam(
       "source_action",
-      this.props.screenProps.prevAppState
+      "a_payment_processing"
     );
     const campaign_channel = this.props.navigation.getParam(
       "campaign_channel",

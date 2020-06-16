@@ -4,9 +4,10 @@ const IsIOS = Platform.OS === "ios";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
+    backgroundColor: "#F4F2F5",
   },
   container: {
-    backgroundColor: "#0000",
+    backgroundColor: "#F4F2F5",
     flex: 1,
   },
   contentContainer: {
@@ -17,16 +18,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 10,
-    backgroundColor: "#F4F4F4",
-    paddingVertical: 8,
+    backgroundColor: "#FCFBFC",
+    paddingTop: 17,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     position: "relative",
     marginTop: 10,
+    paddingBottom: 17,
   },
   textInput: {
     textAlign: "left",
-    marginTop: 5,
     paddingLeft: 15,
     paddingTop: Platform.OS === "ios" ? 15 : 0,
     paddingRight: 15,
@@ -41,23 +42,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 0,
     borderRadius: 20,
-    marginBottom: 17,
     width: "100%",
   },
-  cameraIcon: {
-    marginBottom: 17,
-  },
+  cameraIcon: {},
   submitButton: {
-    marginBottom: 25,
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginRight: 5,
+    paddingHorizontal: 20,
   },
   connectingAgentText: {
-    color: "white",
+    color: "#A496AC",
     fontSize: 14 / PixelRatio.getFontScale(),
     lineHeight: 18,
     fontFamily: "montserrat-regular",
@@ -93,8 +90,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cameraButton: {
-    padding: 5,
-    paddingRight: 10,
+    // padding: 5,
+    paddingHorizontal: 20,
   },
 });
 

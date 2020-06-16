@@ -12,6 +12,11 @@ export default class GenderOptions extends Component {
     Segment.screen("Gender Options");
   }
   render() {
+    let selectedGender = this.props.campaignInfo.targeting.hasOwnProperty(
+      "demographics"
+    )
+      ? this.props.campaignInfo.targeting.demographics[0].gender // snapchat
+      : this.props.selectedGender; //instagram
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -33,18 +38,12 @@ export default class GenderOptions extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedGender === "MALE" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
+                    selectedGender === "MALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -61,17 +60,13 @@ export default class GenderOptions extends Component {
                 <Icon
                   type="MaterialCommunityIcons"
                   name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
-                      ? "circle"
-                      : "circle-outline"
+                    selectedGender === "FEMALE" ? "circle" : "circle-outline"
                   }
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
+                    selectedGender === "FEMALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text
@@ -87,18 +82,12 @@ export default class GenderOptions extends Component {
               >
                 <Icon
                   type="MaterialCommunityIcons"
-                  name={
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
-                      ? "circle"
-                      : "circle-outline"
-                  }
+                  name={selectedGender === "" ? "circle" : "circle-outline"}
                   style={[
-                    this.props.campaignInfo.targeting.demographics[0].gender ===
-                    ""
+                    selectedGender === ""
                       ? styles.activetext
                       : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.optionsIconSize,
                   ]}
                 />
                 <Text

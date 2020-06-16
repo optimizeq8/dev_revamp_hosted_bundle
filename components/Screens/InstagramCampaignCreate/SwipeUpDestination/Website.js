@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   I18nManager,
 } from "react-native";
-import { SafeAreaView } from "react-navigation";
-import { Text, Item, Input, Icon, Button } from "native-base";
+import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
+import InputScrollView from "react-native-input-scroll-view";
 import isEmpty from "lodash/isEmpty";
 import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
@@ -45,13 +45,16 @@ class Website extends Component {
     this.state = {
       campaignInfo: {
         link: "",
-        call_to_action: list.InstagramFeedAd[0].call_to_action_list[0],
+        call_to_action:
+          list[this.props.data["campaign_type"]][this.props.listNum]
+            .call_to_action_list[0],
       },
       callActionLabel: "",
       networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions:
-        list[this.props.data["campaign_type"]][0].call_to_action_list,
+        list[this.props.data["campaign_type"]][this.props.listNum || 0]
+          .call_to_action_list,
       urlError: "",
       inputCallToAction: false,
       callToActionError: null,
@@ -62,11 +65,12 @@ class Website extends Component {
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("link") &&
-      this.props.data.link !== ""
+      this.props.data.link !== "" &&
+      this.props.data.link !== "BLANK"
     ) {
       this.setState({
         campaignInfo: {
-          link: his.props.data.link,
+          link: this.props.data.link,
           call_to_action: this.props.data.call_to_action,
         },
       });
@@ -175,7 +179,10 @@ class Website extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView style={[styles.websiteContent]}>
+      <InputScrollView
+        {...ScrollView.props}
+        contentContainerStyle={[styles.websiteContent]}
+      >
         <WebsiteIcon style={styles.icon} width={60} height={60} fill={"#FFF"} />
         <View style={[styles.textcontainer]}>
           <Text style={styles.titletext}>{translate("Website")}</Text>
@@ -183,43 +190,46 @@ class Website extends Component {
             {translate("The user will be taken to your website")}
           </Text>
         </View>
-        <View style={{ paddingHorizontal: 80 }}>
-          <ModalField
-            stateName={"callToAction"}
-            setModalVisible={this.openCallToActionModal}
-            modal={true}
-            label={"call to action"}
-            valueError={this.state.callToActionError}
-            getValidInfo={this.getValidInfo}
-            disabled={false}
-            valueText={this.state.campaignInfo.call_to_action.label}
-            value={this.state.campaignInfo.call_to_action.label}
-            incomplete={false}
-            translate={this.props.screenProps.translate}
-            icon={WindowIcon}
-            isVisible={this.state.inputCallToAction}
-          />
 
-          <WebsiteField
-            stateName={"url"}
-            customStyle={{ paddingHorizontal: 0, height: 50 }}
-            screenProps={this.props.screenProps}
-            website={this.state.campaignInfo.link}
-            setWebsiteValue={this.setWebsiteValue}
-            stateNameError={this.state.urlError}
-            getValidInfo={this.validateUrl}
-            // disabled={
-            //   (this.state.editBusinessInfo &&
-            //     this.props.editBusinessInfoLoading) ||
-            //   this.props.savingRegister
-            // }
-          />
-          <LowerButton
-            checkmark={true}
-            bottom={0}
-            function={this._handleSubmission}
-          />
-        </View>
+        <ModalField
+          stateName={"callToAction"}
+          setModalVisible={this.openCallToActionModal}
+          modal={true}
+          label={"call to action"}
+          valueError={this.state.callToActionError}
+          getValidInfo={this.getValidInfo}
+          disabled={false}
+          valueText={
+            this.state.campaignInfo.call_to_action.label === "BLANK"
+              ? "No Button"
+              : this.state.campaignInfo.call_to_action.label
+          }
+          value={
+            this.state.campaignInfo.call_to_action.label === "BLANK"
+              ? "No Button"
+              : this.state.campaignInfo.call_to_action.label
+          }
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          icon={WindowIcon}
+          isVisible={this.state.inputCallToAction}
+        />
+
+        <WebsiteField
+          stateName={"url"}
+          customStyle={{ paddingHorizontal: 0, height: 60 }}
+          screenProps={this.props.screenProps}
+          website={this.state.campaignInfo.link}
+          setWebsiteValue={this.setWebsiteValue}
+          stateNameError={this.state.urlError}
+          getValidInfo={this.validateUrl}
+        />
+        <LowerButton
+          checkmark={true}
+          bottom={0}
+          function={this._handleSubmission}
+        />
+
         <Picker
           showIcon={true}
           screenProps={this.props.screenProps}
@@ -235,7 +245,7 @@ class Website extends Component {
           screenName={"Swipe up destination Website"}
           closeCategoryModal={this.closeCallToActionModal}
         />
-      </SafeAreaView>
+      </InputScrollView>
     );
   }
 }

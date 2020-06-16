@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as actionCreators from "../../../store/actions";
@@ -27,8 +28,15 @@ class ContinueCampaign extends Component {
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
-    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
+    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted) {
+      analytics.track("continue_campaign_modal", {
+        source: "ad_objective",
+        // source_action: ""
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
+      });
       this.continueCampaign();
+    }
   }
 
   /**
@@ -37,12 +45,17 @@ class ContinueCampaign extends Component {
    */
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
-    console.log("campaignSteps", this.props.currentCampaignSteps);
 
     let continueRoutes = this.props.currentCampaignSteps.map((route) =>
-      NavigationActions.navigate({
-        routeName: route,
-      })
+      NavigationActions.navigate(
+        {
+          routeName: route,
+        },
+        {
+          source: "continue_campaign_modal",
+          source_action: "a_continue_campaign",
+        }
+      )
     );
     //resets the navigation stack
     resetAction = StackActions.reset({
@@ -103,7 +116,7 @@ class ContinueCampaign extends Component {
     } else {
       this.setState({ resumeLoading: true });
       let updated_transaction_data = {
-        channel: "",
+        channel: "instagram",
       };
       if (
         this.props.currentCampaignSteps.includes("InstagramFeedAdObjective")

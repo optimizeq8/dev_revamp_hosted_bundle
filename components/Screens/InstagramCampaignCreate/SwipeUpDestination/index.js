@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 
 //Redux
 import { connect } from "react-redux";
@@ -8,14 +8,72 @@ import * as actionCreators from "../../../../store/actions";
 
 import Header from "../../../MiniComponents/Header";
 import Website from "./Website";
+import InstaApp_Install from "./InstaApp_Install";
 import styles from "../styles/swipeUpDestination.styles";
+import VideoViews from "./VideoViews";
 
 class SwipeUpDestination extends React.Component {
   getSwipeUpDestination = () => {
-    console.log("data", this.props.data);
+    let listIndex = 0;
+    let content = <></>;
+    switch (this.props.data.objective) {
+      case "BRAND_AWARENESS":
+        listIndex = 0;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "LINK_CLICKS":
+        listIndex = 1;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "LEAD_GENERATION":
+        listIndex = 2;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "VIDEO_VIEWS":
+        listIndex = 3;
+        content = (
+          <VideoViews
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
+          />
+        );
+        break;
+      case "APP_INSTALLS":
+        listIndex = 3;
+         content = (
+          <InstaApp_Install
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        );
+        break;
+      default:
+        listIndex = 0;
+        break;
+    }
+    return { content };
   };
   render() {
-    this.getSwipeUpDestination();
+    const { content } = this.getSwipeUpDestination();
     return (
       <SafeAreaView
         forceInset={{
@@ -31,19 +89,10 @@ class SwipeUpDestination extends React.Component {
             source: "ad_swipe_up_destination",
             source_action: "a_go_back",
           }}
-          // segment={
-          //   {
-          //     // str: "Instagram Feed Ad Objective Back Button",
-          //     // obj: { businessname: this.props.mainBusiness.businessname }
-          //   }
-          // }
           navigation={this.props.navigation}
           title={"Swipe Up destination"}
         />
-        <Website
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-        />
+        {content}
       </SafeAreaView>
     );
   }

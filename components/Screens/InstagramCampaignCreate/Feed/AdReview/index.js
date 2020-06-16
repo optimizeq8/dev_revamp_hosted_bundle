@@ -30,6 +30,10 @@ class AdFeedDesignReview extends React.Component {
     });
   };
   render() {
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
     const {
       instagram_business_name,
       instagram_profile_pic,
@@ -38,7 +42,7 @@ class AdFeedDesignReview extends React.Component {
       media_type,
       media_option,
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = this.props.data;
+    } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_type === "IMAGE" && media) {
@@ -81,9 +85,7 @@ class AdFeedDesignReview extends React.Component {
                 width={32}
                 height={32}
                 source={{
-                  // uri: instagram_profile_pic
-                  uri:
-                    "https://instagram.fruh1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fruh1-1.fna.fbcdn.net&_nc_ohc=fZNjOfpbbykAX8qU7H5&oh=74289c1628b52d2bfd46f1140adf364d&oe=5EE10DAC",
+                  uri: instagram_profile_pic,
                 }}
               />
               <View style={styles.detailProfileView}>
@@ -101,12 +103,16 @@ class AdFeedDesignReview extends React.Component {
               </View>
             </View>
             <View style={styles.mediaView}>{mediaView}</View>
-            <View style={styles.swipeUpView}>
-              <Text style={styles.callToActionText}>
-                {call_to_action.label}
-              </Text>
-              <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
-            </View>
+            {(call_to_action.value || call_to_action) !== "BLANK" && (
+              <View style={styles.swipeUpView}>
+                <Text style={styles.callToActionText}>
+                  {call_to_action.hasOwnProperty("label")
+                    ? call_to_action.label
+                    : call_to_action.replace("_", " ")}
+                </Text>
+                <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
+              </View>
+            )}
             <View style={styles.iconView}>
               <HeartOutline style={styles.icon} />
               <CommentOutline style={styles.icon} />

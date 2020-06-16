@@ -13,10 +13,11 @@ import {
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-
+import isNull from "lodash/isNull";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import { showMessage } from "react-native-flash-message";
 
 //Style
 import styles from "./styles";
@@ -50,6 +51,22 @@ class AdType extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.instagram_access === "0"
+    ) {
+      let socialMediaPlatforms =
+        Platform.OS === "android" && I18nManager.isRTL
+          ? [...SocialPlatforms].reverse()
+          : [...SocialPlatforms];
+      const index = socialMediaPlatforms.findIndex(
+        (el) => el.title === "Instagram"
+      );
+      socialMediaPlatforms.splice(index, 1);
+      this.setState({
+        socialMediaPlatforms,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -60,9 +77,7 @@ class AdType extends Component {
     if (!this.props.navigation.isFocused()) {
       return false;
     }
-    Segment.trackWithProperties("Closed Ad Type", {
-      business_name: this.props.mainBusiness.businessname,
-    });
+
     this.props.navigation.navigate("Dashboard", {
       source: "ad_type",
       source_action: "a_back_button",
@@ -71,6 +86,8 @@ class AdType extends Component {
   };
 
   navigationHandler = (adType) => {
+    const { translate } = this.props.screenProps;
+
     const device_id = this.props.screenProps.device_id;
     analytics.track(`a_campaign_ad_type`, {
       source: "ad_type",
@@ -80,7 +97,7 @@ class AdType extends Component {
       device_id,
     });
     //Check if account is verified or not
-    const { fb_connected } = this.props.mainBusiness;
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
     if (
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
@@ -137,10 +154,24 @@ class AdType extends Component {
         this.props.mainBusiness.google_suspended === "1"
       ) {
         this.props.navigation.navigate("SuspendedWarning");
-      } else if (this.state.active === "Instagram" && fb_connected === "0") {
+      } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
+          source: "ad_type",
+          source_action: "a_campaign_ad_type",
+        });
+      } else if (
+        adType.mediaType === "instagram" &&
+        fb_connected === "1" &&
+        (isNull() || fb_ad_account_id === "")
+      ) {
+        showMessage({
+          message: translate(
+            `Your Instagram Account request is in process by OptimizeApp`
+          ),
+          type: "warning",
+          position: "top",
         });
       } else
         this.props.navigation.navigate(adType.rout, {
@@ -212,6 +243,31 @@ class AdType extends Component {
     });
   };
 
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+
+    analytics.track(`ad_type`, {
+      source,
+      source_action,
+      campaign_channel: this.state.active.toLowerCase(),
+    });
+    const changeFbConnectStatus = this.props.navigation.getParam(
+      "success",
+      false
+    );
+
+    if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
+      this.props.updateBusinessConnectedToFacebook("1");
+    }
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     const {
@@ -220,6 +276,8 @@ class AdType extends Component {
       MainIcon,
       ad_type_array,
     } = this.getValuebasedOnActiveSlide();
+
+    const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
 
     return (
       <SafeAreaView
@@ -239,34 +297,7 @@ class AdType extends Component {
             style={styles.gradient}
           />
         )}
-        <NavigationEvents
-          onDidFocus={() => {
-            const source = this.props.navigation.getParam(
-              "source",
-              this.props.screenProps.prevAppState
-            );
-            const source_action = this.props.navigation.getParam(
-              "source_action",
-              this.props.screenProps.prevAppState
-            );
-
-            analytics.track(`ad_type`, {
-              source,
-              source_action,
-              campaign_channel: this.state.active.toLowerCase(),
-            });
-            const changeFbConnectStatus = this.props.navigation.getParam(
-              "success",
-              false
-            );
-            if (
-              changeFbConnectStatus &&
-              changeFbConnectStatus.includes("true")
-            ) {
-              this.props.updateBusinessConnectedToFacebook("1");
-            }
-          }}
-        />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
 
         <CustomHeader
           screenProps={this.props.screenProps}
@@ -294,7 +325,7 @@ class AdType extends Component {
             {translate("Create a new")}
           </Text>
           <ScrollView horizontal contentContainerStyle={{ width: "100%" }}>
-            {SocialPlatforms.map((social) => {
+            {this.state.socialMediaPlatforms.map((social) => {
               let MediaIcon = social.icon.type;
               return (
                 <TouchableOpacity
@@ -379,19 +410,30 @@ class AdType extends Component {
           )}
         </View>
         <View style={styles.mainView}>
-          {/* {this.state.active === "Instagram" && (
+          {this.state.active === "Instagram" && fb_connected === "0" && (
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: "https://optimizeapp.com/facebooklogin/login.php",
-                  title: "Instagram"
+                  url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
+                  title: "Instagram",
+                  source: "ad_type",
+                  source_action: "a_connect_to_facebook",
                 })
               }
               style={styles.loginBtn}
               uppercase
               text={translate("Login with Facebook")}
             />
-          )} */}
+          )}
+          {this.state.active === "Instagram" &&
+            fb_connected === "1" &&
+            (isNull(fb_ad_account_id) || fb_ad_account_id === "") && (
+              <Text style={styles.fbUnderProcessText}>
+                {translate(
+                  `Your Instagram Account request is in process by OptimizeApp`
+                )}
+              </Text>
+            )}
           <Text style={styles.selectADTypeText}>
             {translate(`Select {{activeSlide}} Ad Type`, {
               activeSlide: I18nManager.isRTL ? " " : this.state.active,

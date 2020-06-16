@@ -460,7 +460,10 @@ class CampaignDetails extends Component {
       }
 
       return (
-        <>
+        <SafeAreaView
+          style={[{ height: "100%" }]}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
           <DateFields
             onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
@@ -472,322 +475,312 @@ class CampaignDetails extends Component {
             chartRange={true}
             screenProps={this.props.screenProps}
           />
-          <SafeAreaView
-            style={[{ height: "100%" }]}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
-            <NavigationEvents onDidFocus={this.onDidFocus} />
-            <Container style={[styles.container]}>
-              <View
-                style={[
-                  styles.gradient,
-                  {
-                    borderBottomStartRadius: 30,
-                    borderBottomEndRadius: 30,
-                    overflow: "hidden",
-                  },
-                ]}
-              >
-                <LinearGradient
-                  colors={["#6200FF", "#8900FF"]}
-                  locations={[1, 0.3]}
-                  style={styles.gradient}
-                />
-              </View>
-              <Header
-                screenProps={this.props.screenProps}
-                campaignEnded={this.props.campaignEnded}
-                closeButton={false}
-                translateTitle={false}
-                title={loading ? "" : selectedCampaign.name}
-                icon={"snapchat"}
-                actionButton={this.state.expand && this.handleChartToggle}
-                navigation={
-                  !this.state.expand ? this.props.navigation : undefined
-                }
-                selectedCampaign={selectedCampaign}
-                containerStyle={{ height: 50 }}
-                showTopRightButtonIcon={
-                  !loading && selectedCampaign.review_status === "APPROVED"
-                }
-                topRightButtonFunction={() => this.showCSVModal(true)}
-                titelStyle={{
-                  textAlign: "left",
-                  fontSize: 15,
-                  paddingTop: 3,
-                  flex: 1,
-                }}
-                segment={{
-                  source: "campaign_detail",
-                  source_action: "a_go_back",
-                }}
-                campaignStatus={loading ? null : selectedCampaign.status}
-              />
-              {loading ? (
-                <View style={{ margin: 5 }}>
-                  <PlaceholderLine />
-                </View>
-              ) : this.campaignEndedOrNot(selectedCampaign) ? (
-                !this.state.expand && (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: globalColors.orange,
-                        },
-                      ]}
-                      name={"circle"}
-                      type={"FontAwesome"}
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        { color: globalColors.orange },
-                      ]}
-                    >
-                      {translate("Campaign ended")}
-                    </Text>
-                  </View>
-                )
-              ) : (
-                !this.state.expand && (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: selectedCampaign.review_status.includes(
-                            "REJECTED"
-                          )
-                            ? globalColors.red
-                            : selectedCampaign.status === "LIVE"
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                      name={
-                        selectedCampaign.review_status.includes("REJECTED")
-                          ? "circle-slash"
-                          : "circle"
-                      }
-                      type={
-                        selectedCampaign.review_status.includes("REJECTED")
-                          ? "Octicons"
-                          : "FontAwesome"
-                      }
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        {
-                          color: selectedCampaign.review_status.includes(
-                            "REJECTED"
-                          )
-                            ? globalColors.red
-                            : !selectedCampaign.review_status.includes(
-                                "PENDING"
-                              ) && selectedCampaign.status === "LIVE"
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                    >
-                      {translate(
-                        `${
-                          selectedCampaign.review_status.includes("PENDING")
-                            ? "In Review"
-                            : selectedCampaign.review_status.includes(
-                                "REJECTED"
-                              )
-                            ? "Ad Rejected"
-                            : selectedCampaign.status === "LIVE"
-                            ? "LIVE"
-                            : "Campaign Paused"
-                        }`
-                      )}
-                    </Text>
-                  </View>
-                )
-              )}
-              <ScrollView
-                contentContainerStyle={{ height: hp(115) }}
-                scrollEnabled={!this.state.expand}
-                ref={(ref) => (this.scroll = ref)}
-                style={{ maxHeight: "100%" }}
-              >
-                <View style={[styles.mainCard]}>
-                  {!loading &&
-                    ((selectedCampaign &&
-                      selectedCampaign.review_status !== "REJECTED") ||
-                    new Date(selectedCampaign.end_time) < new Date() ? (
-                      <TouchableOpacity
-                        onLayout={this.onLayout}
-                        disabled={this.state.expand}
-                        onPress={this.handleChartToggle}
-                      >
-                        {this.state.expand && (
-                          <ChartDateChoices
-                            selectedCampaign={selectedCampaign}
-                            dateField={this.dateField}
-                            durationChange={this.durationChange}
-                            screenProps={this.props.screenProps}
-                          />
-                        )}
-                        <CampaignCircleChart
-                          channel={"snapchat"}
-                          campaign={selectedCampaign}
-                          detail={true}
-                          screenProps={this.props.screenProps}
-                          loading={loading}
-                          handleChartToggle={this.handleChartToggle}
-                          chartExpanded={this.state.expand}
-                        />
-                      </TouchableOpacity>
-                    ) : (
-                      <RejectedSnapchatInfo
-                        loading={loading}
-                        screenProps={this.props.screenProps}
-                        review_status_reason={
-                          selectedCampaign.review_status_reason || []
-                        }
-                        navigation={this.props.navigation}
-                        selectedCampaign={selectedCampaign}
-                      />
-                    ))}
-
-                  {!this.state.expand && (
-                    <View style={styles.campaignMediaAndInfo}>
-                      <CampaignMedia
-                        selectedCampaign={selectedCampaign}
-                        navigation={this.props.navigation}
-                        loading={loading}
-                        screenProps={this.props.screenProps}
-                        source={"campaign_detail"}
-                      />
-                      <AudienceOverview
-                        screenProps={this.props.screenProps}
-                        data={audienceOverViewData}
-                        editCampaign={true}
-                        // targeting={targeting}
-                        loading={loading}
-                        navigatingRoutePath={"AdDetails"}
-                        selectedCampaign={selectedCampaign}
-                      />
-                    </View>
-                  )}
-                  {loading ? (
-                    <View style={{ margin: 5 }}>
-                      <PlaceholderLine />
-                    </View>
-                  ) : (
-                    <View style={{}}>
-                      {!this.state.expand && (
-                        <View>
-                          {selectedCampaign.review_status === "APPROVED" &&
-                            (selectedCampaign.campaign_end === "0" &&
-                            !this.props.campaignEnded &&
-                            new Date(selectedCampaign.end_time) > new Date() ? (
-                              selectedCampaign.review_status === "APPROVED" &&
-                              new Date(selectedCampaign.start_time) >
-                                new Date() ? (
-                                <View style={[styles.campaignStatus]}>
-                                  <Text style={styles.reviewtext}>
-                                    {translate("Scheduled for")} {start_time}
-                                  </Text>
-                                </View>
-                              ) : (
-                                !this.props.campaignEnded && (
-                                  <View padder style={styles.toggleSpace}>
-                                    <View style={{ alignSelf: "center" }}>
-                                      {selectedCampaign && (
-                                        <Toggle
-                                          buttonTextStyle={
-                                            styles.switchButtonText
-                                          }
-                                          buttonText={
-                                            this.state.toggleText !== "PAUSED"
-                                              ? "LIVE"
-                                              : "PAUSED"
-                                          }
-                                          containerStyle={styles.toggleStyle}
-                                          switchOn={this.state.toggle}
-                                          onPress={() => {
-                                            this.state.toggle
-                                              ? this.setState({
-                                                  modalVisible: true,
-                                                })
-                                              : this.updateStatus();
-                                          }}
-                                          backgroundColorOff="rgba(255,255,255,0.1)"
-                                          backgroundColorOn="rgba(255,255,255,0.1)"
-                                          circleColorOff="#FF9D00"
-                                          circleColorOn="#66D072"
-                                          duration={500}
-                                          circleStyle={styles.switchCircle}
-                                        />
-                                      )}
-                                      <Text style={styles.statusText}>
-                                        {translate(
-                                          `${
-                                            this.state.toggle
-                                              ? "Tap to pause AD"
-                                              : "Tap to activate AD"
-                                          }`
-                                        )}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                )
-                              )
-                            ) : null)}
-                        </View>
-                      )}
-                    </View>
-                  )}
-                </View>
-              </ScrollView>
-            </Container>
-            {!loading && (
-              <StatusModal
-                screenProps={this.props.screenProps}
-                selectedCampaign={selectedCampaign}
-                updateStatus={this.updateStatus}
-                endCampaign={this.endCampaign}
-                modalVisible={this.state.modalVisible}
-                showModal={this.showModal}
-              />
-            )}
-            <Animated.View
+          <NavigationEvents onDidFocus={this.onDidFocus} />
+          <Container style={[styles.container]}>
+            <View
               style={[
-                { backgroundColor: "#000", overflow: "hidden" },
-                { height: this.state.chartAnimation },
+                styles.gradient,
+                {
+                  borderBottomStartRadius: 30,
+                  borderBottomEndRadius: 30,
+                  overflow: "hidden",
+                },
               ]}
             >
-              {this.state.expand &&
-                selectedCampaign &&
-                selectedCampaign.review_status !== "REJECTED" && (
-                  <SlideUpPanel
-                    screenProps={this.props.screenProps}
-                    start_time={this.state.start_time}
-                    end_time={this.state.end_time}
-                    dateField={this.dateField}
-                    selectedCampaign={selectedCampaign}
-                    hideCharts={this.hideCharts}
-                    getCampaignStats={this.props.getCampaignStats}
-                    chartAnimation={this.state.chartAnimation}
-                  />
-                )}
-            </Animated.View>
-            <CSVModal
-              isVisible={this.state.CSVModalVisible}
-              showCSVModal={this.showCSVModal}
+              <LinearGradient
+                colors={["#6200FF", "#8900FF"]}
+                locations={[1, 0.3]}
+                style={styles.gradient}
+              />
+            </View>
+            <Header
               screenProps={this.props.screenProps}
-              downloadCSV={this.props.downloadCSV}
-              campaign_id={selectedCampaign && selectedCampaign.campaign_id}
+              campaignEnded={this.props.campaignEnded}
+              closeButton={false}
+              translateTitle={false}
+              title={loading ? "" : selectedCampaign.name}
+              icon={"snapchat"}
+              actionButton={this.state.expand && this.handleChartToggle}
+              navigation={
+                !this.state.expand ? this.props.navigation : undefined
+              }
+              selectedCampaign={selectedCampaign}
+              containerStyle={{ height: 50 }}
+              showTopRightButtonIcon={
+                !loading && selectedCampaign.review_status === "APPROVED"
+              }
+              topRightButtonFunction={() => this.showCSVModal(true)}
+              titelStyle={{
+                textAlign: "left",
+                fontSize: 15,
+                paddingTop: 3,
+                flex: 1,
+              }}
+              segment={{
+                source: "campaign_detail",
+                source_action: "a_go_back",
+              }}
+              campaignStatus={loading ? null : selectedCampaign.status}
             />
-          </SafeAreaView>
-        </>
+            {loading ? (
+              <View style={{ margin: 5 }}>
+                <PlaceholderLine />
+              </View>
+            ) : this.campaignEndedOrNot(selectedCampaign) ? (
+              !this.state.expand && (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: globalColors.orange,
+                      },
+                    ]}
+                    name={"circle"}
+                    type={"FontAwesome"}
+                  />
+                  <Text
+                    style={[styles.reviewText, { color: globalColors.orange }]}
+                  >
+                    {translate("Campaign ended")}
+                  </Text>
+                </View>
+              )
+            ) : (
+              !this.state.expand && (
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: selectedCampaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : selectedCampaign.status === "LIVE"
+                          ? globalColors.green
+                          : globalColors.orange,
+                      },
+                    ]}
+                    name={
+                      selectedCampaign.review_status.includes("REJECTED")
+                        ? "circle-slash"
+                        : "circle"
+                    }
+                    type={
+                      selectedCampaign.review_status.includes("REJECTED")
+                        ? "Octicons"
+                        : "FontAwesome"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.reviewText,
+                      {
+                        color: selectedCampaign.review_status.includes(
+                          "REJECTED"
+                        )
+                          ? globalColors.red
+                          : !selectedCampaign.review_status.includes(
+                              "PENDING"
+                            ) && selectedCampaign.status === "LIVE"
+                          ? globalColors.green
+                          : globalColors.orange,
+                      },
+                    ]}
+                  >
+                    {translate(
+                      `${
+                        selectedCampaign.review_status.includes("PENDING")
+                          ? "In Review"
+                          : selectedCampaign.review_status.includes("REJECTED")
+                          ? "Ad Rejected"
+                          : selectedCampaign.status === "LIVE"
+                          ? "LIVE"
+                          : "Campaign Paused"
+                      }`
+                    )}
+                  </Text>
+                </View>
+              )
+            )}
+            <ScrollView
+              contentContainerStyle={{ height: hp(115) }}
+              scrollEnabled={!this.state.expand}
+              ref={(ref) => (this.scroll = ref)}
+              style={{ maxHeight: "100%" }}
+            >
+              <View style={[styles.mainCard]}>
+                {!loading &&
+                  ((selectedCampaign &&
+                    selectedCampaign.review_status !== "REJECTED") ||
+                  new Date(selectedCampaign.end_time) < new Date() ? (
+                    <TouchableOpacity
+                      onLayout={this.onLayout}
+                      disabled={this.state.expand}
+                      onPress={this.handleChartToggle}
+                    >
+                      {this.state.expand && (
+                        <ChartDateChoices
+                          selectedCampaign={selectedCampaign}
+                          dateField={this.dateField}
+                          durationChange={this.durationChange}
+                          screenProps={this.props.screenProps}
+                        />
+                      )}
+                      <CampaignCircleChart
+                        channel={"snapchat"}
+                        campaign={selectedCampaign}
+                        detail={true}
+                        screenProps={this.props.screenProps}
+                        loading={loading}
+                        handleChartToggle={this.handleChartToggle}
+                        chartExpanded={this.state.expand}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <RejectedSnapchatInfo
+                      loading={loading}
+                      screenProps={this.props.screenProps}
+                      review_status_reason={
+                        selectedCampaign.review_status_reason || []
+                      }
+                      navigation={this.props.navigation}
+                      selectedCampaign={selectedCampaign}
+                    />
+                  ))}
+
+                {!this.state.expand && (
+                  <View style={styles.campaignMediaAndInfo}>
+                    <CampaignMedia
+                      selectedCampaign={selectedCampaign}
+                      navigation={this.props.navigation}
+                      loading={loading}
+                      screenProps={this.props.screenProps}
+                      source={"campaign_detail"}
+                    />
+                    <AudienceOverview
+                      screenProps={this.props.screenProps}
+                      data={audienceOverViewData}
+                      editCampaign={true}
+                      // targeting={targeting}
+                      loading={loading}
+                      navigatingRoutePath={"AdDetails"}
+                      selectedCampaign={selectedCampaign}
+                    />
+                  </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  <View style={{}}>
+                    {!this.state.expand && (
+                      <View>
+                        {selectedCampaign.review_status === "APPROVED" &&
+                          (selectedCampaign.campaign_end === "0" &&
+                          !this.props.campaignEnded &&
+                          new Date(selectedCampaign.end_time) > new Date() ? (
+                            selectedCampaign.review_status === "APPROVED" &&
+                            new Date(selectedCampaign.start_time) >
+                              new Date() ? (
+                              <View style={[styles.campaignStatus]}>
+                                <Text style={styles.reviewtext}>
+                                  {translate("Scheduled for")} {start_time}
+                                </Text>
+                              </View>
+                            ) : (
+                              !this.props.campaignEnded && (
+                                <View padder style={styles.toggleSpace}>
+                                  <View style={{ alignSelf: "center" }}>
+                                    {selectedCampaign && (
+                                      <Toggle
+                                        buttonTextStyle={
+                                          styles.switchButtonText
+                                        }
+                                        buttonText={
+                                          this.state.toggleText !== "PAUSED"
+                                            ? "LIVE"
+                                            : "PAUSED"
+                                        }
+                                        containerStyle={styles.toggleStyle}
+                                        switchOn={this.state.toggle}
+                                        onPress={() => {
+                                          this.state.toggle
+                                            ? this.setState({
+                                                modalVisible: true,
+                                              })
+                                            : this.updateStatus();
+                                        }}
+                                        backgroundColorOff="rgba(255,255,255,0.1)"
+                                        backgroundColorOn="rgba(255,255,255,0.1)"
+                                        circleColorOff="#FF9D00"
+                                        circleColorOn="#66D072"
+                                        duration={500}
+                                        circleStyle={styles.switchCircle}
+                                      />
+                                    )}
+                                    <Text style={styles.statusText}>
+                                      {translate(
+                                        `${
+                                          this.state.toggle
+                                            ? "Tap to pause AD"
+                                            : "Tap to activate AD"
+                                        }`
+                                      )}
+                                    </Text>
+                                  </View>
+                                </View>
+                              )
+                            )
+                          ) : null)}
+                      </View>
+                    )}
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+          </Container>
+          {!loading && (
+            <StatusModal
+              screenProps={this.props.screenProps}
+              selectedCampaign={selectedCampaign}
+              updateStatus={this.updateStatus}
+              endCampaign={this.endCampaign}
+              modalVisible={this.state.modalVisible}
+              showModal={this.showModal}
+            />
+          )}
+          <Animated.View
+            style={[
+              { backgroundColor: "#000", overflow: "hidden" },
+              { height: this.state.chartAnimation },
+            ]}
+          >
+            {this.state.expand &&
+              selectedCampaign &&
+              selectedCampaign.review_status !== "REJECTED" && (
+                <SlideUpPanel
+                  screenProps={this.props.screenProps}
+                  start_time={this.state.start_time}
+                  end_time={this.state.end_time}
+                  dateField={this.dateField}
+                  selectedCampaign={selectedCampaign}
+                  hideCharts={this.hideCharts}
+                  getCampaignStats={this.props.getCampaignStats}
+                  chartAnimation={this.state.chartAnimation}
+                />
+              )}
+          </Animated.View>
+          <CSVModal
+            isVisible={this.state.CSVModalVisible}
+            showCSVModal={this.showCSVModal}
+            screenProps={this.props.screenProps}
+            downloadCSV={this.props.downloadCSV}
+            campaign_id={selectedCampaign && selectedCampaign.campaign_id}
+          />
+        </SafeAreaView>
       );
     }
   }

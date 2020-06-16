@@ -13368,6 +13368,11 @@ react-native-masked-text@^1.13.0:
     date-and-time "0.9.0"
     tinymask "1.0.2"
 
+react-native-mixpanel@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-mixpanel/-/react-native-mixpanel-1.2.0.tgz#17c24151cf2039482cd20decc54ccf0e49ccebc5"
+  integrity sha512-Xy+KEIEVFidWuASBdexZquXTJBb3JCyFM7xSgnIOZt5PRzpARGFrYMDErTUZ1wSPK+KFaf1oylInOoC2DddI/Q==
+
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.1"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-7.6.1.tgz#463eaece1af98aa0b2fce00dab6cd203f89b86da"
@@ -13580,10 +13585,10 @@ react-native-vector-icons@^6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
-react-native-videoeditorsdk@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.4.1.tgz#4f4d80eefd89fbfba192a7f1ced1945b3b4f2d66"
-  integrity sha512-lQWUp0lQjWT53Fq6XYPF9zA0SbR4tPyDaO/v3DTX5zDxRGI6wO+hEA8LZiHE+SE76KzfYmlH8xNKMSYGXqlCBQ==
+react-native-videoeditorsdk@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-videoeditorsdk/-/react-native-videoeditorsdk-2.4.2.tgz#909ab8df928c640efdbfceff7c35e97ebc1bf249"
+  integrity sha512-TfFqT/9N47mn+1qOlThRw1pILHxqybd0edxT6TJb2ySFoP9aw4mxjn8/xhAwnMUZwjMeQge6iNqwVjB20yiCNQ==
 
 react-native-view-shot@3.1.2:
   version "3.1.2"
