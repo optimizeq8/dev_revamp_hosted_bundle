@@ -35,6 +35,7 @@ export default StyleSheet.create({
     paddingRight: 0,
     height: 20,
     paddingVertical: 0,
+    width: "75%",
   },
   downicon: {
     fontSize: 20,

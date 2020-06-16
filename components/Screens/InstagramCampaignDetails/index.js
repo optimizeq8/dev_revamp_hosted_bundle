@@ -400,12 +400,12 @@ class InstagramCampaignDetails extends Component {
         audienceOverViewData.push({
           heading: "Interests",
           icon: <InterestsIcon fill={"#FF790A"} width={31} height={31} />,
-          content: interesetNames,
+          content: interesetNames.length > 0 ? interesetNames : "All",
         });
         audienceOverViewData.push({
           heading: "Devices",
           icon: <DeviceMakeIcon fill={"#FF790A"} width={31} height={31} />,
-          content: deviceMakes,
+          content: deviceMakes.length > 0 ? deviceMakes : "All",
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
           end_time = new Date(selectedCampaign.end_time.split("T")[0]);

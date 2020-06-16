@@ -71,6 +71,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingObj: action.payload,
       };
+    case actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ:
+      return {
+        ...state,
+        loadingObj: action.payload,
+      };
     case actionTypes.SET_AD_DESIGN_INSTAGRAM:
       return {
         ...state,

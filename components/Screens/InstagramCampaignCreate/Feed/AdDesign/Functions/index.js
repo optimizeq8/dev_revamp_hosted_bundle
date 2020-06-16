@@ -4,7 +4,8 @@ export const formatMedia = (
   mainBusiness,
   campaignInfo,
   data,
-  setTheState
+  setTheState,
+  objective
 ) => {
   var body = new FormData();
 
@@ -27,8 +28,13 @@ export const formatMedia = (
   body.append("campaign_name", data.name);
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
   body.append("message", campaignInfo.message);
-  body.append("destination", campaignInfo.destination);
-  body.append("link", data.link); // webiste link for destination as link
+  body.append(
+    "destination",
+    objective === "BRAND_AWARENESS" && data.link
+      ? "link"
+      : campaignInfo.destination
+  );
+  body.append("link", data.link ? data.link : "BLANK"); // webiste link for destination as link
   body.append("call_to_action", data.call_to_action.value);
   body.append(
     "attachment",

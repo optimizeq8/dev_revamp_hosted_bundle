@@ -147,7 +147,7 @@ class AdDesign extends Component {
       } else {
         switch (this.props.data.objective) {
           case "BRAND_AWARENESS":
-            destination = "link";
+            destination = "BLANK";
             break;
           case "LINK_CLICKS":
             destination = "link";
@@ -228,6 +228,7 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
+      this.props.data.objective !== "BRAND_AWARENESS" &&
       this.props.data &&
       this.props.data.call_to_action &&
       this.props.data.call_to_action.label === "BLANK"
@@ -285,7 +286,8 @@ class AdDesign extends Component {
         this.props.mainBusiness,
         this.state.campaignInfo,
         this.props.data,
-        this.setTheState
+        this.setTheState,
+        this.props.data.objective
       );
       await this.handleUpload();
 
@@ -447,7 +449,8 @@ class AdDesign extends Component {
           />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (
-            <Transition style={styles.transition} shared="image">
+            //Made shared null to remove animation since it doesn't look good
+            <Transition style={styles.transition} shared="null">
               <View style={styles.mainView}>
                 <View style={styles.adImageOptionView}>
                   <GradientButton
@@ -536,10 +539,12 @@ class AdDesign extends Component {
                       {(this.props.data &&
                         this.props.data.attachment !== "BLANK") ||
                       (this.props.data &&
-                        this.props.data.attachment === "BLANK" &&
                         this.props.data.link &&
-                        this.state.campaignInfo.destination === "link")
-                        ? this.state.campaignInfo.destination === "link"
+                        this.props.data.link !== "BLANK" &&
+                        (this.state.campaignInfo.destination === "link" ||
+                          this.state.campaignInfo.destination === "BLANK"))
+                        ? this.state.campaignInfo.destination === "link" ||
+                          this.state.campaignInfo.destination === "BLANK"
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===
                             "APP_INSTALLS"
@@ -551,9 +556,10 @@ class AdDesign extends Component {
                         : translate("Destination")}
                     </Text>
                     {this.props.data &&
-                    this.props.data.attachment === "BLANK" &&
                     this.props.data.link &&
-                    this.state.campaignInfo.destination === "link" ? (
+                    this.props.data.link !== "BLANK" &&
+                    (this.state.campaignInfo.destination === "link" ||
+                      this.state.campaignInfo.destination === "BLANK") ? (
                       <Text style={styles.websiteLink}>
                         {this.props.data.link}
                       </Text>
