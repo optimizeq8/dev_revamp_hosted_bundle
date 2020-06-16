@@ -426,6 +426,7 @@ class AdObjective extends Component {
   };
   setValue = (stateName, value) => {
     let state = {};
+    value = value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "");
     state[stateName] = value;
     analytics.track(`a_ad_name`, {
       source: "ad_objective",
