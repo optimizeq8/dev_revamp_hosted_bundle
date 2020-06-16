@@ -864,7 +864,7 @@ class AdDesign extends Component {
       } else if (
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
-          JSON.stringify(this.props.data.formatted) !==
+        JSON.stringify(this.props.data.formatted) !==
           JSON.stringify(this.state.formatted)
       ) {
         const segmentInfo = {

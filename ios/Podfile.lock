@@ -343,7 +343,7 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - RNVideoEditorSDK (2.4.1):
+  - RNVideoEditorSDK (2.4.2):
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
@@ -713,7 +713,7 @@ SPEC CHECKSUMS:
   RNSentry: b456e5a6c48517dad1756d5bccffbdc0d2766dcb
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  RNVideoEditorSDK: b6a37771bd9a38565913f99f13976849054d4c0e
+  RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
   Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
@@ -734,4 +734,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c038fa4f6fe64af8ca697844f69a2d164731ed93
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
