@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>EXUpdatesReleaseChannel</key>
-	<string>development</string>
-	<key>EXUpdatesSDKVersion</key>
-	<string>37.0.0</string>
-	<key>EXUpdatesURL</key>
-	<string>https://exp.host/@samyoptimize/optimize_app</string>
-</dict>
+	<dict>
+		<key>EXUpdatesReleaseChannel</key>
+		<string>development</string>
+		<key>EXUpdatesSDKVersion</key>
+		<string>37.0.0</string>
+		<key>EXUpdatesURL</key>
+		<string>https://optimizeq8.github.io/optimizeapp_live_v2_hosted_bundle/ios-index.json</string>
+	</dict>
 </plist>
