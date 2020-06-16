@@ -89,7 +89,7 @@ if (!__DEV__) {
 import { MixpanelInstance } from "react-native-mixpanel";
 
 const MixpanelSDK = new MixpanelInstance(
-  "ec32f65bd795aee09177e60f6f5f6d25",
+  "ef78d7f5f4160b74fda35568224f6cfa",
   false,
   false
 );
