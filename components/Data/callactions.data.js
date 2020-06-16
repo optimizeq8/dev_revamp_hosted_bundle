@@ -312,7 +312,7 @@ var list = {
     {
       type: "LINK_CLICKS",
       call_to_action_list: [
-        { value: " NO_BUTTON", label: "NO BUTTON" },
+        // { value: "BLANK", label: "NO BUTTON" },
         { value: "LISTEN_NOW", label: "LISTEN NOW" },
         { value: "APPLY_NOW", label: "APPLY NOW" },
         { value: "BOOK_NOW", label: "BOOK NOW" },

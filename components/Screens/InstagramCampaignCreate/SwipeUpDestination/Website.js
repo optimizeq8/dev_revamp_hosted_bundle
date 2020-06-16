@@ -65,7 +65,8 @@ class Website extends Component {
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("link") &&
-      this.props.data.link !== ""
+      this.props.data.link !== "" &&
+      this.props.data.link !== "BLANK"
     ) {
       this.setState({
         campaignInfo: {

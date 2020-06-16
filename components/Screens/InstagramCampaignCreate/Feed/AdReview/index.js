@@ -103,14 +103,16 @@ class AdFeedDesignReview extends React.Component {
               </View>
             </View>
             <View style={styles.mediaView}>{mediaView}</View>
-            <View style={styles.swipeUpView}>
-              <Text style={styles.callToActionText}>
-                {call_to_action.hasOwnProperty("label")
-                  ? call_to_action.label
-                  : call_to_action}
-              </Text>
-              <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
-            </View>
+            {(call_to_action.value || call_to_action) !== "BLANK" && (
+              <View style={styles.swipeUpView}>
+                <Text style={styles.callToActionText}>
+                  {call_to_action.hasOwnProperty("label")
+                    ? call_to_action.label
+                    : call_to_action.replace("_", " ")}
+                </Text>
+                <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
+              </View>
+            )}
             <View style={styles.iconView}>
               <HeartOutline style={styles.icon} />
               <CommentOutline style={styles.icon} />

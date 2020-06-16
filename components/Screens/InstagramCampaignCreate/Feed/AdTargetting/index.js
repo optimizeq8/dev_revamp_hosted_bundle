@@ -148,18 +148,26 @@ class InstagramFeedAdTargetting extends Component {
       );
       editCountryAndRegionSelection.push(...editCountryRegions);
       this.onSelectedCountryRegionChange(editCountryAndRegionSelection);
-      editedCampaign.targeting["user_os"] = this.props.navigation.getParam(
-        "campaign",
-        {
-          targeting: { user_os: [""] },
-        }
-      ).targeting.user_os;
-      editedCampaign.targeting["genders"] = this.props.navigation.getParam(
-        "campaign",
-        {
-          targeting: { genders: [""] },
-        }
-      ).targeting.genders;
+      if (!editedCampaign.targeting.hasOwnProperty("user_os")) {
+        editedCampaign.targeting["user_os"] = [""];
+      } else {
+        editedCampaign.targeting["user_os"] = this.props.navigation.getParam(
+          "campaign",
+          {
+            targeting: { user_os: [""] },
+          }
+        ).targeting.user_os;
+      }
+      if (!editedCampaign.targeting.hasOwnProperty("genders")) {
+        editedCampaign.targeting["genders"] = [""];
+      } else {
+        editedCampaign.targeting["genders"] = this.props.navigation.getParam(
+          "campaign",
+          {
+            targeting: { genders: [""] },
+          }
+        ).targeting.genders;
+      }
       let selectedGender = "";
       switch (editedCampaign.targeting.genders[0]) {
         case "1":
@@ -908,10 +916,11 @@ class InstagramFeedAdTargetting extends Component {
       selectedCountriesAndRegions: item,
       campaignInfo: replace,
     });
-    this.props.save_campaign_info_instagram({
-      campaignInfo: { ...replace },
-      selectedCountriesAndRegions: item, //to save the selection of countries and regions if they resumed
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: { ...replace },
+        selectedCountriesAndRegions: item, //to save the selection of countries and regions if they resumed
+      });
   };
   onSelectedCountryRegionsObjectsChange = (items) => {};
   render() {
