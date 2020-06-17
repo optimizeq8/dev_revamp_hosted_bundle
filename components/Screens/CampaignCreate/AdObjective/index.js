@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -24,6 +23,7 @@ import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { BlurView } from "@react-native-community/blur";
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
@@ -793,7 +793,11 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <BlurView intensity={95} tint="dark">
+            <BlurView
+              blurType="dark"
+              blurAmount={20}
+              reducedTransparencyFallbackColor="black"
+            >
               <SafeAreaView
                 style={{ height: "100%" }}
                 forceInset={{ bottom: "never", top: "always" }}

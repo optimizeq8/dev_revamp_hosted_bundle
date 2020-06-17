@@ -67,6 +67,8 @@ target 'OptimizeApp' do
 
   pod 'react-native-mixpanel', :path => '../node_modules/react-native-mixpanel'
 
+  pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
+
 end
 
 post_install do |installer|
