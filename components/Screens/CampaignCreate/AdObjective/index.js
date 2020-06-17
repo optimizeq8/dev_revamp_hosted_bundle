@@ -798,10 +798,8 @@ class AdObjective extends Component {
               blurAmount={20}
               reducedTransparencyFallbackColor="black"
             >
-              <SafeAreaView
-                style={{ height: "100%" }}
-                forceInset={{ bottom: "never", top: "always" }}
-              >
+              <View style={{ height: "100%" }}>
+                <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
                 <View style={styles.popupOverlay}>
                   <CustomHeader
                     screenProps={this.props.screenProps}
@@ -824,7 +822,7 @@ class AdObjective extends Component {
                   </Content>
                   {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
                 </View>
-              </SafeAreaView>
+              </View>
             </BlurView>
           </Modal>
         </View>
