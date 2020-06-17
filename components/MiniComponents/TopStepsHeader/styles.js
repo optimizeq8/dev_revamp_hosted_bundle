@@ -15,14 +15,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: "#FFF"
   },
-  subtitle: {
-    fontSize: 18,
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 13,
-    textAlign: "center",
-    fontFamily: "montserrat-medium",
-  },
   container: {
     flex: 1,
     backgroundColor: "#0000",
@@ -31,12 +23,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  mainCard: {
-    paddingTop: 0,
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0,
   },
   activeBadege: {
     backgroundColor: "#9300FF",
@@ -51,7 +37,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "transparent",
+    backgroundColor: "#fff",
     width: 25,
     height: 25,
     borderRadius: 35,
@@ -69,9 +55,10 @@ const styles = StyleSheet.create({
   },
   dash: {
     alignSelf: "center",
-    width: 25,
+    width: 15,
     marginBottom: 10,
-    marginHorizontal: -8,
+    marginRight: -10,
+    marginLeft: -9,
     borderBottomColor: "#C6C6C6",
     borderBottomWidth: 2,
   },
@@ -80,15 +67,16 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: "#C6C6C6",
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: "montserrat-light",
   },
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#9300FF",
-    textTransform: "uppercase",
-    top: 10,
+    top: 15,
+    textAlign: "center",
+    width: "110%",
   },
   titleText: {
     fontFamily: "montserrat-regular",
@@ -97,10 +85,9 @@ const styles = StyleSheet.create({
     paddingTop: 3,
   },
   badgeView: {
-    display: "flex",
     alignItems: "center",
-    marginHorizontal: -3,
-    // justifyContent: "space-between",
+    marginHorizontal: -2,
+    width: 55,
   },
   progressCardView: {
     display: "flex",
@@ -112,40 +99,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
-  getStartedBtn: {
-    height: 54,
-    width: 220,
-    alignSelf: "center",
-  },
-  registerSuccessIcon: {
-    marginLeft: I18nManager.isRTL
-      ? widthPercentageToDP(-5)
-      : widthPercentageToDP(-55),
-    marginTop: heightPercentageToDP(5),
-  },
-  successText: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    color: "#FFF",
-    textAlign: "left",
-  },
-  registerCompleteText: {
-    fontFamily: "montserrat-bold",
-    fontSize: 27,
-    color: "#FFF",
-    textAlign: "left",
-    paddingTop: 10,
-  },
-  mainView: {
-    display: "flex",
-    paddingHorizontal: 30,
-    paddingTop: 10,
-    flexDirection: "column",
-  },
-  getStartedText: {
-    fontSize: 14,
-  },
-  registerationText: {
+  title: {
     fontSize: 14,
     color: "#9300FF",
     textTransform: "uppercase",

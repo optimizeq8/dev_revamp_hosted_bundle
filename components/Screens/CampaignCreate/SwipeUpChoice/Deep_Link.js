@@ -23,6 +23,7 @@ import * as actionsCreators from "../../../../store/actions";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -265,52 +266,57 @@ class Deep_Link extends Component {
     const { translate } = this.props.screenProps;
     let { iosAppSelected, androidAppSelected } = this.state;
     return (
-      <SafeAreaView
-        style={[
-          styles.safeAreaContainer,
-          { paddingHorizontal: this.props.toggleSideMenu ? 15 : 26 },
-        ]}
-        forceInset={{ top: "always" }}
-      >
+      <View style={styles.safeAreaContainer}>
+        <SafeAreaView style={{ backgroundColor: "#fff" }} />
         {this.props.adType === "CollectionAd" && (
-          <CustomHeader
+          <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
-            title={"Swipe Up destination"}
             navigation={this.props.navigation}
             segment={{
               source: "ad_swipe_up_destination",
               source_action: "a_go_back",
             }}
+            icon="snapchat"
+            adType={this.props.adType}
+            currentScreen="Compose"
+            title={"Swipe Up destination"}
           />
         )}
 
-        <View style={styles.deepLinkHeader}>
-          <AppInstallIcon style={styles.icon} />
-          <View style={styles.textcontainer}>
-            <Text style={styles.titletext}>{translate("Deep Link")}</Text>
-            <Text style={styles.subtext}>
-              {translate("Send Snapchatters to a specific page in your app")}
-            </Text>
+        <View
+          style={{
+            paddingHorizontal: this.props.toggleSideMenu ? 15 : 26,
+            top: 10,
+          }}
+        >
+          <View style={styles.deepLinkHeader}>
+            <AppInstallIcon style={styles.icon} />
+            <View style={styles.textcontainer}>
+              <Text style={styles.titletext}>{translate("Deep Link")}</Text>
+              <Text style={styles.subtext}>
+                {translate("Send Snapchatters to a specific page in your app")}
+              </Text>
+            </View>
           </View>
+          <AppChoice
+            handleCallaction={this.handleCallaction}
+            navigation={this.props.navigation}
+            selectApp={this.selectApp}
+            listNum={3}
+            attachment={this.state.attachment}
+            callaction={this.state.callaction}
+            swipeUpDestination={this.props.swipeUpDestination}
+            deep_link_uri={this.state.attachment.deep_link_uri}
+            toggleSideMenu={this.props.toggleSideMenu}
+            _handleSubmission={this._handleSubmission}
+            deepLink={true}
+            screenProps={this.props.screenProps}
+            appSelections={{ iosAppSelected, androidAppSelected }}
+            setTheState={this.setTheState}
+          />
         </View>
-        <AppChoice
-          handleCallaction={this.handleCallaction}
-          navigation={this.props.navigation}
-          selectApp={this.selectApp}
-          listNum={3}
-          attachment={this.state.attachment}
-          callaction={this.state.callaction}
-          swipeUpDestination={this.props.swipeUpDestination}
-          deep_link_uri={this.state.attachment.deep_link_uri}
-          toggleSideMenu={this.props.toggleSideMenu}
-          _handleSubmission={this._handleSubmission}
-          deepLink={true}
-          screenProps={this.props.screenProps}
-          appSelections={{ iosAppSelected, androidAppSelected }}
-          setTheState={this.setTheState}
-        />
-      </SafeAreaView>
+      </View>
     );
   }
 }

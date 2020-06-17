@@ -213,10 +213,8 @@ class SwipeUpChoice extends Component {
               source_action: "a_go_back",
             }}
             icon="snapchat"
-            actionButton={this.handleBackButton}
-            adType={this.adType}
+            adType={this.props.adType}
             currentScreen="Compose"
-            actionButton={this.toggleAdSelection}
             title={"Swipe Up destination"}
           />
           {/* <CustomeHeader
@@ -226,8 +224,7 @@ class SwipeUpChoice extends Component {
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
           /> */}
-
-          {menu}
+          <View style={{ top: 15, flex: 1 }}>{menu}</View>
         </View>
       );
   }

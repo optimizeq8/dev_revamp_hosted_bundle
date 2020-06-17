@@ -72,9 +72,7 @@ export default class TopStepsHeader extends Component {
               {translate(step)}
             </Text>
           </View>
-          {steps.length - 1 !== i && (
-            <View style={[styles.dash, { marginLeft: i === 0 ? 0 : -8 }]} />
-          )}
+          {steps.length - 1 !== i && <View style={[styles.dash]} />}
         </Fragment>
       );
     });
@@ -102,7 +100,6 @@ export default class TopStepsHeader extends Component {
       } else if (title && typeof title === "string") {
         title = translate(title);
       }
-    console.log(title);
 
     return (
       <View style={styles.progressCardView}>
@@ -135,7 +132,7 @@ export default class TopStepsHeader extends Component {
               <InstagramIcon width={30} height={24} fill="#fff" />
             </View>
           )}
-          <Text style={styles.registerationText}>
+          <Text style={styles.title}>
             {title && typeof title === "string" ? title : title.join(" ")}
           </Text>
         </View>

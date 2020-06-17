@@ -29,6 +29,7 @@ import { netLoc } from "../../../Data/callactions.data";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class Website extends Component {
   static navigationOptions = {
     header: null,
@@ -218,24 +219,26 @@ class Website extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
-      >
+      <View style={styles.safeAreaContainer}>
+        <SafeAreaView
+          forceInset={{ top: "always", bottom: "never" }}
+          style={{ backgroundColor: "#fff" }}
+        />
         {this.props.adType === "CollectionAd" && (
-          <View style={{ paddingBottom: 10 }}>
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              title={"Swipe Up destination"}
-              segment={{
-                str: "Swipe up Destination CollectionAd  Back Button",
-                source: "ad_swipe_up_destination",
-                source_action: "a_go_back",
-              }}
-              navigation={this.props.navigation}
-            />
-          </View>
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            navigation={this.props.navigation}
+            segment={{
+              str: "Swipe up Destination CollectionAd  Back Button",
+              source: "ad_swipe_up_destination",
+              source_action: "a_go_back",
+            }}
+            icon="snapchat"
+            adType={this.props.adType}
+            currentScreen="Compose"
+            title={"Swipe Up destination"}
+          />
         )}
 
         <InputScrollView
@@ -324,7 +327,7 @@ class Website extends Component {
             />
           </View>
         </InputScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }

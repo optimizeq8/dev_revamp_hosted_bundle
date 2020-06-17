@@ -51,6 +51,7 @@ import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguratio
 import MediaModal from "./MediaModal";
 import { SaveFormat } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class AdCover extends Component {
   static navigationOptions = {
     header: null,
@@ -845,10 +846,11 @@ class AdCover extends Component {
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.mainSafeArea}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.mainSafeArea}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <NavigationEvents
           onDidFocus={this.handleAdCoverFocus}
           onDidBlur={this.handleAdCoverBlur}
@@ -859,18 +861,36 @@ class AdCover extends Component {
           style={styles.gradient}
         />
         <Container style={styles.container}>
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            closeButton={false}
-            segment={{
-              str: "Ad Design Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_cover",
-              source_action: "a_go_back",
-            }}
-            actionButton={this.handleRejectionData}
-            title={"Compose Ad"}
-          />
+          {!this.props.rejCampaign ? (
+            <TopStepsHeader
+              screenProps={this.props.screenProps}
+              closeButton={false}
+              segment={{
+                str: "Ad Design Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_cover",
+                source_action: "a_go_back",
+              }}
+              icon="snapchat"
+              actionButton={this.handleBackButton}
+              adType={"StoryAd"}
+              currentScreen="Cover"
+              title={"Compose Ad"}
+            />
+          ) : (
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              closeButton={false}
+              segment={{
+                str: "Ad Design Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_cover",
+                source_action: "a_go_back",
+              }}
+              actionButton={this.handleRejectionData}
+              title={"Compose Ad"}
+            />
+          )}
           <Content contentContainerStyle={styles.contentContainer} padder>
             <KeyboardShift>
               {() => (
@@ -1087,7 +1107,7 @@ class AdCover extends Component {
             </SafeAreaView>
           </BlurView>
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }
