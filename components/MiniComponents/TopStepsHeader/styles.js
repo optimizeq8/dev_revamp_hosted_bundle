@@ -152,10 +152,16 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
     lineHeight: 18,
-    marginLeft: 5,
-    width: 100,
+    width: 105,
     flexShrink: 1,
     textAlign: "center",
+  },
+  left: {
+    width: "10%",
+    padding: 10,
+    zIndex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   registerHeaderIconView: {
     display: "flex",
