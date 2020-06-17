@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Text,
   View,
@@ -43,7 +43,7 @@ export default class TopStepsHeader extends Component {
     }
     let stepsComponants = steps.map((step, i) => {
       return (
-        <>
+        <Fragment key={step}>
           <View style={styles.badgeView}>
             <Badge
               style={
@@ -72,8 +72,10 @@ export default class TopStepsHeader extends Component {
               {translate(step)}
             </Text>
           </View>
-          {steps.length - 1 !== i && <View style={[styles.dash]} />}
-        </>
+          {steps.length - 1 !== i && (
+            <View style={[styles.dash, { marginLeft: i === 0 ? 0 : -8 }]} />
+          )}
+        </Fragment>
       );
     });
     return stepsComponants;

@@ -76,6 +76,7 @@ import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -1231,10 +1232,7 @@ class AdDesign extends Component {
     );
 
     return (
-      <SafeAreaView
-        style={styles.mainSafeArea}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.mainSafeArea}>
         <NavigationEvents
           onDidFocus={this.handleAdDesignFocus}
           onDidBlur={this.handleAdDesignBlur}
@@ -1244,8 +1242,12 @@ class AdDesign extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
+        <SafeAreaView
+          style={styles.safeAreaView}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <Container style={styles.container}>
-          <CustomHeader
+          <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
@@ -1254,6 +1256,10 @@ class AdDesign extends Component {
               source: "ad_design",
               source_action: "a_go_back",
             }}
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            adType={this.adType}
+            currentScreen="Compose"
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
@@ -1542,7 +1548,7 @@ class AdDesign extends Component {
           loaded={loaded}
           screenProps={this.props.screenProps}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

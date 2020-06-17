@@ -12,8 +12,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#0000",
-    height: "100%",
+    backgroundColor: "#fff",
   },
   popupOverlay: {
     height: "100%",
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   },
   mainSafeArea: {
     height: "100%",
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",

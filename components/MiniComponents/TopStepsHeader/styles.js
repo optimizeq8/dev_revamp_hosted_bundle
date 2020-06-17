@@ -39,15 +39,13 @@ const styles = StyleSheet.create({
     marginRight: 0,
   },
   activeBadege: {
-    backgroundColor: globalColors.purple,
+    backgroundColor: "#9300FF",
     width: 35,
     height: 35,
-    borderRadius: 35,
+    borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-
     alignSelf: "center",
-    paddingVertical: 0,
   },
   badge: {
     alignSelf: "center",
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   activeBadegeText: {
-    marginTop: I18nManager.isRTL ? 10 : 0,
+    marginTop: I18nManager.isRTL ? 15 : 0,
     alignSelf: "center",
     textAlignVertical: "center",
     color: "#FFF",
@@ -71,9 +69,9 @@ const styles = StyleSheet.create({
   },
   dash: {
     alignSelf: "center",
-    width: 20,
+    width: 25,
     marginBottom: 10,
-    marginHorizontal: -7,
+    marginHorizontal: -8,
     borderBottomColor: "#C6C6C6",
     borderBottomWidth: 2,
   },
@@ -82,14 +80,15 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: "#C6C6C6",
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: "montserrat-light",
   },
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    color: "#6C63FF",
+    color: "#9300FF",
     textTransform: "uppercase",
+    top: 10,
   },
   titleText: {
     fontFamily: "montserrat-regular",
@@ -100,7 +99,8 @@ const styles = StyleSheet.create({
   badgeView: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    marginHorizontal: -3,
+    // justifyContent: "space-between",
   },
   progressCardView: {
     display: "flex",
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   registerationText: {
     fontSize: 14,
-    color: globalColors.purple,
+    color: "#9300FF",
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
