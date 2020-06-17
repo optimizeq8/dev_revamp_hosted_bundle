@@ -448,7 +448,7 @@ class PaymentForm extends Component {
             actionButton={this.reviewPurchase}
             icon="snapchat"
             actionButton={this.handleBackButton}
-            adType={this.adType}
+            adType={this.props.adType}
             currentScreen="Payment"
             title={this.state.addingCredits ? "Top up wallet" : "Payment"}
           />
@@ -733,6 +733,7 @@ const mapStateToProps = (state) => ({
   loadingTrans: state.transA.loading,
   wallet: state.transA.wallet,
   channel: state.transA.channel,
+  adType: state.campaignC.adType,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),

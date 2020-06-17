@@ -1145,7 +1145,7 @@ class AdDetails extends Component {
                   }
                   icon="snapchat"
                   actionButton={this.handleBackButton}
-                  adType={this.adType}
+                  adType={this.props.adType}
                   currentScreen="Audience"
                   title={"Campaign details"}
                 />

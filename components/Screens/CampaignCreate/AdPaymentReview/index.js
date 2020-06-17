@@ -294,7 +294,7 @@ class AdPaymentReview extends Component {
             }
             icon="snapchat"
             actionButton={this.handleBackButton}
-            adType={this.adType}
+            adType={this.props.adType}
             currentScreen="Payment"
             title={"Campaign Review"}
           />
