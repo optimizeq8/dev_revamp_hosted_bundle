@@ -122,7 +122,7 @@ class SnapCard extends Component {
             <TouchableOpacity
               onLongPress={() => {
                 snapCardInfo.item.media !== "//" &&
-                  this.setState({ showDelete: true });
+                  this.setState({ showDelete: !this.state.showDelete });
               }}
               onPress={() => {
                 segmentEventTrack("Button clicked to edit snap story ad card");
@@ -139,9 +139,10 @@ class SnapCard extends Component {
                 position: "absolute",
                 bottom: 0,
                 paddingBottom: 10,
+                width: "100%",
               }}
             >
-              <Text
+              {/* <Text
                 style={[
                   styles.mediaButtonMsg,
                   { fontSize: 11, width: 65, textAlign: "left", top: 0 },
@@ -149,7 +150,7 @@ class SnapCard extends Component {
               >
                 {translate("Edit Media")}
               </Text>
-              <PenIcon width={15} height={15} />
+              <PenIcon width={15} height={15} /> */}
             </TouchableOpacity>
           )
         ) : (
