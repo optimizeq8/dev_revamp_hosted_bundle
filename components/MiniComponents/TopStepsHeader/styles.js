@@ -153,6 +153,9 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     lineHeight: 18,
     marginLeft: 5,
+    width: 100,
+    flexShrink: 1,
+    textAlign: "center",
   },
   registerHeaderIconView: {
     display: "flex",
