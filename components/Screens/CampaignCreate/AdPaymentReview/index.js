@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -269,13 +270,13 @@ class AdPaymentReview extends Component {
 
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
-        <SafeAreaView
-          style={[styles.safeAreaView]}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
+        <View style={[styles.safeAreaView]}>
+          <SafeAreaView
+            style={{ backgroundColor: "#fff" }}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
           <NavigationEvents onDidFocus={this.handlePaymentReviewFocus} />
-
-          <CustomHeader
+          <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
@@ -286,8 +287,16 @@ class AdPaymentReview extends Component {
               source: "ad_review",
               source_action: "a_go_back",
             }}
-            navigation={this.props.navigation}
-            title={"Review your Selection"}
+            actionButton={
+              this.editCampaign
+                ? () => this.props.navigation.navigate("CampaignDetails")
+                : undefined
+            }
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            adType={this.adType}
+            currentScreen="Payment"
+            title={"Campaign Review"}
           />
 
           <Content
@@ -487,7 +496,7 @@ class AdPaymentReview extends Component {
                                                     </View> 
                                                 */}
           </View>
-        </SafeAreaView>
+        </View>
       );
     }
   }
