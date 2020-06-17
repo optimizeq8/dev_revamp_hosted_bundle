@@ -54,7 +54,122 @@ const initialState = {
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
-    }, //Last object is an add button to add more story snap cards
+    },
+    {
+      id: 4,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 5,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 6,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 7,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 8,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 9,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 10,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 11,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+
+    {
+      id: 12,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+
+    {
+      id: 13,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 14,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 15,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+
+    {
+      id: 16,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 17,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 18,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 19,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
   ],
   loadingStoryAdsArray: [],
   coverLoading: false,
@@ -416,14 +531,23 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.DELETE_STORY_AD_CARD:
       let deleteStoryAds = state.storyAdsArray;
-      deleteStoryAds = deleteStoryAds.filter((ad) => {
+      deleteStoryAds = deleteStoryAds.map((ad, index) => {
         if (
           (action.payload.card.hasOwnProperty("item") &&
             action.payload.card.item.id !== ad.id) ||
           (action.payload.hasOwnProperty("data") &&
             ad.story_id !== action.payload.data.story_id)
-        )
+        ) {
           return ad;
+        } else {
+          return {
+            id: index,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          };
+        }
       });
       let deletedLoadingAr = state.loadingStoryAdsArray;
       deletedLoadingAr[action.payload.card.index] = false;
@@ -546,6 +670,121 @@ const reducer = (state = initialState, action) => {
           },
           {
             id: 3,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 4,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 5,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 6,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 7,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 8,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 9,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 10,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 11,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+
+          {
+            id: 12,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+
+          {
+            id: 13,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 14,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 15,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+
+          {
+            id: 16,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 17,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 18,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 19,
             call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
             destination: "BLANK",

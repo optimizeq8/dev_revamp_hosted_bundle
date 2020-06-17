@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   inputMiddleButton: {
     position: "absolute",
-    backgroundColor: globalColors.orange,
+    backgroundColor: globalColors.transparent,
     alignSelf: "center",
     width: 90,
     height: 90,
@@ -363,8 +363,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     borderColor: globalColors.orange,
     borderWidth: 2,
-    borderRadius: 15,
-    height: 150,
+    borderRadius: 20,
+    height: 100,
     width: 90,
     margin: 10,
   },
@@ -598,6 +598,12 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 50,
     height: 50,
+  },
+  holdToDeleteText: {
+    color: globalColors.white,
+    fontSize: 12,
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
   },
 });
 
