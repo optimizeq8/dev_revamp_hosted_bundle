@@ -88,6 +88,8 @@ if (!__DEV__) {
 }
 import { MixpanelInstance } from "react-native-mixpanel";
 
+//DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
+//LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
 const MixpanelSDK = new MixpanelInstance(
   "ef78d7f5f4160b74fda35568224f6cfa",
   false,
