@@ -69,6 +69,8 @@ target 'OptimizeApp' do
 
   pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
 
+  pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+
 end
 
 post_install do |installer|

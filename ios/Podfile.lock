@@ -326,6 +326,8 @@ PODS:
     - Segment-Mixpanel
   - RNBootSplash (2.2.4):
     - React
+  - RNCMaskedView (0.1.10):
+    - React
   - RNDeviceInfo (5.6.1):
     - React
   - RNGestureHandler (1.6.1):
@@ -439,6 +441,7 @@ DEPENDENCIES:
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
   - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
@@ -596,6 +599,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -711,6 +716,7 @@ SPEC CHECKSUMS:
   RNAnalytics: 0176cbd15962b36479c9ab76a2c613be9a34528c
   RNAnalyticsIntegration-Mixpanel: 2a7b237e57efc5b5a17fd028820b55d1dd0b1afb
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
@@ -738,6 +744,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 9f4c9866103237d79648499aee8df430c83eb805
+PODFILE CHECKSUM: 6fce40d0b4c59d10ec2b5663ed7bd9035ec8a9b4
 
 COCOAPODS: 1.8.4
