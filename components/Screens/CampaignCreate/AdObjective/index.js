@@ -8,6 +8,7 @@ import {
   ScrollView,
   I18nManager,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -22,7 +23,7 @@ import DateFields from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
@@ -529,21 +530,48 @@ class AdObjective extends Component {
       );
     } else
       return (
-        <SafeAreaView
-          style={styles.safeAreaView}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
+        <View style={{ height: "100%" }}>
+          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <SafeAreaView
+            style={styles.safeAreaView}
+            // forceInset={{ bottom: "never", top: "always" }}
+          />
           <NavigationEvents
             onDidFocus={this.handleAdOnjectiveFocus}
             onDidBlur={this.handleAdOnjectiveBlur}
           />
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              source: "ad_objective",
+              source_action: "a_go_back",
+              str: "Ad Objective Back Button",
+              obj: {
+                businessname:
+                  this.props.mainBusiness &&
+                  this.props.mainBusiness.businessname,
+              },
+            }}
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            adType={adType}
+            currentScreen="Details"
+            title={
+              adType === "SnapAd"
+                ? "Snap Ad"
+                : adType === "StoryAd"
+                ? "Story Ad"
+                : "Collection Ad"
+            }
+          />
+
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
           >
             <Container style={styles.container}>
-              <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-              <CustomHeader
+              {/* <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={false}
                 segment={{
@@ -566,12 +594,12 @@ class AdObjective extends Component {
 
                   "Campaign",
                 ]}
-              />
-              <PhoneIcon
+              /> */}
+              {/* <PhoneIcon
                 style={styles.phoneicon}
                 width={hp(5) < 30 ? 50 : 70}
                 height={hp(5) < 30 ? 50 : 70}
-              />
+              /> */}
               <View style={styles.block1}></View>
               <ScrollView
                 contentContainerStyle={styles.mainContent}
@@ -737,7 +765,6 @@ class AdObjective extends Component {
               </ScrollView>
             </Container>
           </TouchableWithoutFeedback>
-
           <DateFields
             getMinimumCash={this.getMinimumCash}
             onRef={(ref) => (this.dateField = ref)}
@@ -768,7 +795,7 @@ class AdObjective extends Component {
           >
             <BlurView intensity={95} tint="dark">
               <SafeAreaView
-                style={styles.safeAreaView}
+                style={{ height: "100%" }}
                 forceInset={{ bottom: "never", top: "always" }}
               >
                 <View style={styles.popupOverlay}>
@@ -796,7 +823,7 @@ class AdObjective extends Component {
               </SafeAreaView>
             </BlurView>
           </Modal>
-        </SafeAreaView>
+        </View>
       );
   }
 }
