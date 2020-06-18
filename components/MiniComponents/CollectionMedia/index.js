@@ -58,6 +58,7 @@ import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
+import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
@@ -942,7 +943,23 @@ class CollectionMedia extends Component {
             </KeyboardShift>
           </ScrollView>
           <View style={styles.footerStyle}>
-            {this.state.collection.collection_media ? (
+            {this.props.loading || this.state.isVisible ? (
+              <View style={{ bottom: 3, position: "relative" }}>
+                <AnimatedCircularProgress
+                  size={50}
+                  width={5}
+                  fill={Math.round(this.state.loaded)}
+                  rotation={360}
+                  lineCap="round"
+                  tintColor={globalColors.orange}
+                  backgroundColor="rgba(255,255,255,0.3)"
+                  adDetails={false}
+                />
+                <Text style={styles.uplaodPercentageText}>
+                  {Math.round(this.state.loaded, 2)} %
+                </Text>
+              </View>
+            ) : this.state.collection.collection_media ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
                   function={this._handleSubmission}
@@ -973,7 +990,7 @@ class CollectionMedia extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        <Modal
+        {/* <Modal
           visible={this.props.loading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}
           animationType={"slide"}
@@ -1024,6 +1041,7 @@ class CollectionMedia extends Component {
             </SafeAreaView>
           </BlurView>
         </Modal>
+      */}
       </SafeAreaView>
     );
   }

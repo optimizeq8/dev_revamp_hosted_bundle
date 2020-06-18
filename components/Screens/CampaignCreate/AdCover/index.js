@@ -24,6 +24,8 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+
 import * as IntentLauncher from "expo-intent-launcher";
 
 //Redux
@@ -1018,7 +1020,23 @@ class AdCover extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {cover ? (
+            {cover && (this.props.coverLoading || this.state.isVisible) ? (
+              <View style={{ position: "relative" }}>
+                <AnimatedCircularProgress
+                  size={50}
+                  width={5}
+                  fill={Math.round(this.state.loaded)}
+                  rotation={360}
+                  lineCap="round"
+                  tintColor={globalColors.orange}
+                  backgroundColor="rgba(255,255,255,0.3)"
+                  adDetails={false}
+                />
+                <Text style={styles.uplaodPercentageText}>
+                  {Math.round(this.state.loaded, 2)} %
+                </Text>
+              </View>
+            ) : cover ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
                   function={this._handleSubmission}
@@ -1056,7 +1074,7 @@ class AdCover extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        <Modal
+        {/* <Modal
           visible={this.props.coverLoading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}
           animationType={"slide"}
@@ -1107,6 +1125,7 @@ class AdCover extends Component {
             </SafeAreaView>
           </BlurView>
         </Modal>
+       */}
       </View>
     );
   }

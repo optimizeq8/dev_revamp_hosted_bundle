@@ -24,6 +24,8 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
@@ -77,6 +79,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { globalColors } from "../../../../GlobalStyles";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -936,7 +939,6 @@ class AdDesign extends Component {
           videoIsLoading: false,
         })
       : this.props.navigation.goBack();
-    console.log("asssss");
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
@@ -1370,12 +1372,18 @@ class AdDesign extends Component {
             <View style={styles.footerButtonsContainer}>
               {this.props.loadingStoryAdsArray.length > 0 &&
               this.props.loadingStoryAdsArray.includes(true) ? (
-                <CircleLoader
-                  mainViewStyle={{ width: wp(8), height: hp(8) }}
-                  bottom={-0.2}
-                  loop={true}
-                  style={{ width: wp(8), height: hp(8) }}
-                />
+                <View style={{ bottom: 3 }}>
+                  {/* <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={Math.round(this.state.loaded)}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                  /> */}
+                </View>
               ) : (
                 <>
                   {this.adType === "StoryAd" ? (
@@ -1450,6 +1458,8 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <SubmitButton
+                      loading={this.props.loading}
+                      loaded={loaded}
                       _handleSubmission={() =>
                         _handleSubmission(
                           this.adType,
@@ -1539,7 +1549,7 @@ class AdDesign extends Component {
             this.handleDownloadMediaCollectionAds
           }
         />
-        <LoadingModal
+        {/* <LoadingModal
           videoUrlLoading={videoUrlLoading}
           loading={this.props.loading}
           isVisible={isVisible}
@@ -1547,7 +1557,7 @@ class AdDesign extends Component {
           cancelUpload={this.cancelUpload}
           loaded={loaded}
           screenProps={this.props.screenProps}
-        />
+        /> */}
       </View>
     );
   }

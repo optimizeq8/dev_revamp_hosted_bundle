@@ -604,6 +604,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-regular",
   },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold",
+    fontSize: 8,
+    color: "#FFF",
+    top: "32%",
+    left: "32%",
+    textAlign: "center",
+  },
 });
 
 export default styles;
