@@ -793,30 +793,27 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <BlurView
-              blurType="dark"
-              blurAmount={20}
-              reducedTransparencyFallbackColor="black"
-            >
+            <BlurView>
               <View style={{ height: "100%" }}>
                 <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+                <CustomHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={false}
+                  actionButton={() => {
+                    this.setModalVisible(false);
+                  }}
+                  title={"Campaign Objective"}
+                  segment={{
+                    source: "ad_objective_modal",
+                    source_action: "a_go_back",
+                  }}
+                />
                 <View style={styles.popupOverlay}>
-                  <CustomHeader
-                    screenProps={this.props.screenProps}
-                    closeButton={false}
-                    actionButton={() => {
-                      this.setModalVisible(false);
-                    }}
-                    title={"Campaign Objective"}
-                    segment={{
-                      source: "ad_objective_modal",
-                      source_action: "a_go_back",
-                    }}
-                  />
                   <Content
                     padder
                     indicatorStyle="white"
                     contentContainerStyle={styles.contentContainer}
+                    style={{ top: StatusBar.currentHeight }}
                   >
                     {list}
                   </Content>

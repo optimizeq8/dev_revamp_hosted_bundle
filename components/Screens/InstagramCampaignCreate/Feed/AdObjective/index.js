@@ -529,10 +529,8 @@ class AdObjective extends Component {
           visible={this.state.modalVisible}
         >
           <BlurView>
-            <SafeAreaView
-              style={styles.safeAreaView}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
+            <View style={styles.safeAreaView}>
+              <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
               <View style={styles.popupOverlay}>
                 <CustomHeader
                   screenProps={this.props.screenProps}
@@ -555,7 +553,7 @@ class AdObjective extends Component {
                 </Content>
                 {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
               </View>
-            </SafeAreaView>
+            </View>
           </BlurView>
         </Modal>
       </View>

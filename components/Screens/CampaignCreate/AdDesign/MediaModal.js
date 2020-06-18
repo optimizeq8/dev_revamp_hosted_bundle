@@ -48,10 +48,8 @@ export default class MediaModal extends Component {
           blurAmount={20}
           reducedTransparencyFallbackColor="black"
         >
-          <SafeAreaView
-            style={{ backgroundColor: "#0000" }}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
+          <View style={{ backgroundColor: "#0000", height: "100%" }}>
+            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
             <View style={styles.popupOverlay}>
               <CustomHeader
                 screenProps={this.props.screenProps}
@@ -95,7 +93,7 @@ export default class MediaModal extends Component {
                 )}
               </Content>
             </View>
-          </SafeAreaView>
+          </View>
         </BlurView>
       </Modal>
     );

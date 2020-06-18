@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
   },
   popupOverlay: {
     height: "100%",
-    // paddingTop: 10,
   },
   contentContainer: {
     marginTop: 15,

@@ -119,7 +119,7 @@ export default class TopStepsHeader extends Component {
         <View style={styles.registerHeaderIconView}>
           {icon === "snapchat" && (
             <View style={{ paddingHorizontal: 5 }}>
-              <SnapchatIcon stroke="black" width={30} height={30} />
+              <SnapchatIcon fill="black" width={30} height={30} />
             </View>
           )}
           {icon === "google" && (
