@@ -53,6 +53,7 @@ import {
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -510,176 +511,175 @@ class GoogleAdTargetting extends Component {
     }
 
     return (
-      <Sidemenu
-        onChange={(isOpen) => {
-          if (isOpen === false) {
-            this._handleSideMenuState(isOpen);
-          }
-        }}
-        disableGestures={true}
-        menu={this.state.sidemenustate && menu}
-        menuPosition={I18nManager.isRTL ? "left" : "right"}
-        openMenuOffset={wp("100%")}
-        isOpen={this.state.sidemenustate}
-      >
-        <SafeAreaView
-          style={[styles.safeArea]}
-          forceInset={{ bottom: "never", top: "always" }}
+      <>
+        <SafeAreaView style={{ backgroundColor: "#fff" }} />
+        <TopStepsHeader
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          segment={{
+            str: "Google SE Targetting Back Button",
+            obj: {
+              businessname: this.props.mainBusiness.businessname,
+            },
+            source: "ad_targeting",
+            source_action: "a_go_back",
+          }}
+          icon="google"
+          navigation={this.props.navigation}
+          currentScreen="Audience"
+          title={"Campaign details"}
+          disabled={this.props.campaign.uploading}
+        />
+        <Sidemenu
+          onChange={(isOpen) => {
+            if (isOpen === false) {
+              this._handleSideMenuState(isOpen);
+            }
+          }}
+          disableGestures={true}
+          menu={this.state.sidemenustate && menu}
+          menuPosition={I18nManager.isRTL ? "left" : "right"}
+          openMenuOffset={wp("100%")}
+          isOpen={this.state.sidemenustate}
         >
-          <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
-
-          <CustomHeader
-            closeButton={false}
-            segment={{
-              str: "Google SE Targetting Back Button",
-              obj: {
-                businessname: this.props.mainBusiness.businessname,
-              },
-              source: "ad_targeting",
-              source_action: "a_go_back",
-            }}
-            navigation={this.props.navigation}
-            title={"Campaign details"}
-            screenProps={this.props.screenProps}
-            disabled={this.props.campaign.uploading}
-          />
-
-          <Content
-            scrollEnabled={false}
-            contentContainerStyle={styles.contentContainer}
-          >
-            <Text style={styles.subHeadings}>
-              {translate("Set your budget")}
-            </Text>
-            <BudgetCards
-              value={this.state.value}
-              recBudget={this.props.campaign.recommendedBudget}
-              lifetime_budget_micro={this.state.budget}
-              budgetOption={this.state.budgetOption}
-              _handleBudget={this._handleBudget}
-              uploading={this.props.campaign.uploading}
-              screenProps={this.props.screenProps}
-              campaign={this.props.campaign}
-            />
-
-            <Text style={styles.subHeadings}>
-              {translate("What are you promoting?")}
-            </Text>
-            {this.state.keywords.length !== 0 ? (
-              <View
-                style={{
-                  padding: 5,
-                  borderRadius: 10,
-                  flex: 1,
-                }}
-              >
-                <KeywordsCarousel
-                  screenProps={this.props.screenProps}
-                  keywords={this.state.keywords}
-                  _renderSideMenu={this._renderSideMenu}
-                  _handleAddKeyword={this._handleAddKeyword}
-                  uploading={this.props.campaign.uploading}
-                />
-              </View>
-            ) : (
-              <>
-                <TouchableOpacity
-                  style={styles.keywordsAddButton}
-                  onPress={() => this._renderSideMenu("keywords")}
-                >
-                  <PlusCircle width={35} height={35} />
-                </TouchableOpacity>
-                <Text style={[styles.subHeadings, styles.smallSubHeading]}>
-                  {translate("Add Products and Services")}
-                </Text>
-              </>
-            )}
-
-            <Text style={[styles.subHeadings, { width: "60%" }]}>
-              {translate("Who would you like to reach?")}
-            </Text>
-            <ScrollView
-              ref={(ref) => (this.scrollView = ref)}
-              indicatorStyle="white"
-              style={styles.targetList}
+          <View style={[styles.safeArea]}>
+            <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
+            <Content
+              scrollEnabled={false}
+              contentContainerStyle={styles.contentContainer}
             >
-              <TouchableOpacity
-                disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("gender");
-                }}
-                style={styles.targetTouchable}
-              >
-                <View style={globalStyles.row}>
-                  <GenderIcon width={30} height={30} style={styles.icon} />
+              <Text style={styles.subHeadings}>
+                {translate("Set your budget")}
+              </Text>
+              <BudgetCards
+                value={this.state.value}
+                recBudget={this.props.campaign.recommendedBudget}
+                lifetime_budget_micro={this.state.budget}
+                budgetOption={this.state.budgetOption}
+                _handleBudget={this._handleBudget}
+                uploading={this.props.campaign.uploading}
+                screenProps={this.props.screenProps}
+                campaign={this.props.campaign}
+              />
 
-                  <View style={globalStyles.column}>
-                    <Text style={styles.menutext}>{translate("Gender")}</Text>
-                    <Text style={styles.menudetails}>
-                      {gender.find((r) => r.value === this.state.gender)
-                        ? translate(
-                            gender.find((r) => r.value === this.state.gender)
-                              .label
-                          )
-                        : ""}
-                    </Text>
-                  </View>
+              <Text style={styles.subHeadings}>
+                {translate("What are you promoting?")}
+              </Text>
+              {this.state.keywords.length !== 0 ? (
+                <View
+                  style={{
+                    padding: 5,
+                    borderRadius: 10,
+                  }}
+                >
+                  <KeywordsCarousel
+                    screenProps={this.props.screenProps}
+                    keywords={this.state.keywords}
+                    _renderSideMenu={this._renderSideMenu}
+                    _handleAddKeyword={this._handleAddKeyword}
+                    uploading={this.props.campaign.uploading}
+                  />
                 </View>
-                <View style={globalStyles.column}>
-                  {this.state.gender ? (
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={styles.keywordsAddButton}
+                    onPress={() => this._renderSideMenu("keywords")}
+                  >
+                    <PlusCircle width={35} height={35} />
+                  </TouchableOpacity>
+                  <Text style={[styles.subHeadings, styles.smallSubHeading]}>
+                    {translate("Add Products and Services")}
+                  </Text>
+                </>
+              )}
+
+              <Text style={[styles.subHeadings, { width: "60%" }]}>
+                {translate("Who would you like to reach?")}
+              </Text>
+              <ScrollView
+                ref={(ref) => (this.scrollView = ref)}
+                indicatorStyle="white"
+                style={styles.targetList}
+              >
+                <TouchableOpacity
+                  disabled={this.props.campaign.uploading}
+                  onPress={() => {
+                    this._renderSideMenu("gender");
+                  }}
+                  style={styles.targetTouchable}
+                >
+                  <View style={globalStyles.row}>
+                    <GenderIcon width={30} height={30} style={styles.icon} />
+
+                    <View style={globalStyles.column}>
+                      <Text style={styles.menutext}>{translate("Gender")}</Text>
+                      <Text style={styles.menudetails}>
+                        {gender.find((r) => r.value === this.state.gender)
+                          ? translate(
+                              gender.find((r) => r.value === this.state.gender)
+                                .label
+                            )
+                          : ""}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={globalStyles.column}>
+                    {this.state.gender ? (
+                      <GreenCheckmarkIcon width={30} height={30} />
+                    ) : (
+                      <PlusCircleIcon width={30} height={30} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={this.props.campaign.uploading}
+                  onPress={() => {
+                    this._renderSideMenu("age");
+                  }}
+                  style={styles.targetTouchable}
+                >
+                  <View style={globalStyles.row}>
+                    <AgeIcon
+                      fill={globalColors.orange}
+                      width={30}
+                      height={30}
+                      style={styles.icon}
+                    />
+                    <View style={globalStyles.column}>
+                      <Text style={styles.menutext}>{translate("Age")}</Text>
+                      <Text style={styles.menudetails}>
+                        {this.state.age[0] === "Undetermined"
+                          ? translate("All")
+                          : this.state.age.join(", ")}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {this.state.age.length !== 0 ? (
                     <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PlusCircleIcon width={30} height={30} />
                   )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                disabled={this.props.campaign.uploading}
-                onPress={() => {
-                  this._renderSideMenu("age");
-                }}
-                style={styles.targetTouchable}
-              >
-                <View style={globalStyles.row}>
-                  <AgeIcon
-                    fill={globalColors.orange}
-                    width={30}
-                    height={30}
-                    style={styles.icon}
-                  />
-                  <View style={globalStyles.column}>
-                    <Text style={styles.menutext}>{translate("Age")}</Text>
-                    <Text style={styles.menudetails}>
-                      {this.state.age[0] === "Undetermined"
-                        ? translate("All")
-                        : this.state.age.join(", ")}
-                    </Text>
-                  </View>
-                </View>
-
-                {this.state.age.length !== 0 ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PlusCircleIcon width={30} height={30} />
-                )}
-              </TouchableOpacity>
-            </ScrollView>
-            {this.props.campaign.uploading ? (
-              <ForwardLoading
-                mainViewStyle={{ width: wp(8), height: hp(8) }}
-                bottom={hp(5)}
-                style={{ width: wp(8), height: hp(8) }}
-              />
-            ) : (
-              <LowerButton
-                style={styles.proceedButtonRTL}
-                bottom={5}
-                function={this._handleSubmission}
-              />
-            )}
-          </Content>
-        </SafeAreaView>
-      </Sidemenu>
+                </TouchableOpacity>
+              </ScrollView>
+              {this.props.campaign.uploading ? (
+                <ForwardLoading
+                  mainViewStyle={{ width: wp(8), height: hp(8) }}
+                  bottom={hp(25)}
+                  style={{ width: wp(8), height: hp(8) }}
+                />
+              ) : (
+                <LowerButton
+                  style={styles.proceedButtonRTL}
+                  bottom={25}
+                  function={this._handleSubmission}
+                />
+              )}
+            </Content>
+          </View>
+        </Sidemenu>
+      </>
     );
   }
 }

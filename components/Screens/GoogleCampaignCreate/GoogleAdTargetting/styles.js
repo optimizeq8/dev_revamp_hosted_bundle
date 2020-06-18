@@ -1,29 +1,31 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
+    top: "19%",
   },
   mainContainer: {
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   container: {
     backgroundColor: "#0000",
     overflow: "hidden",
     width: "100%",
     height: "100%",
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
-    flex: 1
+    flex: 1,
   },
   subHeadings: {
     color: "#fff",
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     textTransform: "uppercase",
-    textAlign: "left"
+    textAlign: "left",
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -40,7 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignSelf: "center",
     justifyContent: "space-around",
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   budget: {
     alignSelf: "center",
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     paddingBottom: 0,
-    width: "100%"
+    width: "100%",
   },
   moreOptionsText: {
     alignSelf: "center",
@@ -59,13 +61,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     textAlign: "center",
     width: "100%",
-    paddingBottom: 30
+    paddingBottom: 30,
   },
   budgetInstructionText: {
     color: "#fff",
     fontSize: 11,
     alignSelf: "center",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   sliderContainer: {
     marginHorizontal: 40,
@@ -75,32 +77,32 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-around",
-    paddingHorizontal: 40
+    paddingHorizontal: 40,
   },
   budgetSliderText: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     textAlign: "center",
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   slider: {
     width: "100%",
-    height: 20
+    height: 20,
   },
   sliderPlaceHolder: {
     height: 75,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   targetList: {
     flexDirection: "column",
     marginHorizontal: 40,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 8
+    marginVertical: 8,
   },
   icon: {},
   menutext: {
@@ -110,18 +112,18 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#fff",
     textAlign: "left",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   menudetails: {
     textAlign: "left",
     paddingLeft: 15,
     color: "#fff",
     fontFamily: "montserrat-extralight",
-    fontSize: 11
+    fontSize: 11,
   },
   keywordsColumn: {
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   editButton: {
     overflow: "hidden",
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     paddingBottom: 0,
     borderColor: "#fff",
-    borderWidth: 1
+    borderWidth: 1,
   },
   editButtonText: {
     marginRight: 0,
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     alignSelf: "center",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   keywordButton: {
     overflow: "hidden",
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     margin: 3,
     paddingTop: 0,
     paddingRight: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   keywordButtonText: {
     marginRight: 0,
@@ -166,18 +168,18 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     alignSelf: "center",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   xIcon: {
     color: "#fff",
     fontSize: 20,
-    marginRight: 10
+    marginRight: 10,
   },
   keywordScrollView: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
     // marginHorizontal: 40
     // marginBottom: heightPercentageToDP(35)
     // height: "10%"
@@ -194,11 +196,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    elevation: -1
+    elevation: -1,
   },
   proceedButtonRTL: {
     width: 55,
-    height: 55
+    height: 55,
 
     // padding: 20
   },
@@ -206,8 +208,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: "center",
     fontFamily: "montserrat-regular",
-    textTransform: "none"
-  }
+    textTransform: "none",
+  },
 });
 
 export default styles;

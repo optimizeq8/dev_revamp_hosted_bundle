@@ -1,33 +1,33 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   optionsRowContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   inactivetext: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    color: "#fff"
+    color: "#fff",
   },
   optionsTextContainer: {
     textAlign: "center",
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   optionsContainer: {
     flexDirection: "column",
-    width: wp("80%")
+    width: wp("80%"),
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#0000",
     alignSelf: "center",
     textAlign: "center",
-    height: 37
+    height: 37,
   },
   searchfield: {
     marginBottom: 10,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderColor: "#0000",
     backgroundColor: "rgba(0,0,0,0.15)",
     borderRadius: 30,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   infoText: {
     textAlign: "center",
@@ -55,33 +55,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: 250,
     paddingTop: 50,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   scrollViewContainer: {
     width: "100%",
-    maxHeight: hp("25%")
+    maxHeight: hp("25%"),
   },
   selectedContainer: {
     width: "100%",
-    height: "40%",
+    height: "35%",
     marginTop: 20,
     padding: 5,
-    borderRadius: 10
+    borderRadius: 10,
   },
   selectedScrollView: {
-    display: "flex",
+    flex: 1,
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   resetText: {
     alignSelf: "center",
-    paddingTop: 20,
-    margin: 0
+    paddingTop: 10,
+    margin: 0,
   },
   icon: {
     color: "#fff",
     fontSize: 20,
-    marginRight: 10
+    marginRight: 10,
   },
   selectedItem: {
     overflow: "hidden",
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     margin: 3,
     paddingTop: 0,
     paddingRight: 0,
-    paddingBottom: 0
-  }
+    paddingBottom: 0,
+  },
 });
 
 export default styles;

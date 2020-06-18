@@ -446,9 +446,13 @@ class PaymentForm extends Component {
               source_action: "a_go_back",
             }}
             actionButton={this.reviewPurchase}
-            icon="snapchat"
+            icon={this.props.channel === "" ? "snapchat" : this.props.channel}
             actionButton={this.handleBackButton}
-            adType={this.props.adType}
+            adType={
+              this.props.channel === "" || this.props.channel === "snapchat"
+                ? this.props.adType
+                : null
+            }
             currentScreen="Payment"
             title={this.state.addingCredits ? "Top up wallet" : "Payment"}
           />
