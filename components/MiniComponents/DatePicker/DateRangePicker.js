@@ -221,7 +221,6 @@ export default class DateRangePicker extends Component<Props> {
     startDate.setDate(startDate.getDate() + 1);
     return (
       <CalendarList
-        pastScrollRange={this.props.filterMenu ? 50 : 0}
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
