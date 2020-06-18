@@ -54,7 +54,60 @@ LocaleConfig.locales["en"] = {
   dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
 };
 
+LocaleConfig.locales["ar"] = {
+  monthNames: [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ],
+  monthNamesShort: [
+    ".يناير",
+    ".فبراير",
+    ".مارس",
+    ".أبريل",
+    ".مايو",
+    ".يونيو",
+    ".يوليو",
+    ".أغسطس",
+    ".سبتمبر",
+    ".أكتوبر",
+    ".نوفمبر",
+    ".ديسمبر",
+  ],
+  dayNames: [
+    "يَوم الأحَد",
+    "يَوم الإثنين",
+    "يَوم الثلاثاء",
+    "يَوم الأربعاء",
+    "يَوم الخميس",
+    "يَوم الجمعة",
+    "يَوم السبت",
+  ],
+
+  dayNamesShort: [
+    "الأحد",
+    "الاثنين",
+    "الثلاثاء",
+    "الأربعاء",
+    "الخميس",
+    "الجمعة",
+    "السبت",
+  ],
+};
+
 LocaleConfig.defaultLocale = "en";
+if (I18nManager.isRTL) {
+  LocaleConfig.defaultLocale = "ar";
+}
 export default class DateRangePicker extends Component<Props> {
   state = { isFromDatePicked: false, isToDatePicked: false, markedDates: {} };
 
@@ -233,11 +286,20 @@ export default class DateRangePicker extends Component<Props> {
               paddingLeft: 10,
               paddingRight: 10,
               alignItems: "center",
+              // width: 50,
             },
             week: {
               marginTop: 7,
               flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
               justifyContent: "space-around",
+            },
+            dayHeader: {
+              // width: 45,
+              alignSelf: "center",
+              color: "#FFF",
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "montserrat-bold",
             },
           },
           calendarBackground: "transparent",
@@ -252,11 +314,11 @@ export default class DateRangePicker extends Component<Props> {
           arrowColor: "#FF9D00",
           monthTextColor: "#fff",
           textDayFontFamily: "montserrat-regular-english",
-          textMonthFontFamily: "montserrat-bold-english",
-          textDayHeaderFontFamily: "montserrat-bold-english",
+          textMonthFontFamily: "montserrat-bold",
+          textDayHeaderFontFamily: "montserrat-bold",
           textDayFontSize: 17,
           textMonthFontSize: 13,
-          textDayHeaderFontSize: 12,
+          // textDayHeaderFontSize: I18nManager.isRTL ? 8.5 : 12,
         }}
       />
     );
