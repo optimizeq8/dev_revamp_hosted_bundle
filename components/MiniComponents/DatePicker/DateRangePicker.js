@@ -286,7 +286,6 @@ export default class DateRangePicker extends Component<Props> {
               paddingLeft: 10,
               paddingRight: 10,
               alignItems: "center",
-              // width: 50,
             },
             week: {
               marginTop: 7,
