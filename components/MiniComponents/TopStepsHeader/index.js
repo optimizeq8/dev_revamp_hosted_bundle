@@ -106,12 +106,7 @@ export default class TopStepsHeader extends Component {
         <TouchableOpacity
           disabled={disabled}
           onPress={this.handleTouchableOpacity}
-          style={[
-            styles.left,
-            I18nManager.isRTL && {
-              transform: [{ rotateY: "180deg" }, { translateX: -13 }],
-            },
-          ]}
+          style={[styles.left]}
         >
           {I18nManager.isRTL ? <FowrwardIcon /> : <BackIcon />}
         </TouchableOpacity>

@@ -97,7 +97,7 @@ class CampaignCard extends Component {
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <SnapchatBorder width={30} height={30} />
+              <SnapchatBorder width={30} height={30} fill="#000" />
               <View
                 style={{
                   display: "flex",

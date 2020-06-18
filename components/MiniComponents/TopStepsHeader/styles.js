@@ -1,9 +1,4 @@
 import { StyleSheet, I18nManager } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -23,6 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    height: 70,
   },
   activeBadege: {
     backgroundColor: "#9300FF",
@@ -32,6 +28,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
+    bottom: 2,
   },
   badge: {
     alignSelf: "center",
@@ -46,7 +43,6 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   activeBadegeText: {
-    marginTop: I18nManager.isRTL ? 15 : 0,
     alignSelf: "center",
     textAlignVertical: "center",
     color: "#FFF",
@@ -69,13 +65,14 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
     fontSize: 9,
     fontFamily: "montserrat-light",
+    textAlign: "center",
   },
   activeTitleText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#9300FF",
-    top: 15,
     textAlign: "center",
+    height: "120%",
     width: "110%",
   },
   titleText: {
@@ -88,6 +85,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: -2,
     width: 55,
+    height: 40,
   },
   progressCardView: {
     display: "flex",

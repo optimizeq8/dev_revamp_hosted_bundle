@@ -6,7 +6,6 @@ import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskedView from "@react-native-community/masked-view";
-
 export class BudgetCards extends Component {
   state = {
     placeholder: false,
@@ -99,7 +98,7 @@ export class BudgetCards extends Component {
     ));
 
     return (
-      <View style={{ height: "10%" }}>
+      <View>
         <MaskedView
           maskElement={
             <LinearGradient

@@ -20,7 +20,6 @@ export default class AdButtons extends Component {
           }}
         >
           <AdIcon
-            style={{}}
             width={ad.mediaType === "google" ? 20 : 30}
             height={ad.mediaType === "google" ? 20 : 30}
           />
@@ -38,7 +37,7 @@ export default class AdButtons extends Component {
                       left: -20,
                     },
               ]}
-              fill={ad.mediaType === "google" && "#0000"}
+              fill={ad.mediaType === "google" ? "#0000" : "#000"}
             />
           )}
         </TouchableOpacity>
