@@ -24,6 +24,8 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+
 import * as IntentLauncher from "expo-intent-launcher";
 
 //Redux
@@ -905,6 +907,7 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleLogo}
                           style={styles.changeLogoStyle}
                         >
@@ -930,6 +933,7 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleLogo}
                           style={styles.addLogoStyle}
                         >
@@ -965,6 +969,7 @@ class AdCover extends Component {
                       )}
                       <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleSupportPage}
                           style={{
                             position: "absolute",
@@ -975,6 +980,7 @@ class AdCover extends Component {
                           <InfoIcon />
                         </TouchableOpacity>
                         <PenIconBrand
+                          disabled={this.props.coverLoading}
                           style={{ justifyContent: "flex-start" }}
                           data={this.props.data}
                           coverHeadlineError={coverHeadlineError}
@@ -997,6 +1003,7 @@ class AdCover extends Component {
                         image={this.state.cover}
                         media={this.state.cover}
                         screenProps={this.props.screenProps}
+                        disabled={this.props.coverLoading}
                       />
                     </View>
                   </View>
@@ -1018,7 +1025,23 @@ class AdCover extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {cover ? (
+            {cover && (this.props.coverLoading || this.state.isVisible) ? (
+              <View style={{ position: "relative" }}>
+                <AnimatedCircularProgress
+                  size={50}
+                  width={5}
+                  fill={Math.round(this.state.loaded)}
+                  rotation={360}
+                  lineCap="round"
+                  tintColor={globalColors.orange}
+                  backgroundColor="rgba(255,255,255,0.3)"
+                  adDetails={false}
+                />
+                <Text style={styles.uplaodPercentageText}>
+                  {Math.round(this.state.loaded, 2)} %
+                </Text>
+              </View>
+            ) : cover ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
                   function={this._handleSubmission}
@@ -1056,57 +1079,6 @@ class AdCover extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        <Modal
-          visible={this.props.coverLoading || this.state.isVisible}
-          onDismiss={() => this.onToggleModal(false)}
-          animationType={"slide"}
-        >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              forceInset={{ top: "always" }}
-              style={styles.loadingSafeArea}
-            >
-              {this.props.coverLoading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.cancelUpload()}
-                  title={"Uploading Image"}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_cancel_upload",
-                  }}
-                />
-              )}
-              {!this.props.coverLoading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.onToggleModal(false)}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_go_back",
-                  }}
-                />
-              )}
-
-              <CameraLoading center={true} />
-              {this.props.coverLoading && (
-                <View style={styles.loadingContainer}>
-                  <Text style={styles.uplaodPercentage}>
-                    {Math.round(this.state.loaded, 2)}%
-                  </Text>
-
-                  <Text style={styles.uplaodText}>
-                    {translate(
-                      "Please make sure not to close the app or lock the phone while uploading"
-                    )}
-                  </Text>
-                </View>
-              )}
-            </SafeAreaView>
-          </BlurView>
-        </Modal>
       </View>
     );
   }

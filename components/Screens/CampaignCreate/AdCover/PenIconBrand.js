@@ -10,10 +10,10 @@ import { globalColors } from "../../../../GlobalStyles";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
-    let { rejected, coverHeadline } = this.props;
+    let { rejected, coverHeadline, disabled } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <Item style={styles.inputHeadline}>
+      <Item disabled={disabled} style={styles.inputHeadline}>
         <PenIcon
           width={21}
           height={21}
@@ -30,13 +30,14 @@ export default class PenIconBrand extends Component {
           style={{
             flexDirection: "column",
             paddingBottom: 20,
-            justifyContent: "flex-start"
+            justifyContent: "flex-start",
           }}
         >
           <Text style={[styles.subtitleHeading]}>
             {translate(this.props.field)}
           </Text>
           <TextInput
+            editable={!disabled}
             style={[styles.inputText]}
             defaultValue={this.props.coverHeadline}
             maxLength={55}
@@ -46,14 +47,14 @@ export default class PenIconBrand extends Component {
             placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={value => this.props.changeHeadline(value)}
+            onChangeText={(value) => this.props.changeHeadline(value)}
             onFocus={() => {
               //   this.props.focus(businessNameComp ? "inputB" : "inputH");
               this.setState({ input: true });
             }}
             onBlur={() => {
               segmentEventTrack("Changed Story Ad Cover Headline", {
-                campaign_stoty_ad_cover_headline: this.props.coverHeadline
+                campaign_stoty_ad_cover_headline: this.props.coverHeadline,
               });
               this.setState({ input: false });
               this.setState(
@@ -61,7 +62,7 @@ export default class PenIconBrand extends Component {
                   coverHeadlineError: validateWrapper(
                     "mandatory",
                     this.props.coverHeadline
-                  )
+                  ),
                 },
                 () => {
                   if (this.state.coverHeadlineError) {
@@ -69,7 +70,7 @@ export default class PenIconBrand extends Component {
                       "Error occured on Cover Headline input Blur",
                       {
                         campaign_error_stoty_ad_cover_headline: this.state
-                          .coverHeadlineError
+                          .coverHeadlineError,
                       }
                     );
                   }

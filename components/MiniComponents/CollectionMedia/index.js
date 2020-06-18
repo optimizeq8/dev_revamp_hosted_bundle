@@ -58,6 +58,7 @@ import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
+import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
@@ -677,6 +678,7 @@ class CollectionMedia extends Component {
     if (this.state.collection.collection_media) {
       return (
         <TouchableOpacity
+          disabled={this.props.loading}
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
@@ -692,6 +694,7 @@ class CollectionMedia extends Component {
     } else {
       return (
         <TouchableOpacity
+          disabled={this.props.loading}
           style={styles.inputMiddleButton}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
@@ -792,6 +795,7 @@ class CollectionMedia extends Component {
                         ]}
                       >
                         <Input
+                          disabled={this.props.loading}
                           value={this.state.collection.collection_attachment}
                           style={styles.inputtext}
                           placeholder={translate("Enter Deep Link URL")}
@@ -893,6 +897,7 @@ class CollectionMedia extends Component {
                             </TouchableOpacity>
                            */}
                             <Input
+                              disabled={this.props.loading}
                               style={[styles.inputtext]}
                               placeholder={translate(
                                 "Enter your website's URL"
@@ -942,7 +947,23 @@ class CollectionMedia extends Component {
             </KeyboardShift>
           </ScrollView>
           <View style={styles.footerStyle}>
-            {this.state.collection.collection_media ? (
+            {this.props.loading || this.state.isVisible ? (
+              <View style={{ bottom: 3, position: "relative" }}>
+                <AnimatedCircularProgress
+                  size={50}
+                  width={5}
+                  fill={Math.round(this.state.loaded)}
+                  rotation={360}
+                  lineCap="round"
+                  tintColor={globalColors.orange}
+                  backgroundColor="rgba(255,255,255,0.3)"
+                  adDetails={false}
+                />
+                <Text style={styles.uplaodPercentageText}>
+                  {Math.round(this.state.loaded, 2)} %
+                </Text>
+              </View>
+            ) : this.state.collection.collection_media ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
                   function={this._handleSubmission}
@@ -973,57 +994,6 @@ class CollectionMedia extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        <Modal
-          visible={this.props.loading || this.state.isVisible}
-          onDismiss={() => this.onToggleModal(false)}
-          animationType={"slide"}
-        >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              forceInset={{ top: "always" }}
-              style={styles.loadingSafeArea}
-            >
-              {this.props.loading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.cancelUpload()}
-                  title={"Uploading Image"}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_cancel_upload",
-                  }}
-                />
-              )}
-              {!this.props.loading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.onToggleModal(false)}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_go_back",
-                  }}
-                />
-              )}
-
-              <CameraLoading center={true} />
-              {this.props.loading && (
-                <View style={styles.loadingContainer}>
-                  <Text style={styles.uplaodPercentage}>
-                    {Math.round(this.state.loaded, 2)}%
-                  </Text>
-
-                  <Text style={styles.uplaodText}>
-                    {translate(
-                      "Please make sure not to close the app or lock the phone while uploading"
-                    )}
-                  </Text>
-                </View>
-              )}
-            </SafeAreaView>
-          </BlurView>
-        </Modal>
       </SafeAreaView>
     );
   }

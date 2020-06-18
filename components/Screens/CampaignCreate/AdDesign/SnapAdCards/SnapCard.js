@@ -42,6 +42,7 @@ class SnapCard extends Component {
 
     return (
       <TouchableOpacity
+        disabled={this.props.loadingStoryAdsArray.includes(true)}
         style={styles.SnapAdCard}
         onLongPress={() => {
           this.setState({ showDelete: true });

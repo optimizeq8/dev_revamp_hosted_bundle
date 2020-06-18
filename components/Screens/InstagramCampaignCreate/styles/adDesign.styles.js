@@ -406,6 +406,19 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     color: globalColors.purple,
   },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold",
+    fontSize: 8,
+    color: "#FFF",
+    top: "32%",
+    left: "32%",
+    textAlign: "center",
+  },
+  lowerBtnWidth: {
+    width: 55,
+    height: 55,
+  },
 });
 
 export default styles;

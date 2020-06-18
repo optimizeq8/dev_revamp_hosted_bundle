@@ -25,6 +25,7 @@ import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import CustomHeader from "../../../../MiniComponents/Header";
 import LoadingModal from "../../../../MiniComponents/LoadingImageModal";
+import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
@@ -510,6 +511,7 @@ class AdDesign extends Component {
                       screenProps={this.props.screenProps}
                       videoIsLoading={this.videoIsLoading}
                       setMediaModalVisible={this.setMediaModalVisible}
+                      disabled={this.props.loading}
                     />
                   )}
 
@@ -518,6 +520,7 @@ class AdDesign extends Component {
                       this.handleCaptionExpand(true);
                     }}
                     style={styles.captionView}
+                    disabled={this.props.loading}
                   >
                     <View style={styles.captionTextView}>
                       <Text style={styles.captionText}>
@@ -540,6 +543,7 @@ class AdDesign extends Component {
                       )
                     }
                     style={styles.destinationView}
+                    disabled={this.props.loading}
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
@@ -574,10 +578,35 @@ class AdDesign extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.lowerBtn}>
-                  <TouchableOpacity onPress={this.handleReview}>
+                  <TouchableOpacity
+                    disabled={this.props.loading}
+                    // style={styles.lowerBtnWidth}
+                    onPress={this.handleReview}
+                  >
                     <EyeIcon />
                   </TouchableOpacity>
-                  <LowerButton function={this.handleSubmission} />
+                  {this.props.loading || this.state.isVisible ? (
+                    <View style={{ position: "relative" }}>
+                      <AnimatedCircularProgress
+                        size={60}
+                        width={5}
+                        fill={Math.round(this.state.loaded)}
+                        rotation={360}
+                        lineCap="round"
+                        tintColor={globalColors.orange}
+                        backgroundColor="rgba(255,255,255,0.3)"
+                        adDetails={false}
+                      />
+                      <Text style={styles.uplaodPercentageText}>
+                        {Math.round(this.state.loaded, 2)} %
+                      </Text>
+                    </View>
+                  ) : (
+                    <LowerButton
+                      style={styles.lowerBtnWidth}
+                      function={this.handleSubmission}
+                    />
+                  )}
                 </View>
               </View>
             </Transition>
@@ -667,15 +696,6 @@ class AdDesign extends Component {
             this.state.serialization
             // : this.state.storyAdCards.selectedStoryAd.serialization
           }
-          screenProps={this.props.screenProps}
-        />
-        <LoadingModal
-          videoUrlLoading={this.state.videoUrlLoading}
-          loading={this.props.loading}
-          isVisible={this.state.isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
       </View>

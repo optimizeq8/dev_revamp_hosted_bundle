@@ -24,6 +24,8 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
@@ -77,6 +79,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { globalColors } from "../../../../GlobalStyles";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -936,7 +939,6 @@ class AdDesign extends Component {
           videoIsLoading: false,
         })
       : this.props.navigation.goBack();
-    console.log("asssss");
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
@@ -1198,6 +1200,11 @@ class AdDesign extends Component {
 
     let inputFields = ["Business Name", "Promotional Message"].map((field) => (
       <PenIconBrand
+        disabled={
+          this.props.loading ||
+          (this.props.loadingStoryAdsArray.length > 0 &&
+            this.props.loadingStoryAdsArray.includes(true))
+        }
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -1219,6 +1226,7 @@ class AdDesign extends Component {
         selectedCampaign={this.selectedCampaign}
         collIdx={collIdx}
         screenProps={this.props.screenProps}
+        disabled={this.props.loading}
       />
     ));
 
@@ -1305,6 +1313,11 @@ class AdDesign extends Component {
                   ) : (
                     !videoIsLoading && (
                       <MediaButton
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         screenProps={this.props.screenProps}
                         type={"media"}
                         setMediaModalVisible={this.setMediaModalVisible}
@@ -1347,8 +1360,18 @@ class AdDesign extends Component {
                     adType={this.adType}
                     media={media}
                     call_to_action={call_to_action}
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                   />
                   <TouchableOpacity
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                     onPress={this.handleSupportPage}
                     style={{
                       position: "absolute",
@@ -1370,17 +1393,28 @@ class AdDesign extends Component {
             <View style={styles.footerButtonsContainer}>
               {this.props.loadingStoryAdsArray.length > 0 &&
               this.props.loadingStoryAdsArray.includes(true) ? (
-                <CircleLoader
-                  mainViewStyle={{ width: wp(8), height: hp(8) }}
-                  bottom={-0.2}
-                  loop={true}
-                  style={{ width: wp(8), height: hp(8) }}
-                />
+                <View style={{ bottom: 3 }}>
+                  {/* <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={Math.round(this.state.loaded)}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                  /> */}
+                </View>
               ) : (
                 <>
                   {this.adType === "StoryAd" ? (
                     validCards.length >= 3 && (
                       <TouchableOpacity
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         style={styles.button}
                         onPress={() => {
                           segmentEventTrack(
@@ -1394,6 +1428,11 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <TouchableOpacity
+                      disabled={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
                       style={styles.button}
                       onPress={() => {
                         segmentEventTrack(
@@ -1408,6 +1447,11 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" ? (
                     true ? (
                       <LowerButton
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         function={() => {
                           this.handleUpload();
                           _handleSubmission(
@@ -1450,6 +1494,12 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <SubmitButton
+                      loading={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
+                      loaded={loaded}
                       _handleSubmission={() =>
                         _handleSubmission(
                           this.adType,
@@ -1538,15 +1588,6 @@ class AdDesign extends Component {
           handleDownloadMediaCollectionAds={
             this.handleDownloadMediaCollectionAds
           }
-        />
-        <LoadingModal
-          videoUrlLoading={videoUrlLoading}
-          loading={this.props.loading}
-          isVisible={isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={loaded}
-          screenProps={this.props.screenProps}
         />
       </View>
     );

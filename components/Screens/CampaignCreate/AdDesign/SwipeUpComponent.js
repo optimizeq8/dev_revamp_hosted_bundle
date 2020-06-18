@@ -12,18 +12,20 @@ export default class SwipeUpComponent extends Component {
       objective,
       media,
       selectedStoryAd,
-      call_to_action_label
+      call_to_action_label,
+      disabled,
     } = this.props;
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
+        disabled={disabled}
         style={[
           styles.swipeUp,
           {
             bottom: 0,
-            marginBottom: adType === "CollectionAd" ? 110 : 10
-          }
+            marginBottom: adType === "CollectionAd" ? 110 : 10,
+          },
         ]}
         onPress={() => {
           if (adType === "CollectionAd") {
@@ -33,7 +35,7 @@ export default class SwipeUpComponent extends Component {
               collectionAdLinkForm: collectionAdLinkForm,
               adType: adType,
               source: "ad_design",
-              source_action: "a_swipe_up_destination"
+              source_action: "a_swipe_up_destination",
             });
           } else if (adType === "StoryAd") {
             objective === "BRAND_AWARENESS"
@@ -44,7 +46,7 @@ export default class SwipeUpComponent extends Component {
                   destination,
                   media,
                   source: "ad_design",
-                  source_action: "a_swipe_up_destination"
+                  source_action: "a_swipe_up_destination",
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
@@ -52,7 +54,7 @@ export default class SwipeUpComponent extends Component {
                   adType,
                   collectionAdLinkForm,
                   source: "ad_design",
-                  source_action: "a_swipe_up_destination"
+                  source_action: "a_swipe_up_destination",
                 });
           } else {
             objective === "TRAFFIC"
@@ -63,14 +65,14 @@ export default class SwipeUpComponent extends Component {
                   destination,
                   media,
                   source: "ad_design",
-                  source_action: "a_swipe_up_destination"
+                  source_action: "a_swipe_up_destination",
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
                   objective,
                   collectionAdLinkForm,
                   source: "ad_design",
-                  source_action: "a_swipe_up_destination"
+                  source_action: "a_swipe_up_destination",
                 });
           }
         }}

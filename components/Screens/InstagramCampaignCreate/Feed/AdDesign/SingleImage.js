@@ -23,6 +23,7 @@ export default class SingleImage extends React.PureComponent {
       media_type = "IMAGE",
       videoIsLoading,
       setMediaModalVisible,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
 
@@ -36,6 +37,7 @@ export default class SingleImage extends React.PureComponent {
         )}
 
         <TouchableOpacity
+          disabled={disabled}
           onPress={() =>
             // _pickImage(
             //   "All",
