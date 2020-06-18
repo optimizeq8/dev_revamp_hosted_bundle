@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -43,13 +43,21 @@ class GoogleCampaignCard extends Component {
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
-
+    let gradientColor = {
+      color1: "#9300FF",
+      color2: "#4E00CB",
+    };
+    if (I18nManager.isRTL) {
+      gradientColor = {
+        color2: "#9300FF",
+        color1: "#4E00CB",
+      };
+    }
     return (
       <LinearGradient
-        colors={["#9300FF", "#9300FF", "#4E00CB"]}
-        locations={[0, 0.3, 1]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
+        start={[0, 0]}
+        end={[1, 1]}
         style={styles.cardStyle}
       >
         <TouchableOpacity

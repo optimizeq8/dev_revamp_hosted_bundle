@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     // left: 10
   },
   campaignInfoCard: {
-    flexDirection: "row",
+    flex: 1,
     top: 10,
-    flex: 3,
+    alignItems: "flex-start",
   },
   campaignCard: {
     flexDirection: "row",

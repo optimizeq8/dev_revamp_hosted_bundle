@@ -1,20 +1,20 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
     top: 5,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   mainView: {
     justifyContent: "space-between",
@@ -24,37 +24,37 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "5%",
     paddingHorizontal: "3.5%",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   lottieView: {
     width: heightPercentageToDP(5),
-    height: heightPercentageToDP(5)
+    height: heightPercentageToDP(5),
   },
   animateView: {
     zIndex: 1,
-    height: "100%"
+    height: "100%",
   },
   sideMenuCard: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5
+    marginBottom: 5,
   },
   sideMenuTop: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   newCampaignTitle: {
     paddingTop: 0,
-    fontSize: 12
+    fontSize: 12,
   },
   menuContainer: {
     alignSelf: "center",
     width: "100%",
-    position: "absolute"
+    position: "absolute",
   },
   flatlistContainerStyle: {
-    paddingBottom: heightPercentageToDP(35)
+    paddingBottom: heightPercentageToDP(35),
   },
   footerActivityIndicator: { margin: 15 },
   campaignButtonText: {
@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
 
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    top: I18nManager.isRTL ? 8 : 5
+    top: I18nManager.isRTL ? 8 : 5,
   },
   adButtonText: {
     textAlign: "center",
     color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 12,
-    paddingTop: 0
+    fontSize: 12 / PixelRatio.getFontScale(),
+    paddingTop: 0,
     // top: 20
   },
   container: { backgroundColor: "#0000" },
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: heightPercentageToDP(10),
     width: heightPercentageToDP(15),
-    bottom: heightPercentageToDP(3.5)
+    bottom: heightPercentageToDP(3.5),
   },
   imageIcon: {
     alignSelf: "center",
     height: 50,
-    width: 50
+    width: 50,
   },
   mainCard: {
     backgroundColor: "#F4F4F4",
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingTop: 10,
-    bottom: 5
+    bottom: 5,
   },
   backDrop: {
     position: "absolute",
@@ -100,24 +100,24 @@ const styles = StyleSheet.create({
     top: heightPercentageToDP(5) < 40 ? -240 : -210,
     alignSelf: "center",
     zIndex: -1,
-    elevation: -2
+    elevation: -2,
   },
   logoutIcon: {
     zIndex: 20,
 
-    left: widthPercentageToDP("85%")
+    left: widthPercentageToDP("85%"),
   },
   icons: {
     color: "#fff",
     paddingHorizontal: 17,
-    paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
+    paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12,
   },
   text: {
     textAlign: "left",
     color: globalColors.white,
     fontFamily: "montserrat-bold",
     fontSize: 20,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
     // top: 4
   },
   brandStyle: {
@@ -126,21 +126,21 @@ const styles = StyleSheet.create({
     color: globalColors.white,
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   nameStyle: {
     fontFamily: "montserrat-bold",
-    fontSize: 21
+    fontSize: 21,
   },
   buttontext: {
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: 14,
   },
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   input: {
     top: 30,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignSelf: "center",
     width: 250,
-    height: 50
+    height: 50,
   },
   button: {
     justifyContent: "center",
@@ -160,14 +160,15 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 50,
     elevation: 0,
-    top: I18nManager.isRTL ? 8 : 0
+    top: I18nManager.isRTL ? 5 : 0,
+    marginHorizontal: 0,
   },
   link: {
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
     fontFamily: "montserrat-regular",
-    fontSize: 20
+    fontSize: 20,
   },
   bottomCard: {
     top: 15,
@@ -178,17 +179,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 8, height: 8 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100
+    height: 100,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
 
   textcontainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   titletext: {
     textAlign: "left",
@@ -196,14 +197,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontFamily: "montserrat-medium",
     fontSize: 16,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   subtext: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingTop: 25,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   Text: {
     justifyContent: "space-between",
@@ -217,17 +218,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF9D00",
     padding: 10,
     marginBottom: 20,
-    bottom: 15
+    bottom: 15,
   },
   icon: {
     alignSelf: "center",
     color: "#fff",
     fontSize: 40,
     paddingVertical: 10,
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 30,
   },
   activebutton: {
     backgroundColor: "#0000",
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 33,
     alignItems: "center",
-    elevation: 0
+    elevation: 0,
   },
   dateInput: {
     marginBottom: 15,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 270,
     height: 65,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   categories: {
     textAlign: "center",
@@ -253,25 +254,25 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     fontFamily: "montserrat-regular",
     fontSize: 13,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium",
     fontSize: 16,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
     height: heightPercentageToDP("100%"),
-    marginTop: 0
+    marginTop: 0,
   },
   headerIcons: {
     alignItems: "center",
     justifyContent: "center",
     width: "10%",
-    height: "100%"
+    height: "100%",
   },
   placeHolderCardsStyle: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 }
+    shadowOffset: { height: 6, width: 0 },
     // elevation: 1
   },
   snapAd: {
@@ -295,32 +296,32 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     elevation: 0,
-    alignItems: "center"
+    alignItems: "center",
   },
   background: {
     position: "absolute",
     opacity: 0.4,
     top: 230,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   dashboardHeader: {
     paddingHorizontal: "5%",
-    marginBottom: 15
+    marginBottom: 15,
   },
   searchbarContainer: {
     flexDirection: "row",
     height: 60,
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   channelIcon: {
     position: "absolute",
-    top: -22
+    top: -22,
   },
   adButtonView: {
     flexDirection: "column",
     backgroundColor: "#0000",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   languageText: {
     color: "#FFF",
@@ -328,18 +329,18 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: !I18nManager.isRTL
       ? "montserrat-regular-arabic"
-      : "montserrat-regular-english"
+      : "montserrat-regular-english",
   },
   languageTouchView: {
     right: "5%",
-    position: "absolute"
+    position: "absolute",
   },
   unreadText: {
     fontFamily: "montserrat-bold-english",
     fontSize: 10,
     color: globalColors.white,
 
-    textAlign: "center"
+    textAlign: "center",
   },
   unreadTextView: {
     position: "absolute",
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
     display: "flex",
     top: -3,
     left: 18,
-    zIndex: 1
+    zIndex: 1,
   },
   websiteCard: {
     borderRadius: 35,
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: "-12%",
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
   mainText: {
     color: "#FFF",
@@ -371,18 +372,18 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     width: "40%",
     marginLeft: "-10%",
-    marginTop: "-18%"
+    marginTop: "-18%",
   },
   onlineStoreHomeIcon: {
     marginLeft: "-10%",
-    marginTop: "-18%"
+    marginTop: "-18%",
   },
   lowerButton: {
     width: 30,
     height: 30,
     bottom: "10%",
-    right: 15
-  }
+    right: 15,
+  },
 });
 
 export default styles;
