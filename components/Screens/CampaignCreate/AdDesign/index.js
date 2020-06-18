@@ -1589,16 +1589,6 @@ class AdDesign extends Component {
             this.handleDownloadMediaCollectionAds
           }
         />
-        {/* <LoadingModal
-          videoUrlLoading={videoUrlLoading}
-         loading={this.props.loading || (this.props.loadingStoryAdsArray.length > 0 &&
-              this.props.loadingStoryAdsArray.includes(true))})
-          isVisible={isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={loaded}
-          screenProps={this.props.screenProps}
-        /> */}
       </View>
     );
   }

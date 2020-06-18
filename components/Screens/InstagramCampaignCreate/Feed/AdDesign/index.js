@@ -698,15 +698,6 @@ class AdDesign extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        {/* <LoadingModal
-          videoUrlLoading={this.state.videoUrlLoading}
-          loading={this.props.loading}
-          isVisible={this.state.isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={this.state.loaded}
-          screenProps={this.props.screenProps}
-        /> */}
       </View>
     );
   }

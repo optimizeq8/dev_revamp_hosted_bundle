@@ -994,58 +994,6 @@ class CollectionMedia extends Component {
           }
           screenProps={this.props.screenProps}
         />
-        {/* <Modal
-          visible={this.props.loading || this.state.isVisible}
-          onDismiss={() => this.onToggleModal(false)}
-          animationType={"slide"}
-        >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              forceInset={{ top: "always" }}
-              style={styles.loadingSafeArea}
-            >
-              {this.props.loading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.cancelUpload()}
-                  title={"Uploading Image"}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_cancel_upload",
-                  }}
-                />
-              )}
-              {!this.props.loading && (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={true}
-                  actionButton={() => this.onToggleModal(false)}
-                  segment={{
-                    source: "upload_image",
-                    source_action: "a_go_back",
-                  }}
-                />
-              )}
-
-              <CameraLoading center={true} />
-              {this.props.loading && (
-                <View style={styles.loadingContainer}>
-                  <Text style={styles.uplaodPercentage}>
-                    {Math.round(this.state.loaded, 2)}%
-                  </Text>
-
-                  <Text style={styles.uplaodText}>
-                    {translate(
-                      "Please make sure not to close the app or lock the phone while uploading"
-                    )}
-                  </Text>
-                </View>
-              )}
-            </SafeAreaView>
-          </BlurView>
-        </Modal>
-      */}
       </SafeAreaView>
     );
   }
