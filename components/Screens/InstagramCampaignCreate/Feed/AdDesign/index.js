@@ -441,8 +441,8 @@ class AdDesign extends Component {
             source_action: "a_go_back",
           }}
           icon="instagram"
-          actionButton={this.handleBackButton}
           currentScreen="Compose"
+          navigation={this.props.navigation}
           title={"Compose"}
         />
 

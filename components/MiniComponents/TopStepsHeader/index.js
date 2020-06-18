@@ -129,7 +129,7 @@ export default class TopStepsHeader extends Component {
           )}
           {icon === "instagram" && (
             <View style={{ paddingHorizontal: 5 }}>
-              <InstagramIcon width={30} height={24} fill="#fff" />
+              <InstagramIcon width={30} height={30} />
             </View>
           )}
           <Text style={styles.title}>

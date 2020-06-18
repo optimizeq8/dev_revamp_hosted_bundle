@@ -413,7 +413,7 @@ class AdObjective extends Component {
               icon="instagram"
               actionButton={this.handleBackButton}
               currentScreen="Details"
-              title={"Instagram Feed Campaign"}
+              title={"Instagram Feed"}
             />
 
             <ScrollView
