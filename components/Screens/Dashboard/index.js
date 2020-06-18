@@ -716,18 +716,9 @@ class Dashboard extends Component {
                                     style={{ color: "#fff" }}
                                   />
                                 </GradientButton>
-                                {/* <Text
-                                style={[
-                                  styles.campaignButtonText,
-                                  styles.newCampaignTitle
-                                ]}
-                              >
-                                {translate("New Ad")}
-                              </Text> */}
                               </View>
                               <ScrollView
                                 style={{
-                                  // height: 90,
                                   top: I18nManager.isRTL ? 5 : 0,
                                 }}
                                 horizontal

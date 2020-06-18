@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   campaignInfoCard: {
-    flexDirection: "row",
+    flex: 1,
     top: 10,
-    flex: 3,
+    alignItems: "flex-start",
   },
   titleContainer: {
     flexDirection: "row",
