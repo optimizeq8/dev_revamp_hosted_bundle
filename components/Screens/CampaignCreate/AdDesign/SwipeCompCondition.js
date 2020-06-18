@@ -18,6 +18,7 @@ class SwipeCompCondition extends Component {
           adType={this.props.adType}
           media={this.props.media}
           call_to_action_label={this.props.call_to_action.label}
+          disabled={this.props.disabled}
         />
       )
     ) : this.props.adType === "CollectionAd" ? (
@@ -31,6 +32,7 @@ class SwipeCompCondition extends Component {
         collectionAdLinkForm={this.props.collectionAdLinkForm}
         adType={this.props.adType}
         call_to_action_label={this.props.call_to_action.label}
+        disabled={this.props.disabled}
       />
     ) : this.props.adType === "StoryAd" &&
       this.props.objective !== "WEB_CONVERSION" ? (
@@ -44,6 +46,7 @@ class SwipeCompCondition extends Component {
         adType={this.props.adType}
         media={this.props.storyAdCards.selectedStoryAd.media}
         call_to_action_label={this.props.storyAdAttachment.call_to_action.label}
+        disabled={this.props.disabled}
       />
     ) : (
       this.props.adType === "StoryAd" &&
@@ -60,6 +63,7 @@ class SwipeCompCondition extends Component {
           call_to_action_label={
             this.props.storyAdAttachment.call_to_action.label
           }
+          disabled={this.props.disabled}
         />
       )
     );

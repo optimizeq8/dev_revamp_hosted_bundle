@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity, View, StyleSheet, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import GradientButton from "../MiniComponents/GradientButton";
 import ForwardButton from "../../assets/SVGs/ForwardButton";
@@ -13,16 +13,17 @@ import ArrowForward from "../../assets/SVGs/ArrowForward";
 
 export default class LowerButton extends Component {
   render() {
-    let { width, height, style } = this.props;
+    let { width, height, style, disabled } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     return (
       <GradientButton
+        disabled={disabled}
         style={[
           {
-            bottom: heightPercentageToDP(bottom)
+            bottom: heightPercentageToDP(bottom),
           },
           styles.button,
-          style
+          style,
         ]}
         width={60}
         height={60}
@@ -61,7 +62,7 @@ export default class LowerButton extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
-  rtlReverse: { left: widthPercentageToDP(0.5) }
+  rtlReverse: { left: widthPercentageToDP(0.5) },
 });

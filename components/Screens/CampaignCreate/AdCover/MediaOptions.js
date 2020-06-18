@@ -26,14 +26,14 @@ export default class MediaOptions extends Component {
       this.props._pickImage(
         {
           mediaUri: this.props.mediaUri,
-          serialization: this.props.serialization
+          serialization: this.props.serialization,
         },
         true
       );
     }
   };
   render() {
-    let { title } = this.props;
+    let { title, disabled } = this.props;
     const { translate } = this.props.screenProps;
     let imageIcon = null;
     if (title === "Image") {
@@ -51,6 +51,7 @@ export default class MediaOptions extends Component {
     }
     return (
       <TouchableOpacity
+        disabled={disabled}
         onPress={() => this.handleOptionSelect()}
         style={styles.MediaOptionsStyle}
       >

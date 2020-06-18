@@ -15,7 +15,8 @@ class CollectionComp extends Component {
       collectionAdMedia,
       rejected,
       selectedCampaign,
-      navigation
+      navigation,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -26,20 +27,21 @@ class CollectionComp extends Component {
           </Text>
         </View>
         <TouchableOpacity
+          disabled={disabled}
           style={[
             {
               backgroundColor: collectionAdMedia[collIdx]
                 ? ""
-                : "rgba(0, 0, 0, 0.75)"
+                : "rgba(0, 0, 0, 0.75)",
             },
-            styles.touchViewBlock
+            styles.touchViewBlock,
           ]}
           onPress={() => {
             segmentEventTrack("Button clicked to go to Collection Media");
             navigation.push("CollectionMedia", {
               collection_order: collIdx,
               rejected: rejected,
-              selectedCampaign: selectedCampaign
+              selectedCampaign: selectedCampaign,
             });
           }}
         >
@@ -60,7 +62,7 @@ class CollectionComp extends Component {
                 navigation.push("CollectionMedia", {
                   collection_order: collIdx,
                   rejected: rejected,
-                  selectedCampaign: selectedCampaign
+                  selectedCampaign: selectedCampaign,
                 });
               }}
             >
@@ -80,9 +82,9 @@ class CollectionComp extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  collectionAdMedia: state.campaignC.collectionAdMedia
+const mapStateToProps = (state) => ({
+  collectionAdMedia: state.campaignC.collectionAdMedia,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionComp);

@@ -907,6 +907,7 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleLogo}
                           style={styles.changeLogoStyle}
                         >
@@ -932,6 +933,7 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleLogo}
                           style={styles.addLogoStyle}
                         >
@@ -967,6 +969,7 @@ class AdCover extends Component {
                       )}
                       <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
+                          disabled={this.props.coverLoading}
                           onPress={this.handleSupportPage}
                           style={{
                             position: "absolute",
@@ -977,6 +980,7 @@ class AdCover extends Component {
                           <InfoIcon />
                         </TouchableOpacity>
                         <PenIconBrand
+                          disabled={this.props.coverLoading}
                           style={{ justifyContent: "flex-start" }}
                           data={this.props.data}
                           coverHeadlineError={coverHeadlineError}
@@ -999,6 +1003,7 @@ class AdCover extends Component {
                         image={this.state.cover}
                         media={this.state.cover}
                         screenProps={this.props.screenProps}
+                        disabled={this.props.coverLoading}
                       />
                     </View>
                   </View>

@@ -678,6 +678,7 @@ class CollectionMedia extends Component {
     if (this.state.collection.collection_media) {
       return (
         <TouchableOpacity
+          disabled={this.props.loading}
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
@@ -693,6 +694,7 @@ class CollectionMedia extends Component {
     } else {
       return (
         <TouchableOpacity
+          disabled={this.props.loading}
           style={styles.inputMiddleButton}
           onPress={() => {
             segmentEventTrack("Opened Gallery to select Collection Ad media");
@@ -793,6 +795,7 @@ class CollectionMedia extends Component {
                         ]}
                       >
                         <Input
+                          disabled={this.props.loading}
                           value={this.state.collection.collection_attachment}
                           style={styles.inputtext}
                           placeholder={translate("Enter Deep Link URL")}
@@ -894,6 +897,7 @@ class CollectionMedia extends Component {
                             </TouchableOpacity>
                            */}
                             <Input
+                              disabled={this.props.loading}
                               style={[styles.inputtext]}
                               placeholder={translate(
                                 "Enter your website's URL"

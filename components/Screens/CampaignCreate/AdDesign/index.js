@@ -1200,6 +1200,11 @@ class AdDesign extends Component {
 
     let inputFields = ["Business Name", "Promotional Message"].map((field) => (
       <PenIconBrand
+        disabled={
+          this.props.loading ||
+          (this.props.loadingStoryAdsArray.length > 0 &&
+            this.props.loadingStoryAdsArray.includes(true))
+        }
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -1221,6 +1226,7 @@ class AdDesign extends Component {
         selectedCampaign={this.selectedCampaign}
         collIdx={collIdx}
         screenProps={this.props.screenProps}
+        disabled={this.props.loading}
       />
     ));
 
@@ -1307,6 +1313,11 @@ class AdDesign extends Component {
                   ) : (
                     !videoIsLoading && (
                       <MediaButton
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         screenProps={this.props.screenProps}
                         type={"media"}
                         setMediaModalVisible={this.setMediaModalVisible}
@@ -1349,8 +1360,18 @@ class AdDesign extends Component {
                     adType={this.adType}
                     media={media}
                     call_to_action={call_to_action}
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                   />
                   <TouchableOpacity
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                     onPress={this.handleSupportPage}
                     style={{
                       position: "absolute",
@@ -1389,6 +1410,11 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" ? (
                     validCards.length >= 3 && (
                       <TouchableOpacity
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         style={styles.button}
                         onPress={() => {
                           segmentEventTrack(
@@ -1402,6 +1428,11 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <TouchableOpacity
+                      disabled={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
                       style={styles.button}
                       onPress={() => {
                         segmentEventTrack(
@@ -1416,6 +1447,11 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" ? (
                     true ? (
                       <LowerButton
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         function={() => {
                           this.handleUpload();
                           _handleSubmission(
@@ -1458,7 +1494,11 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <SubmitButton
-                      loading={this.props.loading}
+                      loading={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
                       loaded={loaded}
                       _handleSubmission={() =>
                         _handleSubmission(
@@ -1551,7 +1591,8 @@ class AdDesign extends Component {
         />
         {/* <LoadingModal
           videoUrlLoading={videoUrlLoading}
-          loading={this.props.loading}
+         loading={this.props.loading || (this.props.loadingStoryAdsArray.length > 0 &&
+              this.props.loadingStoryAdsArray.includes(true))})
           isVisible={isVisible}
           onToggleModal={this.onToggleModal}
           cancelUpload={this.cancelUpload}

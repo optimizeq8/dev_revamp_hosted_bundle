@@ -511,6 +511,7 @@ class AdDesign extends Component {
                       screenProps={this.props.screenProps}
                       videoIsLoading={this.videoIsLoading}
                       setMediaModalVisible={this.setMediaModalVisible}
+                      disabled={this.props.loading}
                     />
                   )}
 
@@ -519,6 +520,7 @@ class AdDesign extends Component {
                       this.handleCaptionExpand(true);
                     }}
                     style={styles.captionView}
+                    disabled={this.props.loading}
                   >
                     <View style={styles.captionTextView}>
                       <Text style={styles.captionText}>
@@ -541,6 +543,7 @@ class AdDesign extends Component {
                       )
                     }
                     style={styles.destinationView}
+                    disabled={this.props.loading}
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
@@ -576,6 +579,7 @@ class AdDesign extends Component {
                 </View>
                 <View style={styles.lowerBtn}>
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     // style={styles.lowerBtnWidth}
                     onPress={this.handleReview}
                   >

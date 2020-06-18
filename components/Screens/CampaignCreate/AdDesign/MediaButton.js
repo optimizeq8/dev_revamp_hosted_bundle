@@ -18,12 +18,14 @@ export default class MediaButton extends Component {
       _handleStoryAdCards,
       setMediaModalVisible,
       type,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
 
     if (media && media !== "//") {
       return (
         <Button
+          disabled={disabled}
           transparent
           onPress={() => {
             segmentEventTrack(
@@ -72,6 +74,7 @@ export default class MediaButton extends Component {
       return (
         <>
           <Button
+            disabled={disabled}
             style={[
               styles.inputMiddleButton,
               snapAdCard
