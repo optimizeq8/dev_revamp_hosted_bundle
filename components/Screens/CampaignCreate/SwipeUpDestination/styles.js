@@ -3,12 +3,12 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   contentContainer: {
     backgroundColor: "black",
@@ -18,15 +18,15 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     borderTopLeftRadius: 30,
-    borderTopRightRadius: 30
+    borderTopRightRadius: 30,
   },
   media: {
     width: "100%",
     height: "100%",
-    opacity: 0.4
+    opacity: 0.4,
   },
   content: {
-    marginTop: 30
+    marginTop: 30,
   },
   placeholder1: {
     overflow: "hidden",
@@ -36,30 +36,30 @@ const styles = StyleSheet.create({
     zIndex: 0,
     justifyContent: "center",
     position: "absolute",
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   },
   container: {
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   textcontainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   titletext: {
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   subtext: {
     fontFamily: "montserrat-light",
     fontSize: 12,
     paddingTop: 5,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
   },
   buttonN: {
     justifyContent: "space-between",
@@ -72,15 +72,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 15,
     marginBottom: 20,
-    alignItems: "center"
+    alignItems: "center",
   },
   icon: {
     alignSelf: "center",
     color: "#fff",
     fontSize: 40,
     paddingVertical: 10,
-    paddingHorizontal: 7
-  }
+    paddingHorizontal: 7,
+  },
 });
 
 export default styles;

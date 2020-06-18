@@ -6,11 +6,12 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -18,7 +19,7 @@ import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import DateFields from "../../../../MiniComponents/DatePicker/DateFields";
 import Duration from "../../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
-
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CustomHeader from "../../../../MiniComponents/Header";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
 
@@ -106,7 +107,7 @@ class AdObjective extends Component {
         })
         .includes(true)
     ) {
-      rep = {
+      let rep = {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
@@ -390,15 +391,17 @@ class AdObjective extends Component {
     ));
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaView}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             {/* <BackdropIcon style={styles.backDrop} height={hp("100%")} /> */}
-            <CustomHeader
+            <TopStepsHeader
               screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
@@ -407,8 +410,10 @@ class AdObjective extends Component {
                 source: "ad_objective",
                 source_action: "a_go_back",
               }}
-              navigation={this.props.navigation}
-              title={"Instagram Feed Campaign"}
+              icon="instagram"
+              actionButton={this.handleBackButton}
+              currentScreen="Details"
+              title={"Instagram Feed"}
             />
 
             <ScrollView
@@ -523,11 +528,9 @@ class AdObjective extends Component {
           onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              style={styles.safeAreaView}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
+          <BlurView>
+            <View style={styles.safeAreaView}>
+              <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
               <View style={styles.popupOverlay}>
                 <CustomHeader
                   screenProps={this.props.screenProps}
@@ -550,10 +553,10 @@ class AdObjective extends Component {
                 </Content>
                 {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
               </View>
-            </SafeAreaView>
+            </View>
           </BlurView>
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }

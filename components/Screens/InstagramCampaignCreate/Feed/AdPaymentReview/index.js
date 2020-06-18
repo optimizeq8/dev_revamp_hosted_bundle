@@ -24,6 +24,7 @@ import { connect } from "react-redux";
 
 import formatNumber from "../../../../formatNumber";
 import dateFormat from "dateformat";
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 
 class InstagramAdPaymentReview extends Component {
   static navigationOptions = {
@@ -325,14 +326,11 @@ class InstagramAdPaymentReview extends Component {
       // }
 
       return (
-        <SafeAreaView
-          style={[styles.safeAreaView]}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
+        <View style={[styles.safeAreaView]}>
+          <SafeAreaView style={{ backgroundColor: "#fff" }} />
           <NavigationEvents onDidFocus={this.onDidFocus} />
-
           <Container style={[styles.container]}>
-            <CustomHeader
+            <TopStepsHeader
               screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
@@ -343,8 +341,10 @@ class InstagramAdPaymentReview extends Component {
                 source: "ad_review",
                 source_action: "a_go_back",
               }}
+              icon="instagram"
+              currentScreen="Payment"
               navigation={this.props.navigation}
-              title={"Review your Selection"}
+              title={"Campaign Review"}
             />
 
             <Content
@@ -486,7 +486,7 @@ class InstagramAdPaymentReview extends Component {
               </ImageBackground>
             </Content>
 
-            <Footer style={styles.footerBlock}>
+            <View style={styles.footerBlock}>
               <View style={styles.bottomCardBlock1}>
                 <View>
                   <View style={styles.dollarAmountContainer}>
@@ -575,21 +575,10 @@ class InstagramAdPaymentReview extends Component {
                   text={translate("Payment Info")}
                   textStyle={styles.payNowText}
                 />
-
-                {/*
-                                                    ----------For future maybe----------
-                                                    <Text style={styles.text}>Agency Fee</Text>
-                                                    <View style={{ flexDirection: "column", alignSelf: "center" }}>
-                                                    <Text style={styles.text}>
-                                                        {2500 - this._handleAgencyFee()} $
-                                                    </Text>
-                                                    <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
-                                                    </View> 
-                                                */}
               </View>
-            </Footer>
+            </View>
           </Container>
-        </SafeAreaView>
+        </View>
       );
     }
   }

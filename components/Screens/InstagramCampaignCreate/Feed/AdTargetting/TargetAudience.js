@@ -1,14 +1,7 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  MaskedViewIOS,
-  I18nManager,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
+import MaskedView from "@react-native-community/masked-view";
 
 //icons
 import GreenCheckmarkIcon from "../../../../../assets/SVGs/GreenCheckmark";
@@ -22,7 +15,6 @@ import LanguageIcon from "../../../../../assets/SVGs/Language";
 import DeviceMakeIcon from "../../../../../assets/SVGs/DeviceMake";
 
 import styles from "../../styles/adTargetting.styles";
-import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
@@ -60,7 +52,7 @@ export class TargetAudience extends Component {
     const { translate } = this.props.screenProps;
     return (
       <>
-        <MaskedViewIOS
+        <MaskedView
           maskElement={
             <LinearGradient
               colors={["black", "black", "transparent"]}
@@ -389,7 +381,7 @@ export class TargetAudience extends Component {
               </TouchableOpacity>
             )}
           </ScrollView>
-        </MaskedViewIOS>
+        </MaskedView>
         {this.state.scrollY < 12 &&
           !editCampaign &&
           heightPercentageToDP(100) < 800 && (

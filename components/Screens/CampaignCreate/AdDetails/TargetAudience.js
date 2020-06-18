@@ -5,10 +5,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
-  MaskedViewIOS,
   I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
+import MaskedView from "@react-native-community/masked-view";
 
 //icons
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
@@ -76,7 +76,7 @@ export class TargetAudience extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={{ height: "100%" }}>
-        <MaskedViewIOS
+        <MaskedView
           maskElement={
             <LinearGradient
               colors={["black", "black", "transparent"]}
@@ -397,7 +397,7 @@ export class TargetAudience extends Component {
               </TouchableOpacity>
             )}
           </ScrollView>
-        </MaskedViewIOS>
+        </MaskedView>
         {this.state.scrollY < heightPercentageToDP(0.8) &&
           !editCampaign &&
           heightPercentageToDP(100) < 700 && (

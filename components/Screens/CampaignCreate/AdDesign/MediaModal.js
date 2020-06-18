@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { Text, View, Platform } from "react-native";
+import { View } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
 import styles from "./styles";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { BlurView } from "@react-native-community/blur";
 
 export default class MediaModal extends Component {
   render() {
@@ -39,16 +39,17 @@ export default class MediaModal extends Component {
     return (
       <Modal
         animationType={"fade"}
-        transparent={Platform.OS === "ios"}
         onRequestClose={() => this.props.setMediaModalVisible(false)}
         onDismiss={() => this.props.setMediaModalVisible(false)}
         visible={this.props.mediaModalVisible}
       >
-        <BlurView intensity={95} tint="dark">
-          <SafeAreaView
-            style={styles.safeAreaView}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
+        <BlurView
+          blurType="dark"
+          blurAmount={20}
+          reducedTransparencyFallbackColor="black"
+        >
+          <View style={{ backgroundColor: "#0000", height: "100%" }}>
+            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
             <View style={styles.popupOverlay}>
               <CustomHeader
                 screenProps={this.props.screenProps}
@@ -92,7 +93,7 @@ export default class MediaModal extends Component {
                 )}
               </Content>
             </View>
-          </SafeAreaView>
+          </View>
         </BlurView>
       </Modal>
     );

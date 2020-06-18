@@ -53,6 +53,7 @@ import {
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -127,6 +128,7 @@ class GoogleAdTargetting extends Component {
 
   _handleSideMenuState = (status) => {
     this.setState({ sidemenustate: status }, () => {});
+    console.log("scscs");
   };
 
   _renderSideMenu = (component, option = "") => {
@@ -522,13 +524,11 @@ class GoogleAdTargetting extends Component {
         openMenuOffset={wp("100%")}
         isOpen={this.state.sidemenustate}
       >
-        <SafeAreaView
-          style={[styles.safeArea]}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
-          <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
+        <View style={[styles.safeArea]}>
+          <SafeAreaView style={{ backgroundColor: "#fff" }} />
 
-          <CustomHeader
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Google SE Targetting Back Button",
@@ -538,12 +538,13 @@ class GoogleAdTargetting extends Component {
               source: "ad_targeting",
               source_action: "a_go_back",
             }}
+            icon="google"
             navigation={this.props.navigation}
+            currentScreen="Audience"
             title={"Campaign details"}
-            screenProps={this.props.screenProps}
             disabled={this.props.campaign.uploading}
           />
-
+          <NavigationEvents onDidFocus={this.handleGoogleAdDetailsFocus} />
           <Content
             scrollEnabled={false}
             contentContainerStyle={styles.contentContainer}
@@ -570,7 +571,6 @@ class GoogleAdTargetting extends Component {
                 style={{
                   padding: 5,
                   borderRadius: 10,
-                  flex: 1,
                 }}
               >
                 <KeywordsCarousel
@@ -667,18 +667,18 @@ class GoogleAdTargetting extends Component {
             {this.props.campaign.uploading ? (
               <ForwardLoading
                 mainViewStyle={{ width: wp(8), height: hp(8) }}
-                bottom={hp(5)}
+                bottom={hp(25)}
                 style={{ width: wp(8), height: hp(8) }}
               />
             ) : (
               <LowerButton
                 style={styles.proceedButtonRTL}
-                bottom={5}
+                bottom={25}
                 function={this._handleSubmission}
               />
             )}
           </Content>
-        </SafeAreaView>
+        </View>
       </Sidemenu>
     );
   }

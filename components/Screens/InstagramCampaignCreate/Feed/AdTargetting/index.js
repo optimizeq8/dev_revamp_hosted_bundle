@@ -39,11 +39,9 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
-import find from "lodash/find";
-import segmentEventTrack from "../../../../segmentEventTrack";
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 
 class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
@@ -1113,7 +1111,7 @@ class InstagramFeedAdTargetting extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        <SafeAreaView
+        <View
           style={[
             styles.safeArea,
             {
@@ -1122,8 +1120,15 @@ class InstagramFeedAdTargetting extends Component {
                 : "rgba(0,0,0,0.75)",
             },
           ]}
-          forceInset={{ bottom: "never", top: "always" }}
         >
+          <SafeAreaView
+            style={[
+              {
+                backgroundColor: this.editCampaign ? "transparent" : "#fff",
+              },
+            ]}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
           <NavigationEvents
             onDidFocus={() => {
               if (
@@ -1152,40 +1157,64 @@ class InstagramFeedAdTargetting extends Component {
           />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                segment={{
-                  str: "Instagram Feed Ad Details Back Button",
-                  obj: {
-                    businessname: this.props.mainBusiness.businessname,
-                  },
-                }}
-                segment={{
-                  source: "ad_targeting",
-                  source_action: "a_go_back",
-                }}
-                actionButton={
-                  this.editCampaign
-                    ? () => this.props.navigation.goBack()
-                    : undefined
-                }
-                showTopRightButton={
-                  this.editCampaign &&
-                  this.state.campaignInfo.campaign_end === "0" &&
-                  new Date(this.state.campaignInfo.end_time) > new Date() &&
-                  !this.props.campaignEnded &&
-                  this.props.mainBusiness.user_role !== "3"
-                }
-                topRightButtonFunction={() => {
-                  this.setState({ startEditing: !startEditing });
-                }}
-                topRightButtonText={translate("Edit")}
-                navigation={
-                  this.editCampaign ? undefined : this.props.navigation
-                }
-                title={this.editCampaign ? "Audience" : "Campaign details"}
-              />
+              {!this.editCampaign ? (
+                <TopStepsHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={false}
+                  segment={{
+                    str: "Instagram Feed Ad Details Back Button",
+                    obj: {
+                      businessname: this.props.mainBusiness.businessname,
+                    },
+                    source: "ad_targeting",
+                    source_action: "a_go_back",
+                  }}
+                  icon="instagram"
+                  currentScreen="Audience"
+                  actionButton={
+                    this.editCampaign
+                      ? () => this.props.navigation.goBack()
+                      : undefined
+                  }
+                  navigation={
+                    this.editCampaign ? undefined : this.props.navigation
+                  }
+                  title={this.editCampaign ? "Audience" : "Campaign details"}
+                />
+              ) : (
+                <CustomHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={false}
+                  segment={{
+                    str: "Instagram Feed Ad Details Back Button",
+                    obj: {
+                      businessname: this.props.mainBusiness.businessname,
+                    },
+                    source: "ad_targeting",
+                    source_action: "a_go_back",
+                  }}
+                  actionButton={
+                    this.editCampaign
+                      ? () => this.props.navigation.goBack()
+                      : undefined
+                  }
+                  showTopRightButton={
+                    this.editCampaign &&
+                    this.state.campaignInfo.campaign_end === "0" &&
+                    new Date(this.state.campaignInfo.end_time) > new Date() &&
+                    !this.props.campaignEnded &&
+                    this.props.mainBusiness.user_role !== "3"
+                  }
+                  topRightButtonFunction={() => {
+                    this.setState({ startEditing: !startEditing });
+                  }}
+                  topRightButtonText={translate("Edit")}
+                  navigation={
+                    this.editCampaign ? undefined : this.props.navigation
+                  }
+                  title={this.editCampaign ? "Audience" : "Campaign details"}
+                />
+              )}
 
               <Content
                 scrollEnabled={false}
@@ -1289,7 +1318,7 @@ class InstagramFeedAdTargetting extends Component {
               </Content>
             </Container>
           </Container>
-        </SafeAreaView>
+        </View>
       </Sidemenu>
     );
   }

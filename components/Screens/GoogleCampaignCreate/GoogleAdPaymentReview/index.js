@@ -22,6 +22,7 @@ import isUndefined from "lodash/isUndefined";
 //Data
 import CountriesList from "../../../Data/countries.googleSE.data";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -242,13 +243,15 @@ class AdPaymentReview extends Component {
     const { translate } = this.props.screenProps;
 
     return (
-      <SafeAreaView
-        style={[styles.safeAreaView]}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={[styles.safeAreaView]}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <NavigationEvents onDidFocus={this.handleGooglePaymentReviewFocus} />
 
-        <CustomHeader
+        <TopStepsHeader
+          screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
             str: "Ad Payment Review Back Button",
@@ -258,9 +261,10 @@ class AdPaymentReview extends Component {
             source: "ad_review",
             source_action: "a_go_back",
           }}
+          icon="google"
           navigation={this.props.navigation}
+          currentScreen="Audience"
           title={"Review your Selection"}
-          screenProps={this.props.screenProps}
         />
 
         <Content
@@ -396,7 +400,7 @@ class AdPaymentReview extends Component {
             textStyle={styles.payNowText}
           />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

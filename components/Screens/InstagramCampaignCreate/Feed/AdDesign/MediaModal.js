@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
@@ -40,7 +40,7 @@ export default class MediaModal extends Component {
         onDismiss={() => this.props.setMediaModalVisible(false)}
         visible={this.props.mediaModalVisible}
       >
-        <BlurView intensity={95} tint="dark">
+        <BlurView>
           <SafeAreaView
             style={styles.safeAreaView}
             forceInset={{ bottom: "never", top: "always" }}

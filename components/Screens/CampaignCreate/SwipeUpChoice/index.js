@@ -16,6 +16,7 @@ import WhatsApp from "./WhatsApp";
 
 //Redux
 import { connect } from "react-redux";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 // import * as actionCreators from "../../../../store/actions";
 
 class SwipeUpChoice extends Component {
@@ -197,21 +198,34 @@ class SwipeUpChoice extends Component {
     if (this.props.adType === "CollectionAd") return menu;
     else
       return (
-        <SafeAreaView
-          style={styles.safeAreaContainer}
-          forceInset={{ top: "always" }}
-        >
+        <View style={styles.safeAreaContainer}>
+          <SafeAreaView
+            style={{ backgroundColor: "#fff" }}
+            forceInset={{ top: "always" }}
+          />
           <NavigationEvents onDidFocus={this.segment} />
-          <CustomeHeader
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            navigation={this.props.navigation}
+            segment={{
+              source: "ad_swipe_up_destination",
+              source_action: "a_go_back",
+            }}
+            icon="snapchat"
+            adType={this.props.adType}
+            currentScreen="Compose"
+            title={"Swipe Up destination"}
+          />
+          {/* <CustomeHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             screenProps={this.props.screenProps}
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
-          />
-
-          {menu}
-        </SafeAreaView>
+          /> */}
+          <View style={{ top: 15, flex: 1 }}>{menu}</View>
+        </View>
       );
   }
 }

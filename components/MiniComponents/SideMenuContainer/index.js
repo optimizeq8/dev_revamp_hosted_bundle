@@ -13,6 +13,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
 import LowerButton from "../LowerButton";
+import TopStepsHeader from "../TopStepsHeader";
 
 export default class AgeOption extends Component {
   state = {};
@@ -53,10 +54,16 @@ export default class AgeOption extends Component {
       }
     }
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaViewContainer}
-      >
+      <View style={styles.safeAreaViewContainer}>
+        <SafeAreaView style={{ backgroundColor: "#fff" }} />
+        <TopStepsHeader
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          icon="google"
+          actionButton={() => this.props._handleSideMenuState(false)}
+          currentScreen="Audience"
+          title={"Campaign details"}
+        />
         <Container style={styles.container}>
           <View style={this.props.icon === "" ? {} : styles.dataContainer}>
             {this.props.icon !== "" && icon}
@@ -78,7 +85,7 @@ export default class AgeOption extends Component {
             function={() => this.props._handleSideMenuState(false)}
           />
         </Container>
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -45,6 +45,7 @@ import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1114,49 +1115,74 @@ class AdDetails extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        <SafeAreaView
-          style={[styles.safeArea]}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
+        <View style={[styles.safeArea]}>
+          <SafeAreaView
+            style={{ backgroundColor: "#fff" }}
+            forceInset={{ bottom: "never", top: "always" }}
+          />
           <NavigationEvents
             onDidFocus={this.handleAdDetailsFocus}
             onBlur={this.handleAdDetailsBlur}
           />
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                segment={{
-                  str: "Ad Details Back Button",
-                  obj: {
-                    businessname: this.props.mainBusiness.businessname,
-                  },
-                  source: "ad_targeting",
-                  source_action: "a_go_back",
-                }}
-                actionButton={
-                  this.editCampaign
-                    ? () => this.props.navigation.navigate("CampaignDetails")
-                    : undefined
-                }
-                showTopRightButton={
-                  this.editCampaign &&
-                  this.state.campaignInfo.campaign_end === "0" &&
-                  new Date(this.state.campaignInfo.end_time) > new Date() &&
-                  !this.props.campaignEnded &&
-                  this.props.mainBusiness.user_role !== "3"
-                }
-                topRightButtonFunction={() => {
-                  this.setState({ startEditing: !startEditing });
-                }}
-                topRightButtonText={translate("Edit")}
-                navigation={
-                  this.editCampaign ? undefined : this.props.navigation
-                }
-                title={this.editCampaign ? "Audience" : "Campaign details"}
-              />
-
+              {!this.editCampaign ? (
+                <TopStepsHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={false}
+                  segment={{
+                    str: "Ad Details Back Button",
+                    obj: {
+                      businessname: this.props.mainBusiness.businessname,
+                    },
+                    source: "ad_targeting",
+                    source_action: "a_go_back",
+                  }}
+                  actionButton={
+                    this.editCampaign
+                      ? () => this.props.navigation.navigate("CampaignDetails")
+                      : undefined
+                  }
+                  icon="snapchat"
+                  actionButton={this.handleBackButton}
+                  adType={this.props.adType}
+                  currentScreen="Audience"
+                  title={"Campaign details"}
+                />
+              ) : (
+                <CustomHeader
+                  screenProps={this.props.screenProps}
+                  closeButton={false}
+                  segment={{
+                    str: "Ad Details Back Button",
+                    obj: {
+                      businessname: this.props.mainBusiness.businessname,
+                    },
+                    source: "ad_targeting",
+                    source_action: "a_go_back",
+                  }}
+                  actionButton={
+                    this.editCampaign
+                      ? () => this.props.navigation.navigate("CampaignDetails")
+                      : undefined
+                  }
+                  showTopRightButton={
+                    this.editCampaign &&
+                    this.state.campaignInfo.campaign_end === "0" &&
+                    new Date(this.state.campaignInfo.end_time) > new Date() &&
+                    !this.props.campaignEnded &&
+                    this.props.mainBusiness.user_role !== "3"
+                  }
+                  topRightButtonFunction={() => {
+                    this.setState({ startEditing: !startEditing });
+                  }}
+                  topRightButtonText={translate("Edit")}
+                  navigation={
+                    this.editCampaign ? undefined : this.props.navigation
+                  }
+                  title={this.editCampaign ? "Audience" : "Campaign details"}
+                />
+              )}
               <Content
                 scrollEnabled={false}
                 contentContainerStyle={styles.contentContainer}
@@ -1259,7 +1285,7 @@ class AdDetails extends Component {
               </Content>
             </Container>
           </Container>
-        </SafeAreaView>
+        </View>
       </Sidemenu>
     );
   }
