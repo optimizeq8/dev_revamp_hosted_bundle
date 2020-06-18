@@ -75,7 +75,9 @@ export class TargetAudience extends Component {
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <View style={{ height: "100%" }}>
+      <View
+        style={{ height: heightPercentageToDP(100) > 800 ? "100%" : "90%" }}
+      >
         <MaskedView
           maskElement={
             <LinearGradient

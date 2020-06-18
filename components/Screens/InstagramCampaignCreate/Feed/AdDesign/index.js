@@ -446,7 +446,7 @@ class AdDesign extends Component {
           title={"Compose"}
         />
 
-        <View
+        <ScrollView
           style={{
             backgroundColor: "transparent",
             flex: 1,
@@ -640,7 +640,7 @@ class AdDesign extends Component {
               </TouchableWithoutFeedback>
             </Animated.View>
           )}
-        </View>
+        </ScrollView>
         <MediaModal
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
