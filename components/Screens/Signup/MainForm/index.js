@@ -24,12 +24,12 @@ import styles from "./styles";
 
 class MainForm extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
     this.state = {
-      verified: false
+      verified: false,
     };
   }
   componentDidMount() {
@@ -47,7 +47,7 @@ class MainForm extends Component {
       device_id,
       anonymous_userId,
       timestamp: new Date().getTime(),
-      email: this.props.userInfo.email
+      email: this.props.userInfo && this.props.userInfo.email,
     });
   }
   /**
@@ -57,7 +57,7 @@ class MainForm extends Component {
     if (this.props.navigation.getParam("b", null) === "0") {
       this.setState({
         businessInvite: this.props.navigation.getParam("b", null),
-        tempId: this.props.navigation.getParam("v", null)
+        tempId: this.props.navigation.getParam("v", null),
       });
       this.props.getTempUserInfo(this.props.navigation.getParam("v", null));
     }
@@ -111,8 +111,8 @@ class MainForm extends Component {
                   styles.dash,
                   {
                     marginRight: -4,
-                    marginLeft: -4
-                  }
+                    marginLeft: -4,
+                  },
                 ]}
               />
               <View style={styles.badgeView}>
@@ -138,18 +138,18 @@ class MainForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   verificationCode: state.register.verificationCode,
   successNo: state.register.successNo,
   successEmail: state.register.successEmail,
   verified: state.register.verified,
   registered: state.register.registered,
   userInfo: state.register.userInfo,
-  successPersonalInfo: state.register.successPersonalInfo
+  successPersonalInfo: state.register.successPersonalInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   resetRegister: () => dispatch(actionCreators.resetRegister()),
-  getTempUserInfo: tempId => dispatch(actionCreators.getTempUserInfo(tempId))
+  getTempUserInfo: (tempId) => dispatch(actionCreators.getTempUserInfo(tempId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MainForm);
