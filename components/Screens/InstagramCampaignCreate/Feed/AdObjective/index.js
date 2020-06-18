@@ -107,7 +107,7 @@ class AdObjective extends Component {
         })
         .includes(true)
     ) {
-      rep = {
+      let rep = {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,

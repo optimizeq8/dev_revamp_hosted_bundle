@@ -1,19 +1,14 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  MaskedViewIOS,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
+import MaskedView from "@react-native-community/masked-view";
 export class BudgetCards extends Component {
   state = { placeholder: false, scrollX: 1 };
-  handleFading = event => {
+  handleFading = (event) => {
     let x = event.nativeEvent.contentOffset.x;
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
   };
@@ -23,14 +18,14 @@ export class BudgetCards extends Component {
       value,
       recBudget,
       lifetime_budget_micro,
-      budgetOption
+      budgetOption,
     } = this.props;
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
     let cards = [
       { recBudget, id: 1 },
       { recBudget: recBudget * 2, id: 2 },
-      { recBudget: recBudget * 3, id: 3 }
+      { recBudget: recBudget * 3, id: 3 },
     ].map((bud, i) => (
       <BudgetCard
         key={bud.id}
@@ -42,7 +37,7 @@ export class BudgetCards extends Component {
 
     return (
       <View style={{ height: "10%" }}>
-        <MaskedViewIOS
+        <MaskedView
           maskElement={
             <LinearGradient
               colors={["black", "transparent"]}
@@ -63,7 +58,7 @@ export class BudgetCards extends Component {
             <View
               style={[
                 styles.budgetCardStyle,
-                budgetOption === 0 ? { borderWidth: 2.5 } : { borderWidth: 0 }
+                budgetOption === 0 ? { borderWidth: 2.5 } : { borderWidth: 0 },
               ]}
             >
               {budgetOption !== 0 ||
@@ -83,8 +78,8 @@ export class BudgetCards extends Component {
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
                             ? 10
-                            : 20
-                      }
+                            : 20,
+                      },
                     ]}
                   >
                     {translate("Custom Budget")}
@@ -97,7 +92,7 @@ export class BudgetCards extends Component {
                   options={{
                     precision: 0,
                     delimiter: ",",
-                    unit: "$"
+                    unit: "$",
                   }}
                   focus={this.state.placeholder}
                   maxLength={8}
@@ -120,22 +115,22 @@ export class BudgetCards extends Component {
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
                           ? 10
-                          : 20
-                    }
+                          : 20,
+                    },
                   ]}
-                  ref={ref => (this.moneyField = ref)}
+                  ref={(ref) => (this.moneyField = ref)}
                 />
               )}
             </View>
             {cards}
           </ScrollView>
-        </MaskedViewIOS>
+        </MaskedView>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
