@@ -68,6 +68,7 @@ import { formatMedia } from "./Functions/index";
 
 import SingleImage from "./SingleImage";
 import MediaModal from "./MediaModal";
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 // import {
 //   _handleSubmission,
 //   formatMedia,
@@ -425,35 +426,41 @@ class AdDesign extends Component {
     }
 
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaView}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <TopStepsHeader
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          segment={{
+            str: "Instagram Feed Ad Design Back Button",
+            obj: { businessname: this.props.mainBusiness.businessname },
+            source: "ad_design",
+            source_action: "a_go_back",
+          }}
+          icon="instagram"
+          actionButton={this.handleBackButton}
+          currentScreen="Compose"
+          title={"Compose"}
+        />
+
         <View
           style={{
             backgroundColor: "transparent",
             flex: 1,
+            top: 10,
           }}
         >
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            closeButton={false}
-            segment={{
-              str: "Instagram Feed Ad Design Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_design",
-              source_action: "a_go_back",
-            }}
-            navigation={this.props.navigation}
-            title={"Compose"}
-          />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (
             //Made shared null to remove animation since it doesn't look good
             <Transition style={styles.transition} shared="null">
               <View style={styles.mainView}>
                 <View style={styles.adImageOptionView}>
-                  <GradientButton
+                  {/* Remvoed for now untill we implement carousels */}
+                  {/* <GradientButton
                     disabled={this.props.loading}
                     radius={100}
                     onPressAction={() => this.selectImageOption("single")}
@@ -463,7 +470,7 @@ class AdDesign extends Component {
                     transparent={
                       this.state.campaignInfo.media_option !== "single"
                     }
-                  />
+                  /> */}
                   {/*
               <GradientButton
                 onPressAction={() => this.selectImageOption("carousel")}
@@ -671,7 +678,7 @@ class AdDesign extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

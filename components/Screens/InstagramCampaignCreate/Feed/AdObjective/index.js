@@ -6,6 +6,7 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
@@ -395,6 +396,7 @@ class AdObjective extends Component {
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
