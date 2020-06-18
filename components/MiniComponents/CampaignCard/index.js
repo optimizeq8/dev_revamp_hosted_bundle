@@ -75,12 +75,12 @@ class CampaignCard extends Component {
     endDate.setDate(endDate.getDate() + 2);
     let gradientColor = {
       color1: "#9300FF",
-      color2: "#4E00CB",
+      color2: "#671FDE",
     };
     if (I18nManager.isRTL) {
       gradientColor = {
         color2: "#9300FF",
-        color1: "#4E00CB",
+        color1: "#671FDE",
       };
     }
     return (
