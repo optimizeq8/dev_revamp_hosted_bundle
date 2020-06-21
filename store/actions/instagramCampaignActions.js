@@ -882,5 +882,22 @@ export const saveInstgramExistpost = (
         //   JSON.stringify(error.response.data || error.message, null, 2)
         // );
       });
+    export const setInstaRejectedAdType = (data) => {
+      return (dispatch) => {
+        dispatch({
+          type: actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE,
+          payload: data,
+        });
+      };
+    };
+
+    export const setInstaRejectedCampaignData = (rejCampaign) => {
+      return (dispatch) => {
+        dispatch({
+          type: actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN,
+          payload: rejCampaign,
+        });
+      };
+    };
   };
 };

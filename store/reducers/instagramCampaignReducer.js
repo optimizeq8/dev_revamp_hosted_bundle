@@ -102,6 +102,7 @@ const initialState = {
 
   customInterests: [],
   postsLoading: false,
+  rejCampaign: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -474,6 +475,45 @@ const reducer = (state = initialState, action) => {
         postsLoading: action.payload,
       };
     }
+    case actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE:
+      return {
+        ...state,
+        adType: action.payload,
+      };
+    case actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN:
+    case actionTypes.SET_REJECTED_CAMPAIGN:
+      let rejCampaign = action.payload;
+      //Since we receive call_to_action as "ORDER_NOW" for example from campaignDetails,
+      //Turn it to an object so that the process for re-uploading is the same as normal
+      if (typeof rejCampaign.call_to_action === "string") {
+        rejCampaign.call_to_action = {
+          label: rejCampaign.call_to_action.replace("_", " "),
+          value: rejCampaign.call_to_action,
+        };
+      }
+
+      //Same thing, attachment comes in as a string from campaignDetails,
+      if (rejCampaign.hasOwnProperty("attachment")) {
+        let rejCampaignAttacment = rejCampaign.attachment;
+        //if its a string and not "BLANK" then parse it
+        rejCampaignAttacment =
+          typeof rejCampaignAttacment === "string" &&
+          rejCampaignAttacment !== "BLANK"
+            ? JSON.parse(rejCampaignAttacment)
+            : rejCampaignAttacment;
+        //Sometimes attachemnts have utm parameters, they are deleted so that
+        //if sent back they will be added from the backend
+        if (rejCampaignAttacment.hasOwnProperty("block_preload")) {
+          delete rejCampaignAttacment.block_preload;
+          if (rejCampaignAttacment.url.includes("?utm_source")) {
+            rejCampaignAttacment.url = rejCampaignAttacment.url.split(
+              "?utm_source"
+            )[0];
+          }
+        }
+        rejCampaign.attachment = rejCampaignAttacment;
+      }
+      return { ...state, rejCampaign };
     default:
       return state;
   }
