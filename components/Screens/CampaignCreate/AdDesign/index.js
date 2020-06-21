@@ -757,7 +757,14 @@ class AdDesign extends Component {
         type: "warning",
       });
     }
-
+    if (brandHeadlineError) {
+      showMessage({
+        message: translate(
+          "Business name and Promotional Message can not be the same"
+        ),
+        type: "warning",
+      });
+    }
     this.setState({
       brand_nameError,
       headlineError,
