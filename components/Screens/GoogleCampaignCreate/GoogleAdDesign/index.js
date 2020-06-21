@@ -112,9 +112,31 @@ class GoogleAdDesign extends Component {
         data.finalurl = data.finalurl + "/" + this.props.campaign.path1;
       if (this.props.campaign.path2)
         data.finalurl += "/" + this.props.campaign.path2;
-      this.setState({
-        ...data,
-      });
+      this.setState(
+        {
+          ...data,
+        },
+        () => {
+          // If finalurl is still emty
+          if (this.state.finalurl === "") {
+            const { websitelink, weburl } = this.props.mainBusiness;
+            //check if the business has websitelink ie(their own website)
+            if (websitelink && websitelink !== "") {
+              this.setState({
+                finalurl: websitelink,
+              });
+            }
+            // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
+            else if (weburl && weburl !== "") {
+              this.setState({
+                finalurl: weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`,
+              });
+            }
+          }
+        }
+      );
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);

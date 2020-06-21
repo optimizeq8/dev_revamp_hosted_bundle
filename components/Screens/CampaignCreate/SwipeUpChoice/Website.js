@@ -51,7 +51,26 @@ class Website extends Component {
   }
 
   componentDidMount() {
-    this.props.data;
+    if (this.props.mainBusiness) {
+      const { websitelink, weburl } = this.props.mainBusiness;
+      if (websitelink && websitelink !== "") {
+        this.setState({
+          campaignInfo: {
+            attachment: websitelink,
+            callaction: list.SnapAd[0].call_to_action_list[0],
+          },
+        });
+      } else if (weburl && weburl !== "") {
+        this.setState({
+          campaignInfo: {
+            attachment: weburl.includes("https")
+              ? weburl
+              : `https://${weburl}.optimizeapp.com`,
+            callaction: list.SnapAd[0].call_to_action_list[0],
+          },
+        });
+      }
+    }
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
@@ -337,6 +356,7 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({});
