@@ -17,20 +17,21 @@ export default class PenIconBrand extends Component {
       data,
       changeBusinessName,
       changeHeadline,
-      storyAdSelected
+      storyAdSelected,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <Item
         style={[
-          field === "Business Name" ? styles.inputBrand : styles.inputHeadline
+          field === "Business Name" ? styles.inputBrand : styles.inputHeadline,
         ]}
       >
         <PenIcon
           fill={
             this.state.input
               ? "#FF9D00"
-              : brand_nameError || this.state.brand_nameError
+              : (field === "Business Name" && brand_nameError) ||
+                this.state.brand_nameError
               ? "red"
               : "#fff"
           }
@@ -38,7 +39,7 @@ export default class PenIconBrand extends Component {
         <View
           style={[
             { flexDirection: "column" },
-            storyAdSelected ? { opacity: 0.5 } : { opacity: 1 }
+            storyAdSelected ? { opacity: 0.5 } : { opacity: 1 },
           ]}
         >
           <Text style={[styles.inputText, styles.subtitleHeading]}>
@@ -72,7 +73,7 @@ export default class PenIconBrand extends Component {
             placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={value => {
+            onChangeText={(value) => {
               value = value.replace(
                 /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
                 ""
@@ -88,11 +89,11 @@ export default class PenIconBrand extends Component {
               this.setState({ input: false });
               if (field === "Business Name") {
                 segmentEventTrack("Changed Business Name", {
-                  campaign_brand_name: brand_name
+                  campaign_brand_name: brand_name,
                 });
               } else {
                 segmentEventTrack("Changed Headline", {
-                  campaign_headline: headline
+                  campaign_headline: headline,
                 });
               }
               this.setState(
@@ -100,7 +101,7 @@ export default class PenIconBrand extends Component {
                   brand_nameError: validateWrapper(
                     "mandatory",
                     field === "Business Name" ? brand_name : headline
-                  )
+                  ),
                 },
                 () => {
                   if (this.state.brand_nameError) {
@@ -113,7 +114,7 @@ export default class PenIconBrand extends Component {
                           field === "Business Name"
                             ? "camapign_error_brand_name"
                             : "campaign_error_headline"
-                        }`]: this.state.brand_nameError
+                        }`]: this.state.brand_nameError,
                       }
                     );
                   }
