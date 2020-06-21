@@ -83,7 +83,8 @@ class AdFeedDesignReview extends React.Component {
       "campaignDetails",
       false
     );
-    const {
+    let rejected = this.props.navigation.getParam("rejected", false);
+    let {
       instagram_business_name,
       instagram_profile_pic,
       message,
@@ -91,7 +92,11 @@ class AdFeedDesignReview extends React.Component {
       media_type,
       media_option = "single",
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
+    } = !campaignDetails
+      ? !rejected
+        ? this.props.data
+        : this.props.instaRejCampaign
+      : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_option === "single") {
@@ -226,6 +231,7 @@ const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   loading: state.instagramAds.loadingDesign,
   admin: state.login.admin,
   carouselAdsArray: state.instagramAds.carouselAdsArray,

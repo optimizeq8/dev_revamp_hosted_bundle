@@ -25,12 +25,12 @@ class RejectedSnapchatInfo extends Component {
   handleSnapchatRejection = () => {
     let {
       selectedCampaign,
-      setRejectedAdType,
-      setRejectedCampaignData,
+      setInstaRejectedAdType,
+      setInstaRejectedCampaignData,
       navigation,
     } = this.props;
-    setRejectedAdType(selectedCampaign.campaign_type);
-    setRejectedCampaignData(selectedCampaign);
+    setInstaRejectedAdType(selectedCampaign.campaign_type);
+    setInstaRejectedCampaignData(selectedCampaign);
     navigation.navigate(
       selectedCampaign.campaign_type === "InstagramStoryAd"
         ? "InstagramFeedAdDesign"
@@ -91,9 +91,10 @@ class RejectedSnapchatInfo extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
-  setRejectedCampaignData: (rejCampaign) =>
-    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  setInstaRejectedAdType: (info) =>
+    dispatch(actionCreators.setInstaRejectedAdType(info)),
+  setInstaRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setInstaRejectedCampaignData(rejCampaign)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);

@@ -167,7 +167,8 @@ export const saveBrandMediaInstagram = (
   loading,
   onToggleModal,
   cancelUplaod,
-  segmentInfo
+  segmentInfo,
+  rejected
 ) => {
   return (dispatch) => {
     dispatch({
@@ -190,23 +191,24 @@ export const saveBrandMediaInstagram = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        analytics.track(`a_submit_ad_design`, {
+        analytics.track(`a_submit_ad_design${rejected ? "_rejection" : ""}`, {
           source: "ad_design",
-          source_action: "a_submit_ad_design",
+          source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
           action_status: data.success ? "success" : "failure",
           ...segmentInfo,
         });
         if (data.success) {
           onToggleModal(false);
-          dispatch(save_campaign_info_instagram({ formatted: info }));
-          NavigationService.navigate(path, {
+          dispatch(save_campaign_info_instagram({ info }));
+          NavigationService.navigate(rejected ? "Dashboard" : path, {
             source: "ad_design",
-            source_action: "a_submit_ad_design",
+            source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
           });
-          return dispatch({
-            type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
-            payload: data,
-          });
+          if (!rejected)
+            return dispatch({
+              type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
+              payload: data,
+            });
         }
       })
       .catch((error) => {
@@ -882,22 +884,22 @@ export const saveInstgramExistpost = (
         //   JSON.stringify(error.response.data || error.message, null, 2)
         // );
       });
-    export const setInstaRejectedAdType = (data) => {
-      return (dispatch) => {
-        dispatch({
-          type: actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE,
-          payload: data,
-        });
-      };
-    };
+  };
+};
+export const setInstaRejectedAdType = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE,
+      payload: data,
+    });
+  };
+};
 
-    export const setInstaRejectedCampaignData = (rejCampaign) => {
-      return (dispatch) => {
-        dispatch({
-          type: actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN,
-          payload: rejCampaign,
-        });
-      };
-    };
+export const setInstaRejectedCampaignData = (rejCampaign) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN,
+      payload: rejCampaign,
+    });
   };
 };

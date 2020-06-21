@@ -113,7 +113,7 @@ export const formatMedia = (
       return !allIosVideos ? cardMedia : cardUrl;
     });
   }
-  if (fileReadyToUpload && !allIosVideos) {
+  if (fileReadyToUpload && !allIosVideos && !media.includes("http")) {
     let res = (campaignInfo.media_option !== "carousel"
       ? media
       : carouselAd.media

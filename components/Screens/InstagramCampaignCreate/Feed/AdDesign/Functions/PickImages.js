@@ -147,10 +147,11 @@ export const _pickImage = async (
                   media_type: "",
                 });
 
-                save_campaign_info_instagram({
-                  media: "//",
-                  media_type: "",
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: "//",
+                    media_type: "",
+                  });
 
                 return Promise.reject({
                   wrongAspect: true,
@@ -200,10 +201,11 @@ export const _pickImage = async (
                   image: "//",
                 });
 
-                save_campaign_info_instagram({
-                  media: "//",
-                  media_type: "",
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: "//",
+                    media_type: "",
+                  });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
@@ -304,12 +306,13 @@ export const _pickImage = async (
                 type: "success",
               });
 
-              save_campaign_info_instagram({
-                media: result.uri,
-                media_type: result.type.toUpperCase(),
-                fileReadyToUpload: true,
-                uneditedImageUri,
-              });
+              !rejected &&
+                save_campaign_info_instagram({
+                  media: result.uri,
+                  media_type: result.type.toUpperCase(),
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                });
             }
           })
           .catch((error) => {
@@ -464,11 +467,12 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                save_campaign_info_instagram({
-                  media: "//",
-                  media_type: "",
-                  //   rejected,
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: "//",
+                    media_type: "",
+                    rejected,
+                  });
 
                 showMessage({
                   message: translate("Maximum video duration is 120 seconds"),
@@ -497,11 +501,12 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                save_campaign_info_instagram({
-                  media: "//",
-                  media_type: "",
-                  //   rejected,
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: "//",
+                    media_type: "",
+                    rejected,
+                  });
 
                 showMessage({
                   message: translate("Minimum video duration is 1 second"),
@@ -542,7 +547,7 @@ export const _pickImage = async (
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  //   rejected,
+                  rejected,
                 });
                 // onToggleModal((false);
 
@@ -568,11 +573,11 @@ export const _pickImage = async (
                   media: "//",
                   uneditedImageUri: "//",
                 });
-                // !rejected &&
-                save_campaign_info_instagram({
-                  media: "//",
-                  media_type: "",
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: "//",
+                    media_type: "",
+                  });
 
                 showMessage({
                   message: translate(
@@ -683,14 +688,15 @@ export const _pickImage = async (
                   position: "top",
                   type: "success",
                 });
-                save_campaign_info_instagram({
-                  media: result.uri,
-                  media_type: result.type.toUpperCase(),
-                  fileReadyToUpload: true,
-                  uneditedImageUri,
-                  serialization: result.serialization,
-                  //   rejected,
-                });
+                !rejected &&
+                  save_campaign_info_instagram({
+                    media: result.uri,
+                    media_type: result.type.toUpperCase(),
+                    fileReadyToUpload: true,
+                    uneditedImageUri,
+                    serialization: result.serialization,
+                    rejected,
+                  });
                 setTheState({ sourceChanging: false });
               } else {
                 analytics.track(`a_error`, {
@@ -745,10 +751,11 @@ export const _pickImage = async (
         media_type: "",
       });
 
-      save_campaign_info_instagram({
-        media: "//",
-        media_type: "",
-      });
+      !rejected &&
+        save_campaign_info_instagram({
+          media: "//",
+          media_type: "",
+        });
 
       return;
     } else {

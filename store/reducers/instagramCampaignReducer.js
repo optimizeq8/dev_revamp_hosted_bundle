@@ -482,38 +482,38 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN:
     case actionTypes.SET_REJECTED_CAMPAIGN:
-      let rejCampaign = action.payload;
+      let instaRejCampaign = action.payload;
+
       //Since we receive call_to_action as "ORDER_NOW" for example from campaignDetails,
       //Turn it to an object so that the process for re-uploading is the same as normal
-      if (typeof rejCampaign.call_to_action === "string") {
-        rejCampaign.call_to_action = {
-          label: rejCampaign.call_to_action.replace("_", " "),
-          value: rejCampaign.call_to_action,
+      if (typeof instaRejCampaign.call_to_action === "string") {
+        instaRejCampaign.call_to_action = {
+          label: instaRejCampaign.call_to_action.replace("_", " "),
+          value: instaRejCampaign.call_to_action,
         };
       }
 
       //Same thing, attachment comes in as a string from campaignDetails,
-      if (rejCampaign.hasOwnProperty("attachment")) {
-        let rejCampaignAttacment = rejCampaign.attachment;
+      if (instaRejCampaign.hasOwnProperty("attachment")) {
+        let instaRejCampaignAttacment = instaRejCampaign.attachment;
         //if its a string and not "BLANK" then parse it
-        rejCampaignAttacment =
-          typeof rejCampaignAttacment === "string" &&
-          rejCampaignAttacment !== "BLANK"
-            ? JSON.parse(rejCampaignAttacment)
-            : rejCampaignAttacment;
+        instaRejCampaignAttacment =
+          typeof instaRejCampaignAttacment === "string" &&
+          instaRejCampaignAttacment !== "BLANK"
+            ? JSON.parse(instaRejCampaignAttacment)
+            : instaRejCampaignAttacment;
         //Sometimes attachemnts have utm parameters, they are deleted so that
         //if sent back they will be added from the backend
-        if (rejCampaignAttacment.hasOwnProperty("block_preload")) {
-          delete rejCampaignAttacment.block_preload;
-          if (rejCampaignAttacment.url.includes("?utm_source")) {
-            rejCampaignAttacment.url = rejCampaignAttacment.url.split(
+        if (instaRejCampaign.hasOwnProperty("link")) {
+          if (instaRejCampaign.link.includes("?utm_source")) {
+            instaRejCampaign.link = instaRejCampaign.link.split(
               "?utm_source"
             )[0];
           }
         }
-        rejCampaign.attachment = rejCampaignAttacment;
+        instaRejCampaign.attachment = instaRejCampaignAttacment;
       }
-      return { ...state, rejCampaign };
+      return { ...state, instaRejCampaign };
     default:
       return state;
   }
