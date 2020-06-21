@@ -260,9 +260,81 @@ const reducer = (state = initialState, action) => {
         countryName: countryName,
         interestNames: interestNames,
         regionNames: regionNames,
-
         incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps,
+        carouselAdsArray: [
+          {
+            id: 0,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 1,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 2,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 3,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 4,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 5,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 6,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 7,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 8,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          {
+            id: 9,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+        ],
+        loadingCarouselAdsArray: [],
       };
     case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
       return {
@@ -334,6 +406,85 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaignProgressStarted: action.payload,
       };
+    case actionTypes.SET_CAROUSELADMEDIA_DESIGN:
+      let storyAds = state.carouselAdsArray;
+      storyAds[action.payload.data.story_order] = {
+        ...storyAds[action.payload.data.story_order],
+        ...action.payload.data,
+        ...action.payload.card,
+        uploaded: true,
+      };
+      let loadingAr = state.loadingcarouselAdsArray;
+      loadingAr[action.payload.data.story_order] = false;
+
+      return {
+        ...state,
+        loadingcarouselAdsArray: [...loadingAr],
+        carouselAdsArray: [...storyAds],
+      };
+    case actionTypes.SET_CAROUSELADMEDIA_DESIGN_UPLOADED:
+      let storyAdsUploaded = state.carouselAdsArray;
+      storyAdsUploaded[action.payload.card.index] = {
+        ...action.payload.card,
+        uploaded: false,
+      };
+      return {
+        ...state,
+        carouselAdsArray: [...storyAdsUploaded],
+      };
+    case actionTypes.DELETE_CAROUSEL_AD_CARD:
+      let deleteStoryAds = state.carouselAdsArray;
+      deleteStoryAds = deleteStoryAds.map((ad, index) => {
+        if (
+          (action.payload.card.hasOwnProperty("item") &&
+            action.payload.card.item.id !== ad.id) ||
+          (action.payload.hasOwnProperty("data") &&
+            ad.story_id !== action.payload.data.story_id)
+        ) {
+          return ad;
+        } else {
+          return {
+            id: index,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          };
+        }
+      });
+      let deletedLoadingAr = state.loadingcarouselAdsArray;
+      deletedLoadingAr[action.payload.card.index] = false;
+      return {
+        ...state,
+        loadingcarouselAdsArray: [...deletedLoadingAr],
+        carouselAdsArray: [...deleteStoryAds],
+      };
+    case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
+      let ar = state.loadingcarouselAdsArray;
+      let storyPro = state.carouselAdsArray;
+      storyPro[action.payload.index] = {
+        ...storyPro[action.payload.index],
+        progress: action.payload.progress,
+      };
+      ar[action.payload.index] = action.payload.uploading;
+      return {
+        ...state,
+        loadingcarouselAdsArray: [...ar],
+        carouselAdsArray: [...storyPro],
+      };
+    case actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING:
+      let deleteLoadAr = state.loadingcarouselAdsArray;
+      deleteLoadAr[action.payload.index] = action.payload.deleteing;
+      return {
+        ...state,
+        loadingcarouselAdsArray: [...deleteLoadAr],
+      };
+    case actionTypes.ERROR_SET_INSTAGRAM_AD_DESIGN:
+      return {
+        ...state,
+        loadingDesign: false,
+      };
+
     default:
       return state;
   }

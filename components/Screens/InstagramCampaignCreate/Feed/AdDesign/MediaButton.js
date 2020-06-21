@@ -61,41 +61,39 @@ export default class MediaButton extends Component {
       );
     } else {
       return (
-        <>
-          <TouchableOpacity
-            disabled={disabled}
-            style={[
-              styles.inputMiddleButton,
-              snapAdCard
-                ? {
-                    width: 60,
-                    height: 60,
-                    top: "20%",
-                    // left: "85%"
-                  }
-                : {},
-            ]}
-            onPress={() => {
-              // this._pickImage();
+        <TouchableOpacity
+          disabled={disabled}
+          style={[
+            styles.inputMiddleButton,
+            snapAdCard
+              ? {
+                  width: 34,
+                  height: 36,
+                  top: "27%",
+                  // left: "85%"
+                }
+              : {},
+          ]}
+          onPress={() => {
+            // this._pickImage();
 
-              snapAdCard
-                ? _handleStoryAdCards({
-                    index: snapCardInfo.index,
-                    ...snapCardInfo.item,
-                  })
-                : cover
-                ? _pickImage("Images")
-                : setMediaModalVisible(true);
-            }}
-          >
-            <EditCameraIcon width={"100%"} height={"100%"} name="camera" />
-            <Text style={[styles.mediaButtonMsg]}>
-              {type === "cover"
-                ? translate("Add Cover Image")
-                : !snapAdCard && translate("Add Media")}
-            </Text>
-          </TouchableOpacity>
-        </>
+            snapAdCard
+              ? _handleStoryAdCards({
+                  index: snapCardInfo.index,
+                  ...snapCardInfo.item,
+                })
+              : cover
+              ? _pickImage("Images")
+              : setMediaModalVisible(true);
+          }}
+        >
+          <EditCameraIcon width={"100%"} height={"100%"} name="camera" />
+          <Text style={[styles.mediaButtonMsg]}>
+            {type === "cover"
+              ? translate("Add Cover Image")
+              : !snapAdCard && translate("Add Media")}
+          </Text>
+        </TouchableOpacity>
       );
     }
   }

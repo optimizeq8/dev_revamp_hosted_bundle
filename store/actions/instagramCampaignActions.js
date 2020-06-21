@@ -628,3 +628,113 @@ export const getInstagraCampaignStats = (campaign, duration) => {
       });
   };
 };
+
+export const setCarouselAdAttechment = (info) => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.CAROUSELAD_ATTACHMENT, payload: info });
+  };
+};
+
+export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
+      payload: { uploading: true, index: card.index, progress: 0.0 },
+    });
+    dispatch({
+      type: actionTypes.SET_CAROUSELADMEDIA_DESIGN_UPLOADED,
+      payload: { card },
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data",
+    };
+    createBaseUrl()
+      .post(`savestorymedia`, info, {
+        onUploadProgress: (ProgressEvent) => {
+          dispatch({
+            type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
+            payload: {
+              uploading: true,
+              index: card.index,
+              progress: (ProgressEvent.loaded / ProgressEvent.total) * 100,
+            },
+          });
+        },
+
+        // cancelToken: cancelUpload.token
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        rejected &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top",
+          });
+
+        //This is to call the final upload process once all cards are done uploading
+        if (
+          getState().instagramAds.loadingCarouselAdsArray.length > 1 &&
+          getState().instagramAds.loadingCarouselAdsArray.reduce(
+            (n, x) => n + (x === true),
+            0
+          ) === 1
+        ) {
+          finalSubmision();
+        }
+        return dispatch({
+          type: actionTypes.SET_CAROUSELADMEDIA_DESIGN,
+          payload: { data: data.data, card },
+        });
+      })
+      .catch((err) => {
+        // loading(0);
+        dispatch({
+          type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
+          payload: { uploading: false, index: card.index },
+        });
+        // console.log("ad_design", err.message || err.response);
+        errorMessageHandler(err);
+        return dispatch({
+          type: actionTypes.ERROR_SET_INSTAGRAM_AD_DESIGN,
+        });
+      });
+  };
+};
+
+export const deleteCarouselCard = (story_id, card) => {
+  return (dispatch) => {
+    !story_id
+      ? dispatch({
+          type: actionTypes.DELETE_CAROUSEL_AD_CARD,
+          payload: { card },
+        })
+      : dispatch({
+          type: actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING,
+          payload: { deleteing: true, index: card.index },
+        });
+    createBaseUrl()
+      .delete(`savestorymedia/${story_id}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.DELETE_CAROUSEL_AD_CARD,
+          payload: { data: data, card },
+        });
+      })
+
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING,
+          payload: { deleteing: false, index: card.index },
+        });
+        // console.log("getVideoUploadUrl", err.message || err.response);
+        errorMessageHandler(err);
+      });
+  };
+};

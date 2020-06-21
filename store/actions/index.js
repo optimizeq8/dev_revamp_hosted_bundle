@@ -190,4 +190,7 @@ export {
   getInstagramCampaignDetails,
   updateInstagramCampaign,
   getInstagraCampaignStats,
+  deleteCarouselCard,
+  uploadCarouselAdCard,
+  setCarouselAdAttechment,
 } from "./instagramCampaignActions";

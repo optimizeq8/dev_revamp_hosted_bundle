@@ -121,18 +121,6 @@ class AdDesign extends Component {
       mediaModalVisible: false,
       uneditedImageUri: "",
       serialization: null,
-      carouselAdsArray: [
-        { id: 0, media: "//" },
-        { id: 1, media: "//" },
-        { id: 2, media: "//" },
-        { id: 3, media: "//" },
-        { id: 4, media: "//" },
-        { id: 5, media: "//" },
-        { id: 6, media: "//" },
-        { id: 7, media: "//" },
-        { id: 8, media: "//" },
-        { id: 9, media: "//" },
-      ],
     };
   }
 
@@ -454,7 +442,6 @@ class AdDesign extends Component {
     ) {
       media = this.props.data.media;
     }
-    console.log("this.props.carouselAdsArray", this.props.carouselAdsArray);
 
     return (
       <View style={styles.safeAreaView}>
@@ -529,23 +516,6 @@ class AdDesign extends Component {
                       </Text>
                     </View>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.handleCaptionExpand(true);
-                    }}
-                    style={styles.captionView}
-                    disabled={this.props.loading}
-                  >
-                    <View style={styles.captionTextView}>
-                      <Text style={styles.captionText}>
-                        {translate("Caption")}
-                      </Text>
-                      <Text numberOfLines={1} style={styles.caption}>
-                        {this.state.campaignInfo.message}
-                      </Text>
-                    </View>
-                    <PenIcon width={18} height={18} style={styles.penIcon} />
-                  </TouchableOpacity>
 
                   {this.state.campaignInfo.media_option === "single" && (
                     <SingleImage
@@ -573,10 +543,27 @@ class AdDesign extends Component {
                       videoIsLoading={this.videoIsLoading}
                       setMediaModalVisible={this.setMediaModalVisible}
                       disabled={this.props.loading}
-                      carouselAdsArray={this.state.carouselAdsArray}
+                      carouselAdsArray={this.props.carouselAdsArray}
                       _handleStoryAdCards={this._handleStoryAdCards}
                     />
                   )}
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.handleCaptionExpand(true);
+                    }}
+                    style={styles.captionView}
+                    disabled={this.props.loading}
+                  >
+                    <View style={styles.captionTextView}>
+                      <Text style={styles.captionText}>
+                        {translate("Caption")}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.caption}>
+                        {this.state.campaignInfo.message}
+                      </Text>
+                    </View>
+                    <PenIcon width={18} height={18} style={styles.penIcon} />
+                  </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() =>
