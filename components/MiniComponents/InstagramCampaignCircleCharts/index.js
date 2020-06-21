@@ -8,12 +8,10 @@ import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import ReachIcon from "../../../assets/SVGs/CampaignDetail/ReachIcon";
 import FrequencyIcon from "../../../assets/SVGs/CampaignDetail/FrequencyIcon";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Text, Button, Icon } from "native-base";
 import CampaignStats from "../../Screens/CampaignDetails/CampStats/CampaignStats";
+import InstaCampaignStats from "../../Screens/InstagramCampaignDetails/CampStats/CampaignStats";
 import CampDetailsInfo from "./CampDetailsInfo";
 import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
@@ -28,7 +26,7 @@ class CampaignCircleChart extends Component {
     }
   }
 
-  campaignEndedOrNot = campaign => {
+  campaignEndedOrNot = (campaign) => {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -49,9 +47,9 @@ class CampaignCircleChart extends Component {
       loading,
       handleChartToggle,
       channel,
-      chartExpanded
+      chartExpanded,
     } = this.props;
-
+    let mediaChannel = campaign.channel || channel;
     return (
       <View style={detail ? styles.campaignInfoStyle : styles.campaignInfoCard}>
         {detail && (
@@ -73,22 +71,25 @@ class CampaignCircleChart extends Component {
           </View>
         )}
         <ScrollView
-          ref={ref => (this.scroll = ref)}
+          ref={(ref) => (this.scroll = ref)}
           showsHorizontalScrollIndicator={false}
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
             justifyContent: "flex-start",
-            paddingRight: 40
+            paddingRight: 40,
           }}
           style={{
             maxHeight: "100%",
-            paddingLeft: detail ? 20 : 0
           }}
         >
           {!loading && (
             <Chart
-              budget={campaign.lifetime_budget_micro}
+              budget={
+                mediaChannel === "snapchat" || mediaChannel === "instagram"
+                  ? campaign.lifetime_budget_micro
+                  : campaign.budget
+              }
               spends={campaign.spends}
               screenProps={this.props.screenProps}
               detail={detail}
@@ -114,13 +115,13 @@ class CampaignCircleChart extends Component {
               <View
                 style={[
                   styles.campaignInfo,
-                  { flexDirection: detail ? "column-reverse" : "column" }
+                  { flexDirection: detail ? "column-reverse" : "column" },
                 ]}
               >
                 <Text
                   style={[
                     styles.campaignNumbers,
-                    detail && styles.campaignNumbersDetail
+                    detail && styles.campaignNumbersDetail,
                   ]}
                   ellipsizeMode="tail"
                   numberOfLines={1}
@@ -129,6 +130,8 @@ class CampaignCircleChart extends Component {
                     campaign
                       ? !detail || campaign.objective === "BRAND_AWARENESS"
                         ? campaign.impressions
+                        : mediaChannel === "instagram"
+                        ? campaign.clicks
                         : campaign.swipes
                       : 0,
                     true
@@ -141,6 +144,8 @@ class CampaignCircleChart extends Component {
                   {!detail ||
                   (campaign && campaign.objective === "BRAND_AWARENESS")
                     ? translate("Impressions")
+                    : mediaChannel === "instagram"
+                    ? translate("Clicks")
                     : translate("Swipe Ups")}
                 </Text>
               </View>
@@ -165,7 +170,7 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {campaign ? formatNumber(campaign.reach, true) : 0}
@@ -185,13 +190,15 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {formatNumber(
                       campaign
                         ? campaign.objective === "BRAND_AWARENESS"
                           ? campaign.cpm
+                          : mediaChannel === "instagram"
+                          ? campaign.clicks
                           : campaign.swipes
                         : 0,
                       campaign.objective !== "BRAND_AWARENESS"
@@ -203,6 +210,8 @@ class CampaignCircleChart extends Component {
                   >
                     {campaign && campaign.objective === "BRAND_AWARENESS"
                       ? translate("cpm")
+                      : mediaChannel === "instagram"
+                      ? translate("Clicks")
                       : translate("Swipe Ups")}
                   </Text>
                 </View>
@@ -228,7 +237,7 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {campaign ? campaign.paid_frequency.toFixed(2) : 0}
@@ -237,12 +246,19 @@ class CampaignCircleChart extends Component {
               </View>
             )}
           </View>
-          {detail && chartExpanded && (
-            <CampaignStats
-              selectedCampaign={campaign}
-              screenProps={this.props.screenProps}
-            />
-          )}
+          {detail &&
+            chartExpanded &&
+            (mediaChannel === "instagram" ? (
+              <InstaCampaignStats
+                selectedCampaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            ) : (
+              <CampaignStats
+                selectedCampaign={campaign}
+                screenProps={this.props.screenProps}
+              />
+            ))}
         </ScrollView>
         {detail &&
           !(
