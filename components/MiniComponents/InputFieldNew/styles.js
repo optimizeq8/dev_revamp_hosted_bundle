@@ -25,8 +25,8 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   inputText: {
-    fontFamily: "montserrat-light-english",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontFamily: "montserrat-light",
+    fontSize: 12 / PixelRatio.getFontScale(),
     alignSelf: "flex-start",
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#FFF",

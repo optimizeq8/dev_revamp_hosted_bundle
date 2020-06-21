@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   mainView: {
     marginHorizontal: 40,
     display: "flex",
-    flex: 2.5,
+    // flex: 2.5,
     overflow: "hidden",
     backgroundColor: globalColors.transparent,
   },
@@ -284,12 +284,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
   },
   adImageOptionButton: {
-    width: "100%",
+    width: "50%",
     height: 40,
     marginHorizontal: 0,
   },
   outerBlock: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
     marginVertical: 12,
@@ -313,11 +313,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 11,
     color: globalColors.white,
+    textAlign: "left",
   },
   businessName: {
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-medium-english",
     fontSize: 16,
     color: globalColors.white,
+    textAlign: "left",
   },
 
   placeholder: {
@@ -352,17 +354,20 @@ const styles = StyleSheet.create({
     // height: "100%",
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "space-between",
-    marginTop: 15,
+    marginTop: 0,
+    marginBottom: 10,
   },
   captionText: {
     fontFamily: "montserrat-regular",
     fontSize: 9,
     color: globalColors.white,
+    textAlign: "left",
   },
   caption: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
     color: globalColors.white,
+    textAlign: "left",
   },
   destinationView: {
     display: "flex",
@@ -403,8 +408,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   websiteLink: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     color: globalColors.purple,
+    fontSize: 12,
   },
   uplaodPercentageText: {
     position: "absolute",
@@ -418,6 +424,33 @@ const styles = StyleSheet.create({
   lowerBtnWidth: {
     width: 55,
     height: 55,
+  },
+  SnapAdCard: {
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderColor: globalColors.orange,
+    borderWidth: 2,
+    borderRadius: 20,
+    height: 100,
+    width: 90,
+    margin: 10,
+  },
+  inputMiddleButton: {
+    position: "absolute",
+    backgroundColor: globalColors.transparent,
+    alignSelf: "center",
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderColor: "transparent",
+    flexDirection: "column",
+    opacity: 1,
+  },
+  holdToDeleteText: {
+    color: globalColors.white,
+    fontSize: 12,
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
   },
 });
 
