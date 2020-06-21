@@ -10,6 +10,7 @@ import PhoneNoField from "../PhoneNo/PhoneNoFieldNew";
 import BusinessAccount from "../../CreateBusinessAccount";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import InputScrollView from "react-native-input-scroll-view";
+import { openPrivacy, openTerms } from "../../../Terms&Conditions";
 
 //icons
 import UserProfile from "../../../../assets/SVGs/UserProfile";
@@ -38,13 +39,13 @@ class PersonalInfo extends Component {
         mobile: this.props.mobileNo,
         country_code: this.props.countryCode,
         password: "",
-        v: this.props.tempId
+        v: this.props.tempId,
       },
       businessAccount: {
         businessname: "",
         businesscategory: "",
         country: "",
-        otherBusinessCategory: null
+        otherBusinessCategory: null,
         // businesstype: "1",
         // businessemail: "",
         // brandname: "",
@@ -75,22 +76,22 @@ class PersonalInfo extends Component {
       firstnameError: "",
       repasswordError: "",
       businesscategoryError: null,
-      businessnameError: null
+      businessnameError: null,
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
     Segment.screenWithProperties("Registration Detail Screen", {
-      category: "Sign Up"
+      category: "Sign Up",
     });
     if (this.props.userInfo) {
       this.setState({
         ...this.state,
         userInfo: {
           ...this.state.userInfo,
-          ...this.props.userInfo
-        }
+          ...this.props.userInfo,
+        },
       });
     }
   }
@@ -103,8 +104,8 @@ class PersonalInfo extends Component {
           firstname: this.props.tempUserInfo.firstname,
           lastname: this.props.tempUserInfo.lastname,
           email: this.props.tempUserInfo.email,
-          v: this.props.tempId
-        }
+          v: this.props.tempId,
+        },
       });
     }
   }
@@ -116,7 +117,7 @@ class PersonalInfo extends Component {
         : value;
     let userInfo = {
       ...this.state.userInfo,
-      ...state
+      ...state,
     };
     this.setState({ userInfo });
   };
@@ -125,7 +126,7 @@ class PersonalInfo extends Component {
     let state = {};
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
   _passwordVarification = () => {
@@ -147,14 +148,14 @@ class PersonalInfo extends Component {
     let userInfo = {
       ...this.state.userInfo,
       mobile: number,
-      country_code: countryCode
+      country_code: countryCode,
     };
     // if (number.toString().length > 3 && valid) {
     this.setState({
       // phoneNum: number.toString().length > 3 && valid ? number.split(countryCode)[1] : number,
       userInfo,
       valid,
-      type
+      type,
     });
     // }
   };
@@ -203,60 +204,60 @@ class PersonalInfo extends Component {
       businessnameError,
       businesscategoryError,
       businesscategoryOtherError,
-      countryError
+      countryError,
     });
     if (businessnameError) {
       showMessage({
         message: translate("Enter your business name"),
-        type: "warning"
+        type: "warning",
       });
     }
     if (businesscategoryError) {
       showMessage({
         message: translate(businesscategoryError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (businesscategoryOtherError) {
       showMessage({
         message: translate(businesscategoryOtherError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (this.props.businessInvite !== "0" && countryError) {
       showMessage({
         message: translate("Please choose a country"),
-        type: "warning"
+        type: "warning",
       });
     }
     if (passwordError) {
       showMessage({
         message: translate(passwordError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (emailError) {
       showMessage({
         message: translate(emailError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (firstnameError) {
       showMessage({
         message: translate(firstnameError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (lastnameError) {
       showMessage({
         message: translate(lastnameError),
-        type: "warning"
+        type: "warning",
       });
     }
     if (!this.state.valid) {
       showMessage({
         message: translate("Please enter a valid number!"),
-        type: "warning"
+        type: "warning",
       });
     }
     // For non invited user
@@ -279,12 +280,12 @@ class PersonalInfo extends Component {
       );
       let userInfo = {
         ...this.state.userInfo,
-        mobile
+        mobile,
       };
 
       const info = {
         ...userInfo,
-        ...this.state.businessAccount
+        ...this.state.businessAccount,
       };
       this.props.registerGuestUser(
         info,
@@ -308,11 +309,11 @@ class PersonalInfo extends Component {
       );
       let userInfo = {
         ...this.state.userInfo,
-        mobile
+        mobile,
       };
 
       const info = {
-        ...userInfo
+        ...userInfo,
       };
       this.props.registerGuestUser(
         info,
@@ -321,7 +322,7 @@ class PersonalInfo extends Component {
       );
     }
   };
-  focusTheField = fieldName => {
+  focusTheField = (fieldName) => {
     this.inputs[fieldName]._root.focus();
   };
   inputs = {};
@@ -337,7 +338,7 @@ class PersonalInfo extends Component {
 
     let businessAccount = {
       ...this.state.businessAccount,
-      ...state
+      ...state,
     };
     this.setState({ businessAccount });
   };
@@ -350,13 +351,13 @@ class PersonalInfo extends Component {
 
     state[stateError] = validWrap;
     this.setState({
-      ...state
+      ...state,
     });
   };
-  _handleBusinessName = value => {
+  _handleBusinessName = (value) => {
     this.setState({
       businessnameAvalible: value,
-      checkingBusinessNameSubmission: false
+      checkingBusinessNameSubmission: false,
     });
   };
   _verifyBusinessName = async (name, submision) => {
@@ -373,16 +374,16 @@ class PersonalInfo extends Component {
 
   // HANDLE business category STARTS HERE
 
-  _handleBusinessCategories = type => {
+  _handleBusinessCategories = (type) => {
     this.setState({
       businessAccount: {
         ...this.state.businessAccount,
-        businesstype: type
-      }
+        businesstype: type,
+      },
     });
   };
 
-  onSelectedBusinessCategoryIdChange = value => {
+  onSelectedBusinessCategoryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
@@ -392,18 +393,18 @@ class PersonalInfo extends Component {
         "mandatory",
         this.state.businessAccount.businesscategory
       ),
-      inputT: false
+      inputT: false,
     });
   };
 
-  onSelectedBusinessCategoryChange = value => {
+  onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            businesscategory: value[0].value
-          }
+            businesscategory: value[0].value,
+          },
         },
         () => {
           this.closeCategoryModal();
@@ -419,7 +420,7 @@ class PersonalInfo extends Component {
 
   // --COUNTRY HANDLE FOR BUSINESS STARTS HERE--
 
-  onSelectedCountryIdChange = value => {
+  onSelectedCountryIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("country", value);
   };
@@ -429,20 +430,20 @@ class PersonalInfo extends Component {
         "mandatory",
         this.state.businessAccount.country
       ),
-      inputC: false
+      inputC: false,
     });
   };
   openCountryModal = () => {
     this.setState({ inputC: true });
   };
-  onSelectedCountryChange = value => {
+  onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
       this.setState(
         {
           businessAccount: {
             ...this.state.businessAccount,
-            country: value[0].value
-          }
+            country: value[0].value,
+          },
         },
         () => {
           this.closeCountryModal();
@@ -460,8 +461,8 @@ class PersonalInfo extends Component {
           {
             paddingBottom: "55%",
             paddingTop: 20,
-            paddingHorizontal: 26
-          }
+            paddingHorizontal: 26,
+          },
         ]}
       >
         {this.props.businessInvite !== "0" && (
@@ -566,7 +567,7 @@ class PersonalInfo extends Component {
               ? globalStyles.purpleBorderColor
               : this.state.repasswordError !== ""
               ? globalStyles.redBorderColor
-              : globalStyles.transparentBorderColor
+              : globalStyles.transparentBorderColor,
             // styles.repeatPassword
           ]}
         >
@@ -580,13 +581,13 @@ class PersonalInfo extends Component {
                 styles.inputLabel,
                 this.state.inputPR
                   ? globalStyles.orangeTextColor
-                  : globalStyles.whiteTextColor
+                  : globalStyles.whiteTextColor,
               ]}
             >
               {translate("Re-enter Password")}
             </Text>
             <Input
-              ref={input => {
+              ref={(input) => {
                 this.inputs["inputPR"] = input;
               }}
               blurOnSubmit={true}
@@ -595,7 +596,7 @@ class PersonalInfo extends Component {
               secureTextEntry={true}
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.setState({ repassword: value })}
+              onChangeText={(value) => this.setState({ repassword: value })}
               onFocus={() => {
                 this.setState({ inputPR: true });
               }}
@@ -641,16 +642,16 @@ class PersonalInfo extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mobileNo: state.register.mobileNo,
   countryCode: state.register.countryCode,
   tempUserInfo: state.account.tempUserInfo,
   successEmail: state.register.successEmail,
   userInfo: state.register.userInfo,
-  successName: state.register.successName
+  successName: state.register.successName,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   verifyEmail: (email, userInfo, businessInvite, navigation) =>
     dispatch(
       actionCreators.verifyEmail(email, userInfo, businessInvite, navigation)
@@ -666,6 +667,6 @@ const mapDispatchToProps = dispatch => ({
         _handleBusinessName,
         submision
       )
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
