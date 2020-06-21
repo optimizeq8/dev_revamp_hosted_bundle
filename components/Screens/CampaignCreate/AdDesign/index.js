@@ -114,6 +114,7 @@ class AdDesign extends Component {
       formatted: null,
       brand_nameError: "",
       headlineError: "",
+      brandHeadlineError: null,
       orientationError: "",
       mediaError: "Add media",
       swipeUpError: "",
@@ -591,6 +592,7 @@ class AdDesign extends Component {
       !this.props.loadingStoryAdsArray.includes(true) &&
       !this.state.brand_nameError &&
       !this.state.headlineError &&
+      !this.state.brandHeadlineError &&
       !this.state.mediaError
     ) {
       let media =
@@ -650,6 +652,13 @@ class AdDesign extends Component {
       "mandatory",
       this.state.campaignInfo.headline
     );
+    let brandHeadlineError = null;
+    if (
+      this.state.campaignInfo.brand_name === this.state.campaignInfo.headline
+    ) {
+      brandHeadlineError =
+        "Business name and Promotional Message can not be the same";
+    }
     const mediaError =
       this.adType === "StoryAd"
         ? false // this.state.storyAdCards.selectedStoryAd.media === "//"
@@ -674,7 +683,14 @@ class AdDesign extends Component {
         .map((collection) => collection.collection_attachment)
         .includes("BLANK");
     let swipeUpError = null;
-    if (
+
+    if (brandHeadlineError) {
+      showMessage({
+        message: translate(brandHeadlineError),
+        position: "top",
+        type: "warning",
+      });
+    } else if (
       // !this.rejected &&
       this.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
@@ -756,11 +772,13 @@ class AdDesign extends Component {
       swipeUpError,
       collectionError,
       collectionMediaError,
+      brandHeadlineError,
     });
 
     return (
       !brand_nameError &&
       !headlineError &&
+      !brandHeadlineError &&
       !mediaError &&
       !swipeUpError &&
       !collectionError &&
@@ -797,6 +815,7 @@ class AdDesign extends Component {
     if (
       this.state.brand_nameError ||
       this.state.headlineError ||
+      this.state.brandHeadlineError ||
       this.state.mediaError ||
       this.state.swipeUpError
     ) {
@@ -808,32 +827,18 @@ class AdDesign extends Component {
           this.state.brand_nameError ||
           this.state.headlineError ||
           this.state.mediaError ||
+          this.state.brandHeadlineError ||
           this.state.swipeUpError,
-      });
-      segmentEventTrack("Ad Design Submit Error", {
-        campaign_brand_name_error: this.state.brand_nameError,
-        campaign_headline_error: this.state.headlineError,
-        campaign_media_error: this.state.mediaError,
-        campaign_swipeUp_error: this.state.swipeUpError,
       });
     }
     if (
       // !this.props.loadingStoryAdsArray.includes(true) &&
       (!this.state.brand_nameError &&
         !this.state.headlineError &&
+        !this.state.brandHeadlineError &&
         !this.state.mediaError) ||
       (this.state.objective !== "BRAND_AWARENESS" && !this.state.swipeUpError)
     ) {
-      Segment.trackWithProperties("Ad Design Submitted", {
-        business_name: this.props.mainBusiness.businessname,
-      });
-      Segment.trackWithProperties("Completed Checkout Step", {
-        checkout_id: this.props.campaign_id,
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_brand_name: this.state.campaignInfo.brand_name,
-        campaign_headline: this.state.campaignInfo.headline,
-      });
       await formatMedia(
         this.state.iosVideoUploaded,
         this.adType,
