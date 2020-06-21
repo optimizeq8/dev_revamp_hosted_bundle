@@ -357,8 +357,8 @@ const styles = StyleSheet.create({
     // height: "100%",
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "space-between",
-    marginTop: 0,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 0,
   },
   captionText: {
     fontFamily: "montserrat-regular",
@@ -466,9 +466,11 @@ const styles = StyleSheet.create({
     borderColor: globalColors.orange,
     borderWidth: 2,
     borderRadius: 20,
-    height: 100,
-    width: 90,
-    margin: 10,
+    height: 71,
+    width: 67,
+    marginVertical: 12.5,
+    marginHorizontal: 11,
+    // flex: 1,
   },
   inputMiddleButton: {
     position: "absolute",
@@ -486,6 +488,31 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "center",
     fontFamily: "montserrat-regular",
+  },
+  carouselFlatList: {
+    paddingTop: 10,
+    paddingBottom: 50,
+    alignItems: "center",
+  },
+  flatListView: { height: hp(35) },
+
+  carouselEditMedia: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    height: "100%",
+    position: "absolute",
+    bottom: 0,
+    paddingBottom: 10,
+    width: "100%",
+  },
+  carouselCardNumber: {
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,
+    backgroundColor: globalColors.orange,
+    bottom: "20%",
   },
 });
 

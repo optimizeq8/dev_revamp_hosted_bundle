@@ -9,9 +9,11 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../../store/actions";
 import { globalColors } from "../../../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../../../MiniComponents/RNImageOrCacheImage";
-import segmentEventTrack from "../../../../../segmentEventTrack";
 class CarouselCard extends Component {
   state = { uploading: false, showDelete: false };
+  showDeleteButton = () => {
+    snapCardInfo.item.media !== "//" && this.setState({ showDelete: true });
+  };
   render() {
     let {
       snapCardInfo,
@@ -43,9 +45,7 @@ class CarouselCard extends Component {
       <TouchableOpacity
         disabled={this.props.loadingStoryAdsArray.includes(true)}
         style={styles.SnapAdCard}
-        onLongPress={() => {
-          this.setState({ showDelete: true });
-        }}
+        onLongPress={this.showDeleteButton}
       >
         <View
           style={{
@@ -75,25 +75,14 @@ class CarouselCard extends Component {
           )}
         </View>
         <TouchableOpacity
-          style={{
-            width: 25,
-            height: 25,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 50,
-            backgroundColor: globalColors.orange,
-            bottom: "15%",
-          }}
-          onLongPress={() => {
-            snapCardInfo.item.media !== "//" &&
-              this.setState({ showDelete: true });
-          }}
+          style={styles.carouselCardNumber}
+          onLongPress={this.showDeleteButton}
           onPress={() => {
             if (
               this.state.showDelete &&
               !this.props.loadingStoryAdsArray[snapCardInfo.index]
             ) {
-              this.props.deleteStoryAdCard(
+              this.props.deleteCarouselCard(
                 snapCardInfo.item.story_id,
                 snapCardInfo,
                 removeSnapCard
@@ -130,16 +119,8 @@ class CarouselCard extends Component {
                   ...snapCardInfo.item,
                 });
               }}
-              style={{
-                flexDirection: "row",
-                alignItems: "flex-end",
-                height: "100%",
-                position: "absolute",
-                bottom: 0,
-                paddingBottom: 10,
-                width: "100%",
-              }}
-            ></TouchableOpacity>
+              style={styles.carouselEditMedia}
+            />
           )
         ) : (
           <>
@@ -162,8 +143,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteStoryAdCard: (story_id, card, removeCard) =>
-    dispatch(actionCreators.deleteStoryAdCard(story_id, card, removeCard)),
+  deleteCarouselCard: (story_id, card, removeCard) =>
+    dispatch(actionCreators.deleteCarouselCard(story_id, card, removeCard)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CarouselCard);
