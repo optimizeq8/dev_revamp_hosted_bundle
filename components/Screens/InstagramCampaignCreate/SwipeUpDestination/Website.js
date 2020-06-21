@@ -62,6 +62,30 @@ class Website extends Component {
   }
 
   componentDidMount() {
+    if (this.props.mainBusiness) {
+      const { websitelink, weburl } = this.props.mainBusiness;
+      if (websitelink && websitelink !== "") {
+        this.setState({
+          campaignInfo: {
+            link: websitelink,
+            call_to_action:
+              list[this.props.data["campaign_type"]][this.props.listNum]
+                .call_to_action_list[0],
+          },
+        });
+      } else if (weburl && weburl !== "") {
+        this.setState({
+          campaignInfo: {
+            link: weburl.includes("https")
+              ? weburl
+              : `https://${weburl}.optimizeapp.com`,
+            call_to_action:
+              list[this.props.data["campaign_type"]][this.props.listNum]
+                .call_to_action_list[0],
+          },
+        });
+      }
+    }
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("link") &&
@@ -253,6 +277,7 @@ class Website extends Component {
 const mapStateToProps = (state) => ({
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
+  mainBusiness: state.account.mainBusiness,
 });
 const mapDispatchToProps = (dispatch) => ({
   save_campaign_info_instagram: (info) =>
