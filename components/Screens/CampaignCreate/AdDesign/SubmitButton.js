@@ -61,7 +61,7 @@ class SubmitButton extends Component {
       return (
         <View
           style={{
-            bottom: 3,
+            width: "45%",
             position: "relative",
             display: "flex",
             flexDirection: "row",
@@ -79,13 +79,14 @@ class SubmitButton extends Component {
             backgroundColor="rgba(255,255,255,0.3)"
             adDetails={false}
           />
-          <Text style={styles.uplaodPercentageText}>{Math.round(10, 2)} %</Text>
+          <Text style={styles.uplaodPercentageText}>
+            {Math.round(this.props.loaded, 2)} %
+          </Text>
         </View>
       );
+    } else {
+      return <View style={{ width: "45%" }}>{this.submitButton()}</View>;
     }
-    return (
-      <View style={{ bottom: 3, width: "45%" }}>{this.submitButton()}</View>
-    );
   }
 }
 const mapStateToProps = (state) => ({

@@ -612,11 +612,12 @@ const styles = StyleSheet.create({
   },
   uplaodPercentageText: {
     position: "absolute",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 8,
     color: "#FFF",
     top: "35%",
-    right: "10%",
+    right: I18nManager.isRTL ? 0 : "-50%",
+    left: I18nManager.isRTL ? "23%" : 0,
     textAlign: "center",
   },
   uploadingText: {
