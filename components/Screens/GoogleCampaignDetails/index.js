@@ -405,7 +405,22 @@ class GoogleCampaignDetails extends Component {
                   alignItems: "center",
                 }}
               />
-
+              {selectedCampaign &&
+                !selectedCampaign.campaign.completed &&
+                selectedCampaign.campaign.status === "REMOVED" && (
+                  <View style={styles.remainingBudgetContainer}>
+                    <Icon
+                      style={{ fontSize: 35, color: "#fff" }}
+                      type="Ionicons"
+                      name="ios-alert"
+                    />
+                    <Text style={styles.remainingBudgetText}>
+                      {translate(
+                        "Your Remaining budget will be added to Your wallet in the next 48 hours"
+                      )}
+                    </Text>
+                  </View>
+                )}
               {loading ? (
                 <View style={{ margin: 5 }}>
                   <PlaceholderLine />
