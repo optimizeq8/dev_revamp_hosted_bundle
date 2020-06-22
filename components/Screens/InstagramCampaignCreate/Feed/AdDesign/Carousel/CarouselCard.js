@@ -12,6 +12,7 @@ import RNImageOrCacheImage from "../../../../../MiniComponents/RNImageOrCacheIma
 class CarouselCard extends Component {
   state = { uploading: false, showDelete: false };
   showDeleteButton = () => {
+    let { snapCardInfo } = this.props;
     snapCardInfo.item.media !== "//" && this.setState({ showDelete: true });
   };
   render() {
@@ -22,14 +23,14 @@ class CarouselCard extends Component {
       rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
-    let videoPlayer = this.props.loadingStoryAdsArray[
+    let videoPlayer = this.props.loadingCarouselAdsArray[
       snapCardInfo.index
     ] ? null : (
       <Video
         source={{
           uri:
             rejected ||
-            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+            (!this.props.loadingCarouselAdsArray[snapCardInfo.index] &&
               snapCardInfo.item.uploaded)
               ? snapCardInfo.item["media"]
               : "//",
@@ -43,7 +44,7 @@ class CarouselCard extends Component {
 
     return (
       <TouchableOpacity
-        disabled={this.props.loadingStoryAdsArray.includes(true)}
+        disabled={this.props.loadingCarouselAdsArray.includes(true)}
         style={styles.SnapAdCard}
         onLongPress={this.showDeleteButton}
       >
@@ -62,7 +63,8 @@ class CarouselCard extends Component {
           ) : (
             <RNImageOrCacheImage
               media={
-                rejected || !this.props.loadingStoryAdsArray[snapCardInfo.index]
+                rejected ||
+                !this.props.loadingCarouselAdsArray[snapCardInfo.index]
                   ? snapCardInfo.item["media"]
                   : "//"
               }
@@ -80,7 +82,7 @@ class CarouselCard extends Component {
           onPress={() => {
             if (
               this.state.showDelete &&
-              !this.props.loadingStoryAdsArray[snapCardInfo.index]
+              !this.props.loadingCarouselAdsArray[snapCardInfo.index]
             ) {
               this.props.deleteCarouselCard(
                 snapCardInfo.item.story_id,
@@ -91,11 +93,11 @@ class CarouselCard extends Component {
             }
           }}
         >
-          <Text style={{ color: "#fff" }}>
+          <Text style={styles.carouselCardNumberText}>
             {this.state.showDelete ? "X" : snapCardInfo.index + 1}
           </Text>
         </TouchableOpacity>
-        {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
+        {!this.props.loadingCarouselAdsArray[snapCardInfo.index] ? (
           snapCardInfo.item.media === "//" ? (
             <MediaButton
               type={"media"}
@@ -139,7 +141,7 @@ class CarouselCard extends Component {
 }
 const mapStateToProps = (state) => ({
   carouselAdsArray: state.instagramAds.carouselAdsArray,
-  loadingStoryAdsArray: state.instagramAds.loadingStoryAdsArray,
+  loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
 });
 
 const mapDispatchToProps = (dispatch) => ({

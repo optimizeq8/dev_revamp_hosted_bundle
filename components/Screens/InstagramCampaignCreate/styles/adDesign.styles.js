@@ -479,6 +479,11 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.orange,
     bottom: "20%",
   },
+  carouselCardNumberText: {
+    color: "#fff",
+    fontSize: 12,
+    fontFamily: "montserrat-bold-english",
+  },
 });
 
 export default styles;
