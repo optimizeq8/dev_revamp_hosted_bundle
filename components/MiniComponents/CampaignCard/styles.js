@@ -151,9 +151,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   cardStatusDays: {
-    flex: 1,
+    flex: 0.5,
     alignItems: "center",
-    justifyContent: "flex-end",
     alignSelf: "center",
     paddingLeft: 5,
   },
