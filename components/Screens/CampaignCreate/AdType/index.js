@@ -477,6 +477,7 @@ class AdType extends Component {
                     })}
                   </View>
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     style={styles.lowerButton}
                     width={12}
                     height={15}

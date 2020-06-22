@@ -672,6 +672,7 @@ class GoogleAdTargetting extends Component {
               />
             ) : (
               <LowerButton
+                screenProps={this.props.screenProps}
                 style={styles.proceedButtonRTL}
                 bottom={25}
                 function={this._handleSubmission}

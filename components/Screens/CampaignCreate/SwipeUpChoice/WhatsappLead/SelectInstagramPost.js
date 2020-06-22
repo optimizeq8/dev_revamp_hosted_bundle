@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  BackHandler
+  BackHandler,
 } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -30,7 +30,7 @@ class SelectInstagramPost extends React.Component {
       counter: 1,
       cartList: [],
       errorImage: false,
-      posts: []
+      posts: [],
     };
   }
   componentDidMount() {
@@ -63,7 +63,7 @@ class SelectInstagramPost extends React.Component {
     ) {
       this.setState({
         cartList: this.props.selectedInstagramProducts,
-        counter: this.props.selectedInstagramProducts.length + 1
+        counter: this.props.selectedInstagramProducts.length + 1,
       });
     }
 
@@ -76,7 +76,7 @@ class SelectInstagramPost extends React.Component {
       if (this.props.selectedInstagramProducts.length === 0) {
         const list = this.props.instagramPostList;
         this.setState({
-          posts: list
+          posts: list,
         });
       } else {
         const newRecords = [];
@@ -89,7 +89,7 @@ class SelectInstagramPost extends React.Component {
         for (var i = 0; i < this.props.instagramPostList.length; i++) {
           if (
             newRecords.findIndex(
-              img => img.imageId === this.props.instagramPostList[i].imageId
+              (img) => img.imageId === this.props.instagramPostList[i].imageId
             ) === -1
           ) {
             newRecords.push(this.props.instagramPostList[i]);
@@ -97,7 +97,7 @@ class SelectInstagramPost extends React.Component {
         }
 
         this.setState({
-          posts: [...newRecords]
+          posts: [...newRecords],
         });
       }
     }
@@ -107,12 +107,12 @@ class SelectInstagramPost extends React.Component {
     const { translate } = this.props.screenProps;
     if (this.state.counter <= 3) {
       segmentEventTrack("Error Submit Select Instagram Post", {
-        campaign_error_sme_products_list: "Select minimum 3 post"
+        campaign_error_sme_products_list: "Select minimum 3 post",
       });
       showMessage({
         message: translate("Select minimum 3 post"),
         duration: 2000,
-        type: "warning"
+        type: "warning",
       });
     } else {
       segmentEventTrack("Submitted Select Instagram Post Success");
@@ -122,45 +122,45 @@ class SelectInstagramPost extends React.Component {
         _changeDestination: this.props.navigation.getParam(
           "_changeDestination",
           () => {}
-        )
+        ),
       });
     }
   };
-  addToList = item => {
+  addToList = (item) => {
     const { translate } = this.props.screenProps;
     const newCartList = [...this.state.cartList];
     const checkifALreadyExist = find(
       this.state.cartList,
-      it => it.imageId === item.imageId
+      (it) => it.imageId === item.imageId
     );
     // console.log('checkifALreadyExist', checkifALreadyExist);
     if (this.state.counter >= 7 && !checkifALreadyExist) {
       segmentEventTrack("Error adding product to cart", {
-        campaign_error_sme_products_list: "Maximum 6 Selected"
+        campaign_error_sme_products_list: "Maximum 6 Selected",
       });
       showMessage({
         message: translate("Maximum 6 Selected"),
         duration: 2000,
-        type: "warning"
+        type: "warning",
       });
       this.setState({
-        errorImage: true
+        errorImage: true,
       });
     } else if (!checkifALreadyExist) {
       segmentEventTrack("Added product to cart", {
-        campaign_sme_products_list_item: { ...item }
+        campaign_sme_products_list_item: { ...item },
       });
       newCartList.push(item);
       const counterNew = this.state.counter;
       this.setState({
         cartList: newCartList,
         counter: counterNew + 1,
-        errorImage: false
+        errorImage: false,
       });
     } else {
       const index = newCartList.indexOf(checkifALreadyExist);
       segmentEventTrack("Removed product from cart", {
-        campaign_sme_products_list_item: { ...item }
+        campaign_sme_products_list_item: { ...item },
       });
       // console.log('index', index);
       const counterNew = this.state.counter;
@@ -169,7 +169,7 @@ class SelectInstagramPost extends React.Component {
       this.setState({
         cartList: newCartList,
         counter: counterNew - 1,
-        errorImage: false
+        errorImage: false,
       });
     }
   };
@@ -198,14 +198,14 @@ class SelectInstagramPost extends React.Component {
             closeButton={false}
             navigation={this.props.navigation}
             segment={{
-              str: "Select Instagram Post Back Button"
+              str: "Select Instagram Post Back Button",
             }}
           />
           <Content
             style={{
               paddingTop: 20,
               // paddingHorizontal: 20,
-              flexGrow: 1
+              flexGrow: 1,
               // marginBottom: heightPercentageToDP(30),
             }}
           >
@@ -228,7 +228,7 @@ class SelectInstagramPost extends React.Component {
                   // flexWrap: "wrap",
                   flexGrow: 1,
                   justifyContent: "space-around",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 initialNumToRender={12}
                 numColumns={3}
@@ -244,7 +244,7 @@ class SelectInstagramPost extends React.Component {
                   if (item) {
                     const itemFound = findIndex(
                       this.state.cartList,
-                      it => it.imageId === item.imageId
+                      (it) => it.imageId === item.imageId
                     );
                     // console.log("itemFound", itemFound);
 
@@ -259,8 +259,8 @@ class SelectInstagramPost extends React.Component {
                             style={[
                               styles.itemView,
                               {
-                                backgroundColor: globalColors.orange
-                              }
+                                backgroundColor: globalColors.orange,
+                              },
                             ]}
                           >
                             <Text style={styles.itemFoundText}>
@@ -272,7 +272,7 @@ class SelectInstagramPost extends React.Component {
                         )}
                         <Image
                           source={{
-                            uri: item.imageUrl
+                            uri: item.imageUrl,
                           }}
                           width={95}
                           height={95}
@@ -281,9 +281,9 @@ class SelectInstagramPost extends React.Component {
                             itemFound + 1 >= 1
                               ? {
                                   borderWidth: 4,
-                                  borderColor: globalColors.orange
+                                  borderColor: globalColors.orange,
                                 }
-                              : {}
+                              : {},
                           ]}
                         />
                       </TouchableOpacity>
@@ -318,6 +318,7 @@ class SelectInstagramPost extends React.Component {
               this.props.instagramPostList && (
                 <View style={styles.bottonViewWebsite}>
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     checkmark={true}
                     bottom={0}
                     function={this._handleSubmission}
@@ -331,7 +332,7 @@ class SelectInstagramPost extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   weburlAvalible: state.campaignC.weburlAvalible,
   mainBusiness: state.account.mainBusiness,
@@ -344,20 +345,20 @@ const mapStateToProps = state => ({
   instaEndCursor: state.campaignC.instaEndCursor,
   instaHasNextPage: state.campaignC.instaHasNextPage,
   loadingMoreInstaPost: state.campaignC.loadingMoreInstaPost,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({
-  verifyBusinessUrl: weburl =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyBusinessUrl: (weburl) =>
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
-  getWebProducts: campaign_id =>
+  getWebProducts: (campaign_id) =>
     dispatch(actionCreators.getWebProducts(campaign_id)),
-  getInstagramPostInitial: insta_handle =>
+  getInstagramPostInitial: (insta_handle) =>
     dispatch(actionCreators.getInstagramPostInitial(insta_handle)),
   loadMoreInstagramPost: (instaHandleId, instaEndCursor) =>
     dispatch(
       actionCreators.loadMoreInstagramPost(instaHandleId, instaEndCursor)
-    )
+    ),
 });
 export default connect(
   mapStateToProps,

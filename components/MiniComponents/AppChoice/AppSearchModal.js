@@ -365,6 +365,7 @@ export default class AppSearchModal extends Component {
               <FlashMessage ref="modalFlash" position="top" />
               {this.state.showBtn && (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   bottom={4}
                   // function={() => navigation.push("AdDesign")}
                   function={this.submitApp}

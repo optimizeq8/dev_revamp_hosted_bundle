@@ -237,6 +237,7 @@ class ChangePassword extends Component {
             <CheckMarkLoading progress={this.props.progress} />
           ) : (
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark={true}
               function={() => this._handleSubmission()}
               style={styles.button}

@@ -1044,6 +1044,7 @@ class AdCover extends Component {
             ) : cover ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   function={this._handleSubmission}
                   style={[styles.proceedButtonRTL]}
                 />

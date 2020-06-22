@@ -158,6 +158,7 @@ class ForgotPassword extends Component {
                     </Item>
                   </View>
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     style={styles.proceedButtonRTL}
                     function={() => this._handleSubmission()}
                     bottom={-heightPercentageToDP(1.8)}

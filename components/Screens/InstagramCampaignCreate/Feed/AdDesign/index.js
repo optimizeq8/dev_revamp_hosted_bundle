@@ -603,6 +603,7 @@ class AdDesign extends Component {
                     </View>
                   ) : (
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       style={styles.lowerBtnWidth}
                       function={this.handleSubmission}
                     />
@@ -628,6 +629,7 @@ class AdDesign extends Component {
               ]}
             >
               <LowerButton
+                screenProps={this.props.screenProps}
                 style={{
                   alignSelf: "flex-end",
                   marginHorizontal: 50,

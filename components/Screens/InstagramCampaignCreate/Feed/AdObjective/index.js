@@ -488,6 +488,7 @@ class AdObjective extends Component {
                 />
               ) : (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   style={styles.proceedButtonRTL}
                   bottom={-5}
                   function={this._handleSubmission}
@@ -551,7 +552,9 @@ class AdObjective extends Component {
                 >
                   {list}
                 </Content>
-                {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
+                {/* <LowerButton
+   screenProps={this.props.screenProps}
+ bottom={4} function={this.setModalVisible} /> */}
               </View>
             </View>
           </BlurView>

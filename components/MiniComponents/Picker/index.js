@@ -20,7 +20,7 @@ export default class Picker extends Component {
     const { translate } = this.props.screenProps;
     return (
       <SectionedMultiSelect
-        ref={ref => (this.Section = ref)}
+        ref={(ref) => (this.Section = ref)}
         loading={isNull(this.props.data) ? true : false}
         items={this.props.data}
         single={this.props.single}
@@ -48,7 +48,7 @@ export default class Picker extends Component {
         }
         searchPlaceholderText={this.props.searchPlaceholderText}
         searchTextFontFamily={{
-          fontFamily: "montserrat-regular"
+          fontFamily: "montserrat-regular",
         }}
         unselectedIconComponent={
           this.props.showIcon ? (
@@ -69,6 +69,7 @@ export default class Picker extends Component {
         styles={SectionStyle}
         stickyFooterComponent={
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark
             style={styles.button}
             function={() => {
@@ -121,7 +122,7 @@ export default class Picker extends Component {
         selectedItems={this.props.selectedItems}
         removeAllText={translate("Remove all")}
         itemFontFamily={{
-          fontFamily: "montserrat-regular"
+          fontFamily: "montserrat-regular",
         }}
       />
     );

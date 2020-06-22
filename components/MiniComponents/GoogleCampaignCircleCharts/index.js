@@ -36,6 +36,7 @@ class CampaignCircleChart extends Component {
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   function={() => handleChartToggle()}
                   width={15}
                   height={15}

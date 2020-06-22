@@ -23,7 +23,7 @@ Input.defaultProps.allowFontScaling = false;
 class Verification extends Component {
   inputRef = createRef();
   static navigationOptions = {
-    header: null
+    header: null,
   };
   state = {
     timer: 60,
@@ -33,13 +33,13 @@ class Verification extends Component {
     showEmail: false,
     email: "",
     emailError: "",
-    InputE: false
+    InputE: false,
   };
   componentDidMount() {
     Segment.screenWithProperties(
       this.props.invite ? "Invite Code" : "OTP Verification",
       {
-        category: "Sign Up"
+        category: "Sign Up",
       }
     );
   }
@@ -59,7 +59,7 @@ class Verification extends Component {
       clearInterval(this.clockCall);
       this.setState({ timerStart: false, timer: 120 });
     }
-    this.setState(prevstate => ({ timer: prevstate.timer - 1 }));
+    this.setState((prevstate) => ({ timer: prevstate.timer - 1 }));
   };
 
   _handleSubmission = () => {
@@ -71,22 +71,22 @@ class Verification extends Component {
       this.props.resendVerifyMobileCodeByEmail({
         mobile: this.props.mobileNo,
         country_code: this.props.countryCode,
-        email: this.state.email
+        email: this.state.email,
       });
     } else {
       showMessage({
         message: translate("Please enter a valid email address"),
         type: "warning",
-        position: "top"
+        position: "top",
       });
     }
   };
 
-  _handleSentCode = code => {
+  _handleSentCode = (code) => {
     this.props.verifyMobileCode({
       mobile: this.props.mobileNo,
       country_code: this.props.countryCode,
-      verificationCode: code
+      verificationCode: code,
     });
   };
 
@@ -113,21 +113,22 @@ class Verification extends Component {
                 {
                   paddingTop: !this.props.invite ? 0 : 30,
                   // justifyContent: "flex-start"
-                  justifyContent: this.props.invite ? "flex-start" : "center"
-                }
+                  justifyContent: this.props.invite ? "flex-start" : "center",
+                },
               ]}
             >
-              {!this.props.invite && (
-                <Text style={[styles.text]}>
-                  {translate("Please enter the verification code sent to")}{" "}
-                  <Text style={styles.mobileNo}>{this.props.mobileNo}</Text>
-                </Text>
-              )
-              // : (
-              //   <Text style={[styles.inviteText]}>
-              //     {translate("Invite Code")}
-              //   </Text>
-              // )
+              {
+                !this.props.invite && (
+                  <Text style={[styles.text]}>
+                    {translate("Please enter the verification code sent to")}{" "}
+                    <Text style={styles.mobileNo}>{this.props.mobileNo}</Text>
+                  </Text>
+                )
+                // : (
+                //   <Text style={[styles.inviteText]}>
+                //     {translate("Invite Code")}
+                //   </Text>
+                // )
               }
 
               {this.props.invite ? (
@@ -139,9 +140,9 @@ class Verification extends Component {
                       maxLength={5}
                       autoCapitalize="none"
                       style={styles.inputText}
-                      onChangeText={value => {
+                      onChangeText={(value) => {
                         this.setState({
-                          code: value
+                          code: value,
                         });
                       }}
                       onBlur={() => {
@@ -149,7 +150,7 @@ class Verification extends Component {
                           showMessage({
                             message: translate("Please enter an invite code!"),
                             type: "warning",
-                            position: "top"
+                            position: "top",
                           });
                         }
                       }}
@@ -157,6 +158,7 @@ class Verification extends Component {
                     />
                   </Item>
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     function={() => {
                       this._handleInviteCode();
                     }}
@@ -186,19 +188,19 @@ class Verification extends Component {
                         // padding: 10,
                         borderColor: "rgba(0,0,0,0)",
                         width: 50,
-                        height: 50
-                      }
+                        height: 50,
+                      },
                     }}
                     inputProps={{
                       style: {
-                        backgroundColor: "rgba(0,0,0,0)"
-                      }
+                        backgroundColor: "rgba(0,0,0,0)",
+                      },
                     }}
                     // variant="border-box"
                     autoFocus
                     keyboardType="numeric"
                     space={10}
-                    onFulfill={code => this._handleSentCode(code)}
+                    onFulfill={(code) => this._handleSentCode(code)}
                     ref={this.inputRef}
                   />
                 </View>
@@ -224,7 +226,7 @@ class Verification extends Component {
                       this.startTimer();
                       this.props.resendVerifyMobileCode({
                         mobile: this.props.mobileNo,
-                        country_code: this.props.countryCode
+                        country_code: this.props.countryCode,
                       });
                     }}
                     style={[styles.link]}
@@ -255,7 +257,7 @@ class Verification extends Component {
                             ? globalStyles.purpleBorderColor
                             : this.state.emailError
                             ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
+                            : globalStyles.lightGrayBorderColor,
                         ]}
                       >
                         <Label
@@ -263,7 +265,7 @@ class Verification extends Component {
                             styles.emailLabel,
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.whiteTextColor
+                              : globalStyles.whiteTextColor,
                           ]}
                         >
                           {translate("Email")}
@@ -271,7 +273,7 @@ class Verification extends Component {
                         <Input
                           autoCorrect={false}
                           autoCapitalize="none"
-                          onChangeText={value =>
+                          onChangeText={(value) =>
                             this.setState({ email: value })
                           }
                           style={styles.emailLabel}
@@ -280,13 +282,13 @@ class Verification extends Component {
                           }}
                           onBlur={() => {
                             this.setState({
-                              InputE: false
+                              InputE: false,
                             });
                             this.setState({
                               emailError: validateWrapper(
                                 "email",
                                 this.state.email
-                              )
+                              ),
                             });
                           }}
                         />
@@ -298,8 +300,8 @@ class Verification extends Component {
                           I18nManager.isRTL
                             ? { alignSelf: "flex-start" }
                             : {
-                                alignSelf: "flex-end"
-                              }
+                                alignSelf: "flex-end",
+                              },
                         ]}
                         onPress={() => this._handleSubmission()}
                       >
@@ -309,7 +311,7 @@ class Verification extends Component {
                           style={[
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.whiteTextColor
+                              : globalStyles.whiteTextColor,
                           ]}
                         />
                       </Button>
@@ -324,22 +326,19 @@ class Verification extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mobileNo: state.register.mobileNo,
   countryCode: state.register.countryCode,
-  verificationCode: state.register.verificationCode
+  verificationCode: state.register.verificationCode,
 });
-const mapDispatchToProps = dispatch => ({
-  verifyMobileCode: mobileAuth =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyMobileCode: (mobileAuth) =>
     dispatch(actionCreators.verifyMobileCode(mobileAuth)),
-  verifyInviteCode: inviteCode =>
+  verifyInviteCode: (inviteCode) =>
     dispatch(actionCreators.verifyInviteCode(inviteCode)),
-  resendVerifyMobileCode: mobileAuth =>
+  resendVerifyMobileCode: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
-  resendVerifyMobileCodeByEmail: mobileAuth =>
-    dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth))
+  resendVerifyMobileCodeByEmail: (mobileAuth) =>
+    dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Verification);
+export default connect(mapStateToProps, mapDispatchToProps)(Verification);

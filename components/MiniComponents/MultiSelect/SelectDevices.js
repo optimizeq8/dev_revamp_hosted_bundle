@@ -91,7 +91,7 @@ class SelectDevices extends Component {
               </GradientButton>
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
-                  ref={ref => (this.DeviceSection = ref)}
+                  ref={(ref) => (this.DeviceSection = ref)}
                   loading={isNull(this.state.deviceBrands) ? true : false}
                   items={this.state.deviceBrands}
                   modalWithSafeAreaView={true}
@@ -103,7 +103,7 @@ class SelectDevices extends Component {
                       this.state.deviceBrands &&
                       this.state.deviceBrands.length !== 0
                     ) {
-                      return items.filter(device =>
+                      return items.filter((device) =>
                         device.name
                           .toLowerCase()
                           .includes(searchText.toLowerCase())
@@ -137,6 +137,7 @@ class SelectDevices extends Component {
                   confirmText={"\u2714"}
                   stickyFooterComponent={
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark
                       style={styles.button}
                       function={() => this.DeviceSection._submitSelection()}
@@ -156,7 +157,7 @@ class SelectDevices extends Component {
                   colors={colors}
                   searchPlaceholderText={translate("Search Devices")}
                   searchTextFontFamily={{
-                    fontFamily: "montserrat-regular"
+                    fontFamily: "montserrat-regular",
                   }}
                   searchIconComponent={
                     <Icon
@@ -178,7 +179,7 @@ class SelectDevices extends Component {
                     this.props.onSelectedItemsChange([], "devices");
                   }}
                   modalAnimationType="fade"
-                  onSelectedItemsChange={items =>
+                  onSelectedItemsChange={(items) =>
                     this.props.onSelectedItemsChange(items, "devices")
                   }
                   selectedItems={this.props.selectedItems}
@@ -190,6 +191,7 @@ class SelectDevices extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
             function={() => this.props._handleSideMenuState(false)}
@@ -200,13 +202,13 @@ class SelectDevices extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  deviceBrands: state.campaignC.deviceBrands
+  deviceBrands: state.campaignC.deviceBrands,
 });
 
-const mapDispatchToProps = dispatch => ({
-  get_device_brands: os => dispatch(actionCreators.get_device_brands(os))
+const mapDispatchToProps = (dispatch) => ({
+  get_device_brands: (os) => dispatch(actionCreators.get_device_brands(os)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SelectDevices);

@@ -30,7 +30,7 @@ class SelectInterests extends Component {
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
-      selectedDevices: this.props.selectedDevices
+      selectedDevices: this.props.selectedDevices,
     });
   }
   componentDidUpdate(prevProps) {
@@ -43,11 +43,11 @@ class SelectInterests extends Component {
       } else {
         interests =
           this.props.interests &&
-          Object.keys(this.props.interests).map(interest => {
+          Object.keys(this.props.interests).map((interest) => {
             return {
               id: interest,
               name: interest,
-              subcat: [...this.props.interests[interest]]
+              subcat: [...this.props.interests[interest]],
             };
           });
 
@@ -78,8 +78,8 @@ class SelectInterests extends Component {
                 style={[
                   styles.toggleSelectorButton,
                   {
-                    opacity: this.props.country_code === "" ? 0.5 : 1
-                  }
+                    opacity: this.props.country_code === "" ? 0.5 : 1,
+                  },
                 ]}
                 onPressAction={() => this.setState({ open: true })}
               >
@@ -112,6 +112,7 @@ class SelectInterests extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             style={styles.button}
             function={() => this.handleSideMenu()}
@@ -121,14 +122,14 @@ class SelectInterests extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  interests: state.instagramAds.interests
+  interests: state.instagramAds.interests,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   get_interests_instagram: () =>
-    dispatch(actionCreators.get_interests_instagram())
+    dispatch(actionCreators.get_interests_instagram()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SelectInterests);

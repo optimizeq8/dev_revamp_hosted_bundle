@@ -74,7 +74,7 @@ class Tutorial extends Component {
     });
     const device_id = this.props.screenProps.device_id;
     AsyncStorage.getItem("tutorialOpened")
-      .then(async value => {
+      .then(async (value) => {
         if (isNull(value)) {
           AsyncStorage.setItem("tutorialOpened", "false").then(async () => {
             await analytics.track("tutorial_1", {
@@ -107,7 +107,7 @@ class Tutorial extends Component {
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Something went wrong!",
           type: "warning",
@@ -172,7 +172,7 @@ class Tutorial extends Component {
     );
   };
   // To change slide
-  navigationRouteHandler = index => {
+  navigationRouteHandler = (index) => {
     const anonymous_userId = this.props.screenProps.anonymous_userId;
     const device_id = this.props.screenProps.device_id;
 
@@ -201,7 +201,7 @@ class Tutorial extends Component {
       device_id,
     });
     AsyncStorage.getItem("tutorialOpened")
-      .then(value => {
+      .then((value) => {
         if (value == null) {
           AsyncStorage.setItem("tutorialOpened", "false");
         } else {
@@ -213,7 +213,7 @@ class Tutorial extends Component {
           );
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(err)
       });
   };
@@ -233,7 +233,7 @@ class Tutorial extends Component {
     });
 
     AsyncStorage.getItem("tutorialOpened")
-      .then(value => {
+      .then((value) => {
         if (value == null) {
           AsyncStorage.setItem("tutorialOpened", "false");
         } else {
@@ -245,7 +245,7 @@ class Tutorial extends Component {
           );
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(err)
       });
   };
@@ -272,10 +272,10 @@ class Tutorial extends Component {
 
           <Carousel
             firstItem={0}
-            ref={c => {
+            ref={(c) => {
               this._carousel = c;
             }}
-            onSnapToItem={indx => this.navigationRouteHandler(indx)}
+            onSnapToItem={(indx) => this.navigationRouteHandler(indx)}
             data={this.state.slidesData}
             renderItem={this.Slide}
             sliderWidth={widthPercentageToDP(100)}
@@ -319,6 +319,7 @@ class Tutorial extends Component {
                   onPressAction={this.skipTutorial}
                 />
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   function={this.goToNextSlide}
                   style={styles.lowerBtn}
                 />
@@ -331,7 +332,7 @@ class Tutorial extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Tutorial);

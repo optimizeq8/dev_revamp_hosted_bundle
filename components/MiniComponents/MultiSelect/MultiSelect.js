@@ -29,7 +29,7 @@ class MultiSelectList extends Component {
       selectedVersions: [],
       selectedItemObjects: [],
       filteredCountreis: [],
-      interests: []
+      interests: [],
     };
   }
   componentDidMount() {
@@ -39,7 +39,7 @@ class MultiSelectList extends Component {
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
       selectedDevices: this.props.selectedDevices,
-      selectedVersions: this.props.selectedVersions
+      selectedVersions: this.props.selectedVersions,
     });
     if (this.props.option === "countries") {
       Segment.screen("Country Options");
@@ -58,7 +58,7 @@ class MultiSelectList extends Component {
           if (this.props.interests[key].length > 0) {
             interests.push({
               id: key,
-              children: this.props.interests[key]
+              children: this.props.interests[key],
             });
           }
           lenOfLists += this.props.interests[key].length;
@@ -101,7 +101,7 @@ class MultiSelectList extends Component {
 
   selectCountry = () => {
     const { translate } = this.props.screenProps;
-    let countrylist = this.state.filteredCountreis.map(c => (
+    let countrylist = this.state.filteredCountreis.map((c) => (
       <TouchableOpacity
         key={c.value}
         style={styles.selectTextContainer}
@@ -117,7 +117,7 @@ class MultiSelectList extends Component {
           style={{
             fontFamily: "montserrat-bold",
             color: this.props.country_code === c.value ? "#FF9D00" : "#fff",
-            fontSize: 14
+            fontSize: 14,
           }}
         >
           {translate(c.label)}
@@ -144,8 +144,8 @@ class MultiSelectList extends Component {
                       : styles.searchInputText
                   }
                   placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredC = this.props.countries.filter(c =>
+                  onChangeText={(value) => {
+                    let filteredC = this.props.countries.filter((c) =>
                       translate(c.label)
                         .toLowerCase()
                         .includes(value.toLowerCase())
@@ -162,6 +162,7 @@ class MultiSelectList extends Component {
           </View>
 
           <LowerButton
+            screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
             function={() => this.props._handleSideMenuState(false)}
@@ -213,13 +214,13 @@ class MultiSelectList extends Component {
     }
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  interests: state.campaignC.interests
+  interests: state.campaignC.interests,
 });
 
-const mapDispatchToProps = dispatch => ({
-  get_interests: info => dispatch(actionCreators.get_interests(info))
+const mapDispatchToProps = (dispatch) => ({
+  get_interests: (info) => dispatch(actionCreators.get_interests(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MultiSelectList);

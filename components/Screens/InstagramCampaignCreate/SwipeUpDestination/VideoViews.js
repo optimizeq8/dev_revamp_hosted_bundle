@@ -425,7 +425,10 @@ class VideoViews extends Component {
             <LoadingScreen top={50} />
           </Modal>
         </View>
-        <LowerButton function={this._handleSubmission} />
+        <LowerButton
+          screenProps={this.props.screenProps}
+          function={this._handleSubmission}
+        />
       </View>
     );
   }
