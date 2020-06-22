@@ -587,6 +587,24 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
+  remainingBudgetContainer: {
+    backgroundColor: globalColors.orange,
+    width: "90%",
+    height: 50,
+    borderRadius: 50,
+    alignSelf: "center",
+    top: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginVertical: 10,
+  },
+  remainingBudgetText: {
+    fontFamily: "montserrat-regular",
+    color: "white",
+    fontSize: 12,
+    width: "85%",
+  },
 });
 
 export default styles;

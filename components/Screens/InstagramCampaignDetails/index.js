@@ -480,6 +480,23 @@ class InstagramCampaignDetails extends Component {
               }}
               campaignStatus={loading ? null : selectedCampaign.status}
             />
+
+            {selectedCampaign &&
+              selectedCampaign.campaign_end === "0" &&
+              this.campaignEndedOrNot(selectedCampaign) && (
+                <View style={styles.remainingBudgetContainer}>
+                  <Icon
+                    style={{ fontSize: 35, color: "#fff" }}
+                    type="Ionicons"
+                    name="ios-alert"
+                  />
+                  <Text style={styles.remainingBudgetText}>
+                    {translate(
+                      "Your Remaining budget will be added to Your wallet in the next 48 hours"
+                    )}
+                  </Text>
+                </View>
+              )}
             {loading ? (
               <View style={{ margin: 5 }}>
                 <PlaceholderLine />
