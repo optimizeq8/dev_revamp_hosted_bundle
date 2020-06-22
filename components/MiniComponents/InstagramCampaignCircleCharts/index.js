@@ -10,7 +10,7 @@ import ReachIcon from "../../../assets/SVGs/CampaignDetail/ReachIcon";
 import FrequencyIcon from "../../../assets/SVGs/CampaignDetail/FrequencyIcon";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { Text, Button, Icon } from "native-base";
 import CampaignStats from "../../Screens/CampaignDetails/CampStats/CampaignStats";
@@ -28,7 +28,7 @@ class CampaignCircleChart extends Component {
     }
   }
 
-  campaignEndedOrNot = campaign => {
+  campaignEndedOrNot = (campaign) => {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -49,7 +49,7 @@ class CampaignCircleChart extends Component {
       loading,
       handleChartToggle,
       channel,
-      chartExpanded
+      chartExpanded,
     } = this.props;
 
     return (
@@ -73,17 +73,17 @@ class CampaignCircleChart extends Component {
           </View>
         )}
         <ScrollView
-          ref={ref => (this.scroll = ref)}
+          ref={(ref) => (this.scroll = ref)}
           showsHorizontalScrollIndicator={false}
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
             justifyContent: "flex-start",
-            paddingRight: 40
+            paddingRight: 40,
           }}
           style={{
             maxHeight: "100%",
-            paddingLeft: detail ? 20 : 0
+            paddingLeft: detail ? 20 : 0,
           }}
         >
           {!loading && (
@@ -114,13 +114,13 @@ class CampaignCircleChart extends Component {
               <View
                 style={[
                   styles.campaignInfo,
-                  { flexDirection: detail ? "column-reverse" : "column" }
+                  { flexDirection: detail ? "column-reverse" : "column" },
                 ]}
               >
                 <Text
                   style={[
                     styles.campaignNumbers,
-                    detail && styles.campaignNumbersDetail
+                    detail && styles.campaignNumbersDetail,
                   ]}
                   ellipsizeMode="tail"
                   numberOfLines={1}
@@ -165,7 +165,7 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {campaign ? formatNumber(campaign.reach, true) : 0}
@@ -185,7 +185,7 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {formatNumber(
@@ -228,7 +228,7 @@ class CampaignCircleChart extends Component {
                     numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail
+                      detail && styles.campaignNumbersDetail,
                     ]}
                   >
                     {campaign ? campaign.paid_frequency.toFixed(2) : 0}
