@@ -170,6 +170,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SAVE_CAMPAIGN_INFO_INSTAGRAM:
       let resetSwipeUps = {};
+      let savedData = { ...state.data };
+      let savedInstaRejCampaign = { ...state.instaRejCampaign };
       if (action.payload.reset) {
         resetSwipeUps = {
           attachment: "BLANK",
@@ -185,13 +187,24 @@ const reducer = (state = initialState, action) => {
           reset: false,
         };
       }
-      return {
-        ...state,
-        data: {
+      if (!action.payload.rejected) {
+        savedData = {
           ...state.data,
           ...action.payload,
           ...resetSwipeUps,
-        },
+        };
+      } else {
+        savedInstaRejCampaign = {
+          ...state.instaRejCampaign,
+          ...action.payload,
+          ...resetSwipeUps,
+        };
+      }
+
+      return {
+        ...state,
+        data: savedData,
+        instaRejCampaign: savedInstaRejCampaign,
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? //If objective is changed then AdDesign should be the current step again to set the swipe ups

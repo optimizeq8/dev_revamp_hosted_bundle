@@ -134,7 +134,7 @@ class AdDesign extends Component {
     this.rejected = this.props.navigation.getParam("rejected", false);
     this.selectedCampaign = this.rejected
       ? this.props.instaRejCampaign
-      : this.propds.data;
+      : this.props.data;
   }
 
   componentWillUnmount() {
@@ -153,6 +153,11 @@ class AdDesign extends Component {
     }
     return true;
   };
+  componentDidUpdate(prevProps) {
+    if (prevProps.instaRejCampaign.link !== this.props.instaRejCampaign.link) {
+      this.selectedCampaign = this.props.instaRejCampaign;
+    }
+  }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
     if (this.selectedCampaign) {
@@ -212,6 +217,7 @@ class AdDesign extends Component {
       });
       this.props.save_campaign_info_instagram({
         destination,
+        rejected: this.rejected,
       });
     }
   }
@@ -233,6 +239,7 @@ class AdDesign extends Component {
     });
     this.props.save_campaign_info_instagram({
       media_option,
+      rejected: this.rejected,
     });
   };
   setTheState = (state) => {
@@ -778,6 +785,7 @@ class AdDesign extends Component {
                       });
                       this.props.save_campaign_info_instagram({
                         message: value,
+                        rejected: this.rejected,
                       });
                     }}
                   />

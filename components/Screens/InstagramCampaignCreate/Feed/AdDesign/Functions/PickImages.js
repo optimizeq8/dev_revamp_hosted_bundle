@@ -147,11 +147,11 @@ export const _pickImage = async (
                   media_type: "",
                 });
 
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: "//",
-                    media_type: "",
-                  });
+                save_campaign_info_instagram({
+                  rejected,
+                  media: "//",
+                  media_type: "",
+                });
 
                 return Promise.reject({
                   wrongAspect: true,
@@ -201,11 +201,11 @@ export const _pickImage = async (
                   image: "//",
                 });
 
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: "//",
-                    media_type: "",
-                  });
+                save_campaign_info_instagram({
+                  rejected,
+                  media: "//",
+                  media_type: "",
+                });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
@@ -751,11 +751,11 @@ export const _pickImage = async (
         media_type: "",
       });
 
-      !rejected &&
-        save_campaign_info_instagram({
-          media: "//",
-          media_type: "",
-        });
+      save_campaign_info_instagram({
+        rejected,
+        media: "//",
+        media_type: "",
+      });
 
       return;
     } else {
