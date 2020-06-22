@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Platform } from "react-native";
 
 //icons
-import CameraIcon from "../../../../assets/SVGs/Camera";
+import CameraIcon from "../../../../assets/SVGs/CameraOption";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import UploadIcon from "../../../../assets/SVGs/UploadDevice";
 import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";

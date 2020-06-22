@@ -86,7 +86,6 @@ class CampaignCircleChart extends Component {
           }}
           style={{
             maxHeight: "100%",
-            // alignSelf: "flex-start",
           }}
         >
           {!loading && (
@@ -102,13 +101,7 @@ class CampaignCircleChart extends Component {
             />
           )}
 
-          <View
-            style={{
-              // paddingHorizontal: 15,
-              // paddingLeft: 5,
-              alignSelf: "center",
-            }}
-          >
+          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
             <View style={detail ? styles.campaignIcons : styles.campaignCard}>
               {!detail ||
               (campaign && campaign.objective === "BRAND_AWARENESS") ? (
