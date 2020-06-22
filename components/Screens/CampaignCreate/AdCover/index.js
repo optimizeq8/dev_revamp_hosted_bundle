@@ -22,7 +22,6 @@ import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
-import CameraLoading from "../../../MiniComponents/CameraLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
@@ -1026,7 +1025,7 @@ class AdCover extends Component {
 
           <Footer style={styles.footerStyle}>
             {cover && (this.props.coverLoading || this.state.isVisible) ? (
-              <View style={{ position: "relative" }}>
+              <View style={styles.loadingContainer}>
                 <AnimatedCircularProgress
                   size={50}
                   width={5}

@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 70,
+    paddingHorizontal: 15,
   },
   activeBadege: {
     backgroundColor: "#9300FF",
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
     lineHeight: 18,
-    width: 105,
+    width: 100,
     flexShrink: 1,
     textAlign: "center",
   },

@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 8,
     color: "#FFF",
-    top: "40%",
-    left: "40%",
     textAlign: "center",
   },
   uplaodPercentage: {
@@ -46,11 +44,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
     alignItems: "center",
-    top: "15%",
+    justifyContent: "center",
   },
   loadingSafeArea: {
     width: "100%",
