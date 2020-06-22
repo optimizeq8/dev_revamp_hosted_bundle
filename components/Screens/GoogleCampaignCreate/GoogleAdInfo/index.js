@@ -583,6 +583,7 @@ class GoogleAdInfo extends Component {
                 />
               ) : (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   style={styles.proceedButtonRTL}
                   bottom={-5}
                   function={this._handleSubmission}
@@ -661,6 +662,7 @@ class GoogleAdInfo extends Component {
                       </Content>
                     </View>
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       style={styles.proceedButtonRTL}
                       bottom={4}
                       function={this.setModalVisible}
@@ -697,6 +699,7 @@ class GoogleAdInfo extends Component {
                       </Content>
                     </View>
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       bottom={4}
                       style={styles.proceedButtonRTL}
                       function={() => {

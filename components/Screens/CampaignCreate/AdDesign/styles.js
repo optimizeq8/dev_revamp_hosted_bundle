@@ -47,8 +47,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    width: "50%",
-    justifyContent: "space-evenly",
+    // width: "50%",
+    marginHorizontal: 0,
+    justifyContent: "space-around",
   },
   errorMsg: {
     textAlign: "center",
@@ -276,7 +277,10 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "center",
-    width: 50,
+    borderWidth: 1,
+    borderColor: globalColors.white,
+    width: "45%",
+    height: 50,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
@@ -298,6 +302,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderTopWidth: 0,
     elevation: 0,
+    // marginHorizontal: 20,
   },
   subtitleHeading: {
     textAlign: "left",
@@ -595,7 +600,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   proceedButtonRTL: {
-    width: 50,
+    // marginHorizontal: 0,
+    width: "100%",
     height: 50,
   },
   holdToDeleteText: {
@@ -606,12 +612,20 @@ const styles = StyleSheet.create({
   },
   uplaodPercentageText: {
     position: "absolute",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 8,
     color: "#FFF",
-    top: "32%",
-    left: "32%",
+    top: "35%",
+    right: I18nManager.isRTL ? 0 : "-50%",
+    left: I18nManager.isRTL ? "23%" : 0,
     textAlign: "center",
+  },
+  uploadingText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#FFF",
+    textTransform: "uppercase",
+    marginHorizontal: 3,
   },
 });
 

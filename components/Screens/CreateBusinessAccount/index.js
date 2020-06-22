@@ -944,6 +944,7 @@ class CreateBusinessAccount extends Component {
             />
           ) : this.state.editBusinessInfo ? (
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark
               bottom={0}
               function={this._handleSubmission}

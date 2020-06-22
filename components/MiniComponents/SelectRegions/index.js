@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  PixelRatio
+  PixelRatio,
 } from "react-native";
 import { connect } from "react-redux";
 import { Input, Item, Icon } from "native-base";
@@ -30,7 +30,7 @@ class SelectRegions extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    let regionlist = this.props.filteredRegions.map(c => {
+    let regionlist = this.props.filteredRegions.map((c) => {
       return (
         <TouchableOpacity
           key={c.id}
@@ -45,15 +45,15 @@ class SelectRegions extends Component {
           <Icon
             type="MaterialCommunityIcons"
             name={
-              this.props.region_id.find(r => r === c.id)
+              this.props.region_id.find((r) => r === c.id)
                 ? "circle"
                 : "circle-outline"
             }
             style={[
-              this.props.region_id.find(r => r === c.id)
+              this.props.region_id.find((r) => r === c.id)
                 ? styles.activetext
                 : styles.inactivetext,
-              styles.optionsIconSize
+              styles.optionsIconSize,
             ]}
           />
           <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
@@ -88,12 +88,12 @@ class SelectRegions extends Component {
                     {
                       fontFamily: "montserrat-regular",
                       color: "#fff",
-                      fontSize: 14 / PixelRatio.getFontScale()
-                    }
+                      fontSize: 14 / PixelRatio.getFontScale(),
+                    },
                   ]}
                   placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredR = this.props.regions.filter(c =>
+                  onChangeText={(value) => {
+                    let filteredR = this.props.regions.filter((c) =>
                       translate(c.name)
                         .toLowerCase()
                         .includes(value.toLowerCase())
@@ -108,14 +108,14 @@ class SelectRegions extends Component {
                   <TouchableOpacity
                     style={[
                       styles.languageRowConatiner,
-                      { alignSelf: "center" }
+                      { alignSelf: "center" },
                     ]}
                     onPress={() => this.props.onSelectedRegionChange(-1, "all")}
                   >
                     <Text
                       style={[
                         styles.optionsTextContainer,
-                        { paddingLeft: 0, textDecorationLine: "underline" }
+                        { paddingLeft: 0, textDecorationLine: "underline" },
                       ]}
                     >
                       {translate("Select all")}
@@ -128,6 +128,7 @@ class SelectRegions extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             style={[styles.button]}
             function={() => this.props._handleSideMenuState(false)}
@@ -138,11 +139,12 @@ class SelectRegions extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  data: state.campaignC.data
+const mapStateToProps = (state) => ({
+  data: state.campaignC.data,
 });
-const mapDispatchToProps = dispatch => ({
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRegions);

@@ -80,6 +80,7 @@ import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../GlobalStyles";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -166,7 +167,9 @@ class AdDesign extends Component {
           ? this.selectedCampaign.headline
           : this.props.data && this.props.data.headline
           ? this.props.data.headline
-          : this.props.data.name,
+          : this.props.mainBusiness.businessname !== this.props.data.name
+          ? this.props.data.name
+          : "",
       },
       objective: this.rejected
         ? this.selectedCampaign.objective
@@ -1411,52 +1414,61 @@ class AdDesign extends Component {
                   /> */}
                 </View>
               ) : (
-                <>
+                <View
+                  style={{
+                    // width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                  }}
+                >
                   {this.adType === "StoryAd" ? (
                     validCards.length >= 3 && (
-                      <TouchableOpacity
+                      <GradientButton
+                        text={translate("Preview")}
+                        uppercase
+                        transparent
+                        style={styles.button}
+                        disabledGradientBegin={"rgba(0,0,0,0)"}
+                        disabledGradientEnd={"rgba(0,0,0,0)"}
                         disabled={
                           this.props.loading ||
                           (this.props.loadingStoryAdsArray.length > 0 &&
                             this.props.loadingStoryAdsArray.includes(true))
                         }
-                        style={styles.button}
-                        onPress={() => {
-                          segmentEventTrack(
-                            "Button clicked to preview Story Ad Design"
-                          );
-                          this.previewHandler();
-                        }}
-                      >
-                        <EyeIcon width={65} height={65} />
-                      </TouchableOpacity>
+                        onPressAction={this.previewHandler}
+                      />
                     )
                   ) : (
-                    <TouchableOpacity
+                    <GradientButton
+                      text={translate("Preview")}
+                      uppercase
+                      transparent
+                      style={styles.button}
+                      disabledGradientBegin={"rgba(0,0,0,0)"}
+                      disabledGradientEnd={"rgba(0,0,0,0)"}
                       disabled={
                         this.props.loading ||
                         (this.props.loadingStoryAdsArray.length > 0 &&
                           this.props.loadingStoryAdsArray.includes(true))
                       }
-                      style={styles.button}
-                      onPress={() => {
-                        segmentEventTrack(
-                          "Button clicked to preview Ad Design"
-                        );
-                        this.previewHandler();
-                      }}
-                    >
-                      <EyeIcon width={65} height={65} />
-                    </TouchableOpacity>
+                      onPressAction={this.previewHandler}
+                    />
                   )}
                   {this.adType === "StoryAd" ? (
                     true ? (
                       <LowerButton
+                        screenProps={this.props.screenProps}
+                        text={"Next"}
+                        screenProps={this.props.screenProps}
                         disabled={
                           this.props.loading ||
                           (this.props.loadingStoryAdsArray.length > 0 &&
                             this.props.loadingStoryAdsArray.includes(true))
                         }
+                        width={15}
+                        height={15}
                         function={() => {
                           this.handleUpload();
                           _handleSubmission(
@@ -1499,6 +1511,7 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <SubmitButton
+                      screenProps={this.props.screenProps}
                       loading={
                         this.props.loading ||
                         (this.props.loadingStoryAdsArray.length > 0 &&
@@ -1532,7 +1545,7 @@ class AdDesign extends Component {
                       adType={this.adType}
                     />
                   )}
-                </>
+                </View>
               )}
             </View>
           </Footer>

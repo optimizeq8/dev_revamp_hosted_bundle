@@ -4,13 +4,13 @@ import {
   Image,
   TouchableOpacity,
   BackHandler,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Item, Input, Text } from "native-base";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
@@ -55,7 +55,7 @@ class index extends Component {
     );
     const { translate } = this.props.screenProps;
     this.setState({
-      deep_link_uriError
+      deep_link_uriError,
     });
     if (deep_link_uriError) {
       showMessage({
@@ -65,7 +65,7 @@ class index extends Component {
         ),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 7000,
       });
       return false;
     } else {
@@ -96,7 +96,7 @@ class index extends Component {
             <Image
               style={styles.imageApp}
               source={{
-                uri: this.props.icon_media_url || "place.co"
+                uri: this.props.icon_media_url || "place.co",
               }}
             />
             <View style={styles.appDetailsContainer}>
@@ -135,7 +135,7 @@ class index extends Component {
                   style={[
                     globalStyles.column,
                     styles.appStoreButtons,
-                    this.props.ios_app_id === "" ? { opacity: 0.5 } : {}
+                    this.props.ios_app_id === "" ? { opacity: 0.5 } : {},
                   ]}
                 >
                   {/* <TouchableOpacity
@@ -167,7 +167,7 @@ class index extends Component {
                   style={[
                     globalStyles.column,
                     styles.appStoreButtons,
-                    this.props.android_app_url === "" ? { opacity: 0.5 } : {}
+                    this.props.android_app_url === "" ? { opacity: 0.5 } : {},
                   ]}
                 >
                   {/* <TouchableOpacity
@@ -214,7 +214,7 @@ class index extends Component {
                   this.state.deep_link_uriError
                     ? globalStyles.redBorderColor
                     : globalStyles.transparentBorderColor,
-                  styles.deepLinkItem
+                  styles.deepLinkItem,
                 ]}
               >
                 <Input
@@ -224,9 +224,9 @@ class index extends Component {
                   placeholderTextColor="white"
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={value =>
+                  onChangeText={(value) =>
                     this.setState({
-                      deep_link_uri: value
+                      deep_link_uri: value,
                     })
                   }
                   onBlur={() => {
@@ -256,6 +256,7 @@ class index extends Component {
               )}
 
               <LowerButton
+                screenProps={this.props.screenProps}
                 checkmark={true}
                 function={() => this._submitDeepLink()}
                 bottom={0}
@@ -270,10 +271,7 @@ class index extends Component {
     );
   }
 }
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = (state) => ({ data: state.campaignC.data });
 
-const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(index);
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(index);

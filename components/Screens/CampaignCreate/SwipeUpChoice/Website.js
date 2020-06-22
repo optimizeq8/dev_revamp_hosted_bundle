@@ -340,6 +340,7 @@ class Website extends Component {
               </Text>
             )}
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark={true}
               bottom={-5}
               function={this._handleSubmission}

@@ -459,6 +459,7 @@ class RegisterForm extends Component {
         </View>
         {this.props.edit ? (
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             function={this._handleSubmissionUpdate}
           />
@@ -468,6 +469,7 @@ class RegisterForm extends Component {
               <ForwardLoading bottom={-5} />
             ) : (
               <LowerButton
+                screenProps={this.props.screenProps}
                 // checkmark={true}
                 function={this._handleSubmissionRegister}
               />

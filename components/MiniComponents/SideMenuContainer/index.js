@@ -80,6 +80,7 @@ export default class AgeOption extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             style={styles.button}
             function={() => this.props._handleSideMenuState(false)}

@@ -441,7 +441,11 @@ class DateFields extends Component {
               (this.state.end_choice &&
                 this.props.start_time &&
                 !this.state.reset) ? (
-                <LowerButton checkmark function={() => this.handleDate()} />
+                <LowerButton
+                  screenProps={this.props.screenProps}
+                  checkmark
+                  function={() => this.handleDate()}
+                />
               ) : null}
             </SafeAreaView>
           </BlurView>

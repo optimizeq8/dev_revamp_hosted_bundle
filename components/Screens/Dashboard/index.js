@@ -773,6 +773,7 @@ class Dashboard extends Component {
                           )}
 
                           <LowerButton
+                            screenProps={this.props.screenProps}
                             width={10}
                             height={10}
                             style={styles.lowerButton}

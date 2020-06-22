@@ -26,18 +26,18 @@ class FilterMenu extends Component {
     this.state = {
       start_time: "",
       end_time: "",
-      selected: "A"
+      selected: "A",
     };
   }
 
-  handleStartDatePicked = date => {
+  handleStartDatePicked = (date) => {
     this.setState({
-      start_time: date
+      start_time: date,
     });
   };
-  handleEndDatePicked = date => {
+  handleEndDatePicked = (date) => {
     this.setState({
-      end_time: date
+      end_time: date,
     });
   };
   _resetFilter = () => {
@@ -49,12 +49,12 @@ class FilterMenu extends Component {
       this.props.onSearch({
         value: this.props.filterValue,
         selected: selected,
-        dateRange: [this.state.start_time, this.state.end_time]
+        dateRange: [this.state.start_time, this.state.end_time],
       });
     } else {
       this.props.filterTransactions({
         value: this.props.transactionValue,
-        dateRange: [this.state.start_time, this.state.end_time]
+        dateRange: [this.state.start_time, this.state.end_time],
       });
     }
     !statusSelected && this.props._handleSideMenuState(false);
@@ -82,14 +82,14 @@ class FilterMenu extends Component {
             { flex: 1 },
             I18nManager.isRTL && this.props.transactionFilter
               ? { marginLeft: -25, marginRight: 0 }
-              : {}
+              : {},
           ]}
         >
           <DateFields
             screenProps={this.props.screenProps}
             open={this.props.open}
             filterMenu={true}
-            onRef={ref => (this.dateField = ref)}
+            onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.start_time}
@@ -101,7 +101,7 @@ class FilterMenu extends Component {
               styles.container,
               I18nManager.isRTL && this.props.transactionFilter
                 ? { marginLeft: 40, marginRight: 0 }
-                : {}
+                : {},
             ]}
           >
             <View style={styles.headerContainer}>
@@ -140,7 +140,7 @@ class FilterMenu extends Component {
                   styles.dateInput,
                   this.state.start_timeError
                     ? globalStyles.redBorderColor
-                    : globalStyles.lightGrayBorderColor
+                    : globalStyles.lightGrayBorderColor,
                 ]}
                 onPress={() => {
                   this.dateField.showModal();
@@ -196,6 +196,7 @@ class FilterMenu extends Component {
               {translate("Clear filters")}
             </Text>
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark={true}
               bottom={0}
               function={() => this._handleSubmission(this.state.selected)}
@@ -205,18 +206,18 @@ class FilterMenu extends Component {
       );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaignList: state.dashboard.campaignList,
   filterStatus: state.dashboard.filterStatus,
   filterValue: state.dashboard.filterValue,
   transactionValue: state.transA.transactionValue,
   startSearch: state.transA.startSearch,
-  endSearch: state.transA.endSearch
+  endSearch: state.transA.endSearch,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query)),
-  filterTransactions: query =>
-    dispatch(actionCreators.filterTransactions(query))
+const mapDispatchToProps = (dispatch) => ({
+  onSearch: (query) => dispatch(actionCreators.filterCampaigns(query)),
+  filterTransactions: (query) =>
+    dispatch(actionCreators.filterTransactions(query)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);

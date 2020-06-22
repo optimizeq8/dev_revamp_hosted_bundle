@@ -30,7 +30,7 @@ class SelectInterests extends Component {
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
-      selectedDevices: this.props.selectedDevices
+      selectedDevices: this.props.selectedDevices,
     });
   }
   componentDidUpdate(prevProps) {
@@ -43,14 +43,14 @@ class SelectInterests extends Component {
       if (this.props.interests.length === 0) {
         this.setState({ interests: [] });
       } else {
-        interests = this.props.interests.map(interest => {
+        interests = this.props.interests.map((interest) => {
           return {
             hasChild: interest.hasChild,
             id: interest.id,
             name: translate(interest.name),
             parentId: interest.parentId,
             path: interest.path,
-            source: interest.source
+            source: interest.source,
           };
         });
         this.setState({ interests });
@@ -86,8 +86,8 @@ class SelectInterests extends Component {
                 style={[
                   styles.toggleSelectorButton,
                   {
-                    opacity: this.props.country_code === "" ? 0.5 : 1
-                  }
+                    opacity: this.props.country_code === "" ? 0.5 : 1,
+                  },
                 ]}
                 onPressAction={() => this.setState({ open: true })}
               >
@@ -116,6 +116,7 @@ class SelectInterests extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             style={styles.button}
             function={() => this.handleSideMenu()}
@@ -125,13 +126,13 @@ class SelectInterests extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  interests: state.campaignC.interests
+  interests: state.campaignC.interests,
 });
 
-const mapDispatchToProps = dispatch => ({
-  get_interests: info => dispatch(actionCreators.get_interests(info))
+const mapDispatchToProps = (dispatch) => ({
+  get_interests: (info) => dispatch(actionCreators.get_interests(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SelectInterests);

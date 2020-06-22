@@ -249,6 +249,7 @@ class Website extends Component {
           getValidInfo={this.validateUrl}
         />
         <LowerButton
+          screenProps={this.props.screenProps}
           checkmark={true}
           bottom={0}
           function={this._handleSubmission}

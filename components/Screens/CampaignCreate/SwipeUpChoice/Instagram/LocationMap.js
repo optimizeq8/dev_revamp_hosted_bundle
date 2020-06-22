@@ -402,6 +402,8 @@ import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper"
 //                 </View>
 //                 <View style={styles.bottonViewWebsite}>
 //                   <LowerButton
+//  screenProps={this.props.screenProps}
+
 //                     checkmark={true}
 //                     bottom={-5}
 //                     function={this._handleSubmission}
@@ -421,7 +423,7 @@ class LocationMap extends Component {
     return <View />;
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   weburlAvalible: state.campaignC.weburlAvalible,
   mainBusiness: state.account.mainBusiness,
@@ -431,10 +433,10 @@ const mapStateToProps = state => ({
   businessLogo: state.campaignC.businessLogo,
 });
 
-const mapDispatchToProps = dispatch => ({
-  verifyBusinessUrl: weburl =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyBusinessUrl: (weburl) =>
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
-  verifyInstagramHandle: insta_handle =>
+  verifyInstagramHandle: (insta_handle) =>
     dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(LocationMap);

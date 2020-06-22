@@ -12,7 +12,7 @@ import * as actionCreators from "../../../../../store/actions";
 //Functions
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import formatNumber from "../../../../formatNumber";
 import { Text } from "native-base";
@@ -59,6 +59,7 @@ class ReachBar extends Component {
               />
             ) : (
               <LowerButton
+                screenProps={this.props.screenProps}
                 style={[styles.reachBarLowerButton]}
                 function={() => this.props._handleSubmission()}
               />
@@ -68,11 +69,11 @@ class ReachBar extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   average_reach: state.instagramAds.average_reach,
   total_reach: state.instagramAds.total_reach,
   mainBusiness: state.account.mainBusiness,
-  campaignEnded: state.instagramAds.campaignEnded
+  campaignEnded: state.instagramAds.campaignEnded,
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(ReachBar);

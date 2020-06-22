@@ -130,6 +130,7 @@ class ImagePreview extends Component {
                   }}
                 >
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     cross={true}
                     bottom={0}
                     function={() => {
@@ -141,6 +142,7 @@ class ImagePreview extends Component {
                     }}
                   />
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     bottom={0}
                     function={() => {
                       upload();

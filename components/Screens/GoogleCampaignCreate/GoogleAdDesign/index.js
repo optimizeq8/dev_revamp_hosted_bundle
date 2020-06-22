@@ -557,6 +557,7 @@ class GoogleAdDesign extends Component {
                   />
                 ) : (
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     style={styles.proceedButtonRTL}
                     bottom={2}
                     function={this._handleSubmission}

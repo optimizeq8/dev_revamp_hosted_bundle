@@ -16,8 +16,12 @@ class SubmitButton extends Component {
       ) {
         return (
           <LowerButton
+            width={12}
+            height={12}
+            screenProps={this.props.screenProps}
+            text={"Next"}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       }
@@ -25,8 +29,12 @@ class SubmitButton extends Component {
       if (this.props.objective === "BRAND_AWARENESS") {
         return (
           <LowerButton
+            screenProps={this.props.screenProps}
+            text={"Next"}
+            width={12}
+            height={12}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       } else if (
@@ -35,8 +43,12 @@ class SubmitButton extends Component {
       ) {
         return (
           <LowerButton
+            width={15}
+            height={15}
+            screenProps={this.props.screenProps}
+            text={"Next"}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       }
@@ -44,9 +56,19 @@ class SubmitButton extends Component {
     return;
   };
   render() {
+    const { translate } = this.props.screenProps;
     if (this.props.loading && this.props.loaded) {
       return (
-        <View style={{ bottom: 3, position: "relative" }}>
+        <View
+          style={{
+            width: "45%",
+            position: "relative",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.uploadingText}>{translate("Uploading")}</Text>
           <AnimatedCircularProgress
             size={50}
             width={5}
@@ -62,8 +84,9 @@ class SubmitButton extends Component {
           </Text>
         </View>
       );
+    } else {
+      return <View style={{ width: "45%" }}>{this.submitButton()}</View>;
     }
-    return <View style={{ bottom: 3 }}>{this.submitButton()}</View>;
   }
 }
 const mapStateToProps = (state) => ({

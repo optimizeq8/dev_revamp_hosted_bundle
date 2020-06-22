@@ -966,6 +966,7 @@ class CollectionMedia extends Component {
             ) : this.state.collection.collection_media ? (
               <View style={styles.footerButtonsContainer}>
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   function={this._handleSubmission}
                   style={styles.button}
                   checkmark

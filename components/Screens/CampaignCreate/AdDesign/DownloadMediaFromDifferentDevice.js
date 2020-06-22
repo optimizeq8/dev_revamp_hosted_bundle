@@ -96,6 +96,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                   // onPress={() => this.props.handleDownloadMedia("//", "")}
                 />
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   checkmark={true}
                   function={() => {
                     segmentEventTrack(
@@ -191,6 +192,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                     // onPress={() => this.props.handleDownloadMedia("//", "")}
                   />
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     checkmark
                     function={() => {
                       segmentEventTrack(
@@ -302,6 +304,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                       // onPress={() => this.props.handleDownloadMedia("//", "")}
                     />
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark
                       function={() => {
                         segmentEventTrack(
