@@ -161,10 +161,12 @@ class ErrorRedirect extends Component {
                 {translate("Amount:")}
                 {this.props.navigation.getParam("kdamount", 0)} KWD
               </Text>
-              <Text style={styles.text}>
-                {translate("Date:")}{" "}
-                {this.props.navigation.getParam("date", "")}
-              </Text>
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <Text style={[styles.text]}>{translate("Date:")} </Text>
+                <Text style={[{ writingDirection: "ltr" }, styles.text]}>
+                  {this.props.navigation.getParam("date", "")}
+                </Text>
+              </View>
               <Text style={styles.text}>
                 {translate("Status:")}{" "}
                 {this.props.navigation.getParam("status", "")}
