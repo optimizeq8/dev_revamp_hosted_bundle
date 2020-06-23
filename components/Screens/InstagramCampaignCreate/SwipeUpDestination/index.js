@@ -51,7 +51,7 @@ class SwipeUpDestination extends React.Component {
       case "VIDEO_VIEWS":
         listIndex = 3;
         content = (
-          <VideoViews
+          <Website
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}

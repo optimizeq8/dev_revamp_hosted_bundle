@@ -15,12 +15,12 @@ export const instagramAdObjectives = {
     //   info: "Get more people to install your app",
     //   icon: ObjIcons.Download,
     // },
-    // {
-    //   label: "Video Views",
-    //   value: "VIDEO_VIEWS",
-    //   info: "Get more people to view your video content",
-    //   icon: ObjIcons.Video,
-    // },
+    {
+      label: "Video Views",
+      value: "VIDEO_VIEWS",
+      info: "Get more people to view your video content",
+      icon: ObjIcons.Video,
+    },
     {
       label: "Traffic",
       value: "LINK_CLICKS",
