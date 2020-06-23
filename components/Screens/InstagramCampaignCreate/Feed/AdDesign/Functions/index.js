@@ -30,7 +30,8 @@ export const formatMedia = (
   body.append("message", campaignInfo.message);
   body.append(
     "destination",
-    objective === "BRAND_AWARENESS" && data.link
+    (objective === "BRAND_AWARENESS" || objective === "VIDEO_VIEWS") &&
+      data.link
       ? "link"
       : campaignInfo.destination
   );
