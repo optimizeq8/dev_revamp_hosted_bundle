@@ -373,12 +373,12 @@ class AdDesign extends Component {
       this.props.screenProps,
       this.setMediaModalVisible,
       mediaEditor,
-      editImage
+      editImage,
+      this.videoIsLoading
       // this.state.storyAdCards,
       // this.props.storyAdsArray,
       // this.adType,
       // this.rejected,
-      // this.videoIsExporting
     );
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
@@ -509,7 +509,7 @@ class AdDesign extends Component {
                       }
                       setTheState={this.setTheState}
                       screenProps={this.props.screenProps}
-                      videoIsLoading={this.videoIsLoading}
+                      videoIsExporting={this.videoIsLoading}
                       setMediaModalVisible={this.setMediaModalVisible}
                       disabled={this.props.loading}
                     />

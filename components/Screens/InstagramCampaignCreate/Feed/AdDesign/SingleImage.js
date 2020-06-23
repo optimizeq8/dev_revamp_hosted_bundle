@@ -21,8 +21,8 @@ export default class SingleImage extends React.PureComponent {
       screenProps,
       save_campaign_info_instagram,
       media_type = "IMAGE",
-      videoIsLoading,
       setMediaModalVisible,
+      videoIsExporting,
       disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
@@ -30,7 +30,7 @@ export default class SingleImage extends React.PureComponent {
     return (
       <View style={[styles.placeholder]}>
         {media_type === "VIDEO" && (
-          <VideoPlayer videoIsLoading={videoIsLoading} media={media} />
+          <VideoPlayer videoIsLoading={videoIsExporting} media={media} />
         )}
         {media_type === "IMAGE" && (
           <RNImageOrCacheImage media={media} style={styles.placeholder1} />
