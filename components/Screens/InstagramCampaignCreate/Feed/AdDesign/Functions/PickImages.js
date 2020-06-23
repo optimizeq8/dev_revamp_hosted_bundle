@@ -373,10 +373,10 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                // !rejected &&
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
+                  rejected
                 });
 
                 showMessage({
@@ -406,10 +406,10 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                // !rejected &&
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
+                  rejected
                 });
 
                 showMessage({
@@ -448,10 +448,10 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                // !rejected &&
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
+                  rejected
                 });
                 // onToggleModal((false);
 
