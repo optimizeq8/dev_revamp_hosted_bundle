@@ -587,13 +587,13 @@ export const _pickImage = async (
                   position: "top",
                   type: "success",
                 });
-                // !rejected &&
                 save_campaign_info_instagram({
                   media: result.uri,
                   media_type: result.type.toUpperCase(),
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
+                  rejected
                 });
                 setTheState({ sourceChanging: false });
               } else {
