@@ -553,11 +553,11 @@ export const _pickImage = async (
                 fileReadyToUpload: true,
                 type: result.type.toUpperCase(),
               });
-              // !rejected &&
               save_campaign_info_instagram({
                 media: result.uri,
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
+                rejected
               });
               // onToggleModal((false);
             } else {
