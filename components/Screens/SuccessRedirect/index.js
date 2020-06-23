@@ -173,9 +173,12 @@ class SuccessRedirect extends Component {
             <Text style={styles.text}>
               {translate("Amount:")} {this.state.kdamount} KWD
             </Text>
-            <Text style={styles.text}>
-              {translate("Date:")} {this.state.date}
-            </Text>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <Text style={[styles.text]}>{translate("Date:")} </Text>
+              <Text style={[{ writingDirection: "ltr" }, styles.text]}>
+                {this.state.date}
+              </Text>
+            </View>
             <Text style={styles.text}>
               {translate("Status:")} {this.state.status}
             </Text>

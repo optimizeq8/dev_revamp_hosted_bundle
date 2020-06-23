@@ -161,7 +161,7 @@ class AdDesign extends Component {
             destination = "APP_INSTALLS";
             break;
           case "VIDEO_VIEWS":
-            destination = "VIDEO_VIEWS";
+            destination = "BLANK";
             break;
           default:
             destination = "BLANK";
@@ -231,6 +231,7 @@ class AdDesign extends Component {
     let swipeUpError = null;
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
+      this.props.data.objective !== "VIDEO_VIEWS" &&
       this.props.data &&
       this.props.data.call_to_action &&
       this.props.data.call_to_action.label === "BLANK"
@@ -365,7 +366,10 @@ class AdDesign extends Component {
     this.setState({ mediaModalVisible: visibile });
   };
 
-  adDesignPickImage = (mediaTypes, mediaEditor, editImage) =>
+  adDesignPickImage = (mediaTypes, mediaEditor, editImage) => {
+    if (this.props.data.objective === "VIDEO_VIEWS") {
+      mediaTypes = "Videos";
+    }
     _pickImage(
       mediaTypes,
       this.props.save_campaign_info_instagram,
@@ -380,6 +384,7 @@ class AdDesign extends Component {
       // this.adType,
       // this.rejected,
     );
+  };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
       this.props.saveCampaignSteps([
@@ -547,21 +552,19 @@ class AdDesign extends Component {
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
-                      {(this.props.data &&
-                        this.props.data.attachment !== "BLANK") ||
-                      (this.props.data &&
-                        this.props.data.link &&
-                        this.props.data.link !== "BLANK" &&
-                        (this.state.campaignInfo.destination === "link" ||
-                          this.state.campaignInfo.destination === "BLANK"))
+                      {this.props.data &&
+                      this.props.data.link &&
+                      this.props.data.link !== "BLANK" &&
+                      (this.state.campaignInfo.destination === "link" ||
+                        this.state.campaignInfo.destination === "BLANK")
                         ? this.state.campaignInfo.destination === "link" ||
-                          this.state.campaignInfo.destination === "BLANK"
+                          (this.props.data.objective === "BRAND_AWARENESS" &&
+                            this.state.campaignInfo.destination === "BLANK")
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===
                             "APP_INSTALLS"
                           ? translate("App Installs")
-                          : this.state.campaignInfo.destination ===
-                            "VIDEO_VIEWS"
+                          : this.props.data.objective === "VIDEO_VIEWS"
                           ? translate("Video Views")
                           : translate("Destination")
                         : translate("Destination")}

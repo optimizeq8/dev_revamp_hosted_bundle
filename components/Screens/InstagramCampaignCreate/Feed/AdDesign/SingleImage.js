@@ -30,7 +30,8 @@ export default class SingleImage extends React.PureComponent {
     return (
       <View style={[styles.placeholder]}>
         {media_type === "VIDEO" && (
-          <VideoPlayer videoIsLoading={videoIsExporting} media={media} />
+          <VideoPlayer  shouldPlay={false} videoIsLoading={videoIsExporting} media={media} />
+
         )}
         {media_type === "IMAGE" && (
           <RNImageOrCacheImage media={media} style={styles.placeholder1} />
