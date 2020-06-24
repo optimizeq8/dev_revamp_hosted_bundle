@@ -72,7 +72,7 @@
     "react-native-input-scroll-view": "^1.9.5",
     "react-native-maps": "0.26.1",
     "react-native-masked-text": "^1.13.0",
-    "react-native-mixpanel": "^1.2.0",
+    "react-native-mixpanel": "https://github.com/SamyOptimize/react-native-mixpanel.git",
     "react-native-modal-datetime-picker": "^7.6.0",
     "react-native-multiple-select": "^0.5.3",
     "react-native-paper": "^2.16.0",
