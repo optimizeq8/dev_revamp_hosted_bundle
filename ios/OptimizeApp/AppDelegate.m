@@ -16,6 +16,7 @@
 #import <EXScreenOrientation/EXScreenOrientationViewController.h>
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
+#import "Mixpanel/Mixpanel.h"
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -46,8 +47,24 @@
 {
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
-
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        center.delegate = self;
+/*[center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if( !error ) {
+            // required to get the app to do anything at all about push notifications
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication] registerForRemoteNotifications];
+            });
+            NSLog( @"Push registration success." );
+        } else {
+          NSLog( @"Push registration FAILED" );
+          NSLog( @"ERROR: %@ - %@", error.localizedFailureReason, error.localizedDescription );
+          NSLog( @"SUGGESTIONS: %@ - %@", error.localizedRecoveryOptions, error.localizedRecoverySuggestion );
+        }*/
+
+
+
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else
@@ -93,6 +110,19 @@
 - (void)appController:(EXUpdatesAppController *)appController didStartWithSuccess:(BOOL)success
 {
   appController.bridge = [self initializeReactNativeApp];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSLog( @"Handle push from background or closed" );
+    // if you set a member variable in didReceiveRemoteNotification, you  will know if this is from closed or background
+    NSLog(@"%@", response.notification.request.content.userInfo);
+    NSString *web_link = [response.notification.request.content.userInfo valueForKeyPath:@"mp_ontap.uri"];
+    NSURL *url = [[NSURL alloc] initWithString:web_link];
+    NSLog(@"url: %@", url);
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    completionHandler(response);
 }
 
 @end
