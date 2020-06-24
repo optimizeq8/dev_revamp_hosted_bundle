@@ -1399,21 +1399,7 @@ class AdDesign extends Component {
 
           <Footer style={styles.footerStyle}>
             <View style={styles.footerButtonsContainer}>
-              {this.props.loadingStoryAdsArray.length > 0 &&
-              this.props.loadingStoryAdsArray.includes(true) ? (
-                <View style={{ bottom: 3 }}>
-                  {/* <AnimatedCircularProgress
-                    size={50}
-                    width={5}
-                    fill={Math.round(this.state.loaded)}
-                    rotation={360}
-                    lineCap="round"
-                    tintColor={globalColors.orange}
-                    backgroundColor="rgba(255,255,255,0.3)"
-                    adDetails={false}
-                  /> */}
-                </View>
-              ) : (
+              {
                 <View
                   style={{
                     // width: "100%",
@@ -1429,7 +1415,7 @@ class AdDesign extends Component {
                         text={translate("Preview")}
                         uppercase
                         transparent
-                        style={styles.button}
+                        style={[styles.button, { width: "45%" }]}
                         disabledGradientBegin={"rgba(0,0,0,0)"}
                         disabledGradientEnd={"rgba(0,0,0,0)"}
                         disabled={
@@ -1457,7 +1443,36 @@ class AdDesign extends Component {
                     />
                   )}
                   {this.adType === "StoryAd" ? (
-                    true ? (
+                    this.props.loading ||
+                    (this.props.loadingStoryAdsArray.length > 0 &&
+                      this.props.loadingStoryAdsArray.includes(true)) ? (
+                      <View
+                        style={{
+                          width: "47%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.uploadingText}>
+                          {translate("Uploading")}
+                        </Text>
+                        <AnimatedCircularProgress
+                          size={50}
+                          width={5}
+                          fill={Math.round(this.state.loaded)}
+                          rotation={360}
+                          lineCap="round"
+                          tintColor={globalColors.orange}
+                          backgroundColor="rgba(255,255,255,0.3)"
+                          adDetails={false}
+                        />
+                        <Text style={styles.uplaodPercentageText}>
+                          {Math.round(this.state.loaded, 2)} %
+                        </Text>
+                      </View>
+                    ) : true ? (
                       <LowerButton
                         screenProps={this.props.screenProps}
                         text={"Next"}
@@ -1494,7 +1509,10 @@ class AdDesign extends Component {
                             this.props.screenProps
                           );
                         }}
-                        style={[styles.proceedButtonRTL]}
+                        style={[
+                          styles.proceedButtonRTL,
+                          { alignSelf: "flex-end", width: "47%" },
+                        ]}
                       />
                     ) : (
                       <Text style={styles.footerTextStyle}>
@@ -1546,7 +1564,7 @@ class AdDesign extends Component {
                     />
                   )}
                 </View>
-              )}
+              }
             </View>
           </Footer>
         </Container>

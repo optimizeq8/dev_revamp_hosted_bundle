@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
     borderColor: globalColors.white,
     width: "45%",
     height: 50,
+    marginHorizontal: 0,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,

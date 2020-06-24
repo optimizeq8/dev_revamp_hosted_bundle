@@ -8,13 +8,18 @@ import * as ImageManipulator from "expo-image-manipulator";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
 import { Linking } from "expo";
-import {
-  PESDK,
-  Configuration,
-  TintMode,
-  SerializationExportType,
-} from "react-native-photoeditorsdk";
+import { PESDK } from "react-native-photoeditorsdk";
 
+import {
+  VESDK,
+  Configuration,
+  VideoFormat,
+  SerializationExportType,
+  TintMode,
+} from "react-native-videoeditorsdk";
+import PhotoEditorConfiguration from "../../../../../Functions/PhotoEditorConfiguration";
+
+import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
 // ADD TRANSLATE PROP
 export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -63,9 +68,10 @@ export const _pickImage = async (
   setTheState,
   screenProps,
   setMediaModalVisible,
-  // rejected,
   mediaEditor = {},
-  editImage
+  editImage,
+  videoIsExporting,
+  carouselAdCards = {}
 ) => {
   try {
     let result = {};
@@ -79,23 +85,11 @@ export const _pickImage = async (
 
     let uneditedImageUri = result.uri;
     let serialization = null;
-    let configuration: Configuration = {
-      forceCrop: true,
-      export: {
-        serialization: {
-          enabled: true,
-          exportType: SerializationExportType.OBJECT,
-        },
-      },
-      transform: {
-        items: [{ width: 1, height: 1 }],
-      },
-      sticker: {
-        personalStickers: true,
-        defaultPersonalStickerTintMode: TintMode.COLORIZED,
-        categories: [{ identifier: "imgly_sticker_category_shapes" }],
-      },
-    };
+    let configuration = PhotoEditorConfiguration({
+      width: 1,
+      height: 1,
+      serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
+    });
     let file = {};
     if (result) {
       file = await FileSystem.getInfoAsync(result.uri, {
@@ -252,170 +246,389 @@ export const _pickImage = async (
             });
           });
       } else if (result.type === "video") {
-        if (result.duration > 120000) {
-          setTheState({
-            mediaError: "Maximum video duration  is 120 seconds.",
-            media: "//",
-            media_type: "",
-            sourceChanging: true,
-          });
-
-          save_campaign_info_instagram({
-            media: "//",
-            media_type: "",
-          });
-
-          analytics.track(`a_error`, {
-            campaign_channel: "instagram",
-            campaign_ad_type: "InstagramFeedAd",
-            error_page: "ad_design",
-            error_description: "Maximum video duration is 120 seconds",
-          });
-          showMessage({
-            message: translate("Maximum video duration is 120 seconds"),
-            description:
-              translate("Selected video duration") +
-              (result.duration / 1000).toFixed(2) +
-              translate("seconds"),
-            position: "top",
-            type: "warning",
-          });
-
-          setTheState({
-            sourceChanging: false,
-          });
-          return;
-        } else if (result.duration < 3000) {
-          setTheState({
-            mediaError: "Minimum video duration  is 3 seconds.",
-            media: "//",
-            sourceChanging: true,
-          });
-
-          save_campaign_info_instagram({
-            media: "//",
-            media_type: "",
-          });
-          analytics.track(`a_error`, {
-            campaign_channel: "instagram",
-            campaign_ad_type: "InstagramFeedAd",
-            error_page: "ad_design",
-            error_description: "Minimum video duration is 3 seconds",
-          });
-
-          showMessage({
-            message: translate("Minimum video duration is 3 seconds"),
-            description:
-              translate("Selected video duration") +
-              (result.duration / 1000).toFixed(2) +
-              translate("seconds"),
-
-            position: "top",
-            type: "warning",
-          });
-
-          setTheState({ sourceChanging: false });
-          return;
-        } else if (file.size > 30000000) {
-          setTheState({
-            mediaError: "Allowed video size is up to 30 MBs.",
-            media: "//",
-            media_type: "",
-          });
-
-          save_campaign_info_instagram({
-            media: "//",
-            media_type: "",
-          });
-          analytics.track(`a_error`, {
-            campaign_channel: "instagram",
-            campaign_ad_type: "InstagramFeedAd",
-            error_page: "ad_design",
-            error_description: "Allowed video size is up to 30 MBs",
-          });
-
-          showMessage({
-            message: translate("Allowed video size is up to {{fileSize}} MBs", {
-              fileSize: 30,
-            }),
-            position: "top",
-            type: "warning",
-          });
-
-          return;
-        } else if (
-          result.width >= 500 &&
-          result.height >= 625
-          // && Math.floor(result.width / 4) === Math.floor(result.height / 5)
-        ) {
-          setTheState({
-            media: result.uri,
-            media_type: result.type.toUpperCase(),
-            mediaError: null,
-            result: result.uri,
-            iosVideoUploaded: false,
-            sourceChanging: true,
-            fileReadyToUpload: true,
-          });
-          analytics.track(`a_media_editor`, {
-            campaign_channel: "instagram",
-            campaign_ad_type: "InstagramFeedAd",
-            source: "ad_design",
-            source_action: "a_media_editor",
-            action_status: "success",
-            tool_used: "",
-            media_type: "VIDEO",
-            ...serialization,
-            image_for: "campaign_ad",
-          });
-
-          showMessage({
-            message: translate("Video has been selected successfully"),
-            position: "top",
-            type: "success",
-          });
+        let exportOption = {
+          serialization: {
+            enabled: true,
+            exportType: SerializationExportType.OBJECT,
+          },
+        };
+        let uneditedImageUri = result.uri;
+        let vConfiguration: Configuration = {
+          forceCrop: true,
+          transform: {
+            items: [
+              { width: 16, height: 9 },
+              { width: 4, height: 5 },
+              { width: 1, height: 1 },
+            ],
+          },
+          sticker: {
+            personalStickers: true,
+            categories: [{ identifier: "imgly_sticker_category_shapes" }],
+          },
+        };
+        if (Platform.OS === "ios") {
+          let resUri = result.uri.split("/");
+          exportOption["filename"] = resUri[resUri.length - 1].split(".")[0]; //get name of file without .mp4 || .mov extension
+          vConfiguration["export"] = exportOption;
+        } else {
+          vConfiguration["export"] = exportOption;
         }
+        VESDK.openEditor(
+          { uri: result.uri },
+          vConfiguration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
 
-        save_campaign_info_instagram({
-          media: result.uri,
-          media_type: result.type.toUpperCase(),
-          fileReadyToUpload: true,
-        });
-        setTheState({ sourceChanging: false });
-        return;
-      } else {
-        setTheState({
-          mediaError:
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625.",
-          media: "//",
-          media_type: "",
-          sourceChanging: true,
-        });
+          .then(async (manipResult) => {
+            // console.log("manipResult", manipResult);
 
-        save_campaign_info_instagram({
-          media: "//",
-          media_type: "",
-        });
+            if (manipResult) {
+              let actualUri = manipResult.hasChanges
+                ? manipResult.video
+                  ? manipResult.video
+                  : manipResult.image
+                : result.uri;
+              videoIsExporting(true);
+              let newResult = {};
+              if (manipResult.hasChanges) {
+                newResult = await RNFFprobe.getMediaInformation(actualUri);
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                };
+              } else {
+                newResult = {
+                  width: result.width,
+                  height: result.height,
+                  duration: result.duration / 1000,
+                };
+              }
+              let newSize = await FileSystem.getInfoAsync(actualUri);
+              // if (
+              //   ((Math.floor(newResult.width / 9) !==
+              //     Math.floor(newResult.height / 16) &&
+              //     Math.floor(newResult.width / 4) !==
+              //       Math.floor(newResult.height / 5) &&
+              //     Math.floor(newResult.width / 1) !==
+              //       Math.floor(newResult.height / 1)) ||
+              //     newResult.width < 500) &&
+              //   newResult.duration <= 120 &&
+              //   newResult.duration >= 1.0
+              // ) {
+              //   let outputUri = actualUri.split("/");
 
-        analytics.track(`a_error`, {
-          campaign_channel: "instagram",
-          campaign_ad_type: "InstagramFeedAd",
-          error_page: "ad_design",
-          error_description:
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625",
-        });
+              //   // await RNFFmpeg.execute(
+              //   //   `-y -i ${actualUri} -vf scale=${
+              //   //     Math.floor(newResult.width / 9) !==
+              //   //     Math.floor(newResult.height / 16)
+              //   //       ? "1080:1920"
+              //   //       : "-1:1920" //-1 means scale inly by 1920 to keep aspect ratio
+              //   //   } -vcodec libx264 ${FileSystem.documentDirectory}${
+              //   //     outputUri[outputUri.length - 1]
+              //   //   }`
+              //   // );
+              //   newResult = await RNFFprobe.getMediaInformation(
+              //     `${FileSystem.documentDirectory}${
+              //       outputUri[outputUri.length - 1]
+              //     }`
+              //   );
 
-        showMessage({
-          message: translate(
-            "Video's aspect ratio must be 4:5\nwith a minimum size of 500 x 625"
-          ),
-          // message:
-          //   "Video's aspect ratio must be 1:1\nwith a minimum size of 1080 x 1920.",
-          position: "top",
-          type: "warning",
-        });
-        setTheState({ sourceChanging: false });
-        return;
+              //   newResult = {
+              //     width:
+              //       newResult.streams[
+              //         newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+              //       ].width,
+              //     height:
+              //       newResult.streams[
+              //         newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+              //       ].height,
+              //     duration: newResult.duration / 1000,
+              //     newUri: newResult.path,
+              //   };
+              //   newSize = await FileSystem.getInfoAsync(
+              //     `${FileSystem.cacheDirectory}${
+              //       outputUri[outputUri.length - 1]
+              //     }`
+              //   );
+              // }
+              videoIsExporting(false);
+              if (newResult.duration > 120) {
+                analytics.track(`a_error`, {
+                  error_page: "ad_design",
+                  error_description: "Maximum video duration  is 120 seconds.",
+                });
+                setTheState({
+                  mediaError: "Maximum video duration  is 120 seconds.",
+                  media: "//",
+                  sourceChanging: true,
+                  uneditedImageUri: "//",
+                });
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  //   rejected,
+                });
+
+                showMessage({
+                  message: translate("Maximum video duration is 120 seconds"),
+                  description:
+                    translate("Selected video duration") +
+                    newResult.duration.toFixed(2) +
+                    translate("seconds"),
+                  position: "top",
+                  type: "warning",
+                });
+                // onToggleModal((false);
+                setTheState({
+                  sourceChanging: false,
+                });
+                return false;
+              } else if (newResult.duration < 1.0) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "instagram",
+                  campaign_ad_type: "InstagramFeedAd",
+                  error_page: "ad_design",
+                  error_description: "Minimum video duration  is 1 second",
+                });
+                setTheState({
+                  mediaError: "Minimum video duration  is 1 second",
+                  media: "//",
+                  sourceChanging: true,
+                  uneditedImageUri: "//",
+                });
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  //   rejected,
+                });
+
+                showMessage({
+                  message: translate("Minimum video duration is 1 second"),
+                  description:
+                    translate("Selected video duration") +
+                    newResult.duration.toFixed(2) +
+                    translate("seconds"),
+
+                  position: "top",
+                  type: "warning",
+                });
+                // onToggleModal((false);
+                setTheState({ sourceChanging: false });
+                return false;
+              } else if (
+                (Math.floor(newResult.width / 16) !==
+                  Math.floor(newResult.height / 9) &&
+                  Math.floor(newResult.width / 4) !==
+                    Math.floor(newResult.height / 5) &&
+                  Math.floor(newResult.width / 1) !==
+                    Math.floor(newResult.height / 1)) ||
+                newResult.width < 500
+              ) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "instagram",
+                  campaign_ad_type: "InstagramFeedAd",
+                  error_page: "ad_design",
+                  error_description:
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                });
+                setTheState({
+                  mediaError:
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                  media: "//",
+                  sourceChanging: true,
+                  uneditedImageUri: "//",
+                });
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  //   rejected,
+                });
+                // onToggleModal((false);
+
+                showMessage({
+                  message:
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                  // message:
+                  //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                  position: "top",
+                  type: "warning",
+                });
+                setTheState({ sourceChanging: false });
+                return false;
+              } else if (newSize.size > 32000000) {
+                analytics.track(`a_error`, {
+                  campaign_channel: "instagram",
+                  campaign_ad_type: "InstagramFeedAd",
+                  error_page: "ad_design",
+                  error_description: "Allowed video size is up to 32 MBs",
+                });
+                setTheState({
+                  mediaError: "Allowed video size is up to 32 MBs.",
+                  media: "//",
+                  uneditedImageUri: "//",
+                });
+                // !rejected &&
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                });
+
+                showMessage({
+                  message: translate(
+                    "Allowed video size is up to {{fileSize}} MBs",
+                    {
+                      fileSize: 32,
+                    }
+                  ),
+                  position: "top",
+                  type: "warning",
+                });
+                // onToggleModal((false);
+                return false;
+              } else {
+                result.uri = newResult.hasOwnProperty("newUri")
+                  ? newResult.newUri
+                  : manipResult.hasChanges
+                  ? manipResult.video
+                    ? manipResult.video
+                    : manipResult.image
+                  : result.uri;
+                result.serialization = manipResult.serialization;
+              }
+            } else {
+              analytics.track(`a_error`, {
+                campaign_channel: "instagram",
+                campaign_ad_type: "InstagramFeedAd",
+                error_page: "ad_design",
+                error_description: "Editing canceled",
+              });
+              return Promise.reject("Editing canceled");
+            }
+          })
+          .then((correct = true) => {
+            // console.log(result);
+
+            if (carouselAdCards.storyAdSelected) {
+              let cards = storyAdsArray;
+              let card = storyAdsArray[carouselAdCards.selectedStoryAd.index];
+
+              card = {
+                ...card,
+                uploaded: false,
+                index: carouselAdCards.selectedStoryAd.index,
+                media: correct ? result.uri : "//",
+                media_type: result.type.toUpperCase(),
+                iosVideoUploaded: false,
+                uneditedImageUri,
+                fileReadyToUpload: true,
+                serialization: result.serialization,
+              };
+
+              cards[carouselAdCards.selectedStoryAd.index] = card;
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "instagram",
+                campaign_ad_type: "InstagramFeedAd",
+                action_status: "success",
+                tool_used: "VESDK",
+                media_type: result.type.toUpperCase(),
+                ...result.serialization,
+              });
+              setTheState({
+                carouselAdCards: {
+                  ...carouselAdCards,
+                  // storyAdSelected: false,
+                  selectedStoryAd: {
+                    ...card,
+                  },
+                },
+                fileReadyToUpload: true,
+                type: result.type.toUpperCase(),
+              });
+              save_campaign_info_instagram({
+                media: result.uri,
+                media_type: result.type.toUpperCase(),
+                fileReadyToUpload: true,
+                //   rejected,
+              });
+              // onToggleModal((false);
+            } else {
+              if (correct) {
+                setTheState({
+                  media: result.uri,
+                  media_type: result.type.toUpperCase(),
+                  mediaError: null,
+                  iosVideoUploaded: false,
+                  sourceChanging: true,
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization,
+                });
+                // onToggleModal((false);
+                analytics.track(`a_media_editor`, {
+                  campaign_channel: "instagram",
+                  campaign_ad_type: "InstagramFeedAd",
+                  action_status: "success",
+                  tool_used: "VESDK",
+                  media_type: result.type.toUpperCase(),
+                  ...result.serialization,
+                });
+
+                showMessage({
+                  message: translate("Video has been selected successfully"),
+                  position: "top",
+                  type: "success",
+                });
+                save_campaign_info_instagram({
+                  media: result.uri,
+                  media_type: result.type.toUpperCase(),
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization,
+                  //   rejected,
+                });
+                setTheState({ sourceChanging: false });
+              } else {
+                analytics.track(`a_error`, {
+                  error_page: "ad_design",
+                  error_description: "Selected Video Unsuccessfully",
+
+                  campaign_channel: "instagram",
+                  campaign_ad_type: "InstagramFeedAd",
+                });
+
+                setTheState({
+                  media: "//",
+                  media_type: "",
+                });
+              }
+            }
+
+            return;
+          })
+          .catch((err) => {
+            // console.log(err);
+            analytics.track(`a_error`, {
+              error_page: "ad_design",
+              error_description: err,
+              campaign_channel: "instagram",
+              campaign_ad_type: "InstagramFeedAd",
+            });
+
+            showMessage({
+              message: err,
+              type: "warning",
+            });
+          });
       }
     } else if (result && !result.cancelled && isNull(media)) {
       showMessage({

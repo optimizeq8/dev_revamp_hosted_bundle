@@ -61,7 +61,7 @@ class SubmitButton extends Component {
       return (
         <View
           style={{
-            width: "45%",
+            width: "47%",
             position: "relative",
             display: "flex",
             flexDirection: "row",
