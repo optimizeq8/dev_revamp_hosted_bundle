@@ -524,7 +524,8 @@ class CampaignDetails extends Component {
             />
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
-              this.campaignEndedOrNot(selectedCampaign) && (
+              this.campaignEndedOrNot(selectedCampaign) &&
+              !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
                     style={{ fontSize: 35, color: "#fff" }}

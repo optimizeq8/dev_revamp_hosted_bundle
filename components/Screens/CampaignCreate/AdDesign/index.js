@@ -1458,19 +1458,22 @@ class AdDesign extends Component {
                         <Text style={styles.uploadingText}>
                           {translate("Uploading")}
                         </Text>
-                        <AnimatedCircularProgress
-                          size={50}
-                          width={5}
-                          fill={Math.round(this.state.loaded)}
-                          rotation={360}
-                          lineCap="round"
-                          tintColor={globalColors.orange}
-                          backgroundColor="rgba(255,255,255,0.3)"
-                          adDetails={false}
-                        />
-                        <Text style={styles.uplaodPercentageText}>
-                          {Math.round(this.state.loaded, 2)} %
-                        </Text>
+                        <View>
+                          <AnimatedCircularProgress
+                            size={50}
+                            width={5}
+                            fill={Math.round(this.state.loaded)}
+                            rotation={360}
+                            lineCap="round"
+                            tintColor={globalColors.orange}
+                            backgroundColor="rgba(255,255,255,0.3)"
+                            adDetails={false}
+                          />
+                          <Text style={styles.uplaodPercentageText}>
+                            {Math.round(this.state.loaded, 2)}
+                            <Text style={styles.percentage}>%</Text>
+                          </Text>
+                        </View>
                       </View>
                     ) : true ? (
                       <LowerButton

@@ -232,7 +232,11 @@ class CampaignCircleChart extends Component {
                     style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {translate("Frequency")}
-                    <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
+                    {channel !== "instagram" && (
+                      <Small style={{ fontSize: 8 }}>
+                        {translate("Total")}
+                      </Small>
+                    )}
                   </Text>
                   <Text
                     ellipsizeMode="tail"

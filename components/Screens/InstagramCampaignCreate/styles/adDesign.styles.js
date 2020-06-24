@@ -23,7 +23,10 @@ const styles = StyleSheet.create({
   penIcon: { alignSelf: "center" },
   lowerBtn: {
     flexDirection: "row",
-    alignSelf: "flex-end",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    // alignSelf: "flex-end",
   },
   captionMainView: {
     height: hp(60),
@@ -416,8 +419,40 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   lowerBtnWidth: {
-    width: 55,
-    height: 55,
+    width: "50%",
+    height: 50,
+    marginHorizontal: 5,
+  },
+  reviewButton: {
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: globalColors.white,
+    width: "45%",
+    height: 50,
+    marginHorizontal: 0,
+  },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#FFF",
+    top: hp(1.75),
+    right: 0,
+    left: 0,
+    textAlign: "center",
+  },
+  uploadingText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#FFF",
+    textTransform: "uppercase",
+    marginHorizontal: 3,
+  },
+  percentage: {
+    fontSize: 8,
+    color: "#FFF",
+    fontFamily: "montserrat-bold-english",
   },
 });
 

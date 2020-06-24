@@ -2,6 +2,8 @@ import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
+  heightPercentageToDP,
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
@@ -21,6 +23,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     fontFamily: "montserrat-bold",
+  },
+  percentage: {
+    fontSize: 8,
+    color: "#FFF",
+    fontFamily: "montserrat-bold-english",
   },
   uplaodText: {
     justifyContent: "center",
@@ -614,11 +621,12 @@ const styles = StyleSheet.create({
   uplaodPercentageText: {
     position: "absolute",
     fontFamily: "montserrat-bold-english",
-    fontSize: 8,
+    fontSize: 14,
+    lineHeight: 16,
     color: "#FFF",
-    top: "35%",
-    right: I18nManager.isRTL ? 0 : "-50%",
-    left: I18nManager.isRTL ? "23%" : 0,
+    top: heightPercentageToDP(1.75),
+    right: 0,
+    left: 0,
     textAlign: "center",
   },
   uploadingText: {

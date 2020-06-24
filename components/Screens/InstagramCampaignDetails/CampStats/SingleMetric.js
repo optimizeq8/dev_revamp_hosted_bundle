@@ -60,7 +60,7 @@ export default class SingleMetric extends Component {
                 <Small
                   style={[
                     styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular" }
+                    { fontSize: 9, fontFamily: "montserrat-regular" },
                   ]}
                 >
                   $
@@ -80,7 +80,7 @@ export default class SingleMetric extends Component {
                 <Small
                   style={[
                     styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular" }
+                    { fontSize: 9, fontFamily: "montserrat-regular" },
                   ]}
                 >
                   %
