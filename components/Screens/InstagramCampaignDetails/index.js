@@ -162,7 +162,7 @@ class InstagramCampaignDetails extends Component {
       campaign_status: "rejected",
       visible,
       source: "campaign_detail",
-      campaign_channel: "snapchat",
+      campaign_channel: "instagram",
       source_action: "a_update_campaign_status",
     });
     this.setState({ modalVisible: visible });
@@ -219,7 +219,7 @@ class InstagramCampaignDetails extends Component {
     analytics.track(`csv_modal`, {
       source: "ad_detail",
       source_action: "a_toggle_csv_modal",
-      campaign_channel: "snapchat",
+      campaign_channel: "instagram",
     });
     this.setState({ CSVModalVisible: isVisible });
   };
@@ -264,7 +264,7 @@ class InstagramCampaignDetails extends Component {
       analytics.track(`campaign_detail`, {
         source,
         source_action,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
         campaign_id: "error",
@@ -281,7 +281,7 @@ class InstagramCampaignDetails extends Component {
       analytics.track(`campaign_detail`, {
         source,
         source_action,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         timestamp: new Date().getTime(),
         device_id: this.props.screenProps.device_id,
         campaign_id: this.props.selectedCampaign.campaign_id,
@@ -291,6 +291,8 @@ class InstagramCampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
+    console.log("this.props.selectedCampaign", this.props.selectedCampaign);
+
     if (
       (!loading &&
         !this.props.languagesListLoading &&
@@ -483,7 +485,8 @@ class InstagramCampaignDetails extends Component {
 
             {selectedCampaign &&
               selectedCampaign.campaign_end === "0" &&
-              this.campaignEndedOrNot(selectedCampaign) && (
+              this.campaignEndedOrNot(selectedCampaign) &&
+              !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
                     style={{ fontSize: 35, color: "#fff" }}

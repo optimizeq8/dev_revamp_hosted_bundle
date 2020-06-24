@@ -407,7 +407,8 @@ class GoogleCampaignDetails extends Component {
               />
               {selectedCampaign &&
                 !selectedCampaign.campaign.completed &&
-                selectedCampaign.campaign.status === "REMOVED" && (
+                selectedCampaign.campaign.status === "REMOVED" &&
+                !this.state.expand && (
                   <View style={styles.remainingBudgetContainer}>
                     <Icon
                       style={{ fontSize: 35, color: "#fff" }}
