@@ -291,7 +291,6 @@ class InstagramCampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
-    console.log("this.props.selectedCampaign", this.props.selectedCampaign);
 
     if (
       (!loading &&
