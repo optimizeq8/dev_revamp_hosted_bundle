@@ -36,70 +36,60 @@ const initialState = {
   carouselAdsArray: [
     {
       id: 0,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 1,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 2,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 3,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 4,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 5,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 6,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 7,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 8,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 9,
-
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",

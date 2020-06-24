@@ -19,7 +19,6 @@ export default class MediaButton extends Component {
       disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
-    console.log("carouselAdCard", carouselAdCard);
 
     if (media && media !== "//") {
       return (
