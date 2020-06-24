@@ -581,32 +581,52 @@ class AdDesign extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.lowerBtn}>
-                  <TouchableOpacity
+                  <GradientButton
+                    text={translate("Preview")}
+                    uppercase
+                    transparent
+                    style={styles.reviewButton}
+                    disabledGradientBegin={"rgba(0,0,0,0)"}
+                    disabledGradientEnd={"rgba(0,0,0,0)"}
                     disabled={this.props.loading}
-                    // style={styles.lowerBtnWidth}
-                    onPress={this.handleReview}
-                  >
-                    <EyeIcon />
-                  </TouchableOpacity>
-                  {this.props.loading || this.state.isVisible ? (
-                    <View style={{ position: "relative" }}>
-                      <AnimatedCircularProgress
-                        size={60}
-                        width={5}
-                        fill={Math.round(this.state.loaded)}
-                        rotation={360}
-                        lineCap="round"
-                        tintColor={globalColors.orange}
-                        backgroundColor="rgba(255,255,255,0.3)"
-                        adDetails={false}
-                      />
-                      <Text style={styles.uplaodPercentageText}>
-                        {Math.round(this.state.loaded, 2)} %
+                    onPressAction={this.handleReview}
+                  />
+                  {this.props.loading ? (
+                    <View
+                      style={{
+                        width: "45%",
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.uploadingText}>
+                        {translate("Uploading")}
                       </Text>
+                      <View>
+                        <AnimatedCircularProgress
+                          size={50}
+                          width={5}
+                          fill={Math.round(this.state.loaded)}
+                          rotation={360}
+                          lineCap="round"
+                          tintColor={globalColors.orange}
+                          backgroundColor="rgba(255,255,255,0.3)"
+                          adDetails={false}
+                        />
+                        <Text style={styles.uplaodPercentageText}>
+                          {Math.round(this.state.loaded, 2)}
+                          <Text style={styles.percentage}>%</Text>
+                        </Text>
+                      </View>
                     </View>
                   ) : (
                     <LowerButton
                       screenProps={this.props.screenProps}
+                      text={"Next"}
+                      width={12}
+                      height={12}
                       style={styles.lowerBtnWidth}
                       function={this.handleSubmission}
                     />
