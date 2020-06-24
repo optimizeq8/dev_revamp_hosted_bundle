@@ -79,7 +79,7 @@ export default class MediaModal extends Component {
                     mediaUri={
                       // media !== "//"
                       media
-                      // : storyAdCards.selectedStoryAd.uneditedImageUri
+                      // : storyAdCards.selectedCarouselAd.uneditedImageUri
                     }
                     media_type={media_type}
                     serialization={this.props.serialization}

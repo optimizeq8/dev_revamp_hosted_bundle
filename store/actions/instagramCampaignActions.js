@@ -649,8 +649,8 @@ export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data",
     };
-    createBaseUrl()
-      .post(`savestorymedia`, info, {
+    InstagramBackendURL()
+      .post(`saveinstacarouselmedia`, info, {
         onUploadProgress: (ProgressEvent) => {
           dispatch({
             type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,
@@ -716,8 +716,8 @@ export const deleteCarouselCard = (story_id, card) => {
           type: actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING,
           payload: { deleteing: true, index: card.index },
         });
-    createBaseUrl()
-      .delete(`savestorymedia/${story_id}`)
+    InstagramBackendURL()
+      .delete(`saveinstacarouselmedias/${story_id}`)
       .then((res) => {
         return res.data;
       })

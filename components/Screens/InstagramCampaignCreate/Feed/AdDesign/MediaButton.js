@@ -10,15 +10,16 @@ export default class MediaButton extends Component {
     let {
       media,
       cover,
-      snapAdCard,
+      carouselAdCard,
       _pickImage,
       snapCardInfo,
-      _handleStoryAdCards,
+      _handlecarouselAdCards,
       setMediaModalVisible,
       type,
       disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
+    console.log("carouselAdCard", carouselAdCard);
 
     if (media && media !== "//") {
       return (
@@ -26,8 +27,8 @@ export default class MediaButton extends Component {
           disabled={disabled}
           transparent
           onPress={() => {
-            snapAdCard
-              ? _handleStoryAdCards({
+            carouselAdCard
+              ? _handlecarouselAdCards({
                   index: snapCardInfo.index,
                   ...snapCardInfo.item,
                 })
@@ -37,7 +38,7 @@ export default class MediaButton extends Component {
           }}
           style={[
             styles.inputMiddleButton2,
-            snapAdCard
+            carouselAdCard
               ? {
                   width: "100%",
                   height: 40,
@@ -50,7 +51,7 @@ export default class MediaButton extends Component {
           <Text
             style={[
               styles.mediaButtonMsgEdit,
-              snapAdCard ? {} : { width: 150 },
+              carouselAdCard ? {} : { width: 150 },
             ]}
           >
             {type === "cover"
@@ -65,7 +66,7 @@ export default class MediaButton extends Component {
           disabled={disabled}
           style={[
             styles.inputMiddleButton,
-            snapAdCard
+            carouselAdCard
               ? {
                   width: 34,
                   height: 36,
@@ -77,8 +78,8 @@ export default class MediaButton extends Component {
           onPress={() => {
             // this._pickImage();
 
-            snapAdCard
-              ? _handleStoryAdCards({
+            carouselAdCard
+              ? _handlecarouselAdCards({
                   index: snapCardInfo.index,
                   ...snapCardInfo.item,
                 })
@@ -91,7 +92,7 @@ export default class MediaButton extends Component {
           <Text style={[styles.mediaButtonMsg]}>
             {type === "cover"
               ? translate("Add Cover Image")
-              : !snapAdCard && translate("Add Media")}
+              : !carouselAdCard && translate("Add Media")}
           </Text>
         </TouchableOpacity>
       );

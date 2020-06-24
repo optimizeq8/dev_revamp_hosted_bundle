@@ -71,7 +71,9 @@ export const _pickImage = async (
   mediaEditor = {},
   editImage,
   videoIsExporting,
-  carouselAdCards = {}
+  carouselAdCards = {},
+  carouselAdsArray,
+  media_option = "single"
 ) => {
   try {
     let result = {};
@@ -189,39 +191,87 @@ export const _pickImage = async (
             }
           })
           .then(() => {
-            setTheState({
-              media: result.uri,
-              media_type: result.type.toUpperCase(),
-              mediaError: null,
-              result: result.uri,
-              iosVideoUploaded: false,
-              fileReadyToUpload: true,
-              uneditedImageUri,
-              serialization,
-            });
+            if (media_option === "carousel") {
+              let cards = carouselAdsArray;
+              let card =
+                carouselAdsArray[carouselAdCards.selectedCarouselAd.index];
 
-            analytics.track(`a_media_editor`, {
-              campaign_channel: "instagram",
-              campaign_ad_type: "InstagramFeedAd",
-              source: "ad_design",
-              source_action: "a_media_editor",
-              action_status: "success",
-              tool_used: "PESDK",
-              media_type: "IMAGE",
-              ...serialization,
-              image_for: "campaign_ad",
-            });
-            showMessage({
-              message: translate("Image has been selected successfully"),
-              position: "top",
-              type: "success",
-            });
+              card = {
+                ...card,
+                index: carouselAdCards.selectedCarouselAd.index,
+                media: result.uri,
+                uploaded: false,
+                media_type: result.type.toUpperCase(),
+                iosVideoUploaded: false,
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization: result.serialization,
+              };
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "instagram",
+                campaign_ad_type: "InstagramFeedAd",
+                action_status: "success",
+                tool_used: "PESDK",
+                media_type: result.type.toUpperCase(),
+                ...result.serialization,
+                index: carouselAdCards.selectedCarouselAd.index,
+                source: "ad_design",
+                source_action: "a_media_editor",
+                image_for: "campaign_story_ad",
+              });
 
-            save_campaign_info_instagram({
-              media: result.uri,
-              media_type: result.type.toUpperCase(),
-              fileReadyToUpload: true,
-            });
+              cards[carouselAdCards.selectedCarouselAd.index] = card;
+              setTheState({
+                carouselAdCards: {
+                  ...carouselAdCards,
+                  storyAdSelected: false,
+                  selectedCarouselAd: {
+                    ...card,
+                  },
+                },
+                fileReadyToUpload: true,
+                type: result.type.toUpperCase(),
+              });
+              // save_campaign_info_instagram({
+              //   media: result.uri,
+              //   type: result.type.toUpperCase(),
+              //   fileReadyToUpload: true,
+              // });
+            } else {
+              setTheState({
+                media: result.uri,
+                media_type: result.type.toUpperCase(),
+                mediaError: null,
+                result: result.uri,
+                iosVideoUploaded: false,
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                serialization,
+              });
+
+              analytics.track(`a_media_editor`, {
+                campaign_channel: "instagram",
+                campaign_ad_type: "InstagramFeedAd",
+                source: "ad_design",
+                source_action: "a_media_editor",
+                action_status: "success",
+                tool_used: "PESDK",
+                media_type: "IMAGE",
+                ...serialization,
+                image_for: "campaign_ad",
+              });
+              showMessage({
+                message: translate("Image has been selected successfully"),
+                position: "top",
+                type: "success",
+              });
+
+              save_campaign_info_instagram({
+                media: result.uri,
+                media_type: result.type.toUpperCase(),
+                fileReadyToUpload: true,
+              });
+            }
           })
           .catch((error) => {
             analytics.track(`a_error`, {
@@ -518,14 +568,18 @@ export const _pickImage = async (
           .then((correct = true) => {
             // console.log(result);
 
-            if (carouselAdCards.storyAdSelected) {
-              let cards = storyAdsArray;
-              let card = storyAdsArray[carouselAdCards.selectedStoryAd.index];
+            if (
+              media_option === "carousel" &&
+              carouselAdCards.carouselAdSelected
+            ) {
+              let cards = carouselAdsArray;
+              let card =
+                carouselAdsArray[carouselAdCards.selectedCarouselAd.index];
 
               card = {
                 ...card,
                 uploaded: false,
-                index: carouselAdCards.selectedStoryAd.index,
+                index: carouselAdCards.selectedCarouselAd.index,
                 media: correct ? result.uri : "//",
                 media_type: result.type.toUpperCase(),
                 iosVideoUploaded: false,
@@ -534,7 +588,7 @@ export const _pickImage = async (
                 serialization: result.serialization,
               };
 
-              cards[carouselAdCards.selectedStoryAd.index] = card;
+              cards[carouselAdCards.selectedCarouselAd.index] = card;
               analytics.track(`a_media_editor`, {
                 campaign_channel: "instagram",
                 campaign_ad_type: "InstagramFeedAd",
@@ -546,20 +600,20 @@ export const _pickImage = async (
               setTheState({
                 carouselAdCards: {
                   ...carouselAdCards,
-                  // storyAdSelected: false,
-                  selectedStoryAd: {
+                  carouselAdSelected: false,
+                  selectedCarouselAd: {
                     ...card,
                   },
                 },
                 fileReadyToUpload: true,
-                type: result.type.toUpperCase(),
-              });
-              save_campaign_info_instagram({
-                media: result.uri,
                 media_type: result.type.toUpperCase(),
-                fileReadyToUpload: true,
-                //   rejected,
               });
+              // save_campaign_info_instagram({
+              //   media: result.uri,
+              //   media_type: result.type.toUpperCase(),
+              //   fileReadyToUpload: true,
+              //   //   rejected,
+              // });
               // onToggleModal((false);
             } else {
               if (correct) {

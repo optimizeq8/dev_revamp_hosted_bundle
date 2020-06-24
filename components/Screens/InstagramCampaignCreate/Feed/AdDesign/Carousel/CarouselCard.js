@@ -19,7 +19,7 @@ class CarouselCard extends Component {
     let {
       snapCardInfo,
       removeSnapCard,
-      _handleStoryAdCards,
+      _handlecarouselAdCards,
       rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
@@ -104,8 +104,8 @@ class CarouselCard extends Component {
               media={
                 snapCardInfo.item[snapCardInfo.item.media ? "image" : "media"]
               }
-              _handleStoryAdCards={_handleStoryAdCards}
-              snapAdCard={true}
+              _handlecarouselAdCards={_handlecarouselAdCards}
+              carouselAdCard={true}
               snapCardInfo={snapCardInfo}
               screenProps={this.props.screenProps}
             />
@@ -116,7 +116,7 @@ class CarouselCard extends Component {
                   this.setState({ showDelete: !this.state.showDelete });
               }}
               onPress={() => {
-                _handleStoryAdCards({
+                _handlecarouselAdCards({
                   index: snapCardInfo.index,
                   ...snapCardInfo.item,
                 });

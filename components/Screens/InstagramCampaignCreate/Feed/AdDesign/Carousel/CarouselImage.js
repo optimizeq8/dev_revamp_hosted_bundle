@@ -10,7 +10,7 @@ export default class CarouselImage extends Component {
         screenProps={this.props.screenProps}
         rejected={this.props.rejected}
         video={this.props.video}
-        _handleStoryAdCards={this.props._handleStoryAdCards}
+        _handlecarouselAdCards={this.props._handlecarouselAdCards}
         removeSnapCard={this.props.removeSnapCard}
         snapCardInfo={item}
       />

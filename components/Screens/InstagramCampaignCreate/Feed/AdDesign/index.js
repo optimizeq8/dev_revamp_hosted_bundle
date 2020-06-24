@@ -73,7 +73,7 @@ import MediaModal from "./MediaModal";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
 // import {
-//   _handleSubmission,
+//   handleSubmission,
 //   formatMedia,
 //   _changeDestination
 // } from "./Functions/index";
@@ -94,9 +94,9 @@ class AdDesign extends Component {
         message: "",
         media_type: "",
       },
-      storyAdCards: {
-        storyAdSelected: false,
-        selectedStoryAd: { media: "//", call_to_action: {} },
+      carouselAdCards: {
+        carouselAdSelected: false,
+        selectedCarouselAd: { media: "//", call_to_action: {} },
         // numOfAds: 0
       },
 
@@ -278,7 +278,7 @@ class AdDesign extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-  handleSubmission = async () => {
+  finalSubmission = async () => {
     await this.validator();
     if (
       !this.state.mediaError &&
@@ -364,14 +364,14 @@ class AdDesign extends Component {
       });
     }
   };
-  _handleStoryAdCards = (card) => {
+  _handlecarouselAdCards = (card) => {
     this.setState({ sourceChanging: true });
     this.setState({
       ...this.state,
-      storyAdCards: {
-        ...this.state.storyAdCards,
-        storyAdSelected: true,
-        selectedStoryAd: { ...card },
+      carouselAdCards: {
+        ...this.state.carouselAdCards,
+        carouselAdSelected: true,
+        selectedCarouselAd: { ...card },
       },
       type: card.media_type,
       sourceChanging: false,
@@ -395,9 +395,10 @@ class AdDesign extends Component {
       this.setMediaModalVisible,
       mediaEditor,
       editImage,
-      this.videoIsLoading
-      // this.state.storyAdCards,
-      // this.props.storyAdsArray,
+      this.videoIsLoading,
+      this.state.carouselAdCards,
+      this.props.carouselAdsArray,
+      this.state.campaignInfo.media_option
       // this.adType,
       // this.rejected,
     );
@@ -438,7 +439,7 @@ class AdDesign extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    var { media, mediaModalVisible, media_type } = this.state;
+    var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
       this.props.data &&
@@ -447,6 +448,7 @@ class AdDesign extends Component {
     ) {
       media = this.props.data.media;
     }
+    console.log("carouselAdsArray", this.props.carouselAdsArray);
 
     return (
       <View style={styles.safeAreaView}>
@@ -549,7 +551,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       disabled={this.props.loading}
                       carouselAdsArray={this.props.carouselAdsArray}
-                      _handleStoryAdCards={this._handleStoryAdCards}
+                      _handlecarouselAdCards={this._handlecarouselAdCards}
                     />
                   )}
                   <TouchableOpacity
@@ -661,7 +663,7 @@ class AdDesign extends Component {
                       width={12}
                       height={12}
                       style={styles.lowerBtnWidth}
-                      function={this.handleSubmission}
+                      function={this.finalSubmission}
                     />
                   )}
                 </View>
@@ -735,24 +737,21 @@ class AdDesign extends Component {
           mediaModalVisible={mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
           mediaUri={{
-            media:
-              // storyAdCards.storyAdSelected
-              //   ? storyAdCards.selectedStoryAd.uneditedImageUri
-              //   :
-              this.state.uneditedImageUri,
-            // storyAdCards: this.state.storyAdCards,
+            media: carouselAdCards.carouselAdSelected
+              ? carouselAdCards.selectedCarouselAd.uneditedImageUri
+              : this.state.uneditedImageUri,
+            carouselAdCards: this.state.carouselAdCards,
           }}
           media_type={
-            // storyAdCards.storyAdSelected
-            //   ? storyAdCards.selectedStoryAd.media_type
-            //   :
-            media_type
+            carouselAdCards.carouselAdSelected
+              ? carouselAdCards.selectedCarouselAd.media_type
+              : media_type
           }
           serialization={
-            // this.state.serialization.hasOwnProperty("image")
-            // ?
-            this.state.serialization
-            // : this.state.storyAdCards.selectedStoryAd.serialization
+            this.state.serialization &&
+            this.state.serialization.hasOwnProperty("image")
+              ? this.state.serialization
+              : this.state.carouselAdCards.selectedCarouselAd.serialization
           }
           screenProps={this.props.screenProps}
         />
@@ -763,8 +762,6 @@ class AdDesign extends Component {
 
 const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
-  storyAdsArray: state.instagramAds.storyAdsArray,
-  loadingStoryAdsArray: state.instagramAds.loadingStoryAdsArray,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   loading: state.instagramAds.loadingDesign,

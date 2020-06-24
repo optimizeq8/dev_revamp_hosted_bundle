@@ -36,70 +36,70 @@ const initialState = {
   carouselAdsArray: [
     {
       id: 0,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 1,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 2,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 3,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 4,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 5,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 6,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 7,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 8,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
     },
     {
       id: 9,
-      call_to_action: { label: "BLANK", value: "BLANK" },
+
       media: "//",
       destination: "BLANK",
       attachment: "BLANK",
@@ -265,73 +265,48 @@ const reducer = (state = initialState, action) => {
         carouselAdsArray: [
           {
             id: 0,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 1,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 2,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 3,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 4,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 5,
-            call_to_action: { label: "BLANK", value: "BLANK" },
+
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 6,
-            call_to_action: { label: "BLANK", value: "BLANK" },
+
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 7,
-            call_to_action: { label: "BLANK", value: "BLANK" },
+
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 8,
-            call_to_action: { label: "BLANK", value: "BLANK" },
+
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
           {
             id: 9,
-            call_to_action: { label: "BLANK", value: "BLANK" },
+
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           },
         ],
         loadingCarouselAdsArray: [],
@@ -407,30 +382,30 @@ const reducer = (state = initialState, action) => {
         campaignProgressStarted: action.payload,
       };
     case actionTypes.SET_CAROUSELADMEDIA_DESIGN:
-      let storyAds = state.carouselAdsArray;
-      storyAds[action.payload.data.story_order] = {
-        ...storyAds[action.payload.data.story_order],
+      let carouselAds = state.carouselAdsArray;
+      carouselAds[action.payload.data.carousel_order] = {
+        ...carouselAds[action.payload.data.carousel_order],
         ...action.payload.data,
         ...action.payload.card,
         uploaded: true,
       };
       let loadingAr = state.loadingcarouselAdsArray;
-      loadingAr[action.payload.data.story_order] = false;
+      loadingAr[action.payload.data.carousel_order] = false;
 
       return {
         ...state,
         loadingcarouselAdsArray: [...loadingAr],
-        carouselAdsArray: [...storyAds],
+        carouselAdsArray: [...carouselAds],
       };
     case actionTypes.SET_CAROUSELADMEDIA_DESIGN_UPLOADED:
-      let storyAdsUploaded = state.carouselAdsArray;
-      storyAdsUploaded[action.payload.card.index] = {
+      let carouselAdsUploaded = state.carouselAdsArray;
+      carouselAdsUploaded[action.payload.card.index] = {
         ...action.payload.card,
         uploaded: false,
       };
       return {
         ...state,
-        carouselAdsArray: [...storyAdsUploaded],
+        carouselAdsArray: [...carouselAdsUploaded],
       };
     case actionTypes.DELETE_CAROUSEL_AD_CARD:
       let deleteStoryAds = state.carouselAdsArray;
@@ -439,16 +414,13 @@ const reducer = (state = initialState, action) => {
           (action.payload.card.hasOwnProperty("item") &&
             action.payload.card.item.id !== ad.id) ||
           (action.payload.hasOwnProperty("data") &&
-            ad.story_id !== action.payload.data.story_id)
+            ad.carousel_id !== action.payload.data.carousel_id)
         ) {
           return ad;
         } else {
           return {
             id: index,
-            call_to_action: { label: "BLANK", value: "BLANK" },
             media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
           };
         }
       });
