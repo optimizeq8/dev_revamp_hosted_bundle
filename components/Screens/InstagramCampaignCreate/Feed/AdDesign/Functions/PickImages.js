@@ -376,7 +376,7 @@ export const _pickImage = async (
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  rejected
+                  //   rejected,
                 });
 
                 showMessage({
@@ -398,10 +398,10 @@ export const _pickImage = async (
                   campaign_channel: "instagram",
                   campaign_ad_type: "InstagramFeedAd",
                   error_page: "ad_design",
-                  error_description: "Minimum video duration  is 1 seconds.",
+                  error_description: "Minimum video duration  is 1 second",
                 });
                 setTheState({
-                  mediaError: "Minimum video duration  is 1 seconds.",
+                  mediaError: "Minimum video duration  is 1 second",
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
@@ -409,11 +409,11 @@ export const _pickImage = async (
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  rejected
+                  //   rejected,
                 });
 
                 showMessage({
-                  message: translate("Minimum video duration is 1 seconds"),
+                  message: translate("Minimum video duration is 1 second"),
                   description:
                     translate("Selected video duration") +
                     newResult.duration.toFixed(2) +
@@ -439,11 +439,11 @@ export const _pickImage = async (
                   campaign_ad_type: "InstagramFeedAd",
                   error_page: "ad_design",
                   error_description:
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
                 });
                 setTheState({
                   mediaError:
-                    "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
@@ -451,12 +451,13 @@ export const _pickImage = async (
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  rejected
+                  //   rejected,
                 });
                 // onToggleModal((false);
 
                 showMessage({
-                  message: "errror issue video",
+                  message:
+                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
                   // message:
                   //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
                   position: "top",
@@ -557,7 +558,7 @@ export const _pickImage = async (
                 media: result.uri,
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
-                rejected
+                //   rejected,
               });
               // onToggleModal((false);
             } else {
@@ -593,7 +594,7 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
-                  rejected
+                  //   rejected,
                 });
                 setTheState({ sourceChanging: false });
               } else {
@@ -607,6 +608,7 @@ export const _pickImage = async (
 
                 setTheState({
                   media: "//",
+                  media_type: "",
                 });
               }
             }
