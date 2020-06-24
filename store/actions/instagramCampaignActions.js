@@ -636,6 +636,10 @@ export const setCarouselAdAttechment = (info) => {
 };
 
 export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
+  console.log("info", info);
+  console.log("card", card);
+  console.log("rejected", rejected);
+
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN,

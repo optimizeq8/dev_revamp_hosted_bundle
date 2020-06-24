@@ -66,12 +66,13 @@ import { globalColors } from "../../../../../GlobalStyles";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 
 import { _pickImage } from "./Functions/PickImages";
-import { formatMedia } from "./Functions/index";
+import { formatMedia, _handleSubmission } from "./Functions/index";
 
 import SingleImage from "./SingleImage";
 import MediaModal from "./MediaModal";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
+import { formatCarouselAd } from "./Functions/formatCarouselAd";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -86,7 +87,7 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        media_option: "carousel", // Oneof[ "single, carousel"]
+        media_option: "single", // Oneof[ "single, carousel"]
         destination: "BLANK",
         link: "",
         call_to_action: { label: "BLANK", value: "BLANK" },
@@ -228,7 +229,9 @@ class AdDesign extends Component {
       this.state.campaignInfo.message
     );
 
-    const mediaError = this.state.media === "//";
+    const mediaError =
+      this.state.campaignInfo.media_option === "single" &&
+      this.state.media === "//";
 
     let swipeUpError = null;
     if (
@@ -448,7 +451,6 @@ class AdDesign extends Component {
     ) {
       media = this.props.data.media;
     }
-    console.log("carouselAdsArray", this.props.carouselAdsArray);
 
     return (
       <View style={styles.safeAreaView}>
@@ -663,7 +665,29 @@ class AdDesign extends Component {
                       width={12}
                       height={12}
                       style={styles.lowerBtnWidth}
-                      function={this.finalSubmission}
+                      function={() =>
+                        _handleSubmission(
+                          this.state.campaignInfo.media_option,
+                          this.props.carouselAdsArray,
+                          this.state.carouselAdCards,
+                          formatCarouselAd,
+                          this.validator,
+                          this.finalSubmission,
+                          this.setTheState,
+                          {
+                            //for formatCarouselAd
+                            campaignInfo: this.state.campaignInfo,
+                            // selectedCampaign: this.selectedCampaign,
+                            campaign_id: this.props.campaign_id,
+                            // rejected: this.rejected,
+                            handleUpload: this.handleUpload,
+                            signal: this.state.signal,
+                            uploadCarouselAdCard: this.props
+                              .uploadCarouselAdCard,
+                          },
+                          this.props.screenProps
+                        )
+                      }
                     />
                   )}
                 </View>
@@ -796,5 +820,23 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
+  uploadCarouselAdCard: (
+    info,
+    card,
+    cancelUpload,
+    iosUploadVideo,
+    rejected,
+    finalSubmission
+  ) =>
+    dispatch(
+      actionCreators.uploadCarouselAdCard(
+        info,
+        card,
+        cancelUpload,
+        iosUploadVideo,
+        rejected,
+        finalSubmission
+      )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

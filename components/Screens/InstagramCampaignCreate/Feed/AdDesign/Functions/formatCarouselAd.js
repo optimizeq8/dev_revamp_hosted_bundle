@@ -3,12 +3,9 @@ import { Platform } from "react-native";
 export const formatCarouselAd = async (
   ad,
   carouselAdsArray,
-  carouselAdAttachment,
   carouselAdCards,
-  campaignInfo,
   selectedCampaign,
   campaign_id,
-  rejected,
   handleUpload,
   signal,
   uploadCarouselAdCard,
@@ -100,9 +97,7 @@ export const formatCarouselAd = async (
   await uploadCarouselAdCard(
     carouselBody,
     card,
-    signal,
-    null,
-    rejected,
+    null, //  rejected
     finalSubmission
   );
   setTheState({

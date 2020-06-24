@@ -1,19 +1,18 @@
 import store from "../../../../../../store";
 export const _handleSubmission = async (
-  adType,
+  media_option = "single",
   carouselAdsArray,
   carouselAdCards,
-  storyAdAttachChanged,
-  formatStoryAd,
+  formatCarouselAd,
   validator,
   finalSubmission,
   setTheState,
-  formatStoryAdParams,
+  formatCarouselAdParams,
   screenProps
 ) => {
   const { translate } = screenProps;
   let validStoryAds = [false];
-  if (adType === "StoryAd") {
+  if (media_option === "carousel") {
     //Break down to different functions
 
     validStoryAds = carouselAdsArray.filter(
@@ -21,8 +20,7 @@ export const _handleSubmission = async (
     );
     if (
       !validStoryAds.every((ad) => ad.uploaded) ||
-      carouselAdCards.carouselAdSelected ||
-      storyAdAttachChanged
+      carouselAdCards.carouselAdSelected
     ) {
       // if (
       //   carouselAdCards.carouselAdSelected &&
@@ -49,30 +47,24 @@ export const _handleSubmission = async (
       // }
       if (
         validator() &&
-        (validStoryAds.length >= 2 ||
-          storyAdAttachChanged ||
-          !validStoryAds.every((ad) => ad.uploaded))
+        (validStoryAds.length >= 2 || !validStoryAds.every((ad) => ad.uploaded))
       ) {
         await validStoryAds.forEach((ad) => {
-          formatStoryAdParams.handleUpload();
-          if (!ad.uploaded || storyAdAttachChanged)
-            formatStoryAd(
+          formatCarouselAdParams.handleUpload();
+          if (!ad.uploaded)
+            formatCarouselAd(
               ad,
               carouselAdsArray,
-              formatStoryAdParams.storyAdAttachment,
               carouselAdCards,
-              formatStoryAdParams.campaignInfo,
-              formatStoryAdParams.selectedCampaign,
-              formatStoryAdParams.campaign_id,
-              formatStoryAdParams.rejected,
-              formatStoryAdParams.handleUpload,
-              formatStoryAdParams.signal,
-              formatStoryAdParams.uploadStoryAdCard,
+              formatCarouselAdParams.campaignInfo,
+              formatCarouselAdParams.campaign_id,
+              formatCarouselAdParams.handleUpload,
+              formatCarouselAdParams.signal,
+              formatCarouselAdParams.uploadCarouselAdCard,
               setTheState,
               finalSubmission
             );
         });
-        setTheState({ storyAdAttachChanged: false });
       }
     } else {
       if (validator()) finalSubmission();

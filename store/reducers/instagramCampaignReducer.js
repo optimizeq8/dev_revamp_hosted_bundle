@@ -379,12 +379,12 @@ const reducer = (state = initialState, action) => {
         ...action.payload.card,
         uploaded: true,
       };
-      let loadingAr = state.loadingcarouselAdsArray;
+      let loadingAr = state.loadingCarouselAdsArray;
       loadingAr[action.payload.data.carousel_order] = false;
 
       return {
         ...state,
-        loadingcarouselAdsArray: [...loadingAr],
+        loadingCarouselAdsArray: [...loadingAr],
         carouselAdsArray: [...carouselAds],
       };
     case actionTypes.SET_CAROUSELADMEDIA_DESIGN_UPLOADED:
@@ -414,16 +414,18 @@ const reducer = (state = initialState, action) => {
           };
         }
       });
-      let deletedLoadingAr = state.loadingcarouselAdsArray;
+      let deletedLoadingAr = state.loadingCarouselAdsArray;
       deletedLoadingAr[action.payload.card.index] = false;
       return {
         ...state,
-        loadingcarouselAdsArray: [...deletedLoadingAr],
+        loadingCarouselAdsArray: [...deletedLoadingAr],
         carouselAdsArray: [...deleteStoryAds],
       };
     case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
-      let ar = state.loadingcarouselAdsArray;
+      let ar = state.loadingCarouselAdsArray;
       let storyPro = state.carouselAdsArray;
+      console.log("action.payload", action.payload);
+
       storyPro[action.payload.index] = {
         ...storyPro[action.payload.index],
         progress: action.payload.progress,
@@ -431,15 +433,15 @@ const reducer = (state = initialState, action) => {
       ar[action.payload.index] = action.payload.uploading;
       return {
         ...state,
-        loadingcarouselAdsArray: [...ar],
+        loadingCarouselAdsArray: [...ar],
         carouselAdsArray: [...storyPro],
       };
     case actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING:
-      let deleteLoadAr = state.loadingcarouselAdsArray;
+      let deleteLoadAr = state.loadingCarouselAdsArray;
       deleteLoadAr[action.payload.index] = action.payload.deleteing;
       return {
         ...state,
-        loadingcarouselAdsArray: [...deleteLoadAr],
+        loadingCarouselAdsArray: [...deleteLoadAr],
       };
     case actionTypes.ERROR_SET_INSTAGRAM_AD_DESIGN:
       return {
