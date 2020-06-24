@@ -347,7 +347,7 @@ var list = {
       call_to_action_list: [
         { value: "BOOK_NOW", label: "BOOK NOW" },
         { value: "PLAY_GAME", label: "PLAY GAME" },
-        { value: "SHOP NOW", label: "SHOP NOW" },
+        { value: "SHOP_NOW", label: "SHOP NOW" },
         { value: "LEARN_MORE", label: "LEARN MORE" },
         { value: "SIGN_UP", label: "SIGN UP" },
         { value: "SUBSCRIBE", label: "SUBSCRIBE" },

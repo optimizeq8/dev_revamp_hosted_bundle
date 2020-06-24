@@ -48,22 +48,22 @@ class SwipeUpDestination extends React.Component {
           />
         );
         break;
-      case "VIDEO_VIEWS":
-        listIndex = 3;
-        content = (
-          <Website
-            screenProps={this.props.screenProps}
-            navigation={this.props.navigation}
-            listNum={listIndex}
-          />
-        );
-        break;
       case "APP_INSTALLS":
         listIndex = 3;
         content = (
           <InstaApp_Install
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
+          />
+        );
+        break;
+      case "VIDEO_VIEWS":
+        listIndex = 4;
+        content = (
+          <Website
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            listNum={listIndex}
           />
         );
         break;
