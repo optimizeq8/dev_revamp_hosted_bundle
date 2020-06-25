@@ -182,9 +182,14 @@ const reducer = (state = initialState, action) => {
       if (instaCampStats.hasOwnProperty("summary")) {
         Object.keys(instaCampStats.summary).map((metric, i) => {
           if (
-            !["clicks", "spend", "reach", "date_start", "date_stop"].includes(
-              metric
-            )
+            ![
+              "clicks",
+              "spend",
+              "reach",
+              "date_start",
+              "date_stop",
+              "frequency",
+            ].includes(metric)
           ) {
             instaCampaignMetrics.push({
               metric: metric.replace("_", " "),
