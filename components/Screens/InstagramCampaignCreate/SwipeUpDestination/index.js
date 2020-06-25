@@ -94,7 +94,7 @@ class SwipeUpDestination extends React.Component {
           icon="instagram"
           navigation={this.props.navigation}
           currentScreen="Compose"
-          title={"Swipe Up destination"}
+          title={"Click destination"}
         />
         {/* 
         <Header

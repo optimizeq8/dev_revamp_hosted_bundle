@@ -1,4 +1,5 @@
 import { StyleSheet, I18nManager } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
     lineHeight: 18,
-    width: 100,
+    width: widthPercentageToDP(30),
     flexShrink: 1,
     textAlign: "center",
   },

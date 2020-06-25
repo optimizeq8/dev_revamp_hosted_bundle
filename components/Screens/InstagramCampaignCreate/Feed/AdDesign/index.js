@@ -566,8 +566,8 @@ class AdDesign extends Component {
                           ? translate("App Installs")
                           : this.props.data.objective === "VIDEO_VIEWS"
                           ? translate("Video Views")
-                          : translate("Destination")
-                        : translate("Destination")}
+                          : translate("Click destination")
+                        : translate("Click destination")}
                     </Text>
                     {this.props.data &&
                     this.props.data.link &&
