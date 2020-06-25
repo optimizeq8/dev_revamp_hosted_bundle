@@ -85,16 +85,48 @@ export const formatMedia = (
 ) => {
   var body = new FormData();
 
-  let res = media.split("/");
-  res = res[res.length - 1];
-  let format = res.split(".")[1];
-  var photo = {
-    uri: media,
-    type: media_type + "/" + format,
-    name: res,
-  };
-  body.append("media", photo);
-  body.append("media_type", media_type);
+  // let res = media.split("/");
+  // res = res[res.length - 1];
+  // let format = res.split(".")[1];
+  // var photo = {
+  //   uri: media,
+  //   type: media_type + "/" + format,
+  //   name: res,
+  // };
+  // body.append("media", photo);
+  // body.append("media_type", media_type);
+
+  //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
+  //back to the back end when they re-upload for rejection reasons without choosing any images
+  if (fileReadyToUpload && adType === "StoryAd") {
+    storyAd = storyAdsArray.find((card) => {
+      if (card && card.media !== "//" && !card.media.includes("https://"))
+        cardMedia = card.media;
+      if (card && card.media !== "//" && card.media.includes("https://"))
+        cardUrl = card.media;
+      allIosVideos =
+        (!cardMedia && cardUrl && Platform.OS === "ios") ||
+        card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
+      return !allIosVideos ? cardMedia : cardUrl;
+    });
+    if (storyAd.media === "//" && !allIosVideos) {
+      storyAd.media = tempImage;
+      storyAd.media_type = media_type;
+    }
+  }
+  if (fileReadyToUpload && !iosVideoUploaded && !allIosVideos) {
+    let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
+    res = res[res.length - 1];
+    let format = res.split(".")[1];
+    var photo = {
+      uri: adType !== "StoryAd" ? media : storyAd.media,
+      type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
+      name: res,
+    };
+
+    body.append("media", photo);
+    body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
+  }
 
   // body.append("ad_account_id", mainBusiness.snap_ad_account_id);
   body.append("ad_account_id", mainBusiness.fb_ad_account_id);
