@@ -160,9 +160,13 @@ class AdDesign extends Component {
           : this.props.campaign_id,
         brand_name: this.rejected
           ? this.selectedCampaign.brand_name
-          : this.props.data && this.props.data.brand_name
+          : this.props.data &&
+            this.props.data.brand_name &&
+            this.props.data.brand_name.length <= 25
           ? this.props.data.brand_name
-          : this.props.mainBusiness.businessname,
+          : this.props.mainBusiness.businessname <= 25
+          ? this.props.mainBusiness.businessname
+          : "",
         headline: this.rejected
           ? this.selectedCampaign.headline
           : this.props.data && this.props.data.headline
@@ -767,7 +771,14 @@ class AdDesign extends Component {
         type: "warning",
       });
     }
-
+    if (brandHeadlineError) {
+      showMessage({
+        message: translate(
+          "Business name and Promotional Message can not be the same"
+        ),
+        type: "warning",
+      });
+    }
     this.setState({
       brand_nameError,
       headlineError,
@@ -1223,6 +1234,8 @@ class AdDesign extends Component {
         field={field}
         mainBusiness={this.props.mainBusiness}
         screenProps={this.props.screenProps}
+        brand_nameError={this.state.brand_nameError}
+        headlineError={this.state.headlineError}
       />
     ));
 

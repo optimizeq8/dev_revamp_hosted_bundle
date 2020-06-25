@@ -31,7 +31,8 @@ export default class PenIconBrand extends Component {
           fill={
             this.state.input
               ? "#FF9D00"
-              : brand_nameError || this.state.brand_nameError
+              : (field === "Business Name" && brand_nameError) ||
+                this.state.brand_nameError
               ? "red"
               : "#fff"
           }
