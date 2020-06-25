@@ -18,21 +18,19 @@ export default class WebsiteComponent extends React.Component {
   };
   validateUrl = () => {
     const { translate } = this.props.screenProps;
-    const { stateName, register, deepLink } = this.props;
+    const { stateName, deepLink } = this.props;
     const urlError = validateWrapper(
-      deepLink ? "deepLink" : register ? "url" : "website",
+      deepLink ? "deepLink" : "website",
       this.props.website
     );
     this.props.getValidInfo &&
       this.props.getValidInfo(stateName + "Error", urlError);
     if (urlError && this.props.website) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me|api.whatsapp.)/g;
 
       showMessage({
         message: deepLink
           ? translate("Invalid deep link URL")
-          : register
-          ? translate("Please enter a valid URL")
           : !this.props.website.match(regex)
           ? "Please enter a valid url"
           : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
