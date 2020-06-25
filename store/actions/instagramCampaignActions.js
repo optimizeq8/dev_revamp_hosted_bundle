@@ -173,6 +173,8 @@ export const saveBrandMediaInstagram = (
   segmentInfo
 ) => {
   return (dispatch) => {
+    console.log("saveBrandMediaInstagram info", info);
+
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -201,7 +203,7 @@ export const saveBrandMediaInstagram = (
         if (data.success) {
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
-          // console.log("data", data.data);
+          console.log("data", data.data);
           NavigationService.navigate("InstagramFeedAdTargetting", {
             source: "ad_design",
             source_action: "a_submit_ad_design",

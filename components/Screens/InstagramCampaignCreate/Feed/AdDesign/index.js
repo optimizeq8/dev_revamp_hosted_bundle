@@ -95,6 +95,7 @@ class AdDesign extends Component {
         message: "",
         media_type: "",
       },
+      fileReadyToUpload: false,
       carouselAdCards: {
         carouselAdSelected: false,
         selectedCarouselAd: { media: "//", call_to_action: {} },
@@ -295,7 +296,10 @@ class AdDesign extends Component {
         this.state.campaignInfo,
         this.props.data,
         this.setTheState,
-        this.props.data.objective
+        this.props.data.objective,
+        this.props.carouselAdsArray,
+        false,
+        this.state.fileReadyToUpload
       );
       await this.handleUpload();
 

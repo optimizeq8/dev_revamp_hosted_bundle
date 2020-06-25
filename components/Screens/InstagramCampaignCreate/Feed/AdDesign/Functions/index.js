@@ -81,7 +81,10 @@ export const formatMedia = (
   campaignInfo,
   data,
   setTheState,
-  objective
+  objective,
+  carouselAdsArray,
+  allIosVideos = false,
+  fileReadyToUpload = true
 ) => {
   var body = new FormData();
 
@@ -98,8 +101,8 @@ export const formatMedia = (
 
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
-  if (fileReadyToUpload && adType === "StoryAd") {
-    storyAd = storyAdsArray.find((card) => {
+  if (fileReadyToUpload && campaignInfo.media_option === "carousel") {
+    carouselAd = carouselAdsArray.find((card) => {
       if (card && card.media !== "//" && !card.media.includes("https://"))
         cardMedia = card.media;
       if (card && card.media !== "//" && card.media.includes("https://"))
@@ -109,23 +112,30 @@ export const formatMedia = (
         card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
       return !allIosVideos ? cardMedia : cardUrl;
     });
-    if (storyAd.media === "//" && !allIosVideos) {
-      storyAd.media = tempImage;
-      storyAd.media_type = media_type;
-    }
   }
-  if (fileReadyToUpload && !iosVideoUploaded && !allIosVideos) {
-    let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
+  if (fileReadyToUpload && !allIosVideos) {
+    let res = (campaignInfo.media_option !== "carousel"
+      ? media
+      : carouselAd.media
+    ).split("/");
     res = res[res.length - 1];
     let format = res.split(".")[1];
     var photo = {
-      uri: adType !== "StoryAd" ? media : storyAd.media,
-      type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
+      uri: campaignInfo.media_option !== "carousel" ? media : carouselAd.media,
+      type:
+        (campaignInfo.media_option !== "carousel"
+          ? media_type
+          : carouselAd.media_type) +
+        "/" +
+        format,
       name: res,
     };
 
     body.append("media", photo);
-    body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
+    body.append(
+      "media_type",
+      campaignInfo.media_option !== "carousel" ? type : carouselAd.media_type
+    );
   }
 
   // body.append("ad_account_id", mainBusiness.snap_ad_account_id);
