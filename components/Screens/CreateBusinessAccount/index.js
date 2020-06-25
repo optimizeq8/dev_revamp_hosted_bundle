@@ -262,7 +262,7 @@ class CreateBusinessAccount extends Component {
     const websitelinkError =
       this.state.businessAccount.websitelink !== "" &&
       validateWrapper(
-        "url",
+        "website",
         // this.state.networkString +
         this.state.businessAccount.websitelink
       );
