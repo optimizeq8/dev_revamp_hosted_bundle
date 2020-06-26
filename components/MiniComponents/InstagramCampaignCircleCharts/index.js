@@ -240,7 +240,9 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail,
                     ]}
                   >
-                    {campaign ? campaign.paid_frequency.toFixed(2) : 0}
+                    {campaign
+                      ? parseFloat(campaign.paid_frequency).toFixed(2)
+                      : 0}
                   </Text>
                 </View>
               </View>
