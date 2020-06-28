@@ -13382,7 +13382,7 @@ react-native-masked-text@^1.13.0:
 
 "react-native-mixpanel@https://github.com/SamyOptimize/react-native-mixpanel.git":
   version "1.2.0"
-  resolved "https://github.com/SamyOptimize/react-native-mixpanel.git#5e5f646dd40212b49601244bdba7f2ee8fcde884"
+  resolved "https://github.com/SamyOptimize/react-native-mixpanel.git#8c7708d05de02f4237ae455ad29bcc1b41268188"
 
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.1"
