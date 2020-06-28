@@ -46,10 +46,10 @@ export default class AdButtons extends Component {
             styles.adButtonText,
             !isStringArabic(this.props.translate(ad.title))
               ? {
-                  fontFamily: "montserrat-regular-english",
+                  fontFamily: "montserrat-bold-english",
                 }
               : {
-                  fontFamily: "montserrat-regular",
+                  fontFamily: "montserrat-bold",
                 },
           ]}
         >
