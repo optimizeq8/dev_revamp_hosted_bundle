@@ -134,7 +134,9 @@ export const formatMedia = (
     body.append("media", photo);
     body.append(
       "media_type",
-      campaignInfo.media_option !== "carousel" ? type : carouselAd.media_type
+      campaignInfo.media_option !== "carousel"
+        ? media_type
+        : carouselAd.media_type
     );
   }
 
