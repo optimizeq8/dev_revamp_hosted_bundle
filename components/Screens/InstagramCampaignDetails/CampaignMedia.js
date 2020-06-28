@@ -50,10 +50,10 @@ export const previewHandler = (
     source: "campaign_details",
     source_action: "a_preview_ad",
     action_status: "success",
-    campaign_channel: "snapchat",
+    campaign_channel: "instgram",
     campaign_ad_type: selectedCampaign.campaign_type,
   });
-  navigation.push(
+  navigation.navigate(
     selectedCampaign.campaign_type !== "StoryAd"
       ? "AdFeedDesignReview"
       : "StoryAdDesignReview",
@@ -63,6 +63,7 @@ export const previewHandler = (
       call_to_action: call_to_action,
       headline: selectedCampaign.headline,
       brand_name: selectedCampaign.brand_name,
+      media_option: selectedCampaign.media_option,
       destination: destination,
       campaignDetails: true,
       icon_media_url: icon_media_url,
