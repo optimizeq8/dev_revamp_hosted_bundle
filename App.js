@@ -17,14 +17,13 @@ import {
   AppState,
   AsyncStorage,
   ActivityIndicator,
-  Linking,
   Dimensions,
+  Linking,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
-
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
 
@@ -150,6 +149,8 @@ class App extends React.Component {
       translateY: new Animated.Value(1),
       bootSplashIsVisible: true,
       bootSplashLogoIsLoaded: false,
+      notificationData: null,
+      mounted: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
@@ -233,6 +234,20 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
+  componentDidUpdate(prevProps, prevState) {
+    // to navigate from a deep link from a notification if the app is killed on iOS
+    if (store.getState().auth.userInfo && Platform.OS === "ios") {
+      if (
+        this.state.mounted !== prevState.mounted &&
+        this.state.mounted &&
+        this.state.isLoadingComplete &&
+        this.navigatorRef &&
+        this.state.notificationData
+      ) {
+        this._handleNotification(this.state.notificationData);
+      }
+    }
+  }
   _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
@@ -278,14 +293,16 @@ class App extends React.Component {
 
   _handleNotification = async (handleScreen) => {
     segmentEventTrack("Notification received");
-    console.log("handleScreen app", handleScreen);
-    store.dispatch(
-      actionCreators.checkNotification(
-        "recieved",
-        JSON.stringify(handleScreen.data)
-      )
-    );
+    // console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
+    // console.log(handleScreen.notification.request.content.data.screenName);
+
     if (handleScreen.data) {
+      store.dispatch(
+        actionCreators.checkNotification(
+          "recieved",
+          JSON.stringify(handleScreen.data)
+        )
+      );
       if (
         handleScreen.data.screenName === "Messenger" ||
         handleScreen.data.screenName === "MessengerLoading"
@@ -314,6 +331,25 @@ class App extends React.Component {
           });
         }
       }
+    } else if (
+      handleScreen.notification.request.content.data.hasOwnProperty(
+        "screenName"
+      ) &&
+      this.state.mounted
+    ) {
+      if (
+        handleScreen.notification.request.content.data.hasOwnProperty("adType")
+      ) {
+        store.dispatch(
+          actionCreators.set_adType(
+            handleScreen.notification.request.content.data.adType
+          )
+        );
+      }
+      this.setState({ notificationHandled: true });
+      NavigationService.navigate(
+        handleScreen.notification.request.content.data.screenName
+      );
     }
 
     if (handleScreen.origin === "received") {
@@ -439,7 +475,7 @@ class App extends React.Component {
       );
     }
     {
-      // const prefix = Linking.makeUrl("/");
+      const prefix = "optimize://";
 
       return (
         <Provider store={store}>
@@ -465,7 +501,10 @@ class App extends React.Component {
                 paddingTop: 0,
               }}
             />
-            <View style={styles.container}>
+            <View
+              onLayout={() => this.setState({ mounted: true })}
+              style={styles.container}
+            >
               <Root>
                 <AppNavigator
                   onNavigationStateChange={(prevState, currentState) => {
@@ -475,8 +514,9 @@ class App extends React.Component {
                     this.setState({ currentScreen });
                     // console.log("screeen name", currentScreen);
                   }}
-                  // uriPrefix={prefix}
+                  uriPrefix={prefix}
                   ref={(navigatorRef) => {
+                    this.navigatorRef = navigatorRef;
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                   screenProps={{

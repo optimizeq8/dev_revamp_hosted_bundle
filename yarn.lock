@@ -13380,10 +13380,9 @@ react-native-masked-text@^1.13.0:
     date-and-time "0.9.0"
     tinymask "1.0.2"
 
-react-native-mixpanel@^1.2.0:
+"react-native-mixpanel@https://github.com/SamyOptimize/react-native-mixpanel.git":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-mixpanel/-/react-native-mixpanel-1.2.0.tgz#17c24151cf2039482cd20decc54ccf0e49ccebc5"
-  integrity sha512-Xy+KEIEVFidWuASBdexZquXTJBb3JCyFM7xSgnIOZt5PRzpARGFrYMDErTUZ1wSPK+KFaf1oylInOoC2DddI/Q==
+  resolved "https://github.com/SamyOptimize/react-native-mixpanel.git#8c7708d05de02f4237ae455ad29bcc1b41268188"
 
 react-native-modal-datetime-picker@^7.6.0:
   version "7.6.1"
