@@ -66,11 +66,12 @@ const styles = StyleSheet.create({
     top: I18nManager.isRTL ? 8 : 5,
   },
   adButtonText: {
+    textTransform: "uppercase",
     textAlign: "center",
     color: globalColors.white,
     fontFamily: "montserrat-regular",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    paddingTop: 0,
+    fontSize: 10 / PixelRatio.getFontScale(),
+    paddingTop: 4,
     // top: 20
   },
   container: { backgroundColor: "#0000" },
@@ -322,6 +323,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#0000",
     justifyContent: "space-around",
+    alignItems: "center",
+    marginHorizontal: 1,
   },
   languageText: {
     color: "#FFF",

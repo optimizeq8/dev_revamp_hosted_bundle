@@ -1,7 +1,9 @@
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
 import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
-import Instagram from "../../assets/images/AdTypes/logoIg";
+// import Instagram from "../../assets/images/AdTypes/logoIg";
+import Instagram from "../../assets/images/AdTypes/InstaWhiteLogo";
+
 import SnapAd from "../../assets/SVGs/AdType/Snapchat/SnapAd";
 import StoryAd from "../../assets/SVGs/AdType/Snapchat/StoryAd";
 import CollectionAd from "../../assets/SVGs/AdType/Snapchat/CollectionAd";
