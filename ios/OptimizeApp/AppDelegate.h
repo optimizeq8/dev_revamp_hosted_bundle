@@ -9,11 +9,10 @@
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <React/RCTBridgeDelegate.h>
 #import <UMCore/UMAppDelegateWrapper.h>
-#import <UserNotifications/UserNotifications.h>
 
 #import <EXUpdates/EXUpdatesAppController.h>
 
-@interface AppDelegate : UMAppDelegateWrapper <RCTBridgeDelegate, EXUpdatesAppControllerDelegate, UIApplicationDelegate, UNUserNotificationCenterDelegate>
+@interface AppDelegate : UMAppDelegateWrapper <RCTBridgeDelegate, EXUpdatesAppControllerDelegate>
 
 @property(nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
 @property(nonatomic, strong) UIWindow *window;
