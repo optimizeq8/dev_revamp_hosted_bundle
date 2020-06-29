@@ -75,7 +75,7 @@ class AdFeedDesignReview extends React.Component {
       message,
       call_to_action,
       media_type,
-      media_option,
+      media_option = "single",
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
     } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
