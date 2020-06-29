@@ -394,9 +394,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 14,
     color: globalColors.white,
+    textAlign: "left",
   },
   message: {
     flex: 1,
+    textAlign: "left",
     // alignSelf: "flex-start",
     color: globalColors.white,
     fontSize: 12,
