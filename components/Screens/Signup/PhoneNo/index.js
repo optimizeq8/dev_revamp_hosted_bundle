@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { Icon, Item, Text } from "native-base";
@@ -33,7 +33,7 @@ import { showMessage } from "react-native-flash-message";
 
 class PhoneNo extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor() {
     super();
@@ -43,19 +43,19 @@ class PhoneNo extends Component {
       countryCode: "",
       value: "",
       numExists: "",
-      pickerData: null
+      pickerData: null,
     };
   }
 
   componentDidMount() {
     Segment.screenWithProperties("Phone No. Registration", {
-      category: "Sign Up"
+      category: "Sign Up",
     });
   }
 
-  handlePickerData = data => {
+  handlePickerData = (data) => {
     this.setState({
-      pickerData: data
+      pickerData: data,
     });
   };
 
@@ -63,14 +63,14 @@ class PhoneNo extends Component {
     if (this.state.valid && this.state.type === "MOBILE") {
       this.props.sendMobileNo({
         country_code: this.state.countryCode,
-        mobile: this.state.value && this.state.value.trim()
+        mobile: this.state.value && this.state.value.trim(),
       });
     } else {
       this.validateNumber();
     }
   };
 
-  selectCountry = country => {
+  selectCountry = (country) => {
     this.phone.selectCountry(country.iso2);
   };
 
@@ -82,13 +82,13 @@ class PhoneNo extends Component {
     ) {
       showMessage({
         message: "Please Enter a valid Mobile number.",
-        type: "warning"
+        type: "warning",
       });
     }
     if (!this.state.valid)
       showMessage({
         message: "Please Enter a valid Mobile number.",
-        type: "warning"
+        type: "warning",
       });
   };
 
@@ -98,7 +98,7 @@ class PhoneNo extends Component {
         value: number.split(countryCode)[1],
         countryCode: countryCode,
         valid,
-        type
+        type,
       });
     }
     this.props.changeFunction && this.props.changeFunction(number, valid);
@@ -111,9 +111,9 @@ class PhoneNo extends Component {
         <View
           style={[
             {
-              flex: !this.props.invite ? 1 : 0
+              flex: !this.props.invite ? 1 : 0,
             },
-            styles.phoneViewContainer
+            styles.phoneViewContainer,
           ]}
         >
           <View
@@ -140,6 +140,7 @@ class PhoneNo extends Component {
                     </Text>
                     {!this.props.invite && !this.props.info && (
                       <LowerButton
+                        screenProps={this.props.screenProps}
                         function={() => this._handleSubmission()}
                         bottom={-heightPercentageToDP(1)}
                       />
@@ -169,14 +170,11 @@ class PhoneNo extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  verified: state.register.verified
+const mapStateToProps = (state) => ({
+  verified: state.register.verified,
 });
 
-const mapDispatchToProps = dispatch => ({
-  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo))
+const mapDispatchToProps = (dispatch) => ({
+  sendMobileNo: (mobileNo) => dispatch(actionCreators.sendMobileNo(mobileNo)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PhoneNo);
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneNo);

@@ -232,6 +232,7 @@ class ProductSelect extends React.Component {
               </Text>
             )}
           <LowerButton
+            screenProps={this.props.screenProps}
             style={styles.lowerBtn}
             checkmark={true}
             function={this.handleSubmission}

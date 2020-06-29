@@ -64,6 +64,7 @@ class CampaignCircleChart extends Component {
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   function={() => handleChartToggle()}
                   width={15}
                   height={15}
@@ -79,9 +80,10 @@ class CampaignCircleChart extends Component {
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
-            justifyContent: "space-between",
+            // justifyContent: "space-between",
             flexDirection: "row",
-            paddingRight: 40,
+            alignSelf: "flex-end",
+            paddingRight: detail ? 40 : 0,
           }}
           style={{
             maxHeight: "100%",
@@ -100,13 +102,7 @@ class CampaignCircleChart extends Component {
             />
           )}
 
-          <View
-            style={{
-              // paddingHorizontal: 15,
-              // paddingLeft: 5,
-              alignSelf: "center",
-            }}
-          >
+          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
             <View style={detail ? styles.campaignIcons : styles.campaignCard}>
               {!detail ||
               (campaign && campaign.objective === "BRAND_AWARENESS") ? (
@@ -236,7 +232,11 @@ class CampaignCircleChart extends Component {
                     style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {translate("Frequency")}
-                    <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
+                    {channel !== "instagram" && (
+                      <Small style={{ fontSize: 8 }}>
+                        {translate("Total")}
+                      </Small>
+                    )}
                   </Text>
                   <Text
                     ellipsizeMode="tail"
@@ -246,7 +246,9 @@ class CampaignCircleChart extends Component {
                       detail && styles.campaignNumbersDetail,
                     ]}
                   >
-                    {campaign ? campaign.paid_frequency.toFixed(2) : 0}
+                    {campaign
+                      ? parseFloat(campaign.paid_frequency).toFixed(2)
+                      : 0}
                   </Text>
                 </View>
               </View>

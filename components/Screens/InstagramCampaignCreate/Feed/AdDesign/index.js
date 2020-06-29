@@ -23,8 +23,10 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import * as IntentLauncher from "expo-intent-launcher";
 import Constants from "expo-constants";
+
 import CustomHeader from "../../../../MiniComponents/Header";
 import LoadingModal from "../../../../MiniComponents/LoadingImageModal";
+import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
@@ -64,12 +66,15 @@ import { globalColors } from "../../../../../GlobalStyles";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 
 import { _pickImage } from "./Functions/PickImages";
-import { formatMedia } from "./Functions/index";
+import { formatMedia, _handleSubmission } from "./Functions/index";
 
 import SingleImage from "./SingleImage";
 import MediaModal from "./MediaModal";
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import CarouselImage from "./Carousel/CarouselImage";
+import { formatCarouselAd } from "./Functions/formatCarouselAd";
 // import {
-//   _handleSubmission,
+//   handleSubmission,
 //   formatMedia,
 //   _changeDestination
 // } from "./Functions/index";
@@ -82,7 +87,7 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        media_option: "single", // Oneof[ "single, caraousel"]
+        media_option: "single", // Oneof[ "single, carousel"]
         destination: "BLANK",
         link: "",
         call_to_action: { label: "BLANK", value: "BLANK" },
@@ -90,9 +95,10 @@ class AdDesign extends Component {
         message: "",
         media_type: "",
       },
-      storyAdCards: {
-        storyAdSelected: false,
-        selectedStoryAd: { media: "//", call_to_action: {} },
+      fileReadyToUpload: false,
+      carouselAdCards: {
+        carouselAdSelected: false,
+        selectedCarouselAd: { media: "//", call_to_action: {} },
         // numOfAds: 0
       },
 
@@ -159,7 +165,7 @@ class AdDesign extends Component {
             destination = "APP_INSTALLS";
             break;
           case "VIDEO_VIEWS":
-            destination = "VIDEO_VIEWS";
+            destination = "BLANK";
             break;
           default:
             destination = "BLANK";
@@ -224,11 +230,14 @@ class AdDesign extends Component {
       this.state.campaignInfo.message
     );
 
-    const mediaError = this.state.media === "//";
+    const mediaError =
+      this.state.campaignInfo.media_option === "single" &&
+      this.state.media === "//";
 
     let swipeUpError = null;
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
+      this.props.data.objective !== "VIDEO_VIEWS" &&
       this.props.data &&
       this.props.data.call_to_action &&
       this.props.data.call_to_action.label === "BLANK"
@@ -273,7 +282,7 @@ class AdDesign extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-  handleSubmission = async () => {
+  finalSubmission = async () => {
     await this.validator();
     if (
       !this.state.mediaError &&
@@ -287,7 +296,10 @@ class AdDesign extends Component {
         this.state.campaignInfo,
         this.props.data,
         this.setTheState,
-        this.props.data.objective
+        this.props.data.objective,
+        this.props.carouselAdsArray,
+        false,
+        this.state.fileReadyToUpload
       );
       await this.handleUpload();
 
@@ -359,11 +371,29 @@ class AdDesign extends Component {
       });
     }
   };
+  _handlecarouselAdCards = (card) => {
+    this.setState({ sourceChanging: true });
+    this.setState({
+      ...this.state,
+      carouselAdCards: {
+        ...this.state.carouselAdCards,
+        carouselAdSelected: true,
+        selectedCarouselAd: { ...card },
+      },
+      type: card.media_type,
+      sourceChanging: false,
+    });
+    this.setMediaModalVisible(true);
+  };
+
   setMediaModalVisible = (visibile) => {
     this.setState({ mediaModalVisible: visibile });
   };
 
-  adDesignPickImage = (mediaTypes, mediaEditor, editImage) =>
+  adDesignPickImage = (mediaTypes, mediaEditor, editImage) => {
+    if (this.props.data.objective === "VIDEO_VIEWS") {
+      mediaTypes = "Videos";
+    }
     _pickImage(
       mediaTypes,
       this.props.save_campaign_info_instagram,
@@ -371,13 +401,15 @@ class AdDesign extends Component {
       this.props.screenProps,
       this.setMediaModalVisible,
       mediaEditor,
-      editImage
-      // this.state.storyAdCards,
-      // this.props.storyAdsArray,
+      editImage,
+      this.videoIsLoading,
+      this.state.carouselAdCards,
+      this.props.carouselAdsArray,
+      this.state.campaignInfo.media_option
       // this.adType,
       // this.rejected,
-      // this.videoIsExporting
     );
+  };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
       this.props.saveCampaignSteps([
@@ -414,7 +446,7 @@ class AdDesign extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    var { media, mediaModalVisible, media_type } = this.state;
+    var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
       this.props.data &&
@@ -425,28 +457,33 @@ class AdDesign extends Component {
     }
 
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
-        <View
+      <View style={styles.safeAreaView}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <TopStepsHeader
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          segment={{
+            str: "Instagram Feed Ad Design Back Button",
+            obj: { businessname: this.props.mainBusiness.businessname },
+            source: "ad_design",
+            source_action: "a_go_back",
+          }}
+          icon="instagram"
+          currentScreen="Compose"
+          navigation={this.props.navigation}
+          title={"Compose"}
+        />
+
+        <ScrollView
           style={{
             backgroundColor: "transparent",
             flex: 1,
+            top: 10,
           }}
         >
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            closeButton={false}
-            segment={{
-              str: "Instagram Feed Ad Design Back Button",
-              obj: { businessname: this.props.mainBusiness.businessname },
-              source: "ad_design",
-              source_action: "a_go_back",
-            }}
-            navigation={this.props.navigation}
-            title={"Compose"}
-          />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (
             //Made shared null to remove animation since it doesn't look good
@@ -458,22 +495,22 @@ class AdDesign extends Component {
                     radius={100}
                     onPressAction={() => this.selectImageOption("single")}
                     style={styles.adImageOptionButton}
-                    text={translate("Instagram Feed Campaign")}
+                    text={translate("Single Image")}
                     uppercase
                     transparent={
                       this.state.campaignInfo.media_option !== "single"
                     }
                   />
-                  {/*
-              <GradientButton
-                onPressAction={() => this.selectImageOption("carousel")}
-                style={styles.adImageOptionButton}
-                text={translate("Carousel")}
-                transparent={
-                  this.state.campaignInfo.media_option !== "carousel"
-                }
-                uppercase
-              /> */}
+
+                  <GradientButton
+                    onPressAction={() => this.selectImageOption("carousel")}
+                    style={styles.adImageOptionButton}
+                    text={translate("Carousel")}
+                    transparent={
+                      this.state.campaignInfo.media_option !== "carousel"
+                    }
+                    uppercase
+                  />
                 </View>
                 <View style={[styles.outerBlock]}>
                   <View style={styles.profileBsnNameView}>
@@ -492,6 +529,7 @@ class AdDesign extends Component {
                       </Text>
                     </View>
                   </View>
+
                   {this.state.campaignInfo.media_option === "single" && (
                     <SingleImage
                       media_type={media_type || this.props.data.media_type}
@@ -501,16 +539,33 @@ class AdDesign extends Component {
                       }
                       setTheState={this.setTheState}
                       screenProps={this.props.screenProps}
-                      videoIsLoading={this.videoIsLoading}
+                      videoIsExporting={this.videoIsLoading}
                       setMediaModalVisible={this.setMediaModalVisible}
+                      disabled={this.props.loading}
                     />
                   )}
-
+                  {this.state.campaignInfo.media_option === "carousel" && (
+                    <CarouselImage
+                      media_type={media_type || this.props.data.media_type}
+                      media={media}
+                      save_campaign_info_instagram={
+                        this.props.save_campaign_info_instagram
+                      }
+                      setTheState={this.setTheState}
+                      screenProps={this.props.screenProps}
+                      videoIsLoading={this.videoIsLoading}
+                      setMediaModalVisible={this.setMediaModalVisible}
+                      disabled={this.props.loading}
+                      carouselAdsArray={this.props.carouselAdsArray}
+                      _handlecarouselAdCards={this._handlecarouselAdCards}
+                    />
+                  )}
                   <TouchableOpacity
                     onPress={() => {
                       this.handleCaptionExpand(true);
                     }}
                     style={styles.captionView}
+                    disabled={this.props.loading}
                   >
                     <View style={styles.captionTextView}>
                       <Text style={styles.captionText}>
@@ -522,6 +577,7 @@ class AdDesign extends Component {
                     </View>
                     <PenIcon width={18} height={18} style={styles.penIcon} />
                   </TouchableOpacity>
+
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate(
@@ -533,27 +589,26 @@ class AdDesign extends Component {
                       )
                     }
                     style={styles.destinationView}
+                    disabled={this.props.loading}
                   >
                     <ArrowUp stroke={globalColors.orange} />
                     <Text style={styles.destinationText}>
-                      {(this.props.data &&
-                        this.props.data.attachment !== "BLANK") ||
-                      (this.props.data &&
-                        this.props.data.link &&
-                        this.props.data.link !== "BLANK" &&
-                        (this.state.campaignInfo.destination === "link" ||
-                          this.state.campaignInfo.destination === "BLANK"))
+                      {this.props.data &&
+                      this.props.data.link &&
+                      this.props.data.link !== "BLANK" &&
+                      (this.state.campaignInfo.destination === "link" ||
+                        this.state.campaignInfo.destination === "BLANK")
                         ? this.state.campaignInfo.destination === "link" ||
-                          this.state.campaignInfo.destination === "BLANK"
+                          (this.props.data.objective === "BRAND_AWARENESS" &&
+                            this.state.campaignInfo.destination === "BLANK")
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===
                             "APP_INSTALLS"
                           ? translate("App Installs")
-                          : this.state.campaignInfo.destination ===
-                            "VIDEO_VIEWS"
+                          : this.props.data.objective === "VIDEO_VIEWS"
                           ? translate("Video Views")
-                          : translate("Destination")
-                        : translate("Destination")}
+                          : translate("Click destination")
+                        : translate("Click destination")}
                     </Text>
                     {this.props.data &&
                     this.props.data.link &&
@@ -567,10 +622,78 @@ class AdDesign extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.lowerBtn}>
-                  <TouchableOpacity onPress={this.handleReview}>
-                    <EyeIcon />
-                  </TouchableOpacity>
-                  <LowerButton function={this.handleSubmission} />
+                  <GradientButton
+                    text={translate("Preview")}
+                    uppercase
+                    transparent
+                    style={styles.reviewButton}
+                    disabledGradientBegin={"rgba(0,0,0,0)"}
+                    disabledGradientEnd={"rgba(0,0,0,0)"}
+                    disabled={this.props.loading}
+                    onPressAction={this.handleReview}
+                  />
+                  {this.props.loading ? (
+                    <View
+                      style={{
+                        width: "45%",
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={styles.uploadingText}>
+                        {translate("Uploading")}
+                      </Text>
+                      <View>
+                        <AnimatedCircularProgress
+                          size={50}
+                          width={5}
+                          fill={Math.round(this.state.loaded)}
+                          rotation={360}
+                          lineCap="round"
+                          tintColor={globalColors.orange}
+                          backgroundColor="rgba(255,255,255,0.3)"
+                          adDetails={false}
+                        />
+                        <Text style={styles.uplaodPercentageText}>
+                          {Math.round(this.state.loaded, 2)}
+                          <Text style={styles.percentage}>%</Text>
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <LowerButton
+                      screenProps={this.props.screenProps}
+                      text={"Next"}
+                      width={12}
+                      height={12}
+                      style={styles.lowerBtnWidth}
+                      function={() =>
+                        _handleSubmission(
+                          this.state.campaignInfo.media_option,
+                          this.props.carouselAdsArray,
+                          this.state.carouselAdCards,
+                          formatCarouselAd,
+                          this.validator,
+                          this.finalSubmission,
+                          this.setTheState,
+                          {
+                            //for formatCarouselAd
+                            campaignInfo: this.state.campaignInfo,
+                            // selectedCampaign: this.selectedCampaign,
+                            campaign_id: this.props.campaign_id,
+                            // rejected: this.rejected,
+                            handleUpload: this.handleUpload,
+                            signal: this.state.signal,
+                            uploadCarouselAdCard: this.props
+                              .uploadCarouselAdCard,
+                          },
+                          this.props.screenProps
+                        )
+                      }
+                    />
+                  )}
                 </View>
               </View>
             </Transition>
@@ -592,6 +715,7 @@ class AdDesign extends Component {
               ]}
             >
               <LowerButton
+                screenProps={this.props.screenProps}
                 style={{
                   alignSelf: "flex-end",
                   marginHorizontal: 50,
@@ -633,7 +757,7 @@ class AdDesign extends Component {
               </TouchableWithoutFeedback>
             </Animated.View>
           )}
-        </View>
+        </ScrollView>
         <MediaModal
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
@@ -641,45 +765,31 @@ class AdDesign extends Component {
           mediaModalVisible={mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
           mediaUri={{
-            media:
-              // storyAdCards.storyAdSelected
-              //   ? storyAdCards.selectedStoryAd.uneditedImageUri
-              //   :
-              this.state.uneditedImageUri,
-            // storyAdCards: this.state.storyAdCards,
+            media: carouselAdCards.carouselAdSelected
+              ? carouselAdCards.selectedCarouselAd.uneditedImageUri
+              : this.state.uneditedImageUri,
+            carouselAdCards: this.state.carouselAdCards,
           }}
           media_type={
-            // storyAdCards.storyAdSelected
-            //   ? storyAdCards.selectedStoryAd.media_type
-            //   :
-            media_type
+            carouselAdCards.carouselAdSelected
+              ? carouselAdCards.selectedCarouselAd.media_type
+              : media_type
           }
           serialization={
-            // this.state.serialization.hasOwnProperty("image")
-            // ?
-            this.state.serialization
-            // : this.state.storyAdCards.selectedStoryAd.serialization
+            this.state.serialization &&
+            this.state.serialization.hasOwnProperty("image")
+              ? this.state.serialization
+              : this.state.carouselAdCards.selectedCarouselAd.serialization
           }
           screenProps={this.props.screenProps}
         />
-        <LoadingModal
-          videoUrlLoading={this.state.videoUrlLoading}
-          loading={this.props.loading}
-          isVisible={this.state.isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={this.state.loaded}
-          screenProps={this.props.screenProps}
-        />
-      </SafeAreaView>
+      </View>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
-  storyAdsArray: state.instagramAds.storyAdsArray,
-  loadingStoryAdsArray: state.instagramAds.loadingStoryAdsArray,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   loading: state.instagramAds.loadingDesign,
@@ -687,6 +797,8 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.instagramAds.currentCampaignSteps,
   admin: state.login.admin,
   rejCampaign: state.dashboard.rejCampaign,
+  carouselAdsArray: state.instagramAds.carouselAdsArray,
+  loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -712,5 +824,23 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
+  uploadCarouselAdCard: (
+    info,
+    card,
+    cancelUpload,
+    iosUploadVideo,
+    rejected,
+    finalSubmission
+  ) =>
+    dispatch(
+      actionCreators.uploadCarouselAdCard(
+        info,
+        card,
+        cancelUpload,
+        iosUploadVideo,
+        rejected,
+        finalSubmission
+      )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

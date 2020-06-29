@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Platform, ScrollView } from "react-native";
 import { Text } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView } from "react-navigation";
 import { Video } from "expo-av";
 
@@ -96,6 +96,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                   // onPress={() => this.props.handleDownloadMedia("//", "")}
                 />
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   checkmark={true}
                   function={() => {
                     segmentEventTrack(
@@ -191,6 +192,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                     // onPress={() => this.props.handleDownloadMedia("//", "")}
                   />
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     checkmark
                     function={() => {
                       segmentEventTrack(
@@ -302,6 +304,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                       // onPress={() => this.props.handleDownloadMedia("//", "")}
                     />
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark
                       function={() => {
                         segmentEventTrack(
@@ -335,10 +338,7 @@ class DownloadMediaFromDifferentDevice extends Component {
         visible={this.props.downloadMediaModal}
       >
         <BlurView intensity={95} tint="dark">
-          <SafeAreaView
-            style={styles.safeAreaView}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
+          <SafeAreaView forceInset={{ bottom: "never", top: "always" }}>
             <View style={styles.popupOverlay}>
               <CustomHeader
                 screenProps={this.props.screenProps}

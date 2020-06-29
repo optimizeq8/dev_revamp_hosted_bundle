@@ -1,24 +1,24 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { isRTL } from "expo-localization";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
-    height: "100%"
+    height: "100%",
   },
   container: {
     backgroundColor: "transparent",
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
     // flexGrow: 1,
     flex: 1,
     // marginTop: hp(3),
-    marginTop: 30
+    marginTop: 30,
     // justifyContent: 'space-between',
   },
   mainView: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   placeholder: {
     borderRadius: 30,
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     borderWidth: 3,
-    borderColor: globalColors.orange
+    borderColor: globalColors.orange,
   },
   imagePlaceholder: {
     opacity: 0.5,
@@ -49,49 +49,49 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     zIndex: 0,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
     opacity: 0.4,
     height: "100%",
     width: "100%",
-    flex: 1
+    flex: 1,
   },
   optionsContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     width: "100%",
-    marginVertical: 20
+    marginVertical: 20,
   },
   optionsRowContainer: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
     // paddingBottom: 20
   },
   inactivetext: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#fff"
+    color: "#fff",
     // paddingLeft: 10
   },
   activetext: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#FF9D00"
+    color: "#FF9D00",
   },
   optionsIconSize: {
-    fontSize: 25
+    fontSize: 25,
   },
   optionsTextContainer: {
     textAlign: "center",
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   inputContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   netLocStyle: {
     backgroundColor: "#5D1CD8",
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: "#5D1CD8",
     // width: "100%",
     width: wp(20),
-    height: 50
+    height: 50,
   },
   networkLabel: {
     fontFamily: "montserrat-bold",
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     // flex: 1,
     // paddingLeft: 20,
-    top: 2
+    top: 2,
     // right: 4,
   },
   input: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 54,
     paddingHorizontal: 0,
-    width: 300
+    width: 300,
   },
   inputtext: {
     fontFamily: "montserrat-regular",
@@ -128,12 +128,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     color: "#FFF",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   loadingSafeArea: {
     width: "100%",
     height: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   uplaodPercentage: {
     fontSize: 16,
@@ -142,14 +142,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     justifyContent: "flex-end",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    top: "15%"
+    top: "15%",
   },
   plaodPercentage: {
     fontSize: 16,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     justifyContent: "flex-end",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   uplaodText: {
     justifyContent: "center",
@@ -167,13 +167,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     alignSelf: "center",
     paddingTop: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   footerTextStyle: {
     fontSize: 12,
     color: "white",
     fontFamily: "montserrat-medium",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   footerStyle: {
     backgroundColor: "transparent",
@@ -183,13 +183,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flex: 1,
     justifyContent: "flex-end",
-    paddingVertical: 10
+    paddingVertical: 10,
     // position: 'absolute',
     // bottom: 50,
   },
   footerButtonsContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   inputMiddleButton: {
     position: "absolute",
@@ -205,12 +205,12 @@ const styles = StyleSheet.create({
     opacity: 1,
     transform: [
       {
-        translateX: I18nManager.isRTL ? 35 : -35
+        translateX: I18nManager.isRTL ? 35 : -35,
       },
       {
-        translateY: -40
-      }
-    ]
+        translateY: -40,
+      },
+    ],
   },
   inputMiddleButtonEdit: {
     position: "absolute",
@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     transform: [
       {
-        translateX: I18nManager.isRTL ? 35 : -35
+        translateX: I18nManager.isRTL ? 35 : -35,
       },
       {
-        translateY: -40
-      }
-    ]
+        translateY: -40,
+      },
+    ],
   },
   icon: {
     color: "#fff",
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
     fontSize: 35,
-    paddingTop: 15
+    paddingTop: 15,
   },
   mediaButtonMsg: {
     alignSelf: "center",
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 14,
     width: 150,
-    color: globalColors.orange
+    color: globalColors.orange,
   },
   mediaButtonMsg1: {
     textAlign: "center",
@@ -257,18 +257,18 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 14,
     width: 150,
-    color: globalColors.orange
+    color: globalColors.orange,
   },
   button: {
     width: wp(15),
-    height: hp(7)
+    height: hp(7),
   },
   errorMsg: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    paddingTop: 10
+    paddingTop: 10,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -277,13 +277,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
   },
   topContainer: {
     paddingVertical: 30,
     width: 300,
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
     // shadowOffset: { width: 1, height: 1 },
     // shadowColor: 'black',
     // shadowOpacity: 0.2,
@@ -292,39 +292,39 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 0,
     borderBottomStartRadius: 0,
     borderBottomEndRadius: 40,
-    borderTopEndRadius: 40
+    borderTopEndRadius: 40,
   },
   collectionAdLinkForm1: {
     borderBottomEndRadius: 0,
     borderTopEndRadius: 0,
     borderBottomStartRadius: 40,
-    borderTopStartRadius: 40
+    borderTopStartRadius: 40,
   },
   activeButton: {
     backgroundColor: "#FF9D00",
     height: 50,
     width: 150,
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   inactiveText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "rgba(255,255,255,0.4)",
-    textAlign: "center"
+    textAlign: "center",
   },
   activeText: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   button2: {
     backgroundColor: "rgba(0,0,0,0.2)",
     width: 150,
     height: 50,
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   imageView: {
     backgroundColor: globalColors.orange,
@@ -332,13 +332,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 30,
     marginBottom: -20,
-    zIndex: 1
+    zIndex: 1,
   },
   productText: {
     textAlign: "center",
     color: "#FFF",
     fontFamily: "montserrat-bold",
-    fontSize: 17
+    fontSize: 17,
   },
   deepLinkLabelView: {
     borderTopLeftRadius: 150,
@@ -350,11 +350,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   websiteView: {
     alignItems: "center",
-    width: "100%"
+    width: "100%",
   },
   websiteLabelView: {
     borderTopLeftRadius: 150,
@@ -366,8 +366,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold",
+    fontSize: 9,
+    color: "#FFF",
+    top: "35%",
+    left: 17,
+    textAlign: "center",
+  },
 });
 
 export default styles;

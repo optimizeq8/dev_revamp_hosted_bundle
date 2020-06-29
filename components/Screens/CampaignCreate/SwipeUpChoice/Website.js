@@ -29,6 +29,7 @@ import { netLoc } from "../../../Data/callactions.data";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class Website extends Component {
   static navigationOptions = {
     header: null,
@@ -50,7 +51,26 @@ class Website extends Component {
   }
 
   componentDidMount() {
-    this.props.data;
+    if (this.props.mainBusiness) {
+      const { websitelink, weburl } = this.props.mainBusiness;
+      if (websitelink && websitelink !== "") {
+        this.setState({
+          campaignInfo: {
+            attachment: websitelink,
+            callaction: list.SnapAd[0].call_to_action_list[0],
+          },
+        });
+      } else if (weburl && weburl !== "") {
+        this.setState({
+          campaignInfo: {
+            attachment: weburl.includes("https")
+              ? weburl
+              : `https://${weburl}.optimizeapp.com`,
+            callaction: list.SnapAd[0].call_to_action_list[0],
+          },
+        });
+      }
+    }
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
@@ -218,24 +238,26 @@ class Website extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
-      >
+      <View style={styles.safeAreaContainer}>
+        <SafeAreaView
+          forceInset={{ top: "always", bottom: "never" }}
+          style={{ backgroundColor: "#fff" }}
+        />
         {this.props.adType === "CollectionAd" && (
-          <View style={{ paddingBottom: 10 }}>
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              title={"Swipe Up destination"}
-              segment={{
-                str: "Swipe up Destination CollectionAd  Back Button",
-                source: "ad_swipe_up_destination",
-                source_action: "a_go_back",
-              }}
-              navigation={this.props.navigation}
-            />
-          </View>
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            navigation={this.props.navigation}
+            segment={{
+              str: "Swipe up Destination CollectionAd  Back Button",
+              source: "ad_swipe_up_destination",
+              source_action: "a_go_back",
+            }}
+            icon="snapchat"
+            adType={this.props.adType}
+            currentScreen="Compose"
+            title={"Swipe Up destination"}
+          />
         )}
 
         <InputScrollView
@@ -318,13 +340,14 @@ class Website extends Component {
               </Text>
             )}
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark={true}
               bottom={-5}
               function={this._handleSubmission}
             />
           </View>
         </InputScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -334,6 +357,7 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

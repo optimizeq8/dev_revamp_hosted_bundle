@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
   },
   walletPaymentModalContainer: {
     height: "100%",
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

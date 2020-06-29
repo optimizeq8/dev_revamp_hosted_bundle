@@ -16,6 +16,7 @@
 #import <EXScreenOrientation/EXScreenOrientationViewController.h>
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
+#import "Mixpanel/Mixpanel.h"
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -46,7 +47,6 @@
 {
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
-
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 #ifdef DEBUG
   [self initializeReactNativeApp];
@@ -94,5 +94,6 @@
 {
   appController.bridge = [self initializeReactNativeApp];
 }
+
 
 @end

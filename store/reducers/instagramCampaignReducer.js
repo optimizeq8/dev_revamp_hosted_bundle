@@ -33,6 +33,69 @@ const initialState = {
   oldTempAdType: "",
   oldTempData: null,
   storyAdAttachment: {},
+  carouselAdsArray: [
+    {
+      id: 0,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 1,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 2,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 3,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 4,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 5,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 6,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 7,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 8,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
+      id: 9,
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+  ],
+  loadingCarouselAdsArray: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -187,9 +250,56 @@ const reducer = (state = initialState, action) => {
         countryName: countryName,
         interestNames: interestNames,
         regionNames: regionNames,
-
         incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps,
+        carouselAdsArray: [
+          {
+            id: 0,
+            media: "//",
+          },
+          {
+            id: 1,
+            media: "//",
+          },
+          {
+            id: 2,
+            media: "//",
+          },
+          {
+            id: 3,
+            media: "//",
+          },
+          {
+            id: 4,
+            media: "//",
+          },
+          {
+            id: 5,
+
+            media: "//",
+          },
+          {
+            id: 6,
+
+            media: "//",
+          },
+          {
+            id: 7,
+
+            media: "//",
+          },
+          {
+            id: 8,
+
+            media: "//",
+          },
+          {
+            id: 9,
+
+            media: "//",
+          },
+        ],
+        loadingCarouselAdsArray: [],
       };
     case actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM:
       return {
@@ -261,6 +371,84 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaignProgressStarted: action.payload,
       };
+    case actionTypes.SET_CAROUSELADMEDIA_DESIGN:
+      let carouselAds = state.carouselAdsArray;
+      carouselAds[action.payload.data.carousel_order] = {
+        ...carouselAds[action.payload.data.carousel_order],
+        ...action.payload.data,
+        ...action.payload.card,
+        uploaded: true,
+      };
+      let loadingAr = state.loadingCarouselAdsArray;
+      loadingAr[action.payload.data.carousel_order] = false;
+
+      return {
+        ...state,
+        loadingCarouselAdsArray: [...loadingAr],
+        carouselAdsArray: [...carouselAds],
+      };
+    case actionTypes.SET_CAROUSELADMEDIA_DESIGN_UPLOADED:
+      let carouselAdsUploaded = state.carouselAdsArray;
+      carouselAdsUploaded[action.payload.card.index] = {
+        ...action.payload.card,
+        uploaded: false,
+      };
+      return {
+        ...state,
+        carouselAdsArray: [...carouselAdsUploaded],
+      };
+    case actionTypes.DELETE_CAROUSEL_AD_CARD:
+      let deleteStoryAds = state.carouselAdsArray;
+      deleteStoryAds = deleteStoryAds.map((ad, index) => {
+        if (
+          (action.payload.card.hasOwnProperty("item") &&
+            action.payload.card.item.id !== ad.id) ||
+          (action.payload.hasOwnProperty("data") &&
+            ad.carousel_id !== action.payload.data.carousel_id)
+        ) {
+          return ad;
+        } else {
+          return {
+            id: index,
+            media: "//",
+          };
+        }
+      });
+      let deletedLoadingAr = state.loadingCarouselAdsArray;
+      deletedLoadingAr[action.payload.card.index] = false;
+      return {
+        ...state,
+        loadingCarouselAdsArray: [...deletedLoadingAr],
+        carouselAdsArray: [...deleteStoryAds],
+      };
+    case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
+      let ar = state.loadingCarouselAdsArray;
+      let storyPro = state.carouselAdsArray;
+      console.log("action.payload", action.payload);
+
+      storyPro[action.payload.index] = {
+        ...storyPro[action.payload.index],
+        progress: action.payload.progress,
+      };
+      ar[action.payload.index] = action.payload.uploading;
+      return {
+        ...state,
+        loadingCarouselAdsArray: [...ar],
+        carouselAdsArray: [...storyPro],
+      };
+    case actionTypes.SET_DELETE_CAROUSEL_CARD_LOADING:
+      let deleteLoadAr = state.loadingCarouselAdsArray;
+      deleteLoadAr[action.payload.index] = action.payload.deleteing;
+      return {
+        ...state,
+        loadingCarouselAdsArray: [...deleteLoadAr],
+      };
+    case actionTypes.ERROR_SET_INSTAGRAM_AD_DESIGN:
+      return {
+        ...state,
+        loadingDesign: false,
+      };
+
     default:
       return state;
   }

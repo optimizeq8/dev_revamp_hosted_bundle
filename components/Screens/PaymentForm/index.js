@@ -39,6 +39,7 @@ import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import segmentEventTrack from "../../segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -426,15 +427,16 @@ class PaymentForm extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaViewContainer}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <NavigationEvents onDidFocus={this.handlePaymentFormFocus} />
 
         <Container style={[styles.container]}>
           {/* <BackDrop style={styles.backDrop} /> */}
-          <CustomHeader
+          <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
@@ -443,9 +445,15 @@ class PaymentForm extends Component {
               source: "payment_mode",
               source_action: "a_go_back",
             }}
-            // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
-            // paymentForm={true}
+            icon={this.props.channel === "" ? "snapchat" : this.props.channel}
+            actionButton={this.handleBackButton}
+            adType={
+              this.props.channel === "" || this.props.channel === "snapchat"
+                ? this.props.adType
+                : null
+            }
+            currentScreen="Payment"
             title={this.state.addingCredits ? "Top up wallet" : "Payment"}
           />
           <Content
@@ -706,7 +714,7 @@ class PaymentForm extends Component {
         <Modal dismissable={false} visible={this.state.browserLoading}>
           <LoadingScreen top={0} />
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -729,6 +737,7 @@ const mapStateToProps = (state) => ({
   loadingTrans: state.transA.loading,
   wallet: state.transA.wallet,
   channel: state.transA.channel,
+  adType: state.campaignC.adType,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),

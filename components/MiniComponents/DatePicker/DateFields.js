@@ -442,8 +442,8 @@ class DateFields extends Component {
                 this.props.start_time &&
                 !this.state.reset) ? (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   checkmark
-                  style={styles.button}
                   function={() => this.handleDate()}
                 />
               ) : null}

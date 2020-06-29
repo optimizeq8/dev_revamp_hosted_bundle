@@ -7,7 +7,7 @@ import {
   BackHandler,
   ScrollView,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { Text, Item, Input, Container, Textarea } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -31,14 +31,14 @@ import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import split from "lodash/split";
 import segmentEventTrack from "../../../segmentEventTrack";
 
 class GoogleAdDesign extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -62,7 +62,7 @@ class GoogleAdDesign extends Component {
       description2Error: "",
       urlError: "",
       networkString: "http://",
-      modalVisible: false
+      modalVisible: false,
     };
   }
   componentWillUnmount() {
@@ -71,14 +71,14 @@ class GoogleAdDesign extends Component {
   componentDidMount() {
     if (this.props.navigation.getParam("rejected", false)) {
       rejectedCampaign = this.props.navigation.getParam("ad", {});
-      let keys = Object.keys(this.state).filter(key => {
+      let keys = Object.keys(this.state).filter((key) => {
         if (rejectedCampaign.hasOwnProperty(key)) return key;
       });
       let data = { ...this.state };
-      keys.filter(key => {
+      keys.filter((key) => {
         data = {
           ...data,
-          [key]: rejectedCampaign[key]
+          [key]: rejectedCampaign[key],
         };
       }, {});
       if (rejectedCampaign.finalurl) {
@@ -87,18 +87,18 @@ class GoogleAdDesign extends Component {
         this.setState({
           ...data,
           networkString: url[0] + "://",
-          finalurl: url[1]
+          finalurl: url[1],
         });
       }
     } else {
-      let keys = Object.keys(this.state).filter(key => {
+      let keys = Object.keys(this.state).filter((key) => {
         if (this.props.campaign.hasOwnProperty(key)) return key;
       });
       let data = { ...this.state };
-      keys.filter(key => {
+      keys.filter((key) => {
         data = {
           ...data,
-          [key]: this.props.campaign[key]
+          [key]: this.props.campaign[key],
         };
       }, {});
       if (this.props.campaign.finalurl) {
@@ -107,7 +107,7 @@ class GoogleAdDesign extends Component {
         this.setState({
           ...data,
           networkString: url[0] + "://",
-          finalurl: url[1]
+          finalurl: url[1],
         });
       }
     }
@@ -140,7 +140,7 @@ class GoogleAdDesign extends Component {
       headline3Error,
       descriptionError,
       description2Error,
-      urlError
+      urlError,
     });
     // set segment track for error
     if (
@@ -157,7 +157,7 @@ class GoogleAdDesign extends Component {
         campaign_error_headline3: headline3Error,
         campaign_error_description: descriptionError,
         campaign_error_description2: description2Error,
-        campaign_error_url: urlError
+        campaign_error_url: urlError,
       });
     }
     if (
@@ -174,7 +174,7 @@ class GoogleAdDesign extends Component {
         headline3: this.state.headline3,
         description: this.state.description,
         description2: this.state.description2,
-        finalurl: this.state.networkString + this.state.finalurl
+        finalurl: this.state.networkString + this.state.finalurl,
       };
       const segmentInfo = {
         step: 3,
@@ -185,7 +185,7 @@ class GoogleAdDesign extends Component {
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        checkout_id: this.props.campaign.id
+        checkout_id: this.props.campaign.id,
       };
       /**
        * the screen is used to handle rejected ads as well, I send back rejected as a param
@@ -199,14 +199,14 @@ class GoogleAdDesign extends Component {
             ...data,
             id: this.props.campaign.id,
             businessid: this.props.mainBusiness.businessid,
-            completed: error_type
+            completed: error_type,
           },
           rejectedVal,
           segmentInfo
         );
         this.props.save_google_campaign_data({
           ...data,
-          id: this.props.campaign.id
+          id: this.props.campaign.id,
         });
       } else {
         /**
@@ -219,24 +219,24 @@ class GoogleAdDesign extends Component {
               ...data,
               id: this.props.navigation.getParam("id", null),
               businessid: this.props.mainBusiness.businessid,
-              completed: error_type
+              completed: error_type,
             },
             rejectedVal,
             segmentInfo
           );
         else
           this.props.navigation.navigate("GoogleEditKeywords", {
-            adData: data
+            adData: data,
           });
       }
     }
   };
-  focusTheField = fieldName => {
+  focusTheField = (fieldName) => {
     this.inputs[fieldName]._root.focus();
   };
   handleModalToggle = () => {
     this.setState({
-      modalVisible: !this.state.modalVisible
+      modalVisible: !this.state.modalVisible,
     });
   };
   inputs = {};
@@ -256,15 +256,15 @@ class GoogleAdDesign extends Component {
               this.props.save_google_campaign_steps([
                 "Dashboard",
                 "GoogleAdInfo",
-                "GoogleAdDesign"
+                "GoogleAdDesign",
               ]);
             Segment.screenWithProperties("Google SE Design AD", {
               category: "Campaign Creation",
-              channel: "google"
+              channel: "google",
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               step: 3,
-              business_name: this.props.mainBusiness.businessname
+              business_name: this.props.mainBusiness.businessname,
             });
           }}
         />
@@ -274,7 +274,7 @@ class GoogleAdDesign extends Component {
               closeButton={false}
               segment={{
                 str: "Google SE Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
+                obj: { businessname: this.props.mainBusiness.businessname },
               }}
               actionButton={rejected && this.handleModalToggle}
               navigation={!rejected ? this.props.navigation : undefined}
@@ -304,7 +304,7 @@ class GoogleAdDesign extends Component {
               {...ScrollView.props}
               contentContainerStyle={[
                 styles.mainContent,
-                { paddingBottom: "80%" }
+                { paddingBottom: "80%" },
               ]}
             >
               <Animatable.View
@@ -320,7 +320,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputH1
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Headline")} {translate("1")}
@@ -336,13 +336,13 @@ class GoogleAdDesign extends Component {
                     style={[styles.inputText]}
                     autoCorrect={true}
                     maxLength={30}
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        headline1: value
+                        headline1: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          headline1: value
+                          headline1: value,
                         });
                     }}
                     onFocus={() => {
@@ -350,7 +350,7 @@ class GoogleAdDesign extends Component {
                     }}
                     onBlur={() => {
                       segmentEventTrack("headline1 Field on Blur", {
-                        campaign_headline1: this.state.headline1
+                        campaign_headline1: this.state.headline1,
                       });
                       this.setState({ inputH1: false });
                       this.setState(
@@ -358,7 +358,7 @@ class GoogleAdDesign extends Component {
                           headline1Error: validateWrapper(
                             "mandatory",
                             this.state.headline1
-                          )
+                          ),
                         },
                         () => {
                           if (this.state.headline1Error) {
@@ -366,7 +366,7 @@ class GoogleAdDesign extends Component {
                               "Error at headline1 field on blur",
                               {
                                 campaign_error_headline1: this.state
-                                  .headline1Error
+                                  .headline1Error,
                               }
                             );
                           }
@@ -395,7 +395,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputH2
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Headline")} {translate("2")}
@@ -410,13 +410,13 @@ class GoogleAdDesign extends Component {
                     style={[styles.inputText]}
                     autoCorrect={true}
                     maxLength={30}
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        headline2: value
+                        headline2: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          headline2: value
+                          headline2: value,
                         });
                     }}
                     onFocus={() => {
@@ -424,7 +424,7 @@ class GoogleAdDesign extends Component {
                     }}
                     onBlur={() => {
                       segmentEventTrack("headline2 Field on Blur", {
-                        campaign_headline2: this.state.headline2
+                        campaign_headline2: this.state.headline2,
                       });
                       this.setState({ inputH2: false });
                       this.setState(
@@ -432,7 +432,7 @@ class GoogleAdDesign extends Component {
                           headline2Error: validateWrapper(
                             "mandatory",
                             this.state.headline2
-                          )
+                          ),
                         },
                         () => {
                           if (this.state.headline2Error) {
@@ -440,14 +440,14 @@ class GoogleAdDesign extends Component {
                               "Error at headline2 field on blur",
                               {
                                 campaign_error_headline2: this.state
-                                  .headline2Error
+                                  .headline2Error,
                               }
                             );
                           }
                         }
                       );
                     }}
-                    ref={input => {
+                    ref={(input) => {
                       this.inputs["inputH2"] = input;
                     }}
                     onSubmitEditing={() => {
@@ -472,7 +472,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputH3
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Headline")} {translate("3")}
@@ -487,13 +487,13 @@ class GoogleAdDesign extends Component {
                     style={[styles.inputText]}
                     autoCorrect={true}
                     maxLength={30}
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        headline3: value
+                        headline3: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          headline3: value
+                          headline3: value,
                         });
                     }}
                     onFocus={() => {
@@ -501,7 +501,7 @@ class GoogleAdDesign extends Component {
                     }}
                     onBlur={() => {
                       segmentEventTrack("headline3 Field on Blur", {
-                        campaign_headline3: this.state.headline3
+                        campaign_headline3: this.state.headline3,
                       });
                       this.setState({ inputH3: false });
                       this.setState(
@@ -509,7 +509,7 @@ class GoogleAdDesign extends Component {
                           headline3Error: validateWrapper(
                             "mandatory",
                             this.state.headline3
-                          )
+                          ),
                         },
                         () => {
                           if (this.state.description2Error) {
@@ -517,7 +517,7 @@ class GoogleAdDesign extends Component {
                               "Error at headline3 Field on Blur",
                               {
                                 campaign_error_headline3: this.state
-                                  .headline3Error
+                                  .headline3Error,
                               }
                             );
                           }
@@ -527,7 +527,7 @@ class GoogleAdDesign extends Component {
                     onSubmitEditing={() => {
                       this.focusTheField("inputURL");
                     }}
-                    ref={input => {
+                    ref={(input) => {
                       this.inputs["inputH3"] = input;
                     }}
                     blurOnSubmit={false}
@@ -548,7 +548,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputURL
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Landing Page")}
@@ -563,17 +563,17 @@ class GoogleAdDesign extends Component {
                         width: 54,
                         height: 54,
                         alignItems: "center",
-                        justifyContent: "center"
-                      }
+                        justifyContent: "center",
+                      },
                     ]}
                     onPress={() => {
                       if (this.state.networkString === "https://") {
                         this.setState({
-                          networkString: "http://"
+                          networkString: "http://",
                         });
                       } else {
                         this.setState({
-                          networkString: "https://"
+                          networkString: "https://",
                         });
                       }
                     }}
@@ -595,19 +595,19 @@ class GoogleAdDesign extends Component {
                       styles.inputText,
                       this.state.finalurl
                         ? { textAlign: "left" }
-                        : { right: wp(6) }
+                        : { right: wp(6) },
                     ]}
                     autoCorrect={false}
                     maxLength={34}
                     autoCapitalize="none"
                     placeholder={translate("Input landing page url")}
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        finalurl: value
+                        finalurl: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          finalurl: this.state.networkString + value
+                          finalurl: this.state.networkString + value,
                         });
                     }}
                     onFocus={() => {
@@ -619,13 +619,13 @@ class GoogleAdDesign extends Component {
                         urlError: validateWrapper(
                           "mandatory",
                           this.state.networkString + this.state.finalurl
-                        )
+                        ),
                       });
                     }}
                     onSubmitEditing={() => {
                       this.focusTheField("inputD");
                     }}
-                    ref={input => {
+                    ref={(input) => {
                       this.inputs["inputURL"] = input;
                     }}
                     blurOnSubmit={false}
@@ -647,7 +647,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputD
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Description")}
@@ -658,8 +658,8 @@ class GoogleAdDesign extends Component {
                     styles.input,
                     {
                       paddingVertical: 20,
-                      paddingHorizontal: 5
-                    }
+                      paddingHorizontal: 5,
+                    },
                   ]}
                 >
                   <Textarea
@@ -677,13 +677,13 @@ class GoogleAdDesign extends Component {
                         ? null
                         : translate("Input Description 1 text")
                     }
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        description: value
+                        description: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          description: value
+                          description: value,
                         });
                     }}
                     onFocus={() => {
@@ -691,7 +691,7 @@ class GoogleAdDesign extends Component {
                     }}
                     onBlur={() => {
                       segmentEventTrack("description Field on Blur", {
-                        campaign_description: this.state.description
+                        campaign_description: this.state.description,
                       });
                       this.setState({ inputD: false });
                       this.setState(
@@ -699,7 +699,7 @@ class GoogleAdDesign extends Component {
                           headline3Error: validateWrapper(
                             "mandatory",
                             this.state.description
-                          )
+                          ),
                         },
                         () => {
                           if (this.state.descriptionError) {
@@ -707,7 +707,7 @@ class GoogleAdDesign extends Component {
                               "Error description Field on Blur",
                               {
                                 campaign_error_description: this.state
-                                  .descriptionError
+                                  .descriptionError,
                               }
                             );
                           }
@@ -717,7 +717,7 @@ class GoogleAdDesign extends Component {
                     onSubmitEditing={() => {
                       this.focusTheField("inputD2");
                     }}
-                    ref={input => {
+                    ref={(input) => {
                       this.inputs["inputD"] = input;
                     }}
                     blurOnSubmit={false}
@@ -741,7 +741,7 @@ class GoogleAdDesign extends Component {
                       styles.inputLabel,
                       this.state.inputD2
                         ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
+                        : GlobalStyles.whiteTextColor,
                     ]}
                   >
                     {translate("Description")} {translate("2")}
@@ -750,7 +750,7 @@ class GoogleAdDesign extends Component {
                 <Item
                   style={[
                     styles.input,
-                    { paddingVertical: 20, paddingHorizontal: 5 }
+                    { paddingVertical: 20, paddingHorizontal: 5 },
                   ]}
                 >
                   <Textarea
@@ -768,13 +768,13 @@ class GoogleAdDesign extends Component {
                         ? null
                         : translate("Input Description 2 text")
                     }
-                    onChangeText={value => {
+                    onChangeText={(value) => {
                       this.setState({
-                        description2: value
+                        description2: value,
                       });
                       if (!rejected)
                         this.props.save_google_campaign_data({
-                          description2: value
+                          description2: value,
                         });
                     }}
                     onFocus={() => {
@@ -782,7 +782,7 @@ class GoogleAdDesign extends Component {
                     }}
                     onBlur={() => {
                       segmentEventTrack("description2 Field on Blur", {
-                        campaign_description2: this.state.description2
+                        campaign_description2: this.state.description2,
                       });
                       this.setState({ inputD2: false });
                       this.setState(
@@ -790,7 +790,7 @@ class GoogleAdDesign extends Component {
                           description2Error: validateWrapper(
                             "mandatory",
                             this.state.description2
-                          )
+                          ),
                         },
                         () => {
                           if (this.state.description2Error) {
@@ -798,14 +798,14 @@ class GoogleAdDesign extends Component {
                               "Error description2 Field on Blur",
                               {
                                 campaign_error_description2: this.state
-                                  .description2Error
+                                  .description2Error,
                               }
                             );
                           }
                         }
                       );
                     }}
-                    ref={input => {
+                    ref={(input) => {
                       this.inputs["inputD2"] = input;
                     }}
                     blurOnSubmit={true}
@@ -822,6 +822,7 @@ class GoogleAdDesign extends Component {
                 />
               ) : (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   style={styles.proceedButtonRTL}
                   bottom={2}
                   function={this._handleSubmission}
@@ -842,13 +843,13 @@ class GoogleAdDesign extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
-  campaign: state.googleAds
+  campaign: state.googleAds,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   create_google_SE_campaign_ad_design: (info, rejected, segmentInfo) =>
     dispatch(
       actionCreators.create_google_SE_campaign_ad_design(
@@ -857,9 +858,9 @@ const mapDispatchToProps = dispatch => ({
         segmentInfo
       )
     ),
-  save_google_campaign_data: info =>
+  save_google_campaign_data: (info) =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  save_google_campaign_steps: value =>
-    dispatch(actionCreators.save_google_campaign_steps(value))
+  save_google_campaign_steps: (value) =>
+    dispatch(actionCreators.save_google_campaign_steps(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdDesign);

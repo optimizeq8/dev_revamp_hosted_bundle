@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 
 import isStringArabic from "../../../isStringArabic";
@@ -30,11 +30,11 @@ export default class EmptyCampaigns extends Component {
         source_action: "a_create_campaign",
         timestamp: new Date().getTime(),
         userId: userInfo.userid,
-        device_id
+        device_id,
       });
       this.props.navigation.navigate("AdType", {
         source: "dashboard",
-        source_action: "a_create_campaign"
+        source_action: "a_create_campaign",
       });
     } else {
       this.props.navigation.navigate("CreateBusinessAccount");
@@ -49,11 +49,11 @@ export default class EmptyCampaigns extends Component {
       source_action: "a_verify_account",
       timestamp: new Date().getTime(),
       device_id,
-      userId: userInfo.userid
+      userId: userInfo.userid,
     });
     this.props.navigation.navigate("VerifyAccount", {
       source: "dashboard",
-      source_action: "a_verify_account"
+      source_action: "a_verify_account",
     });
   };
   render() {
@@ -97,9 +97,9 @@ export default class EmptyCampaigns extends Component {
 
                 !isStringArabic(userInfo.firstname)
                   ? {
-                      fontFamily: "montserrat-bold-english"
+                      fontFamily: "montserrat-bold-english",
                     }
-                  : {}
+                  : {},
               ]}
             >
               {translate("Hello")} {userInfo.firstname}!
@@ -114,8 +114,8 @@ export default class EmptyCampaigns extends Component {
             styles.mainButtonView,
             (user_role === "3" ||
               (mainBusiness.weburl && mainBusiness.weburl !== "")) && {
-              flex: 1
-            }
+              flex: 1,
+            },
           ]}
         >
           <Text style={styles.getStartedText}>
@@ -153,6 +153,7 @@ export default class EmptyCampaigns extends Component {
             )}
             <LaunchCampaignIcon style={styles.launchCampaignIcon} />
             <LowerButton
+              screenProps={this.props.screenProps}
               width={20}
               height={20}
               style={styles.lowerButton}
@@ -167,7 +168,7 @@ export default class EmptyCampaigns extends Component {
                 onPress={() => {
                   this.props.navigation.navigate("TutorialWeb", {
                     source: "dashboard",
-                    source_action: "a_open_website_tutorial"
+                    source_action: "a_open_website_tutorial",
                   });
                 }}
               >
@@ -190,6 +191,7 @@ export default class EmptyCampaigns extends Component {
                   style={styles.onlineStoreHomeIcon}
                 />
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   width={20}
                   height={20}
                   style={styles.lowerButton}

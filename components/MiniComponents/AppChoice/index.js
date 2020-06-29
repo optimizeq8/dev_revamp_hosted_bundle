@@ -438,7 +438,11 @@ class AppChoice extends Component {
           </Text>
         )}
 
-        <LowerButton checkmark={true} function={() => this.validate()} />
+        <LowerButton
+          screenProps={this.props.screenProps}
+          checkmark={true}
+          function={() => this.validate()}
+        />
       </InputScrollView>
     );
   }

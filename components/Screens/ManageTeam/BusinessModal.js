@@ -12,34 +12,34 @@ import BusinessCard from "../../MiniComponents/BusinessCard";
 export default class BusinessModal extends Component {
   state = { isVisible: false, dataSource: [] };
   componentDidMount() {
-    let accounts = this.props.businessAccounts.filter(item => {
+    let accounts = this.props.businessAccounts.filter((item) => {
       if (item.user_role === "1") {
         item.isSelected = false;
         return item;
       }
     });
     this.setState({
-      dataSource: accounts
+      dataSource: accounts,
     });
   }
-  setModalVisible = isVisible => {
+  setModalVisible = (isVisible) => {
     this.setState({ isVisible });
   };
 
-  selectItem = data => {
+  selectItem = (data) => {
     data.item.isSelected = !data.item.isSelected;
 
     const index = this.state.dataSource.findIndex(
-      item => data.item.businessid === item.businessid
+      (item) => data.item.businessid === item.businessid
     );
 
     this.state.dataSource[index] = data.item;
     this.props.handleAccounts(data.item);
     this.setState({
-      dataSource: this.state.dataSource
+      dataSource: this.state.dataSource,
     });
   };
-  renderItem = data => {
+  renderItem = (data) => {
     return (
       <BusinessCard
         manageTeam={true}
@@ -88,8 +88,8 @@ export default class BusinessModal extends Component {
                 <FlatList
                   data={this.state.dataSource}
                   ItemSeparatorComponent={this.FlatListItemSeparator}
-                  renderItem={item => this.renderItem(item)}
-                  keyExtractor={item => item.businessid.toString()}
+                  renderItem={(item) => this.renderItem(item)}
+                  keyExtractor={(item) => item.businessid.toString()}
                   extraData={this.state}
                   contentContainerStyle={{ paddingTop: 20 }}
                 />
@@ -100,7 +100,11 @@ export default class BusinessModal extends Component {
                 >
                   {accounts}
                 </Content> */}
-                <LowerButton bottom={0} function={this.setModalVisible} />
+                <LowerButton
+                  screenProps={this.props.screenProps}
+                  bottom={0}
+                  function={this.setModalVisible}
+                />
               </View>
             </SafeAreaView>
           </BlurView>

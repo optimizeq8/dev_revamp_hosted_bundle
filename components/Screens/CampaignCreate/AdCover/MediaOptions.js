@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Platform } from "react-native";
 
 //icons
-import CameraIcon from "../../../../assets/SVGs/Camera";
+import CameraIcon from "../../../../assets/SVGs/CameraOption";
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import UploadIcon from "../../../../assets/SVGs/UploadDevice";
 import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
@@ -26,14 +26,14 @@ export default class MediaOptions extends Component {
       this.props._pickImage(
         {
           mediaUri: this.props.mediaUri,
-          serialization: this.props.serialization
+          serialization: this.props.serialization,
         },
         true
       );
     }
   };
   render() {
-    let { title } = this.props;
+    let { title, disabled } = this.props;
     const { translate } = this.props.screenProps;
     let imageIcon = null;
     if (title === "Image") {
@@ -51,6 +51,7 @@ export default class MediaOptions extends Component {
     }
     return (
       <TouchableOpacity
+        disabled={disabled}
         onPress={() => this.handleOptionSelect()}
         style={styles.MediaOptionsStyle}
       >

@@ -52,6 +52,7 @@ export default class InvitationRow extends Component {
           }}
         >
           <LowerButton
+            screenProps={this.props.screenProps}
             cross
             function={() =>
               handleTeamInvite(
@@ -75,6 +76,7 @@ export default class InvitationRow extends Component {
             ]}
           />
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark
             function={() =>
               navigation.navigate("TeamInvite", {

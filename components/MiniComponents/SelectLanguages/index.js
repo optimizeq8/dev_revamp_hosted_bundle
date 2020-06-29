@@ -12,7 +12,7 @@ export default class SelectLanguages extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
-    let languagelist = this.props.filteredLanguages.map(c => (
+    let languagelist = this.props.filteredLanguages.map((c) => (
       <TouchableOpacity
         key={c.id}
         style={styles.languageRowConatiner}
@@ -23,15 +23,15 @@ export default class SelectLanguages extends Component {
         <Icon
           type="MaterialCommunityIcons"
           name={
-            this.props.demographics[0].languages.find(l => l === c.id)
+            this.props.demographics[0].languages.find((l) => l === c.id)
               ? "circle"
               : "circle-outline"
           }
           style={[
-            this.props.demographics[0].languages.find(l => l === c.id)
+            this.props.demographics[0].languages.find((l) => l === c.id)
               ? styles.activetext
               : styles.inactivetext,
-            styles.optionsIconSize
+            styles.optionsIconSize,
           ]}
         />
         <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
@@ -52,8 +52,8 @@ export default class SelectLanguages extends Component {
                   placeholder={translate("Search Language")}
                   style={styles.inputtext}
                   placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredC = this.props.languages.filter(c =>
+                  onChangeText={(value) => {
+                    let filteredC = this.props.languages.filter((c) =>
                       translate(c.name)
                         .toLowerCase()
                         .includes(value.toLowerCase())
@@ -69,6 +69,7 @@ export default class SelectLanguages extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             checkmark={true}
             style={[styles.button]}
             function={() => this.props._handleSideMenuState(false)}

@@ -26,7 +26,7 @@ export const formatStoryAd = async (
     var photo = {
       uri: card.media,
       type: card.media_type + "/" + format,
-      name: res
+      name: res,
     };
     storyBody.append("story_media", photo);
     storyBody.append("story_media_type", card.media_type);
@@ -40,7 +40,7 @@ export const formatStoryAd = async (
     var video = {
       uri: card.longformvideo_media,
       type: card.longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1]
+      name: resVideo[1],
     };
 
     storyBody.append("story_longformvideo_media", video);
@@ -105,8 +105,8 @@ export const formatStoryAd = async (
   setTheState({
     storyAdCards: {
       ...storyAdCards,
-      storyAdSelected: false
-    }
+      storyAdSelected: false,
+    },
   });
   return;
 };

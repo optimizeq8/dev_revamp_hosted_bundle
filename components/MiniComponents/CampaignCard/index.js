@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, I18nManager } from "react-native";
 import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
@@ -73,13 +73,21 @@ class CampaignCard extends Component {
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
-
+    let gradientColor = {
+      color1: "#9300FF",
+      color2: "#671FDE",
+    };
+    if (I18nManager.isRTL) {
+      gradientColor = {
+        color2: "#9300FF",
+        color1: "#671FDE",
+      };
+    }
     return (
       <LinearGradient
-        colors={["#9300FF", "#9300FF", "#4E00CB"]}
-        locations={[0, 0.3, 1]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={[gradientColor.color1, "#9300FF", gradientColor.color2]}
+        start={[0, 0]}
+        end={[1, 1]}
         style={styles.cardStyle}
       >
         <TouchableOpacity
@@ -89,7 +97,7 @@ class CampaignCard extends Component {
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <SnapchatBorder width={30} height={30} />
+              <SnapchatBorder width={30} height={30} fill="#000" />
               <View
                 style={{
                   display: "flex",

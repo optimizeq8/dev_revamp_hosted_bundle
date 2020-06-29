@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Platform } from "react-native";
 import { Content, Text } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView } from "react-navigation";
 
 //Redux
@@ -44,11 +44,9 @@ class UploadMediaFromDifferentDevice extends Component {
         onDismiss={() => this.props.setUploadFromDifferentDeviceModal(false)}
         visible={this.props.uploadMediaDifferentDeviceModal}
       >
-        <BlurView intensity={95} tint="dark">
-          <SafeAreaView
-            style={styles.safeAreaView}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
+        <BlurView>
+          <View style={{ backgroundColor: "#0000", height: "100%" }}>
+            <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
             <View style={styles.popupOverlay}>
               <CustomHeader
                 screenProps={this.props.screenProps}
@@ -134,7 +132,7 @@ class UploadMediaFromDifferentDevice extends Component {
                 </View>
               </Content>
             </View>
-          </SafeAreaView>
+          </View>
         </BlurView>
       </Modal>
     );

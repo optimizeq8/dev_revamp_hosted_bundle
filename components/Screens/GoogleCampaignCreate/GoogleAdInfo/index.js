@@ -9,10 +9,11 @@ import {
   I18nManager,
   Text,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -27,6 +28,7 @@ import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 //Icons
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
@@ -413,15 +415,17 @@ class GoogleAdInfo extends Component {
     const { translate } = this.props.screenProps;
 
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaView}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <StatusBar barStyle="dark-content" />
         <NavigationEvents onDidFocus={this.handleGoogleAdInfoFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
-            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-            <CustomHeader
+            <TopStepsHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
                 str: "Google SE Info Back Button",
@@ -433,18 +437,14 @@ class GoogleAdInfo extends Component {
                 source: "ad_objective",
                 source_action: "a_go_back",
               }}
+              icon="google"
               actionButton={() => {
                 this.handleBackButton();
                 this.props.set_google_campaign_resumed(false);
               }}
-              disabled={this.props.campaign.uploading}
+              currentScreen="Details"
               title={"Search Engine Ad"}
-              screenProps={this.props.screenProps}
-            />
-            <GoogleSE
-              width={hp(5) < 30 ? 50 : 70}
-              height={hp(5) < 30 ? 50 : 70}
-              style={styles.googleIcon}
+              disabled={this.props.campaign.uploading}
             />
             <ScrollView
               contentContainerStyle={styles.mainContent}
@@ -583,6 +583,7 @@ class GoogleAdInfo extends Component {
                 />
               ) : (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   style={styles.proceedButtonRTL}
                   bottom={-5}
                   function={this._handleSubmission}
@@ -618,11 +619,13 @@ class GoogleAdInfo extends Component {
           onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              style={styles.safeAreaView}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
+          <BlurView
+            blurType="dark"
+            blurAmount={20}
+            reducedTransparencyFallbackColor="black"
+          >
+            <View style={styles.safeAreaView}>
+              <SafeAreaView />
               {this.state.selectRegion ? (
                 <Animatable.View
                   duration={300}
@@ -644,19 +647,22 @@ class GoogleAdInfo extends Component {
                         source_action: "a_go_back",
                       }}
                     />
-                    <Content scrollEnabled={false} indicatorStyle="white">
-                      <RegionsSelector
-                        screenProps={this.props.screenProps}
-                        country={this.state.country}
-                        locationsFetchedList={
-                          this.props.campaign.locationsFetchedList
-                        }
-                        locations={this.state.location}
-                        onSelectRegions={this._handleSelectedRegions}
-                        loading={this.props.campaign.loading}
-                      />
-                    </Content>
+                    <View style={{ height: "80%" }}>
+                      <Content scrollEnabled={false} indicatorStyle="white">
+                        <RegionsSelector
+                          screenProps={this.props.screenProps}
+                          country={this.state.country}
+                          locationsFetchedList={
+                            this.props.campaign.locationsFetchedList
+                          }
+                          locations={this.state.location}
+                          onSelectRegions={this._handleSelectedRegions}
+                          loading={this.props.campaign.loading}
+                        />
+                      </Content>
+                    </View>
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       style={styles.proceedButtonRTL}
                       bottom={4}
                       function={this.setModalVisible}
@@ -682,15 +688,18 @@ class GoogleAdInfo extends Component {
                         source_action: "a_go_back",
                       }}
                     />
-                    <Content scrollEnabled={false} indicatorStyle="white">
-                      <CountrySelector
-                        screenProps={this.props.screenProps}
-                        countries={CountriesList}
-                        country={this.state.country}
-                        onSelectedCountryChange={this._handleCountryChange}
-                      />
-                    </Content>
+                    <View style={{ height: "80%" }}>
+                      <Content scrollEnabled={false} indicatorStyle="white">
+                        <CountrySelector
+                          screenProps={this.props.screenProps}
+                          countries={CountriesList}
+                          country={this.state.country}
+                          onSelectedCountryChange={this._handleCountryChange}
+                        />
+                      </Content>
+                    </View>
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       bottom={4}
                       style={styles.proceedButtonRTL}
                       function={() => {
@@ -722,10 +731,10 @@ class GoogleAdInfo extends Component {
                   </View>
                 </Animatable.View>
               )}
-            </SafeAreaView>
+            </View>
           </BlurView>
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }

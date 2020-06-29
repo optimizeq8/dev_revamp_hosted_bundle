@@ -14,37 +14,34 @@ import styles from "../../styles/adDesign.styles";
 import { _pickImage } from "./Functions/PickImages";
 
 export default class SingleImage extends React.PureComponent {
+  showModal = () => {
+    this.props.setMediaModalVisible(true);
+  };
   render() {
     const {
       media,
-      setTheState,
-      screenProps,
-      save_campaign_info_instagram,
       media_type = "IMAGE",
-      videoIsLoading,
-      setMediaModalVisible,
+      videoIsExporting,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
 
     return (
       <View style={[styles.placeholder]}>
         {media_type === "VIDEO" && (
-          <VideoPlayer videoIsLoading={videoIsLoading} media={media} />
+          <VideoPlayer
+            shouldPlay={false}
+            videoIsLoading={videoIsExporting}
+            media={media}
+          />
         )}
         {media_type === "IMAGE" && (
           <RNImageOrCacheImage media={media} style={styles.placeholder1} />
         )}
 
         <TouchableOpacity
-          onPress={() =>
-            // _pickImage(
-            //   "All",
-            //   save_campaign_info_instagram,
-            //   setTheState,
-            //   screenProps
-            // )
-            setMediaModalVisible(true)
-          }
+          disabled={disabled}
+          onPress={this.showModal}
           style={{ alignSelf: "center" }}
         >
           <MediaButtonIcon />

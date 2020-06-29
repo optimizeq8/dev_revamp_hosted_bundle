@@ -36,7 +36,9 @@ export default (props) => {
               new Date(campaign.start_time).setUTCHours(0, 0, 0, 0) &&
             campaign.campaign_end === "0" ? (
               <Text style={[styles.subtext]}>
-                {TimeDifferance(currentDate, campaign.end_time) + 1}{" "}
+                {TimeDifferance(currentDate, campaign.end_time) === 0
+                  ? 1
+                  : TimeDifferance(currentDate, campaign.end_time) === 0}{" "}
                 {translate("Day(s) left")}
               </Text>
             ) : (

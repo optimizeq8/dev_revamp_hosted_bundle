@@ -104,6 +104,7 @@ class SelectDevices extends Component {
                   confirmText={"\u2714"}
                   stickyFooterComponent={
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark
                       style={styles.button}
                       function={() => this.DeviceSection._submitSelection()}
@@ -156,6 +157,7 @@ class SelectDevices extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
             function={() => this.props._handleSideMenuState(false)}

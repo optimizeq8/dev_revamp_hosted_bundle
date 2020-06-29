@@ -24,6 +24,8 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
@@ -76,6 +78,9 @@ import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { globalColors } from "../../../../GlobalStyles";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -166,7 +171,9 @@ class AdDesign extends Component {
           ? this.selectedCampaign.headline
           : this.props.data && this.props.data.headline
           ? this.props.data.headline
-          : this.props.data.name,
+          : this.props.mainBusiness.businessname !== this.props.data.name
+          ? this.props.data.name
+          : "",
       },
       objective: this.rejected
         ? this.selectedCampaign.objective
@@ -683,7 +690,14 @@ class AdDesign extends Component {
         .map((collection) => collection.collection_attachment)
         .includes("BLANK");
     let swipeUpError = null;
-    if (
+
+    if (brandHeadlineError) {
+      showMessage({
+        message: translate(brandHeadlineError),
+        position: "top",
+        type: "warning",
+      });
+    } else if (
       // !this.rejected &&
       this.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
@@ -830,12 +844,6 @@ class AdDesign extends Component {
           this.state.brandHeadlineError ||
           this.state.swipeUpError,
       });
-      segmentEventTrack("Ad Design Submit Error", {
-        campaign_brand_name_error: this.state.brand_nameError,
-        campaign_headline_error: this.state.headlineError,
-        campaign_media_error: this.state.mediaError,
-        campaign_swipeUp_error: this.state.swipeUpError,
-      });
     }
     if (
       // !this.props.loadingStoryAdsArray.includes(true) &&
@@ -845,16 +853,6 @@ class AdDesign extends Component {
         !this.state.mediaError) ||
       (this.state.objective !== "BRAND_AWARENESS" && !this.state.swipeUpError)
     ) {
-      Segment.trackWithProperties("Ad Design Submitted", {
-        business_name: this.props.mainBusiness.businessname,
-      });
-      Segment.trackWithProperties("Completed Checkout Step", {
-        checkout_id: this.props.campaign_id,
-        step: 3,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_brand_name: this.state.campaignInfo.brand_name,
-        campaign_headline: this.state.campaignInfo.headline,
-      });
       await formatMedia(
         this.state.iosVideoUploaded,
         this.adType,
@@ -960,7 +958,6 @@ class AdDesign extends Component {
           videoIsLoading: false,
         })
       : this.props.navigation.goBack();
-    console.log("asssss");
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
@@ -1222,6 +1219,11 @@ class AdDesign extends Component {
 
     let inputFields = ["Business Name", "Promotional Message"].map((field) => (
       <PenIconBrand
+        disabled={
+          this.props.loading ||
+          (this.props.loadingStoryAdsArray.length > 0 &&
+            this.props.loadingStoryAdsArray.includes(true))
+        }
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -1245,6 +1247,7 @@ class AdDesign extends Component {
         selectedCampaign={this.selectedCampaign}
         collIdx={collIdx}
         screenProps={this.props.screenProps}
+        disabled={this.props.loading}
       />
     ));
 
@@ -1258,10 +1261,7 @@ class AdDesign extends Component {
     );
 
     return (
-      <SafeAreaView
-        style={styles.mainSafeArea}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.mainSafeArea}>
         <NavigationEvents
           onDidFocus={this.handleAdDesignFocus}
           onDidBlur={this.handleAdDesignBlur}
@@ -1271,8 +1271,12 @@ class AdDesign extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
+        <SafeAreaView
+          style={styles.safeAreaView}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <Container style={styles.container}>
-          <CustomHeader
+          <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
@@ -1281,6 +1285,10 @@ class AdDesign extends Component {
               source: "ad_design",
               source_action: "a_go_back",
             }}
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            adType={this.adType}
+            currentScreen="Compose"
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
@@ -1326,6 +1334,11 @@ class AdDesign extends Component {
                   ) : (
                     !videoIsLoading && (
                       <MediaButton
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
                         screenProps={this.props.screenProps}
                         type={"media"}
                         setMediaModalVisible={this.setMediaModalVisible}
@@ -1368,8 +1381,18 @@ class AdDesign extends Component {
                     adType={this.adType}
                     media={media}
                     call_to_action={call_to_action}
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                   />
                   <TouchableOpacity
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
                     onPress={this.handleSupportPage}
                     style={{
                       position: "absolute",
@@ -1389,46 +1412,94 @@ class AdDesign extends Component {
 
           <Footer style={styles.footerStyle}>
             <View style={styles.footerButtonsContainer}>
-              {this.props.loadingStoryAdsArray.length > 0 &&
-              this.props.loadingStoryAdsArray.includes(true) ? (
-                <CircleLoader
-                  mainViewStyle={{ width: wp(8), height: hp(8) }}
-                  bottom={-0.2}
-                  loop={true}
-                  style={{ width: wp(8), height: hp(8) }}
-                />
-              ) : (
-                <>
+              {
+                <View
+                  style={{
+                    // width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                  }}
+                >
                   {this.adType === "StoryAd" ? (
                     validCards.length >= 3 && (
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                          segmentEventTrack(
-                            "Button clicked to preview Story Ad Design"
-                          );
-                          this.previewHandler();
-                        }}
-                      >
-                        <EyeIcon width={65} height={65} />
-                      </TouchableOpacity>
+                      <GradientButton
+                        text={translate("Preview")}
+                        uppercase
+                        transparent
+                        style={[styles.button, { width: "45%" }]}
+                        disabledGradientBegin={"rgba(0,0,0,0)"}
+                        disabledGradientEnd={"rgba(0,0,0,0)"}
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
+                        onPressAction={this.previewHandler}
+                      />
                     )
                   ) : (
-                    <TouchableOpacity
+                    <GradientButton
+                      text={translate("Preview")}
+                      uppercase
+                      transparent
                       style={styles.button}
-                      onPress={() => {
-                        segmentEventTrack(
-                          "Button clicked to preview Ad Design"
-                        );
-                        this.previewHandler();
-                      }}
-                    >
-                      <EyeIcon width={65} height={65} />
-                    </TouchableOpacity>
+                      disabledGradientBegin={"rgba(0,0,0,0)"}
+                      disabledGradientEnd={"rgba(0,0,0,0)"}
+                      disabled={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
+                      onPressAction={this.previewHandler}
+                    />
                   )}
                   {this.adType === "StoryAd" ? (
-                    true ? (
+                    this.props.loading ||
+                    (this.props.loadingStoryAdsArray.length > 0 &&
+                      this.props.loadingStoryAdsArray.includes(true)) ? (
+                      <View
+                        style={{
+                          width: "47%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.uploadingText}>
+                          {translate("Uploading")}
+                        </Text>
+                        <View>
+                          <AnimatedCircularProgress
+                            size={50}
+                            width={5}
+                            fill={Math.round(this.state.loaded)}
+                            rotation={360}
+                            lineCap="round"
+                            tintColor={globalColors.orange}
+                            backgroundColor="rgba(255,255,255,0.3)"
+                            adDetails={false}
+                          />
+                          <Text style={styles.uplaodPercentageText}>
+                            {Math.round(this.state.loaded, 2)}
+                            <Text style={styles.percentage}>%</Text>
+                          </Text>
+                        </View>
+                      </View>
+                    ) : true ? (
                       <LowerButton
+                        screenProps={this.props.screenProps}
+                        text={"Next"}
+                        screenProps={this.props.screenProps}
+                        disabled={
+                          this.props.loading ||
+                          (this.props.loadingStoryAdsArray.length > 0 &&
+                            this.props.loadingStoryAdsArray.includes(true))
+                        }
+                        width={15}
+                        height={15}
                         function={() => {
                           this.handleUpload();
                           _handleSubmission(
@@ -1454,7 +1525,10 @@ class AdDesign extends Component {
                             this.props.screenProps
                           );
                         }}
-                        style={[styles.proceedButtonRTL]}
+                        style={[
+                          styles.proceedButtonRTL,
+                          { alignSelf: "flex-end", width: "47%" },
+                        ]}
                       />
                     ) : (
                       <Text style={styles.footerTextStyle}>
@@ -1471,6 +1545,13 @@ class AdDesign extends Component {
                     )
                   ) : (
                     <SubmitButton
+                      screenProps={this.props.screenProps}
+                      loading={
+                        this.props.loading ||
+                        (this.props.loadingStoryAdsArray.length > 0 &&
+                          this.props.loadingStoryAdsArray.includes(true))
+                      }
+                      loaded={loaded}
                       _handleSubmission={() =>
                         _handleSubmission(
                           this.adType,
@@ -1498,8 +1579,8 @@ class AdDesign extends Component {
                       adType={this.adType}
                     />
                   )}
-                </>
-              )}
+                </View>
+              }
             </View>
           </Footer>
         </Container>
@@ -1560,16 +1641,7 @@ class AdDesign extends Component {
             this.handleDownloadMediaCollectionAds
           }
         />
-        <LoadingModal
-          videoUrlLoading={videoUrlLoading}
-          loading={this.props.loading}
-          isVisible={isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={loaded}
-          screenProps={this.props.screenProps}
-        />
-      </SafeAreaView>
+      </View>
     );
   }
 }
