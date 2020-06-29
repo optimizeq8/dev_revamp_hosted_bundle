@@ -295,7 +295,7 @@ class App extends React.Component {
     segmentEventTrack("Notification received");
     // console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
     // console.log(handleScreen.notification.request.content.data.screenName);
-
+    this.setState({ notificationData: handleScreen });
     if (handleScreen.data) {
       store.dispatch(
         actionCreators.checkNotification(
