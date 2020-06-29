@@ -121,8 +121,11 @@ export const _pickImage = async (
               ) {
                 //check for aspect ration incase user undos the cropping
                 setTheState({
-                  mediaError:
-                    "Image's aspect ratio must be 1:1\nwith a minimum size of 500px x 500px.",
+                  mediaError: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
+                    media_option === "single"
+                      ? "500px x 500px"
+                      : "600px x 600px"
+                  }.`,
                   media: "//",
                   media_type: "",
                 });
@@ -134,18 +137,22 @@ export const _pickImage = async (
 
                 return Promise.reject({
                   wrongAspect: true,
-                  message:
-                    "Image's aspect ratio must be 1:1\nwith a minimum size of 500px x 500px",
+                  message: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
+                    media_option === "single"
+                      ? "500px x 500px"
+                      : "600px x 600px"
+                  }`,
                 });
               }
+              let size =
+                media_option === "single"
+                  ? { width: 500, height: 500 }
+                  : { width: 600, height: 600 };
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.uri,
                 [
                   {
-                    resize: {
-                      width: 500,
-                      height: 500,
-                    },
+                    resize: size,
                   },
                 ],
                 {
@@ -302,15 +309,20 @@ export const _pickImage = async (
             exportType: SerializationExportType.OBJECT,
           },
         };
+        //FOR VIDEO CAROUSEL RATIO  SHOULD BE ONLY BE 1:1
+        let ratio =
+          media_option === "single"
+            ? [
+                { width: 16, height: 9 },
+                { width: 4, height: 5 },
+                { width: 1, height: 1 },
+              ]
+            : [{ width: 1, height: 1 }];
         let uneditedImageUri = result.uri;
         let vConfiguration: Configuration = {
           forceCrop: true,
           transform: {
-            items: [
-              { width: 16, height: 9 },
-              { width: 4, height: 5 },
-              { width: 1, height: 1 },
-            ],
+            items: ratio,
           },
           sticker: {
             personalStickers: true,
