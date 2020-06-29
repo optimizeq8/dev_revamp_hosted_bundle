@@ -34,6 +34,7 @@ import isUndefined from "lodash/isUndefined";
 //Redux
 import { connect } from "react-redux";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -132,7 +133,52 @@ class SwipeUpDestination extends Component {
       }
     );
   };
-
+  handleSideMenu = (isOpen) => {
+    if (isOpen === false)
+      this.setState({ sidemenustate: isOpen }, () => {
+        analytics.track(`ad_swipe_up_destination`, {
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
+          source: "ad_swipe_up_destination",
+          source_action: "a_swipe_up_destination",
+          campaign_swipe_up_destination: "",
+          campaign_objective: this.props.navigation.getParam(
+            "objective",
+            "objective"
+          ),
+        });
+        Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
+          category: "Campaign Creation",
+          channel: "snapchat",
+        });
+      });
+    else {
+      if (this.state.selected === "REMOTE_WEBPAGE")
+        analytics.track(`ad_swipe_up_destination`, {
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
+          source: "ad_swipe_up_destination",
+          source_action: "a_swipe_up_destination",
+          campaign_swipe_up_destination: "Website",
+          campaign_objective: this.props.navigation.getParam(
+            "objective",
+            "objective"
+          ),
+        });
+      else
+        analytics.track(`ad_swipe_up_destination`, {
+          campaign_channel: "snapchat",
+          campaign_ad_type: this.props.navigation.getParam("adType", "SnapAd"),
+          source: "ad_swipe_up_destination",
+          source_action: "a_swipe_up_destination",
+          campaign_swipe_up_destination: "Deep link",
+          campaign_objective: this.props.navigation.getParam(
+            "objective",
+            "objective"
+          ),
+        });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     let storyAd = this.adType === "StoryAd";
@@ -225,71 +271,17 @@ class SwipeUpDestination extends Component {
         break;
       }
     }
+
     return (
-      <SafeAreaView
-        style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaViewContainer}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <Container style={styles.container}>
           <Sidemenu
-            onChange={(isOpen) => {
-              if (isOpen === false)
-                this.setState({ sidemenustate: isOpen }, () => {
-                  analytics.track(`ad_swipe_up_destination`, {
-                    campaign_channel: "snapchat",
-                    campaign_ad_type: this.props.navigation.getParam(
-                      "adType",
-                      "SnapAd"
-                    ),
-                    source: "ad_swipe_up_destination",
-                    source_action: "a_swipe_up_destination",
-                    campaign_swipe_up_destination: "",
-                    campaign_objective: this.props.navigation.getParam(
-                      "objective",
-                      "objective"
-                    ),
-                  });
-                  Segment.screenWithProperties(
-                    "Snap Ad Traffic SwipeUp Selection",
-                    {
-                      category: "Campaign Creation",
-                      channel: "snapchat",
-                    }
-                  );
-                });
-              else {
-                if (this.state.selected === "REMOTE_WEBPAGE")
-                  analytics.track(`ad_swipe_up_destination`, {
-                    campaign_channel: "snapchat",
-                    campaign_ad_type: this.props.navigation.getParam(
-                      "adType",
-                      "SnapAd"
-                    ),
-                    source: "ad_swipe_up_destination",
-                    source_action: "a_swipe_up_destination",
-                    campaign_swipe_up_destination: "Website",
-                    campaign_objective: this.props.navigation.getParam(
-                      "objective",
-                      "objective"
-                    ),
-                  });
-                else
-                  analytics.track(`ad_swipe_up_destination`, {
-                    campaign_channel: "snapchat",
-                    campaign_ad_type: this.props.navigation.getParam(
-                      "adType",
-                      "SnapAd"
-                    ),
-                    source: "ad_swipe_up_destination",
-                    source_action: "a_swipe_up_destination",
-                    campaign_swipe_up_destination: "Deep link",
-                    campaign_objective: this.props.navigation.getParam(
-                      "objective",
-                      "objective"
-                    ),
-                  });
-              }
-            }}
+            style={{ backgroundColor: "red" }}
+            onChange={this.handleSideMenu}
             menuPosition={I18nManager.isRTL ? "left" : "right"}
             disableGestures={true}
             isOpen={this.state.sidemenustate}
@@ -297,17 +289,33 @@ class SwipeUpDestination extends Component {
             openMenuOffset={wp(85)}
             screenProps={this.props.screenProps}
           >
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              title={"Swipe Up destination"}
-              navigation={this.props.navigation}
-              segment={{
-                source: "ad_swipe_up_destination",
-                source_action: "a_go_back",
-              }}
-            />
-
+            {!this.props.rejCampaign ? (
+              <TopStepsHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                segment={{
+                  source: "ad_swipe_up_destination",
+                  source_action: "a_go_back",
+                }}
+                icon="snapchat"
+                navigation={this.props.navigation}
+                adType={this.adType}
+                currentScreen="Compose"
+                actionButton={this.toggleAdSelection}
+                title={"Swipe Up destination"}
+              />
+            ) : (
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                title={"Swipe Up destination"}
+                navigation={this.props.navigation}
+                segment={{
+                  source: "ad_swipe_up_destination",
+                  source_action: "a_go_back",
+                }}
+              />
+            )}
             <Content contentContainerStyle={styles.contentContainer}>
               {!isNull(this.state.media) &&
                 !isUndefined(this.state.media) &&
@@ -325,7 +333,7 @@ class SwipeUpDestination extends Component {
             </Content>
           </Sidemenu>
         </Container>
-      </SafeAreaView>
+      </View>
     );
   }
 }

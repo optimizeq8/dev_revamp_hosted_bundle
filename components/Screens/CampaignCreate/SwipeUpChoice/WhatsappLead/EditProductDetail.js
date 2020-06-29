@@ -20,7 +20,7 @@ export default class EditProductDetail extends React.Component {
       item: {},
       cartList: [],
       productNameError: true,
-      priceError: true
+      priceError: true,
     };
   }
   componentDidMount() {
@@ -34,7 +34,7 @@ export default class EditProductDetail extends React.Component {
       productNameError:
         !item.productName ||
         (item.productName && item.productName.length === 0),
-      priceError: !item.price || (item.price && item.price.length === 0)
+      priceError: !item.price || (item.price && item.price.length === 0),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -60,27 +60,27 @@ export default class EditProductDetail extends React.Component {
     ) {
       segmentEventTrack("Error Submit Edit SME Product Item", {
         campaign_error_sme_product_item: "Please enter a valid price",
-        campaign_sme_product_item_price: this.state.item.price
+        campaign_sme_product_item_price: this.state.item.price,
       });
       showMessage({
         message: translate("Please enter a valid price"),
         position: "top",
         description: translate("eg 1 1500  1000 10000500"),
-        type: "warning"
+        type: "warning",
       });
     } else {
       const newList = [...this.state.cartList];
       const index = findIndex(
         newList,
-        item => item.imageId === this.state.item.imageId
+        (item) => item.imageId === this.state.item.imageId
       );
       newList[index] = this.state.item;
       // console.log('newList', newList);
       segmentEventTrack("Submitted Edit SME Product Item Success", {
-        campaign_sme_product_item: { ...this.state.item }
+        campaign_sme_product_item: { ...this.state.item },
       });
       this.props.navigation.navigate("SelectedInstagramProductsList", {
-        selectetedItems: newList
+        selectetedItems: newList,
       });
     }
   };
@@ -97,7 +97,7 @@ export default class EditProductDetail extends React.Component {
             screenProps={this.props.screenProps}
             title={["SME Growth", "Campaign"]}
             segment={{
-              str: "Edit Product Detail Back Button"
+              str: "Edit Product Detail Back Button",
             }}
             closeButton={false}
             navigation={this.props.navigation}
@@ -120,7 +120,7 @@ export default class EditProductDetail extends React.Component {
                         </View>
                         <Item
                           style={[
-                            styles.input
+                            styles.input,
                             // this.state.urlError
                             //     ? GlobalStyles.redBorderColor
                             //     : GlobalStyles.transparentBorderColor
@@ -133,13 +133,13 @@ export default class EditProductDetail extends React.Component {
                             value={this.state.item.productName}
                             autoCorrect={false}
                             autoCapitalize="none"
-                            onChangeText={value => {
+                            onChangeText={(value) => {
                               this.setState({
                                 item: {
                                   ...this.state.item,
-                                  productName: value
+                                  productName: value,
                                 },
-                                productNameError: value.length === 0
+                                productNameError: value.length === 0,
                               });
                             }}
                             onBlur={() => {
@@ -147,7 +147,7 @@ export default class EditProductDetail extends React.Component {
                                 "Changed Product Name Sme Growth",
                                 {
                                   campaign_sme_product_item_name: this.state
-                                    .item.productName
+                                    .item.productName,
                                 }
                               );
                             }}
@@ -165,7 +165,7 @@ export default class EditProductDetail extends React.Component {
                         </View>
                         <Item
                           style={[
-                            styles.input
+                            styles.input,
                             // this.state.urlError
                             //     ? GlobalStyles.redBorderColor
                             //     : GlobalStyles.transparentBorderColor
@@ -179,13 +179,13 @@ export default class EditProductDetail extends React.Component {
                             value={this.state.item.price}
                             autoCorrect={false}
                             autoCapitalize="none"
-                            onChangeText={value => {
+                            onChangeText={(value) => {
                               this.setState({
                                 item: {
                                   ...this.state.item,
-                                  price: value
+                                  price: value,
                                 },
-                                priceError: value.length === 0
+                                priceError: value.length === 0,
                               });
                             }}
                             onBlur={() => {
@@ -193,7 +193,7 @@ export default class EditProductDetail extends React.Component {
                                 "Changed Product Price Sme Growth",
                                 {
                                   campaign_sme_product_item_price: this.state
-                                    .item.price
+                                    .item.price,
                                 }
                               );
                             }}
@@ -206,6 +206,7 @@ export default class EditProductDetail extends React.Component {
                   {/* {!this.state.productNameError && !this.state.priceError && ( */}
                   <View style={styles.bottonViewWebsite}>
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark={true}
                       bottom={0}
                       function={this._handleSubmission}

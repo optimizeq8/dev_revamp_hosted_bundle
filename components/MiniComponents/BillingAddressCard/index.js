@@ -380,6 +380,7 @@ class BillingAddressCard extends React.Component {
             />
           ) : (
             <LowerButton
+              screenProps={this.props.screenProps}
               checkmark
               function={() => this._handleSubmission()}
               style={[

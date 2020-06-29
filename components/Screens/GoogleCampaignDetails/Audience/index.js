@@ -709,6 +709,7 @@ class GoogleAdTargetting extends Component {
                         />
                       </Content>
                       <LowerButton
+                        screenProps={this.props.screenProps}
                         style={styles.proceedButtonRTL}
                         bottom={4}
                         function={this.setModalVisible}
@@ -745,6 +746,7 @@ class GoogleAdTargetting extends Component {
                         />
                       </Content>
                       <LowerButton
+                        screenProps={this.props.screenProps}
                         style={styles.proceedButtonRTL}
                         bottom={4}
                         function={() => {

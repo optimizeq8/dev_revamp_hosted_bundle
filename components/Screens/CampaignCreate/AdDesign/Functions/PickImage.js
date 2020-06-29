@@ -232,11 +232,7 @@ export const _pickImage = async (
                 source_action: "a_media_editor",
                 image_for: "campaign_story_ad",
               });
-              segmentEventTrack("Selected Story Ad Image Successful");
-              segmentEventTrack("Selected Story Ad serialization", {
-                index: storyAdCards.selectedStoryAd.index,
-                ...result.serialization,
-              });
+
               cards[storyAdCards.selectedStoryAd.index] = card;
               setTheState({
                 storyAdCards: {

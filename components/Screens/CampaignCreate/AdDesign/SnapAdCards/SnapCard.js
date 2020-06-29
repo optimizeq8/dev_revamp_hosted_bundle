@@ -12,13 +12,13 @@ import PenIcon from "../../../../../assets/SVGs/Pen.svg";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 import segmentEventTrack from "../../../../segmentEventTrack";
 class SnapCard extends Component {
-  state = { uploading: false };
+  state = { uploading: false, showDelete: false };
   render() {
     let {
       snapCardInfo,
       removeSnapCard,
       _handleStoryAdCards,
-      rejected
+      rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
     let videoPlayer = this.props.loadingStoryAdsArray[
@@ -31,7 +31,7 @@ class SnapCard extends Component {
             (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
               snapCardInfo.item.uploaded)
               ? snapCardInfo.item["media"]
-              : "//"
+              : "//",
         }}
         shouldPlay={false}
         isMuted
@@ -41,15 +41,21 @@ class SnapCard extends Component {
     );
 
     return (
-      <View style={styles.SnapAdCard}>
+      <TouchableOpacity
+        disabled={this.props.loadingStoryAdsArray.includes(true)}
+        style={styles.SnapAdCard}
+        onLongPress={() => {
+          this.setState({ showDelete: true });
+        }}
+      >
         <View
           style={{
             height: "100%",
             width: "100%",
-            borderRadius: 15,
+            borderRadius: 20,
             overflow: "hidden",
             opacity: 0.5,
-            position: "absolute"
+            position: "absolute",
           }}
         >
           {snapCardInfo.item.media_type === "VIDEO" ? (
@@ -64,12 +70,12 @@ class SnapCard extends Component {
               style={{
                 height: "100%",
                 width: "100%",
-                position: "absolute"
+                position: "absolute",
               }}
             />
           )}
         </View>
-        <View
+        <TouchableOpacity
           style={{
             width: 25,
             height: 25,
@@ -77,11 +83,30 @@ class SnapCard extends Component {
             justifyContent: "center",
             borderRadius: 50,
             backgroundColor: globalColors.orange,
-            bottom: "10%"
+            bottom: "15%",
+          }}
+          onLongPress={() => {
+            snapCardInfo.item.media !== "//" &&
+              this.setState({ showDelete: true });
+          }}
+          onPress={() => {
+            if (
+              this.state.showDelete &&
+              !this.props.loadingStoryAdsArray[snapCardInfo.index]
+            ) {
+              this.props.deleteStoryAdCard(
+                snapCardInfo.item.story_id,
+                snapCardInfo,
+                removeSnapCard
+              );
+              this.setState({ showDelete: false });
+            }
           }}
         >
-          <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
-        </View>
+          <Text style={{ color: "#fff" }}>
+            {this.state.showDelete ? "X" : snapCardInfo.index + 1}
+          </Text>
+        </TouchableOpacity>
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
           snapCardInfo.item.media === "//" ? (
             <MediaButton
@@ -96,12 +121,16 @@ class SnapCard extends Component {
             />
           ) : (
             <TouchableOpacity
+              onLongPress={() => {
+                snapCardInfo.item.media !== "//" &&
+                  this.setState({ showDelete: !this.state.showDelete });
+              }}
               onPress={() => {
                 segmentEventTrack("Button clicked to edit snap story ad card");
 
                 _handleStoryAdCards({
                   index: snapCardInfo.index,
-                  ...snapCardInfo.item
+                  ...snapCardInfo.item,
                 });
               }}
               style={{
@@ -110,18 +139,19 @@ class SnapCard extends Component {
                 height: "100%",
                 position: "absolute",
                 bottom: 0,
-                paddingBottom: 10
+                paddingBottom: 10,
+                width: "100%",
               }}
             >
-              <Text
+              {/* <Text
                 style={[
                   styles.mediaButtonMsg,
-                  { fontSize: 11, width: 65, textAlign: "left", top: 0 }
+                  { fontSize: 11, width: 65, textAlign: "left", top: 0 },
                 ]}
               >
                 {translate("Edit Media")}
               </Text>
-              <PenIcon width={15} height={15} />
+              <PenIcon width={15} height={15} /> */}
             </TouchableOpacity>
           )
         ) : (
@@ -135,7 +165,7 @@ class SnapCard extends Component {
             </Text>
           </>
         )}
-        {snapCardInfo.index > 2 && (
+        {/* {snapCardInfo.index > 2 && (
           <Icon
             onPress={() => {
               //   this.props.cancelUpload();
@@ -155,19 +185,19 @@ class SnapCard extends Component {
               alignSelf: "flex-start"
             }}
           />
-        )}
-      </View>
+        )} */}
+      </TouchableOpacity>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   storyAdsArray: state.campaignC.storyAdsArray,
-  loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray
+  loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   deleteStoryAdCard: (story_id, card, removeCard) =>
-    dispatch(actionCreators.deleteStoryAdCard(story_id, card, removeCard))
+    dispatch(actionCreators.deleteStoryAdCard(story_id, card, removeCard)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SnapCard);

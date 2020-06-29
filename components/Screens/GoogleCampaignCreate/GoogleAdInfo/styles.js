@@ -1,34 +1,34 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
-    height: "100%"
+    height: "100%",
   },
   container: {
     backgroundColor: "#0000",
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   backDrop: {
     position: "absolute",
     top: hp(5) < 30 ? -hp("73%") : -hp("63%"),
-    alignSelf: "center"
+    alignSelf: "center",
   },
   googleIcon: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   mainContent: {
     paddingBottom: hp(35),
     paddingTop: 20,
-    paddingHorizontal: 26
+    paddingHorizontal: 26,
   },
   scrollViewStyle: {
-    marginTop: 15
+    marginTop: 15,
   },
   inputViewContainer: {
     borderTopLeftRadius: 150,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 20,
-    zIndex: 1
+    zIndex: 1,
   },
   input1: {
     marginBottom: 30,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: 300,
     borderColor: "transparent",
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 30
+    borderRadius: 30,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 30,
     marginBottom: 0,
-    height: 20
+    height: 20,
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 10,
     borderBottomColor: "transparent",
-    height: 50
+    height: 50,
   },
   input2: {
     backgroundColor: "rgba(0, 0, 0, 0.2)",
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 50,
     marginBottom: 20,
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   label: {
     fontFamily: "montserrat-regular",
@@ -87,21 +87,21 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    width: "100%"
+    width: "100%",
   },
   downicon: {
     color: "#fff",
-    fontSize: 20
+    fontSize: 20,
   },
   popupOverlay: {
-    height: "100%"
+    height: "100%",
   },
   topContainer: {
     paddingVertical: 10,
     // width: 300,
     width: "100%",
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   choiceButtonRight: {
     borderTopStartRadius: 0,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 40,
     borderTopEndRadius: 40,
     width: "50%",
-    height: 60
+    height: 60,
   },
   choiceButtonLeft: {
     borderBottomEndRadius: 0,
@@ -118,32 +118,32 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 40,
     width: "50%",
 
-    height: 60
+    height: 60,
   },
   inactiveButton: {
     backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   activeButton: {
     backgroundColor: "#FF9D00",
 
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   inactiveText: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "rgba(255,255,255,0.4)",
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   activeText: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
 
   dateTextLabel: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   countryTextLabel: {
     marginTop: 30,
@@ -169,22 +169,22 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   languageChoiceView: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   languageChoiceText: {
     color: "#FFFFFF",
     fontSize: 12,
     fontFamily: "montserrat-bold",
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   proceedButtonRTL: {
     width: 55,
-    height: 55
-  }
+    height: 55,
+  },
 });
 
 export default styles;

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
-import { BlurView } from "expo-blur";
+
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import { BlurView } from "@react-native-community/blur";
 
 import styles from "./styles";
 export default class LoadingModal extends Component {
@@ -24,7 +25,11 @@ export default class LoadingModal extends Component {
         onDismiss={() => onToggleModal(false)}
         animationType={"slide"}
       >
-        <BlurView intensity={95} tint="dark">
+        <BlurView
+          blurType="dark"
+          blurAmount={20}
+          reducedTransparencyFallbackColor="black"
+        >
           <SafeAreaView
             forceInset={{ top: "always" }}
             style={styles.loadingSafeArea}

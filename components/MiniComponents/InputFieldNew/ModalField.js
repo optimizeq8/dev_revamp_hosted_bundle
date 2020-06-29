@@ -49,7 +49,7 @@ export default class ModalField extends Component {
       valueError,
       icon,
       isVisible,
-      stateName
+      stateName,
     } = this.props;
     let FieldIcon = icon ? icon : null;
     return (
@@ -74,7 +74,7 @@ export default class ModalField extends Component {
             <Text style={[styles.inputLabel, GlobalStyles.whiteTextColor]}>
               {translate(label)}
             </Text>
-            <Text style={styles.inputText}>
+            <Text style={[styles.inputText, { textAlign: "left" }]}>
               {stateName === "businesscategory" || stateName === "area"
                 ? valueText
                 : translate(valueText)}
@@ -101,5 +101,5 @@ ModalField.propTypes = {
   //the function that opens the modal
   setModalVisible: PropTypes.func,
   //the value that shows on the input field when modal is being used
-  valueText: PropTypes.string
+  valueText: PropTypes.string,
 };

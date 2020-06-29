@@ -13,7 +13,7 @@ import CheckMarkLoading from "../../../../MiniComponents/CheckMarkLoading";
 import * as actionCreators from "../.././../../../store/actions";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import PenIcon from "../../../../../assets/SVGs/Pen";
 import isStringArabic from "../../../../isStringArabic";
@@ -25,7 +25,7 @@ class ProductList extends React.Component {
     super(props);
     this.state = {
       cartList: [],
-      disable: true
+      disable: true,
     };
   }
   componentDidMount() {
@@ -33,7 +33,7 @@ class ProductList extends React.Component {
     const list = this.props.navigation.getParam("selectetedItems", []);
     // console.log("list", list);
     this.setState({
-      cartList: list
+      cartList: list,
     });
     // console.log('data', this.props.data);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -47,15 +47,15 @@ class ProductList extends React.Component {
     return true;
   };
 
-  editItem = item => {
+  editItem = (item) => {
     segmentEventTrack("Clicked on edit item details", {
       campaign_sme_product_item: {
-        ...item
-      }
+        ...item,
+      },
     });
     this.props.navigation.navigate("EditProductDetailInstagramPost", {
       cartList: this.state.cartList,
-      item: item
+      item: item,
     });
   };
   _handleSubmission = () => {
@@ -90,7 +90,7 @@ class ProductList extends React.Component {
             // // console.log(' disable', includes(checkIfHasKeyProductName, false));
 
             this.setState({
-              cartList: list
+              cartList: list,
               // disable: includes(checkIfHasKeyProductName, false)
             });
           }}
@@ -102,7 +102,7 @@ class ProductList extends React.Component {
             closeButton={false}
             navigation={this.props.navigation}
             segment={{
-              str: "Products List Back Button"
+              str: "Products List Back Button",
             }}
           />
           <Content style={styles.contentStyle}>
@@ -110,7 +110,7 @@ class ProductList extends React.Component {
               {translate("Add product names and prices for each product")}
             </Text>
             <Content contentContainerStyle={styles.contentContainerStyle}>
-              {this.state.cartList.map(item => {
+              {this.state.cartList.map((item) => {
                 // const itemFound = findIndex(this.state.cartList, it => it.id === item.id);
                 // console.log('itemFound', itemFound);
 
@@ -119,7 +119,7 @@ class ProductList extends React.Component {
                     <View style={styles.productImageView}>
                       <Image
                         source={{
-                          uri: item.imageUrl
+                          uri: item.imageUrl,
                         }}
                         width={"100%"}
                         height={"100%"}
@@ -136,9 +136,9 @@ class ProductList extends React.Component {
                               : translate("Product Name")
                           )
                             ? "montserrat-semibold"
-                            : "montserrat-bold-english"
+                            : "montserrat-bold-english",
                         },
-                        styles.productNameText
+                        styles.productNameText,
                       ]}
                     >
                       {item.productName
@@ -172,6 +172,7 @@ class ProductList extends React.Component {
                 />
               ) : (
                 <LowerButton
+                  screenProps={this.props.screenProps}
                   // disabled={this.state.disable}
                   checkmark={true}
                   bottom={0}
@@ -185,21 +186,21 @@ class ProductList extends React.Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   savingWebProducts: state.campaignC.savingWebProducts,
   productInfoId: state.campaignC.productInfoId,
   businessLogo: state.campaignC.businessLogo,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
   // weburlAvalible: state.campaignC.weburlAvalible,
   // mainBusiness: state.account.mainBusiness,
   // errorInstaHandle: state.campaignC.errorInstaHandle,
   // errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
 });
-const mapDispatchToProps = dispatch => ({
-  verifyBusinessUrl: weburl =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyBusinessUrl: (weburl) =>
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
-  verifyInstagramHandle: insta_handle =>
+  verifyInstagramHandle: (insta_handle) =>
     dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
   saveWebProducts: (
     cartList,
@@ -218,6 +219,6 @@ const mapDispatchToProps = dispatch => ({
         businessLogo,
         from
       )
-    )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

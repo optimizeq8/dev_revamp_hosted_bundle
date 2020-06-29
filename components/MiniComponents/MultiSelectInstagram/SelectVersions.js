@@ -27,14 +27,14 @@ class SelectVersions extends Component {
     versions: [],
     os_version_min: "",
     os_version_max: "",
-    selectedItems: []
+    selectedItems: [],
   };
 
   componentDidMount() {
     Segment.screen("OS Versions");
     this.props.getOSVersion(this.props.OSType);
     this.setState({
-      selectedItems: this.props.selectedItems
+      selectedItems: this.props.selectedItems,
     });
   }
   componentDidUpdate(prevProps) {
@@ -49,7 +49,7 @@ class SelectVersions extends Component {
       });
 
       this.setState({
-        versions: [{ name: "Versions", id: 0, children }]
+        versions: [{ name: "Versions", id: 0, children }],
       });
     } else if (
       this.props.OSType === "Android" &&
@@ -62,11 +62,11 @@ class SelectVersions extends Component {
       });
 
       this.setState({
-        versions: [{ name: "Versions", id: 0, children }]
+        versions: [{ name: "Versions", id: 0, children }],
       });
     }
   }
-  onSelectedItemsChange = selectedItems => {
+  onSelectedItemsChange = (selectedItems) => {
     if (selectedItems.length > 2) {
       return;
     } else if (selectedItems.length === 2) {
@@ -77,7 +77,7 @@ class SelectVersions extends Component {
     }
 
     this.setState({
-      selectedItems
+      selectedItems,
     });
   };
 
@@ -89,7 +89,7 @@ class SelectVersions extends Component {
       showMessage({
         message: translate("Please choose at least two versions"),
         type: "warning",
-        position: "top"
+        position: "top",
       });
   };
   render() {
@@ -129,7 +129,7 @@ class SelectVersions extends Component {
               </View>
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
-                  ref={ref => (this.VersionSection = ref)}
+                  ref={(ref) => (this.VersionSection = ref)}
                   loading={this.state.versions.length === 0 ? true : false}
                   items={this.state.versions}
                   uniqueKey="name"
@@ -160,6 +160,7 @@ class SelectVersions extends Component {
                   styles={SectionStyle}
                   stickyFooterComponent={
                     <LowerButton
+                      screenProps={this.props.screenProps}
                       checkmark
                       style={styles.button}
                       function={() => this.VersionSection._submitSelection()}
@@ -179,7 +180,7 @@ class SelectVersions extends Component {
                   colors={colors}
                   searchPlaceholderText={translate("Search Versions")}
                   searchTextFontFamily={{
-                    fontFamily: "montserrat-regular"
+                    fontFamily: "montserrat-regular",
                   }}
                   searchIconComponent={
                     <Icon
@@ -200,7 +201,7 @@ class SelectVersions extends Component {
                   }}
                   selectChildren
                   modalAnimationType="fade"
-                  onSelectedItemsChange={items =>
+                  onSelectedItemsChange={(items) =>
                     this.onSelectedItemsChange(items, "version")
                   }
                   selectedItems={this.state.selectedItems}
@@ -212,6 +213,7 @@ class SelectVersions extends Component {
             </View>
           </View>
           <LowerButton
+            screenProps={this.props.screenProps}
             style={[styles.button]}
             checkmark={true}
             function={() => this._handleSubmission()}
@@ -222,14 +224,14 @@ class SelectVersions extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   isoVersions: state.instagramAds.isoVersions,
-  androidVersions: state.instagramAds.androidVersions
+  androidVersions: state.instagramAds.androidVersions,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getOSVersion: OSType => dispatch(actionCreators.getOSVersion(OSType))
+const mapDispatchToProps = (dispatch) => ({
+  getOSVersion: (OSType) => dispatch(actionCreators.getOSVersion(OSType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SelectVersions);

@@ -29,11 +29,10 @@ export default class MediaOptions extends Component {
       segmentEventTrack(
         ` Media Picker option selected to open gallery to upload Media `
       );
-      this.props._pickImage("Images");
+      this.props._pickImage("All");
     } else {
-      segmentEventTrack(` Image edit option selected`);
       this.props._pickImage(
-        "Images",
+        "All",
         {
           mediaUri: this.props.mediaUri,
           serialization: this.props.serialization,

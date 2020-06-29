@@ -113,6 +113,9 @@ export default class WebsiteComponent extends React.Component {
             <Input
               style={[
                 styles.inputText,
+                {
+                  fontFamily: "montserrat-light-english",
+                },
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
               ]}
               ref={"websiteField"}

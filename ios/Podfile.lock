@@ -267,13 +267,15 @@ PODS:
   - react-native-adjust (4.22.0):
     - Adjust (= 4.22.1)
     - React
+  - react-native-blur (0.8.0):
+    - React
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
   - react-native-maps (0.26.1):
     - React
   - react-native-mixpanel (1.2.0):
-    - Mixpanel (~> 3.6.0)
+    - Mixpanel (~> 3.6.1)
     - React
   - react-native-webview (8.1.1):
     - React
@@ -323,6 +325,8 @@ PODS:
     - RNAnalytics
     - Segment-Mixpanel
   - RNBootSplash (2.2.4):
+    - React
+  - RNCMaskedView (0.1.10):
     - React
   - RNDeviceInfo (5.6.1):
     - React
@@ -417,6 +421,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-adjust (from `../node_modules/react-native-adjust`)
+  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
@@ -436,6 +441,7 @@ DEPENDENCIES:
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
   - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPhotoEditorSDK (from `../node_modules/react-native-photoeditorsdk`)
@@ -555,6 +561,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-adjust:
     :path: "../node_modules/react-native-adjust"
+  react-native-blur:
+    :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-maps:
@@ -591,6 +599,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -687,9 +697,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
+  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
-  react-native-mixpanel: d644efe1ca33d2646d5cba29e24a13ebc9b37209
+  react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -705,6 +716,7 @@ SPEC CHECKSUMS:
   RNAnalytics: 0176cbd15962b36479c9ab76a2c613be9a34528c
   RNAnalyticsIntegration-Mixpanel: 2a7b237e57efc5b5a17fd028820b55d1dd0b1afb
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNPhotoEditorSDK: 8b1a9bd6ab289436edd1d6374ed65ded74f60cbc
@@ -732,6 +744,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: c038fa4f6fe64af8ca697844f69a2d164731ed93
+PODFILE CHECKSUM: 6fce40d0b4c59d10ec2b5663ed7bd9035ec8a9b4
 
 COCOAPODS: 1.9.1

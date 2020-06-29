@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 import styles from "./styles";
-import { View } from "react-native";
+import { View, Text } from "react-native";
+import { globalColors } from "../../../../GlobalStyles";
 class SubmitButton extends Component {
   submitButton = () => {
     if (this.props.adType === "CollectionAd") {
@@ -14,8 +16,12 @@ class SubmitButton extends Component {
       ) {
         return (
           <LowerButton
+            width={12}
+            height={12}
+            screenProps={this.props.screenProps}
+            text={"Next"}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       }
@@ -23,8 +29,12 @@ class SubmitButton extends Component {
       if (this.props.objective === "BRAND_AWARENESS") {
         return (
           <LowerButton
+            screenProps={this.props.screenProps}
+            text={"Next"}
+            width={12}
+            height={12}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       } else if (
@@ -33,8 +43,12 @@ class SubmitButton extends Component {
       ) {
         return (
           <LowerButton
+            width={15}
+            height={15}
+            screenProps={this.props.screenProps}
+            text={"Next"}
             function={this.props._handleSubmission}
-            style={[styles.proceedButtonRTL]}
+            style={styles.proceedButtonRTL}
           />
         );
       }
@@ -42,12 +56,45 @@ class SubmitButton extends Component {
     return;
   };
   render() {
-    return <View style={{ bottom: 3 }}>{this.submitButton()}</View>;
+    const { translate } = this.props.screenProps;
+    if (this.props.loading && this.props.loaded) {
+      return (
+        <View
+          style={{
+            width: "47%",
+            position: "relative",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.uploadingText}>{translate("Uploading")}</Text>
+          <View>
+            <AnimatedCircularProgress
+              size={50}
+              width={5}
+              fill={Math.round(this.props.loaded)}
+              rotation={360}
+              lineCap="round"
+              tintColor={globalColors.orange}
+              backgroundColor="rgba(255,255,255,0.3)"
+              adDetails={false}
+            />
+            <Text style={styles.uplaodPercentageText}>
+              {Math.round(this.props.loaded, 2)}
+              <Text style={styles.percentage}>%</Text>
+            </Text>
+          </View>
+        </View>
+      );
+    } else {
+      return <View style={{ width: "45%" }}>{this.submitButton()}</View>;
+    }
   }
 }
-const mapStateToProps = state => ({
-  collectionAdMedia: state.campaignC.collectionAdMedia
+const mapStateToProps = (state) => ({
+  collectionAdMedia: state.campaignC.collectionAdMedia,
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SubmitButton);

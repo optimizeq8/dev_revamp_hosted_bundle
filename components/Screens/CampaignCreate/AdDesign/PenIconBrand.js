@@ -18,6 +18,7 @@ export default class PenIconBrand extends Component {
       changeBusinessName,
       changeHeadline,
       storyAdSelected,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -39,20 +40,20 @@ export default class PenIconBrand extends Component {
         <View
           style={[
             { flexDirection: "column" },
-            storyAdSelected ? { opacity: 0.5 } : { opacity: 1 },
+            storyAdSelected || disabled ? { opacity: 0.5 } : { opacity: 1 },
           ]}
         >
           <Text style={[styles.inputText, styles.subtitleHeading]}>
             {translate(field)}
           </Text>
           <Input
-            disabled={storyAdSelected}
+            disabled={storyAdSelected || disabled}
             style={styles.inputText}
             maxLength={field === "Business Name" ? 25 : 34}
             placeholder={
               field === "Business Name"
                 ? translate("Enter your business name")
-                : translate("Enter your Promotional Message")
+                : translate("Shop Our Latest Collection")
             }
             value={
               field === "Business Name"

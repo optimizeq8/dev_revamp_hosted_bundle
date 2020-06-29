@@ -2,6 +2,8 @@ import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
+  heightPercentageToDP,
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
@@ -12,8 +14,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#0000",
-    height: "100%",
+    backgroundColor: "#fff",
   },
   popupOverlay: {
     height: "100%",
@@ -22,6 +23,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     fontFamily: "montserrat-bold",
+  },
+  percentage: {
+    fontSize: 8,
+    color: "#FFF",
+    fontFamily: "montserrat-bold-english",
   },
   uplaodText: {
     justifyContent: "center",
@@ -48,8 +54,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    width: "50%",
-    justifyContent: "space-evenly",
+    // width: "50%",
+    marginHorizontal: 0,
+    justifyContent: "space-around",
   },
   errorMsg: {
     textAlign: "center",
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
   },
   mainSafeArea: {
     height: "100%",
-    backgroundColor: "#0000",
+    // backgroundColor: "#0000",
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
   },
   inputMiddleButton: {
     position: "absolute",
-    backgroundColor: globalColors.orange,
+    backgroundColor: globalColors.transparent,
     alignSelf: "center",
     width: 90,
     height: 90,
@@ -277,7 +284,11 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "center",
-    width: 50,
+    borderWidth: 1,
+    borderColor: globalColors.white,
+    width: "45%",
+    height: 50,
+    marginHorizontal: 0,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
@@ -299,6 +310,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderTopWidth: 0,
     elevation: 0,
+    // marginHorizontal: 20,
   },
   subtitleHeading: {
     textAlign: "left",
@@ -363,8 +375,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     borderColor: globalColors.orange,
     borderWidth: 2,
-    borderRadius: 15,
-    height: 150,
+    borderRadius: 20,
+    height: 100,
     width: 90,
     margin: 10,
   },
@@ -596,8 +608,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   proceedButtonRTL: {
-    width: 50,
+    // marginHorizontal: 0,
+    width: "100%",
     height: 50,
+  },
+  holdToDeleteText: {
+    color: globalColors.white,
+    fontSize: 12,
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
+  },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#FFF",
+    top: heightPercentageToDP(1.75),
+    right: 0,
+    left: 0,
+    textAlign: "center",
+  },
+  uploadingText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#FFF",
+    textTransform: "uppercase",
+    marginHorizontal: 3,
   },
 });
 

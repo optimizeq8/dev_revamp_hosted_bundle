@@ -4,7 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   I18nManager,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { Button, Text, Item, Input, Icon } from "native-base";
 import isNull from "lodash/isNull";
@@ -44,7 +44,7 @@ class MultiSelectList extends Component {
       selectedItemObjects: [],
 
       interests: [],
-      openCountryModal: false
+      openCountryModal: false,
     };
   }
   componentDidMount() {
@@ -52,7 +52,7 @@ class MultiSelectList extends Component {
     this.setState({
       selectedItems: this.props.selectedItems,
       selectedDevices: this.props.selectedDevices,
-      selectedVersions: this.props.selectedVersions
+      selectedVersions: this.props.selectedVersions,
     });
     if (this.props.option === "countries") {
       Segment.screen("Country Options");
@@ -68,7 +68,7 @@ class MultiSelectList extends Component {
           if (this.props.interests[key].length > 0) {
             interests.push({
               id: key,
-              children: this.props.interests[key]
+              children: this.props.interests[key],
             });
           }
           lenOfLists += this.props.interests[key].length;
@@ -152,6 +152,7 @@ class MultiSelectList extends Component {
           </View>
 
           <LowerButton
+            screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
             function={() => this.props._handleSideMenuState(false)}
@@ -202,14 +203,14 @@ class MultiSelectList extends Component {
     }
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
-  interests: state.instagramAds.interests
+  interests: state.instagramAds.interests,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   get_interests_instagram: () =>
-    dispatch(actionCreators.get_interests_instagram())
+    dispatch(actionCreators.get_interests_instagram()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MultiSelectList);

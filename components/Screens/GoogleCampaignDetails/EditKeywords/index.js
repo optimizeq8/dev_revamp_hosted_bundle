@@ -216,7 +216,10 @@ class EditKeywords extends Component {
                 style={{ width: wp(7), height: hp(7) }}
               />
             ) : (
-              <LowerButton function={this._handleSubmission} />
+              <LowerButton
+                screenProps={this.props.screenProps}
+                function={this._handleSubmission}
+              />
             )}
           </Container>
         </TouchableWithoutFeedback>

@@ -39,6 +39,7 @@ import {
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -111,9 +112,31 @@ class GoogleAdDesign extends Component {
         data.finalurl = data.finalurl + "/" + this.props.campaign.path1;
       if (this.props.campaign.path2)
         data.finalurl += "/" + this.props.campaign.path2;
-      this.setState({
-        ...data,
-      });
+      this.setState(
+        {
+          ...data,
+        },
+        () => {
+          // If finalurl is still emty
+          if (this.state.finalurl === "") {
+            const { websitelink, weburl } = this.props.mainBusiness;
+            //check if the business has websitelink ie(their own website)
+            if (websitelink && websitelink !== "") {
+              this.setState({
+                finalurl: websitelink,
+              });
+            }
+            // if that is also not present check if it has optimizeapp.com business website and set the finalurl to it
+            else if (weburl && weburl !== "") {
+              this.setState({
+                finalurl: weburl.includes("https")
+                  ? weburl
+                  : `https://${weburl}.optimizeapp.com`,
+              });
+            }
+          }
+        }
+      );
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -420,10 +443,8 @@ class GoogleAdDesign extends Component {
     const rejected = this.props.navigation.getParam("rejected", false);
 
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={styles.safeAreaView}>
+        <SafeAreaView style={{ backgroundColor: "#FFF" }} />
         <NavigationEvents
           onWillBlur={() => {
             this.setState({ unmounted: true });
@@ -432,20 +453,39 @@ class GoogleAdDesign extends Component {
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
-            <CustomHeader
-              closeButton={false}
-              segment={{
-                str: "Google SE Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_design",
-                source_action: "a_go_back",
-              }}
-              actionButton={rejected && this.handleModalToggle}
-              navigation={!rejected ? this.props.navigation : undefined}
-              title={"Search Engine Ad"}
-              screenProps={this.props.screenProps}
-              disabled={this.props.campaign.uploading}
-            />
+            {!rejected ? (
+              <TopStepsHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                segment={{
+                  str: "Google SE Design Back Button",
+                  obj: { businessname: this.props.mainBusiness.businessname },
+                  source: "ad_design",
+                  source_action: "a_go_back",
+                }}
+                icon="google"
+                actionButton={rejected && this.handleModalToggle}
+                navigation={!rejected ? this.props.navigation : undefined}
+                currentScreen="Compose"
+                title={"Search Engine Ad"}
+                disabled={this.props.campaign.uploading}
+              />
+            ) : (
+              <CustomHeader
+                closeButton={false}
+                segment={{
+                  str: "Google SE Design Back Button",
+                  obj: { businessname: this.props.mainBusiness.businessname },
+                  source: "ad_design",
+                  source_action: "a_go_back",
+                }}
+                actionButton={rejected && this.handleModalToggle}
+                navigation={!rejected ? this.props.navigation : undefined}
+                title={"Search Engine Ad"}
+                screenProps={this.props.screenProps}
+                disabled={this.props.campaign.uploading}
+              />
+            )}
 
             <InputScrollView
               keyboardAvoidingViewProps={{ behavior: "padding" }}
@@ -517,6 +557,7 @@ class GoogleAdDesign extends Component {
                   />
                 ) : (
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     style={styles.proceedButtonRTL}
                     bottom={2}
                     function={this._handleSubmission}
@@ -533,7 +574,7 @@ class GoogleAdDesign extends Component {
             navigation={this.props.navigation}
           />
         )}
-      </SafeAreaView>
+      </View>
     );
   }
 }

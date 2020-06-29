@@ -269,6 +269,7 @@ class PersonalInfo extends Component {
               />
             ) : (
               <LowerButton
+                screenProps={this.props.screenProps}
                 checkmark
                 bottom={-10}
                 function={this._handleSubmission}

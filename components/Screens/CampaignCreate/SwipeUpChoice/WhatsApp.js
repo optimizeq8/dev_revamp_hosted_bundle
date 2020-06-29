@@ -7,7 +7,7 @@ import {
   ScrollView,
   Platform,
   Modal,
-  I18nManager
+  I18nManager,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button, Container } from "native-base";
@@ -48,7 +48,7 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 class WhatsApp extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ class WhatsApp extends Component {
         insta_handle: "",
         callnumber: "",
         callaction: list.SnapAd[4].call_to_action_list[0],
-        googlemaplink: ""
+        googlemaplink: "",
       },
       callactions: list.SnapAd[4].call_to_action_list,
       validCallNumber: false,
@@ -67,7 +67,7 @@ class WhatsApp extends Component {
       insta_handleError: "",
       showChangeInstaHandle: false,
       inputCallToAction: false,
-      submissionLoading: false
+      submissionLoading: false,
     };
   }
   componentDidMount() {
@@ -117,8 +117,8 @@ class WhatsApp extends Component {
               this.props.data.call_to_action &&
               this.props.data.call_to_action.value !== "BLANK"
             ? this.props.data.call_to_action
-            : list.SnapAd[4].call_to_action_list[0]
-        }
+            : list.SnapAd[4].call_to_action_list[0],
+        },
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -154,7 +154,7 @@ class WhatsApp extends Component {
     this.setState({
       insta_handleError,
       weburlError,
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (
       insta_handleError ||
@@ -174,7 +174,7 @@ class WhatsApp extends Component {
           : "",
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
@@ -201,7 +201,7 @@ class WhatsApp extends Component {
     ) {
       Segment.screen("Change Insta Handle Modal");
       this.setState({
-        showChangeInstaHandle: true
+        showChangeInstaHandle: true,
       });
     } else {
       await this._handleSubmission();
@@ -211,7 +211,7 @@ class WhatsApp extends Component {
   // handle submission sme growth
   _handleSubmission = async () => {
     this.setState({
-      submissionLoading: true
+      submissionLoading: true,
     });
     const { translate } = this.props.screenProps;
     // if (!this.props.mainBusiness.weburl) {
@@ -230,7 +230,7 @@ class WhatsApp extends Component {
           { insta_handle: this.state.campaignInfo.insta_handle }
         ),
         type: "danger",
-        duration: 2000
+        duration: 2000,
       });
     }
     let weburlAvalible =
@@ -242,14 +242,14 @@ class WhatsApp extends Component {
       !validate
     ) {
       this.setState({
-        submissionLoading: false
+        submissionLoading: false,
       });
       segmentEventTrack("Error submit SME Growth swipeup", {
         camapign_error_insta_handle: this.props.errorInstaHandleMessage,
         campaign_error_weburl: this.state.weburlError,
         campaign_error_whatsappnumber: this.state.validWhatsAppNumber,
         campaign_error_googlemaplink: this.state.googleMapLinkError,
-        campaign_error_callnumber: this.state.validCallNumber
+        campaign_error_callnumber: this.state.validCallNumber,
       });
     }
     if (validate && weburlAvalible && !this.props.errorInstaHandle) {
@@ -264,7 +264,7 @@ class WhatsApp extends Component {
             ? this.state.campaignInfo.callnumber.replace("+", "")
             : this.state.campaignInfo.whatsappnumber.replace("+", ""),
 
-        source: "SME GROWTH"
+        source: "SME GROWTH",
       };
       // check here for insta handle change then update the selectedItemList to []
       // if (this.props.data.insta_handle !== this.state.campaignInfo.insta_handle && this.props.productInfoId) {
@@ -285,7 +285,7 @@ class WhatsApp extends Component {
             url: `https://${this.state.campaignInfo.weburl.replace(
               /[^0-9a-z]/gi,
               ""
-            )}.optimizeapp.com`
+            )}.optimizeapp.com`,
           },
           null,
           whatsAppCampaign
@@ -299,21 +299,21 @@ class WhatsApp extends Component {
         campaign_callnumber: this.state.campaignInfo.callnumber,
         campaign_insta_handle: this.state.campaignInfo.insta_handle,
         campaign_weburl: this.state.campaignInfo.weburl,
-        campaign_googlemaplink: this.state.campaignInfo.googlemaplink
+        campaign_googlemaplink: this.state.campaignInfo.googlemaplink,
       });
       this.setState({
-        submissionLoading: false
+        submissionLoading: false,
       });
       this.props.navigation.navigate("SelectInstagramPost", {
         insta_handle: this.state.campaignInfo.insta_handle,
-        _changeDestination
+        _changeDestination,
       });
     }
   };
-  onSelectedCallToActionChange = value => {
+  onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
       segmentEventTrack("Selected SME Growth Call to Action", {
-        campaign_call_to_action: value[0].label
+        campaign_call_to_action: value[0].label,
       });
       this.setState(
         {
@@ -321,9 +321,9 @@ class WhatsApp extends Component {
             ...this.state.campaignInfo,
             callaction: {
               label: value[0].label,
-              value: value[0].value
-            }
-          }
+              value: value[0].value,
+            },
+          },
         },
         () => {
           this.closeCallToActionModal();
@@ -333,10 +333,10 @@ class WhatsApp extends Component {
   };
   closeCallToActionModal = () => {
     this.setState({
-      inputCallToAction: false
+      inputCallToAction: false,
     });
   };
-  onSelectedCallToActionIdChange = value => {
+  onSelectedCallToActionIdChange = (value) => {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
@@ -345,8 +345,8 @@ class WhatsApp extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         whatsappnumber: validNumber ? value : "",
-        validWhatsAppNumber: validNumber
-      }
+        validWhatsAppNumber: validNumber,
+      },
     });
   };
   changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
@@ -354,27 +354,27 @@ class WhatsApp extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         callnumber: validNumber ? value : "",
-        validCallNumber: validNumber
-      }
+        validCallNumber: validNumber,
+      },
     });
   };
-  changeInstaHandle = value => {
+  changeInstaHandle = (value) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        insta_handle: value
-      }
+        insta_handle: value,
+      },
     });
   };
-  changeWebUrl = value => {
+  changeWebUrl = (value) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        weburl: value.replace(/[^0-9a-z]/gi, "")
-      }
+        weburl: value.replace(/[^0-9a-z]/gi, ""),
+      },
     });
   };
-  changeGoogleMapLocation = value => {
+  changeGoogleMapLocation = (value) => {
     // truncate before https: everything
     if (value.includes("https:")) {
       const link = value.substring(value.indexOf("https:") + 1);
@@ -382,15 +382,15 @@ class WhatsApp extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          googlemaplink: value === "" ? "" : "h" + link
-        }
+          googlemaplink: value === "" ? "" : "h" + link,
+        },
       });
     } else {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          googlemaplink: value
-        }
+          googlemaplink: value,
+        },
       });
     }
   };
@@ -404,23 +404,23 @@ class WhatsApp extends Component {
         this.state.campaignInfo.googlemaplink
       );
     this.setState({
-      googleMapLinkError
+      googleMapLinkError,
     });
     if (googleMapLinkError) {
       showMessage({
         message: translate("Please provide a valid location link"),
         type: "warning",
         position: "top",
-        duration: 2000
+        duration: 2000,
       });
       return false;
     } else {
       return true;
     }
   };
-  setModalInstagramChangedVisible = value => {
+  setModalInstagramChangedVisible = (value) => {
     this.setState({
-      showChangeInstaHandle: value
+      showChangeInstaHandle: value,
     });
   };
   render() {
@@ -438,8 +438,8 @@ class WhatsApp extends Component {
             styles.whatsApp,
             {
               paddingBottom: 0,
-              paddingTop: 0
-            }
+              paddingTop: 0,
+            },
           ]}
         >
           <WhatsAppIcon
@@ -474,9 +474,9 @@ class WhatsApp extends Component {
                   style={[
                     styles.input,
                     {
-                      paddingHorizontal: 0
+                      paddingHorizontal: 0,
                       // width: "50%"
-                    }
+                    },
                     //   this.state.weburlError
                     //     ? GlobalStyles.redBorderColor
                     //     : GlobalStyles.transparentBorderColor
@@ -489,15 +489,15 @@ class WhatsApp extends Component {
                     value={this.state.campaignInfo.weburl}
                     autoCorrect={false}
                     autoCapitalize="none"
-                    onChangeText={value => this.changeWebUrl(value)}
+                    onChangeText={(value) => this.changeWebUrl(value)}
                     onBlur={async () => {
                       segmentEventTrack("Changed SME Growth Web URL", {
-                        campaign_weburl: this.state.campaignInfo.weburl
+                        campaign_weburl: this.state.campaignInfo.weburl,
                       });
                       const valid = await this.validate();
                       if (!valid) {
                         segmentEventTrack("Error on blur sme growth weburl", {
-                          campaign_error_weburl: this.state.weburlError
+                          campaign_error_weburl: this.state.weburlError,
                         });
                       }
                       if (!this.props.mainBusiness.weburl) {
@@ -575,8 +575,8 @@ class WhatsApp extends Component {
                 style={[
                   styles.input,
                   {
-                    paddingHorizontal: 0
-                  }
+                    paddingHorizontal: 0,
+                  },
                   //   this.state.insta_handleError
                   //     ? GlobalStyles.redBorderColor
                   //     : GlobalStyles.transparentBorderColor
@@ -595,11 +595,11 @@ class WhatsApp extends Component {
                   value={this.state.campaignInfo.insta_handle}
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={value => this.changeInstaHandle(value)}
+                  onChangeText={(value) => this.changeInstaHandle(value)}
                   onBlur={async () => {
                     segmentEventTrack("Changed SME Growth Instagram Handle", {
                       campaign_insta_handle: this.state.campaignInfo
-                        .insta_handle
+                        .insta_handle,
                     });
                     this.validate();
                     await this.props.verifyInstagramHandle(
@@ -610,7 +610,7 @@ class WhatsApp extends Component {
                         "Error on blur sme growth insta handle",
                         {
                           campaign_error_insta_handle: this.props
-                            .errorInstaHandleMessage
+                            .errorInstaHandleMessage,
                         }
                       );
                     }
@@ -647,8 +647,8 @@ class WhatsApp extends Component {
                 style={[
                   styles.callToActionLabelView,
                   {
-                    backgroundColor: "rgba(0,0,0,0.15)"
-                  }
+                    backgroundColor: "rgba(0,0,0,0.15)",
+                  },
                 ]}
               >
                 <Text
@@ -657,8 +657,8 @@ class WhatsApp extends Component {
                     styles.inputLabel,
                     {
                       fontFamily: "montserrat-bold-english",
-                      marginTop: 0
-                    }
+                      marginTop: 0,
+                    },
                   ]}
                 >
                   {translate("whatsApp")}
@@ -678,8 +678,8 @@ class WhatsApp extends Component {
                 style={[
                   styles.callToActionLabelView,
                   {
-                    backgroundColor: "rgba(0,0,0,0.15)"
-                  }
+                    backgroundColor: "rgba(0,0,0,0.15)",
+                  },
                 ]}
               >
                 <Text uppercase style={[styles.inputLabel]}>
@@ -707,9 +707,9 @@ class WhatsApp extends Component {
                 style={[
                   styles.input,
                   {
-                    paddingHorizontal: 0
+                    paddingHorizontal: 0,
                     // width: "75%"
-                  }
+                  },
                   //   this.state.insta_handleError
                   //     ? GlobalStyles.redBorderColor
                   //     : GlobalStyles.transparentBorderColor
@@ -728,12 +728,12 @@ class WhatsApp extends Component {
                   value={this.state.campaignInfo.googlemaplink}
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={value => this.changeGoogleMapLocation(value)}
+                  onChangeText={(value) => this.changeGoogleMapLocation(value)}
                   onBlur={async () => {
                     segmentEventTrack(
                       "Changed SME Growth Google Map Location",
                       {
-                        campaign_googlemaplink: this.state.googleMapLinkError
+                        campaign_googlemaplink: this.state.googleMapLinkError,
                       }
                     );
                     await this.validateUrl();
@@ -742,7 +742,7 @@ class WhatsApp extends Component {
                         "Error on blur sme growth google map location",
                         {
                           campaign_error_googlemaplink: this.state
-                            .googleMapLinkError
+                            .googleMapLinkError,
                         }
                       );
                     }
@@ -756,6 +756,7 @@ class WhatsApp extends Component {
               <ForwardLoading bottom={-5} />
             ) : (
               <LowerButton
+                screenProps={this.props.screenProps}
                 // checkmark={true}
                 function={this.checkInstaAccountChange}
               />
@@ -801,7 +802,7 @@ class WhatsApp extends Component {
                     justifyContent: "center",
                     // flex: 1,
                     width: "100%",
-                    paddingTop: 60
+                    paddingTop: 60,
                   }}
                 >
                   {/* <TouchableOpacity
@@ -812,11 +813,13 @@ class WhatsApp extends Component {
                     <CloseCircleIcon width={53} height={53} />
                   </TouchableOpacity> */}
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     cross={true}
                     bottom={0}
                     function={() => this.setModalInstagramChangedVisible(false)}
                   />
                   <LowerButton
+                    screenProps={this.props.screenProps}
                     function={() => {
                       let whatsAppCampaign = {
                         weburl: this.state.campaignInfo.weburl,
@@ -835,7 +838,7 @@ class WhatsApp extends Component {
                             : this.state.campaignInfo.whatsappnumber.replace(
                                 "+",
                                 ""
-                              )
+                              ),
                       };
                       this.props._changeDestination(
                         "REMOTE_WEBPAGE",
@@ -844,7 +847,7 @@ class WhatsApp extends Component {
                           url: `https://${this.state.campaignInfo.weburl.replace(
                             /[^0-9a-z]/gi,
                             ""
-                          )}.optimizeapp.com`
+                          )}.optimizeapp.com`,
                         },
                         null,
                         whatsAppCampaign
@@ -869,7 +872,7 @@ class WhatsApp extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   weburlAvalible: state.campaignC.weburlAvalible,
   mainBusiness: state.account.mainBusiness,
@@ -878,13 +881,13 @@ const mapStateToProps = state => ({
   productInfoId: state.campaignC.productInfoId,
   businessLogo: state.campaignC.businessLogo,
   selectedInstagramProducts: state.campaignC.selectedInstagramProducts,
-  rejCampaign: state.dashboard.rejCampaign
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = dispatch => ({
-  verifyBusinessUrl: weburl =>
+const mapDispatchToProps = (dispatch) => ({
+  verifyBusinessUrl: (weburl) =>
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
-  verifyInstagramHandle: insta_handle =>
+  verifyInstagramHandle: (insta_handle) =>
     dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
   saveWebProducts: (cartList, campaign_id, productInfoId, navigation) =>
     dispatch(
@@ -895,10 +898,7 @@ const mapDispatchToProps = dispatch => ({
         navigation
       )
     ),
-  getWebProducts: campaign_id =>
-    dispatch(actionCreators.getWebProducts(campaign_id))
+  getWebProducts: (campaign_id) =>
+    dispatch(actionCreators.getWebProducts(campaign_id)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WhatsApp);
+export default connect(mapStateToProps, mapDispatchToProps)(WhatsApp);

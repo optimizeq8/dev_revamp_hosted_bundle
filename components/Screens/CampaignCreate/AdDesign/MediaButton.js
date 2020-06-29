@@ -17,13 +17,15 @@ export default class MediaButton extends Component {
       snapCardInfo,
       _handleStoryAdCards,
       setMediaModalVisible,
-      type
+      type,
+      disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
 
     if (media && media !== "//") {
       return (
         <Button
+          disabled={disabled}
           transparent
           onPress={() => {
             segmentEventTrack(
@@ -38,7 +40,7 @@ export default class MediaButton extends Component {
             snapAdCard
               ? _handleStoryAdCards({
                   index: snapCardInfo.index,
-                  ...snapCardInfo.item
+                  ...snapCardInfo.item,
                 })
               : cover
               ? _pickImage("Images")
@@ -50,16 +52,16 @@ export default class MediaButton extends Component {
               ? {
                   width: "100%",
                   height: 40,
-                  top: "30%"
+                  top: "30%",
                 }
-              : {}
+              : {},
           ]}
         >
           <EditCameraIcon width={"100%"} height={"100%"} />
           <Text
             style={[
               styles.mediaButtonMsgEdit,
-              snapAdCard ? {} : { width: 150 }
+              snapAdCard ? {} : { width: 150 },
             ]}
           >
             {type === "cover"
@@ -72,16 +74,17 @@ export default class MediaButton extends Component {
       return (
         <>
           <Button
+            disabled={disabled}
             style={[
               styles.inputMiddleButton,
               snapAdCard
                 ? {
-                    width: 40,
-                    height: 40,
-                    top: "30%"
+                    width: 60,
+                    height: 60,
+                    top: "20%",
                     // left: "85%"
                   }
-                : {}
+                : {},
             ]}
             onPress={() => {
               // this._pickImage();
@@ -97,18 +100,18 @@ export default class MediaButton extends Component {
               snapAdCard
                 ? _handleStoryAdCards({
                     index: snapCardInfo.index,
-                    ...snapCardInfo.item
+                    ...snapCardInfo.item,
                   })
                 : cover
                 ? _pickImage("Images")
                 : setMediaModalVisible(true);
             }}
           >
-            <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
+            <EditCameraIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
               {type === "cover"
                 ? translate("Add Cover Image")
-                : translate("Add Media")}
+                : !snapAdCard && translate("Add Media")}
             </Text>
           </Button>
         </>
