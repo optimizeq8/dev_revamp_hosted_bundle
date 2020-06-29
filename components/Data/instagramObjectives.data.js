@@ -27,12 +27,12 @@ export const instagramAdObjectives = {
       info: "Send more people to a destination such as a website or app",
       icon: ObjIcons.BRAND_AWARENESS,
     },
-    {
-      label: "Lead Generation",
-      value: "LEAD_GENERATION",
-      info: "Generate leads for your business",
-      icon: ObjIcons.Group,
-    },
+    // {
+    //   label: "Lead Generation",
+    //   value: "LEAD_GENERATION",
+    //   info: "Generate leads for your business",
+    //   icon: ObjIcons.Group,
+    // },
     // {
     //   label: "Messages",
     //   value: "MESSAGES",
