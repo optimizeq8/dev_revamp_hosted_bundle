@@ -63,6 +63,8 @@ import AdFeedDesignReview from "../Screens/InstagramCampaignCreate/Feed/AdReview
 
 import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
+import AdStoryDesignReview from "../Screens/InstagramCampaignCreate/Story/AdReview";
+
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
@@ -140,6 +142,7 @@ export default FluidNavigator(
     InstagramFeedAdDesign: InstagramFeedAdDesign,
     InstagramStoryAdObjective: InstagramStoryAdObjective,
     InstagramStoryAdDesign: InstagramStoryAdDesign,
+    AdStoryDesignReview: AdStoryDesignReview,
     InstagramSwipeUpDestination: InstagramSwipeUpDestination,
     InstagramFeedAdTargetting: InstagramFeedAdTargetting,
     AdFeedDesignReview: AdFeedDesignReview,

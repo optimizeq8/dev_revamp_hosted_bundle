@@ -310,7 +310,7 @@ class AdDesign extends Component {
       ) {
         const segmentInfo = {
           campaign_channel: "instagram",
-          campaign_ad_type: "InstagramFeedAd",
+          campaign_ad_type: "InstagramStoryAd",
           campaign_id: this.props.data.campaign_id,
           campaign_business_name: this.state.campaignInfo.brand_name,
           campaign_caption: this.state.campaignInfo.headline,
@@ -362,10 +362,10 @@ class AdDesign extends Component {
       source_action: "a_preview_ad",
       action_status: noError ? "success" : "failure",
       campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
+      campaign_ad_type: "InstagramStoryAd",
     });
     if (noError) {
-      this.props.navigation.navigate("AdFeedDesignReview", {
+      this.props.navigation.navigate("AdStoryDesignReview", {
         source: "ad_objective",
         source_action: "a_preview_ad",
       });
@@ -411,11 +411,11 @@ class AdDesign extends Component {
     );
   };
   onDidFocus = () => {
-    if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
+    if (!this.props.currentCampaignSteps.includes("InstagramStoryAdDetails")) {
       this.props.saveCampaignSteps([
         "Dashboard",
-        "InstagramFeedAdObjective",
-        "InstagramFeedAdDesign",
+        "InstagramStoryAdObjective",
+        "InstagramStoryAdDesign",
       ]);
     }
     const source = this.props.navigation.getParam(
@@ -430,7 +430,7 @@ class AdDesign extends Component {
       source,
       source_action,
       campaign_channel: "instagram",
-      campaign_ad_type: "InstagramFeedAd",
+      campaign_ad_type: "InstagramStoryAd",
       campaign_name: this.props.data.name,
       campaign_id: this.props.data.campaign_id,
       campaign_objective: this.props.data.objective,

@@ -3,7 +3,11 @@ import { View, Text, Image } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP,
+} from "react-native-responsive-screen";
+import { ProgressBar, Colors } from "react-native-paper";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 import CustomHeader from "../../../../MiniComponents/Header";
@@ -16,14 +20,18 @@ import styles from "../../styles/adFeedReview.styles";
 
 //icons
 import ArchiveOutline from "../../../../../assets/SVGs/ArchiveOutline";
+import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
+import Close from "../../../../../assets/SVGs/Close";
+
 import CommentOutline from "../../../../../assets/SVGs/CommentOutline";
 import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
 import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
 import HeartFilled from "../../../../../assets/SVGs/HeartFilled";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
-import { globalColors } from "../../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
+import CloseButton from "../../../../MiniComponents/BackButton";
 
-class AdFeedDesignReview extends React.Component {
+class AdStoryDesignReview extends React.Component {
   state = {
     isVideoLoading: false,
     activeSlide: 0,
@@ -84,7 +92,7 @@ class AdFeedDesignReview extends React.Component {
       if (media_type === "IMAGE" && media) {
         mediaView = (
           <Image
-            style={styles.imagePreview}
+            style={styles.imagePreviewStory}
             source={{
               uri: media,
             }}
@@ -128,70 +136,89 @@ class AdFeedDesignReview extends React.Component {
             }}
           />
 
-          <View style={styles.container}>
+          <View
+            style={[
+              styles.container,
+              {
+                paddingTop: 0,
+                paddingBottom: 0,
+                height: "88%",
+                marginBottom: 10,
+              },
+            ]}
+          >
+            <ProgressBar
+              progress={0.5}
+              color={"#FFF"}
+              indeterminate
+              style={{ marginHorizontal: 10 }}
+            />
             <View style={styles.profilePicView}>
               <Image
                 style={{ borderRadius: 20 }}
                 width={32}
                 height={32}
                 source={{
-                  uri: instagram_profile_pic,
+                  uri:
+                    "https://instagram.fkwi11-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fkwi11-1.fna.fbcdn.net&_nc_ohc=aGUfMuilEH0AX8CBJAN&oh=93bc0862ddbff10b3915f0ed005e443a&oe=5F244A2C",
                 }}
               />
               <View style={styles.detailProfileView}>
-                <Text style={styles.instagramBusinessName}>
+                <Text style={[styles.instagramBusinessName, { color: "#fff" }]}>
                   {instagram_business_name}
                 </Text>
-                <Text style={styles.sponsoredText}>
+                <Text style={[styles.sponsoredText, { color: "#fff" }]}>
                   {translate("Sponsored")}
                 </Text>
               </View>
-              <View style={styles.dotView}>
-                <Text style={styles.dot}>.</Text>
-                <Text style={styles.dot}>.</Text>
-                <Text style={styles.dot}>.</Text>
-              </View>
+              <Close
+                width={15}
+                height={15}
+                style={{ alignSelf: "center", marginLeft: "auto" }}
+              />
             </View>
-            <View style={styles.mediaView}>{mediaView}</View>
-            {(call_to_action.value || call_to_action) !== "BLANK" && (
-              <View style={styles.swipeUpView}>
-                <Text style={styles.callToActionText}>
-                  {call_to_action.hasOwnProperty("label")
-                    ? call_to_action.label
-                    : call_to_action.replace("_", " ")}
-                </Text>
-                <ArrowBlueForward style={[styles.icon, styles.archiveIcon]} />
-              </View>
-            )}
-            <View style={styles.iconView}>
-              <HeartOutline style={styles.icon} />
-              <CommentOutline style={styles.icon} />
-              <SendArrowOutline style={styles.icon} />
-              {media_option === "carousel" && (
-                <Pagination
-                  containerStyle={styles.paginationContainerStyle}
-                  dotsLength={carouselAdsArray.length}
-                  activeDotIndex={this.state.activeSlide}
-                  dotStyle={styles.paginationDotStyle}
-                  dotColor={"#0095f6"}
-                  inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
-                  inactiveDotOpacity={1}
-                  inactiveDotScale={1}
-                />
+            <View style={styles.mediaView2}>{mediaView}</View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 10,
+                bottom: heightPercentageToDP(-73),
+              }}
+            >
+              {(call_to_action.value || call_to_action) !== "BLANK" && (
+                <View
+                  style={[
+                    styles.swipeUpView,
+                    {
+                      flexDirection: "column",
+                      borderBottomWidth: 0,
+                      alignSelf: "center",
+                      flex: 1,
+                    },
+                  ]}
+                >
+                  <ArrowUp stroke={"#FFFF"} style={{ marginTop: -5 }} />
+
+                  <Text
+                    style={[
+                      styles.callToActionText,
+                      { color: "#FFF", fontFamily: "montserrat-regular" },
+                    ]}
+                  >
+                    {call_to_action.hasOwnProperty("label")
+                      ? call_to_action.label
+                      : call_to_action.replace("_", " ")}
+                  </Text>
+                </View>
               )}
-              <ArchiveOutline style={[styles.icon, styles.archiveIcon]} />
+              <View style={[styles.dotView, { flexDirection: "row" }]}>
+                <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+                <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+                <Text style={[styles.dot, globalStyles.whiteTextColor]}>.</Text>
+              </View>
             </View>
-            {/* <View style={styles.likeView}>
-              <HeartFilled style={styles.icon} /> */}
-            <Text style={[styles.likeView, styles.likeText]}>508 likes</Text>
-            {/* </View> */}
-            <Text style={styles.businessNameText}>
-              {instagram_business_name}
-              <Text style={styles.captionText}>
-                {` `}
-                {message}
-              </Text>
-            </Text>
           </View>
         </View>
       </Transition>
@@ -208,4 +235,4 @@ const mapStateToProps = (state) => ({
   carouselAdsArray: state.instagramAds.carouselAdsArray,
 });
 
-export default connect(mapStateToProps, null)(AdFeedDesignReview);
+export default connect(mapStateToProps, null)(AdStoryDesignReview);

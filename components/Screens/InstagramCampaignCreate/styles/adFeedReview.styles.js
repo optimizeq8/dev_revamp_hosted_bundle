@@ -9,6 +9,14 @@ const styles = StyleSheet.create({
     height: hp(45),
     width: "100%",
   },
+  mediaView2: {
+    width: "100%",
+    top: 0,
+    bottom: 0,
+    zIndex: -10,
+    height: "100%",
+    position: "absolute",
+  },
   profilePicView: {
     flexDirection: "row",
     alignItems: "center",
@@ -110,6 +118,11 @@ const styles = StyleSheet.create({
   imagePreview: {
     width: "100%",
     height: "100%",
+  },
+  imagePreviewStory: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
   },
   paginationContainerStyle: {
     // paddingVertical: 5,
