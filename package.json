@@ -5,7 +5,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "doc": "jsdoc -c jsdoc.conf.json"
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "postinstall": "./node_modules/react-native-maps/enable-google-maps 'ios/my-frameworks/GoogleMaps/**'"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^1.0.0",

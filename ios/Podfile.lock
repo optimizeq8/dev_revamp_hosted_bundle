@@ -113,15 +113,15 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.13.1)
+  - imglyKit (10.14.0)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.4.0):
     - lottie-ios (~> 3.1.3)
     - React
   - Mixpanel (3.6.1)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.13.1):
-    - imglyKit (= 10.13.1)
+  - PhotoEditorSDK (10.14.0):
+    - imglyKit (= 10.14.0)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -379,9 +379,9 @@ PODS:
   - Segment-Mixpanel (1.6.0):
     - Analytics (~> 3.0)
     - Mixpanel (~> 3.5)
-  - Sentry (5.1.4):
-    - Sentry/Core (= 5.1.4)
-  - Sentry/Core (5.1.4)
+  - Sentry (5.1.6):
+    - Sentry/Core (= 5.1.6)
+  - Sentry/Core (5.1.6)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -399,8 +399,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.1.0)
   - UMTaskManagerInterface (5.1.0)
-  - VideoEditorSDK (10.13.1):
-    - imglyKit (= 10.13.1)
+  - VideoEditorSDK (10.14.0):
+    - imglyKit (= 10.14.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -715,12 +715,12 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: e9aad13dd136e82d1a69cb7ee79e0169a2ccda53
+  imglyKit: 7b2e9ea18bf7228c821f65dfd1ebcc4f576f3561
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   Mixpanel: 61e6d8c0717c8e94ccc6d3a1ae8677b9a78f64c5
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: eba8c2e128c6679580ba82b2a063a0174f40903b
+  PhotoEditorSDK: 4d81558110f57f8cbe96fb36fb9bced9bb80b46c
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
-  Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
+  Sentry: e5796ec31a481474d2f94553213278470f9e302d
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
@@ -776,9 +776,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 126da3486c1a1f11945b649d557d6c2ebb9407b2
   UMSensorsInterface: 48941f70175e2975af1a9386c6d6cb16d8126805
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
-  VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
+  VideoEditorSDK: ca906fafa351722a4e3e60c44e43e119c822fc30
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 45ec4c59290d41ee2f8836692982d7d1633b0b0a
+PODFILE CHECKSUM: 5766879776867721da6e612e965af23a1cacdfee
 
 COCOAPODS: 1.8.4
