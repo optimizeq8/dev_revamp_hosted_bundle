@@ -24,6 +24,7 @@ const reducer = (state = initialState, action) => {
               " " +
               action.payload.user.lastname,
             selected_language: language,
+            $phone: "+" + action.payload.user.mobile,
             logged_out: false,
           };
           Notifications.getDevicePushTokenAsync().then((token) => {
@@ -43,6 +44,7 @@ const reducer = (state = initialState, action) => {
               action.payload.user.firstname +
               " " +
               action.payload.user.lastname,
+            $phone: "+" + action.payload.user.mobile,
             logged_out: false,
           });
         });
