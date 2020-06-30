@@ -71,6 +71,8 @@ target 'OptimizeApp' do
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 end
 
 post_install do |installer|

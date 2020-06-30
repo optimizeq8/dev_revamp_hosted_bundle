@@ -272,7 +272,7 @@ PODS:
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
-  - react-native-maps (0.26.1):
+  - react-native-maps (0.27.1):
     - React
   - react-native-mixpanel (1.2.0):
     - Mixpanel (~> 3.6.1)
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
-  react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
+  react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -744,6 +744,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 6fce40d0b4c59d10ec2b5663ed7bd9035ec8a9b4
+PODFILE CHECKSUM: 3aa4c767dfd8bbe6e83750b1d29a75e3c294b5f8
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
