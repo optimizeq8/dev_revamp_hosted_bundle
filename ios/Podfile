@@ -45,6 +45,12 @@ target 'OptimizeApp' do
   # pod 'react-native-ffmpeg', :path => '../node_modules/react-native-ffmpeg'
   pod 'react-native-ffmpeg/https-gpl-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
 
+   # React Native Maps dependencies
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
+
   use_native_modules!
 
   pod 'RNAnalytics', :path => '../node_modules/@segment/analytics-react-native'
@@ -79,6 +85,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10'
+      config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
     end
   end
 end

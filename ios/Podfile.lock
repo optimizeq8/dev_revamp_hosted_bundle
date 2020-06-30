@@ -92,6 +92,27 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - Google-Maps-iOS-Utils (2.1.0):
+    - Google-Maps-iOS-Utils/Clustering (= 2.1.0)
+    - Google-Maps-iOS-Utils/Geometry (= 2.1.0)
+    - Google-Maps-iOS-Utils/Heatmap (= 2.1.0)
+    - Google-Maps-iOS-Utils/QuadTree (= 2.1.0)
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Clustering (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Geometry (2.1.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Heatmap (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/QuadTree (2.1.0):
+    - GoogleMaps
+  - GoogleMaps (3.5.0):
+    - GoogleMaps/Maps (= 3.5.0)
+  - GoogleMaps/Base (3.5.0)
+  - GoogleMaps/Maps (3.5.0):
+    - GoogleMaps/Base
   - imglyKit (10.13.1)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.4.0):
@@ -272,6 +293,10 @@ PODS:
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
+  - react-native-google-maps (0.27.1):
+    - Google-Maps-iOS-Utils (= 2.1.0)
+    - GoogleMaps (= 3.5.0)
+    - React
   - react-native-maps (0.27.1):
     - React
   - react-native-mixpanel (1.2.0):
@@ -408,6 +433,8 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -423,6 +450,7 @@ DEPENDENCIES:
   - react-native-adjust (from `../node_modules/react-native-adjust`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
+  - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -471,6 +499,8 @@ SPEC REPOS:
     - Adjust
     - Analytics
     - boost-for-react-native
+    - Google-Maps-iOS-Utils
+    - GoogleMaps
     - imglyKit
     - lottie-ios
     - Mixpanel
@@ -565,6 +595,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
+  react-native-google-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
@@ -681,6 +713,8 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
+  GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   imglyKit: e9aad13dd136e82d1a69cb7ee79e0169a2ccda53
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
@@ -699,6 +733,7 @@ SPEC CHECKSUMS:
   react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
+  react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
@@ -744,6 +779,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 3aa4c767dfd8bbe6e83750b1d29a75e3c294b5f8
+PODFILE CHECKSUM: 45ec4c59290d41ee2f8836692982d7d1633b0b0a
 
 COCOAPODS: 1.8.4
