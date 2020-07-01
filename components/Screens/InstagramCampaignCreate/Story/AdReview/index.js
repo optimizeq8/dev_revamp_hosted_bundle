@@ -142,13 +142,16 @@ class AdStoryDesignReview extends React.Component {
               {
                 paddingTop: 0,
                 paddingBottom: 0,
-                height: "88%",
-                marginBottom: 10,
+
+                height: heightPercentageToDP(85),
+                width: widthPercentageToDP(90),
+                marginHorizontal: 0,
+                alignSelf: "center",
               },
             ]}
           >
             <ProgressBar
-              progress={0.5}
+              progress={0.3}
               color={"#FFF"}
               indeterminate
               style={{ marginHorizontal: 10 }}
@@ -159,8 +162,7 @@ class AdStoryDesignReview extends React.Component {
                 width={32}
                 height={32}
                 source={{
-                  uri:
-                    "https://instagram.fkwi11-1.fna.fbcdn.net/v/t51.2885-19/s320x320/90706392_196909181609127_2297844259690119168_n.jpg?_nc_ht=instagram.fkwi11-1.fna.fbcdn.net&_nc_ohc=aGUfMuilEH0AX8CBJAN&oh=93bc0862ddbff10b3915f0ed005e443a&oe=5F244A2C",
+                  uri: instagram_profile_pic,
                 }}
               />
               <View style={styles.detailProfileView}>
@@ -183,8 +185,9 @@ class AdStoryDesignReview extends React.Component {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                padding: 10,
-                bottom: heightPercentageToDP(-73),
+                paddingHorizontal: 10,
+                position: "absolute",
+                bottom: 0,
               }}
             >
               {(call_to_action.value || call_to_action) !== "BLANK" && (
@@ -199,12 +202,16 @@ class AdStoryDesignReview extends React.Component {
                     },
                   ]}
                 >
-                  <ArrowUp stroke={"#FFFF"} style={{ marginTop: -5 }} />
+                  <ArrowUp stroke={"#FFFF"} style={{}} />
 
                   <Text
                     style={[
                       styles.callToActionText,
-                      { color: "#FFF", fontFamily: "montserrat-regular" },
+                      {
+                        color: "#FFF",
+                        fontFamily: "montserrat-regular",
+                        lineHeight: 17,
+                      },
                     ]}
                   >
                     {call_to_action.hasOwnProperty("label")

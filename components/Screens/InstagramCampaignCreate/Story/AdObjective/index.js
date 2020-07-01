@@ -83,6 +83,7 @@ class AdObjective extends Component {
     //   }
     // });
     this.setCampaignInfo();
+    this.props.set_adType_instagram("InstagramStoryAd");
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -251,7 +252,7 @@ class AdObjective extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_objective",
         campaign_channel: "instagram",
-        campaign_ad_type: this.props.adType,
+        campaign_ad_type: "InstagramStoryAd",
         source_action: "a_submit_ad_objective",
         error_description:
           nameError ||
@@ -266,6 +267,8 @@ class AdObjective extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
+      console.log("this.props.adType", this.props.adType);
+
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,

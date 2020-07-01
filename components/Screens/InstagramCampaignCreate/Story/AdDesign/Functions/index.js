@@ -146,8 +146,9 @@ export const formatMedia = (
   body.append("businessid", mainBusiness.businessid);
   body.append("campaign_id", campaignInfo.campaign_id);
   body.append("campaign_name", data.name);
+  body.append("campaign_type", "InstagramStoryAd");
+  body.append("message", ""); // pass caption as empty string for story ad
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
-  body.append("message", campaignInfo.message);
   body.append(
     "destination",
     (objective === "BRAND_AWARENESS" || objective === "VIDEO_VIEWS") &&

@@ -27,7 +27,7 @@ export default class SingleImage extends React.PureComponent {
     const { translate } = this.props.screenProps;
 
     return (
-      <View style={[styles.placeholder]}>
+      <View style={[styles.placeholder, styles.placeHolderStoryAd]}>
         {media_type === "VIDEO" && (
           <VideoPlayer
             shouldPlay={false}

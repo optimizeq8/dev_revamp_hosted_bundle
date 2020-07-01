@@ -26,7 +26,7 @@ const initialState = {
   interestNames: [],
   regionNames: [],
   campaignEnded: false,
-  adType: "InstagramAdFeed",
+  adType: "InstagramFeedAd",
   incompleteCampaign: false,
   campaignProgressStarted: false,
   currentCampaignSteps: [],

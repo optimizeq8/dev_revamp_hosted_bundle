@@ -43,7 +43,7 @@ import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 
-class InstagramFeedAdTargetting extends Component {
+class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
     header: null,
     gesturesEnabled: false,
@@ -729,7 +729,7 @@ class InstagramFeedAdTargetting extends Component {
         source_action: "a_submit_ad_targeting",
         campaign_id: this.props.data.campaign_id,
         campaign_channel: "instagram",
-        campaign_ad_type: "InstagramFeedAd",
+        campaign_ad_type: "InstagramStoryAd",
         error_description:
           countryRegionError ||
           validateWrapper(
@@ -789,7 +789,7 @@ class InstagramFeedAdTargetting extends Component {
       }
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
-        campaign_ad_type: "InstagramFeedAd",
+        campaign_ad_type: "InstagramStoryAd",
         campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
@@ -1140,20 +1140,11 @@ class InstagramFeedAdTargetting extends Component {
               ) {
                 this.props.saveCampaignSteps([
                   "Dashboard",
-                  "InstagramFeedAdObjective",
-                  "InstagramFeedAdDesign",
-                  "InstagramFeedAdTargetting",
+                  "InstagramStoryAdObjective",
+                  "InstagramStoryAdDesign",
+                  "InstagramStoryAdTargetting",
                 ]);
               }
-              Segment.screenWithProperties("Instagram Feed Ad Targeting", {
-                category: "Campaign Creation",
-                channel: "instagram",
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign_id,
-                step: 3,
-                business_name: this.props.mainBusiness.businessname,
-              });
             }}
           />
           <Container style={styles.mainContainer}>
@@ -1163,7 +1154,7 @@ class InstagramFeedAdTargetting extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={false}
                   segment={{
-                    str: "Instagram Feed Ad Details Back Button",
+                    str: "Instagram Story Ad Details Back Button",
                     obj: {
                       businessname: this.props.mainBusiness.businessname,
                     },
@@ -1187,7 +1178,7 @@ class InstagramFeedAdTargetting extends Component {
                   screenProps={this.props.screenProps}
                   closeButton={false}
                   segment={{
-                    str: "Instagram Feed Ad Details Back Button",
+                    str: "Instagram Story Ad Details Back Button",
                     obj: {
                       businessname: this.props.mainBusiness.businessname,
                     },
@@ -1364,4 +1355,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(InstagramFeedAdTargetting);
+)(InstagramStoryAdTargetting);

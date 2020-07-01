@@ -225,10 +225,6 @@ class AdDesign extends Component {
 
   validator = () => {
     const { translate } = this.props.screenProps;
-    const messageError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.message
-    );
 
     const mediaError =
       this.state.campaignInfo.media_option === "single" &&
@@ -250,13 +246,6 @@ class AdDesign extends Component {
       swipeUpError = "Choose A Swipe Up Destination";
     }
 
-    if (messageError) {
-      showMessage({
-        message: translate("Please add caption to proceed"),
-        position: "top",
-        type: "warning",
-      });
-    }
     if (mediaError) {
       showMessage({
         message: translate("Please add media to proceed"),
@@ -266,12 +255,11 @@ class AdDesign extends Component {
     }
 
     this.setState({
-      messageError,
       mediaError,
       swipeUpError,
     });
 
-    return !mediaError && !swipeUpError && !messageError;
+    return !mediaError && !swipeUpError;
   };
   handleUpload = () => {
     this.setState({ signal: Axios.CancelToken.source() });
@@ -323,7 +311,7 @@ class AdDesign extends Component {
         };
         if (!this.props.loading) {
           await this.props.saveBrandMediaInstagram(
-            "InstagramFeedAdDesign",
+            "InstagramStoryAdTargetting",
             this.state.formatted,
             this._getUploadState,
             this.onToggleModal,
@@ -332,7 +320,7 @@ class AdDesign extends Component {
           );
         }
       } else {
-        this.props.navigation.navigate("InstagramFeedAdTargetting", {
+        this.props.navigation.navigate("InstagramStoryAdTargetting", {
           source: "ad_design",
           source_action: "a_submit_ad_design",
         });
@@ -482,6 +470,7 @@ class AdDesign extends Component {
             backgroundColor: "transparent",
             flex: 1,
             top: 10,
+            marginBottom: "5%",
           }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -561,23 +550,6 @@ class AdDesign extends Component {
                       _handlecarouselAdCards={this._handlecarouselAdCards}
                     />
                   )}
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.handleCaptionExpand(true);
-                    }}
-                    style={styles.captionView}
-                    disabled={this.props.loading}
-                  >
-                    <View style={styles.captionTextView}>
-                      <Text style={styles.captionText}>
-                        {translate("Caption")}
-                      </Text>
-                      <Text numberOfLines={1} style={styles.caption}>
-                        {this.state.campaignInfo.message}
-                      </Text>
-                    </View>
-                    <PenIcon width={18} height={18} style={styles.penIcon} />
-                  </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() =>
@@ -608,8 +580,8 @@ class AdDesign extends Component {
                           ? translate("App Installs")
                           : this.props.data.objective === "VIDEO_VIEWS"
                           ? translate("Video Views")
-                          : translate("Click destination")
-                        : translate("Click destination")}
+                          : translate("Swipe Up destination")
+                        : translate("Swipe Up destination")}
                     </Text>
                     {this.props.data &&
                     this.props.data.link &&

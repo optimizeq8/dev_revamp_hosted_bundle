@@ -25,6 +25,8 @@ InstagramBackendURL = () =>
  */
 export const ad_objective_instagram = (info, navigation_route, segmentInfo) => {
   return (dispatch, getState) => {
+    console.log("ad objective info", info);
+
     dispatch({
       type: actionTypes.SET_INSTAGRAM_AD_LOADING_OBJ,
       payload: true,
@@ -165,7 +167,7 @@ export const overWriteObjectiveDataInstagram = (value) => {
  * @param {*} carousel_data Array having carousel_ids in case of media_option is carousel
  */
 export const saveBrandMediaInstagram = (
-  path = "InstagramFeedAdDesign",
+  path = "InstagramFeedAdTargetting",
   info,
   loading,
   onToggleModal,
@@ -204,7 +206,7 @@ export const saveBrandMediaInstagram = (
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
           console.log("data", data.data);
-          NavigationService.navigate("InstagramFeedAdTargetting", {
+          NavigationService.navigate(path, {
             source: "ad_design",
             source_action: "a_submit_ad_design",
           });
@@ -432,10 +434,15 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
       .then(() => {
         // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
-        navigation.navigate("InstagramAdPaymentReview", {
-          source: "ad_targeting",
-          source_action: "a_submit_ad_targeting",
-        });
+        navigation.navigate(
+          segmentInfo.campaign_ad_type === "InstagramStoryAd"
+            ? "InstagramStoryAdPaymentReview"
+            : "InstagramAdPaymentReview",
+          {
+            source: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+          }
+        );
       })
       .catch((err) => {
         // console.log("ad_details_instagram error", err.message || err.response);
