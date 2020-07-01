@@ -175,8 +175,6 @@ export const saveBrandMediaInstagram = (
   segmentInfo
 ) => {
   return (dispatch) => {
-    console.log("saveBrandMediaInstagram info", info);
-
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
@@ -205,7 +203,6 @@ export const saveBrandMediaInstagram = (
         if (data.success) {
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
-          console.log("data", data.data);
           NavigationService.navigate(path, {
             source: "ad_design",
             source_action: "a_submit_ad_design",
@@ -645,9 +642,9 @@ export const setCarouselAdAttechment = (info) => {
 };
 
 export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
-  console.log("info", info);
-  console.log("card", card);
-  console.log("rejected", rejected);
+  // console.log("info", info);
+  // console.log("card", card);
+  // console.log("rejected", rejected);
 
   return (dispatch, getState) => {
     dispatch({
