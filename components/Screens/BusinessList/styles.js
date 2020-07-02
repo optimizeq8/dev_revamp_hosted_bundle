@@ -1,20 +1,20 @@
 import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   switchAccountText: {
     marginTop: 5,
     marginBottom: 20,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   title: {
     fontFamily: "montserrat-bold",
@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     fontSize: 19,
     textAlign: "left",
     marginTop: 28,
-    paddingHorizontal: "11%"
+    paddingHorizontal: "11%",
   },
   container: {
     backgroundColor: "#0000",
-    zIndex: 10
+    zIndex: 10,
   },
   noInviteText: {
     alignSelf: "center",
@@ -36,19 +36,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     position: "absolute",
-    bottom: hp(30)
+    bottom: hp(30),
   },
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    borderColor: "transparent"
+    borderColor: "transparent",
+    position: "relative",
   },
   text: {
     textAlign: "center",
     color: "#C6C6C6",
 
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: 14,
   },
   bottomCard: {
     borderRadius: 50,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     width: wp(70),
     position: "absolute",
     alignSelf: "center",
-    bottom: hp(5) > 40 ? hp(7) : hp(12)
+    bottom: hp(5) > 40 ? hp(7) : hp(12),
   },
   bottomCard2: {
     borderRadius: 50,
@@ -66,29 +67,29 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     bottom: hp(20),
     borderColor: "#D2C6D8",
-    borderWidth: 1
+    borderWidth: 1,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   subtext: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     // paddingBottom: 20,
-    color: "#A496AC"
+    color: "#A496AC",
     // color: "#FF790A"
   },
   contentContainer: {
     paddingTop: 20,
     paddingBottom: hp("30"),
-    paddingHorizontal: "10%"
+    paddingHorizontal: "10%",
   },
   headings: {
     fontFamily: "montserrat-bold",
     marginVertical: 10,
     fontSize: 14,
     color: "#575757",
-    textAlign: "left"
+    textAlign: "left",
   },
   customInputStyle: {
     backgroundColor: "#FFF",
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginLeft: "10%",
     marginRight: "10%",
-    elevation: 5
+    elevation: 5,
 
     // marginHorizontal: "10%"
   },
@@ -110,24 +111,24 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowOffset: {
       height: 3,
-      width: 0
-    }
+      width: 0,
+    },
   },
   flatlistWrapper: { height: hp(55), marginTop: 10 },
   iconStyle: {
     fontSize: 15,
-    color: "#fff"
+    color: "#fff",
   },
   tabView: {
     display: "flex",
     flexDirection: "row",
-    paddingHorizontal: "10%"
+    paddingHorizontal: "10%",
   },
   tabText: {
     fontFamily: "montserrat-bold",
     fontSize: 14,
     color: "#A0A0A0",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   touchTabView: {
     marginRight: 15,
@@ -136,17 +137,17 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     borderBottomWidth: 5,
     borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10
+    borderBottomRightRadius: 10,
   },
   activeTab: {
     borderBottomColor: "#FF790A",
-    color: "#FF790A"
+    color: "#FF790A",
   },
   pendingInviteNumber: {
     fontFamily: "montserrat-bold-english",
     color: globalColors.white,
     fontSize: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   pendingInviteView: {
     backgroundColor: globalColors.orange,
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignSelf: "flex-end",
     marginRight: -10,
-    marginBottom: -5
+    marginBottom: -5,
   },
   flex: {
     display: "flex",
@@ -163,13 +164,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    flex: 1
+    flex: 1,
   },
   addNewBusinessText: {
     fontSize: 16,
     color: globalColors.white,
-    fontFamily: "montserrat-medium"
-  }
+    fontFamily: "montserrat-medium",
+  },
 });
 
 export default styles;

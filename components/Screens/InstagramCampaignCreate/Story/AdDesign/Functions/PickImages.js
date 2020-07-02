@@ -217,7 +217,7 @@ export const _pickImage = async (
               };
               analytics.track(`a_media_editor`, {
                 campaign_channel: "instagram",
-                campaign_ad_type: "InstagramFeedAd",
+                campaign_ad_type: "InstagramStoryAd",
                 action_status: "success",
                 tool_used: "PESDK",
                 media_type: result.type.toUpperCase(),
@@ -259,7 +259,7 @@ export const _pickImage = async (
 
               analytics.track(`a_media_editor`, {
                 campaign_channel: "instagram",
-                campaign_ad_type: "InstagramFeedAd",
+                campaign_ad_type: "InstagramStoryAd",
                 source: "ad_design",
                 source_action: "a_media_editor",
                 action_status: "success",
@@ -284,7 +284,7 @@ export const _pickImage = async (
           .catch((error) => {
             analytics.track(`a_error`, {
               campaign_channel: "instagram",
-              campaign_ad_type: "InstagramFeedAd",
+              campaign_ad_type: "InstagramStoryAd",
               error_page: "ad_design",
               error_description: error.wrongAspect
                 ? error.message
@@ -314,9 +314,8 @@ export const _pickImage = async (
         let ratio =
           media_option === "single"
             ? [
-                { width: 16, height: 9 },
+                { width: 9, height: 16 },
                 { width: 4, height: 5 },
-                { width: 1, height: 1 },
               ]
             : [{ width: 1, height: 1 }];
         let uneditedImageUri = result.uri;
@@ -459,7 +458,7 @@ export const _pickImage = async (
               } else if (newResult.duration < 1.0) {
                 analytics.track(`a_error`, {
                   campaign_channel: "instagram",
-                  campaign_ad_type: "InstagramFeedAd",
+                  campaign_ad_type: "InstagramStoryAd",
                   error_page: "ad_design",
                   error_description: "Minimum video duration  is 1 second",
                 });
@@ -489,24 +488,22 @@ export const _pickImage = async (
                 setTheState({ sourceChanging: false });
                 return false;
               } else if (
-                (Math.floor(newResult.width / 16) !==
-                  Math.floor(newResult.height / 9) &&
+                (Math.floor(newResult.width / 9) !==
+                  Math.floor(newResult.height / 16) &&
                   Math.floor(newResult.width / 4) !==
-                    Math.floor(newResult.height / 5) &&
-                  Math.floor(newResult.width / 1) !==
-                    Math.floor(newResult.height / 1)) ||
+                    Math.floor(newResult.height / 5)) ||
                 newResult.width < 500
               ) {
                 analytics.track(`a_error`, {
                   campaign_channel: "instagram",
-                  campaign_ad_type: "InstagramFeedAd",
+                  campaign_ad_type: "InstagramStoryAd",
                   error_page: "ad_design",
                   error_description:
-                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                    "Video's aspect ratio must be 16:9 or 4:5\nwith a minimum width size of 500",
                 });
                 setTheState({
                   mediaError:
-                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                    "Video's aspect ratio must be 16:9 or 4:5 \nwith a minimum width size of 500",
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
@@ -520,7 +517,7 @@ export const _pickImage = async (
 
                 showMessage({
                   message:
-                    "Video's aspect ratio must be 16:9 or 4:5 or 1: 1\nwith a minimum width size of 500",
+                    "Video's aspect ratio must be 16:9 or 4:5\nwith a minimum width size of 500",
                   // message:
                   //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
                   position: "top",
@@ -531,7 +528,7 @@ export const _pickImage = async (
               } else if (newSize.size > 32000000) {
                 analytics.track(`a_error`, {
                   campaign_channel: "instagram",
-                  campaign_ad_type: "InstagramFeedAd",
+                  campaign_ad_type: "InstagramStoryAd",
                   error_page: "ad_design",
                   error_description: "Allowed video size is up to 32 MBs",
                 });
@@ -571,7 +568,7 @@ export const _pickImage = async (
             } else {
               analytics.track(`a_error`, {
                 campaign_channel: "instagram",
-                campaign_ad_type: "InstagramFeedAd",
+                campaign_ad_type: "InstagramStoryAd",
                 error_page: "ad_design",
                 error_description: "Editing canceled",
               });
@@ -604,7 +601,7 @@ export const _pickImage = async (
               cards[carouselAdCards.selectedCarouselAd.index] = card;
               analytics.track(`a_media_editor`, {
                 campaign_channel: "instagram",
-                campaign_ad_type: "InstagramFeedAd",
+                campaign_ad_type: "InstagramStoryAd",
                 action_status: "success",
                 tool_used: "VESDK",
                 media_type: result.type.toUpperCase(),
@@ -643,7 +640,7 @@ export const _pickImage = async (
                 // onToggleModal((false);
                 analytics.track(`a_media_editor`, {
                   campaign_channel: "instagram",
-                  campaign_ad_type: "InstagramFeedAd",
+                  campaign_ad_type: "InstagramStoryAd",
                   action_status: "success",
                   tool_used: "VESDK",
                   media_type: result.type.toUpperCase(),
@@ -670,7 +667,7 @@ export const _pickImage = async (
                   error_description: "Selected Video Unsuccessfully",
 
                   campaign_channel: "instagram",
-                  campaign_ad_type: "InstagramFeedAd",
+                  campaign_ad_type: "InstagramStoryAd",
                 });
 
                 setTheState({
@@ -688,7 +685,7 @@ export const _pickImage = async (
               error_page: "ad_design",
               error_description: err,
               campaign_channel: "instagram",
-              campaign_ad_type: "InstagramFeedAd",
+              campaign_ad_type: "InstagramStoryAd",
             });
 
             showMessage({
@@ -706,7 +703,7 @@ export const _pickImage = async (
 
       analytics.track(`a_error`, {
         campaign_channel: "instagram",
-        campaign_ad_type: "InstagramFeedAd",
+        campaign_ad_type: "InstagramStoryAd",
         error_page: "ad_design",
         error_description: "Image Picker closed without selecting a media file",
       });

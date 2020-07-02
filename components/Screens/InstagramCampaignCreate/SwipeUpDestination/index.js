@@ -74,8 +74,6 @@ class SwipeUpDestination extends React.Component {
     return { content };
   };
   render() {
-    console.log("adType", this.props.adType);
-
     const { content } = this.getSwipeUpDestination();
     return (
       <View style={styles.safeAreaContainer}>

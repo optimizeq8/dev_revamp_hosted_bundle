@@ -26,13 +26,10 @@ export default class MediaOptions extends Component {
     //   this.props.getWebUploadLinkMedia();
     // } else
     if (title === "Media") {
-      segmentEventTrack(
-        ` Media Picker option selected to open gallery to upload Media `
-      );
-      this.props._pickImage("Images");
+      this.props._pickImage("All");
     } else {
       this.props._pickImage(
-        "Images",
+        "All",
         {
           mediaUri: this.props.mediaUri,
           serialization: this.props.serialization,
