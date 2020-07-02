@@ -494,11 +494,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-regular",
   },
-  carouselFlatList: {
-    paddingTop: 10,
-    paddingBottom: 50,
-    alignItems: "center",
-  },
+
   flatListView: { height: hp(35) },
 
   carouselEditMedia: {
@@ -554,8 +550,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
   },
   carouselFlatList: {
-    paddingTop: 10,
-    paddingBottom: 50,
+    paddingBottom: hp(24),
     alignItems: "center",
   },
   flatListView: { height: hp(35) },
