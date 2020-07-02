@@ -11,6 +11,9 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
+  placeHolderStoryAd: {
+    height: hp(45),
+  },
   transition: { height: "100%" },
   mainView: {
     marginHorizontal: 40,

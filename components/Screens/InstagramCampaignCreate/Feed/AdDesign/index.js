@@ -323,7 +323,7 @@ class AdDesign extends Component {
         };
         if (!this.props.loading) {
           await this.props.saveBrandMediaInstagram(
-            "InstagramFeedAdDesign",
+            "InstagramFeedAdTargetting",
             this.state.formatted,
             this._getUploadState,
             this.onToggleModal,

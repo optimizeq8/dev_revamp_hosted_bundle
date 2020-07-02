@@ -82,6 +82,7 @@ class AdObjective extends Component {
     //     businessid: this.props.mainBusiness.businessid
     //   }
     // });
+    this.props.set_adType_instagram("InstagramFeedAd");
     this.setCampaignInfo();
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);

@@ -74,6 +74,8 @@ class SwipeUpDestination extends React.Component {
     return { content };
   };
   render() {
+    console.log("adType", this.props.adType);
+
     const { content } = this.getSwipeUpDestination();
     return (
       <View style={styles.safeAreaContainer}>
@@ -94,7 +96,11 @@ class SwipeUpDestination extends React.Component {
           icon="instagram"
           navigation={this.props.navigation}
           currentScreen="Compose"
-          title={"Click destination"}
+          title={
+            this.props.adType === "InstagramStoryAd"
+              ? "Swipe Up destination"
+              : "Click destination"
+          }
         />
         {/* 
         <Header
@@ -115,7 +121,6 @@ class SwipeUpDestination extends React.Component {
 
 const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
-  adType: state.instagramAds.adType,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
