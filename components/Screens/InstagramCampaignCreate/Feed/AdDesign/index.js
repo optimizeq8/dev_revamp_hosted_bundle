@@ -478,11 +478,7 @@ class AdDesign extends Component {
         />
 
         <ScrollView
-          style={{
-            backgroundColor: "transparent",
-            flex: 1,
-            top: 10,
-          }}
+          contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (

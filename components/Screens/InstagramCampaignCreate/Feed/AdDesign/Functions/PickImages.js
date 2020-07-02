@@ -85,12 +85,21 @@ export const _pickImage = async (
         type: mediaEditor.media_type === "IMAGE" ? "image" : "video",
       };
 
+    let itemsRatio =
+      media_option === "single"
+        ? [
+            { width: 1, height: 1 },
+            { width: 4, height: 5 },
+            { width: 16, height: 9 },
+          ]
+        : null;
     let uneditedImageUri = result.uri;
     let serialization = null;
     let configuration = PhotoEditorConfiguration({
       width: 1,
       height: 1,
       serialization: mediaEditor && mediaEditor.hasOwnProperty("serialization"),
+      items: itemsRatio,
     });
     let file = {};
     if (result) {
@@ -117,11 +126,18 @@ export const _pickImage = async (
                 manipResult.image
               );
               if (
-                Math.floor(manipResult.width) !== Math.floor(manipResult.height)
+                Math.floor(manipResult.width / 4) !==
+                  Math.floor(manipResult.height / 5) &&
+                Math.floor(manipResult.width / 1) !==
+                  Math.floor(manipResult.height / 1) &&
+                Math.floor(manipResult.width / 16) !==
+                  Math.floor(manipResult.height / 9)
               ) {
                 //check for aspect ration incase user undos the cropping
                 setTheState({
-                  mediaError: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
+                  mediaError: `Image's aspect ratio must be 1:1 ${
+                    media_option === "single" && "or 4:5 or 16:9"
+                  } \nwith a minimum size of ${
                     media_option === "single"
                       ? "500px x 500px"
                       : "600px x 600px"
@@ -137,11 +153,13 @@ export const _pickImage = async (
 
                 return Promise.reject({
                   wrongAspect: true,
-                  message: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
+                  message: `Image's aspect ratio must be 1:1 ${
+                    media_option === "single" && "or 4:5 or 16:9"
+                  } \nwith a minimum size of ${
                     media_option === "single"
                       ? "500px x 500px"
                       : "600px x 600px"
-                  }`,
+                  }.`,
                 });
               }
               let size =

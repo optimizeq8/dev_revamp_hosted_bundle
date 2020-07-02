@@ -453,7 +453,8 @@ class AdType extends Component {
                   <Image style={styles.adTypeImage} />
                   <View style={styles.descriptionView}>
                     <Text style={styles.titleText}>
-                      {translate(item.title)}
+                      {`\u200F ${translate(item.title)}`}
+                      {/**Added speecial character for strings that has combination of english and arabic */}
                     </Text>
                     <Text style={styles.description}>
                       {translate(item.description)}

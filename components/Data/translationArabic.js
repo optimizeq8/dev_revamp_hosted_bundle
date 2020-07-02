@@ -179,21 +179,21 @@ const strings = {
   "Auto Advance": "التقدم التلقائي",
   "Advance with tap": "التقدم بالضغط",
   "Loop story": "إعادة story",
-  Awareness: "التوعية",
+  Awareness: "الوعي بالعلامة التجارية",
   "Increase awareness of your brand or product":
-    "زيادة التوعية للشركة أو للمنتجات",
+    "زيادة الوعي بالعلامة التجارية الخاصة بك أو بالمنتجات التي تقدمها",
   Traffic: "زيارة الموقع/ التطبيق",
   "Send Snapchatters directly to your website or to your app":
-    "إرسال الزبائن مباشرة إلى الموقع الإلكتروني أو التطبيق",
+    "أرسل المزيد من المستخدمين بالإنتقال إلى صفحة تحميل التطبيق أو الموقع الالكتروني الخاص بك",
   "App Installs": "تحميل التطبيق",
   "Send Snapchatters to the app store to download your app":
     "إرسال الزبائن إلى متجر التطبيقات لتحميل تطبيقك",
   "Promote your brand or product to Snapchatters through video":
-    "إرسال الزبائن لمشاهدة فيديو لا يقل عن ١٥ ثانية ",
+    "إحصل على المزيد من المشاهدات لمقاطع الفيديو الخاصة بك",
   "Video Views": "مشاهدات الفيديو",
   "Lead Generation": "العملاء المحتملين",
   "Generate leads for your business":
-    "إرسال الزبائن المهتمين لصفحة من الموقع لتسجيل البيانات",
+    "السماح لعملائك بتعبئة نموذج فوري لتجميع بيانات الاتصال",
   "WhatsApp Leads": "نمو المشاريع الصغيرة",
   "Get a free website that pushes users to your business's WhatsApp":
     "إحصل على موقع إلكتروني لإرسال عملائك مباشرة إلى الواتساب الخاص بمشروعك",
@@ -210,7 +210,7 @@ const strings = {
   "Please make sure not to close the app or lock the phone while uploading":
     "الرجاء عدم الخروج من التطبيق أو قفل الهاتف أثناء التحميل",
   "Choose A Swipe Up Destination": "إختار وجهة رفع الشاشة",
-  "Compose Ad": "إنتاج الحملة",
+  "Compose Ad": "إنشاء الحملة",
   "Re-upload media": "إعادة تحميل الملفات",
   "Please allow access to the gallery to upload media":
     "الرجاء السماح للدخول إلى البوم الصور لتحميل الملفات",
@@ -254,12 +254,12 @@ const strings = {
   "iOS App ID": "\niOS App ID",
   "Android URL": "رابط Android",
   "apple\napp store": "apple\napp store",
-  "google\nplay store": "google\nplay store",
+  "google\nplay store": "Google\nPlay Store",
   "Deep Link URL": "رابط Deep Link",
   "App Install": "تحميل التطبيق",
   "LongForm Video": "فيديو لا يقل عن ١٥ ثانية",
   "Promote your brand or product to\nSnapchatters through video":
-    "تطوير المشروع أو المنتج عن طريق فيديو لمستخدمي السناب",
+    "تطوير المشروع أو المنتج عن طريق فيديو لمستخدمي Snapchat",
   "Video must be less than 500 Megabytes":
     "يجب أن يكون حجم الفيديو أقل من 500 ميجابايت",
   "Please choose a video": "الرجاء إختيار الفيديو",
@@ -348,7 +348,7 @@ const strings = {
     "الرجاء إختيار تاريخ إطلاق و إنتهاء الحملة",
   "Minimum of $25/day": "الحد الأدنى هو ٢٥ دولار / يوم",
   "Create a new campaign!": "إنشاء حملة جديدة!",
-  Snapchat: "سناب شات",
+  Snapchat: "Snapchat",
   "Oops ! There seems to be a problem\nTry again in sometime":
     "تبدو أن هناك مشكلة يرجي المحاولة لاحقا",
   "Go Back": "الرجوع",
@@ -551,7 +551,7 @@ const strings = {
   Verify: "توثيق",
   Personal: "شخصي",
   Business: "المشروع",
-  GoogleSE: "جوجل للبحث",
+  GoogleSE: "Google للبحث",
   "1": "1",
   "2": "2",
   "3": "3",
@@ -756,7 +756,7 @@ const strings = {
   "Please wait while we check for updates":
     "الرجاء الإنتظار حتى يتم العثور على التحديثات.",
   "Continue with the app": "الإستمرار في التطبيق",
-  "Search Engine Ad": "إعلان قوقل للبحث",
+  "Search Engine Ad": "إعلان Google للبحث",
   Decline: "رفض",
   "Please add links to each product to proceed":
     "الرجاء إضافة روابط إلى كل منتج للمتابعة",
@@ -1246,7 +1246,7 @@ const strings = {
   "Switch Business": "تغير المشروع",
   "You have been invited to join": "تم دعوتك للانضمام إلى",
   INVITATION: "دعوات",
-  "Search Engine Ad Preview": "مراجعة إعلان قوقل للبحث",
+  "Search Engine Ad Preview": "مراجعة إعلان Google للبحث",
   "Please sign in with the correct email to accept":
     "يرجى تسجيل الدخول بالبريد الإلكتروني الصحيح لقبول الدعوة",
   "Please complete all of the fields": "يرجى استكمال جميع الخانات.",
@@ -1389,7 +1389,7 @@ const strings = {
   "Instagram Story Campaign": "حملة قصص الانستقرام",
   "Brand Awareness": "الوعي بالعلامة التجارية",
   "Increase awareness for your brand by reaching people who are more likely to be interested in it":
-    "زيادة الوعي بالعلامة التجارية الخاصة بك عن طريق الوصول للأشخاص في نطاق الجمهور المستهدف",
+    "زيادة الوعي بالعلامة التجارية الخاصة بك أو بالمنتجات التي تقدمها",
   "Get more people to view your video content":
     "إحصل على المزيد من المشاهدات لمقاطع الفيديو الخاصة بك",
   "Send more people to a destination such as a website or app":
@@ -1427,9 +1427,9 @@ const strings = {
   "E-COMMERCE & Online Stores": "متاجر الكترونية",
   "Story-Tellers": "رواية القصص",
   "Snap Ads are full screen 3-10 second videos or images that get shown to users between their friends’ stories Snap Ads are a great way to advertise no matter what service or product you’re promoting":
-    "عبارة عن مقطع فيديو لا تتجاوز مدته عن ١٠ ثواني، يتم عرضه من ضمن مقاطع الفيديو في سناب شات ومنشورات الأصدقاء. يتيح للمعلن إمكانية إرفاق مقطع فيديو أطول، أو لزيارة موقع الكتروني، أو لتحميل تطبيق. ",
+    "عبارة عن مقطع فيديو لا تتجاوز مدته عن ١٠ ثواني، يتم عرضه من ضمن مقاطع الفيديو في Snapchat ومنشورات الأصدقاء. يتيح للمعلن إمكانية إرفاق مقطع فيديو أطول، أو لزيارة موقع الكتروني، أو لتحميل تطبيق. ",
   "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times":
-    "سلسلة من المقاطع يتم عرضها ضمن صفحة البحث/Explore في سناب شات، تمكّن العلامات التجارية من إيصال رسالتهم بشكل أفضل وعرض مقاطع فيديو عالية الجودة.",
+    "سلسلة من المقاطع يتم عرضها ضمن صفحة البحث/Explore في Snapchat، تمكّن العلامات التجارية من إيصال رسالتهم بشكل أفضل وعرض مقاطع فيديو عالية الجودة.",
   "Select {{activeSlide}} Ad Type": "اختر {{activeSlide}}  نوع الحملة",
   "Google is where people search for what to do, where to go, and what to buy Your digital ads can appear on Google at the very moment someone is looking for products or services like yours":
     "يعتبر Google محرك البحث الأول الذي يستخدمه الأشخاص للبحث عن أنشطة أو سلع أو أماكن تهمهم. يمكنك الآن عرض إعلانك باستخدام Google Ads في اللحظة نفسها التي يبحث فيها الشخص عن منتجات أو خدمات أنت تقدمها.",
@@ -1518,7 +1518,7 @@ const strings = {
   "Al Wakra": "الوكرة",
   "Al Buraimi Governorate": "محافظة البريمي",
   "unique clicks": "ضغطات جديدة",
-  "Tap and hold to delete media": "اضغط بشكل مستمر لمسح الوسائط",
+  "Tap and hold to delete media": "اضغط بشكل مستمر لمسح الملفات",
   "Campaign Review": "مراجعة الحملة",
   Cover: "الغلاف",
   "5": "٥",

@@ -2,28 +2,36 @@ import {
   Configuration,
   TintMode,
   SerializationExportType,
-  ImageFormat
+  ImageFormat,
 } from "react-native-photoeditorsdk";
 
 export default (custom = {}) => {
-  let { width, height } = custom;
+  let { width, height, items } = custom;
+  console.log("items", items);
+
+  let transformItems =
+    items && items.length > 0
+      ? [...items]
+      : [{ width: width || 9, height: height || 16 }];
+  console.log("transformItems", transformItems);
+
   let configuration: Configuration = {
     forceCrop: true,
     export: {
       image: { format: ImageFormat.PNG },
       serialization: {
         enabled: true,
-        exportType: SerializationExportType.OBJECT
-      }
+        exportType: SerializationExportType.OBJECT,
+      },
     },
     transform: {
-      items: [{ width: width || 9, height: height || 16 }]
+      items: transformItems,
     },
     sticker: {
       personalStickers: true,
       defaultPersonalStickerTintMode: TintMode.COLORIZED,
       categories: [
-        { identifier: "imgly_sticker_category_shapes" }
+        { identifier: "imgly_sticker_category_shapes" },
         // { identifier: "imgly_sticker_category_emoticons" },
         // {
         //   identifier: "optimize_sticker_category",
@@ -62,8 +70,8 @@ export default (custom = {}) => {
         //     }
         //   ]
         // }
-      ]
-    }
+      ],
+    },
   };
   return configuration;
 };

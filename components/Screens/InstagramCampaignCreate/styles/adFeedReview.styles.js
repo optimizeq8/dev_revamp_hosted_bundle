@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     height: hp(45),
     width: "100%",
   },
+  forwadIcon: {
+    transform: [{ rotate: I18nManager.isRTL ? "180deg" : "0deg" }],
+  },
   mediaView2: {
     width: "100%",
     top: 0,
@@ -50,11 +53,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingTop: 15,
     paddingHorizontal: 20,
+    textAlign: "left",
   },
   captionText: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#2a2a2a",
+    textAlign: "left",
     // paddingHorizontal: 25,
     marginTop: 10,
     // marginHorizontal: 15
@@ -98,6 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     paddingHorizontal: 20,
     marginTop: 4,
+    textAlign: "left",
   },
   sponsoredText: {
     fontFamily: "montserrat-regular",
