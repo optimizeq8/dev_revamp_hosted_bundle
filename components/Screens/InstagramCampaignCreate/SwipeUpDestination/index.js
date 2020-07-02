@@ -54,6 +54,7 @@ class SwipeUpDestination extends React.Component {
           <InstaApp_Install
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
+            listNum={listIndex}
           />
         );
         break;
@@ -113,7 +114,7 @@ class SwipeUpDestination extends React.Component {
           navigation={this.props.navigation}
           title={"Swipe Up destination"}
         /> */}
-        <View style={{ top: 15 }}>{content}</View>
+        <View style={{ top: 15, flex: 1 }}>{content}</View>
       </View>
     );
   }

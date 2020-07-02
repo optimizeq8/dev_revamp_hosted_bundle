@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
   safeAreaContainer: {
-    // height: '100%',
     flex: 1,
     // backgroundColor: '#FFFF',
   },

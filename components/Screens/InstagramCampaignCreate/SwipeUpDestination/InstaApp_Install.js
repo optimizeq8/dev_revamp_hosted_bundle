@@ -254,10 +254,7 @@ class InstaApp_Install extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
 
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}
-      >
+      <View style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}>
         <AppInstallIcon
           width={widthPercentageToDP(18)}
           height={heightPercentageToDP(10)}
@@ -287,7 +284,7 @@ class InstaApp_Install extends Component {
           socialMediaPlatform={"InstagramFeedAd"}
           data={this.props.data}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }
