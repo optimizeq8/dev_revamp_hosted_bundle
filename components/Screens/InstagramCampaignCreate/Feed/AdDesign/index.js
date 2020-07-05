@@ -150,7 +150,7 @@ class AdDesign extends Component {
         this.props.data.destination &&
         this.props.data.destination !== "BLANK"
       ) {
-        destination = "app_install";
+        destination = this.props.data.destination;
       } else {
         switch (this.props.data.objective) {
           case "BRAND_AWARENESS":
