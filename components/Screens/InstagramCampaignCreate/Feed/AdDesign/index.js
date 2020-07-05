@@ -143,6 +143,7 @@ class AdDesign extends Component {
         message = "",
         media_type,
         media = "//",
+        fileReadyToUpload,
       } = this.props.data;
       let destination = "";
       if (
@@ -162,7 +163,7 @@ class AdDesign extends Component {
             destination = "link";
             break;
           case "APP_INSTALLS":
-            destination = "APP_INSTALLS";
+            destination = "app_install";
             break;
           case "VIDEO_VIEWS":
             destination = "BLANK";
@@ -184,6 +185,7 @@ class AdDesign extends Component {
         },
         media_type,
         media,
+        fileReadyToUpload,
       });
       this.props.save_campaign_info_instagram({
         destination,
@@ -592,14 +594,15 @@ class AdDesign extends Component {
                       {this.props.data &&
                       this.props.data.link &&
                       this.props.data.link !== "BLANK" &&
-                      (this.state.campaignInfo.destination === "link" ||
-                        this.state.campaignInfo.destination === "BLANK")
+                      ["link", "BLANK", "app_install"].includes(
+                        this.state.campaignInfo.destination
+                      )
                         ? this.state.campaignInfo.destination === "link" ||
                           (this.props.data.objective === "BRAND_AWARENESS" &&
                             this.state.campaignInfo.destination === "BLANK")
                           ? translate("Website")
                           : this.state.campaignInfo.destination ===
-                            "APP_INSTALLS"
+                            "app_install"
                           ? translate("App Installs")
                           : this.props.data.objective === "VIDEO_VIEWS"
                           ? translate("Video Views")

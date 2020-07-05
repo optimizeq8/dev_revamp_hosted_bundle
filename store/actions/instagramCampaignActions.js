@@ -219,7 +219,10 @@ export const saveBrandMediaInstagram = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        // console.log("error saveBrandMedia ", error.response || error.message);
+        // console.log(
+        //   "error saveBrandMedia ",
+        //   JSON.stringify(error.response.data || error.message, null, 2)
+        // );
       });
   };
 };

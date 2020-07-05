@@ -4,7 +4,7 @@ import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import AppChoice from "../../../MiniComponents/AppChoice";
+import AppChoice from "../../../MiniComponents/InstaAppChoice";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -138,7 +138,7 @@ class InstaApp_Install extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: nameError || callActionError,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",
       });
     }
@@ -159,20 +159,8 @@ class InstaApp_Install extends Component {
             ? null
             : appChoice,
         //to not turn off or on the toogle of the other app selection
-        iosAppSelected:
-          iosApp_name !== "" &&
-          (androidApp_name && this.state.iosAppSelected
-            ? true
-            : this.state.iosAppSelected && this.state.androidAppSelected)
-            ? true
-            : appChoice === "iOS",
-        androidAppSelected:
-          androidApp_name !== "" &&
-          (iosApp_name && this.state.androidAppSelected
-            ? true
-            : this.state.iosAppSelected && this.state.androidAppSelected)
-            ? true
-            : appChoice !== "iOS",
+        iosAppSelected: iosApp_name !== "" && appChoice === "iOS",
+        androidAppSelected: androidApp_name !== "" && appChoice !== "iOS",
       });
       this.props.save_campaign_info_instagram({
         iosApp_name,
@@ -213,7 +201,7 @@ class InstaApp_Install extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: appError,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",
       });
     }
@@ -236,6 +224,7 @@ class InstaApp_Install extends Component {
         call_to_action: this.state.callaction,
         attachment,
         appChoice,
+        link: attachment.app_url,
       });
 
       this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
@@ -254,10 +243,7 @@ class InstaApp_Install extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
 
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}
-      >
+      <View style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}>
         <AppInstallIcon
           width={widthPercentageToDP(18)}
           height={heightPercentageToDP(10)}
@@ -267,7 +253,7 @@ class InstaApp_Install extends Component {
           <Text style={styles.titletext}>{translate("App Install")}</Text>
           <Text style={styles.subtext}>
             {translate(
-              "Send Snapchatters to the app store to download your app"
+              "Send instagram users to the app store to download your app"
             )}
           </Text>
         </View>
@@ -287,7 +273,7 @@ class InstaApp_Install extends Component {
           socialMediaPlatform={"InstagramFeedAd"}
           data={this.props.data}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }
