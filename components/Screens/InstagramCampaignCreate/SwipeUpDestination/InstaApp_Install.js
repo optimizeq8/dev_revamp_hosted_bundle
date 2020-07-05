@@ -4,7 +4,7 @@ import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import AppChoice from "../../../MiniComponents/AppChoice";
+import AppChoice from "../../../MiniComponents/InstaAppChoice";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -236,6 +236,7 @@ class InstaApp_Install extends Component {
         call_to_action: this.state.callaction,
         attachment,
         appChoice,
+        link: attachment.app_url,
       });
 
       this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
