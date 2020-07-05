@@ -1099,7 +1099,7 @@ class AdCover extends Component {
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={
-            "https://optimizekwtestingserver.com/optimize/static-media/ad_cover_en.svg"
+            "https://optimizekwtestingserver.com/optimize/static-media/ad_cover_en.png"
           }
         />
       </View>

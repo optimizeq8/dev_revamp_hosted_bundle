@@ -17,9 +17,11 @@ export default class LoadingModal extends Component {
       source,
       source_action,
       description,
-      media = "https://optimizekwtestingserver.com/optimize/static-media/ad_cover_en.svg",
+      media,
+      imageStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
+
     return (
       <Modal
         visible={isVisible}
@@ -31,7 +33,7 @@ export default class LoadingModal extends Component {
           style={styles.loadingSafeArea}
         />
         <BlurView intensity={100} tint="dark">
-          <View style={styles.container}>
+          <View style={{ height: "100%", alignItems: "center" }}>
             <CustomHeader
               screenProps={this.props.screenProps}
               closeButton={true}
@@ -41,18 +43,16 @@ export default class LoadingModal extends Component {
                 source: source,
                 source_action: source_action,
               }}
+              titelStyle={{ textAlign: "left" }}
             />
             <Text style={styles.descText}>{description}</Text>
-            <Image
-              onLoadStart={() => {
-                console.log("loading");
-              }}
-              onLoadEnd={() => {
-                console.log("loadEnd");
-              }}
-              source={{ uri: media }}
-              style={styles.review}
-            />
+            <View style={styles.reviewView}>
+              <RNImageOrCacheImage
+                resizeMode={"cover"}
+                media={media}
+                style={[styles.review, imageStyle]}
+              />
+            </View>
           </View>
         </BlurView>
       </Modal>
@@ -70,13 +70,17 @@ const styles = StyleSheet.create({
   },
   loadingSafeArea: {
     flex: 1,
+    height: "100%",
   },
   review: {
-    width: "100%",
-    height: "50%",
-    zIndex: 2,
-
-    borderWidth: 4,
+    flex: 1,
+    aspectRatio: 0.5,
+  },
+  reviewView: {
+    height: "71%",
+    width: "90%",
+    marginTop: 20,
+    alignItems: "center",
   },
   container: {
     width: "100%",

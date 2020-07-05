@@ -81,7 +81,7 @@ import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
-
+import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -134,6 +134,7 @@ class AdDesign extends Component {
       downloadMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
+      showExampleModal: true,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign;
@@ -1393,7 +1394,9 @@ class AdDesign extends Component {
                       (this.props.loadingStoryAdsArray.length > 0 &&
                         this.props.loadingStoryAdsArray.includes(true))
                     }
-                    onPress={this.handleSupportPage}
+                    onPress={() => {
+                      this.setState({ showExampleModal: true });
+                    }}
                     style={{
                       position: "absolute",
                       right: "4%",
@@ -1639,6 +1642,26 @@ class AdDesign extends Component {
           handleDownloadMediaStoryAds={this.handleDownloadMediaStoryAds}
           handleDownloadMediaCollectionAds={
             this.handleDownloadMediaCollectionAds
+          }
+        />
+        <ExampleModal
+          imageStyle={styles.imageStyle}
+          isVisible={this.state.showExampleModal}
+          onToggleModal={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          cancelUpload={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          title="Story Cover Example"
+          description={
+            "The cover shows on the Discover page among subscriptions and trending content"
+          }
+          source={"ad_cover"}
+          source_action={"a_help"}
+          screenProps={this.props.screenProps}
+          media={
+            "https://optimizekwtestingserver.com/optimize/static-media/ad_design_en.png"
           }
         />
       </View>
