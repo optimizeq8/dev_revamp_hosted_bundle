@@ -53,6 +53,7 @@ import MediaModal from "./MediaModal";
 import { SaveFormat } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdCover extends Component {
   static navigationOptions = {
     header: null,
@@ -93,6 +94,7 @@ class AdCover extends Component {
       uneditedCoverUri: "//",
       uneditedLogoUri: "//",
       selectingLogo: false,
+      showExampleModal: false,
     };
     this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -969,7 +971,9 @@ class AdCover extends Component {
                       <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                           disabled={this.props.coverLoading}
-                          onPress={this.handleSupportPage}
+                          onPress={() => {
+                            this.setState({ showExampleModal: true });
+                          }}
                           style={{
                             position: "absolute",
                             right: "5%",
@@ -1078,6 +1082,25 @@ class AdCover extends Component {
               : null
           }
           screenProps={this.props.screenProps}
+        />
+        <ExampleModal
+          isVisible={this.state.showExampleModal}
+          onToggleModal={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          cancelUpload={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          title="Story Cover Example"
+          description={
+            "The cover shows on the Discover page among subscriptions and trending content"
+          }
+          source={"ad_cover"}
+          source_action={"a_help"}
+          screenProps={this.props.screenProps}
+          media={
+            "https://optimizekwtestingserver.com/optimize/static-media/ad_cover_en.svg"
+          }
         />
       </View>
     );
