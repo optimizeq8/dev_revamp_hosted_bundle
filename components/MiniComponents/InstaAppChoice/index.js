@@ -51,11 +51,11 @@ class AppChoice extends Component {
       data: [],
       androidData: [],
       callaction:
-        list[this.props.socialMediaPlatform || "SnapAd"][
+        list[this.props.socialMediaPlatform || "InstagramFeedAd"][
           this.props.listNum || 1
         ].call_to_action_list[0],
       callactions:
-        list[this.props.socialMediaPlatform || "SnapAd"][
+        list[this.props.socialMediaPlatform || "InstagramFeedAd"][
           this.props.listNum || 1
         ].call_to_action_list,
       nameError: "",
@@ -103,17 +103,13 @@ class AppChoice extends Component {
           deep_link_uri: this.props.attachment.deep_link_uri,
           callaction: this.props.callaction
             ? this.props.callaction
-            : this.props.adType === "CollectionAd"
-            ? list[this.props.adType][0].call_to_action_list[0]
-            : list[this.props.socialMediaPlatform || "SnapAd"][
+            : list[this.props.socialMediaPlatform || "InstagramFeedAd"][
                 this.props.listNum
               ].call_to_action_list[0],
           callactions:
-            this.props.adType === "CollectionAd"
-              ? list[this.props.adType][0].call_to_action_list
-              : list[this.props.socialMediaPlatform || "SnapAd"][
-                  this.props.listNum
-                ].call_to_action_list,
+            list[this.props.socialMediaPlatform || "InstagramFeedAd"][
+              this.props.listNum
+            ].call_to_action_list,
           iosAppSelected: this.props.appSelections.iosAppSelected,
           androidAppSelected: this.props.appSelections.androidAppSelected,
         },
@@ -462,11 +458,7 @@ class AppChoice extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  data: state.campaignC.data,
   instaData: state.instagramAds.data,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  adType: state.campaignC.adType,
-  storyAdAttachment: state.campaignC.storyAdAttachment,
   rejCampaign: state.dashboard.rejCampaign,
   mainBusiness: state.account.mainBusiness,
 });

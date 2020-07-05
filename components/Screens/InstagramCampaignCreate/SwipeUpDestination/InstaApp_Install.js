@@ -138,7 +138,7 @@ class InstaApp_Install extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: nameError || callActionError,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",
       });
     }
@@ -201,7 +201,7 @@ class InstaApp_Install extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_swipe_up_destination",
         error_description: appError,
-        campaign_channel: "snapchat",
+        campaign_channel: "instagram",
         campaign_objective: "APP_INSTALL",
       });
     }
@@ -253,7 +253,7 @@ class InstaApp_Install extends Component {
           <Text style={styles.titletext}>{translate("App Install")}</Text>
           <Text style={styles.subtext}>
             {translate(
-              "Send Snapchatters to the app store to download your app"
+              "Send instagram users to the app store to download your app"
             )}
           </Text>
         </View>
