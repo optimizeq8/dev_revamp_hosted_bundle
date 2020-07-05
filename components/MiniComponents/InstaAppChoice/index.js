@@ -312,8 +312,14 @@ class AppChoice extends Component {
   toggleAppSelection = (android) => {
     this.setState(
       android
-        ? { androidAppSelected: !this.state.androidAppSelected }
-        : { iosAppSelected: !this.state.iosAppSelected }
+        ? {
+            androidAppSelected: !this.state.androidAppSelected,
+            iosAppSelected: false,
+          }
+        : {
+            iosAppSelected: !this.state.iosAppSelected,
+            androidAppSelected: false,
+          }
     );
     this.props.setTheState(
       android
@@ -371,6 +377,9 @@ class AppChoice extends Component {
           appSelections={{ iosAppSelected, androidAppSelected }}
           toggleAppSelection={this.toggleAppSelection}
         />
+        <Text style={styles.OSNote}>
+          {translate("Only one OS per campaign")}
+        </Text>
         <Picker
           showIcon={true}
           screenProps={this.props.screenProps}

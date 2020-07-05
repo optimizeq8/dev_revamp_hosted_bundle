@@ -242,6 +242,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 13,
   },
+  OSNote: {
+    fontFamily: "montserrat-regular",
+    alignSelf: "center",
+    color: "#fff",
+    bottom: 20,
+    fontSize: 13,
+  },
 });
 
 export default styles;

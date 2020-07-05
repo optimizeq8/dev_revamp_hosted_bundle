@@ -159,20 +159,8 @@ class InstaApp_Install extends Component {
             ? null
             : appChoice,
         //to not turn off or on the toogle of the other app selection
-        iosAppSelected:
-          iosApp_name !== "" &&
-          (androidApp_name && this.state.iosAppSelected
-            ? true
-            : this.state.iosAppSelected && this.state.androidAppSelected)
-            ? true
-            : appChoice === "iOS",
-        androidAppSelected:
-          androidApp_name !== "" &&
-          (iosApp_name && this.state.androidAppSelected
-            ? true
-            : this.state.iosAppSelected && this.state.androidAppSelected)
-            ? true
-            : appChoice !== "iOS",
+        iosAppSelected: iosApp_name !== "" && appChoice === "iOS",
+        androidAppSelected: androidApp_name !== "" && appChoice !== "iOS",
       });
       this.props.save_campaign_info_instagram({
         iosApp_name,
