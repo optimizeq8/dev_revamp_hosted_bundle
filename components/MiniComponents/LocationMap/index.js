@@ -11,7 +11,8 @@ import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import { cloneDeep } from "lodash";
-
+import MapSearchBar from "./MapSearchBar";
+import { SafeAreaView } from "react-navigation";
 export default class LocaionMap extends Component {
   state = {
     cirLat: 37.78825,
@@ -101,6 +102,7 @@ export default class LocaionMap extends Component {
     let { cirLat, cirLong, radius } = this.state;
     return (
       <View style={{ height: "100%" }}>
+        <SafeAreaView forceInset={{ top: "always" }} />
         <View style={styles.mapContainer}>
           <MapView
             loadingEnabled={true}
@@ -207,6 +209,7 @@ export default class LocaionMap extends Component {
             Select a marker to increase its size
           </Text>
         )}
+        <MapSearchBar />
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}

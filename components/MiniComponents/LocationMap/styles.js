@@ -3,7 +3,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
   mapContainer: {
-    height: "85%",
+    height: "80%",
     justifyContent: "center",
     width: "100%",
     borderBottomEndRadius: 30,
