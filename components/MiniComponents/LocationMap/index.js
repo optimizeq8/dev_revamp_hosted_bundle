@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Animated } from "react-native";
 import MapView, {
   PROVIDER_GOOGLE,
   Circle,
@@ -35,6 +35,11 @@ export default class LocaionMap extends Component {
     let marker = this.state.marker;
     marker.radius = radius;
     this.setState({ radius });
+    this.animateRad();
+    this.timer = setTimeout(() => this.handleRad(subtract), 200);
+  };
+  stopTimer = () => {
+    clearTimeout(this.timer);
   };
   handleAddCir = (e) => {
     this.setState({
@@ -181,8 +186,8 @@ export default class LocaionMap extends Component {
         {this.state.markerSelected && (
           <View style={styles.buttonContainer}>
             <Button
-              onLongPress={() => this.handleRad(false)}
-              onPress={() => this.handleRad(true)}
+              onPressOut={() => this.stopTimer()}
+              onPressIn={() => this.handleRad(true)}
               style={styles.mapButtons}
             >
               <Text style={styles.buttonText}>-</Text>
@@ -196,8 +201,8 @@ export default class LocaionMap extends Component {
             </Button>
 
             <Button
-              onLongPress={() => this.handleRad(false)}
-              onPress={() => this.handleRad(false)}
+              onPressOut={() => this.stopTimer()}
+              onPressIn={() => this.handleRad(false)}
               style={styles.mapButtons}
             >
               <Text style={styles.buttonText}>+</Text>
