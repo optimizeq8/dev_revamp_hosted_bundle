@@ -56,27 +56,31 @@ export default class SingleMetric extends Component {
           <View>
             <Text style={[styles.title]}>{translate(metric)}</Text>
             <View style={globalStyles.row}>
-              {metric.toLowerCase().includes("c") && (
-                <Small
-                  style={[
-                    styles.numbers,
-                    { fontSize: 9, fontFamily: "montserrat-regular" },
-                  ]}
-                >
-                  $
-                </Small>
-              )}
+              {metric.toLowerCase().includes("c") &&
+                metric.toLowerCase() !== "ctr" &&
+                metric.toLowerCase() !== "link click" && (
+                  <Small
+                    style={[
+                      styles.numbers,
+                      { fontSize: 9, fontFamily: "montserrat-regular" },
+                    ]}
+                  >
+                    $
+                  </Small>
+                )}
               <Text
                 style={[styles.numbers, { fontFamily: "montserrat-regular" }]}
               >
                 {formatNumber(
-                  Number.isInteger(metricValue)
+                  Number.isInteger(metricValue) ||
+                    metric.toLowerCase() === "link click" ||
+                    metric.toLowerCase() === "impressions"
                     ? metricValue
                     : parseFloat(metricValue).toFixed(2),
                   true
                 )}
               </Text>
-              {metric.toLowerCase() === "swipeup rate" && (
+              {metric.toLowerCase() === "ctr" && (
                 <Small
                   style={[
                     styles.numbers,
