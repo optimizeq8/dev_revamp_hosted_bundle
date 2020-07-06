@@ -69,7 +69,6 @@ import LowerButton from "../../MiniComponents/LowerButton";
 import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
-import LocationMap from "../../MiniComponents/LocationMap";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -521,7 +520,6 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <LocationMap />
           {!this.state.sidemenustate && (
             <View
               style={[
