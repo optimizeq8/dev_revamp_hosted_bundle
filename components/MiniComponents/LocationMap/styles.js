@@ -23,10 +23,13 @@ export default StyleSheet.create({
     height: 40,
     justifyContent: "center",
     backgroundColor: globalColors.orange,
+    alignItems: "center",
   },
   buttonText: {
     fontFamily: "montserrat-regular",
     color: "#fff",
-    fontSize: 40,
+    fontSize: 30,
+    alignSelf: "center",
+    height: 40,
   },
 });

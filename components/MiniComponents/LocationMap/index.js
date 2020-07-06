@@ -10,6 +10,7 @@ import { Button, Icon } from "native-base";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
+import { cloneDeep } from "lodash";
 
 export default class LocaionMap extends Component {
   state = {
@@ -18,9 +19,20 @@ export default class LocaionMap extends Component {
     radius: 500,
     markers: [],
     circles: [],
-    marker: { latitude: 37.78825, longitude: -122.4324 },
+    marker: { latitude: 37.78825, longitude: -122.4324, radius: 500 },
     markerSelected: false,
   };
+  cirRefs = {};
+  componentDidMount() {
+    if (this.props.circles.length > 0) {
+      let cirs = this.props.circles.map((cir) => ({
+        key: JSON.stringify(cir.latitude),
+        coordinate: { latitude: cir.latitude, longitude: cir.longitude },
+        radius: cir.radius,
+      }));
+      this.setState({ markers: cirs });
+    }
+  }
   handleDrag = (e, dragEnd = false) => {
     let cirLat = e.nativeEvent.coordinate.latitude;
     let cirLong = e.nativeEvent.coordinate.longitude;
@@ -29,14 +41,18 @@ export default class LocaionMap extends Component {
     this.setState({ cirLat, cirLong, markerSelected: dragEnd });
   };
   handleRad = (subtract = false) => {
-    let radius = subtract
-      ? this.state.marker.radius - 100
-      : this.state.marker.radius + 100;
+    let radius = this.state.marker.radius;
+    if (subtract) {
+      if (this.state.marker.radius > 250)
+        radius = this.state.marker.radius - 250;
+    } else {
+      if (this.state.marker.radius < 100000)
+        radius = this.state.marker.radius + 250;
+    }
     let marker = this.state.marker;
     marker.radius = radius;
     this.setState({ radius });
-    this.animateRad();
-    this.timer = setTimeout(() => this.handleRad(subtract), 200);
+    this.timer = setTimeout(() => this.handleRad(subtract), 20);
   };
   stopTimer = () => {
     clearTimeout(this.timer);
@@ -49,7 +65,6 @@ export default class LocaionMap extends Component {
           coordinate: e.nativeEvent.coordinate,
           key: JSON.stringify(e.nativeEvent.coordinate.latitude),
           radius: 500,
-          ...e.nativeEvent.coordinate,
         },
       ],
       marker: {
@@ -57,14 +72,6 @@ export default class LocaionMap extends Component {
         key: JSON.stringify(e.nativeEvent.coordinate.latitude),
         radius: 500,
       },
-      circles: [
-        ...this.state.circles,
-        {
-          radius: 500,
-          ...e.nativeEvent.coordinate,
-        },
-      ],
-
       markerSelected: false,
     });
   };
@@ -81,8 +88,14 @@ export default class LocaionMap extends Component {
   handleMarkerLayput = (e, marker) => {};
 
   handleMapSubmission = () => {
+    let markers = cloneDeep(this.state.markers);
+    markers = markers.map((mrk) => ({
+      latitude: mrk.coordinate.latitude,
+      longitude: mrk.coordinate.longitude,
+      radius: mrk.radius,
+    }));
+    this.props.onSelectedMapChange(markers);
     this.props._handleSideMenuState(false);
-    this.props.onSelectedMapChange(this.state.markers);
   };
   render() {
     let { cirLat, cirLong, radius } = this.state;
@@ -140,47 +153,21 @@ export default class LocaionMap extends Component {
               */}
                 <Circle
                   onLayout={() => {
-                    if (this.cir) {
-                      this.cir.setNativeProps({
+                    if (this.cirRefs[marker.coordinate.latitude]) {
+                      this.cirRefs[marker.coordinate.latitude].setNativeProps({
                         fillColor: "#7778",
                       });
                     }
                   }}
                   ref={(ref) => {
-                    this.cir = ref;
+                    this.cirRefs[marker.coordinate.latitude] = ref;
                   }}
                   center={marker.coordinate}
-                  // center={{ latitude: cirLat, longitude: cirLong }}
                   radius={marker.radius}
-                  fillColor={"rgba(132,22,25,1)"}
+                  fillColor={"#7778"}
                 />
               </Fragment>
             ))}
-            {/* <Marker
-            draggable={true}
-            geodesic={true}
-            coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-            }}
-            style={{ width: 80, height: 80 }}
-            onDrag={this.handleDrag}
-          />
-          <Circle
-            onLayout={() => {
-              if (this.cir) {
-                this.cir.setNativeProps({
-                  fillColor: "#7778",
-                });
-              }
-            }}
-            ref={(ref) => {
-              this.cir = ref;
-            }}
-            center={{ latitude: cirLat, longitude: cirLong }}
-            radius={radius}
-            fillColor={"rgba(132,22,25,1)"}
-          /> */}
           </MapView>
         </View>
         {this.state.markerSelected && (

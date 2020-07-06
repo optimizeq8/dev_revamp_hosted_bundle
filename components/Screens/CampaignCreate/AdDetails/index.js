@@ -467,8 +467,6 @@ class AdDetails extends Component {
   onSelectedMapChange = (selectedItems) => {
     let stateRep = cloneDeep(this.state.campaignInfo);
     stateRep.targeting.locations[0].circles = selectedItems;
-    console.log(JSON.stringify(stateRep.targeting.locations[0], null, 2));
-
     analytics.track(`a_ad_map_locations`, {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
@@ -1026,6 +1024,7 @@ class AdDetails extends Component {
             onSelectedMapChange={this.onSelectedMapChange}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
+            circles={this.state.campaignInfo.targeting.locations[0].circles}
           />
         );
         break;

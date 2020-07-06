@@ -23,14 +23,13 @@ class ReachBar extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo } = this.props;
-    console.log(this.props.total_reach);
 
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress
           size={85}
           width={8}
-          fill={this.props.average_reach / this.props.total_reach}
+          fill={this.props.total_reach}
           rotation={360}
           lineCap="round"
           style={[styles.chart]}
