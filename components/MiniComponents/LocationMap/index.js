@@ -15,8 +15,12 @@ import MapSearchBar from "./MapSearchBar";
 import { SafeAreaView } from "react-navigation";
 export default class LocaionMap extends Component {
   state = {
-    cirLat: 37.78825,
-    cirLong: -122.4324,
+    initialRegion: {
+      longitude: 48.07012852281332,
+      latitude: 29.318775799600733,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
     radius: 500,
     markers: [],
     circles: [],
@@ -86,7 +90,15 @@ export default class LocaionMap extends Component {
   handleMarkerSelect = (e, marker, onPress = false) => {
     this.setState({ marker, markerSelected: onPress });
   };
-  handleMarkerLayput = (e, marker) => {};
+  handleRegionChange = (coordinates) => {
+    this.map.animateToRegion(
+      { ...this.state.initialRegion, ...coordinates },
+      500
+    );
+    this.setState({
+      initialRegion: { ...this.state.initialRegion, ...coordinates },
+    });
+  };
 
   handleMapSubmission = () => {
     let markers = cloneDeep(this.state.markers);
@@ -105,17 +117,13 @@ export default class LocaionMap extends Component {
         <SafeAreaView forceInset={{ top: "always" }} />
         <View style={styles.mapContainer}>
           <MapView
+            ref={(ref) => (this.map = ref)}
             loadingEnabled={true}
             provider={PROVIDER_GOOGLE}
             style={{ height: "100%" }}
             onMarkerPress={(e) => console.log(e.nativeEvent)}
             onLongPress={this.handleAddCir}
-            initialRegion={{
-              longitude: 48.07012852281332,
-              latitude: 29.318775799600733,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
+            initialRegion={this.state.initialRegion}
           >
             {this.state.markers.map((marker) => (
               <Fragment key={marker.key}>
@@ -209,7 +217,7 @@ export default class LocaionMap extends Component {
             Select a marker to increase its size
           </Text>
         )}
-        <MapSearchBar />
+        <MapSearchBar handleRegionChange={this.handleRegionChange} />
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}
