@@ -177,20 +177,39 @@ class AdDetails extends Component {
 
       let recBudget = duration * 75;
 
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: recBudget,
+      // To by default set the country to that of the business country selected
+      let country_code = find(
+        countries,
+        (country) => country.label === this.props.mainBusiness.country
+      ).value;
+
+      await this.onSelectedCountryChange(
+        country_code,
+        null,
+        this.props.mainBusiness.country
+      );
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            campaign_id: this.props.campaign_id,
+            lifetime_budget_micro: recBudget,
+          },
+          minValueBudget: this.props.data.minValueBudget,
+          maxValueBudget: this.props.data.maxValueBudget,
+          value: this.formatNumber(recBudget, true),
+          recBudget: recBudget,
         },
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(recBudget, true),
-        recBudget: recBudget,
-      });
+        () => {
+          this._calcReach();
+        }
+      );
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
-        rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
+        const rep = {
+          ...this.state.campaignInfo,
+          ...this.props.data.campaignInfo,
+        };
         let countryRegions = find(
           country_regions,
           (country) =>
@@ -202,6 +221,7 @@ class AdDetails extends Component {
             ...this.props.data,
             campaignInfo: {
               ...rep,
+              campaign_id: this.props.campaign_id,
               lifetime_budget_micro:
                 this.props.data.campaignDateChanged &&
                 this.props.data.campaignInfo.lifetime_budget_micro <
@@ -868,6 +888,7 @@ class AdDetails extends Component {
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
+        console.log("rep", rep);
 
         this.props.ad_details(
           rep,
