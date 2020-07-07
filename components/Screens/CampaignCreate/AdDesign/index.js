@@ -164,7 +164,7 @@ class AdDesign extends Component {
             this.props.data.brand_name &&
             this.props.data.brand_name.length <= 25
           ? this.props.data.brand_name
-          : this.props.mainBusiness.businessname <= 25
+          : this.props.mainBusiness.businessname.length <= 25
           ? this.props.mainBusiness.businessname
           : "",
         headline: this.rejected
