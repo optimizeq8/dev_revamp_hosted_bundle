@@ -14,6 +14,7 @@ import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Segment from "expo-analytics-segment";
+import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //Redux
 import { connect } from "react-redux";
@@ -201,9 +202,20 @@ class Signin extends Component {
     });
   };
   render() {
+    console.log(this.props.checkingForToken);
+
     const { translate } = this.props.screenProps;
     if (this.props.userInfo) {
       return <LoadingScreen dash={true} />;
+    } else if (this.props.checkingForTokenError) {
+      return (
+        <ErrorComponent
+          screenProps={this.props.screenProps}
+          dashboard={true}
+          loading={this.props.loading}
+          navigation={this.props.navigation}
+        />
+      );
     } else
       return (
         <SafeAreaView
@@ -377,6 +389,7 @@ const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
   loading: state.auth.loading,
   checkingForToken: state.login.checkingForToken,
+  checkingForTokenError: state.login.checkingForTokenError,
 });
 
 const mapDispatchToProps = (dispatch) => ({
