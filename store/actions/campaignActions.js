@@ -31,7 +31,7 @@ export const snap_ad_audience_size = (info, totalReach) => {
       })
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch((err) => {
-        console.log("snap_ad_audience_size", err.message || err.response);
+        // console.log("snap_ad_audience_size", err.message || err.response);
         errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE,
@@ -48,8 +48,6 @@ export const get_total_reach = (info) => {
         return res.data;
       })
       .then((data) => {
-        console.log(JSON.stringify(data, null, 2));
-
         return dispatch({
           type: actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE,
           payload: data,

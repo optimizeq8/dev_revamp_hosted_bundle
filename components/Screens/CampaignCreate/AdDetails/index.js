@@ -709,7 +709,6 @@ class AdDetails extends Component {
         targeting: JSON.stringify(r),
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
       };
-      console.log(JSON.stringify(r, null, 2));
 
       let totalReach = {
         demographics: [

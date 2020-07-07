@@ -36,8 +36,6 @@ export default class LocaionMap extends Component {
   };
   cirRefs = {};
   componentDidMount() {
-    console.log(this.props.country_code);
-
     if (this.props.country_code) {
       this.handleInitialRegion();
     }
@@ -125,7 +123,8 @@ export default class LocaionMap extends Component {
     let northeastLat = parseFloat(bBox.northEast.latitude);
     let southwestLat = parseFloat(bBox.southWest.latitude);
     let latDelta = northeastLat - southwestLat;
-    let lngDelta = latDelta * ASPECT_RATIO * 2.5;
+    let lngDelta = latDelta * ASPECT_RATIO * 1.8;
+    this.map.setMapBoundaries(bBox.northEast, bBox.southWest);
     let zoomLevel = {
       latitudeDelta: latDelta,
       longitudeDelta: lngDelta,

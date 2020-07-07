@@ -409,8 +409,6 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE:
-      console.log(state.average_reach, action.payload.average_reach);
-
       return {
         ...state,
         total_reach: (state.average_reach / action.payload.average_reach) * 100,
@@ -1033,7 +1031,6 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.GET_MORE_INSTAGRAM_POST:
       const list = [...state.instagramPostList, ...action.payload.imagesList];
-      // console.log("list", list);
       return {
         ...state,
         instaHasNextPage: action.payload.instaHasNextPage,
