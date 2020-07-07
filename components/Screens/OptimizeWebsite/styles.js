@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   whatsAppDetailContainer: {
     paddingTop: 20,
-    paddingBottom: "30%",
+    paddingBottom: "50%",
     paddingHorizontal: 30,
     // minHeight: '100%',
     // justifyContent: 'space-around',
