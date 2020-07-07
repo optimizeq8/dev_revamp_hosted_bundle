@@ -16,7 +16,8 @@ import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect
 import CustomHeader from "../../../MiniComponents/Header";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
-
+// import LocationMap from "../../../MiniComponents/LocationMap";
+let LocationMap = null;
 //Data
 import countries, { gender, OSType, country_regions } from "./data";
 
@@ -77,6 +78,12 @@ class AdDetails extends Component {
             },
           ],
           geos: [{ country_code: "", region_id: [] }],
+          locations: [
+            {
+              circles: [],
+              operation: "INCLUDE",
+            },
+          ],
         },
       },
       filteredRegions: country_regions[0].regions,
@@ -310,6 +317,7 @@ class AdDetails extends Component {
       replace.targeting.geos[0].country_code = newCountry;
 
       replace.targeting.geos[0].region_id = [];
+      replace.targeting.locations[0].circles = [];
 
       let reg = country_regions.find(
         (c) => c.country_code === replace.targeting.geos[0].country_code
@@ -474,6 +482,23 @@ class AdDetails extends Component {
     !this.editCampaign &&
       this.props.save_campaign_info({
         campaignInfo: { ...replace },
+      });
+  };
+
+  onSelectedMapChange = (selectedItems) => {
+    let stateRep = cloneDeep(this.state.campaignInfo);
+    stateRep.targeting.locations[0].circles = selectedItems;
+    analytics.track(`a_ad_map_locations`, {
+      source: "ad_targeting",
+      source_action: "a_ad_map_locations",
+      campaign_map_locations: selectedItems,
+    });
+    this.setState({
+      campaignInfo: { ...stateRep },
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: { ...stateRep },
       });
   };
   // onSelectedBudgetChange = budget => {
@@ -680,7 +705,7 @@ class AdDetails extends Component {
     );
   };
   _calcReach = async () => {
-    if (this.state.campaignInfo.targeting.geos[0].country_code !== "") {
+    if (this.state.campaignInfo.targeting.geos[0].country_code !== "" || true) {
       let r = cloneDeep(this.state.campaignInfo.targeting);
       if (r.demographics[0].gender === "") {
         delete r.demographics[0].gender;
@@ -1009,6 +1034,23 @@ class AdDetails extends Component {
           />
         );
 
+        break;
+      }
+      case "map": {
+        if (!LocationMap) {
+          LocationMap = require("../../../MiniComponents/LocationMap").default;
+        }
+        menu = (
+          <LocationMap
+            country_code={
+              this.state.campaignInfo.targeting.geos[0].country_code
+            }
+            onSelectedMapChange={this.onSelectedMapChange}
+            screenProps={this.props.screenProps}
+            _handleSideMenuState={this._handleSideMenuState}
+            circles={this.state.campaignInfo.targeting.locations[0].circles}
+          />
+        );
         break;
       }
       case "languages": {

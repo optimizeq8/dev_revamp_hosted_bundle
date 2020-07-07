@@ -139,6 +139,16 @@ export const checkForExpiredToken = (navigation) => {
                   source: AppState.currentState,
                   source_action: "a_check_expired_token",
                 });
+            })
+            .catch((err) => {
+              console.log(
+                "verifyAccessToken error",
+                JSON.stringify(verifyAccessToken, null, 2)
+              );
+              dispatch({
+                type: actionTypes.CHECKING_FOR_TOKEN_ERROR,
+                payload: true,
+              });
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));

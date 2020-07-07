@@ -45,6 +45,12 @@ target 'OptimizeApp' do
   # pod 'react-native-ffmpeg', :path => '../node_modules/react-native-ffmpeg'
   pod 'react-native-ffmpeg/https-gpl-lts', :podspec => '../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec'
 
+   # React Native Maps dependencies
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
+
   use_native_modules!
 
   pod 'RNAnalytics', :path => '../node_modules/@segment/analytics-react-native'
@@ -70,6 +76,7 @@ target 'OptimizeApp' do
   pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+
 
 end
 

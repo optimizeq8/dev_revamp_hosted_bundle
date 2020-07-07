@@ -23,6 +23,7 @@ class ReachBar extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo } = this.props;
+
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress

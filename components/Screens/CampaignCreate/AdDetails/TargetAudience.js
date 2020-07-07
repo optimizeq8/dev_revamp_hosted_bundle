@@ -168,6 +168,31 @@ export class TargetAudience extends Component {
             ) : null}
             <TouchableOpacity
               disabled={loading}
+              onPress={() => this.callFunction("map")}
+              style={styles.targetTouchable}
+            >
+              <View style={globalStyles.row}>
+                <LocationIcon width={30} height={30} style={styles.icon} />
+
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Map")}</Text>
+                  <Text style={styles.menudetails}>
+                    {mainState.countryName !== ""
+                      ? translate(mainState.countryName)
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+              {startEditing &&
+                (targeting.geos[0].country_code ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={loading}
               onPress={() => this.callFunction("gender")}
               style={styles.targetTouchable}
             >
