@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Text, View, Animated } from "react-native";
+import { Text, View, Animated, Dimensions } from "react-native";
 import MapView, {
   PROVIDER_GOOGLE,
   Circle,
@@ -13,26 +13,41 @@ import styles from "./styles";
 import { cloneDeep } from "lodash";
 import MapSearchBar from "./MapSearchBar";
 import { SafeAreaView } from "react-navigation";
+import Axios from "axios";
+import countries from "../../Data/countries.billingAddress";
 export default class LocaionMap extends Component {
   state = {
     initialRegion: {
-      longitude: 48.07012852281332,
-      latitude: 29.318775799600733,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      longitude: 0,
+      latitude: 0,
+      latitudeDelta: 3,
+      longitudeDelta: 3,
     },
     radius: 500,
     markers: [],
     circles: [],
-    marker: { latitude: 37.78825, longitude: -122.4324, radius: 500 },
+    marker: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      radius: 500,
+    },
     markerSelected: false,
+    showFlatList: false,
   };
   cirRefs = {};
   componentDidMount() {
+    console.log(this.props.country_code);
+
+    if (this.props.country_code) {
+      this.handleInitialRegion();
+    }
     if (this.props.circles.length > 0) {
       let cirs = this.props.circles.map((cir) => ({
         key: JSON.stringify(cir.latitude),
-        coordinate: { latitude: cir.latitude, longitude: cir.longitude },
+        coordinate: {
+          latitude: cir.latitude,
+          longitude: cir.longitude,
+        },
         radius: cir.radius,
       }));
       this.setState({ markers: cirs });
@@ -90,16 +105,76 @@ export default class LocaionMap extends Component {
   handleMarkerSelect = (e, marker, onPress = false) => {
     this.setState({ marker, markerSelected: onPress });
   };
-  handleRegionChange = (coordinates) => {
+  handleRegionChange = (coordinates, bBox = {}) => {
+    coordinates = {
+      latitude: coordinates[1],
+      longitude: coordinates[0],
+    };
+    bBox = {
+      southWest: {
+        latitude: bBox[1],
+        longitude: bBox[0],
+      },
+      northEast: {
+        latitude: bBox[3],
+        longitude: bBox[2],
+      },
+    };
+    let { width, height } = Dimensions.get("window");
+    let ASPECT_RATIO = width / height;
+    let northeastLat = parseFloat(bBox.northEast.latitude);
+    let southwestLat = parseFloat(bBox.southWest.latitude);
+    let latDelta = northeastLat - southwestLat;
+    let lngDelta = latDelta * ASPECT_RATIO * 2.5;
+    let zoomLevel = {
+      latitudeDelta: latDelta,
+      longitudeDelta: lngDelta,
+    };
     this.map.animateToRegion(
-      { ...this.state.initialRegion, ...coordinates },
+      {
+        ...this.state.initialRegion,
+        ...coordinates,
+        ...zoomLevel,
+      },
       500
     );
     this.setState({
-      initialRegion: { ...this.state.initialRegion, ...coordinates },
+      initialRegion: {
+        ...this.state.initialRegion,
+        ...coordinates,
+        ...zoomLevel,
+      },
     });
   };
 
+  handleInitialRegion = () => {
+    let { country_code } = this.props;
+    console.log(country_code);
+    let countryName = "";
+    if (country_code === "sa") {
+      countryName = "Saudi Arabia";
+    } else if (country_code === "ae") {
+      countryName = "United Arab Emirates";
+    } else
+      countryName = countries.find((country) => country.value === country_code)
+        .label;
+    Axios.get(
+      `https://api.geocodify.com/v2/geocode?api_key=710870f62a633c72ad91bc4ab46c4aee88e4dd78&q=${countryName}`
+    )
+      .then((res) => res.data)
+      .then((data) => {
+        let features = data.response.features;
+        let country = features.find(
+          (country) => country.properties.country === countryName
+        );
+        let countryCoords = country.geometry.coordinates;
+        let bBox = country.bbox; //boundries of country
+        this.handleRegionChange(countryCoords, bBox);
+      });
+  };
+  handleShowFlatList = (showFlatList) => {
+    this.setState({ showFlatList });
+  };
   handleMapSubmission = () => {
     let markers = cloneDeep(this.state.markers);
     markers = markers.map((mrk) => ({
@@ -120,6 +195,8 @@ export default class LocaionMap extends Component {
             ref={(ref) => (this.map = ref)}
             loadingEnabled={true}
             provider={PROVIDER_GOOGLE}
+            onPress={() => this.handleShowFlatList(false)}
+            onPanDrag={() => this.handleShowFlatList(false)}
             style={{ height: "100%" }}
             onMarkerPress={(e) => console.log(e.nativeEvent)}
             onLongPress={this.handleAddCir}
@@ -138,29 +215,6 @@ export default class LocaionMap extends Component {
                   onPress={(e) => this.handleMarkerSelect(e, marker, true)}
                   // onDrag={this.handleDrag}
                 />
-                {/* <Callout style={{ width: 200 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: "100%",
-                    justifyContent: "space-evenly",
-                  }}
-                >
-                  <Button
-                    style={{ width: 50, justifyContent: "center" }}
-                    onPress={() => this.handleRad(false)}
-                  >
-                    <Text>+</Text>
-                  </Button>
-                  <Button
-                    style={{ width: 50, justifyContent: "center" }}
-                    onPress={() => this.handleRad(true)}
-                  >
-                    <Text>-</Text>
-                  </Button>
-                </View>
-              </Callout>
-              */}
                 <Circle
                   onLayout={() => {
                     if (this.cirRefs[marker.coordinate.latitude]) {
@@ -217,7 +271,12 @@ export default class LocaionMap extends Component {
             Select a marker to increase its size
           </Text>
         )}
-        <MapSearchBar handleRegionChange={this.handleRegionChange} />
+        <MapSearchBar
+          handleShowFlatList={this.handleShowFlatList}
+          country_code={this.props.country_code}
+          showFlatList={this.state.showFlatList}
+          handleRegionChange={this.handleRegionChange}
+        />
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}

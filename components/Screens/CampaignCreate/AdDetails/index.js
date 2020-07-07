@@ -297,6 +297,7 @@ class AdDetails extends Component {
       replace.targeting.geos[0].country_code = newCountry;
 
       replace.targeting.geos[0].region_id = [];
+      replace.targeting.locations[0].circles = [];
 
       let reg = country_regions.find(
         (c) => c.country_code === replace.targeting.geos[0].country_code
@@ -1021,6 +1022,9 @@ class AdDetails extends Component {
         }
         menu = (
           <LocationMap
+            country_code={
+              this.state.campaignInfo.targeting.geos[0].country_code
+            }
             onSelectedMapChange={this.onSelectedMapChange}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}

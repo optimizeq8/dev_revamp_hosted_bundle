@@ -32,4 +32,20 @@ export default StyleSheet.create({
     alignSelf: "center",
     height: 40,
   },
+  autoCompleteResaults: {
+    backgroundColor: "#fff",
+    padding: 10,
+    borderBottomWidth: 0.3,
+    width: "100%",
+    alignSelf: "center",
+    flexDirection: "column",
+  },
+  autoCompleteResaultText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+  },
+  autoCompleteResaultTextSecondery: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+  },
 });
