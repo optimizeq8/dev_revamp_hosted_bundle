@@ -972,6 +972,7 @@ class AdCover extends Component {
                         <TouchableOpacity
                           disabled={this.props.coverLoading}
                           onPress={() => {
+                            this.props.tutorialLinks("ad_cover", "en");
                             this.setState({ showExampleModal: true });
                           }}
                           style={{
@@ -1098,9 +1099,7 @@ class AdCover extends Component {
           source={"ad_cover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
-          media={
-            "https://optimizekwtestingserver.com/optimize/static-media/ad_cover_en.png"
-          }
+          media={this.props.ad_tutorial_link}
         />
       </View>
     );
@@ -1115,6 +1114,9 @@ const mapStateToProps = (state) => ({
   coverLoading: state.campaignC.coverLoading,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   rejCampaign: state.dashboard.rejCampaign,
+  ad_tutorial_type: state.generic.ad_tutorial_type,
+  ad_tutorial_link: state.generic.ad_tutorial_link,
+  ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1143,5 +1145,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData()),
+  tutorialLinks: (screenName, appLang) =>
+    dispatch(actionCreators.tutorialLinks(screenName, appLang)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdCover);
