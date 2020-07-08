@@ -105,6 +105,7 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
+    Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
@@ -152,6 +153,7 @@ class Dashboard extends Component {
   componentWillUnmount() {
     this.signal.cancel("Api is being canceled");
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    Linking.removeEventListener("url");
   }
 
   componentDidUpdate(prevProps) {
@@ -446,6 +448,47 @@ class Dashboard extends Component {
   };
   onDidBlur = () => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  };
+
+  handleDeepLinkListener = (url) => {
+    if (url) {
+      console.log(this.props.navigation.state.params);
+      let deeplinkType = this.props.navigation.getParam("deeplinkType", "");
+      let campaign_id = this.props.navigation.getParam("campaign_id", "");
+
+      switch (deeplinkType) {
+        case "snapchatCampaignDetail":
+          this.props.getCampaignDetails(campaign_id, this.props.navigation);
+          break;
+        case "googleCampaignDetail":
+          let start_time = this.props.navigation.getParam("start_time", "");
+          let end_time = this.props.navigation.getParam("end_time", "");
+          this.props.get_google_campiagn_details(
+            campaign_id,
+            start_time,
+            end_time,
+            false,
+            {
+              source: "dashboard",
+              source_action: "a_open_campaign_details",
+            }
+          );
+          this.props.navigation.navigate("GoogleCampaignDetails", {
+            campaign: campaign_id,
+            source: "dashboard",
+            source_action: "a_open_campaign_details",
+          });
+          break;
+        case "instagramCampaignDetail":
+          this.props.getInstagramCampaignDetails(
+            campaign_id,
+            this.props.navigation
+          );
+          break;
+        default:
+          break;
+      }
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -925,6 +968,26 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getLanguageListPOEdit(language)),
   setCampaignInProgressInstagram: (value) =>
     dispatch(actionCreators.setCampaignInProgressInstagram(value)),
+  getCampaignDetails: (id, naviagtion) =>
+    dispatch(actionCreators.getCampaignDetails(id, naviagtion)),
+  get_google_campiagn_details: (
+    id,
+    start_time,
+    end_time,
+    getStats,
+    segmentInfo
+  ) =>
+    dispatch(
+      actionCreators.get_google_campiagn_details(
+        id,
+        start_time,
+        end_time,
+        getStats,
+        segmentInfo
+      )
+    ),
+  getInstagramCampaignDetails: (id, naviagtion) =>
+    dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
