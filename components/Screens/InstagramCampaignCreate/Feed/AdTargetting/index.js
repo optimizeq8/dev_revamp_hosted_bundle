@@ -197,17 +197,32 @@ class InstagramFeedAdTargetting extends Component {
 
       let recBudget = duration * 75;
 
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: recBudget,
+      let country_code = country_regions.find(
+        (country) => country.name === this.props.mainBusiness.country
+      ).key;
+      let allCountryRegions = country_regions
+        .find((country) => country.name === this.props.mainBusiness.country)
+        .regions.map((reg) => reg.key);
+      await this.onSelectedCountryRegionChange([
+        country_code,
+        ...allCountryRegions,
+      ]);
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            campaign_id: this.props.campaign_id,
+            lifetime_budget_micro: recBudget,
+          },
+          minValueBudget: this.props.data.minValueBudget,
+          maxValueBudget: this.props.data.maxValueBudget,
+          value: this.formatNumber(recBudget),
+          recBudget: recBudget,
         },
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(recBudget),
-        recBudget: recBudget,
-      });
+        () => {
+          this._calcReach();
+        }
+      );
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
