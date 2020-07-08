@@ -379,9 +379,9 @@ PODS:
   - Segment-Mixpanel (1.6.0):
     - Analytics (~> 3.0)
     - Mixpanel (~> 3.5)
-  - Sentry (5.1.6):
-    - Sentry/Core (= 5.1.6)
-  - Sentry/Core (5.1.6)
+  - Sentry (5.1.8):
+    - Sentry/Core (= 5.1.8)
+  - Sentry/Core (5.1.8)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
-  Sentry: e5796ec31a481474d2f94553213278470f9e302d
+  Sentry: 795e8ffe1c45d9d20b3aa398774d7ea6a443fb05
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
@@ -781,4 +781,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5766879776867721da6e612e965af23a1cacdfee
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
