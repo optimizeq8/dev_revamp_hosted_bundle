@@ -143,7 +143,7 @@ export const checkForExpiredToken = (navigation) => {
             .catch((err) => {
               console.log(
                 "verifyAccessToken error",
-                JSON.stringify(verifyAccessToken, null, 2)
+                JSON.stringify(err.response, null, 2)
               );
               dispatch({
                 type: actionTypes.CHECKING_FOR_TOKEN_ERROR,

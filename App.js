@@ -346,10 +346,59 @@ class App extends React.Component {
           )
         );
       }
+      if (
+        handleScreen.notification.request.content.data.hasOwnProperty(
+          "deeplinkType"
+        )
+      ) {
+        let deeplinkType =
+          handleScreen.notification.request.content.data.deeplinkType;
+        let campaign_id =
+          handleScreen.notification.request.content.data.campaign_id;
+
+        switch (deeplinkType) {
+          case "snapchatCampaignDetail":
+            store.dispatch(
+              actionCreators.getCampaignDetails(campaign_id, NavigationService)
+            );
+            break;
+          case "googleCampaignDetail":
+            let start_time = this.props.navigation.getParam("start_time", "");
+            let end_time = this.props.navigation.getParam("end_time", "");
+            store.dispatch(
+              actionCreators.get_google_campiagn_details(
+                campaign_id,
+                start_time,
+                end_time,
+                false,
+                {
+                  source: "dashboard",
+                  source_action: "a_open_campaign_details",
+                }
+              )
+            );
+            NavigationService.navigate("GoogleCampaignDetails", {
+              campaign: campaign_id,
+              source: "dashboard",
+              source_action: "a_open_campaign_details",
+            });
+            break;
+          case "instagramCampaignDetail":
+            store.dispatch(
+              actionCreators.getInstagramCampaignDetails(
+                campaign_id,
+                NavigationService
+              )
+            );
+            break;
+          default:
+            break;
+        }
+      } else
+        NavigationService.navigate(
+          handleScreen.notification.request.content.data.screenName
+        );
       this.setState({ notificationHandled: true });
-      NavigationService.navigate(
-        handleScreen.notification.request.content.data.screenName
-      );
     }
 
     if (handleScreen.origin === "received") {
