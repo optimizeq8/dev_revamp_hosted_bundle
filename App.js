@@ -363,8 +363,10 @@ class App extends React.Component {
             );
             break;
           case "googleCampaignDetail":
-            let start_time = this.props.navigation.getParam("start_time", "");
-            let end_time = this.props.navigation.getParam("end_time", "");
+            let start_time =
+              handleScreen.notification.request.content.data.start_time;
+            let end_time =
+              handleScreen.notification.request.content.data.end_time;
             store.dispatch(
               actionCreators.get_google_campiagn_details(
                 campaign_id,
