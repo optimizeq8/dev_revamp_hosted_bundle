@@ -101,6 +101,7 @@ class Signin extends Component {
   handleDeepLink = (url) => {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
+      console.log("ADJUST DEEP LINK", screen);
       screen = screen[1].split("/")[0];
       if (url && url.url.includes("adType")) {
         let adTypePart = url.url
