@@ -109,6 +109,15 @@ class GoogleAdInfo extends Component {
         [key]: this.props.campaign[key],
       };
     }, {});
+    // By default set it to business country
+    if (data.location && data.location.length === 0) {
+      const countryCode = CountriesList.find(
+        (ctry) => ctry.name === this.props.mainBusiness.country
+      ).criteria_id;
+
+      data.location = [countryCode];
+      data.country = countryCode;
+    }
     this.setState({ ...data });
   };
 
