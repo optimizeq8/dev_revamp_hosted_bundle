@@ -479,7 +479,7 @@ class AdDesign extends Component {
                     radius={100}
                     onPressAction={() => this.selectImageOption("single")}
                     style={styles.adImageOptionButton}
-                    text={translate("Single Image")}
+                    text={translate("Single Media")}
                     uppercase
                     transparent={
                       this.state.campaignInfo.media_option !== "single"

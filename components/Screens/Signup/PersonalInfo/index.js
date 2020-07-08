@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, ScrollView, I18nManager, Text } from "react-native";
 import { Item, Input, Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import analytics from "@segment/analytics-react-native";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import InputFeild from "../../../MiniComponents/InputFieldNew";
@@ -82,9 +82,6 @@ class PersonalInfo extends Component {
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
-    Segment.screenWithProperties("Registration Detail Screen", {
-      category: "Sign Up",
-    });
     if (this.props.userInfo) {
       this.setState({
         ...this.state,
@@ -115,6 +112,15 @@ class PersonalInfo extends Component {
       stateName === "firstname" || stateName === "lastname"
         ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
         : value;
+    if (stateName !== "password")
+      analytics.track(`a_${stateName}`, {
+        source: "registration_detail",
+        source_action: `a_${stateName}`,
+        value:
+          stateName === "firstname" || stateName === "lastname"
+            ? value.replace(/[^a-z\u0621-\u064A]/gi, "")
+            : value,
+      });
     let userInfo = {
       ...this.state.userInfo,
       ...state,
@@ -150,6 +156,13 @@ class PersonalInfo extends Component {
       mobile: number,
       country_code: countryCode,
     };
+    analytics.track(`a_mobile_number`, {
+      source: "registration_detail",
+      source_action: `a_mobile_number`,
+      value: number,
+      country_code: countryCode,
+      action_status: valid ? "success" : "failure",
+    });
     // if (number.toString().length > 3 && valid) {
     this.setState({
       // phoneNum: number.toString().length > 3 && valid ? number.split(countryCode)[1] : number,
@@ -195,7 +208,30 @@ class PersonalInfo extends Component {
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
       );
-
+    if (
+      passwordError ||
+      emailError ||
+      firstnameError ||
+      lastnameError ||
+      businessnameError ||
+      businesscategoryError ||
+      countryError ||
+      businesscategoryOtherError
+    ) {
+      analytics.track(`a_error_form`, {
+        error_page: "registration_detail",
+        error_description:
+          passwordError ||
+          emailError ||
+          firstnameError ||
+          lastnameError ||
+          businessnameError ||
+          businesscategoryError ||
+          countryError ||
+          businesscategoryOtherError,
+        source_action: "a_sign_up",
+      });
+    }
     this.setState({
       passwordError,
       emailError,
@@ -335,7 +371,14 @@ class PersonalInfo extends Component {
       stateName === "businessname"
         ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
         : value;
-
+    analytics.track(`a_${stateName}`, {
+      source: "registration_detail",
+      source_action: `a_${stateName}`,
+      value:
+        stateName === "businessname"
+          ? value.replace(/[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi, "")
+          : value,
+    });
     let businessAccount = {
       ...this.state.businessAccount,
       ...state,
@@ -399,6 +442,11 @@ class PersonalInfo extends Component {
 
   onSelectedBusinessCategoryChange = (value) => {
     if (value && !isEmpty(value)) {
+      analytics.track(`a_business_category`, {
+        source: "registration_detail",
+        source_action: "a_business_category",
+        value: value[0].value,
+      });
       this.setState(
         {
           businessAccount: {
@@ -438,6 +486,11 @@ class PersonalInfo extends Component {
   };
   onSelectedCountryChange = (value) => {
     if (value && !isEmpty(value)) {
+      analytics.track(`a_business_country`, {
+        source: "registration_detail",
+        source_action: "a_business_country",
+        value: value[0].value,
+      });
       this.setState(
         {
           businessAccount: {
