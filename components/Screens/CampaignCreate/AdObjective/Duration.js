@@ -46,7 +46,7 @@ export default class Duration extends Component {
         style={[
           styles.dateInput,
           // this.props.start_timeError ? GlobalStyles.redBorderColor : GlobalStyles.transparentBorderColor,
-          this.props.style
+          this.props.style,
         ]}
         onPress={() => {
           this.props.dismissKeyboard && this.props.dismissKeyboard();
@@ -61,7 +61,7 @@ export default class Duration extends Component {
             <Text style={styles.inputLabel}>{translate(label)}</Text>
             <View
               style={{
-                flexDirection: "row"
+                flexDirection: "row",
                 // justifyContent: "space-between"
               }}
             >
@@ -77,10 +77,14 @@ export default class Duration extends Component {
 
                       I18nManager.isRTL
                         ? { marginHorizontal: -15 }
-                        : { marginHorizontal: 0 }
+                        : { marginHorizontal: 0 },
                     ]}
                   >
-                    {translate("Start")}
+                    {(this.props.start_time === "" || selectedCampaign) &&
+                    (!this.props.slidePanel ||
+                      new Date(selectedCampaign.end_time) < new Date())
+                      ? ""
+                      : translate("Start")}
                   </Text>
                 )}
               </View>
@@ -91,13 +95,23 @@ export default class Duration extends Component {
                   GlobalStyles.whiteTextColor,
                   {
                     alignSelf: "center",
-                    marginHorizontal: widthPercentageToDP(5)
+                    marginHorizontal:
+                      ((this.props.start_time === "" || selectedCampaign) &&
+                        !this.props.slidePanel) ||
+                      (selectedCampaign &&
+                        new Date(selectedCampaign.end_time) < new Date())
+                        ? 0
+                        : widthPercentageToDP(5),
                     // top: this.props.start_time === '' ? 0 : 10,
                     // marginHorizontal: -25
-                  }
+                  },
                 ]}
               >
-                {I18nManager.isRTL ? "\t" : translate("To")}
+                {(this.props.start_time === "" || selectedCampaign) &&
+                (!this.props.slidePanel ||
+                  new Date(selectedCampaign.end_time) < new Date())
+                  ? translate("Select Campaign Duration")
+                  : translate("To")}
               </Text>
 
               {!this.props.slidePanel ||
@@ -108,7 +122,13 @@ export default class Duration extends Component {
                       {end_time} {end_year}
                     </Text>
                   ) : (
-                    <Text style={[styles.dateLabel]}>{translate("End")}</Text>
+                    <Text style={[styles.dateLabel]}>
+                      {(this.props.start_time === "" || selectedCampaign) &&
+                      (!this.props.slidePanel ||
+                        new Date(selectedCampaign.end_time) < new Date())
+                        ? ""
+                        : translate("End")}
+                    </Text>
                   )}
                 </View>
               ) : (
