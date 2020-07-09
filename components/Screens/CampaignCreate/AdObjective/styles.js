@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     // borderWidth: 0.5,
   },
   dateLabel: {
-    textAlign: "center",
+    textAlign: "left",
     color: globalColors.orange,
     flexDirection: "column",
-    fontFamily: "montserrat-regular",
-    fontSize: 16,
+    fontFamily: "montserrat-light",
+    fontSize: 12,
     // paddingHorizontal: 10
   },
   date: {
