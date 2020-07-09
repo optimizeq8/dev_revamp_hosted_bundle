@@ -134,7 +134,7 @@ class AdDesign extends Component {
       downloadMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
-      showExampleModal: true,
+      showExampleModal: false,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign;
@@ -1395,6 +1395,10 @@ class AdDesign extends Component {
                         this.props.loadingStoryAdsArray.includes(true))
                     }
                     onPress={() => {
+                      this.props.tutorialLinks(
+                        "ad_design",
+                        I18nManager.isRTL ? "ar" : "en"
+                      );
                       this.setState({ showExampleModal: true });
                     }}
                     style={{
@@ -1645,6 +1649,8 @@ class AdDesign extends Component {
           }
         />
         <ExampleModal
+          title={""}
+          description={""}
           imageStyle={styles.imageStyle}
           isVisible={this.state.showExampleModal}
           onToggleModal={() => {
@@ -1653,16 +1659,10 @@ class AdDesign extends Component {
           cancelUpload={() => {
             this.setState({ showExampleModal: false });
           }}
-          title="Story Cover Example"
-          description={
-            "The cover shows on the Discover page among subscriptions and trending content"
-          }
           source={"ad_cover"}
           source_action={"a_help"}
           screenProps={this.props.screenProps}
-          media={
-            "https://optimizekwtestingserver.com/optimize/static-media/ad_design_en.png"
-          }
+          media={this.props.ad_tutorial_link}
         />
       </View>
     );
@@ -1693,6 +1693,10 @@ const mapStateToProps = (state) => ({
   collectionMainMediaTypeWebLink:
     state.campaignC.collectionMainMediaTypeWebLink,
   rejCampaign: state.dashboard.rejCampaign,
+
+  ad_tutorial_type: state.generic.ad_tutorial_type,
+  ad_tutorial_link: state.generic.ad_tutorial_link,
+  ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1751,5 +1755,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.updateStoryADS(storyAdsArray)),
   setCollectionAdMediaArray: (collectionAdsArray) =>
     dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
+  tutorialLinks: (screenName, appLang) =>
+    dispatch(actionCreators.tutorialLinks(screenName, appLang)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

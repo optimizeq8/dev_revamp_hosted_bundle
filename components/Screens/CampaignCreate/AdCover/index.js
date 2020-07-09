@@ -15,6 +15,7 @@ import {
   Platform,
   BackHandler,
   Linking,
+  I18nManager,
 } from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -972,7 +973,10 @@ class AdCover extends Component {
                         <TouchableOpacity
                           disabled={this.props.coverLoading}
                           onPress={() => {
-                            this.props.tutorialLinks("ad_cover", "en");
+                            this.props.tutorialLinks(
+                              "ad_cover",
+                              I18nManager.isRTL ? "ar" : "en"
+                            );
                             this.setState({ showExampleModal: true });
                           }}
                           style={{
