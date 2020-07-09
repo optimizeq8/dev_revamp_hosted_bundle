@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#fff",
   },
+  imageStyle: {
+    width: 70,
+  },
   popupOverlay: {
     height: "100%",
   },
