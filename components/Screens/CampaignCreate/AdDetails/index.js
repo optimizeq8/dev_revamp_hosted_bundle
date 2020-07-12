@@ -132,6 +132,11 @@ class AdDetails extends Component {
       prevState.campaignInfo.targeting.geos.length !==
       this.state.campaignInfo.targeting.geos.length
     ) {
+      let languages = this.state.campaignInfo.targeting.demographics[0]
+        .languages;
+      if (this.state.campaignInfo.targeting.geos.length > 1) {
+        languages.length = 1;
+      }
       let duration = Math.round(
         Math.abs(
           (new Date(this.props.data.start_time).getTime() -
@@ -252,6 +257,9 @@ class AdDetails extends Component {
         let minValueBudget =
           this.props.data.minValueBudget * rep.targeting.geos.length;
         recBudget *= rep.targeting.geos.length;
+        if (rep.targeting.geos.length > 1) {
+          rep.targeting.demographics[0].languages.length = 1;
+        }
         this.setState(
           {
             ...this.state,
@@ -485,7 +493,7 @@ class AdDetails extends Component {
 
   onSelectedLangsChange = (selectedItem) => {
     const { translate } = this.props.screenProps;
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     let langs = [];
     if (
       replace.targeting.demographics[0].languages.find(
@@ -502,7 +510,9 @@ class AdDetails extends Component {
         campaign_languages: langs.join(", "),
       });
     } else {
-      replace.targeting.demographics[0].languages.push(selectedItem);
+      if (replace.targeting.geos.length > 1) {
+        replace.targeting.demographics[0].languages = [selectedItem];
+      } else replace.targeting.demographics[0].languages.push(selectedItem);
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_ad_languages`, {
         source: "ad_targeting",
