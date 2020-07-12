@@ -33,8 +33,12 @@ class MultiSelectList extends Component {
     };
   }
   componentDidMount() {
-    !this.props.addressForm &&
-      this.props.get_interests(this.props.country_code[0].country_code);
+    if (!this.props.addressForm) {
+      let country_code = this.props.country_code.map(
+        (cCode) => cCode.country_code
+      );
+      this.props.get_interests(country_code.join(","));
+    }
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
@@ -72,7 +76,10 @@ class MultiSelectList extends Component {
       prevProps.country_code !== this.props.country_code &&
       !this.props.addressForm
     ) {
-      this.props.get_interests(this.props.country_code[0].country_code);
+      let country_code = this.props.country_code.map(
+        (cCode) => cCode.country_code
+      );
+      this.props.get_interests(country_code.join(","));
     }
   }
   onSelectedItemObjectsChange = (selectedItems, option) => {
