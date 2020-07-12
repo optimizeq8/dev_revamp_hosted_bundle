@@ -30,36 +30,57 @@ class SelectRegions extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    let regionlist = this.props.filteredRegions.map((c) => {
-      return (
-        <TouchableOpacity
-          key={c.id}
-          style={styles.languageRowConatiner}
-          onPress={() => {
-            this.props.onSelectedRegionChange(
-              this.props.addressForm ? c : c.id,
-              c.name
-            );
-          }}
-        >
-          <Icon
-            type="MaterialCommunityIcons"
-            name={
-              this.props.region_id.find((r) => r === c.id)
-                ? "circle"
-                : "circle-outline"
-            }
-            style={[
-              this.props.region_id.find((r) => r === c.id)
-                ? styles.activetext
-                : styles.inactivetext,
-              styles.optionsIconSize,
-            ]}
-          />
-          <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
-        </TouchableOpacity>
+    let regionlist = this.props.filteredRegions.map((fReg) => {
+      let countryName = fReg.country_name;
+      let coRegIndex = this.props.region_id.findIndex(
+        (coR) => coR.country_code === fReg.country_code
       );
+      let coReg = fReg.regions;
+      if (this.props.addressForm || coReg.length > 3)
+        return (
+          <View>
+            <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
+              {countryName}
+            </Text>
+            {coReg.map((c) => (
+              <TouchableOpacity
+                key={c.id}
+                style={styles.languageRowConatiner}
+                onPress={() => {
+                  this.props.onSelectedRegionChange(
+                    this.props.addressForm ? c : c.id,
+                    c.name,
+                    fReg.country_code
+                  );
+                }}
+              >
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name={
+                    this.props.region_id[coRegIndex].region_id.find(
+                      (r) => r === c.id
+                    )
+                      ? "circle"
+                      : "circle-outline"
+                  }
+                  style={[
+                    this.props.region_id[coRegIndex].region_id.find(
+                      (r) => r === c.id
+                    )
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    styles.optionsIconSize,
+                  ]}
+                />
+                <Text style={styles.optionsTextContainer}>
+                  {translate(c.name)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        );
     });
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
