@@ -47,6 +47,7 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { uniq, flatten } from "lodash";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -127,6 +128,27 @@ class AdDetails extends Component {
         filteredLanguages: this.props.languages,
       });
     }
+    if (
+      prevState.campaignInfo.targeting.geos.length !==
+      this.state.campaignInfo.targeting.geos.length
+    ) {
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let recBudget =
+        this.state.campaignInfo.targeting.geos.length * duration * 75;
+
+      let minValueBudget =
+        this.props.data.minValueBudget *
+        this.state.campaignInfo.targeting.geos.length;
+
+      this.setState({ minValueBudget, recBudget });
+    }
   }
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {
@@ -190,11 +212,6 @@ class AdDetails extends Component {
         (country) => country.label === this.props.mainBusiness.country
       ).value;
 
-      await this.onSelectedCountryChange(
-        country_code,
-        null,
-        this.props.mainBusiness.country
-      );
       this.setState(
         {
           campaignInfo: {
@@ -224,12 +241,17 @@ class AdDetails extends Component {
             country_regions,
             (country) => country.country_code === cou.country_code
           );
-          savedRegionNames = this.props.data.regionNames.filter(
-            (regN) => regN.country_code === foundCountryReg.country_code
+          let filterSelectedRegions = this.props.data.regionNames.filter(
+            (regN) => regN.country_code === cou.country_code
+          );
+          savedRegionNames = uniq(
+            flatten([savedRegionNames, filterSelectedRegions])
           );
           return foundCountryReg;
         });
-
+        let minValueBudget =
+          this.props.data.minValueBudget * rep.targeting.geos.length;
+        recBudget *= rep.targeting.geos.length;
         this.setState(
           {
             ...this.state,
@@ -254,12 +276,13 @@ class AdDetails extends Component {
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
-            filteredRegions: countryRegions ? countryRegions.regions : [],
+            filteredRegions: countryRegions ? countryRegions : [],
             regions: countryRegions ? countryRegions : [],
             budgetOption: this.props.data.campaignDateChanged
               ? 1
               : this.props.data.budgetOption,
             regionNames: savedRegionNames,
+            minValueBudget,
           },
           () => {
             if (this.props.data.appChoice) {
@@ -275,6 +298,12 @@ class AdDetails extends Component {
             }
             this._calcReach();
           }
+        );
+      } else {
+        await this.onSelectedCountryChange(
+          country_code,
+          null,
+          this.props.mainBusiness.country
         );
       }
     }
@@ -377,6 +406,7 @@ class AdDetails extends Component {
         source_action: "a_ad_country",
         campaign_country_name: countryName,
       });
+      let showRegions = false;
       this.setState(
         {
           campaignInfo: replace,
@@ -388,10 +418,9 @@ class AdDetails extends Component {
         },
         () => {
           //To show the regions options if one of the selected countries has more than 3 regions
-          let showRegions = this.state.regions.some(
+          showRegions = this.state.regions.some(
             (reg) => reg.regions.length > 3
           );
-          this.setState({ showRegions });
           !this.editCampaign &&
             this.props.save_campaign_info({
               campaignInfo: replace,
@@ -399,6 +428,7 @@ class AdDetails extends Component {
               countryName,
               showRegions: showRegions,
             });
+          this.setState({ showRegions });
         }
       );
     }
@@ -743,7 +773,10 @@ class AdDetails extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.state.minValueBudget,
+          description:
+            this.state.campaignInfo.targeting.geos.length > 1
+              ? `$25 x ${translate("Country")} = $${this.state.minValueBudget}`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
