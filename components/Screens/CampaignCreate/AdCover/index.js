@@ -1104,6 +1104,7 @@ class AdCover extends Component {
           source_action={"a_help"}
           screenProps={this.props.screenProps}
           media={this.props.ad_tutorial_link}
+          mediaType={this.props.ad_tutorial_media_type}
         />
       </View>
     );
