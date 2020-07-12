@@ -360,6 +360,7 @@ class AdDetails extends Component {
           region_id: [],
         };
         countryName = [];
+        regionNames = [];
       } else if (
         replace.targeting.geos.find((co) => co.country_code === newCountry)
       ) {
@@ -380,6 +381,9 @@ class AdDetails extends Component {
           region_id: [],
         };
         countryName = [countryName];
+        regionNames = this.state.regionNames.filter(
+          (reg) => reg.country_code !== newCountry
+        );
       } else {
         //To add the coutnry to geos array
         replace.targeting.geos.push({
@@ -427,6 +431,7 @@ class AdDetails extends Component {
               country_code: newCountry,
               countryName,
               showRegions: showRegions,
+              regionNames,
             });
           this.setState({ showRegions });
         }
