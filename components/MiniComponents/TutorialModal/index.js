@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Modal } from "react-native-paper";
+import { Video } from "expo-av";
+
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import CustomHeader from "../Header";
@@ -19,9 +21,34 @@ export default class LoadingModal extends Component {
       description,
       media,
       imageStyle,
+      mediaType,
     } = this.props;
     const { translate } = this.props.screenProps;
 
+    if (mediaType === "video") {
+      var mediaPlayer = (
+        <Video
+          shouldPlay={true}
+          isMuted={false}
+          isLooping={true}
+          source={{
+            uri: media !== "//" ? media : "dfv.dfv",
+          }}
+          style={{
+            width: "80%",
+            height: "100%",
+            position: "absolute",
+          }}
+        />
+      );
+    } else
+      mediaPlayer = (
+        <RNImageOrCacheImage
+          resizeMode={"cover"}
+          media={media}
+          style={[styles.review, imageStyle]}
+        />
+      );
     return (
       <Modal
         visible={isVisible}
@@ -46,13 +73,8 @@ export default class LoadingModal extends Component {
               titelStyle={{ textAlign: "left" }}
             />
             <Text style={styles.descText}>{description}</Text>
-            <View style={styles.reviewView}>
-              <RNImageOrCacheImage
-                resizeMode={"cover"}
-                media={media}
-                style={[styles.review, imageStyle]}
-              />
-            </View>
+            <View style={styles.reviewView}></View>
+            {mediaPlayer}
           </View>
         </BlurView>
       </Modal>
