@@ -248,91 +248,91 @@ class AdDetails extends Component {
           value: this.formatNumber(recBudget, true),
           recBudget: recBudget,
         },
-        () => {
+        async () => {
+          if (this.props.data.hasOwnProperty("campaignInfo")) {
+            const rep = {
+              ...this.state.campaignInfo,
+              ...this.props.data.campaignInfo,
+            };
+
+            let savedRegionNames = this.props.data.regionNames;
+            let countryRegions = rep.targeting.geos.map((cou) => {
+              let foundCountryReg = find(
+                country_regions,
+                (country) => country.country_code === cou.country_code
+              );
+              let filterSelectedRegions = this.props.data.regionNames.filter(
+                (regN) => regN.country_code === cou.country_code
+              );
+              savedRegionNames = uniq(
+                flatten([savedRegionNames, filterSelectedRegions])
+              );
+              return foundCountryReg;
+            });
+            let minValueBudget =
+              this.props.data.minValueBudget * rep.targeting.geos.length;
+            recBudget *= rep.targeting.geos.length;
+            if (rep.targeting.geos.length > 1) {
+              rep.targeting.demographics[0].languages.length = 1;
+            }
+            this.setState(
+              {
+                ...this.state,
+                ...this.props.data,
+                campaignInfo: {
+                  ...rep,
+                  campaign_id: this.props.campaign_id,
+                  lifetime_budget_micro:
+                    this.props.data.campaignDateChanged &&
+                    this.props.data.campaignInfo.lifetime_budget_micro <
+                      this.props.data.minValueBudget
+                      ? recBudget
+                      : this.props.data.campaignInfo.lifetime_budget_micro,
+                },
+                value: this.formatNumber(
+                  this.props.data.campaignDateChanged &&
+                    this.props.data.campaignInfo.lifetime_budget_micro <
+                      this.props.data.minValueBudget
+                    ? recBudget
+                    : this.props.data.campaignInfo.lifetime_budget_micro
+                ),
+                showRegions: this.props.data.showRegions,
+                filteredLanguages: this.props.languages,
+                recBudget,
+                filteredRegions: countryRegions ? countryRegions : [],
+                regions: countryRegions ? countryRegions : [],
+                budgetOption: this.props.data.campaignDateChanged
+                  ? 1
+                  : this.props.data.budgetOption,
+                regionNames: savedRegionNames,
+                minValueBudget,
+              },
+              () => {
+                if (this.props.data.appChoice) {
+                  let navAppChoice =
+                    this.props.data.iosApp_name &&
+                    this.props.data.androidApp_name
+                      ? ""
+                      : this.props.data.appChoice;
+                  let rep = this.state.campaignInfo;
+                  rep.targeting.devices[0].os_type = navAppChoice;
+                  this.setState({
+                    campaignInfo: rep,
+                  });
+                }
+                this._calcReach();
+              }
+            );
+          } else {
+            await this.onSelectedCountryChange(
+              country_code,
+              null,
+              this.props.mainBusiness.country
+            );
+          }
           this._calcReach();
         }
       );
-
-      if (this.props.data.hasOwnProperty("campaignInfo")) {
-        const rep = {
-          ...this.state.campaignInfo,
-          ...this.props.data.campaignInfo,
-        };
-
-        let savedRegionNames = this.props.data.regionNames;
-        let countryRegions = rep.targeting.geos.map((cou) => {
-          let foundCountryReg = find(
-            country_regions,
-            (country) => country.country_code === cou.country_code
-          );
-          let filterSelectedRegions = this.props.data.regionNames.filter(
-            (regN) => regN.country_code === cou.country_code
-          );
-          savedRegionNames = uniq(
-            flatten([savedRegionNames, filterSelectedRegions])
-          );
-          return foundCountryReg;
-        });
-        let minValueBudget =
-          this.props.data.minValueBudget * rep.targeting.geos.length;
-        recBudget *= rep.targeting.geos.length;
-        if (rep.targeting.geos.length > 1) {
-          rep.targeting.demographics[0].languages.length = 1;
-        }
-        this.setState(
-          {
-            ...this.state,
-            ...this.props.data,
-            campaignInfo: {
-              ...rep,
-              campaign_id: this.props.campaign_id,
-              lifetime_budget_micro:
-                this.props.data.campaignDateChanged &&
-                this.props.data.campaignInfo.lifetime_budget_micro <
-                  this.props.data.minValueBudget
-                  ? recBudget
-                  : this.props.data.campaignInfo.lifetime_budget_micro,
-            },
-            value: this.formatNumber(
-              this.props.data.campaignDateChanged &&
-                this.props.data.campaignInfo.lifetime_budget_micro <
-                  this.props.data.minValueBudget
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
-            ),
-            showRegions: this.props.data.showRegions,
-            filteredLanguages: this.props.languages,
-            recBudget,
-            filteredRegions: countryRegions ? countryRegions : [],
-            regions: countryRegions ? countryRegions : [],
-            budgetOption: this.props.data.campaignDateChanged
-              ? 1
-              : this.props.data.budgetOption,
-            regionNames: savedRegionNames,
-            minValueBudget,
-          },
-          () => {
-            if (this.props.data.appChoice) {
-              let navAppChoice =
-                this.props.data.iosApp_name && this.props.data.androidApp_name
-                  ? ""
-                  : this.props.data.appChoice;
-              let rep = this.state.campaignInfo;
-              rep.targeting.devices[0].os_type = navAppChoice;
-              this.setState({
-                campaignInfo: rep,
-              });
-            }
-            this._calcReach();
-          }
-        );
-      } else {
-        await this.onSelectedCountryChange(
-          country_code,
-          null,
-          this.props.mainBusiness.country
-        );
-      }
     }
   }
 
