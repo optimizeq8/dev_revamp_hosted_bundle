@@ -140,10 +140,12 @@ class AdPaymentReview extends Component {
     let gender = targeting.demographics[0].gender
       ? startCase(lowerCase(targeting.demographics[0].gender))
       : "All";
-    let countryName = this.props.countryName;
+    let countryName = this.props.countryName.map((country) =>
+      translate(country)
+    );
     if (this.props.regionNames) {
       var regionNames = this.props.regionNames.map((region) =>
-        translate(region)
+        translate(region.name)
       );
     } else regionNames = [""];
 
@@ -402,8 +404,8 @@ class AdPaymentReview extends Component {
                         title: "Location",
                         content:
                           regionNames.length > 0
-                            ? translate(countryName) + ": " + regionNames
-                            : translate(countryName),
+                            ? countryName + ": " + regionNames
+                            : countryName,
                       },
                       {
                         title: "Language",

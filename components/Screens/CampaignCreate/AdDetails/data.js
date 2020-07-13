@@ -1,123 +1,126 @@
 export const gender = [
   { label: "Female", value: "FEMALE" },
   { label: "Male", value: "MALE" },
-  { label: "All", value: "" }
+  { label: "All", value: "" },
 ];
 export const OSType = [
   { value: "iOS", label: "iOS" },
   { value: "ANDROID", label: "ANDROID" },
-  { label: "All", value: "" }
+  { label: "All", value: "" },
 ];
 
 export const country_regions = [
   {
     country_code: "kw",
+    country_name: "Kuwait",
     regions: [
       {
         id: "25678",
         code: "ah",
-        name: "Ahmadi"
+        name: "Ahmadi",
       },
 
       {
         id: "25680",
         code: "ku",
-        name: "Kuwait City (Capital)"
-      }
-    ]
+        name: "Kuwait City (Capital)",
+      },
+    ],
   },
   {
     country_code: "ae",
+    country_name: "UAE",
     regions: [
       {
         id: "25151",
         code: "aj",
-        name: "Ajman"
+        name: "Ajman",
       },
       {
         id: "25152",
         code: "az",
-        name: "Abu Dhabi"
+        name: "Abu Dhabi",
       },
       {
         id: "25153",
         code: "du",
-        name: "Dubai"
+        name: "Dubai",
       },
       {
         id: "25154",
         code: "fu",
-        name: "Fujairah"
+        name: "Fujairah",
       },
 
       {
         id: "25156",
         code: "sh",
-        name: "Sharjah"
+        name: "Sharjah",
       },
       {
         id: "25157",
         code: "uq",
-        name: "Umm Al - Quwain"
-      }
-    ]
+        name: "Umm Al - Quwain",
+      },
+    ],
   },
   {
     country_code: "sa",
+    country_name: "KSA",
     regions: [
       {
         id: "12205",
         code: "04",
-        name: "Eastern Province"
+        name: "Eastern Province",
       },
       {
         id: "12207",
         code: "02",
-        name: "Makkah"
+        name: "Makkah",
       },
       {
         id: "12208",
         code: "01",
-        name: "Riyadh"
+        name: "Riyadh",
       },
       {
         id: "23905",
         code: "03",
-        name: "Al - Madinah"
+        name: "Al - Madinah",
       },
       {
         id: "24313",
         code: "07",
-        name: "Tabuk"
+        name: "Tabuk",
       },
       {
         id: "24817",
         code: "09",
-        name: "Jizan"
+        name: "Jizan",
       },
 
       {
         id: "24819",
         code: "08",
-        name: "Northern Borders"
+        name: "Northern Borders",
       },
 
       {
         id: "24970",
         code: "12",
-        name: "Al Jawf"
+        name: "Al Jawf",
       },
       {
         id: "24971",
         code: "14",
-        name: "Asir"
+        name: "Asir",
       },
       {
         id: "24972",
         code: "10",
-        name: "Najran"
-      }
-    ]
+        name: "Najran",
+      },
+    ],
   },
   {
     country_code: "bh",
@@ -125,7 +128,7 @@ export const country_regions = [
       {
         id: "25180",
         code: "13",
-        name: "Al Asimah"
+        name: "Al Asimah",
       },
       // {
       //   id: "28673",
@@ -145,22 +148,23 @@ export const country_regions = [
       {
         id: "28676",
         code: "17",
-        name: "Ash Shamaliyah"
-      }
-    ]
+        name: "Ash Shamaliyah",
+      },
+    ],
   },
   {
     country_code: "qa",
+    country_name: "Qatar",
     regions: [
       {
         id: "25911",
         code: "da",
-        name: "Ad Dawhah"
+        name: "Ad Dawhah",
       },
       {
         id: "30060",
         code: "kh",
-        name: "Al Khawr Wa Adh Dhakhira"
+        name: "Al Khawr Wa Adh Dhakhira",
       },
       // {
       //   id: "30061",
@@ -180,22 +184,23 @@ export const country_regions = [
       {
         id: "30064",
         code: "wa",
-        name: "Al Wakrah"
-      }
+        name: "Al Wakrah",
+      },
       // {
       //   id: "30065",
       //   code: "za",
       //   name: "Az Zain"
       // }
-    ]
+    ],
   },
   {
     country_code: "om",
+    country_name: "Oman",
     regions: [
       {
         id: "25874",
         code: "ma",
-        name: "Masqat"
+        name: "Masqat",
       },
       // {
       //   id: "29714",
@@ -210,7 +215,7 @@ export const country_regions = [
       {
         id: "29716",
         code: "da",
-        name: "Ad Dakhiliyah"
+        name: "Ad Dakhiliyah",
       },
       // {
       //   id: "29717",
@@ -235,8 +240,8 @@ export const country_regions = [
       {
         id: "29721",
         code: "zu",
-        name: "Zufar"
-      }
+        name: "Zufar",
+      },
       // {
       //   id: "34944",
       //   code: "bj",
@@ -257,33 +262,33 @@ export const country_regions = [
       //   code: "ss",
       //   name: "Shamal Ash Sharqiyah"
       // }
-    ]
-  }
+    ],
+  },
 ];
 
-export default (countries = [
+export default countries = [
   {
     label: "Kuwait",
-    value: "kw"
+    value: "kw",
   },
   {
     label: "UAE",
-    value: "ae"
+    value: "ae",
   },
   {
     label: "KSA",
-    value: "sa"
+    value: "sa",
   },
   {
     label: "Bahrain",
-    value: "bh"
+    value: "bh",
   },
   {
     label: "Qatar",
-    value: "qa"
+    value: "qa",
   },
   {
     label: "Oman",
-    value: "om"
-  }
-]);
+    value: "om",
+  },
+];
