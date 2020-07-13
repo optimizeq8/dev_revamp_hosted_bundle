@@ -252,12 +252,9 @@ class InstagramStoryAdTargetting extends Component {
           },
           () => {
             if (this.props.data.appChoice) {
-              let navAppChoice =
-                this.props.data.iosApp_name && this.props.data.androidApp_name
-                  ? ""
-                  : this.props.data.appChoice;
+              let navAppChoice = this.props.data.appChoice;
               let rep = this.state.campaignInfo;
-              rep.targeting.devices[0].os_type = navAppChoice;
+              rep.targeting.user_os = [navAppChoice];
               this.setState({
                 campaignInfo: rep,
               });
@@ -1012,6 +1009,7 @@ class InstagramStoryAdTargetting extends Component {
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
             _handleSideMenuState={this._handleSideMenuState}
+            objective={this.props.data.objective}
           />
         );
         break;
