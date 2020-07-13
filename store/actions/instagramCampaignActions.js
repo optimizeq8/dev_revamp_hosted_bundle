@@ -263,7 +263,11 @@ export const getOSVersion = (osType) => {
       .get(`osversion/${osType}`)
       .then((res) => res.data)
       .then((data) => {
-        if (data && data.osversion) {
+        if (
+          data &&
+          data.osversion &&
+          data.osversion.hasOwnProperty("description")
+        ) {
           let osVersionArray = data.osversion.description.split(";");
 
           if (osType === "Android") {

@@ -252,12 +252,9 @@ class InstagramFeedAdTargetting extends Component {
           },
           () => {
             if (this.props.data.appChoice) {
-              let navAppChoice =
-                this.props.data.iosApp_name && this.props.data.androidApp_name
-                  ? ""
-                  : this.props.data.appChoice;
+              let navAppChoice = this.props.data.appChoice;
               let rep = this.state.campaignInfo;
-              rep.targeting.devices[0].os_type = navAppChoice;
+              rep.targeting.user_os = [navAppChoice];
               this.setState({
                 campaignInfo: rep,
               });
@@ -1008,6 +1005,7 @@ class InstagramFeedAdTargetting extends Component {
             selectedOSType={this.state.campaignInfo.targeting.user_os[0]}
             iosName={"iOS"}
             androidName={"Android"}
+            objective={this.props.data.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
