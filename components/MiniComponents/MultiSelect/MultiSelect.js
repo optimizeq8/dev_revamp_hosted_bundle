@@ -107,6 +107,8 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
+    let disabled =
+      this.props.editCampaign && this.props.country_code.length > 1;
     const { translate } = this.props.screenProps;
     let countrylist = this.state.filteredCountreis.map((c) => {
       let country_code = this.props.country_code.find(
@@ -116,6 +118,7 @@ class MultiSelectList extends Component {
         <TouchableOpacity
           key={c.value}
           style={styles.selectTextContainer}
+          disabled={disabled}
           onPress={() => {
             this.props.onSelectedCountryChange(
               !this.props.addressForm ? c.value : c,
@@ -131,6 +134,7 @@ class MultiSelectList extends Component {
                 ? "#FF9D00"
                 : "#fff",
               fontSize: 14,
+              opacity: !disabled ? 1 : 0.5,
             }}
           >
             {translate(c.label)}

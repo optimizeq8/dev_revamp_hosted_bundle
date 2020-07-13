@@ -38,7 +38,7 @@ class SelectRegions extends Component {
       let coReg = fReg.regions;
       if (this.props.addressForm || coReg.length > 3)
         return (
-          <View>
+          <View key={countryName}>
             <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
               {countryName}
             </Text>

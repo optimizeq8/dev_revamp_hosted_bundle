@@ -137,22 +137,24 @@ class AdDetails extends Component {
       if (this.state.campaignInfo.targeting.geos.length > 1) {
         languages.length = 1;
       }
-      let duration = Math.round(
-        Math.abs(
-          (new Date(this.props.data.start_time).getTime() -
-            new Date(this.props.data.end_time).getTime()) /
-            86400000
-        ) + 1
-      );
+      if (!this.editCampaign) {
+        let duration = Math.round(
+          Math.abs(
+            (new Date(this.props.data.start_time).getTime() -
+              new Date(this.props.data.end_time).getTime()) /
+              86400000
+          ) + 1
+        );
 
-      let recBudget =
-        this.state.campaignInfo.targeting.geos.length * duration * 75;
+        let recBudget =
+          this.state.campaignInfo.targeting.geos.length * duration * 75;
 
-      let minValueBudget =
-        this.props.data.minValueBudget *
-        this.state.campaignInfo.targeting.geos.length;
+        let minValueBudget =
+          this.props.data.minValueBudget *
+          this.state.campaignInfo.targeting.geos.length;
 
-      this.setState({ minValueBudget, recBudget });
+        this.setState({ minValueBudget, recBudget });
+      }
     }
   }
   handleBackButton = () => {
@@ -170,35 +172,52 @@ class AdDetails extends Component {
         this.props.navigation.getParam("campaign", {}),
         { arrayMerge: combineMerge }
       );
-      this.props.get_interests(editedCampaign.targeting.geos[0].country_code);
+      let editedCountryCodes = editedCampaign.targeting.geos.map(
+        (geo) => geo.country_code
+      );
+      this.props.get_interests(editedCountryCodes.join(","));
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
       );
-      getCountryName = countries.find(
-        (country) =>
-          country.value === editedCampaign.targeting.geos[0].country_code
-      ).label;
-      this.onSelectedCountryChange(
-        editedCampaign.targeting.geos[0].country_code,
-        null,
-        getCountryName
+      let getCountryName = editedCampaign.targeting.geos.map(
+        (geo, i) =>
+          countries.find(
+            (country) =>
+              country.value === editedCampaign.targeting.geos[i].country_code
+          ).label
       );
-      let editedRegionNames = country_regions.find(
-        (country_region) =>
-          country_region.country_code ===
-          editedCampaign.targeting.geos[0].country_code
+      let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
+        country_regions.find(
+          (country_region) =>
+            country_region.country_code ===
+            editedCampaign.targeting.geos[i].country_code
+        )
       );
-      editedCampaign.targeting.geos[0].region_id.forEach((id) => {
-        let name = editedRegionNames.regions.find((region) => region.id === id)
-          .name;
-        this.onSelectedRegionChange(id, name);
-      });
+      let stateRegionNames = [];
       this.setState(
         {
           campaignInfo: editedCampaign,
           startEditing: false,
+          countryName: getCountryName,
+          regions: editedRegionNames,
+          filteredRegions: editedRegionNames,
         },
-        () => this._calcReach()
+        () => {
+          editedCampaign.targeting.geos.forEach((geo, i) =>
+            editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+              let regN = editedRegionNames[i].regions.find(
+                (region) => region.id === id
+              );
+              regN.country_code = editedCampaign.targeting.geos[i].country_code;
+              stateRegionNames.push(regN);
+            })
+          );
+          let showRegions = this.state.regions.some(
+            (reg) => reg.regions.length > 3
+          );
+          this._calcReach();
+          this.setState({ regionNames: stateRegionNames, showRegions });
+        }
       );
     } else {
       let duration = Math.round(
@@ -1253,6 +1272,7 @@ class AdDetails extends Component {
             onSelectedVersionsChange={this.onSelectedVersionsChange}
             OSType={this.state.campaignInfo.targeting.devices[0].os_type}
             option={this.state.selectionOption}
+            editCampaign={this.editCampaign}
           />
         );
         break;
