@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Icon, Text } from "native-base";
+import { Icon, Text, Input, Item } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
@@ -90,8 +90,30 @@ export default class Picker extends Component {
                 this.props.closeCategoryModal();
               }}
             />
+            {this.props.customSearch && (
+              <Item
+                style={{
+                  width: "80%",
+                  backgroundColor: "#fff1",
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  height: "20%",
+                  left: "20%",
+                  borderRadius: 15,
+                  borderBottomWidth: 0,
+                }}
+                placeholder={this.props.placeholder}
+              >
+                <Input
+                  placeholder={this.props.placeholder}
+                  onEndEditing={this.props.customSearch}
+                  placeholderTextColor={"red"}
+                ></Input>
+              </Item>
+            )}
           </View>
         }
+        hideSearch={this.props.customSearch}
         colors={colors}
         searchIconComponent={
           <Icon

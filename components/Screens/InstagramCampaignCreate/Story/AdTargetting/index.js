@@ -320,6 +320,8 @@ class InstagramStoryAdTargetting extends Component {
       });
   };
   onSelectedInterestsNamesChange = (selectedItems) => {
+    console.log(selectedItems);
+
     let replace = cloneDeep(this.state.campaignInfo);
     let interestArray =
       selectedItems.length > 0 &&

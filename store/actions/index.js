@@ -194,4 +194,5 @@ export {
   deleteCarouselCard,
   uploadCarouselAdCard,
   setCarouselAdAttechment,
+  get_custom_interests_instagram,
 } from "./instagramCampaignActions";
