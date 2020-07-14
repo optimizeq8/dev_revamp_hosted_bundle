@@ -970,7 +970,7 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       )}
                       <View style={{ flexDirection: "row" }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           disabled={this.props.coverLoading}
                           onPress={() => {
                             this.props.tutorialLinks(
@@ -986,7 +986,7 @@ class AdCover extends Component {
                           }}
                         >
                           <InfoIcon />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <PenIconBrand
                           disabled={this.props.coverLoading}
                           style={{ justifyContent: "flex-start" }}

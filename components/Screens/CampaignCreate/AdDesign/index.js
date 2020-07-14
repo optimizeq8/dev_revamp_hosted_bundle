@@ -1388,7 +1388,7 @@ class AdDesign extends Component {
                         this.props.loadingStoryAdsArray.includes(true))
                     }
                   />
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     disabled={
                       this.props.loading ||
                       (this.props.loadingStoryAdsArray.length > 0 &&
@@ -1408,7 +1408,7 @@ class AdDesign extends Component {
                     }}
                   >
                     <InfoIcon />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   {this.adType === "CollectionAd" && (
                     <View style={styles.collectionView}>{collection}</View>
                   )}
