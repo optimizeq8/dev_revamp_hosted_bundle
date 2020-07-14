@@ -63,7 +63,7 @@ class InstaApp_Install extends Component {
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK" &&
       (this.props.data.objective === "APP_INSTALLS" ||
-        this.props.data.destination === "APP_INSTALLS")
+        this.props.data.destination === "app_install")
     ) {
       this.setState({
         attachment: {
@@ -79,7 +79,7 @@ class InstaApp_Install extends Component {
         iosAppSelected: this.props.data.attachment.ios_app_id !== "",
         androidAppSelected: this.props.data.attachment.android_app_url !== "",
       });
-    } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
+    } else if (this.props.storyAdAttachment.destination === "app_install") {
       this.setState({
         attachment: {
           ...this.state.attachment,
@@ -162,6 +162,7 @@ class InstaApp_Install extends Component {
         iosAppSelected: iosApp_name !== "" && appChoice === "iOS",
         androidAppSelected: androidApp_name !== "" && appChoice !== "iOS",
       });
+
       this.props.save_campaign_info_instagram({
         iosApp_name,
         androidApp_name,
@@ -219,12 +220,17 @@ class InstaApp_Install extends Component {
       (this.state.iosAppSelected || this.state.androidAppSelected) &&
       !appError
     ) {
+      let appUrl = attachment.app_url
+        ? attachment.app_url
+        : attachment.android_app_url
+        ? `https://play.google.com/store/apps/details?id=${attachment.android_app_url}`
+        : `https://apps.apple.com/us/app/${attachment.app_name}/id${attachment.ios_app_id}?uo=4`;
       this.props.save_campaign_info_instagram({
         ...this.props.data,
         call_to_action: this.state.callaction,
         attachment,
         appChoice,
-        link: attachment.app_url,
+        link: appUrl,
       });
 
       this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
