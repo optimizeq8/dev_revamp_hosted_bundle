@@ -106,7 +106,7 @@ class AppUpdateChecker extends PureComponent {
   handleButton = () => {
     Linking.openURL(
       Platform.OS === "ios"
-        ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
+        ? "itms-apps://apps.apple.com/us/app/optimizeapp/id1462878125"
         : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
     );
   };
