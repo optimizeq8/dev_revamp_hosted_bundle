@@ -33,8 +33,12 @@ class MultiSelectList extends Component {
     };
   }
   componentDidMount() {
-    !this.props.addressForm &&
-      this.props.get_interests(this.props.country_code);
+    if (!this.props.addressForm) {
+      let country_code = this.props.country_code.map(
+        (cCode) => cCode.country_code
+      );
+      this.props.get_interests(country_code.join(","));
+    }
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
@@ -72,7 +76,10 @@ class MultiSelectList extends Component {
       prevProps.country_code !== this.props.country_code &&
       !this.props.addressForm
     ) {
-      this.props.get_interests(this.props.country_code);
+      let country_code = this.props.country_code.map(
+        (cCode) => cCode.country_code
+      );
+      this.props.get_interests(country_code.join(","));
     }
   }
   onSelectedItemObjectsChange = (selectedItems, option) => {
@@ -100,30 +107,41 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
+    let disabled =
+      this.props.editCampaign && this.props.country_code.length > 1;
     const { translate } = this.props.screenProps;
-    let countrylist = this.state.filteredCountreis.map((c) => (
-      <TouchableOpacity
-        key={c.value}
-        style={styles.selectTextContainer}
-        onPress={() => {
-          this.props.onSelectedCountryChange(
-            !this.props.addressForm ? c.value : c,
-            false,
-            c.label
-          );
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: "montserrat-bold",
-            color: this.props.country_code === c.value ? "#FF9D00" : "#fff",
-            fontSize: 14,
+    let countrylist = this.state.filteredCountreis.map((c) => {
+      let country_code = this.props.country_code.find(
+        (co) => co.country_code === c.value
+      );
+      return (
+        <TouchableOpacity
+          key={c.value}
+          style={styles.selectTextContainer}
+          disabled={disabled}
+          onPress={() => {
+            this.props.onSelectedCountryChange(
+              !this.props.addressForm ? c.value : c,
+              false,
+              c.label
+            );
           }}
         >
-          {translate(c.label)}
-        </Text>
-      </TouchableOpacity>
-    ));
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              color: (country_code ? country_code.country_code : "" === c.value)
+                ? "#FF9D00"
+                : "#fff",
+              fontSize: 14,
+              opacity: !disabled ? 1 : 0.5,
+            }}
+          >
+            {translate(c.label)}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}

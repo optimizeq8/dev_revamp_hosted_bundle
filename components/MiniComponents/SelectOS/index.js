@@ -19,6 +19,7 @@ export default class SelectOS extends Component {
       ? this.props.campaignInfo.targeting.devices[0].os_type
       : this.props.campaignInfo.targeting.user_os[0];
     const { translate } = this.props.screenProps;
+    let disabled = this.props.objective === "APP_INSTALLS";
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -38,7 +39,11 @@ export default class SelectOS extends Component {
             </Text>
             <View style={[styles.optionsContainer]}>
               <TouchableOpacity
-                style={styles.optionsRowContainer}
+                disabled={disabled}
+                style={[
+                  styles.optionsRowContainer,
+                  { opacity: disabled ? 0.5 : 1 },
+                ]}
                 onPress={() => this.props.onSelectedOSChange("")}
               >
                 <Icon
@@ -55,7 +60,11 @@ export default class SelectOS extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.optionsRowContainer}
+                disabled={disabled}
+                style={[
+                  styles.optionsRowContainer,
+                  { opacity: disabled ? 0.5 : 1 },
+                ]}
                 onPress={() => this.props.onSelectedOSChange("iOS")}
               >
                 <Icon
@@ -83,7 +92,11 @@ export default class SelectOS extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.optionsRowContainer}
+                disabled={disabled}
+                style={[
+                  styles.optionsRowContainer,
+                  { opacity: disabled ? 0.5 : 1 },
+                ]}
                 onPress={() => this.props.onSelectedOSChange("ANDROID")}
               >
                 <Icon

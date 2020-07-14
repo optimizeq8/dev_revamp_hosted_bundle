@@ -17,6 +17,7 @@
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
 #import "Mixpanel/Mixpanel.h"
+#import <GoogleMaps/GoogleMaps.h>
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -45,6 +46,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyDxOd8PlgO-DjzmoVDaFmpGj2XcqhclrwM"];
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

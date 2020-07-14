@@ -54,6 +54,7 @@ class SwipeUpDestination extends React.Component {
           <InstaApp_Install
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
+            listNum={listIndex}
           />
         );
         break;
@@ -94,7 +95,11 @@ class SwipeUpDestination extends React.Component {
           icon="instagram"
           navigation={this.props.navigation}
           currentScreen="Compose"
-          title={"Click destination"}
+          title={
+            this.props.adType === "InstagramStoryAd"
+              ? "Swipe Up destination"
+              : "Click destination"
+          }
         />
         {/* 
         <Header
@@ -107,7 +112,7 @@ class SwipeUpDestination extends React.Component {
           navigation={this.props.navigation}
           title={"Swipe Up destination"}
         /> */}
-        <View style={{ top: 15 }}>{content}</View>
+        <View style={{ top: 15, flex: 1 }}>{content}</View>
       </View>
     );
   }
@@ -115,7 +120,6 @@ class SwipeUpDestination extends React.Component {
 
 const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
-  adType: state.instagramAds.adType,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,

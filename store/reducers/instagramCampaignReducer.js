@@ -26,7 +26,7 @@ const initialState = {
   interestNames: [],
   regionNames: [],
   campaignEnded: false,
-  adType: "InstagramAdFeed",
+  adType: "InstagramFeedAd",
   incompleteCampaign: false,
   campaignProgressStarted: false,
   currentCampaignSteps: [],
@@ -424,7 +424,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
       let ar = state.loadingCarouselAdsArray;
       let storyPro = state.carouselAdsArray;
-      console.log("action.payload", action.payload);
 
       storyPro[action.payload.index] = {
         ...storyPro[action.payload.index],

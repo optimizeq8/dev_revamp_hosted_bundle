@@ -21,13 +21,14 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { upperFirst } from "lodash";
 
 class SelectDevices extends Component {
   state = { deviceBrands: null };
 
   componentDidMount() {
     Segment.screen("Devices Brands Options");
-    this.props.getDeviceBrand(this.props.OSType);
+    this.props.getDeviceBrand(upperFirst(this.props.OSType.toLowerCase()));
   }
 
   render() {

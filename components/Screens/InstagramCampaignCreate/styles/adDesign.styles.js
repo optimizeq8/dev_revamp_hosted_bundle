@@ -11,6 +11,9 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
+  placeHolderStoryAd: {
+    height: hp(45),
+  },
   transition: { height: "100%" },
   mainView: {
     marginHorizontal: 40,
@@ -491,11 +494,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-regular",
   },
-  carouselFlatList: {
-    paddingTop: 10,
-    paddingBottom: 50,
-    alignItems: "center",
-  },
+
   flatListView: { height: hp(35) },
 
   carouselEditMedia: {
@@ -551,8 +550,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
   },
   carouselFlatList: {
-    paddingTop: 10,
-    paddingBottom: 50,
+    paddingBottom: hp(24),
     alignItems: "center",
   },
   flatListView: { height: hp(35) },

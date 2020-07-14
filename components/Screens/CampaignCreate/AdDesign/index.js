@@ -81,7 +81,7 @@ import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
-
+import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -134,6 +134,7 @@ class AdDesign extends Component {
       downloadMediaModal: false,
       serialization: {},
       uneditedImageUri: "//",
+      showExampleModal: false,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign;
@@ -164,7 +165,7 @@ class AdDesign extends Component {
             this.props.data.brand_name &&
             this.props.data.brand_name.length <= 25
           ? this.props.data.brand_name
-          : this.props.mainBusiness.businessname <= 25
+          : this.props.mainBusiness.businessname.length <= 25
           ? this.props.mainBusiness.businessname
           : "",
         headline: this.rejected
@@ -1387,13 +1388,19 @@ class AdDesign extends Component {
                         this.props.loadingStoryAdsArray.includes(true))
                     }
                   />
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     disabled={
                       this.props.loading ||
                       (this.props.loadingStoryAdsArray.length > 0 &&
                         this.props.loadingStoryAdsArray.includes(true))
                     }
-                    onPress={this.handleSupportPage}
+                    onPress={() => {
+                      this.props.tutorialLinks(
+                        "ad_design",
+                        I18nManager.isRTL ? "ar" : "en"
+                      );
+                      this.setState({ showExampleModal: true });
+                    }}
                     style={{
                       position: "absolute",
                       right: "4%",
@@ -1401,7 +1408,7 @@ class AdDesign extends Component {
                     }}
                   >
                     <InfoIcon />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   {this.adType === "CollectionAd" && (
                     <View style={styles.collectionView}>{collection}</View>
                   )}
@@ -1641,6 +1648,23 @@ class AdDesign extends Component {
             this.handleDownloadMediaCollectionAds
           }
         />
+        <ExampleModal
+          title={""}
+          description={""}
+          imageStyle={styles.imageStyle}
+          isVisible={this.state.showExampleModal}
+          onToggleModal={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          cancelUpload={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          source={"ad_cover"}
+          source_action={"a_help"}
+          screenProps={this.props.screenProps}
+          media={this.props.ad_tutorial_link}
+          mediaType={this.props.ad_tutorial_media_type}
+        />
       </View>
     );
   }
@@ -1670,6 +1694,10 @@ const mapStateToProps = (state) => ({
   collectionMainMediaTypeWebLink:
     state.campaignC.collectionMainMediaTypeWebLink,
   rejCampaign: state.dashboard.rejCampaign,
+
+  ad_tutorial_type: state.generic.ad_tutorial_type,
+  ad_tutorial_link: state.generic.ad_tutorial_link,
+  ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1728,5 +1756,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.updateStoryADS(storyAdsArray)),
   setCollectionAdMediaArray: (collectionAdsArray) =>
     dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
+  tutorialLinks: (screenName, appLang) =>
+    dispatch(actionCreators.tutorialLinks(screenName, appLang)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

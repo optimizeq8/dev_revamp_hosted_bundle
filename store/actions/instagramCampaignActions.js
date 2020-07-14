@@ -165,7 +165,7 @@ export const overWriteObjectiveDataInstagram = (value) => {
  * @param {*} carousel_data Array having carousel_ids in case of media_option is carousel
  */
 export const saveBrandMediaInstagram = (
-  path = "InstagramFeedAdDesign",
+  path = "InstagramFeedAdTargetting",
   info,
   loading,
   onToggleModal,
@@ -173,13 +173,10 @@ export const saveBrandMediaInstagram = (
   segmentInfo
 ) => {
   return (dispatch) => {
-    console.log("saveBrandMediaInstagram info", info);
-
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
-
     InstagramBackendURL()
       .post(`saveinstabrandmedia`, info, {
         onUploadProgress: (ProgressEvent) =>
@@ -203,8 +200,7 @@ export const saveBrandMediaInstagram = (
         if (data.success) {
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
-          console.log("data", data.data);
-          NavigationService.navigate("InstagramFeedAdTargetting", {
+          NavigationService.navigate(path, {
             source: "ad_design",
             source_action: "a_submit_ad_design",
           });
@@ -221,7 +217,10 @@ export const saveBrandMediaInstagram = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        // console.log("error saveBrandMedia ", error.response || error.message);
+        // console.log(
+        //   "error saveBrandMedia ",
+        //   JSON.stringify(error.response.data || error.message, null, 2)
+        // );
       });
   };
 };
@@ -262,7 +261,11 @@ export const getOSVersion = (osType) => {
       .get(`osversion/${osType}`)
       .then((res) => res.data)
       .then((data) => {
-        if (data && data.osversion) {
+        if (
+          data &&
+          data.osversion &&
+          data.osversion.hasOwnProperty("description")
+        ) {
           let osVersionArray = data.osversion.description.split(";");
 
           if (osType === "Android") {
@@ -432,10 +435,15 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
       .then(() => {
         // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
-        navigation.navigate("InstagramAdPaymentReview", {
-          source: "ad_targeting",
-          source_action: "a_submit_ad_targeting",
-        });
+        navigation.navigate(
+          segmentInfo.campaign_ad_type === "InstagramStoryAd"
+            ? "InstagramStoryAdPaymentReview"
+            : "InstagramAdPaymentReview",
+          {
+            source: "ad_targeting",
+            source_action: "a_submit_ad_targeting",
+          }
+        );
       })
       .catch((err) => {
         // console.log("ad_details_instagram error", err.message || err.response);
@@ -638,9 +646,9 @@ export const setCarouselAdAttechment = (info) => {
 };
 
 export const uploadCarouselAdCard = (info, card, rejected, finalSubmision) => {
-  console.log("info", info);
-  console.log("card", card);
-  console.log("rejected", rejected);
+  // console.log("info", info);
+  // console.log("card", card);
+  // console.log("rejected", rejected);
 
   return (dispatch, getState) => {
     dispatch({

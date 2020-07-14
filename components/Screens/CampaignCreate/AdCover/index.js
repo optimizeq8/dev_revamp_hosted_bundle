@@ -15,6 +15,7 @@ import {
   Platform,
   BackHandler,
   Linking,
+  I18nManager,
 } from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -53,6 +54,7 @@ import MediaModal from "./MediaModal";
 import { SaveFormat } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdCover extends Component {
   static navigationOptions = {
     header: null,
@@ -93,6 +95,7 @@ class AdCover extends Component {
       uneditedCoverUri: "//",
       uneditedLogoUri: "//",
       selectingLogo: false,
+      showExampleModal: false,
     };
     this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -967,9 +970,15 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       )}
                       <View style={{ flexDirection: "row" }}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           disabled={this.props.coverLoading}
-                          onPress={this.handleSupportPage}
+                          onPress={() => {
+                            this.props.tutorialLinks(
+                              "ad_cover",
+                              I18nManager.isRTL ? "ar" : "en"
+                            );
+                            this.setState({ showExampleModal: true });
+                          }}
                           style={{
                             position: "absolute",
                             right: "5%",
@@ -977,7 +986,7 @@ class AdCover extends Component {
                           }}
                         >
                           <InfoIcon />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <PenIconBrand
                           disabled={this.props.coverLoading}
                           style={{ justifyContent: "flex-start" }}
@@ -1079,6 +1088,24 @@ class AdCover extends Component {
           }
           screenProps={this.props.screenProps}
         />
+        <ExampleModal
+          isVisible={this.state.showExampleModal}
+          onToggleModal={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          cancelUpload={() => {
+            this.setState({ showExampleModal: false });
+          }}
+          title="Story Cover Example"
+          description={
+            "The cover shows on the Discover page among subscriptions and trending content"
+          }
+          source={"ad_cover"}
+          source_action={"a_help"}
+          screenProps={this.props.screenProps}
+          media={this.props.ad_tutorial_link}
+          mediaType={this.props.ad_tutorial_media_type}
+        />
       </View>
     );
   }
@@ -1092,6 +1119,9 @@ const mapStateToProps = (state) => ({
   coverLoading: state.campaignC.coverLoading,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   rejCampaign: state.dashboard.rejCampaign,
+  ad_tutorial_type: state.generic.ad_tutorial_type,
+  ad_tutorial_link: state.generic.ad_tutorial_link,
+  ad_tutorial_media_type: state.generic.ad_tutorial_media_type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1120,5 +1150,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveCampaignSteps: (step) => dispatch(actionCreators.saveCampaignSteps(step)),
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData()),
+  tutorialLinks: (screenName, appLang) =>
+    dispatch(actionCreators.tutorialLinks(screenName, appLang)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdCover);

@@ -92,15 +92,36 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - imglyKit (10.13.1)
+  - Google-Maps-iOS-Utils (2.1.0):
+    - Google-Maps-iOS-Utils/Clustering (= 2.1.0)
+    - Google-Maps-iOS-Utils/Geometry (= 2.1.0)
+    - Google-Maps-iOS-Utils/Heatmap (= 2.1.0)
+    - Google-Maps-iOS-Utils/QuadTree (= 2.1.0)
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Clustering (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Geometry (2.1.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Heatmap (2.1.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/QuadTree (2.1.0):
+    - GoogleMaps
+  - GoogleMaps (3.5.0):
+    - GoogleMaps/Maps (= 3.5.0)
+  - GoogleMaps/Base (3.5.0)
+  - GoogleMaps/Maps (3.5.0):
+    - GoogleMaps/Base
+  - imglyKit (10.14.0)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.4.0):
     - lottie-ios (~> 3.1.3)
     - React
   - Mixpanel (3.6.1)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.13.1):
-    - imglyKit (= 10.13.1)
+  - PhotoEditorSDK (10.14.0):
+    - imglyKit (= 10.14.0)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -272,7 +293,11 @@ PODS:
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
     - mobile-ffmpeg-https-gpl (= 4.3.1.LTS)
     - React
-  - react-native-maps (0.26.1):
+  - react-native-google-maps (0.27.1):
+    - Google-Maps-iOS-Utils (= 2.1.0)
+    - GoogleMaps (= 3.5.0)
+    - React
+  - react-native-maps (0.27.1):
     - React
   - react-native-mixpanel (1.2.0):
     - Mixpanel (~> 3.6.1)
@@ -354,9 +379,9 @@ PODS:
   - Segment-Mixpanel (1.6.0):
     - Analytics (~> 3.0)
     - Mixpanel (~> 3.5)
-  - Sentry (5.1.4):
-    - Sentry/Core (= 5.1.4)
-  - Sentry/Core (5.1.4)
+  - Sentry (5.1.8):
+    - Sentry/Core (= 5.1.8)
+  - Sentry/Core (5.1.8)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -374,8 +399,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.1.0)
   - UMTaskManagerInterface (5.1.0)
-  - VideoEditorSDK (10.13.1):
-    - imglyKit (= 10.13.1)
+  - VideoEditorSDK (10.14.0):
+    - imglyKit (= 10.14.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -408,6 +433,8 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -423,6 +450,7 @@ DEPENDENCIES:
   - react-native-adjust (from `../node_modules/react-native-adjust`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
+  - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -471,6 +499,8 @@ SPEC REPOS:
     - Adjust
     - Analytics
     - boost-for-react-native
+    - Google-Maps-iOS-Utils
+    - GoogleMaps
     - imglyKit
     - lottie-ios
     - Mixpanel
@@ -565,6 +595,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
+  react-native-google-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
@@ -681,12 +713,14 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  imglyKit: e9aad13dd136e82d1a69cb7ee79e0169a2ccda53
+  Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
+  GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
+  imglyKit: 7b2e9ea18bf7228c821f65dfd1ebcc4f576f3561
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   Mixpanel: 61e6d8c0717c8e94ccc6d3a1ae8677b9a78f64c5
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: eba8c2e128c6679580ba82b2a063a0174f40903b
+  PhotoEditorSDK: 4d81558110f57f8cbe96fb36fb9bced9bb80b46c
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -699,7 +733,8 @@ SPEC CHECKSUMS:
   react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
-  react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
+  react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
+  react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
   react-native-webview: 0ec2ca34f52e60892e4a9141508751588d45a518
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -727,7 +762,7 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
-  Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
+  Sentry: 795e8ffe1c45d9d20b3aa398774d7ea6a443fb05
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d
@@ -741,9 +776,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 126da3486c1a1f11945b649d557d6c2ebb9407b2
   UMSensorsInterface: 48941f70175e2975af1a9386c6d6cb16d8126805
   UMTaskManagerInterface: cb890c79c63885504ddc0efd7a7d01481760aca2
-  VideoEditorSDK: 7f32b419197c0b30df0abe44035690bbb901c636
+  VideoEditorSDK: ca906fafa351722a4e3e60c44e43e119c822fc30
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 6fce40d0b4c59d10ec2b5663ed7bd9035ec8a9b4
+PODFILE CHECKSUM: 5766879776867721da6e612e965af23a1cacdfee
 
 COCOAPODS: 1.9.1

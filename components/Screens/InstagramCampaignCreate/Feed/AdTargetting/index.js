@@ -197,17 +197,32 @@ class InstagramFeedAdTargetting extends Component {
 
       let recBudget = duration * 75;
 
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: recBudget,
+      let country_code = country_regions.find(
+        (country) => country.name === this.props.mainBusiness.country
+      ).key;
+      let allCountryRegions = country_regions
+        .find((country) => country.name === this.props.mainBusiness.country)
+        .regions.map((reg) => reg.key);
+      await this.onSelectedCountryRegionChange([
+        country_code,
+        ...allCountryRegions,
+      ]);
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            campaign_id: this.props.campaign_id,
+            lifetime_budget_micro: recBudget,
+          },
+          minValueBudget: this.props.data.minValueBudget,
+          maxValueBudget: this.props.data.maxValueBudget,
+          value: this.formatNumber(recBudget),
+          recBudget: recBudget,
         },
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(recBudget),
-        recBudget: recBudget,
-      });
+        () => {
+          this._calcReach();
+        }
+      );
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
@@ -237,12 +252,9 @@ class InstagramFeedAdTargetting extends Component {
           },
           () => {
             if (this.props.data.appChoice) {
-              let navAppChoice =
-                this.props.data.iosApp_name && this.props.data.androidApp_name
-                  ? ""
-                  : this.props.data.appChoice;
+              let navAppChoice = this.props.data.appChoice;
               let rep = this.state.campaignInfo;
-              rep.targeting.devices[0].os_type = navAppChoice;
+              rep.targeting.user_os = [navAppChoice];
               this.setState({
                 campaignInfo: rep,
               });
@@ -789,6 +801,7 @@ class InstagramFeedAdTargetting extends Component {
       }
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
+        campaign_ad_type: "InstagramFeedAd",
         campaign_id: this.props.campaign_id,
         campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
         campaign_gender:
@@ -992,6 +1005,7 @@ class InstagramFeedAdTargetting extends Component {
             selectedOSType={this.state.campaignInfo.targeting.user_os[0]}
             iosName={"iOS"}
             androidName={"Android"}
+            objective={this.props.data.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}

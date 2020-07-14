@@ -6,10 +6,12 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
+  StatusBar,
 } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { BlurView } from "expo-blur";
+import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -17,14 +19,14 @@ import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import DateFields from "../../../../MiniComponents/DatePicker/DateFields";
 import Duration from "../../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
-
+import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CustomHeader from "../../../../MiniComponents/Header";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
 
 // Style
 import styles from "../../styles/adObjectives.styles";
 //Data
-import { instagramAdObjectives } from "../../../../Data/snapchatObjectives.data";
+import { instagramAdObjectives } from "../../../../Data/instagramObjectives.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -38,8 +40,8 @@ import {
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampaign";
 import { persistor } from "../../../../../store";
-import InputField from "../../../../MiniComponents/InputField";
-import ModalField from "../../../../MiniComponents/ModalField";
+import InputField from "../../../../MiniComponents/InputFieldNew";
+import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -73,14 +75,15 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        ad_account_id: this.props.mainBusiness.fb_ad_account_id,
-        businessid: this.props.mainBusiness.businessid,
-      },
-    });
+    // this.setState({
+    //   campaignInfo: {
+    //     ...this.state.campaignInfo,
+    //     ad_account_id: 123456789012,
+    //     businessid: this.props.mainBusiness.businessid
+    //   }
+    // });
     this.setCampaignInfo();
+    this.props.set_adType_instagram("InstagramStoryAd");
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -95,6 +98,8 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = () => {
+    // console.log("data", this.props.data);
+
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -103,7 +108,7 @@ class AdObjective extends Component {
         })
         .includes(true)
     ) {
-      rep = {
+      let rep = {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
@@ -138,7 +143,6 @@ class AdObjective extends Component {
           start_time: "",
           end_time: "",
         },
-
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
@@ -160,8 +164,11 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label,
     });
-    segmentEventTrack("Selected Ad Objective", {
-      campaign_objective: choice.label,
+    analytics.track(`a_select_ad_objective`, {
+      source: "ad_objective_modal",
+      source_action: "a_select_ad_objective",
+      campaign_id: this.props.campaign_id,
+      campaign_objective: choice.value,
     });
     this.props.save_campaign_info_instagram({
       objective: choice.value,
@@ -180,8 +187,10 @@ class AdObjective extends Component {
         start_time: date,
       },
     });
-    segmentEventTrack("Selected Campaign Start Date", {
+    analytics.track(`a_ad_start_date`, {
       campaign_start_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_start_date",
     });
     this.props.save_campaign_info_instagram({ start_time: date });
   };
@@ -192,8 +201,10 @@ class AdObjective extends Component {
         end_time: date,
       },
     });
-    segmentEventTrack("Selected Campaign End Date", {
+    analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
+      source: "ad_objective",
+      source_action: "a_ad_end_date",
     });
     this.props.save_campaign_info_instagram({
       end_time: date,
@@ -201,9 +212,11 @@ class AdObjective extends Component {
     });
   };
   setModalVisible = (visible) => {
-    if (visible) {
-      Segment.screen("Ad Objective Modal");
-    }
+    analytics.track(`ad_objective_modal`, {
+      source: "ad_objective",
+      source_action: "a_toggle_modal",
+      modal_visible: visible,
+    });
     this.setState({ modalVisible: visible });
   };
 
@@ -220,6 +233,7 @@ class AdObjective extends Component {
     });
   };
 
+  _;
   _handleSubmission = async () => {
     let { nameError, objectiveError } = this.state;
     let dateErrors = this.dateField.getErrors();
@@ -235,15 +249,16 @@ class AdObjective extends Component {
       dateErrors.start_timeError ||
       dateErrors.end_timeError
     ) {
-      segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        campaign_error_ad_name: nameError ? nameError : "",
-        campaign_error_ad_objective: objectiveError ? objectiveError : "",
-        campaign_error_ad_start_date: dateErrors.start_timeError
-          ? dateErrors.start_timeError
-          : "",
-        campaign_error_ad_end_date: dateErrors.end_timeError
-          ? dateErrors.end_timeError
-          : "",
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramStoryAd",
+        source_action: "a_submit_ad_objective",
+        error_description:
+          nameError ||
+          objectiveError ||
+          dateErrors.start_timeError ||
+          dateErrors.end_timeError,
       });
     }
     if (
@@ -253,9 +268,16 @@ class AdObjective extends Component {
       !dateErrors.end_timeError
     ) {
       const segmentInfo = {
-        step: 2,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
+        campaign_duration:
+          Math.ceil(
+            (new Date(this.state.campaignInfo.end_time) -
+              new Date(this.state.campaignInfo.start_time)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1,
+        campaign_ad_type: this.props.adType,
+        campaign_name: this.state.campaignInfo.name,
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
@@ -285,7 +307,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
       });
       let info = {
-        campaign_type: this.props.adType,
+        campaign_type: "InstagramStoryAd",
         ...this.state.campaignInfo,
       };
 
@@ -295,7 +317,7 @@ class AdObjective extends Component {
           campaign_id:
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
-        "DummyNaviagte", // replace to ad design
+        "InstagramStoryAdDesign",
         segmentInfo
       );
     } else {
@@ -309,6 +331,14 @@ class AdObjective extends Component {
   setValue = (stateName, value) => {
     let state = {};
     state[stateName] = value;
+    analytics.track(`a_ad_name`, {
+      source: "ad_objective",
+      source_action: "a_ad_name",
+      campaign_id: this.props.campaign_id,
+      campaign_channel: "instagram",
+      campaign_ad_type: this.props.adType,
+      campaign_name: value,
+    });
     this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
     this.props.save_campaign_info_instagram({ name: value });
   };
@@ -318,8 +348,13 @@ class AdObjective extends Component {
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
-      segmentEventTrack(`Error in ${stateError}`, {
-        campaign_error: validObj,
+      analytics.track(`a_error_form`, {
+        error_page: "ad_objective",
+        error_description: `Error in ${stateError}: ${validObj}`,
+        source: "ad_objective",
+        source_action: "a_ad_name",
+        campaign_channel: "instagram",
+        campaign_ad_type: this.props.adType,
       });
     }
     let state = {};
@@ -328,10 +363,24 @@ class AdObjective extends Component {
       ...state,
     });
   };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`ad_objective`, {
+      source,
+      source_action,
+      campaign_channel: "instagram",
+      campaign_ad_type: this.props.adType,
+    });
+  };
 
   render() {
-    let adType = this.props.adType;
-
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
       <ObjectivesCard
         choice={o}
@@ -343,37 +392,31 @@ class AdObjective extends Component {
     ));
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Instagram Story Ad Objective", {
-              category: "Campaign Creation",
-              channel: "instagram",
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 2,
-              business_name: this.props.mainBusiness.businessname,
-            });
-          }}
+      <View style={styles.safeAreaView}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
         />
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
-            <CustomHeader
+            {/* <BackdropIcon style={styles.backDrop} height={hp("100%")} /> */}
+            <TopStepsHeader
               screenProps={this.props.screenProps}
               closeButton={false}
-              navigation={this.props.navigation}
-              title={"Instagram Story Campaign"}
               segment={{
-                str: "Ad Objective Back Button",
+                str: "Instagram story Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname },
                 source: "ad_objective",
                 source_action: "a_go_back",
               }}
+              icon="instagram"
+              actionButton={this.handleBackButton}
+              currentScreen="Details"
+              title={"Instagram Story"}
             />
-            <View style={styles.block1}></View>
+
             <ScrollView
               contentContainerStyle={styles.mainContent}
               scrollEnabled={true}
@@ -384,14 +427,13 @@ class AdObjective extends Component {
                 setValue={this.setValue}
                 getValidInfo={this.getValidInfo}
                 disabled={this.props.loading}
-                disabled={this.props.loading}
                 stateName1={"name"}
                 value={this.state.campaignInfo.name}
                 valueError1={this.state.nameError}
                 maxLength={34}
                 autoFocus={false}
                 incomplete={this.state.incomplete}
-                valueText={this.state.objectiveLabel}
+                valueText={this.state.campaignInfo.name}
                 translate={this.props.screenProps.translate}
               />
               <Animatable.View
@@ -409,12 +451,8 @@ class AdObjective extends Component {
                     : "shake"
                 }
               >
-                <View style={[styles.dateTextLabel]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    {translate("Date")}
-                  </Text>
-                </View>
                 <Duration
+                  label={"Date"}
                   screenProps={this.props.screenProps}
                   loading={this.props.loading}
                   dismissKeyboard={Keyboard.dismiss}
@@ -428,21 +466,20 @@ class AdObjective extends Component {
               <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text>
-              <View style={[styles.input2]}>
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
-                  incomplete={this.state.incomplete}
-                  translate={this.props.screenProps.translate}
-                />
-              </View>
+
+              <ModalField
+                stateName={"objective"}
+                setModalVisible={this.setModalVisible}
+                modal={true}
+                label={"Objective"}
+                valueError={this.state.objectiveError}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.loading}
+                valueText={this.state.objectiveLabel}
+                value={this.state.campaignInfo.objective}
+                incomplete={this.state.incomplete}
+                translate={this.props.screenProps.translate}
+              />
 
               {this.props.loading ? (
                 <ForwardLoading
@@ -493,11 +530,9 @@ class AdObjective extends Component {
           onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <BlurView intensity={95} tint="dark">
-            <SafeAreaView
-              style={styles.safeAreaView}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
+          <BlurView>
+            <View style={styles.safeAreaView}>
+              <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
               <View style={styles.popupOverlay}>
                 <CustomHeader
                   screenProps={this.props.screenProps}
@@ -507,7 +542,7 @@ class AdObjective extends Component {
                   }}
                   title={"Campaign Objective"}
                   segment={{
-                    source: "ad_objective",
+                    source: "ad_objective_modal",
                     source_action: "a_go_back",
                   }}
                 />
@@ -522,17 +557,17 @@ class AdObjective extends Component {
    screenProps={this.props.screenProps}
  bottom={4} function={this.setModalVisible} /> */}
               </View>
-            </SafeAreaView>
+            </View>
           </BlurView>
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   userInfo: state.auth.userInfo,
-  campaignProcessSteps: state.instagramAds.campaignProcessSteps,
+  // campaignProcessSteps: state.instagramAds.campaignProcessSteps,
   mainBusiness: state.account.mainBusiness,
   loading: state.instagramAds.loadingObj,
   campaign_id: state.instagramAds.campaign_id,
@@ -544,13 +579,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_objective_instagram: (info, navigation, segmentInfo) =>
+  ad_objective_instagram: (info, navigation_route, segmentInfo) =>
     dispatch(
-      actionCreators.ad_objective_instagram(info, navigation, segmentInfo)
+      actionCreators.ad_objective_instagram(info, navigation_route, segmentInfo)
     ),
   save_campaign_info_instagram: (info) =>
     dispatch(actionCreators.save_campaign_info_instagram(info)),
-
   resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: (value) =>

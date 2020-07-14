@@ -1,24 +1,24 @@
 import { StyleSheet, Platform, PixelRatio } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   contentContainerStyle: {
     alignSelf: "center",
     width: "100%",
     // minHeight: '100%',
     flexGrow: 1,
-    marginBottom: heightPercentageToDP(35)
+    marginBottom: heightPercentageToDP(35),
     // justifyContent: 'space-around',
     //   height: heightPercentageToDP(80),
     //   overflow: "hidden"
@@ -26,26 +26,26 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     // alignSelf: 'center',
     // width: '100%',
-    flex: 1
+    flex: 1,
     // justifyContent: 'space-around',
   },
   mainView: {
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: 20
+    paddingTop: 20,
   },
   imageApp: {
     height: heightPercentageToDP(8.3),
     width: heightPercentageToDP(8.3),
     alignSelf: "center",
-    borderRadius: 18
+    borderRadius: 18,
   },
   appDetailsContainer: {
     flexDirection: "column",
-    paddingTop: 10
+    paddingTop: 10,
   },
   advertiseOSView: {
-    flexDirection: "column"
+    flexDirection: "column",
 
     // backgroundColor: "rgba(0,0,0,0.2)"
   },
@@ -55,19 +55,18 @@ const styles = StyleSheet.create({
     // top: heightPercentageToDP(17),
     textDecorationLine: "underline",
     fontFamily: "montserrat-bold",
-    fontSize: heightPercentageToDP(2)
+    fontSize: heightPercentageToDP(2),
   },
   advertiseOSButtonView: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 15
   },
   androidButton: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
   },
   deepLinkItem: {
-    marginBottom: 0
+    marginBottom: 0,
     //   top: heightPercentageToDP(4)
   },
   listText: {
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fff",
     // flex: 1,
-    width: 170
+    width: 170,
   },
   footerText: {
     color: "#fff",
@@ -83,19 +82,19 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     paddingBottom: 16,
     textDecorationLine: "underline",
-    textAlign: "center"
+    textAlign: "center",
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: "transparent",
     marginTop: 0,
-    height: "100%"
+    height: "100%",
     // marginTop: heightPercentageToDP(3)
   },
   textcontainer: {
     // flex: 1,
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
     // paddingHorizontal: 7
     // marginBottom: 20
   },
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   subtext: {
     alignSelf: "center",
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     // marginBottom: 10,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   appTexts: {
     alignSelf: "center",
@@ -124,16 +123,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     // width: widthPercentageToDP(50),
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   icon: {
     alignSelf: "center",
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   video: {
     // height: 95,
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 30,
     // justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
     // height: "100%"
   },
   placeholder: {
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: "dashed",
     borderColor: "#fff",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   mainCard: {
     top: 15,
@@ -164,14 +163,14 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     flex: 1,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
   },
   text: {
     color: "#fff",
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    alignSelf: "center"
+    alignSelf: "center",
   },
 
   deepLinkError: {
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    alignSelf: "center"
+    alignSelf: "center",
     // width: widthPercentageToDP(75),
     // top: heightPercentageToDP(5)
   },
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5F5F5F",
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
   },
   badge: {
     backgroundColor: "#fff",
@@ -195,11 +194,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderColor: "#5F5F5F",
-    borderWidth: 2
+    borderWidth: 2,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
-    height: heightPercentageToDP(105)
+    height: heightPercentageToDP(105),
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
     borderColor: "#5D1CD8",
     alignSelf: "center",
     width: "100%",
-    height: 50
+    height: 50,
     // marginHorizontal: 50
   },
   inputtext: {
@@ -216,29 +215,29 @@ const styles = StyleSheet.create({
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center",
-    color: "#fff"
+    color: "#fff",
   },
   root: {
     marginTop: 20,
-    padding: 10
+    padding: 10,
   },
   titleContainer: {
     shadowColor: "#00000021",
     shadowOffset: {
-      width: 2
+      width: 2,
     },
     shadowOpacity: 0.5,
     shadowRadius: 4,
     marginVertical: 8,
     backgroundColor: "#DCDCDC",
-    padding: 10
+    padding: 10,
   },
   title: {
     textAlign: "center",
     color: "white",
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
-    fontSize: 16
+    fontSize: 16,
     // paddingHorizontal: 20,
     // width: widthPercentageToDP(55)
   },
@@ -251,12 +250,12 @@ const styles = StyleSheet.create({
   // },
   content: {
     marginLeft: 16,
-    flex: 1
+    flex: 1,
   },
   contentHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 6
+    marginBottom: 6,
   },
   OS: {
     padding: widthPercentageToDP(4),
@@ -264,12 +263,12 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     height: parseInt(heightPercentageToDP(7.2)),
     width: parseInt(widthPercentageToDP(16)),
-    justifyContent: "center"
+    justifyContent: "center",
   },
   OSText: {
     fontSize: widthPercentageToDP(2.9),
     fontFamily: "montserrat-bold",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   toggleStyle: {
     alignSelf: "center",
@@ -277,12 +276,12 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("13"),
     height: heightPercentageToDP("2.7"),
     borderRadius: 25,
-    padding: 0
+    padding: 0,
   },
   toggleCircle: {
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
-    borderRadius: 50
+    borderRadius: 50,
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -296,7 +295,7 @@ const styles = StyleSheet.create({
     height: 15,
     zIndex: 1,
     borderWidth: 0,
-    marginTop: 20
+    marginTop: 20,
   },
   appStoreLabelView: {
     borderTopLeftRadius: 160,
@@ -310,7 +309,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 25,
-    zIndex: 1
+    zIndex: 1,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -319,16 +318,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     // borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
   },
   appStoreButtons: {
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.16)",
     width: "48%",
-    // marginHorizontal: 10,
+    height: "70%",
+    justifyContent: "space-evenly",
     paddingVertical: 20,
-    borderRadius: 35
-    // justifyContent: 'center',
+    borderRadius: 35,
   },
   appStoreButtonsText: {
     fontFamily: "montserrat-bold-english",
@@ -336,8 +335,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 5,
     maxWidth: 80,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default styles;

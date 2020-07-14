@@ -270,8 +270,8 @@ class GoogleCampaignDetails extends Component {
         ) {
           end_time = new Date(selectedCampaign.campaign.end_time);
           start_time = new Date(selectedCampaign.campaign.start_time);
-          end_year = end_time.getFullYear();
-          start_year = start_time.getFullYear();
+          // end_year = end_time.getFullYear();
+          // start_year = start_time.getFullYear();
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }

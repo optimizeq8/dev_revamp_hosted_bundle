@@ -60,17 +60,17 @@ export const getCampaignDetails = (id, navigation) => {
 
         return data.data;
       })
-      .then((data) => {
-        let endDate = new Date(data.end_time);
-        endDate.setDate(endDate.getDate() + 2);
-        if (
-          data.snap_ad_id &&
-          data.campaign_end === "0" &&
-          endDate < new Date()
-        ) {
-          dispatch(checkRemainingBudget(data.campaign_id));
-        }
-      })
+      // .then((data) => {
+      //   let endDate = new Date(data.end_time);
+      //   endDate.setDate(endDate.getDate() + 2);
+      //   if (
+      //     data.snap_ad_id &&
+      //     data.campaign_end === "0" &&
+      //     endDate < new Date()
+      //   ) {
+      //     dispatch(checkRemainingBudget(data.campaign_id));
+      //   }
+      // })
       .catch((err) => {
         analytics.track(`a_error`, {
           error_page: "dashboard",

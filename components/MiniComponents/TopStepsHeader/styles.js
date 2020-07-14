@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 30,
+    paddingVertical: 20,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },

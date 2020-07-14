@@ -123,7 +123,6 @@ class VideoViews extends Component {
         categories: [{ identifier: "imgly_sticker_category_shapes" }],
       },
     };
-    console.log("result", result);
 
     if (result && !result.cancelled) {
       if (result.duration >= 1000) {
@@ -151,7 +150,6 @@ class VideoViews extends Component {
               newResult.streams[0].hasOwnProperty("height") ? 0 : 1
             ].height;
           result.duration = newResult.duration / 1000;
-          console.log(JSON.stringify(result, null, 2));
         }
 
         if (file.size > 524288000) {
