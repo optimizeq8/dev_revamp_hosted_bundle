@@ -37,7 +37,7 @@ import { interestNames } from "./interesetNames";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import MediaBox from "./MediaBox";
-import CampaignCircleChart from "../../MiniComponents/CampaignCircleCharts";
+import CampaignCircleChart from "../../MiniComponents/InstagramCampaignCircleCharts";
 import CampaignMedia from "./CampaignMedia";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { heightPercentageToDP } from "react-native-responsive-screen";
