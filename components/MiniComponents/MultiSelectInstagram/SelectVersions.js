@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { upperFirst } from "lodash";
 
 class SelectVersions extends Component {
   state = {
@@ -32,7 +33,7 @@ class SelectVersions extends Component {
 
   componentDidMount() {
     Segment.screen("OS Versions");
-    this.props.getOSVersion(this.props.OSType);
+    this.props.getOSVersion(upperFirst(this.props.OSType.toLowerCase()));
     this.setState({
       selectedItems: this.props.selectedItems,
     });
@@ -52,7 +53,7 @@ class SelectVersions extends Component {
         versions: [{ name: "Versions", id: 0, children }],
       });
     } else if (
-      this.props.OSType === "Android" &&
+      this.props.OSType === "ANDROID" &&
       prevProps.androidVersions !== this.props.androidVersions &&
       this.props.androidVersions.length > 0
     ) {

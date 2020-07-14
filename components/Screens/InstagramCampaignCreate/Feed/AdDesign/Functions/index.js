@@ -146,6 +146,8 @@ export const formatMedia = (
   body.append("businessid", mainBusiness.businessid);
   body.append("campaign_id", campaignInfo.campaign_id);
   body.append("campaign_name", data.name);
+  body.append("campaign_type", "InstagramFeedAd");
+
   body.append("media_option", campaignInfo.media_option); //Oneof [single, carousel, collection]
   body.append("message", campaignInfo.message);
   body.append(

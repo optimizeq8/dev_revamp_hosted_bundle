@@ -171,3 +171,29 @@ export const checkNotification = (message, data) => {
     });
   };
 };
+
+export const tutorialLinks = (screenName, appLanguage) => {
+  return (dispatch) => {
+    axios
+      .get(
+        `https://optimizeapp.com/optimize/public/frontendAdTypeMedia/${screenName}_${appLanguage}`
+      )
+      .then((result) => result.data)
+      .then((data) => {
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.SET_TUTORIAL_MEDIA_LINK,
+            payload: data.data[0],
+          });
+        }
+        return dispatch({
+          type: actionTypes.SET_TUTORIAL_MEDIA_LINK,
+          payload: {
+            ad_type: "",
+            link: "",
+            media_type: "",
+          },
+        });
+      });
+  };
+};

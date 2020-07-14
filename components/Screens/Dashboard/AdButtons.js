@@ -53,7 +53,8 @@ export default class AdButtons extends Component {
                 },
           ]}
         >
-          {this.props.translate(ad.title)}
+          {"\u200F"} {this.props.translate(ad.title)}
+          {/**Added speecial character for strings that has combination of english and arabic */}
         </Text>
       </View>
     );

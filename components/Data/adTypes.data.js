@@ -156,33 +156,33 @@ export const instagramAds = [
       },
     ],
   },
-  // {
-  //   id: 2,
-  //   mediaType: "instagram",
-  //   text: "Create Your Ad Now!",
-  //   rout: "InstagramStoryAdObjective",
-  //   createRout: "InstagramStoryAdObjective",
-  //   title: "Story",
-  //   value: "InstagramStoryAd",
-  //   media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
-  //     .default,
-  //   icon: AdIcons.InstagramStory,
-  //   channelIcon: Instagram,
-  //   image: InstagramStoryAd,
-  //   description: "",
-  //   suitableFor: [
-  //     {
-  //       icon: Mortgage,
-  //       name: "Home Businesses"
-  //     },
-  //     {
-  //       icon: Hand,
-  //       name: "Service Providers"
-  //     },
-  //     {
-  //       icon: StartUp,
-  //       name: "Startups & SMEs"
-  //     }
-  //   ]
-  // }
+  {
+    id: 2,
+    mediaType: "instagram",
+    text: "Create Your Ad Now!",
+    rout: "InstagramStoryAdObjective",
+    createRout: "InstagramStoryAdObjective",
+    title: "Story",
+    value: "InstagramStoryAd",
+    media: require("../../assets/images/AdTypes/Instagram/InstagramStoryAd.svg")
+      .default,
+    icon: AdIcons.InstagramStory,
+    channelIcon: Instagram,
+    image: InstagramStoryAd,
+    description: " ",
+    suitableFor: [
+      {
+        icon: Mortgage,
+        name: "Home Businesses",
+      },
+      {
+        icon: Hand,
+        name: "Service Providers",
+      },
+      {
+        icon: StartUp,
+        name: "Startups & SMEs",
+      },
+    ],
+  },
 ];

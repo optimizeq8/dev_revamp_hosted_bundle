@@ -643,7 +643,12 @@ class InstagramCampaignDetails extends Component {
                       editCampaign={true}
                       // targeting={targeting}
                       loading={loading}
-                      navigatingRoutePath={"InstagramFeedAdTargetting"}
+                      navigatingRoutePath={
+                        selectedCampaign &&
+                        selectedCampaign.campaign_type === "InstagramFeedAd"
+                          ? "InstagramFeedAdTargetting"
+                          : "InstagramStoryAdTargetting"
+                      }
                       selectedCampaign={selectedCampaign}
                     />
                   </View>

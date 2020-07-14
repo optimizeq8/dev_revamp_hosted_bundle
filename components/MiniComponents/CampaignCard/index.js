@@ -209,7 +209,7 @@ class CampaignCard extends Component {
                   </View>
                 )}
               </View>
-              {campaign.snap_ad_id &&
+              {/* {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
                 endDate < this.currentDate() && (
                   <Icon
@@ -225,7 +225,7 @@ class CampaignCard extends Component {
                       },
                     ]}
                   />
-                )}
+                )} */}
             </View>
 
             {!this.review_status.includes("PENDING") &&

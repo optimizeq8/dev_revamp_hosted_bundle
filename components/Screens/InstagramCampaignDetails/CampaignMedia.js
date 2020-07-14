@@ -11,6 +11,8 @@ const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
+
+//TODO: CLEAN CODE
 export const previewHandler = (
   selectedCampaign,
   navigation,
@@ -50,25 +52,23 @@ export const previewHandler = (
     source: "campaign_details",
     source_action: "a_preview_ad",
     action_status: "success",
-    campaign_channel: "instgram",
+    campaign_channel: "instagram",
     campaign_ad_type: selectedCampaign.campaign_type,
   });
+
   navigation.navigate(
-    selectedCampaign.campaign_type !== "StoryAd"
+    selectedCampaign.campaign_type !== "InstagramStoryAd"
       ? "AdFeedDesignReview"
-      : "StoryAdDesignReview",
+      : "AdStoryDesignReview",
     {
       ...media,
       media_type: type,
       call_to_action: call_to_action,
-      headline: selectedCampaign.headline,
-      brand_name: selectedCampaign.brand_name,
       media_option: selectedCampaign.media_option,
       destination: destination,
       campaignDetails: true,
       icon_media_url: icon_media_url,
       adType: selectedCampaign.campaign_type,
-      coverHeadline: selectedCampaign.story_headline,
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
       instagram_business_name: selectedCampaign.instagram_business_name,

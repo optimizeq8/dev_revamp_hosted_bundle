@@ -352,7 +352,7 @@ class CampaignDetails extends Component {
             : [];
 
         region_names =
-          targeting.geos[0].hasOwnProperty("region_id") &&
+          targeting.geos.some((geo) => geo.hasOwnProperty("region_id")) &&
           targeting.geos[0].region_id
             .map((id) =>
               translate(
@@ -438,11 +438,13 @@ class CampaignDetails extends Component {
         });
         countryName =
           targeting &&
-          targeting.geos[0].country_code &&
-          translate(
-            countries.find(
-              (country) => country.value === targeting.geos[0].country_code
-            ).label
+          targeting.geos &&
+          targeting.geos.map((geo, i) =>
+            translate(
+              countries.find(
+                (country) => country.value === targeting.geos[i].country_code
+              ).label
+            )
           );
         audienceOverViewData.push({
           heading: "Location",

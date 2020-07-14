@@ -12,7 +12,10 @@ const initialState = {
   customMessage_ar: "",
   loadingChecker: false,
   checkNotification: "Not received",
-  notificationData: "No data"
+  notificationData: "No data",
+  ad_tutorial_type: "",
+  ad_tutorial_link: "",
+  ad_tutorial_media_type: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,7 +34,7 @@ const reducer = (state = initialState, action) => {
         updateMessage_en: action.payload.updateMessage_en,
         customMessage_en: action.payload.customMessage_en,
         customMessage_ar: action.payload.customMessage_ar,
-        loadingChecker: false
+        loadingChecker: false,
       };
     case actionTypes.SET_UPDATE_LOADING:
       return { ...state, loadingChecker: action.payload };
@@ -39,7 +42,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         checkNotification: action.payload.message,
-        notificationData: action.payload.data
+        notificationData: action.payload.data,
+      };
+    case actionTypes.SET_TUTORIAL_MEDIA_LINK:
+      return {
+        ...state,
+        ad_tutorial_type: action.payload.ad_type,
+        ad_tutorial_link: action.payload.link,
+        ad_tutorial_media_type: action.payload.media_type,
       };
     default:
       return state;

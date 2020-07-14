@@ -264,8 +264,7 @@ export default class DateRangePicker extends Component<Props> {
             },
             fillers: {
               position: "absolute",
-
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              flexDirection: "row",
               left: 0,
               right: 0,
             },
@@ -274,13 +273,14 @@ export default class DateRangePicker extends Component<Props> {
             week: {
               marginTop: 7,
               marginBottom: 7,
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              alignItems: "center",
+              flexDirection: "row",
               justifyContent: "space-around",
             },
           },
           "stylesheet.calendar.header": {
             header: {
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              flexDirection: "row",
               justifyContent: "space-between",
               paddingLeft: 10,
               paddingRight: 10,
@@ -288,7 +288,7 @@ export default class DateRangePicker extends Component<Props> {
             },
             week: {
               marginTop: 7,
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              flexDirection: "row",
               justifyContent: "space-around",
             },
             dayHeader: {

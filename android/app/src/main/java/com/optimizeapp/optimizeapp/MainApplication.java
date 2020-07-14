@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.kevinejohn.RNMixpanel.RNMixpanel;

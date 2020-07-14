@@ -1031,7 +1031,6 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.GET_MORE_INSTAGRAM_POST:
       const list = [...state.instagramPostList, ...action.payload.imagesList];
-      // console.log("list", list);
       return {
         ...state,
         instaHasNextPage: action.payload.instaHasNextPage,

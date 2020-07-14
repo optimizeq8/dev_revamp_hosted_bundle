@@ -110,8 +110,10 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Country")}</Text>
                   <Text style={styles.menudetails}>
-                    {mainState.countryName !== ""
-                      ? translate(mainState.countryName)
+                    {mainState.countryName.length > 0
+                      ? mainState.countryName
+                          .map((co) => translate(co))
+                          .join(", ")
                       : ""}
                   </Text>
                 </View>
@@ -159,13 +161,40 @@ export class TargetAudience extends Component {
                 </View>
 
                 {startEditing &&
-                  (targeting.geos[0].region_id.length !== 0 ? (
+                  (targeting.geos.some((geo) => geo.region_id.length !== 0) ? (
                     <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PlusCircleIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             ) : null}
+            {/* <TouchableOpacity
+              disabled={loading}
+              onPress={() => this.callFunction("map")}
+              style={styles.targetTouchable}
+            >
+              <View style={globalStyles.row}>
+                <LocationIcon width={30} height={30} style={styles.icon} />
+
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Map")}</Text>
+                  <Text style={styles.menudetails}>
+                    {mainState.countryName.length > 0
+                      ? mainState.countryName
+                          .map((co) => translate(co))
+                          .join(", ")
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+              {startEditing &&
+                (targeting.geos[0].country_code ? (
+                  <GreenCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PlusCircleIcon width={30} height={30} />
+                ))}
+            </TouchableOpacity> */}
+
             <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("gender")}

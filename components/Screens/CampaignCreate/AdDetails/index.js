@@ -16,7 +16,8 @@ import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect
 import CustomHeader from "../../../MiniComponents/Header";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
-
+// import LocationMap from "../../../MiniComponents/LocationMap";
+let LocationMap = null;
 //Data
 import countries, { gender, OSType, country_regions } from "./data";
 
@@ -46,6 +47,7 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { uniq, flatten } from "lodash";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -77,6 +79,12 @@ class AdDetails extends Component {
             },
           ],
           geos: [{ country_code: "", region_id: [] }],
+          // locations: [
+          //   {
+          //     circles: [],
+          //     operation: "INCLUDE",
+          //   },
+          // ],
         },
       },
       filteredRegions: country_regions[0].regions,
@@ -86,7 +94,7 @@ class AdDetails extends Component {
       advance: false,
       sidemenustate: false,
       sidemenu: "gender",
-      regions: country_regions[0].regions,
+      regions: [],
       value: 50,
       minValueBudget: 25,
       maxValueBudget: 1500,
@@ -120,6 +128,34 @@ class AdDetails extends Component {
         filteredLanguages: this.props.languages,
       });
     }
+    if (
+      prevState.campaignInfo.targeting.geos.length !==
+      this.state.campaignInfo.targeting.geos.length
+    ) {
+      let languages = this.state.campaignInfo.targeting.demographics[0]
+        .languages;
+      if (this.state.campaignInfo.targeting.geos.length > 1) {
+        languages.length = 1;
+      }
+      if (!this.editCampaign) {
+        let duration = Math.round(
+          Math.abs(
+            (new Date(this.props.data.start_time).getTime() -
+              new Date(this.props.data.end_time).getTime()) /
+              86400000
+          ) + 1
+        );
+
+        let recBudget =
+          this.state.campaignInfo.targeting.geos.length * duration * 75;
+
+        let minValueBudget =
+          this.props.data.minValueBudget *
+          this.state.campaignInfo.targeting.geos.length;
+
+        this.setState({ minValueBudget, recBudget });
+      }
+    }
   }
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {
@@ -136,35 +172,52 @@ class AdDetails extends Component {
         this.props.navigation.getParam("campaign", {}),
         { arrayMerge: combineMerge }
       );
-      this.props.get_interests(editedCampaign.targeting.geos[0].country_code);
+      let editedCountryCodes = editedCampaign.targeting.geos.map(
+        (geo) => geo.country_code
+      );
+      this.props.get_interests(editedCountryCodes.join(","));
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
       );
-      getCountryName = countries.find(
-        (country) =>
-          country.value === editedCampaign.targeting.geos[0].country_code
-      ).label;
-      this.onSelectedCountryChange(
-        editedCampaign.targeting.geos[0].country_code,
-        null,
-        getCountryName
+      let getCountryName = editedCampaign.targeting.geos.map(
+        (geo, i) =>
+          countries.find(
+            (country) =>
+              country.value === editedCampaign.targeting.geos[i].country_code
+          ).label
       );
-      let editedRegionNames = country_regions.find(
-        (country_region) =>
-          country_region.country_code ===
-          editedCampaign.targeting.geos[0].country_code
+      let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
+        country_regions.find(
+          (country_region) =>
+            country_region.country_code ===
+            editedCampaign.targeting.geos[i].country_code
+        )
       );
-      editedCampaign.targeting.geos[0].region_id.forEach((id) => {
-        let name = editedRegionNames.regions.find((region) => region.id === id)
-          .name;
-        this.onSelectedRegionChange(id, name);
-      });
+      let stateRegionNames = [];
       this.setState(
         {
           campaignInfo: editedCampaign,
           startEditing: false,
+          countryName: getCountryName,
+          regions: editedRegionNames,
+          filteredRegions: editedRegionNames,
         },
-        () => this._calcReach()
+        () => {
+          editedCampaign.targeting.geos.forEach((geo, i) =>
+            editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+              let regN = editedRegionNames[i].regions.find(
+                (region) => region.id === id
+              );
+              regN.country_code = editedCampaign.targeting.geos[i].country_code;
+              stateRegionNames.push(regN);
+            })
+          );
+          let showRegions = this.state.regions.some(
+            (reg) => reg.regions.length > 3
+          );
+          this._calcReach();
+          this.setState({ regionNames: stateRegionNames, showRegions });
+        }
       );
     } else {
       let duration = Math.round(
@@ -177,70 +230,109 @@ class AdDetails extends Component {
 
       let recBudget = duration * 75;
 
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: recBudget,
-        },
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(recBudget, true),
-        recBudget: recBudget,
-      });
+      // To by default set the country to that of the business country selected
+      let country_code = find(
+        countries,
+        (country) => country.label === this.props.mainBusiness.country
+      ).value;
 
-      if (this.props.data.hasOwnProperty("campaignInfo")) {
-        rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
-        let countryRegions = find(
-          country_regions,
-          (country) =>
-            country.country_code === rep.targeting.geos[0].country_code
-        );
-        this.setState(
-          {
-            ...this.state,
-            ...this.props.data,
-            campaignInfo: {
-              ...rep,
-              lifetime_budget_micro:
-                this.props.data.campaignDateChanged &&
-                this.props.data.campaignInfo.lifetime_budget_micro <
-                  this.props.data.minValueBudget
-                  ? recBudget
-                  : this.props.data.campaignInfo.lifetime_budget_micro,
-            },
-            value: this.formatNumber(
-              this.props.data.campaignDateChanged &&
-                this.props.data.campaignInfo.lifetime_budget_micro <
-                  this.props.data.minValueBudget
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
-            ),
-            showRegions: this.props.data.showRegions,
-            filteredLanguages: this.props.languages,
-            recBudget,
-            filteredRegions: countryRegions ? countryRegions.regions : [],
-            regions: countryRegions ? countryRegions.regions : [],
-            budgetOption: this.props.data.campaignDateChanged
-              ? 1
-              : this.props.data.budgetOption,
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            campaign_id: this.props.campaign_id,
+            lifetime_budget_micro: recBudget,
           },
-          () => {
-            if (this.props.data.appChoice) {
-              let navAppChoice =
-                this.props.data.iosApp_name && this.props.data.androidApp_name
-                  ? ""
-                  : this.props.data.appChoice;
-              let rep = this.state.campaignInfo;
-              rep.targeting.devices[0].os_type = navAppChoice;
-              this.setState({
-                campaignInfo: rep,
-              });
+          minValueBudget: this.props.data.minValueBudget,
+          maxValueBudget: this.props.data.maxValueBudget,
+          value: this.formatNumber(recBudget, true),
+          recBudget: recBudget,
+        },
+        async () => {
+          if (this.props.data.hasOwnProperty("campaignInfo")) {
+            const rep = {
+              ...this.state.campaignInfo,
+              ...this.props.data.campaignInfo,
+            };
+
+            let savedRegionNames = this.props.data.regionNames;
+            let countryRegions = rep.targeting.geos.map((cou) => {
+              let foundCountryReg = find(
+                country_regions,
+                (country) => country.country_code === cou.country_code
+              );
+              let filterSelectedRegions = this.props.data.regionNames.filter(
+                (regN) => regN.country_code === cou.country_code
+              );
+              savedRegionNames = uniq(
+                flatten([savedRegionNames, filterSelectedRegions])
+              );
+              return foundCountryReg;
+            });
+            let minValueBudget =
+              this.props.data.minValueBudget * rep.targeting.geos.length;
+            recBudget *= rep.targeting.geos.length;
+            if (rep.targeting.geos.length > 1) {
+              rep.targeting.demographics[0].languages.length = 1;
             }
-            this._calcReach();
+            this.setState(
+              {
+                ...this.state,
+                ...this.props.data,
+                campaignInfo: {
+                  ...rep,
+                  campaign_id: this.props.campaign_id,
+                  lifetime_budget_micro:
+                    this.props.data.campaignDateChanged &&
+                    this.props.data.campaignInfo.lifetime_budget_micro <
+                      this.props.data.minValueBudget
+                      ? recBudget
+                      : this.props.data.campaignInfo.lifetime_budget_micro,
+                },
+                value: this.formatNumber(
+                  this.props.data.campaignDateChanged &&
+                    this.props.data.campaignInfo.lifetime_budget_micro <
+                      this.props.data.minValueBudget
+                    ? recBudget
+                    : this.props.data.campaignInfo.lifetime_budget_micro
+                ),
+                showRegions: this.props.data.showRegions,
+                filteredLanguages: this.props.languages,
+                recBudget,
+                filteredRegions: countryRegions ? countryRegions : [],
+                regions: countryRegions ? countryRegions : [],
+                budgetOption: this.props.data.campaignDateChanged
+                  ? 1
+                  : this.props.data.budgetOption,
+                regionNames: savedRegionNames,
+                minValueBudget,
+              },
+              () => {
+                if (this.props.data.appChoice) {
+                  let navAppChoice =
+                    this.props.data.iosApp_name &&
+                    this.props.data.androidApp_name
+                      ? ""
+                      : this.props.data.appChoice;
+                  let rep = this.state.campaignInfo;
+                  rep.targeting.devices[0].os_type = navAppChoice;
+                  this.setState({
+                    campaignInfo: rep,
+                  });
+                }
+                this._calcReach();
+              }
+            );
+          } else {
+            await this.onSelectedCountryChange(
+              country_code,
+              null,
+              this.props.mainBusiness.country
+            );
           }
-        );
-      }
+          this._calcReach();
+        }
+      );
     }
   }
 
@@ -282,42 +374,95 @@ class AdDetails extends Component {
   ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
+    let regionNames = this.state.regionNames;
 
-    if (
-      typeof newCountry !== "undefined" &&
-      newCountry !== replace.targeting.geos[0].country_code
-    ) {
-      replace.targeting.geos[0].country_code = newCountry;
+    if (newCountry) {
+      if (
+        replace.targeting.geos.find((co) => co.country_code === newCountry) &&
+        replace.targeting.geos.length === 1
+      ) {
+        //To overwrite the object in geos instead of filtering it out
+        replace.targeting.geos[0] = {
+          country_code: "",
+          region_id: [],
+        };
+        countryName = [];
+        regionNames = [];
+      } else if (
+        replace.targeting.geos.find((co) => co.country_code === newCountry)
+      ) {
+        //To remove the country from the array
+        replace.targeting.geos = replace.targeting.geos.filter(
+          (co) => co.country_code !== newCountry
+        );
+        //To remove the regions from the the region names
+        regionNames = this.state.regionNames.filter(
+          (reg) => reg.country_code !== newCountry
+        );
+        //To remove the country name from the country names
+        countryName = this.state.countryName.filter((co) => co !== countryName);
+      } else if (replace.targeting.geos[0].country_code === "") {
+        //To overwrite the only object in geos instead of pushing the new country
+        replace.targeting.geos[0] = {
+          country_code: newCountry,
+          region_id: [],
+        };
+        countryName = [countryName];
+        regionNames = this.state.regionNames.filter(
+          (reg) => reg.country_code !== newCountry
+        );
+      } else {
+        //To add the coutnry to geos array
+        replace.targeting.geos.push({
+          country_code: newCountry,
+          region_id: [],
+        });
+        countryName = [...this.state.countryName, countryName];
+      }
 
-      replace.targeting.geos[0].region_id = [];
+      let reg = country_regions.find((c) => c.country_code === newCountry);
+      if (this.state.regions.find((c) => c.country_code === newCountry)) {
+        //To remove the region from the list of country regions that shows all regions of countriees when
+        //the country is unselected
+        reg = this.state.regions.filter((coReg) => {
+          return coReg.country_code !== newCountry;
+        });
+      } else {
+        reg = [...this.state.regions, reg];
+      }
 
-      let reg = country_regions.find(
-        (c) => c.country_code === replace.targeting.geos[0].country_code
-      );
       replace.targeting.interests[0].category_id = [];
       analytics.track(`a_ad_country`, {
         source: "ad_targeting",
         source_action: "a_ad_country",
         campaign_country_name: countryName,
       });
-
-      this.setState({
-        campaignInfo: replace,
-        regions: reg.regions,
-        filteredRegions: reg.regions,
-        regionNames: [],
-        interestNames: [],
-        countryName,
-        showRegions: reg.regions.length > 3,
-      });
-
-      !this.editCampaign &&
-        this.props.save_campaign_info({
+      let showRegions = false;
+      this.setState(
+        {
           campaignInfo: replace,
-          country_code: newCountry,
+          regions: reg,
+          filteredRegions: reg,
+          regionNames,
+          interestNames: [],
           countryName,
-          showRegions: reg.regions.length > 3,
-        });
+        },
+        () => {
+          //To show the regions options if one of the selected countries has more than 3 regions
+          showRegions = this.state.regions.some(
+            (reg) => reg.regions.length > 3
+          );
+          !this.editCampaign &&
+            this.props.save_campaign_info({
+              campaignInfo: replace,
+              country_code: newCountry,
+              countryName,
+              showRegions: showRegions,
+              regionNames,
+            });
+          this.setState({ showRegions });
+        }
+      );
     }
   };
 
@@ -367,7 +512,7 @@ class AdDetails extends Component {
 
   onSelectedLangsChange = (selectedItem) => {
     const { translate } = this.props.screenProps;
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     let langs = [];
     if (
       replace.targeting.demographics[0].languages.find(
@@ -384,7 +529,9 @@ class AdDetails extends Component {
         campaign_languages: langs.join(", "),
       });
     } else {
-      replace.targeting.demographics[0].languages.push(selectedItem);
+      if (replace.targeting.geos.length > 1) {
+        replace.targeting.demographics[0].languages = [selectedItem];
+      } else replace.targeting.demographics[0].languages.push(selectedItem);
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_ad_languages`, {
         source: "ad_targeting",
@@ -456,6 +603,23 @@ class AdDetails extends Component {
         campaignInfo: { ...replace },
       });
   };
+
+  onSelectedMapChange = (selectedItems) => {
+    let stateRep = cloneDeep(this.state.campaignInfo);
+    stateRep.targeting.locations[0].circles = selectedItems;
+    analytics.track(`a_ad_map_locations`, {
+      source: "ad_targeting",
+      source_action: "a_ad_map_locations",
+      campaign_map_locations: selectedItems,
+    });
+    this.setState({
+      campaignInfo: { ...stateRep },
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: { ...stateRep },
+      });
+  };
   // onSelectedBudgetChange = budget => {
   //   if (budget === this.state.maxValueBudget) {
   //     showMessage({
@@ -479,28 +643,70 @@ class AdDetails extends Component {
   //     });
   // };
 
-  onSelectedRegionChange = (selectedItem, regionName) => {
-    let replace = this.state.campaignInfo;
-    let rIds = replace.targeting.geos[0].region_id;
+  onSelectedRegionChange = (selectedItem, regionName, country_code) => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    let coRegIndex = 0;
+    let rIds = [];
+    if (country_code) {
+      //get the index of the selected country to add the regions to it
+      coRegIndex = replace.targeting.geos.findIndex(
+        (co) => co.country_code === country_code
+      );
+      rIds = replace.targeting.geos[coRegIndex].region_id;
+    }
     let rNamesSelected = this.state.regionNames;
 
     if (selectedItem === -1) {
-      if (this.state.regions.length === this.state.regionNames.length) {
-        replace.targeting.geos[0].region_id = [];
+      //Select all option
+      let regionsLength = 0;
+      this.state.regions.forEach((reg) => {
+        if (reg.regions.length > 3) regionsLength += reg.regions.length;
+      });
+      if (regionsLength === this.state.regionNames.length) {
+        //if all the regions of all selected countries are selected
+        //then regionNames.length will === all the regions of the selected countries
+        //Meaning that this will unselect all the regions
+        replace.targeting.geos.forEach(
+          (co, i) => (replace.targeting.geos[i].region_id = [])
+        );
         analytics.track(`a_ad_regions`, {
           source: "ad_targeting",
           source_action: "a_ad_regions",
           campaign_region_names: [],
         });
-
+        rNamesSelected = [];
         this.setState({
-          regionNames: [],
+          regionNames: rNamesSelected,
           campaignInfo: replace,
         });
       } else {
-        rNamesSelected = this.state.regions.map((r) => r.name);
-        rIds = this.state.regions.map((r) => r.id);
-        replace.targeting.geos[0].region_id = rIds;
+        //To select all regions of all selected countries
+        rNamesSelected = [];
+        rIds = [];
+        //this.state.regions is an array of multiple country regions of selected countries
+        //[{country_code:"kw",country_name:"Kuwait",regions:[{id,name},{id,name},{id,name}]}]
+        this.state.regions.forEach(
+          (r) =>
+            r.regions.length > 3 &&
+            r.regions.forEach((region) => {
+              //Add region names of all regions of the selected countries
+              rNamesSelected.push({
+                name: region.name,
+                country_code: r.country_code,
+              });
+            })
+        );
+        //To add the region ids of all selected countries
+        replace.targeting.geos.forEach((cou, i) => {
+          let foundRegions = this.state.regions.find(
+            (cReg) =>
+              cReg.regions.length > 3 &&
+              cReg.country_code === replace.targeting.geos[i].country_code
+          );
+          replace.targeting.geos[i].region_id = foundRegions
+            ? foundRegions.regions.map((reg) => reg.id)
+            : [];
+        });
         analytics.track(`a_ad_regions`, {
           source: "ad_targeting",
           source_action: "a_ad_regions",
@@ -523,13 +729,16 @@ class AdDetails extends Component {
 
       // campignInfo region
       if (rIds.find((r) => r === selectedItem)) {
-        replace.targeting.geos[0].region_id = rIds.filter(
+        replace.targeting.geos[coRegIndex].region_id = rIds.filter(
           (r) => r !== selectedItem
         );
-        rNamesSelected = rNamesSelected.filter((r) => r !== regionName);
+        rNamesSelected = rNamesSelected.filter((r) => r.name !== regionName);
       } else {
-        replace.targeting.geos[0].region_id.push(selectedItem);
-        rNamesSelected.push(regionName);
+        replace.targeting.geos[coRegIndex].region_id.push(selectedItem);
+        rNamesSelected.push({
+          name: regionName,
+          country_code: country_code,
+        });
       }
       analytics.track(`a_ad_regions`, {
         source: "ad_targeting",
@@ -598,7 +807,10 @@ class AdDetails extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.state.minValueBudget,
+          description:
+            this.state.campaignInfo.targeting.geos.length > 1
+              ? `$25 x ${translate("Country")} = $${this.state.minValueBudget}`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -669,10 +881,12 @@ class AdDetails extends Component {
         delete r.devices[0].os_type;
       }
       if (
-        r.geos[0].hasOwnProperty("region_id") &&
-        r.geos[0].region_id.length === 0
+        r.geos.some((re) => re.hasOwnProperty("region_id")) &&
+        r.geos.some((re) => re.region_id.length === 0)
       ) {
-        delete r.geos[0].region_id;
+        r.geos.forEach(
+          (re) => re.region_id.length === 0 && delete re.region_id
+        );
       }
       if (
         r.hasOwnProperty("interests") &&
@@ -693,12 +907,9 @@ class AdDetails extends Component {
             max_age: "50+",
           },
         ],
-        geos: [
-          {
-            country_code: this.state.campaignInfo.targeting.geos[0]
-              .country_code,
-          },
-        ],
+        geos: this.state.campaignInfo.targeting.geos.map((geo) => ({
+          country_code: geo.country_code,
+        })),
       };
       const obj2 = {
         targeting: JSON.stringify(totalReach),
@@ -983,11 +1194,28 @@ class AdDetails extends Component {
             onSelectedRegionChange={this.onSelectedRegionChange}
             _handleSideMenuState={this._handleSideMenuState}
             regions={this.state.regions}
-            region_id={this.state.campaignInfo.targeting.geos[0].region_id}
+            region_id={this.state.campaignInfo.targeting.geos}
             filterRegions={this.filterRegions}
           />
         );
 
+        break;
+      }
+      case "map": {
+        if (!LocationMap) {
+          LocationMap = require("../../../MiniComponents/LocationMap").default;
+        }
+        menu = (
+          <LocationMap
+            country_code={
+              this.state.campaignInfo.targeting.geos[0].country_code
+            }
+            onSelectedMapChange={this.onSelectedMapChange}
+            screenProps={this.props.screenProps}
+            _handleSideMenuState={this._handleSideMenuState}
+            circles={this.state.campaignInfo.targeting.locations[0].circles}
+          />
+        );
         break;
       }
       case "languages": {
@@ -1022,13 +1250,9 @@ class AdDetails extends Component {
           <MultiSelectSections
             screenProps={this.props.screenProps}
             countries={countries}
-            country_code={
-              this.state.campaignInfo.targeting.geos[0].country_code
-            }
+            country_code={this.state.campaignInfo.targeting.geos}
             onSelectedCountryChange={this.onSelectedCountryChange}
-            country_codes={
-              this.state.campaignInfo.targeting.geos[0].country_code
-            }
+            country_codes={this.state.campaignInfo.targeting.geos}
             _handleSideMenuState={this._handleSideMenuState}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
@@ -1048,6 +1272,7 @@ class AdDetails extends Component {
             onSelectedVersionsChange={this.onSelectedVersionsChange}
             OSType={this.state.campaignInfo.targeting.devices[0].os_type}
             option={this.state.selectionOption}
+            editCampaign={this.editCampaign}
           />
         );
         break;
@@ -1055,18 +1280,7 @@ class AdDetails extends Component {
     }
 
     let regions_names = [];
-    this.state.regions.forEach((r) => {
-      if (
-        this.state.campaignInfo.targeting.geos[0].region_id &&
-        this.state.campaignInfo.targeting.geos[0].region_id.find(
-          (i) => i === r.id
-        )
-      ) {
-        regions_names.push(translate(r.name));
-      }
-    });
-    regions_names = regions_names.join(", ");
-
+    regions_names = this.state.regionNames.map((regN) => regN.name).join(", ");
     let languages_names = [];
     this.props.languages.forEach((r) => {
       if (

@@ -87,7 +87,6 @@ class CampaignStats extends PureComponent {
     // }
     while (objectiveMetric.length > 0)
       metrics.push(objectiveMetric.splice(0, 3));
-    console.log("instaCampaignMetrics", instaCampaignMetrics);
 
     return (
       <View
