@@ -59,7 +59,6 @@ class GoogleKeywordsStats extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleSelectedKeyword = (keyword) => {
-    console.log("keyword", keyword);
     analytics.track(`a_open_keyword_performance`, {
       source: "ad_keywords_performance",
       source_action: "a_open_keyword_performance",

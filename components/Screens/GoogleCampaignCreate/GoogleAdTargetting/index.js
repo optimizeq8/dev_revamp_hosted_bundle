@@ -128,7 +128,6 @@ class GoogleAdTargetting extends Component {
 
   _handleSideMenuState = (status) => {
     this.setState({ sidemenustate: status }, () => {});
-    console.log("scscs");
   };
 
   _renderSideMenu = (component, option = "") => {

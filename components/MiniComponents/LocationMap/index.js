@@ -148,7 +148,6 @@ export default class LocaionMap extends Component {
 
   handleInitialRegion = () => {
     let { country_code } = this.props;
-    console.log(country_code);
     let countryName = "";
     if (country_code === "sa") {
       countryName = "Saudi Arabia";

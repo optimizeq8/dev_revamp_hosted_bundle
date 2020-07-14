@@ -267,8 +267,6 @@ class AdObjective extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      console.log("this.props.adType", this.props.adType);
-
       const segmentInfo = {
         campaign_channel: "instagram",
         campaign_ad_type: this.props.adType,

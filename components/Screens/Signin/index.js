@@ -101,7 +101,6 @@ class Signin extends Component {
   handleDeepLink = (url) => {
     if (this.props.userInfo) {
       let screen = url.url.split("/main_navigator/");
-      console.log("ADJUST DEEP LINK", screen);
       screen = screen[1].split("/")[0];
       if (url && url.url.includes("adType")) {
         let adTypePart = url.url
@@ -112,15 +111,11 @@ class Signin extends Component {
       }
 
       this.props.navigation.navigate(screen);
-      Linking.removeEventListener("url", (evnt) =>
-        console.log("unmounted", evnt)
-      );
+      Linking.removeEventListener("url");
     }
   };
   componentWillUnmount() {
-    Linking.removeEventListener("url", (evnt) =>
-      console.log("unmounted", evnt)
-    );
+    Linking.removeEventListener("url");
   }
   setValue = (stateName, value) => {
     let state = {};
@@ -203,8 +198,6 @@ class Signin extends Component {
     });
   };
   render() {
-    console.log(this.props.checkingForToken);
-
     const { translate } = this.props.screenProps;
     if (this.props.userInfo) {
       return <LoadingScreen dash={true} />;

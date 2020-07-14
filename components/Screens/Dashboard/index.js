@@ -452,7 +452,6 @@ class Dashboard extends Component {
 
   handleDeepLinkListener = (url) => {
     if (url) {
-      console.log(this.props.navigation.state.params);
       let deeplinkType = this.props.navigation.getParam("deeplinkType", "");
       let campaign_id = this.props.navigation.getParam("campaign_id", "");
 

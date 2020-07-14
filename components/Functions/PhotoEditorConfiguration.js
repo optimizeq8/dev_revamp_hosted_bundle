@@ -7,13 +7,11 @@ import {
 
 export default (custom = {}) => {
   let { width, height, items } = custom;
-  console.log("items", items);
 
   let transformItems =
     items && items.length > 0
       ? [...items]
       : [{ width: width || 9, height: height || 16 }];
-  console.log("transformItems", transformItems);
 
   let configuration: Configuration = {
     forceCrop: true,
