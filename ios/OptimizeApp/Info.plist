@@ -34,7 +34,7 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>90</string>
+		<string>92</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
@@ -67,9 +67,9 @@
 		<key>NSMotionUsageDescription</key>
 		<string>Allow OptimizeApp to access your device's accelerometer</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>Give OptimizeApp periences permission to save photos</string>
+		<string>OptimizeApp let's you save edited media to your gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Give OptimizeApp periences permission to access your photos</string>
+		<string>OptimizeApp let's you choose your media files that you wish to use for campaigns or to share with our support team</string>
 		<key>NSRemindersUsageDescription</key>
 		<string>Allow OptimizeApp to access your reminders</string>
 		<key>UIAppFonts</key>
