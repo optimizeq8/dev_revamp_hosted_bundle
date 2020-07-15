@@ -442,6 +442,7 @@ class AppChoice extends Component {
           screenProps={this.props.screenProps}
           checkmark={true}
           function={() => this.validate()}
+          bottom={-2}
         />
       </InputScrollView>
     );

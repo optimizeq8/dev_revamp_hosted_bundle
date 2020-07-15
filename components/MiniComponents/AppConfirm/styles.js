@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.16)",
     width: "48%",
-    height: "70%",
+    // height: "70%"
     justifyContent: "space-evenly",
     paddingVertical: 20,
     borderRadius: 35,
