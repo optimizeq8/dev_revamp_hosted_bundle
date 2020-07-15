@@ -59,7 +59,10 @@ class SelectInterests extends Component {
       prevProps.customInterests !== this.props.customInterests
     ) {
       let customInterests = [];
-      if (this.props.customInterests.length === 0) {
+      if (
+        this.props.customInterests.length === 0 ||
+        this.props.customInterests.Interests.length === 0
+      ) {
         this.setState({ customInterests: [] });
       } else {
         customInterests =
@@ -80,7 +83,7 @@ class SelectInterests extends Component {
     this.props._handleSideMenuState(false);
   };
   handleCustomInterests = (event) => {
-    this.props.get_custom_interests_instagram(event.nativeEvent.text);
+    this.props.get_custom_interests_instagram(event.replace(" ", "_"));
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -126,7 +129,12 @@ class SelectInterests extends Component {
                   />
                 </GradientButton>
               </View>
-              {/* <Picker
+              {this.props.selectedItems.length > 0 && (
+                <Text style={styles.interestSection}>
+                  {translate("Pre-defined interests")}
+                </Text>
+              )}
+              <Picker
                 showDropDowns={true}
                 readOnlyHeadings={true}
                 screenProps={this.props.screenProps}
@@ -146,9 +154,14 @@ class SelectInterests extends Component {
                 single={false}
                 screenName={"Select Interests"}
                 closeCategoryModal={() => this.setState({ open: false })}
-              /> */}
+              />
+              {this.props.selectedCustomInterests.length > 0 && (
+                <Text style={styles.interestSection}>
+                  {translate("Customs interests")}
+                </Text>
+              )}
               <Picker
-                showDropDowns={true}
+                showDropDowns={false}
                 readOnlyHeadings={true}
                 screenProps={this.props.screenProps}
                 searchPlaceholderText={translate("Search for custom Interests")}
@@ -163,7 +176,7 @@ class SelectInterests extends Component {
                   this.props.onSelectedItemObjectsChange
                 }
                 showIcon={false}
-                selectedItems={this.props.selectedItems}
+                selectedItems={this.props.selectedCustomInterests}
                 single={false}
                 screenName={"Select Interests"}
                 closeCategoryModal={() => this.setState({ open2: false })}
