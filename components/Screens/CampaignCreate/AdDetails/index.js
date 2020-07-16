@@ -314,7 +314,7 @@ class AdDetails extends Component {
                     this.props.data.androidApp_name
                       ? ""
                       : this.props.data.appChoice;
-                  let rep = this.state.campaignInfo;
+                  let rep = cloneDeep(this.state.campaignInfo);
                   rep.targeting.devices[0].os_type = navAppChoice;
                   this.setState({
                     campaignInfo: rep,
