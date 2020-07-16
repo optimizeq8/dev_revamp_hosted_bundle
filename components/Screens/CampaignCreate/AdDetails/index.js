@@ -261,12 +261,14 @@ class AdDetails extends Component {
                 country_regions,
                 (country) => country.country_code === cou.country_code
               );
-              let filterSelectedRegions = this.props.data.regionNames.filter(
-                (regN) => regN.country_code === cou.country_code
-              );
-              savedRegionNames = uniq(
-                flatten([savedRegionNames, filterSelectedRegions])
-              );
+              let filterSelectedRegions = this.props.data.regionNames
+                ? this.props.data.regionNames.filter(
+                    (regN) => regN.country_code === cou.country_code
+                  )
+                : [];
+              savedRegionNames =
+                savedRegionNames &&
+                uniq(flatten([savedRegionNames, filterSelectedRegions]));
               return foundCountryReg;
             });
             let minValueBudget =

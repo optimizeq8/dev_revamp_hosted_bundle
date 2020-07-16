@@ -25,8 +25,8 @@ class SelectInterests extends Component {
   state = { interests: null, open: false };
   componentDidMount() {
     Segment.screen("Interests Options");
-    !this.props.addressForm &&
-      this.props.get_interests(this.props.country_code);
+    // !this.props.addressForm &&
+    //   this.props.get_interests(this.props.country_code);
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
@@ -56,12 +56,12 @@ class SelectInterests extends Component {
         this.setState({ interests });
       }
     }
-    if (
-      prevProps.country_code !== this.props.country_code &&
-      !this.props.addressForm
-    ) {
-      this.props.get_interests(this.props.country_code);
-    }
+    // if (
+    //   prevProps.country_code !== this.props.country_code &&
+    //   !this.props.addressForm
+    // ) {
+    //   this.props.get_interests(this.props.country_code);
+    // }
   }
   handleSideMenu = () => {
     this.props._handleSideMenuState(false);
