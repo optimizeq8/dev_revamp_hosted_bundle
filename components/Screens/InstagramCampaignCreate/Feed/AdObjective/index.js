@@ -23,6 +23,10 @@ import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CustomHeader from "../../../../MiniComponents/Header";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
 
+// image
+import PenBox from "../../../../../assets/SVGs/PenBox.svg";
+import UserProfile from "../../../../../assets/SVGs/UserProfileRoundOutline.svg";
+
 // Style
 import styles from "../../styles/adObjectives.styles";
 //Data
@@ -33,7 +37,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 
 //Functions
-import segmentEventTrack from "../../../../segmentEventTrack";
+import cloneDeep from "lodash/cloneDeep";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -42,6 +46,7 @@ import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampai
 import { persistor } from "../../../../../store";
 import InputField from "../../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
+import GradientButton from "../../../../MiniComponents/GradientButton";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -56,6 +61,7 @@ class AdObjective extends Component {
         objective: "",
         start_time: "",
         end_time: "",
+        existingPost: 0,
       },
       minValueBudget: 0,
       maxValueBudget: 0,
@@ -380,6 +386,16 @@ class AdObjective extends Component {
     });
   };
 
+  selectPostType = () => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    replace.existingPost = this.state.campaignInfo.existingPost === 0 ? 1 : 0;
+    this.setState({
+      campaignInfo: replace,
+    });
+    this.props.save_campaign_info_instagram({
+      existingPost: this.state.campaignInfo.existingPost === 0 ? 1 : 0,
+    });
+  };
   render() {
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
@@ -422,6 +438,42 @@ class AdObjective extends Component {
               scrollEnabled={true}
               style={styles.scrollViewStyle}
             >
+              <View style={styles.radioButtonView}>
+                <GradientButton
+                  style={styles.gradientBtn}
+                  screenProps={this.props.screenProps}
+                  transparent={this.state.campaignInfo.existingPost !== 0}
+                  onPressAction={this.selectPostType}
+                >
+                  <View style={styles.buttonView}>
+                    <UserProfile />
+                    <Text style={styles.btnHeadingText}>
+                      {translate("Existing Post")}
+                    </Text>
+                    <Text style={styles.btnDescText}>
+                      {translate(
+                        "Promote an existing Post from your Instagram account"
+                      )}
+                    </Text>
+                  </View>
+                </GradientButton>
+                <GradientButton
+                  style={styles.gradientBtn}
+                  screenProps={this.props.screenProps}
+                  transparent={this.state.campaignInfo.existingPost !== 1}
+                  onPressAction={this.selectPostType}
+                >
+                  <View style={styles.buttonView}>
+                    <PenBox />
+                    <Text style={styles.btnHeadingText}>
+                      {translate("New Post")}
+                    </Text>
+                    <Text style={styles.btnDescText}>
+                      {translate("Create a new ad using our photo editor")}
+                    </Text>
+                  </View>
+                </GradientButton>
+              </View>
               <InputField
                 label={"Ad Name"}
                 setValue={this.setValue}
