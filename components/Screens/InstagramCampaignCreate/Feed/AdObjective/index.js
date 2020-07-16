@@ -323,7 +323,9 @@ class AdObjective extends Component {
           campaign_id:
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
-        "InstagramFeedAdDesign",
+        this.state.campaignInfo.existingPost === 0
+          ? "InstagramAdDesignExistingPost"
+          : "InstagramFeedAdDesign",
         segmentInfo
       );
     } else {
