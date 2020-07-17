@@ -152,8 +152,19 @@ class AdDetails extends Component {
         let minValueBudget =
           this.props.data.minValueBudget *
           this.state.campaignInfo.targeting.geos.length;
-
-        this.setState({ minValueBudget, recBudget });
+        let lifetime_budget_micro = this.state.campaignInfo
+          .lifetime_budget_micro;
+        let value = this.state.value;
+        if (this.state.budgetOption === 1) {
+          lifetime_budget_micro = recBudget;
+          value = this.formatNumber(recBudget, true);
+        }
+        this.setState({
+          campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
+          value,
+          minValueBudget,
+          recBudget,
+        });
       }
     }
   }
