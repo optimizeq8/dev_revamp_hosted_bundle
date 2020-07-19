@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import { Content, Text, Container } from "native-base";
+import { Content, Text, Container, Icon, Button } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -51,6 +51,7 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
+import CampaignDuration from "./CampaignDuration";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -79,6 +80,7 @@ class AdObjective extends Component {
       start_timeError: "",
       end_timeError: "",
       incomplete: false,
+      duration: 1,
     };
   }
   componentWillUnmount() {
@@ -502,6 +504,21 @@ class AdObjective extends Component {
       this.handleBackButton
     );
   };
+
+  handleDuration = (subtract = false) => {
+    let duration = subtract
+      ? this.state.duration - 1 > 1
+        ? this.state.duration - 1
+        : 1
+      : this.state.duration + 1;
+    this.setState({
+      duration,
+    });
+    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+  };
+  stopTimer = () => {
+    clearTimeout(this.timer);
+  };
   render() {
     let adType = this.props.adType;
     const list = ObjectiveData[this.props.adType].map((o) => (
@@ -571,36 +588,6 @@ class AdObjective extends Component {
             accessible={false}
           >
             <Container style={styles.container}>
-              {/* <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                segment={{
-                  source: "ad_objective",
-                  source_action: "a_go_back",
-                  str: "Ad Objective Back Button",
-                  obj: {
-                    businessname:
-                      this.props.mainBusiness &&
-                      this.props.mainBusiness.businessname,
-                  },
-                }}
-                actionButton={this.handleBackButton}
-                title={[
-                  adType === "SnapAd"
-                    ? "Snap Ad"
-                    : adType === "StoryAd"
-                    ? "Story Ad"
-                    : "Collection Ad",
-
-                  "Campaign",
-                ]}
-              /> */}
-              {/* <PhoneIcon
-                style={styles.phoneicon}
-                width={hp(5) < 30 ? 50 : 70}
-                height={hp(5) < 30 ? 50 : 70}
-              /> */}
-              <View style={styles.block1}></View>
               <ScrollView
                 contentContainerStyle={styles.mainContent}
                 scrollEnabled={true}
@@ -621,6 +608,24 @@ class AdObjective extends Component {
                   incomplete={this.state.incomplete}
                   valueText={this.state.objectiveLabel}
                   translate={this.props.screenProps.translate}
+                />
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.loading}
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
+                <CampaignDuration
+                  stopTimer={this.stopTimer}
+                  handleDuration={this.handleDuration}
+                  duration={this.state.duration}
                 />
                 <Animatable.View
                   onAnimationEnd={() =>
@@ -654,23 +659,6 @@ class AdObjective extends Component {
                     dateField={this.dateField}
                   />
                 </Animatable.View>
-                {/* <Text style={styles.minBudget}>
-                {translate("Minimum of $25/day")}
-              </Text> */}
-
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
-                  incomplete={this.state.incomplete}
-                  translate={this.props.screenProps.translate}
-                />
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
@@ -743,9 +731,6 @@ class AdObjective extends Component {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    {/* <Text style={styles.minBudget}>
-                    Collection Ads only work on iOS
-                  </Text> */}
                   </View>
                 )}
 
@@ -818,9 +803,6 @@ class AdObjective extends Component {
                   >
                     {list}
                   </Content>
-                  {/* <LowerButton
-   screenProps={this.props.screenProps}
- bottom={4} function={this.setModalVisible} /> */}
                 </View>
               </View>
             </BlurView>
