@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Icon, Text } from "native-base";
+import { View, PixelRatio, I18nManager } from "react-native";
+import { Icon, Text, Input, Item } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
+import SearchIcon from "../../../assets/SVGs/Search";
 
 import BackButton from "../../MiniComponents/BackButton";
 
 import styles from "./styles";
 import SectionStyle, { colors } from "../MultiSelect/SectionStyle";
 import LowerButton from "../LowerButton";
+import { globalColors } from "../../../GlobalStyles";
 
 export default class Picker extends Component {
   componentDidUpdate(prevProps) {
@@ -79,7 +81,15 @@ export default class Picker extends Component {
           />
         }
         headerComponent={
-          <View style={styles.headerComponent}>
+          <View
+            style={[
+              styles.headerComponent,
+              this.props.customSearch && {
+                height: 100,
+                width: "100%",
+              },
+            ]}
+          >
             <BackButton
               stroke={"#FFF"}
               style={{ top: 0, left: 0 }}
@@ -90,16 +100,23 @@ export default class Picker extends Component {
                 this.props.closeCategoryModal();
               }}
             />
+            {this.props.customSearch && (
+              <Item rounded style={styles.customSearchField}>
+                <SearchIcon stroke={globalColors.orange} />
+                <Input
+                  style={styles.customSearchInput}
+                  placeholder={"Search Interesets.."}
+                  placeholderTextColor="white"
+                  autoCapitalize="none"
+                  onChangeText={this.props.customSearch}
+                />
+              </Item>
+            )}
           </View>
         }
+        hideSearch={this.props.customSearch}
         colors={colors}
-        searchIconComponent={
-          <Icon
-            type="MaterialCommunityIcons"
-            name="magnify"
-            style={styles.indicator}
-          />
-        }
+        searchIconComponent={<SearchIcon stroke={globalColors.orange} />}
         modalWithSafeAreaView={true}
         iconKey="icon"
         showDropDowns={
@@ -117,8 +134,19 @@ export default class Picker extends Component {
         }}
         selectChildren
         modalAnimationType="fade"
-        onSelectedItemsChange={this.props.onSelectedItemsChange}
-        onSelectedItemObjectsChange={this.props.onSelectedItemObjectsChange}
+        onSelectedItemsChange={(items) =>
+          this.props.onSelectedItemsChange(
+            items,
+            "",
+            this.props.customSearch ? true : false
+          )
+        }
+        onSelectedItemObjectsChange={(items) =>
+          this.props.onSelectedItemObjectsChange(
+            items,
+            this.props.customSearch ? true : false
+          )
+        }
         selectedItems={this.props.selectedItems}
         removeAllText={translate("Remove all")}
         itemFontFamily={{
