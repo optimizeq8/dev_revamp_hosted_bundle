@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, I18nManager, Modal } from "react-native";
 import { Text } from "native-base";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { Modal } from "react-native-paper";
+
 import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import {
@@ -28,6 +28,7 @@ import {
 import Loading from "../LoadingScreen";
 import LowerButton from "../LowerButton";
 import { showMessage } from "react-native-flash-message";
+import { globalColors } from "../../../GlobalStyles";
 
 class DateFields extends Component {
   constructor(props) {
@@ -346,110 +347,90 @@ class DateFields extends Component {
               ? this.state.modalVisible && this.props.open
               : this.state.modalVisible
           }
+          transparent
+          animationType="slide"
         >
-          <BlurView
-            tint="dark"
-            intensity={95}
-            style={[
-              styles.BlurView,
-              this.props.filterMenu &&
-                !I18nManager.isRTL && {
-                  paddingLeft: wp("20"),
-                  paddingTop: hp(6),
-                },
-              this.props.filterMenu &&
-                I18nManager.isRTL && {
-                  paddingLeft: wp("2"),
-                  paddingRight: wp("8"),
-                  paddingTop: hp(6),
-                },
-            ]}
-          >
-            <SafeAreaView
-              style={styles.safeArea}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
-              <View style={{ alignItems: "center" }}>
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  segment={{
-                    source: "date_modal",
-                    source_action: "a_go_back",
-                  }}
-                  closeButton={true}
-                  actionButton={() => {
-                    this.setState({ modalVisible: false });
-                    if (this.state.outdatedDate) {
-                      this.props.navigation.goBack();
-                    }
-                  }}
-                  topRightButtonText={translate("Reset")}
-                  topRightButtonFunction={this.handleReset}
-                  showTopRightButton={
-                    this.state.start_date || this.props.chartRange
+          <View style={styles.safeArea}>
+            <View style={{ alignItems: "center" }}>
+              <CustomHeader
+                icon="calendar"
+                screenProps={this.props.screenProps}
+                segment={{
+                  source: "date_modal",
+                  source_action: "a_go_back",
+                }}
+                closeButton={true}
+                iconColor="#000"
+                actionButton={() => {
+                  this.setState({ modalVisible: false });
+                  if (this.state.outdatedDate) {
+                    this.props.navigation.goBack();
                   }
-                  title={"Duration"}
-                />
-              </View>
-              <Text style={styles.textModal}>
-                {this.props.filterMenu
-                  ? translate("Select a date range to filter from")
-                  : translate("Please select your ad launch and end dates")}
-              </Text>
-              <CalenderkIcon
-                fill="#fff"
-                width={hp(5) < 30 ? 30 : 60}
-                height={hp(5) < 30 ? 30 : 60}
-                style={styles.icon}
+                }}
+                topRightButtonText={translate("Reset")}
+                topRightButtonFunction={this.handleReset}
+                showTopRightButton={
+                  this.state.start_date || this.props.chartRange
+                }
+                title={"Choose campaign start date"}
+                titleStyle={{ color: "#000" }}
               />
-              <Text style={styles.textModalOrange}>
-                {translate(
-                  `Select the ${
-                    !this.state.start_choice ? "Start Date" : "End Date"
-                  }`
-                )}
-              </Text>
-              <View style={{ height: "55%" }}>
-                <DateRangePicker
-                  initialRange={
-                    this.props.start_time
-                      ? [this.props.start_time, this.props.end_time]
-                      : ["", ""]
-                  }
-                  filterMenu={this.props.filterMenu}
-                  reset={this.state.reset}
-                  chartRange={this.props.chartRange}
-                  selectedCampaign={this.props.selectedCampaign}
-                  startDatePicked={this.startDatePicked}
-                  endDatePicked={this.endDatePicked}
-                  // initialRange={[this.props.start_time, this.props.end_time]}
-                  onSuccess={async (s, e) => {
-                    this.endDatePicked();
-                    this.setState({
-                      start_date: s,
-                      end_date: e,
-                      reset: false,
-                    });
-                  }}
-                  theme={{
-                    markColor: "#FF9D00",
-                    markTextColor: "white",
-                  }}
-                />
-              </View>
+            </View>
+            {/* <Text style={styles.textModal}>
+              {this.props.filterMenu
+                ? translate("Select a date range to filter from")
+                : translate("Please select your ad launch and end dates")}
+            </Text> */}
 
-              {this.state.end_choice ||
-              (this.state.end_choice &&
-                this.props.start_time &&
-                !this.state.reset) ? (
-                <LowerButton
-                  screenProps={this.props.screenProps}
-                  checkmark
-                  function={() => this.handleDate()}
-                />
-              ) : null}
-            </SafeAreaView>
-          </BlurView>
+            <Text style={styles.textModalOrange}>
+              {translate(
+                `Select the ${
+                  !this.state.start_choice ? "Start Date" : "End Date"
+                }`
+              )}
+            </Text>
+            <View style={{ height: "55%" }}>
+              <DateRangePicker
+                initialRange={
+                  this.props.start_time
+                    ? [this.props.start_time, this.props.end_time]
+                    : ["", ""]
+                }
+                filterMenu={this.props.filterMenu}
+                reset={this.state.reset}
+                chartRange={this.props.chartRange}
+                selectedCampaign={this.props.selectedCampaign}
+                startDatePicked={this.startDatePicked}
+                endDatePicked={this.endDatePicked}
+                // initialRange={[this.props.start_time, this.props.end_time]}
+                onSuccess={async (s, e) => {
+                  this.endDatePicked();
+                  this.setState({
+                    start_date: s,
+                    end_date: e,
+                    reset: false,
+                  });
+                }}
+                theme={{
+                  markColor: globalColors.purple,
+                  markTextColor: "#fff",
+                }}
+              />
+            </View>
+
+            {this.state.end_choice ||
+            (this.state.end_choice &&
+              this.props.start_time &&
+              !this.state.reset) ? (
+              <LowerButton
+                screenProps={this.props.screenProps}
+                checkmark
+                function={() => this.handleDate()}
+                purpleViolet={true}
+                style={{ alignSelf: "flex-end" }}
+              />
+            ) : null}
+          </View>
           {this.state.resumeLoading && <Loading dash />}
         </Modal>
       </View>

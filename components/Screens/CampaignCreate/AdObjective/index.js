@@ -19,7 +19,7 @@ import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import DateFields from "../../../MiniComponents/DatePicker/DateFields";
+import DateFields from "../../../MiniComponents/DatePickerRedesigned/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
@@ -793,7 +793,7 @@ class AdObjective extends Component {
                   source: "ad_objective_modal",
                   source_action: "a_go_back",
                 }}
-                titelStyle={{ color: "#000" }}
+                titleStyle={{ color: "#000" }}
                 iconColor="#000"
               />
               <View style={styles.popupOverlay}>
