@@ -113,7 +113,6 @@ class DateFields extends Component {
       } else {
         await this.props.handleStartDatePicked(this.state.start_date);
         await this.props.handleEndDatePicked(this.state.end_date);
-        await this.props.getMinimumCash(timeDiff + 1);
         if (
           this.props.incompleteCampaign && //pass as a props
           !this.props.campaignProgressStarted && //pass as a props
@@ -140,7 +139,6 @@ class DateFields extends Component {
     } else if (!this.props.filterMenu && !this.props.chartRange) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
-      await this.props.getMinimumCash(timeDiff + 1);
 
       //if user chooses to resume a campaign and the dates are not appiclble then
       //the dateField modal shows up and handles to resume campaign or not with new dates
@@ -382,14 +380,14 @@ class DateFields extends Component {
                 : translate("Please select your ad launch and end dates")}
             </Text> */}
 
-            <Text style={styles.textModalOrange}>
+            {/* <Text style={styles.textModalOrange}>
               {translate(
                 `Select the ${
                   !this.state.start_choice ? "Start Date" : "End Date"
                 }`
               )}
-            </Text>
-            <View style={{ height: "55%" }}>
+            </Text> */}
+            <View style={{ height: "60%" }}>
               <DateRangePicker
                 initialRange={
                   this.props.start_time

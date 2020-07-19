@@ -81,7 +81,7 @@ class AdObjective extends Component {
       start_timeError: "",
       end_timeError: "",
       incomplete: false,
-      duration: 1,
+      duration: 7,
     };
   }
   componentWillUnmount() {
@@ -151,6 +151,10 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = () => {
+    let start_time = new Date();
+    start_time.setDate(new Date().getDate() + 1);
+    let end_time = new Date();
+    end_time.setDate(start_time.getDate() + this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -169,8 +173,10 @@ class AdObjective extends Component {
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
-          : "",
-        end_time: this.props.data.end_time ? this.props.data.end_time : "",
+          : start_time.toISOString(),
+        end_time: this.props.data.end_time
+          ? this.props.data.end_time
+          : end_time.toISOString(),
       };
       this.setState({
         collectionAdLinkForm: this.props.collectionAdLinkForm,
@@ -187,6 +193,9 @@ class AdObjective extends Component {
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
         modalVisible: false,
+        duration: this.props.data.duration
+          ? this.props.data.duration
+          : this.state.duration,
       });
     } else {
       this.setState({
@@ -198,8 +207,8 @@ class AdObjective extends Component {
             this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: "",
           objective: "",
-          start_time: "",
-          end_time: "",
+          start_time: start_time.toISOString(),
+          end_time: end_time.toISOString(),
         },
         collectionAdLinkForm: 0,
         minValueBudget: 0,
@@ -211,6 +220,7 @@ class AdObjective extends Component {
         objectiveError: "",
         start_timeError: "",
         end_timeError: "",
+        duration: 7,
       });
     }
   };
@@ -268,10 +278,12 @@ class AdObjective extends Component {
     this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date,
+        end_time: end_time.toISOString(),
       },
     });
     analytics.track(`a_ad_end_date`, {
@@ -294,9 +306,11 @@ class AdObjective extends Component {
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = (days) => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+  getMinimumCash = () => {
+    let minValueBudget = 25 * this.state.duration;
+    let maxValueBudget = minValueBudget + 1500;
+    console.log(minValueBudget, maxValueBudget);
+
     this.setState({
       minValueBudget,
       maxValueBudget,
@@ -411,7 +425,7 @@ class AdObjective extends Component {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
       };
-
+      this.getMinimumCash();
       this.props.ad_objective(
         {
           ...info,
@@ -513,8 +527,20 @@ class AdObjective extends Component {
         ? this.state.duration - 1
         : 1
       : this.state.duration + 1;
+
+    let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + duration);
     this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: end_time.toISOString(),
+      },
       duration,
+    });
+    this.props.save_campaign_info({
+      end_time: end_time.toISOString(),
+      duration,
+      campaignDateChanged: true,
     });
     this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
@@ -628,6 +654,7 @@ class AdObjective extends Component {
                   stopTimer={this.stopTimer}
                   handleDuration={this.handleDuration}
                   duration={this.state.duration}
+                  screenProps={this.props.screenProps}
                 />
                 <Animatable.View
                   onAnimationEnd={() =>
@@ -754,7 +781,7 @@ class AdObjective extends Component {
             </Container>
           </TouchableWithoutFeedback>
           <DateFields
-            getMinimumCash={this.getMinimumCash}
+            // getMinimumCash={this.getMinimumCash}
             onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}

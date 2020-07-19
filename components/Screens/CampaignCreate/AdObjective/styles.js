@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 5,
     textTransform: "uppercase",
+    alignSelf: "flex-start",
   },
   objectiveModal: {
     height: "76%",
