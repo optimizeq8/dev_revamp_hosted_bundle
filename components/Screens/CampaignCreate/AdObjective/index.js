@@ -9,10 +9,11 @@ import {
   I18nManager,
   TouchableOpacity,
   StatusBar,
+  Modal,
 } from "react-native";
 import { Content, Text, Container, Icon, Button } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { Modal } from "react-native-paper";
+// import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
@@ -185,6 +186,7 @@ class AdObjective extends Component {
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
+        modalVisible: false,
       });
     } else {
       this.setState({
@@ -779,33 +781,30 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <BlurView>
-              <View style={{ height: "100%" }}>
-                <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  actionButton={() => {
-                    this.setModalVisible(false);
-                  }}
-                  title={"Campaign Objective"}
-                  segment={{
-                    source: "ad_objective_modal",
-                    source_action: "a_go_back",
-                  }}
-                />
-                <View style={styles.popupOverlay}>
-                  <Content
-                    padder
-                    indicatorStyle="white"
-                    contentContainerStyle={styles.contentContainer}
-                    style={{ top: StatusBar.currentHeight }}
-                  >
-                    {list}
-                  </Content>
-                </View>
+            <View style={styles.objectiveModal}>
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={true}
+                actionButton={() => {
+                  this.setModalVisible(false);
+                }}
+                title={"Select an objective"}
+                segment={{
+                  source: "ad_objective_modal",
+                  source_action: "a_go_back",
+                }}
+                titelStyle={{ color: "#000" }}
+                iconColor="#000"
+              />
+              <View style={styles.popupOverlay}>
+                <Content
+                  contentContainerStyle={styles.contentContainer}
+                  // style={{ top: 20 }}
+                >
+                  {list}
+                </Content>
               </View>
-            </BlurView>
+            </View>
           </Modal>
         </View>
       );

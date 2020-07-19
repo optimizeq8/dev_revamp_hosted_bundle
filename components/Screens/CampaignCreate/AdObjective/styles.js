@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    marginTop: 15,
+    marginTop: 10,
     paddingTop: 15,
     marginBottom: 15,
   },
@@ -327,6 +327,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 5,
     textTransform: "uppercase",
+  },
+  objectiveModal: {
+    height: "76%",
+    top: "20%",
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    overflow: "hidden",
+    borderRadius: 50,
+    width: "95%",
+    alignSelf: "center",
   },
 });
 

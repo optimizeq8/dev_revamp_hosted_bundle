@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingLeft: 15
+    paddingLeft: 15,
   },
   titletext: {
     textAlign: "left",
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     // paddingTop: 6,
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   subtext: {
     fontFamily: "montserrat-light",
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "left",
     width: "80%",
-    lineHeight: 18
+    lineHeight: 18,
   },
   campaignButton: {
     justifyContent: "space-between",
@@ -38,15 +38,23 @@ const styles = StyleSheet.create({
     padding: 10,
     height: 90,
     marginBottom: 10,
-    bottom: 15
+    bottom: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5.46,
+    elevation: 8,
   },
   icon: {
     alignSelf: "center",
     color: "#fff",
     fontSize: 40,
     paddingVertical: 10,
-    paddingHorizontal: 7
-  }
+    paddingHorizontal: 7,
+  },
 });
 
 export default styles;

@@ -19,22 +19,40 @@ class ObjectiveCard extends Component {
     const { translate } = this.props.screenProps;
     let obj = this.props.choice;
     let IconName = obj.icon;
-    let changeState = { backgroundColor: "transparent", color: "#fff" };
+    let color = obj.color;
+    let changeState = { backgroundColor: "#fff", color };
     if (this.props.selected === obj.value) {
       changeState.backgroundColor = "#FF9D00";
-      changeState.color = "#fff";
+      changeState.color = "#75647C";
     }
+    let fillIcons = obj.value !== "APP_INSTALLS" && obj.value !== "VIDEO_VIEWS";
     return (
       <TouchableOpacity
         onPress={this.changeObjective}
         style={[
           styles.campaignButton,
-          { backgroundColor: changeState.backgroundColor }
+          { backgroundColor: changeState.backgroundColor },
         ]}
       >
-        <IconName width={30} height={30} fill="#fff" style={[styles.icon]} />
+        <IconName
+          width={45}
+          height={45}
+          stroke={!fillIcons ? changeState.color : "#0000"}
+          fill={fillIcons ? changeState.color : "#0000"}
+          style={[styles.icon]}
+        />
         <View style={styles.textcontainer}>
-          <Text style={[styles.titletext, { color: changeState.color }]}>
+          <Text
+            style={[
+              styles.titletext,
+              {
+                color:
+                  this.props.selected === obj.value
+                    ? changeState.color
+                    : "#D2C6D8",
+              },
+            ]}
+          >
             {translate(obj.label)}
           </Text>
           <Text style={[styles.subtext, { color: changeState.color }]}>
@@ -45,13 +63,11 @@ class ObjectiveCard extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  mainBusiness: state.account.mainBusiness
+const mapStateToProps = (state) => ({
+  mainBusiness: state.account.mainBusiness,
 });
-const mapDispatchToProps = dispatch => ({
-  changeBusiness: business => dispatch(actionCreators.changeBusiness(business))
+const mapDispatchToProps = (dispatch) => ({
+  changeBusiness: (business) =>
+    dispatch(actionCreators.changeBusiness(business)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ObjectiveCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ObjectiveCard);
