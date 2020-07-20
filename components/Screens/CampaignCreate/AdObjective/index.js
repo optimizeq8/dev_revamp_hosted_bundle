@@ -175,8 +175,8 @@ class AdObjective extends Component {
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
-          : start_time.toISOString(),
-        end_time: this.props.data.end_time
+          : start_time.toISOString().split("T")[0],
+        end_time: this.props.data.end_time.split("T")[0]
           ? this.props.data.end_time
           : end_time.toISOString(),
       };
@@ -209,8 +209,8 @@ class AdObjective extends Component {
             this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: "",
           objective: "",
-          start_time: start_time.toISOString(),
-          end_time: end_time.toISOString(),
+          start_time: start_time.toISOString().split("T")[0],
+          end_time: end_time.toISOString().split("T")[0],
         },
         collectionAdLinkForm: 0,
         minValueBudget: 0,
@@ -788,7 +788,7 @@ class AdObjective extends Component {
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.campaignInfo.start_time}
-            end_time={this.state.campaignInfo.end_time}
+            end_time={this.state.campaignInfo.start_time}
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             closedContinueModal={this.state.closedContinueModal}
