@@ -9,7 +9,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     borderWidth: 0,
-    height: 60,
+    height: 54,
     alignItems: "center",
     marginBottom: 25,
     marginTop: 10,

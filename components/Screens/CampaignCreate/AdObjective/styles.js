@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     marginBottom: 5,
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
     borderRadius: 30,
     alignSelf: "center",
     width: "100%",
