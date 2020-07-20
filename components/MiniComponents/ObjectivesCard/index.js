@@ -20,10 +20,9 @@ class ObjectiveCard extends Component {
     let obj = this.props.choice;
     let IconName = obj.icon;
     let color = obj.color;
-    let changeState = { backgroundColor: "#fff", color };
+    let changeState = { borderColor: "#fff", color };
     if (this.props.selected === obj.value) {
-      changeState.backgroundColor = "#FF9D00";
-      changeState.color = "#75647C";
+      changeState.borderColor = "#9304FF";
     }
     let fillIcons = obj.value !== "APP_INSTALLS" && obj.value !== "VIDEO_VIEWS";
     return (
@@ -31,7 +30,7 @@ class ObjectiveCard extends Component {
         onPress={this.changeObjective}
         style={[
           styles.campaignButton,
-          { backgroundColor: changeState.backgroundColor },
+          { borderColor: changeState.borderColor },
         ]}
       >
         <IconName

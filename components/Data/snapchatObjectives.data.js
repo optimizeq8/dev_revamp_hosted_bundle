@@ -5,20 +5,20 @@ export default {
     {
       label: "Awareness",
       value: "BRAND_AWARENESS",
-      info: "Increase awareness of your brand or product",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
     },
     {
       label: "Traffic",
       value: "TRAFFIC",
-      info: "Send Snapchatters directly to your website or to your app",
+      info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
     },
     {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
-      info: "Generate leads for your business",
+      info: "I WANT TO KNOW MY CUSTOMERS",
       icon: ObjIcons.Group,
       color: "#AA22DD",
     },
@@ -27,19 +27,19 @@ export default {
     {
       label: "Awareness",
       value: "BRAND_AWARENESS",
-      info: "Increase awareness of your brand or product",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
     },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
-      info: "Send Snapchatters to the app store to download your app",
+      info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
     },
     {
       label: "Lead Generation",
       value: "LEAD_GENERATION",
-      info: "Generate leads for your business",
+      info: "I WANT TO KNOW MY CUSTOMERS",
       icon: ObjIcons.Group,
       color: "#AA22DD",
     },
@@ -54,7 +54,7 @@ export default {
     {
       label: "Awareness",
       value: "BRAND_AWARENESS",
-      info: "Increase awareness of your brand or product",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
     },
     {

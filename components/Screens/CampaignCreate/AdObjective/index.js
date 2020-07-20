@@ -176,9 +176,9 @@ class AdObjective extends Component {
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
-        end_time: this.props.data.end_time.split("T")[0]
+        end_time: this.props.data.end_time
           ? this.props.data.end_time
-          : end_time.toISOString(),
+          : end_time.toISOString().split("T")[0],
       };
       this.setState({
         collectionAdLinkForm: this.props.collectionAdLinkForm,
