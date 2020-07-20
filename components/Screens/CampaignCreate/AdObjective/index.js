@@ -52,7 +52,7 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
-import CampaignDuration from "./CampaignDuration";
+import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -90,7 +90,9 @@ class AdObjective extends Component {
       this.handleBackButton
     );
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await this.setCampaignInfo();
+
     if (this.props.navigation.getParam("adType", false)) {
       this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
     }
@@ -104,6 +106,7 @@ class AdObjective extends Component {
       this._handleCollectionAdLinkForm(0);
     }
     this.setState({
+      ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
         ad_account_id:
@@ -113,7 +116,6 @@ class AdObjective extends Component {
       },
       objectiveLabel: "Select Objective",
     });
-    this.setCampaignInfo();
   }
 
   componentDidUpdate(prevProps) {
@@ -327,7 +329,7 @@ class AdObjective extends Component {
       source_action: "a_change_collection_ad_link_form",
       campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
     });
-    this.setState({ collectionAdLinkForm: val });
+    this.setState({ ...this.state, collectionAdLinkForm: val });
   };
 
   _handleSubmission = async () => {
