@@ -426,6 +426,7 @@ class AdObjective extends Component {
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
+        duration: this.state.duration,
       };
       this.getMinimumCash();
       this.props.ad_objective(
