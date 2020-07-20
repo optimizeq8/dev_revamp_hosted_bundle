@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 5.46,
+    shadowOpacity: 0.12,
+    shadowRadius: 7,
     elevation: 8,
   },
   icon: {
