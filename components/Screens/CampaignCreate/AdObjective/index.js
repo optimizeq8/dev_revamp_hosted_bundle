@@ -311,7 +311,6 @@ class AdObjective extends Component {
   getMinimumCash = () => {
     let minValueBudget = 25 * this.state.duration;
     let maxValueBudget = minValueBudget + 1500;
-    console.log(minValueBudget, maxValueBudget);
 
     this.setState({
       minValueBudget,

@@ -227,9 +227,9 @@ class AdObjective extends Component {
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = (days) => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+  getMinimumCash = () => {
+    let minValueBudget = 25 * this.state.duration;
+    let maxValueBudget = minValueBudget + 1500;
     this.setState({
       minValueBudget,
       maxValueBudget,
@@ -317,7 +317,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         duration: this.state.duration,
       };
-
+      this.getMinimumCash();
       this.props.ad_objective_instagram(
         {
           ...info,
@@ -537,7 +537,7 @@ class AdObjective extends Component {
         </TouchableWithoutFeedback>
 
         <DateFields
-          getMinimumCash={this.getMinimumCash}
+          // getMinimumCash={this.getMinimumCash}
           onRef={(ref) => (this.dateField = ref)}
           handleStartDatePicked={this.handleStartDatePicked}
           handleEndDatePicked={this.handleEndDatePicked}
