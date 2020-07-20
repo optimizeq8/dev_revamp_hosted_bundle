@@ -16,6 +16,7 @@ import {
   Image as RNImage,
   I18nManager,
   Linking,
+  ScrollView,
 } from "react-native";
 import { Content, Text, Container, Footer, Button } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -1312,10 +1313,21 @@ class AdDesign extends Component {
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
-          <View style={styles.contentContainer} scrollEnabled={false} padder>
-            <Transition style={styles.transition} shared="image">
+          <ScrollView
+            style={styles.contentContainer}
+            contentContainerStyle={{ height: "100%", paddingBottom: 20 }}
+          >
+            <View style={styles.transition} shared="image">
               <View style={styles.buttonN}>
-                <View style={styles.placeholder}>
+                <View style={styles.penIconBranContainer}>{inputFields}</View>
+                <View
+                  style={[
+                    styles.placeholder,
+                    this.adType === "SnapAd" && objective === "BRAND_AWARENESS"
+                      ? { height: "75%" }
+                      : {},
+                  ]}
+                >
                   {type === "VIDEO" ? (
                     videoPlayer
                   ) : (
@@ -1338,7 +1350,6 @@ class AdDesign extends Component {
                       </Text>
                     </View>
                   )}
-                  {inputFields}
                   {this.adType === "StoryAd" ? (
                     <StoryAdCards
                       screenProps={this.props.screenProps}
@@ -1371,42 +1382,7 @@ class AdDesign extends Component {
                     )
                   )}
                   {videoIsLoading ? <CameraLoading /> : null}
-                  <SwipeCompCondition
-                    screenProps={this.props.screenProps}
-                    _changeDestination={(
-                      destination,
-                      call_to_action,
-                      attachment,
-                      appChoice = null,
-                      whatsAppCampaign
-                    ) =>
-                      _changeDestination(
-                        destination,
-                        call_to_action,
-                        attachment,
-                        appChoice,
-                        whatsAppCampaign,
-                        this.adType,
-                        this.props.setStoryAdAttachment,
-                        this.state.campaignInfo,
-                        this.props.save_campaign_info,
-                        this.setTheState
-                      )
-                    }
-                    navigation={this.props.navigation}
-                    objective={objective}
-                    destination={destination}
-                    attachment={attachment}
-                    storyAdCards={storyAdCards}
-                    adType={this.adType}
-                    media={media}
-                    call_to_action={call_to_action}
-                    disabled={
-                      this.props.loading ||
-                      (this.props.loadingStoryAdsArray.length > 0 &&
-                        this.props.loadingStoryAdsArray.includes(true))
-                    }
-                  />
+
                   {/* <TouchableOpacity
                     disabled={
                       this.props.loading ||
@@ -1432,29 +1408,81 @@ class AdDesign extends Component {
                     <View style={styles.collectionView}>{collection}</View>
                   )}
                 </View>
-              </View>
-            </Transition>
-          </View>
 
-          <Footer style={styles.footerStyle}>
-            <View style={styles.footerButtonsContainer}>
-              {
-                <View
-                  style={{
-                    // width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-evenly",
-                  }}
-                >
-                  {this.adType === "StoryAd" ? (
-                    validCards.length >= 3 && (
+                <SwipeCompCondition
+                  screenProps={this.props.screenProps}
+                  _changeDestination={(
+                    destination,
+                    call_to_action,
+                    attachment,
+                    appChoice = null,
+                    whatsAppCampaign
+                  ) =>
+                    _changeDestination(
+                      destination,
+                      call_to_action,
+                      attachment,
+                      appChoice,
+                      whatsAppCampaign,
+                      this.adType,
+                      this.props.setStoryAdAttachment,
+                      this.state.campaignInfo,
+                      this.props.save_campaign_info,
+                      this.setTheState
+                    )
+                  }
+                  navigation={this.props.navigation}
+                  objective={objective}
+                  destination={destination}
+                  attachment={attachment}
+                  storyAdCards={storyAdCards}
+                  adType={this.adType}
+                  media={media}
+                  call_to_action={call_to_action}
+                  disabled={
+                    this.props.loading ||
+                    (this.props.loadingStoryAdsArray.length > 0 &&
+                      this.props.loadingStoryAdsArray.includes(true))
+                  }
+                />
+              </View>
+            </View>
+
+            <Footer style={styles.footerStyle}>
+              <View style={styles.footerButtonsContainer}>
+                {
+                  <View
+                    style={{
+                      width: "90%",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    {this.adType === "StoryAd" ? (
+                      validCards.length >= 3 && (
+                        <GradientButton
+                          text={translate("Preview")}
+                          uppercase
+                          transparent
+                          style={[styles.button, { width: "45%" }]}
+                          disabledGradientBegin={"rgba(0,0,0,0)"}
+                          disabledGradientEnd={"rgba(0,0,0,0)"}
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          onPressAction={this.previewHandler}
+                        />
+                      )
+                    ) : (
                       <GradientButton
                         text={translate("Preview")}
                         uppercase
                         transparent
-                        style={[styles.button, { width: "45%" }]}
+                        style={styles.button}
                         disabledGradientBegin={"rgba(0,0,0,0)"}
                         disabledGradientEnd={"rgba(0,0,0,0)"}
                         disabled={
@@ -1464,70 +1492,105 @@ class AdDesign extends Component {
                         }
                         onPressAction={this.previewHandler}
                       />
-                    )
-                  ) : (
-                    <GradientButton
-                      text={translate("Preview")}
-                      uppercase
-                      transparent
-                      style={styles.button}
-                      disabledGradientBegin={"rgba(0,0,0,0)"}
-                      disabledGradientEnd={"rgba(0,0,0,0)"}
-                      disabled={
-                        this.props.loading ||
-                        (this.props.loadingStoryAdsArray.length > 0 &&
-                          this.props.loadingStoryAdsArray.includes(true))
-                      }
-                      onPressAction={this.previewHandler}
-                    />
-                  )}
-                  {this.adType === "StoryAd" ? (
-                    this.props.loading ||
-                    (this.props.loadingStoryAdsArray.length > 0 &&
-                      this.props.loadingStoryAdsArray.includes(true)) ? (
-                      <View
-                        style={{
-                          width: "47%",
-                          position: "relative",
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text style={styles.uploadingText}>
-                          {translate("Uploading")}
-                        </Text>
-                        <View>
-                          <AnimatedCircularProgress
-                            size={50}
-                            width={5}
-                            fill={Math.round(this.state.loaded)}
-                            rotation={360}
-                            lineCap="round"
-                            tintColor={globalColors.orange}
-                            backgroundColor="rgba(255,255,255,0.3)"
-                            adDetails={false}
-                          />
-                          <Text style={styles.uplaodPercentageText}>
-                            {Math.round(this.state.loaded, 2)}
-                            <Text style={styles.percentage}>%</Text>
+                    )}
+                    {this.adType === "StoryAd" ? (
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true)) ? (
+                        <View
+                          style={{
+                            width: "47%",
+                            position: "relative",
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text style={styles.uploadingText}>
+                            {translate("Uploading")}
                           </Text>
+                          <View>
+                            <AnimatedCircularProgress
+                              size={50}
+                              width={5}
+                              fill={Math.round(this.state.loaded)}
+                              rotation={360}
+                              lineCap="round"
+                              tintColor={globalColors.orange}
+                              backgroundColor="rgba(255,255,255,0.3)"
+                              adDetails={false}
+                            />
+                            <Text style={styles.uplaodPercentageText}>
+                              {Math.round(this.state.loaded, 2)}
+                              <Text style={styles.percentage}>%</Text>
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                    ) : true ? (
-                      <LowerButton
+                      ) : true ? (
+                        <LowerButton
+                          screenProps={this.props.screenProps}
+                          text={"Next"}
+                          screenProps={this.props.screenProps}
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          width={15}
+                          height={15}
+                          function={() => {
+                            this.handleUpload();
+                            _handleSubmission(
+                              this.adType,
+                              this.props.storyAdsArray,
+                              storyAdCards,
+                              storyAdAttachChanged,
+                              formatStoryAd,
+                              this.validator,
+                              this.finalSubmission,
+                              this.setTheState,
+                              {
+                                //for formatStoryAd
+                                storyAdAttachment: this.props.storyAdAttachment,
+                                campaignInfo: this.state.campaignInfo,
+                                selectedCampaign: this.selectedCampaign,
+                                campaign_id: this.props.campaign_id,
+                                rejected: this.rejected,
+                                handleUpload: this.handleUpload,
+                                signal: this.state.signal,
+                                uploadStoryAdCard: this.props.uploadStoryAdCard,
+                              },
+                              this.props.screenProps
+                            );
+                          }}
+                          style={[
+                            styles.proceedButtonRTL,
+                            { alignSelf: "flex-end", width: "47%" },
+                          ]}
+                        />
+                      ) : (
+                        <Text style={styles.footerTextStyle}>
+                          {this.adType === "StoryAd"
+                            ? videoIsLoading
+                              ? translate(
+                                  "Please wait while the video is downloading"
+                                )
+                              : translate("Please add minimum of 3 media files")
+                            : objective !== "BRAND_AWARENESS"
+                            ? ""
+                            : translate("Please add media to proceed")}
+                        </Text>
+                      )
+                    ) : (
+                      <SubmitButton
                         screenProps={this.props.screenProps}
-                        text={"Next"}
-                        screenProps={this.props.screenProps}
-                        disabled={
+                        loading={
                           this.props.loading ||
                           (this.props.loadingStoryAdsArray.length > 0 &&
                             this.props.loadingStoryAdsArray.includes(true))
                         }
-                        width={15}
-                        height={15}
-                        function={() => {
-                          this.handleUpload();
+                        loaded={loaded}
+                        _handleSubmission={() =>
                           _handleSubmission(
                             this.adType,
                             this.props.storyAdsArray,
@@ -1549,66 +1612,16 @@ class AdDesign extends Component {
                               uploadStoryAdCard: this.props.uploadStoryAdCard,
                             },
                             this.props.screenProps
-                          );
-                        }}
-                        style={[
-                          styles.proceedButtonRTL,
-                          { alignSelf: "flex-end", width: "47%" },
-                        ]}
+                          )
+                        }
+                        adType={this.adType}
                       />
-                    ) : (
-                      <Text style={styles.footerTextStyle}>
-                        {this.adType === "StoryAd"
-                          ? videoIsLoading
-                            ? translate(
-                                "Please wait while the video is downloading"
-                              )
-                            : translate("Please add minimum of 3 media files")
-                          : objective !== "BRAND_AWARENESS"
-                          ? ""
-                          : translate("Please add media to proceed")}
-                      </Text>
-                    )
-                  ) : (
-                    <SubmitButton
-                      screenProps={this.props.screenProps}
-                      loading={
-                        this.props.loading ||
-                        (this.props.loadingStoryAdsArray.length > 0 &&
-                          this.props.loadingStoryAdsArray.includes(true))
-                      }
-                      loaded={loaded}
-                      _handleSubmission={() =>
-                        _handleSubmission(
-                          this.adType,
-                          this.props.storyAdsArray,
-                          storyAdCards,
-                          storyAdAttachChanged,
-                          formatStoryAd,
-                          this.validator,
-                          this.finalSubmission,
-                          this.setTheState,
-                          {
-                            //for formatStoryAd
-                            storyAdAttachment: this.props.storyAdAttachment,
-                            campaignInfo: this.state.campaignInfo,
-                            selectedCampaign: this.selectedCampaign,
-                            campaign_id: this.props.campaign_id,
-                            rejected: this.rejected,
-                            handleUpload: this.handleUpload,
-                            signal: this.state.signal,
-                            uploadStoryAdCard: this.props.uploadStoryAdCard,
-                          },
-                          this.props.screenProps
-                        )
-                      }
-                      adType={this.adType}
-                    />
-                  )}
-                </View>
-              }
-            </View>
-          </Footer>
+                    )}
+                  </View>
+                }
+              </View>
+            </Footer>
+          </ScrollView>
         </Container>
         <MediaModal
           getVideoUploadUrl={this.getVideoUploadUrl}
