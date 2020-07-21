@@ -7,6 +7,7 @@ export default {
       value: "BRAND_AWARENESS",
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "Traffic",
@@ -29,6 +30,7 @@ export default {
       value: "BRAND_AWARENESS",
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "App Installs",
@@ -56,6 +58,7 @@ export default {
       value: "BRAND_AWARENESS",
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "Traffic",
