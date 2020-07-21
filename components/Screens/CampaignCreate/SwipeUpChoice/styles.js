@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: Platform.OS === "android" ? 10 : 0,
   },
   longFormVideoContainer: {
     flex: 1,

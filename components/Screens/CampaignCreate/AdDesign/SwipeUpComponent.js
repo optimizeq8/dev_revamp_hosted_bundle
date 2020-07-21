@@ -143,13 +143,6 @@ export default class SwipeUpComponent extends Component {
   };
 
   render() {
-    let sty = !this.state.expanded
-      ? {}
-      : {
-          height: this.props.swipeUpMaxHeight,
-          position: "absolute",
-          bottom: -10,
-        };
     let {
       destination,
       attachment,
@@ -164,7 +157,13 @@ export default class SwipeUpComponent extends Component {
     let SwipeIcon = SnapObjective[adType || "SnapAd"].find(
       (obj) => obj.value === (objective || "BRAND_AWARENESS")
     ).icon;
-
+    let sty = !this.state.expanded
+      ? {}
+      : {
+          height: this.props.swipeUpMaxHeight,
+          position: "absolute",
+          bottom: adType === "CollectionAd" ? -110 : -10,
+        };
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     const { translate } = this.props.screenProps;
     return (

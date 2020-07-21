@@ -414,6 +414,9 @@ class AppChoice extends Component {
               placeholder={"Enter Deep Link URL"}
               deepLink={true}
               getValidInfo={this.getValidInfo}
+              customStyle={styles.customModalField}
+              customIconColor={globalColors.rum}
+              customTextStyle={{ color: globalColors.rum }}
             />
             <Text style={styles.warningText}>
               {translate(
@@ -435,17 +438,11 @@ class AppChoice extends Component {
           appChoice={this.props.appChoice}
         />
 
-        {this.props.swipeUpDestination && (
-          <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
-            {translate("Change Swipe-up Destination")}
-          </Text>
-        )}
-
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}
           function={() => this.validate()}
-          bottom={-2}
+          // bottom={5}
           purpleViolet={true}
         />
       </InputScrollView>

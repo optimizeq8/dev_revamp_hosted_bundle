@@ -114,7 +114,7 @@ class SwipeUpChoice extends Component {
                 objective={objective}
                 _changeDestination={_changeDestination}
                 navigation={this.props.navigation}
-                toggleSideMenu={this.toggleSideMenu}
+                // toggleSideMenu={this.toggleSideMenu}
                 screenProps={this.props.screenProps}
                 toggle={this.props.toggle}
                 //   swipeUpDestination={true}
@@ -131,7 +131,7 @@ class SwipeUpChoice extends Component {
                 objective={objective}
                 _changeDestination={_changeDestination}
                 navigation={this.props.navigation}
-                toggleSideMenu={this.toggleSideMenu}
+                // toggleSideMenu={this.toggleSideMenu}
                 screenProps={this.props.screenProps}
                 toggle={this.props.toggle}
                 //   swipeUpDestination={true}
@@ -142,7 +142,7 @@ class SwipeUpChoice extends Component {
         }
       }
     } else {
-      if (objective === "LEAD_GENERATION")
+      if (objective === "LEAD_GENERATION" || objective === "WEBSITE_TRAFFIC")
         menu = (
           <Website
             objective={objective}
@@ -165,11 +165,23 @@ class SwipeUpChoice extends Component {
             />
           </>
         );
-      } else if (objective.toLowerCase().includes("app")) {
+      } else if (objective.toLowerCase() === "app_installs") {
         menu = (
           <>
             <NavigationEvents onDidFocus={this.segment} />
             <App_Install
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
+            />
+          </>
+        );
+      } else if (objective.toLowerCase() === "app_traffic") {
+        menu = (
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <Deep_Link
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
@@ -192,29 +204,32 @@ class SwipeUpChoice extends Component {
       }
     }
 
-    if (this.props.adType === "CollectionAd") return menu;
-    else
-      return (
-        <View style={styles.safeAreaContainer}>
-          {/* <SafeAreaView
+    // if (this.props.adType === "CollectionAd") return menu;
+    // else
+    return (
+      <View style={styles.safeAreaContainer}>
+        {/* <SafeAreaView
             // style={{ backgroundColor: "#fff" }}
             forceInset={{ top: "always" }}
           /> */}
-          <NavigationEvents onDidFocus={this.segment} />
-          <TouchableWithoutFeedback
-            style={{ alignSelf: "center", alignItems: "center" }}
-            onPress={() => this.props.toggle(false)}
-          >
-            <Icon
-              type="AntDesign"
-              name="down"
-              style={[{ color: globalColors.purple, fontSize: 18 }]}
-            />
-            <Text style={[styles.swipeUpTitle]}>
-              {translate("swipe up settings")}
-            </Text>
-          </TouchableWithoutFeedback>
-          {/* <TopStepsHeader
+        <NavigationEvents onDidFocus={this.segment} />
+        <TouchableWithoutFeedback
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+          }}
+          onPress={() => this.props.toggle(false)}
+        >
+          <Icon
+            type="AntDesign"
+            name="down"
+            style={[{ color: globalColors.purple, fontSize: 18 }]}
+          />
+          <Text style={[styles.swipeUpTitle]}>
+            {translate("swipe up settings")}
+          </Text>
+        </TouchableWithoutFeedback>
+        {/* <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             navigation={this.props.navigation}
@@ -227,16 +242,16 @@ class SwipeUpChoice extends Component {
             currentScreen="Compose"
             title={"Swipe Up destination"}
           /> */}
-          {/* <CustomeHeader
+        {/* <CustomeHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             screenProps={this.props.screenProps}
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
           /> */}
-          <View style={{ top: 15, flex: 1 }}>{menu}</View>
-        </View>
-      );
+        <View style={{ flex: 1 }}>{menu}</View>
+      </View>
+    );
   }
 }
 
