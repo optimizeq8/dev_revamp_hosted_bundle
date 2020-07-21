@@ -175,11 +175,11 @@ class Website extends Component {
           url: this.state.campaignInfo.attachment,
         }
       );
-
-      this.props.navigation.navigate("AdDesign", {
-        source: "ad_swipe_up_destination",
-        source_action: "a_swipe_up_destination",
-      });
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
     }
   };
   onSelectedCallToActionIdChange = (value) => {
@@ -239,27 +239,6 @@ class Website extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaContainer}>
-        <SafeAreaView
-          forceInset={{ top: "always", bottom: "never" }}
-          style={{ backgroundColor: "#fff" }}
-        />
-        {this.props.adType === "CollectionAd" && (
-          <TopStepsHeader
-            screenProps={this.props.screenProps}
-            closeButton={false}
-            navigation={this.props.navigation}
-            segment={{
-              str: "Swipe up Destination CollectionAd  Back Button",
-              source: "ad_swipe_up_destination",
-              source_action: "a_go_back",
-            }}
-            icon="snapchat"
-            adType={this.props.adType}
-            currentScreen="Compose"
-            title={"Swipe Up destination"}
-          />
-        )}
-
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[
@@ -270,7 +249,7 @@ class Website extends Component {
             },
           ]}
         >
-          <WebsiteIcon style={styles.icon} fill={"#FFF"} />
+          {/* <WebsiteIcon style={styles.icon} fill={"#FFF"} /> */}
           <View style={[styles.textcontainer]}>
             <Text style={styles.titletext}>{translate("Website")}</Text>
             <Text style={styles.subtext}>
@@ -306,8 +285,11 @@ class Website extends Component {
             incomplete={false}
             translate={this.props.screenProps.translate}
             icon={WindowIcon}
-            isVisible={this.state.inputCallToAction}
+            isVisible={true}
             isTranslate={false}
+            customStyle={styles.customModalField}
+            customIconColor={globalColors.rum}
+            customTextStyle={{ color: globalColors.rum }}
           />
 
           <WebsiteField
@@ -316,6 +298,9 @@ class Website extends Component {
             website={this.state.campaignInfo.attachment}
             setWebsiteValue={this.setWebsiteValue}
             stateNameError={this.state.websitelinkError}
+            customStyle={styles.customModalField}
+            customIconColor={globalColors.rum}
+            customTextStyle={{ color: globalColors.rum }}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&

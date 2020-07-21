@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler, I18nManager } from "react-native";
+import { View, TouchableOpacity, BackHandler, ScrollView } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -18,7 +18,7 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
-import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
+import AddVidIcon from "../../../../assets/SVGs/Video";
 import WindowIcon from "../../../../assets/SVGs/Window";
 
 // Style
@@ -117,8 +117,9 @@ class Long_Form_Video extends Component {
               videoLoading: false,
             });
           } else if (
-            (result.width < 1080 && result.height < 1920) ||
-            (result.width < 1920 && result.height < 1080)
+            ((result.width < 1080 && result.height < 1920) ||
+              (result.width < 1920 && result.height < 1080)) &&
+            false
           ) {
             showMessage({
               message: translate(
@@ -194,10 +195,11 @@ class Long_Form_Video extends Component {
         longformvideo_media_type: this.state.longformvideo_media_type,
       });
 
-      this.props.navigation.navigate("AdDesign", {
-        source: "ad_swipe_up_destination",
-        source_action: "a_swipe_up_destination",
-      });
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
     }
   };
 
@@ -247,17 +249,13 @@ class Long_Form_Video extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <View style={styles.longFormVideoContainer}>
+      <ScrollView
+        style={{
+          height: "100%",
+        }}
+        contentContainerStyle={styles.longFormVideoContainer}
+      >
         <View style={styles.longFormVideoContent}>
-          <VideoIcon fill="#fff" style={styles.icon} />
-          <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
-            <Text style={styles.titletext}>{translate("LongForm Video")}</Text>
-            <Text style={styles.subtext}>
-              {translate(
-                "Promote your brand or product to\nSnapchatters through video"
-              )}
-            </Text>
-          </View>
           {this.state.longformvideo_media && (
             <View style={styles.previewButtonContainer}>
               {/* <Text style={[styles.subtext, { paddingBottom: 5 }]}>
@@ -296,13 +294,28 @@ class Long_Form_Video extends Component {
 
           {!this.state.longformvideo_media && (
             <TouchableOpacity
-              onPress={() => {
-                this._pickImage();
-              }}
-              style={[styles.video]}
+              onPress={this._pickImage}
+              style={styles.addVideoContainer}
             >
-              <AddVidIcon style={[styles.icon, { fontSize: 70 }]} />
-              <Text style={styles.addVideoText}>{translate("Add Video")}</Text>
+              <TouchableOpacity
+                onPress={this._pickImage}
+                style={[styles.video]}
+              >
+                <AddVidIcon
+                  width={35}
+                  height={35}
+                  fill="#fff"
+                  style={[styles.icon, { fontSize: 70 }]}
+                />
+              </TouchableOpacity>
+              <View style={[styles.textcontainer, {}]}>
+                <Text style={styles.titletext}>
+                  {translate("Upload") + translate("LongForm Video")}
+                </Text>
+                <Text style={styles.subtext}>
+                  {translate("This video will be seen when users swipe up")}
+                </Text>
+              </View>
             </TouchableOpacity>
           )}
           {/* {this.state.durationError ? (
@@ -364,19 +377,23 @@ class Long_Form_Video extends Component {
             incomplete={false}
             translate={this.props.screenProps.translate}
             icon={WindowIcon}
-            isVisible={this.state.inputCallToAction}
+            isVisible={true}
             isTranslate={false}
+            customStyle={styles.customModalField}
+            customIconColor={globalColors.rum}
+            customTextStyle={{ color: globalColors.rum }}
           />
 
           <Modal isVisible={this.state.videoLoading}>
             <LoadingScreen top={50} />
           </Modal>
+          <LowerButton
+            screenProps={this.props.screenProps}
+            function={this._handleSubmission}
+            purpleViolet
+          />
         </View>
-        <LowerButton
-          screenProps={this.props.screenProps}
-          function={this._handleSubmission}
-        />
-      </View>
+      </ScrollView>
     );
   }
 }

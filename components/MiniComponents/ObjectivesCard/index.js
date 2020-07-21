@@ -24,7 +24,6 @@ class ObjectiveCard extends Component {
     if (this.props.selected === obj.value) {
       changeState.borderColor = "#9304FF";
     }
-    let fillIcons = obj.value !== "APP_INSTALLS" && obj.value !== "VIDEO_VIEWS";
     return (
       <TouchableOpacity
         onPress={this.changeObjective}
@@ -36,8 +35,7 @@ class ObjectiveCard extends Component {
         <IconName
           width={45}
           height={45}
-          stroke={!fillIcons ? changeState.color : "#0000"}
-          fill={fillIcons ? changeState.color : "#0000"}
+          fill={changeState.color}
           style={[styles.icon]}
         />
         <View style={styles.textcontainer}>

@@ -77,6 +77,8 @@ export default class WebsiteComponent extends React.Component {
       disabled,
       label = "Website",
       placeholder = "Enter your website's URL",
+      customIconColor,
+      customTextStyle,
     } = this.props;
     return (
       <Animatable.View
@@ -94,9 +96,7 @@ export default class WebsiteComponent extends React.Component {
             width={23}
             height={24}
             style={styles.icon}
-            fill={
-              this.state.highlight ? globalColors.orange : globalColors.white
-            }
+            fill={this.state.highlight ? globalColors.orange : customIconColor}
           />
           <View style={styles.colView}>
             <Text
@@ -104,7 +104,7 @@ export default class WebsiteComponent extends React.Component {
                 styles.inputLabel,
                 this.state.highlight
                   ? [GlobalStyles.orangeTextColor]
-                  : GlobalStyles.whiteTextColor,
+                  : customTextStyle,
               ]}
             >
               {translate(label)}
@@ -114,8 +114,9 @@ export default class WebsiteComponent extends React.Component {
               style={[
                 styles.inputText,
                 {
-                  fontFamily: "montserrat-light-english",
+                  fontFamily: "montserrat-regular-english",
                 },
+                customTextStyle,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
               ]}
               ref={"websiteField"}

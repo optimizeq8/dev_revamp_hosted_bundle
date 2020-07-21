@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   titletext: {
-    textAlign: "left",
+    textAlign: "center",
     color: globalColors.purple,
     paddingTop: 10,
     fontFamily: "montserrat-bold",
@@ -54,15 +54,14 @@ const styles = StyleSheet.create({
   longFormVideoContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 30,
   },
   longFormVideoContent: {
     flexDirection: "column",
-    paddingTop: 30,
+    width: "100%",
+    padding: 10,
   },
   videoSelectButton: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.purple,
     alignSelf: "center",
     marginVertical: 10,
     borderRadius: 30,
@@ -108,15 +107,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: "center",
   },
-  addVideoText: {
-    alignSelf: "center",
-    fontSize: 14,
-    paddingTop: 5,
-    textAlign: "center",
-    color: "#FF9D00",
-    position: "absolute",
-    top: "70%",
-    fontFamily: "montserrat-bold",
+  addVideoContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 35,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
   },
   safeAreaContainer: {
     paddingTop: 10,
@@ -159,8 +161,11 @@ const styles = StyleSheet.create({
   video: {
     borderRadius: 50,
     alignSelf: "center",
-    marginBottom: 30,
     alignItems: "center",
+    backgroundColor: globalColors.purple,
+    width: 60,
+    height: 60,
+    justifyContent: "center",
   },
   placeholder: {
     borderRadius: 13,
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   previewButtonContainer: {
-    paddingVertical: 40,
+    // paddingVertical: 40,
   },
   videoPreviewView: {
     flex: 1,
@@ -507,6 +512,18 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
     textTransform: "uppercase",
     fontSize: 13,
+  },
+  customModalField: {
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
+    width: "95%",
   },
 });
 
