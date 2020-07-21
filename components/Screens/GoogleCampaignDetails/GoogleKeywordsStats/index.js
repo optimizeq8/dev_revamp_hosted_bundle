@@ -143,7 +143,7 @@ class GoogleKeywordsStats extends Component {
                 source: "ad_keywords_performance",
                 source_action: "a_go_back",
               }}
-              titelStyle={{
+              titleStyle={{
                 textAlign: "left",
                 fontSize: 15,
                 paddingTop: 3,

@@ -1151,19 +1151,38 @@ class AdDesign extends Component {
       source_action,
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      campaign_name: this.props.data.name,
-      campaign_id: this.props.data.campaign_id,
-      campaign_objective: this.props.data.objective,
+      campaign_name: this.rejected
+        ? this.selectedCampaign.name
+        : this.props.data.name,
+      campaign_id: this.rejected
+        ? this.selectedCampaign.campaign_id
+        : this.props.data.campaign_id,
+      campaign_objective: this.rejected
+        ? this.selectedCampaign.objective
+        : this.props.data.objective,
       campaign_duration:
         Math.ceil(
-          (new Date(this.props.data.end_time) -
-            new Date(this.props.data.start_time)) /
+          (new Date(
+            this.rejected
+              ? this.selectedCampaign.end_time
+              : this.props.data.end_time
+          ) -
+            new Date(
+              this.rejected
+                ? this.selectedCampaign.start_time
+                : this.props.data.start_time
+            )) /
             (1000 * 60 * 60 * 24)
         ) + 1,
-      campaign_start_date: this.props.data.start_time,
-      campaign_end_date: this.props.data.end_time,
-      campaign_collectionAdLinkForm: this.props.data
-        .campaign_collectionAdLinkForm,
+      campaign_start_date: this.rejected
+        ? this.selectedCampaign.start_time
+        : this.props.data.start_time,
+      campaign_end_date: this.rejected
+        ? this.selectedCampaign.end_time
+        : this.props.data.end_time,
+      campaign_collectionAdLinkForm: this.rejected
+        ? this.selectedCampaign.campaign_collectionAdLinkForm
+        : this.props.data.campaign_collectionAdLinkForm,
     });
     // Segment.screenWithProperties("Snap Ad Design", {
     //   category: "Campaign Creation",

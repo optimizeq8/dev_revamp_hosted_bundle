@@ -130,7 +130,8 @@ class ContinueCampaign extends Component {
 
     if (
       new Date(this.props.data.start_time) < new Date() ||
-      new Date(this.props.data.end_time) < new Date()
+      new Date(this.props.data.end_time) < new Date() ||
+      true
     ) {
       segmentEventTrack("Dates are no longer applicable", {
         campaign_old_start_data: this.props.data.start_time,
@@ -143,8 +144,11 @@ class ContinueCampaign extends Component {
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.props.dateField.showModal(true);
-      this.handleSubmition(false, false), 800;
+      this.handleSubmition(false, false);
+      setTimeout(() => {
+        //to fix issue with date field not opening when the resume modal is open
+        this.props.dateField.showModal();
+      }, 350);
     } else {
       segmentEventTrack("Resume Campaign", this.props.data);
       this.setState({ resumeLoading: true });

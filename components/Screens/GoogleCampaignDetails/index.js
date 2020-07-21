@@ -395,7 +395,7 @@ class GoogleCampaignDetails extends Component {
                 }
                 topRightButtonFunction={() => this.showCSVModal(true)}
                 containerStyle={{ height: 50 }}
-                titelStyle={{
+                titleStyle={{
                   textAlign: "left",
                   fontSize: 15,
                   paddingTop: 3,

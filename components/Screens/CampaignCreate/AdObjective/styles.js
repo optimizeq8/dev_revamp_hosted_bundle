@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     // flex: 1,
-    // justifyContent: 'flex-start',
+    justifyContent: "space-evenly",
     paddingHorizontal: 26,
     paddingBottom: hp(14),
     paddingTop: 20,
@@ -118,13 +118,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    marginTop: 15,
+    marginTop: 10,
     paddingTop: 15,
     marginBottom: 15,
   },
   dateInput: {
     marginBottom: 5,
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
     borderRadius: 30,
     alignSelf: "center",
     width: "100%",
@@ -257,6 +257,16 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     // padding: 20
+  },
+  objectiveModal: {
+    height: "76%",
+    top: "20%",
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    overflow: "hidden",
+    borderRadius: 50,
+    width: "95%",
+    alignSelf: "center",
   },
 });
 

@@ -351,20 +351,24 @@ class CampaignDetails extends Component {
             ? targeting.devices[0].marketing_name.join(", \n")
             : [];
 
-        region_names =
-          targeting.geos.some((geo) => geo.hasOwnProperty("region_id")) &&
-          targeting.geos[0].region_id
-            .map((id) =>
-              translate(
-                regionsCountries
-                  .find(
-                    (country) =>
-                      country.country_code === targeting.geos[0].country_code
-                  )
-                  .regions.find((reg) => reg.id === id).name
-              )
-            )
-            .join(", ");
+        region_names = [];
+        targeting.geos.some((geo) => geo.hasOwnProperty("region_id")) &&
+          targeting.geos.forEach((geo, i) => {
+            let regN = [];
+            if (geo.hasOwnProperty("region_id")) {
+              regN = geo.region_id.map((id) =>
+                translate(
+                  regionsCountries
+                    .find(
+                      (country) =>
+                        country.country_code === targeting.geos[i].country_code
+                    )
+                    .regions.find((reg) => reg.id === id).name
+                )
+              );
+              region_names = [...region_names, ...regN];
+            }
+          });
 
         // gender
         const gender =
@@ -512,7 +516,7 @@ class CampaignDetails extends Component {
                 !loading && selectedCampaign.review_status === "APPROVED"
               }
               topRightButtonFunction={() => this.showCSVModal(true)}
-              titelStyle={{
+              titleStyle={{
                 textAlign: "left",
                 fontSize: 15,
                 paddingTop: 3,

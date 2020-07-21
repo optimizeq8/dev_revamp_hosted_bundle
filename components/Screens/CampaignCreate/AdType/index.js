@@ -302,7 +302,7 @@ class AdType extends Component {
         <CustomHeader
           screenProps={this.props.screenProps}
           closeButton={true}
-          titelStyle={{ color: textColor }}
+          titleStyle={{ color: textColor }}
           iconColor={textColor}
           segment={{
             str: "Ad Type Close",
