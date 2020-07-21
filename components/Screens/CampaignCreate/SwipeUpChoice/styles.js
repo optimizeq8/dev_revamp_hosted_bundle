@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   titletext: {
     textAlign: "left",
-    color: "#fff",
+    color: globalColors.purple,
     paddingTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 16,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingTop: 5,
-    color: "#fff",
+    color: globalColors.purple,
     paddingHorizontal: 20,
     textAlign: "center",
   },
@@ -119,9 +119,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
   safeAreaContainer: {
-    // height: '100%',
+    paddingTop: 10,
     flex: 1,
-    // backgroundColor: '#FFFF',
   },
   warningText: {
     color: "#fff",
@@ -502,6 +501,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 4,
     // padding: 20
+  },
+  swipeUpTitle: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    fontSize: 13,
   },
 });
 

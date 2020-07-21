@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -322,17 +323,25 @@ const styles = StyleSheet.create({
   },
   appStoreButtons: {
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.16)",
+    backgroundColor: "#fff",
     width: "48%",
     // height: "70%"
     justifyContent: "space-evenly",
     paddingVertical: 20,
     borderRadius: 35,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
   },
   appStoreButtonsText: {
     fontFamily: "montserrat-bold-english",
     fontSize: 10,
-    color: "#fff",
+    color: globalColors.rum,
     paddingTop: 5,
     maxWidth: 80,
     textAlign: "center",

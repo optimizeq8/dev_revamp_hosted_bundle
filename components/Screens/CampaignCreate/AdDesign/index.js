@@ -136,6 +136,7 @@ class AdDesign extends Component {
       serialization: {},
       uneditedImageUri: "//",
       showExampleModal: false,
+      swipeUpMaxHeight: 0,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign;
@@ -1205,6 +1206,9 @@ class AdDesign extends Component {
   videoIsExporting = (isLoading) =>
     this.setState({ videoIsLoading: isLoading });
 
+  setMaxHeight = (event) => {
+    this.setState({ swipeUpMaxHeight: event.nativeEvent.layout.height });
+  };
   render() {
     let {
       media,
@@ -1318,7 +1322,7 @@ class AdDesign extends Component {
             contentContainerStyle={{ height: "100%", paddingBottom: 20 }}
           >
             <View style={styles.transition} shared="image">
-              <View style={styles.buttonN}>
+              <View style={styles.buttonN} onLayout={this.setMaxHeight}>
                 <View style={styles.penIconBranContainer}>{inputFields}</View>
                 <View
                   style={[
@@ -1411,6 +1415,7 @@ class AdDesign extends Component {
 
                 <SwipeCompCondition
                   screenProps={this.props.screenProps}
+                  swipeUpMaxHeight={this.state.swipeUpMaxHeight}
                   _changeDestination={(
                     destination,
                     call_to_action,

@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     zIndex: 10,
     bottom: -30,
+    overflow: "hidden",
   },
   swipeUpView: {
     flexDirection: "column",
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
   },
   swipeUpText: {
     alignSelf: "flex-start",
-    color: "#75647C",
+    color: globalColors.rum,
     fontFamily: "montserrat-bold",
     fontSize: 15,
     textTransform: "uppercase",
@@ -324,7 +325,7 @@ const styles = StyleSheet.create({
   downIcon: {
     position: "absolute",
     right: 15,
-    color: "#75647C",
+    color: globalColors.rum,
     width: 25,
     height: 25,
     fontSize: 30,

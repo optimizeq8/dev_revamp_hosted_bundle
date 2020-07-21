@@ -130,8 +130,7 @@ class ContinueCampaign extends Component {
 
     if (
       new Date(this.props.data.start_time) < new Date() ||
-      new Date(this.props.data.end_time) < new Date() ||
-      true
+      new Date(this.props.data.end_time) < new Date()
     ) {
       segmentEventTrack("Dates are no longer applicable", {
         campaign_old_start_data: this.props.data.start_time,

@@ -1,15 +1,16 @@
 import { StyleSheet } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   subtext: {
     fontFamily: "montserrat-regular-english",
     fontSize: 12,
-    color: "#fff"
+    color: "#fff",
   },
   businessButton: {
     flexDirection: "row",
     paddingVertical: 15,
-    bottom: 15
+    bottom: 15,
   },
   businessIconStyle: {
     width: 50,
@@ -17,13 +18,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#c6c6c6"
+    backgroundColor: "#c6c6c6",
   },
   textcontainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   titletext: {
     textAlign: "left",
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 0,
     textTransform: "uppercase",
-    color: "#75647C"
-  }
+    color: globalColors.rum,
+  },
 });
 
 export default styles;
