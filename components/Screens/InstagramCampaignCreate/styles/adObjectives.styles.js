@@ -253,6 +253,16 @@ const styles = StyleSheet.create({
     height: 65,
     // padding: 20
   },
+  objectiveModal: {
+    height: "76%",
+    top: "20%",
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    overflow: "hidden",
+    borderRadius: 50,
+    width: "95%",
+    alignSelf: "center",
+  },
 });
 
 export default styles;

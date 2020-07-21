@@ -13,7 +13,15 @@ import ArrowForward from "../../assets/SVGs/ArrowForward";
 
 export default class LowerButton extends Component {
   render() {
-    let { width, height, style, disabled, text, widthButton } = this.props;
+    let {
+      width,
+      height,
+      style,
+      disabled,
+      text,
+      widthButton,
+      purpleViolet,
+    } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     const { translate } = this.props.screenProps;
     return (
@@ -21,6 +29,7 @@ export default class LowerButton extends Component {
         disabled={disabled}
         disabledGradientBegin={"rgba(0,0,0,0)"}
         disabledGradientEnd={"rgba(0,0,0,0)"}
+        purpleViolet={purpleViolet}
         style={[
           {
             bottom: heightPercentageToDP(bottom),

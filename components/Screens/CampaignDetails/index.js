@@ -516,7 +516,7 @@ class CampaignDetails extends Component {
                 !loading && selectedCampaign.review_status === "APPROVED"
               }
               topRightButtonFunction={() => this.showCSVModal(true)}
-              titelStyle={{
+              titleStyle={{
                 textAlign: "left",
                 fontSize: 15,
                 paddingTop: 3,

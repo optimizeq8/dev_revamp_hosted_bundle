@@ -270,7 +270,7 @@ class Messenger extends Component {
           screenProps={this.props.screenProps}
           closeButton={true}
           title={"Support"}
-          titelStyle={{
+          titleStyle={{
             color: "#75647C",
           }}
           segment={{
