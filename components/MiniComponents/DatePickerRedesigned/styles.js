@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     backgroundColor: "#fff",
-    top: 200,
+    top: heightPercentageToDP(20),
     paddingRight: 20,
     borderRadius: 50,
     paddingTop: 20,
