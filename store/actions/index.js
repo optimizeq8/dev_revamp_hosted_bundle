@@ -195,4 +195,5 @@ export {
   uploadCarouselAdCard,
   setCarouselAdAttechment,
   getInstagramExistingPost,
+  saveInstgramExistpost,
 } from "./instagramCampaignActions";

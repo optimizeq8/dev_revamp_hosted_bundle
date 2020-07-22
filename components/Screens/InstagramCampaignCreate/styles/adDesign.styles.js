@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-end",
     // alignSelf: "flex-end",
   },
   captionMainView: {

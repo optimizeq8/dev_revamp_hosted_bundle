@@ -9,6 +9,10 @@ const styles = StyleSheet.create({
     height: hp(45),
     width: "100%",
   },
+  mediaViewExist: {
+    height: hp(30),
+    width: "100%",
+  },
   forwadIcon: {
     transform: [{ rotate: I18nManager.isRTL ? "180deg" : "0deg" }],
   },
@@ -63,6 +67,9 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 25,
     marginTop: 10,
     // marginHorizontal: 15
+  },
+  captionTextExist: {
+    // height: 30,
   },
   container: {
     backgroundColor: globalColors.white,

@@ -5,14 +5,9 @@ import {
   View,
   Animated,
   TouchableOpacity,
-  Platform,
   BackHandler,
   Image as RNImage,
-  ScrollView,
-  I18nManager,
   Text,
-  Keyboard,
-  TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
@@ -32,9 +27,22 @@ import * as actionCreators from "../../../../../store/actions";
 
 // Style
 import styles from "../../styles/adDesign.styles";
+import previewStyles from "../../styles/adFeedReview.styles";
 
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import LowerButton from "../../../../MiniComponents/LowerButton";
+import GradientButton from "../../../../MiniComponents/GradientButton";
+
 import { heightPercentageToDP } from "react-native-responsive-screen";
+
+//ICONS
+
+import ArchiveOutline from "../../../../../assets/SVGs/ArchiveOutline";
+import CommentOutline from "../../../../../assets/SVGs/CommentOutline";
+import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
+import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
+import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
+import { globalColors } from "../../../../../GlobalStyles";
 
 class InstagramAdDesignExistingPost extends Component {
   static navigationOptions = {
@@ -52,6 +60,8 @@ class InstagramAdDesignExistingPost extends Component {
         message: "",
         media_type: "",
       },
+      showPreview: false,
+      selectedPost: {},
       fileReadyToUpload: false,
       carouselAdCards: {
         carouselAdSelected: false,
@@ -382,6 +392,12 @@ class InstagramAdDesignExistingPost extends Component {
           borderRadius: 20,
           overflow: "hidden",
         }}
+        onPress={() => {
+          this.setState({
+            selectedPost: item.item,
+            showPreview: true,
+          });
+        }}
       >
         <RNImage
           style={{
@@ -440,7 +456,7 @@ class InstagramAdDesignExistingPost extends Component {
     ) {
       media = this.props.data.media;
     }
-
+    console.log("slectpost", this.state.selectedPost);
     return (
       <View style={styles.safeAreaView}>
         <SafeAreaView
@@ -462,62 +478,253 @@ class InstagramAdDesignExistingPost extends Component {
           navigation={this.props.navigation}
           title={"Compose"}
         />
-        <View
-          style={{
-            height: heightPercentageToDP(70),
-            backgroundColor: "rgba(0,0,0,0.16)",
-            marginHorizontal: 15,
-            borderRadius: 20,
-            marginVertical: 15,
-          }}
-        >
-          <View style={styles.profileBsnNameView}>
-            <RNImage
-              style={styles.businessProfilePic}
-              source={{
-                uri: this.state.campaignInfo.instagram_profile_pic,
-              }}
-            />
-            <View style={styles.bsnNameView}>
-              <Text style={styles.businessNameText}>
-                {translate("Business Name")}
-              </Text>
-              <Text style={styles.businessName}>
-                {this.state.campaignInfo.instagram_business_name}
-              </Text>
-            </View>
-          </View>
-
-          <Text
+        {!this.state.showPreview && (
+          <View
             style={{
-              color: "#FFF",
-              fontSize: 14,
-              fontFamily: "montserrat-regular",
-              paddingHorizontal: 20,
+              height: heightPercentageToDP(70),
+              backgroundColor: "rgba(0,0,0,0.16)",
+              marginHorizontal: 15,
+              borderRadius: 20,
+              marginVertical: 15,
             }}
           >
-            Select a post to promote
-          </Text>
-          <FlatList
-            data={this.props.instagramExistingPost}
-            renderItem={this.renderEachPost}
-            numColumns={4}
-            style={
-              {
-                // alignItems: "center",
+            <View style={styles.profileBsnNameView}>
+              <RNImage
+                style={styles.businessProfilePic}
+                source={{
+                  uri: this.state.campaignInfo.instagram_profile_pic,
+                }}
+              />
+              <View style={styles.bsnNameView}>
+                <Text style={styles.businessNameText}>
+                  {translate("Business Name")}
+                </Text>
+                <Text style={styles.businessName}>
+                  {this.state.campaignInfo.instagram_business_name}
+                </Text>
+              </View>
+            </View>
+
+            <Text
+              style={{
+                color: "#FFF",
+                fontSize: 14,
+                fontFamily: "montserrat-regular",
+                paddingHorizontal: 20,
+              }}
+            >
+              Select a post to promote
+            </Text>
+            <FlatList
+              data={this.props.instagramExistingPost}
+              renderItem={this.renderEachPost}
+              numColumns={4}
+              style={
+                {
+                  // alignItems: "center",
+                }
               }
-            }
-            contentContainerStyle={{
-              display: "flex",
-              marginBottom: heightPercentageToDP(20),
-              justifyContent: "space-around",
-              alignItems: "center",
-            }}
-          />
-          <TouchableOpacity>
-            <Text> LOAD MORE</Text>
-          </TouchableOpacity>
-        </View>
+              contentContainerStyle={{
+                display: "flex",
+                marginBottom: heightPercentageToDP(20),
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            />
+            <TouchableOpacity>
+              <Text> LOAD MORE</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {this.state.showPreview && (
+          <View>
+            <View style={previewStyles.container}>
+              <View style={previewStyles.profilePicView}>
+                <RNImage
+                  style={{ borderRadius: 20 }}
+                  width={32}
+                  height={32}
+                  source={{
+                    uri: this.state.campaignInfo.instagram_profile_pic,
+                  }}
+                />
+                <View style={previewStyles.detailProfileView}>
+                  <Text style={previewStyles.instagramBusinessName}>
+                    {this.state.campaignInfo.instagram_business_name}
+                  </Text>
+                  <Text style={previewStyles.sponsoredText}>
+                    {translate("Sponsored")}
+                  </Text>
+                </View>
+                <View style={previewStyles.dotView}>
+                  <Text style={previewStyles.dot}>.</Text>
+                  <Text style={previewStyles.dot}>.</Text>
+                  <Text style={previewStyles.dot}>.</Text>
+                </View>
+              </View>
+              <View style={previewStyles.mediaViewExist}>
+                <RNImage
+                  style={previewStyles.imagePreview}
+                  source={{
+                    uri: this.state.selectedPost.full_picture,
+                  }}
+                />
+              </View>
+              {/* {(call_to_action.value || call_to_action) !== "BLANK" && (
+              <View style={previewStyles.swipeUpView}>
+                <Text style={previewStyles.callToActionText}>
+                  {call_to_action.hasOwnProperty("label")
+                    ? translate(call_to_action.label)
+                    : translate(call_to_action.replace("_", " "))}
+                </Text>
+                <ArrowBlueForward
+                  style={[previewStyles.icon, previewStyles.archiveIcon, previewStyles.forwadIcon]}
+                />
+              </View>
+            )} */}
+              <View style={previewStyles.iconView}>
+                <HeartOutline style={previewStyles.icon} />
+                <CommentOutline style={previewStyles.icon} />
+                <SendArrowOutline style={previewStyles.icon} />
+                {/* {this.state.media_option === "carousel" && (
+                <Pagination
+                  containerStyle={previewStyles.paginationContainerStyle}
+                  dotsLength={carouselAdsArray.length}
+                  activeDotIndex={this.state.activeSlide}
+                  dotStyle={previewStyles.paginationDotStyle}
+                  dotColor={"#0095f6"}
+                  inactiveDotColor={"rgba(0, 0, 0, 0.2)"}
+                  inactiveDotOpacity={1}
+                  inactiveDotScale={1}
+                />
+              )} */}
+                <ArchiveOutline
+                  style={[previewStyles.icon, previewStyles.archiveIcon]}
+                />
+              </View>
+              {/* <View style={previewStyles.likeView}>
+              <HeartFilled style={previewStyles.icon} /> */}
+              <Text style={[previewStyles.likeView, previewStyles.likeText]}>
+                508 likes
+              </Text>
+              {/* </View> */}
+              <Text
+                style={[
+                  previewStyles.businessNameText,
+                  previewStyles.captionTextExist,
+                ]}
+              >
+                {this.state.campaignInfo.instagram_business_name}
+
+                <Text style={[previewStyles.captionText]}>
+                  {` `}
+                  {this.state.selectedPost.message}
+                </Text>
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("InstagramSwipeUpDestination", {
+                  source: "ad_objective",
+                  source_action: "a_swipe_up_destination",
+                })
+              }
+              style={styles.destinationView}
+              disabled={this.props.loading}
+            >
+              <ArrowUp stroke={globalColors.orange} />
+              <Text style={styles.destinationText}>
+                {this.props.data &&
+                this.props.data.link &&
+                this.props.data.link !== "BLANK" &&
+                ["link", "BLANK", "app_install"].includes(
+                  this.state.campaignInfo.destination
+                )
+                  ? this.state.campaignInfo.destination === "link" ||
+                    (this.props.data.objective === "BRAND_AWARENESS" &&
+                      this.state.campaignInfo.destination === "BLANK")
+                    ? translate("Website")
+                    : this.state.campaignInfo.destination === "app_install"
+                    ? translate("App Installs")
+                    : this.props.data.objective === "VIDEO_VIEWS"
+                    ? translate("Video Views")
+                    : translate("Click destination")
+                  : translate("Click destination")}
+              </Text>
+              {this.props.data &&
+              this.props.data.link &&
+              this.props.data.link !== "BLANK" &&
+              (this.state.campaignInfo.destination === "link" ||
+                this.state.campaignInfo.destination === "BLANK") ? (
+                <Text style={styles.websiteLink}>{this.props.data.link}</Text>
+              ) : null}
+            </TouchableOpacity>
+
+            <View style={styles.lowerBtn}>
+              {this.props.loading ? (
+                <View
+                  style={{
+                    width: "45%",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={styles.uploadingText}>
+                    {translate("Uploading")}
+                  </Text>
+                  <View>
+                    <AnimatedCircularProgress
+                      size={50}
+                      width={5}
+                      fill={Math.round(this.state.loaded)}
+                      rotation={360}
+                      lineCap="round"
+                      tintColor={globalColors.orange}
+                      backgroundColor="rgba(255,255,255,0.3)"
+                      adDetails={false}
+                    />
+                    <Text style={styles.uplaodPercentageText}>
+                      {Math.round(this.state.loaded, 2)}
+                      <Text style={styles.percentage}>%</Text>
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <LowerButton
+                  screenProps={this.props.screenProps}
+                  text={"Next"}
+                  width={12}
+                  height={12}
+                  style={styles.lowerBtnWidth}
+                  function={() =>
+                    _handleSubmission(
+                      this.state.campaignInfo.media_option,
+                      this.props.carouselAdsArray,
+                      this.state.carouselAdCards,
+                      formatCarouselAd,
+                      this.validator,
+                      this.finalSubmission,
+                      this.setTheState,
+                      {
+                        //for formatCarouselAd
+                        campaignInfo: this.state.campaignInfo,
+                        // selectedCampaign: this.selectedCampaign,
+                        campaign_id: this.props.campaign_id,
+                        // rejected: this.rejected,
+                        handleUpload: this.handleUpload,
+                        signal: this.state.signal,
+                        uploadCarouselAdCard: this.props.uploadCarouselAdCard,
+                      },
+                      this.props.screenProps
+                    )
+                  }
+                />
+              )}
+            </View>
+          </View>
+        )}
       </View>
     );
   }
@@ -581,6 +788,24 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getInstagramExistingPost: (businessid) =>
     dispatch(actionCreators.getInstagramExistingPost(businessid)),
+  saveInstgramExistpost: (
+    path,
+    info,
+    loading,
+    onToggleModal,
+    cancelUpload,
+    segmentInfo
+  ) =>
+    dispatch(
+      actionCreators.saveInstgramExistpost(
+        path,
+        info,
+        loading,
+        onToggleModal,
+        cancelUpload,
+        segmentInfo
+      )
+    ),
 });
 export default connect(
   mapStateToProps,
