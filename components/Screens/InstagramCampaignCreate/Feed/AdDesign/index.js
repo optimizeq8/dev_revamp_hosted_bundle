@@ -587,6 +587,7 @@ class AdDesign extends Component {
                   </TouchableOpacity>
 
                   <ClickDestination
+                    screenProps={this.props.screenProps}
                     navigation={this.props.navigation}
                     loading={this.props.loading}
                     data={this.props.data}

@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
     marginVertical: 12,
-    paddingBottom: "25%",
+    paddingBottom: "30%",
   },
   profileBsnNameView: {
     display: "flex",
@@ -578,6 +578,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     fontFamily: "montserrat-bold-english",
+  },
+  swipeUpTitle: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    fontSize: 13,
   },
 });
 
