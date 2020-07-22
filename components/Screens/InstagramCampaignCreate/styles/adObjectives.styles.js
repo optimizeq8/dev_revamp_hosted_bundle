@@ -288,6 +288,7 @@ const styles = StyleSheet.create({
     width: "50%",
     marginHorizontal: 0,
     height: 155,
+  },
   objectiveModal: {
     height: "76%",
     top: "20%",
