@@ -252,6 +252,35 @@ export const get_interests_instagram = () => {
 };
 
 /**
+ *  To get custom interest list
+ */
+export const get_custom_interests_instagram = (keyword) => {
+  return (dispatch) => {
+    if (keyword)
+      InstagramBackendURL()
+        .get(`categorizedcustominterests/${keyword}`)
+        .then((res) => res.data)
+        .then((data) => {
+          // console.log(JSON.stringify(data, null, 2));
+
+          if (data && data.interests) {
+            return dispatch({
+              type: actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS,
+              payload: data.interests,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log("error get_interests_instagram", error);
+          return dispatch({
+            type: actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS,
+            payload: [],
+          });
+        });
+  };
+};
+
+/**
  * To get OS versions list
  * @param {*} osType  One of [Android, iOS]
  */

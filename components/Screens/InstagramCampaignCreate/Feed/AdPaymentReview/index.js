@@ -50,12 +50,16 @@ class InstagramAdPaymentReview extends Component {
 
     let targeting = campaignInfo.targeting;
     let interestNames = [];
+    let customInterstNames = data.customInterests
+      ? data.customInterests.map((interest) => interest.name)
+      : [];
     let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
 
     if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
-      interestNames = targeting.flexible_spec[0].interests.map(
-        (interest) => interest.name
-      );
+      interestNames = [
+        targeting.flexible_spec[0].interests.map((interest) => interest.name),
+        customInterstNames,
+      ];
     }
     let end_time = new Date(data.end_time || "01-01-1970");
 
@@ -247,11 +251,14 @@ class InstagramAdPaymentReview extends Component {
       let targeting = campaignInfo.targeting;
       let interestNames = [];
       let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
-
+      let customInterstNames = data.customInterests
+        ? data.customInterests.map((interest) => interest.name)
+        : [];
       if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
-        interestNames = targeting.flexible_spec[0].interests.map(
-          (interest) => interest.name
-        );
+        interestNames = [
+          targeting.flexible_spec[0].interests.map((interest) => interest.name),
+          customInterstNames,
+        ];
       }
       let end_time = new Date(data.end_time || "01-01-1970");
 

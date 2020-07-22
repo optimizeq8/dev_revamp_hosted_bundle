@@ -51,7 +51,7 @@ export default class index extends Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             // containerStyle={{ height: "3%" }}
-            // titelStyle={{ top: 5, left: 0 }}
+            // titleStyle={{ top: 5, left: 0 }}
             segment={{
               source: this.props.navigation.getParam(
                 "source",

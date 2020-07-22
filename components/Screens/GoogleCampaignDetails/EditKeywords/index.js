@@ -188,7 +188,7 @@ class EditKeywords extends Component {
               }}
               navigation={!rejected ? this.props.navigation : undefined}
               actionButton={rejected && this.handleModalToggle}
-              titelStyle={{
+              titleStyle={{
                 textAlign: "left",
                 fontSize: 15,
                 paddingTop: 3,

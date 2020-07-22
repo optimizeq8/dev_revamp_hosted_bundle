@@ -22,21 +22,13 @@ export default class Duration extends Component {
     let end_year = "";
     let start_year = "";
     let selectedCampaign = this.props.selectedCampaign;
-    if (this.props.end_time !== "") {
-      if (this.props.start_time !== "" && this.props.end_time !== "") {
-        end_time = new Date(this.props.end_time.split("T")[0]);
-        start_time = new Date(this.props.start_time.split("T")[0]);
-        end_year = end_time.getFullYear();
-        start_year = start_time.getFullYear();
-        end_time = dateFormat(end_time, "d mmm").toUpperCase();
-        start_time = dateFormat(start_time, "d mmm").toUpperCase();
-      }
-    } else if (this.props.slidePanel) {
-      end_time = new Date(selectedCampaign.end_time.split("T")[0]);
-      start_time = new Date(selectedCampaign.start_time.split("T")[0]);
-      end_year = end_time.getFullYear();
+
+    if (this.props.start_time !== "") {
+      // end_time = new Date(this.props.end_time.split("T")[0]);
+      start_time = new Date(this.props.start_time.split("T")[0]);
+      // end_year = end_time.getFullYear();
       start_year = start_time.getFullYear();
-      end_time = dateFormat(end_time, "d mmm").toUpperCase();
+      // end_time = dateFormat(end_time, "d mmm").toUpperCase();
       start_time = dateFormat(start_time, "d mmm").toUpperCase();
     }
     return (
@@ -80,16 +72,14 @@ export default class Duration extends Component {
                         : { marginHorizontal: 0 },
                     ]}
                   >
-                    {(this.props.start_time === "" || selectedCampaign) &&
-                    (!this.props.slidePanel ||
-                      new Date(selectedCampaign.end_time) < new Date())
+                    {this.props.start_time === "" || selectedCampaign
                       ? ""
                       : translate("Start")}
                   </Text>
                 )}
               </View>
 
-              <Text
+              {/* <Text
                 style={[
                   styles.dateLabel,
                   GlobalStyles.whiteTextColor,
@@ -112,9 +102,9 @@ export default class Duration extends Component {
                   new Date(selectedCampaign.end_time) < new Date())
                   ? translate("Select Campaign Duration")
                   : translate("To")}
-              </Text>
+              </Text> */}
 
-              {!this.props.slidePanel ||
+              {/* {!this.props.slidePanel ||
               new Date(selectedCampaign.end_time) < new Date() ? (
                 <View style={styles.dateColumn}>
                   {this.props.end_time !== "" || selectedCampaign ? (
@@ -142,7 +132,7 @@ export default class Duration extends Component {
                     </Text>
                   </View>
                 )
-              )}
+              )} */}
             </View>
           </View>
         </View>

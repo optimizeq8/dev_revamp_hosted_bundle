@@ -96,8 +96,12 @@ const initialState = {
     },
   ],
   loadingCarouselAdsArray: [],
+
   instagramExistingPost: [],
   paging: {},
+
+  customInterests: [],
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -312,6 +316,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         interests: action.payload,
+      };
+    case actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS:
+      return {
+        ...state,
+        customInterests: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_OS_VERSIONS:
       return {
