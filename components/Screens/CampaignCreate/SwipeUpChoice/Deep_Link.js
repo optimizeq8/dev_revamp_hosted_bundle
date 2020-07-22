@@ -267,7 +267,12 @@ class Deep_Link extends Component {
     const { translate } = this.props.screenProps;
     let { iosAppSelected, androidAppSelected } = this.state;
     return (
-      <View style={styles.safeAreaContainer}>
+      <View
+        style={[
+          styles.safeAreaContainer,
+          this.props.swipeUpDestination && { width: "110%" },
+        ]}
+      >
         <View>
           <View style={styles.deepLinkHeader}>
             {/* <AppInstallIcon style={styles.icon} /> */}

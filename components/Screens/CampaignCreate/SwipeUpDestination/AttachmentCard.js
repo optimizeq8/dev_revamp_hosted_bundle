@@ -14,13 +14,14 @@ export default class AttachmentCard extends Component {
         style={[
           styles.buttonN,
           this.props.selected === value
-            ? globalStyles.orangeBackgroundColor
-            : globalStyles.transparentBackgroundColor
+            ? { borderColor: globalColors.purple }
+            : { borderColor: "#0000" },
         ]}
       >
         <CardIcon
-          fill={globalColors.white}
+          fill={globalColors.rum}
           width={30}
+          stroke={globalColors.rum}
           height={30}
           style={styles.icon}
         />

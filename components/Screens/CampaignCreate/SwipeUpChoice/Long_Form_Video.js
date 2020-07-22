@@ -253,7 +253,10 @@ class Long_Form_Video extends Component {
         style={{
           height: "100%",
         }}
-        contentContainerStyle={styles.longFormVideoContainer}
+        contentContainerStyle={[
+          styles.longFormVideoContainer,
+          this.props.swipeUpDestination && { width: "110%" },
+        ]}
       >
         <View style={styles.longFormVideoContent}>
           {this.state.longformvideo_media && (
@@ -387,6 +390,11 @@ class Long_Form_Video extends Component {
           <Modal isVisible={this.state.videoLoading}>
             <LoadingScreen top={50} />
           </Modal>
+          {this.props.swipeUpDestination && (
+            <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
+              {translate("Change Swipe-up Destination")}
+            </Text>
+          )}
           <LowerButton
             screenProps={this.props.screenProps}
             function={this._handleSubmission}

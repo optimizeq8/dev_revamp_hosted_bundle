@@ -627,6 +627,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     top: 10,
   },
+  swipeUpTitle: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    fontSize: 13,
+  },
 });
 
 export default styles;

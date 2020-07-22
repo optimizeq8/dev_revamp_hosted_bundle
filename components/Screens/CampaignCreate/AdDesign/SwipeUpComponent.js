@@ -6,13 +6,15 @@ import {
   Animated,
   LayoutAnimation,
   UIManager,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Icon } from "native-base";
 import styles from "./styles";
 import SnapObjective from "../../../Data/snapchatObjectives.data";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import SwipeUpChoice from "../SwipeUpChoice/";
-
+import SwipeUpDestination from "../SwipeUpDestination";
+import { globalColors } from "../../../../GlobalStyles";
 export default class SwipeUpComponent extends Component {
   constructor(props) {
     super(props);
@@ -244,12 +246,41 @@ export default class SwipeUpComponent extends Component {
             />
           </>
         ) : (
-          <SwipeUpChoice
-            screenProps={this.props.screenProps}
-            navigation={this.props.navigation}
-            toggle={this.toggle}
-            {...this.state.swipeUpProps}
-          />
+          <View style={{ width: "100%" }}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{
+                alignSelf: "center",
+                alignItems: "center",
+              }}
+              onPress={() => this.toggle(false)}
+            >
+              <Icon
+                type="AntDesign"
+                name="down"
+                style={[{ color: globalColors.purple, fontSize: 18 }]}
+              />
+              <Text style={[styles.swipeUpTitle]}>
+                {translate("swipe up settings")}
+              </Text>
+            </TouchableOpacity>
+            {adType === "StoryAd" && objective === "BRAND_AWARENESS" ? (
+              <SwipeUpDestination
+                swipeUpProps={this.state.swipeUpProps}
+                screenProps={this.props.screenProps}
+                navigation={this.props.navigation}
+                toggle={this.toggle}
+                toggle={this.toggle}
+              />
+            ) : (
+              <SwipeUpChoice
+                screenProps={this.props.screenProps}
+                navigation={this.props.navigation}
+                toggle={this.toggle}
+                {...this.state.swipeUpProps}
+              />
+            )}
+          </View>
         )}
       </TouchableOpacity>
     );

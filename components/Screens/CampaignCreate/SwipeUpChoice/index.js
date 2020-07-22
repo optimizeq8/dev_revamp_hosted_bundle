@@ -213,22 +213,7 @@ class SwipeUpChoice extends Component {
             forceInset={{ top: "always" }}
           /> */}
         <NavigationEvents onDidFocus={this.segment} />
-        <TouchableWithoutFeedback
-          style={{
-            alignSelf: "center",
-            alignItems: "center",
-          }}
-          onPress={() => this.props.toggle(false)}
-        >
-          <Icon
-            type="AntDesign"
-            name="down"
-            style={[{ color: globalColors.purple, fontSize: 18 }]}
-          />
-          <Text style={[styles.swipeUpTitle]}>
-            {translate("swipe up settings")}
-          </Text>
-        </TouchableWithoutFeedback>
+
         {/* <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}

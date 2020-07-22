@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     width: 170,
   },
   footerText: {
-    color: globalColors.rum,
+    color: globalColors.purple,
     fontSize: 14,
     fontFamily: "montserrat-regular",
     paddingVertical: 16,

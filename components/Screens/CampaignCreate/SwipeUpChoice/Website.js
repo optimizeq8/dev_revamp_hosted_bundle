@@ -238,7 +238,12 @@ class Website extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <View style={styles.safeAreaContainer}>
+      <View
+        style={[
+          styles.safeAreaContainer,
+          this.props.swipeUpDestination && { width: "110%" },
+        ]}
+      >
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[
@@ -329,6 +334,7 @@ class Website extends Component {
               checkmark={true}
               bottom={-5}
               function={this._handleSubmission}
+              purpleViolet
             />
           </View>
         </InputScrollView>

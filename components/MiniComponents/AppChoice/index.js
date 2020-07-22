@@ -437,7 +437,11 @@ class AppChoice extends Component {
           screenProps={this.props.screenProps}
           appChoice={this.props.appChoice}
         />
-
+        {this.props.swipeUpDestination && (
+          <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
+            {translate("Change Swipe-up Destination")}
+          </Text>
+        )}
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}

@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   longFormVideoContainer: {
     flex: 1,
     alignItems: "center",
+    padding: 10,
   },
   longFormVideoContent: {
     flexDirection: "column",
@@ -119,8 +120,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   safeAreaContainer: {
-    paddingTop: 10,
     flex: 1,
+    padding: 10,
   },
   warningText: {
     color: "#fff",
@@ -136,13 +137,14 @@ const styles = StyleSheet.create({
     width: 170,
   },
   footerText: {
-    color: "#fff",
+    color: globalColors.purple,
     fontSize: 14,
     fontFamily: "montserrat-regular",
     paddingBottom: 0,
     paddingTop: 30,
     textDecorationLine: "underline",
     textAlign: "center",
+    marginBottom: 10,
   },
   textcontainer: {
     flexDirection: "column",
@@ -504,12 +506,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 4,
     // padding: 20
-  },
-  swipeUpTitle: {
-    fontFamily: "montserrat-bold",
-    color: globalColors.purple,
-    textTransform: "uppercase",
-    fontSize: 13,
   },
   customModalField: {
     backgroundColor: "#fff",
