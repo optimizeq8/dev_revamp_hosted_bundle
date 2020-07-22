@@ -10,9 +10,10 @@ import {
   Image as RNImage,
   ScrollView,
   I18nManager,
-  TextInput,
+  Text,
   Keyboard,
   TouchableWithoutFeedback,
+  FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
@@ -33,6 +34,7 @@ import * as actionCreators from "../../../../../store/actions";
 import styles from "../../styles/adDesign.styles";
 
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class InstagramAdDesignExistingPost extends Component {
   static navigationOptions = {
@@ -89,6 +91,7 @@ class InstagramAdDesignExistingPost extends Component {
     );
   }
   componentDidMount() {
+    this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
     if (this.props.data) {
       let {
         media_option = "single",
@@ -367,12 +370,36 @@ class InstagramAdDesignExistingPost extends Component {
       // this.rejected,
     );
   };
+  renderEachPost = (item) => {
+    const product = item.item;
+    return (
+      <TouchableOpacity
+        style={{
+          width: 70,
+          height: 70,
+          // borderWidth: 2,
+          margin: 5,
+          borderRadius: 20,
+          overflow: "hidden",
+        }}
+      >
+        <RNImage
+          style={{
+            width: 70,
+            height: 70,
+          }}
+          source={{ uri: product.full_picture }}
+          resizeMode={"cover"}
+        />
+      </TouchableOpacity>
+    );
+  };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
       this.props.saveCampaignSteps([
         "Dashboard",
         "InstagramFeedAdObjective",
-        "InstagramFeedAdDesign",
+        "InstagramAdDesignExistingPost",
       ]);
     }
     const source = this.props.navigation.getParam(
@@ -403,6 +430,7 @@ class InstagramAdDesignExistingPost extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    console.log("paging", this.props.paging);
     var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
@@ -419,6 +447,7 @@ class InstagramAdDesignExistingPost extends Component {
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <TopStepsHeader
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -433,12 +462,62 @@ class InstagramAdDesignExistingPost extends Component {
           navigation={this.props.navigation}
           title={"Compose"}
         />
-
-        <ScrollView
-          contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
+        <View
+          style={{
+            height: heightPercentageToDP(70),
+            backgroundColor: "rgba(0,0,0,0.16)",
+            marginHorizontal: 15,
+            borderRadius: 20,
+            marginVertical: 15,
+          }}
         >
-          <NavigationEvents onDidFocus={this.onDidFocus} />
-        </ScrollView>
+          <View style={styles.profileBsnNameView}>
+            <RNImage
+              style={styles.businessProfilePic}
+              source={{
+                uri: this.state.campaignInfo.instagram_profile_pic,
+              }}
+            />
+            <View style={styles.bsnNameView}>
+              <Text style={styles.businessNameText}>
+                {translate("Business Name")}
+              </Text>
+              <Text style={styles.businessName}>
+                {this.state.campaignInfo.instagram_business_name}
+              </Text>
+            </View>
+          </View>
+
+          <Text
+            style={{
+              color: "#FFF",
+              fontSize: 14,
+              fontFamily: "montserrat-regular",
+              paddingHorizontal: 20,
+            }}
+          >
+            Select a post to promote
+          </Text>
+          <FlatList
+            data={this.props.instagramExistingPost}
+            renderItem={this.renderEachPost}
+            numColumns={4}
+            style={
+              {
+                // alignItems: "center",
+              }
+            }
+            contentContainerStyle={{
+              display: "flex",
+              marginBottom: heightPercentageToDP(20),
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          />
+          <TouchableOpacity>
+            <Text> LOAD MORE</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -455,6 +534,8 @@ const mapStateToProps = (state) => ({
   rejCampaign: state.dashboard.rejCampaign,
   carouselAdsArray: state.instagramAds.carouselAdsArray,
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
+  instagramExistingPost: state.instagramAds.instagramExistingPost,
+  paging: state.instagramAds.paging,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -498,6 +579,8 @@ const mapDispatchToProps = (dispatch) => ({
         finalSubmission
       )
     ),
+  getInstagramExistingPost: (businessid) =>
+    dispatch(actionCreators.getInstagramExistingPost(businessid)),
 });
 export default connect(
   mapStateToProps,

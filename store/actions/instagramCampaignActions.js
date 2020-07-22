@@ -752,3 +752,26 @@ export const deleteCarouselCard = (story_id, card) => {
       });
   };
 };
+
+export const getInstagramExistingPost = (businessid) => {
+  return (dispatch) => {
+    InstagramBackendURL()
+      .get(`instaFeed/${businessid}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_INSTAGRAM_POST_AD,
+            payload: {
+              data: data.data,
+              paging: data.paging,
+            },
+          });
+        }
+      });
+  };
+};
+
+export const saveInstgramExistpost = () => {};

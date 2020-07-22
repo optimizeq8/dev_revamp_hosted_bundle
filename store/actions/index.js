@@ -194,4 +194,5 @@ export {
   deleteCarouselCard,
   uploadCarouselAdCard,
   setCarouselAdAttechment,
+  getInstagramExistingPost,
 } from "./instagramCampaignActions";
