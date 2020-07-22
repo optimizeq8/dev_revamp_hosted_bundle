@@ -2,6 +2,7 @@ import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
@@ -299,6 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
     marginVertical: 12,
+    paddingBottom: "25%",
   },
   profileBsnNameView: {
     display: "flex",
@@ -376,15 +378,14 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   destinationView: {
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: globalColors.white,
     paddingHorizontal: 20,
     paddingVertical: 15,
-
     borderRadius: 50,
     marginTop: 15,
+    width: "100%",
   },
   destinationText: {
     fontFamily: "montserrat-bold",

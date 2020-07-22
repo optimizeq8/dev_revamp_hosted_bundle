@@ -73,6 +73,7 @@ import MediaModal from "./MediaModal";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
 import { formatCarouselAd } from "./Functions/formatCarouselAd";
+import ClickDestination from "./ClickDestination";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -123,6 +124,7 @@ class AdDesign extends Component {
       mediaModalVisible: false,
       uneditedImageUri: "",
       serialization: null,
+      maxClickHeight: 0,
     };
   }
 
@@ -446,6 +448,11 @@ class AdDesign extends Component {
       campaign_end_date: this.props.data.end_time,
     });
   };
+  setMaxClickHeight = (event) => {
+    this.setState({
+      maxClickHeight: event.nativeEvent.layout.height,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
@@ -510,7 +517,10 @@ class AdDesign extends Component {
                     uppercase
                   />
                 </View>
-                <View style={[styles.outerBlock]}>
+                <View
+                  style={[styles.outerBlock]}
+                  onLayout={this.setMaxClickHeight}
+                >
                   <View style={styles.profileBsnNameView}>
                     <RNImage
                       style={styles.businessProfilePic}
@@ -576,49 +586,14 @@ class AdDesign extends Component {
                     <PenIcon width={18} height={18} style={styles.penIcon} />
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate(
-                        "InstagramSwipeUpDestination",
-                        {
-                          source: "ad_objective",
-                          source_action: "a_swipe_up_destination",
-                        }
-                      )
-                    }
-                    style={styles.destinationView}
-                    disabled={this.props.loading}
-                  >
-                    <ArrowUp stroke={globalColors.orange} />
-                    <Text style={styles.destinationText}>
-                      {this.props.data &&
-                      this.props.data.link &&
-                      this.props.data.link !== "BLANK" &&
-                      ["link", "BLANK", "app_install"].includes(
-                        this.state.campaignInfo.destination
-                      )
-                        ? this.state.campaignInfo.destination === "link" ||
-                          (this.props.data.objective === "BRAND_AWARENESS" &&
-                            this.state.campaignInfo.destination === "BLANK")
-                          ? translate("Website")
-                          : this.state.campaignInfo.destination ===
-                            "app_install"
-                          ? translate("App Installs")
-                          : this.props.data.objective === "VIDEO_VIEWS"
-                          ? translate("Video Views")
-                          : translate("Click destination")
-                        : translate("Click destination")}
-                    </Text>
-                    {this.props.data &&
-                    this.props.data.link &&
-                    this.props.data.link !== "BLANK" &&
-                    (this.state.campaignInfo.destination === "link" ||
-                      this.state.campaignInfo.destination === "BLANK") ? (
-                      <Text style={styles.websiteLink}>
-                        {this.props.data.link}
-                      </Text>
-                    ) : null}
-                  </TouchableOpacity>
+                  <ClickDestination
+                    navigation={this.props.navigation}
+                    loading={this.props.loading}
+                    data={this.props.data}
+                    campaignInfo={this.state.campaignInfo}
+                    translate={translate}
+                    maxClickHeight={this.state.maxClickHeight}
+                  />
                 </View>
                 <View style={styles.lowerBtn}>
                   <GradientButton
