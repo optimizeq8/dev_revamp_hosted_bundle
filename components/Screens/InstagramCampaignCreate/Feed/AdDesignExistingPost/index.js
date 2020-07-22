@@ -29,6 +29,8 @@ import * as actionCreators from "../../../../../store/actions";
 import styles from "../../styles/adDesign.styles";
 import previewStyles from "../../styles/adFeedReview.styles";
 
+import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper";
+
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import GradientButton from "../../../../MiniComponents/GradientButton";
@@ -42,7 +44,11 @@ import CommentOutline from "../../../../../assets/SVGs/CommentOutline";
 import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
 import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
+import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
+
 import { globalColors } from "../../../../../GlobalStyles";
+import { ScrollView } from "react-native-gesture-handler";
+import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class InstagramAdDesignExistingPost extends Component {
   static navigationOptions = {
@@ -61,7 +67,7 @@ class InstagramAdDesignExistingPost extends Component {
         media_type: "",
       },
       showPreview: false,
-      selectedPost: {},
+
       fileReadyToUpload: false,
       carouselAdCards: {
         carouselAdSelected: false,
@@ -200,9 +206,7 @@ class InstagramAdDesignExistingPost extends Component {
       this.state.campaignInfo.message
     );
 
-    const mediaError =
-      this.state.campaignInfo.media_option === "single" &&
-      this.state.media === "//";
+    const mediaError = this.state.campaignInfo.media === "//";
 
     let swipeUpError = null;
     if (
@@ -252,61 +256,80 @@ class InstagramAdDesignExistingPost extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-  finalSubmission = async () => {
+  handleSubmission = async () => {
     await this.validator();
     if (
       !this.state.mediaError &&
       !this.state.messageError &&
       !this.state.swipeUpError
     ) {
-      await formatMedia(
-        this.state.media,
-        this.state.media_type,
-        this.props.mainBusiness,
-        this.state.campaignInfo,
-        this.props.data,
-        this.setTheState,
-        this.props.data.objective,
-        this.props.carouselAdsArray,
-        false,
-        this.state.fileReadyToUpload
-      );
-      await this.handleUpload();
+      const mainBusiness = this.props.mainBusiness;
+      const campaignInfo = this.state.campaignInfo;
+      const data = this.props.data;
 
-      if (
-        (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
-        JSON.stringify(this.props.data.formatted) !==
-          JSON.stringify(this.state.formatted)
-      ) {
-        const segmentInfo = {
-          campaign_channel: "instagram",
-          campaign_ad_type: "InstagramFeedAd",
-          campaign_id: this.props.data.campaign_id,
-          campaign_business_name: this.state.campaignInfo.brand_name,
-          campaign_caption: this.state.campaignInfo.headline,
-          campaign_attachment: this.state.campaignInfo.attachment,
-          campaign_swipe_up_CTA: this.state.campaignInfo.call_to_action,
-          campaign_swipe_up_destination: this.state.campaignInfo.destination,
-          campaign_media: this.state.media,
-          campaign_media_type: this.state.type,
-          // campaign_appChoice: this.state.appChoice,
-        };
-        if (!this.props.loading) {
-          await this.props.saveBrandMediaInstagram(
-            "InstagramFeedAdTargetting",
-            this.state.formatted,
-            this._getUploadState,
-            this.onToggleModal,
-            this.state.signal,
-            segmentInfo
-          );
-        }
-      } else {
-        this.props.navigation.navigate("InstagramFeedAdTargetting", {
-          source: "ad_design",
-          source_action: "a_submit_ad_design",
-        });
+      var body = new FormData();
+      body.append("ad_account_id", mainBusiness.fb_ad_account_id);
+
+      body.append("businessid", mainBusiness.businessid);
+      body.append("campaign_id", campaignInfo.campaign_id);
+      body.append("campaign_name", data.name);
+      body.append("campaign_type", "InstagramFeedAd");
+      body.append("media", this.state.campaignInfo.media);
+      body.append("media_type", this.state.campaignInfo.media_type);
+
+      body.append("message", campaignInfo.message);
+      body.append("instagram_post_id", campaignInfo.instagram_post_id);
+      body.append(
+        "destination",
+        (data.objective === "BRAND_AWARENESS" ||
+          data.objective === "VIDEO_VIEWS") &&
+          data.link
+          ? "link"
+          : campaignInfo.destination
+      );
+      body.append("link", data.link ? data.link : "BLANK"); // webiste link for destination as link
+      body.append("call_to_action", data.call_to_action.value);
+      body.append(
+        "attachment",
+        data.attachment === "BLANK"
+          ? data.attachment
+          : JSON.stringify(data.attachment)
+      );
+
+      // if (
+      //   (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
+      //   JSON.stringify(this.props.data.formatted) !==
+      //     JSON.stringify(this.state.formatted)
+      // ) {
+      const segmentInfo = {
+        campaign_channel: "instagram",
+        campaign_ad_type: "InstagramFeedAd",
+        campaign_id: this.props.data.campaign_id,
+        campaign_business_name: this.state.campaignInfo.instagram_business_name,
+        campaign_caption: this.state.campaignInfo.message,
+        campaign_attachment: this.state.campaignInfo.attachment,
+        campaign_swipe_up_CTA: this.state.campaignInfo.call_to_action,
+        campaign_swipe_up_destination: this.state.campaignInfo.destination,
+        campaign_media: this.state.campaignInfo.media,
+        campaign_media_type: this.state.campaignInfo.media_type,
+        // campaign_appChoice: this.state.appChoice,
+      };
+      if (!this.props.loading) {
+        await this.props.saveInstgramExistpost(
+          "InstagramFeedAdTargetting",
+          body,
+          this._getUploadState,
+          this.onToggleModal,
+          this.cancelUpload,
+          segmentInfo
+        );
       }
+      // } else {
+      //   this.props.navigation.navigate("InstagramFeedAdTargetting", {
+      //     source: "ad_design",
+      //     source_action: "a_submit_ad_design",
+      //   });
+      // }
     }
   };
   handleCaptionExpand = (value) => {
@@ -382,6 +405,7 @@ class InstagramAdDesignExistingPost extends Component {
   };
   renderEachPost = (item) => {
     const product = item.item;
+
     return (
       <TouchableOpacity
         style={{
@@ -391,11 +415,45 @@ class InstagramAdDesignExistingPost extends Component {
           margin: 5,
           borderRadius: 20,
           overflow: "hidden",
+          borderWidth:
+            this.state.campaignInfo.instagram_post_id === product.promotable_id
+              ? 5
+              : 0,
+          borderColor:
+            this.state.campaignInfo.instagram_post_id === product.promotable_id
+              ? globalColors.orange
+              : globalColors.transparent,
         }}
         onPress={() => {
           this.setState({
-            selectedPost: item.item,
+            campaignInfo: {
+              ...this.state.campaignInfo,
+              media:
+                product.attachments.data[0].type == "video_inline"
+                  ? product.attachments.data[0].media.source
+                  : product.attachments.data[0].media.image.src,
+              media_type:
+                product.attachments.data[0].type === "photo" ||
+                product.attachments.data[0].type === "album"
+                  ? "IMAGE"
+                  : "VIDEO",
+              message: product.message,
+              instagram_post_id: product.promotable_id,
+            },
             showPreview: true,
+          });
+          this.props.save_campaign_info_instagram({
+            media:
+              product.attachments.data[0].type == "video_inline"
+                ? product.attachments.data[0].media.source
+                : product.attachments.data[0].media.image.src,
+            media_type:
+              product.attachments.data[0].type === "photo" ||
+              product.attachments.data[0].type === "album"
+                ? "IMAGE"
+                : "VIDEO",
+            message: product.message,
+            instagram_post_id: product.promotable_id,
           });
         }}
       >
@@ -409,6 +467,15 @@ class InstagramAdDesignExistingPost extends Component {
         />
       </TouchableOpacity>
     );
+  };
+  goBack = () => {
+    if (this.state.showPreview) {
+      this.setState({
+        showPreview: false,
+      });
+    } else {
+      this.props.navigation.goBack();
+    }
   };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
@@ -446,8 +513,8 @@ class InstagramAdDesignExistingPost extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    console.log("paging", this.props.paging);
-    var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
+
+    var { media } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
       this.props.data &&
@@ -456,7 +523,7 @@ class InstagramAdDesignExistingPost extends Component {
     ) {
       media = this.props.data.media;
     }
-    console.log("slectpost", this.state.selectedPost);
+
     return (
       <View style={styles.safeAreaView}>
         <SafeAreaView
@@ -475,7 +542,8 @@ class InstagramAdDesignExistingPost extends Component {
           }}
           icon="instagram"
           currentScreen="Compose"
-          navigation={this.props.navigation}
+          // navigation={this.props.navigation}
+          actionButton={this.goBack}
           title={"Compose"}
         />
         {!this.state.showPreview && (
@@ -513,7 +581,7 @@ class InstagramAdDesignExistingPost extends Component {
                 paddingHorizontal: 20,
               }}
             >
-              Select a post to promote
+              {translate("Select a post to promote")}
             </Text>
             <FlatList
               data={this.props.instagramExistingPost}
@@ -531,13 +599,13 @@ class InstagramAdDesignExistingPost extends Component {
                 alignItems: "center",
               }}
             />
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         )}
         {this.state.showPreview && (
-          <View>
+          <ScrollView>
             <View style={previewStyles.container}>
               <View style={previewStyles.profilePicView}>
                 <RNImage
@@ -566,22 +634,34 @@ class InstagramAdDesignExistingPost extends Component {
                 <RNImage
                   style={previewStyles.imagePreview}
                   source={{
-                    uri: this.state.selectedPost.full_picture,
+                    uri: this.state.campaignInfo.media,
                   }}
                 />
               </View>
-              {/* {(call_to_action.value || call_to_action) !== "BLANK" && (
-              <View style={previewStyles.swipeUpView}>
-                <Text style={previewStyles.callToActionText}>
-                  {call_to_action.hasOwnProperty("label")
-                    ? translate(call_to_action.label)
-                    : translate(call_to_action.replace("_", " "))}
-                </Text>
-                <ArrowBlueForward
-                  style={[previewStyles.icon, previewStyles.archiveIcon, previewStyles.forwadIcon]}
-                />
-              </View>
-            )} */}
+              {(this.state.campaignInfo.call_to_action.value ||
+                this.state.campaignInfo.call_to_action) !== "BLANK" && (
+                <View style={previewStyles.swipeUpView}>
+                  <Text style={previewStyles.callToActionText}>
+                    {this.state.campaignInfo.call_to_action.hasOwnProperty(
+                      "label"
+                    )
+                      ? translate(this.state.campaignInfo.call_to_action.label)
+                      : translate(
+                          this.state.campaignInfo.call_to_action.replace(
+                            "_",
+                            " "
+                          )
+                        )}
+                  </Text>
+                  <ArrowBlueForward
+                    style={[
+                      previewStyles.icon,
+                      previewStyles.archiveIcon,
+                      previewStyles.forwadIcon,
+                    ]}
+                  />
+                </View>
+              )}
               <View style={previewStyles.iconView}>
                 <HeartOutline style={previewStyles.icon} />
                 <CommentOutline style={previewStyles.icon} />
@@ -618,7 +698,7 @@ class InstagramAdDesignExistingPost extends Component {
 
                 <Text style={[previewStyles.captionText]}>
                   {` `}
-                  {this.state.selectedPost.message}
+                  {this.state.campaignInfo.message}
                 </Text>
               </Text>
             </View>
@@ -627,9 +707,10 @@ class InstagramAdDesignExistingPost extends Component {
                 this.props.navigation.navigate("InstagramSwipeUpDestination", {
                   source: "ad_objective",
                   source_action: "a_swipe_up_destination",
+                  existingPost: true,
                 })
               }
-              style={styles.destinationView}
+              style={[styles.destinationView, { marginHorizontal: 20 }]}
               disabled={this.props.loading}
             >
               <ArrowUp stroke={globalColors.orange} />
@@ -698,32 +779,11 @@ class InstagramAdDesignExistingPost extends Component {
                   width={12}
                   height={12}
                   style={styles.lowerBtnWidth}
-                  function={() =>
-                    _handleSubmission(
-                      this.state.campaignInfo.media_option,
-                      this.props.carouselAdsArray,
-                      this.state.carouselAdCards,
-                      formatCarouselAd,
-                      this.validator,
-                      this.finalSubmission,
-                      this.setTheState,
-                      {
-                        //for formatCarouselAd
-                        campaignInfo: this.state.campaignInfo,
-                        // selectedCampaign: this.selectedCampaign,
-                        campaign_id: this.props.campaign_id,
-                        // rejected: this.rejected,
-                        handleUpload: this.handleUpload,
-                        signal: this.state.signal,
-                        uploadCarouselAdCard: this.props.uploadCarouselAdCard,
-                      },
-                      this.props.screenProps
-                    )
-                  }
+                  function={this.handleSubmission}
                 />
               )}
             </View>
-          </View>
+          </ScrollView>
         )}
       </View>
     );

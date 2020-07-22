@@ -787,6 +787,7 @@ export const saveInstgramExistpost = (
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
+    // console.log("info", info);
     InstagramBackendURL()
       .post(`saveinstapostbrandmedia`, info, {
         onUploadProgress: (ProgressEvent) =>

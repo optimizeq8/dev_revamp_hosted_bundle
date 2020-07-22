@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     // alignSelf: "flex-end",
+    marginTop: 10,
+    marginHorizontal: 20,
   },
   captionMainView: {
     height: hp(60),
