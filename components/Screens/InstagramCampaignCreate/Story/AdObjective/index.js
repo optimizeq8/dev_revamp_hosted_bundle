@@ -389,7 +389,6 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
-
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
       <ObjectivesCard
