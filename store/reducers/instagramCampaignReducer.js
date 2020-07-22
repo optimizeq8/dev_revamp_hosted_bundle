@@ -96,7 +96,12 @@ const initialState = {
     },
   ],
   loadingCarouselAdsArray: [],
+
+  instagramExistingPost: [],
+  paging: {},
+
   customInterests: [],
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -453,7 +458,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingDesign: false,
       };
-
+    case actionTypes.GET_INSTAGRAM_POST_AD: {
+      return {
+        ...state,
+        instagramExistingPost: action.payload.data,
+        paging: action.payload.paging,
+      };
+    }
     default:
       return state;
   }

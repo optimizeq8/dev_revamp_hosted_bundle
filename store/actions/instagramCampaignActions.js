@@ -781,3 +781,86 @@ export const deleteCarouselCard = (story_id, card) => {
       });
   };
 };
+
+export const getInstagramExistingPost = (businessid) => {
+  return (dispatch) => {
+    InstagramBackendURL()
+      .get(`instaFeed/${businessid}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_INSTAGRAM_POST_AD,
+            payload: {
+              data: data.data,
+              paging: data.paging,
+            },
+          });
+        }
+      });
+  };
+};
+
+export const saveInstgramExistpost = (
+  path = "InstagramFeedAdTargetting",
+  info,
+  loading,
+  onToggleModal,
+  cancelUplaod,
+  segmentInfo
+) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+      payload: true,
+    });
+    // console.log("info", info);
+    InstagramBackendURL()
+      .post(`saveinstapostbrandmedia`, info, {
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false,
+        });
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
+        if (data.success) {
+          onToggleModal(false);
+          dispatch(save_campaign_info_instagram({ info }));
+          NavigationService.navigate(path, {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
+            payload: data,
+          });
+        }
+      })
+      .catch((error) => {
+        loading(0);
+        onToggleModal(false);
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false,
+        });
+        // console.log(
+        //   "error saveBrandMedia ",
+        //   JSON.stringify(error.response.data || error.message, null, 2)
+        // );
+      });
+  };
+};

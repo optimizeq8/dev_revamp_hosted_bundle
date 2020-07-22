@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-end",
     // alignSelf: "flex-end",
+    marginTop: 10,
+    marginHorizontal: 20,
   },
   captionMainView: {
     height: hp(60),
