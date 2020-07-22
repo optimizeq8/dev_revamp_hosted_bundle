@@ -101,7 +101,6 @@ class SwipeUpChoice extends Component {
     const { translate } = this.props.screenProps;
     let objective = this.props.objective;
     let _changeDestination = this.props._changeDestination;
-    console.log("objective", objective);
 
     let menu = <View />;
     if (this.props.adType === "CollectionAd") {
