@@ -34,9 +34,9 @@ export default class StoryAdCards extends Component {
       <View
         style={{
           position: "absolute",
-          top: "20%",
-          width: "100%",
-          height: "68%",
+          width: "90%",
+          alignSelf: "center",
+          height: heightPercentageToDP(42),
         }}
       >
         <FlatList

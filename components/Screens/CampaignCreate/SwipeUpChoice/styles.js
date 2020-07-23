@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   titletext: {
-    textAlign: "left",
-    color: "#fff",
+    textAlign: "center",
+    color: globalColors.purple,
     paddingTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 16,
@@ -48,21 +48,19 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: Platform.OS === "android" ? 10 : 0,
   },
   longFormVideoContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 30,
+    padding: 10,
   },
   longFormVideoContent: {
     flexDirection: "column",
-    paddingTop: 30,
+    width: "100%",
+    padding: 10,
   },
   videoSelectButton: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.purple,
     alignSelf: "center",
     marginVertical: 10,
     borderRadius: 30,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingTop: 5,
-    color: "#fff",
+    color: globalColors.purple,
     paddingHorizontal: 20,
     textAlign: "center",
   },
@@ -108,20 +106,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: "center",
   },
-  addVideoText: {
-    alignSelf: "center",
-    fontSize: 14,
-    paddingTop: 5,
-    textAlign: "center",
-    color: "#FF9D00",
-    position: "absolute",
-    top: "70%",
-    fontFamily: "montserrat-bold",
+  addVideoContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 35,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
   },
   safeAreaContainer: {
-    // height: '100%',
     flex: 1,
-    // backgroundColor: '#FFFF',
+    padding: 10,
   },
   warningText: {
     color: "#fff",
@@ -137,13 +137,14 @@ const styles = StyleSheet.create({
     width: 170,
   },
   footerText: {
-    color: "#fff",
+    color: globalColors.purple,
     fontSize: 14,
     fontFamily: "montserrat-regular",
     paddingBottom: 0,
     paddingTop: 30,
     textDecorationLine: "underline",
     textAlign: "center",
+    marginBottom: 10,
   },
   textcontainer: {
     flexDirection: "column",
@@ -160,8 +161,11 @@ const styles = StyleSheet.create({
   video: {
     borderRadius: 50,
     alignSelf: "center",
-    marginBottom: 30,
     alignItems: "center",
+    backgroundColor: globalColors.purple,
+    width: 60,
+    height: 60,
+    justifyContent: "center",
   },
   placeholder: {
     borderRadius: 13,
@@ -251,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   previewButtonContainer: {
-    paddingVertical: 40,
+    // paddingVertical: 40,
   },
   videoPreviewView: {
     flex: 1,
@@ -502,6 +506,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 4,
     // padding: 20
+  },
+  customModalField: {
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
+    width: "95%",
   },
 });
 

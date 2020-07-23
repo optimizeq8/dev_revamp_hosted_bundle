@@ -7,21 +7,23 @@ import {
   BackHandler,
   ScrollView,
   StatusBar,
+  Modal,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "@react-native-community/blur";
-import { Modal } from "react-native-paper";
+
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../../MiniComponents/LowerButton";
-import DateFields from "../../../../MiniComponents/DatePicker/DateFields";
+import DateFields from "../../../../MiniComponents/DatePickerRedesigned/DateFields";
 import Duration from "../../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CustomHeader from "../../../../MiniComponents/Header";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
+import CampaignDuration from "../../../../MiniComponents/CampaignDurationField";
 
 // Style
 import styles from "../../styles/adObjectives.styles";
@@ -69,6 +71,7 @@ class AdObjective extends Component {
       start_timeError: "",
       end_timeError: "",
       incomplete: false,
+      duration: 7,
     };
   }
   componentWillUnmount() {
@@ -99,6 +102,10 @@ class AdObjective extends Component {
    */
   setCampaignInfo = () => {
     // console.log("data", this.props.data);
+    let start_time = new Date();
+    start_time.setDate(new Date().getDate() + 1);
+    let end_time = new Date();
+    end_time.setDate(start_time.getDate() + this.state.duration);
 
     if (
       this.props.data &&
@@ -116,8 +123,10 @@ class AdObjective extends Component {
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
-          : "",
-        end_time: this.props.data.end_time ? this.props.data.end_time : "",
+          : start_time.toISOString().split("T")[0],
+        end_time: this.props.data.end_time
+          ? this.props.data.end_time
+          : end_time.toISOString().split("T")[0],
       };
       this.setState({
         minValueBudget: this.props.data.minValueBudget,
@@ -132,6 +141,7 @@ class AdObjective extends Component {
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
+        modalVisible: false,
       });
     } else {
       this.setState({
@@ -140,8 +150,8 @@ class AdObjective extends Component {
           businessid: this.props.mainBusiness.businessid,
           name: "",
           objective: "",
-          start_time: "",
-          end_time: "",
+          start_time: start_time.toISOString().split("T")[0],
+          end_time: start_time.toISOString().split("T")[0],
         },
         minValueBudget: 0,
         maxValueBudget: 0,
@@ -220,9 +230,9 @@ class AdObjective extends Component {
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = (days) => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+  getMinimumCash = () => {
+    let minValueBudget = 25 * this.state.duration;
+    let maxValueBudget = minValueBudget + 1500;
     this.setState({
       minValueBudget,
       maxValueBudget,
@@ -310,7 +320,7 @@ class AdObjective extends Component {
         campaign_type: "InstagramStoryAd",
         ...this.state.campaignInfo,
       };
-
+      this.getMinimumCash();
       this.props.ad_objective_instagram(
         {
           ...info,
@@ -379,7 +389,6 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
-
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
       <ObjectivesCard
@@ -451,6 +460,12 @@ class AdObjective extends Component {
                     : "shake"
                 }
               >
+                <CampaignDuration
+                  stopTimer={this.stopTimer}
+                  handleDuration={this.handleDuration}
+                  duration={this.state.duration}
+                  screenProps={this.props.screenProps}
+                />
                 <Duration
                   label={"Date"}
                   screenProps={this.props.screenProps}
@@ -500,12 +515,12 @@ class AdObjective extends Component {
         </TouchableWithoutFeedback>
 
         <DateFields
-          getMinimumCash={this.getMinimumCash}
+          // getMinimumCash={this.getMinimumCash}
           onRef={(ref) => (this.dateField = ref)}
           handleStartDatePicked={this.handleStartDatePicked}
           handleEndDatePicked={this.handleEndDatePicked}
           start_time={this.state.campaignInfo.start_time}
-          end_time={this.state.campaignInfo.end_time}
+          end_time={this.state.campaignInfo.start_time}
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
           closedContinueModal={this.state.closedContinueModal}
@@ -530,9 +545,8 @@ class AdObjective extends Component {
           onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <BlurView>
-            <View style={styles.safeAreaView}>
-              <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+          <View style={styles.safeAreaView}>
+            <View style={styles.objectiveModal}>
               <View style={styles.popupOverlay}>
                 <CustomHeader
                   screenProps={this.props.screenProps}
@@ -540,11 +554,13 @@ class AdObjective extends Component {
                   actionButton={() => {
                     this.setModalVisible(false);
                   }}
-                  title={"Campaign Objective"}
+                  title={"Select an objective"}
                   segment={{
                     source: "ad_objective_modal",
                     source_action: "a_go_back",
                   }}
+                  titleStyle={{ color: "#000" }}
+                  iconColor="#000"
                 />
                 <Content
                   padder
@@ -558,7 +574,7 @@ class AdObjective extends Component {
  bottom={4} function={this.setModalVisible} /> */}
               </View>
             </View>
-          </BlurView>
+          </View>
         </Modal>
       </View>
     );

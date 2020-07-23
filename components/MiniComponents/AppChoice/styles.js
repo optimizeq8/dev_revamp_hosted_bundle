@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     width: "100%",
     // flex: 1,
     paddingBottom: 300,
+    paddingHorizontal: 10,
+    paddingTop: 20,
   },
   container: {
     backgroundColor: "#0000",
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     width: 170,
   },
   footerText: {
-    color: "#fff",
+    color: globalColors.purple,
     fontSize: 14,
     fontFamily: "montserrat-regular",
     paddingVertical: 16,
@@ -242,6 +244,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-regular",
     fontSize: 13,
+  },
+  customModalField: {
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
   },
 });
 

@@ -25,6 +25,7 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
           />
         );
         break;
@@ -35,6 +36,7 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
           />
         );
         break;
@@ -45,6 +47,7 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
           />
         );
         break;
@@ -55,6 +58,7 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
           />
         );
         break;
@@ -65,6 +69,7 @@ class SwipeUpDestination extends React.Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             listNum={listIndex}
+            toggleClickDestination={this.props.toggleClickDestination}
           />
         );
         break;
@@ -76,45 +81,7 @@ class SwipeUpDestination extends React.Component {
   };
   render() {
     const { content } = this.getSwipeUpDestination();
-    return (
-      <View style={styles.safeAreaContainer}>
-        <SafeAreaView
-          forceInset={{
-            top: "always",
-            bottom: "never",
-          }}
-          style={{ backgroundColor: "#fff" }}
-        />
-        <TopStepsHeader
-          screenProps={this.props.screenProps}
-          closeButton={false}
-          segment={{
-            source: "ad_swipe_up_destination",
-            source_action: "a_go_back",
-          }}
-          icon="instagram"
-          navigation={this.props.navigation}
-          currentScreen="Compose"
-          title={
-            this.props.adType === "InstagramStoryAd"
-              ? "Swipe Up destination"
-              : "Click destination"
-          }
-        />
-        {/* 
-        <Header
-          screenProps={this.props.screenProps}
-          closeButton={false}
-          segment={{
-            source: "ad_swipe_up_destination",
-            source_action: "a_go_back",
-          }}
-          navigation={this.props.navigation}
-          title={"Swipe Up destination"}
-        /> */}
-        <View style={{ top: 15, flex: 1 }}>{content}</View>
-      </View>
-    );
+    return <View style={styles.safeAreaContainer}>{content}</View>;
   }
 }
 
