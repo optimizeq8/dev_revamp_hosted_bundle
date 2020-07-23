@@ -16,7 +16,9 @@ import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
 import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 import CalenderkIcon from "../../../assets/SVGs/Calender";
+import BinIcon from "../../../assets/SVGs/Bin";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 
 export default class Header extends Component {
   render() {
@@ -156,6 +158,21 @@ export default class Header extends Component {
             <TouchableOpacity onPress={topRightButtonFunction}>
               {showTopRightButtonIcon === "settings" ? (
                 <Settings width={30} />
+              ) : showTopRightButtonIcon === "delete" ? (
+                <View
+                  style={{ display: "flex", flexDirection: "row", right: 20 }}
+                >
+                  <BinIcon width={30} fill="#9300ff" />
+                  <Text
+                    style={{
+                      fontFamily: "montserrat-regular",
+                      fontSize: 14,
+                      color: globalColors.purple,
+                    }}
+                  >
+                    Delete
+                  </Text>
+                </View>
               ) : (
                 <ShareIcon fill="#fff" />
               )}

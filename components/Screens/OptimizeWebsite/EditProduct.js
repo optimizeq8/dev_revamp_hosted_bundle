@@ -24,8 +24,8 @@ import CopyIcon from "../../../assets/SVGs/CopyIcon";
 import PlusIcon from "../../../assets/SVGs/Plus";
 
 // Style
-import styles from "./styles";
 import myWebsiteStyles from "./myWebsiteStyles";
+import editProductStyles from "./editProductStyles";
 
 import Header from "../../MiniComponents/Header";
 import Website from "../../MiniComponents/InputFieldNew/Website";
@@ -34,6 +34,7 @@ import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "./PickImage";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -77,16 +78,14 @@ class MyWebsite extends Component {
     this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    this.props.navigation.navigate("WebsiteSetting", {
-      source: "open_my_website",
-      source_action: "a_open_my_website_detail",
-    });
+    console.log("delete");
   };
   goBack = () => {
-    this.props.navigation.navigate("Dashboard", {
-      source: "open_my_website",
-      source_action: "a_go_back",
-    });
+    this.props.navigation.goBack();
+    // this.props.navigation.navigate("Dashboard", {
+    //   source: "open_my_website",
+    //   source_action: "a_go_back",
+    // });
   };
   startUpload = (media) => {
     var body = new FormData();
@@ -121,10 +120,8 @@ class MyWebsite extends Component {
       website = `https://${mainBusiness.weburl}.optimizeapp.com`;
     }
     return (
-      <SafeAreaView
-        style={myWebsiteStyles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View style={editProductStyles.outerView}>
+        <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -143,113 +140,96 @@ class MyWebsite extends Component {
             color: "#75647C",
           }}
           iconColor={"#75647C"}
+          showTopRightButtonIcon={"delete"}
         />
         <ScrollView
-          style={{
-            backgroundColor: "#f8f8f8",
+          horizontal
+          contentContainerStyle={editProductStyles.imageViewContainer}
+        >
+          <Image
+            style={editProductStyles.image}
+            source={{
+              uri:
+                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+            }}
+          />
+          <Image
+            style={editProductStyles.image}
+            source={{
+              uri:
+                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+            }}
+          />
+          <Image
+            style={editProductStyles.image}
+            source={{
+              uri:
+                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+            }}
+          />
+        </ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: 20,
           }}
         >
-          <View>
-            <Image
-              style={{
-                width: 140,
-                height: 230,
-                borderRadius: 20,
-              }}
-              source={{
-                uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-              }}
-            />
-          </View>
-
-          <View>
-            <View
-              style={{
-                borderColor: globalColors.purple,
-                borderWidth: 1,
-                width: 20,
-                height: 20,
-                borderRadius: 20,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#9300FF50",
-              }}
-            >
+          <View style={editProductStyles.feildView}>
+            <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
             </View>
-            <View>
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 12,
-                  color: "#75647C",
-                  textTransform: "uppercase",
-                }}
-              >
-                Product Name
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 12,
-                  color: "#75647C",
-                  marginTop: 4,
-                }}
-              >
-                dfghjkj
-              </Text>
+            <View style={{ marginHorizontal: 8 }}>
+              <Text style={editProductStyles.subHeading}>Product Name</Text>
+              <Text style={editProductStyles.subText}>dfghjkj</Text>
             </View>
           </View>
-          <View>
-            <View>
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 12,
-                  color: "#75647C",
-                  textTransform: "uppercase",
-                }}
-              >
-                Price
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 12,
-                  color: "#75647C",
-                  marginTop: 4,
-                }}
-              >
-                Add Price
-              </Text>
+          <View style={editProductStyles.feildView}>
+            <View style={editProductStyles.plusIconView}>
+              <PlusIcon width={7} fill={globalColors.purple} />
+            </View>
+            <View style={{ marginHorizontal: 8 }}>
+              <Text style={editProductStyles.subHeading}>Price</Text>
+              <Text style={editProductStyles.subText}>dfghjkj</Text>
             </View>
           </View>
-          <View>
-            <View>
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 12,
-                  color: "#75647C",
-                  textTransform: "uppercase",
-                }}
-              >
-                Description
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 12,
-                  color: "#75647C",
-                  marginTop: 4,
-                }}
-              >
-                dfghjkj
+          <View style={editProductStyles.feildView}>
+            <View style={editProductStyles.plusIconView}>
+              <PlusIcon width={7} fill={globalColors.purple} />
+            </View>
+            <View style={{ marginHorizontal: 8 }}>
+              <Text style={editProductStyles.subHeading}>Description</Text>
+              <Text style={editProductStyles.subText}>
+                qwertyuiopasdfghjklzxcvbnm
               </Text>
             </View>
           </View>
         </ScrollView>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-around",
+            marginVertical: 20,
+          }}
+        >
+          <GradientButton
+            text={"Preview"}
+            screenProps={this.props.screenProps}
+            transparent
+            style={editProductStyles.previewBtn}
+            uppercase
+            textStyle={editProductStyles.previewText}
+          />
+          <GradientButton
+            text={"Save"}
+            screenProps={this.props.screenProps}
+            purpleViolet
+            style={editProductStyles.saveBtn}
+            uppercase
+            // textStyle={editProductStyles.previewText}
+          />
+        </View>
+
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -259,7 +239,7 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }
