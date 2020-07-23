@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 11,
     fontFamily: "montserrat-regular",
-    color: globalColors.orange,
+    color: globalColors.purple,
     paddingHorizontal: 5,
   },
   instagramErrorText: {
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    color: "#FFF",
+    color: globalColors.purple,
     paddingBottom: 5,
   },
   socialMediaView: {

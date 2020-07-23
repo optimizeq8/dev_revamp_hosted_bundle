@@ -53,6 +53,7 @@ import OptimizeWebsite from "../Screens/OptimizeWebsite";
 import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
+import EditProduct from "../Screens/OptimizeWebsite/EditProduct";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
@@ -155,6 +156,7 @@ export default FluidNavigator(
     ImagePreview: ImagePreview,
     InstagramCampaignDetails: InstagramCampaignDetails,
     InstagramAdDesignExistingPost: InstagramAdDesignExistingPost,
+    EditProduct: EditProduct,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

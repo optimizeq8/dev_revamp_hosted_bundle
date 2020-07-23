@@ -21,6 +21,7 @@ import * as actionCreators from "../../../store/actions";
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 import Pen from "../../../assets/SVGs/Pen";
 import CopyIcon from "../../../assets/SVGs/CopyIcon";
+import PlusIcon from "../../../assets/SVGs/Plus";
 
 // Style
 import styles from "./styles";
@@ -137,7 +138,7 @@ class MyWebsite extends Component {
           // navigation={this.props.navigation}
           actionButton={this.goBack}
           topRightButtonFunction={this.topRightButtonFunction}
-          title={"My Website"}
+          title={"Edit Product"}
           titleStyle={{
             color: "#75647C",
           }}
@@ -148,119 +149,11 @@ class MyWebsite extends Component {
             backgroundColor: "#f8f8f8",
           }}
         >
-          <View style={styles.businesslogoView}>
+          <View>
             <Image
               style={{
-                width: 95,
-                height: 95,
-              }}
-              source={{
-                uri: mainBusiness.businesslogo || this.props.businessLogo,
-              }}
-            />
-          </View>
-          {/* <Text style={styles.bsnNameText}>
-            {this.props.mainBusiness.businessname}
-          </Text> */}
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignSelf: "center",
-              alignItems: "center",
-              marginBottom: 13,
-            }}
-            onPress={this.uploadPhoto}
-          >
-            <Pen width={15} fill={globalColors.purple} />
-            <Text style={styles.changeLogoText}>
-              {translate("Change Logo")}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.weburlView}>
-            <Website
-              label={"Your URL"}
-              website={website}
-              disabled={true}
-              screenProps={this.props.screenProps}
-              iconFill={"#75647C"}
-              labelColor={"#75647C"}
-              inputColor={"#75647C"}
-              customStyle={{
-                backgroundColor: globalColors.white,
-              }}
-            />
-            <TouchableOpacity
-              style={styles.copyIcon2}
-              onPress={() => {
-                analytics.track(`a_copy_my_website_url`, {
-                  source: "open_my_website",
-                  source_action: "a_copy_my_website_url",
-                  weburl: website,
-                });
-                Clipboard.setString(website);
-              }}
-            >
-              <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginHorizontal: 15,
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "montserrat-bold",
-                fontSize: 18,
-                color: "#75647C",
-              }}
-            >
-              MY PRODUCTS
-            </Text>
-
-            <TouchableOpacity>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 14,
-                  color: globalColors.purple,
-                }}
-              >
-                Add Products
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("EditProduct");
-            }}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#FFF",
-              borderRadius: 20,
-              marginHorizontal: 20,
-              borderColor: "#707070",
-              borderWidth: 0.1,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
-          >
-            <Image
-              style={{
-                width: 105,
-                height: 105,
+                width: 140,
+                height: 230,
                 borderRadius: 20,
               }}
               source={{
@@ -268,19 +161,30 @@ class MyWebsite extends Component {
                   "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
               }}
             />
+          </View>
+
+          <View>
             <View
               style={{
-                paddingHorizontal: 15,
-                flex: 1,
+                borderColor: globalColors.purple,
+                borderWidth: 1,
+                width: 20,
+                height: 20,
+                borderRadius: 20,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#9300FF50",
               }}
             >
+              <PlusIcon width={7} fill={globalColors.purple} />
+            </View>
+            <View>
               <Text
                 style={{
                   fontFamily: "montserrat-bold",
                   fontSize: 12,
                   color: "#75647C",
                   textTransform: "uppercase",
-                  marginTop: 4,
                 }}
               >
                 Product Name
@@ -290,18 +194,21 @@ class MyWebsite extends Component {
                   fontFamily: "montserrat-regular",
                   fontSize: 12,
                   color: "#75647C",
-                  lineHeight: 15,
+                  marginTop: 4,
                 }}
               >
-                Untitled
+                dfghjkj
               </Text>
+            </View>
+          </View>
+          <View>
+            <View>
               <Text
                 style={{
                   fontFamily: "montserrat-bold",
                   fontSize: 12,
                   color: "#75647C",
                   textTransform: "uppercase",
-                  marginTop: 4,
                 }}
               >
                 Price
@@ -311,23 +218,37 @@ class MyWebsite extends Component {
                   fontFamily: "montserrat-regular",
                   fontSize: 12,
                   color: "#75647C",
-                  lineHeight: 15,
+                  marginTop: 4,
                 }}
               >
-                Unavailable
+                Add Price
               </Text>
             </View>
-            <Pen
-              style={{ marginRight: 20 }}
-              width={15}
-              fill={globalColors.purple}
-            />
-          </TouchableOpacity>
-          {/* <ProductSelect
-            source={"open_my_website"}
-            edit={true}
-            screenProps={this.props.screenProps}
-          /> */}
+          </View>
+          <View>
+            <View>
+              <Text
+                style={{
+                  fontFamily: "montserrat-bold",
+                  fontSize: 12,
+                  color: "#75647C",
+                  textTransform: "uppercase",
+                }}
+              >
+                Description
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "montserrat-regular",
+                  fontSize: 12,
+                  color: "#75647C",
+                  marginTop: 4,
+                }}
+              >
+                dfghjkj
+              </Text>
+            </View>
+          </View>
         </ScrollView>
         <LoadingModal
           videoUrlLoading={false}

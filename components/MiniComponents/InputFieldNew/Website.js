@@ -77,6 +77,9 @@ export default class WebsiteComponent extends React.Component {
       disabled,
       label = "Website",
       placeholder = "Enter your website's URL",
+      iconFill,
+      labelColor,
+      inputColor = "#FFF",
     } = this.props;
     return (
       <Animatable.View
@@ -95,15 +98,21 @@ export default class WebsiteComponent extends React.Component {
             height={24}
             style={styles.icon}
             fill={
-              this.state.highlight ? globalColors.orange : globalColors.white
+              iconFill
+                ? iconFill
+                : this.state.highlight
+                ? globalColors.orange
+                : globalColors.white
             }
           />
           <View style={styles.colView}>
             <Text
               style={[
                 styles.inputLabel,
-                this.state.highlight
-                  ? [GlobalStyles.orangeTextColor]
+                labelColor
+                  ? { color: labelColor }
+                  : this.state.highlight
+                  ? GlobalStyles.orangeTextColor
                   : GlobalStyles.whiteTextColor,
               ]}
             >
@@ -115,6 +124,7 @@ export default class WebsiteComponent extends React.Component {
                 styles.inputText,
                 {
                   fontFamily: "montserrat-light-english",
+                  color: inputColor,
                 },
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
               ]}
