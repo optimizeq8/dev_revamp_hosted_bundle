@@ -238,6 +238,15 @@ class InstaApp_Install extends Component {
       //   source: "ad_swipe_up_destination",
       //   source_action: "a_swipe_up_destination",
       // });
+//       const existingPost = this.props.navigation.getParam(
+//         "existingPost",
+//         false
+//       );
+//       this.props.navigation.navigate(
+//         existingPost
+//           ? "InstagramAdDesignExistingPost"
+//           : `${this.props.data.campaign_type}Design`
+//       );
     } else {
       showMessage({
         message: translate("Please select at least one app"),

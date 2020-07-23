@@ -145,6 +145,15 @@ class Website extends Component {
 
       this.props.toggleClickDestination(false);
       // this.props.navigation.navigate(`${this.props.data.campaign_type}Design`);
+//       const existingPost = this.props.navigation.getParam(
+//         "existingPost",
+//         false
+//       );
+//       this.props.navigation.navigate(
+//         existingPost
+//           ? "InstagramAdDesignExistingPost"
+//           : `${this.props.data.campaign_type}Design`
+//       );
     }
   };
   onSelectedCallToActionIdChange = (value) => {
