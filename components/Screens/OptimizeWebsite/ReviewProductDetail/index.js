@@ -10,31 +10,23 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import Pen from "../../../assets/SVGs/Pen";
-import CopyIcon from "../../../assets/SVGs/CopyIcon";
-import PlusIcon from "../../../assets/SVGs/Plus";
+import PlusIcon from "../../../../assets/SVGs/Plus";
 
 // Style
-import myWebsiteStyles from "./myWebsiteStyles";
-import editProductStyles from "./editProductStyles";
+import editProductStyles from "./styles";
 
-import Header from "../../MiniComponents/Header";
-import Website from "../../MiniComponents/InputFieldNew/Website";
-import ProductSelect from "./ProductSelect";
-import { globalColors } from "../../../GlobalStyles";
-import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
+import Header from "../../../MiniComponents/Header";
+import { globalColors } from "../../../../GlobalStyles";
 
-import { _pickImage } from "./PickImage";
-import GradientButton from "../../MiniComponents/GradientButton";
+import { _pickImage } from "../PickImage";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -112,9 +104,6 @@ class MyWebsite extends Component {
     this.setState({ isVisible: visibile });
   };
 
-  goToPreview = () => {
-    this.props.navigation.navigate("ReviewProductDetail");
-  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -125,26 +114,7 @@ class MyWebsite extends Component {
     return (
       <View style={editProductStyles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
-        <Header
-          screenProps={this.props.screenProps}
-          closeButton={false}
-          segment={{
-            str: "MyWebsite Back Button",
-            obj: { businessname: this.props.mainBusiness.businessname },
-            source: "open_my_website",
-            source_action: "a_go_back",
-          }}
-          showTopRightButtonIcon={"settings"}
-          // navigation={this.props.navigation}
-          actionButton={this.goBack}
-          topRightButtonFunction={this.topRightButtonFunction}
-          title={"Edit Product"}
-          titleStyle={{
-            color: "#75647C",
-          }}
-          iconColor={"#75647C"}
-          showTopRightButtonIcon={"delete"}
-        />
+
         <ScrollView
           horizontal
           contentContainerStyle={editProductStyles.imageViewContainer}
@@ -206,43 +176,6 @@ class MyWebsite extends Component {
             </View>
           </View>
         </ScrollView>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-around",
-            marginVertical: 20,
-          }}
-        >
-          <GradientButton
-            text={"Preview"}
-            screenProps={this.props.screenProps}
-            transparent
-            style={editProductStyles.previewBtn}
-            uppercase
-            textStyle={editProductStyles.previewText}
-            onPressAction={this.goToPreview}
-          />
-          <GradientButton
-            text={"Save"}
-            screenProps={this.props.screenProps}
-            purpleViolet
-            style={editProductStyles.saveBtn}
-            uppercase
-            // textStyle={editProductStyles.previewText}
-          />
-        </View>
-
-        <LoadingModal
-          videoUrlLoading={false}
-          loading={this.props.loading}
-          isVisible={this.state.isVisible}
-          onToggleModal={this.onToggleModal}
-          cancelUpload={this.cancelUpload}
-          loaded={this.state.loaded}
-          screenProps={this.props.screenProps}
-        />
       </View>
     );
   }

@@ -72,6 +72,7 @@ import InstagramStoryAdPaymentReview from "../Screens/InstagramCampaignCreate/St
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
+import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
 
 export default FluidNavigator(
   {
@@ -157,6 +158,7 @@ export default FluidNavigator(
     InstagramCampaignDetails: InstagramCampaignDetails,
     InstagramAdDesignExistingPost: InstagramAdDesignExistingPost,
     EditProduct: EditProduct,
+    ReviewProductDetail: ReviewProductDetail,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
