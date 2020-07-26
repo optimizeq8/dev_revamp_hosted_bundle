@@ -6,9 +6,9 @@ import { Icon } from "native-base";
 import styles from "./styles";
 
 export default class LocationList extends Component {
-  state = { autoFeatures: "" };
+  state = { results: "" };
   handleAutoFeatures = (list) => {
-    this.setState({ autoFeatures: list });
+    this.setState({ results: list });
   };
   render() {
     return (
@@ -27,12 +27,14 @@ export default class LocationList extends Component {
         <MapSearchBar
           handleAutoFeatures={this.handleAutoFeatures}
           //   handleShowFlatList={this.handleShowFlatList}
+          handleLocationSearchModal={this.props.handleLocationSearchModal}
+          handleMarkers={this.props.handleMarkers}
           country_code={this.props.country_code}
           showFlatList={this.state.showFlatList}
           handleRegionChange={this.handleRegionChange}
         />
 
-        <FlatList
+        {/* <FlatList
           style={{
             top: 20,
             maxHeight: 200,
@@ -43,13 +45,13 @@ export default class LocationList extends Component {
             borderWidth: 0.3,
             backgroundColor: "#fff",
           }}
-          //   data={this.state.autoFeatures}
-          data={[
-            { properties: { region: "Salmiya", country: "Kuwait" } },
-            { properties: { region: "LKNsdv", country: "Kuwait" } },
+          data={this.state.results}
+          //   data={[
+          //     { properties: { region: "Salmiya", country: "Kuwait" } },
+          //     { properties: { region: "LKNsdv", country: "Kuwait" } },
 
-            { properties: { region: "Sallknmiya", country: "Kuwait" } },
-          ]}
+          //     { properties: { region: "Sallknmiya", country: "Kuwait" } },
+          //   ]}
           renderItem={(item) => (
             <SearchResault
               // // handleRegionChange={this.props.handleRegionChange}
@@ -57,7 +59,7 @@ export default class LocationList extends Component {
             />
           )}
           keyExtractor={(item) => item.name}
-        />
+        /> */}
       </View>
     );
   }

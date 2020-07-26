@@ -6,13 +6,11 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default class LocationRow extends Component {
   render() {
-    let { country, region, handleMapModal, result } = this.props;
+    let { formatted_address, region, handleMapModal, result } = this.props;
+
     return (
       <View style={styles.locationRow}>
-        <Text style={styles.locationName}>
-          {country}
-          <Text style={{ fontFamily: "montserrat-light" }}> - {region}</Text>
-        </Text>
+        <Text style={styles.locationName}>{formatted_address}</Text>
         <View style={styles.buttonsContainer}>
           {result ? (
             <Text style={styles.buttonText}>Add</Text>

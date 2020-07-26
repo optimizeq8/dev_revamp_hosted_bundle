@@ -29,7 +29,9 @@ export default class SnapchatLocation extends Component {
   handleLocationSearchModal = (value) => {
     this.setState({ searchModalVisible: value });
   };
-  handleMarkers = (markers) => {
+  handleMarkers = (marker) => {
+    let markers = this.state.markers;
+    markers = [...markers, marker];
     this.setState({
       markers,
     });
@@ -121,6 +123,7 @@ export default class SnapchatLocation extends Component {
           ></TouchableOpacity>
           <View style={{ top: "20%" }}>
             <LocationList
+              handleMarkers={this.handleMarkers}
               handleLocationSearchModal={this.handleLocationSearchModal}
               {...props}
             />
