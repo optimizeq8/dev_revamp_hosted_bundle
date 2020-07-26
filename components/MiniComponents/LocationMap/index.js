@@ -23,15 +23,19 @@ import Axios from "axios";
 import countries from "../../Data/countries.billingAddress";
 import GradientButton from "../GradientButton";
 import MapMarker from "../../../assets/SVGs/MapMarker";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 export default class LocaionMap extends Component {
   state = {
     initialRegion: {
-      longitude: 0,
-      latitude: 0,
-      latitudeDelta: 3,
+      longitude: 42,
+      latitude: 27,
+      latitudeDelta: 30,
       longitudeDelta: 3,
     },
-    radius: 500,
+    radius: 1000,
     markers: [],
     circles: [],
     marker: {
@@ -44,7 +48,7 @@ export default class LocaionMap extends Component {
     x: 50,
     y: 50,
     dropped: false,
-    width: 100,
+    width: widthPercentageToDP(30),
   };
   cirRefs = {};
   componentDidMount() {
@@ -73,35 +77,68 @@ export default class LocaionMap extends Component {
   handleRad = (subtract = false) => {
     let radius = this.state.marker.radius;
     let width = this.state.width;
+    // if (subtract) {
+    //   if (this.state.width > 100) width = this.state.width - 10;
+    //   // radius = this.state.marker.radius - 250;
+    // } else {
+    //   if (this.state.width < 600) width = this.state.width + 10;
+    //   // radius = this.state.marker.radius + 250;
+    // }
     if (subtract) {
-      if (this.state.width > 100) width = this.state.width - 10;
-      // radius = this.state.marker.radius - 250;
+      if (this.state.marker.radius > 250)
+        radius = this.state.marker.radius - 250;
     } else {
-      if (this.state.width < 600) width = this.state.width + 10;
-      // radius = this.state.marker.radius + 250;
+      if (this.state.marker.radius < 100000)
+        radius = this.state.marker.radius + 250;
     }
     let marker = this.state.marker;
     marker.radius = radius;
-    this.setState({ radius, width });
+
+    this.setState({ radius, width, marker });
     this.timer = setTimeout(() => this.handleRad(subtract), 20);
   };
   stopTimer = () => {
     clearTimeout(this.timer);
   };
   handleAddCir = (e) => {
+    //  let { width, height } = Dimensions.get("window");
+    // let radiusInM =
+    //   this.state.width * width * this.state.latitudeDelta;
+    // this.props.handleMarkers([
+    //   ...this.state.markers,
+    //   {
+    //     coordinate: e.nativeEvent.coordinate,
+    //     key: JSON.stringify(e.nativeEvent.coordinate.latitude),
+    //     radius: radiusInM,
+    //   },
+    // ]);
+
+    console.log(this.state.latitudeDelta, this.state.longitudeDelta);
+
+    this.map.animateToRegion(
+      {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+        latitudeDelta:
+          this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+        longitudeDelta:
+          this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+      },
+      1000
+    );
     this.setState({
       markers: [
         ...this.state.markers,
         {
           coordinate: e.nativeEvent.coordinate,
           key: JSON.stringify(e.nativeEvent.coordinate.latitude),
-          radius: this.state.width * 75 * this.state.latitudeDelta,
+          radius: this.state.radius,
         },
       ],
       marker: {
         coordinate: e.nativeEvent.coordinate,
         key: JSON.stringify(e.nativeEvent.coordinate.latitude),
-        radius: this.state.width * 75 * this.state.latitudeDelta,
+        radius: this.state.radius,
       },
       markerSelected: false,
       dropped: true,
@@ -111,7 +148,7 @@ export default class LocaionMap extends Component {
   handleRemoveCir = () => {
     let mrkers = this.state.markers;
     mrkers = mrkers.filter((mrk) => mrk.key !== this.state.marker.key);
-
+    // this.props.handleMarkers(mrkers);
     this.setState({
       markers: mrkers,
       markerSelected: false,
@@ -186,7 +223,8 @@ export default class LocaionMap extends Component {
         let countryCoords = country.geometry.coordinates;
         let bBox = country.bbox; //boundries of country
         this.handleRegionChange(countryCoords, bBox);
-      });
+      })
+      .catch((err) => {});
   };
   handleShowFlatList = (showFlatList) => {
     this.setState({ showFlatList });
@@ -217,16 +255,35 @@ export default class LocaionMap extends Component {
     let { cirLat, cirLong, radius } = this.state;
     const { translate } = this.props.screenProps;
     return (
-      <View style={{ height: "100%", backgroundColor: "#fff" }}>
-        <SafeAreaView forceInset={{ top: "always" }} />
+      <View
+        style={{
+          height: "100%",
+          backgroundColor: "#fff",
+          borderTopEndRadius: 40,
+          borderTopStartRadius: 40,
+        }}
+      >
         <View
-          style={[
-            globalStyles.row,
-            { justifyContent: "space-evenly", alignItems: "center" },
-          ]}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            padding: 20,
+          }}
         >
-          <View style={[globalStyles.row, { justifyContent: "space-around" }]}>
-            <Icon type="AntDesign" name="close" />
+          <View
+            style={[
+              globalStyles.row,
+              {
+                flex: 1,
+              },
+            ]}
+          >
+            <Icon
+              onPress={() => this.props.handleMapModal(false)}
+              name="close"
+              type="FontAwesome"
+              style={{ fontSize: 20, marginHorizontal: 10 }}
+            />
             <View>
               <Text style={[styles.mapTitle, { fontSize: 17 }]}>
                 Percise Location
@@ -241,7 +298,7 @@ export default class LocaionMap extends Component {
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={{ right: 0 }}>
+          <TouchableOpacity style={{}}>
             <Text style={[styles.rangeStyle, { fontSize: 14 }]}>Save</Text>
           </TouchableOpacity>
         </View>
@@ -259,11 +316,7 @@ export default class LocaionMap extends Component {
             <View>
               <Text style={styles.mapTitle}>Range</Text>
               <Text style={styles.rangeStyle}>
-                {(
-                  (this.state.width * 75 * this.state.latitudeDelta) /
-                  1000
-                ).toFixed(2)}{" "}
-                KM
+                {(this.state.radius / 1000).toFixed(2)} KM
               </Text>
             </View>
           </View>
@@ -296,6 +349,7 @@ export default class LocaionMap extends Component {
                 .then((p) => {
                   this.setState({ ...p });
                 });
+
               this.setState({ ...reg });
             }}
             ref={(ref) => (this.map = ref)}
@@ -304,9 +358,9 @@ export default class LocaionMap extends Component {
             onPress={() => this.handleShowFlatList(false)}
             onPanDrag={() => this.handleShowFlatList(false)}
             style={{ height: "100%" }}
-            onLongPress={this.handleAddCir}
+            // onLongPress={this.handleAddCir}
             initialRegion={this.state.initialRegion}
-            minZoomLevel={this.state.initialRegion.latitudeDelta > 8 ? 5 : 8}
+            // minZoomLevel={this.state.initialRegion.latitudeDelta > 8 ? 5 : 8}
             maxZoomLevel={15}
           >
             {this.state.markers.map((marker) => (
@@ -328,7 +382,7 @@ export default class LocaionMap extends Component {
                   onLayout={() => {
                     if (this.cirRefs[marker.coordinate.latitude]) {
                       this.cirRefs[marker.coordinate.latitude].setNativeProps({
-                        fillColor: "rgba(147,4,255,0.31)",
+                        fillColor: globalColors.purpleTran,
                       });
                     }
                   }}
@@ -336,8 +390,8 @@ export default class LocaionMap extends Component {
                     this.cirRefs[marker.coordinate.latitude] = ref;
                   }}
                   center={marker.coordinate}
-                  radius={marker.radius}
-                  fillColor={"rgba(147,4,255,0.31)"}
+                  radius={this.state.marker.radius}
+                  fillColor={globalColors.purpleTran}
                   strokeColor="#9304FF"
                 />
               </Fragment>
@@ -345,11 +399,7 @@ export default class LocaionMap extends Component {
           </MapView>
           {!this.state.dropped && (
             <View pointerEvents="none" style={styles.circleMarker(this.state)}>
-              <Icon
-                type="FontAwesome"
-                name="circle"
-                style={{ fontSize: 10, color: "#9304FF" }}
-              ></Icon>
+              <MapMarker style={{ bottom: 20 }} />
               <Text style={styles.pinTextStyle}>Drop pin here</Text>
             </View>
           )}
@@ -384,12 +434,12 @@ export default class LocaionMap extends Component {
           showFlatList={this.state.showFlatList}
           handleRegionChange={this.handleRegionChange}
         /> */}
-        <LowerButton
+        {/* <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}
           // style={[styles.button]}
           function={this.handleMapSubmission}
-        />
+        /> */}
       </View>
     );
   }
