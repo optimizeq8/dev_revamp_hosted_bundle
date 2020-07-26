@@ -445,6 +445,19 @@ class AdObjective extends Component {
                 valueText={this.state.campaignInfo.name}
                 translate={this.props.screenProps.translate}
               />
+              <ModalField
+                stateName={"objective"}
+                setModalVisible={this.setModalVisible}
+                modal={true}
+                label={"Objective"}
+                valueError={this.state.objectiveError}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.loading}
+                valueText={this.state.objectiveLabel}
+                value={this.state.campaignInfo.objective}
+                incomplete={this.state.incomplete}
+                translate={this.props.screenProps.translate}
+              />
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({
@@ -467,7 +480,7 @@ class AdObjective extends Component {
                   screenProps={this.props.screenProps}
                 />
                 <Duration
-                  label={"Date"}
+                  label={"Start Date"}
                   screenProps={this.props.screenProps}
                   loading={this.props.loading}
                   dismissKeyboard={Keyboard.dismiss}
@@ -481,20 +494,6 @@ class AdObjective extends Component {
               <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text>
-
-              <ModalField
-                stateName={"objective"}
-                setModalVisible={this.setModalVisible}
-                modal={true}
-                label={"Objective"}
-                valueError={this.state.objectiveError}
-                getValidInfo={this.getValidInfo}
-                disabled={this.props.loading}
-                valueText={this.state.objectiveLabel}
-                value={this.state.campaignInfo.objective}
-                incomplete={this.state.incomplete}
-                translate={this.props.screenProps.translate}
-              />
 
               {this.props.loading ? (
                 <ForwardLoading

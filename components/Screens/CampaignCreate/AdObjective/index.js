@@ -679,7 +679,7 @@ class AdObjective extends Component {
                     </Text>
                   </View> */}
                   <Duration
-                    label={"Campaign Duration"}
+                    label={"Start Date"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}

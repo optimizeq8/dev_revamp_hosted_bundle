@@ -507,33 +507,6 @@ class GoogleAdInfo extends Component {
                 translate={this.props.screenProps.translate}
               />
               <Animatable.View
-                onAnimationEnd={() =>
-                  this.setState({
-                    start_timeError: null,
-                    end_timeError: null,
-                  })
-                }
-                duration={200}
-                easing={"ease"}
-                animation={
-                  !this.state.start_timeError || !this.state.end_timeError
-                    ? ""
-                    : "shake"
-                }
-              >
-                <Duration
-                  label={"Campaign Duration"}
-                  screenProps={this.props.screenProps}
-                  loading={this.props.campaign.uploading}
-                  dismissKeyboard={Keyboard.dismiss}
-                  start_time={this.state.start_time}
-                  end_time={this.state.end_time}
-                  start_timeError={this.state.start_timeError}
-                  end_timeError={this.state.end_timeError}
-                  dateField={this.dateField}
-                />
-              </Animatable.View>
-              <Animatable.View
                 onAnimationEnd={() => this.setState({ countryError: null })}
                 duration={200}
                 easing={"ease"}
@@ -570,6 +543,34 @@ class GoogleAdInfo extends Component {
                 duration={this.state.duration}
                 screenProps={this.props.screenProps}
               />
+              <Animatable.View
+                onAnimationEnd={() =>
+                  this.setState({
+                    start_timeError: null,
+                    end_timeError: null,
+                  })
+                }
+                duration={200}
+                easing={"ease"}
+                animation={
+                  !this.state.start_timeError || !this.state.end_timeError
+                    ? ""
+                    : "shake"
+                }
+              >
+                <Duration
+                  label={"Start Date"}
+                  screenProps={this.props.screenProps}
+                  loading={this.props.campaign.uploading}
+                  dismissKeyboard={Keyboard.dismiss}
+                  start_time={this.state.start_time}
+                  end_time={this.state.end_time}
+                  start_timeError={this.state.start_timeError}
+                  end_timeError={this.state.end_timeError}
+                  dateField={this.dateField}
+                />
+              </Animatable.View>
+
               <View style={styles.languageChoiceView}>
                 <Text style={styles.languageChoiceText}>
                   {translate("Ad Language")}
