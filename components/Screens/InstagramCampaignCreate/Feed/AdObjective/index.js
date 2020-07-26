@@ -396,7 +396,7 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
- selectPostType = () => {
+  selectPostType = () => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.existingPost = this.state.campaignInfo.existingPost === 0 ? 1 : 0;
     this.setState({
@@ -405,7 +405,7 @@ class AdObjective extends Component {
     this.props.save_campaign_info_instagram({
       existingPost: this.state.campaignInfo.existingPost === 0 ? 1 : 0,
     });
-  }
+  };
   handleDuration = (subtract = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 1
@@ -413,7 +413,6 @@ class AdObjective extends Component {
         : 1
       : this.state.duration + 1;
 
- 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
     end_time.setDate(end_time.getDate() + duration);
     this.setState({
@@ -561,7 +560,7 @@ class AdObjective extends Component {
                   screenProps={this.props.screenProps}
                 />
                 <Duration
-                  label={"Date"}
+                  label={"Start Date"}
                   screenProps={this.props.screenProps}
                   loading={this.props.loading}
                   dismissKeyboard={Keyboard.dismiss}
