@@ -21,6 +21,7 @@ import * as actionCreators from "../../../store/actions";
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 import Pen from "../../../assets/SVGs/Pen";
 import CopyIcon from "../../../assets/SVGs/CopyIcon";
+import PlusIcon from "../../../assets/SVGs/Plus";
 
 // Style
 import styles from "./styles";
@@ -143,17 +144,10 @@ class MyWebsite extends Component {
           }}
           iconColor={"#75647C"}
         />
-        <ScrollView
-          style={{
-            backgroundColor: "#f8f8f8",
-          }}
-        >
+        <ScrollView style={styles.scrollViewContainer}>
           <View style={styles.businesslogoView}>
             <Image
-              style={{
-                width: 95,
-                height: 95,
-              }}
+              style={styles.businessLogoImage}
               source={{
                 uri: mainBusiness.businesslogo || this.props.businessLogo,
               }}
@@ -163,12 +157,7 @@ class MyWebsite extends Component {
             {this.props.mainBusiness.businessname}
           </Text> */}
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignSelf: "center",
-              alignItems: "center",
-              marginBottom: 13,
-            }}
+            style={styles.changeLogoView}
             onPress={this.uploadPhoto}
           >
             <Pen width={15} fill={globalColors.purple} />
@@ -203,33 +192,17 @@ class MyWebsite extends Component {
               <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginHorizontal: 15,
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "montserrat-bold",
-                fontSize: 18,
-                color: "#75647C",
-              }}
-            >
-              MY PRODUCTS
+          <View style={myWebsiteStyles.myproductsView}>
+            <Text style={myWebsiteStyles.myproductsText}>
+              {translate("MY PRODUCTS")}
             </Text>
 
-            <TouchableOpacity>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 14,
-                  color: globalColors.purple,
-                }}
-              >
-                Add Products
+            <TouchableOpacity style={myWebsiteStyles.addProductsView}>
+              <View style={myWebsiteStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <Text style={myWebsiteStyles.addProductText}>
+                {translate("Add Products")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -238,96 +211,35 @@ class MyWebsite extends Component {
             onPress={() => {
               this.props.navigation.navigate("EditProduct");
             }}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#FFF",
-              borderRadius: 20,
-              marginHorizontal: 20,
-              borderColor: "#707070",
-              borderWidth: 0.1,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
+            style={myWebsiteStyles.productCard}
           >
             <Image
-              style={{
-                width: 105,
-                height: 105,
-                borderRadius: 20,
-              }}
+              style={myWebsiteStyles.productImage}
               source={{
                 uri:
                   "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
               }}
             />
-            <View
-              style={{
-                paddingHorizontal: 15,
-                flex: 1,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 12,
-                  color: "#75647C",
-                  textTransform: "uppercase",
-                  marginTop: 4,
-                }}
-              >
-                Product Name
+            <View style={myWebsiteStyles.productDetailView}>
+              <Text style={myWebsiteStyles.productNamesubhead}>
+                {translate("Product Name")}
               </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 12,
-                  color: "#75647C",
-                  lineHeight: 15,
-                }}
-              >
-                Untitled
+              <Text style={myWebsiteStyles.productNameText}>
+                {translate("Untitled")}
               </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 12,
-                  color: "#75647C",
-                  textTransform: "uppercase",
-                  marginTop: 4,
-                }}
-              >
-                Price
+              <Text style={myWebsiteStyles.pricesubhead}>
+                {translate("price")}
               </Text>
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 12,
-                  color: "#75647C",
-                  lineHeight: 15,
-                }}
-              >
-                Unavailable
+              <Text style={myWebsiteStyles.priceText}>
+                {translate("Unavailable")}
               </Text>
             </View>
             <Pen
-              style={{ marginRight: 20 }}
+              style={myWebsiteStyles.penIcon}
               width={15}
               fill={globalColors.purple}
             />
           </TouchableOpacity>
-          {/* <ProductSelect
-            source={"open_my_website"}
-            edit={true}
-            screenProps={this.props.screenProps}
-          /> */}
         </ScrollView>
         <LoadingModal
           videoUrlLoading={false}
