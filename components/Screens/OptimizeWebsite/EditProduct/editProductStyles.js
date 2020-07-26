@@ -3,7 +3,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   outerView: {

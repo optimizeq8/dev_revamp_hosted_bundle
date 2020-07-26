@@ -53,7 +53,7 @@ import OptimizeWebsite from "../Screens/OptimizeWebsite";
 import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
-import EditProduct from "../Screens/OptimizeWebsite/EditProduct";
+import EditProduct from "../Screens/OptimizeWebsite/EditProduct/EditProduct";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";

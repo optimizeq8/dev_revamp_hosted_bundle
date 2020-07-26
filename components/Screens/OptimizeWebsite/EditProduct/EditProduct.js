@@ -10,31 +10,24 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
-// import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import Pen from "../../../assets/SVGs/Pen";
-import CopyIcon from "../../../assets/SVGs/CopyIcon";
-import PlusIcon from "../../../assets/SVGs/Plus";
+import PlusIcon from "../../../../assets/SVGs/Plus";
 
 // Style
-import myWebsiteStyles from "./myWebsiteStyles";
 import editProductStyles from "./editProductStyles";
 
-import Header from "../../MiniComponents/Header";
-import Website from "../../MiniComponents/InputFieldNew/Website";
-import ProductSelect from "./ProductSelect";
-import { globalColors } from "../../../GlobalStyles";
-import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
+import Header from "../../../MiniComponents/Header";
+import { globalColors } from "../../../../GlobalStyles";
+import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
-import { _pickImage } from "./PickImage";
-import GradientButton from "../../MiniComponents/GradientButton";
+import { _pickImage } from "../PickImage";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class MyWebsite extends Component {
   constructor(props) {
