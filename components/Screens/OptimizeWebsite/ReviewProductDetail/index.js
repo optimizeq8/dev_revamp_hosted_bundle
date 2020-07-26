@@ -104,11 +104,7 @@ class MyWebsite extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    const { mainBusiness } = this.props;
-    let website = mainBusiness.weburl;
-    if (website && !website.includes(".com")) {
-      website = `https://${mainBusiness.weburl}.optimizeapp.com`;
-    }
+
     return (
       <View style={styles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "never" }} />
@@ -129,7 +125,7 @@ class MyWebsite extends Component {
         </View>
         <View style={styles.priceView}>
           <View>
-            <Text style={styles.priceText}>Price</Text>
+            <Text style={styles.priceText}>{translate("price")}</Text>
             <Text style={styles.priceAmountText}>
               KD <Text style={styles.priceAmountBigText}>125</Text>
             </Text>

@@ -62,5 +62,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 5,
   },
+  fieldTextView: { marginHorizontal: 8 },
 });
 export default styles;

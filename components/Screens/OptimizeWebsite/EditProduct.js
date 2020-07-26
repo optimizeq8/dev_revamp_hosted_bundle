@@ -180,26 +180,36 @@ class MyWebsite extends Component {
             <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
             </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Product Name</Text>
-              <Text style={editProductStyles.subText}>dfghjkj</Text>
+            <View style={editProductStyles.fieldTextView}>
+              <Text style={editProductStyles.subHeading}>
+                {translate("Product Name")}
+              </Text>
+              <Text style={editProductStyles.subText}>
+                {translate("Add Name")}
+              </Text>
             </View>
           </View>
           <View style={editProductStyles.feildView}>
             <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
             </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Price</Text>
-              <Text style={editProductStyles.subText}>dfghjkj</Text>
+            <View style={editProductStyles.fieldTextView}>
+              <Text style={editProductStyles.subHeading}>
+                {translate("price")}
+              </Text>
+              <Text style={editProductStyles.subText}>
+                {translate("Add Price")}
+              </Text>
             </View>
           </View>
           <View style={editProductStyles.feildView}>
             <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
             </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Description</Text>
+            <View style={editProductStyles.fieldTextView}>
+              <Text style={editProductStyles.subHeading}>
+                {translate("Description")}
+              </Text>
               <Text style={editProductStyles.subText}>
                 qwertyuiopasdfghjklzxcvbnm
               </Text>
