@@ -169,7 +169,7 @@ export class TargetAudience extends Component {
                   ))}
               </TouchableOpacity>
             ) : null}
-            {/* <TouchableOpacity
+            <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("map")}
               style={styles.targetTouchable}
@@ -194,7 +194,7 @@ export class TargetAudience extends Component {
                 ) : (
                   <PlusCircleIcon width={30} height={30} />
                 ))}
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
             <TouchableOpacity
               disabled={loading}

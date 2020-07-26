@@ -79,12 +79,12 @@ class AdDetails extends Component {
             },
           ],
           geos: [{ country_code: "", region_id: [] }],
-          // locations: [
-          //   {
-          //     circles: [],
-          //     operation: "INCLUDE",
-          //   },
-          // ],
+          locations: [
+            {
+              circles: [],
+              operation: "INCLUDE",
+            },
+          ],
         },
       },
       filteredRegions: country_regions[0].regions,
@@ -1171,6 +1171,8 @@ class AdDetails extends Component {
     );
   };
   render() {
+    console.log(this.state.campaignInfo.targeting.locations);
+
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
