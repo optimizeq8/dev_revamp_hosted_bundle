@@ -33,7 +33,7 @@ export default class MapSearchBar extends Component {
         );
         let coordinates = country.geometry.coordinates;
         let bBox = country.bbox; //boundries of country
-        this.props.handleRegionChange(coordinates, bBox);
+        // this.props.handleRegionChange(coordinates, bBox);
       })
       .catch((err) => console.log("err", err));
   };
@@ -46,61 +46,39 @@ export default class MapSearchBar extends Component {
         .then((res) => res.data)
         .then((data) => {
           let autoFeatures = data.response.features;
-          this.setState({ autoFeatures });
-          this.props.handleShowFlatList(true);
-        });
+          this.props.handleAutoFeatures(autoFeatures);
+          // this.props.handleShowFlatList(true);
+        })
+        .catch((err) => console.log(err));
     }, 1000);
   };
   render() {
     return (
-      <View style={{ position: "absolute", width: "100%", flex: 1 }}>
-        <SafeAreaView forceInset={{ top: "always" }} />
+      <View style={{ width: "100%" }}>
         <SearchBar
           round
           containerStyle={{
-            backgroundColor: "#0000",
+            backgroundColor: "#fff",
             borderBottomWidth: 0,
+            borderTopWidth: 0,
           }}
-          inputContainerStyle={{ backgroundColor: "#fff" }}
+          inputContainerStyle={{
+            backgroundColor: "#fff",
+            borderWidth: 1,
+            borderColor: "#0001",
+          }}
+          placeholderTextColor={"#0003"}
           searchIcon={{ size: 24 }}
           onChangeText={(text) => this.handleAutoComplete(text)}
           //   onEndEditing={this.searchForGeocode}
-          onFocus={() =>
-            this.state.autoFeatures.length > 0 &&
-            this.props.handleShowFlatList(true)
-          }
+          // onFocus={() =>
+          //   this.state.autoFeatures.length > 0 &&
+          //   // this.props.handleShowFlatList(true)
+          // }
           onClear={(text) => this.SearchFilterFunction("")}
-          placeholder="Type Here..."
+          placeholder="Search for country or region"
           value={this.state.searchValue}
         />
-        {this.props.showFlatList && (
-          <FlatList
-            style={{
-              top: 20,
-              maxHeight: 200,
-              borderRadius: 15,
-              overflow: "hidden",
-              width: "95%",
-              alignSelf: "center",
-              borderWidth: 0.3,
-              backgroundColor: "#fff",
-            }}
-            data={this.state.autoFeatures}
-            //   data={[
-            //     { properties: { name: "Salmiya", country: "Kuwait" } },
-            //     { properties: { name: "LKNsdv", country: "Kuwait" } },
-
-            //     { properties: { name: "Sallknmiya", country: "Kuwait" } },
-            //   ]}
-            renderItem={(item) => (
-              <SearchResault
-                handleRegionChange={this.props.handleRegionChange}
-                item={item.item}
-              />
-            )}
-            keyExtractor={(item) => item.name}
-          />
-        )}
       </View>
     );
   }

@@ -3,7 +3,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default StyleSheet.create({
   mapContainer: {
-    height: "80%",
+    height: "70%",
     justifyContent: "center",
     width: "100%",
     borderTopEndRadius: 30,
@@ -14,7 +14,6 @@ export default StyleSheet.create({
   buttonContainer: {
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
     height: "5%",
     backgroundColor: "#fff",
     flexDirection: "row",
@@ -22,7 +21,7 @@ export default StyleSheet.create({
     paddingLeft: 20,
     borderRadius: 50,
     alignSelf: "center",
-    margin: 20,
+    margin: 10,
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.1,
@@ -63,21 +62,21 @@ export default StyleSheet.create({
     width: state.width,
     height: state.width,
     borderRadius: state.width,
-    borderWidth: 1,
+    // borderWidth: 1,
     position: "absolute",
     left: state.x - state.width / 2,
     top: state.y - state.width / 2,
     alignItems: "center",
-    backgroundColor: "rgba(117, 26, 255,0.3)",
-    borderStyle: "dashed",
-    borderColor: "#9304FF",
+    // backgroundColor: "rgba(117, 26, 255,0.3)",
+    // borderStyle: "dashed",
+    // borderColor: "#9304FF",
     justifyContent: "center",
   }),
   pinButton: {
     position: "absolute",
     width: "50%",
     height: 60,
-    bottom: "5%",
+    bottom: "15%",
     alignSelf: "center",
   },
   pinTextStyle: {
