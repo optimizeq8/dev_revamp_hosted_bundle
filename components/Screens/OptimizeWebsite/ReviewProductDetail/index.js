@@ -18,15 +18,13 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import PlusIcon from "../../../../assets/SVGs/Plus";
+import CrossIcon from "../../../../assets/SVGs/Close";
 
-// Style
-import editProductStyles from "./styles";
-
-import Header from "../../../MiniComponents/Header";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../GlobalStyles";
 
 import { _pickImage } from "../PickImage";
+import styles from "./styles";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -112,70 +110,37 @@ class MyWebsite extends Component {
       website = `https://${mainBusiness.weburl}.optimizeapp.com`;
     }
     return (
-      <View style={editProductStyles.outerView}>
-        <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
+      <View style={styles.outerView}>
+        <SafeAreaView forceInset={{ bottom: "never", top: "never" }} />
 
-        <ScrollView
-          horizontal
-          contentContainerStyle={editProductStyles.imageViewContainer}
-        >
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-            }}
-          />
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-            }}
-          />
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-            }}
-          />
-        </ScrollView>
-        <ScrollView
-          contentContainerStyle={{
-            paddingHorizontal: 20,
+        <Image
+          style={styles.image}
+          source={{
+            uri:
+              "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
           }}
-        >
-          <View style={editProductStyles.feildView}>
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Product Name</Text>
-              <Text style={editProductStyles.subText}>dfghjkj</Text>
-            </View>
+        />
+        <TouchableOpacity style={styles.closeButton} onPress={this.goBack}>
+          <CrossIcon width={12} height={12} stroke={"#9300FF"} />
+        </TouchableOpacity>
+        <View style={styles.productView}>
+          <Text style={styles.productName}> Olive Dress</Text>
+          <Text style={styles.productDesc}>Descriotion in long format</Text>
+        </View>
+        <View style={styles.priceView}>
+          <View>
+            <Text style={styles.priceText}>Price</Text>
+            <Text style={styles.priceAmountText}>
+              KD <Text style={styles.priceAmountBigText}>125</Text>
+            </Text>
           </View>
-          <View style={editProductStyles.feildView}>
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Price</Text>
-              <Text style={editProductStyles.subText}>dfghjkj</Text>
-            </View>
-          </View>
-          <View style={editProductStyles.feildView}>
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <View style={{ marginHorizontal: 8 }}>
-              <Text style={editProductStyles.subHeading}>Description</Text>
-              <Text style={editProductStyles.subText}>
-                qwertyuiopasdfghjklzxcvbnm
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
+          <GradientButton
+            purpleViolet
+            uppercase
+            text={"Buy on Whatsapp"}
+            style={styles.buyBtn}
+          />
+        </View>
       </View>
     );
   }
