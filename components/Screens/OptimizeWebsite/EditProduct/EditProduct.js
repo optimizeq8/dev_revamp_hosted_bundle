@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
+import { Modal } from "react-native-paper";
+
 import Axios from "axios";
 
 //Redux
@@ -18,6 +20,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusIcon from "../../../../assets/SVGs/Plus";
+import CrossIcon from "../../../../assets/SVGs/Close";
 
 // Style
 import editProductStyles from "./editProductStyles";
@@ -28,6 +31,31 @@ import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import { BlurView } from "@react-native-community/blur";
+import { Input } from "native-base";
+
+const country = [
+  {
+    currency: "KW",
+    country: "Kuwait",
+    flag: require("../../../../assets/images/Flags/Kuwait.png"),
+  },
+  {
+    currency: "SR",
+    country: "KSA",
+    flag: require("../../../../assets/images/Flags/KSA.png"),
+  },
+  {
+    currency: "BD",
+    country: "Bahrain",
+    flag: require("../../../../assets/images/Flags/Bahrain.png"),
+  },
+  {
+    currency: "AED",
+    country: "UAE",
+    flag: require("../../../../assets/images/Flags/UAE.png"),
+  },
+];
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -36,6 +64,7 @@ class MyWebsite extends Component {
       signal: null,
       loaded: 0,
       isVisible: false,
+      showPriceModal: false,
     };
   }
   componentWillUnmount() {
@@ -107,6 +136,16 @@ class MyWebsite extends Component {
 
   goToPreview = () => {
     this.props.navigation.navigate("ReviewProductDetail");
+  };
+  closePriceModal = () => {
+    this.setState({
+      showPriceModal: false,
+    });
+  };
+  openPriceModal = () => {
+    this.setState({
+      showPriceModal: true,
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -182,7 +221,10 @@ class MyWebsite extends Component {
               </Text>
             </View>
           </View>
-          <View style={editProductStyles.feildView}>
+          <TouchableOpacity
+            onPress={this.openPriceModal}
+            style={editProductStyles.feildView}
+          >
             <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
             </View>
@@ -194,7 +236,7 @@ class MyWebsite extends Component {
                 {translate("Add Price")}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={editProductStyles.feildView}>
             <View style={editProductStyles.plusIconView}>
               <PlusIcon width={7} fill={globalColors.purple} />
@@ -246,6 +288,129 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
+        <Modal visible={true} onDismiss={this.closePriceModal}>
+          <View
+            style={{
+              backgroundColor: "#F8F8F8",
+              // position: "absolute",
+              width: "80%",
+              alignSelf: "center",
+              padding: 10,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                // alignItems: "center",
+              }}
+            >
+              <TouchableOpacity>
+                <CrossIcon width={10} stroke={globalColors.purple} />
+              </TouchableOpacity>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    color: "#75647C",
+                    marginHorizontal: 15,
+                    fontFamily: "montserrat-bold",
+                  }}
+                >
+                  {translate("price")}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "montserrat-regular",
+                    color: "#75647C",
+                    marginHorizontal: 15,
+                  }}
+                >
+                  Prices will show based on users location
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+                marginHorizontal: 15,
+              }}
+            >
+              {country.map((ctr) => (
+                <TouchableOpacity
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginHorizontal: 5,
+                  }}
+                  key={ctr.country}
+                >
+                  <Image
+                    source={ctr.flag}
+                    style={{ borderRadius: 25, height: 35, width: 35 }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: "montserrat-regular",
+                      fontSize: 12,
+                      color: "#9300FF",
+                      marginVertical: 4,
+                    }}
+                  >
+                    {ctr.country}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View
+              style={{ display: "flex", flexDirection: "row", width: "100%" }}
+            >
+              <Input
+                style={{
+                  width: "50%",
+                  borderRadius: 25,
+                  // borderWidth: 1,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: -1,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                  backgroundColor: "#FFF",
+                  height: 35,
+                  color: "#75647C",
+                  fontSize: 12,
+                  fontFamily: "montserrat-regular",
+                  paddingHorizontal: 15,
+                }}
+                placeholder={translate("Enter Price")}
+                placeholderTextColor={"#75647C"}
+                keyboardType={"numeric"}
+              />
+              {/* </View> */}
+
+              <GradientButton
+                style={{
+                  width: "50%",
+                  height: 35,
+                }}
+                purpleViolet
+                text={"SAVE"}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
