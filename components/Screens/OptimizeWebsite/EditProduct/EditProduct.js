@@ -33,6 +33,7 @@ import { _pickImage } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { BlurView } from "@react-native-community/blur";
 import { Input } from "native-base";
+import styles from "../../../MiniComponents/SideMenu/styles";
 
 const country = [
   {
@@ -188,20 +189,6 @@ class MyWebsite extends Component {
                 "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
             }}
           />
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-            }}
-          />
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-            }}
-          />
         </ScrollView>
         <ScrollView
           contentContainerStyle={{
@@ -288,123 +275,52 @@ class MyWebsite extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
-        <Modal visible={true} onDismiss={this.closePriceModal}>
-          <View
-            style={{
-              backgroundColor: "#F8F8F8",
-              // position: "absolute",
-              width: "80%",
-              alignSelf: "center",
-              padding: 10,
-              borderRadius: 20,
-            }}
-          >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                // alignItems: "center",
-              }}
-            >
-              <TouchableOpacity>
+        <Modal
+          visible={this.state.showPriceModal}
+          onDismiss={this.closePriceModal}
+        >
+          <View style={editProductStyles.priceCard}>
+            <View style={editProductStyles.priceHeaderCard}>
+              <TouchableOpacity onPress={this.closePriceModal}>
                 <CrossIcon width={10} stroke={globalColors.purple} />
               </TouchableOpacity>
               <View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    textTransform: "uppercase",
-                    color: "#75647C",
-                    marginHorizontal: 15,
-                    fontFamily: "montserrat-bold",
-                  }}
-                >
+                <Text style={editProductStyles.priceText}>
                   {translate("price")}
                 </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontFamily: "montserrat-regular",
-                    color: "#75647C",
-                    marginHorizontal: 15,
-                  }}
-                >
-                  Prices will show based on users location
+                <Text style={editProductStyles.priceSubText}>
+                  {translate("Prices will show based on users location")}
                 </Text>
               </View>
             </View>
 
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                marginVertical: 10,
-                marginHorizontal: 15,
-              }}
-            >
+            <View style={editProductStyles.countryOuterView}>
               {country.map((ctr) => (
                 <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    marginHorizontal: 5,
-                  }}
+                  style={editProductStyles.countryEachView}
                   key={ctr.country}
                 >
                   <Image
                     source={ctr.flag}
-                    style={{ borderRadius: 25, height: 35, width: 35 }}
+                    style={editProductStyles.flagImage}
                   />
-                  <Text
-                    style={{
-                      fontFamily: "montserrat-regular",
-                      fontSize: 12,
-                      color: "#9300FF",
-                      marginVertical: 4,
-                    }}
-                  >
+                  <Text style={editProductStyles.countryText}>
                     {ctr.country}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
 
-            <View
-              style={{ display: "flex", flexDirection: "row", width: "100%" }}
-            >
+            <View style={editProductStyles.bottomView}>
               <Input
-                style={{
-                  width: "50%",
-                  borderRadius: 25,
-                  // borderWidth: 1,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: -1,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                  backgroundColor: "#FFF",
-                  height: 35,
-                  color: "#75647C",
-                  fontSize: 12,
-                  fontFamily: "montserrat-regular",
-                  paddingHorizontal: 15,
-                }}
+                style={editProductStyles.inputView}
                 placeholder={translate("Enter Price")}
                 placeholderTextColor={"#75647C"}
                 keyboardType={"numeric"}
               />
-              {/* </View> */}
 
               <GradientButton
-                style={{
-                  width: "50%",
-                  height: 35,
-                }}
+                style={editProductStyles.saveButton}
                 purpleViolet
                 text={"SAVE"}
               />
