@@ -34,8 +34,8 @@ export default class LocaionMap extends Component {
       // latitude: 27,
       // latitudeDelta: 30,
       // longitudeDelta: 3,
-      longitude: 0,
-      latitude: 0,
+      longitude: 42,
+      latitude: 27,
       latitudeDelta: 30,
       longitudeDelta: 3,
     },
@@ -147,17 +147,19 @@ export default class LocaionMap extends Component {
     //   },
     // ]);
 
-    // this.map.animateToRegion(
-    //   {
-    //     latitude: e.nativeEvent.coordinate.latitude,
-    //     longitude: e.nativeEvent.coordinate.longitude,
-    //     latitudeDelta:
-    //       this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
-    //     longitudeDelta:
-    //       this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
-    //   },
-    //   1000
-    // );
+    console.log(this.state.latitudeDelta, this.state.longitudeDelta);
+
+    this.map.animateToRegion(
+      {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+        latitudeDelta:
+          this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+        longitudeDelta:
+          this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+      },
+      1000
+    );
     this.setState({
       markers: [
         ...this.state.markers,
@@ -413,7 +415,6 @@ export default class LocaionMap extends Component {
             // onLongPress={this.handleAddCir}
             initialRegion={this.state.initialRegion}
             // minZoomLevel={this.state.initialRegion.latitudeDelta > 8 ? 5 : 8}
-
             maxZoomLevel={15}
           >
             {this.state.markers.map((marker) => (
@@ -450,7 +451,6 @@ export default class LocaionMap extends Component {
               </Fragment>
             ))}
           </MapView>
-
           {!this.state.dropped && (
             <View pointerEvents="none" style={styles.circleMarker(this.state)}>
               <MapMarker style={{ bottom: 20 }} />
