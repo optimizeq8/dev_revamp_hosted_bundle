@@ -20,12 +20,13 @@ import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
 
 // Icons
-import CloseIcon from "../../../../assets/SVGs/EyeCut";
+import CloseIcon from "../../../../assets/SVGs/Checkmark";
 
 // MiniComponents
-import GradientButton from "../../../MiniComponents/GradientButton";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import Header from "../../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
+
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(
@@ -168,7 +169,7 @@ class ProductSelect extends React.Component {
         >
           {itemFound ? (
             <View style={[styles.itemView, styles.itemFoundView]}>
-              <CloseIcon width={15} />
+              <CloseIcon width={25} />
             </View>
           ) : (
             <View style={styles.itemView}></View>
@@ -187,57 +188,61 @@ class ProductSelect extends React.Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <View style={styles.productSelectOuterView}>
-        <View style={styles.productsTextView}>
-          <Text style={styles.productsText}>{translate("Products")}</Text>
-        </View>
-        <View style={styles.selectProductTextView}>
-          {/* <Text style={styles.selectProductText}>
-            {translate("These are the products that will show on your website")}
-            .{" "}
-            <Text style={styles.hideProductText}>
-              {translate("Tap to remove products")}.
-            </Text>
-          </Text> */}
-          {this.props.instagramPostLoading && (
-            <ActivityIndicator color={globalColors.orange} size="large" />
-          )}
-          {!this.props.instagramPostLoading && this.props.instagramPostList && (
-            <FlatList
-              contentContainerStyle={styles.list}
-              initialNumToRender={12}
-              numColumns={4}
-              horizontal={false}
-              data={this.state.posts}
-              keyExtractor={(item, index) => {
-                if (item) {
-                  return item.imageId;
-                }
-                return index;
-              }}
-              renderItem={({ item }) => this.renderItem(item)}
-            />
-          )}
-          {this.props.loadingMoreInstaPost && (
-            <ActivityIndicator color={globalColors.orange} size="large" />
-          )}
-          {!this.props.instagramPostLoading &&
-            !this.props.loadingMoreInstaPost &&
-            this.props.instagramPostList &&
-            this.props.instaHasNextPage && (
-              <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
-                {translate("VIEW MORE")}
-              </Text>
-            )}
-          <LowerButton
-            screenProps={this.props.screenProps}
-            style={styles.lowerBtn}
-            checkmark={true}
-            function={this.handleSubmission}
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+        <Header
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          segment={{
+            str: "MyWebsite Back Button",
+            obj: { businessname: this.props.mainBusiness.businessname },
+            source: "open_my_website",
+            source_action: "a_go_back",
+          }}
+          // navigation={this.props.navigation}
+          actionButton={this.goBack}
+          titleStyle={{ color: "#75647C" }}
+          iconColor={"#75647C"}
+          title={"Add Products"}
+        />
+
+        {this.props.instagramPostLoading && (
+          <ActivityIndicator color={globalColors.orange} size="large" />
+        )}
+        {!this.props.instagramPostLoading && this.props.instagramPostList && (
+          <FlatList
+            contentContainerStyle={styles.list}
+            initialNumToRender={12}
+            numColumns={4}
+            horizontal={false}
+            data={this.state.posts}
+            keyExtractor={(item, index) => {
+              if (item) {
+                return item.imageId;
+              }
+              return index;
+            }}
+            renderItem={({ item }) => this.renderItem(item)}
           />
-        </View>
+        )}
+        {this.props.loadingMoreInstaPost && (
+          <ActivityIndicator color={globalColors.orange} size="large" />
+        )}
+        {!this.props.instagramPostLoading &&
+          !this.props.loadingMoreInstaPost &&
+          this.props.instagramPostList &&
+          this.props.instaHasNextPage && (
+            <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
+              {translate("VIEW MORE")}
+            </Text>
+          )}
+        <LowerButton
+          screenProps={this.props.screenProps}
+          style={styles.lowerBtn}
+          checkmark={true}
+          function={this.handleSubmission}
+        />
       </View>
     );
   }

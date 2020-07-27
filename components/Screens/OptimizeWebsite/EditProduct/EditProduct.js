@@ -32,9 +32,7 @@ import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
-import { BlurView } from "@react-native-community/blur";
 import { Input } from "native-base";
-import styles from "../../../MiniComponents/SideMenu/styles";
 
 const country = [
   {

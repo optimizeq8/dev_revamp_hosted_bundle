@@ -73,7 +73,7 @@ import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/Swip
 import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
 import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
-import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/ProductSelect";
+import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/SelectProduct";
 
 export default FluidNavigator(
   {

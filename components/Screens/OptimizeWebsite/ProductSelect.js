@@ -164,7 +164,7 @@ class ProductSelect extends React.Component {
         <TouchableOpacity
           key={item.imageId}
           style={styles.itemProductView}
-          onPress={() => this.addToCart(item)}
+          // onPress={() => this.addToCart(item)}
         >
           {itemFound ? (
             <View style={[styles.itemView, styles.itemFoundView]}>
