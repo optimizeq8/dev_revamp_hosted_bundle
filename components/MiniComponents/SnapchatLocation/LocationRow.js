@@ -5,12 +5,17 @@ import { Icon } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class LocationRow extends Component {
+  handleDeletion = (locationInfo) => {
+    this.props.handleMarkers(null, locationInfo);
+  };
   render() {
-    let { formatted_address, region, handleMapModal, result } = this.props;
-
+    let { locationInfo, region, handleMapModal, result } = this.props;
+    // console.log(this.props);
     return (
       <View style={styles.locationRow}>
-        <Text style={styles.locationName}>{formatted_address}</Text>
+        <Text style={styles.locationName}>
+          {locationInfo.description.replace(",", " - ")}
+        </Text>
         <View style={styles.buttonsContainer}>
           {result ? (
             <Text style={styles.buttonText}>Add</Text>
@@ -18,7 +23,7 @@ export default class LocationRow extends Component {
             <>
               <TouchableOpacity
                 style={styles.mapButtonStyle}
-                onPress={() => handleMapModal(true)}
+                onPress={() => handleMapModal(true, locationInfo)}
               >
                 <Icon
                   style={{ fontSize: 20 }}
@@ -27,9 +32,15 @@ export default class LocationRow extends Component {
                 ></Icon>
                 <Text>Map</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteLocationStyle}>
+              <TouchableOpacity
+                onPress={() => this.handleDeletion(locationInfo)}
+                style={styles.deleteLocationStyle}
+              >
                 <Icon
-                  style={{ fontSize: 20, color: globalColors.purple }}
+                  style={{
+                    fontSize: 20,
+                    color: globalColors.purple,
+                  }}
                   name="delete-outline"
                   type="MaterialCommunityIcons"
                 ></Icon>

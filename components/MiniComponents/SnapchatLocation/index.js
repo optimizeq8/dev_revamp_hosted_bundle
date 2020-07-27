@@ -13,32 +13,48 @@ export default class SnapchatLocation extends Component {
     mapModal: false,
     searchModalVisible: false,
     markers: [],
+    locationsInfo: [],
+    selectedLocation: {},
   };
   handleLocationRows = ({ item }) => {
     return (
       <LocationRow
         handleMapModal={this.handleMapModal}
+        handleMarkers={this.handleMarkers}
         id={item.id}
-        {...item}
+        locationInfo={item}
       />
     );
   };
-  handleMapModal = (value) => {
-    this.setState({ mapModal: value });
+  handleMapModal = (value, locationInfo) => {
+    this.setState({
+      mapModal: value,
+      selectedLocation: locationInfo,
+    });
   };
   handleLocationSearchModal = (value) => {
     this.setState({ searchModalVisible: value });
   };
-  handleMarkers = (marker) => {
+  handleMarkers = (marker, locInfo) => {
     let markers = this.state.markers;
-    markers = [...markers, marker];
+    let locationsInfo = this.state.locationsInfo;
+    let index = locationsInfo.findIndex(
+      (loc) => loc.place_id === locInfo.place_id
+    );
+    console.log(index);
+    if (index > -1) {
+      locationsInfo.splice(index, 1);
+      markers.splice(index, 1);
+    } else {
+      locationsInfo = [...locationsInfo, locInfo];
+      markers = [...markers, marker];
+    }
     this.setState({
       markers,
+      locationsInfo,
     });
   };
   render() {
-    console.log(this.state.markers);
-
     let { ...props } = this.props;
     const { translate } = props.screenProps;
     return (
@@ -58,9 +74,9 @@ export default class SnapchatLocation extends Component {
           <Text style={styles.buttonText}>Add location</Text>
         </TouchableOpacity>
         <FlatList
-          data={[{ country: "kuwait", id: 1, region: "Jabriya" }]}
+          data={this.state.locationsInfo}
           renderItem={this.handleLocationRows}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item}
           contentContainerStyle={{ height: "100%" }}
           style={{ width: "80%", height: "40%" }}
         />
@@ -103,7 +119,11 @@ export default class SnapchatLocation extends Component {
             activeOpacity={1}
           ></TouchableOpacity>
           <View style={{ top: "18%" }}>
-            <LocationMap handleMapModal={this.handleMapModal} {...props} />
+            <LocationMap
+              {...props}
+              selectedLocation={this.state.selectedLocation}
+              handleMapModal={this.handleMapModal}
+            />
           </View>
         </Modal>
 

@@ -30,8 +30,12 @@ import {
 export default class LocaionMap extends Component {
   state = {
     initialRegion: {
-      longitude: 42,
-      latitude: 27,
+      // longitude: 42,
+      // latitude: 27,
+      // latitudeDelta: 30,
+      // longitudeDelta: 3,
+      longitude: 0,
+      latitude: 0,
       latitudeDelta: 30,
       longitudeDelta: 3,
     },
@@ -51,21 +55,51 @@ export default class LocaionMap extends Component {
     width: widthPercentageToDP(30),
   };
   cirRefs = {};
+
   componentDidMount() {
-    if (this.props.country_code) {
-      this.handleInitialRegion();
+    if (this.props.selectedLocation) {
+      console.log("this.props.csdc", this.props.selectedLocation);
+      setTimeout(() => {
+        this.handleRegionChange(this.props.selectedLocation);
+      }, 1000);
     }
-    if (this.props.circles.length > 0) {
-      let cirs = this.props.circles.map((cir) => ({
-        key: JSON.stringify(cir.latitude),
-        coordinate: {
-          latitude: cir.latitude,
-          longitude: cir.longitude,
-        },
-        radius: cir.radius,
-      }));
-      this.setState({ markers: cirs });
+    // if (this.props.circles.length > 0) {
+    //   let cirs = this.props.circles.map((cir) => ({
+    //     key: JSON.stringify(cir.latitude),
+    //     coordinate: {
+    //       latitude: cir.latitude,
+    //       longitude: cir.longitude,
+    //     },
+    //     radius: cir.radius,
+    //   }));
+    //   this.setState({ markers: cirs });
+    // }
+  }
+  componentDidUpdate(prevProps) {
+    console.log(
+      "prevProps.selectedLocation !== this.props.selectedLocation",
+      prevProps.selectedLocation !== this.props.selectedLocation &&
+        this.props.selectedLocation
+    );
+    if (
+      prevProps.selectedLocation !== this.props.selectedLocation &&
+      this.props.selectedLocation
+    ) {
+      setTimeout(() => {
+        this.handleRegionChange(this.props.selectedLocation);
+      }, 1000);
     }
+    // if (this.props.circles.length > 0) {
+    //   let cirs = this.props.circles.map((cir) => ({
+    //     key: JSON.stringify(cir.latitude),
+    //     coordinate: {
+    //       latitude: cir.latitude,
+    //       longitude: cir.longitude,
+    //     },
+    //     radius: cir.radius,
+    //   }));
+    //   this.setState({ markers: cirs });
+    // }
   }
   handleDrag = (e, dragEnd = false) => {
     let cirLat = e.nativeEvent.coordinate.latitude;
@@ -113,19 +147,17 @@ export default class LocaionMap extends Component {
     //   },
     // ]);
 
-    console.log(this.state.latitudeDelta, this.state.longitudeDelta);
-
-    this.map.animateToRegion(
-      {
-        latitude: e.nativeEvent.coordinate.latitude,
-        longitude: e.nativeEvent.coordinate.longitude,
-        latitudeDelta:
-          this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
-        longitudeDelta:
-          this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
-      },
-      1000
-    );
+    // this.map.animateToRegion(
+    //   {
+    //     latitude: e.nativeEvent.coordinate.latitude,
+    //     longitude: e.nativeEvent.coordinate.longitude,
+    //     latitudeDelta:
+    //       this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+    //     longitudeDelta:
+    //       this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+    //   },
+    //   1000
+    // );
     this.setState({
       markers: [
         ...this.state.markers,
@@ -158,47 +190,58 @@ export default class LocaionMap extends Component {
   handleMarkerSelect = (e, marker, onPress = false) => {
     this.setState({ marker, markerSelected: onPress });
   };
-  handleRegionChange = (coordinates, bBox = {}) => {
-    coordinates = {
-      latitude: coordinates[1],
-      longitude: coordinates[0],
-    };
-    bBox = {
-      southWest: {
-        latitude: bBox[1],
-        longitude: bBox[0],
-      },
-      northEast: {
-        latitude: bBox[3],
-        longitude: bBox[2],
-      },
-    };
-    let { width, height } = Dimensions.get("window");
-    let ASPECT_RATIO = width / height;
-    let northeastLat = parseFloat(bBox.northEast.latitude);
-    let southwestLat = parseFloat(bBox.southWest.latitude);
-    let latDelta = northeastLat - southwestLat;
-    let lngDelta = latDelta * ASPECT_RATIO * 1.8;
-    this.map.setMapBoundaries(bBox.northEast, bBox.southWest);
-    let zoomLevel = {
-      latitudeDelta: latDelta,
-      longitudeDelta: lngDelta,
-    };
-    this.map.animateToRegion(
-      {
-        ...this.state.initialRegion,
-        ...coordinates,
+  handleRegionChange = async (selectedLocation) => {
+    try {
+      console.log("handleRegionChange", selectedLocation);
+      let { coordinates, bBox } = selectedLocation;
+      let { width, height } = Dimensions.get("window");
+      let ASPECT_RATIO = width / height;
+      let northeastLat = parseFloat(bBox.northeast.lat);
+      let southwestLat = parseFloat(bBox.southwest.lat);
+      let latDelta = northeastLat - southwestLat;
+      let lngDelta = latDelta * ASPECT_RATIO * 1.8;
+      this.map.setMapBoundaries(bBox.northeast, bBox.southwest);
+      let zoomLevel = {
+        latitudeDelta: latDelta,
+        longitudeDelta: lngDelta,
+      };
+      let initialRegion = {
+        ...selectedLocation.coordinates,
         ...zoomLevel,
-      },
-      500
-    );
-    this.setState({
-      initialRegion: {
-        ...this.state.initialRegion,
-        ...coordinates,
-        ...zoomLevel,
-      },
-    });
+      };
+      // console.log(
+      //   "initialRegion",
+      //   this.map.animateToRegion(
+      //     {
+      //       latitude: 29.3117,
+      //       longitude: 47.4818,
+      //       latitudeDelta: 0.3,
+      //       // this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+      //       longitudeDelta: 0.3,
+      //       // this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+      //     },
+      //     1000
+      //   )
+      // );
+      this.map.animateToRegion(
+        {
+          latitude: 29.3117,
+          longitude: 47.4818,
+          latitudeDelta: 0.3,
+          // this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+          longitudeDelta: 0.3,
+          // this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+        },
+        1000
+      );
+      this.setState(
+        {
+          initialRegion: initialRegion,
+          radius: selectedLocation.radius,
+        },
+        () => {}
+      );
+    } catch (error) {}
   };
 
   handleInitialRegion = () => {
@@ -252,6 +295,7 @@ export default class LocaionMap extends Component {
         });
   };
   render() {
+    console.log("this.props.selectedLocation", this.props.selectedLocation);
     let { cirLat, cirLong, radius } = this.state;
     const { translate } = this.props.screenProps;
     return (
@@ -279,7 +323,9 @@ export default class LocaionMap extends Component {
             ]}
           >
             <Icon
-              onPress={() => this.props.handleMapModal(false)}
+              onPress={() =>
+                this.props.handleMapModal(false, this.props.selectedLocation)
+              }
               name="close"
               type="FontAwesome"
               style={{ fontSize: 20, marginHorizontal: 10 }}
@@ -291,7 +337,10 @@ export default class LocaionMap extends Component {
               <Text
                 style={[
                   styles.mapTitle,
-                  { fontSize: 12, fontFamily: "montserrat-regular" },
+                  {
+                    fontSize: 12,
+                    fontFamily: "montserrat-regular",
+                  },
                 ]}
               >
                 Select a specific location
@@ -340,18 +389,21 @@ export default class LocaionMap extends Component {
 
         <View style={styles.mapContainer}>
           <MapView
-            onRegionChangeComplete={(reg) => {
-              this.map
-                .pointForCoordinate({
-                  latitude: reg.latitude,
-                  longitude: reg.longitude,
-                })
-                .then((p) => {
-                  this.setState({ ...p });
-                });
+            // onMapReady={() =>
+            //   this.handleRegionChange(this.props.selectedLocation)
+            // }
+            // onRegionChangeComplete={(reg) => {
+            //   this.map
+            //     .pointForCoordinate({
+            //       latitude: reg.latitude,
+            //       longitude: reg.longitude,
+            //     })
+            //     .then((p) => {
+            //       this.setState({ ...p });
+            //     });
 
-              this.setState({ ...reg });
-            }}
+            //   this.setState({ ...reg });
+            // }}
             ref={(ref) => (this.map = ref)}
             loadingEnabled={true}
             provider={PROVIDER_GOOGLE}
@@ -361,6 +413,7 @@ export default class LocaionMap extends Component {
             // onLongPress={this.handleAddCir}
             initialRegion={this.state.initialRegion}
             // minZoomLevel={this.state.initialRegion.latitudeDelta > 8 ? 5 : 8}
+
             maxZoomLevel={15}
           >
             {this.state.markers.map((marker) => (
@@ -397,6 +450,7 @@ export default class LocaionMap extends Component {
               </Fragment>
             ))}
           </MapView>
+
           {!this.state.dropped && (
             <View pointerEvents="none" style={styles.circleMarker(this.state)}>
               <MapMarker style={{ bottom: 20 }} />

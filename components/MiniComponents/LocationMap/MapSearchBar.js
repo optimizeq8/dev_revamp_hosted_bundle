@@ -60,11 +60,32 @@ export default class MapSearchBar extends Component {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
       radius: 5000,
+      place_id: data.place_id,
     };
-    this.props.handleMarkers(marker);
+    let locationInfo = {
+      description: data.description,
+      coordinates: {
+        latitude: details.geometry.location.lat,
+        longitude: details.geometry.location.lng,
+      },
+      bBox: {
+        ...details.geometry.viewport,
+      },
+      place_id: data.place_id,
+    };
+
+    this.props.handleMarkers(marker, locationInfo);
     this.props.handleLocationSearchModal(false);
   };
   render() {
+    const kuwait = {
+      description: "Kuwait",
+      geometry: { location: { lat: 47.4818, lng: 29.3117 } },
+    };
+    const saudi = {
+      description: "Saudi Arabia",
+      geometry: { location: { lat: 45.0792, lng: 23.8859 } },
+    };
     return (
       <View style={{ width: "100%", height: "100%" }}>
         <GooglePlacesAutocomplete
@@ -83,6 +104,7 @@ export default class MapSearchBar extends Component {
             key: "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
             language: "en",
           }}
+          predefinedPlaces={[kuwait, saudi]}
         />
         {/* <SearchBar
           round
