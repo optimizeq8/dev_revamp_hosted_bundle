@@ -13,18 +13,18 @@ import analytics from "@segment/analytics-react-native";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 
 // Styles
-import { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
 
 // Icons
-import CloseIcon from "../../../assets/SVGs/EyeCut";
+import CloseIcon from "../../../../assets/SVGs/EyeCut";
 
 // MiniComponents
-import GradientButton from "../../MiniComponents/GradientButton";
-import LowerButton from "../../MiniComponents/LowerButton";
+import GradientButton from "../../../MiniComponents/GradientButton";
+import LowerButton from "../../../MiniComponents/LowerButton";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 class ProductSelect extends React.Component {
   componentDidMount() {

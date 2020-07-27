@@ -112,7 +112,9 @@ class MyWebsite extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-
+  goToSelectProduct = () => {
+    this.props.navigation.navigate("MyWebsiteSelectProducts");
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -197,7 +199,10 @@ class MyWebsite extends Component {
               {translate("MY PRODUCTS")}
             </Text>
 
-            <TouchableOpacity style={myWebsiteStyles.addProductsView}>
+            <TouchableOpacity
+              onPress={this.goToSelectProduct}
+              style={myWebsiteStyles.addProductsView}
+            >
               <View style={myWebsiteStyles.plusIconView}>
                 <PlusIcon width={7} fill={globalColors.purple} />
               </View>
