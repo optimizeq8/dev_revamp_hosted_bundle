@@ -136,5 +136,33 @@ const styles = StyleSheet.create({
     width: "30%",
     height: 35,
   },
+  addMediaText: {
+    fontSize: 9,
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    textAlign: "center",
+    marginTop: 8,
+  },
+  placeholderView: {
+    width: 140,
+    height: 230,
+    borderRadius: 20,
+    marginHorizontal: 5,
+    borderWidth: 2,
+    borderColor: globalColors.purple,
+    backgroundColor: "#9304FF16",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imagePlaceholder: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: "100%",
+    borderRadius: 20,
+    opacity: 0.75,
+  },
 });
 export default styles;

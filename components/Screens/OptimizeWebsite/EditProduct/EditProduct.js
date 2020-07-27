@@ -21,6 +21,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import PlusIcon from "../../../../assets/SVGs/Plus";
 import CrossIcon from "../../../../assets/SVGs/Close";
+import CameraCircleOutlineIcon from "../../../../assets/SVGs/CameraCircleOutlinePurple";
 
 // Style
 import editProductStyles from "./editProductStyles";
@@ -189,6 +190,37 @@ class MyWebsite extends Component {
                 "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
             }}
           />
+          <View style={editProductStyles.placeholderView}>
+            <Image
+              style={editProductStyles.imagePlaceholder}
+              source={{
+                uri:
+                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+              }}
+            />
+            <TouchableOpacity>
+              <CameraCircleOutlineIcon width={70} height={70} />
+              <Text style={editProductStyles.addMediaText}>
+                {translate("Add Media")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={editProductStyles.placeholderView}>
+            <Image
+              style={editProductStyles.imagePlaceholder}
+              source={{
+                uri:
+                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+              }}
+            />
+            <TouchableOpacity>
+              <CameraCircleOutlineIcon width={70} height={70} />
+              <Text style={editProductStyles.addMediaText}>
+                {translate("Add Media")}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <ScrollView
           contentContainerStyle={{
