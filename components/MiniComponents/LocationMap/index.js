@@ -53,15 +53,17 @@ export default class LocaionMap extends Component {
     y: 50,
     dropped: false,
     width: widthPercentageToDP(30),
+    mapReady: false,
   };
   cirRefs = {};
 
   componentDidMount() {
     if (this.props.selectedLocation) {
-      console.log("this.props.csdc", this.props.selectedLocation);
       setTimeout(() => {
+        console.log("this.props.csdc", this.map.animateCamera);
+
         this.handleRegionChange(this.props.selectedLocation);
-      }, 1000);
+      }, 100);
     }
     // if (this.props.circles.length > 0) {
     //   let cirs = this.props.circles.map((cir) => ({
@@ -75,19 +77,15 @@ export default class LocaionMap extends Component {
     //   this.setState({ markers: cirs });
     // }
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     console.log(
-      "prevProps.selectedLocation !== this.props.selectedLocation",
-      prevProps.selectedLocation !== this.props.selectedLocation &&
-        this.props.selectedLocation
+      "prevState.mapReady !== this.state.mapReady",
+      prevState.mapReady !== this.state.mapReady
     );
-    if (
-      prevProps.selectedLocation !== this.props.selectedLocation &&
-      this.props.selectedLocation
-    ) {
+    if (prevState.mapReady !== this.state.mapReady) {
       setTimeout(() => {
         this.handleRegionChange(this.props.selectedLocation);
-      }, 1000);
+      }, 10);
     }
     // if (this.props.circles.length > 0) {
     //   let cirs = this.props.circles.map((cir) => ({
@@ -145,21 +143,19 @@ export default class LocaionMap extends Component {
     //     key: JSON.stringify(e.nativeEvent.coordinate.latitude),
     //     radius: radiusInM,
     //   },
-    // ]);
+    // ]);{
 
-    console.log(this.state.latitudeDelta, this.state.longitudeDelta);
-
-    this.map.animateToRegion(
-      {
-        latitude: e.nativeEvent.coordinate.latitude,
-        longitude: e.nativeEvent.coordinate.longitude,
-        latitudeDelta:
-          this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
-        longitudeDelta:
-          this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
-      },
-      1000
-    );
+    // this.map.animateToRegion(
+    //   {
+    //     latitude: e.nativeEvent.coordinate.latitude,
+    //     longitude: e.nativeEvent.coordinate.longitude,
+    //     latitudeDelta:
+    //       this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
+    //     longitudeDelta:
+    //       this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
+    //   },
+    //   1000
+    // );
     this.setState({
       markers: [
         ...this.state.markers,
@@ -225,13 +221,13 @@ export default class LocaionMap extends Component {
       //     1000
       //   )
       // );
-      this.map.animateToRegion(
+      this.map.animateCamera(
         {
-          latitude: 29.3117,
-          longitude: 47.4818,
-          latitudeDelta: 0.3,
-          // this.state.latitudeDelta > 5 ? 0.3 : this.state.latitudeDelta,
-          longitudeDelta: 0.3,
+          center: {
+            latitude: 29.3117,
+            longitude: 47.4818,
+          },
+          zoom: 10,
           // this.state.longitudeDelta > 3 ? 0.3 : this.state.longitudeDelta,
         },
         1000
@@ -243,7 +239,9 @@ export default class LocaionMap extends Component {
         },
         () => {}
       );
-    } catch (error) {}
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   handleInitialRegion = () => {
@@ -297,7 +295,6 @@ export default class LocaionMap extends Component {
         });
   };
   render() {
-    console.log("this.props.selectedLocation", this.props.selectedLocation);
     let { cirLat, cirLong, radius } = this.state;
     const { translate } = this.props.screenProps;
     return (
@@ -391,9 +388,7 @@ export default class LocaionMap extends Component {
 
         <View style={styles.mapContainer}>
           <MapView
-            // onMapReady={() =>
-            //   this.handleRegionChange(this.props.selectedLocation)
-            // }
+            onMapReady={() => this.setState({ mapReady: true })}
             // onRegionChangeComplete={(reg) => {
             //   this.map
             //     .pointForCoordinate({
