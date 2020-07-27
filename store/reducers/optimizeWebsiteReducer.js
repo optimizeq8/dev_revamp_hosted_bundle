@@ -11,7 +11,8 @@ const defaultState = {
   getWebProductsLoading: false,
   savingWebProducts: false,
   message: null,
-  weburl: ""
+  weburl: "",
+  webproducts: [],
 };
 
 /**
@@ -33,7 +34,7 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         businessLogo: "",
         instaHandleId: null,
         instaHasNextPage: null,
-        instaEndCursor: null
+        instaEndCursor: null,
       };
     case actionTypes.GET_INSTAGRAM_POST:
       return {
@@ -43,7 +44,7 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         instagramPostLoading: false,
         instaHandleId: action.payload.instaHandleId,
         instaHasNextPage: action.payload.instaHasNextPage,
-        instaEndCursor: action.payload.instaEndCursor
+        instaEndCursor: action.payload.instaEndCursor,
       };
     case actionTypes.ERROR_GET_INSTAGRAM_POSTS:
       return {
@@ -56,13 +57,13 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         // errorInstaHandle: true,
         errorInstaHandle: action.payload.error,
         instagramPostLoading: false,
-        errorInstaHandleMessage: action.payload.errorMessage
+        errorInstaHandleMessage: action.payload.errorMessage,
       };
 
     case actionTypes.SET_LOADING: {
       return {
         ...state,
-        loadingInstaDetail: action.payload
+        loadingInstaDetail: action.payload,
       };
     }
 
@@ -71,7 +72,7 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         ...state,
         products_to_hide_list: action.payload.products_to_hide_list,
         products_to_hide_id: action.payload.products_to_hide_id,
-        getWebProductsLoading: false
+        getWebProductsLoading: false,
       };
     }
     case actionTypes.ERROR_SET_HIDDEN_INSTAGRAM_POST: {
@@ -79,14 +80,14 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         ...state,
         products_to_hide_list: [],
         products_to_hide_id: null,
-        getWebProductsLoading: false
+        getWebProductsLoading: false,
       };
     }
 
     case actionTypes.SAVE_WEB_PRODUCTS_LOADING:
       return {
         ...state,
-        savingWebProducts: action.payload
+        savingWebProducts: action.payload,
       };
     case actionTypes.SUCCESS_SAVE_WEB_PRODUCTS:
       return {
@@ -94,26 +95,26 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         // savingWebProducts: false,
         products_to_hide_id: action.payload.id,
         products_to_hide_list: action.payload.webproducts,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case actionTypes.ERROR_SAVE_WEB_PRODUCTS:
       return {
         ...state,
         savingWebProducts: false,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case actionTypes.ERROR_GET_MORE_INSTAGRAM_POSTS: {
       return {
         ...state,
         instaHasNextPage: null,
         instaEndCursor: null,
-        loadingMoreInstaPost: false
+        loadingMoreInstaPost: false,
       };
     }
     case actionTypes.SET_LOADING_GET_WEB_PRODUCTS: {
       return {
         ...state,
-        getWebProductsLoading: action.payload
+        getWebProductsLoading: action.payload,
       };
     }
     case actionTypes.GET_MORE_INSTAGRAM_POSTS: {
@@ -124,13 +125,20 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         instaHasNextPage: action.payload.instaHasNextPage,
         instaEndCursor: action.payload.instaEndCursor,
         instagramPostList: list,
-        loadingMoreInstaPost: false
+        loadingMoreInstaPost: false,
       };
     }
     case actionTypes.LOADING_MORE_INSTAGRAM_POSTS: {
       return {
         ...state,
-        loadingMoreInstaPost: action.payload
+        loadingMoreInstaPost: action.payload,
+      };
+    }
+    case actionTypes.SET_WEB_PRODUCTS_LIST: {
+      return {
+        ...state,
+        webproducts: action.payload,
+        getWebProductsLoading: false,
       };
     }
 

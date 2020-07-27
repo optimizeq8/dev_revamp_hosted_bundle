@@ -97,18 +97,15 @@ class ProductSelect extends React.Component {
     }
   }
   handleSubmission = () => {
-    const businesslogo = this.props.edit
-      ? this.props.mainBusiness.businesslogo
-      : this.props.businessLogo;
-    this.props.saveWebProductsToHide(
+    this.props.saveWebProductsToAdd(
       this.props.edit,
       this.state.cartList,
       this.props.mainBusiness.businessid,
-      businesslogo,
       this.state.no_of_products_to_show
     );
   };
   addToCart = (item) => {
+    console.log("item", item);
     const newCartList = [...this.state.cartList];
     const checkifALreadyExist = find(
       this.state.cartList,
@@ -118,7 +115,7 @@ class ProductSelect extends React.Component {
     if (!checkifALreadyExist) {
       newCartList.push(item.imageId);
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`a_products_to_add_in_cart`, {
         source: this.props.source,
         source_action: "a_add_products",
         timestamp: new Date().getTime(),
@@ -137,7 +134,7 @@ class ProductSelect extends React.Component {
 
       newCartList.splice(index, 1);
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`a_products_to_add_in_cart`, {
         source: this.props.source,
         source_action: "a_remove_products",
         timestamp: new Date().getTime(),
@@ -200,8 +197,7 @@ class ProductSelect extends React.Component {
             source: "open_my_website",
             source_action: "a_go_back",
           }}
-          // navigation={this.props.navigation}
-          actionButton={this.goBack}
+          navigation={this.props.navigation}
           titleStyle={{ color: "#75647C" }}
           iconColor={"#75647C"}
           title={"Add Products"}
@@ -288,5 +284,6 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getWebProductsToHide: (businessid) =>
     dispatch(actionCreators.getWebProductsToHide(businessid)),
+  saveWebProductsToAdd: () => dispatch(actionCreators.saveWebProductsToAdd()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductSelect);

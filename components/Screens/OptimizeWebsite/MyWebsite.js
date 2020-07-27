@@ -6,7 +6,7 @@ import {
   Text,
   Clipboard,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
@@ -115,6 +115,42 @@ class MyWebsite extends Component {
   goToSelectProduct = () => {
     this.props.navigation.navigate("MyWebsiteSelectProducts");
   };
+
+  renderEachProduct = (item) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate("EditProduct");
+        }}
+        style={myWebsiteStyles.productCard}
+      >
+        <Image
+          style={myWebsiteStyles.productImage}
+          source={{
+            uri:
+              "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+          }}
+        />
+        <View style={myWebsiteStyles.productDetailView}>
+          <Text style={myWebsiteStyles.productNamesubhead}>
+            {translate("Product Name")}
+          </Text>
+          <Text style={myWebsiteStyles.productNameText}>
+            {translate("Untitled")}
+          </Text>
+          <Text style={myWebsiteStyles.pricesubhead}>{translate("price")}</Text>
+          <Text style={myWebsiteStyles.priceText}>
+            {translate("Unavailable")}
+          </Text>
+        </View>
+        <Pen
+          style={myWebsiteStyles.penIcon}
+          width={15}
+          fill={globalColors.purple}
+        />
+      </TouchableOpacity>
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -146,106 +182,82 @@ class MyWebsite extends Component {
           }}
           iconColor={"#75647C"}
         />
-        <ScrollView style={styles.scrollViewContainer}>
-          <View style={styles.businesslogoView}>
-            <Image
-              style={styles.businessLogoImage}
-              source={{
-                uri: mainBusiness.businesslogo || this.props.businessLogo,
-              }}
-            />
-          </View>
-          {/* <Text style={styles.bsnNameText}>
+
+        <View style={styles.businesslogoView}>
+          <Image
+            style={styles.businessLogoImage}
+            source={{
+              uri: mainBusiness.businesslogo || this.props.businessLogo,
+            }}
+          />
+        </View>
+        {/* <Text style={styles.bsnNameText}>
             {this.props.mainBusiness.businessname}
           </Text> */}
-          <TouchableOpacity
-            style={styles.changeLogoView}
-            onPress={this.uploadPhoto}
-          >
-            <Pen width={15} fill={globalColors.purple} />
-            <Text style={styles.changeLogoText}>
-              {translate("Change Logo")}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.weburlView}>
-            <Website
-              label={"Your URL"}
-              website={website}
-              disabled={true}
-              screenProps={this.props.screenProps}
-              iconFill={"#75647C"}
-              labelColor={"#75647C"}
-              inputColor={"#75647C"}
-              customStyle={{
-                backgroundColor: globalColors.white,
-              }}
-            />
-            <TouchableOpacity
-              style={styles.copyIcon2}
-              onPress={() => {
-                analytics.track(`a_copy_my_website_url`, {
-                  source: "open_my_website",
-                  source_action: "a_copy_my_website_url",
-                  weburl: website,
-                });
-                Clipboard.setString(website);
-              }}
-            >
-              <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
-            </TouchableOpacity>
-          </View>
-          <View style={myWebsiteStyles.myproductsView}>
-            <Text style={myWebsiteStyles.myproductsText}>
-              {translate("MY PRODUCTS")}
-            </Text>
-
-            <TouchableOpacity
-              onPress={this.goToSelectProduct}
-              style={myWebsiteStyles.addProductsView}
-            >
-              <View style={myWebsiteStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <Text style={myWebsiteStyles.addProductText}>
-                {translate("Add Products")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("EditProduct");
+        <TouchableOpacity
+          style={styles.changeLogoView}
+          onPress={this.uploadPhoto}
+        >
+          <Pen width={15} fill={globalColors.purple} />
+          <Text style={styles.changeLogoText}>{translate("Change Logo")}</Text>
+        </TouchableOpacity>
+        <View style={styles.weburlView}>
+          <Website
+            label={"Your URL"}
+            website={website}
+            disabled={true}
+            screenProps={this.props.screenProps}
+            iconFill={"#75647C"}
+            labelColor={"#75647C"}
+            inputColor={"#75647C"}
+            customStyle={{
+              backgroundColor: globalColors.white,
             }}
-            style={myWebsiteStyles.productCard}
+          />
+          <TouchableOpacity
+            style={styles.copyIcon2}
+            onPress={() => {
+              analytics.track(`a_copy_my_website_url`, {
+                source: "open_my_website",
+                source_action: "a_copy_my_website_url",
+                weburl: website,
+              });
+              Clipboard.setString(website);
+            }}
           >
-            <Image
-              style={myWebsiteStyles.productImage}
-              source={{
-                uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
-              }}
-            />
-            <View style={myWebsiteStyles.productDetailView}>
-              <Text style={myWebsiteStyles.productNamesubhead}>
-                {translate("Product Name")}
-              </Text>
-              <Text style={myWebsiteStyles.productNameText}>
-                {translate("Untitled")}
-              </Text>
-              <Text style={myWebsiteStyles.pricesubhead}>
-                {translate("price")}
-              </Text>
-              <Text style={myWebsiteStyles.priceText}>
-                {translate("Unavailable")}
-              </Text>
-            </View>
-            <Pen
-              style={myWebsiteStyles.penIcon}
-              width={15}
-              fill={globalColors.purple}
-            />
+            <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
           </TouchableOpacity>
-        </ScrollView>
+        </View>
+        <View style={myWebsiteStyles.myproductsView}>
+          <Text style={myWebsiteStyles.myproductsText}>
+            {translate("MY PRODUCTS")}
+          </Text>
+
+          <TouchableOpacity
+            onPress={this.goToSelectProduct}
+            style={myWebsiteStyles.addProductsView}
+          >
+            <View style={myWebsiteStyles.plusIconView}>
+              <PlusIcon width={7} fill={globalColors.purple} />
+            </View>
+            <Text style={myWebsiteStyles.addProductText}>
+              {translate("Add Products")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          contentContainerStyle={styles.list}
+          initialNumToRender={12}
+          horizontal={false}
+          data={this.props.webproducts}
+          keyExtractor={(item, index) => {
+            if (item) {
+              return item.imageId;
+            }
+            return index;
+          }}
+          renderItem={({ item }) => this.renderItem(item)}
+        />
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -263,6 +275,7 @@ const mapStateToProps = (state) => ({
   loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
+  webproducts: state.website.webproducts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
