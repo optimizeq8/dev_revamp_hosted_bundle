@@ -16,33 +16,39 @@ export default class SnapchatLocation extends Component {
     locationsInfo: [],
     selectedLocation: {},
   };
-  handleLocationRows = ({ item }) => {
+  handleLocationRows = ({ item, index }) => {
     return (
       <LocationRow
         handleMapModal={this.handleMapModal}
         handleMarkers={this.handleMarkers}
-        id={item.id}
+        id={item.place_id + index}
         locationInfo={item}
+        index={index}
       />
     );
   };
-  handleMapModal = (value, locationInfo) => {
+  handleMapModal = (value, locationInfo, index) => {
+    if (locationInfo) {
+      locationInfo.index = index;
+      this.setState({
+        selectedLocation: locationInfo,
+      });
+    }
     this.setState({
       mapModal: value,
-      selectedLocation: locationInfo,
     });
   };
   handleLocationSearchModal = (value) => {
     this.setState({ searchModalVisible: value });
   };
-  handleMarkers = (marker, locInfo) => {
+  handleMarkers = (marker, locInfo, remove = false) => {
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
     let index = locationsInfo.findIndex(
       (loc) => loc.place_id === locInfo.place_id
     );
     console.log(index);
-    if (index > -1) {
+    if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
       markers.splice(index, 1);
     } else {
@@ -53,6 +59,18 @@ export default class SnapchatLocation extends Component {
       markers,
       locationsInfo,
     });
+  };
+  updateMarkerLocation = (location) => {
+    let index = location.index;
+    let locationsInfo = this.state.locationsInfo;
+    let loc = locationsInfo[index];
+    loc.coordinates = location.coordinates;
+    let markers = this.state.markers;
+    let marker = markers[index];
+    marker.latitude = location.coordinates.latitude;
+    marker.longitude = location.coordinates.longitude;
+    marker.radius = location.radius;
+    this.setState({ markers, locationsInfo });
   };
   render() {
     let { ...props } = this.props;
@@ -76,7 +94,7 @@ export default class SnapchatLocation extends Component {
         <FlatList
           data={this.state.locationsInfo}
           renderItem={this.handleLocationRows}
-          keyExtractor={(item) => item}
+          keyExtractor={(item, index) => item.place_id + index}
           contentContainerStyle={{ height: "100%" }}
           style={{ width: "80%", height: "40%" }}
         />
@@ -97,32 +115,11 @@ export default class SnapchatLocation extends Component {
           ></TouchableOpacity>
           <View style={{ top: "20%" }}>
             <LocationMap
+              {...props}
               handleMarkers={this.handleMarkers}
               handleMapModal={this.handleMapModal}
-              {...props}
-            />
-          </View>
-        </Modal>
-        <Modal
-          visible={this.state.mapModal}
-          transparent
-          animationType="slide"
-          onDismiss={() => this.handleMapModal(false)}
-        >
-          <TouchableOpacity
-            style={{
-              width: "100%",
-              height: "20%",
-              position: "absolute",
-            }}
-            onPress={() => this.handleMapModal(false)}
-            activeOpacity={1}
-          ></TouchableOpacity>
-          <View style={{ top: "18%" }}>
-            <LocationMap
-              {...props}
               selectedLocation={this.state.selectedLocation}
-              handleMapModal={this.handleMapModal}
+              updateMarkerLocation={this.updateMarkerLocation}
             />
           </View>
         </Modal>

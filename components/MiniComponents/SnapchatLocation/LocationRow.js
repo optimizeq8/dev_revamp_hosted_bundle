@@ -9,8 +9,7 @@ export default class LocationRow extends Component {
     this.props.handleMarkers(null, locationInfo);
   };
   render() {
-    let { locationInfo, region, handleMapModal, result } = this.props;
-    // console.log(this.props);
+    let { locationInfo, index, handleMapModal, result } = this.props;
     return (
       <View style={styles.locationRow}>
         <Text style={styles.locationName}>
@@ -23,7 +22,7 @@ export default class LocationRow extends Component {
             <>
               <TouchableOpacity
                 style={styles.mapButtonStyle}
-                onPress={() => handleMapModal(true, locationInfo)}
+                onPress={() => handleMapModal(true, locationInfo, index)}
               >
                 <Icon
                   style={{ fontSize: 20 }}
