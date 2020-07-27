@@ -13,7 +13,11 @@ import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
 class AcceptTermsConditionLoading extends Component {
+  state = { snap_ad_account_id: "" };
   componentDidMount() {
+    this.setState({
+      snap_ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+    });
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -29,17 +33,21 @@ class AcceptTermsConditionLoading extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
       timestamp: new Date().getTime(),
-      device_id: this.props.screenProps.device_id
+      device_id: this.props.screenProps.device_id,
     });
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
-      !prevProps.mainBusiness.snap_ad_account_id &&
+      prevState.snap_ad_account_id !==
+        this.props.mainBusiness.snap_ad_account_id &&
       this.props.mainBusiness.snap_ad_account_id
     ) {
+      this.setState({
+        snap_ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+      });
       this.props.navigation.navigate("AdObjective", {
         source: "ad_TNC_loading",
-        source_action: "a_accept_ad_TNC"
+        source_action: "a_accept_ad_TNC",
       });
     }
   }
@@ -67,10 +75,10 @@ class AcceptTermsConditionLoading extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   loading: state.account.loading,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
 });
 
 export default connect(mapStateToProps, null)(AcceptTermsConditionLoading);
