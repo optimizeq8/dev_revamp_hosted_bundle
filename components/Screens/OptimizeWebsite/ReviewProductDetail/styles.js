@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F8F8",
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    paddingTop: 20,
+    // paddingTop: 20,
     paddingHorizontal: 15,
+    marginTop: -50,
   },
   priceView: {
     display: "flex",
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 25,
     fontFamily: "montserrat-bold",
-    color: "#A496AC",
+    color: "#75647C",
     textTransform: "capitalize",
     marginBottom: 5,
   },
@@ -132,11 +133,17 @@ const styles = StyleSheet.create({
     // height: 250,
   },
   image: {
-    // width: "100%",
-    // height: 200,
     flex: 1,
-    marginBottom: -50,
-    // position: "absolute",
+    marginBottom: 0,
+  },
+  paginationContainerStyle: {
+    // paddingVertical: 5,
+  },
+  paginationDotStyle: {
+    borderRadius: 7,
+    height: 8,
+    marginHorizontal: -5,
+    width: 8,
   },
 });
 export default styles;

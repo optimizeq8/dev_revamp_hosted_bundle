@@ -11,6 +11,7 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import Axios from "axios";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 
 //Redux
 import { connect } from "react-redux";
@@ -25,6 +26,7 @@ import { globalColors } from "../../../../GlobalStyles";
 
 import { _pickImage } from "../PickImage";
 import styles from "./styles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class MyWebsite extends Component {
       signal: null,
       loaded: 0,
       isVisible: false,
+      activeSlide: 0,
     };
   }
   componentWillUnmount() {
@@ -101,7 +104,22 @@ class MyWebsite extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-
+  Slide = () => {
+    return (
+      <Image
+        style={styles.image}
+        source={{
+          uri:
+            "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+        }}
+      />
+    );
+  };
+  navigationRouteHandler = (index) => {
+    this.setState({
+      activeSlide: index,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -109,17 +127,33 @@ class MyWebsite extends Component {
       <View style={styles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "never" }} />
 
-        <Image
-          style={styles.image}
-          source={{
-            uri:
-              "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+        <Carousel
+          firstItem={0}
+          ref={(c) => {
+            this._carousel = c;
           }}
+          onSnapToItem={(indx) => this.navigationRouteHandler(indx)}
+          data={[{ id: 0 }, { id: 1 }, { id: 2 }]}
+          renderItem={this.Slide}
+          sliderWidth={widthPercentageToDP(100)}
+          itemWidth={widthPercentageToDP(100)}
         />
+
         <TouchableOpacity style={styles.closeButton} onPress={this.goBack}>
           <CrossIcon width={12} height={12} stroke={"#9300FF"} />
         </TouchableOpacity>
         <View style={styles.productView}>
+          <Pagination
+            containerStyle={styles.paginationContainerStyle}
+            dotsLength={3}
+            activeDotIndex={this.state.activeSlide}
+            dotStyle={styles.paginationDotStyle}
+            dotColor={globalColors.purple}
+            inactiveDotColor={"rgba(0, 0, 0, 0.16)"}
+            inactiveDotOpacity={1}
+            inactiveDotScale={1}
+          />
+
           <Text style={styles.productName}> Olive Dress</Text>
           <Text style={styles.productDesc}>Descriotion in long format</Text>
         </View>
