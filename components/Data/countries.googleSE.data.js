@@ -18,12 +18,6 @@ export default [
     criteria_id: "2784",
   },
   {
-    id: 215,
-    name: "UAE",
-    country_code: "AE",
-    criteria_id: "2784",
-  },
-  {
     id: 374,
     name: "Qatar",
     country_code: "QA",
@@ -32,12 +26,6 @@ export default [
   {
     id: 379,
     name: "Saudi Arabia",
-    country_code: "SA",
-    criteria_id: "2682",
-  },
-  {
-    id: 379,
-    name: "KSA",
     country_code: "SA",
     criteria_id: "2682",
   },
