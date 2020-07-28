@@ -620,14 +620,18 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedMapChange = (selectedItems) => {
+  onSelectedMapChange = (selectedItems, unselect = false) => {
     let stateRep = cloneDeep(this.state.campaignInfo);
-    stateRep.targeting.locations[0].circles = selectedItems;
+    if (unselect) {
+      stateRep.targeting.locations[0].circles = [];
+      this.props.save_campaign_info({ markers: [], locationsInfo: [] });
+    } else stateRep.targeting.locations[0].circles = selectedItems;
     analytics.track(`a_ad_map_locations`, {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
       campaign_map_locations: selectedItems,
     });
+
     this.setState({
       campaignInfo: { ...stateRep },
     });
@@ -1221,6 +1225,10 @@ class AdDetails extends Component {
             regions={this.state.regions}
             region_id={this.state.campaignInfo.targeting.geos}
             filterRegions={this.filterRegions}
+            locationsSelected={
+              campaignInfo.targeting.locations[0].circles.length > 0
+            }
+            onSelectedMapChange={this.onSelectedMapChange}
           />
         );
 

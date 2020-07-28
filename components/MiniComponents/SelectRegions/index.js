@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   PixelRatio,
+  Alert,
 } from "react-native";
 import { connect } from "react-redux";
 import { Input, Item, Icon } from "native-base";
@@ -27,7 +28,31 @@ class SelectRegions extends Component {
   //     this.props.onSelectedRegionChange(region.id, region.name)
   //   );
   // };
-
+  checkForLocations = (c, fReg) => {
+    if (this.props.locationsSelected) {
+      Alert.alert(
+        "Reset selected locations",
+        "Selecting regions will overwrite and reset your selected locations, are you sure you want to continue?",
+        [
+          {
+            text: "Yes",
+            onPress: () => {
+              this.props.onSelectedMapChange(null, true);
+              this.handleRegionSelection(c, fReg);
+            },
+          },
+          { text: "Cancel" },
+        ]
+      );
+    } else this.handleRegionSelection(c, fReg);
+  };
+  handleRegionSelection = (c, fReg) => {
+    this.props.onSelectedRegionChange(
+      this.props.addressForm ? c : c.id,
+      c.name,
+      fReg.country_code
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     let regionlist = this.props.filteredRegions.map((fReg) => {
@@ -46,13 +71,7 @@ class SelectRegions extends Component {
               <TouchableOpacity
                 key={c.id}
                 style={styles.languageRowConatiner}
-                onPress={() => {
-                  this.props.onSelectedRegionChange(
-                    this.props.addressForm ? c : c.id,
-                    c.name,
-                    fReg.country_code
-                  );
-                }}
+                onPress={() => this.checkForLocations(c, fReg)}
               >
                 <Icon
                   type="MaterialCommunityIcons"
