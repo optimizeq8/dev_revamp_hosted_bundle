@@ -95,13 +95,19 @@ export default class SnapchatLocation extends Component {
         "Reset selected regions",
         "Selecting locations will overwrite and reset your selected regions, are you sure you want to continue?",
         [
-          { text: "Yes", onPress: () => this.handleSubmisionOfMarkers() },
+          {
+            text: "Yes",
+            onPress: () => {
+              this.handleSubmisionOfMarkers();
+              this.props.onSelectedRegionChange(-1, null, null, true);
+            },
+          },
           { text: "Cancel" },
         ]
       );
     } else this.handleSubmisionOfMarkers();
   };
-  handleSubmisionOfMarkers = () => {
+  handleSubmisionOfMarkers = async () => {
     let markers = this.state.markers;
     markers = markers.map((mrk) => ({
       latitude: mrk.latitude,
@@ -109,7 +115,13 @@ export default class SnapchatLocation extends Component {
       radius: mrk.radius,
     }));
     this.props.onSelectedMapChange(markers);
-    this.props.onSelectedRegionChange(-1, null, null, true);
+    for (let loc of this.state.locationsInfo)
+      await this.props.onSelectedCountryChange(
+        loc.country_code,
+        null,
+        loc.countryName,
+        true
+      );
     this.props.save_campaign_info({
       markers: this.state.markers,
       locationsInfo: this.state.locationsInfo,

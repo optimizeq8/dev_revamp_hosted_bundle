@@ -386,16 +386,17 @@ class AdDetails extends Component {
   onSelectedCountryChange = async (
     selectedItem,
     mounting = null,
-    countryName
+    countryName,
+    addCountryOfLocations = false
   ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
     let regionNames = this.state.regionNames;
-
     if (newCountry) {
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        replace.targeting.geos.length === 1
+        replace.targeting.geos.length === 1 &&
+        !addCountryOfLocations
       ) {
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
@@ -405,7 +406,8 @@ class AdDetails extends Component {
         countryName = [];
         regionNames = [];
       } else if (
-        replace.targeting.geos.find((co) => co.country_code === newCountry)
+        replace.targeting.geos.find((co) => co.country_code === newCountry) &&
+        !addCountryOfLocations
       ) {
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
@@ -427,24 +429,39 @@ class AdDetails extends Component {
         regionNames = this.state.regionNames.filter(
           (reg) => reg.country_code !== newCountry
         );
-      } else {
+      } else if (
+        addCountryOfLocations
+          ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
+          : true
+      ) {
         //To add the coutnry to geos array
         replace.targeting.geos.push({
           country_code: newCountry,
           region_id: [],
         });
         countryName = [...this.state.countryName, countryName];
+      } else {
+        countryName = [...this.state.countryName];
       }
 
       let reg = country_regions.find((c) => c.country_code === newCountry);
-      if (this.state.regions.find((c) => c.country_code === newCountry)) {
+      if (
+        this.state.regions.find((c) => c.country_code === newCountry) &&
+        !addCountryOfLocations
+      ) {
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
         reg = this.state.regions.filter((coReg) => {
           return coReg.country_code !== newCountry;
         });
-      } else {
+      } else if (
+        addCountryOfLocations
+          ? !this.state.regions.find((c) => c.country_code === newCountry)
+          : true
+      ) {
         reg = [...this.state.regions, reg];
+      } else {
+        reg = [...this.state.regions];
       }
 
       replace.targeting.interests[0].category_id = [];
@@ -1183,10 +1200,6 @@ class AdDetails extends Component {
     );
   };
   render() {
-    console.log(
-      JSON.stringify(this.state.campaignInfo.targeting.locations, null, 2)
-    );
-
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
@@ -1254,6 +1267,7 @@ class AdDetails extends Component {
               campaignInfo.targeting.geos[0].region_id.length > 0
             }
             onSelectedRegionChange={this.onSelectedRegionChange}
+            onSelectedCountryChange={this.onSelectedCountryChange}
           />
         );
         break;
@@ -1356,7 +1370,7 @@ class AdDetails extends Component {
         : this.props.navigation.getParam("media", "//");
 
     return (
-      <View style={{ height: "100%", backgroundColor: "#000" }}>
+      <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

@@ -16,6 +16,7 @@ import styles from "../MultiSelect/styles";
 
 import LocationIcon from "../../../assets/SVGs/Location";
 import LowerButton from "../LowerButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectRegions extends Component {
   state = { selectedAll: false };
@@ -101,80 +102,73 @@ class SelectRegions extends Component {
     });
 
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
-      >
-        <View style={styles.container}>
-          <View style={[styles.dataContainer]}>
-            <LocationIcon
-              width={110}
-              height={110}
-              fill="#fff"
-              style={styles.locationIcon}
-            />
-            <Text style={[styles.title]}>
-              {this.props.addressForm
-                ? translate("Select Region")
-                : translate("Select Regions")}{" "}
-            </Text>
-
-            <View style={styles.slidercontainer}>
-              <Item>
-                <Input
-                  placeholder={translate("Search Region")}
-                  style={[
-                    styles.searchRegionText,
-                    {
-                      fontFamily: "montserrat-regular",
-                      color: "#fff",
-                      fontSize: 14 / PixelRatio.getFontScale(),
-                    },
-                  ]}
-                  placeholderTextColor="#fff"
-                  onChangeText={(value) => {
-                    let filteredR = this.props.regions.filter((c) =>
-                      translate(c.name)
-                        .toLowerCase()
-                        .includes(value.toLowerCase())
-                    );
-                    this.props.filterRegions(filteredR);
-                  }}
-                />
-              </Item>
-
-              <ScrollView style={[styles.regionListContainer]}>
-                {!this.props.addressForm && (
-                  <TouchableOpacity
-                    style={[
-                      styles.languageRowConatiner,
-                      { alignSelf: "center" },
-                    ]}
-                    onPress={() => this.props.onSelectedRegionChange(-1, "all")}
-                  >
-                    <Text
-                      style={[
-                        styles.optionsTextContainer,
-                        { paddingLeft: 0, textDecorationLine: "underline" },
-                      ]}
-                    >
-                      {translate("Select all")}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
-                {regionlist}
-              </ScrollView>
-            </View>
-          </View>
-          <LowerButton
-            screenProps={this.props.screenProps}
-            checkmark={true}
-            style={[styles.button]}
-            function={() => this.props._handleSideMenuState(false)}
+      <View style={styles.container}>
+        <View style={[styles.dataContainer]}>
+          <LocationIcon
+            width={70}
+            height={70}
+            fill={globalColors.rum}
+            style={styles.locationIcon}
           />
+          <Text style={[styles.title]}>
+            {this.props.addressForm
+              ? translate("Select Region")
+              : translate("Select Regions")}{" "}
+          </Text>
+
+          <View style={styles.slidercontainer}>
+            <Item>
+              <Input
+                placeholder={translate("Search Region")}
+                style={[
+                  styles.searchRegionText,
+                  {
+                    fontFamily: "montserrat-regular",
+                    color: globalColors.rum,
+                    fontSize: 14 / PixelRatio.getFontScale(),
+                  },
+                ]}
+                placeholderTextColor="#fff"
+                onChangeText={(value) => {
+                  let filteredR = this.props.regions.filter((c) =>
+                    translate(c.name)
+                      .toLowerCase()
+                      .includes(value.toLowerCase())
+                  );
+                  this.props.filterRegions(filteredR);
+                }}
+              />
+            </Item>
+
+            <ScrollView style={[styles.regionListContainer]}>
+              {!this.props.addressForm && (
+                <TouchableOpacity
+                  style={[styles.languageRowConatiner, { alignSelf: "center" }]}
+                  onPress={() => this.props.onSelectedRegionChange(-1, "all")}
+                >
+                  <Text
+                    style={[
+                      styles.optionsTextContainer,
+                      { paddingLeft: 0, textDecorationLine: "underline" },
+                    ]}
+                  >
+                    {translate("Select all")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+              {regionlist}
+            </ScrollView>
+          </View>
         </View>
-      </SafeAreaView>
+        <LowerButton
+          screenProps={this.props.screenProps}
+          checkmark={true}
+          style={[styles.button]}
+          bottom={5}
+          function={() => this.props._handleSideMenuState(false)}
+        />
+      </View>
     );
   }
 }

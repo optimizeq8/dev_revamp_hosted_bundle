@@ -64,7 +64,19 @@ export default class MapSearchBar extends Component {
       radius: 5000,
       place_id: data.place_id,
     };
+    let countryName =
+      details.address_components[details.address_components.length - 1]
+        .long_name;
+    if (countryName === "Saudi Arabia") {
+      countryName = "KSA";
+    } else if (countryName === "United Arab Emirates") {
+      countryName = "UAE";
+    }
     let locationInfo = {
+      country_code: details.address_components[
+        details.address_components.length - 1
+      ].short_name.toLowerCase(),
+      countryName,
       description: data.description,
       coordinates: {
         latitude: details.geometry.location.lat,
