@@ -824,12 +824,14 @@ class AdObjective extends Component {
                 }}
                 titleStyle={{ color: "#000" }}
                 iconColor="#000"
+                containerStyle={styles.customHeaderContainer}
+                titleContainerStyle={{
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
               />
               <View style={styles.popupOverlay}>
-                <Content
-                  contentContainerStyle={styles.contentContainer}
-                  // style={{ top: 20 }}
-                >
+                <Content contentContainerStyle={styles.contentContainer}>
                   {list}
                 </Content>
               </View>

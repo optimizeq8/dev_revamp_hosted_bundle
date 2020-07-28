@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
   },
   safeAreaContainer: {
     flex: 1,
-    padding: 10,
   },
   warningText: {
     color: "#fff",

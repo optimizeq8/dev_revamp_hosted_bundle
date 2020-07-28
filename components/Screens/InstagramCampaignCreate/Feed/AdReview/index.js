@@ -27,6 +27,7 @@ class AdFeedDesignReview extends React.Component {
   state = {
     isVideoLoading: false,
     activeSlide: 0,
+    AP: 1 / 1,
   };
   videoIsLoading = (value) => {
     this.setState({
@@ -37,6 +38,20 @@ class AdFeedDesignReview extends React.Component {
     let media = this.props.carouselAdsArray.filter((ad) => ad.media !== "//");
     return media;
   };
+
+  componentDidMount() {
+    let data = !this.props.campaignDetails
+      ? this.props.data
+      : this.props.navigation.state.params;
+    if (data.media) {
+      console.log("uuuuuu");
+      Image.getSize(data.media, (width, height) => {
+        this.setState({
+          AP: width / height,
+        });
+      });
+    }
+  }
 
   Slide = ({ item }) => {
     let mediaView = null;
@@ -152,7 +167,9 @@ class AdFeedDesignReview extends React.Component {
                 <Text style={styles.dot}>.</Text>
               </View>
             </View>
-            <View style={styles.mediaView}>{mediaView}</View>
+            <View style={[styles.mediaView, { aspectRatio: this.state.AP }]}>
+              {mediaView}
+            </View>
             {(call_to_action.value || call_to_action) !== "BLANK" && (
               <View style={styles.swipeUpView}>
                 <Text style={styles.callToActionText}>

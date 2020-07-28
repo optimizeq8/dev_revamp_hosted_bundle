@@ -116,11 +116,13 @@ const styles = StyleSheet.create({
   },
   popupOverlay: {
     height: "100%",
+    overflow: "visible",
   },
   contentContainer: {
     marginTop: 10,
     paddingTop: 15,
     marginBottom: 15,
+    paddingBottom: 100,
   },
   dateInput: {
     marginBottom: 5,
@@ -262,11 +264,17 @@ const styles = StyleSheet.create({
     height: "76%",
     top: "20%",
     backgroundColor: "#fff",
-    paddingTop: 20,
+    paddingTop: 10,
     overflow: "hidden",
     borderRadius: 50,
     width: "95%",
     alignSelf: "center",
+  },
+  customHeaderContainer: {
+    height: 30,
+    justifyContent: "center",
+    paddingHorizontal: 30,
+    paddingTop: 20,
   },
 });
 
