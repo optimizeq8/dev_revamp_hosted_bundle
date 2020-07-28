@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, FlatList, Modal } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  Alert,
+} from "react-native";
 import LocationMap from "../LocationMap";
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import { globalColors } from "../../../GlobalStyles";
@@ -81,6 +88,19 @@ export default class SnapchatLocation extends Component {
     marker.radius = location.radius;
     this.setState({ markers, locationsInfo });
   };
+
+  checkForRegions = () => {
+    if (this.props.regionsSelected) {
+      Alert.alert(
+        "Reset selected regions",
+        "Selecting locations will overwrite and reset your selected regions, are you sure you want to continue?",
+        [
+          { text: "Yes", onPress: () => this.handleSubmisionOfMarkers() },
+          { text: "Cancel" },
+        ]
+      );
+    } else this.handleSubmisionOfMarkers();
+  };
   handleSubmisionOfMarkers = () => {
     let markers = this.state.markers;
     markers = markers.map((mrk) => ({
@@ -89,6 +109,7 @@ export default class SnapchatLocation extends Component {
       radius: mrk.radius,
     }));
     this.props.onSelectedMapChange(markers);
+    this.props.onSelectedRegionChange(-1, null, null, true);
     this.props.save_campaign_info({
       markers: this.state.markers,
       locationsInfo: this.state.locationsInfo,
@@ -125,7 +146,7 @@ export default class SnapchatLocation extends Component {
           screenProps={this.props.screenProps}
           purpleViolet
           style={{ alignSelf: "flex-end", right: 30 }}
-          function={this.handleSubmisionOfMarkers}
+          function={this.checkForRegions}
         />
         <Modal
           visible={this.state.mapModal}

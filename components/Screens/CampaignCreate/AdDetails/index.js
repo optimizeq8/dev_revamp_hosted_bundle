@@ -659,7 +659,12 @@ class AdDetails extends Component {
   //     });
   // };
 
-  onSelectedRegionChange = (selectedItem, regionName, country_code) => {
+  onSelectedRegionChange = (
+    selectedItem,
+    regionName,
+    country_code,
+    unselect = false
+  ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let coRegIndex = 0;
     let rIds = [];
@@ -678,7 +683,7 @@ class AdDetails extends Component {
       this.state.regions.forEach((reg) => {
         if (reg.regions.length > 3) regionsLength += reg.regions.length;
       });
-      if (regionsLength === this.state.regionNames.length) {
+      if (regionsLength === this.state.regionNames.length || unselect) {
         //if all the regions of all selected countries are selected
         //then regionNames.length will === all the regions of the selected countries
         //Meaning that this will unselect all the regions
@@ -1237,6 +1242,10 @@ class AdDetails extends Component {
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.save_campaign_info}
             data={this.props.data}
+            regionsSelected={
+              campaignInfo.targeting.geos[0].region_id.length > 0
+            }
+            onSelectedRegionChange={this.onSelectedRegionChange}
           />
         );
         break;
