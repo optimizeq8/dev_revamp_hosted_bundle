@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
-    height: hp(35),
+    // height: hp(35),
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
   },

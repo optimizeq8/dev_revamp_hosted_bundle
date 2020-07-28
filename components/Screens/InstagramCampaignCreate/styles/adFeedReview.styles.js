@@ -6,7 +6,7 @@ import {
 import { globalColors } from "../../../../GlobalStyles";
 const styles = StyleSheet.create({
   mediaView: {
-    height: hp(45),
+    // height: hp(45),
     width: "100%",
   },
   mediaViewExist: {
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingTop: 10,
     marginHorizontal: 20,
+    width: "90%",
     // alignSelf: "center"
     // flex: 1
   },
