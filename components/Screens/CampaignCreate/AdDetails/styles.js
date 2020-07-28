@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     position: "absolute",
-    bottom: 0,
+    bottom: "15%",
     marginLeft: 25,
     width: "100%",
     // marginHorizontal: 30

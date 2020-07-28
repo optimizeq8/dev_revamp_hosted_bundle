@@ -1174,7 +1174,9 @@ class AdDetails extends Component {
     );
   };
   render() {
-    console.log(this.state.campaignInfo.targeting.locations);
+    console.log(
+      JSON.stringify(this.state.campaignInfo.targeting.locations, null, 2)
+    );
 
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1232,6 +1234,9 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}
+            onSelectedMapChange={this.onSelectedMapChange}
+            save_campaign_info={this.props.save_campaign_info}
+            data={this.props.data}
           />
         );
         break;
@@ -1300,15 +1305,16 @@ class AdDetails extends Component {
     let regions_names = [];
     regions_names = this.state.regionNames.map((regN) => regN.name).join(", ");
     let languages_names = [];
-    this.props.languages.forEach((r) => {
-      if (
-        this.state.campaignInfo.targeting.demographics[0].languages.find(
-          (i) => i === r.id
-        )
-      ) {
-        languages_names.push(translate(r.name));
-      }
-    });
+    if (typeof this.props.languages === "object")
+      this.props.languages.forEach((r) => {
+        if (
+          this.state.campaignInfo.targeting.demographics[0].languages.find(
+            (i) => i === r.id
+          )
+        ) {
+          languages_names.push(translate(r.name));
+        }
+      });
     languages_names = languages_names.join(", ");
 
     let interests_names = [];
@@ -1333,7 +1339,7 @@ class AdDetails extends Component {
         : this.props.navigation.getParam("media", "//");
 
     return (
-      <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
+      <View style={{ height: "100%", backgroundColor: "#000" }}>
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

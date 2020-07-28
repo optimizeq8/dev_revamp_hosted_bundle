@@ -6,7 +6,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 export default class LocationRow extends Component {
   handleDeletion = (locationInfo) => {
-    this.props.handleMarkers(null, locationInfo);
+    this.props.handleMarkers(null, locationInfo, true);
   };
   render() {
     let { locationInfo, index, handleMapModal, result } = this.props;

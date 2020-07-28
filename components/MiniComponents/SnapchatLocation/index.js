@@ -7,6 +7,7 @@ import styles from "./styles";
 import { Icon } from "native-base";
 import LocationRow from "./LocationRow";
 import LocationList from "./LocationList";
+import LowerButton from "../LowerButton";
 
 export default class SnapchatLocation extends Component {
   state = {
@@ -16,6 +17,14 @@ export default class SnapchatLocation extends Component {
     locationsInfo: [],
     selectedLocation: {},
   };
+  componentDidMount() {
+    if (this.props.data.hasOwnProperty("markers")) {
+      this.setState({
+        markers: this.props.data.markers,
+        locationsInfo: this.props.data.locationsInfo,
+      });
+    }
+  }
   handleLocationRows = ({ item, index }) => {
     return (
       <LocationRow
@@ -72,6 +81,19 @@ export default class SnapchatLocation extends Component {
     marker.radius = location.radius;
     this.setState({ markers, locationsInfo });
   };
+  handleSubmisionOfMarkers = () => {
+    let markers = this.state.markers;
+    markers = markers.map((mrk) => ({
+      latitude: mrk.latitude,
+      longitude: mrk.longitude,
+      radius: mrk.radius,
+    }));
+    this.props.onSelectedMapChange(markers);
+    this.props.save_campaign_info({
+      markers: this.state.markers,
+      locationsInfo: this.state.locationsInfo,
+    });
+  };
   render() {
     let { ...props } = this.props;
     const { translate } = props.screenProps;
@@ -97,6 +119,13 @@ export default class SnapchatLocation extends Component {
           keyExtractor={(item, index) => item.place_id + index}
           contentContainerStyle={{ height: "100%" }}
           style={{ width: "80%", height: "40%" }}
+        />
+        <LowerButton
+          checkmark
+          screenProps={this.props.screenProps}
+          purpleViolet
+          style={{ alignSelf: "flex-end", right: 30 }}
+          function={this.handleSubmisionOfMarkers}
         />
         <Modal
           visible={this.state.mapModal}

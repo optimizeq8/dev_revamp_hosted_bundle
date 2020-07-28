@@ -6,7 +6,9 @@ import Axios from "axios";
 import countriesBillingAddress from "../../Data/countries.billingAddress";
 import SearchResault from "./SearchResault";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-
+import PredefinedPlaces from "./PredefinedPlaces";
+import { Icon } from "native-base";
+import { globalColors } from "../../../GlobalStyles";
 export default class MapSearchBar extends Component {
   state = { searchValue: "", autoFeatures: "" };
   SearchFilterFunction = (text) => {
@@ -78,33 +80,76 @@ export default class MapSearchBar extends Component {
     this.props.handleLocationSearchModal(false);
   };
   render() {
-    const kuwait = {
-      description: "Kuwait",
-      geometry: { location: { lat: 47.4818, lng: 29.3117 } },
-    };
-    const saudi = {
-      description: "Saudi Arabia",
-      geometry: { location: { lat: 45.0792, lng: 23.8859 } },
-    };
     return (
       <View style={{ width: "100%", height: "100%" }}>
         <GooglePlacesAutocomplete
           placeholder="Search"
           fetchDetails={true}
+          autoFocus
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             this.handleCountrySelection(data, details);
-            // console.log(
-            //   JSON.stringify(data, null, 2),
-            //   JSON.stringify(details, null, 2)
-            // );
+            console.log(
+              JSON.stringify(data, null, 2),
+              JSON.stringify(details, null, 2)
+            );
           }}
+          enablePoweredByContainer={false}
           nearbyPlacesAPI={"GooglePlacesSearch"}
           query={{
             key: "AIzaSyCPCME2BWXM3bRzNdvrGHAvnOxB3np3c_Q",
             language: "en",
+            // components:
+            //   "country:sa|country:ae|country:om|country:bh|country:qa",
           }}
-          predefinedPlaces={[kuwait, saudi]}
+          renderLeftButton={() => (
+            <Icon name="search" type="Fontisto" style={{ fontSize: 20 }} />
+          )}
+          // renderRow={(props) => {
+          //   console.log(JSON.stringify(props, null, 2));
+          //   return (
+          //     <View>
+          //       <Text>hi</Text>
+          //     </View>
+          //   );
+          // }}
+          predefinedPlaces={PredefinedPlaces}
+          styles={{
+            textInputContainer: {
+              backgroundColor: "#fff",
+              alignItems: "center",
+              paddingHorizontal: 10,
+              borderTopWidth: 0,
+              alignSelf: "center",
+              borderRadius: 50,
+              width: "90%",
+              borderBottomWidth: 0,
+              alignItem: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 6,
+            },
+            listView: {
+              top: 30,
+            },
+            separator: {
+              backgroundColor: "#0000",
+            },
+            textInput: {
+              marginLeft: 0,
+              marginRight: 0,
+              height: 38,
+              color: globalColors.gray,
+              fontSize: 16,
+              borderRadius: 50,
+              fontFamily: "montserrat-regular",
+            },
+            predefinedPlacesDescription: {
+              color: "#1faadb",
+              fontFamily: "montserrat-bold",
+            },
+          }}
         />
         {/* <SearchBar
           round
