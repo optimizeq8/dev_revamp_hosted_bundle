@@ -189,6 +189,7 @@ class AdDesign extends Component {
         media_type,
         media,
         fileReadyToUpload,
+        uneditedImageUri: this.props.data.uneditedImageUri,
       });
       this.props.save_campaign_info_instagram({
         destination,
@@ -465,7 +466,6 @@ class AdDesign extends Component {
     ) {
       media = this.props.data.media;
     }
-
     return (
       <View style={styles.safeAreaView}>
         <SafeAreaView
