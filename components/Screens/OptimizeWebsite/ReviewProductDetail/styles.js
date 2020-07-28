@@ -134,6 +134,9 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     marginBottom: 0,
   },
   paginationContainerStyle: {
@@ -144,6 +147,11 @@ const styles = StyleSheet.create({
     height: 8,
     marginHorizontal: -5,
     width: 8,
+  },
+  contactUs: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: globalColors.purple,
   },
 });
 export default styles;

@@ -35,6 +35,10 @@ class ProductSelect extends React.Component {
     // if (this.props.edit) {
     this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
     // }
+    this.setState({
+      cartList: this.props.webproducts,
+      counter: this.props.webproducts.length + 1,
+    });
   }
 
   constructor(props) {
@@ -94,18 +98,24 @@ class ProductSelect extends React.Component {
   }
   handleSubmission = () => {
     const array = this.state.cartList.map((elem) => {
-      console.log("elem", elem);
       const itemExistOnBackend = this.props.webproducts.find(
         ({ instagram_pid }) => elem.instagram_pid === instagram_pid
       );
       if (itemExistOnBackend) {
         return {
-          ...elem,
+          shortcode: elem.media[0].shortcode,
+          instagram_pid: elem.instagram_pid,
+          image_url: elem.media[0].media_path,
+          id: elem.id,
         };
       }
-      return elem;
+      return {
+        shortcode: elem.shortcode,
+        instagram_pid: elem.instagram_pid,
+        image_url: elem.image_url,
+        id: "",
+      };
     });
-    console.log("array", array);
 
     // check for if the product already exist in rge
     this.props.saveWebProductsToAdd(array, this.props.mainBusiness.businessid);

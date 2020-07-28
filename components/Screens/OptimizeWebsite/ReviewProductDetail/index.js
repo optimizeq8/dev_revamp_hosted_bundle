@@ -36,6 +36,7 @@ class MyWebsite extends Component {
       loaded: 0,
       isVisible: false,
       activeSlide: 0,
+      product: { media: [] },
     };
   }
   componentWillUnmount() {
@@ -64,6 +65,10 @@ class MyWebsite extends Component {
       source,
       source_action,
       timestamp: new Date().getTime(),
+    });
+    const product = this.props.navigation.getParam("product", {});
+    this.setState({
+      product,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -105,15 +110,14 @@ class MyWebsite extends Component {
     this.setState({ isVisible: visibile });
   };
   Slide = () => {
-    return (
+    return this.state.product.media.map((item) => (
       <Image
         style={styles.image}
         source={{
-          uri:
-            "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+          uri: item.media_path,
         }}
       />
-    );
+    ));
   };
   navigationRouteHandler = (index) => {
     this.setState({
@@ -133,7 +137,7 @@ class MyWebsite extends Component {
             this._carousel = c;
           }}
           onSnapToItem={(indx) => this.navigationRouteHandler(indx)}
-          data={[{ id: 0 }, { id: 1 }, { id: 2 }]}
+          data={this.state.product.media}
           renderItem={this.Slide}
           sliderWidth={widthPercentageToDP(100)}
           itemWidth={widthPercentageToDP(100)}
@@ -154,15 +158,22 @@ class MyWebsite extends Component {
             inactiveDotScale={1}
           />
 
-          <Text style={styles.productName}> Olive Dress</Text>
-          <Text style={styles.productDesc}>Descriotion in long format</Text>
+          <Text style={styles.productName}> {this.state.product.name}</Text>
+          <Text style={styles.productDesc}>
+            {this.state.product.description_en}
+          </Text>
         </View>
         <View style={styles.priceView}>
           <View>
             <Text style={styles.priceText}>{translate("price")}</Text>
-            <Text style={styles.priceAmountText}>
-              KD <Text style={styles.priceAmountBigText}>125</Text>
-            </Text>
+            {this.state.product.prices &&
+            this.state.product.prices.length === 0 ? (
+              <Text style={styles.contactUs}>Contact us for prices</Text>
+            ) : (
+              <Text style={styles.priceAmountText}>
+                KD <Text style={styles.priceAmountBigText}>125</Text>
+              </Text>
+            )}
           </View>
           <GradientButton
             purpleViolet

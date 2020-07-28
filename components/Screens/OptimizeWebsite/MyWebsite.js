@@ -118,18 +118,18 @@ class MyWebsite extends Component {
   };
 
   renderEachProduct = (item) => {
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("EditProduct");
+          this.props.navigation.navigate("EditProduct", { product: item });
         }}
         style={myWebsiteStyles.productCard}
       >
         <Image
           style={myWebsiteStyles.productImage}
           source={{
-            uri:
-              "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+            uri: item.media[0].media_path,
           }}
         />
         <View style={myWebsiteStyles.productDetailView}>
@@ -137,11 +137,13 @@ class MyWebsite extends Component {
             {translate("Product Name")}
           </Text>
           <Text style={myWebsiteStyles.productNameText}>
-            {translate("Untitled")}
+            {item.name ? item.name : translate("Untitled")}
           </Text>
           <Text style={myWebsiteStyles.pricesubhead}>{translate("price")}</Text>
           <Text style={myWebsiteStyles.priceText}>
-            {translate("Unavailable")}
+            {item.prices && item.prices.length > 0
+              ? item.prices[0].currency + item.prices[0].price
+              : translate("Unavailable")}
           </Text>
         </View>
         <Pen
@@ -257,7 +259,7 @@ class MyWebsite extends Component {
             }
             return index;
           }}
-          renderItem={({ item }) => this.renderItem(item)}
+          renderItem={({ item }) => this.renderEachProduct(item)}
         />
         <LoadingModal
           videoUrlLoading={false}

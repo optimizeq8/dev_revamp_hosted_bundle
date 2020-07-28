@@ -415,48 +415,47 @@ export const getWebProductsToHide = (businessid) => {
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
   return (dispatch, getState) => {
     const { insta_handle } = getState().account.mainBusiness;
-    console.log("webproductsToAdd", webproductsToAdd);
-    // console.log("products_to_hide_id", products_to_hide_id);
+
+    const info = {
+      business_id: businessid,
+      products: webproductsToAdd,
+    };
+    console.log("info", JSON.stringify(info, null, 2));
+    delete axios.defaults.headers.common["Authorization"];
 
     axios
-      .post(`https://optimizeapp.com/ecommerce/api/products `, {
-        products: webproductsToAdd,
-        businessid,
+      .post(`https://optimizeapp.com/ecommerce/api/products`, info, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       })
       .then((response) => {
         return response.data;
       })
       .then((data) => {
         console.log("data save", data);
-        analytics.track(`a_submit_my_website_products`, {
+        // analytics.track(`a_submit_my_website_products`, {
+        //   source: "open_my_website",
+        //   source_action: "a_submit_my_website_products",
+        //   new: false,
+        //   action_status: data.success ? "success" : "failure",
+        //   error_description: !data.success && data.message,
+        //   webproductsToAdd,
+        //   insta_handle,
+        // });
+        // showMessage({
+        //   type: data.success ? "success" : "warning",
+        //   message: data.message,
+        // });
+        NavigationService.navigate("MyWebsite", {
           source: "open_my_website",
           source_action: "a_submit_my_website_products",
-          new: false,
-          action_status: data.success ? "success" : "failure",
-          error_description: !data.success && data.message,
-          webproductsToAdd,
-          insta_handle,
         });
-        showMessage({
-          type: data.success ? "success" : "warning",
-          message: data.message,
-        });
-        if (data.success) {
-          dispatch({
-            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-            payload: { weburl: data.weburl },
-          });
-        }
 
         return data;
       })
-      .then((data) => {
-        data.success &&
-          NavigationService.navigate("MyWebsite", {
-            source: "open_my_website",
-            source_action: "a_submit_my_website_products",
-          });
-      })
+
       .catch((error) => {
         console.log(
           "saveWebProductsToAdd error",
@@ -467,7 +466,7 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
 };
 
 export const getWebProductsList = (businessid) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.GET_WEB_PRODUCTS_LOADING,
       payload: true,

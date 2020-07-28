@@ -65,6 +65,7 @@ class MyWebsite extends Component {
       loaded: 0,
       isVisible: false,
       showPriceModal: false,
+      product: {},
     };
   }
   componentWillUnmount() {
@@ -89,6 +90,9 @@ class MyWebsite extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
+    const product = this.props.navigation.getParam("product", {});
+    console.log("product", product);
+    this.setState({ product });
     analytics.track(`open_my_website`, {
       source,
       source_action,
@@ -135,7 +139,9 @@ class MyWebsite extends Component {
   };
 
   goToPreview = () => {
-    this.props.navigation.navigate("ReviewProductDetail");
+    this.props.navigation.navigate("ReviewProductDetail", {
+      product: this.state.product,
+    });
   };
   closePriceModal = () => {
     this.setState({
@@ -149,11 +155,7 @@ class MyWebsite extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    const { mainBusiness } = this.props;
-    let website = mainBusiness.weburl;
-    if (website && !website.includes(".com")) {
-      website = `https://${mainBusiness.weburl}.optimizeapp.com`;
-    }
+
     return (
       <View style={editProductStyles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
@@ -185,7 +187,8 @@ class MyWebsite extends Component {
             style={editProductStyles.image}
             source={{
               uri:
-                "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+                this.state.product.media &&
+                this.state.product.media[0].media_path,
             }}
           />
           <View style={editProductStyles.placeholderView}>
@@ -193,7 +196,9 @@ class MyWebsite extends Component {
               style={editProductStyles.imagePlaceholder}
               source={{
                 uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+                  this.state.product.media &&
+                  this.state.product.media[1] &&
+                  this.state.product.media[1].media_path,
               }}
             />
             <TouchableOpacity>
@@ -209,7 +214,9 @@ class MyWebsite extends Component {
               style={editProductStyles.imagePlaceholder}
               source={{
                 uri:
-                  "https://instagram.fkwi8-1.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/109965463_293445785428393_3199064970583842940_n.jpg?_nc_ht=instagram.fkwi8-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=NJ7QMVcx4GcAX_qF0MC&oh=19abfaf65fdaf4aca58af3265c256b60&oe=5F42CCE1",
+                  this.state.product.media &&
+                  this.state.product.media[2] &&
+                  this.state.product.media[2].media_path,
               }}
             />
             <TouchableOpacity>
@@ -263,7 +270,7 @@ class MyWebsite extends Component {
                 {translate("Description")}
               </Text>
               <Text style={editProductStyles.subText}>
-                qwertyuiopasdfghjklzxcvbnm
+                {this.state.product.description_en}
               </Text>
             </View>
           </View>

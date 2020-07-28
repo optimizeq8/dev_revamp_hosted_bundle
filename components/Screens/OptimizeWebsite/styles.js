@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     // display: "flex",
     // flexGrow: 1,
     // justifyContent: "space-around",
-    alignItems: "center",
+    // alignItems: "center",
     // marginBottom: 40
   },
   submitProducts: {
