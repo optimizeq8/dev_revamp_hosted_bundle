@@ -125,6 +125,7 @@ class AdDesign extends Component {
       uneditedImageUri: "",
       serialization: null,
       maxClickHeight: 0,
+      swipeUpExpanded: false,
     };
   }
 
@@ -487,6 +488,7 @@ class AdDesign extends Component {
         />
 
         <ScrollView
+          scrollEnabled={!this.state.swipeUpExpanded}
           contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -594,82 +596,85 @@ class AdDesign extends Component {
                     campaignInfo={this.state.campaignInfo}
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
+                    setTheState={this.setTheState}
                   />
                 </View>
-                <View style={styles.lowerBtn}>
-                  <GradientButton
-                    text={translate("Preview")}
-                    uppercase
-                    transparent
-                    style={styles.reviewButton}
-                    disabledGradientBegin={"rgba(0,0,0,0)"}
-                    disabledGradientEnd={"rgba(0,0,0,0)"}
-                    disabled={this.props.loading}
-                    onPressAction={this.handleReview}
-                  />
-                  {this.props.loading ? (
-                    <View
-                      style={{
-                        width: "45%",
-                        position: "relative",
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.uploadingText}>
-                        {translate("Uploading")}
-                      </Text>
-                      <View>
-                        <AnimatedCircularProgress
-                          size={50}
-                          width={5}
-                          fill={Math.round(this.state.loaded)}
-                          rotation={360}
-                          lineCap="round"
-                          tintColor={globalColors.orange}
-                          backgroundColor="rgba(255,255,255,0.3)"
-                          adDetails={false}
-                        />
-                        <Text style={styles.uplaodPercentageText}>
-                          {Math.round(this.state.loaded, 2)}
-                          <Text style={styles.percentage}>%</Text>
-                        </Text>
-                      </View>
-                    </View>
-                  ) : (
-                    <LowerButton
-                      screenProps={this.props.screenProps}
-                      text={"Next"}
-                      width={12}
-                      height={12}
-                      style={styles.lowerBtnWidth}
-                      function={() =>
-                        _handleSubmission(
-                          this.state.campaignInfo.media_option,
-                          this.props.carouselAdsArray,
-                          this.state.carouselAdCards,
-                          formatCarouselAd,
-                          this.validator,
-                          this.finalSubmission,
-                          this.setTheState,
-                          {
-                            //for formatCarouselAd
-                            campaignInfo: this.state.campaignInfo,
-                            // selectedCampaign: this.selectedCampaign,
-                            campaign_id: this.props.campaign_id,
-                            // rejected: this.rejected,
-                            handleUpload: this.handleUpload,
-                            signal: this.state.signal,
-                            uploadCarouselAdCard: this.props
-                              .uploadCarouselAdCard,
-                          },
-                          this.props.screenProps
-                        )
-                      }
+                {!this.state.swipeUpExpanded && (
+                  <View style={styles.lowerBtn}>
+                    <GradientButton
+                      text={translate("Preview")}
+                      uppercase
+                      transparent
+                      style={styles.reviewButton}
+                      disabledGradientBegin={"rgba(0,0,0,0)"}
+                      disabledGradientEnd={"rgba(0,0,0,0)"}
+                      disabled={this.props.loading}
+                      onPressAction={this.handleReview}
                     />
-                  )}
-                </View>
+                    {this.props.loading ? (
+                      <View
+                        style={{
+                          width: "45%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.uploadingText}>
+                          {translate("Uploading")}
+                        </Text>
+                        <View>
+                          <AnimatedCircularProgress
+                            size={50}
+                            width={5}
+                            fill={Math.round(this.state.loaded)}
+                            rotation={360}
+                            lineCap="round"
+                            tintColor={globalColors.orange}
+                            backgroundColor="rgba(255,255,255,0.3)"
+                            adDetails={false}
+                          />
+                          <Text style={styles.uplaodPercentageText}>
+                            {Math.round(this.state.loaded, 2)}
+                            <Text style={styles.percentage}>%</Text>
+                          </Text>
+                        </View>
+                      </View>
+                    ) : (
+                      <LowerButton
+                        screenProps={this.props.screenProps}
+                        text={"Next"}
+                        width={12}
+                        height={12}
+                        style={styles.lowerBtnWidth}
+                        function={() =>
+                          _handleSubmission(
+                            this.state.campaignInfo.media_option,
+                            this.props.carouselAdsArray,
+                            this.state.carouselAdCards,
+                            formatCarouselAd,
+                            this.validator,
+                            this.finalSubmission,
+                            this.setTheState,
+                            {
+                              //for formatCarouselAd
+                              campaignInfo: this.state.campaignInfo,
+                              // selectedCampaign: this.selectedCampaign,
+                              campaign_id: this.props.campaign_id,
+                              // rejected: this.rejected,
+                              handleUpload: this.handleUpload,
+                              signal: this.state.signal,
+                              uploadCarouselAdCard: this.props
+                                .uploadCarouselAdCard,
+                            },
+                            this.props.screenProps
+                          )
+                        }
+                      />
+                    )}
+                  </View>
+                )}
               </View>
             </Transition>
           ) : (

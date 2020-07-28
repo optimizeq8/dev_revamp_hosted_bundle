@@ -246,13 +246,7 @@ class Website extends Component {
       >
         <InputScrollView
           {...ScrollView.props}
-          contentContainerStyle={[
-            styles.scrollViewContainer,
-            {
-              paddingHorizontal:
-                this.props.objective === "LEAD_GENERATION" ? 26 : 10,
-            },
-          ]}
+          contentContainerStyle={[styles.scrollViewContainer]}
         >
           {/* <WebsiteIcon style={styles.icon} fill={"#FFF"} /> */}
           <View style={[styles.textcontainer]}>

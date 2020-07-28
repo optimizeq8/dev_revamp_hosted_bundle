@@ -13,6 +13,8 @@ export const colors = {
 const styles = StyleSheet.create({
   scrollViewContainer: {
     width: "100%",
+    padding: 10,
+    paddingBottom: "50%",
     // flex: 1
   },
   container: {
