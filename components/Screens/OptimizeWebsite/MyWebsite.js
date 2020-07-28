@@ -58,6 +58,7 @@ class MyWebsite extends Component {
     });
   };
   componentDidMount() {
+    this.props.getWebProductsList(this.props.mainBusiness.businessid);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -290,5 +291,7 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal
       )
     ),
+  getWebProductsList: (businessid) =>
+    dispatch(actionCreators.getWebProductsList(businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

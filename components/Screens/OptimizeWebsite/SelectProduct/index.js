@@ -48,9 +48,6 @@ class ProductSelect extends React.Component {
     };
   }
 
-  checkIfRecordExist = (newRecords, imageId) => {
-    return newRecords.findIndex((img) => img.imageId === imageId) === -1;
-  };
   componentDidUpdate(prevProps) {
     // console.log(
     //   "this.props.mainBusiness.insta_handle",
@@ -71,18 +68,17 @@ class ProductSelect extends React.Component {
       !this.props.savingWebProducts
     ) {
       this.setState({
-        cartList: this.props.products_to_hide_list,
-        counter: this.props.products_to_hide_list.length + 1,
+        cartList: this.props.webproducts,
+        counter: this.props.webproducts.length + 1,
       });
     }
     if (
-      prevProps.products_to_hide_list &&
-      this.props.products_to_hide_list &&
-      prevProps.products_to_hide_list.length !==
-        this.props.products_to_hide_list.length
+      prevProps.webproducts &&
+      this.props.webproducts &&
+      prevProps.webproducts.length !== this.props.webproducts.length
     ) {
       this.setState({
-        cartList: [...this.props.products_to_hide_list],
+        cartList: [...this.props.webproducts],
       });
     }
 
@@ -97,29 +93,44 @@ class ProductSelect extends React.Component {
     }
   }
   handleSubmission = () => {
-    this.props.saveWebProductsToAdd(
-      this.props.edit,
-      this.state.cartList,
-      this.props.mainBusiness.businessid,
-      this.state.no_of_products_to_show
-    );
+    const array = this.state.cartList.map((elem) => {
+      console.log("elem", elem);
+      const itemExistOnBackend = this.props.webproducts.find(
+        ({ instagram_pid }) => elem.instagram_pid === instagram_pid
+      );
+      if (itemExistOnBackend) {
+        return {
+          ...elem,
+        };
+      }
+      return elem;
+    });
+    console.log("array", array);
+
+    // check for if the product already exist in rge
+    this.props.saveWebProductsToAdd(array, this.props.mainBusiness.businessid);
   };
   addToCart = (item) => {
-    console.log("item", item);
+    // console.log("item", item);
     const newCartList = [...this.state.cartList];
-    const checkifALreadyExist = find(
-      this.state.cartList,
-      (imageId) => imageId === item.imageId
-    );
-    // console.log("checkifALreadyExist", checkifALreadyExist);
-    if (!checkifALreadyExist) {
-      newCartList.push(item.imageId);
+    const checkifALreadyExist = newCartList
+      .map((prod) => {
+        return prod.instagram_pid;
+      })
+      .indexOf(item.imageId);
+
+    if (checkifALreadyExist === -1) {
+      newCartList.push({
+        shortcode: item.shortcode,
+        instagram_pid: item.imageId,
+        image_url: item.imageUrl,
+      });
 
       analytics.track(`a_products_to_add_in_cart`, {
         source: this.props.source,
         source_action: "a_add_products",
         timestamp: new Date().getTime(),
-        products_to_hide_list: newCartList,
+        webproducts: newCartList,
       });
       const counterNew = this.state.counter;
       this.setState({
@@ -127,8 +138,12 @@ class ProductSelect extends React.Component {
         counter: counterNew + 1,
       });
     } else {
-      const index = newCartList.indexOf(checkifALreadyExist);
-
+      // const index = newCartList.indexOf(checkifALreadyExist);
+      const index = newCartList
+        .map((e) => {
+          return e.instagram_pid;
+        })
+        .indexOf(item.imageId);
       // console.log("index", index);
       const counterNew = this.state.counter;
 
@@ -138,7 +153,7 @@ class ProductSelect extends React.Component {
         source: this.props.source,
         source_action: "a_remove_products",
         timestamp: new Date().getTime(),
-        products_to_hide_list: newCartList,
+        webproducts: newCartList,
       });
       this.setState({
         cartList: newCartList,
@@ -156,8 +171,9 @@ class ProductSelect extends React.Component {
     if (item) {
       // console.log("itemFound", itemFound);
       const itemFound =
-        this.state.cartList.filter((imageId) => imageId === item.imageId)
-          .length > 0;
+        this.state.cartList.filter(
+          (imageId) => imageId.instagram_pid === item.imageId
+        ).length > 0;
       return (
         <TouchableOpacity
           key={item.imageId}
@@ -257,6 +273,7 @@ const mapStateToProps = (state) => ({
   businessLogo: state.website.businessLogo,
   mainBusiness: state.account.mainBusiness,
   products_to_hide_list: state.website.products_to_hide_list,
+  webproducts: state.website.webproducts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -284,6 +301,7 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getWebProductsToHide: (businessid) =>
     dispatch(actionCreators.getWebProductsToHide(businessid)),
-  saveWebProductsToAdd: () => dispatch(actionCreators.saveWebProductsToAdd()),
+  saveWebProductsToAdd: (webProducts, businessid) =>
+    dispatch(actionCreators.saveWebProductsToAdd(webProducts, businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductSelect);

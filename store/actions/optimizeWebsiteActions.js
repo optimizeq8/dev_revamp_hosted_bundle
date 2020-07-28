@@ -412,92 +412,85 @@ export const getWebProductsToHide = (businessid) => {
  * @param {*} businesslogo  instgarm business logo
  * @param {*} no_of_products_to_show number of products to show by default 60
  */
-export const saveWebProductsToAdd = (
-  edit = false,
-  webproductsToAdd,
-  businessid,
-  no_of_products_to_show = 60
-) => {
+export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
   return (dispatch, getState) => {
     const { insta_handle } = getState().account.mainBusiness;
-    // console.log("insta_handle", insta_handle);
+    console.log("webproductsToAdd", webproductsToAdd);
     // console.log("products_to_hide_id", products_to_hide_id);
 
-    if (edit && products_to_hide_id) {
-      createBaseUrl()
-        .put(`businesswebProducts`, {
-          webproducts: webproductsToAdd,
-          businessid,
-          no_of_products_to_show,
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products `, {
+        products: webproductsToAdd,
+        businessid,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        console.log("data save", data);
+        analytics.track(`a_submit_my_website_products`, {
+          source: "open_my_website",
+          source_action: "a_submit_my_website_products",
+          new: false,
+          action_status: data.success ? "success" : "failure",
+          error_description: !data.success && data.message,
+          webproductsToAdd,
           insta_handle,
-        })
-        .then((response) => {
-          return response.data;
-        })
-        .then((data) => {
-          analytics.track(`a_submit_my_website_products`, {
+        });
+        showMessage({
+          type: data.success ? "success" : "warning",
+          message: data.message,
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+            payload: { weburl: data.weburl },
+          });
+        }
+
+        return data;
+      })
+      .then((data) => {
+        data.success &&
+          NavigationService.navigate("MyWebsite", {
             source: "open_my_website",
             source_action: "a_submit_my_website_products",
-            new: false,
-            action_status: data.success ? "success" : "failure",
-            error_description: !data.success && data.message,
-            webproductsToAdd,
-            insta_handle,
           });
-          showMessage({
-            type: data.success ? "success" : "warning",
-            message: data.message,
-          });
-          if (data.success) {
-            dispatch({
-              type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl },
-            });
-          }
-
-          return data;
-        })
-        .then((data) => {
-          data.success &&
-            NavigationService.navigate("MyWebsite", {
-              source: "open_my_website",
-              source_action: "a_submit_my_website_products",
-            });
-        })
-        .catch((error) => {
-          // console.log("saveWebProductsToHide", error.response || error.message);
-        });
-    }
+      })
+      .catch((error) => {
+        console.log(
+          "saveWebProductsToAdd error",
+          error.response || error.message
+        );
+      });
   };
 };
 
-export const getWebProductsList = () => {
-  return (
-    dispatch,
-    (getState) => {
-      dispatch({
-        type: actionTypes.GET_WEB_PRODUCTS_LOADING,
-        payload: true,
-      });
+export const getWebProductsList = (businessid) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+      payload: true,
+    });
 
-      createBaseUrl()
-        .get(``)
-        .then((res) => {
-          return res.data;
-        })
-        .then((data) => {
-          if (data.success)
-            return dispatch({
-              type: actionTypes.SET_WEB_PRODUCTS_LIST,
-              payload: data.list,
-            });
-        })
-        .catch((err) => {
-          return dispatch({
-            type: actionTypes.SET_WEB_PRODUCTS_LIST,
-            payload: [],
-          });
+    axios
+      .get(
+        `https://optimizeapp.com/ecommerce/api/business/${businessid}/products`
+      )
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS_LIST,
+          payload: data.data,
         });
-    }
-  );
+      })
+      .catch((err) => {
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS_LIST,
+          payload: [],
+        });
+      });
+  };
 };
