@@ -34,7 +34,7 @@ class AppUpdateChecker extends PureComponent {
   }
 
   componentDidMount() {
-    Constants.nativeAppVersion[Constants.nativeAppVersion.length - 1] === "0"
+    Constants.nativeAppVersion[Constants.nativeAppVersion.length - 1] !== "0"
       ? this.handleUpdates()
       : this.props.checkForUpdate();
   }

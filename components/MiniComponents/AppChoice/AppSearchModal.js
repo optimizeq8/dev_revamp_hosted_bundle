@@ -7,6 +7,7 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
 import SearchIcon from "../../../assets/SVGs/Search";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
@@ -20,7 +21,8 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-export default class AppSearchModal extends Component {
+import { log } from "react-native-reanimated";
+class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
     if (pervProps.appSelection !== this.props.appSelection)
@@ -41,20 +43,17 @@ export default class AppSearchModal extends Component {
       },
     });
     let appIdorName = this.props.mainState.appValue.includes(".");
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-        // `/applications/com.espn.score_center/metadata.json`
-      )
+    instance;
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.OP_fb_ad_account_id}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.fb_access_token}`
+    )
       .then((res) => {
         // console.log(res);
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
       .then((data) =>
         this.props.setTheState({
-          androidData: data,
+          androidData: data.data,
           showList: true,
           loading: false,
         })
@@ -110,13 +109,14 @@ export default class AppSearchModal extends Component {
       .then((res) => {
         return !appIdorName ? res.data.content : [res.data.content];
       })
-      .then((data) =>
+      .then((data) => {
+        console.log(JSON.stringify(data, null, 2));
         this.props.setTheState({
           data: data,
           showList: true,
           loading: false,
-        })
-      )
+        });
+      })
       .catch((err) => {
         // console.log(err);
 
@@ -378,3 +378,9 @@ export default class AppSearchModal extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  fb_access_token: state.generic.fb_access_token,
+  OP_fb_ad_account_id: state.generic.OP_fb_ad_account_id,
+});
+export default connect(mapStateToProps, null)(AppSearchModal);
