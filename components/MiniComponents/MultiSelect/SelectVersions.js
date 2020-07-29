@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectVersions extends Component {
   state = {
@@ -203,6 +204,9 @@ class SelectVersions extends Component {
                     this.onSelectedItemsChange(items, "version")
                   }
                   selectedItems={this.state.selectedItems}
+                  colors={{
+                    chipColor: globalColors.rum,
+                  }}
                 />
                 {this.state.versions.length === 0 && (
                   <LoadingScreen top={-10} />

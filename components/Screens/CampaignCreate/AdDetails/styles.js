@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    flex: 1,
+    height: "85%",
   },
   subHeadings: {
     color: globalColors.gray,
@@ -134,25 +134,22 @@ const styles = StyleSheet.create({
   },
   bottom: {
     display: "flex",
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    position: "absolute",
-    bottom: "15%",
     marginLeft: 25,
     width: "100%",
-    // marginHorizontal: 30
+    paddingVertical: 10,
     paddingBottom: 15,
   },
   chartText: {
-    color: "#fff",
+    color: globalColors.rum,
     textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17,
   },
   chartTextNum: {
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 16,
     textAlign: "left",

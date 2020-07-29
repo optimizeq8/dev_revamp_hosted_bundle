@@ -73,7 +73,6 @@ export default class SelectLanguages extends Component {
             screenProps={this.props.screenProps}
             checkmark={true}
             style={[styles.button]}
-            bottom={7}
             function={() => this.props._handleSideMenuState(false)}
           />
         </View>

@@ -128,7 +128,7 @@ class SelectRegions extends Component {
                     fontSize: 14 / PixelRatio.getFontScale(),
                   },
                 ]}
-                placeholderTextColor="#fff"
+                placeholderTextColor={globalColors.rum}
                 onChangeText={(value) => {
                   let filteredR = this.props.regions.filter((c) =>
                     translate(c.name)
@@ -165,7 +165,6 @@ class SelectRegions extends Component {
           screenProps={this.props.screenProps}
           checkmark={true}
           style={[styles.button]}
-          bottom={5}
           function={() => this.props._handleSideMenuState(false)}
         />
       </View>

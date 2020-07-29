@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   container: {
-    flex: 1,
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-between",
+    height: "85%",
   },
   button: {
     alignSelf: "center",

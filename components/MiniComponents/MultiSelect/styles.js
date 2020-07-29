@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    justifyContent: "space-between",
+    height: "85%",
   },
   dataContainer: {
     alignItems: "center",
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
     marginBottom: 40,
+    position: "relative",
   },
   stickyFooterButton: {
     backgroundColor: "transparent",

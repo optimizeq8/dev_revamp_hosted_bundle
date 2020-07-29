@@ -20,6 +20,7 @@ export default class Picker extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
+    let { customColors } = this.props;
     return (
       <SectionedMultiSelect
         ref={(ref) => (this.Section = ref)}
@@ -115,7 +116,7 @@ export default class Picker extends Component {
           </View>
         }
         hideSearch={this.props.customSearch}
-        colors={colors}
+        colors={{ ...colors, ...customColors }}
         searchIconComponent={<SearchIcon stroke={globalColors.orange} />}
         modalWithSafeAreaView={true}
         iconKey="icon"

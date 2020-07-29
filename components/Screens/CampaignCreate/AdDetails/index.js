@@ -49,6 +49,7 @@ import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { uniq, flatten } from "lodash";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
+import { globalColors } from "../../../../GlobalStyles";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1425,6 +1426,8 @@ class AdDetails extends Component {
             topRightButtonFunction={() => {
               this.setState({ startEditing: !startEditing });
             }}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
             topRightButtonText={translate("Edit")}
             navigation={this.editCampaign ? undefined : this.props.navigation}
             title={this.editCampaign ? "Audience" : "Campaign details"}

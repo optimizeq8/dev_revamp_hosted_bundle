@@ -19,6 +19,7 @@ import rtlStyles from "./rtlStyles";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import LowerButton from "../LowerButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -132,7 +133,7 @@ class MultiSelectList extends Component {
               fontFamily: "montserrat-bold",
               color: (country_code ? country_code.country_code : "" === c.value)
                 ? "#FF9D00"
-                : "#fff",
+                : globalColors.rum,
               fontSize: 14,
               opacity: !disabled ? 1 : 0.5,
             }}
@@ -149,7 +150,7 @@ class MultiSelectList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <LocationIcon width={110} height={110} fill="#fff" />
+            <LocationIcon width={70} height={70} fill={globalColors.rum} />
             <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>
@@ -161,7 +162,7 @@ class MultiSelectList extends Component {
                       ? rtlStyles.searchInputText
                       : styles.searchInputText
                   }
-                  placeholderTextColor="#fff"
+                  placeholderTextColor={globalColors.rum}
                   onChangeText={(value) => {
                     let filteredC = this.props.countries.filter((c) =>
                       translate(c.label)

@@ -76,7 +76,13 @@ export class TargetAudience extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View
-        style={{ height: heightPercentageToDP(100) > 800 ? "100%" : "90%" }}
+        style={{
+          height: editCampaign
+            ? heightPercentageToDP(60)
+            : heightPercentageToDP(100) > 800
+            ? "60%"
+            : "50%",
+        }}
       >
         <MaskedView
           maskElement={
@@ -96,7 +102,7 @@ export class TargetAudience extends Component {
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? heightPercentageToDP(70) : "50%" },
+              { height: editCampaign ? heightPercentageToDP(60) : "50%" },
             ]}
           >
             <TouchableOpacity
@@ -105,7 +111,12 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
-                <LocationIcon width={30} height={30} style={styles.icon} />
+                <LocationIcon
+                  width={30}
+                  height={30}
+                  style={styles.icon}
+                  fill={globalColors.purple}
+                />
 
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Country")}</Text>
@@ -121,7 +132,11 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.geos[0].country_code ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
+                  <GreenCheckmarkIcon
+                    width={30}
+                    height={30}
+                    fill={globalColors.purple}
+                  />
                 ) : (
                   <PlusCircleIcon width={30} height={30} />
                 ))}
@@ -133,7 +148,12 @@ export class TargetAudience extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
-                  <LocationIcon width={30} height={30} style={styles.icon} />
+                  <LocationIcon
+                    width={30}
+                    height={30}
+                    style={styles.icon}
+                    fill={globalColors.purple}
+                  />
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text
                       style={[
@@ -175,7 +195,12 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
-                <LocationIcon width={30} height={30} style={styles.icon} />
+                <LocationIcon
+                  width={30}
+                  height={30}
+                  style={styles.icon}
+                  fill={globalColors.purple}
+                />
 
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Map")}</Text>
@@ -202,7 +227,12 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
-                <GenderIcon width={30} height={30} style={styles.icon} />
+                <GenderIcon
+                  width={30}
+                  height={30}
+                  style={styles.icon}
+                  fill={globalColors.purple}
+                />
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
@@ -232,10 +262,10 @@ export class TargetAudience extends Component {
             >
               <View style={globalStyles.row}>
                 <AgeIcon
-                  fill={globalColors.orange}
                   width={25}
                   height={25}
                   style={styles.icon}
+                  fill={globalColors.purple}
                 />
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
@@ -261,7 +291,12 @@ export class TargetAudience extends Component {
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
-                <LanguageIcon width={30} height={30} style={styles.icon} />
+                <LanguageIcon
+                  width={30}
+                  height={30}
+                  style={styles.icon}
+                  fill={globalColors.purple}
+                />
                 <View style={[globalStyles.column, styles.flex]}>
                   <Text style={styles.menutext}>{translate("Language")}</Text>
                   <Text
@@ -289,7 +324,12 @@ export class TargetAudience extends Component {
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
-                  <InterestsIcon width={30} height={30} style={styles.icon} />
+                  <InterestsIcon
+                    width={30}
+                    height={30}
+                    style={styles.icon}
+                    fill={globalColors.purple}
+                  />
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text style={styles.menutext}>
                       {translate("Interests")}
@@ -321,7 +361,7 @@ export class TargetAudience extends Component {
                 <OperatingSystemIcon
                   width={25}
                   height={25}
-                  fill={globalColors.orange}
+                  fill={globalColors.purple}
                   style={styles.icon}
                 />
                 <View style={[globalStyles.column, styles.flex]}>
@@ -364,7 +404,7 @@ export class TargetAudience extends Component {
                     width={25}
                     height={25}
                     style={{
-                      color: globalColors.orange,
+                      color: globalColors.purple,
                       right: 2,
                     }}
                   />
@@ -404,7 +444,7 @@ export class TargetAudience extends Component {
                     width={25}
                     height={25}
                     style={styles.icon}
-                    fill={globalColors.orange}
+                    fill={globalColors.purple}
                   />
 
                   <View style={[globalStyles.column, styles.flex]}>
