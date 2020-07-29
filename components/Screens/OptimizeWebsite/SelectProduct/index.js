@@ -101,22 +101,24 @@ class ProductSelect extends React.Component {
       const itemExistOnBackend = this.props.webproducts.find(
         ({ instagram_pid }) => elem.instagram_pid === instagram_pid
       );
+
       if (itemExistOnBackend) {
         return {
           shortcode: elem.media[0].shortcode,
           instagram_pid: elem.instagram_pid,
           image_url: elem.media[0].media_path,
           id: elem.id,
+          description_en: elem.description_en,
         };
       }
       return {
         shortcode: elem.shortcode,
         instagram_pid: elem.instagram_pid,
         image_url: elem.image_url,
+        description_en: elem.description_en,
         id: "",
       };
     });
-
     // check for if the product already exist in rge
     this.props.saveWebProductsToAdd(array, this.props.mainBusiness.businessid);
   };
@@ -128,12 +130,13 @@ class ProductSelect extends React.Component {
         return prod.instagram_pid;
       })
       .indexOf(item.imageId);
-
+    // console.log("add item", item);
     if (checkifALreadyExist === -1) {
       newCartList.push({
         shortcode: item.shortcode,
         instagram_pid: item.imageId,
         image_url: item.imageUrl,
+        description_en: item.productDescription,
       });
 
       analytics.track(`a_products_to_add_in_cart`, {

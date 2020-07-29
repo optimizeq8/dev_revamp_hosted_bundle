@@ -7,11 +7,12 @@ import {
   Clipboard,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
-
+import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
 
 //Redux
@@ -32,21 +33,20 @@ import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
-import { Input } from "native-base";
 
 const country = [
   {
-    currency: "KW",
+    currency: "KWD",
     country: "Kuwait",
     flag: require("../../../../assets/images/Flags/Kuwait.png"),
   },
   {
-    currency: "SR",
+    currency: "SAR",
     country: "KSA",
     flag: require("../../../../assets/images/Flags/KSA.png"),
   },
   {
-    currency: "BD",
+    currency: "BHD",
     country: "Bahrain",
     flag: require("../../../../assets/images/Flags/Bahrain.png"),
   },
@@ -54,6 +54,16 @@ const country = [
     currency: "AED",
     country: "UAE",
     flag: require("../../../../assets/images/Flags/UAE.png"),
+  },
+  {
+    currency: "OMR",
+    country: "Oman",
+    flag: require("../../../../assets/images/Flags/Oman.png"),
+  },
+  {
+    currency: "QAR",
+    country: "Qatar",
+    flag: require("../../../../assets/images/Flags/Qatar.png"),
   },
 ];
 
@@ -65,7 +75,9 @@ class MyWebsite extends Component {
       loaded: 0,
       isVisible: false,
       showPriceModal: false,
-      product: {},
+      product: {
+        prices: [],
+      },
     };
   }
   componentWillUnmount() {
@@ -91,7 +103,7 @@ class MyWebsite extends Component {
       this.props.screenProps.prevAppState
     );
     const product = this.props.navigation.getParam("product", {});
-    console.log("product", product);
+
     this.setState({ product });
     analytics.track(`open_my_website`, {
       source,
@@ -153,6 +165,20 @@ class MyWebsite extends Component {
       showPriceModal: true,
     });
   };
+  onAddPrice = (item) => {
+    let priceArr = this.state.product.prices;
+    priceArr.push({
+      currency: item.currency,
+      price: this.state.price,
+    });
+    this.setState({
+      product: {
+        ...this.state.product,
+        prices: priceArr,
+      },
+    });
+  };
+  savePrice = () => {};
   render() {
     const { translate } = this.props.screenProps;
 
@@ -179,102 +205,149 @@ class MyWebsite extends Component {
           iconColor={"#75647C"}
           showTopRightButtonIcon={"delete"}
         />
-        <ScrollView
-          horizontal
-          contentContainerStyle={editProductStyles.imageViewContainer}
-        >
-          <Image
-            style={editProductStyles.image}
-            source={{
-              uri:
-                this.state.product.media &&
-                this.state.product.media[0].media_path,
-            }}
-          />
-          <View style={editProductStyles.placeholderView}>
-            <Image
-              style={editProductStyles.imagePlaceholder}
-              source={{
-                uri:
-                  this.state.product.media &&
-                  this.state.product.media[1] &&
-                  this.state.product.media[1].media_path,
-              }}
-            />
-            <TouchableOpacity>
-              <CameraCircleOutlineIcon width={70} height={70} />
-              <Text style={editProductStyles.addMediaText}>
-                {translate("Add Media")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={editProductStyles.placeholderView}>
-            <Image
-              style={editProductStyles.imagePlaceholder}
-              source={{
-                uri:
-                  this.state.product.media &&
-                  this.state.product.media[2] &&
-                  this.state.product.media[2].media_path,
-              }}
-            />
-            <TouchableOpacity>
-              <CameraCircleOutlineIcon width={70} height={70} />
-              <Text style={editProductStyles.addMediaText}>
-                {translate("Add Media")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        <ScrollView
+        <InputScrollView
+          {...ScrollView.props}
           contentContainerStyle={{
-            paddingHorizontal: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            // height: "100%",
           }}
         >
-          <View style={editProductStyles.feildView}>
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <View style={editProductStyles.fieldTextView}>
-              <Text style={editProductStyles.subHeading}>
-                {translate("Product Name")}
-              </Text>
-              <Text style={editProductStyles.subText}>
-                {translate("Add Name")}
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={this.openPriceModal}
-            style={editProductStyles.feildView}
+          <ScrollView
+            horizontal
+            contentContainerStyle={editProductStyles.imageViewContainer}
           >
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
+            <Image
+              style={editProductStyles.image}
+              source={{
+                uri:
+                  this.state.product.media &&
+                  this.state.product.media[0].media_path,
+              }}
+            />
+            <View style={editProductStyles.placeholderView}>
+              <Image
+                style={editProductStyles.imagePlaceholder}
+                source={{
+                  uri:
+                    this.state.product.media &&
+                    this.state.product.media[1] &&
+                    this.state.product.media[1].media_path,
+                }}
+              />
+              <TouchableOpacity>
+                <CameraCircleOutlineIcon width={70} height={70} />
+                <Text style={editProductStyles.addMediaText}>
+                  {translate("Add Media")}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <View style={editProductStyles.fieldTextView}>
-              <Text style={editProductStyles.subHeading}>
-                {translate("price")}
-              </Text>
-              <Text style={editProductStyles.subText}>
-                {translate("Add Price")}
-              </Text>
+
+            <View style={editProductStyles.placeholderView}>
+              <Image
+                style={editProductStyles.imagePlaceholder}
+                source={{
+                  uri:
+                    this.state.product.media &&
+                    this.state.product.media[2] &&
+                    this.state.product.media[2].media_path,
+                }}
+              />
+              <TouchableOpacity>
+                <CameraCircleOutlineIcon width={70} height={70} />
+                <Text style={editProductStyles.addMediaText}>
+                  {translate("Add Media")}
+                </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-          <View style={editProductStyles.feildView}>
-            <View style={editProductStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <View style={editProductStyles.fieldTextView}>
-              <Text style={editProductStyles.subHeading}>
-                {translate("Description")}
-              </Text>
-              <Text style={editProductStyles.subText}>
-                {this.state.product.description_en}
-              </Text>
-            </View>
+          </ScrollView>
+          <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.productNameInput.focus();
+              }}
+              style={editProductStyles.feildView}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>
+                  {translate("Product Name")}
+                </Text>
+                {/* <Text style={editProductStyles.subText}>
+                {translate("Add Name")}
+              </Text> */}
+                <TextInput
+                  placeholder={translate("Add Name")}
+                  style={editProductStyles.subText}
+                  value={this.state.product.name}
+                  ref={(input) => {
+                    this.productNameInput = input;
+                  }}
+                  onChangeText={(text) => {
+                    this.setState({
+                      product: {
+                        ...this.state.product,
+                        name: text,
+                      },
+                    });
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.openPriceModal}
+              style={editProductStyles.feildView}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>
+                  {translate("price")}
+                </Text>
+                <Text style={editProductStyles.subText}>
+                  {translate("Add Price")}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.productDescInput.focus();
+              }}
+              style={editProductStyles.feildView}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>
+                  {translate("Description")}
+                </Text>
+
+                <TextInput
+                  style={[editProductStyles.subText]}
+                  multiline={true}
+                  value={this.state.product.description_en}
+                  ref={(input) => {
+                    this.productDescInput = input;
+                  }}
+                  onChangeText={(text) => {
+                    this.setState({
+                      product: {
+                        ...this.state.product,
+                        description_en: text,
+                      },
+                    });
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
+        </InputScrollView>
+
         <View
           style={{
             display: "flex",
@@ -282,6 +355,9 @@ class MyWebsite extends Component {
             alignItems: "center",
             justifyContent: "space-around",
             marginVertical: 20,
+            bottom: 10,
+            position: "absolute",
+            // alignSelf: "flex-end",
           }}
         >
           <GradientButton
@@ -336,20 +412,30 @@ class MyWebsite extends Component {
                 <TouchableOpacity
                   style={editProductStyles.countryEachView}
                   key={ctr.country}
+                  onPress={() => {
+                    this.setState({
+                      activeCountryCurrency: ctr.currency,
+                    });
+                  }}
                 >
                   <Image
                     source={ctr.flag}
-                    style={editProductStyles.flagImage}
+                    style={[
+                      editProductStyles.flagImage,
+                      this.state.activeCountryCurrency === ctr.currency &&
+                        editProductStyles.flagActiveImage,
+                    ]}
                   />
                   <Text style={editProductStyles.countryText}>
-                    {ctr.country}
+                    {this.state.activeCountryCurrency === ctr.currency &&
+                      translate(ctr.country)}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
 
             <View style={editProductStyles.bottomView}>
-              <Input
+              <TextInput
                 style={editProductStyles.inputView}
                 placeholder={translate("Enter Price")}
                 placeholderTextColor={"#75647C"}
@@ -360,6 +446,7 @@ class MyWebsite extends Component {
                 style={editProductStyles.saveButton}
                 purpleViolet
                 text={"SAVE"}
+                onPressAction={this.savePrice}
               />
             </View>
           </View>

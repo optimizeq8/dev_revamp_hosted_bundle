@@ -80,10 +80,6 @@ class MyWebsite extends Component {
   };
   goBack = () => {
     this.props.navigation.goBack();
-    // this.props.navigation.navigate("Dashboard", {
-    //   source: "open_my_website",
-    //   source_action: "a_go_back",
-    // });
   };
   startUpload = (media) => {
     var body = new FormData();
@@ -109,15 +105,15 @@ class MyWebsite extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
-  Slide = () => {
-    return this.state.product.media.map((item) => (
+  Slide = ({ item }) => {
+    return (
       <Image
         style={styles.image}
         source={{
           uri: item.media_path,
         }}
       />
-    ));
+    );
   };
   navigationRouteHandler = (index) => {
     this.setState({
@@ -149,7 +145,7 @@ class MyWebsite extends Component {
         <View style={styles.productView}>
           <Pagination
             containerStyle={styles.paginationContainerStyle}
-            dotsLength={3}
+            dotsLength={this.state.product.media.length}
             activeDotIndex={this.state.activeSlide}
             dotStyle={styles.paginationDotStyle}
             dotColor={globalColors.purple}

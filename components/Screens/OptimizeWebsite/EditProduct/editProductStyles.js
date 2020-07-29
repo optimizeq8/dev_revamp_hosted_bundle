@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   outerView: {
     flex: 1,
     backgroundColor: "#f8f8f8",
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "column",
   },
   safeAreaViewContainer: {
     // flex: 1,
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#75647C",
     marginTop: 4,
+    // height: null,
   },
   previewBtn: {
     borderColor: "#75647C",
@@ -52,6 +56,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
   imageViewContainer: {
+    // flex: 1,
     marginHorizontal: 10,
     flexDirection: "row",
     // height: 250,
@@ -92,15 +97,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 10,
-    marginHorizontal: 15,
+    justifyContent: "space-around",
+    // marginHorizontal: 15,
   },
   countryEachView: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginHorizontal: 5,
+    // marginHorizontal: 8,
   },
-  flagImage: { borderRadius: 25, height: 35, width: 35 },
+  flagImage: { borderRadius: 25, height: 30, width: 30 },
   countryText: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
@@ -163,6 +169,10 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
     opacity: 0.75,
+  },
+  flagActiveImage: {
+    borderWidth: 2,
+    borderColor: globalColors.purple,
   },
 });
 export default styles;
