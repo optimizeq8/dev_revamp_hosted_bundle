@@ -3,9 +3,11 @@ import { Text, View } from "react-native";
 import SwipeUpComponent from "./SwipeUpComponent";
 import { connect } from "react-redux";
 class SwipeCompCondition extends Component {
-  savedObjective = this.props.rejCampaign.hasOwnProperty("savedObjective")
-    ? this.props.rejCampaign.savedObjective
-    : this.props.savedObjective;
+  savedObjective =
+    this.props.rejCampaign &&
+    this.props.rejCampaign.hasOwnProperty("savedObjective")
+      ? this.props.rejCampaign.savedObjective
+      : this.props.savedObjective;
   swipeUpComp = () =>
     this.props.adType === "SnapAd" ? (
       // !this.props.rejected &&

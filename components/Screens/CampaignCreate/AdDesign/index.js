@@ -139,7 +139,7 @@ class AdDesign extends Component {
       swipeUpMaxHeight: 0,
     };
     this.adType = this.props.adType;
-    this.selectedCampaign = this.props.rejCampaign;
+    this.selectedCampaign = this.props.rejCampaign || this.props.data;
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
