@@ -253,6 +253,52 @@ const styles = StyleSheet.create({
     height: 65,
     // padding: 20
   },
+  buttonView: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    // paddingHorizontal: 10,
+    // paddingVertical: 6,
+  },
+  btnHeadingText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: globalColors.white,
+    textTransform: "uppercase",
+    textAlign: "center",
+    marginTop: 3,
+  },
+  btnDescText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: globalColors.white,
+    marginTop: 3,
+    textAlign: "center",
+  },
+  radioButtonView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 35,
+    backgroundColor: "rgba(0,0,0,0.16)",
+    flex: 1,
+  },
+  gradientBtn: {
+    width: "50%",
+    marginHorizontal: 0,
+    height: 155,
+  },
+  objectiveModal: {
+    height: "76%",
+    top: "20%",
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    overflow: "hidden",
+    borderRadius: 50,
+    width: "95%",
+    alignSelf: "center",
+  },
 });
 
 export default styles;

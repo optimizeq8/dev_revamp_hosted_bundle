@@ -219,7 +219,7 @@ export default class AppSearchModal extends Component {
               >
                 {appSelection === "iOS" ? (
                   <>
-                    <AppStoreIcon width={50} height={50} />
+                    <AppStoreIcon width={50} height={50} fill="#fff" />
                     <Text
                       uppercase
                       style={[

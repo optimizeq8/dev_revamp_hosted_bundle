@@ -7,13 +7,13 @@ import Toggle from "../Toggle";
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
   state = {
     fadeIOSLogo: new Animated.Value(1),
-    fadeAndroidLogo: new Animated.Value(1)
+    fadeAndroidLogo: new Animated.Value(1),
   };
 
   /**
@@ -24,7 +24,7 @@ export default class AppBox extends Component {
       setModalVisible,
       appstorelink,
       toggleAppSelection,
-      appSelections
+      appSelections,
     } = this.props;
     if (
       this.props.iosApp_name === "" ||
@@ -36,7 +36,7 @@ export default class AppBox extends Component {
     else {
       Animated.timing(this.state.fadeIOSLogo, {
         toValue: !appSelections.iosAppSelected ? 1 : 0.5,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
       toggleAppSelection(false);
     }
@@ -46,7 +46,7 @@ export default class AppBox extends Component {
       setModalVisible,
       playstorelink,
       toggleAppSelection,
-      appSelections
+      appSelections,
     } = this.props;
     if (
       this.props.androidApp_name === "" ||
@@ -58,7 +58,7 @@ export default class AppBox extends Component {
     else {
       Animated.timing(this.state.fadeAndroidLogo, {
         toValue: !appSelections.androidAppSelected ? 1 : 0.5,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
       toggleAppSelection(true);
     }
@@ -69,7 +69,7 @@ export default class AppBox extends Component {
       attachment,
       iosApp_name,
       androidApp_name,
-      appSelections
+      appSelections,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -79,7 +79,7 @@ export default class AppBox extends Component {
           style={[globalStyles.column, appConfirmStyles.appStoreButtons]}
         >
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
-            <AppStoreIcon />
+            <AppStoreIcon fill={globalColors.rum} />
           </Animated.View>
           <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
             {translate(`apple\napp store`)}
@@ -93,9 +93,9 @@ export default class AppBox extends Component {
             switchOn={
               appSelections.iosAppSelected && attachment.ios_app_id !== ""
             }
-            backgroundColorOff="rgba(255,255,255,0.1)"
-            backgroundColorOn="rgba(255,255,255,0.1)"
-            circleColorOff="#FFf"
+            backgroundColorOff="#0001"
+            backgroundColorOn="#0001"
+            circleColorOff={globalColors.rum}
             circleColorOn="#66D072"
             onPress={this.handleIOSAppSelection}
             duration={500}
@@ -126,9 +126,9 @@ export default class AppBox extends Component {
               appSelections.androidAppSelected &&
               attachment.android_app_url !== ""
             }
-            backgroundColorOff="rgba(255,255,255,0.1)"
-            backgroundColorOn="rgba(255,255,255,0.1)"
-            circleColorOff="#FFf"
+            backgroundColorOff="#0001"
+            backgroundColorOn="#0001"
+            circleColorOff={globalColors.rum}
             circleColorOn="#66D072"
             duration={500}
             onPress={this.handleAndroidAppSelection}

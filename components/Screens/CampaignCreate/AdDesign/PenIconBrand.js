@@ -22,11 +22,7 @@ export default class PenIconBrand extends Component {
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <Item
-        style={[
-          field === "Business Name" ? styles.inputBrand : styles.inputHeadline,
-        ]}
-      >
+      <Item style={[styles.inputBrand]}>
         <PenIcon
           fill={
             this.state.input

@@ -6,7 +6,11 @@ import {
 import { globalColors } from "../../../../GlobalStyles";
 const styles = StyleSheet.create({
   mediaView: {
-    height: hp(45),
+    // height: hp(45),
+    width: "100%",
+  },
+  mediaViewExist: {
+    height: hp(30),
     width: "100%",
   },
   forwadIcon: {
@@ -64,6 +68,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     // marginHorizontal: 15
   },
+  captionTextExist: {
+    // height: 30,
+  },
   container: {
     backgroundColor: globalColors.white,
     // marginHorizontal: 20,
@@ -71,6 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingTop: 10,
     marginHorizontal: 20,
+    width: "90%",
     // alignSelf: "center"
     // flex: 1
   },

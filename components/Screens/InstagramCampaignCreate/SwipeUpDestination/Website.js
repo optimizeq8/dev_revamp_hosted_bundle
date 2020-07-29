@@ -142,7 +142,18 @@ class Website extends Component {
       // segmentEventTrack("Submitted Website SwipeUp Success", {
       //   campaign_website_url: this.state.campaignInfo.attachment
       // });
-      this.props.navigation.navigate(`${this.props.data.campaign_type}Design`);
+
+      this.props.toggleClickDestination(false);
+      // this.props.navigation.navigate(`${this.props.data.campaign_type}Design`);
+//       const existingPost = this.props.navigation.getParam(
+//         "existingPost",
+//         false
+//       );
+//       this.props.navigation.navigate(
+//         existingPost
+//           ? "InstagramAdDesignExistingPost"
+//           : `${this.props.data.campaign_type}Design`
+//       );
     }
   };
   onSelectedCallToActionIdChange = (value) => {
@@ -207,7 +218,7 @@ class Website extends Component {
         {...ScrollView.props}
         contentContainerStyle={[styles.websiteContent]}
       >
-        <WebsiteIcon style={styles.icon} width={60} height={60} fill={"#FFF"} />
+        {/* <WebsiteIcon style={styles.icon} width={60} height={60} fill={"#FFF"} /> */}
         <View style={[styles.textcontainer]}>
           <Text style={styles.titletext}>{translate("Website")}</Text>
           <Text style={styles.subtext}>
@@ -236,7 +247,10 @@ class Website extends Component {
           incomplete={false}
           translate={this.props.screenProps.translate}
           icon={WindowIcon}
-          isVisible={this.state.inputCallToAction}
+          isVisible={true}
+          customStyle={styles.customModalField}
+          customIconColor={globalColors.rum}
+          customTextStyle={{ color: globalColors.rum }}
         />
 
         <WebsiteField
@@ -247,12 +261,16 @@ class Website extends Component {
           setWebsiteValue={this.setWebsiteValue}
           stateNameError={this.state.urlError}
           getValidInfo={this.validateUrl}
+          customStyle={styles.customModalField}
+          customIconColor={globalColors.rum}
+          customTextStyle={{ color: globalColors.rum }}
         />
         <LowerButton
           screenProps={this.props.screenProps}
           checkmark={true}
           bottom={0}
           function={this._handleSubmission}
+          purpleViolet
         />
 
         <Picker

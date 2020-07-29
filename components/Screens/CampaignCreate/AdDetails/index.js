@@ -152,8 +152,19 @@ class AdDetails extends Component {
         let minValueBudget =
           this.props.data.minValueBudget *
           this.state.campaignInfo.targeting.geos.length;
-
-        this.setState({ minValueBudget, recBudget });
+        let lifetime_budget_micro = this.state.campaignInfo
+          .lifetime_budget_micro;
+        let value = this.state.value;
+        if (this.state.budgetOption === 1) {
+          lifetime_budget_micro = recBudget;
+          value = this.formatNumber(recBudget, true);
+        }
+        this.setState({
+          campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
+          value,
+          minValueBudget,
+          recBudget,
+        });
       }
     }
   }
@@ -261,12 +272,14 @@ class AdDetails extends Component {
                 country_regions,
                 (country) => country.country_code === cou.country_code
               );
-              let filterSelectedRegions = this.props.data.regionNames.filter(
-                (regN) => regN.country_code === cou.country_code
-              );
-              savedRegionNames = uniq(
-                flatten([savedRegionNames, filterSelectedRegions])
-              );
+              let filterSelectedRegions = this.props.data.regionNames
+                ? this.props.data.regionNames.filter(
+                    (regN) => regN.country_code === cou.country_code
+                  )
+                : [];
+              savedRegionNames =
+                savedRegionNames &&
+                uniq(flatten([savedRegionNames, filterSelectedRegions]));
               return foundCountryReg;
             });
             let minValueBudget =
@@ -314,7 +327,7 @@ class AdDetails extends Component {
                     this.props.data.androidApp_name
                       ? ""
                       : this.props.data.appChoice;
-                  let rep = this.state.campaignInfo;
+                  let rep = cloneDeep(this.state.campaignInfo);
                   rep.targeting.devices[0].os_type = navAppChoice;
                   this.setState({
                     campaignInfo: rep,

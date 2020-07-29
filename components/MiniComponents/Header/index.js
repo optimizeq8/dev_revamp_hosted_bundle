@@ -15,6 +15,8 @@ const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
 import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+import CalenderkIcon from "../../../assets/SVGs/Calender";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default class Header extends Component {
   render() {
@@ -30,7 +32,7 @@ export default class Header extends Component {
       topRightButtonText,
       showTopRightButton,
       containerStyle,
-      titelStyle,
+      titleStyle,
       icon,
       backButton,
       translateTitle = true,
@@ -38,6 +40,7 @@ export default class Header extends Component {
       disabled = false,
       changeHeaderColor = false,
       iconColor = "#FFF",
+      titleContainerStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -77,7 +80,7 @@ export default class Header extends Component {
             backButton === "messenger" ? (
               <MSGBackIcon width={40} height={40} />
             ) : (
-              <CloseIcon width={23} height={23} stroke={iconColor} />
+              <CloseIcon width={20} height={20} stroke={iconColor} />
             )
           ) : (
             <BackIcon width={24} height={24} stroke={iconColor} />
@@ -98,6 +101,14 @@ export default class Header extends Component {
             <InstagramIcon width={30} height={24} fill="#fff" />
           </View>
         )}
+        {icon === "calendar" && (
+          <CalenderkIcon
+            width={heightPercentageToDP(5) < 30 ? 15 : 30}
+            height={heightPercentageToDP(5) < 30 ? 15 : 30}
+            fill="#000"
+            style={styles.icon}
+          />
+        )}
         {title && typeof title === "object" ? (
           <View style={[styles.titleView]}>
             {title.map((text) => (
@@ -111,7 +122,7 @@ export default class Header extends Component {
                         fontFamily: "montserrat-bold-english",
                       }
                     : {},
-                  titelStyle,
+                  titleStyle,
                 ]}
               >
                 {text}
@@ -119,7 +130,7 @@ export default class Header extends Component {
             ))}
           </View>
         ) : (
-          <View style={[styles.titleView]}>
+          <View style={[styles.titleView, titleContainerStyle]}>
             <Text
               numberOfLines={2}
               uppercase
@@ -130,7 +141,7 @@ export default class Header extends Component {
                       fontFamily: "montserrat-bold-english",
                     }
                   : {},
-                titelStyle,
+                titleStyle,
               ]}
             >
               {title}

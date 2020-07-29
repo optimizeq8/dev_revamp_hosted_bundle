@@ -252,6 +252,35 @@ export const get_interests_instagram = () => {
 };
 
 /**
+ *  To get custom interest list
+ */
+export const get_custom_interests_instagram = (keyword) => {
+  return (dispatch) => {
+    if (keyword)
+      InstagramBackendURL()
+        .get(`categorizedcustominterests/${keyword}`)
+        .then((res) => res.data)
+        .then((data) => {
+          // console.log(JSON.stringify(data, null, 2));
+
+          if (data && data.interests) {
+            return dispatch({
+              type: actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS,
+              payload: data.interests,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log("error get_interests_instagram", error);
+          return dispatch({
+            type: actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS,
+            payload: [],
+          });
+        });
+  };
+};
+
+/**
  * To get OS versions list
  * @param {*} osType  One of [Android, iOS]
  */
@@ -749,6 +778,89 @@ export const deleteCarouselCard = (story_id, card) => {
         });
         // console.log("getVideoUploadUrl", err.message || err.response);
         errorMessageHandler(err);
+      });
+  };
+};
+
+export const getInstagramExistingPost = (businessid) => {
+  return (dispatch) => {
+    InstagramBackendURL()
+      .get(`instaFeed/${businessid}`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_INSTAGRAM_POST_AD,
+            payload: {
+              data: data.data,
+              paging: data.paging,
+            },
+          });
+        }
+      });
+  };
+};
+
+export const saveInstgramExistpost = (
+  path = "InstagramFeedAdTargetting",
+  info,
+  loading,
+  onToggleModal,
+  cancelUplaod,
+  segmentInfo
+) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+      payload: true,
+    });
+    // console.log("info", info);
+    InstagramBackendURL()
+      .post(`saveinstapostbrandmedia`, info, {
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false,
+        });
+        analytics.track(`a_submit_ad_design`, {
+          source: "ad_design",
+          source_action: "a_submit_ad_design",
+          action_status: data.success ? "success" : "failure",
+          ...segmentInfo,
+        });
+        if (data.success) {
+          onToggleModal(false);
+          dispatch(save_campaign_info_instagram({ info }));
+          NavigationService.navigate(path, {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          });
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
+            payload: data,
+          });
+        }
+      })
+      .catch((error) => {
+        loading(0);
+        onToggleModal(false);
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
+          payload: false,
+        });
+        // console.log(
+        //   "error saveBrandMedia ",
+        //   JSON.stringify(error.response.data || error.message, null, 2)
+        // );
       });
   };
 };

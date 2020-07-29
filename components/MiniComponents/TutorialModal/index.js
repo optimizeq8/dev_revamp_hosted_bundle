@@ -70,7 +70,7 @@ export default class LoadingModal extends Component {
                 source: source,
                 source_action: source_action,
               }}
-              titelStyle={{ textAlign: "left" }}
+              titleStyle={{ textAlign: "left" }}
             />
             <Text style={styles.descText}>{description}</Text>
             <View style={styles.reviewView}></View>
