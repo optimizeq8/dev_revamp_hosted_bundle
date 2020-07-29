@@ -174,9 +174,9 @@ class AdDesign extends Component {
           ? this.selectedCampaign.headline
           : this.props.data && this.props.data.headline
           ? this.props.data.headline
-          : this.props.mainBusiness.businessname !== this.props.data.name
-          ? this.props.data.name
-          : "",
+          : // : this.props.mainBusiness.businessname !== this.props.data.name // Commented for this sprint only
+            // ? this.props.data.name
+            "",
       },
       objective: this.rejected
         ? this.selectedCampaign.objective
