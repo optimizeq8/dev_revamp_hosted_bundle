@@ -116,8 +116,14 @@ class GoogleAdInfo extends Component {
     }, {});
     // By default set it to business country
     if (data.location && data.location.length === 0) {
+      let bsnsCountry = this.props.mainBusiness.country;
+      if (bsnsCountry === "UAE") {
+        bsnsCountry = "United Arab Emirates";
+      } else if (bsnsCountry === "KSA") {
+        bsnsCountry = "Saudi Arabia";
+      }
       const countryCode = CountriesList.find(
-        (ctry) => ctry.name === this.props.mainBusiness.country
+        (ctry) => ctry.name === bsnsCountry
       ).criteria_id;
 
       data.location = [countryCode];
