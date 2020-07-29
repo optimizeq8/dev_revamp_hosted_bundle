@@ -91,6 +91,8 @@ class AppChoice extends Component {
     this.data =
       this.props.socialMediaPlatform === "InstagramFeedAd"
         ? this.props.instaData
+        : this.props.rejCampaign
+        ? this.props.rejCampaign
         : this.props.data;
     if (
       prevProps.attachment !== this.props.attachment &&
@@ -116,8 +118,12 @@ class AppChoice extends Component {
               : list[this.props.socialMediaPlatform || "SnapAd"][
                   this.props.listNum
                 ].call_to_action_list,
-          iosAppSelected: this.props.appSelections.iosAppSelected,
-          androidAppSelected: this.props.appSelections.androidAppSelected,
+          iosAppSelected: this.props.appSelections.iosAppSelected
+            ? this.props.appSelections.iosAppSelected
+            : this.props.attachment.ios_app_id !== "",
+          androidAppSelected: this.props.appSelections.androidAppSelected
+            ? this.props.appSelections.androidAppSelected
+            : this.props.attachment.android_app_url !== "",
         },
         () =>
           this.props.handleCallaction({
@@ -133,6 +139,8 @@ class AppChoice extends Component {
           iosApp_name: this.props.attachment.ios_app_id
             ? this.data.iosApp_name
               ? this.data.iosApp_name
+              : this.data.attachment.app_name
+              ? this.data.attachment.app_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
             : "",
@@ -147,6 +155,8 @@ class AppChoice extends Component {
           androidApp_name: this.props.attachment.android_app_url
             ? this.data.androidApp_name
               ? this.data.androidApp_name
+              : this.data.attachment.app_name
+              ? this.data.attachment.app_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
             : "",

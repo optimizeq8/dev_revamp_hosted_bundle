@@ -101,7 +101,6 @@ const initialState = {
   paging: {},
 
   customInterests: [],
-
 };
 
 const reducer = (state = initialState, action) => {

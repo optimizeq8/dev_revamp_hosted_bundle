@@ -839,7 +839,7 @@ class AdDesign extends Component {
       analytics.track(`a_error_form`, {
         source: "ad_design",
         source_action: "a_submit_ad_design",
-        campaign_id: this.props.data.campaign_id,
+        campaign_id: this.selectedCampaign.campaign_id,
         error_description:
           this.state.brand_nameError ||
           this.state.headlineError ||
@@ -881,7 +881,7 @@ class AdDesign extends Component {
           error_description: "Please crop the image to the right dimensions",
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
-          campaign_id: this.props.data.campaign_id,
+          campaign_id: this.selectedCampaign.campaign_id,
         });
         showMessage({
           message: "Please crop the image to the right dimensions",
@@ -896,7 +896,7 @@ class AdDesign extends Component {
         const segmentInfo = {
           campaign_channel: "snapchat",
           campaign_ad_type: this.adType,
-          campaign_id: this.props.data.campaign_id,
+          campaign_id: this.selectedCampaign.campaign_id,
           campaign_brand_name: this.state.campaignInfo.brand_name,
           campaign_headline: this.state.campaignInfo.headline,
           campaign_attachment: this.state.campaignInfo.attachment,
@@ -1082,7 +1082,7 @@ class AdDesign extends Component {
       timestamp: new Date().getTime(),
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
-      campaign_id: this.props.data.campaign_id,
+      campaign_id: this.selectedCampaign.campaign_id,
     });
 
     this.props.navigation.push("WebView", {

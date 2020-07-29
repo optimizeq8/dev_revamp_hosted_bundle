@@ -635,9 +635,7 @@ class CampaignDetails extends Component {
             >
               <View style={[styles.mainCard]}>
                 {!loading &&
-                  ((selectedCampaign &&
-                    selectedCampaign.review_status !== "REJECTED") ||
-                  new Date(selectedCampaign.end_time) < new Date() ? (
+                  (false ? (
                     <TouchableOpacity
                       onLayout={this.onLayout}
                       disabled={this.state.expand}

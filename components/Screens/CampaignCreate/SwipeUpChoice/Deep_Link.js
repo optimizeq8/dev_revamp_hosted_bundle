@@ -71,6 +71,9 @@ class Deep_Link extends Component {
           ...this.props.rejCampaign.attachment,
         },
         callaction: this.props.rejCampaign.call_to_action,
+        iosAppSelected: this.props.rejCampaign.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.rejCampaign.attachment.android_app_url !== "",
       });
     } else if (
       this.props.data &&
