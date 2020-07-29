@@ -422,13 +422,17 @@ class AdObjective extends Component {
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
       });
+      let objective = this.state.campaignInfo.objective;
+      if (objective !== "APP_INSTALLS") {
+        objective = this.state.campaignInfo.objective.replace(
+          /WEBSITE_|APP_/g,
+          ""
+        );
+      }
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
-        objective: this.state.campaignInfo.objective.replace(
-          /WEBSITE_|APP_/g,
-          ""
-        ),
+        objective,
         duration: this.state.duration,
       };
       this.getMinimumCash();
