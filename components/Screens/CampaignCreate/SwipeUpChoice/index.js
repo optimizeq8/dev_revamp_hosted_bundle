@@ -141,7 +141,10 @@ class SwipeUpChoice extends Component {
         }
       }
     } else {
-      if (objective === "LEAD_GENERATION" || objective === "WEBSITE_TRAFFIC")
+      if (
+        objective === "LEAD_GENERATION" ||
+        this.props.savedObjective === "WEBSITE_TRAFFIC"
+      )
         menu = (
           <Website
             objective={objective}
@@ -176,7 +179,7 @@ class SwipeUpChoice extends Component {
             />
           </>
         );
-      } else if (objective.toLowerCase() === "app_traffic") {
+      } else if (this.props.savedObjective.toLowerCase() === "app_traffic") {
         menu = (
           <>
             <NavigationEvents onDidFocus={this.segment} />
@@ -242,6 +245,7 @@ class SwipeUpChoice extends Component {
 const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
+  savedObjective: state.campaignC.savedObjective,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

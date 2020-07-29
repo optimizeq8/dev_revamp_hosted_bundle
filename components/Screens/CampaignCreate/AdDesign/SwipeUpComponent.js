@@ -155,9 +155,10 @@ export default class SwipeUpComponent extends Component {
       selectedStoryAd,
       call_to_action_label,
       disabled,
+      savedObjective,
     } = this.props;
     let SwipeIcon = SnapObjective[adType || "SnapAd"].find(
-      (obj) => obj.value === (objective || "BRAND_AWARENESS")
+      (obj) => obj.value === (savedObjective || objective || "BRAND_AWARENESS")
     ).icon;
     let sty = !this.state.expanded
       ? {}

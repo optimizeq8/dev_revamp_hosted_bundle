@@ -425,6 +425,10 @@ class AdObjective extends Component {
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
+        objective: this.state.campaignInfo.objective.replace(
+          /WEBSITE_|APP_/g,
+          ""
+        ),
         duration: this.state.duration,
       };
       this.getMinimumCash();
@@ -435,7 +439,8 @@ class AdObjective extends Component {
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         this.props.navigation,
-        segmentInfo
+        segmentInfo,
+        this.state.campaignInfo.objective
       );
     } else {
       this.setState({ incomplete: true });
@@ -857,8 +862,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_objective: (info, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_objective(info, navigation, segmentInfo)),
+  ad_objective: (info, navigation, segmentInfo, objective) =>
+    dispatch(
+      actionCreators.ad_objective(info, navigation, segmentInfo, objective)
+    ),
   save_campaign_info: (info) =>
     dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: (values) => dispatch(actionCreators.getMinimumCash(values)),
