@@ -13,6 +13,8 @@ export const colors = {
 const styles = StyleSheet.create({
   scrollViewContainer: {
     width: "100%",
+    padding: 10,
+    paddingBottom: "50%",
     // flex: 1
   },
   container: {
@@ -248,6 +250,18 @@ const styles = StyleSheet.create({
     color: "#fff",
     bottom: 20,
     fontSize: 13,
+  },
+  customModalField: {
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 8,
+    width: "95%",
   },
 });
 

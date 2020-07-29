@@ -19,7 +19,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
-import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import DateField from "../../../MiniComponents/DatePickerRedesigned/DateFields";
 import Duration from "../../CampaignCreate/AdObjective/Duration"; //needs to be moved????
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import InputField from "../../../MiniComponents/InputFieldNew";
@@ -29,7 +29,7 @@ import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-
+import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
 //Icons
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
@@ -78,6 +78,7 @@ class GoogleAdInfo extends Component {
       selectRegion: false,
       closedContinueModal: false,
       incomplete: false,
+      duration: 7,
     };
   }
   componentWillUnmount() {
@@ -99,6 +100,10 @@ class GoogleAdInfo extends Component {
     }
   }
   setCampaignInfo = () => {
+    let start_time = new Date();
+    start_time.setDate(new Date().getDate() + 1);
+    let end_time = new Date();
+    end_time.setDate(start_time.getDate() + this.state.duration);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -124,6 +129,8 @@ class GoogleAdInfo extends Component {
       data.location = [countryCode];
       data.country = countryCode;
     }
+    data.start_time = start_time.toISOString().split("T")[0];
+    data.end_time = end_time.toISOString().split("T")[0];
     this.setState({ ...data });
   };
 
@@ -349,6 +356,7 @@ class GoogleAdInfo extends Component {
           start_time: this.state.start_time,
           end_time: this.state.end_time,
           location: this.state.location,
+          dduration: this.state.duration,
         },
         this.props.navigation,
         segmentInfo
@@ -426,6 +434,29 @@ class GoogleAdInfo extends Component {
     this.setState({ ...state });
     this.props.save_google_campaign_data({ name: value });
   };
+  handleDuration = (subtract = false) => {
+    let duration = subtract
+      ? this.state.duration - 1 > 7
+        ? this.state.duration - 1
+        : 7
+      : this.state.duration + 1;
+
+    let end_time = new Date(this.state.start_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + duration);
+    this.setState({
+      end_time: end_time.toISOString(),
+      duration,
+    });
+    this.props.save_google_campaign_data({
+      end_time: end_time.toISOString(),
+      duration,
+      campaignDateChanged: true,
+    });
+    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+  };
+  stopTimer = () => {
+    clearTimeout(this.timer);
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -482,33 +513,6 @@ class GoogleAdInfo extends Component {
                 translate={this.props.screenProps.translate}
               />
               <Animatable.View
-                onAnimationEnd={() =>
-                  this.setState({
-                    start_timeError: null,
-                    end_timeError: null,
-                  })
-                }
-                duration={200}
-                easing={"ease"}
-                animation={
-                  !this.state.start_timeError || !this.state.end_timeError
-                    ? ""
-                    : "shake"
-                }
-              >
-                <Duration
-                  label={"Campaign Duration"}
-                  screenProps={this.props.screenProps}
-                  loading={this.props.campaign.uploading}
-                  dismissKeyboard={Keyboard.dismiss}
-                  start_time={this.state.start_time}
-                  end_time={this.state.end_time}
-                  start_timeError={this.state.start_timeError}
-                  end_timeError={this.state.end_timeError}
-                  dateField={this.dateField}
-                />
-              </Animatable.View>
-              <Animatable.View
                 onAnimationEnd={() => this.setState({ countryError: null })}
                 duration={200}
                 easing={"ease"}
@@ -537,6 +541,39 @@ class GoogleAdInfo extends Component {
                   icon={LocationIcon}
                   isVisible={this.state.modalVisible}
                   isTranslate={false}
+                />
+              </Animatable.View>
+              <CampaignDuration
+                stopTimer={this.stopTimer}
+                handleDuration={this.handleDuration}
+                duration={this.state.duration}
+                screenProps={this.props.screenProps}
+              />
+              <Animatable.View
+                onAnimationEnd={() =>
+                  this.setState({
+                    start_timeError: null,
+                    end_timeError: null,
+                  })
+                }
+                duration={200}
+                easing={"ease"}
+                animation={
+                  !this.state.start_timeError || !this.state.end_timeError
+                    ? ""
+                    : "shake"
+                }
+              >
+                <Duration
+                  label={"Start Date"}
+                  screenProps={this.props.screenProps}
+                  loading={this.props.campaign.uploading}
+                  dismissKeyboard={Keyboard.dismiss}
+                  start_time={this.state.start_time}
+                  end_time={this.state.end_time}
+                  start_timeError={this.state.start_timeError}
+                  end_timeError={this.state.end_timeError}
+                  dateField={this.dateField}
                 />
               </Animatable.View>
 
@@ -614,7 +651,7 @@ class GoogleAdInfo extends Component {
           handleStartDatePicked={this.handleStartDatePicked}
           handleEndDatePicked={this.handleEndDatePicked}
           start_time={this.state.start_time}
-          end_time={this.state.end_time}
+          end_time={this.state.start_time}
           screenProps={this.props.screenProps}
           incompleteCampaign={this.props.campaign.incompleteCampaign}
           campaignProgressStarted={this.props.campaign.campaignResumed}

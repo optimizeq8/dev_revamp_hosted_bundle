@@ -83,7 +83,7 @@ export default class TopStepsHeader extends Component {
       title,
       actionButton,
       containerStyle,
-      titelStyle,
+      titleStyle,
       icon,
       translateTitle = true,
       disabled = false,

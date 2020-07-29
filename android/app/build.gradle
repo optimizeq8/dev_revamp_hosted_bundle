@@ -162,7 +162,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 58
-        versionName "0.3.95"
+        versionName "0.3.960"
         multiDexEnabled true
 
     }

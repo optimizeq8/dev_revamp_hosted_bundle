@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Content, Container, View } from "native-base";
+import { Content, Container, View, Text, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import CustomeHeader from "../../../MiniComponents/Header";
@@ -17,6 +17,8 @@ import WhatsApp from "./WhatsApp";
 //Redux
 import { connect } from "react-redux";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { globalColors } from "../../../../GlobalStyles";
 // import * as actionCreators from "../../../../store/actions";
 
 class SwipeUpChoice extends Component {
@@ -27,27 +29,20 @@ class SwipeUpChoice extends Component {
     this.segment();
   }
   segment = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    const campaign_ad_type = this.props.navigation.getParam(
-      "adType",
-      this.props.screenProps.prevAppState
-    );
+    const source = this.props.screenProps.prevAppState;
 
-    switch (this.props.navigation.getParam("objective")) {
+    const source_action = this.props.screenProps.prevAppState;
+
+    const campaign_ad_type = this.props.screenProps.prevAppState;
+
+    switch (this.props.objective) {
       case "LEAD_GENERATION":
         analytics.track(`ad_swipe_up_destination`, {
           source,
           source_action,
           timestamp: new Date().getTime(),
           campaign_swipe_up_destination: "website",
-          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
@@ -69,7 +64,7 @@ class SwipeUpChoice extends Component {
           source_action,
           timestamp: new Date().getTime(),
           campaign_swipe_up_destination: "video_views",
-          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
@@ -80,7 +75,7 @@ class SwipeUpChoice extends Component {
           source_action,
           timestamp: new Date().getTime(),
           campaign_swipe_up_destination: "sme_growth",
-          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
@@ -96,7 +91,7 @@ class SwipeUpChoice extends Component {
           source_action,
           timestamp: new Date().getTime(),
           campaign_swipe_up_destination: "app_install",
-          campaign_objective: this.props.navigation.getParam("objective"),
+          campaign_objective: this.props.objective,
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
@@ -104,11 +99,9 @@ class SwipeUpChoice extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    let objective = this.props.navigation.getParam("objective", "");
-    let _changeDestination = this.props.navigation.getParam(
-      "_changeDestination",
-      () => {}
-    );
+    let objective = this.props.objective;
+    let _changeDestination = this.props._changeDestination;
+
     let menu = <View />;
     if (this.props.adType === "CollectionAd") {
       switch (this.props.collectionAdLinkForm) {
@@ -120,8 +113,9 @@ class SwipeUpChoice extends Component {
                 objective={objective}
                 _changeDestination={_changeDestination}
                 navigation={this.props.navigation}
-                toggleSideMenu={this.toggleSideMenu}
+                // toggleSideMenu={this.toggleSideMenu}
                 screenProps={this.props.screenProps}
+                toggle={this.props.toggle}
                 //   swipeUpDestination={true}
               />
             </>
@@ -136,9 +130,9 @@ class SwipeUpChoice extends Component {
                 objective={objective}
                 _changeDestination={_changeDestination}
                 navigation={this.props.navigation}
-                toggleSideMenu={this.toggleSideMenu}
+                // toggleSideMenu={this.toggleSideMenu}
                 screenProps={this.props.screenProps}
-
+                toggle={this.props.toggle}
                 //   swipeUpDestination={true}
               />
             </>
@@ -147,16 +141,18 @@ class SwipeUpChoice extends Component {
         }
       }
     } else {
-      if (objective === "LEAD_GENERATION")
+      if (
+        objective === "LEAD_GENERATION" ||
+        this.props.savedObjective === "WEBSITE_TRAFFIC"
+      )
         menu = (
           <Website
             objective={objective}
             _changeDestination={_changeDestination}
             navigation={this.props.navigation}
-            collectionAdLinkForm={this.props.navigation.getParam(
-              "collectionAdLinkForm"
-            )}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
       else if (objective === "VIDEO_VIEWS") {
@@ -167,10 +163,11 @@ class SwipeUpChoice extends Component {
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
             />
           </>
         );
-      } else if (objective.toLowerCase().includes("app")) {
+      } else if (objective.toLowerCase() === "app_installs") {
         menu = (
           <>
             <NavigationEvents onDidFocus={this.segment} />
@@ -178,6 +175,19 @@ class SwipeUpChoice extends Component {
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
+            />
+          </>
+        );
+      } else if (this.props.savedObjective.toLowerCase() === "app_traffic") {
+        menu = (
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <Deep_Link
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
             />
           </>
         );
@@ -189,22 +199,24 @@ class SwipeUpChoice extends Component {
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
             />
           </>
         );
       }
     }
 
-    if (this.props.adType === "CollectionAd") return menu;
-    else
-      return (
-        <View style={styles.safeAreaContainer}>
-          <SafeAreaView
-            style={{ backgroundColor: "#fff" }}
+    // if (this.props.adType === "CollectionAd") return menu;
+    // else
+    return (
+      <View style={styles.safeAreaContainer}>
+        {/* <SafeAreaView
+            // style={{ backgroundColor: "#fff" }}
             forceInset={{ top: "always" }}
-          />
-          <NavigationEvents onDidFocus={this.segment} />
-          <TopStepsHeader
+          /> */}
+        <NavigationEvents onDidFocus={this.segment} />
+
+        {/* <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             navigation={this.props.navigation}
@@ -216,23 +228,24 @@ class SwipeUpChoice extends Component {
             adType={this.props.adType}
             currentScreen="Compose"
             title={"Swipe Up destination"}
-          />
-          {/* <CustomeHeader
+          /> */}
+        {/* <CustomeHeader
             screenProps={this.props.screenProps}
             closeButton={false}
             screenProps={this.props.screenProps}
             title={"Swipe Up destination"}
             navigation={this.props.navigation}
           /> */}
-          <View style={{ top: 15, flex: 1 }}>{menu}</View>
-        </View>
-      );
+        <View style={{ flex: 1 }}>{menu}</View>
+      </View>
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
+  savedObjective: state.campaignC.savedObjective,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

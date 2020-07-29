@@ -44,6 +44,8 @@ class MultiSelectList extends Component {
       selectedItemObjects: [],
 
       interests: [],
+      customSelection: false,
+      selectedCustomInterests: [],
       openCountryModal: false,
     };
   }
@@ -53,6 +55,7 @@ class MultiSelectList extends Component {
       selectedItems: this.props.selectedItems,
       selectedDevices: this.props.selectedDevices,
       selectedVersions: this.props.selectedVersions,
+      selectedCustomInterests: this.props.selectedCustomItems,
     });
     if (this.props.option === "countries") {
       Segment.screen("Country Options");
@@ -80,10 +83,10 @@ class MultiSelectList extends Component {
     }
   }
   onSelectedItemObjectsChange = (selectedItems, option) => {
-    this.props.onSelectedInterestsNamesChange(selectedItems);
+    this.props.onSelectedInterestsNamesChange(selectedItems, option);
     this.setState({ selectedItemObjects: selectedItems });
   };
-  onSelectedItemsChange = (selectedItems, option) => {
+  onSelectedItemsChange = (selectedItems, option, custom) => {
     if (option === "devices") {
       if (selectedItems[0] === "Devices") {
         selectedItems.shift();
@@ -97,7 +100,11 @@ class MultiSelectList extends Component {
       let selectedInterests = selectedItems;
 
       this.props.onSelectedInterestsChange(selectedInterests);
-      this.setState({ selectedItems });
+      this.setState(
+        custom
+          ? { selectedCustomInterests: selectedItems, customSelection: true }
+          : { selectedItems }
+      );
     }
   };
 
@@ -173,6 +180,7 @@ class MultiSelectList extends Component {
             onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedItems}
+            selectedCustomInterests={this.state.selectedCustomInterests}
             _handleSideMenuState={this.props._handleSideMenuState}
             country_code={this.props.country_code}
           />

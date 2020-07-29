@@ -215,6 +215,7 @@ const initialState = {
   oldTempData: null,
   languagesListLoading: false,
   languagesListError: false,
+  savedObjective: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -240,6 +241,7 @@ const reducer = (state = initialState, action) => {
         //saves this part just in case anything is changed in AdObjective and not submitting
         oldTempData: { ...state.data, ...action.payload.data },
         oldTempAdType: state.adType,
+        savedObjective: action.payload.savedObjective,
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {

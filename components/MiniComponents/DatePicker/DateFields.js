@@ -397,6 +397,7 @@ class DateFields extends Component {
                   : translate("Please select your ad launch and end dates")}
               </Text>
               <CalenderkIcon
+                fill="#fff"
                 width={hp(5) < 30 ? 30 : 60}
                 height={hp(5) < 30 ? 30 : 60}
                 style={styles.icon}

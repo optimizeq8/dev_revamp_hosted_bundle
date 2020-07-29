@@ -143,8 +143,11 @@ class ContinueCampaign extends Component {
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.props.dateField.showModal(true);
-      this.handleSubmition(false, false), 800;
+      this.handleSubmition(false, false);
+      setTimeout(() => {
+        //to fix issue with date field not opening when the resume modal is open
+        this.props.dateField.showModal();
+      }, 350);
     } else {
       segmentEventTrack("Resume Campaign", this.props.data);
       this.setState({ resumeLoading: true });

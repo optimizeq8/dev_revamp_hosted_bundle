@@ -233,10 +233,20 @@ class InstaApp_Install extends Component {
         link: appUrl,
       });
 
-      this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
-        source: "ad_swipe_up_destination",
-        source_action: "a_swipe_up_destination",
-      });
+      this.props.toggleClickDestination(false);
+      // this.props.navigation.navigate(`${this.props.data.campaign_type}Design`, {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
+      //       const existingPost = this.props.navigation.getParam(
+      //         "existingPost",
+      //         false
+      //       );
+      //       this.props.navigation.navigate(
+      //         existingPost
+      //           ? "InstagramAdDesignExistingPost"
+      //           : `${this.props.data.campaign_type}Design`
+      //       );
     } else {
       showMessage({
         message: translate("Please select at least one app"),
@@ -250,11 +260,11 @@ class InstaApp_Install extends Component {
 
     return (
       <View style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}>
-        <AppInstallIcon
+        {/* <AppInstallIcon
           width={widthPercentageToDP(18)}
           height={heightPercentageToDP(10)}
           style={styles.icon}
-        />
+        /> */}
         <View style={styles.textcontainer}>
           <Text style={styles.titletext}>{translate("App Install")}</Text>
           <Text style={styles.subtext}>

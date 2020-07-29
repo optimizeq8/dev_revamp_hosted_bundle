@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
   },
   contentContainer: {
-    backgroundColor: "black",
+    backgroundColor: "#fff",
     overflow: "hidden",
     marginTop: 10,
     flexGrow: 1,
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    paddingHorizontal: 10,
   },
   media: {
     width: "100%",
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   },
   titletext: {
     textAlign: "left",
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-bold",
     fontSize: 14,
     paddingVertical: 0,
@@ -58,21 +60,20 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     fontSize: 12,
     paddingTop: 5,
-    color: "#fff",
+    color: globalColors.rum,
     textAlign: "left",
   },
   buttonN: {
     justifyContent: "space-between",
     flexDirection: "row",
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    paddingVertical: 20,
+    borderRadius: 20,
+    paddingVertical: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
     alignItems: "center",
+    backgroundColor: "#F8F8F8",
+    width: "100%",
+    borderWidth: 1,
   },
   icon: {
     alignSelf: "center",

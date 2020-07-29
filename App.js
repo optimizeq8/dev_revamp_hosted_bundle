@@ -19,6 +19,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Linking,
+  UIManager,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
@@ -90,7 +91,7 @@ import { MixpanelInstance } from "react-native-mixpanel";
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
 const MixpanelSDK = new MixpanelInstance(
-  "ef78d7f5f4160b74fda35568224f6cfa",
+  "c9ade508d045eb648f95add033dfb017",
   false,
   false
 );
@@ -163,6 +164,11 @@ class App extends React.Component {
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
+    if (Platform.OS === "android") {
+      if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
+      }
+    }
   }
 
   _loadAsync = async () => {
@@ -191,7 +197,7 @@ class App extends React.Component {
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
 
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,

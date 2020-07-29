@@ -88,6 +88,7 @@ class InstagramFeedAdTargetting extends Component {
       recBudget: 0,
       budgetOption: 1,
       startEditing: true,
+      customInterests: [],
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -146,26 +147,27 @@ class InstagramFeedAdTargetting extends Component {
       );
       editCountryAndRegionSelection.push(...editCountryRegions);
       this.onSelectedCountryRegionChange(editCountryAndRegionSelection);
-      if (!editedCampaign.targeting.hasOwnProperty("user_os")) {
-        editedCampaign.targeting["user_os"] = [""];
-      } else {
-        editedCampaign.targeting["user_os"] = this.props.navigation.getParam(
-          "campaign",
-          {
-            targeting: { user_os: [""] },
-          }
-        ).targeting.user_os;
-      }
-      if (!editedCampaign.targeting.hasOwnProperty("genders")) {
-        editedCampaign.targeting["genders"] = [""];
-      } else {
-        editedCampaign.targeting["genders"] = this.props.navigation.getParam(
-          "campaign",
-          {
-            targeting: { genders: [""] },
-          }
-        ).targeting.genders;
-      }
+      // if (!editedCampaign.targeting.hasOwnProperty("user_os")) {
+      //   editedCampaign.targeting["user_os"] = [""];
+      // } else {
+      //   editedCampaign.targeting["user_os"] = this.props.navigation.getParam(
+      //     "campaign",
+      //     {
+      //       targeting: { user_os: [""] },
+      //     }
+      //   ).targeting.user_os;
+      // }
+      // if (!editedCampaign.targeting.hasOwnProperty("genders")) {
+      //   editedCampaign.targeting["genders"] = [""];
+      // } else {
+      //   editedCampaign.targeting["genders"] = this.props.navigation.getParam(
+      //     "campaign",
+      //     {
+      //       targeting: { genders: [""] },
+      //     }
+      //   ).targeting.genders;
+      // }
+
       let selectedGender = "";
       switch (editedCampaign.targeting.genders[0]) {
         case "1":
@@ -249,6 +251,7 @@ class InstagramFeedAdTargetting extends Component {
             budgetOption: this.props.data.campaignDateChanged
               ? 1
               : this.props.data.budgetOption,
+            customInterests: this.props.data.customInterests,
           },
           () => {
             if (this.props.data.appChoice) {
@@ -319,18 +322,23 @@ class InstagramFeedAdTargetting extends Component {
         campaignInfo: replace,
       });
   };
-  onSelectedInterestsNamesChange = (selectedItems) => {
+  onSelectedInterestsNamesChange = (selectedItems, custom = false) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let interestArray =
       selectedItems.length > 0 &&
       selectedItems.map((item) => {
         return { name: item.name, id: item.id };
       });
-    replace.targeting.flexible_spec[0].interests = interestArray;
-    this.setState({});
+    if (!custom) {
+      replace.targeting.flexible_spec[0].interests = interestArray;
+      this.setState({ campaignInfo: replace });
+    } else {
+      this.setState({
+        customInterests: interestArray,
+      });
+    }
     this.setState({
       interestNames: selectedItems,
-      campaignInfo: replace,
     });
     let names = [];
     names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
@@ -343,6 +351,7 @@ class InstagramFeedAdTargetting extends Component {
       !this.editCampaign &&
         this.props.save_campaign_info_instagram({
           campaignInfo: replace,
+          customInterests: interestArray,
         });
   };
 
@@ -642,6 +651,9 @@ class InstagramFeedAdTargetting extends Component {
     // ) {
 
     let r = cloneDeep(this.state.campaignInfo.targeting);
+    r.flexible_spec[0].interests = r.flexible_spec[0].interests.concat(
+      this.state.customInterests
+    );
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
@@ -770,6 +782,9 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
+      rep.targeting.flexible_spec[0].interests = rep.targeting.flexible_spec[0].interests.concat(
+        this.state.customInterests
+      );
       if (rep.targeting.genders[0] === "") {
         delete rep.targeting.genders;
       }
@@ -852,6 +867,12 @@ class InstagramFeedAdTargetting extends Component {
   };
 
   selectedItemsId = (array) => {
+    if (array && array.length > 0) {
+      return array.map((item) => item.id || item.key);
+    }
+    return [];
+  };
+  selectedCustomItemsId = (array) => {
     if (array && array.length > 0) {
       return array.map((item) => item.id || item.key);
     }
@@ -1031,6 +1052,9 @@ class InstagramFeedAdTargetting extends Component {
             selectedItems={this.selectedItemsId(
               this.state.campaignInfo.targeting.flexible_spec[0].interests
             )}
+            selectedCustomItems={this.selectedCustomItemsId(
+              this.state.customInterests
+            )}
             selectedDevices={this.state.campaignInfo.targeting.user_device}
             onSelectedDevicesChange={this.onSelectedDevicesChange}
             selectedMinVersions={
@@ -1098,18 +1122,15 @@ class InstagramFeedAdTargetting extends Component {
     if (
       this.state.campaignInfo.targeting.flexible_spec[0].interests.length > 0
     ) {
-      interests_names = this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
-        (interest) => interest.name
-      );
+      interests_names = [
+        this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
+          (interest) => interest.name
+        ),
+        this.state.customInterests &&
+          this.state.customInterests.map((interest) => interest.name),
+      ];
     }
     interests_names = interests_names.join(", ");
-
-    const campaign = this.props.navigation.getParam("campaign", {});
-
-    const media =
-      this.props.data && this.props.data.media
-        ? this.props.data.media
-        : this.props.navigation.getParam("media", "//");
     return (
       <Sidemenu
         onChange={(isOpen) => {

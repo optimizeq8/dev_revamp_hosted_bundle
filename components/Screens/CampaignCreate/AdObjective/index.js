@@ -9,16 +9,17 @@ import {
   I18nManager,
   TouchableOpacity,
   StatusBar,
+  Modal,
 } from "react-native";
-import { Content, Text, Container } from "native-base";
+import { Content, Text, Container, Icon, Button } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import { Modal } from "react-native-paper";
+// import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import DateFields from "../../../MiniComponents/DatePicker/DateFields";
+import DateFields from "../../../MiniComponents/DatePickerRedesigned/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
@@ -51,6 +52,7 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
+import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -79,6 +81,7 @@ class AdObjective extends Component {
       start_timeError: "",
       end_timeError: "",
       incomplete: false,
+      duration: 7,
     };
   }
   componentWillUnmount() {
@@ -87,7 +90,9 @@ class AdObjective extends Component {
       this.handleBackButton
     );
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await this.setCampaignInfo();
+
     if (this.props.navigation.getParam("adType", false)) {
       this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
     }
@@ -101,6 +106,7 @@ class AdObjective extends Component {
       this._handleCollectionAdLinkForm(0);
     }
     this.setState({
+      ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
         ad_account_id:
@@ -110,7 +116,6 @@ class AdObjective extends Component {
       },
       objectiveLabel: "Select Objective",
     });
-    this.setCampaignInfo();
   }
 
   componentDidUpdate(prevProps) {
@@ -148,6 +153,10 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = () => {
+    let start_time = new Date();
+    start_time.setDate(new Date().getDate() + 1);
+    let end_time = new Date();
+    end_time.setDate(start_time.getDate() + this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -166,8 +175,10 @@ class AdObjective extends Component {
         objective: this.props.data.objective ? this.props.data.objective : "",
         start_time: this.props.data.start_time
           ? this.props.data.start_time
-          : "",
-        end_time: this.props.data.end_time ? this.props.data.end_time : "",
+          : start_time.toISOString().split("T")[0],
+        end_time: this.props.data.end_time
+          ? this.props.data.end_time
+          : end_time.toISOString().split("T")[0],
       };
       this.setState({
         collectionAdLinkForm: this.props.collectionAdLinkForm,
@@ -183,6 +194,10 @@ class AdObjective extends Component {
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
+        modalVisible: false,
+        duration: this.props.data.duration
+          ? this.props.data.duration
+          : this.state.duration,
       });
     } else {
       this.setState({
@@ -194,8 +209,8 @@ class AdObjective extends Component {
             this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: "",
           objective: "",
-          start_time: "",
-          end_time: "",
+          start_time: start_time.toISOString().split("T")[0],
+          end_time: end_time.toISOString().split("T")[0],
         },
         collectionAdLinkForm: 0,
         minValueBudget: 0,
@@ -207,6 +222,7 @@ class AdObjective extends Component {
         objectiveError: "",
         start_timeError: "",
         end_timeError: "",
+        duration: 7,
       });
     }
   };
@@ -264,10 +280,12 @@ class AdObjective extends Component {
     this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date,
+        end_time: end_time.toISOString(),
       },
     });
     analytics.track(`a_ad_end_date`, {
@@ -290,9 +308,10 @@ class AdObjective extends Component {
     this.setState({ modalVisible: visible });
   };
 
-  getMinimumCash = (days) => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+  getMinimumCash = () => {
+    let minValueBudget = 25 * this.state.duration;
+    let maxValueBudget = minValueBudget + 1500;
+
     this.setState({
       minValueBudget,
       maxValueBudget,
@@ -309,7 +328,7 @@ class AdObjective extends Component {
       source_action: "a_change_collection_ad_link_form",
       campaign_collectionAdLinkForm: val === 2 ? "Website" : "App DeepLinks",
     });
-    this.setState({ collectionAdLinkForm: val });
+    this.setState({ ...this.state, collectionAdLinkForm: val });
   };
 
   _handleSubmission = async () => {
@@ -403,11 +422,20 @@ class AdObjective extends Component {
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
       });
+      let objective = this.state.campaignInfo.objective;
+      if (objective !== "APP_INSTALLS") {
+        objective = this.state.campaignInfo.objective.replace(
+          /WEBSITE_|APP_/g,
+          ""
+        );
+      }
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
+        objective,
+        duration: this.state.duration,
       };
-
+      this.getMinimumCash();
       this.props.ad_objective(
         {
           ...info,
@@ -415,7 +443,8 @@ class AdObjective extends Component {
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         this.props.navigation,
-        segmentInfo
+        segmentInfo,
+        this.state.campaignInfo.objective
       );
     } else {
       this.setState({ incomplete: true });
@@ -502,6 +531,33 @@ class AdObjective extends Component {
       this.handleBackButton
     );
   };
+
+  handleDuration = (subtract = false) => {
+    let duration = subtract
+      ? this.state.duration - 1 > 1
+        ? this.state.duration - 1
+        : 1
+      : this.state.duration + 1;
+
+    let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + duration);
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: end_time.toISOString(),
+      },
+      duration,
+    });
+    this.props.save_campaign_info({
+      end_time: end_time.toISOString(),
+      duration,
+      campaignDateChanged: true,
+    });
+    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+  };
+  stopTimer = () => {
+    clearTimeout(this.timer);
+  };
   render() {
     let adType = this.props.adType;
     const list = ObjectiveData[this.props.adType].map((o) => (
@@ -571,36 +627,6 @@ class AdObjective extends Component {
             accessible={false}
           >
             <Container style={styles.container}>
-              {/* <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                segment={{
-                  source: "ad_objective",
-                  source_action: "a_go_back",
-                  str: "Ad Objective Back Button",
-                  obj: {
-                    businessname:
-                      this.props.mainBusiness &&
-                      this.props.mainBusiness.businessname,
-                  },
-                }}
-                actionButton={this.handleBackButton}
-                title={[
-                  adType === "SnapAd"
-                    ? "Snap Ad"
-                    : adType === "StoryAd"
-                    ? "Story Ad"
-                    : "Collection Ad",
-
-                  "Campaign",
-                ]}
-              /> */}
-              {/* <PhoneIcon
-                style={styles.phoneicon}
-                width={hp(5) < 30 ? 50 : 70}
-                height={hp(5) < 30 ? 50 : 70}
-              /> */}
-              <View style={styles.block1}></View>
               <ScrollView
                 contentContainerStyle={styles.mainContent}
                 scrollEnabled={true}
@@ -621,6 +647,25 @@ class AdObjective extends Component {
                   incomplete={this.state.incomplete}
                   valueText={this.state.objectiveLabel}
                   translate={this.props.screenProps.translate}
+                />
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
+                  disabled={this.props.loading}
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
+                <CampaignDuration
+                  stopTimer={this.stopTimer}
+                  handleDuration={this.handleDuration}
+                  duration={this.state.duration}
+                  screenProps={this.props.screenProps}
                 />
                 <Animatable.View
                   onAnimationEnd={() =>
@@ -643,7 +688,7 @@ class AdObjective extends Component {
                     </Text>
                   </View> */}
                   <Duration
-                    label={"Campaign Duration"}
+                    label={"Start Date"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}
@@ -654,23 +699,6 @@ class AdObjective extends Component {
                     dateField={this.dateField}
                   />
                 </Animatable.View>
-                {/* <Text style={styles.minBudget}>
-                {translate("Minimum of $25/day")}
-              </Text> */}
-
-                <ModalField
-                  stateName={"objective"}
-                  setModalVisible={this.setModalVisible}
-                  modal={true}
-                  label={"Objective"}
-                  valueError={this.state.objectiveError}
-                  getValidInfo={this.getValidInfo}
-                  disabled={this.props.loading}
-                  valueText={this.state.objectiveLabel}
-                  value={this.state.campaignInfo.objective}
-                  incomplete={this.state.incomplete}
-                  translate={this.props.screenProps.translate}
-                />
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
@@ -743,9 +771,6 @@ class AdObjective extends Component {
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    {/* <Text style={styles.minBudget}>
-                    Collection Ads only work on iOS
-                  </Text> */}
                   </View>
                 )}
 
@@ -767,12 +792,12 @@ class AdObjective extends Component {
             </Container>
           </TouchableWithoutFeedback>
           <DateFields
-            getMinimumCash={this.getMinimumCash}
+            // getMinimumCash={this.getMinimumCash}
             onRef={(ref) => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
             start_time={this.state.campaignInfo.start_time}
-            end_time={this.state.campaignInfo.end_time}
+            end_time={this.state.campaignInfo.start_time}
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             closedContinueModal={this.state.closedContinueModal}
@@ -794,36 +819,32 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <BlurView>
-              <View style={{ height: "100%" }}>
-                <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  actionButton={() => {
-                    this.setModalVisible(false);
-                  }}
-                  title={"Campaign Objective"}
-                  segment={{
-                    source: "ad_objective_modal",
-                    source_action: "a_go_back",
-                  }}
-                />
-                <View style={styles.popupOverlay}>
-                  <Content
-                    padder
-                    indicatorStyle="white"
-                    contentContainerStyle={styles.contentContainer}
-                    style={{ top: StatusBar.currentHeight }}
-                  >
-                    {list}
-                  </Content>
-                  {/* <LowerButton
-   screenProps={this.props.screenProps}
- bottom={4} function={this.setModalVisible} /> */}
-                </View>
+            <View style={styles.objectiveModal}>
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={true}
+                actionButton={() => {
+                  this.setModalVisible(false);
+                }}
+                title={"Select an objective"}
+                segment={{
+                  source: "ad_objective_modal",
+                  source_action: "a_go_back",
+                }}
+                titleStyle={{ color: "#000" }}
+                iconColor="#000"
+                containerStyle={styles.customHeaderContainer}
+                titleContainerStyle={{
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              />
+              <View style={styles.popupOverlay}>
+                <Content contentContainerStyle={styles.contentContainer}>
+                  {list}
+                </Content>
               </View>
-            </BlurView>
+            </View>
           </Modal>
         </View>
       );
@@ -845,8 +866,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_objective: (info, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_objective(info, navigation, segmentInfo)),
+  ad_objective: (info, navigation, segmentInfo, objective) =>
+    dispatch(
+      actionCreators.ad_objective(info, navigation, segmentInfo, objective)
+    ),
   save_campaign_info: (info) =>
     dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: (values) => dispatch(actionCreators.getMinimumCash(values)),

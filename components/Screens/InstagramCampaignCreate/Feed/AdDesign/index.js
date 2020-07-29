@@ -73,6 +73,7 @@ import MediaModal from "./MediaModal";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
 import { formatCarouselAd } from "./Functions/formatCarouselAd";
+import ClickDestination from "./ClickDestination";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -123,6 +124,8 @@ class AdDesign extends Component {
       mediaModalVisible: false,
       uneditedImageUri: "",
       serialization: null,
+      maxClickHeight: 0,
+      swipeUpExpanded: false,
     };
   }
 
@@ -186,6 +189,7 @@ class AdDesign extends Component {
         media_type,
         media,
         fileReadyToUpload,
+        uneditedImageUri: this.props.data.uneditedImageUri,
       });
       this.props.save_campaign_info_instagram({
         destination,
@@ -446,6 +450,11 @@ class AdDesign extends Component {
       campaign_end_date: this.props.data.end_time,
     });
   };
+  setMaxClickHeight = (event) => {
+    this.setState({
+      maxClickHeight: event.nativeEvent.layout.height,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
@@ -457,7 +466,6 @@ class AdDesign extends Component {
     ) {
       media = this.props.data.media;
     }
-
     return (
       <View style={styles.safeAreaView}>
         <SafeAreaView
@@ -480,6 +488,7 @@ class AdDesign extends Component {
         />
 
         <ScrollView
+          scrollEnabled={!this.state.swipeUpExpanded}
           contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -510,7 +519,10 @@ class AdDesign extends Component {
                     uppercase
                   />
                 </View>
-                <View style={[styles.outerBlock]}>
+                <View
+                  style={[styles.outerBlock]}
+                  onLayout={this.setMaxClickHeight}
+                >
                   <View style={styles.profileBsnNameView}>
                     <RNImage
                       style={styles.businessProfilePic}
@@ -576,124 +588,93 @@ class AdDesign extends Component {
                     <PenIcon width={18} height={18} style={styles.penIcon} />
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate(
-                        "InstagramSwipeUpDestination",
-                        {
-                          source: "ad_objective",
-                          source_action: "a_swipe_up_destination",
-                        }
-                      )
-                    }
-                    style={styles.destinationView}
-                    disabled={this.props.loading}
-                  >
-                    <ArrowUp stroke={globalColors.orange} />
-                    <Text style={styles.destinationText}>
-                      {this.props.data &&
-                      this.props.data.link &&
-                      this.props.data.link !== "BLANK" &&
-                      ["link", "BLANK", "app_install"].includes(
-                        this.state.campaignInfo.destination
-                      )
-                        ? this.state.campaignInfo.destination === "link" ||
-                          (this.props.data.objective === "BRAND_AWARENESS" &&
-                            this.state.campaignInfo.destination === "BLANK")
-                          ? translate("Website")
-                          : this.state.campaignInfo.destination ===
-                            "app_install"
-                          ? translate("App Installs")
-                          : this.props.data.objective === "VIDEO_VIEWS"
-                          ? translate("Video Views")
-                          : translate("Click destination")
-                        : translate("Click destination")}
-                    </Text>
-                    {this.props.data &&
-                    this.props.data.link &&
-                    this.props.data.link !== "BLANK" &&
-                    (this.state.campaignInfo.destination === "link" ||
-                      this.state.campaignInfo.destination === "BLANK") ? (
-                      <Text style={styles.websiteLink}>
-                        {this.props.data.link}
-                      </Text>
-                    ) : null}
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.lowerBtn}>
-                  <GradientButton
-                    text={translate("Preview")}
-                    uppercase
-                    transparent
-                    style={styles.reviewButton}
-                    disabledGradientBegin={"rgba(0,0,0,0)"}
-                    disabledGradientEnd={"rgba(0,0,0,0)"}
-                    disabled={this.props.loading}
-                    onPressAction={this.handleReview}
+                  <ClickDestination
+                    screenProps={this.props.screenProps}
+                    navigation={this.props.navigation}
+                    loading={this.props.loading}
+                    data={this.props.data}
+                    campaignInfo={this.state.campaignInfo}
+                    translate={translate}
+                    maxClickHeight={this.state.maxClickHeight}
+                    setTheState={this.setTheState}
                   />
-                  {this.props.loading ? (
-                    <View
-                      style={{
-                        width: "45%",
-                        position: "relative",
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text style={styles.uploadingText}>
-                        {translate("Uploading")}
-                      </Text>
-                      <View>
-                        <AnimatedCircularProgress
-                          size={50}
-                          width={5}
-                          fill={Math.round(this.state.loaded)}
-                          rotation={360}
-                          lineCap="round"
-                          tintColor={globalColors.orange}
-                          backgroundColor="rgba(255,255,255,0.3)"
-                          adDetails={false}
-                        />
-                        <Text style={styles.uplaodPercentageText}>
-                          {Math.round(this.state.loaded, 2)}
-                          <Text style={styles.percentage}>%</Text>
-                        </Text>
-                      </View>
-                    </View>
-                  ) : (
-                    <LowerButton
-                      screenProps={this.props.screenProps}
-                      text={"Next"}
-                      width={12}
-                      height={12}
-                      style={styles.lowerBtnWidth}
-                      function={() =>
-                        _handleSubmission(
-                          this.state.campaignInfo.media_option,
-                          this.props.carouselAdsArray,
-                          this.state.carouselAdCards,
-                          formatCarouselAd,
-                          this.validator,
-                          this.finalSubmission,
-                          this.setTheState,
-                          {
-                            //for formatCarouselAd
-                            campaignInfo: this.state.campaignInfo,
-                            // selectedCampaign: this.selectedCampaign,
-                            campaign_id: this.props.campaign_id,
-                            // rejected: this.rejected,
-                            handleUpload: this.handleUpload,
-                            signal: this.state.signal,
-                            uploadCarouselAdCard: this.props
-                              .uploadCarouselAdCard,
-                          },
-                          this.props.screenProps
-                        )
-                      }
-                    />
-                  )}
                 </View>
+                {!this.state.swipeUpExpanded && (
+                  <View style={styles.lowerBtn}>
+                    <GradientButton
+                      text={translate("Preview")}
+                      uppercase
+                      transparent
+                      style={styles.reviewButton}
+                      disabledGradientBegin={"rgba(0,0,0,0)"}
+                      disabledGradientEnd={"rgba(0,0,0,0)"}
+                      disabled={this.props.loading}
+                      onPressAction={this.handleReview}
+                    />
+                    {this.props.loading ? (
+                      <View
+                        style={{
+                          width: "45%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text style={styles.uploadingText}>
+                          {translate("Uploading")}
+                        </Text>
+                        <View>
+                          <AnimatedCircularProgress
+                            size={50}
+                            width={5}
+                            fill={Math.round(this.state.loaded)}
+                            rotation={360}
+                            lineCap="round"
+                            tintColor={globalColors.orange}
+                            backgroundColor="rgba(255,255,255,0.3)"
+                            adDetails={false}
+                          />
+                          <Text style={styles.uplaodPercentageText}>
+                            {Math.round(this.state.loaded, 2)}
+                            <Text style={styles.percentage}>%</Text>
+                          </Text>
+                        </View>
+                      </View>
+                    ) : (
+                      <LowerButton
+                        screenProps={this.props.screenProps}
+                        text={"Next"}
+                        width={12}
+                        height={12}
+                        style={styles.lowerBtnWidth}
+                        function={() =>
+                          _handleSubmission(
+                            this.state.campaignInfo.media_option,
+                            this.props.carouselAdsArray,
+                            this.state.carouselAdCards,
+                            formatCarouselAd,
+                            this.validator,
+                            this.finalSubmission,
+                            this.setTheState,
+                            {
+                              //for formatCarouselAd
+                              campaignInfo: this.state.campaignInfo,
+                              // selectedCampaign: this.selectedCampaign,
+                              campaign_id: this.props.campaign_id,
+                              // rejected: this.rejected,
+                              handleUpload: this.handleUpload,
+                              signal: this.state.signal,
+                              uploadCarouselAdCard: this.props
+                                .uploadCarouselAdCard,
+                            },
+                            this.props.screenProps
+                          )
+                        }
+                      />
+                    )}
+                  </View>
+                )}
               </View>
             </Transition>
           ) : (

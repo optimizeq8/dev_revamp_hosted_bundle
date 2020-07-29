@@ -98,7 +98,7 @@ export const verifyBusinessUrl = (weburl) => {
   };
 };
 
-export const ad_objective = (info, navigation, segmentInfo) => {
+export const ad_objective = (info, navigation, segmentInfo, objective) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_OBJ,
@@ -113,7 +113,7 @@ export const ad_objective = (info, navigation, segmentInfo) => {
         data.success
           ? dispatch({
               type: actionTypes.SET_AD_OBJECTIVE,
-              payload: data,
+              payload: { ...data, savedObjective: objective },
             })
           : dispatch({
               type: actionTypes.SET_AD_LOADING_OBJ,

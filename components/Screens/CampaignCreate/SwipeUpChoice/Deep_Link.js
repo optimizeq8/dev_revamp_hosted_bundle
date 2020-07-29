@@ -71,6 +71,9 @@ class Deep_Link extends Component {
           ...this.props.rejCampaign.attachment,
         },
         callaction: this.props.rejCampaign.call_to_action,
+        iosAppSelected: this.props.rejCampaign.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.rejCampaign.attachment.android_app_url !== "",
       });
     } else if (
       this.props.data &&
@@ -247,10 +250,11 @@ class Deep_Link extends Component {
         attachment,
         appChoice
       );
-      this.props.navigation.navigate("AdDesign", {
-        source: "ad_swipe_up_destination",
-        source_action: "a_swipe_up_destination",
-      });
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
     } else
       showMessage({
         message: translate("Please select at least one app"),
@@ -266,32 +270,15 @@ class Deep_Link extends Component {
     const { translate } = this.props.screenProps;
     let { iosAppSelected, androidAppSelected } = this.state;
     return (
-      <View style={styles.safeAreaContainer}>
-        <SafeAreaView style={{ backgroundColor: "#fff" }} />
-        {this.props.adType === "CollectionAd" && (
-          <TopStepsHeader
-            screenProps={this.props.screenProps}
-            closeButton={false}
-            navigation={this.props.navigation}
-            segment={{
-              source: "ad_swipe_up_destination",
-              source_action: "a_go_back",
-            }}
-            icon="snapchat"
-            adType={this.props.adType}
-            currentScreen="Compose"
-            title={"Swipe Up destination"}
-          />
-        )}
-
-        <View
-          style={{
-            paddingHorizontal: this.props.toggleSideMenu ? 15 : 26,
-            top: 10,
-          }}
-        >
+      <View
+        style={[
+          styles.safeAreaContainer,
+          this.props.swipeUpDestination && { width: "110%" },
+        ]}
+      >
+        <View>
           <View style={styles.deepLinkHeader}>
-            <AppInstallIcon style={styles.icon} />
+            {/* <AppInstallIcon style={styles.icon} /> */}
             <View style={styles.textcontainer}>
               <Text style={styles.titletext}>{translate("Deep Link")}</Text>
               <Text style={styles.subtext}>

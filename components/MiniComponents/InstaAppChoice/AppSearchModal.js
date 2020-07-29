@@ -17,7 +17,7 @@ import { Text, Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 export default class AppSearchModal extends Component {
@@ -191,7 +191,11 @@ export default class AppSearchModal extends Component {
               >
                 {appSelection === "iOS" ? (
                   <>
-                    <AppStoreIcon width={50} height={50} />
+                    <AppStoreIcon
+                      fill={globalColors.rum}
+                      width={50}
+                      height={50}
+                    />
                     <Text
                       uppercase
                       style={[

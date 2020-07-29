@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
@@ -14,9 +14,24 @@ import styles from "../../styles/adDesign.styles";
 import { _pickImage } from "./Functions/PickImages";
 
 export default class SingleImage extends React.PureComponent {
+  state = { width: null, height: null, AP: 1 / 1 };
   showModal = () => {
     this.props.setMediaModalVisible(true);
   };
+  componentDidMount() {
+    if (this.props.media) {
+      Image.getSize(this.props.media, (width, height) =>
+        this.setState({ AP: width / height })
+      );
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.media !== this.props.media) {
+      Image.getSize(this.props.media, (width, height) =>
+        this.setState({ AP: width / height })
+      );
+    }
+  }
   render() {
     const {
       media,
@@ -25,9 +40,19 @@ export default class SingleImage extends React.PureComponent {
       disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
-
+    console.log({
+      width: this.state.width,
+      height: this.state.height,
+    });
     return (
-      <View style={[styles.placeholder]}>
+      <View
+        style={[
+          styles.placeholder,
+          {
+            aspectRatio: this.state.AP,
+          },
+        ]}
+      >
         {media_type === "VIDEO" && (
           <VideoPlayer
             shouldPlay={false}
@@ -36,7 +61,11 @@ export default class SingleImage extends React.PureComponent {
           />
         )}
         {media_type === "IMAGE" && (
-          <RNImageOrCacheImage media={media} style={styles.placeholder1} />
+          <RNImageOrCacheImage
+            resizeMode="contain"
+            media={media}
+            style={[styles.placeholder1]}
+          />
         )}
 
         <TouchableOpacity

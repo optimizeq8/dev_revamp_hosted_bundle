@@ -110,11 +110,12 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Country")}</Text>
                   <Text style={styles.menudetails}>
-                    {mainState.countryName.length > 0
+                    {typeof mainState.countryName !== "string" &&
+                    mainState.countryName.length > 0
                       ? mainState.countryName
                           .map((co) => translate(co))
                           .join(", ")
-                      : ""}
+                      : mainState.countryName}
                   </Text>
                 </View>
               </View>
