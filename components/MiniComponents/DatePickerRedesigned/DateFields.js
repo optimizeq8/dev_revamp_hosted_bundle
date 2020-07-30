@@ -356,6 +356,7 @@ class DateFields extends Component {
                 showTopRightButton={
                   this.state.start_date || this.props.chartRange
                 }
+                containerStyle={I18nManager.isRTL && { paddingHorizontal: 50 }}
                 title={"Choose campaign start date"}
                 titleStyle={{ color: "#000" }}
               />
