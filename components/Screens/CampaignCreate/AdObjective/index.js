@@ -82,6 +82,7 @@ class AdObjective extends Component {
       end_timeError: "",
       incomplete: false,
       duration: 7,
+      savedObjective: "",
     };
   }
   componentWillUnmount() {
@@ -198,6 +199,9 @@ class AdObjective extends Component {
         duration: this.props.data.duration
           ? this.props.data.duration
           : this.state.duration,
+        savedObjective: this.props.data.hasOwnProperty("savedObjective")
+          ? this.props.data.savedObjective
+          : this.state.campaignInfo.objective,
       });
     } else {
       this.setState({
@@ -434,6 +438,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         objective,
         duration: this.state.duration,
+        savedObjective: this.state.savedObjective,
       };
       this.getMinimumCash();
       this.props.ad_objective(

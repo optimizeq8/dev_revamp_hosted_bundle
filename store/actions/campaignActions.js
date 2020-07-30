@@ -113,7 +113,10 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
         data.success
           ? dispatch({
               type: actionTypes.SET_AD_OBJECTIVE,
-              payload: { ...data, savedObjective: objective },
+              payload: {
+                ...data,
+                savedObjective: info.savedObjective,
+              },
             })
           : dispatch({
               type: actionTypes.SET_AD_LOADING_OBJ,

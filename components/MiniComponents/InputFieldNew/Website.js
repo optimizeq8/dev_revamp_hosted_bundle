@@ -115,6 +115,7 @@ export default class WebsiteComponent extends React.Component {
                 styles.inputText,
                 {
                   fontFamily: "montserrat-regular-english",
+                  marginBottom: 0,
                 },
                 customTextStyle,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
