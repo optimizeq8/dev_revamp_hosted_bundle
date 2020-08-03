@@ -243,6 +243,7 @@ class Signin extends Component {
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
                       onPress={this.changeActiveTab}
+                      disabled={this.props.emailLoading}
                       style={[
                         styles.tabView,
                         this.state.activeTab === 0 && styles.activeTabView,
@@ -264,6 +265,7 @@ class Signin extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={this.changeActiveTab}
+                      disabled={this.props.emailLoading}
                       style={[
                         styles.tabView,
                         this.state.activeTab === 1 && styles.activeTabView,
@@ -372,6 +374,7 @@ class Signin extends Component {
                 )}
               </InputScrollView>
               <AppUpdateChecker screenProps={this.props.screenProps} />
+              {this.props.emailLoading && <LoadingScreen dash={true} />}
             </View>
           )}
         </SafeAreaView>
@@ -384,6 +387,7 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   checkingForToken: state.login.checkingForToken,
   checkingForTokenError: state.login.checkingForTokenError,
+  emailLoading: state.register.emailLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
