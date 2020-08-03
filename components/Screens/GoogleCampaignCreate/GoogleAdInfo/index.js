@@ -163,6 +163,8 @@ class GoogleAdInfo extends Component {
   };
 
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration);
     analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
       source: "ad_objective",
@@ -170,10 +172,12 @@ class GoogleAdInfo extends Component {
       campaign_end_date: date,
     });
     this.setState({
-      end_time: date,
+      end_time: end_time.toISOString(),
     });
 
-    this.props.save_google_campaign_data({ end_time: date });
+    this.props.save_google_campaign_data({
+      end_time: end_time.toISOString(),
+    });
   };
 
   setModalVisible = (visible) => {
@@ -345,7 +349,6 @@ class GoogleAdInfo extends Component {
        * will show again if the exit and come back
        */
       this.props.set_google_campaign_resumed(false);
-
       this.props.create_google_SE_campaign_info(
         {
           id: this.props.campaign.id !== "" ? this.props.campaign.id : "",
@@ -354,7 +357,7 @@ class GoogleAdInfo extends Component {
           name: this.state.name,
           language: this.state.language,
           start_time: this.state.start_time,
-          end_time: this.state.end_time,
+          end_time: this.state.end_time.split("T")[0],
           location: this.state.location,
           dduration: this.state.duration,
         },
