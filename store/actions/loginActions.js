@@ -181,7 +181,10 @@ export const login = (userData, navigation) => {
       payload: true,
     });
     createBaseUrl()
-      .post("userLogin", userData)
+      .post("userLogin", userData, {
+        timeout: 5000,
+        timeoutErrorMessage: "Something went wrong, please try again.",
+      })
       .then((res) => {
         return res.data;
       })

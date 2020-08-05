@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-bold",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontSize: 12 / PixelRatio.getFontScale(),
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   },
   subtitleHeading: {
     textAlign: "left",
-    fontSize: 12,
+    fontSize: 10,
     marginBottom: -10,
     fontFamily: "montserrat-regular",
   },

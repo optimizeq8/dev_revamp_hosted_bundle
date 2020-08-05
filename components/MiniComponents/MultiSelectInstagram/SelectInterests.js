@@ -27,6 +27,49 @@ class SelectInterests extends Component {
     Segment.screen("Interests Options");
 
     this.props.get_interests_instagram();
+    if (this.props.interests) {
+      let interests = [];
+      if (this.props.interests.length === 0) {
+        this.setState({ interests: [] });
+      } else {
+        interests =
+          this.props.interests &&
+          Object.keys(this.props.interests).map((interest) => {
+            return {
+              id: interest,
+              name: interest,
+              subcat: [...this.props.interests[interest]],
+            };
+          });
+
+        this.setState({ interests });
+      }
+    }
+    if (this.props.customInterests) {
+      let customInterests = [];
+      if (
+        this.props.customInterests.length === 0 ||
+        this.props.customInterests.Interests.length === 0
+      ) {
+        this.setState({ customInterests: [] });
+      } else {
+        customInterests =
+          this.props.customInterests &&
+          Object.keys(this.props.customInterests).map((interest) => {
+            return {
+              id: interest,
+              name: interest,
+              subcat: [...this.props.customInterests[interest]],
+            };
+          });
+        if (this.props.data.hasOwnProperty("customInterestObjects")) {
+          customInterests[0].subcat = customInterests[0].subcat.concat(
+            this.props.data.customInterestObjects
+          );
+        }
+        this.setState({ customInterests });
+      }
+    }
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
@@ -74,7 +117,11 @@ class SelectInterests extends Component {
               subcat: [...this.props.customInterests[interest]],
             };
           });
-
+        if (this.props.data.hasOwnProperty("customInterestObjects")) {
+          customInterests[0].subcat = customInterests[0].subcat.concat(
+            this.props.data.customInterestObjects
+          );
+        }
         this.setState({ customInterests });
       }
     }
@@ -157,7 +204,7 @@ class SelectInterests extends Component {
               />
               {this.props.selectedCustomInterests.length > 0 && (
                 <Text style={styles.interestSection}>
-                  {translate("Customs interests")}
+                  {translate("Custom interests")}
                 </Text>
               )}
               <Picker
@@ -203,6 +250,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   interests: state.instagramAds.interests,
   customInterests: state.instagramAds.customInterests,
+  data: state.instagramAds.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({

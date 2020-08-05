@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   left: {
     width: "10%",
-    height: "150%",
+    height: 40,
     zIndex: 1,
     alignItems: "center",
     justifyContent: "center",

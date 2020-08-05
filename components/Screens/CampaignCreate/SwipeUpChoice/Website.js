@@ -299,7 +299,9 @@ class Website extends Component {
             stateNameError={this.state.websitelinkError}
             customStyle={styles.customModalField}
             customIconColor={globalColors.rum}
-            customTextStyle={{ color: globalColors.rum }}
+            customTextStyle={{
+              color: globalColors.rum,
+            }}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&

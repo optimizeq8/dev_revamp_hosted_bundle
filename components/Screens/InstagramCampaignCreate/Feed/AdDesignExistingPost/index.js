@@ -49,7 +49,9 @@ import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 import { globalColors } from "../../../../../GlobalStyles";
 import { ScrollView } from "react-native-gesture-handler";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
-
+import ClickDestination from "../AdDesign/ClickDestination";
+import { Video } from "expo";
+import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 class InstagramAdDesignExistingPost extends Component {
   static navigationOptions = {
     header: null,
@@ -96,6 +98,7 @@ class InstagramAdDesignExistingPost extends Component {
       mediaModalVisible: false,
       uneditedImageUri: "",
       serialization: null,
+      maxClickHeight: 0,
     };
   }
 
@@ -295,7 +298,6 @@ class InstagramAdDesignExistingPost extends Component {
           ? data.attachment
           : JSON.stringify(data.attachment)
       );
-
       // if (
       //   (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
       //   JSON.stringify(this.props.data.formatted) !==
@@ -511,6 +513,11 @@ class InstagramAdDesignExistingPost extends Component {
       campaign_end_date: this.props.data.end_time,
     });
   };
+  setMaxClickHeight = (event) => {
+    this.setState({
+      maxClickHeight: event.nativeEvent.layout.height,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -605,8 +612,18 @@ class InstagramAdDesignExistingPost extends Component {
           </View>
         )}
         {this.state.showPreview && (
-          <ScrollView>
-            <View style={previewStyles.container}>
+          <ScrollView
+            style={{ height: "100%" }}
+            contentContainerStyle={{
+              paddingTop: "5%",
+              paddingBottom: "25%",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={[previewStyles.container, { marginBottom: 20 }]}
+              onLayout={this.setMaxClickHeight}
+            >
               <View style={previewStyles.profilePicView}>
                 <RNImage
                   style={{ borderRadius: 20 }}
@@ -631,12 +648,16 @@ class InstagramAdDesignExistingPost extends Component {
                 </View>
               </View>
               <View style={previewStyles.mediaViewExist}>
-                <RNImage
-                  style={previewStyles.imagePreview}
-                  source={{
-                    uri: this.state.campaignInfo.media,
-                  }}
-                />
+                {this.state.media_type === "IMAGE" ? (
+                  <RNImage
+                    style={previewStyles.imagePreview}
+                    source={{
+                      uri: this.state.campaignInfo.media,
+                    }}
+                  />
+                ) : (
+                  <VideoPlayer shouldPlay={true} media={media} />
+                )}
               </View>
               {(this.state.campaignInfo.call_to_action.value ||
                 this.state.campaignInfo.call_to_action) !== "BLANK" && (
@@ -702,46 +723,27 @@ class InstagramAdDesignExistingPost extends Component {
                 </Text>
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate("InstagramSwipeUpDestination", {
-                  source: "ad_objective",
-                  source_action: "a_swipe_up_destination",
-                  existingPost: true,
-                })
-              }
-              style={[styles.destinationView, { marginHorizontal: 20 }]}
-              disabled={this.props.loading}
+            <View style={[styles.clickContainer]}>
+              <ClickDestination
+                screenProps={this.props.screenProps}
+                navigation={this.props.navigation}
+                loading={this.props.loading}
+                data={this.props.data}
+                campaignInfo={this.state.campaignInfo}
+                translate={translate}
+                maxClickHeight={this.state.maxClickHeight}
+                setTheState={this.setTheState}
+              />
+            </View>
+            <View
+              style={[
+                styles.lowerBtn,
+                {
+                  top: "20%",
+                  width: "90%",
+                },
+              ]}
             >
-              <ArrowUp stroke={globalColors.orange} />
-              <Text style={styles.destinationText}>
-                {this.props.data &&
-                this.props.data.link &&
-                this.props.data.link !== "BLANK" &&
-                ["link", "BLANK", "app_install"].includes(
-                  this.state.campaignInfo.destination
-                )
-                  ? this.state.campaignInfo.destination === "link" ||
-                    (this.props.data.objective === "BRAND_AWARENESS" &&
-                      this.state.campaignInfo.destination === "BLANK")
-                    ? translate("Website")
-                    : this.state.campaignInfo.destination === "app_install"
-                    ? translate("App Installs")
-                    : this.props.data.objective === "VIDEO_VIEWS"
-                    ? translate("Video Views")
-                    : translate("Click destination")
-                  : translate("Click destination")}
-              </Text>
-              {this.props.data &&
-              this.props.data.link &&
-              this.props.data.link !== "BLANK" &&
-              (this.state.campaignInfo.destination === "link" ||
-                this.state.campaignInfo.destination === "BLANK") ? (
-                <Text style={styles.websiteLink}>{this.props.data.link}</Text>
-              ) : null}
-            </TouchableOpacity>
-
-            <View style={styles.lowerBtn}>
               {this.props.loading ? (
                 <View
                   style={{

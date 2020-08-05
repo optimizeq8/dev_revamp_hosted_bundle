@@ -419,9 +419,13 @@ export const resendVerifyMobileCodeByEmail = (mobileAuth) => {
 
 export const verifyEmail = (email, userInfo, navigation) => {
   return async (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_EMAIL_LOADING,
+      payload: true,
+    });
     const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
-      .post(`verifyEmail`, { email: email })
+      .post(`verifyEmail`, { email: email }, { timeout: 5000 })
       .then((res) => {
         return res.data;
       })
@@ -476,11 +480,15 @@ export const verifyEmail = (email, userInfo, navigation) => {
         });
         showMessage({
           message:
-            err.message ||
+            (err.message && !err.message.includes("timeout") && err.message) ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
           position: "top",
+        });
+        dispatch({
+          type: actionTypes.VERIFY_EMAIL_LOADING,
+          payload: false,
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,

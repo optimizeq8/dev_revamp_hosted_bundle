@@ -11,6 +11,7 @@ export default class ClickDestination extends Component {
     swipeUpMinHeight: 0,
     expanded: false,
     swipeUpProps: null,
+    compHeight: 0,
   };
   toggleClickDestination = (expanded = true) => {
     // if (Platform.OS === "android") LayoutAnimation.spring();
@@ -31,12 +32,18 @@ export default class ClickDestination extends Component {
       expanded: expanded, //Step 2
     });
   };
+  getCompHeight = (event) => {
+    if (this.state.compHeight === 0)
+      this.setState({
+        compHeight: event.nativeEvent.layout.height,
+      });
+  };
   render() {
     let translate = this.props.translate;
     let sty = !this.state.expanded
       ? {}
       : {
-          height: this.props.maxClickHeight,
+          height: this.props.maxClickHeight + this.state.compHeight,
           // position: "absolute",
           // bottom: 200,
           zIndex: 10,
@@ -46,9 +53,9 @@ export default class ClickDestination extends Component {
         style={{
           position: "absolute",
           width: "100%",
-
           bottom: 0,
         }}
+        onLayout={this.getCompHeight}
       >
         <TouchableOpacity
           onPress={

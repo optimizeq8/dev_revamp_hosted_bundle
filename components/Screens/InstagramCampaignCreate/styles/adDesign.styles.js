@@ -587,6 +587,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontSize: 13,
   },
+  clickContainer: {
+    width: "90%",
+    alignSelf: "center",
+    backgroundColor: "blue",
+    top: 75,
+  },
 });
 
 export default styles;

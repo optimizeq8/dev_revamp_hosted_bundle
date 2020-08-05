@@ -103,7 +103,7 @@ class GoogleAdInfo extends Component {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -116,8 +116,14 @@ class GoogleAdInfo extends Component {
     }, {});
     // By default set it to business country
     if (data.location && data.location.length === 0) {
+      let bsnsCountry = this.props.mainBusiness.country;
+      if (bsnsCountry === "UAE") {
+        bsnsCountry = "United Arab Emirates";
+      } else if (bsnsCountry === "KSA") {
+        bsnsCountry = "Saudi Arabia";
+      }
       const countryCode = CountriesList.find(
-        (ctry) => ctry.name === this.props.mainBusiness.country
+        (ctry) => ctry.name === bsnsCountry
       ).criteria_id;
 
       data.location = [countryCode];
@@ -157,6 +163,8 @@ class GoogleAdInfo extends Component {
   };
 
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
       source: "ad_objective",
@@ -164,10 +172,12 @@ class GoogleAdInfo extends Component {
       campaign_end_date: date,
     });
     this.setState({
-      end_time: date,
+      end_time: end_time.toISOString(),
     });
 
-    this.props.save_google_campaign_data({ end_time: date });
+    this.props.save_google_campaign_data({
+      end_time: end_time.toISOString(),
+    });
   };
 
   setModalVisible = (visible) => {
@@ -339,7 +349,6 @@ class GoogleAdInfo extends Component {
        * will show again if the exit and come back
        */
       this.props.set_google_campaign_resumed(false);
-
       this.props.create_google_SE_campaign_info(
         {
           id: this.props.campaign.id !== "" ? this.props.campaign.id : "",
@@ -348,7 +357,7 @@ class GoogleAdInfo extends Component {
           name: this.state.name,
           language: this.state.language,
           start_time: this.state.start_time,
-          end_time: this.state.end_time,
+          end_time: this.state.end_time.split("T")[0],
           location: this.state.location,
           dduration: this.state.duration,
         },
@@ -436,7 +445,7 @@ class GoogleAdInfo extends Component {
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration);
+    end_time.setDate(end_time.getDate() + duration - 1);
     this.setState({
       end_time: end_time.toISOString(),
       duration,

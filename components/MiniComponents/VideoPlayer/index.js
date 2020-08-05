@@ -6,8 +6,10 @@ export default class VideoPlayer extends Component {
     let { shouldPlay = true, media, videoIsLoading } = this.props;
     return (
       <Video
-        onLoadStart={() => media !== "//" && videoIsLoading(true)}
-        onLoad={() => videoIsLoading(false)}
+        onLoadStart={() =>
+          media !== "//" && videoIsLoading && videoIsLoading(true)
+        }
+        onLoad={() => videoIsLoading && videoIsLoading(false)}
         source={{
           uri: media !== "//" ? media : "dfv.dfv",
         }}
