@@ -655,7 +655,11 @@ class InstagramFeedAdTargetting extends Component {
     // ) {
 
     let r = cloneDeep(this.state.campaignInfo.targeting);
-    if (r.flexible_spec[0].interests.length > 0)
+    if (
+      r.flexible_spec[0].interests.length > 0 &&
+      this.state.customInterests &&
+      this.state.customInterests.length > 0
+    )
       r.flexible_spec[0].interests = r.flexible_spec[0].interests.concat(
         this.state.customInterests
       );
@@ -793,7 +797,11 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
-      if (rep.targeting.flexible_spec[0].interests.length > 0)
+      if (
+        rep.targeting.flexible_spec[0].interests.length > 0 &&
+        this.state.customInterests &&
+        this.state.customInterests.length > 0
+      )
         rep.targeting.flexible_spec[0].interests = rep.targeting.flexible_spec[0].interests.concat(
           this.state.customInterests
         );
@@ -832,6 +840,7 @@ class InstagramFeedAdTargetting extends Component {
       if (rep.targeting.user_device && rep.targeting.user_device.length === 0) {
         delete rep.targeting.user_device;
       }
+      console.log(JSON.stringify(rep.targeting, null, 2));
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",

@@ -40,10 +40,6 @@ export default class SingleImage extends React.PureComponent {
       disabled,
     } = this.props;
     const { translate } = this.props.screenProps;
-    console.log({
-      width: this.state.width,
-      height: this.state.height,
-    });
     return (
       <View
         style={[
