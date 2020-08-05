@@ -211,61 +211,65 @@ class InstagramFeedAdTargetting extends Component {
           value: this.formatNumber(recBudget),
           recBudget: recBudget,
         },
-        () => {
+        async () => {
+          if (this.props.data.hasOwnProperty("campaignInfo")) {
+            rep = {
+              ...this.state.campaignInfo,
+              ...this.props.data.campaignInfo,
+            };
+            // console.log("data campaignInfo", this.props.data);
+
+            this.setState(
+              {
+                ...this.state,
+                ...this.props.data,
+                campaignInfo: {
+                  ...rep,
+                  lifetime_budget_micro: this.props.data.campaignDateChanged
+                    ? recBudget
+                    : this.props.data.campaignInfo.lifetime_budget_micro,
+                  campaign_id: this.props.campaign_id,
+                },
+                value: this.formatNumber(
+                  this.props.data.campaignDateChanged
+                    ? recBudget
+                    : this.props.data.campaignInfo.lifetime_budget_micro
+                ),
+                recBudget,
+                budgetOption: this.props.data.campaignDateChanged
+                  ? 1
+                  : this.props.data.budgetOption,
+                customInterests: this.props.data.customInterests,
+              },
+              () => {
+                if (this.props.data.appChoice) {
+                  let navAppChoice = this.props.data.appChoice;
+                  let rep = this.state.campaignInfo;
+                  rep.targeting.user_os = [navAppChoice];
+                  this.setState({
+                    campaignInfo: rep,
+                  });
+                }
+                this._calcReach();
+              }
+            );
+          } else {
+            let country_code = country_regions.find(
+              (country) => country.name === this.props.mainBusiness.country
+            ).key;
+            let allCountryRegions = country_regions
+              .find(
+                (country) => country.name === this.props.mainBusiness.country
+              )
+              .regions.map((reg) => reg.key);
+            await this.onSelectedCountryRegionChange([
+              country_code,
+              ...allCountryRegions,
+            ]);
+          }
           this._calcReach();
         }
       );
-
-      if (this.props.data.hasOwnProperty("campaignInfo")) {
-        rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
-        // console.log("data campaignInfo", this.props.data);
-
-        this.setState(
-          {
-            ...this.state,
-            ...this.props.data,
-            campaignInfo: {
-              ...rep,
-              lifetime_budget_micro: this.props.data.campaignDateChanged
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro,
-              campaign_id: this.props.campaign_id,
-            },
-            value: this.formatNumber(
-              this.props.data.campaignDateChanged
-                ? recBudget
-                : this.props.data.campaignInfo.lifetime_budget_micro
-            ),
-            recBudget,
-            budgetOption: this.props.data.campaignDateChanged
-              ? 1
-              : this.props.data.budgetOption,
-            customInterests: this.props.data.customInterests,
-          },
-          () => {
-            if (this.props.data.appChoice) {
-              let navAppChoice = this.props.data.appChoice;
-              let rep = this.state.campaignInfo;
-              rep.targeting.user_os = [navAppChoice];
-              this.setState({
-                campaignInfo: rep,
-              });
-            }
-            this._calcReach();
-          }
-        );
-      } else {
-        let country_code = country_regions.find(
-          (country) => country.name === this.props.mainBusiness.country
-        ).key;
-        let allCountryRegions = country_regions
-          .find((country) => country.name === this.props.mainBusiness.country)
-          .regions.map((reg) => reg.key);
-        await this.onSelectedCountryRegionChange([
-          country_code,
-          ...allCountryRegions,
-        ]);
-      }
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -352,7 +356,7 @@ class InstagramFeedAdTargetting extends Component {
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: replace,
-        customInterests: custom ? interestArray : [],
+        customInterests: custom ? interestArray : this.state.customInterests,
         customInterestObjects: custom
           ? selectedItems
           : this.props.data.customInterestObjects,
@@ -840,7 +844,6 @@ class InstagramFeedAdTargetting extends Component {
       if (rep.targeting.user_device && rep.targeting.user_device.length === 0) {
         delete rep.targeting.user_device;
       }
-      console.log(JSON.stringify(rep.targeting, null, 2));
       rep.targeting = JSON.stringify(rep.targeting);
       const segmentInfo = {
         campaign_ad_type: "InstagramFeedAd",
@@ -986,7 +989,6 @@ class InstagramFeedAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
-
     switch (this.state.sidemenu) {
       case "genders": {
         menu = (
