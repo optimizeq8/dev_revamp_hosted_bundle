@@ -237,6 +237,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         objective: choice.value,
       },
+      savedObjective: choice.value,
       objectiveLabel: choice.label,
     });
     analytics.track(`a_select_ad_objective`, {
@@ -249,6 +250,7 @@ class AdObjective extends Component {
     this.props.save_campaign_info({
       objective: choice.value,
       objectiveLabel: choice.label,
+      savedObjective: choice.value,
       reset: true,
     });
   };
