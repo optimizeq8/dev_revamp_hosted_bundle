@@ -374,7 +374,9 @@ class Signin extends Component {
                 )}
               </InputScrollView>
               <AppUpdateChecker screenProps={this.props.screenProps} />
-              {this.props.emailLoading && <LoadingScreen dash={true} />}
+              {(this.props.emailLoading || this.props.loading) && (
+                <LoadingScreen dash={true} />
+              )}
             </View>
           )}
         </SafeAreaView>
