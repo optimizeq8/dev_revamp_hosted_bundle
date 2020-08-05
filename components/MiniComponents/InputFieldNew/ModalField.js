@@ -50,6 +50,9 @@ export default class ModalField extends Component {
       icon,
       isVisible,
       stateName,
+      customStyle,
+      customIconColor,
+      customTextStyle,
     } = this.props;
     let FieldIcon = icon ? icon : null;
     return (
@@ -61,27 +64,54 @@ export default class ModalField extends Component {
       >
         <Item
           onPress={() => !disabled && setModalVisible(true)}
-          style={[styles.input1]}
+          style={[styles.input1, customStyle]}
         >
           {FieldIcon && (
             <FieldIcon
               style={[styles.iconSize, styles.icon]}
-              fill={isVisible ? globalColors.orange : globalColors.white}
-              stroke={isVisible ? globalColors.orange : globalColors.white}
+              fill={
+                isVisible
+                  ? customIconColor
+                    ? customIconColor
+                    : globalColors.orange
+                  : globalColors.white
+              }
+              // stroke={
+              //   isVisible
+              //     ? customIconColor
+              //       ? customIconColor
+              //       : globalColors.orange
+              //     : globalColors.white
+              // }
             />
           )}
           <View style={[styles.colView, !FieldIcon && { marginLeft: 20 }]}>
-            <Text style={[styles.inputLabel, GlobalStyles.whiteTextColor]}>
+            <Text
+              style={[
+                styles.inputLabel,
+                GlobalStyles.whiteTextColor,
+                customTextStyle,
+              ]}
+            >
               {translate(label)}
             </Text>
-            <Text style={[styles.inputText, { textAlign: "left" }]}>
+            <Text
+              style={[styles.inputText, { textAlign: "left" }, customTextStyle]}
+            >
               {stateName === "businesscategory" || stateName === "area"
                 ? valueText
                 : translate(valueText)}
             </Text>
           </View>
 
-          <Icon type="AntDesign" name="down" style={styles.downiconEnd} />
+          <Icon
+            type="AntDesign"
+            name="down"
+            style={[
+              styles.downiconEnd,
+              customIconColor && { color: customIconColor },
+            ]}
+          />
         </Item>
       </Animatable.View>
     );

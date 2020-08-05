@@ -238,11 +238,11 @@ class App_Install extends Component {
         attachment,
         appChoice
       );
-
-      this.props.navigation.navigate("AdDesign", {
-        source: "ad_swipe_up_destination",
-        source_action: "a_swipe_up_destination",
-      });
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
     } else {
       showMessage({
         message: translate("Please select at least one app"),
@@ -255,15 +255,12 @@ class App_Install extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
 
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={[styles.safeAreaContainer, { paddingHorizontal: 26 }]}
-      >
-        <AppInstallIcon
+      <View style={[styles.safeAreaContainer]}>
+        {/* <AppInstallIcon
           width={widthPercentageToDP(18)}
           height={heightPercentageToDP(10)}
           style={styles.icon}
-        />
+        /> */}
         <View style={styles.textcontainer}>
           <Text style={styles.titletext}>{translate("App Install")}</Text>
           <Text style={styles.subtext}>
@@ -286,7 +283,7 @@ class App_Install extends Component {
           appSelections={{ iosAppSelected, androidAppSelected }}
           setTheState={this.setTheState}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

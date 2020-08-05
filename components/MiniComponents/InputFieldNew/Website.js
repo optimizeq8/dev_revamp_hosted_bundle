@@ -80,6 +80,8 @@ export default class WebsiteComponent extends React.Component {
       iconFill,
       labelColor,
       inputColor = "#FFF",
+      customIconColor,
+      customTextStyle,
     } = this.props;
     return (
       <Animatable.View
@@ -126,6 +128,7 @@ export default class WebsiteComponent extends React.Component {
                   fontFamily: "montserrat-light-english",
                   color: inputColor,
                 },
+                customTextStyle,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
               ]}
               ref={"websiteField"}

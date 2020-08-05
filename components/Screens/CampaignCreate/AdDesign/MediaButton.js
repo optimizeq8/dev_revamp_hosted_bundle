@@ -79,9 +79,9 @@ export default class MediaButton extends Component {
               styles.inputMiddleButton,
               snapAdCard
                 ? {
-                    width: 60,
-                    height: 60,
-                    top: "20%",
+                    width: 40,
+                    height: 40,
+                    top: "27%",
                     // left: "85%"
                   }
                 : {},

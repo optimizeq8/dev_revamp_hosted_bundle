@@ -42,6 +42,7 @@ export default class Header extends Component {
       disabled = false,
       changeHeaderColor = false,
       iconColor = "#FFF",
+      titleContainerStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -81,7 +82,7 @@ export default class Header extends Component {
             backButton === "messenger" ? (
               <MSGBackIcon width={40} height={40} />
             ) : (
-              <CloseIcon width={23} height={23} stroke={iconColor} />
+              <CloseIcon width={20} height={20} stroke={iconColor} />
             )
           ) : (
             <BackIcon width={24} height={24} stroke={iconColor} />
@@ -131,7 +132,7 @@ export default class Header extends Component {
             ))}
           </View>
         ) : (
-          <View style={[styles.titleView]}>
+          <View style={[styles.titleView, titleContainerStyle]}>
             <Text
               numberOfLines={2}
               uppercase

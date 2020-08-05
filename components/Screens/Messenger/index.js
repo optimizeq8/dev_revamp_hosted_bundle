@@ -271,7 +271,7 @@ class Messenger extends Component {
           closeButton={true}
           title={"Support"}
           titleStyle={{
-            color: "#75647C",
+            color: globalColors.rum,
           }}
           segment={{
             source: "open_support",

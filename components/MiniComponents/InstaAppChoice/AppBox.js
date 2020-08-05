@@ -7,7 +7,7 @@ import Toggle from "../Toggle";
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
@@ -79,7 +79,7 @@ export default class AppBox extends Component {
           style={[globalStyles.column, appConfirmStyles.appStoreButtons]}
         >
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
-            <AppStoreIcon />
+            <AppStoreIcon fill={globalColors.rum} />
           </Animated.View>
           <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
             {translate(`apple\napp store`)}
@@ -94,9 +94,9 @@ export default class AppBox extends Component {
             switchOn={
               appSelections.iosAppSelected && attachment.ios_app_id !== ""
             }
-            backgroundColorOff="rgba(255,255,255,0.1)"
-            backgroundColorOn="rgba(255,255,255,0.1)"
-            circleColorOff="#FFf"
+            backgroundColorOff="#0001"
+            backgroundColorOn="#0001"
+            circleColorOff={globalColors.rum}
             circleColorOn="#66D072"
             onPress={this.handleIOSAppSelection}
             duration={500}
@@ -127,9 +127,9 @@ export default class AppBox extends Component {
               appSelections.androidAppSelected &&
               attachment.android_app_url !== ""
             }
-            backgroundColorOff="rgba(255,255,255,0.1)"
-            backgroundColorOn="rgba(255,255,255,0.1)"
-            circleColorOff="#FFf"
+            backgroundColorOff="#0001"
+            backgroundColorOn="#0001"
+            circleColorOff={globalColors.rum}
             circleColorOn="#66D072"
             duration={500}
             onPress={this.handleAndroidAppSelection}

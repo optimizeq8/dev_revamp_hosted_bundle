@@ -162,21 +162,33 @@ export const _pickImage = async (
                   }.`,
                 });
               }
-              let size =
-                media_option === "single"
-                  ? { width: 500, height: 500 }
-                  : { width: 600, height: 600 };
-              manipResult = await ImageManipulator.manipulateAsync(
-                manipResult.uri,
-                [
+              if (manipResult.height > 1936 || manipResult.width > 1936) {
+                let size =
+                  media_option === "single"
+                    ? manipResult.height > manipResult.width
+                      ? {
+                          width:
+                            (manipResult.width / manipResult.height) * 1930,
+                          height: 1936,
+                        }
+                      : {
+                          width: 1936,
+                          height:
+                            (manipResult.height / manipResult.width) * 1930,
+                        }
+                    : { width: 600, height: 600 };
+                manipResult = await ImageManipulator.manipulateAsync(
+                  manipResult.uri,
+                  [
+                    {
+                      resize: size,
+                    },
+                  ],
                   {
-                    resize: size,
-                  },
-                ],
-                {
-                  compress: 1,
-                }
-              );
+                    compress: 1,
+                  }
+                );
+              }
               let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
                 size: true,
               });
@@ -295,6 +307,7 @@ export const _pickImage = async (
                 media: result.uri,
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
+                uneditedImageUri,
               });
             }
           })

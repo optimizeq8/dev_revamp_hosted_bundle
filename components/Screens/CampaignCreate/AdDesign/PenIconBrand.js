@@ -7,7 +7,7 @@ import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
-  state = { input: false, brand_nameError: "" };
+  state = { input: false, brand_nameError: "", headlineError: "" };
   render() {
     let {
       brand_name,
@@ -19,27 +19,26 @@ export default class PenIconBrand extends Component {
       changeHeadline,
       storyAdSelected,
       disabled,
+      headlineError,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <Item
-        style={[
-          field === "Business Name" ? styles.inputBrand : styles.inputHeadline,
-        ]}
-      >
+      <Item style={[styles.inputBrand]}>
         <PenIcon
           fill={
             this.state.input
               ? "#FF9D00"
               : (field === "Business Name" && brand_nameError) ||
-                this.state.brand_nameError
+                this.state.brand_nameError ||
+                (field === "Promotional Message" && headlineError) ||
+                this.state.headlineError
               ? "red"
               : "#fff"
           }
         />
         <View
           style={[
-            { flexDirection: "column" },
+            { flexDirection: "column", width: "90%" },
             storyAdSelected || disabled ? { opacity: 0.5 } : { opacity: 1 },
           ]}
         >
@@ -48,7 +47,7 @@ export default class PenIconBrand extends Component {
           </Text>
           <Input
             disabled={storyAdSelected || disabled}
-            style={styles.inputText}
+            style={[styles.inputText, { width: "100%" }]}
             maxLength={field === "Business Name" ? 25 : 34}
             placeholder={
               field === "Business Name"
@@ -100,6 +99,10 @@ export default class PenIconBrand extends Component {
               this.setState(
                 {
                   brand_nameError: validateWrapper(
+                    "mandatory",
+                    field === "Business Name" ? brand_name : headline
+                  ),
+                  headlineError: validateWrapper(
                     "mandatory",
                     field === "Business Name" ? brand_name : headline
                   ),

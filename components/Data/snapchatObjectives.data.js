@@ -10,7 +10,7 @@ export default {
       color: "#EF6C57",
     },
     {
-      label: "Traffic",
+      label: "Website Traffic",
       value: "TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
@@ -61,8 +61,8 @@ export default {
       color: "#EF6C57",
     },
     {
-      label: "Traffic",
-      value: "TRAFFIC",
+      label: "Website Traffic",
+      value: "WEBSITE_TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",

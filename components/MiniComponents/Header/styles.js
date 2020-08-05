@@ -1,7 +1,7 @@
 import { StyleSheet, I18nManager } from "react-native";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
   container: {
@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     alignItems: "center",
     width: wp("100%"),
-    height: 70
+    height: 70,
   },
   left: {
     width: "10%",
-    height: "150%",
+    height: 40,
     zIndex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   title: {
     flex: 1,
@@ -31,17 +31,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",
-    width: wp("80%")
+    width: wp("80%"),
   },
   right: {
     alignItems: "center",
-    width: wp("10%")
+    width: wp("10%"),
   },
   edit: {
     fontSize: 12,
     color: "#fff",
     fontFamily: "montserrat-regular",
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   titleText: {
     fontSize: 16,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   titleView: {
     display: "flex",
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: wp("80%"),
-    height: 50
+    height: 50,
   },
   googleIcon: {
-    alignSelf: "center"
+    alignSelf: "center",
     // width: 30
     // marginTop: 20
-  }
+  },
 });
 export default styles;

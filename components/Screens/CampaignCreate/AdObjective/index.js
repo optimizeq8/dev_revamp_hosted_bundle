@@ -82,6 +82,7 @@ class AdObjective extends Component {
       end_timeError: "",
       incomplete: false,
       duration: 7,
+      savedObjective: "",
     };
   }
   componentWillUnmount() {
@@ -198,6 +199,9 @@ class AdObjective extends Component {
         duration: this.props.data.duration
           ? this.props.data.duration
           : this.state.duration,
+        savedObjective: this.props.data.hasOwnProperty("savedObjective")
+          ? this.props.data.savedObjective
+          : this.state.campaignInfo.objective,
       });
     } else {
       this.setState({
@@ -422,10 +426,19 @@ class AdObjective extends Component {
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
       });
+      let objective = this.state.campaignInfo.objective;
+      if (objective !== "APP_INSTALLS") {
+        objective = this.state.campaignInfo.objective.replace(
+          /WEBSITE_|APP_/g,
+          ""
+        );
+      }
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
+        objective,
         duration: this.state.duration,
+        savedObjective: this.state.savedObjective,
       };
       this.getMinimumCash();
       this.props.ad_objective(
@@ -435,7 +448,8 @@ class AdObjective extends Component {
             this.props.campaign_id !== "" ? this.props.campaign_id : 0,
         },
         this.props.navigation,
-        segmentInfo
+        segmentInfo,
+        this.state.campaignInfo.objective
       );
     } else {
       this.setState({ incomplete: true });
@@ -679,7 +693,7 @@ class AdObjective extends Component {
                     </Text>
                   </View> */}
                   <Duration
-                    label={"Campaign Duration"}
+                    label={"Start Date"}
                     screenProps={this.props.screenProps}
                     loading={this.props.loading}
                     dismissKeyboard={Keyboard.dismiss}
@@ -824,12 +838,14 @@ class AdObjective extends Component {
                 }}
                 titleStyle={{ color: "#000" }}
                 iconColor="#000"
+                containerStyle={styles.customHeaderContainer}
+                titleContainerStyle={{
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
               />
               <View style={styles.popupOverlay}>
-                <Content
-                  contentContainerStyle={styles.contentContainer}
-                  // style={{ top: 20 }}
-                >
+                <Content contentContainerStyle={styles.contentContainer}>
                   {list}
                 </Content>
               </View>
@@ -855,8 +871,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_objective: (info, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_objective(info, navigation, segmentInfo)),
+  ad_objective: (info, navigation, segmentInfo, objective) =>
+    dispatch(
+      actionCreators.ad_objective(info, navigation, segmentInfo, objective)
+    ),
   save_campaign_info: (info) =>
     dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: (values) => dispatch(actionCreators.getMinimumCash(values)),

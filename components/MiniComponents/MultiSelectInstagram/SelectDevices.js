@@ -151,7 +151,7 @@ class SelectDevices extends Component {
                   }
                   selectedItems={this.props.selectedItems}
                 />
-                {isNull(this.state.deviceBrands) && (
+                {isNull(this.props.deviceBrands) && (
                   <ActivityIndicator color="#FFFF" size="large" />
                 )}
               </ScrollView>

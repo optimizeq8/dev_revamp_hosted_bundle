@@ -77,13 +77,13 @@ class SnapCard extends Component {
         </View>
         <TouchableOpacity
           style={{
-            width: 25,
-            height: 25,
+            width: 24,
+            height: 24,
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 50,
             backgroundColor: globalColors.orange,
-            bottom: "15%",
+            bottom: "20%",
           }}
           onLongPress={() => {
             snapCardInfo.item.media !== "//" &&

@@ -19,6 +19,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Linking,
+  UIManager,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
@@ -163,6 +164,11 @@ class App extends React.Component {
     );
     adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
     Adjust.create(adjustConfig);
+    if (Platform.OS === "android") {
+      if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
+      }
+    }
   }
 
   _loadAsync = async () => {

@@ -58,6 +58,11 @@ class SwipeUpDestination extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    if (this.props.toggle) {
+      this.props.navigation.setParams({
+        ...this.props.swipeUpProps,
+      });
+    }
     // Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
     //   category: "Campaign Creation",
     //   channel: "snapchat",
@@ -206,6 +211,7 @@ class SwipeUpDestination extends Component {
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
         break;
@@ -221,6 +227,7 @@ class SwipeUpDestination extends Component {
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
         break;
@@ -236,6 +243,7 @@ class SwipeUpDestination extends Component {
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
         break;
@@ -251,6 +259,7 @@ class SwipeUpDestination extends Component {
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
         break;
@@ -266,6 +275,7 @@ class SwipeUpDestination extends Component {
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
             screenProps={this.props.screenProps}
+            toggle={this.props.toggle}
           />
         );
         break;
@@ -274,22 +284,17 @@ class SwipeUpDestination extends Component {
 
     return (
       <View style={styles.safeAreaViewContainer}>
-        <SafeAreaView
-          style={{ backgroundColor: "#fff" }}
-          forceInset={{ bottom: "never", top: "always" }}
-        />
         <Container style={styles.container}>
           <Sidemenu
-            style={{ backgroundColor: "red" }}
             onChange={this.handleSideMenu}
             menuPosition={I18nManager.isRTL ? "left" : "right"}
             disableGestures={true}
             isOpen={this.state.sidemenustate}
             menu={this.state.sidemenustate && menu}
-            openMenuOffset={wp(85)}
+            openMenuOffset={wp(110)}
             screenProps={this.props.screenProps}
           >
-            {!this.props.rejCampaign ? (
+            {/* {!this.props.rejCampaign ? (
               <TopStepsHeader
                 screenProps={this.props.screenProps}
                 closeButton={false}
@@ -315,20 +320,8 @@ class SwipeUpDestination extends Component {
                   source_action: "a_go_back",
                 }}
               />
-            )}
+            )} */}
             <Content contentContainerStyle={styles.contentContainer}>
-              {!isNull(this.state.media) &&
-                !isUndefined(this.state.media) &&
-                this.state.media.length > 0 && (
-                  <View style={styles.placeholder1}>
-                    <RNImageOrCacheImage
-                      style={styles.media}
-                      media={this.state.media}
-                      resizeMode="cover"
-                      blurRadius={20}
-                    />
-                  </View>
-                )}
               <View style={styles.content}>{attachmentOptionsCard}</View>
             </Content>
           </Sidemenu>

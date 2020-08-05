@@ -24,7 +24,7 @@ import list from "../../Data/callactions.data";
 //Styles
 import styles from "./styles";
 import appConfirmStyles from "../AppConfirm/styles";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
@@ -405,6 +405,9 @@ class AppChoice extends Component {
           translate={this.props.screenProps.translate}
           icon={WindowIcon}
           isVisible={this.state.inputCallToAction}
+          customStyle={styles.customModalField}
+          customIconColor={globalColors.rum}
+          customTextStyle={{ color: globalColors.rum }}
         />
 
         {this.props.deepLink && (
@@ -419,6 +422,9 @@ class AppChoice extends Component {
               placeholder={"Enter Deep Link URL"}
               deepLink={true}
               getValidInfo={this.getValidInfo}
+              customStyle={styles.customModalField}
+              customIconColor={globalColors.rum}
+              customTextStyle={{ color: globalColors.rum }}
             />
             <Text style={styles.warningText}>
               {translate(
@@ -452,6 +458,7 @@ class AppChoice extends Component {
           screenProps={this.props.screenProps}
           checkmark={true}
           function={() => this.validate()}
+          purpleViolet
         />
       </InputScrollView>
     );
