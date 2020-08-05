@@ -563,6 +563,7 @@ class AdDesign extends Component {
                     campaignInfo={this.state.campaignInfo}
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
+                    setTheState={this.setTheState}
                   />
                 </View>
                 <View style={styles.lowerBtn}>
