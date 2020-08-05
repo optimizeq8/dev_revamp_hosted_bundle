@@ -1,0 +1,86 @@
+import { StyleSheet } from "react-native";
+import { globalColors } from "../../../GlobalStyles";
+
+export default StyleSheet.create({
+  title: {
+    fontFamily: "montserrat-bold",
+    fontSize: 15,
+    color: globalColors.gray,
+    textTransform: "uppercase",
+  },
+  locationContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 10,
+  },
+  addLocationStyle: {
+    backgroundColor: globalColors.purpleTran,
+    height: 60,
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "rgba(147,4,255,1)",
+    flexDirection: "row",
+    marginVertical: 20,
+  },
+  buttonText: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple,
+    textTransform: "uppercase",
+    fontSize: 10,
+  },
+  iconStyle: {
+    color: globalColors.purple,
+    fontSize: 20,
+  },
+  locationRow: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    // justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  mapButtonStyle: {
+    backgroundColor: globalColors.purpleTran,
+    height: 30,
+    width: 70,
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 50,
+    borderColor: globalColors.purple,
+    borderWidth: 0.5,
+  },
+  deleteLocationStyle: {
+    backgroundColor: globalColors.purpleTran,
+    height: 30,
+    width: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 50,
+    borderColor: globalColors.purple,
+    borderWidth: 1,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "40%",
+    flex: 1,
+  },
+  locationName: {
+    fontFamily: "montserrat-bold",
+    textTransform: "capitalize",
+    flex: 2,
+    paddingLeft: 10,
+  },
+  locationSearchContainer: {
+    backgroundColor: "#fff",
+    height: "100%",
+    borderTopEndRadius: 40,
+    borderTopStartRadius: 40,
+  },
+});

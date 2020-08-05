@@ -21,6 +21,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {
   state = { deviceBrands: null };
@@ -183,6 +184,9 @@ class SelectDevices extends Component {
                     this.props.onSelectedItemsChange(items, "devices")
                   }
                   selectedItems={this.props.selectedItems}
+                  colors={{
+                    chipColor: globalColors.rum,
+                  }}
                 />
                 {isNull(this.state.deviceBrands) && (
                   <ActivityIndicator color="#FFFF" size="large" />

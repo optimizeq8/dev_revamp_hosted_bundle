@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     flex: 1,
-    // ...StyleSheet.absoluteFillObject,
     backgroundColor: "#0000",
   },
   mainContainer: {
@@ -43,10 +42,10 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    flex: 1,
+    height: "85%",
   },
   subHeadings: {
-    color: "#fff",
+    color: globalColors.gray,
     fontFamily: "montserrat-bold",
     fontSize: 18,
     paddingVertical: 10,
@@ -121,6 +120,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 8,
+    backgroundColor: "#fff",
+    borderRadius: 50,
+    padding: 10,
   },
   icon: {
     alignSelf: "center",
@@ -132,25 +134,22 @@ const styles = StyleSheet.create({
   },
   bottom: {
     display: "flex",
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    position: "absolute",
-    bottom: 0,
     marginLeft: 25,
     width: "100%",
-    // marginHorizontal: 30
+    paddingVertical: 10,
     paddingBottom: 15,
   },
   chartText: {
-    color: "#fff",
+    color: globalColors.rum,
     textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17,
   },
   chartTextNum: {
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 16,
     textAlign: "left",
@@ -176,14 +175,15 @@ const styles = StyleSheet.create({
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
     fontFamily: "montserrat-bold",
-    color: "#fff",
+    color: globalColors.gray,
     textAlign: "left",
     textTransform: "uppercase",
   },
   menudetails: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    color: "#fff",
+    color: globalColors.gray,
+
     fontFamily: "montserrat-regular",
     fontSize: 11,
     textAlign: "left",
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+  menuComponentStyle: { top: 0 },
 });
 
 export default styles;

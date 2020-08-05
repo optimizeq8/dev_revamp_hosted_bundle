@@ -20,6 +20,7 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectInterests extends Component {
   state = { interests: null, open: false };
@@ -109,6 +110,9 @@ class SelectInterests extends Component {
                 single={false}
                 screenName={"Select Interests"}
                 closeCategoryModal={() => this.setState({ open: false })}
+                colors={{
+                  chipColor: globalColors.rum,
+                }}
               />
               {isNull(this.state.interests) && (
                 <ActivityIndicator color="#FFFF" size="large" />
