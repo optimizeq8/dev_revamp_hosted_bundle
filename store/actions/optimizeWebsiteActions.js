@@ -532,3 +532,25 @@ export const deleteWebProduct = (product_id) => {
       });
   };
 };
+
+export const saveSingleWebProduct = (product_id, info) => {
+  return (dispatch) => {
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .patch(
+        `https://optimizeapp.com/ecommerce/api/products/${product_id}`,
+        info
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        console.log("data save product", data);
+        NavigationService.navigate("MyWebsite", {
+          source: "open_my_website",
+          source_action: "a_submit_my_website_products",
+        });
+      })
+      .catch((err) => {
+        console.log("saveSingleWebProduct", err.response || err.message);
+      });
+  };
+};

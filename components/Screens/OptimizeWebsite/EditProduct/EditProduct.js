@@ -79,7 +79,7 @@ class MyWebsite extends Component {
       product: {
         prices: [],
       },
-      prices: [{ currency: "KWD", price: null }],
+      prices: [{ currency: "KWD", price: null, id: "" }],
     };
   }
   componentWillUnmount() {
@@ -179,6 +179,17 @@ class MyWebsite extends Component {
   };
   saveProduct = () => {
     console.log("product to save", this.state.product);
+    let info = {
+      name: this.state.product.name,
+      prices: this.state.product.prices,
+      business_id: this.state.product.business_id,
+      description_en: this.state.product.description_en,
+      description_ar: this.state.product.description_ar,
+      instagram_pid: this.state.product.instagram_pid,
+      media: this.state.product.media.map((md) => md.media_path),
+    };
+    console.log("info", info);
+    this.props.saveSingleWebProduct(this.state.product.id, info);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -465,10 +476,11 @@ class MyWebsite extends Component {
                     newArray.push({
                       currency: this.state.activeCountryCurrency,
                       price: text,
+                      id: "",
                     });
                   } else {
                     newArray[elementsIndex] = {
-                      currency: this.state.activeCountryCurrency,
+                      ...newArray[elementsIndex],
                       price: text,
                     };
                   }
@@ -512,5 +524,7 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   deleteWebProduct: (product_id) =>
     dispatch(actionCreators.deleteWebProduct(product_id)),
+  saveSingleWebProduct: (product_id, info) =>
+    dispatch(actionCreators.saveSingleWebProduct(product_id, info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
