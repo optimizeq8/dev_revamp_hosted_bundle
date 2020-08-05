@@ -141,6 +141,16 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         getWebProductsLoading: false,
       };
     }
+    case actionTypes.DELETE_WEB_PRODUCT: {
+      const product_id = action.payload;
+      let webproducts = state.webproducts;
+      webproducts = webproducts.filter((prod) => prod.id !== product_id);
+
+      return {
+        ...state,
+        webproducts,
+      };
+    }
 
     default:
       return state;

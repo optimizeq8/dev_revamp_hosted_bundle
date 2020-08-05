@@ -173,6 +173,7 @@ export {
   getWebProductsToHide,
   getWebProductsList,
   saveWebProductsToAdd,
+  deleteWebProduct,
 } from "./optimizeWebsiteActions";
 
 export {

@@ -103,7 +103,7 @@ class MyWebsite extends Component {
       this.props.screenProps.prevAppState
     );
     const product = this.props.navigation.getParam("product", {});
-
+    console.log("product", product);
     this.setState({ product });
     analytics.track(`open_my_website`, {
       source,
@@ -116,7 +116,7 @@ class MyWebsite extends Component {
     this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    console.log("delete");
+    this.props.deleteWebProduct(this.state.product.id);
   };
   goBack = () => {
     this.props.navigation.goBack();
@@ -473,5 +473,7 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal
       )
     ),
+  deleteWebProduct: (product_id) =>
+    dispatch(actionCreators.deleteWebProduct(product_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

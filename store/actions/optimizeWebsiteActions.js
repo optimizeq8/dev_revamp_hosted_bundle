@@ -89,7 +89,7 @@ export const getInstagramPostInitialWebsite = (insta_handle) => {
 
         if (mediaArray && mediaArray.length > 0) {
           var imagesList = mediaArray.map((media) => {
-            // console.log('media', media);
+            // console.log("media", JSON.stringify(media, null, 2));
             // if (!media.node.is_video)
             return {
               imageUrl: media.node.display_url,
@@ -413,14 +413,12 @@ export const getWebProductsToHide = (businessid) => {
  * @param {*} no_of_products_to_show number of products to show by default 60
  */
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
-  return (dispatch, getState) => {
-    const { insta_handle } = getState().account.mainBusiness;
-
+  return (dispatch) => {
     const info = {
       business_id: businessid,
       products: webproductsToAdd,
     };
-    console.log("info", JSON.stringify(info, null, 2));
+
     delete axios.defaults.headers.common["Authorization"];
 
     axios
@@ -490,6 +488,47 @@ export const getWebProductsList = (businessid) => {
           type: actionTypes.SET_WEB_PRODUCTS_LIST,
           payload: [],
         });
+      });
+  };
+};
+
+export const deleteWebProduct = (product_id) => {
+  return (dispatch) => {
+    delete axios.defaults.headers.common["Authorization"];
+
+    axios
+      .delete(`https://optimizeapp.com/ecommerce/api/products/${product_id}`)
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        // analytics.track(`a_submit_my_website_products`, {
+        //   source: "open_my_website",
+        //   source_action: "a_submit_my_website_products",
+        //   new: false,
+        //   action_status: data.success ? "success" : "failure",
+        //   error_description: !data.success && data.message,
+        //   webproductsToAdd,
+        //   insta_handle,
+        // });
+        // showMessage({
+        //   type: data.success ? "success" : "warning",
+        //   message: data.message,
+        // });
+        if (data === 204) {
+          NavigationService.navigate("MyWebsite", {
+            source: "open_my_website",
+            source_action: "a_submit_my_website_products",
+          });
+          return dispatch({
+            type: actionTypes.DELETE_WEB_PRODUCT,
+            payload: product_id,
+          });
+        }
+      })
+
+      .catch((error) => {
+        console.log("deleteWebProduct error", error.response || error.message);
       });
   };
 };
