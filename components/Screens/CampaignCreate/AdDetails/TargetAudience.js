@@ -81,7 +81,7 @@ export class TargetAudience extends Component {
             ? heightPercentageToDP(60)
             : heightPercentageToDP(100) > 800
             ? "60%"
-            : "50%",
+            : "45%",
         }}
       >
         <MaskedView
@@ -102,7 +102,7 @@ export class TargetAudience extends Component {
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? heightPercentageToDP(60) : "50%" },
+              { height: editCampaign ? heightPercentageToDP(60) : "90%" },
             ]}
           >
             <TouchableOpacity

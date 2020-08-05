@@ -1269,6 +1269,7 @@ class AdDetails extends Component {
             }
             onSelectedRegionChange={this.onSelectedRegionChange}
             onSelectedCountryChange={this.onSelectedCountryChange}
+            _handleSideMenuState={this._handleSideMenuState}
           />
         );
         break;

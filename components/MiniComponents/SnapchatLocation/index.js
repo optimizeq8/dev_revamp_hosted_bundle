@@ -126,6 +126,7 @@ export default class SnapchatLocation extends Component {
       markers: this.state.markers,
       locationsInfo: this.state.locationsInfo,
     });
+    this.props._handleSideMenuState(false);
   };
   render() {
     let { ...props } = this.props;
