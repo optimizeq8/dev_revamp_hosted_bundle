@@ -199,16 +199,6 @@ class InstagramFeedAdTargetting extends Component {
 
       let recBudget = duration * 75;
 
-      let country_code = country_regions.find(
-        (country) => country.name === this.props.mainBusiness.country
-      ).key;
-      let allCountryRegions = country_regions
-        .find((country) => country.name === this.props.mainBusiness.country)
-        .regions.map((reg) => reg.key);
-      await this.onSelectedCountryRegionChange([
-        country_code,
-        ...allCountryRegions,
-      ]);
       this.setState(
         {
           campaignInfo: {
@@ -247,7 +237,6 @@ class InstagramFeedAdTargetting extends Component {
                 : this.props.data.campaignInfo.lifetime_budget_micro
             ),
             recBudget,
-
             budgetOption: this.props.data.campaignDateChanged
               ? 1
               : this.props.data.budgetOption,
@@ -265,6 +254,17 @@ class InstagramFeedAdTargetting extends Component {
             this._calcReach();
           }
         );
+      } else {
+        let country_code = country_regions.find(
+          (country) => country.name === this.props.mainBusiness.country
+        ).key;
+        let allCountryRegions = country_regions
+          .find((country) => country.name === this.props.mainBusiness.country)
+          .regions.map((reg) => reg.key);
+        await this.onSelectedCountryRegionChange([
+          country_code,
+          ...allCountryRegions,
+        ]);
       }
     }
 
@@ -325,10 +325,11 @@ class InstagramFeedAdTargetting extends Component {
   onSelectedInterestsNamesChange = (selectedItems, custom = false) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let interestArray =
-      selectedItems.length > 0 &&
-      selectedItems.map((item) => {
-        return { name: item.name, id: item.id };
-      });
+      selectedItems.length > 0
+        ? selectedItems.map((item) => {
+            return { name: item.name, id: item.id };
+          })
+        : [];
     if (!custom) {
       replace.targeting.flexible_spec[0].interests = interestArray;
       this.setState({ campaignInfo: replace });
@@ -341,18 +342,21 @@ class InstagramFeedAdTargetting extends Component {
       interestNames: selectedItems,
     });
     let names = [];
-    names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
+    // names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
     analytics.track(`a_ad_interests`, {
       source: "ad_targeting",
       source_action: "a_ad_interests",
       campaign_interests_names: names && names.length > 0 && names.join(", "),
     });
-    if (names && names.length > 0)
-      !this.editCampaign &&
-        this.props.save_campaign_info_instagram({
-          campaignInfo: replace,
-          customInterests: interestArray,
-        });
+    // if (names && names.length > 0)
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: replace,
+        customInterests: custom ? interestArray : [],
+        customInterestObjects: custom
+          ? selectedItems
+          : this.props.data.customInterestObjects,
+      });
   };
 
   // onSelectedLangsChange = selectedItem => {
@@ -651,9 +655,16 @@ class InstagramFeedAdTargetting extends Component {
     // ) {
 
     let r = cloneDeep(this.state.campaignInfo.targeting);
-    r.flexible_spec[0].interests = r.flexible_spec[0].interests.concat(
-      this.state.customInterests
-    );
+    if (r.flexible_spec[0].interests.length > 0)
+      r.flexible_spec[0].interests = r.flexible_spec[0].interests.concat(
+        this.state.customInterests
+      );
+    else if (
+      this.state.customInterests &&
+      this.state.customInterests.length > 0
+    ) {
+      r.flexible_spec[0].interests = this.state.customInterests;
+    }
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
@@ -782,9 +793,16 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
-      rep.targeting.flexible_spec[0].interests = rep.targeting.flexible_spec[0].interests.concat(
-        this.state.customInterests
-      );
+      if (rep.targeting.flexible_spec[0].interests.length > 0)
+        rep.targeting.flexible_spec[0].interests = rep.targeting.flexible_spec[0].interests.concat(
+          this.state.customInterests
+        );
+      else if (
+        this.state.customInterests &&
+        this.state.customInterests.length > 0
+      ) {
+        rep.targeting.flexible_spec[0].interests = this.state.customInterests;
+      }
       if (rep.targeting.genders[0] === "") {
         delete rep.targeting.genders;
       }
@@ -880,7 +898,7 @@ class InstagramFeedAdTargetting extends Component {
   };
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     let countryArrayFromSelectedArray = countries.filter((country) =>
       item.includes(country.value)
     );
@@ -958,7 +976,6 @@ class InstagramFeedAdTargetting extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
-
     let menu;
 
     switch (this.state.sidemenu) {
@@ -1126,6 +1143,14 @@ class InstagramFeedAdTargetting extends Component {
         this.state.campaignInfo.targeting.flexible_spec[0].interests.map(
           (interest) => interest.name
         ),
+        this.state.customInterests &&
+          this.state.customInterests.map((interest) => interest.name),
+      ];
+    } else if (
+      this.state.customInterests &&
+      this.state.customInterests.length > 0
+    ) {
+      interests_names = [
         this.state.customInterests &&
           this.state.customInterests.map((interest) => interest.name),
       ];
