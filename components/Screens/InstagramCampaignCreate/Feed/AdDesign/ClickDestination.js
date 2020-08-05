@@ -6,6 +6,7 @@ import { globalColors } from "../../../../../GlobalStyles";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import InstagramSwipeUpDestination from "../../SwipeUpDestination/index";
 import { Icon } from "native-base";
+import { Platform } from "react-native";
 export default class ClickDestination extends Component {
   state = {
     swipeUpMinHeight: 0,
@@ -107,14 +108,21 @@ export default class ClickDestination extends Component {
                   alignSelf: "center",
                   alignItems: "center",
                 }}
-                onPress={() => this.toggleClickDestination(false)}
+                onPress={() =>
+                  Platform.OS !== "android" &&
+                  this.toggleClickDestination(false)
+                }
               >
                 <Icon
                   type="AntDesign"
                   name="down"
                   style={[{ color: globalColors.purple, fontSize: 18 }]}
+                  onPress={() => this.toggleClickDestination(false)}
                 />
-                <Text style={[styles.swipeUpTitle]}>
+                <Text
+                  onPress={() => this.toggleClickDestination(false)}
+                  style={[styles.swipeUpTitle]}
+                >
                   {translate("swipe up settings")}
                 </Text>
               </TouchableOpacity>
