@@ -157,7 +157,7 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -285,11 +285,11 @@ class AdObjective extends Component {
   };
   handleEndDatePicked = (date) => {
     let end_time = new Date(date);
-    end_time.setDate(end_time.getDate() + this.state.duration);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: end_time.toISOString(),
+        end_time: end_time.toISOString().split("T")[0],
       },
     });
     analytics.track(`a_ad_end_date`, {
@@ -545,11 +545,11 @@ class AdObjective extends Component {
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration);
+    end_time.setDate(end_time.getDate() + duration - 1);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: end_time.toISOString(),
+        end_time: end_time.toISOString().split("T")[0],
       },
       duration,
     });

@@ -103,7 +103,7 @@ class GoogleAdInfo extends Component {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -164,7 +164,7 @@ class GoogleAdInfo extends Component {
 
   handleEndDatePicked = (date) => {
     let end_time = new Date(date);
-    end_time.setDate(end_time.getDate() + this.state.duration);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     analytics.track(`a_ad_end_date`, {
       campaign_end_date: date,
       source: "ad_objective",
@@ -445,7 +445,7 @@ class GoogleAdInfo extends Component {
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.start_time.split("T")[0]);
-    end_time.setDate(end_time.getDate() + duration);
+    end_time.setDate(end_time.getDate() + duration - 1);
     this.setState({
       end_time: end_time.toISOString(),
       duration,
