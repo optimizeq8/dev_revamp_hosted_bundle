@@ -13,7 +13,6 @@ import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "@react-native-community/blur";
-
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
@@ -35,7 +34,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 
 //Functions
-import segmentEventTrack from "../../../../segmentEventTrack";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -86,7 +84,6 @@ class AdObjective extends Component {
     //   }
     // });
     this.setCampaignInfo();
-    this.props.set_adType_instagram("InstagramStoryAd");
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -105,8 +102,7 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration);
-
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -243,7 +239,6 @@ class AdObjective extends Component {
     });
   };
 
-  _;
   _handleSubmission = async () => {
     let { nameError, objectiveError } = this.state;
     let dateErrors = this.dateField.getErrors();
@@ -319,6 +314,7 @@ class AdObjective extends Component {
       let info = {
         campaign_type: "InstagramStoryAd",
         ...this.state.campaignInfo,
+        duration: this.state.duration,
       };
       this.getMinimumCash();
       this.props.ad_objective_instagram(
@@ -388,6 +384,32 @@ class AdObjective extends Component {
       campaign_channel: "instagram",
       campaign_ad_type: this.props.adType,
     });
+  };
+  handleDuration = (subtract = false) => {
+    let duration = subtract
+      ? this.state.duration - 1 > 1
+        ? this.state.duration - 1
+        : 1
+      : this.state.duration + 1;
+
+    let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + duration - 1);
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: end_time.toISOString().split("T")[0],
+      },
+      duration,
+    });
+    this.props.save_campaign_info_instagram({
+      end_time: end_time.toISOString().split("T")[0],
+      duration,
+      campaignDateChanged: true,
+    });
+    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+  };
+  stopTimer = () => {
+    clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
@@ -544,34 +566,29 @@ class AdObjective extends Component {
           onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <View style={styles.safeAreaView}>
-            <View style={styles.objectiveModal}>
-              <View style={styles.popupOverlay}>
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  actionButton={() => {
-                    this.setModalVisible(false);
-                  }}
-                  title={"Select an objective"}
-                  segment={{
-                    source: "ad_objective_modal",
-                    source_action: "a_go_back",
-                  }}
-                  titleStyle={{ color: "#000" }}
-                  iconColor="#000"
-                />
-                <Content
-                  padder
-                  indicatorStyle="white"
-                  contentContainerStyle={styles.contentContainer}
-                >
-                  {list}
-                </Content>
-                {/* <LowerButton
-   screenProps={this.props.screenProps}
- bottom={4} function={this.setModalVisible} /> */}
-              </View>
+          <View style={styles.objectiveModal}>
+            <View style={styles.popupOverlay}>
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                actionButton={() => {
+                  this.setModalVisible(false);
+                }}
+                title={"Select an objective"}
+                segment={{
+                  source: "ad_objective_modal",
+                  source_action: "a_go_back",
+                }}
+                titleStyle={{ color: "#000" }}
+                iconColor="#000"
+              />
+              <Content
+                padder
+                indicatorStyle="white"
+                contentContainerStyle={styles.contentContainer}
+              >
+                {list}
+              </Content>
             </View>
           </View>
         </Modal>

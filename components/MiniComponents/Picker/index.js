@@ -114,7 +114,7 @@ export default class Picker extends Component {
             )}
           </View>
         }
-        hideSearch={this.props.customSearch}
+        hideSearch={this.props.customSearch !== undefined}
         colors={colors}
         searchIconComponent={<SearchIcon stroke={globalColors.orange} />}
         modalWithSafeAreaView={true}
@@ -129,8 +129,15 @@ export default class Picker extends Component {
           </Text>
         }
         onCancel={() => {
-          this.props.onSelectedItemsChange([]);
-          this.props.onSelectedItemObjectsChange([]);
+          this.props.onSelectedItemsChange(
+            [],
+            "",
+            this.props.customSearch ? true : false
+          );
+          this.props.onSelectedItemObjectsChange(
+            [],
+            this.props.customSearch ? true : false
+          );
         }}
         selectChildren
         modalAnimationType="fade"
@@ -147,7 +154,11 @@ export default class Picker extends Component {
             this.props.customSearch ? true : false
           )
         }
-        selectedItems={this.props.selectedItems}
+        selectedItems={
+          this.props.data && this.props.data.length > 0
+            ? this.props.selectedItems
+            : []
+        }
         removeAllText={translate("Remove all")}
         itemFontFamily={{
           fontFamily: "montserrat-regular",

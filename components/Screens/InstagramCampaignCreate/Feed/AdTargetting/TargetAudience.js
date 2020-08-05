@@ -257,8 +257,7 @@ export class TargetAudience extends Component {
                 </View>
 
                 {startEditing &&
-                  (targeting.flexible_spec[0].interests &&
-                  targeting.flexible_spec[0].interests.length !== 0 ? (
+                  (interests_names && interests_names.length !== 0 ? (
                     <GreenCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PlusCircleIcon width={30} height={30} />
