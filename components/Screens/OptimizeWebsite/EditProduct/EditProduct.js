@@ -235,6 +235,7 @@ class MyWebsite extends Component {
               source={{
                 uri:
                   this.state.product.media &&
+                  this.state.product.media[0] &&
                   this.state.product.media[0].media_path,
               }}
             />

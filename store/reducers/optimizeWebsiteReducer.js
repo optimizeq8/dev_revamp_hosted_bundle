@@ -151,7 +151,13 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         webproducts,
       };
     }
-
+    case actionTypes.SET_WEB_PRODUCTS: {
+      let webproducts = state.webproducts;
+      return {
+        ...state,
+        webproducts: [action.payload, ...webproducts],
+      };
+    }
     default:
       return state;
   }

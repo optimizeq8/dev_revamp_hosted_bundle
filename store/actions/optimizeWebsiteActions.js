@@ -413,7 +413,7 @@ export const getWebProductsToHide = (businessid) => {
  * @param {*} no_of_products_to_show number of products to show by default 60
  */
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const info = {
       business_id: businessid,
       products: webproductsToAdd,
@@ -446,12 +446,16 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
         //   type: data.success ? "success" : "warning",
         //   message: data.message,
         // });
+
         NavigationService.navigate("MyWebsite", {
           source: "open_my_website",
           source_action: "a_submit_my_website_products",
         });
 
-        return data;
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS,
+          payload: data.data,
+        });
       })
 
       .catch((error) => {
