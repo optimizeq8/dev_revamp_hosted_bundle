@@ -733,6 +733,7 @@ class InstagramAdDesignExistingPost extends Component {
                 translate={translate}
                 maxClickHeight={this.state.maxClickHeight}
                 setTheState={this.setTheState}
+                existingPosts={true}
               />
             </View>
             <View

@@ -43,7 +43,9 @@ export default class ClickDestination extends Component {
     let sty = !this.state.expanded
       ? {}
       : {
-          height: this.props.maxClickHeight + this.state.compHeight,
+          height:
+            this.props.maxClickHeight +
+            (this.props.existingPosts ? this.state.compHeight : 0),
           // position: "absolute",
           // bottom: 200,
           zIndex: 10,
