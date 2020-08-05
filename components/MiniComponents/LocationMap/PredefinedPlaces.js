@@ -1,6 +1,7 @@
 export default [
   {
     description: "Kuwait",
+    address_components: [{ long_name: "Kuwait", short_name: "kw" }],
     geometry: {
       location: {
         lat: 29.31166,
@@ -22,6 +23,7 @@ export default [
   },
   {
     description: "Saudi Arabia",
+    address_components: [{ long_name: "Saudi Arabia", short_name: "sa" }],
     geometry: {
       location: {
         lat: 23.885942,
@@ -43,6 +45,7 @@ export default [
   {
     description: "Bahrain",
     place_id: "ChIJQSqV5z-ChIJEaJHak5SSD4RRhDa2",
+    address_components: [{ long_name: "Bahrain", short_name: "bh" }],
     geometry: {
       location: {
         lat: 26.0667,
@@ -63,6 +66,7 @@ export default [
   {
     description: "UAE",
     place_id: "ChIJvRKrsd9IXj4RpwoIwFYv0zM",
+    address_components: [{ long_name: "UAE", short_name: "ae" }],
     geometry: {
       location: {
         lat: 23.424076,
@@ -83,6 +87,7 @@ export default [
   {
     description: "Qatar",
     place_id: "ChIJf-jc_zTFRT4RMkArgc-I-hw",
+    address_components: [{ long_name: "Qatar", short_name: "qa" }],
     geometry: {
       location: {
         lat: 25.354826,
@@ -103,6 +108,7 @@ export default [
   {
     description: "Oman",
     place_id: "ChIJv5vVqWaf1j0RF6ixZXZMBjo",
+    address_components: [{ long_name: "Oman", short_name: "om" }],
     geometry: {
       location: {
         lat: 21.4735329,
