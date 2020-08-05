@@ -46,6 +46,7 @@ export default class SnapchatLocation extends Component {
   handleMapModal = (value, locationInfo, index) => {
     if (locationInfo) {
       locationInfo.index = index;
+      locationInfo.radius = this.state.markers[index].radius;
       this.setState({
         selectedLocation: locationInfo,
       });
@@ -81,6 +82,7 @@ export default class SnapchatLocation extends Component {
     let locationsInfo = this.state.locationsInfo;
     let loc = locationsInfo[index];
     loc.coordinates = location.coordinates;
+    loc.saved = true;
     let markers = this.state.markers;
     let marker = markers[index];
     marker.latitude = location.coordinates.latitude;

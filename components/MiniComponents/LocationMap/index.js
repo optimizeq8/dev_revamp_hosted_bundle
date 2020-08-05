@@ -173,7 +173,9 @@ export default class LocaionMap extends Component {
         this.setState(
           {
             initialRegion: initialRegion,
-            radius: 5000 * (latDelta > 0.1 ? latDelta : 0.1),
+            radius: selectedLocation.saved
+              ? selectedLocation.radius
+              : 5000 * (latDelta > 0.1 ? latDelta : 0.1),
           },
           () => {
             this.handleAddCir({ nativeEvent: { coordinate: coordinates } });
@@ -266,7 +268,11 @@ export default class LocaionMap extends Component {
           >
             <Icon
               onPress={() =>
-                this.props.handleMapModal(false, this.props.selectedLocation)
+                this.props.handleMapModal(
+                  false,
+                  this.props.selectedLocation,
+                  this.props.selectedLocation.index
+                )
               }
               name="close"
               type="FontAwesome"
