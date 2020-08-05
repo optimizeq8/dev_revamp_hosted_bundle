@@ -36,7 +36,7 @@ class MyWebsite extends Component {
       loaded: 0,
       isVisible: false,
       activeSlide: 0,
-      product: { media: [] },
+      product: { media: [], prices: [] },
     };
   }
   componentWillUnmount() {
@@ -167,7 +167,10 @@ class MyWebsite extends Component {
               <Text style={styles.contactUs}>Contact us for prices</Text>
             ) : (
               <Text style={styles.priceAmountText}>
-                KD <Text style={styles.priceAmountBigText}>125</Text>
+                {this.state.product.prices[0].currency}{" "}
+                <Text style={styles.priceAmountBigText}>
+                  {this.state.product.prices[0].price}
+                </Text>
               </Text>
             )}
           </View>

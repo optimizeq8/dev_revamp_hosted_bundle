@@ -33,6 +33,7 @@ import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
 import { _pickImage } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import { findIndex } from "lodash";
 
 const country = [
   {
@@ -78,6 +79,7 @@ class MyWebsite extends Component {
       product: {
         prices: [],
       },
+      prices: [{ currency: "KWD", price: null }],
     };
   }
   componentWillUnmount() {
@@ -165,20 +167,19 @@ class MyWebsite extends Component {
       showPriceModal: true,
     });
   };
-  onAddPrice = (item) => {
-    let priceArr = this.state.product.prices;
-    priceArr.push({
-      currency: item.currency,
-      price: this.state.price,
-    });
+
+  savePrice = () => {
     this.setState({
+      showPriceModal: false,
       product: {
         ...this.state.product,
-        prices: priceArr,
+        prices: this.state.prices,
       },
     });
   };
-  savePrice = () => {};
+  saveProduct = () => {
+    console.log("product to save", this.state.product);
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -309,7 +310,11 @@ class MyWebsite extends Component {
                   {translate("price")}
                 </Text>
                 <Text style={editProductStyles.subText}>
-                  {translate("Add Price")}
+                  {this.state.product.prices.length > 0
+                    ? this.state.product.prices
+                        .map((pr) => pr.currency + " " + pr.price)
+                        .join(", ")
+                    : translate("Add Price")}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -375,6 +380,7 @@ class MyWebsite extends Component {
             purpleViolet
             style={editProductStyles.saveBtn}
             uppercase
+            onPressAction={this.saveProduct}
             // textStyle={editProductStyles.previewText}
           />
         </View>
@@ -440,6 +446,37 @@ class MyWebsite extends Component {
                 placeholder={translate("Enter Price")}
                 placeholderTextColor={"#75647C"}
                 keyboardType={"numeric"}
+                value={
+                  this.state.product.prices.find(
+                    (pr) => pr.currency === this.state.activeCountryCurrency
+                  ) &&
+                  this.state.product.prices.find(
+                    (pr) => pr.currency === this.state.activeCountryCurrency
+                  ).price
+                }
+                onChangeText={(text) => {
+                  const elementsIndex = this.state.prices.findIndex(
+                    (element) =>
+                      element.currency === this.state.activeCountryCurrency
+                  );
+
+                  let newArray = [...this.state.prices];
+                  if (elementsIndex === -1) {
+                    newArray.push({
+                      currency: this.state.activeCountryCurrency,
+                      price: text,
+                    });
+                  } else {
+                    newArray[elementsIndex] = {
+                      currency: this.state.activeCountryCurrency,
+                      price: text,
+                    };
+                  }
+
+                  this.setState({
+                    prices: newArray,
+                  });
+                }}
               />
 
               <GradientButton
