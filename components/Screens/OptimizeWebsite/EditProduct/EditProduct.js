@@ -269,6 +269,7 @@ class MyWebsite extends Component {
             <TouchableOpacity
               style={editProductStyles.placeholderView}
               onPress={this.uploadPhoto}
+              disabled={this.props.saving}
             >
               <Image
                 style={editProductStyles.imagePlaceholder}
@@ -279,7 +280,11 @@ class MyWebsite extends Component {
                     this.state.product.media[1].url,
                 }}
               />
-              <TouchableOpacity onPress={this.uploadPhoto}>
+              <TouchableOpacity
+                onPress={this.uploadPhoto}
+                disabled={this.props.saving}
+                disabled={this.props.saving}
+              >
                 <CameraCircleOutlineIcon width={70} height={70} />
                 <Text style={editProductStyles.addMediaText}>
                   {translate("Add Media")}
@@ -290,6 +295,7 @@ class MyWebsite extends Component {
             <TouchableOpacity
               style={editProductStyles.placeholderView}
               onPress={this.uploadPhoto}
+              disabled={this.props.saving}
             >
               <Image
                 style={editProductStyles.imagePlaceholder}
@@ -300,7 +306,10 @@ class MyWebsite extends Component {
                     this.state.product.media[2].url,
                 }}
               />
-              <TouchableOpacity onPress={this.uploadPhoto}>
+              <TouchableOpacity
+                disabled={this.props.saving}
+                onPress={this.uploadPhoto}
+              >
                 <CameraCircleOutlineIcon width={70} height={70} />
                 <Text style={editProductStyles.addMediaText}>
                   {translate("Add Media")}
@@ -314,6 +323,7 @@ class MyWebsite extends Component {
                 this.productNameInput.focus();
               }}
               style={editProductStyles.feildView}
+              disabled={this.props.saving}
             >
               <View style={editProductStyles.plusIconView}>
                 <PlusIcon width={7} fill={globalColors.purple} />
@@ -326,6 +336,7 @@ class MyWebsite extends Component {
                 {translate("Add Name")}
               </Text> */}
                 <TextInput
+                  editable={!this.props.saving}
                   placeholder={translate("Add Name")}
                   style={editProductStyles.subText}
                   value={this.state.product.name}
@@ -344,6 +355,7 @@ class MyWebsite extends Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
+              disabled={this.props.saving}
               onPress={this.openPriceModal}
               style={editProductStyles.feildView}
             >
@@ -364,6 +376,7 @@ class MyWebsite extends Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
+              disabled={this.props.saving}
               onPress={() => {
                 this.productDescInput.focus();
               }}
@@ -378,6 +391,7 @@ class MyWebsite extends Component {
                 </Text>
 
                 <TextInput
+                  editable={!this.props.saving}
                   style={[editProductStyles.subText]}
                   multiline={true}
                   value={this.state.product.description_en}
@@ -418,6 +432,9 @@ class MyWebsite extends Component {
             uppercase
             textStyle={editProductStyles.previewText}
             onPressAction={this.goToPreview}
+            disabled={this.props.saving}
+            disabledGradientBegin={"#0000"}
+            disabledGradientEnd={"#0000"}
           />
           <GradientButton
             text={"Save"}
@@ -426,6 +443,9 @@ class MyWebsite extends Component {
             style={editProductStyles.saveBtn}
             uppercase
             onPressAction={this.saveProduct}
+            disabled={this.props.saving}
+            disabledGradientBegin={"#9300FF"}
+            disabledGradientEnd={"#9300FF"}
             // textStyle={editProductStyles.previewText}
           />
         </View>
@@ -487,6 +507,7 @@ class MyWebsite extends Component {
 
             <View style={editProductStyles.bottomView}>
               <TextInput
+                editable={!this.props.saving}
                 style={editProductStyles.inputView}
                 placeholder={translate("Enter Price")}
                 placeholderTextColor={"#75647C"}
@@ -543,6 +564,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
   media: state.website.media,
+  saving: state.website.saving,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -570,5 +592,6 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal
       )
     ),
+  setSavingToInitial: () => dispatch(actionCreators.setSavingToInitial()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

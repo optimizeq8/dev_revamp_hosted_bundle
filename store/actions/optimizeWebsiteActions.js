@@ -539,6 +539,10 @@ export const deleteWebProduct = (product_id) => {
 
 export const saveSingleWebProduct = (product_id, info) => {
   return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+      payload: true,
+    });
     delete axios.defaults.headers.common["Authorization"];
     axios
       .patch(
@@ -552,9 +556,18 @@ export const saveSingleWebProduct = (product_id, info) => {
           source: "open_my_website",
           source_action: "a_submit_my_website_products",
         });
+        return dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
       })
       .catch((err) => {
         console.log("saveSingleWebProduct", err.response || err.message);
+
+        return dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
       });
   };
 };
@@ -573,6 +586,7 @@ export const saveSingleMedia = (
       type: actionTypes.SAVE_PRODUCT_MEDIA,
       payload: {},
     });
+
     delete axios.defaults.headers.common["Authorization"];
     axios
       .post(`https://optimizeapp.com/ecommerce/api/products/media`, media, {
@@ -604,5 +618,14 @@ export const saveSingleMedia = (
         onToggleModal(false);
         console.log("saveSingleWebProduct error", err.response || err.message);
       });
+  };
+};
+
+export const setSavingToInitial = () => {
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+      payload: false,
+    });
   };
 };
