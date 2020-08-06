@@ -132,6 +132,7 @@ class AdObjective extends Component {
         end_time: this.props.data.end_time
           ? this.props.data.end_time
           : end_time.toISOString().split("T")[0],
+        existingPost: this.props.data.existingPost,
       };
       this.setState({
         minValueBudget: this.props.data.minValueBudget,
@@ -157,6 +158,7 @@ class AdObjective extends Component {
           objective: "",
           start_time: start_time.toISOString().split("T")[0],
           end_time: start_time.toISOString().split("T")[0],
+          existingPost: 0,
         },
         minValueBudget: 0,
         maxValueBudget: 0,

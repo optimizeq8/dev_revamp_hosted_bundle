@@ -62,7 +62,10 @@ class SelectInterests extends Component {
               subcat: [...this.props.customInterests[interest]],
             };
           });
-        if (this.props.data.hasOwnProperty("customInterestObjects")) {
+        if (
+          this.props.data.hasOwnProperty("customInterestObjects") &&
+          this.props.data.customInterestObjects
+        ) {
           customInterests[0].subcat = customInterests[0].subcat.concat(
             this.props.data.customInterestObjects
           );
