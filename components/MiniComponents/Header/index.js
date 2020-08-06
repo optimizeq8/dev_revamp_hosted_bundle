@@ -171,7 +171,7 @@ export default class Header extends Component {
                       color: globalColors.purple,
                     }}
                   >
-                    Delete
+                    {translate("Delete")}
                   </Text>
                 </View>
               ) : (
