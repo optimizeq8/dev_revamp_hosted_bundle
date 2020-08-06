@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
 import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
+import isEmpty from "lodash/isEmpty";
 
 //Redux
 import { connect } from "react-redux";
@@ -31,7 +32,7 @@ import Header from "../../../MiniComponents/Header";
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
-import { _pickImage } from "../PickImage";
+import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { findIndex } from "lodash";
 
@@ -129,9 +130,16 @@ class MyWebsite extends Component {
   };
   startUpload = (media) => {
     var body = new FormData();
-    body.append("businessid", this.props.mainBusiness.businessid);
-    body.append("businesslogo", media);
-    this.props.changeBusinessLogo(
+    // body.append("businessid", this.props.mainBusiness.businessid);
+    body.append("media", media, media.name);
+    // this.props.changeBusinessLogo(
+    //   body,
+    //   this._getUploadState,
+    //   this.cancelUpload,
+    //   this.onToggleModal
+    // );
+    console.log("media", media);
+    this.props.saveSingleMedia(
       body,
       this._getUploadState,
       this.cancelUpload,
@@ -146,7 +154,7 @@ class MyWebsite extends Component {
   };
 
   uploadPhoto = () => {
-    _pickImage("Images", this.props.screenProps, this.startUpload);
+    _pickImageMedia("Images", this.props.screenProps, this.startUpload);
   };
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
@@ -191,9 +199,27 @@ class MyWebsite extends Component {
     console.log("info", info);
     this.props.saveSingleWebProduct(this.state.product.id, info);
   };
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.media !== this.props.media &&
+      this.props.media &&
+      !isEmpty(this.props.media)
+    ) {
+      let product = this.state.product;
+      product = {
+        ...product,
+        media: [...product.media, this.props.media],
+      };
+
+      console.log("did update prod", product);
+      this.setState({
+        product,
+      });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <View style={editProductStyles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
@@ -236,44 +262,50 @@ class MyWebsite extends Component {
                 uri:
                   this.state.product.media &&
                   this.state.product.media[0] &&
-                  this.state.product.media[0].media_path,
+                  this.state.product.media[0].url,
               }}
             />
-            <View style={editProductStyles.placeholderView}>
+            <TouchableOpacity
+              style={editProductStyles.placeholderView}
+              onPress={this.uploadPhoto}
+            >
               <Image
                 style={editProductStyles.imagePlaceholder}
                 source={{
                   uri:
                     this.state.product.media &&
                     this.state.product.media[1] &&
-                    this.state.product.media[1].media_path,
+                    this.state.product.media[1].url,
                 }}
               />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={this.uploadPhoto}>
                 <CameraCircleOutlineIcon width={70} height={70} />
                 <Text style={editProductStyles.addMediaText}>
                   {translate("Add Media")}
                 </Text>
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
 
-            <View style={editProductStyles.placeholderView}>
+            <TouchableOpacity
+              style={editProductStyles.placeholderView}
+              onPress={this.uploadPhoto}
+            >
               <Image
                 style={editProductStyles.imagePlaceholder}
                 source={{
                   uri:
                     this.state.product.media &&
                     this.state.product.media[2] &&
-                    this.state.product.media[2].media_path,
+                    this.state.product.media[2].url,
                 }}
               />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={this.uploadPhoto}>
                 <CameraCircleOutlineIcon width={70} height={70} />
                 <Text style={editProductStyles.addMediaText}>
                   {translate("Add Media")}
                 </Text>
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </ScrollView>
           <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
             <TouchableOpacity
@@ -509,6 +541,7 @@ const mapStateToProps = (state) => ({
   loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
+  media: state.website.media,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -527,5 +560,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.deleteWebProduct(product_id)),
   saveSingleWebProduct: (product_id, info) =>
     dispatch(actionCreators.saveSingleWebProduct(product_id, info)),
+  saveSingleMedia: (media, _getUploadState, cancelUpload, onToggleModal) =>
+    dispatch(
+      actionCreators.saveSingleMedia(
+        media,
+        _getUploadState,
+        cancelUpload,
+        onToggleModal
+      )
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

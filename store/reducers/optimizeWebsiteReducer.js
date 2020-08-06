@@ -13,6 +13,7 @@ const defaultState = {
   message: null,
   weburl: "",
   webproducts: [],
+  media: {},
 };
 
 /**
@@ -156,6 +157,12 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
       return {
         ...state,
         webproducts: [action.payload, ...webproducts],
+      };
+    }
+    case actionTypes.SAVE_PRODUCT_MEDIA: {
+      return {
+        ...state,
+        media: action.payload,
       };
     }
     default:

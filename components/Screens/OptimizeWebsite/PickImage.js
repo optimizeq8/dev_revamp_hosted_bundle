@@ -199,3 +199,151 @@ export const _pickImage = async (
     // console.log("error image pick", error);
   }
 };
+
+export const _pickImageMedia = async (
+  mediaTypes = "Images",
+  screenProps,
+  startUpload
+) => {
+  try {
+    let result = {};
+    result = await pick(mediaTypes, screenProps);
+    result = { uri: result.uri, cancelled: false, type: "image" };
+    let configuration = PhotoEditorConfiguration({
+      width: 1,
+      height: 1,
+      serialization: result && result.hasOwnProperty("serialization"),
+      transform: {
+        items: [{ width: 1, height: 1, name: "Square" }],
+      },
+    });
+    let file = {};
+    if (result) {
+      file = await FileSystem.getInfoAsync(result.uri, {
+        size: true,
+      });
+    }
+    const { translate } = screenProps;
+    if (result && !result.cancelled) {
+      let uneditedImageUri = result.uri;
+      PESDK.openEditor(
+        result.uri,
+        configuration,
+        result && result.hasOwnProperty("serialization")
+          ? result.serialization
+          : null
+      )
+        .then(async (manipResult) => {
+          let serialization = {};
+          if (manipResult) {
+            serialization = manipResult.serialization;
+            manipResult = await ImageManipulator.manipulateAsync(
+              manipResult.image
+            );
+
+            manipResult = await ImageManipulator.manipulateAsync(
+              manipResult.uri,
+              [
+                {
+                  resize: {
+                    width: 500,
+                    height: 500,
+                  },
+                },
+              ],
+              {
+                compress: 1,
+              }
+            );
+            let newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+              size: true,
+            });
+
+            if (newSize.size > 5000000) {
+              analytics.track(`a_error`, {
+                source: "open_my_website",
+                source_action: "a_select_media",
+                error_description: "Image must be less than 5 MBs",
+                image_for: "Business Logo",
+              });
+
+              showMessage({
+                message: translate("Image must be less than {{fileSize}} MBs", {
+                  fileSize: 5,
+                }),
+                position: "top",
+                type: "warning",
+              });
+
+              return Promise.reject("Image must be less than 5 MBs");
+            }
+
+            result.uri = manipResult.uri;
+            result.height = manipResult.height;
+            result.width = manipResult.width;
+            result.serialization = serialization;
+          } else {
+            analytics.track(`a_select_media`, {
+              source: "open_my_website",
+              source_action: "a_select_media",
+              action_status: "failure",
+              image_for: "Business Logo",
+            });
+            return Promise.reject("Editing canceled");
+          }
+        })
+        .then(() => {
+          analytics.track(`a_select_media`, {
+            source: "open_my_website",
+            source_action: "a_select_media",
+            action_status: "success",
+            image_for: "Business Logo",
+          });
+
+          showMessage({
+            message: translate("Image has been selected successfully"),
+            position: "top",
+            type: "success",
+          });
+          var res = result.uri.split("/");
+          res = res[res.length - 1];
+          var photo = {
+            uri: result.uri,
+            type: "IMAGE" + "/" + format,
+            name: res,
+          };
+          let format = res.split(".")[1];
+          startUpload(photo);
+        })
+        .catch((error) => {
+          // console.log(error);
+          analytics.track(`a_error`, {
+            source: "open_my_website",
+            source_action: "a_select_media",
+            error_description: error.wrongAspect
+              ? error.message
+              : error ||
+                translate(
+                  "The dimensions are too large, please choose a different image"
+                ),
+            image_for: "Business Logo",
+          });
+
+          showMessage({
+            message: error.wrongAspect
+              ? error.message
+              : error ||
+                translate(
+                  "The dimensions are too large, please choose a different image"
+                ),
+            position: "top",
+            type: "warning",
+          });
+        });
+    } else {
+      return;
+    }
+  } catch (error) {
+    // console.log("error image pick", error);
+  }
+};

@@ -175,6 +175,7 @@ export {
   saveWebProductsToAdd,
   deleteWebProduct,
   saveSingleWebProduct,
+  saveSingleMedia,
 } from "./optimizeWebsiteActions";
 
 export {

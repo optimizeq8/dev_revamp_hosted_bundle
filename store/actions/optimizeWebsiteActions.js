@@ -558,3 +558,51 @@ export const saveSingleWebProduct = (product_id, info) => {
       });
   };
 };
+
+export const saveSingleMedia = (
+  media,
+  loading,
+  cancelUplaod,
+  onToggleModal
+) => {
+  onToggleModal(true);
+
+  console.log("media save", media);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_PRODUCT_MEDIA,
+      payload: {},
+    });
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products/media`, media, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log("data save media", data);
+        onToggleModal(false);
+        return dispatch({
+          type: actionTypes.SAVE_PRODUCT_MEDIA,
+          payload: data.data,
+        });
+        // NavigationService.navigate("MyWebsite", {
+        //   source: "open_my_website",
+        //   source_action: "a_submit_my_website_products",
+
+        // });
+      })
+      .catch((err) => {
+        loading(0);
+        onToggleModal(false);
+        console.log("saveSingleWebProduct error", err.response || err.message);
+      });
+  };
+};

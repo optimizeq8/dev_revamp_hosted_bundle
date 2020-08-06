@@ -110,7 +110,7 @@ class MyWebsite extends Component {
       <Image
         style={styles.image}
         source={{
-          uri: item.media_path,
+          uri: item.url,
         }}
       />
     );
