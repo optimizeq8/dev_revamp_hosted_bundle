@@ -13,19 +13,20 @@ import analytics from "@segment/analytics-react-native";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 
 // Styles
-import { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
 
 // Icons
-import CloseIcon from "../../../assets/SVGs/EyeCut";
+import CloseIcon from "../../../../assets/SVGs/Checkmark";
 
 // MiniComponents
-import GradientButton from "../../MiniComponents/GradientButton";
-import LowerButton from "../../MiniComponents/LowerButton";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import Header from "../../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
+
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(
@@ -34,6 +35,10 @@ class ProductSelect extends React.Component {
     // if (this.props.edit) {
     this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
     // }
+    this.setState({
+      cartList: this.props.webproducts,
+      counter: this.props.webproducts.length + 1,
+    });
   }
 
   constructor(props) {
@@ -47,9 +52,6 @@ class ProductSelect extends React.Component {
     };
   }
 
-  checkIfRecordExist = (newRecords, imageId) => {
-    return newRecords.findIndex((img) => img.imageId === imageId) === -1;
-  };
   componentDidUpdate(prevProps) {
     // console.log(
     //   "this.props.mainBusiness.insta_handle",
@@ -70,18 +72,17 @@ class ProductSelect extends React.Component {
       !this.props.savingWebProducts
     ) {
       this.setState({
-        cartList: this.props.products_to_hide_list,
-        counter: this.props.products_to_hide_list.length + 1,
+        cartList: this.props.webproducts,
+        counter: this.props.webproducts.length + 1,
       });
     }
     if (
-      prevProps.products_to_hide_list &&
-      this.props.products_to_hide_list &&
-      prevProps.products_to_hide_list.length !==
-        this.props.products_to_hide_list.length
+      prevProps.webproducts &&
+      this.props.webproducts &&
+      prevProps.webproducts.length !== this.props.webproducts.length
     ) {
       this.setState({
-        cartList: [...this.props.products_to_hide_list],
+        cartList: [...this.props.webproducts],
       });
     }
 
@@ -96,32 +97,53 @@ class ProductSelect extends React.Component {
     }
   }
   handleSubmission = () => {
-    const businesslogo = this.props.edit
-      ? this.props.mainBusiness.businesslogo
-      : this.props.businessLogo;
-    this.props.saveWebProductsToHide(
-      this.props.edit,
-      this.state.cartList,
-      this.props.mainBusiness.businessid,
-      businesslogo,
-      this.state.no_of_products_to_show
-    );
+    const array = this.state.cartList.map((elem) => {
+      const itemExistOnBackend = this.props.webproducts.find(
+        ({ instagram_pid }) => elem.instagram_pid === instagram_pid
+      );
+
+      if (itemExistOnBackend) {
+        return {
+          shortcode: elem.media[0].shortcode,
+          instagram_pid: elem.instagram_pid,
+          image_url: elem.media[0].media_path,
+          id: elem.id,
+          description_en: elem.description_en,
+        };
+      }
+      return {
+        shortcode: elem.shortcode,
+        instagram_pid: elem.instagram_pid,
+        image_url: elem.image_url,
+        description_en: elem.description_en,
+        id: "",
+      };
+    });
+    // check for if the product already exist in rge
+    this.props.saveWebProductsToAdd(array, this.props.mainBusiness.businessid);
   };
   addToCart = (item) => {
+    // console.log("item", item);
     const newCartList = [...this.state.cartList];
-    const checkifALreadyExist = find(
-      this.state.cartList,
-      (imageId) => imageId === item.imageId
-    );
-    // console.log("checkifALreadyExist", checkifALreadyExist);
-    if (!checkifALreadyExist) {
-      newCartList.push(item.imageId);
+    const checkifALreadyExist = newCartList
+      .map((prod) => {
+        return prod.instagram_pid;
+      })
+      .indexOf(item.imageId);
+    // console.log("add item", item);
+    if (checkifALreadyExist === -1) {
+      newCartList.push({
+        shortcode: item.shortcode,
+        instagram_pid: item.imageId,
+        image_url: item.imageUrl,
+        description_en: item.productDescription,
+      });
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`a_products_to_add_in_cart`, {
         source: this.props.source,
         source_action: "a_add_products",
         timestamp: new Date().getTime(),
-        products_to_hide_list: newCartList,
+        webproducts: newCartList,
       });
       const counterNew = this.state.counter;
       this.setState({
@@ -129,18 +151,22 @@ class ProductSelect extends React.Component {
         counter: counterNew + 1,
       });
     } else {
-      const index = newCartList.indexOf(checkifALreadyExist);
-
+      // const index = newCartList.indexOf(checkifALreadyExist);
+      const index = newCartList
+        .map((e) => {
+          return e.instagram_pid;
+        })
+        .indexOf(item.imageId);
       // console.log("index", index);
       const counterNew = this.state.counter;
 
       newCartList.splice(index, 1);
 
-      analytics.track(`a_products_to_hide_in_cart`, {
+      analytics.track(`a_products_to_add_in_cart`, {
         source: this.props.source,
         source_action: "a_remove_products",
         timestamp: new Date().getTime(),
-        products_to_hide_list: newCartList,
+        webproducts: newCartList,
       });
       this.setState({
         cartList: newCartList,
@@ -158,17 +184,18 @@ class ProductSelect extends React.Component {
     if (item) {
       // console.log("itemFound", itemFound);
       const itemFound =
-        this.state.cartList.filter((imageId) => imageId === item.imageId)
-          .length > 0;
+        this.state.cartList.filter(
+          (imageId) => imageId.instagram_pid === item.imageId
+        ).length > 0;
       return (
         <TouchableOpacity
           key={item.imageId}
           style={styles.itemProductView}
-          // onPress={() => this.addToCart(item)}
+          onPress={() => this.addToCart(item)}
         >
           {itemFound ? (
             <View style={[styles.itemView, styles.itemFoundView]}>
-              <CloseIcon width={15} />
+              <CloseIcon width={25} />
             </View>
           ) : (
             <View style={styles.itemView}></View>
@@ -187,57 +214,60 @@ class ProductSelect extends React.Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-
     return (
       <View style={styles.productSelectOuterView}>
-        <View style={styles.productsTextView}>
-          <Text style={styles.productsText}>{translate("Products")}</Text>
-        </View>
-        <View style={styles.selectProductTextView}>
-          {/* <Text style={styles.selectProductText}>
-            {translate("These are the products that will show on your website")}
-            .{" "}
-            <Text style={styles.hideProductText}>
-              {translate("Tap to remove products")}.
-            </Text>
-          </Text> */}
-          {this.props.instagramPostLoading && (
-            <ActivityIndicator color={globalColors.orange} size="large" />
-          )}
-          {!this.props.instagramPostLoading && this.props.instagramPostList && (
-            <FlatList
-              contentContainerStyle={styles.list}
-              initialNumToRender={12}
-              numColumns={4}
-              horizontal={false}
-              data={this.state.posts}
-              keyExtractor={(item, index) => {
-                if (item) {
-                  return item.imageId;
-                }
-                return index;
-              }}
-              renderItem={({ item }) => this.renderItem(item)}
-            />
-          )}
-          {this.props.loadingMoreInstaPost && (
-            <ActivityIndicator color={globalColors.orange} size="large" />
-          )}
-          {!this.props.instagramPostLoading &&
-            !this.props.loadingMoreInstaPost &&
-            this.props.instagramPostList &&
-            this.props.instaHasNextPage && (
-              <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
-                {translate("VIEW MORE")}
-              </Text>
-            )}
-          <LowerButton
-            screenProps={this.props.screenProps}
-            style={styles.lowerBtn}
-            checkmark={true}
-            function={this.handleSubmission}
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+        <Header
+          screenProps={this.props.screenProps}
+          closeButton={false}
+          segment={{
+            str: "MyWebsite Back Button",
+            obj: { businessname: this.props.mainBusiness.businessname },
+            source: "open_my_website",
+            source_action: "a_go_back",
+          }}
+          navigation={this.props.navigation}
+          titleStyle={{ color: "#75647C" }}
+          iconColor={"#75647C"}
+          title={"Add Products"}
+        />
+
+        {this.props.instagramPostLoading && (
+          <ActivityIndicator color={globalColors.orange} size="large" />
+        )}
+        {!this.props.instagramPostLoading && this.props.instagramPostList && (
+          <FlatList
+            contentContainerStyle={styles.list}
+            initialNumToRender={12}
+            numColumns={4}
+            horizontal={false}
+            data={this.state.posts}
+            keyExtractor={(item, index) => {
+              if (item) {
+                return item.imageId;
+              }
+              return index;
+            }}
+            renderItem={({ item }) => this.renderItem(item)}
           />
-        </View>
+        )}
+        {this.props.loadingMoreInstaPost && (
+          <ActivityIndicator color={globalColors.orange} size="large" />
+        )}
+        {!this.props.instagramPostLoading &&
+          !this.props.loadingMoreInstaPost &&
+          this.props.instagramPostList &&
+          this.props.instaHasNextPage && (
+            <Text style={styles.viewMoreText} onPress={this.onScrollHandler}>
+              {translate("VIEW MORE")}
+            </Text>
+          )}
+        <LowerButton
+          screenProps={this.props.screenProps}
+          style={styles.lowerBtn}
+          checkmark={true}
+          function={this.handleSubmission}
+        />
       </View>
     );
   }
@@ -256,6 +286,7 @@ const mapStateToProps = (state) => ({
   businessLogo: state.website.businessLogo,
   mainBusiness: state.account.mainBusiness,
   products_to_hide_list: state.website.products_to_hide_list,
+  webproducts: state.website.webproducts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -283,5 +314,7 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getWebProductsToHide: (businessid) =>
     dispatch(actionCreators.getWebProductsToHide(businessid)),
+  saveWebProductsToAdd: (webProducts, businessid) =>
+    dispatch(actionCreators.saveWebProductsToAdd(webProducts, businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductSelect);

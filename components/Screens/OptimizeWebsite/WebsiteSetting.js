@@ -48,10 +48,11 @@ export default class MyWebsite extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        style={myWebsiteStyles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <View>
+        <SafeAreaView
+          // style={[myWebsiteStyles.safeAreaViewContainer]}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -72,7 +73,7 @@ export default class MyWebsite extends Component {
         <RegisterForm edit={true} screenProps={this.props.screenProps} />
 
         <OnlineStoreHome style={myWebsiteStyles.onlineStoreHomeIcon} />
-      </SafeAreaView>
+      </View>
     );
   }
 }

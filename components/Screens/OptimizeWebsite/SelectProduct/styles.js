@@ -3,7 +3,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     display: "flex",
     alignItems: "center",
-    alignSelf: "flex-end",
+    alignSelf: "center",
     justifyContent: "center",
   },
   itemFoundText: {
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     // display: "flex",
     // flexGrow: 1,
     // justifyContent: "space-around",
-    // alignItems: "center",
+    alignItems: "center",
     // marginBottom: 40
   },
   submitProducts: {
@@ -473,8 +473,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   productSelectOuterView: {
-    // flex: 1,
-    backgroundColor: "#5600CB",
+    flex: 1,
+    backgroundColor: "#FFF",
   },
   productsTextView: {
     alignSelf: "center",
@@ -489,10 +489,10 @@ const styles = StyleSheet.create({
   },
   selectProductTextView: {
     // flex: 1,
-    backgroundColor: "#FFF",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingTop: 20,
+    // backgroundColor: "#FFF",
+    // borderTopLeftRadius: 25,
+    // borderTopRightRadius: 25,
+    // paddingTop: 20,
   },
   lowerBtn: {
     marginBottom: 20,
@@ -503,10 +503,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   itemFound: {
-    opacity: 0.26,
+    // opacity: 0.26,
+    borderWidth: 3,
+    borderColor: "#FF7A09",
   },
   itemFoundView: {
-    backgroundColor: "#D84D28",
+    backgroundColor: "#FF7A09",
   },
   businesslogoView: {
     width: 95,

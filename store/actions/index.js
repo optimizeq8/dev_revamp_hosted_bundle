@@ -171,6 +171,12 @@ export {
   verifyInstagramHandleWebsite,
   saveWebProductsToHide,
   getWebProductsToHide,
+  getWebProductsList,
+  saveWebProductsToAdd,
+  deleteWebProduct,
+  saveSingleWebProduct,
+  saveSingleMedia,
+  setSavingToInitial,
 } from "./optimizeWebsiteActions";
 
 export {
@@ -194,7 +200,6 @@ export {
   deleteCarouselCard,
   uploadCarouselAdCard,
   setCarouselAdAttechment,
-
   getInstagramExistingPost,
   saveInstgramExistpost,
   get_custom_interests_instagram,
