@@ -58,10 +58,13 @@ export default class MapSearchBar extends Component {
     }, 1000);
   };
   handleCountrySelection = (data, details) => {
+    let northeastLat = parseFloat(details.geometry.viewport.northeast.lat);
+    let southwestLat = parseFloat(details.geometry.viewport.southwest.lat);
+    let latDelta = northeastLat - southwestLat;
     let marker = {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng,
-      radius: 5000,
+      radius: 5000 * (latDelta > 0.1 ? latDelta : 0.1),
       place_id: data.place_id,
     };
     let countryName =

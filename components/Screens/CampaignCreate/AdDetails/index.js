@@ -108,6 +108,7 @@ class AdDetails extends Component {
       recBudget: 0,
       budgetOption: 1,
       startEditing: true,
+      locationsInfo: [],
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -393,6 +394,7 @@ class AdDetails extends Component {
     let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
     let regionNames = this.state.regionNames;
+    let locationsInfo = this.state.locationsInfo;
     if (newCountry) {
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
@@ -406,6 +408,8 @@ class AdDetails extends Component {
         };
         countryName = [];
         regionNames = [];
+        locationsInfo = [];
+        replace.targeting.locations[0].circles = [];
       } else if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         !addCountryOfLocations
@@ -420,6 +424,13 @@ class AdDetails extends Component {
         );
         //To remove the country name from the country names
         countryName = this.state.countryName.filter((co) => co !== countryName);
+        locationsInfo = this.state.locationsInfo.filter((loc, i) => {
+          if (loc.country_code !== newCountry) {
+            return loc;
+          } else {
+            replace.targeting.locations[0].circles.splice(i, 1);
+          }
+        });
       } else if (replace.targeting.geos[0].country_code === "") {
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
@@ -480,6 +491,7 @@ class AdDetails extends Component {
           regionNames,
           interestNames: [],
           countryName,
+          locationsInfo,
         },
         () => {
           //To show the regions options if one of the selected countries has more than 3 regions
@@ -493,6 +505,8 @@ class AdDetails extends Component {
               countryName,
               showRegions: showRegions,
               regionNames,
+              markers: replace.targeting.locations[0].circles,
+              locationsInfo,
             });
           this.setState({ showRegions });
         }
@@ -638,7 +652,7 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedMapChange = (selectedItems, unselect = false) => {
+  onSelectedMapChange = (selectedItems, unselect = false, locationsInfo) => {
     let stateRep = cloneDeep(this.state.campaignInfo);
     if (unselect) {
       stateRep.targeting.locations[0].circles = [];
@@ -649,9 +663,9 @@ class AdDetails extends Component {
       source_action: "a_ad_map_locations",
       campaign_map_locations: selectedItems,
     });
-
     this.setState({
       campaignInfo: { ...stateRep },
+      locationsInfo,
     });
     !this.editCampaign &&
       this.props.save_campaign_info({
@@ -1257,7 +1271,6 @@ class AdDetails extends Component {
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
-            onSelectedMapChange={this.onSelectedMapChange}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}

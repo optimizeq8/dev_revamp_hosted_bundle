@@ -116,7 +116,11 @@ export default class SnapchatLocation extends Component {
       longitude: mrk.longitude,
       radius: mrk.radius,
     }));
-    this.props.onSelectedMapChange(markers);
+    await this.props.onSelectedMapChange(
+      markers,
+      false,
+      this.state.locationsInfo
+    );
     for (let loc of this.state.locationsInfo)
       await this.props.onSelectedCountryChange(
         loc.country_code,
