@@ -132,6 +132,7 @@ class AdObjective extends Component {
         end_time: this.props.data.end_time
           ? this.props.data.end_time
           : end_time.toISOString().split("T")[0],
+        existingPost: this.props.data.existingPost,
       };
       this.setState({
         minValueBudget: this.props.data.minValueBudget,
@@ -434,7 +435,6 @@ class AdObjective extends Component {
     clearTimeout(this.timer);
   };
   render() {
-    console.log(this.state.campaignInfo.existingPost);
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
         choice={o}

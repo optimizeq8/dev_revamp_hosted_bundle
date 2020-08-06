@@ -196,7 +196,6 @@ class InstagramFeedAdTargetting extends Component {
             86400000
         ) + 1
       );
-
       let recBudget = duration * 75;
 
       this.setState(
@@ -238,7 +237,9 @@ class InstagramFeedAdTargetting extends Component {
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption,
+                  : this.props.data.budgetOption
+                  ? this.props.data.budgetOption
+                  : 1,
                 customInterests: this.props.data.customInterests,
               },
               () => {

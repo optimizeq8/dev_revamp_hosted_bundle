@@ -238,7 +238,9 @@ class InstagramStoryAdTargetting extends Component {
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption,
+                  : this.props.data.budgetOption
+                  ? this.props.data.budgetOption
+                  : 1,
                 customInterests: this.props.data.customInterests,
               },
               () => {

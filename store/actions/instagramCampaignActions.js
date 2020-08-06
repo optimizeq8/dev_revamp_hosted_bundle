@@ -199,7 +199,7 @@ export const saveBrandMediaInstagram = (
         });
         if (data.success) {
           onToggleModal(false);
-          dispatch(save_campaign_info_instagram({ info }));
+          dispatch(save_campaign_info_instagram({ formatted: info }));
           NavigationService.navigate(path, {
             source: "ad_design",
             source_action: "a_submit_ad_design",
