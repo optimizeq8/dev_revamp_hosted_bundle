@@ -174,5 +174,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: globalColors.purple,
   },
+  bottomBtns: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginVertical: 20,
+    bottom: 10,
+    position: "absolute",
+    // alignSelf: "flex-end",
+  },
 });
 export default styles;

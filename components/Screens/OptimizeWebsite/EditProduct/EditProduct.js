@@ -32,42 +32,10 @@ import Header from "../../../MiniComponents/Header";
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
+// Data
+import country from "../../../Data/countries.billingAddress";
 import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
-import { findIndex } from "lodash";
-
-const country = [
-  {
-    currency: "KWD",
-    country: "Kuwait",
-    flag: require("../../../../assets/images/Flags/Kuwait.png"),
-  },
-  {
-    currency: "SAR",
-    country: "KSA",
-    flag: require("../../../../assets/images/Flags/KSA.png"),
-  },
-  {
-    currency: "BHD",
-    country: "Bahrain",
-    flag: require("../../../../assets/images/Flags/Bahrain.png"),
-  },
-  {
-    currency: "AED",
-    country: "UAE",
-    flag: require("../../../../assets/images/Flags/UAE.png"),
-  },
-  {
-    currency: "OMR",
-    country: "Oman",
-    flag: require("../../../../assets/images/Flags/Oman.png"),
-  },
-  {
-    currency: "QAR",
-    country: "Qatar",
-    flag: require("../../../../assets/images/Flags/Qatar.png"),
-  },
-];
 
 class MyWebsite extends Component {
   constructor(props) {
@@ -412,18 +380,7 @@ class MyWebsite extends Component {
           </View>
         </InputScrollView>
 
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-around",
-            marginVertical: 20,
-            bottom: 10,
-            position: "absolute",
-            // alignSelf: "flex-end",
-          }}
-        >
+        <View style={editProductStyles.bottomBtns}>
           <GradientButton
             text={"Preview"}
             screenProps={this.props.screenProps}
@@ -499,7 +456,7 @@ class MyWebsite extends Component {
                   />
                   <Text style={editProductStyles.countryText}>
                     {this.state.activeCountryCurrency === ctr.currency &&
-                      translate(ctr.country)}
+                      translate(ctr.label)}
                   </Text>
                 </TouchableOpacity>
               ))}
