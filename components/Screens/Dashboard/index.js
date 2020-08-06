@@ -763,6 +763,7 @@ class Dashboard extends Component {
                                   top: I18nManager.isRTL ? 5 : 0,
                                 }}
                                 horizontal
+                                showsHorizontalScrollIndicator={false}
                               >
                                 {adButtons}
                               </ScrollView>

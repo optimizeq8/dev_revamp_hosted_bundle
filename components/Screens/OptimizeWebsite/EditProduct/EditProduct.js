@@ -254,6 +254,7 @@ class MyWebsite extends Component {
         >
           <ScrollView
             horizontal
+            showsHorizontalScrollIndicator={false}
             contentContainerStyle={editProductStyles.imageViewContainer}
           >
             <Image
