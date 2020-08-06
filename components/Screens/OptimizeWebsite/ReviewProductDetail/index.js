@@ -28,7 +28,7 @@ import { _pickImage } from "../PickImage";
 import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
-class MyWebsite extends Component {
+class ReviewProductDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -204,4 +204,7 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReviewProductDetail);

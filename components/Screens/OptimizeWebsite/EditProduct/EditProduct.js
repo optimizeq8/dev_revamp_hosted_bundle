@@ -4,7 +4,6 @@ import {
   Image,
   BackHandler,
   Text,
-  Clipboard,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -37,7 +36,7 @@ import country from "../../../Data/countries.billingAddress";
 import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
-class MyWebsite extends Component {
+class EditProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -551,4 +550,4 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   setSavingToInitial: () => dispatch(actionCreators.setSavingToInitial()),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);
