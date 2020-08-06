@@ -157,6 +157,7 @@ class AdObjective extends Component {
           objective: "",
           start_time: start_time.toISOString().split("T")[0],
           end_time: start_time.toISOString().split("T")[0],
+          existingPost: 0,
         },
         minValueBudget: 0,
         maxValueBudget: 0,
@@ -433,6 +434,7 @@ class AdObjective extends Component {
     clearTimeout(this.timer);
   };
   render() {
+    console.log(this.state.campaignInfo.existingPost);
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
       <ObjectivesCard
         choice={o}
