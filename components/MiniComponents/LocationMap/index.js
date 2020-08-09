@@ -226,6 +226,11 @@ export default class LocaionMap extends Component {
       index: this.props.selectedLocation.index,
     };
     this.props.updateMarkerLocation(marker);
+    this.props.handleMapModal(
+      false,
+      this.props.selectedLocation,
+      this.props.selectedLocation.index
+    );
   };
   handlePin = () => {
     this.state.dropped
@@ -280,7 +285,7 @@ export default class LocaionMap extends Component {
             />
             <View>
               <Text style={[styles.mapTitle, { fontSize: 17 }]}>
-                Percise Location
+                {translate("Precise Location")}
               </Text>
               <Text
                 style={[
@@ -291,12 +296,14 @@ export default class LocaionMap extends Component {
                   },
                 ]}
               >
-                Select a specific location
+                {translate("Select a specific location")}
               </Text>
             </View>
           </View>
           <TouchableOpacity onPress={this.handleMapSubmission}>
-            <Text style={[styles.rangeStyle, { fontSize: 14 }]}>Save</Text>
+            <Text style={[styles.rangeStyle, { fontSize: 14 }]}>
+              {translate("Save")}
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
@@ -398,7 +405,9 @@ export default class LocaionMap extends Component {
           {!this.state.dropped && (
             <View pointerEvents="none" style={styles.circleMarker(this.state)}>
               <MapMarker style={{ bottom: 20 }} />
-              <Text style={styles.pinTextStyle}>Drop pin here</Text>
+              <Text style={styles.pinTextStyle}>
+                {translate("Drop pin here")}
+              </Text>
             </View>
           )}
           <GradientButton

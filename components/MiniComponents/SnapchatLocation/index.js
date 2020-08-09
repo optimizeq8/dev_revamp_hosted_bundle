@@ -64,7 +64,7 @@ export default class SnapchatLocation extends Component {
     let index = locationsInfo.findIndex(
       (loc) => loc.place_id === locInfo.place_id
     );
-    console.log(index);
+    if (!remove) locInfo.index = locationsInfo.length;
     if (index > -1 && remove) {
       locationsInfo.splice(index, 1);
       markers.splice(index, 1);
@@ -72,10 +72,13 @@ export default class SnapchatLocation extends Component {
       locationsInfo = [...locationsInfo, locInfo];
       markers = [...markers, marker];
     }
-    this.setState({
-      markers,
-      locationsInfo,
-    });
+    this.setState(
+      {
+        markers,
+        locationsInfo,
+      },
+      () => !remove && this.handleMapModal(true, locInfo, locInfo.index)
+    );
   };
   updateMarkerLocation = (location) => {
     let index = location.index;
@@ -92,19 +95,22 @@ export default class SnapchatLocation extends Component {
   };
 
   checkForRegions = () => {
+    let { translate } = this.props.screenProps;
     if (this.props.regionsSelected) {
       Alert.alert(
-        "Reset selected regions",
-        "Selecting locations will overwrite and reset your selected regions, are you sure you want to continue?",
+        translate("Reset selected regions"),
+        translate(
+          "Selecting locations will overwrite and reset your selected regions, are you sure you want to continue"
+        ),
         [
           {
-            text: "Yes",
+            text: translate("Yes"),
             onPress: () => {
               this.handleSubmisionOfMarkers();
               this.props.onSelectedRegionChange(-1, null, null, true);
             },
           },
-          { text: "Cancel" },
+          { text: translate("Cancel") },
         ]
       );
     } else this.handleSubmisionOfMarkers();
@@ -151,7 +157,7 @@ export default class SnapchatLocation extends Component {
           style={styles.addLocationStyle}
         >
           <Icon style={styles.iconStyle} name="plus" type="Entypo" />
-          <Text style={styles.buttonText}>Add location</Text>
+          <Text style={styles.buttonText}>{translate("Add location")}</Text>
         </TouchableOpacity>
         <FlatList
           data={this.state.locationsInfo}

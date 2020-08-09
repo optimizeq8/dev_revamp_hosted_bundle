@@ -30,19 +30,22 @@ class SelectRegions extends Component {
   //   );
   // };
   checkForLocations = (c, fReg) => {
+    let { translate } = this.props.screenProps;
     if (this.props.locationsSelected) {
       Alert.alert(
-        "Reset selected locations",
-        "Selecting regions will overwrite and reset your selected locations, are you sure you want to continue?",
+        translate("Reset selected locations"),
+        translate(
+          "Selecting regions will overwrite and reset your selected locations, are you sure you want to continue"
+        ),
         [
           {
-            text: "Yes",
+            text: translate("Yes"),
             onPress: () => {
               this.props.onSelectedMapChange(null, true);
               this.handleRegionSelection(c, fReg);
             },
           },
-          { text: "Cancel" },
+          { text: translate("Cancel") },
         ]
       );
     } else this.handleRegionSelection(c, fReg);

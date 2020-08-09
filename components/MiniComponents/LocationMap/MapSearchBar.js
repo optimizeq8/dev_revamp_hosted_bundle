@@ -104,10 +104,10 @@ export default class MapSearchBar extends Component {
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             this.handleCountrySelection(data, details);
-            console.log(
-              JSON.stringify(data, null, 2),
-              JSON.stringify(details, null, 2)
-            );
+            // console.log(
+            //   JSON.stringify(data, null, 2),
+            //   JSON.stringify(details, null, 2)
+            // );
           }}
           enablePoweredByContainer={false}
           nearbyPlacesAPI={"GooglePlacesSearch"}
