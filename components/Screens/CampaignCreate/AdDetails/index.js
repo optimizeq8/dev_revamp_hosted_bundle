@@ -321,7 +321,9 @@ class AdDetails extends Component {
                 regions: countryRegions ? countryRegions : [],
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption,
+                  : this.props.data.budgetOption
+                  ? this.props.data.budgetOption
+                  : 1,
                 regionNames: savedRegionNames,
                 minValueBudget,
               },
