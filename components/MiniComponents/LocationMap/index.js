@@ -376,7 +376,6 @@ export default class LocaionMap extends Component {
                   onDragEnd={(e) => this.handleDrag(e, true)}
                   coordinate={marker.coordinate}
                   onDragStart={(e) => this.handleMarkerSelect(e, marker)}
-                  style={{ width: 100, height: 100 }}
                   title="Hold to drag"
                   onPress={(e) => this.handleMarkerSelect(e, marker, true)}
                   // onDrag={this.handleDrag}

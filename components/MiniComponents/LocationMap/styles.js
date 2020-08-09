@@ -37,10 +37,8 @@ export default StyleSheet.create({
   // },
   buttonText: {
     fontFamily: "montserrat-regular",
+    fontSize: 25,
     color: "#fff",
-    fontSize: 30,
-    alignSelf: "center",
-    height: 40,
   },
   autoCompleteResaults: {
     backgroundColor: "#fff",
