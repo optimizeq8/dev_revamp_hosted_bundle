@@ -538,6 +538,7 @@ export const deleteWebProduct = (product_id) => {
 };
 
 export const saveSingleWebProduct = (product_id, info) => {
+  console.log("product_id", product_id);
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
@@ -551,14 +552,18 @@ export const saveSingleWebProduct = (product_id, info) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        console.log("data save product", data);
+        // console.log("data save product", data);
         NavigationService.navigate("MyWebsite", {
           source: "open_my_website",
           source_action: "a_submit_my_website_products",
         });
-        return dispatch({
+        dispatch({
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
           payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
+          payload: data.data,
         });
       })
       .catch((err) => {

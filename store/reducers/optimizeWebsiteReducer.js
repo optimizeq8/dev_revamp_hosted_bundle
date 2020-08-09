@@ -172,6 +172,14 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
         saving: action.payload,
       };
     }
+    case actionTypes.SAVE_SINGLE_WEB_PRODUCT: {
+      let webProd = [...state.webproducts];
+      const index = webProd.findIndex((wP) => wP.id === action.payload.id);
+      webProd[index] = {
+        ...action.payload,
+      };
+      return { ...state, webproducts: webProd };
+    }
     default:
       return state;
   }
