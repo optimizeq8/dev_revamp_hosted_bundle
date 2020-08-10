@@ -127,8 +127,6 @@ export class TargetAudience extends Component {
                 </View>
               )}
             </TouchableOpacity>
-            {/* 
-            Later will be used
             <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("age")}
@@ -144,20 +142,18 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
                   <Text style={styles.menudetails}>
-                    {targeting.demographics[0].min_age} -{" "}
-                    {targeting.demographics[0].max_age}
+                    {targeting.age_min} - {targeting.age_max}
                   </Text>
                 </View>
               </View>
 
               {startEditing &&
-                (targeting.demographics[0].max_age ? (
+                (targeting.age_max ? (
                   <GreenCheckmarkIcon width={30} height={30} />
                 ) : (
                   <PlusCircleIcon width={30} height={30} />
                 ))}
-            </TouchableOpacity> */}
-
+            </TouchableOpacity>
             {/*
             
             Later if it has to be used

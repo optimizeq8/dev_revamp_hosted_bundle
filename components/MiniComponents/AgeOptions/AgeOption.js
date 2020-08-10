@@ -25,7 +25,7 @@ export default class AgeOption extends Component {
   componentDidMount() {
     Segment.screen("Age Option");
     this.setState({
-      values: [this.props.state.min_age, this.props.state.max_age],
+      values: [this.props.minAge, this.props.maxAge],
     });
   }
   multiSliderValuesChange = (values) => {
@@ -56,8 +56,8 @@ export default class AgeOption extends Component {
               )}
               customMarkerRight={(e) => <RangeMarkers value={e.currentValue} />}
               onValuesChange={this.multiSliderValuesChange}
-              min={13}
-              max={50}
+              min={this.props.ageValuesRange[0]}
+              max={this.props.ageValuesRange[1]}
               step={1}
               selectedStyle={styles.selected}
               unselectedStyle={{

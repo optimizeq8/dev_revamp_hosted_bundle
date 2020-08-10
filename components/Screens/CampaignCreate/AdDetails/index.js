@@ -1240,6 +1240,9 @@ class AdDetails extends Component {
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
+            ageValuesRange={[13, 50]}
+            minAge={this.state.campaignInfo.targeting.demographics[0].min_age}
+            maxAge={this.state.campaignInfo.targeting.demographics[0].max_age}
           />
         );
         break;
