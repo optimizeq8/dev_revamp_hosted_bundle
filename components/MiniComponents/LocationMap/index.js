@@ -93,11 +93,11 @@ export default class LocaionMap extends Component {
     //   // radius = this.state.marker.radius + 250;
     // }
     if (subtract) {
-      if (this.state.marker.radius > 250)
-        radius = this.state.marker.radius - 250;
+      if (this.state.marker.radius > 500)
+        radius = this.state.marker.radius - 500;
     } else {
       if (this.state.marker.radius < 100000)
-        radius = this.state.marker.radius + 250;
+        radius = this.state.marker.radius + 500;
     }
     let marker = this.state.marker;
     marker.radius = radius;
@@ -170,12 +170,13 @@ export default class LocaionMap extends Component {
           ...zoomLevel,
         };
         this.map.animateToRegion({ ...initialRegion }, 1000);
+        let radius = 5000 * (latDelta > 0.1 ? latDelta : 0.1);
         this.setState(
           {
             initialRegion: initialRegion,
             radius: selectedLocation.saved
               ? selectedLocation.radius
-              : 5000 * (latDelta > 0.1 ? latDelta : 0.1),
+              : Math.round(radius / 1000) * 1000,
           },
           () => {
             this.handleAddCir({ nativeEvent: { coordinate: coordinates } });
