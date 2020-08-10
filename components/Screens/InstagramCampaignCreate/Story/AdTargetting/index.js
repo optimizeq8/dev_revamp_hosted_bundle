@@ -66,6 +66,8 @@ class InstagramStoryAdTargetting extends Component {
           os_version_min: "",
           os_version_max: "",
           geo_locations: { countries: [], regions: [] },
+          age_max: "",
+          age_min: "",
         },
       },
       selectedCountriesAndRegions: [],
@@ -277,34 +279,38 @@ class InstagramStoryAdTargetting extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  // _handleMaxAge = value => {
-  //   let rep = this.state.campaignInfo;
-  //   // rep.targeting.demographics[0].max_age = parseInt(value);
-  //   // segmentEventTrack(`Selected Max Age`, {
-  //   //   campaign_max_age: parseInt(value)
-  //   // });
-  //   this.setState({
-  //     campaignInfo: rep
-  //   });
-  //  !this.editCampaign &&
-  //   this.props.save_campaign_info_instagram({ campaignInfo: rep });
-  // };
+  _handleMaxAge = (value) => {
+    let rep = this.state.campaignInfo;
+    rep.targeting.age_max = parseInt(value);
 
-  // _handleMinAge = value => {
-  //   let rep = this.state.campaignInfo;
-  //   // rep.targeting.demographics[0].min_age = value;
-  //   // segmentEventTrack(`Selected Min Age`, {
-  //   //   campaign_min_age: parseInt(value)
-  //   // });
+    analytics.track(`a_ad_age`, {
+      source: "ad_targeting",
+      source_action: "a_ad_age",
+      campaign_max_age: parseInt(value),
+    });
+    this.setState({
+      campaignInfo: rep,
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({ campaignInfo: rep });
+  };
 
-  //   this.setState({
-  //     campaignInfo: rep
-  //   });
-  //  !this.editCampaign &&
-  //   this.props.save_campaign_info_instagram({
-  //     campaignInfo: rep
-  //   });
-  // };
+  _handleMinAge = (value) => {
+    let rep = this.state.campaignInfo;
+    rep.targeting.age_min = value;
+    analytics.track(`a_ad_age`, {
+      source: "ad_targeting",
+      source_action: "a_ad_age",
+      campaign_min_age: parseInt(value),
+    });
+    this.setState({
+      campaignInfo: rep,
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: rep,
+      });
+  };
 
   onSelectedInterestsChange = (selectedItems) => {
     // No more used, kept for PICKER component
@@ -1005,18 +1011,21 @@ class InstagramStoryAdTargetting extends Component {
         );
         break;
       }
-      // case "age": {
-      //   menu = (
-      //     <AgeOption
-      //       screenProps={this.props.screenProps}
-      //       state={this.state.campaignInfo.targeting.demographics[0]}
-      //       _handleMaxAge={this._handleMaxAge}
-      //       _handleMinAge={this._handleMinAge}
-      //       _handleSideMenuState={this._handleSideMenuState}
-      //     />
-      //   );
-      //   break;
-      // }
+      case "age": {
+        menu = (
+          <AgeOption
+            screenProps={this.props.screenProps}
+            state={this.state.campaignInfo}
+            _handleMaxAge={this._handleMaxAge}
+            _handleMinAge={this._handleMinAge}
+            _handleSideMenuState={this._handleSideMenuState}
+            ageValuesRange={[13, 65]}
+            minAge={this.state.campaignInfo.targeting.age_min || 13}
+            maxAge={this.state.campaignInfo.targeting.age_max || 65}
+          />
+        );
+        break;
+      }
       // case "regions": {
       //   menu = (
       //     <SelectRegions

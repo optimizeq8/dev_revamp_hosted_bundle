@@ -161,6 +161,16 @@ class InstagramAdPaymentReview extends Component {
       campaign_region: regionNames,
       campaign_devices: user_devices,
       camapign_OS: OSContnet,
+      campaign_max_age:
+        this.props.data &&
+        this.props.data.campaignInfo &&
+        this.props.data.campaignInfo.targeting &&
+        this.props.data.campaignInfo.targeting.age_max,
+      campaign_min_age:
+        this.props.data &&
+        this.props.data.campaignInfo &&
+        this.props.data.campaignInfo.targeting &&
+        this.props.data.campaignInfo.targeting.age_min,
     };
     analytics.track(`ad_review`, {
       source,
@@ -292,10 +302,7 @@ class InstagramAdPaymentReview extends Component {
       let user_devices = targeting.user_device;
       const media = data.media ? data.media : "//";
       // -------Keep commented code incase we will add it--------------//
-      // let ageGroupContent =
-      //   targeting.min_age +
-      //   "-" +
-      //   targeting.max_age;
+      let ageGroupContent = targeting.age_min + "-" + targeting.age_max;
 
       // if (
       //   targeting.geos[0].hasOwnProperty("region_id") &&
@@ -452,10 +459,10 @@ class InstagramAdPaymentReview extends Component {
                         //   title: "Language",
                         //   content: languageNames.join(", ")
                         // },
-                        // {
-                        //   title: "Age group",
-                        //   content: ageGroupContent
-                        // },
+                        {
+                          title: "Age group",
+                          content: ageGroupContent,
+                        },
                         interestNames.length > 0 && {
                           title: "Interests",
                           content: interestNames + "",
