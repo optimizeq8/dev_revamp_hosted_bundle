@@ -85,25 +85,27 @@ class SuccessRedirect extends Component {
     //TODO: For adjust please add the analytics keywords accordinlgy for instagram channel
     if (this.props.navigation.getParam("isWallet") === "1") {
       let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
-      adjustWalletPaymentTracker.addPartnerParameter(
-        this.props.channel === "google"
-          ? `Google_SEM`
-          : `Snap_${this.props.adType}`,
-        this.props.channel === "google" ? "google_sem" : this.props.adType
-      );
-      adjustWalletPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.getParam("amount", "null")),
-        "USD"
-      );
-      adjustWalletPaymentTracker.setTransactionId(
-        this.props.navigation.getParam("paymentId", "null")
-      );
+      // adjustWalletPaymentTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustWalletPaymentTracker.setRevenue(
+      //   parseFloat(this.props.navigation.getParam("amount", "null")),
+      //   "USD"
+      // );
+      // adjustWalletPaymentTracker.setTransactionId(
+      //   this.props.navigation.getParam("paymentId", "null")
+      // );
       Adjust.trackEvent(adjustWalletPaymentTracker);
     } else if (!this.props.navigation.getParam("checkoutwithWallet", false)) {
       let adjustPaymentTracker = new AdjustEvent("kdnzgg");
       adjustPaymentTracker.addPartnerParameter(
         this.props.channel === "google"
           ? `Google_SEM`
+          : this.props.channel === "instagram"
+          ? `Instagram_${this.props.adType}`
           : `Snap_${this.props.adType}`,
         this.props.channel === "google" ? "google_sem" : this.props.adType
       );
