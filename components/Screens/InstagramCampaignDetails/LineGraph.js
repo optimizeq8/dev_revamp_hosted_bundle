@@ -10,6 +10,7 @@ import {
   VictoryAxis,
   VictoryArea,
   VictoryScatter,
+  VictoryGroup,
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
@@ -194,18 +195,32 @@ class LineGraph extends Component {
                 data={data}
               />
             ) : (
-              <VictoryArea
-                categories={{ x: category }}
-                interpolation="catmullRom"
-                style={{
-                  data: {
-                    stroke: "#FF7D08",
-                    fill: "url(#myGradient)",
-                    strokeWidth: 5,
-                  },
-                }}
-                data={data}
-              />
+              <VictoryGroup>
+                <VictoryArea
+                  standalone={true}
+                  categories={{ x: category }}
+                  interpolation="catmullRom"
+                  style={{
+                    data: {
+                      stroke: "#FF7D08",
+                      fill: "url(#myGradient)",
+                      strokeWidth: 5,
+                    },
+                  }}
+                  data={data}
+                />
+                <VictoryScatter
+                  categories={{ x: category }}
+                  style={{
+                    data: {
+                      fill: "#fff",
+                      strokeWidth: 5,
+                    },
+                  }}
+                  size={8}
+                  data={data}
+                />
+              </VictoryGroup>
             )}
             <VictoryAxis
               tickCount={5}
