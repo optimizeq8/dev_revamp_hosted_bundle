@@ -129,7 +129,7 @@ class MyWebsite extends Component {
         <Image
           style={myWebsiteStyles.productImage}
           source={{
-            uri: item.media[0] && item.media[0].url,
+            uri: item.media && item.media[0] && item.media[0].url,
           }}
         />
         <View style={myWebsiteStyles.productDetailView}>
