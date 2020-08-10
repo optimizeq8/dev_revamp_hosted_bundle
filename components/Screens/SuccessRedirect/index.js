@@ -48,6 +48,7 @@ class SuccessRedirect extends Component {
         amount: parseFloat(this.props.navigation.getParam("amount", "null")),
         payment_status: "success",
         top_wallet_amount: this.props.navigation.getParam("amount", "null"),
+        type: "Wallet load",
       };
       analytics.identify(this.props.userInfo.userid, {
         wallet_amount: this.props.navigation.getParam("amount", "null"),
@@ -71,6 +72,7 @@ class SuccessRedirect extends Component {
         campaign_revenue: parseFloat(
           this.props.navigation.getParam("campaign_revenue", "null")
         ),
+        type: "Campaign",
       };
     }
     analytics.track(`payment_end`, {
