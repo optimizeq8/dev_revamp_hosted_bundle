@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#75647C",
     lineHeight: 15,
+    textAlign: "left",
   },
   pricesubhead: {
     fontFamily: "montserrat-bold",
@@ -45,12 +46,14 @@ const styles = StyleSheet.create({
     color: "#75647C",
     textTransform: "uppercase",
     marginTop: 4,
+    textAlign: "left",
   },
   productNameText: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#75647C",
     lineHeight: 15,
+    textAlign: "left",
   },
   productNamesubhead: {
     fontFamily: "montserrat-bold",
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
     color: "#75647C",
     textTransform: "uppercase",
     marginTop: 4,
+    textAlign: "left",
   },
   productCard: {
     display: "flex",

@@ -91,4 +91,11 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     // height: "100%",
   },
+  uploadText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#75647C",
+    marginHorizontal: 5,
+    textTransform: "uppercase",
+  },
 });
