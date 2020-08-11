@@ -117,20 +117,19 @@ class Long_Form_Video extends Component {
               videoLoading: false,
             });
           } else if (
-            ((result.width < 1080 && result.height < 1920) ||
-              (result.width < 1920 && result.height < 1080)) &&
-            false
+            (result.width < 1080 && result.height < 1920) ||
+            (result.width < 1920 && result.height < 1080)
           ) {
             showMessage({
               message: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
+                "Video's dimensions must be equal or over 1080x1920 or 1920x1080"
               ),
               type: "warning",
               position: "top",
             });
             this.setState({
               videoError: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
+                "Video's dimensions must be equal or over 1080x1920 or 1920x1080"
               ),
               longformvideo_media: null,
               videoLoading: false,
