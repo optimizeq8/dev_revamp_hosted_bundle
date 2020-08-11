@@ -51,6 +51,7 @@ class EditProduct extends Component {
       },
       prices: [{ currency: "KWD", price: null, id: "" }],
       activeCountryCurrency: "KWD",
+      activeUploadMediaPos: 1,
     };
   }
   componentWillUnmount() {
@@ -116,7 +117,7 @@ class EditProduct extends Component {
     //   this.cancelUpload,
     //   this.onToggleModal
     // );
-    console.log("media", media);
+    // console.log("media", media);
     this.props.saveSingleMedia(
       body,
       this._getUploadState,
@@ -131,7 +132,10 @@ class EditProduct extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
 
-  uploadPhoto = () => {
+  uploadPhoto = (index) => {
+    this.setState({
+      activeUploadMediaPos: index,
+    });
     _pickImageMedia("Images", this.props.screenProps, this.startUpload);
   };
   onToggleModal = (visibile) => {
@@ -193,7 +197,6 @@ class EditProduct extends Component {
     });
   };
   saveProduct = () => {
-    console.log("product to save", this.state.product);
     let info = {
       name: this.state.product.name,
       prices: this.state.product.prices,
@@ -203,7 +206,7 @@ class EditProduct extends Component {
       instagram_pid: this.state.product.instagram_pid,
       media: this.state.product.media.map((md) => md.media_path),
     };
-    console.log("info", info);
+    // console.log("info", info);
     this.props.saveSingleWebProduct(this.state.product.id, info);
   };
 
@@ -213,18 +216,27 @@ class EditProduct extends Component {
       this.props.media &&
       !isEmpty(this.props.media)
     ) {
-      let product = this.state.product;
-      product = {
-        ...product,
-        media: [...product.media, this.props.media],
-      };
-
-      console.log("did update prod", product);
+      let media = this.state.product.media;
+      media[this.state.activeUploadMediaPos] = this.props.media;
+      // console.log("did update media", media);
       this.setState({
-        product,
+        product: {
+          ...this.state.product,
+          media,
+        },
       });
     }
   }
+  deleteMedia = (index) => {
+    const media = [...this.state.product.media];
+    media.splice(index, 1);
+    this.setState({
+      product: {
+        ...this.state.product,
+        media,
+      },
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -269,56 +281,79 @@ class EditProduct extends Component {
                   this.state.product.media[0].url,
               }}
             />
-            <TouchableOpacity
-              style={editProductStyles.placeholderView}
-              onPress={this.uploadPhoto}
-              disabled={this.props.saving}
-            >
-              <Image
-                style={editProductStyles.imagePlaceholder}
-                source={{
-                  uri:
-                    this.state.product.media &&
-                    this.state.product.media[1] &&
-                    this.state.product.media[1].url,
-                }}
-              />
+            <View style={editProductStyles.imageHolderView}>
+              {this.state.product.media &&
+                this.state.product.media[1] &&
+                this.state.product.media[1].url && (
+                  <TouchableOpacity
+                    style={editProductStyles.deleteMediaView}
+                    onPress={() => this.deleteMedia(1)}
+                  >
+                    <Text style={editProductStyles.crossButtonText}>X</Text>
+                  </TouchableOpacity>
+                )}
               <TouchableOpacity
-                onPress={this.uploadPhoto}
-                disabled={this.props.saving}
+                style={editProductStyles.placeholderView}
+                onPress={() => this.uploadPhoto(1)}
                 disabled={this.props.saving}
               >
-                <CameraCircleOutlineIcon width={70} height={70} />
-                <Text style={editProductStyles.addMediaText}>
-                  {translate("Add Media")}
-                </Text>
+                <Image
+                  style={editProductStyles.imagePlaceholder}
+                  source={{
+                    uri:
+                      this.state.product.media &&
+                      this.state.product.media[1] &&
+                      this.state.product.media[1].url,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => this.uploadPhoto(1)}
+                  disabled={this.props.saving}
+                  disabled={this.props.saving}
+                >
+                  <CameraCircleOutlineIcon width={70} height={70} />
+                  <Text style={editProductStyles.addMediaText}>
+                    {translate("Add Media")}
+                  </Text>
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={editProductStyles.placeholderView}
-              onPress={this.uploadPhoto}
-              disabled={this.props.saving}
-            >
-              <Image
-                style={editProductStyles.imagePlaceholder}
-                source={{
-                  uri:
-                    this.state.product.media &&
-                    this.state.product.media[2] &&
-                    this.state.product.media[2].url,
-                }}
-              />
+            </View>
+            <View style={editProductStyles.imageHolderView}>
+              {this.state.product.media &&
+                this.state.product.media[2] &&
+                this.state.product.media[2].url && (
+                  <TouchableOpacity
+                    style={editProductStyles.deleteMediaView}
+                    onPress={() => this.deleteMedia(2)}
+                  >
+                    <Text style={editProductStyles.crossButtonText}>X</Text>
+                  </TouchableOpacity>
+                )}
               <TouchableOpacity
+                style={editProductStyles.placeholderView}
+                onPress={() => this.uploadPhoto(2)}
                 disabled={this.props.saving}
-                onPress={this.uploadPhoto}
               >
-                <CameraCircleOutlineIcon width={70} height={70} />
-                <Text style={editProductStyles.addMediaText}>
-                  {translate("Add Media")}
-                </Text>
+                <Image
+                  style={editProductStyles.imagePlaceholder}
+                  source={{
+                    uri:
+                      this.state.product.media &&
+                      this.state.product.media[2] &&
+                      this.state.product.media[2].url,
+                  }}
+                />
+                <TouchableOpacity
+                  disabled={this.props.saving}
+                  onPress={() => this.uploadPhoto(2)}
+                >
+                  <CameraCircleOutlineIcon width={70} height={70} />
+                  <Text style={editProductStyles.addMediaText}>
+                    {translate("Add Media")}
+                  </Text>
+                </TouchableOpacity>
               </TouchableOpacity>
-            </TouchableOpacity>
+            </View>
           </ScrollView>
           <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
             <TouchableOpacity

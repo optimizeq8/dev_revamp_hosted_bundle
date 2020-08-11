@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     height: 230,
     borderRadius: 20,
     marginHorizontal: 5,
+    marginTop: 10,
   },
   fieldTextView: { marginHorizontal: 8 },
   priceCard: {
@@ -164,6 +165,8 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
+    // marginTop: -90,
   },
   imagePlaceholder: {
     position: "absolute",
@@ -193,5 +196,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  deleteMediaView: {
+    position: "absolute",
+    backgroundColor: globalColors.purple,
+    zIndex: 10,
+    elevation: 10,
+    marginTop: -10,
+    width: 30,
+    left: "40%",
+    right: "40%",
+    borderRadius: 30,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  crossButtonText: {
+    fontFamily: "montserrat-regular-english",
+    color: "#FFF",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  imageHolderView: { marginTop: 10 },
 });
 export default styles;
