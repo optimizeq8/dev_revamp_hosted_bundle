@@ -141,6 +141,7 @@ class AdDesign extends Component {
       swipeUpMaxHeight: 0,
       swipeUpExpanded: false,
       showCover: false,
+      coverError: false,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign || this.props.data;
@@ -607,7 +608,8 @@ class AdDesign extends Component {
       !this.state.brand_nameError &&
       !this.state.headlineError &&
       !this.state.brandHeadlineError &&
-      !this.state.mediaError
+      !this.state.mediaError &&
+      !this.state.coverError
     ) {
       let media =
         this.adType !== "StoryAd"
@@ -698,6 +700,9 @@ class AdDesign extends Component {
         .includes("BLANK");
     let swipeUpError = null;
 
+    let coverError =
+      this.adType === "StoryAd" &&
+      (!this.props.data.cover || !this.props.storyAdCover);
     if (brandHeadlineError) {
       showMessage({
         message: translate(brandHeadlineError),
@@ -786,6 +791,14 @@ class AdDesign extends Component {
         type: "warning",
       });
     }
+    if (coverError) {
+      showMessage({
+        message: `Please ${
+          this.props.data.cover && !this.props.storyAdCover ? "upload" : "add"
+        } a cover and a logo`,
+        type: "warning",
+      });
+    }
     this.setState({
       brand_nameError,
       headlineError,
@@ -794,6 +807,7 @@ class AdDesign extends Component {
       collectionError,
       collectionMediaError,
       brandHeadlineError,
+      coverError,
     });
 
     return (
@@ -804,7 +818,8 @@ class AdDesign extends Component {
       !swipeUpError &&
       !collectionError &&
       !collectionMediaError &&
-      validCards.length >= 3
+      validCards.length >= 3 &&
+      !coverError
     );
   };
 
@@ -838,7 +853,8 @@ class AdDesign extends Component {
       this.state.headlineError ||
       this.state.brandHeadlineError ||
       this.state.mediaError ||
-      this.state.swipeUpError
+      this.state.swipeUpError ||
+      this.state.coverError
     ) {
       analytics.track(`a_error_form`, {
         source: "ad_design",
@@ -849,7 +865,8 @@ class AdDesign extends Component {
           this.state.headlineError ||
           this.state.mediaError ||
           this.state.brandHeadlineError ||
-          this.state.swipeUpError,
+          this.state.swipeUpError ||
+          (this.state.coverError && "Cover not uploaded"),
       });
     }
     if (
@@ -857,7 +874,8 @@ class AdDesign extends Component {
       (!this.state.brand_nameError &&
         !this.state.headlineError &&
         !this.state.brandHeadlineError &&
-        !this.state.mediaError) ||
+        !this.state.mediaError &&
+        !this.state.coverError) ||
       (this.state.objective !== "BRAND_AWARENESS" && !this.state.swipeUpError)
     ) {
       await formatMedia(
@@ -1357,13 +1375,13 @@ class AdDesign extends Component {
                         style={styles.placeholder1}
                       />
                     )}
-                    {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
+                    {/* {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
                       <View style={styles.storyAdIndexContainer}>
                         <Text style={styles.storyAdIndexNum}>
                           {parseInt(storyAdCards.selectedStoryAd.index) + 1}
                         </Text>
                       </View>
-                    )}
+                    )} */}
                     {this.adType === "StoryAd" ? (
                       <StoryAdCards
                         screenProps={this.props.screenProps}
@@ -1750,7 +1768,7 @@ const mapStateToProps = (state) => ({
   collectionMainMediaTypeWebLink:
     state.campaignC.collectionMainMediaTypeWebLink,
   rejCampaign: state.dashboard.rejCampaign,
-
+  storyAdCover: state.campaignC.storyAdCover,
   ad_tutorial_type: state.generic.ad_tutorial_type,
   ad_tutorial_link: state.generic.ad_tutorial_link,
   ad_tutorial_media_type: state.generic.ad_tutorial_media_type,

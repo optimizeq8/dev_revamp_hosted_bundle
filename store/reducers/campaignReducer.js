@@ -564,6 +564,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingStoryAdsArray: [...deletedLoadingAr],
         storyAdsArray: [...deleteStoryAds],
+        currentCampaignSteps: ["Dashboard", "AdObjective", "AdDesign"],
       };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
