@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -430,7 +431,7 @@ class EditProduct extends Component {
 
         <View style={editProductStyles.bottomBtns}>
           <GradientButton
-            text={"Preview"}
+            text={translate("Preview")}
             screenProps={this.props.screenProps}
             transparent
             style={editProductStyles.previewBtn}
@@ -441,18 +442,33 @@ class EditProduct extends Component {
             disabledGradientBegin={"#0000"}
             disabledGradientEnd={"#0000"}
           />
-          <GradientButton
-            text={"Save"}
-            screenProps={this.props.screenProps}
-            purpleViolet
-            style={editProductStyles.saveBtn}
-            uppercase
-            onPressAction={this.saveProduct}
-            disabled={this.props.saving}
-            disabledGradientBegin={"#9300FF"}
-            disabledGradientEnd={"#9300FF"}
-            // textStyle={editProductStyles.previewText}
-          />
+          {this.props.saving && (
+            <View style={editProductStyles.uploadingView}>
+              <Text style={styles.uploadText}>{translate("Uploading")}</Text>
+              <AnimatedCircularProgress
+                size={50}
+                width={5}
+                fill={100}
+                tintColor={globalColors.purple}
+                backgroundColor={"#9300FF99"}
+              />
+            </View>
+          )}
+
+          {!this.props.saving && (
+            <GradientButton
+              text={translate("Save")}
+              screenProps={this.props.screenProps}
+              purpleViolet
+              style={editProductStyles.saveBtn}
+              uppercase
+              onPressAction={this.saveProduct}
+              disabled={this.props.saving}
+              disabledGradientBegin={"#9300FF"}
+              disabledGradientEnd={"#9300FF"}
+              // textStyle={editProductStyles.previewText}
+            />
+          )}
         </View>
 
         <LoadingModal

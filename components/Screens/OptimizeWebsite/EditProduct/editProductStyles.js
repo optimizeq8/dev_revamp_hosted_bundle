@@ -32,12 +32,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#75647C",
     textTransform: "uppercase",
+    textAlign: "left",
   },
   subText: {
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#75647C",
     marginTop: 4,
+    textAlign: "left",
+
     // height: null,
   },
   previewBtn: {
@@ -182,7 +185,13 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     bottom: 10,
     position: "absolute",
+    width: "100%",
     // alignSelf: "flex-end",
+  },
+  uploadingView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 export default styles;
