@@ -19,6 +19,7 @@ class SnapCard extends Component {
       removeSnapCard,
       _handleStoryAdCards,
       rejected,
+      setTheState,
     } = this.props;
     const { translate } = this.props.screenProps;
     let videoPlayer = this.props.loadingStoryAdsArray[
@@ -77,7 +78,7 @@ class SnapCard extends Component {
         </View>
         <TouchableOpacity
           style={{
-            width: 24,
+            width: snapCardInfo.item.id === -1 ? 50 : 24,
             height: 24,
             alignItems: "center",
             justifyContent: "center",
@@ -103,8 +104,12 @@ class SnapCard extends Component {
             }
           }}
         >
-          <Text style={{ color: "#fff" }}>
-            {this.state.showDelete ? "X" : snapCardInfo.index + 1}
+          <Text style={{ color: "#fff", fontFamily: "montserrat-regular" }}>
+            {this.state.showDelete
+              ? "X"
+              : snapCardInfo.item.id === -1
+              ? "Cover"
+              : snapCardInfo.index}
           </Text>
         </TouchableOpacity>
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
@@ -118,11 +123,14 @@ class SnapCard extends Component {
               snapAdCard={true}
               snapCardInfo={snapCardInfo}
               screenProps={this.props.screenProps}
+              navigateToCover={snapCardInfo.item.id === -1}
+              setTheState={this.props.setTheState}
             />
           ) : (
             <TouchableOpacity
               onLongPress={() => {
                 snapCardInfo.item.media !== "//" &&
+                  snapCardInfo.item.id !== -1 &&
                   this.setState({ showDelete: !this.state.showDelete });
               }}
               onPress={() => {

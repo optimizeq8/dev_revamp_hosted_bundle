@@ -28,6 +28,13 @@ const initialState = {
   campaignEnded: false,
   storyAdsArray: [
     {
+      id: -1,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
+    {
       id: 0,
       call_to_action: { label: "BLANK", value: "BLANK" },
       media: "//",

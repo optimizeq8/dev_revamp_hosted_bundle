@@ -17,7 +17,7 @@ import {
   Linking,
   I18nManager,
 } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { Content, Text, Container, Footer, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
@@ -851,37 +851,13 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainSafeArea}>
-        <SafeAreaView
-          style={{ backgroundColor: "#fff" }}
-          forceInset={{ bottom: "never", top: "always" }}
-        />
         <NavigationEvents
           onDidFocus={this.handleAdCoverFocus}
           onDidBlur={this.handleAdCoverBlur}
         />
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[1, 0.3]}
-          style={styles.gradient}
-        />
+
         <Container style={styles.container}>
-          {!this.props.rejCampaign ? (
-            <TopStepsHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_cover",
-                source_action: "a_go_back",
-              }}
-              icon="snapchat"
-              actionButton={this.handleBackButton}
-              adType={"StoryAd"}
-              currentScreen="Cover"
-              title={"Compose Ad"}
-            />
-          ) : (
+          {!this.props.rejCampaign ? null : (
             <CustomHeader
               screenProps={this.props.screenProps}
               closeButton={false}
@@ -895,82 +871,106 @@ class AdCover extends Component {
               title={"Compose Ad"}
             />
           )}
-          <Content contentContainerStyle={styles.contentContainer} padder>
+          <Content contentContainerStyle={styles.contentContainer}>
             <KeyboardShift>
               {() => (
-                <>
-                  <View style={styles.buttonN}>
-                    <View style={styles.placeholder}>
+                <View style={styles.placeholder}>
+                  {logo ? (
+                    <TouchableOpacity
+                      disabled={this.props.coverLoading}
+                      onPress={this.handleLogo}
+                      style={styles.changeLogoStyle}
+                    >
                       <RNImageOrCacheImage
-                        media={cover}
-                        style={styles.placeholder1}
-                        resizeMode="cover"
+                        media={logo}
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          alignSelf: "center",
+                        }}
+                        resizeMode="contain"
                       />
-
-                      {logo ? (
-                        <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={this.handleLogo}
-                          style={styles.changeLogoStyle}
+                      <Text
+                        style={{
+                          color: globalColors.orange,
+                          fontFamily: "montserrat-medium",
+                          alignSelf: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        {translate("Edit logo")}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      disabled={this.props.coverLoading}
+                      onPress={this.handleLogo}
+                      style={styles.addLogoStyle}
+                    >
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
                         >
-                          <RNImageOrCacheImage
-                            media={logo}
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              alignSelf: "center",
-                            }}
-                            resizeMode="contain"
+                          <Icon
+                            name="plus"
+                            type="SimpleLineIcons"
+                            style={{ color: globalColors.orange }}
                           />
                           <Text
                             style={{
                               color: globalColors.orange,
-                              fontFamily: "montserrat-medium",
-                              alignSelf: "center",
-                              marginTop: 10,
+                              fontFamily: "montserrat-bold",
+                              fontSize: 14,
                             }}
                           >
-                            {translate("Edit logo")}
+                            {translate("Your Logo")}
                           </Text>
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={this.handleLogo}
-                          style={styles.addLogoStyle}
-                        >
-                          <View
-                            style={{
-                              flexDirection: "column",
-                              alignItems: "center",
-                            }}
-                          >
-                            <View
-                              style={{
-                                flexDirection: "column",
-                                alignItems: "center",
-                              }}
-                            >
-                              <PlusAddIcon />
-                              <Text
-                                style={{
-                                  color: globalColors.orange,
-                                  fontFamily: "montserrat-bold",
-                                }}
-                              >
-                                {translate("Your Logo")}
-                              </Text>
-                              <Text style={styles.addLogoTextStyle}>
-                                {translate(
-                                  "Must be 993px by 284px and transparent"
-                                )}
-                              </Text>
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                      <View style={{ flexDirection: "row" }}>
-                        {/* <TouchableOpacity
+                          <Text style={styles.addLogoTextStyle}>
+                            {translate(
+                              "Must be Transparent PNG (without Background)"
+                            )}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  <View style={styles.placeholder1}>
+                    <RNImageOrCacheImage
+                      media={cover}
+                      style={{ width: "100%", height: "100%" }}
+                      // style={styles.placeholder1}
+                      resizeMode="cover"
+                    />
+                    <MediaButton
+                      type={"cover"}
+                      cover={true}
+                      _pickImage={() =>
+                        this.state.cover === "//"
+                          ? this._pickImage()
+                          : this.setMediaModalVisible(true)
+                      }
+                      image={this.state.cover}
+                      media={this.state.cover}
+                      screenProps={this.props.screenProps}
+                      disabled={this.props.coverLoading}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      backgroundColor: "#0003",
+                      borderRadius: 30,
+                    }}
+                  >
+                    {/* <TouchableOpacity
                           disabled={this.props.coverLoading}
                           onPress={() => {
                             this.props.tutorialLinks(
@@ -987,38 +987,23 @@ class AdCover extends Component {
                         >
                           <InfoIcon />
                         </TouchableOpacity> */}
-                        <PenIconBrand
-                          disabled={this.props.coverLoading}
-                          style={{ justifyContent: "flex-start" }}
-                          data={this.props.data}
-                          coverHeadlineError={coverHeadlineError}
-                          changeHeadline={this.changeHeadline}
-                          coverHeadline={coverHeadline}
-                          field={"Headline"}
-                          mainBusiness={this.props.mainBusiness}
-                          rejected={this.rejected}
-                          screenProps={this.props.screenProps}
-                        />
-                      </View>
-                      <MediaButton
-                        type={"cover"}
-                        cover={true}
-                        _pickImage={() =>
-                          this.state.cover === "//"
-                            ? this._pickImage()
-                            : this.setMediaModalVisible(true)
-                        }
-                        image={this.state.cover}
-                        media={this.state.cover}
-                        screenProps={this.props.screenProps}
-                        disabled={this.props.coverLoading}
-                      />
-                    </View>
+                    <PenIconBrand
+                      disabled={this.props.coverLoading}
+                      style={{ justifyContent: "flex-start" }}
+                      data={this.props.data}
+                      coverHeadlineError={coverHeadlineError}
+                      changeHeadline={this.changeHeadline}
+                      coverHeadline={coverHeadline}
+                      field={"Headline"}
+                      mainBusiness={this.props.mainBusiness}
+                      rejected={this.rejected}
+                      screenProps={this.props.screenProps}
+                    />
                   </View>
-                </>
+                </View>
               )}
             </KeyboardShift>
-            <Text
+            {/* <Text
               style={[
                 styles.subText,
                 {
@@ -1029,10 +1014,17 @@ class AdCover extends Component {
               {translate(
                 "The cover shows on the\nDiscover page among\nsubscriptions and trending content"
               )}
-            </Text>
+            </Text> */}
           </Content>
 
-          <Footer style={styles.footerStyle}>
+          <Footer
+            style={[
+              styles.footerStyle,
+              {
+                justifyContent: "flex-end",
+              },
+            ]}
+          >
             {cover && (this.props.coverLoading || this.state.isVisible) ? (
               <View style={styles.loadingContainer}>
                 <AnimatedCircularProgress
@@ -1050,11 +1042,13 @@ class AdCover extends Component {
                 </Text>
               </View>
             ) : cover ? (
-              <View style={styles.footerButtonsContainer}>
+              <View style={[styles.footerButtonsContainer]}>
                 <LowerButton
                   screenProps={this.props.screenProps}
                   function={this._handleSubmission}
                   style={[styles.proceedButtonRTL]}
+                  checkmark
+                  purpleViolet={false}
                 />
               </View>
             ) : (

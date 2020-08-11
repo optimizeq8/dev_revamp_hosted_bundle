@@ -83,6 +83,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
+import AdCover from "../AdCover";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -138,6 +139,7 @@ class AdDesign extends Component {
       showExampleModal: false,
       swipeUpMaxHeight: 0,
       swipeUpExpanded: false,
+      showCover: false,
     };
     this.adType = this.props.adType;
     this.selectedCampaign = this.props.rejCampaign || this.props.data;
@@ -1321,75 +1323,83 @@ class AdDesign extends Component {
           />
           <ScrollView
             style={styles.contentContainer}
-            contentContainerStyle={{ height: "100%", paddingBottom: 20 }}
+            contentContainerStyle={{ height: "100%" }}
           >
-            <View style={styles.transition} shared="image">
-              <View style={styles.buttonN} onLayout={this.setMaxHeight}>
-                <View style={styles.penIconBranContainer}>{inputFields}</View>
-                <View
-                  style={[
-                    styles.placeholder,
-                    this.adType === "SnapAd" && objective === "BRAND_AWARENESS"
-                      ? { height: "75%" }
-                      : {},
-                  ]}
-                >
-                  {type === "VIDEO" ? (
-                    videoPlayer
-                  ) : (
-                    <RNImageOrCacheImage
-                      media={
-                        this.adType !== "StoryAd" && media !== "//"
-                          ? media
-                          : // : storyAdCards.selectedStoryAd.media &&
-                            //   storyAdCards.storyAdSelected
-                            // ? storyAdCards.selectedStoryAd.media
-                            preview.uri
-                      }
-                      style={styles.placeholder1}
-                    />
-                  )}
-                  {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
-                    <View style={styles.storyAdIndexContainer}>
-                      <Text style={styles.storyAdIndexNum}>
-                        {parseInt(storyAdCards.selectedStoryAd.index) + 1}
-                      </Text>
-                    </View>
-                  )}
-                  {this.adType === "StoryAd" ? (
-                    <StoryAdCards
-                      screenProps={this.props.screenProps}
-                      rejected={this.rejected}
-                      video={type === "VIDEO"}
-                      // numOfAds={storyAdCards.numOfAds}
-                      // openUploadVideo={this.openUploadVideo}
-                      selectedStoryAd={storyAdCards.selectedStoryAd}
-                      cancelUpload={this.cancelUpload} //one signal to cancel all requests
-                      StoryAdCards={this.props.storyAdsArray}
-                      _handleStoryAdCards={this._handleStoryAdCards}
-                    />
-                  ) : (
-                    !videoIsLoading && (
-                      <MediaButton
-                        disabled={
-                          this.props.loading ||
-                          (this.props.loadingStoryAdsArray.length > 0 &&
-                            this.props.loadingStoryAdsArray.includes(true))
-                        }
-                        screenProps={this.props.screenProps}
-                        type={"media"}
-                        setMediaModalVisible={this.setMediaModalVisible}
+            {this.state.showCover ? (
+              <AdCover
+                navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
+              />
+            ) : (
+              <View style={styles.transition} shared="image">
+                <View style={styles.buttonN} onLayout={this.setMaxHeight}>
+                  <View style={styles.penIconBranContainer}>{inputFields}</View>
+                  <View
+                    style={[
+                      styles.placeholder,
+                      this.adType === "SnapAd" &&
+                      objective === "BRAND_AWARENESS"
+                        ? { height: "75%" }
+                        : {},
+                    ]}
+                  >
+                    {type === "VIDEO" ? (
+                      videoPlayer
+                    ) : (
+                      <RNImageOrCacheImage
                         media={
-                          media !== "//"
+                          this.adType !== "StoryAd" && media !== "//"
                             ? media
-                            : storyAdCards.selectedStoryAd.media
+                            : // : storyAdCards.selectedStoryAd.media &&
+                              //   storyAdCards.storyAdSelected
+                              // ? storyAdCards.selectedStoryAd.media
+                              preview.uri
                         }
+                        style={styles.placeholder1}
                       />
-                    )
-                  )}
-                  {videoIsLoading ? <CameraLoading /> : null}
+                    )}
+                    {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
+                      <View style={styles.storyAdIndexContainer}>
+                        <Text style={styles.storyAdIndexNum}>
+                          {parseInt(storyAdCards.selectedStoryAd.index) + 1}
+                        </Text>
+                      </View>
+                    )}
+                    {this.adType === "StoryAd" ? (
+                      <StoryAdCards
+                        screenProps={this.props.screenProps}
+                        rejected={this.rejected}
+                        video={type === "VIDEO"}
+                        // numOfAds={storyAdCards.numOfAds}
+                        // openUploadVideo={this.openUploadVideo}
+                        selectedStoryAd={storyAdCards.selectedStoryAd}
+                        cancelUpload={this.cancelUpload} //one signal to cancel all requests
+                        StoryAdCards={this.props.storyAdsArray}
+                        _handleStoryAdCards={this._handleStoryAdCards}
+                        setTheState={this.setTheState}
+                      />
+                    ) : (
+                      !videoIsLoading && (
+                        <MediaButton
+                          disabled={
+                            this.props.loading ||
+                            (this.props.loadingStoryAdsArray.length > 0 &&
+                              this.props.loadingStoryAdsArray.includes(true))
+                          }
+                          screenProps={this.props.screenProps}
+                          type={"media"}
+                          setMediaModalVisible={this.setMediaModalVisible}
+                          media={
+                            media !== "//"
+                              ? media
+                              : storyAdCards.selectedStoryAd.media
+                          }
+                        />
+                      )
+                    )}
+                    {videoIsLoading ? <CameraLoading /> : null}
 
-                  {/* <TouchableOpacity
+                    {/* <TouchableOpacity
                     disabled={
                       this.props.loading ||
                       (this.props.loadingStoryAdsArray.length > 0 &&
@@ -1410,51 +1420,52 @@ class AdDesign extends Component {
                   >
                     <InfoIcon />
                   </TouchableOpacity> */}
-                  {this.adType === "CollectionAd" && (
-                    <View style={styles.collectionView}>{collection}</View>
-                  )}
-                </View>
+                    {this.adType === "CollectionAd" && (
+                      <View style={styles.collectionView}>{collection}</View>
+                    )}
+                  </View>
 
-                <SwipeCompCondition
-                  screenProps={this.props.screenProps}
-                  swipeUpMaxHeight={this.state.swipeUpMaxHeight}
-                  setTheState={this.setTheState}
-                  _changeDestination={(
-                    destination,
-                    call_to_action,
-                    attachment,
-                    appChoice = null,
-                    whatsAppCampaign
-                  ) =>
-                    _changeDestination(
+                  <SwipeCompCondition
+                    screenProps={this.props.screenProps}
+                    swipeUpMaxHeight={this.state.swipeUpMaxHeight}
+                    setTheState={this.setTheState}
+                    _changeDestination={(
                       destination,
                       call_to_action,
                       attachment,
-                      appChoice,
-                      whatsAppCampaign,
-                      this.adType,
-                      this.props.setStoryAdAttachment,
-                      this.state.campaignInfo,
-                      this.props.save_campaign_info,
-                      this.setTheState
-                    )
-                  }
-                  navigation={this.props.navigation}
-                  objective={objective}
-                  destination={destination}
-                  attachment={attachment}
-                  storyAdCards={storyAdCards}
-                  adType={this.adType}
-                  media={media}
-                  call_to_action={call_to_action}
-                  disabled={
-                    this.props.loading ||
-                    (this.props.loadingStoryAdsArray.length > 0 &&
-                      this.props.loadingStoryAdsArray.includes(true))
-                  }
-                />
+                      appChoice = null,
+                      whatsAppCampaign
+                    ) =>
+                      _changeDestination(
+                        destination,
+                        call_to_action,
+                        attachment,
+                        appChoice,
+                        whatsAppCampaign,
+                        this.adType,
+                        this.props.setStoryAdAttachment,
+                        this.state.campaignInfo,
+                        this.props.save_campaign_info,
+                        this.setTheState
+                      )
+                    }
+                    navigation={this.props.navigation}
+                    objective={objective}
+                    destination={destination}
+                    attachment={attachment}
+                    storyAdCards={storyAdCards}
+                    adType={this.adType}
+                    media={media}
+                    call_to_action={call_to_action}
+                    disabled={
+                      this.props.loading ||
+                      (this.props.loadingStoryAdsArray.length > 0 &&
+                        this.props.loadingStoryAdsArray.includes(true))
+                    }
+                  />
+                </View>
               </View>
-            </View>
+            )}
 
             {!this.state.swipeUpExpanded && (
               <Footer style={styles.footerStyle}>
