@@ -48,6 +48,7 @@ class EditProduct extends Component {
         prices: [],
       },
       prices: [{ currency: "KWD", price: null, id: "" }],
+      activeCountryCurrency: "KWD",
     };
   }
   componentWillUnmount() {
@@ -73,8 +74,12 @@ class EditProduct extends Component {
       this.props.screenProps.prevAppState
     );
     const product = this.props.navigation.getParam("product", {});
-    console.log("product", product);
-    this.setState({ product });
+    console.log("product1", product);
+    this.setState({
+      product: { ...product },
+      prices: [...product.prices],
+    });
+
     analytics.track(`open_my_website`, {
       source,
       source_action,
@@ -187,6 +192,7 @@ class EditProduct extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
+
     return (
       <View style={editProductStyles.outerView}>
         <SafeAreaView forceInset={{ bottom: "never", top: "always" }} />
@@ -472,17 +478,21 @@ class EditProduct extends Component {
                   this.state.product.prices.find(
                     (pr) => pr.currency === this.state.activeCountryCurrency
                   ) &&
-                  this.state.product.prices.find(
-                    (pr) => pr.currency === this.state.activeCountryCurrency
-                  ).price
+                  this.state.product.prices
+                    .find(
+                      (pr) => pr.currency === this.state.activeCountryCurrency
+                    )
+                    .price.toString()
                 }
                 onChangeText={(text) => {
+                  console.log("text", text);
                   const elementsIndex = this.state.prices.findIndex(
                     (element) =>
                       element.currency === this.state.activeCountryCurrency
                   );
 
                   let newArray = [...this.state.prices];
+                  console.log("elementsIndex", elementsIndex);
                   if (elementsIndex === -1) {
                     newArray.push({
                       currency: this.state.activeCountryCurrency,
@@ -491,13 +501,14 @@ class EditProduct extends Component {
                     });
                   } else {
                     newArray[elementsIndex] = {
-                      ...newArray[elementsIndex],
+                      currency: newArray[elementsIndex].currency,
                       price: text,
+                      id: newArray[elementsIndex].id,
                     };
                   }
 
                   this.setState({
-                    prices: newArray,
+                    prices: [...newArray],
                   });
                 }}
               />

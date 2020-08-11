@@ -119,6 +119,14 @@ class MyWebsite extends Component {
 
   renderEachProduct = (item) => {
     const { translate } = this.props.screenProps;
+    const prices =
+      item.prices && item.prices.length > 0
+        ? item.prices
+            .map((pr) => {
+              return pr.currency + " " + pr.price;
+            })
+            .join(", ")
+        : translate("Unavailable");
     return (
       <TouchableOpacity
         onPress={() => {
@@ -140,11 +148,7 @@ class MyWebsite extends Component {
             {item.name ? item.name : translate("Untitled")}
           </Text>
           <Text style={myWebsiteStyles.pricesubhead}>{translate("price")}</Text>
-          <Text style={myWebsiteStyles.priceText}>
-            {item.prices && item.prices.length > 0
-              ? item.prices[0].currency + item.prices[0].price
-              : translate("Unavailable")}
-          </Text>
+          <Text style={myWebsiteStyles.priceText}>{prices}</Text>
         </View>
         <Pen
           style={myWebsiteStyles.penIcon}
