@@ -25,6 +25,7 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import * as IntentLauncher from "expo-intent-launcher";
 
@@ -55,6 +56,8 @@ import { SaveFormat } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
+import PenIcon from "../../../../assets/SVGs/Pen";
+
 class AdCover extends Component {
   static navigationOptions = {
     header: null,
@@ -871,151 +874,119 @@ class AdCover extends Component {
               title={"Compose Ad"}
             />
           )}
-          <Content contentContainerStyle={styles.contentContainer}>
-            <KeyboardShift>
-              {() => (
-                <View style={styles.placeholder}>
-                  {logo ? (
-                    <TouchableOpacity
-                      disabled={this.props.coverLoading}
-                      onPress={this.handleLogo}
-                      style={styles.changeLogoStyle}
+          <KeyboardAwareScrollView
+            contentContainerStyle={styles.contentContainer}
+          >
+            <TouchableOpacity
+              disabled={this.props.coverLoading}
+              onPress={() => {
+                this.props.tutorialLinks(
+                  "ad_cover",
+                  I18nManager.isRTL ? "ar" : "en"
+                );
+                this.setState({ showExampleModal: true });
+              }}
+              style={{
+                alignSelf: "flex-end",
+                backgroundColor: "#fff",
+                borderRadius: 50,
+                padding: 7,
+                marginBottom: 5,
+              }}
+            >
+              {/* <InfoIcon /> */}
+              <Text style={styles.infoText}>Where does the cover show?</Text>
+            </TouchableOpacity>
+            <View style={styles.placeholder}>
+              {!logo ? (
+                <TouchableOpacity
+                  disabled={this.props.coverLoading}
+                  onPress={this.handleLogo}
+                  style={styles.changeLogoStyle}
+                >
+                  <RNImageOrCacheImage
+                    media={logo}
+                    style={styles.logoStyle}
+                    resizeMode="contain"
+                  />
+                  <PenIcon width={20} height={20} style={styles.logoEdit} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  disabled={this.props.coverLoading}
+                  onPress={this.handleLogo}
+                  style={styles.addLogoStyle}
+                >
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
                     >
-                      <RNImageOrCacheImage
-                        media={logo}
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          alignSelf: "center",
-                        }}
-                        resizeMode="contain"
+                      <Icon
+                        name="plus"
+                        type="SimpleLineIcons"
+                        style={{ color: globalColors.orange }}
                       />
                       <Text
                         style={{
                           color: globalColors.orange,
-                          fontFamily: "montserrat-medium",
-                          alignSelf: "center",
-                          marginTop: 10,
+                          fontFamily: "montserrat-bold",
+                          fontSize: 14,
                         }}
                       >
-                        {translate("Edit logo")}
+                        {translate("Your Logo")}
                       </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      disabled={this.props.coverLoading}
-                      onPress={this.handleLogo}
-                      style={styles.addLogoStyle}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Icon
-                            name="plus"
-                            type="SimpleLineIcons"
-                            style={{ color: globalColors.orange }}
-                          />
-                          <Text
-                            style={{
-                              color: globalColors.orange,
-                              fontFamily: "montserrat-bold",
-                              fontSize: 14,
-                            }}
-                          >
-                            {translate("Your Logo")}
-                          </Text>
-                          <Text style={styles.addLogoTextStyle}>
-                            {translate(
-                              "Must be Transparent PNG (without Background)"
-                            )}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                  <View style={styles.placeholder1}>
-                    <RNImageOrCacheImage
-                      media={cover}
-                      style={{ width: "100%", height: "100%" }}
-                      // style={styles.placeholder1}
-                      resizeMode="cover"
-                    />
-                    <MediaButton
-                      type={"cover"}
-                      cover={true}
-                      _pickImage={() =>
-                        this.state.cover === "//"
-                          ? this._pickImage()
-                          : this.setMediaModalVisible(true)
-                      }
-                      image={this.state.cover}
-                      media={this.state.cover}
-                      screenProps={this.props.screenProps}
-                      disabled={this.props.coverLoading}
-                    />
+                      <Text style={styles.addLogoTextStyle}>
+                        {translate(
+                          "Must be Transparent PNG (without Background)"
+                        )}
+                      </Text>
+                    </View>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      backgroundColor: "#0003",
-                      borderRadius: 30,
-                    }}
-                  >
-                    {/* <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={() => {
-                            this.props.tutorialLinks(
-                              "ad_cover",
-                              I18nManager.isRTL ? "ar" : "en"
-                            );
-                            this.setState({ showExampleModal: true });
-                          }}
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            bottom: 15,
-                          }}
-                        >
-                          <InfoIcon />
-                        </TouchableOpacity> */}
-                    <PenIconBrand
-                      disabled={this.props.coverLoading}
-                      style={{ justifyContent: "flex-start" }}
-                      data={this.props.data}
-                      coverHeadlineError={coverHeadlineError}
-                      changeHeadline={this.changeHeadline}
-                      coverHeadline={coverHeadline}
-                      field={"Headline"}
-                      mainBusiness={this.props.mainBusiness}
-                      rejected={this.rejected}
-                      screenProps={this.props.screenProps}
-                    />
-                  </View>
-                </View>
+                </TouchableOpacity>
               )}
-            </KeyboardShift>
-            {/* <Text
-              style={[
-                styles.subText,
-                {
-                  // bottom: -10
-                },
-              ]}
-            >
-              {translate(
-                "The cover shows on the\nDiscover page among\nsubscriptions and trending content"
-              )}
-            </Text> */}
-          </Content>
+              <View style={styles.placeholder1}>
+                <RNImageOrCacheImage
+                  media={cover}
+                  style={{ width: "100%", height: "100%", opacity: 0.7 }}
+                  // style={styles.placeholder1}
+                  resizeMode="cover"
+                />
+                <MediaButton
+                  type={"cover"}
+                  cover={true}
+                  _pickImage={() =>
+                    this.state.cover === "//"
+                      ? this._pickImage()
+                      : this.setMediaModalVisible(true)
+                  }
+                  image={this.state.cover}
+                  media={this.state.cover}
+                  screenProps={this.props.screenProps}
+                  disabled={this.props.coverLoading}
+                />
+              </View>
+
+              <PenIconBrand
+                disabled={this.props.coverLoading}
+                data={this.props.data}
+                coverHeadlineError={coverHeadlineError}
+                changeHeadline={this.changeHeadline}
+                coverHeadline={coverHeadline}
+                field={"Headline"}
+                mainBusiness={this.props.mainBusiness}
+                rejected={this.rejected}
+                screenProps={this.props.screenProps}
+              />
+            </View>
+          </KeyboardAwareScrollView>
 
           <Footer
             style={[

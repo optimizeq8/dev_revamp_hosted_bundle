@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignSelf: "center",
-    flex: 1,
+    height: "100%",
     width: "90%",
     borderRadius: 30,
     alignItems: "center",
@@ -159,15 +159,20 @@ const styles = StyleSheet.create({
     width: "100%",
     borderColor: "transparent",
     paddingLeft: 15,
+    height: 50,
+    backgroundColor: "#0003",
+    borderRadius: 40,
   },
   container: {
     backgroundColor: "#0000",
+    // flex: 1,
   },
   inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 13 / PixelRatio.getFontScale(),
     color: "#fff",
     marginLeft: 8,
+    // height: "100%",
   },
 
   placeholder: {
@@ -177,9 +182,9 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     backgroundColor: "#0003",
-    justifyContent: "space-between",
-    padding: 10,
-    paddingBottom: 25,
+    justifyContent: "space-evenly",
+    padding: 20,
+    // paddingBottom: 30,
   },
   placeholder1: {
     // opacity: 0.5,
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
     backgroundColor: "#0003",
     justifyContent: "center",
-    marginVertical: 5,
+    marginVertical: 20,
   },
   button: {
     alignSelf: "center",
@@ -218,7 +223,7 @@ const styles = StyleSheet.create({
   },
   subtitleHeading: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: 9,
     fontFamily: "montserrat-regular",
     marginLeft: 8,
     textAlign: "left",
@@ -249,7 +254,7 @@ const styles = StyleSheet.create({
     fontSize: hp(1.7),
   },
   addLogoStyle: {
-    borderRadius: 30,
+    borderRadius: 40,
     height: "25%",
     width: "100%",
     alignSelf: "center",
@@ -265,16 +270,33 @@ const styles = StyleSheet.create({
     width: 250,
   },
   changeLogoStyle: {
-    borderWidth: 2,
-    borderRadius: 15,
-    width: "90%",
-    height: "30%",
+    borderRadius: 30,
+    width: "100%",
+    height: "20%",
     alignSelf: "center",
-    paddingVertical: 10,
+    overflow: "hidden",
+    // paddingVertical: 10,
   },
   proceedButtonRTL: {
     width: 50,
     height: 50,
+  },
+  logoStyle: {
+    height: "100%",
+    width: "100%",
+    alignSelf: "center",
+    opacity: 0.7,
+  },
+  logoEdit: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    right: 10,
+    top: 10,
+  },
+  infoText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: globalColors.purple,
   },
 });
 

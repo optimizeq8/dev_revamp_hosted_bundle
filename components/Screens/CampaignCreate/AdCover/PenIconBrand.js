@@ -15,8 +15,8 @@ export default class PenIconBrand extends Component {
     return (
       <Item disabled={disabled} style={styles.inputHeadline}>
         <PenIcon
-          width={18}
-          height={18}
+          width={16}
+          height={16}
           style={{ alignSelf: "center" }}
           fill={
             this.state.input
@@ -28,8 +28,9 @@ export default class PenIconBrand extends Component {
         />
         <View
           style={{
-            paddingBottom: 10,
+            // paddingBottom: 10,
             width: "90%",
+            height: "100%",
           }}
         >
           <Text style={[styles.subtitleHeading]}>

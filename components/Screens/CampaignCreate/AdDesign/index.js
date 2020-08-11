@@ -26,6 +26,7 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
@@ -963,6 +964,8 @@ class AdDesign extends Component {
           type: "",
           videoIsLoading: false,
         })
+      : this.state.showCover
+      ? this.setState({ showCover: false })
       : this.props.navigation.goBack();
   };
 
@@ -1321,9 +1324,9 @@ class AdDesign extends Component {
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
-          <ScrollView
+          <KeyboardAwareScrollView
             style={styles.contentContainer}
-            contentContainerStyle={{ height: "100%" }}
+            contentContainerStyle={{ height: "100%", paddingBottom: 50 }}
           >
             {this.state.showCover ? (
               <AdCover
@@ -1646,7 +1649,7 @@ class AdDesign extends Component {
                 </View>
               </Footer>
             )}
-          </ScrollView>
+          </KeyboardAwareScrollView>
         </Container>
         <MediaModal
           getVideoUploadUrl={this.getVideoUploadUrl}
