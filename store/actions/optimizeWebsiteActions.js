@@ -605,7 +605,13 @@ export const saveSingleMedia = (
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("data save media", data);
+        // console.log("data save media", data);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: data.data ? "success" : "failure",
+        });
         onToggleModal(false);
         return dispatch({
           type: actionTypes.SAVE_PRODUCT_MEDIA,
@@ -620,6 +626,13 @@ export const saveSingleMedia = (
       .catch((err) => {
         loading(0);
         onToggleModal(false);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: "failure",
+          error_description: err.response || err.message,
+        });
         console.log("saveSingleWebProduct error", err.response || err.message);
       });
   };

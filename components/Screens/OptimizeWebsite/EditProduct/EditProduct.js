@@ -538,7 +538,7 @@ class EditProduct extends Component {
                   analytics.track(`a_product_price`, {
                     source: "open_edit_product",
                     source_action: "a_product_price",
-                    product_country: ctr.country,
+                    product_country: this.state.activeCountryCurrency,
                     product_price: text,
                   });
                   const elementsIndex = this.state.prices.findIndex(
