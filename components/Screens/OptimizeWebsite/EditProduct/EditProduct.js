@@ -229,6 +229,12 @@ class EditProduct extends Component {
   }
   deleteMedia = (index) => {
     const media = [...this.state.product.media];
+    analytics.track(`a_delete_single_media`, {
+      source: "open_edit_product",
+      source_action: "a_delete_single_media",
+      product_id: this.state.product.id,
+      media_id: media[index].id,
+    });
     media.splice(index, 1);
     this.setState({
       product: {
