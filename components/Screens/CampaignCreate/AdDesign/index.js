@@ -791,7 +791,7 @@ class AdDesign extends Component {
         type: "warning",
       });
     }
-    if (coverError) {
+    if (!mount && coverError) {
       showMessage({
         message: translate(
           `Please ${
@@ -801,7 +801,7 @@ class AdDesign extends Component {
         type: "warning",
       });
     }
-    if (headlineError) {
+    if (!mount && headlineError) {
       showMessage({
         message: translate(`Please add a promotional message`),
         type: "warning",
