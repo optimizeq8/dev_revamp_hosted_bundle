@@ -35,6 +35,7 @@ import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 import country from "../../../Data/countries.billingAddress";
 import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import styles from "../../../MiniComponents/InputFieldNew/styles";
 
 class EditProduct extends Component {
   constructor(props) {
@@ -65,6 +66,16 @@ class EditProduct extends Component {
     });
   };
   componentDidMount() {
+    const product = this.props.navigation.getParam("product", {});
+    // console.log("product1", product);
+    this.setState({
+      product: { ...product },
+      prices:
+        product && product.prices
+          ? [...product.prices]
+          : [{ currency: "KWD", price: null, id: "" }],
+    });
+
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -73,16 +84,10 @@ class EditProduct extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    const product = this.props.navigation.getParam("product", {});
-    console.log("product1", product);
-    this.setState({
-      product: { ...product },
-      prices: [...product.prices],
-    });
-
-    analytics.track(`open_my_website`, {
+    analytics.track(`open_edit_product`, {
       source,
       source_action,
+      product_id: product.id,
       timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -133,22 +138,51 @@ class EditProduct extends Component {
   };
 
   goToPreview = () => {
+    analytics.track(`a_preview_product`, {
+      source: "open_edit_product",
+      source_action: "a_preview_product",
+      product_id: this.state.product.id,
+      product_name: this.state.product.name,
+      product_price: this.state.product.prices,
+      product_description: this.state.product.description_en,
+    });
     this.props.navigation.navigate("ReviewProductDetail", {
       product: this.state.product,
+      source: "open_edit_product",
+      source_action: "a_preview_product",
     });
   };
   closePriceModal = () => {
+    analytics.track(`open_currency_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_price_modal",
+      product_id: this.state.product.id,
+      open: false,
+    });
     this.setState({
       showPriceModal: false,
     });
   };
   openPriceModal = () => {
+    analytics.track(`open_currency_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_price_modal",
+      product_id: this.state.product.id,
+      open: true,
+    });
     this.setState({
       showPriceModal: true,
     });
   };
 
   savePrice = () => {
+    analytics.track(`a_toggle_price_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_price_modal",
+      product_id: this.state.product.id,
+      open: false,
+      product_prices: this.state.prices,
+    });
     this.setState({
       showPriceModal: false,
       product: {
@@ -200,9 +234,9 @@ class EditProduct extends Component {
           screenProps={this.props.screenProps}
           closeButton={false}
           segment={{
-            str: "MyWebsite Back Button",
+            str: "Edit Product Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "open_my_website",
+            source: "open_edit_product",
             source_action: "a_go_back",
           }}
           showTopRightButtonIcon={"settings"}
@@ -218,12 +252,7 @@ class EditProduct extends Component {
         />
         <InputScrollView
           {...ScrollView.props}
-          contentContainerStyle={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // height: "100%",
-          }}
+          contentContainerStyle={styles.inputScrollViewStyle}
         >
           <ScrollView
             horizontal
@@ -293,7 +322,7 @@ class EditProduct extends Component {
           <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
             <TouchableOpacity
               onPress={() => {
-                this.productNameInput.focus();
+                this.state.productNameInput.focus();
               }}
               style={editProductStyles.feildView}
               disabled={this.props.saving}
@@ -314,9 +343,15 @@ class EditProduct extends Component {
                   style={editProductStyles.subText}
                   value={this.state.product.name}
                   ref={(input) => {
-                    this.productNameInput = input;
+                    this.state.productNameInput = input;
                   }}
                   onChangeText={(text) => {
+                    analytics.track(`a_product_name`, {
+                      source: "open_edit_product",
+                      source_action: "a_product_name",
+                      product_id: this.state.product.id,
+                      product_name: text,
+                    });
                     this.setState({
                       product: {
                         ...this.state.product,
@@ -340,7 +375,9 @@ class EditProduct extends Component {
                   {translate("price")}
                 </Text>
                 <Text style={editProductStyles.subText}>
-                  {this.state.product.prices.length > 0
+                  {this.state.product &&
+                  this.state.product.prices &&
+                  this.state.product.prices.length > 0
                     ? this.state.product.prices
                         .map((pr) => pr.currency + " " + pr.price)
                         .join(", ")
@@ -351,7 +388,7 @@ class EditProduct extends Component {
             <TouchableOpacity
               disabled={this.props.saving}
               onPress={() => {
-                this.productDescInput.focus();
+                this.state.productDescInput.focus();
               }}
               style={editProductStyles.feildView}
             >
@@ -369,9 +406,15 @@ class EditProduct extends Component {
                   multiline={true}
                   value={this.state.product.description_en}
                   ref={(input) => {
-                    this.productDescInput = input;
+                    this.state.productDescInput = input;
                   }}
                   onChangeText={(text) => {
+                    analytics.track(`a_product_description`, {
+                      source: "open_edit_product",
+                      source_action: "a_product_description",
+                      product_id: this.state.product.id,
+                      product_description: text,
+                    });
                     this.setState({
                       product: {
                         ...this.state.product,
@@ -446,6 +489,11 @@ class EditProduct extends Component {
                   style={editProductStyles.countryEachView}
                   key={ctr.country}
                   onPress={() => {
+                    analytics.track(`a_switch_country`, {
+                      source: "open_edit_product",
+                      source_action: "a_switch_country",
+                      product_country: ctr.country,
+                    });
                     this.setState({
                       activeCountryCurrency: ctr.currency,
                     });
@@ -475,6 +523,8 @@ class EditProduct extends Component {
                 placeholderTextColor={"#75647C"}
                 keyboardType={"numeric"}
                 value={
+                  this.state.product &&
+                  this.state.product.prices &&
                   this.state.product.prices.find(
                     (pr) => pr.currency === this.state.activeCountryCurrency
                   ) &&
@@ -485,14 +535,18 @@ class EditProduct extends Component {
                     .price.toString()
                 }
                 onChangeText={(text) => {
-                  console.log("text", text);
+                  analytics.track(`a_product_price`, {
+                    source: "open_edit_product",
+                    source_action: "a_product_price",
+                    product_country: this.state.activeCountryCurrency,
+                    product_price: text,
+                  });
                   const elementsIndex = this.state.prices.findIndex(
                     (element) =>
                       element.currency === this.state.activeCountryCurrency
                   );
 
                   let newArray = [...this.state.prices];
-                  console.log("elementsIndex", elementsIndex);
                   if (elementsIndex === -1) {
                     newArray.push({
                       currency: this.state.activeCountryCurrency,

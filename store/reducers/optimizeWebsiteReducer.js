@@ -154,10 +154,10 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
       };
     }
     case actionTypes.SET_WEB_PRODUCTS: {
-      let webproducts = state.webproducts;
+      // let webproducts = state.webproducts;
       return {
         ...state,
-        webproducts: [action.payload, ...webproducts],
+        webproducts: [...action.payload],
       };
     }
     case actionTypes.SAVE_PRODUCT_MEDIA: {

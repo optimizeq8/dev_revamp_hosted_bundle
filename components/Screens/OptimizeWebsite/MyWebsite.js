@@ -114,7 +114,14 @@ class MyWebsite extends Component {
     this.setState({ isVisible: visibile });
   };
   goToSelectProduct = () => {
-    this.props.navigation.navigate("MyWebsiteSelectProducts");
+    analytics.track(`a_add_more_products`, {
+      source: "open_my_website",
+      source_action: "a_add_more_products",
+    });
+    this.props.navigation.navigate("MyWebsiteSelectProducts", {
+      source: "open_my_website",
+      source_action: "a_add_more_products",
+    });
   };
 
   renderEachProduct = (item) => {
@@ -130,9 +137,19 @@ class MyWebsite extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("EditProduct", { product: item });
+          analytics.track(`a_select_product_to_edit`, {
+            source: "oprn_my_website",
+            source_action: "a_select_product_to_edit",
+            product_id: item.id,
+          });
+          this.props.navigation.navigate("EditProduct", {
+            product: item,
+            source: "oprn_my_website",
+            source_action: "a_select_product_to_edit",
+          });
         }}
         style={myWebsiteStyles.productCard}
+        key={item.id}
       >
         <Image
           style={myWebsiteStyles.productImage}
@@ -258,8 +275,8 @@ class MyWebsite extends Component {
           horizontal={false}
           data={this.props.webproducts}
           keyExtractor={(item, index) => {
-            if (item) {
-              return item.imageId;
+            if (item && item.id) {
+              return item.id.toString();
             }
             return index;
           }}

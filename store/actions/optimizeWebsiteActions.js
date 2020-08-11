@@ -433,22 +433,21 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
       })
       .then((data) => {
         console.log("data save", data);
-        // analytics.track(`a_submit_my_website_products`, {
-        //   source: "open_my_website",
-        //   source_action: "a_submit_my_website_products",
-        //   new: false,
-        //   action_status: data.success ? "success" : "failure",
-        //   error_description: !data.success && data.message,
-        //   webproductsToAdd,
-        //   insta_handle,
-        // });
+        analytics.track(`a_submit_my_website_products`, {
+          source: "open_select_product",
+          source_action: "a_submit_my_website_products",
+
+          action_status: data.data ? "success" : "failure",
+          // error_description: !data.success && data.message,
+          webproductsToAdd,
+        });
         // showMessage({
         //   type: data.success ? "success" : "warning",
         //   message: data.message,
         // });
 
         NavigationService.navigate("MyWebsite", {
-          source: "open_my_website",
+          source: "open_select_product",
           source_action: "a_submit_my_website_products",
         });
 
@@ -506,23 +505,16 @@ export const deleteWebProduct = (product_id) => {
         return response.data;
       })
       .then((data) => {
-        // analytics.track(`a_submit_my_website_products`, {
-        //   source: "open_my_website",
-        //   source_action: "a_submit_my_website_products",
-        //   new: false,
-        //   action_status: data.success ? "success" : "failure",
-        //   error_description: !data.success && data.message,
-        //   webproductsToAdd,
-        //   insta_handle,
-        // });
-        // showMessage({
-        //   type: data.success ? "success" : "warning",
-        //   message: data.message,
-        // });
+        analytics.track(`a_delete_product`, {
+          source: "open_edit_product",
+          source_action: "a_delete_product",
+          action_status: data === 204 ? "success" : "failure",
+          // error_description:  data.message,
+        });
         if (data === 204) {
           NavigationService.navigate("MyWebsite", {
-            source: "open_my_website",
-            source_action: "a_submit_my_website_products",
+            source: "open_edit_product",
+            source_action: "a_delete_product",
           });
           return dispatch({
             type: actionTypes.DELETE_WEB_PRODUCT,
@@ -538,7 +530,7 @@ export const deleteWebProduct = (product_id) => {
 };
 
 export const saveSingleWebProduct = (product_id, info) => {
-  console.log("product_id", product_id);
+  // console.log("product_id", product_id);
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
@@ -552,10 +544,17 @@ export const saveSingleWebProduct = (product_id, info) => {
       )
       .then((res) => res.data)
       .then((data) => {
+        analytics.track(`a_save_product_detail`, {
+          source: "open_edit_product",
+          source_action: "a_save_product_detail",
+          product_id,
+          product: info,
+          action_status: data.data ? "success" : "failure",
+        });
         // console.log("data save product", data);
         NavigationService.navigate("MyWebsite", {
-          source: "open_my_website",
-          source_action: "a_submit_my_website_products",
+          source: "open_edit_product",
+          source_action: "a_save_product_detail",
         });
         dispatch({
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
@@ -606,7 +605,13 @@ export const saveSingleMedia = (
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("data save media", data);
+        // console.log("data save media", data);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: data.data ? "success" : "failure",
+        });
         onToggleModal(false);
         return dispatch({
           type: actionTypes.SAVE_PRODUCT_MEDIA,
@@ -621,6 +626,13 @@ export const saveSingleMedia = (
       .catch((err) => {
         loading(0);
         onToggleModal(false);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: "failure",
+          error_description: err.response || err.message,
+        });
         console.log("saveSingleWebProduct error", err.response || err.message);
       });
   };
