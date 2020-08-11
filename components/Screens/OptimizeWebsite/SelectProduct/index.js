@@ -29,12 +29,26 @@ import { SafeAreaView } from "react-navigation";
 
 class ProductSelect extends React.Component {
   componentDidMount() {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track(`open_select_product`, {
+      source,
+      source_action,
+      timestamp: new Date().getTime(),
+    });
     this.props.getInstagramPostInitialWebsite(
       this.props.mainBusiness.insta_handle
     );
     // if (this.props.edit) {
     this.props.getWebProductsToHide(this.props.mainBusiness.businessid);
     // }
+
     this.setState({
       cartList: this.props.webproducts,
       counter: this.props.webproducts.length + 1,

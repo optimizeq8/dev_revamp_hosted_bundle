@@ -85,4 +85,10 @@ export default StyleSheet.create({
   icon: {
     marginLeft: 15,
   },
+  inputScrollViewStyle: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    // height: "100%",
+  },
 });
