@@ -793,9 +793,17 @@ class AdDesign extends Component {
     }
     if (coverError) {
       showMessage({
-        message: `Please ${
-          this.props.data.cover && !this.props.storyAdCover ? "upload" : "add"
-        } a cover and a logo`,
+        message: translate(
+          `Please ${
+            this.props.data.cover && !this.props.storyAdCover ? "upload" : "add"
+          } a cover and a logo`
+        ),
+        type: "warning",
+      });
+    }
+    if (headlineError) {
+      showMessage({
+        message: translate(`Please add a promotional message`),
         type: "warning",
       });
     }
