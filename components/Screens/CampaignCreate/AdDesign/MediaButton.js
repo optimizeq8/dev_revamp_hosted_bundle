@@ -7,6 +7,7 @@ import styles from "./styles";
 import EditCameraIcon from "../../../../assets/SVGs/CameraCircleOutline";
 import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
 import segmentEventTrack from "../../../segmentEventTrack";
+import NavigationService from "../../../../NavigationService";
 export default class MediaButton extends Component {
   render() {
     let {
@@ -93,9 +94,8 @@ export default class MediaButton extends Component {
             ]}
             onPress={() => {
               // this._pickImage();
-              console.log(navigateToCover);
               if (navigateToCover) {
-                setTheState({ showCover: true });
+                NavigationService.navigate("AdCover");
               } else {
                 segmentEventTrack(
                   `Button clicked to  ${

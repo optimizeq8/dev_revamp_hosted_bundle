@@ -1140,11 +1140,7 @@ class AdDesign extends Component {
     //   this.toggleAdSelection
     // );
     if (!this.props.currentCampaignSteps.includes("AdDetails")) {
-      this.props.saveCampaignSteps(
-        this.adType === "StoryAd"
-          ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
-          : ["Dashboard", "AdObjective", "AdDesign"]
-      );
+      this.props.saveCampaignSteps(["Dashboard", "AdObjective", "AdDesign"]);
     }
     const source = this.props.navigation.getParam(
       "source",

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerButtonsContainer: {
-    display: "flex",
+    // display: "flex",
     flexDirection: "row",
   },
   errorMsg: {
@@ -72,11 +72,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignSelf: "center",
-    height: "100%",
+    height: "95%",
     width: "90%",
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 10,
   },
   mainSafeArea: {
     height: "100%",
@@ -165,7 +166,6 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#0000",
-    // flex: 1,
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -220,6 +220,11 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderTopWidth: 0,
     elevation: 0,
+    justifyContent: "flex-end",
+    padding: 20,
+    alignItems: "center",
+    width: "100%",
+    top: 10,
   },
   subtitleHeading: {
     color: "#fff",

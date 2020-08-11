@@ -35,7 +35,8 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
-import InfoIcon from "../../../../assets/SVGs/InfoIcon";
+import PenIcon from "../../../../assets/SVGs/Pen";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -56,8 +57,6 @@ import { SaveFormat } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
-import PenIcon from "../../../../assets/SVGs/Pen";
-
 class AdCover extends Component {
   static navigationOptions = {
     header: null,
@@ -749,12 +748,13 @@ class AdCover extends Component {
           );
         }
       } else {
-        this.props.navigation.push("AdDesign", {
-          rejected: this.rejected,
-          selectedCampaign: this.selectedCampaign,
-          source: "ad_cover",
-          source_action: "a_submit_ad_cover",
-        });
+        this.props.navigation.goBack();
+        // .push("AdDesign", {
+        //   rejected: this.rejected,
+        //   selectedCampaign: this.selectedCampaign,
+        //   source: "ad_cover",
+        //   source_action: "a_submit_ad_cover",
+        // });
       }
     }
   };
@@ -854,13 +854,36 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainSafeArea}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
         <NavigationEvents
           onDidFocus={this.handleAdCoverFocus}
           onDidBlur={this.handleAdCoverBlur}
         />
-
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={styles.gradient}
+        />
         <Container style={styles.container}>
-          {!this.props.rejCampaign ? null : (
+          {!this.props.rejCampaign ? (
+            <TopStepsHeader
+              screenProps={this.props.screenProps}
+              closeButton={false}
+              segment={{
+                str: "Ad Design Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname },
+                source: "ad_cover",
+                source_action: "a_go_back",
+              }}
+              icon="snapchat"
+              actionButton={this.handleBackButton}
+              currentScreen="Compose"
+              title={"Compose Ad"}
+            />
+          ) : (
             <CustomHeader
               screenProps={this.props.screenProps}
               closeButton={false}
@@ -876,6 +899,7 @@ class AdCover extends Component {
           )}
           <KeyboardAwareScrollView
             contentContainerStyle={styles.contentContainer}
+            extraScrollHeight={80}
           >
             <TouchableOpacity
               disabled={this.props.coverLoading}
@@ -898,7 +922,7 @@ class AdCover extends Component {
               <Text style={styles.infoText}>Where does the cover show?</Text>
             </TouchableOpacity>
             <View style={styles.placeholder}>
-              {!logo ? (
+              {logo ? (
                 <TouchableOpacity
                   disabled={this.props.coverLoading}
                   onPress={this.handleLogo}
@@ -986,48 +1010,41 @@ class AdCover extends Component {
                 screenProps={this.props.screenProps}
               />
             </View>
-          </KeyboardAwareScrollView>
-
-          <Footer
-            style={[
-              styles.footerStyle,
-              {
-                justifyContent: "flex-end",
-              },
-            ]}
-          >
-            {cover && (this.props.coverLoading || this.state.isVisible) ? (
-              <View style={styles.loadingContainer}>
-                <AnimatedCircularProgress
-                  size={50}
-                  width={5}
-                  fill={Math.round(this.state.loaded)}
-                  rotation={360}
-                  lineCap="round"
-                  tintColor={globalColors.orange}
-                  backgroundColor="rgba(255,255,255,0.3)"
-                  adDetails={false}
-                />
-                <Text style={styles.uplaodPercentageText}>
-                  {Math.round(this.state.loaded, 2)} %
-                </Text>
-              </View>
-            ) : cover ? (
-              <View style={[styles.footerButtonsContainer]}>
+            <Footer style={[styles.footerStyle]}>
+              {cover && (this.props.coverLoading || this.state.isVisible) ? (
+                <View style={styles.loadingContainer}>
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={Math.round(this.state.loaded)}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                  />
+                  <Text style={styles.uplaodPercentageText}>
+                    {Math.round(this.state.loaded, 2)} %
+                  </Text>
+                </View>
+              ) : cover ? (
+                // <View style={[styles.footerButtonsContainer]}>
                 <LowerButton
                   screenProps={this.props.screenProps}
                   function={this._handleSubmission}
                   style={[styles.proceedButtonRTL]}
                   checkmark
                   purpleViolet={false}
+                  bottom={1}
                 />
-              </View>
-            ) : (
-              <Text style={styles.footerTextStyle}>
-                {translate("Please add media to proceed")}
-              </Text>
-            )}
-          </Footer>
+              ) : (
+                // </View>
+                <Text style={styles.footerTextStyle}>
+                  {translate("Please add media to proceed")}
+                </Text>
+              )}
+            </Footer>
+          </KeyboardAwareScrollView>
         </Container>
         <MediaModal
           _pickImage={(mediaEditor, editImage) =>

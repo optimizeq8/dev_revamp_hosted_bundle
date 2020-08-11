@@ -311,11 +311,12 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        navigation.navigate("AdDesign", {
-          rejected,
-          source: "ad_cover",
-          source_action: "a_submit_ad_cover",
-        });
+        navigation.goBack();
+        //   .navigate("AdDesign", {
+        //     rejected,
+        //     source: "ad_cover",
+        //     source_action: "a_submit_ad_cover",
+        //   });
       })
       .catch((err) => {
         loading(0);
