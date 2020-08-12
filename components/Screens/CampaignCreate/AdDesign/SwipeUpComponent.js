@@ -41,6 +41,7 @@ export default class SwipeUpComponent extends Component {
       objective,
       media,
     } = this.props;
+
     if (adType === "CollectionAd") {
       this.setState({
         swipeUpProps: {
@@ -274,7 +275,6 @@ export default class SwipeUpComponent extends Component {
                 swipeUpProps={this.state.swipeUpProps}
                 screenProps={this.props.screenProps}
                 navigation={this.props.navigation}
-                toggle={this.toggle}
                 toggle={this.toggle}
               />
             ) : (
