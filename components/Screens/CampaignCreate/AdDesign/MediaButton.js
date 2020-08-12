@@ -21,7 +21,7 @@ export default class MediaButton extends Component {
       type,
       disabled,
       navigateToCover,
-      setTheState,
+      rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
 
@@ -95,7 +95,7 @@ export default class MediaButton extends Component {
             onPress={() => {
               // this._pickImage();
               if (navigateToCover) {
-                NavigationService.navigate("AdCover");
+                NavigationService.navigate("AdCover", { rejected });
               } else {
                 segmentEventTrack(
                   `Button clicked to  ${

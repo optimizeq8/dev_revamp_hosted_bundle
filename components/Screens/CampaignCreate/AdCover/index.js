@@ -99,7 +99,7 @@ class AdCover extends Component {
       selectingLogo: false,
       showExampleModal: false,
     };
-    this.selectedCampaign = this.props.rejCampaign;
+    this.selectedCampaign = this.props.rejCampaign || this.props.data;
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
@@ -126,12 +126,12 @@ class AdCover extends Component {
           : this.props.campaign_id,
         coverHeadline: this.rejected
           ? this.selectedCampaign.story_headline
-          : !this.props.data
+          : !this.selectedCampaign
           ? "Headline"
-          : this.props.data.coverHeadline,
+          : this.selectedCampaign.coverHeadline,
       },
-      objective: this.props.data
-        ? this.props.data.objective
+      objective: this.selectedCampaign
+        ? this.selectedCampaign.objective
         : this.rejected
         ? this.selectedCampaign.objective
         : "",
@@ -176,22 +176,22 @@ class AdCover extends Component {
         cover: this.selectedCampaign.story_preview_media,
       });
     } else if (
-      this.props.data &&
+      this.selectedCampaign &&
       Object.keys(this.state.campaignInfo)
         .map((key) => {
-          if (this.props.data.hasOwnProperty(key)) return true;
+          if (this.selectedCampaign.hasOwnProperty(key)) return true;
         })
         .includes(true)
     ) {
-      let rep = { ...this.state.campaignInfo, ...this.props.data };
+      let rep = { ...this.state.campaignInfo, ...this.selectedCampaign };
 
       this.setState({
         ...this.state,
-        ...this.props.data,
+        ...this.selectedCampaign,
         campaignInfo: {
           ...this.state.campaignInfo,
-          logo: this.props.data.logo,
-          coverHeadline: this.props.data.coverHeadline,
+          logo: this.selectedCampaign.logo,
+          coverHeadline: this.selectedCampaign.coverHeadline,
         },
       });
     }
@@ -239,11 +239,15 @@ class AdCover extends Component {
       headlineRejectionUpload: true,
     });
 
-    !this.rejected &&
-      this.props.save_campaign_info({
-        coverHeadline,
-        headlineRejectionUpload: true,
-      });
+    !this.rejected
+      ? this.props.save_campaign_info({
+          coverHeadline,
+          headlineRejectionUpload: true,
+        })
+      : this.props.setRejectedCampaignData({
+          ...this.props.rejCampaign,
+          story_headline: coverHeadline,
+        });
   };
   pick = async () => {
     let status = await this.askForPermssion();
@@ -402,13 +406,17 @@ class AdCover extends Component {
           segmentEventTrack("Selected Story Ad Logo serialization", {
             ...serialization,
           });
-        !this.rejected &&
-          this.props.save_campaign_info({
-            logo: editedLogo.uri !== "" ? editedLogo.uri : "",
-            logoRejectionUpload: editedLogo.uri !== "",
-            uneditedLogoUri,
-            logoSerialization: serialization,
-          });
+        !this.rejected
+          ? this.props.save_campaign_info({
+              logo: editedLogo.uri !== "" ? editedLogo.uri : "",
+              logoRejectionUpload: editedLogo.uri !== "",
+              uneditedLogoUri,
+              logoSerialization: serialization,
+            })
+          : this.props.setRejectedCampaignData({
+              ...this.props.rejCampaign,
+              story_logo_media: editedLogo.uri,
+            });
       }
     }
   };
@@ -541,13 +549,17 @@ class AdCover extends Component {
                 position: "top",
                 type: "success",
               });
-              !this.rejected &&
-                this.props.save_campaign_info({
-                  cover: result.uri,
-                  coverRejectionUpload: true,
-                  uneditedCoverUri,
-                  coverSerialization: result.serialization,
-                });
+              !this.rejected
+                ? this.props.save_campaign_info({
+                    cover: result.uri,
+                    coverRejectionUpload: true,
+                    uneditedCoverUri,
+                    coverSerialization: result.serialization,
+                  })
+                : this.props.setRejectedCampaignData({
+                    ...this.props.rejCampaign,
+                    story_preview_media: result.uri,
+                  });
             })
             .catch((error) => {
               this.onToggleModal(false);
@@ -725,16 +737,16 @@ class AdCover extends Component {
             this.state.coverRejectionUpload ||
             this.state.headlineRejectionUpload)) ||
         (!this.rejected &&
-          this.props.data &&
-          (!this.props.data.hasOwnProperty("formattedCover") ||
-            JSON.stringify(this.props.data.formattedCover) !==
+          this.selectedCampaign &&
+          (!this.selectedCampaign.hasOwnProperty("formattedCover") ||
+            JSON.stringify(this.selectedCampaign.formattedCover) !==
               JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
           const segmentInfo = {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            campaign_id: this.props.data.campaign_id,
+            campaign_id: this.selectedCampaign.campaign_id,
             campaign_cover_headline: this.state.campaignInfo.coverHeadline,
           };
           await this.props.uploadStoryAdCover(
@@ -783,7 +795,7 @@ class AdCover extends Component {
       timestamp: new Date().getTime(),
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
-      campaign_id: this.props.data.campaign_id,
+      campaign_id: this.selectedCampaign.campaign_id,
     });
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
@@ -802,7 +814,7 @@ class AdCover extends Component {
    * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
    */
   handleRejectionData = () => {
-    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
+    // if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
     this.props.navigation.goBack();
   };
 
@@ -849,7 +861,6 @@ class AdCover extends Component {
   };
   render() {
     let { cover, coverHeadlineError, logoSerialization } = this.state;
-
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
     return (
@@ -868,35 +879,20 @@ class AdCover extends Component {
           style={styles.gradient}
         />
         <Container style={styles.container}>
-          {!this.props.rejCampaign ? (
-            <TopStepsHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_cover",
-                source_action: "a_go_back",
-              }}
-              icon="snapchat"
-              actionButton={this.handleBackButton}
-              currentScreen="Compose"
-              title={"Compose Ad"}
-            />
-          ) : (
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_cover",
-                source_action: "a_go_back",
-              }}
-              actionButton={this.handleRejectionData}
-              title={"Compose Ad"}
-            />
-          )}
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Ad Design Back Button",
+              obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_cover",
+              source_action: "a_go_back",
+            }}
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            currentScreen="Compose"
+            title={"Compose Ad"}
+          />
           <KeyboardAwareScrollView
             contentContainerStyle={styles.contentContainer}
             extraScrollHeight={80}
@@ -1000,7 +996,7 @@ class AdCover extends Component {
 
               <PenIconBrand
                 disabled={this.props.coverLoading}
-                data={this.props.data}
+                data={this.selectedCampaign}
                 coverHeadlineError={coverHeadlineError}
                 changeHeadline={this.changeHeadline}
                 coverHeadline={coverHeadline}
@@ -1134,5 +1130,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetRejectedCampaignData()),
   tutorialLinks: (screenName, appLang) =>
     dispatch(actionCreators.tutorialLinks(screenName, appLang)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdCover);

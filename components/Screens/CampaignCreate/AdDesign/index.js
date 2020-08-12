@@ -144,8 +144,10 @@ class AdDesign extends Component {
       coverError: false,
     };
     this.adType = this.props.adType;
-    this.selectedCampaign = this.props.rejCampaign || this.props.data;
     this.rejected = this.props.navigation.getParam("rejected", false);
+    this.selectedCampaign = this.rejected
+      ? this.props.rejCampaign
+      : this.props.data;
   }
 
   componentWillUnmount() {
@@ -364,6 +366,13 @@ class AdDesign extends Component {
 
     if (!isEqual(prevProps.storyAdAttachment, this.props.storyAdAttachment)) {
       this.setState({ storyAdAttachChanged: true });
+    }
+    if (
+      JSON.stringify(prevProps.rejCampaign) !==
+        JSON.stringify(this.props.rejCampaign) &&
+      this.props.rejCampaign
+    ) {
+      this.selectedCampaign = this.props.rejCampaign;
     }
   }
 
@@ -617,7 +626,9 @@ class AdDesign extends Component {
           : {
               cover: this.rejected
                 ? this.selectedCampaign.story_preview_media
-                : this.props.data.cover,
+                : this.props.data
+                ? this.props.data.cover
+                : "//",
               logo: this.rejected
                 ? this.selectedCampaign.story_logo_media
                 : this.props.data.logo,
@@ -702,7 +713,10 @@ class AdDesign extends Component {
 
     let coverError =
       this.adType === "StoryAd" &&
-      (!this.props.data.cover || !this.props.storyAdCover);
+      (this.rejected
+        ? this.selectedCampaign.story_preview_media === ""
+        : (this.props.data && !this.props.data.cover) ||
+          !this.props.storyAdCover);
     if (brandHeadlineError) {
       showMessage({
         message: translate(brandHeadlineError),
@@ -795,7 +809,9 @@ class AdDesign extends Component {
       showMessage({
         message: translate(
           `Please ${
-            this.props.data.cover && !this.props.storyAdCover ? "upload" : "add"
+            this.props.data && this.props.data.cover && !this.props.storyAdCover
+              ? "upload"
+              : "add"
           } a cover and a logo`
         ),
         type: "warning",
@@ -980,6 +996,7 @@ class AdDesign extends Component {
     if (!this.props.navigation.isFocused()) {
       return false;
     }
+    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
     this.state.storyAdCards.storyAdSelected
       ? this.setState({
           ...this.state,
@@ -1840,5 +1857,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
   tutorialLinks: (screenName, appLang) =>
     dispatch(actionCreators.tutorialLinks(screenName, appLang)),
+  resetRejectedCampaignData: () =>
+    dispatch(actionCreators.resetRejectedCampaignData()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

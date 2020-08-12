@@ -37,12 +37,9 @@ class RejectedSnapchatInfo extends Component {
         ? "APP_TRAFFIC"
         : selectedCampaign.objective;
     setRejectedCampaignData({ ...selectedCampaign, savedObjective });
-    navigation.navigate(
-      selectedCampaign.campaign_type === "StoryAd" ? "AdCover" : "AdDesign",
-      {
-        rejected: true,
-      }
-    );
+    navigation.navigate("AdDesign", {
+      rejected: true,
+    });
   };
 
   render() {

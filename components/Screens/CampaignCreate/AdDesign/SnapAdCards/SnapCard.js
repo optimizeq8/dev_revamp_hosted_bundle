@@ -64,7 +64,11 @@ class SnapCard extends Component {
             <RNImageOrCacheImage
               media={
                 snapCardInfo.item.id === -1
-                  ? this.props.data.cover || "//"
+                  ? rejected
+                    ? this.props.rejCampaign
+                      ? this.props.rejCampaign.story_preview_media
+                      : "//"
+                    : (this.props.data && this.props.data.cover) || "//"
                   : rejected ||
                     !this.props.loadingStoryAdsArray[snapCardInfo.index]
                   ? snapCardInfo.item["media"]
@@ -127,6 +131,7 @@ class SnapCard extends Component {
               screenProps={this.props.screenProps}
               navigateToCover={snapCardInfo.item.id === -1}
               setTheState={this.props.setTheState}
+              rejected={rejected}
             />
           ) : (
             <TouchableOpacity
@@ -204,6 +209,7 @@ const mapStateToProps = (state) => ({
   storyAdsArray: state.campaignC.storyAdsArray,
   loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray,
   data: state.campaignC.data,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 const mapDispatchToProps = (dispatch) => ({

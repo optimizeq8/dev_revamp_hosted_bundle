@@ -76,7 +76,8 @@ export default class MediaModal extends Component {
               >
                 {options}
                 {((!storyAdCards.storyAdSelected && media !== "//") ||
-                  storyAdCards.selectedStoryAd.media !== "//") && (
+                  (storyAdCards.selectedStoryAd.media !== "//" &&
+                    storyAdCards.selectedStoryAd.media.includes("file:/"))) && (
                   <MediaOptions
                     _pickImage={this.props._pickImage}
                     title={"Edit Media"}
