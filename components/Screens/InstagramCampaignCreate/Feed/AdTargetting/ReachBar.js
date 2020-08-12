@@ -25,13 +25,13 @@ class ReachBar extends Component {
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress
-          size={85}
+          size={hp(10)}
           width={8}
           fill={this.props.total_reach}
           rotation={360}
           lineCap="round"
           style={[styles.chart]}
-          backgroundColor="rgba(255,255,255,0.3)"
+          backgroundColor="rgba(0,0,0,0.1)"
           adDetails={true}
         />
         <View style={styles.chartItems}>
