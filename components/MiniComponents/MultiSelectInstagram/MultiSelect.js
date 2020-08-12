@@ -33,6 +33,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import LowerButton from "../LowerButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -118,7 +119,7 @@ class MultiSelectList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <LocationIcon width={110} height={110} fill="#fff" />
+            <LocationIcon width={110} height={110} fill={globalColors.rum} />
             <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>
@@ -151,9 +152,12 @@ class MultiSelectList extends Component {
                 closeCategoryModal={() =>
                   this.setState({ openCountryModal: false })
                 }
+                customColors={{
+                  chipColor: globalColors.rum,
+                }}
               />
               {isNull(this.props.country_regions) && (
-                <ActivityIndicator color="#FFFF" size="large" />
+                <ActivityIndicator color={globalColors.rum} size="large" />
               )}
             </View>
           </View>

@@ -1234,8 +1234,7 @@ class InstagramFeedAdTargetting extends Component {
             }}
             icon="instagram"
             currentScreen="Audience"
-            actionButton={this.handleBackButton}
-            navigation={this.editCampaign ? undefined : this.props.navigation}
+            actionButton={() => this.handleBackButton()}
             title={this.editCampaign ? "Audience" : "Campaign details"}
           />
         ) : (

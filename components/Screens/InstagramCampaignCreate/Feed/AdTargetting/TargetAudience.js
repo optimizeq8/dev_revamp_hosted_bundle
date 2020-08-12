@@ -328,7 +328,7 @@ export class TargetAudience extends Component {
                     width={25}
                     height={25}
                     style={{
-                      color: globalColors.orange,
+                      color: globalColors.purple,
                       right: 2,
                     }}
                   />

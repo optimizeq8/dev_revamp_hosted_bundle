@@ -20,6 +20,7 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectInterests extends Component {
   state = { interests: null, customInterests: null, open: false };
@@ -138,113 +139,114 @@ class SelectInterests extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
-      >
-        <View style={styles.container}>
-          <View style={styles.dataContainer}>
-            <InterestsIcon width={100} height={100} fill="#fff" />
-            <Text style={styles.title}> {translate("Select Interests")}</Text>
-            <Text style={styles.subHeadings}>
-              {translate("Choose Interests that best describe your audience")}
-            </Text>
+      <View style={styles.container}>
+        <View style={styles.dataContainer}>
+          <InterestsIcon width={100} height={100} fill={globalColors.rum} />
+          <Text style={styles.title}> {translate("Select Interests")}</Text>
+          <Text style={styles.subHeadings}>
+            {translate("Choose Interests that best describe your audience")}
+          </Text>
 
-            <View style={styles.slidercontainer}>
-              <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <GradientButton
-                  style={[
-                    styles.toggleSelectorButton,
-                    {
-                      opacity: this.props.country_code === "" ? 0.5 : 1,
-                    },
-                  ]}
-                  onPressAction={() => this.setState({ open: true })}
-                >
-                  <PlusCircle width={53} height={53} />
-                </GradientButton>
-                <GradientButton
-                  style={[
-                    styles.toggleSelectorButton,
-                    {
-                      opacity: this.props.country_code === "" ? 0.5 : 1,
-                    },
-                  ]}
-                  onPressAction={() => this.setState({ open2: true })}
-                >
-                  <Icon
-                    style={{ color: "#fff" }}
-                    name="edit"
-                    type="MaterialIcons"
-                  />
-                </GradientButton>
-              </View>
-              {this.props.selectedItems.length > 0 && (
-                <Text style={styles.interestSection}>
-                  {translate("Pre-defined interests")}
-                </Text>
-              )}
-              <Picker
-                showDropDowns={true}
-                readOnlyHeadings={true}
-                screenProps={this.props.screenProps}
-                searchPlaceholderText={translate("Search Interests")}
-                data={this.state.interests}
-                uniqueKey={"id"}
-                displayKey={"name"}
-                subKey="subcat"
-                selectChildren={true}
-                open={this.state.open}
-                onSelectedItemsChange={this.props.onSelectedItemsChange}
-                onSelectedItemObjectsChange={
-                  this.props.onSelectedItemObjectsChange
-                }
-                showIcon={false}
-                selectedItems={this.props.selectedItems}
-                single={false}
-                screenName={"Select Interests"}
-                closeCategoryModal={() => this.setState({ open: false })}
-              />
-              {this.props.selectedCustomInterests.length > 0 && (
-                <Text style={styles.interestSection}>
-                  {translate("Custom interests")}
-                </Text>
-              )}
-              <Picker
-                showDropDowns={false}
-                readOnlyHeadings={true}
-                screenProps={this.props.screenProps}
-                searchPlaceholderText={translate("Search for custom Interests")}
-                data={this.state.customInterests}
-                uniqueKey={"id"}
-                displayKey={"name"}
-                subKey="subcat"
-                selectChildren={true}
-                open={this.state.open2}
-                onSelectedItemsChange={this.props.onSelectedItemsChange}
-                onSelectedItemObjectsChange={
-                  this.props.onSelectedItemObjectsChange
-                }
-                showIcon={false}
-                selectedItems={this.props.selectedCustomInterests}
-                single={false}
-                screenName={"Select Interests"}
-                closeCategoryModal={() => this.setState({ open2: false })}
-                customSearch={this.handleCustomInterests}
-              />
-              {isNull(this.state.interests) && (
-                <ActivityIndicator color="#FFFF" size="large" />
-              )}
+          <View style={styles.slidercontainer}>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <GradientButton
+                style={[
+                  styles.toggleSelectorButton,
+                  {
+                    opacity: this.props.country_code === "" ? 0.5 : 1,
+                  },
+                ]}
+                onPressAction={() => this.setState({ open: true })}
+              >
+                <PlusCircle width={53} height={53} />
+              </GradientButton>
+              <GradientButton
+                style={[
+                  styles.toggleSelectorButton,
+                  {
+                    opacity: this.props.country_code === "" ? 0.5 : 1,
+                  },
+                ]}
+                onPressAction={() => this.setState({ open2: true })}
+              >
+                <Icon
+                  style={{ color: "#fff" }}
+                  name="edit"
+                  type="MaterialIcons"
+                />
+              </GradientButton>
             </View>
+            {this.props.selectedItems.length > 0 && (
+              <Text style={styles.interestSection}>
+                {translate("Pre-defined interests")}
+              </Text>
+            )}
+            <Picker
+              showDropDowns={true}
+              readOnlyHeadings={true}
+              screenProps={this.props.screenProps}
+              searchPlaceholderText={translate("Search Interests")}
+              data={this.state.interests}
+              uniqueKey={"id"}
+              displayKey={"name"}
+              subKey="subcat"
+              selectChildren={true}
+              open={this.state.open}
+              onSelectedItemsChange={this.props.onSelectedItemsChange}
+              onSelectedItemObjectsChange={
+                this.props.onSelectedItemObjectsChange
+              }
+              showIcon={false}
+              selectedItems={this.props.selectedItems}
+              single={false}
+              screenName={"Select Interests"}
+              customColors={{
+                chipColor: globalColors.rum,
+              }}
+              closeCategoryModal={() => this.setState({ open: false })}
+            />
+            {this.props.selectedCustomInterests.length > 0 && (
+              <Text style={styles.interestSection}>
+                {translate("Custom interests")}
+              </Text>
+            )}
+            <Picker
+              showDropDowns={false}
+              readOnlyHeadings={true}
+              screenProps={this.props.screenProps}
+              searchPlaceholderText={translate("Search for custom Interests")}
+              data={this.state.customInterests}
+              uniqueKey={"id"}
+              displayKey={"name"}
+              subKey="subcat"
+              selectChildren={true}
+              open={this.state.open2}
+              onSelectedItemsChange={this.props.onSelectedItemsChange}
+              onSelectedItemObjectsChange={
+                this.props.onSelectedItemObjectsChange
+              }
+              showIcon={false}
+              selectedItems={this.props.selectedCustomInterests}
+              single={false}
+              screenName={"Select Interests"}
+              customColors={{
+                chipColor: globalColors.rum,
+              }}
+              closeCategoryModal={() => this.setState({ open2: false })}
+              customSearch={this.handleCustomInterests}
+            />
+            {isNull(this.state.interests) && (
+              <ActivityIndicator color={globalColors.rum} size="large" />
+            )}
           </View>
-          <LowerButton
-            screenProps={this.props.screenProps}
-            checkmark={true}
-            style={styles.button}
-            function={() => this.handleSideMenu()}
-          />
         </View>
-      </SafeAreaView>
+        <LowerButton
+          screenProps={this.props.screenProps}
+          checkmark={true}
+          style={styles.button}
+          function={() => this.handleSideMenu()}
+        />
+      </View>
     );
   }
 }

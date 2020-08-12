@@ -22,6 +22,7 @@ import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
 import { upperFirst } from "lodash";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectVersions extends Component {
   state = {
@@ -97,130 +98,120 @@ class SelectVersions extends Component {
     const { translate } = this.props.screenProps;
 
     return (
-      <SafeAreaView
-        forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
-      >
-        <View style={styles.container}>
-          <View style={[styles.dataContainer]}>
-            <Icon
-              name="versions"
-              type="Octicons"
-              style={styles.selectVersionIcon}
-            />
-            <Text style={styles.title}> {translate("Select OS Versions")}</Text>
-            <Text style={styles.subHeadings}>
-              {translate(
-                `Choose which {{osType}} versions you want to target`,
-                { osType: this.props.OSType }
-              )}
-            </Text>
-
-            <View style={styles.slidercontainer}>
-              <View style={styles.choiceContainer}>
-                <GradientButton
-                  style={styles.toggleSelectorButton}
-                  onPressAction={() => this.VersionSection._toggleSelector()}
-                >
-                  <PlusCircle width={53} height={53} />
-                </GradientButton>
-                <Text style={styles.inputtext}>
-                  {translate("Choose Minimum and Maximum versions")}
-                </Text>
-              </View>
-              <ScrollView style={styles.scrollContainer}>
-                <SectionedMultiSelect
-                  ref={(ref) => (this.VersionSection = ref)}
-                  loading={this.state.versions.length === 0 ? true : false}
-                  items={this.state.versions}
-                  uniqueKey="name"
-                  selectToggleIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="menu-down"
-                      style={styles.indicator}
-                    />
-                  }
-                  selectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle"
-                      style={[styles.itemCircles]}
-                    />
-                  }
-                  unselectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle-outline"
-                      style={styles.itemCircles}
-                    />
-                  }
-                  hideSelect
-                  hideConfirm
-                  subKey="children"
-                  styles={SectionStyle}
-                  stickyFooterComponent={
-                    <LowerButton
-                      screenProps={this.props.screenProps}
-                      checkmark
-                      style={styles.button}
-                      function={() => this.VersionSection._submitSelection()}
-                    />
-                  }
-                  modalWithSafeAreaView={true}
-                  headerComponent={
-                    <View style={styles.headerComponent}>
-                      <BackButton
-                        style={{ top: 0, left: 0 }}
-                        navigation={() =>
-                          this.VersionSection._cancelSelection()
-                        }
-                      />
-                    </View>
-                  }
-                  colors={colors}
-                  searchPlaceholderText={translate("Search Versions")}
-                  searchTextFontFamily={{
-                    fontFamily: "montserrat-regular",
-                  }}
-                  searchIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="magnify"
-                      style={[styles.indicator]}
-                    />
-                  }
-                  iconKey="icon"
-                  showRemoveAll
-                  selectText="Select Versions"
-                  showDropDowns={false}
-                  noItemsComponent={
-                    <Text>{translate("Sorry, No Versions Available")}</Text>
-                  }
-                  onCancel={() => {
-                    this.onSelectedItemsChange([], "version");
-                  }}
-                  selectChildren
-                  modalAnimationType="fade"
-                  onSelectedItemsChange={(items) =>
-                    this.onSelectedItemsChange(items, "version")
-                  }
-                  selectedItems={this.state.selectedItems}
-                />
-                {this.state.versions.length === 0 && (
-                  <LoadingScreen top={-10} />
-                )}
-              </ScrollView>
-            </View>
-          </View>
-          <LowerButton
-            screenProps={this.props.screenProps}
-            style={[styles.button]}
-            checkmark={true}
-            function={() => this._handleSubmission()}
+      <View style={styles.container}>
+        <View style={[styles.dataContainer]}>
+          <Icon
+            name="versions"
+            type="Octicons"
+            style={styles.selectVersionIcon}
           />
+          <Text style={styles.title}> {translate("Select OS Versions")}</Text>
+          <Text style={styles.subHeadings}>
+            {translate(`Choose which {{osType}} versions you want to target`, {
+              osType: this.props.OSType,
+            })}
+          </Text>
+
+          <View style={styles.slidercontainer}>
+            <View style={styles.choiceContainer}>
+              <GradientButton
+                style={styles.toggleSelectorButton}
+                onPressAction={() => this.VersionSection._toggleSelector()}
+              >
+                <PlusCircle width={53} height={53} />
+              </GradientButton>
+              <Text style={styles.inputtext}>
+                {translate("Choose Minimum and Maximum versions")}
+              </Text>
+            </View>
+            <ScrollView style={styles.scrollContainer}>
+              <SectionedMultiSelect
+                ref={(ref) => (this.VersionSection = ref)}
+                loading={this.state.versions.length === 0 ? true : false}
+                items={this.state.versions}
+                uniqueKey="name"
+                selectToggleIconComponent={
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="menu-down"
+                    style={styles.indicator}
+                  />
+                }
+                selectedIconComponent={
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="circle"
+                    style={[styles.itemCircles]}
+                  />
+                }
+                unselectedIconComponent={
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="circle-outline"
+                    style={styles.itemCircles}
+                  />
+                }
+                hideSelect
+                hideConfirm
+                subKey="children"
+                styles={SectionStyle}
+                stickyFooterComponent={
+                  <LowerButton
+                    screenProps={this.props.screenProps}
+                    checkmark
+                    style={styles.button}
+                    function={() => this.VersionSection._submitSelection()}
+                  />
+                }
+                modalWithSafeAreaView={true}
+                headerComponent={
+                  <View style={styles.headerComponent}>
+                    <BackButton
+                      style={{ top: 0, left: 0 }}
+                      navigation={() => this.VersionSection._cancelSelection()}
+                    />
+                  </View>
+                }
+                colors={{ ...colors, chipColor: globalColors.rum }}
+                searchPlaceholderText={translate("Search Versions")}
+                searchTextFontFamily={{
+                  fontFamily: "montserrat-regular",
+                }}
+                searchIconComponent={
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="magnify"
+                    style={[styles.indicator]}
+                  />
+                }
+                iconKey="icon"
+                showRemoveAll
+                selectText="Select Versions"
+                showDropDowns={false}
+                noItemsComponent={
+                  <Text>{translate("Sorry, No Versions Available")}</Text>
+                }
+                onCancel={() => {
+                  this.onSelectedItemsChange([], "version");
+                }}
+                selectChildren
+                modalAnimationType="fade"
+                onSelectedItemsChange={(items) =>
+                  this.onSelectedItemsChange(items, "version")
+                }
+                selectedItems={this.state.selectedItems}
+              />
+              {this.state.versions.length === 0 && <LoadingScreen top={-10} />}
+            </ScrollView>
+          </View>
         </View>
-      </SafeAreaView>
+        <LowerButton
+          screenProps={this.props.screenProps}
+          style={[styles.button]}
+          checkmark={true}
+          function={() => this._handleSubmission()}
+        />
+      </View>
     );
   }
 }
