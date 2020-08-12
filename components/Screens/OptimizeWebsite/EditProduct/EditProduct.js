@@ -560,12 +560,27 @@ class EditProduct extends Component {
                     source={ctr.flag}
                     style={[
                       editProductStyles.flagImage,
-                      this.state.activeCountryCurrency === ctr.currency &&
-                        editProductStyles.flagActiveImage,
+                      this.state.prices.find(
+                        (pr) => pr.currency === ctr.currency
+                      ) && editProductStyles.flagActiveImage,
+                      this.state.activeCountryCurrency === ctr.currency && {
+                        borderColor: globalColors.orange,
+                        borderWidth: 2,
+                      },
                     ]}
                   />
-                  <Text style={editProductStyles.countryText}>
-                    {this.state.activeCountryCurrency === ctr.currency &&
+                  <Text
+                    style={[
+                      editProductStyles.countryText,
+                      this.state.activeCountryCurrency === ctr.currency && {
+                        color: globalColors.orange,
+                      },
+                    ]}
+                  >
+                    {(this.state.prices.find(
+                      (pr) => pr.currency === ctr.currency
+                    ) ||
+                      this.state.activeCountryCurrency === ctr.currency) &&
                       translate(ctr.label)}
                   </Text>
                 </TouchableOpacity>
@@ -610,6 +625,10 @@ class EditProduct extends Component {
                       price: text,
                       id: "",
                     });
+                  }
+                  // To remove that country
+                  else if (text === "") {
+                    newArray.splice(elementsIndex, 1);
                   } else {
                     newArray[elementsIndex] = {
                       currency: newArray[elementsIndex].currency,
@@ -627,7 +646,8 @@ class EditProduct extends Component {
               <GradientButton
                 style={editProductStyles.saveButton}
                 purpleViolet
-                text={"SAVE"}
+                text={translate("Save")}
+                uppercase
                 onPressAction={this.savePrice}
               />
             </View>

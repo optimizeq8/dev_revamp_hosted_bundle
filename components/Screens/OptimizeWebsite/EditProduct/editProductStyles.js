@@ -89,12 +89,14 @@ const styles = StyleSheet.create({
     color: "#75647C",
     marginHorizontal: 15,
     fontFamily: "montserrat-bold",
+    textAlign: "left",
   },
   priceSubText: {
     fontSize: 12,
     fontFamily: "montserrat-regular",
     color: "#75647C",
     marginHorizontal: 15,
+    textAlign: "left",
   },
   countryOuterView: {
     display: "flex",
@@ -116,6 +118,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#9300FF",
     marginVertical: 4,
+    width: 60,
+    textAlign: "center",
+    height: 70,
   },
   bottomView: {
     display: "flex",
@@ -141,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-regular",
     paddingHorizontal: 15,
+    textAlign: "left",
   },
   saveButton: {
     width: "30%",
