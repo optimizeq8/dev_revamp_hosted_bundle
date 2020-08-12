@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import analytics from "@segment/analytics-react-native";
@@ -98,7 +99,8 @@ class EditProduct extends Component {
     this.props.navigation.navigate("ManageProducts");
   };
   topRightButtonFunction = () => {
-    this.props.deleteWebProduct(this.state.product.id);
+    this.createButtonAlert();
+    // this.props.deleteWebProduct(this.state.product.id);
   };
   goBack = () => {
     this.props.navigation.goBack();
@@ -242,6 +244,29 @@ class EditProduct extends Component {
         media,
       },
     });
+  };
+  createButtonAlert = () => {
+    const { translate } = this.props.screenProps;
+    analytics.track(`open_delete_product_prompt`, {
+      source: "open_edit_product",
+      source_action: "a_delete_product",
+      product_id: this.state.product.id,
+    });
+    return Alert.alert(
+      translate("Delete Product"),
+      translate("Are you sure you want to delete this product ?"),
+      [
+        {
+          text: translate("YES"),
+          onPress: () => this.props.deleteWebProduct(this.state.product.id),
+        },
+        {
+          text: translate("Cancel"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
   };
   render() {
     const { translate } = this.props.screenProps;
