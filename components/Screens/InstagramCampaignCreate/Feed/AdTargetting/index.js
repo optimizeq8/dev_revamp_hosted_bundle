@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content } from "native-base";
+import { Text, Container, Content, Row, Grid } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
@@ -42,7 +42,8 @@ import {
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
-
+import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
+import { globalColors } from "../../../../../GlobalStyles";
 class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
     header: null,
@@ -112,7 +113,12 @@ class InstagramFeedAdTargetting extends Component {
     }
   }
   handleBackButton = () => {
-    this.props.navigation.goBack();
+    if (!this.props.navigation.isFocused()) {
+      return false;
+    }
+    if (this.state.sidemenustate) {
+      this._handleSideMenuState(false);
+    } else this.props.navigation.goBack();
     return true;
   };
   async componentDidMount() {
@@ -1205,147 +1211,146 @@ class InstagramFeedAdTargetting extends Component {
     }
     interests_names = interests_names.join(", ");
     return (
-      <Sidemenu
-        onChange={(isOpen) => {
-          if (isOpen === false) {
-            this._handleSideMenuState(isOpen);
-            this._calcReach();
-          }
-        }}
-        disableGestures={true}
-        menu={this.state.sidemenustate && menu}
-        menuPosition={I18nManager.isRTL ? "left" : "right"}
-        openMenuOffset={wp("85%")}
-        isOpen={this.state.sidemenustate}
-        // edgeHitWidth={-60}
-      >
-        <View
+      <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
+        <SafeAreaView
           style={[
-            styles.safeArea,
             {
-              backgroundColor: this.editCampaign
-                ? "transparent"
-                : "rgba(0,0,0,0.75)",
+              backgroundColor: this.editCampaign ? "transparent" : "#fff",
             },
           ]}
-        >
-          <SafeAreaView
-            style={[
-              {
-                backgroundColor: this.editCampaign ? "transparent" : "#fff",
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        {!this.editCampaign ? (
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Instagram Feed Ad Details Back Button",
+              obj: {
+                businessname: this.props.mainBusiness.businessname,
               },
-            ]}
-            forceInset={{ bottom: "never", top: "always" }}
-          />
-          <NavigationEvents
-            onDidFocus={() => {
-              if (
-                !this.props.currentCampaignSteps.includes(
-                  "InstagramAdPaymentReview"
-                ) &&
-                !this.editCampaign
-              ) {
-                this.props.saveCampaignSteps([
-                  "Dashboard",
-                  "InstagramFeedAdObjective",
-                  "InstagramFeedAdDesign",
-                  "InstagramFeedAdTargetting",
-                ]);
-              }
-              Segment.screenWithProperties("Instagram Feed Ad Targeting", {
-                category: "Campaign Creation",
-                channel: "instagram",
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign_id,
-                step: 3,
-                business_name: this.props.mainBusiness.businessname,
-              });
+              source: "ad_targeting",
+              source_action: "a_go_back",
             }}
+            icon="instagram"
+            currentScreen="Audience"
+            actionButton={this.handleBackButton}
+            navigation={this.editCampaign ? undefined : this.props.navigation}
+            title={this.editCampaign ? "Audience" : "Campaign details"}
           />
-          <Container style={styles.mainContainer}>
-            <Container style={styles.container}>
-              {!this.editCampaign ? (
-                <TopStepsHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  segment={{
-                    str: "Instagram Feed Ad Details Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname,
-                    },
-                    source: "ad_targeting",
-                    source_action: "a_go_back",
-                  }}
-                  icon="instagram"
-                  currentScreen="Audience"
-                  actionButton={
-                    this.editCampaign
-                      ? () => this.props.navigation.goBack()
-                      : undefined
+        ) : (
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Instagram Feed Ad Details Back Button",
+              obj: {
+                businessname: this.props.mainBusiness.businessname,
+              },
+              source: "ad_targeting",
+              source_action: "a_go_back",
+            }}
+            actionButton={this.handleBackButton}
+            showTopRightButton={
+              this.editCampaign &&
+              this.state.campaignInfo.campaign_end === "0" &&
+              new Date(this.state.campaignInfo.end_time) > new Date() &&
+              !this.props.campaignEnded &&
+              this.props.mainBusiness.user_role !== "3"
+            }
+            topRightButtonFunction={() => {
+              this.setState({ startEditing: !startEditing });
+            }}
+            topRightButtonText={translate("Edit")}
+            navigation={this.editCampaign ? undefined : this.props.navigation}
+            title={this.editCampaign ? "Audience" : "Campaign details"}
+          />
+        )}
+        <View style={{ height: "100%" }}>
+          <Sidemenu
+            onChange={(isOpen) => {
+              if (isOpen === false) {
+                this._handleSideMenuState(isOpen);
+                this._calcReach();
+              }
+            }}
+            disableGestures={true}
+            menu={this.state.sidemenustate && menu}
+            menuPosition={I18nManager.isRTL ? "left" : "right"}
+            openMenuOffset={wp(100)}
+            isOpen={this.state.sidemenustate}
+          >
+            <View style={[styles.safeArea]}>
+              <NavigationEvents
+                onDidFocus={() => {
+                  if (
+                    !this.props.currentCampaignSteps.includes(
+                      "InstagramAdPaymentReview"
+                    ) &&
+                    !this.editCampaign
+                  ) {
+                    this.props.saveCampaignSteps([
+                      "Dashboard",
+                      "InstagramFeedAdObjective",
+                      "InstagramFeedAdDesign",
+                      "InstagramFeedAdTargetting",
+                    ]);
                   }
-                  navigation={
-                    this.editCampaign ? undefined : this.props.navigation
-                  }
-                  title={this.editCampaign ? "Audience" : "Campaign details"}
-                />
-              ) : (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  segment={{
-                    str: "Instagram Feed Ad Details Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname,
-                    },
-                    source: "ad_targeting",
-                    source_action: "a_go_back",
-                  }}
-                  actionButton={
-                    this.editCampaign
-                      ? () => this.props.navigation.goBack()
-                      : undefined
-                  }
-                  showTopRightButton={
-                    this.editCampaign &&
-                    this.state.campaignInfo.campaign_end === "0" &&
-                    new Date(this.state.campaignInfo.end_time) > new Date() &&
-                    !this.props.campaignEnded &&
-                    this.props.mainBusiness.user_role !== "3"
-                  }
-                  topRightButtonFunction={() => {
-                    this.setState({ startEditing: !startEditing });
-                  }}
-                  topRightButtonText={translate("Edit")}
-                  navigation={
-                    this.editCampaign ? undefined : this.props.navigation
-                  }
-                  title={this.editCampaign ? "Audience" : "Campaign details"}
-                />
-              )}
+                  Segment.screenWithProperties("Instagram Feed Ad Targeting", {
+                    category: "Campaign Creation",
+                    channel: "instagram",
+                  });
+                  Segment.trackWithProperties("Viewed Checkout Step", {
+                    checkout_id: this.props.campaign_id,
+                    step: 3,
+                    business_name: this.props.mainBusiness.businessname,
+                  });
+                }}
+              />
+              <Container style={styles.mainContainer}>
+                <Container style={styles.container}>
+                  <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.contentContainer}
+                  >
+                    {!this.editCampaign ? (
+                      <>
+                        <Row
+                          size={-1}
+                          style={{
+                            alignItems: "center",
+                            paddingHorizontal: 20,
+                          }}
+                        >
+                          <WalletIcon
+                            width={30}
+                            heoght={30}
+                            fill={globalColors.rum}
+                          />
+                          <Text
+                            uppercase
+                            style={[
+                              styles.subHeadings,
+                              { paddingHorizontal: 10 },
+                            ]}
+                          >
+                            {translate("Set your budget")}
+                          </Text>
+                        </Row>
 
-              <Content
-                scrollEnabled={false}
-                contentContainerStyle={styles.contentContainer}
-              >
-                {!this.editCampaign ? (
-                  <>
-                    <Text uppercase style={styles.subHeadings}>
-                      {translate("Set your budget")}
-                    </Text>
-                    <BudgetCards
-                      value={this.state.value}
-                      recBudget={this.state.recBudget}
-                      lifetime_budget_micro={
-                        this.state.campaignInfo.lifetime_budget_micro
-                      }
-                      budgetOption={this.state.budgetOption}
-                      _handleBudget={this._handleBudget}
-                      screenProps={this.props.screenProps}
-                    />
+                        <BudgetCards
+                          value={this.state.value}
+                          recBudget={this.state.recBudget}
+                          lifetime_budget_micro={
+                            this.state.campaignInfo.lifetime_budget_micro
+                          }
+                          budgetOption={this.state.budgetOption}
+                          _handleBudget={this._handleBudget}
+                          screenProps={this.props.screenProps}
+                        />
 
-                    {/*---------leave if in case we want to use it again---------*/}
-                    {/* <View style={styles.sliderContainer}>
+                        {/*---------leave if in case we want to use it again---------*/}
+                        {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
@@ -1377,57 +1382,59 @@ class InstagramFeedAdTargetting extends Component {
                       />
                     </View>
                   */}
-                  </>
-                ) : (
-                  startEditing && (
-                    <View style={styles.sliderPlaceHolder}>
-                      <Text style={styles.subHeadings}>
-                        {translate(
-                          "Editing budget and duration\nis currently unavailable"
-                        )}
+                      </>
+                    ) : (
+                      startEditing && (
+                        <View style={styles.sliderPlaceHolder}>
+                          <Text style={styles.subHeadings}>
+                            {translate(
+                              "Editing budget and duration\nis currently unavailable"
+                            )}
+                          </Text>
+                        </View>
+                      )
+                    )}
+                    {startEditing && (
+                      <Text
+                        uppercase
+                        style={[styles.subHeadings, { width: "60%" }]}
+                      >
+                        {translate("Who would you like to reach?")}
                       </Text>
-                    </View>
-                  )
-                )}
-                {startEditing && (
-                  <Text
-                    uppercase
-                    style={[styles.subHeadings, { width: "60%" }]}
-                  >
-                    {translate("Who would you like to reach?")}
-                  </Text>
-                )}
-                <TargetAudience
-                  screenProps={this.props.screenProps}
-                  _renderSideMenu={this._renderSideMenu}
-                  loading={this.props.loading}
-                  gender={this.state.selectedGender}
-                  targeting={this.state.campaignInfo.targeting}
-                  countries_names={countries_names}
-                  regions_names={regions_names}
-                  languages_names={languages_names}
-                  interests_names={interests_names}
-                  OSType={OSType}
-                  mainState={this.state}
-                  translate={translate}
-                  editCampaign={this.editCampaign}
-                  startEditing={startEditing}
-                />
+                    )}
+                    <TargetAudience
+                      screenProps={this.props.screenProps}
+                      _renderSideMenu={this._renderSideMenu}
+                      loading={this.props.loading}
+                      gender={this.state.selectedGender}
+                      targeting={this.state.campaignInfo.targeting}
+                      countries_names={countries_names}
+                      regions_names={regions_names}
+                      languages_names={languages_names}
+                      interests_names={interests_names}
+                      OSType={OSType}
+                      mainState={this.state}
+                      translate={translate}
+                      editCampaign={this.editCampaign}
+                      startEditing={startEditing}
+                    />
 
-                <ReachBar
-                  loading={this.props.loading}
-                  campaignInfo={campaignInfo}
-                  _handleSubmission={this._handleSubmission}
-                  startEditing={startEditing}
-                  campaignInfo={campaignInfo}
-                  editCampaign={this.editCampaign}
-                  screenProps={this.props.screenProps}
-                />
-              </Content>
-            </Container>
-          </Container>
+                    <ReachBar
+                      loading={this.props.loading}
+                      campaignInfo={campaignInfo}
+                      _handleSubmission={this._handleSubmission}
+                      startEditing={startEditing}
+                      campaignInfo={campaignInfo}
+                      editCampaign={this.editCampaign}
+                      screenProps={this.props.screenProps}
+                    />
+                  </Content>
+                </Container>
+              </Container>
+            </View>
+          </Sidemenu>
         </View>
-      </Sidemenu>
+      </View>
     );
   }
 }

@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content } from "native-base";
+import { Text, Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
@@ -50,6 +50,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { uniq, flatten } from "lodash";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
+import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1480,9 +1481,28 @@ class AdDetails extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Text uppercase style={styles.subHeadings}>
-                          {translate("Set your budget")}
-                        </Text>
+                        <Row
+                          size={-1}
+                          style={{
+                            alignItems: "center",
+                            paddingHorizontal: 20,
+                          }}
+                        >
+                          <WalletIcon
+                            width={30}
+                            heoght={30}
+                            fill={globalColors.rum}
+                          />
+                          <Text
+                            uppercase
+                            style={[
+                              styles.subHeadings,
+                              { paddingHorizontal: 10 },
+                            ]}
+                          >
+                            {translate("Set your budget")}
+                          </Text>
+                        </Row>
                         <BudgetCards
                           value={this.state.value}
                           recBudget={this.state.recBudget}

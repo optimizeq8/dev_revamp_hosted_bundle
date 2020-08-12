@@ -4,44 +4,49 @@ export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 5
+    paddingVertical: 10,
+    paddingTop: 5,
   },
   budgetCardsStyle: { alignSelf: "center" },
   budgetCardStyle: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff3",
-    borderRadius: 12,
-    borderColor: globalColors.orange,
+    backgroundColor: "#fff",
+    borderRadius: 40,
+    borderColor: globalColors.purple,
     borderWidth: 2.5,
     height: 50,
     marginHorizontal: 5,
-    width: 105
+    width: 105,
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 0 },
+    shadowRadius: 7,
+    shadowOpacity: 0.1,
   },
   budgetTextStyle: {
-    color: globalColors.orange,
+    color: globalColors.purple,
     fontFamily: "montserrat-bold",
-    fontSize: 18
+    fontSize: 18,
   },
   budget: {
     alignSelf: "center",
-    color: globalColors.orange,
+    color: globalColors.purple,
     fontSize: 19 / PixelRatio.getFontScale(),
     fontFamily: "montserrat-bold",
     textAlign: "center",
     width: "100%",
     paddingBottom: 0,
-    width: "100%"
+    width: "100%",
   },
   recIcon: {
     position: "absolute",
-    left: "50%",
+    left: "47%",
     bottom: "70%",
-    backgroundColor: globalColors.green,
+    backgroundColor: globalColors.orange,
     borderRadius: 50,
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

@@ -11,11 +11,11 @@ import { connect } from "react-redux";
 import MaskedView from "@react-native-community/masked-view";
 
 //icons
-import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
+import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
 import LocationIcon from "../../../../assets/SVGs/Location";
 import InterestsIcon from "../../../../assets/SVGs/Interests";
 import GenderIcon from "../../../../assets/SVGs/Gender";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline";
+import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
@@ -132,13 +132,13 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.geos[0].country_code ? (
-                  <GreenCheckmarkIcon
+                  <PurpleCheckmarkIcon
                     width={30}
                     height={30}
                     fill={globalColors.purple}
                   />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <PurplePlusIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -183,9 +183,9 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.geos.some((geo) => geo.region_id.length !== 0) ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
+                    <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={30} height={30} />
+                    <PurplePlusIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             ) : null}
@@ -215,9 +215,9 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.geos[0].country_code ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
+                  <PurpleCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <PurplePlusIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -249,9 +249,9 @@ export class TargetAudience extends Component {
                 {startEditing &&
                   (targeting.demographics[0].gender === "" ||
                   targeting.demographics[0].gender ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
+                    <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={30} height={30} />
+                    <PurplePlusIcon width={30} height={30} />
                   ))}
               </View>
             </TouchableOpacity>
@@ -279,9 +279,9 @@ export class TargetAudience extends Component {
 
               {startEditing &&
                 (targeting.demographics[0].max_age ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
+                  <PurpleCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <PurplePlusIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -309,9 +309,9 @@ export class TargetAudience extends Component {
               </View>
               {startEditing &&
                 (targeting.demographics[0].languages.length !== 0 ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
+                  <PurpleCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <PurplePlusIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -345,9 +345,9 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   {startEditing &&
                     (targeting.interests[0].category_id.length !== 0 ? (
-                      <GreenCheckmarkIcon width={30} height={30} />
+                      <PurpleCheckmarkIcon width={30} height={30} />
                     ) : (
-                      <PlusCircleIcon width={30} height={30} />
+                      <PurplePlusIcon width={30} height={30} />
                     ))}
                 </View>
               </TouchableOpacity>
@@ -381,9 +381,9 @@ export class TargetAudience extends Component {
               {startEditing &&
                 (targeting.devices[0].os_type === "" ||
                 targeting.devices[0].os_type ? (
-                  <GreenCheckmarkIcon width={30} height={30} />
+                  <PurpleCheckmarkIcon width={30} height={30} />
                 ) : (
-                  <PlusCircleIcon width={30} height={30} />
+                  <PurplePlusIcon width={30} height={30} />
                 ))}
             </TouchableOpacity>
 
@@ -422,9 +422,9 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.devices[0].os_version_min !== "" ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
+                    <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={30} height={30} />
+                    <PurplePlusIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             )}
@@ -462,9 +462,9 @@ export class TargetAudience extends Component {
 
                 {startEditing &&
                   (targeting.devices[0].marketing_name.length !== 0 ? (
-                    <GreenCheckmarkIcon width={30} height={30} />
+                    <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
-                    <PlusCircleIcon width={30} height={30} />
+                    <PurplePlusIcon width={30} height={30} />
                   ))}
               </TouchableOpacity>
             )}
