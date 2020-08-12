@@ -119,7 +119,7 @@ class MultiSelectList extends Component {
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <LocationIcon width={110} height={110} fill={globalColors.rum} />
+            <LocationIcon width={60} height={60} fill={globalColors.rum} />
             <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>
@@ -129,33 +129,37 @@ class MultiSelectList extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </GradientButton>
-              <Picker
-                showDropDowns={true}
-                readOnlyHeadings={false}
-                showRemoveAll={true}
-                screenProps={this.props.screenProps}
-                searchPlaceholderText={translate("Search Country")}
-                data={this.props.country_regions}
-                uniqueKey={"key"}
-                displayKey={"name"}
-                subKey="regions"
-                open={this.state.openCountryModal}
-                onSelectedItemsChange={this.props.onSelectedCountryRegionChange}
-                onSelectedItemObjectsChange={
-                  this.props.onSelectedCountryRegionsObjectsChange
-                }
-                single={false}
-                showIcon={true}
-                highlightChildren={true}
-                selectedItems={this.props.selectedItemsRegionsCountry}
-                screenName={"Select Country"}
-                closeCategoryModal={() =>
-                  this.setState({ openCountryModal: false })
-                }
-                customColors={{
-                  chipColor: globalColors.rum,
-                }}
-              />
+              <ScrollView>
+                <Picker
+                  showDropDowns={true}
+                  readOnlyHeadings={false}
+                  showRemoveAll={true}
+                  screenProps={this.props.screenProps}
+                  searchPlaceholderText={translate("Search Country")}
+                  data={this.props.country_regions}
+                  uniqueKey={"key"}
+                  displayKey={"name"}
+                  subKey="regions"
+                  open={this.state.openCountryModal}
+                  onSelectedItemsChange={
+                    this.props.onSelectedCountryRegionChange
+                  }
+                  onSelectedItemObjectsChange={
+                    this.props.onSelectedCountryRegionsObjectsChange
+                  }
+                  single={false}
+                  showIcon={true}
+                  highlightChildren={true}
+                  selectedItems={this.props.selectedItemsRegionsCountry}
+                  screenName={"Select Country"}
+                  closeCategoryModal={() =>
+                    this.setState({ openCountryModal: false })
+                  }
+                  customColors={{
+                    chipColor: globalColors.rum,
+                  }}
+                />
+              </ScrollView>
               {isNull(this.props.country_regions) && (
                 <ActivityIndicator color={globalColors.rum} size="large" />
               )}

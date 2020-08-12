@@ -1249,7 +1249,7 @@ class InstagramFeedAdTargetting extends Component {
               source: "ad_targeting",
               source_action: "a_go_back",
             }}
-            actionButton={this.handleBackButton}
+            actionButton={() => this.handleBackButton()}
             showTopRightButton={
               this.editCampaign &&
               this.state.campaignInfo.campaign_end === "0" &&

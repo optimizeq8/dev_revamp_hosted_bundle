@@ -181,60 +181,64 @@ class SelectInterests extends Component {
                 {translate("Pre-defined interests")}
               </Text>
             )}
-            <Picker
-              showDropDowns={true}
-              readOnlyHeadings={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search Interests")}
-              data={this.state.interests}
-              uniqueKey={"id"}
-              displayKey={"name"}
-              subKey="subcat"
-              selectChildren={true}
-              open={this.state.open}
-              onSelectedItemsChange={this.props.onSelectedItemsChange}
-              onSelectedItemObjectsChange={
-                this.props.onSelectedItemObjectsChange
-              }
-              showIcon={false}
-              selectedItems={this.props.selectedItems}
-              single={false}
-              screenName={"Select Interests"}
-              customColors={{
-                chipColor: globalColors.rum,
-              }}
-              closeCategoryModal={() => this.setState({ open: false })}
-            />
+            <ScrollView>
+              <Picker
+                showDropDowns={true}
+                readOnlyHeadings={true}
+                screenProps={this.props.screenProps}
+                searchPlaceholderText={translate("Search Interests")}
+                data={this.state.interests}
+                uniqueKey={"id"}
+                displayKey={"name"}
+                subKey="subcat"
+                selectChildren={true}
+                open={this.state.open}
+                onSelectedItemsChange={this.props.onSelectedItemsChange}
+                onSelectedItemObjectsChange={
+                  this.props.onSelectedItemObjectsChange
+                }
+                showIcon={false}
+                selectedItems={this.props.selectedItems}
+                single={false}
+                screenName={"Select Interests"}
+                customColors={{
+                  chipColor: globalColors.rum,
+                }}
+                closeCategoryModal={() => this.setState({ open: false })}
+              />
+            </ScrollView>
             {this.props.selectedCustomInterests.length > 0 && (
               <Text style={styles.interestSection}>
                 {translate("Custom interests")}
               </Text>
             )}
-            <Picker
-              showDropDowns={false}
-              readOnlyHeadings={true}
-              screenProps={this.props.screenProps}
-              searchPlaceholderText={translate("Search for custom Interests")}
-              data={this.state.customInterests}
-              uniqueKey={"id"}
-              displayKey={"name"}
-              subKey="subcat"
-              selectChildren={true}
-              open={this.state.open2}
-              onSelectedItemsChange={this.props.onSelectedItemsChange}
-              onSelectedItemObjectsChange={
-                this.props.onSelectedItemObjectsChange
-              }
-              showIcon={false}
-              selectedItems={this.props.selectedCustomInterests}
-              single={false}
-              screenName={"Select Interests"}
-              customColors={{
-                chipColor: globalColors.rum,
-              }}
-              closeCategoryModal={() => this.setState({ open2: false })}
-              customSearch={this.handleCustomInterests}
-            />
+            <ScrollView>
+              <Picker
+                showDropDowns={false}
+                readOnlyHeadings={true}
+                screenProps={this.props.screenProps}
+                searchPlaceholderText={translate("Search for custom Interests")}
+                data={this.state.customInterests}
+                uniqueKey={"id"}
+                displayKey={"name"}
+                subKey="subcat"
+                selectChildren={true}
+                open={this.state.open2}
+                onSelectedItemsChange={this.props.onSelectedItemsChange}
+                onSelectedItemObjectsChange={
+                  this.props.onSelectedItemObjectsChange
+                }
+                showIcon={false}
+                selectedItems={this.props.selectedCustomInterests}
+                single={false}
+                screenName={"Select Interests"}
+                customColors={{
+                  chipColor: globalColors.rum,
+                }}
+                closeCategoryModal={() => this.setState({ open2: false })}
+                customSearch={this.handleCustomInterests}
+              />
+            </ScrollView>
             {isNull(this.state.interests) && (
               <ActivityIndicator color={globalColors.rum} size="large" />
             )}

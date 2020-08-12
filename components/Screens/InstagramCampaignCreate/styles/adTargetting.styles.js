@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   subHeadings: {
     color: globalColors.rum,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: 14 / PixelRatio.getFontScale(),
     paddingVertical: 10,
     paddingHorizontal: 30,
     textAlign: "left",

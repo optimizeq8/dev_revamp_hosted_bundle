@@ -51,7 +51,15 @@ export class TargetAudience extends Component {
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <>
+      <View
+        style={{
+          height: editCampaign
+            ? heightPercentageToDP(60)
+            : heightPercentageToDP(100) > 800
+            ? "50%"
+            : "40%",
+        }}
+      >
         <MaskedView
           maskElement={
             <LinearGradient
@@ -70,7 +78,7 @@ export class TargetAudience extends Component {
             contentContainerStyle={{ paddingBottom: 100 }}
             style={[
               styles.targetList,
-              { height: editCampaign ? "100%" : "50%" },
+              { height: editCampaign ? heightPercentageToDP(60) : "90%" },
             ]}
           >
             <TouchableOpacity
@@ -408,7 +416,7 @@ export class TargetAudience extends Component {
               {translate("Scroll for more options")}
             </Text>
           )}
-      </>
+      </View>
     );
   }
 }
