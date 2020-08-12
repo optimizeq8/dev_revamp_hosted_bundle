@@ -545,6 +545,33 @@ class CampaignDetails extends Component {
                   </Text>
                 </View>
               )}
+            {selectedCampaign &&
+              selectedCampaign.review_status === "PENDING" &&
+              !this.campaignEndedOrNot(selectedCampaign) &&
+              !this.state.expand && (
+                <View
+                  style={[
+                    styles.remainingBudgetContainer,
+                    { backgroundColor: globalColors.white },
+                  ]}
+                >
+                  <Icon
+                    style={{ fontSize: 35, color: globalColors.orange }}
+                    type="Ionicons"
+                    name="ios-alert"
+                  />
+                  <Text
+                    style={[
+                      styles.remainingBudgetText,
+                      { color: globalColors.rum },
+                    ]}
+                  >
+                    {translate(
+                      "Please note that Snapchat's review process can take up to 72 hours or more"
+                    )}
+                  </Text>
+                </View>
+              )}
             {loading ? (
               <View style={{ margin: 5 }}>
                 <PlaceholderLine />
