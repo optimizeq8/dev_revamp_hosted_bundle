@@ -70,15 +70,6 @@ class EditProduct extends Component {
   };
   componentDidMount() {
     const product = this.props.navigation.getParam("product", {});
-    // console.log("product1", product);
-    this.setState({
-      product: { ...product },
-      prices:
-        product && product.prices
-          ? [...product.prices]
-          : [{ currency: "KWD", price: null, id: "" }],
-    });
-
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -93,6 +84,12 @@ class EditProduct extends Component {
       product_id: product.id,
       timestamp: new Date().getTime(),
     });
+    // console.log("product1", product);
+    this.setState({
+      product: { ...product },
+      prices: product && product.prices,
+    });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   goToManageProducts = () => {
@@ -576,6 +573,13 @@ class EditProduct extends Component {
                       source_action: "a_switch_country",
                       product_country: ctr.country,
                     });
+                    // check if the value for that field is empty then clean the input field
+                    const priceExist = this.state.prices.find(
+                      (pr) => pr.currency === ctr.currency
+                    );
+                    if (!priceExist || priceExist.price === "") {
+                      this.inputPrice.clear();
+                    }
                     this.setState({
                       activeCountryCurrency: ctr.currency,
                     });
@@ -619,13 +623,16 @@ class EditProduct extends Component {
                 placeholder={translate("Enter Price")}
                 placeholderTextColor={"#75647C"}
                 keyboardType={"numeric"}
+                ref={(inputField) => (this.inputPrice = inputField)}
                 value={
-                  this.state.product &&
-                  this.state.product.prices &&
-                  this.state.product.prices.find(
+                  this.state.prices &&
+                  this.state.prices.find(
                     (pr) => pr.currency === this.state.activeCountryCurrency
                   ) &&
-                  this.state.product.prices
+                  this.state.prices.find(
+                    (pr) => pr.currency === this.state.activeCountryCurrency
+                  ).price &&
+                  this.state.prices
                     .find(
                       (pr) => pr.currency === this.state.activeCountryCurrency
                     )
@@ -647,7 +654,7 @@ class EditProduct extends Component {
                   if (elementsIndex === -1) {
                     newArray.push({
                       currency: this.state.activeCountryCurrency,
-                      price: text,
+                      price: text.toString(),
                       id: "",
                     });
                   }
@@ -657,7 +664,7 @@ class EditProduct extends Component {
                   } else {
                     newArray[elementsIndex] = {
                       currency: newArray[elementsIndex].currency,
-                      price: text,
+                      price: text.toString(),
                       id: newArray[elementsIndex].id,
                     };
                   }
