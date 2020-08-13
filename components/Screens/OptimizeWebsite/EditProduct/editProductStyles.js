@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   safeAreaViewContainer: {
     // flex: 1,
   },
-  feildView: { display: "flex", flexDirection: "row", marginVertical: 8 },
+  feildView: { display: "flex", flexDirection: "row", marginVertical: 6 },
   plusIconView: {
     borderColor: globalColors.purple,
     borderWidth: 1,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#9300FF50",
+    backgroundColor: "#9300FF29",
   },
   subHeading: {
     fontFamily: "montserrat-bold",
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     color: "#75647C",
     marginTop: 4,
     textAlign: "left",
+    lineHeight: 14,
 
     // height: null,
   },
@@ -223,5 +224,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   imageHolderView: { marginTop: 10 },
+  checkBox: {
+    width: 17,
+    height: 17,
+  },
 });
 export default styles;

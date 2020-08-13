@@ -17,6 +17,7 @@ import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
 import isEmpty from "lodash/isEmpty";
 
+import CheckBox from "@react-native-community/checkbox";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -49,6 +50,7 @@ class EditProduct extends Component {
       showPriceModal: false,
       product: {
         prices: [],
+        // is_featured: true,
       },
       prices: [{ currency: "KWD", price: null, id: "" }],
       activeCountryCurrency: "KWD",
@@ -204,6 +206,7 @@ class EditProduct extends Component {
       description_ar: this.state.product.description_ar,
       instagram_pid: this.state.product.instagram_pid,
       media: this.state.product.media.map((md) => md.media_path),
+      is_featured: this.state.product.is_featured,
     };
     // console.log("info", info);
     this.props.saveSingleWebProduct(this.state.product.id, info);
@@ -438,7 +441,16 @@ class EditProduct extends Component {
                 <Text style={editProductStyles.subHeading}>
                   {translate("price")}
                 </Text>
-                <Text style={editProductStyles.subText}>
+                <Text
+                  style={[
+                    editProductStyles.subText,
+                    this.state.product &&
+                      this.state.product.prices &&
+                      this.state.product.prices.length > 0 && {
+                        fontFamily: "montserrat-regular-english",
+                      },
+                  ]}
+                >
                   {this.state.product &&
                   this.state.product.prices &&
                   this.state.product.prices.length > 0
@@ -488,6 +500,60 @@ class EditProduct extends Component {
                   }}
                 />
               </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={editProductStyles.feildView}
+              onPress={() => {
+                analytics.track(`a_toggle_is_featured`, {
+                  source: "open_edit_product",
+                  source_action: `a_toggle_is_featured`,
+                  product_id: this.state.product.id,
+                  product_is_featured:
+                    this.state.product.is_featured === 0 ? 1 : 0,
+                });
+                this.setState({
+                  product: {
+                    ...this.state.product,
+                    is_featured: this.state.product.is_featured === 0 ? 1 : 0,
+                  },
+                });
+              }}
+            >
+              <CheckBox
+                value={this.state.product.is_featured === 1}
+                onValueChange={(newValue) => {
+                  analytics.track(`a_toggle_is_featured`, {
+                    source: "open_edit_product",
+                    source_action: `a_toggle_is_featured`,
+                    product_id: this.state.product.id,
+                    product_is_featured: newValue ? 1 : 0,
+                  });
+                  this.setState({
+                    product: {
+                      ...this.state.product,
+                      is_featured: newValue ? 1 : 0,
+                    },
+                  });
+                }}
+                tintColors={{
+                  true: globalColors.purple,
+                  false: globalColors.rum,
+                }}
+                tintColor={globalColors.rum}
+                onCheckColor={globalColors.purple}
+                onTintColor={globalColors.purple}
+                onFillColor={"#9300FF29"}
+                lineWidth={1}
+                style={editProductStyles.checkBox}
+              />
+              <Text
+                style={[
+                  editProductStyles.fieldTextView,
+                  editProductStyles.subHeading,
+                ]}
+              >
+                {translate("FEATURED")}
+              </Text>
             </TouchableOpacity>
           </View>
         </InputScrollView>
