@@ -15,6 +15,8 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import ProgressBar from "../../../MiniComponents/ProgressBar";
+
 import {
   VESDK,
   Configuration,
@@ -37,7 +39,8 @@ import list from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
-import { RNFFmpeg, RNFFprobe } from "react-native-ffmpeg";
+import { RNFFmpeg, RNFFprobe, RNFFmpegConfig } from "react-native-ffmpeg";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -57,6 +60,10 @@ class Long_Form_Video extends Component {
       durationError: "",
       videoLoading: false,
       inputCallToAction: false,
+      duration: 0,
+      progress: 0,
+      cancelled: false,
+      serialization: null,
     };
   }
 
@@ -65,7 +72,6 @@ class Long_Form_Video extends Component {
     return true;
   };
   async componentDidMount() {
-    ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -91,6 +97,11 @@ class Long_Form_Video extends Component {
     this._willBlurSubscription && this._willBlurSubscription.remove();
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+  statisticsCallback = (statisticsData) => {
+    let progress = (statisticsData.time / (this.state.duration * 1000)) * 100;
+    this.setState({ progress });
+  };
+
   pick = async () => {
     return ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
@@ -100,31 +111,46 @@ class Long_Form_Video extends Component {
       aspect: [9, 16],
     })
       .then((res) => {
-        this.setState({ videoLoading: true });
         return res;
       })
       .catch((err) => {});
   };
-  _pickImage = async (mediaEditor) => {
-    let result = await this.pick();
+  _pickImage = async (editVideo = false) => {
+    console.log(editVideo);
+
+    let result = null;
+    if (!editVideo) {
+      result = await this.pick();
+    } else
+      result = {
+        uri: this.state.uneditedVideo,
+        cancelled: false,
+        duration: this.state.duration,
+        type: this.state.longformvideo_media_type,
+      };
     const { translate } = this.props.screenProps;
     let vConfiguration: Configuration = {
       sticker: {
         personalStickers: true,
         categories: [{ identifier: "imgly_sticker_category_shapes" }],
       },
+      export: {
+        serialization: {
+          enabled: true,
+          exportType: SerializationExportType.OBJECT,
+        },
+      },
     };
     if (result && !result.cancelled) {
-      console.log("result.duration", Math.round(result.duration / 1000) * 1000);
-      if (Math.round(result.duration / 1000) * 1000 >= 15000) {
+      let uneditedVideo = result.uri;
+      if (editVideo || Math.round(result.duration / 1000) * 1000 >= 15000) {
         VESDK.openEditor(
           { uri: result.uri },
           vConfiguration,
-          mediaEditor && mediaEditor.hasOwnProperty("serialization")
-            ? mediaEditor.serialization
-            : null
+          editVideo ? this.state.serialization : null
         )
           .then(async (manipResult) => {
+            this.setState({ videoLoading: true, cancelled: false });
             let newResult = {};
             if (manipResult) {
               let actualUri = manipResult.hasChanges
@@ -158,32 +184,31 @@ class Long_Form_Video extends Component {
                   duration: result.duration / 1000,
                 };
               }
-
+              this.setState({ duration: newResult.duration });
               let newSize = FileSystem.getInfoAsync(result.uri, {
                 size: true,
               });
+              RNFFmpegConfig.enableStatisticsCallback(this.statisticsCallback);
 
               if (newResult.width < 1080) {
                 let outputUri = actualUri.split("/");
                 await RNFFmpeg.execute(
-                  `-y -i ${actualUri} -vf scale=${
-                    // Math.floor(newResult.width / 9) !==
-                    // Math.floor(newResult.height / 16)
-                    //   ?
-                    "-2:1080"
-                    // : newResult.width < newResult.height
-                    // ? "1080:-2"
-                    // : "-2:1920" //-1 means scale inly by 1920 to keep aspect ratio
-                  } pad=640:480:0:40:violet -vcodec libx264 ${
-                    FileSystem.documentDirectory
-                  }${outputUri[outputUri.length - 1]}`
+                  `-y -i ${actualUri} -vf "scale=${
+                    newResult.width < newResult.height ? "1080:-2" : "-2:1080"
+                  }"  ${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
                 );
+                //if user cancelled the export, the above command
+                //will exit and the code after will execute
+                if (this.state.cancelled) {
+                  return;
+                }
                 newResult = await RNFFprobe.getMediaInformation(
                   `${FileSystem.documentDirectory}${
                     outputUri[outputUri.length - 1]
                   }`
                 );
-
                 newResult = {
                   width:
                     newResult.streams[
@@ -201,10 +226,18 @@ class Long_Form_Video extends Component {
                     outputUri[outputUri.length - 1]
                   }`
                 );
-                console.log(JSON.stringify(newResult, null, 2));
-              }
-
-              if (newSize.size > 524288000) {
+              } else if (Math.round(newResult.duration) * 1000 < 15000) {
+                showMessage({
+                  message: validateWrapper("duration", this.state.duration),
+                  type: "warning",
+                  position: "top",
+                });
+                this.setState({
+                  durationError: validateWrapper("duration", result.duration),
+                  longformvideo_media: null,
+                  videoLoading: false,
+                });
+              } else if (newSize.size > 524288000) {
                 showMessage({
                   message: translate("Video must be less than 500 Megabytes"),
                   type: "warning",
@@ -217,24 +250,12 @@ class Long_Form_Video extends Component {
                   longformvideo_media: null,
                   videoLoading: false,
                 });
-              } else if (newResult.width < 1080) {
-                showMessage({
-                  message: translate("Minimum width for video is 1080px"),
-                  type: "warning",
-                  position: "top",
-                });
-                this.setState({
-                  videoError: translate("Minimum width for video is 1080px"),
-                  longformvideo_media: null,
-                  videoLoading: false,
-                });
               }
               result.uri = newResult.hasOwnProperty("newUri")
                 ? newResult.newUri
                 : manipResult.hasChanges
                 ? manipResult.video
                 : result.uri;
-              result.serialization = manipResult.serialization;
               this.setState({
                 longformvideo_media: result.uri,
                 longformvideo_media_type: result.type.toUpperCase(),
@@ -243,24 +264,20 @@ class Long_Form_Video extends Component {
                 durationError: null,
                 videoError: null,
                 videoLoading: false,
-                serialization: result.serialization,
+                serialization: manipResult.serialization,
+                progress: 0,
+                uneditedVideo,
               });
             } else {
-              result.uri = newResult.hasOwnProperty("newUri")
-                ? newResult.newUri
-                : manipResult.hasChanges
-                ? manipResult.video
-                : result.uri;
-              result.serialization = manipResult.serialization;
+              showMessage({
+                message: translate("Please choose a video"),
+                type: "warning",
+                position: "top",
+              });
               this.setState({
-                longformvideo_media: result.uri,
-                longformvideo_media_type: result.type.toUpperCase(),
-                width: result.width,
-                height: result.height,
-                durationError: null,
-                videoError: null,
+                videoError: translate("Please choose a video"),
                 videoLoading: false,
-                serialization: result.serialization,
+                cancelled: false,
               });
             }
           })
@@ -286,12 +303,19 @@ class Long_Form_Video extends Component {
       });
       this.setState({
         videoError: translate("Please choose a video"),
-        longformvideo_media: null,
         videoLoading: false,
       });
     }
   };
-
+  handleVideoCaneling = () => {
+    this.setState({
+      longformvideo_media: null,
+      videoLoading: false,
+      cancelled: true,
+      progress: 0,
+    });
+    RNFFmpeg.cancel();
+  };
   _handleSubmission = () => {
     const videoError = validateWrapper("video", this.state.longformvideo_media);
     this.setState({
@@ -365,6 +389,7 @@ class Long_Form_Video extends Component {
     });
   };
   render() {
+    console.log(this.state.serialization);
     const { translate } = this.props.screenProps;
     return (
       <ScrollView
@@ -410,16 +435,24 @@ class Long_Form_Video extends Component {
               >
                 <Text> {translate("Change Video")}</Text>
               </Button>
+              <Button
+                onPress={() => {
+                  this._pickImage(true);
+                }}
+                style={styles.videoSelectButton}
+              >
+                <Text> {translate("Edit Video")}</Text>
+              </Button>
             </View>
           )}
 
           {!this.state.longformvideo_media && (
             <TouchableOpacity
-              onPress={this._pickImage}
+              onPress={() => this._pickImage()}
               style={styles.addVideoContainer}
             >
               <TouchableOpacity
-                onPress={this._pickImage}
+                onPress={() => this._pickImage()}
                 style={[styles.video]}
               >
                 <AddVidIcon
@@ -506,7 +539,41 @@ class Long_Form_Video extends Component {
           />
 
           <Modal isVisible={this.state.videoLoading}>
-            <LoadingScreen top={50} />
+            <Icon
+              name="close"
+              onPress={this.handleVideoCaneling}
+              type="AntDesign"
+              style={{
+                color: globalColors.white,
+
+                position: "absolute",
+                top: 30,
+              }}
+            />
+
+            <LoadingScreen top={60} />
+            <View
+              style={{ alignItems: "center", justifyContent: "space-evenly" }}
+            >
+              <ProgressBar
+                progress={this.state.progress / 100}
+                width={widthPercentageToDP(70)}
+                style={{ alignSelf: "center" }}
+                borderColor={globalColors.orange}
+                height={15}
+                borderRadius={50}
+                color={globalColors.orange}
+              />
+              <Text
+                style={{
+                  fontFamily: "montserrat-bold",
+                  color: "#fff",
+                  top: 10,
+                }}
+              >
+                {this.state.progress.toFixed(0)}%
+              </Text>
+            </View>
           </Modal>
           {this.props.swipeUpDestination && (
             <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
