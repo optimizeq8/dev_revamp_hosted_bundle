@@ -504,6 +504,13 @@ class EditProduct extends Component {
             <TouchableOpacity
               style={editProductStyles.feildView}
               onPress={() => {
+                analytics.track(`a_toggle_is_featured`, {
+                  source: "open_edit_product",
+                  source_action: `a_toggle_is_featured`,
+                  product_id: this.state.product.id,
+                  product_is_featured:
+                    this.state.product.is_featured === 0 ? 1 : 0,
+                });
                 this.setState({
                   product: {
                     ...this.state.product,
@@ -515,6 +522,12 @@ class EditProduct extends Component {
               <CheckBox
                 value={this.state.product.is_featured === 1}
                 onValueChange={(newValue) => {
+                  analytics.track(`a_toggle_is_featured`, {
+                    source: "open_edit_product",
+                    source_action: `a_toggle_is_featured`,
+                    product_id: this.state.product.id,
+                    product_is_featured: newValue ? 1 : 0,
+                  });
                   this.setState({
                     product: {
                       ...this.state.product,
