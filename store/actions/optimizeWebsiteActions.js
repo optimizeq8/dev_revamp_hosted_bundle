@@ -4,7 +4,6 @@ import createBaseUrl from "./createBaseUrl";
 import analytics from "@segment/analytics-react-native";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const verifyInstagramHandleWebsite = (insta_handle) => {
   return async (dispatch) => {
@@ -268,11 +267,6 @@ export const saveWebProductsToHide = (
             type: data.success ? "success" : "warning",
             message: data.message,
           });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo,
-          });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -316,11 +310,7 @@ export const saveWebProductsToHide = (
             insta_handle,
             weburl: data.weburl,
           });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo,
-          });
+
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -433,7 +423,6 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
         analytics.track(`a_submit_my_website_products`, {
           source: "open_select_product",
           source_action: "a_submit_my_website_products",
-
           action_status: data.data ? "success" : "failure",
           // error_description: !data.success && data.message,
           webproductsToAdd,
@@ -610,11 +599,6 @@ export const saveSingleMedia = (
           type: actionTypes.SAVE_PRODUCT_MEDIA,
           payload: data.data,
         });
-        // NavigationService.navigate("MyWebsite", {
-        //   source: "open_my_website",
-        //   source_action: "a_submit_my_website_products",
-
-        // });
       })
       .catch((err) => {
         loading(0);
