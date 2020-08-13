@@ -423,7 +423,6 @@ export const verifyEmail = (email, userInfo, navigation) => {
       type: actionTypes.VERIFY_EMAIL_LOADING,
       payload: true,
     });
-    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
       .post(`verifyEmail`, { email: email }, { timeout: 5000 })
       .then((res) => {
@@ -437,15 +436,6 @@ export const verifyEmail = (email, userInfo, navigation) => {
         return data;
       })
       .then((data) => {
-        analytics.track(`a_create_account`, {
-          mode_of_sign_up: "email",
-          source: "email_registration",
-          action_status: data.success ? "success" : "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-          anonymous_userId,
-          // source_action: "" Not sure
-        });
         if (data.success) {
           // Segment.trackWithProperties("Register Email Info", {
           //   category: "Sign Up",
@@ -463,21 +453,17 @@ export const verifyEmail = (email, userInfo, navigation) => {
             position: "top",
           });
         }
+        analytics.track(`a_create_account`, {
+          mode_of_sign_up: "email",
+          source: "email_registration",
+          action_status: data.success ? "success" : "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+          // source_action: "" Not sure
+        });
       })
       .catch((err) => {
         // console.log("verifyEmail ERROR", err.message || err.response);
-        analytics.track(`a_error`, {
-          error_page: "email_registration",
-          action_status: "failure",
-          timestamp: new Date().getTime(),
-          device_id: getUniqueId(),
-
-          source_action: "a_create_account",
-          error_description:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-        });
         showMessage({
           message:
             (err.message && !err.message.includes("timeout") && err.message) ||
@@ -489,6 +475,18 @@ export const verifyEmail = (email, userInfo, navigation) => {
         dispatch({
           type: actionTypes.VERIFY_EMAIL_LOADING,
           payload: false,
+        });
+        analytics.track(`a_error`, {
+          error_page: "email_registration",
+          action_status: "failure",
+          timestamp: new Date().getTime(),
+          device_id: getUniqueId(),
+
+          source_action: "a_create_account",
+          error_description:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
         });
         return dispatch({
           type: actionTypes.ERROR_VERIFY_EMAIL,
@@ -585,7 +583,6 @@ export const registerGuestUser = (
   navigation
 ) => {
   return async (dispatch, getState) => {
-    const anonymous_userId = await analytics.getAnonymousId();
     createBaseUrl()
       .post(`saveUserInfoV2`, userInfo)
       .then((res) => {
@@ -595,7 +592,6 @@ export const registerGuestUser = (
         analytics.track(`a_sign_up`, {
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          anonymous_userId,
           source: "registration_detail",
           source_action: "a_sign_up",
           action_status: data.success ? "success" : "failure",
@@ -676,7 +672,6 @@ export const registerGuestUser = (
         analytics.track(`a_error`, {
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          anonymous_userId,
           error_page: "registration_detail",
           source_action: "a_sign_up",
           error_description:
