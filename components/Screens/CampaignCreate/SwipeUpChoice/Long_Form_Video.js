@@ -15,7 +15,13 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-
+import {
+  VESDK,
+  Configuration,
+  VideoFormat,
+  SerializationExportType,
+  TintMode,
+} from "react-native-videoeditorsdk";
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/Video";
@@ -31,6 +37,7 @@ import list from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { RNFFmpeg, RNFFprobe } from "react-native-ffmpeg";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -98,55 +105,166 @@ class Long_Form_Video extends Component {
       })
       .catch((err) => {});
   };
-  _pickImage = async () => {
+  _pickImage = async (mediaEditor) => {
     let result = await this.pick();
     const { translate } = this.props.screenProps;
-
+    let vConfiguration: Configuration = {
+      sticker: {
+        personalStickers: true,
+        categories: [{ identifier: "imgly_sticker_category_shapes" }],
+      },
+    };
     if (result && !result.cancelled) {
-      if (result.duration >= 15000) {
-        FileSystem.getInfoAsync(result.uri, { size: true }).then((file) => {
-          if (file.size > 524288000) {
-            showMessage({
-              message: translate("Video must be less than 500 Megabytes"),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate("Video must be less than 500 Megabytes"),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else if (
-            ((result.width < 1080 && result.height < 1920) ||
-              (result.width < 1920 && result.height < 1080)) &&
-            false
-          ) {
-            showMessage({
-              message: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else {
-            this.setState({
-              longformvideo_media: result.uri,
-              longformvideo_media_type: result.type.toUpperCase(),
-              width: result.width,
-              height: result.height,
-              durationError: null,
-              videoError: null,
-              videoLoading: false,
-            });
-          }
-        });
+      console.log("result.duration", Math.round(result.duration / 1000) * 1000);
+      if (Math.round(result.duration / 1000) * 1000 >= 15000) {
+        VESDK.openEditor(
+          { uri: result.uri },
+          vConfiguration,
+          mediaEditor && mediaEditor.hasOwnProperty("serialization")
+            ? mediaEditor.serialization
+            : null
+        )
+          .then(async (manipResult) => {
+            let newResult = {};
+            if (manipResult) {
+              let actualUri = manipResult.hasChanges
+                ? manipResult.video
+                : result.uri;
+              if (manipResult.hasChanges) {
+                newResult = await RNFFprobe.getMediaInformation(actualUri);
+                if (newResult.streams) {
+                  newResult = {
+                    width:
+                      newResult.streams[
+                        newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                      ].width,
+                    height:
+                      newResult.streams[
+                        newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                      ].height,
+                    duration: newResult.duration / 1000,
+                  };
+                } else {
+                  newResult = {
+                    width: result.width,
+                    height: result.height,
+                    duration: result.duration / 1000,
+                  };
+                }
+              } else {
+                newResult = {
+                  width: result.width,
+                  height: result.height,
+                  duration: result.duration / 1000,
+                };
+              }
+
+              let newSize = FileSystem.getInfoAsync(result.uri, {
+                size: true,
+              });
+
+              if (newResult.width < 1080) {
+                let outputUri = actualUri.split("/");
+                await RNFFmpeg.execute(
+                  `-y -i ${actualUri} -vf scale=${
+                    // Math.floor(newResult.width / 9) !==
+                    // Math.floor(newResult.height / 16)
+                    //   ?
+                    "-2:1080"
+                    // : newResult.width < newResult.height
+                    // ? "1080:-2"
+                    // : "-2:1920" //-1 means scale inly by 1920 to keep aspect ratio
+                  } pad=640:480:0:40:violet -vcodec libx264 ${
+                    FileSystem.documentDirectory
+                  }${outputUri[outputUri.length - 1]}`
+                );
+                newResult = await RNFFprobe.getMediaInformation(
+                  `${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                  newUri: newResult.path,
+                };
+                newSize = await FileSystem.getInfoAsync(
+                  `${FileSystem.cacheDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+                console.log(JSON.stringify(newResult, null, 2));
+              }
+
+              if (newSize.size > 524288000) {
+                showMessage({
+                  message: translate("Video must be less than 500 Megabytes"),
+                  type: "warning",
+                  position: "top",
+                });
+                this.setState({
+                  videoError: translate(
+                    "Video must be less than 500 Megabytes"
+                  ),
+                  longformvideo_media: null,
+                  videoLoading: false,
+                });
+              } else if (newResult.width < 1080) {
+                showMessage({
+                  message: translate("Minimum width for video is 1080px"),
+                  type: "warning",
+                  position: "top",
+                });
+                this.setState({
+                  videoError: translate("Minimum width for video is 1080px"),
+                  longformvideo_media: null,
+                  videoLoading: false,
+                });
+              }
+              result.uri = newResult.hasOwnProperty("newUri")
+                ? newResult.newUri
+                : manipResult.hasChanges
+                ? manipResult.video
+                : result.uri;
+              result.serialization = manipResult.serialization;
+              this.setState({
+                longformvideo_media: result.uri,
+                longformvideo_media_type: result.type.toUpperCase(),
+                width: result.width,
+                height: result.height,
+                durationError: null,
+                videoError: null,
+                videoLoading: false,
+                serialization: result.serialization,
+              });
+            } else {
+              result.uri = newResult.hasOwnProperty("newUri")
+                ? newResult.newUri
+                : manipResult.hasChanges
+                ? manipResult.video
+                : result.uri;
+              result.serialization = manipResult.serialization;
+              this.setState({
+                longformvideo_media: result.uri,
+                longformvideo_media_type: result.type.toUpperCase(),
+                width: result.width,
+                height: result.height,
+                durationError: null,
+                videoError: null,
+                videoLoading: false,
+                serialization: result.serialization,
+              });
+            }
+          })
+          .catch((err) => console.log(err));
       } else {
         validateWrapper("duration", this.state.duration) &&
           showMessage({
