@@ -407,13 +407,10 @@ export const getWebProductsToHide = (businessid) => {
 /**
  *
  * @param {*} edit to update products list
- * @param {*} webproductsToHide array of imageIds to hide
- * @param {*} businessid businessid
- * @param {*} businesslogo  instgarm business logo
- * @param {*} no_of_products_to_show number of products to show by default 60
+ * @param {*} webproductsToHide list of products to be added
  */
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const info = {
       business_id: businessid,
       products: webproductsToAdd,
@@ -432,7 +429,7 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
         return response.data;
       })
       .then((data) => {
-        console.log("data save", data);
+        // console.log("data save", data);
         analytics.track(`a_submit_my_website_products`, {
           source: "open_select_product",
           source_action: "a_submit_my_website_products",
@@ -441,10 +438,6 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
           // error_description: !data.success && data.message,
           webproductsToAdd,
         });
-        // showMessage({
-        //   type: data.success ? "success" : "warning",
-        //   message: data.message,
-        // });
 
         NavigationService.navigate("MyWebsite", {
           source: "open_select_product",
@@ -524,7 +517,7 @@ export const deleteWebProduct = (product_id) => {
       })
 
       .catch((error) => {
-        console.log("deleteWebProduct error", error.response || error.message);
+        // console.log("deleteWebProduct error", error.response || error.message);
       });
   };
 };
@@ -566,7 +559,7 @@ export const saveSingleWebProduct = (product_id, info) => {
         });
       })
       .catch((err) => {
-        console.log("saveSingleWebProduct", err.response || err.message);
+        // console.log("saveSingleWebProduct", err.response || err.message);
 
         return dispatch({
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
@@ -584,7 +577,7 @@ export const saveSingleMedia = (
 ) => {
   onToggleModal(true);
 
-  console.log("media save", media);
+  // console.log("media save", media);
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_PRODUCT_MEDIA,
@@ -633,7 +626,7 @@ export const saveSingleMedia = (
           action_status: "failure",
           error_description: err.response || err.message,
         });
-        console.log("saveSingleWebProduct error", err.response || err.message);
+        // console.log("saveSingleWebProduct error", err.response || err.message);
       });
   };
 };
