@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
     borderRadius: 30,
+    width: "60%",
+    justifyContent: "center",
   },
   subtext: {
     bottom: 5,
@@ -517,6 +519,31 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 8,
     width: "95%",
+  },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#FFF",
+    // top: heightPercentageToDP(1.75),
+    right: 0,
+    left: 0,
+    textAlign: "center",
+  },
+  percentage: {
+    fontSize: 8,
+    color: "#FFF",
+    fontFamily: "montserrat-bold-english",
+  },
+  animatedLoaderContainer: {
+    width: "100%",
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
   },
 });
 

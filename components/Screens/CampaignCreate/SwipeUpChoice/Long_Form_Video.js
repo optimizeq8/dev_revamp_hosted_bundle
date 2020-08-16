@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, BackHandler, ScrollView } from "react-native";
-import { Button, Text, Item, Icon } from "native-base";
+import { Button, Text, Item, Icon, ActionSheet } from "native-base";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";
@@ -16,6 +16,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import ProgressBar from "../../../MiniComponents/ProgressBar";
+import * as actionCreators from "../../../../store/actions";
 
 import {
   VESDK,
@@ -41,6 +42,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
 import { RNFFmpeg, RNFFprobe, RNFFmpegConfig } from "react-native-ffmpeg";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -64,6 +66,7 @@ class Long_Form_Video extends Component {
       progress: 0,
       cancelled: false,
       serialization: null,
+      uneditedVideo: "",
     };
   }
 
@@ -76,7 +79,17 @@ class Long_Form_Video extends Component {
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
-    if (this.props.data.hasOwnProperty("longformvideo_media")) {
+    if (this.props.data.hasOwnProperty("uneditedLongformVideo")) {
+      this.setState({
+        uneditedVideo: this.props.data.uneditedLongformVideo,
+        longformvideo_media_type: this.props.longformvideo_media_type,
+        longformvideo_media: this.props.data.longformvideo_media,
+
+        serialization: this.props.data.longFormVideoSerialization
+          ? this.props.data.longFormVideoSerialization
+          : null,
+      });
+    } else if (this.props.data.hasOwnProperty("longformvideo_media")) {
       this.setState({
         longformvideo_media: this.props.data.longformvideo_media,
         longformvideo_media_type: this.props.longformvideo_media_type,
@@ -116,8 +129,6 @@ class Long_Form_Video extends Component {
       .catch((err) => {});
   };
   _pickImage = async (editVideo = false) => {
-    console.log(editVideo);
-
     let result = null;
     if (!editVideo) {
       result = await this.pick();
@@ -268,6 +279,11 @@ class Long_Form_Video extends Component {
                 progress: 0,
                 uneditedVideo,
               });
+              !this.props.rejCampaign &&
+                this.props.save_campaign_info({
+                  uneditedLongformVideo: uneditedVideo,
+                  longFormVideoSerialization: manipResult.serialization,
+                });
             } else {
               showMessage({
                 message: translate("Please choose a video"),
@@ -550,8 +566,26 @@ class Long_Form_Video extends Component {
                 top: 30,
               }}
             />
-
-            <LoadingScreen top={60} />
+            <View style={styles.animatedLoaderContainer}>
+              <AnimatedCircularProgress
+                size={100}
+                width={10}
+                fill={this.state.progress}
+                rotation={360}
+                lineCap="round"
+                tintColor={globalColors.orange}
+                backgroundColor="rgba(255,255,255,0.3)"
+                adDetails={false}
+              />
+              <Text style={styles.uplaodPercentageText}>
+                {this.state.progress.toFixed(0)}
+                <Text style={styles.percentage}>%</Text>
+              </Text>
+            </View>
+            <Text style={styles.subTitle}>
+              {translate("Processing and upscaling your video now")}...
+            </Text>
+            {/* <LoadingScreen top={60} />
             <View
               style={{ alignItems: "center", justifyContent: "space-evenly" }}
             >
@@ -574,6 +608,7 @@ class Long_Form_Video extends Component {
                 {this.state.progress.toFixed(0)}%
               </Text>
             </View>
+          */}
           </Modal>
           {this.props.swipeUpDestination && (
             <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
@@ -594,7 +629,11 @@ class Long_Form_Video extends Component {
 const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   storyAdAttachment: state.campaignC.storyAdAttachment,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (data) =>
+    dispatch(actionCreators.save_campaign_info(data)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Long_Form_Video);
