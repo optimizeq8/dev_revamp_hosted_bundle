@@ -158,7 +158,7 @@ export default class Header extends Component {
           ) : showTopRightButtonIcon ? (
             <TouchableOpacity onPress={topRightButtonFunction}>
               {showTopRightButtonIcon === "settings" ? (
-                <Settings width={30} />
+                <Settings width={30} fill={iconColor} />
               ) : showTopRightButtonIcon === "delete" ? (
                 <View
                   style={{ display: "flex", flexDirection: "row", right: 20 }}

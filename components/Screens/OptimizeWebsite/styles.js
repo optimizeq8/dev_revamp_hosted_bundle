@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     // display: "flex",
     // flexGrow: 1,
     // justifyContent: "space-around",
-    // alignItems: "center",
+    alignItems: "center",
     // marginBottom: 40
   },
   submitProducts: {
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 11,
     fontFamily: "montserrat-regular",
-    color: globalColors.purple,
+    color: globalColors.orange,
     paddingHorizontal: 5,
   },
   instagramErrorText: {
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-    color: globalColors.purple,
+    color: "#FFF",
     paddingBottom: 5,
   },
   socialMediaView: {
