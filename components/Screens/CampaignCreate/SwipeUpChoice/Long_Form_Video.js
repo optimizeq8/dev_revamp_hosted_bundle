@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, BackHandler, ScrollView } from "react-native";
-import { Button, Text, Item, Icon } from "native-base";
+import { Button, Text, Item, Icon, ActionSheet } from "native-base";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";
@@ -15,7 +15,16 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-
+import ProgressBar from "../../../MiniComponents/ProgressBar";
+import * as actionCreators from "../../../../store/actions";
+import VideoPreviewIcon from "../../../../assets/SVGs/VideoPreview";
+import {
+  VESDK,
+  Configuration,
+  VideoFormat,
+  SerializationExportType,
+  TintMode,
+} from "react-native-videoeditorsdk";
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/Video";
@@ -31,6 +40,9 @@ import list from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
+import { RNFFmpeg, RNFFprobe, RNFFmpegConfig } from "react-native-ffmpeg";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -50,6 +62,11 @@ class Long_Form_Video extends Component {
       durationError: "",
       videoLoading: false,
       inputCallToAction: false,
+      duration: 0,
+      progress: 0,
+      cancelled: false,
+      serialization: null,
+      uneditedVideo: "",
     };
   }
 
@@ -58,12 +75,21 @@ class Long_Form_Video extends Component {
     return true;
   };
   async componentDidMount() {
-    ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
-    if (this.props.data.hasOwnProperty("longformvideo_media")) {
+    if (this.props.data.hasOwnProperty("uneditedLongformVideo")) {
+      this.setState({
+        uneditedVideo: this.props.data.uneditedLongformVideo,
+        longformvideo_media_type: this.props.longformvideo_media_type,
+        longformvideo_media: this.props.data.longformvideo_media,
+
+        serialization: this.props.data.longFormVideoSerialization
+          ? this.props.data.longFormVideoSerialization
+          : null,
+      });
+    } else if (this.props.data.hasOwnProperty("longformvideo_media")) {
       this.setState({
         longformvideo_media: this.props.data.longformvideo_media,
         longformvideo_media_type: this.props.longformvideo_media_type,
@@ -84,6 +110,11 @@ class Long_Form_Video extends Component {
     this._willBlurSubscription && this._willBlurSubscription.remove();
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+  statisticsCallback = (statisticsData) => {
+    let progress = (statisticsData.time / (this.state.duration * 1000)) * 100;
+    this.setState({ progress });
+  };
+
   pick = async () => {
     return ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
@@ -93,60 +124,180 @@ class Long_Form_Video extends Component {
       aspect: [9, 16],
     })
       .then((res) => {
-        this.setState({ videoLoading: true });
         return res;
       })
       .catch((err) => {});
   };
-  _pickImage = async () => {
-    let result = await this.pick();
+  _pickImage = async (editVideo = false) => {
+    let result = null;
+    if (!editVideo) {
+      result = await this.pick();
+    } else
+      result = {
+        uri: this.state.uneditedVideo,
+        cancelled: false,
+        duration: this.state.duration,
+        type: this.state.longformvideo_media_type,
+      };
     const { translate } = this.props.screenProps;
-
+    let vConfiguration: Configuration = {
+      sticker: {
+        personalStickers: true,
+        categories: [{ identifier: "imgly_sticker_category_shapes" }],
+      },
+      export: {
+        serialization: {
+          enabled: true,
+          exportType: SerializationExportType.OBJECT,
+        },
+      },
+    };
     if (result && !result.cancelled) {
-      if (result.duration >= 15000) {
-        FileSystem.getInfoAsync(result.uri, { size: true }).then((file) => {
-          if (file.size > 524288000) {
-            showMessage({
-              message: translate("Video must be less than 500 Megabytes"),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate("Video must be less than 500 Megabytes"),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else if (
-            ((result.width < 1080 && result.height < 1920) ||
-              (result.width < 1920 && result.height < 1080)) &&
-            false
-          ) {
-            showMessage({
-              message: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              type: "warning",
-              position: "top",
-            });
-            this.setState({
-              videoError: translate(
-                "Video's dimensions must be ewual or over 1080x1920 or 1080x1920"
-              ),
-              longformvideo_media: null,
-              videoLoading: false,
-            });
-          } else {
-            this.setState({
-              longformvideo_media: result.uri,
-              longformvideo_media_type: result.type.toUpperCase(),
-              width: result.width,
-              height: result.height,
-              durationError: null,
-              videoError: null,
-              videoLoading: false,
-            });
-          }
-        });
+      let uneditedVideo = result.uri;
+      if (editVideo || Math.round(result.duration / 1000) * 1000 >= 15000) {
+        VESDK.openEditor(
+          { uri: result.uri },
+          vConfiguration,
+          editVideo ? this.state.serialization : null
+        )
+          .then(async (manipResult) => {
+            this.setState({ videoLoading: true, cancelled: false });
+            let newResult = {};
+            if (manipResult) {
+              let actualUri = manipResult.hasChanges
+                ? manipResult.video
+                : result.uri;
+              if (manipResult.hasChanges) {
+                newResult = await RNFFprobe.getMediaInformation(actualUri);
+                if (newResult.streams) {
+                  newResult = {
+                    width:
+                      newResult.streams[
+                        newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                      ].width,
+                    height:
+                      newResult.streams[
+                        newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                      ].height,
+                    duration: newResult.duration / 1000,
+                  };
+                } else {
+                  newResult = {
+                    width: result.width,
+                    height: result.height,
+                    duration: result.duration / 1000,
+                  };
+                }
+              } else {
+                newResult = {
+                  width: result.width,
+                  height: result.height,
+                  duration: result.duration / 1000,
+                };
+              }
+              this.setState({ duration: newResult.duration });
+              let newSize = FileSystem.getInfoAsync(result.uri, {
+                size: true,
+              });
+              RNFFmpegConfig.enableStatisticsCallback(this.statisticsCallback);
+
+              if (newResult.width < 1080) {
+                let outputUri = actualUri.split("/");
+                await RNFFmpeg.execute(
+                  `-y -i ${actualUri} -vf "scale=${
+                    newResult.width < newResult.height ? "1080:-2" : "-2:1080"
+                  }"  ${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+                //if user cancelled the export, the above command
+                //will exit and the code after will execute
+                if (this.state.cancelled) {
+                  return;
+                }
+                newResult = await RNFFprobe.getMediaInformation(
+                  `${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                  newUri: newResult.path,
+                };
+                newSize = await FileSystem.getInfoAsync(
+                  `${FileSystem.cacheDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+              } else if (Math.round(newResult.duration) * 1000 < 15000) {
+                showMessage({
+                  message: validateWrapper("duration", this.state.duration),
+                  type: "warning",
+                  position: "top",
+                });
+                this.setState({
+                  durationError: validateWrapper("duration", result.duration),
+                  longformvideo_media: null,
+                  videoLoading: false,
+                });
+              } else if (newSize.size > 524288000) {
+                showMessage({
+                  message: translate("Video must be less than 500 Megabytes"),
+                  type: "warning",
+                  position: "top",
+                });
+                this.setState({
+                  videoError: translate(
+                    "Video must be less than 500 Megabytes"
+                  ),
+                  longformvideo_media: null,
+                  videoLoading: false,
+                });
+              }
+              result.uri = newResult.hasOwnProperty("newUri")
+                ? newResult.newUri
+                : manipResult.hasChanges
+                ? manipResult.video
+                : result.uri;
+              this.setState({
+                longformvideo_media: result.uri,
+                longformvideo_media_type: result.type.toUpperCase(),
+                width: result.width,
+                height: result.height,
+                durationError: null,
+                videoError: null,
+                videoLoading: false,
+                serialization: manipResult.serialization,
+                progress: 0,
+                uneditedVideo,
+              });
+              !this.props.rejCampaign &&
+                this.props.save_campaign_info({
+                  uneditedLongformVideo: uneditedVideo,
+                  longFormVideoSerialization: manipResult.serialization,
+                });
+            } else {
+              showMessage({
+                message: translate("Please choose a video"),
+                type: "warning",
+                position: "top",
+              });
+              this.setState({
+                videoError: translate("Please choose a video"),
+                videoLoading: false,
+                cancelled: false,
+              });
+            }
+          })
+          .catch((err) => console.log(err));
       } else {
         validateWrapper("duration", this.state.duration) &&
           showMessage({
@@ -168,12 +319,19 @@ class Long_Form_Video extends Component {
       });
       this.setState({
         videoError: translate("Please choose a video"),
-        longformvideo_media: null,
         videoLoading: false,
       });
     }
   };
-
+  handleVideoCaneling = () => {
+    this.setState({
+      longformvideo_media: null,
+      videoLoading: false,
+      cancelled: true,
+      progress: 0,
+    });
+    RNFFmpeg.cancel();
+  };
   _handleSubmission = () => {
     const videoError = validateWrapper("video", this.state.longformvideo_media);
     this.setState({
@@ -247,6 +405,7 @@ class Long_Form_Video extends Component {
     });
   };
   render() {
+    console.log(this.state.serialization);
     const { translate } = this.props.screenProps;
     return (
       <ScrollView
@@ -264,44 +423,63 @@ class Long_Form_Video extends Component {
               {/* <Text style={[styles.subtext, { paddingBottom: 5 }]}>
                 Preview Only
               </Text> */}
-              {/* <Video
-                source={{
-                  uri: this.state.longformvideo_media
-                }}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode="cover"
-                style={styles.placeholder}
-              /> */}
-              <Button
-                onPress={() => {
-                  this.props.navigation.navigate("LongFormVideoPreview", {
-                    longformvideo_media: this.state.longformvideo_media,
-                  });
-                }}
-                style={styles.videoSelectButton}
-              >
-                <Text> {translate("Preview Video")}</Text>
-              </Button>
-              <Button
-                onPress={() => {
-                  this._pickImage();
-                }}
-                style={styles.videoSelectButton}
-              >
-                <Text> {translate("Change Video")}</Text>
-              </Button>
+              <View style={styles.placeholder}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("LongFormVideoPreview", {
+                      longformvideo_media: this.state.longformvideo_media,
+                    });
+                  }}
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Video
+                    source={{
+                      uri: this.state.longformvideo_media,
+                    }}
+                    shouldPlay={false}
+                    isMuted
+                    resizeMode="cover"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                  <VideoPreviewIcon style={{ position: "absolute" }} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.videoButtons}>
+                <Button
+                  onPress={() => {
+                    this._pickImage();
+                  }}
+                  style={styles.videoSelectButton}
+                >
+                  <Text style={styles.videoButtonTexts}>
+                    {translate("Change Video")}
+                  </Text>
+                </Button>
+
+                <Button
+                  onPress={() => {
+                    this._pickImage(true);
+                  }}
+                  style={[
+                    styles.videoSelectButton,
+                    { borderLeftWidth: 0.3, borderColor: "#0003" },
+                  ]}
+                >
+                  <Text style={styles.videoButtonTexts}>
+                    {translate("Edit Video")}
+                  </Text>
+                </Button>
+              </View>
             </View>
           )}
 
           {!this.state.longformvideo_media && (
             <TouchableOpacity
-              onPress={this._pickImage}
+              onPress={() => this._pickImage()}
               style={styles.addVideoContainer}
             >
               <TouchableOpacity
-                onPress={this._pickImage}
+                onPress={() => this._pickImage()}
                 style={[styles.video]}
               >
                 <AddVidIcon
@@ -321,25 +499,7 @@ class Long_Form_Video extends Component {
               </View>
             </TouchableOpacity>
           )}
-          {/* {this.state.durationError ? (
-            <Text
-              style={[
-                styles.subtext,
-                { color: "white", marginBottom: 5, paddingTop: 0 }
-              ]}
-            >
-              {this.state.durationError}
-            </Text>
-          ) : this.state.videoError ? (
-            <Text
-              style={[
-                styles.subtext,
-                { color: "white", marginBottom: 5, paddingTop: 0 }
-              ]}
-            >
-              {this.state.videoError}
-            </Text>
-          ) : null} */}
+
           <Picker
             showIcon={true}
             screenProps={this.props.screenProps}
@@ -388,18 +548,74 @@ class Long_Form_Video extends Component {
           />
 
           <Modal isVisible={this.state.videoLoading}>
-            <LoadingScreen top={50} />
+            <Icon
+              name="close"
+              onPress={this.handleVideoCaneling}
+              type="AntDesign"
+              style={{
+                color: globalColors.white,
+
+                position: "absolute",
+                top: 30,
+              }}
+            />
+            <View style={styles.animatedLoaderContainer}>
+              <AnimatedCircularProgress
+                size={100}
+                width={10}
+                fill={this.state.progress}
+                rotation={360}
+                lineCap="round"
+                tintColor={globalColors.orange}
+                backgroundColor="rgba(255,255,255,0.3)"
+                adDetails={false}
+              />
+              <Text style={styles.uplaodPercentageText}>
+                {this.state.progress.toFixed(0)}
+                <Text style={styles.percentage}>%</Text>
+              </Text>
+            </View>
+            <Text style={styles.subTitle}>
+              {translate("Processing and upscaling your video now")}...
+            </Text>
+            {/* <LoadingScreen top={60} />
+            <View
+              style={{ alignItems: "center", justifyContent: "space-evenly" }}
+            >
+              <ProgressBar
+                progress={this.state.progress / 100}
+                width={widthPercentageToDP(70)}
+                style={{ alignSelf: "center" }}
+                borderColor={globalColors.orange}
+                height={15}
+                borderRadius={50}
+                color={globalColors.orange}
+              />
+              <Text
+                style={{
+                  fontFamily: "montserrat-bold",
+                  color: "#fff",
+                  top: 10,
+                }}
+              >
+                {this.state.progress.toFixed(0)}%
+              </Text>
+            </View>
+          */}
           </Modal>
           {this.props.swipeUpDestination && (
             <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
               {translate("Change Swipe-up Destination")}
             </Text>
           )}
-          <LowerButton
+          <Button style={styles.saveButton} onPress={this._handleSubmission}>
+            <Text style={styles.saveText}>{translate("Save")}</Text>
+          </Button>
+          {/* <LowerButton
             screenProps={this.props.screenProps}
             function={this._handleSubmission}
             purpleViolet
-          />
+          /> */}
         </View>
       </ScrollView>
     );
@@ -409,7 +625,11 @@ class Long_Form_Video extends Component {
 const mapStateToProps = (state) => ({
   data: state.campaignC.data,
   storyAdAttachment: state.campaignC.storyAdAttachment,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  save_campaign_info: (data) =>
+    dispatch(actionCreators.save_campaign_info(data)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Long_Form_Video);

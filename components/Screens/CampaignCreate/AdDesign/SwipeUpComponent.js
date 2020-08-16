@@ -139,6 +139,7 @@ export default class SwipeUpComponent extends Component {
         type: LayoutAnimation.Types.easeInEaseOut,
       },
     });
+    this.props.setTheState({ swipeUpExpanded: expanded });
     this.setState({
       expanded: expanded, //Step 2
     });

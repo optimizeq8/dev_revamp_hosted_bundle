@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   longFormVideoContainer: {
     flex: 1,
     alignItems: "center",
-    padding: 10,
   },
   longFormVideoContent: {
     flexDirection: "column",
@@ -60,10 +59,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   videoSelectButton: {
-    backgroundColor: globalColors.purple,
+    backgroundColor: "#0000",
     alignSelf: "center",
-    marginVertical: 10,
-    borderRadius: 30,
+    borderRadius: 0,
+    justifyContent: "center",
+    flex: 1,
   },
   subtext: {
     bottom: 5,
@@ -167,15 +167,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   placeholder: {
-    borderRadius: 13,
+    borderRadius: 40,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
     height: 150,
     zIndex: 0,
-    borderWidth: 2,
-    borderStyle: "dashed",
-    borderColor: "#fff",
     justifyContent: "center",
   },
   text: {
@@ -254,7 +251,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   previewButtonContainer: {
-    // paddingVertical: 40,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    borderRadius: 40,
   },
   videoPreviewView: {
     flex: 1,
@@ -517,6 +522,49 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 8,
     width: "95%",
+  },
+  uplaodPercentageText: {
+    position: "absolute",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 14,
+    lineHeight: 16,
+    color: "#FFF",
+    // top: heightPercentageToDP(1.75),
+    right: 0,
+    left: 0,
+    textAlign: "center",
+  },
+  percentage: {
+    fontSize: 8,
+    color: "#FFF",
+    fontFamily: "montserrat-bold-english",
+  },
+  animatedLoaderContainer: {
+    width: "100%",
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  videoButtons: {
+    flexDirection: "row",
+  },
+  videoButtonTexts: {
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple,
+    fontSize: 13,
+  },
+  saveButton: {
+    borderRadius: 50,
+    backgroundColor: globalColors.purple,
+    width: 70,
+    height: 45,
+    alignSelf: "center",
+  },
+  saveText: {
+    fontFamily: "montserrat-bold",
   },
 });
 
