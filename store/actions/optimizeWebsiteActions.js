@@ -4,7 +4,6 @@ import createBaseUrl from "./createBaseUrl";
 import analytics from "@segment/analytics-react-native";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../components/segmentEventTrack";
 
 export const verifyInstagramHandleWebsite = (insta_handle) => {
   return async (dispatch) => {
@@ -268,11 +267,6 @@ export const saveWebProductsToHide = (
             type: data.success ? "success" : "warning",
             message: data.message,
           });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo,
-          });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -316,11 +310,7 @@ export const saveWebProductsToHide = (
             insta_handle,
             weburl: data.weburl,
           });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo,
-          });
+
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
@@ -407,13 +397,10 @@ export const getWebProductsToHide = (businessid) => {
 /**
  *
  * @param {*} edit to update products list
- * @param {*} webproductsToHide array of imageIds to hide
- * @param {*} businessid businessid
- * @param {*} businesslogo  instgarm business logo
- * @param {*} no_of_products_to_show number of products to show by default 60
+ * @param {*} webproductsToHide list of products to be added
  */
 export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const info = {
       business_id: businessid,
       products: webproductsToAdd,
@@ -432,19 +419,14 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
         return response.data;
       })
       .then((data) => {
-        console.log("data save", data);
+        // console.log("data save", data);
         analytics.track(`a_submit_my_website_products`, {
           source: "open_select_product",
           source_action: "a_submit_my_website_products",
-
           action_status: data.data ? "success" : "failure",
           // error_description: !data.success && data.message,
           webproductsToAdd,
         });
-        // showMessage({
-        //   type: data.success ? "success" : "warning",
-        //   message: data.message,
-        // });
 
         NavigationService.navigate("MyWebsite", {
           source: "open_select_product",
@@ -458,10 +440,10 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
       })
 
       .catch((error) => {
-        console.log(
-          "saveWebProductsToAdd error",
-          error.response || error.message
-        );
+        // console.log(
+        //   "saveWebProductsToAdd error",
+        //   error.response || error.message
+        // );
       });
   };
 };
@@ -524,7 +506,7 @@ export const deleteWebProduct = (product_id) => {
       })
 
       .catch((error) => {
-        console.log("deleteWebProduct error", error.response || error.message);
+        // console.log("deleteWebProduct error", error.response || error.message);
       });
   };
 };
@@ -566,7 +548,7 @@ export const saveSingleWebProduct = (product_id, info) => {
         });
       })
       .catch((err) => {
-        console.log("saveSingleWebProduct", err.response || err.message);
+        // console.log("saveSingleWebProduct", err.response || err.message);
 
         return dispatch({
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
@@ -584,7 +566,7 @@ export const saveSingleMedia = (
 ) => {
   onToggleModal(true);
 
-  console.log("media save", media);
+  // console.log("media save", media);
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_PRODUCT_MEDIA,
@@ -617,11 +599,6 @@ export const saveSingleMedia = (
           type: actionTypes.SAVE_PRODUCT_MEDIA,
           payload: data.data,
         });
-        // NavigationService.navigate("MyWebsite", {
-        //   source: "open_my_website",
-        //   source_action: "a_submit_my_website_products",
-
-        // });
       })
       .catch((err) => {
         loading(0);
@@ -633,7 +610,7 @@ export const saveSingleMedia = (
           action_status: "failure",
           error_description: err.response || err.message,
         });
-        console.log("saveSingleWebProduct error", err.response || err.message);
+        // console.log("saveSingleWebProduct error", err.response || err.message);
       });
   };
 };

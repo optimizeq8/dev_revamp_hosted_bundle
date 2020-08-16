@@ -94,30 +94,18 @@ class EditProduct extends Component {
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-  goToManageProducts = () => {
-    this.props.navigation.navigate("ManageProducts");
-  };
+
   topRightButtonFunction = () => {
     this.createButtonAlert();
-    // this.props.deleteWebProduct(this.state.product.id);
   };
   goBack = () => {
     this.props.navigation.goBack();
-    // this.props.navigation.navigate("Dashboard", {
-    //   source: "open_my_website",
-    //   source_action: "a_go_back",
-    // });
   };
   startUpload = (media) => {
     var body = new FormData();
     // body.append("businessid", this.props.mainBusiness.businessid);
     body.append("media", media, media.name);
-    // this.props.changeBusinessLogo(
-    //   body,
-    //   this._getUploadState,
-    //   this.cancelUpload,
-    //   this.onToggleModal
-    // );
+
     // console.log("media", media);
     this.props.saveSingleMedia(
       body,
