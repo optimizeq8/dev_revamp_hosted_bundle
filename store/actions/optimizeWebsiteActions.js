@@ -440,10 +440,10 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
       })
 
       .catch((error) => {
-        console.log(
-          "saveWebProductsToAdd error",
-          error.response || error.message
-        );
+        // console.log(
+        //   "saveWebProductsToAdd error",
+        //   error.response || error.message
+        // );
       });
   };
 };
