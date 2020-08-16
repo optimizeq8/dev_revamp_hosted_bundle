@@ -79,9 +79,9 @@ export class TargetAudience extends Component {
         style={{
           height: editCampaign
             ? heightPercentageToDP(60)
-            : heightPercentageToDP(100) > 800
-            ? "60%"
-            : "45%",
+            : heightPercentageToDP(100) > 700
+            ? "65%"
+            : "55%",
         }}
       >
         <MaskedView

@@ -1490,7 +1490,7 @@ class AdDetails extends Component {
                         >
                           <WalletIcon
                             width={30}
-                            heoght={30}
+                            height={30}
                             fill={globalColors.rum}
                           />
                           <Text

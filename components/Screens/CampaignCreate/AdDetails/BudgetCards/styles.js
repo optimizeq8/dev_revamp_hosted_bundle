@@ -1,5 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../../../GlobalStyles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
@@ -14,9 +15,9 @@ export default StyleSheet.create({
     borderRadius: 40,
     borderColor: globalColors.purple,
     borderWidth: 2.5,
-    height: 50,
+    height: widthPercentageToDP(10),
     marginHorizontal: 5,
-    width: 105,
+    width: widthPercentageToDP(25),
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 0 },
     shadowRadius: 7,

@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
   subHeadings: {
     color: globalColors.gray,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
-    paddingVertical: 10,
+    fontSize: 16,
+    paddingVertical: 5,
     paddingHorizontal: 30,
     textAlign: "left",
   },
@@ -133,20 +133,19 @@ const styles = StyleSheet.create({
     // width: widthPercentageToDP(25)
   },
   bottom: {
-    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    marginLeft: 25,
     width: "100%",
-    paddingVertical: 10,
-    paddingBottom: 15,
+    paddingLeft: 10,
+    height: "14%",
+    alignItems: "center",
+    // paddingBottom: 30,
   },
   chartText: {
     color: globalColors.rum,
     textAlign: "left",
     fontFamily: "montserrat-bold",
-    fontSize: 17,
+    fontSize: 15 / PixelRatio.getFontScale(),
   },
   chartTextNum: {
     color: globalColors.rum,

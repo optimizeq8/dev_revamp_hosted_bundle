@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     textAlign: "center",
     width: "100%",
-    bottom: 20,
+    bottom: 10,
   },
   budgetInstructionText: {
     color: "#fff",
@@ -134,14 +134,12 @@ const styles = StyleSheet.create({
     // width: widthPercentageToDP(25)
   },
   bottom: {
-    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    marginLeft: 25,
     width: "100%",
-    paddingVertical: 10,
-    paddingBottom: 15,
+    paddingLeft: 10,
+    height: "14%",
+    alignItems: "center",
   },
   chartText: {
     color: globalColors.rum,

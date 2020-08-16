@@ -55,9 +55,9 @@ export class TargetAudience extends Component {
         style={{
           height: editCampaign
             ? heightPercentageToDP(60)
-            : heightPercentageToDP(100) > 800
+            : heightPercentageToDP(100) > 700
             ? "50%"
-            : "40%",
+            : "43%",
         }}
       >
         <MaskedView
@@ -402,7 +402,7 @@ export class TargetAudience extends Component {
         </MaskedView>
         {this.state.scrollY < 12 &&
           !editCampaign &&
-          heightPercentageToDP(100) < 800 && (
+          heightPercentageToDP(100) < 700 && (
             <Text
               onPress={() => {
                 this.scrollView.scrollToEnd({ animated: true });
