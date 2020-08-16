@@ -614,7 +614,7 @@ class AdDesign extends Component {
                     {this.props.loading ? (
                       <View
                         style={{
-                          width: "45%",
+                          width: "50%",
                           position: "relative",
                           display: "flex",
                           flexDirection: "row",
