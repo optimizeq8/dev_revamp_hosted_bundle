@@ -428,7 +428,7 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
           webproductsToAdd,
         });
 
-        NavigationService.navigate("MyWebsite", {
+        NavigationService.navigate("MyWebsiteECommerce", {
           source: "open_select_product",
           source_action: "a_submit_my_website_products",
         });
@@ -494,7 +494,7 @@ export const deleteWebProduct = (product_id) => {
           // error_description:  data.message,
         });
         if (data === 204) {
-          NavigationService.navigate("MyWebsite", {
+          NavigationService.navigate("MyWebsiteECommerce", {
             source: "open_edit_product",
             source_action: "a_delete_product",
           });
@@ -534,7 +534,7 @@ export const saveSingleWebProduct = (product_id, info) => {
           action_status: data.data ? "success" : "failure",
         });
         // console.log("data save product", data);
-        NavigationService.navigate("MyWebsite", {
+        NavigationService.navigate("MyWebsiteECommerce", {
           source: "open_edit_product",
           source_action: "a_save_product_detail",
         });
