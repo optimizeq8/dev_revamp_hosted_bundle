@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   longFormVideoContainer: {
     flex: 1,
     alignItems: "center",
-    padding: 10,
   },
   longFormVideoContent: {
     flexDirection: "column",
@@ -60,12 +59,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   videoSelectButton: {
-    backgroundColor: globalColors.purple,
+    backgroundColor: "#0000",
     alignSelf: "center",
-    marginVertical: 10,
-    borderRadius: 30,
-    width: "60%",
+    borderRadius: 0,
     justifyContent: "center",
+    flex: 1,
   },
   subtext: {
     bottom: 5,
@@ -169,15 +167,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   placeholder: {
-    borderRadius: 30,
+    borderRadius: 40,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
     height: 150,
     zIndex: 0,
-    borderWidth: 2,
-    borderStyle: "dashed",
-    borderColor: "#fff",
     justifyContent: "center",
   },
   text: {
@@ -256,7 +251,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   previewButtonContainer: {
-    // paddingVertical: 40,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    borderRadius: 40,
   },
   videoPreviewView: {
     flex: 1,
@@ -544,6 +547,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,
+  },
+  videoButtons: {
+    flexDirection: "row",
+  },
+  videoButtonTexts: {
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple,
+    fontSize: 13,
+  },
+  saveButton: {
+    borderRadius: 50,
+    backgroundColor: globalColors.purple,
+    width: 70,
+    height: 45,
+    alignSelf: "center",
+  },
+  saveText: {
+    fontFamily: "montserrat-bold",
   },
 });
 

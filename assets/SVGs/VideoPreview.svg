@@ -1,0 +1,14 @@
+<svg id="Component_288_7" data-name="Component 288 – 7" xmlns="http://www.w3.org/2000/svg" width="60.44" height="79.716"
+    viewBox="0 0 60.44 79.716">
+    <g id="Ellipse_141" data-name="Ellipse 141" fill="none" stroke="#ff7a09" stroke-width="5">
+        <ellipse cx="30.22" cy="30.22" rx="30.22" ry="30.22" stroke="none" />
+        <ellipse cx="30.22" cy="30.22" rx="27.72" ry="27.72" fill="none" />
+    </g>
+    <path id="Polygon_6" data-name="Polygon 6"
+        d="M10.417,4.371a3,3,0,0,1,5.166,0l7.743,13.1A3,3,0,0,1,20.743,22H5.257a3,3,0,0,1-2.583-4.526Z"
+        transform="translate(44.145 17.72) rotate(90)" fill="#ff7a09" />
+    <text id="PREVIEW" transform="translate(30.733 76.716)" fill="#ff7a09" font-size="11"
+        font-family="montserrat-medium, montserrat" font-weight="500">
+        <tspan x="-26.906" y="0">PREVIEW</tspan>
+    </text>
+</svg>

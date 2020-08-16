@@ -17,7 +17,7 @@ import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import ProgressBar from "../../../MiniComponents/ProgressBar";
 import * as actionCreators from "../../../../store/actions";
-
+import VideoPreviewIcon from "../../../../assets/SVGs/VideoPreview";
 import {
   VESDK,
   Configuration,
@@ -423,41 +423,53 @@ class Long_Form_Video extends Component {
               {/* <Text style={[styles.subtext, { paddingBottom: 5 }]}>
                 Preview Only
               </Text> */}
-              <Video
-                source={{
-                  uri: this.state.longformvideo_media,
-                }}
-                shouldPlay={false}
-                isMuted
-                resizeMode="cover"
-                style={styles.placeholder}
-              />
-              <Button
-                onPress={() => {
-                  this.props.navigation.navigate("LongFormVideoPreview", {
-                    longformvideo_media: this.state.longformvideo_media,
-                  });
-                }}
-                style={styles.videoSelectButton}
-              >
-                <Text> {translate("Preview Video")}</Text>
-              </Button>
-              <Button
-                onPress={() => {
-                  this._pickImage();
-                }}
-                style={styles.videoSelectButton}
-              >
-                <Text> {translate("Change Video")}</Text>
-              </Button>
-              <Button
-                onPress={() => {
-                  this._pickImage(true);
-                }}
-                style={styles.videoSelectButton}
-              >
-                <Text> {translate("Edit Video")}</Text>
-              </Button>
+              <View style={styles.placeholder}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("LongFormVideoPreview", {
+                      longformvideo_media: this.state.longformvideo_media,
+                    });
+                  }}
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Video
+                    source={{
+                      uri: this.state.longformvideo_media,
+                    }}
+                    shouldPlay={false}
+                    isMuted
+                    resizeMode="cover"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                  <VideoPreviewIcon style={{ position: "absolute" }} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.videoButtons}>
+                <Button
+                  onPress={() => {
+                    this._pickImage();
+                  }}
+                  style={styles.videoSelectButton}
+                >
+                  <Text style={styles.videoButtonTexts}>
+                    {translate("Change Video")}
+                  </Text>
+                </Button>
+
+                <Button
+                  onPress={() => {
+                    this._pickImage(true);
+                  }}
+                  style={[
+                    styles.videoSelectButton,
+                    { borderLeftWidth: 0.3, borderColor: "#0003" },
+                  ]}
+                >
+                  <Text style={styles.videoButtonTexts}>
+                    {translate("Edit Video")}
+                  </Text>
+                </Button>
+              </View>
             </View>
           )}
 
@@ -596,11 +608,14 @@ class Long_Form_Video extends Component {
               {translate("Change Swipe-up Destination")}
             </Text>
           )}
-          <LowerButton
+          <Button style={styles.saveButton} onPress={this._handleSubmission}>
+            <Text style={styles.saveText}>{translate("Save")}</Text>
+          </Button>
+          {/* <LowerButton
             screenProps={this.props.screenProps}
             function={this._handleSubmission}
             purpleViolet
-          />
+          /> */}
         </View>
       </ScrollView>
     );
