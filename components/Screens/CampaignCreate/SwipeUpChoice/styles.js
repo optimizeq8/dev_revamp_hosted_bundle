@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   placeholder: {
-    borderRadius: 13,
+    borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",

@@ -423,16 +423,15 @@ class Long_Form_Video extends Component {
               {/* <Text style={[styles.subtext, { paddingBottom: 5 }]}>
                 Preview Only
               </Text> */}
-              {/* <Video
+              <Video
                 source={{
-                  uri: this.state.longformvideo_media
+                  uri: this.state.longformvideo_media,
                 }}
-                shouldPlay
-                isLooping
+                shouldPlay={false}
                 isMuted
                 resizeMode="cover"
                 style={styles.placeholder}
-              /> */}
+              />
               <Button
                 onPress={() => {
                   this.props.navigation.navigate("LongFormVideoPreview", {
@@ -488,25 +487,7 @@ class Long_Form_Video extends Component {
               </View>
             </TouchableOpacity>
           )}
-          {/* {this.state.durationError ? (
-            <Text
-              style={[
-                styles.subtext,
-                { color: "white", marginBottom: 5, paddingTop: 0 }
-              ]}
-            >
-              {this.state.durationError}
-            </Text>
-          ) : this.state.videoError ? (
-            <Text
-              style={[
-                styles.subtext,
-                { color: "white", marginBottom: 5, paddingTop: 0 }
-              ]}
-            >
-              {this.state.videoError}
-            </Text>
-          ) : null} */}
+
           <Picker
             showIcon={true}
             screenProps={this.props.screenProps}
