@@ -122,11 +122,7 @@ export const _pickImage = async (
               ) {
                 //check for aspect ration incase user undos the cropping
                 setTheState({
-                  mediaError: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
-                    media_option === "single"
-                      ? "500px x 500px"
-                      : "600px x 600px"
-                  }.`,
+                  mediaError: `Image's aspect ratio must be 9:16\nwith a minimum size of 500px`,
                   media: "//",
                   media_type: "",
                 });
@@ -138,17 +134,11 @@ export const _pickImage = async (
 
                 return Promise.reject({
                   wrongAspect: true,
-                  message: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
-                    media_option === "single"
-                      ? "500px x 500px"
-                      : "600px x 600px"
-                  }`,
+                  message: `Image's aspect ratio must be 9:16\nwith a minimum size of 500px`,
                 });
               }
-              let size =
-                media_option === "single"
-                  ? { width: 500, height: 500 }
-                  : { width: 600, height: 600 };
+              let size = { width: 1080, height: 1920 };
+
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.uri,
                 [
