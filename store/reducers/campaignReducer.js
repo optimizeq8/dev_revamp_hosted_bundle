@@ -858,6 +858,18 @@ const reducer = (state = initialState, action) => {
         destination: rejNewStoryAdsArray[0].destination,
       };
       let stateAdArray = cloneDeep(state.storyAdsArray);
+      if (stateAdArray[0].id !== -1) {
+        stateAdArray = [
+          {
+            id: -1,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          ...stateAdArray,
+        ];
+      }
       stateAdArray.splice(
         1,
         rejNewStoryAdsArray.length,
