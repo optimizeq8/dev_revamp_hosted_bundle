@@ -47,8 +47,6 @@ export default class ClickDestination extends Component {
           height:
             this.props.maxClickHeight +
             (this.props.existingPosts ? this.state.compHeight : 0),
-          // position: "absolute",
-          // bottom: 200,
           zIndex: 10,
         };
     return (
@@ -97,7 +95,9 @@ export default class ClickDestination extends Component {
               this.props.data.link !== "BLANK" &&
               (this.props.campaignInfo.destination === "link" ||
                 this.props.campaignInfo.destination === "BLANK") ? (
-                <Text style={styles.websiteLink}>{this.props.data.link}</Text>
+                <Text numberOfLines={1} style={styles.websiteLink}>
+                  {this.props.data.link}
+                </Text>
               ) : null}
             </>
           ) : (

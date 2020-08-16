@@ -388,6 +388,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 15,
     width: "100%",
+    height: "80%",
   },
   destinationText: {
     fontFamily: "montserrat-bold",
@@ -422,6 +423,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light-english",
     color: globalColors.purple,
     fontSize: 12,
+    textAlign: "center",
   },
   uplaodPercentageText: {
     position: "absolute",
