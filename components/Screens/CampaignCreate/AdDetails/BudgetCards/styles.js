@@ -26,7 +26,7 @@ export default StyleSheet.create({
   budgetTextStyle: {
     color: globalColors.purple,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: 16,
   },
   budget: {
     alignSelf: "center",

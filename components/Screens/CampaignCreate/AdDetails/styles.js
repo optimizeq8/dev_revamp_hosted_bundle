@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     height: "14%",
     alignItems: "center",
-    // paddingBottom: 30,
+    bottom: 10,
   },
   chartText: {
     color: globalColors.rum,

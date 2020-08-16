@@ -137,8 +137,8 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 10
-                            : 20,
+                            ? 9
+                            : 15,
                       },
                     ]}
                   >
@@ -169,7 +169,7 @@ export class BudgetCards extends Component {
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
                           ? 10
-                          : 20,
+                          : 15,
                     },
                   ]}
                   ref={(ref) => (this.moneyField = ref)}

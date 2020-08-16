@@ -135,11 +135,13 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+    justifyContent: "center",
     paddingLeft: 10,
     height: "14%",
     alignItems: "center",
+    alignSelf: "center",
+    width: "100%",
+    bottom: 10,
   },
   chartText: {
     color: globalColors.rum,
@@ -155,6 +157,7 @@ const styles = StyleSheet.create({
   },
   chartItems: {
     flexDirection: "row",
+    width: "80%",
   },
   reachBarLowerButton: {
     width: 55,
@@ -163,11 +166,11 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   reachPeopleView: {
-    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
     paddingHorizontal: 8,
+    width: "70%",
   },
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
