@@ -74,6 +74,7 @@ import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
 import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
 import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/SelectProduct";
+import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
 
 export default FluidNavigator(
   {
@@ -161,6 +162,7 @@ export default FluidNavigator(
     EditProduct: EditProduct,
     ReviewProductDetail: ReviewProductDetail,
     MyWebsiteSelectProducts: MyWebsiteSelectProducts,
+    MyWebsiteECommerce: MyWebsiteECommerce,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

@@ -6,7 +6,7 @@ import {
   Text,
   Clipboard,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
@@ -21,10 +21,11 @@ import * as actionCreators from "../../../store/actions";
 // import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 import Pen from "../../../assets/SVGs/Pen";
 import CopyIcon from "../../../assets/SVGs/CopyIcon";
+import PlusIcon from "../../../assets/SVGs/Plus";
 
 // Style
 import styles from "./styles";
-import myWebsiteStyles from "./myWebsiteStyles";
+import myWebsiteStyles from "./myWebsiteEcommerceStyle";
 
 import Header from "../../MiniComponents/Header";
 import Website from "../../MiniComponents/InputFieldNew/Website";
@@ -57,6 +58,7 @@ class MyWebsite extends Component {
     });
   };
   componentDidMount() {
+    this.props.getWebProductsList(this.props.mainBusiness.businessid);
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -111,7 +113,69 @@ class MyWebsite extends Component {
   onToggleModal = (visibile) => {
     this.setState({ isVisible: visibile });
   };
+  goToSelectProduct = () => {
+    analytics.track(`a_add_more_products`, {
+      source: "open_my_website",
+      source_action: "a_add_more_products",
+    });
+    this.props.navigation.navigate("MyWebsiteSelectProducts", {
+      source: "open_my_website",
+      source_action: "a_add_more_products",
+    });
+  };
 
+  renderEachProduct = (item) => {
+    const { translate } = this.props.screenProps;
+    const prices =
+      item.prices && item.prices.length > 0
+        ? item.prices
+            .map((pr) => {
+              return pr.currency + " " + pr.price;
+            })
+            .join(", ")
+        : translate("Unavailable");
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          analytics.track(`a_select_product_to_edit`, {
+            source: "open_my_website",
+            source_action: "a_select_product_to_edit",
+            product_id: item.id,
+          });
+          this.props.navigation.navigate("EditProduct", {
+            product: item,
+            source: "open_my_website",
+            source_action: "a_select_product_to_edit",
+          });
+        }}
+        style={myWebsiteStyles.productCard}
+        key={item.id}
+      >
+        <Image
+          style={myWebsiteStyles.productImage}
+          source={{
+            uri: item.media && item.media[0] && item.media[0].url,
+          }}
+        />
+        <View style={myWebsiteStyles.productDetailView}>
+          <Text style={myWebsiteStyles.productNamesubhead}>
+            {translate("Product Name")}
+          </Text>
+          <Text style={myWebsiteStyles.productNameText}>
+            {item.name ? item.name : translate("Untitled")}
+          </Text>
+          <Text style={myWebsiteStyles.pricesubhead}>{translate("price")}</Text>
+          <Text style={myWebsiteStyles.priceText}>{prices}</Text>
+        </View>
+        <Pen
+          style={myWebsiteStyles.penIcon}
+          width={15}
+          fill={globalColors.purple}
+        />
+      </TouchableOpacity>
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -124,11 +188,6 @@ class MyWebsite extends Component {
         style={myWebsiteStyles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <LinearGradient
-          colors={["#9300FF", "#5600CB"]}
-          locations={[0, 0.35]}
-          style={styles.gradient}
-        />
         <Header
           screenProps={this.props.screenProps}
           closeButton={false}
@@ -143,70 +202,89 @@ class MyWebsite extends Component {
           actionButton={this.goBack}
           topRightButtonFunction={this.topRightButtonFunction}
           title={"My Website"}
+          titleStyle={{
+            color: "#75647C",
+          }}
+          iconColor={"#75647C"}
         />
-        <ScrollView>
-          <View style={styles.businesslogoView}>
-            <Image
-              style={{
-                width: 95,
-                height: 95,
-              }}
-              source={{
-                uri: mainBusiness.businesslogo || this.props.businessLogo,
-              }}
-            />
-          </View>
-          <Text style={styles.bsnNameText}>
-            {this.props.mainBusiness.businessname}
-          </Text>
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignSelf: "center",
-              alignItems: "center",
-              marginBottom: 13,
+
+        <View style={styles.businesslogoView}>
+          <Image
+            style={styles.businessLogoImage}
+            source={{
+              uri: mainBusiness.businesslogo || this.props.businessLogo,
             }}
-            onPress={this.uploadPhoto}
+          />
+        </View>
+        {/* <Text style={styles.bsnNameText}>
+            {this.props.mainBusiness.businessname}
+          </Text> */}
+        <TouchableOpacity
+          style={styles.changeLogoView}
+          onPress={this.uploadPhoto}
+        >
+          <Pen width={15} fill={globalColors.purple} />
+          <Text style={[styles.changeLogoText, { color: globalColors.purple }]}>
+            {translate("Change Logo")}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.weburlView}>
+          <Website
+            label={"Your URL"}
+            website={website}
+            disabled={true}
+            screenProps={this.props.screenProps}
+            iconFill={"#75647C"}
+            labelColor={"#75647C"}
+            inputColor={"#75647C"}
+            customStyle={{
+              backgroundColor: globalColors.white,
+            }}
+          />
+          <TouchableOpacity
+            style={styles.copyIcon2}
+            onPress={() => {
+              analytics.track(`a_copy_my_website_url`, {
+                source: "open_my_website",
+                source_action: "a_copy_my_website_url",
+                weburl: website,
+              });
+              Clipboard.setString(website);
+            }}
           >
-            <Pen width={15} fill={globalColors.orange} />
-            <Text style={styles.changeLogoText}>
-              {translate("Change Logo")}
+            <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
+          </TouchableOpacity>
+        </View>
+        <View style={myWebsiteStyles.myproductsView}>
+          <Text style={myWebsiteStyles.myproductsText}>
+            {translate("MY PRODUCTS")}
+          </Text>
+
+          <TouchableOpacity
+            onPress={this.goToSelectProduct}
+            style={myWebsiteStyles.addProductsView}
+          >
+            <View style={myWebsiteStyles.plusIconView}>
+              <PlusIcon width={7} fill={globalColors.purple} />
+            </View>
+            <Text style={myWebsiteStyles.addProductText}>
+              {translate("Add Products")}
             </Text>
           </TouchableOpacity>
-          <View style={styles.weburlView}>
-            <Website
-              website={website}
-              disabled={true}
-              screenProps={this.props.screenProps}
-            />
-            <TouchableOpacity
-              style={styles.copyIcon2}
-              onPress={() => {
-                analytics.track(`a_copy_my_website_url`, {
-                  source: "open_my_website",
-                  source_action: "a_copy_my_website_url",
-                  weburl: website,
-                });
-                Clipboard.setString(website);
-              }}
-            >
-              <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
-            </TouchableOpacity>
-
-            {/* <View style={styles.colView}>
-              <Text style={styles.yourUrlText}>{translate("Your URL")}</Text>
-              <Text selectable style={styles.weburl}>
-                {website}
-              </Text>
-            </View> */}
-          </View>
-
-          <ProductSelect
-            source={"open_my_website"}
-            edit={true}
-            screenProps={this.props.screenProps}
-          />
-        </ScrollView>
+        </View>
+        <FlatList
+          contentContainerStyle={styles.list}
+          initialNumToRender={12}
+          horizontal={false}
+          data={this.props.webproducts}
+          keyExtractor={(item, index) => {
+            if (item && item.id) {
+              return item.id.toString();
+            }
+            return index;
+          }}
+          renderItem={({ item }) => this.renderEachProduct(item)}
+        />
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -224,6 +302,7 @@ const mapStateToProps = (state) => ({
   loading: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
+  webproducts: state.website.webproducts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -238,5 +317,7 @@ const mapDispatchToProps = (dispatch) => ({
         onToggleModal
       )
     ),
+  getWebProductsList: (businessid) =>
+    dispatch(actionCreators.getWebProductsList(businessid)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

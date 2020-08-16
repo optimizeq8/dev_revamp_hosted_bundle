@@ -164,7 +164,7 @@ class ProductSelect extends React.Component {
         <TouchableOpacity
           key={item.imageId}
           style={styles.itemProductView}
-          // onPress={() => this.addToCart(item)}
+          onPress={() => this.addToCart(item)}
         >
           {itemFound ? (
             <View style={[styles.itemView, styles.itemFoundView]}>
@@ -194,13 +194,13 @@ class ProductSelect extends React.Component {
           <Text style={styles.productsText}>{translate("Products")}</Text>
         </View>
         <View style={styles.selectProductTextView}>
-          {/* <Text style={styles.selectProductText}>
+          <Text style={styles.selectProductText}>
             {translate("These are the products that will show on your website")}
             .{" "}
             <Text style={styles.hideProductText}>
               {translate("Tap to remove products")}.
             </Text>
-          </Text> */}
+          </Text>
           {this.props.instagramPostLoading && (
             <ActivityIndicator color={globalColors.orange} size="large" />
           )}
