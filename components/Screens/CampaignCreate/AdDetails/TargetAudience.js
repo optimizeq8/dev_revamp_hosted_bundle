@@ -205,7 +205,8 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Map")}</Text>
                   <Text style={styles.menudetails}>
-                    {mainState.locationsInfo.length > 0
+                    {mainState.locationsInfo &&
+                    mainState.locationsInfo.length > 0
                       ? mainState.locationsInfo
                           .map((loc) => translate(loc.countryName))
                           .join(", ")
