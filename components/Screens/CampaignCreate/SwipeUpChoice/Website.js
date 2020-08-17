@@ -302,6 +302,8 @@ class Website extends Component {
             customTextStyle={{
               color: globalColors.rum,
             }}
+            iconFill={globalColors.rum}
+            labelColor={globalColors.rum}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&

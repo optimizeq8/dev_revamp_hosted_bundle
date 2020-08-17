@@ -35,6 +35,8 @@ import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
+import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -42,7 +44,6 @@ import {
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
-import { isNull, isUndefined } from "lodash";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {

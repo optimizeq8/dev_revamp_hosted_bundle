@@ -35,6 +35,8 @@ import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
+import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -44,7 +46,6 @@ import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
 import { globalColors } from "../../../../../GlobalStyles";
-import { isNull, isUndefined } from "lodash";
 class InstagramFeedAdTargetting extends Component {
   static navigationOptions = {
     header: null,
