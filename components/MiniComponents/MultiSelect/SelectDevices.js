@@ -195,6 +195,7 @@ class SelectDevices extends Component {
             screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
+            purpleViolet
             function={() => this.props._handleSideMenuState(false)}
           />
         </View>

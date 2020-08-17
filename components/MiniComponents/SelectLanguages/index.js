@@ -72,6 +72,7 @@ export default class SelectLanguages extends Component {
           <LowerButton
             screenProps={this.props.screenProps}
             checkmark={true}
+            purpleViolet
             style={[styles.button]}
             function={() => this.props._handleSideMenuState(false)}
           />

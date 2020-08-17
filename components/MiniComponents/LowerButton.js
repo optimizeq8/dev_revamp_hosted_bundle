@@ -20,7 +20,7 @@ export default class LowerButton extends Component {
       disabled,
       text,
       widthButton,
-      purpleViolet = true,
+      purpleViolet,
     } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     const { translate } = this.props.screenProps;

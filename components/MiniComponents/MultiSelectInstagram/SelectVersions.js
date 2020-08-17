@@ -209,6 +209,7 @@ class SelectVersions extends Component {
           screenProps={this.props.screenProps}
           style={[styles.button]}
           checkmark={true}
+          purpleViolet
           function={() => this._handleSubmission()}
         />
       </View>

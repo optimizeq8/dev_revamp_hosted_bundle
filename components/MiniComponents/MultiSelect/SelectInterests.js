@@ -123,6 +123,7 @@ class SelectInterests extends Component {
             screenProps={this.props.screenProps}
             checkmark={true}
             style={styles.button}
+            purpleViolet
             function={() => this.handleSideMenu()}
           />
         </View>

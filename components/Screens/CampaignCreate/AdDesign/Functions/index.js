@@ -105,18 +105,21 @@ export const formatMedia = (
   allIosVideos = false;
   let cardMedia = "";
   let cardUrl = "";
+  let allIosVideos = false;
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
   if (fileReadyToUpload && adType === "StoryAd") {
-    storyAd = storyAdsArray.find((card) => {
-      if (card && card.media !== "//" && !card.media.includes("https://"))
+    storyAd = {};
+    storyAdsArray.forEach((card) => {
+      if (card && card.media !== "//" && !card.media.includes("https://")) {
+        storyAd = card;
         cardMedia = card.media;
+      }
       if (card && card.media !== "//" && card.media.includes("https://"))
         cardUrl = card.media;
       allIosVideos =
         (!cardMedia && cardUrl && Platform.OS === "ios") ||
         card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
-      return !allIosVideos ? cardMedia : cardUrl;
     });
     if (storyAd.media === "//" && !allIosVideos) {
       storyAd.media = tempImage;

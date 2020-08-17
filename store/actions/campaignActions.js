@@ -135,13 +135,10 @@ export const ad_objective = (info, navigation, segmentInfo, objective) => {
           ...segmentInfo,
         });
         if (data.success) {
-          navigation.navigate(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign",
-            {
-              source: "ad_objective",
-              source_action: "a_submit_ad_objective",
-            }
-          );
+          navigation.navigate("AdDesign", {
+            source: "ad_objective",
+            source_action: "a_submit_ad_objective",
+          });
         } else showMessage({ message: data.message, position: "top" });
       })
       .catch((err) => {
@@ -314,11 +311,12 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        navigation.navigate("AdDesign", {
-          rejected,
-          source: "ad_cover",
-          source_action: "a_submit_ad_cover",
-        });
+        navigation.goBack();
+        //   .navigate("AdDesign", {
+        //     rejected,
+        //     source: "ad_cover",
+        //     source_action: "a_submit_ad_cover",
+        //   });
       })
       .catch((err) => {
         loading(0);

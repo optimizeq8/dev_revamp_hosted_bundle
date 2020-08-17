@@ -17,7 +17,7 @@ import {
   Linking,
   I18nManager,
 } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { Content, Text, Container, Footer, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
@@ -25,6 +25,7 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import * as IntentLauncher from "expo-intent-launcher";
 
@@ -34,7 +35,8 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
-import InfoIcon from "../../../../assets/SVGs/InfoIcon";
+import PenIcon from "../../../../assets/SVGs/Pen";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -97,7 +99,7 @@ class AdCover extends Component {
       selectingLogo: false,
       showExampleModal: false,
     };
-    this.selectedCampaign = this.props.rejCampaign;
+    this.selectedCampaign = this.props.rejCampaign || this.props.data;
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
@@ -124,12 +126,12 @@ class AdCover extends Component {
           : this.props.campaign_id,
         coverHeadline: this.rejected
           ? this.selectedCampaign.story_headline
-          : !this.props.data
+          : !this.selectedCampaign
           ? "Headline"
-          : this.props.data.coverHeadline,
+          : this.selectedCampaign.coverHeadline,
       },
-      objective: this.props.data
-        ? this.props.data.objective
+      objective: this.selectedCampaign
+        ? this.selectedCampaign.objective
         : this.rejected
         ? this.selectedCampaign.objective
         : "",
@@ -174,22 +176,22 @@ class AdCover extends Component {
         cover: this.selectedCampaign.story_preview_media,
       });
     } else if (
-      this.props.data &&
+      this.selectedCampaign &&
       Object.keys(this.state.campaignInfo)
         .map((key) => {
-          if (this.props.data.hasOwnProperty(key)) return true;
+          if (this.selectedCampaign.hasOwnProperty(key)) return true;
         })
         .includes(true)
     ) {
-      let rep = { ...this.state.campaignInfo, ...this.props.data };
+      let rep = { ...this.state.campaignInfo, ...this.selectedCampaign };
 
       this.setState({
         ...this.state,
-        ...this.props.data,
+        ...this.selectedCampaign,
         campaignInfo: {
           ...this.state.campaignInfo,
-          logo: this.props.data.logo,
-          coverHeadline: this.props.data.coverHeadline,
+          logo: this.selectedCampaign.logo,
+          coverHeadline: this.selectedCampaign.coverHeadline,
         },
       });
     }
@@ -237,11 +239,15 @@ class AdCover extends Component {
       headlineRejectionUpload: true,
     });
 
-    !this.rejected &&
-      this.props.save_campaign_info({
-        coverHeadline,
-        headlineRejectionUpload: true,
-      });
+    !this.rejected
+      ? this.props.save_campaign_info({
+          coverHeadline,
+          headlineRejectionUpload: true,
+        })
+      : this.props.setRejectedCampaignData({
+          ...this.props.rejCampaign,
+          story_headline: coverHeadline,
+        });
   };
   pick = async () => {
     let status = await this.askForPermssion();
@@ -400,13 +406,17 @@ class AdCover extends Component {
           segmentEventTrack("Selected Story Ad Logo serialization", {
             ...serialization,
           });
-        !this.rejected &&
-          this.props.save_campaign_info({
-            logo: editedLogo.uri !== "" ? editedLogo.uri : "",
-            logoRejectionUpload: editedLogo.uri !== "",
-            uneditedLogoUri,
-            logoSerialization: serialization,
-          });
+        !this.rejected
+          ? this.props.save_campaign_info({
+              logo: editedLogo.uri !== "" ? editedLogo.uri : "",
+              logoRejectionUpload: editedLogo.uri !== "",
+              uneditedLogoUri,
+              logoSerialization: serialization,
+            })
+          : this.props.setRejectedCampaignData({
+              ...this.props.rejCampaign,
+              story_logo_media: editedLogo.uri,
+            });
       }
     }
   };
@@ -539,13 +549,17 @@ class AdCover extends Component {
                 position: "top",
                 type: "success",
               });
-              !this.rejected &&
-                this.props.save_campaign_info({
-                  cover: result.uri,
-                  coverRejectionUpload: true,
-                  uneditedCoverUri,
-                  coverSerialization: result.serialization,
-                });
+              !this.rejected
+                ? this.props.save_campaign_info({
+                    cover: result.uri,
+                    coverRejectionUpload: true,
+                    uneditedCoverUri,
+                    coverSerialization: result.serialization,
+                  })
+                : this.props.setRejectedCampaignData({
+                    ...this.props.rejCampaign,
+                    story_preview_media: result.uri,
+                  });
             })
             .catch((error) => {
               this.onToggleModal(false);
@@ -723,16 +737,16 @@ class AdCover extends Component {
             this.state.coverRejectionUpload ||
             this.state.headlineRejectionUpload)) ||
         (!this.rejected &&
-          this.props.data &&
-          (!this.props.data.hasOwnProperty("formattedCover") ||
-            JSON.stringify(this.props.data.formattedCover) !==
+          this.selectedCampaign &&
+          (!this.selectedCampaign.hasOwnProperty("formattedCover") ||
+            JSON.stringify(this.selectedCampaign.formattedCover) !==
               JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
           const segmentInfo = {
             campaign_channel: "snapchat",
             campaign_ad_type: "StoryAd",
-            campaign_id: this.props.data.campaign_id,
+            campaign_id: this.selectedCampaign.campaign_id,
             campaign_cover_headline: this.state.campaignInfo.coverHeadline,
           };
           await this.props.uploadStoryAdCover(
@@ -746,12 +760,13 @@ class AdCover extends Component {
           );
         }
       } else {
-        this.props.navigation.push("AdDesign", {
-          rejected: this.rejected,
-          selectedCampaign: this.selectedCampaign,
-          source: "ad_cover",
-          source_action: "a_submit_ad_cover",
-        });
+        this.props.navigation.goBack();
+        // .push("AdDesign", {
+        //   rejected: this.rejected,
+        //   selectedCampaign: this.selectedCampaign,
+        //   source: "ad_cover",
+        //   source_action: "a_submit_ad_cover",
+        // });
       }
     }
   };
@@ -780,7 +795,7 @@ class AdCover extends Component {
       timestamp: new Date().getTime(),
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
-      campaign_id: this.props.data.campaign_id,
+      campaign_id: this.selectedCampaign.campaign_id,
     });
     this.props.navigation.push("WebView", {
       url: "https://www.optimizeapp.com/ad_requirements",
@@ -799,7 +814,7 @@ class AdCover extends Component {
    * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
    */
   handleRejectionData = () => {
-    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
+    // if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
     this.props.navigation.goBack();
   };
 
@@ -846,7 +861,6 @@ class AdCover extends Component {
   };
   render() {
     let { cover, coverHeadlineError, logoSerialization } = this.state;
-
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
     return (
@@ -865,204 +879,170 @@ class AdCover extends Component {
           style={styles.gradient}
         />
         <Container style={styles.container}>
-          {!this.props.rejCampaign ? (
-            <TopStepsHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_cover",
-                source_action: "a_go_back",
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Ad Design Back Button",
+              obj: { businessname: this.props.mainBusiness.businessname },
+              source: "ad_cover",
+              source_action: "a_go_back",
+            }}
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            currentScreen="Compose"
+            title={"Compose Ad"}
+          />
+          <KeyboardAwareScrollView
+            contentContainerStyle={styles.contentContainer}
+            extraScrollHeight={80}
+          >
+            <TouchableOpacity
+              disabled={this.props.coverLoading}
+              onPress={() => {
+                this.props.tutorialLinks(
+                  "ad_cover",
+                  I18nManager.isRTL ? "ar" : "en"
+                );
+                this.setState({ showExampleModal: true });
               }}
-              icon="snapchat"
-              actionButton={this.handleBackButton}
-              adType={"StoryAd"}
-              currentScreen="Cover"
-              title={"Compose Ad"}
-            />
-          ) : (
-            <CustomHeader
-              screenProps={this.props.screenProps}
-              closeButton={false}
-              segment={{
-                str: "Ad Design Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname },
-                source: "ad_cover",
-                source_action: "a_go_back",
+              style={{
+                alignSelf: "flex-end",
+                backgroundColor: "#fff",
+                borderRadius: 50,
+                padding: 7,
+                marginBottom: 5,
               }}
-              actionButton={this.handleRejectionData}
-              title={"Compose Ad"}
-            />
-          )}
-          <Content contentContainerStyle={styles.contentContainer} padder>
-            <KeyboardShift>
-              {() => (
-                <>
-                  <View style={styles.buttonN}>
-                    <View style={styles.placeholder}>
-                      <RNImageOrCacheImage
-                        media={cover}
-                        style={styles.placeholder1}
-                        resizeMode="cover"
+            >
+              {/* <InfoIcon /> */}
+              <Text style={styles.infoText}>
+                {translate("Where does the cover show")}
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.placeholder}>
+              {logo ? (
+                <TouchableOpacity
+                  disabled={this.props.coverLoading}
+                  onPress={this.handleLogo}
+                  style={styles.changeLogoStyle}
+                >
+                  <RNImageOrCacheImage
+                    media={logo}
+                    style={styles.logoStyle}
+                    resizeMode="contain"
+                  />
+                  <PenIcon width={20} height={20} style={styles.logoEdit} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  disabled={this.props.coverLoading}
+                  onPress={this.handleLogo}
+                  style={styles.addLogoStyle}
+                >
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Icon
+                        name="plus"
+                        type="SimpleLineIcons"
+                        style={{ color: globalColors.orange }}
                       />
-
-                      {logo ? (
-                        <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={this.handleLogo}
-                          style={styles.changeLogoStyle}
-                        >
-                          <RNImageOrCacheImage
-                            media={logo}
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              alignSelf: "center",
-                            }}
-                            resizeMode="contain"
-                          />
-                          <Text
-                            style={{
-                              color: globalColors.orange,
-                              fontFamily: "montserrat-medium",
-                              alignSelf: "center",
-                              marginTop: 10,
-                            }}
-                          >
-                            {translate("Edit logo")}
-                          </Text>
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={this.handleLogo}
-                          style={styles.addLogoStyle}
-                        >
-                          <View
-                            style={{
-                              flexDirection: "column",
-                              alignItems: "center",
-                            }}
-                          >
-                            <View
-                              style={{
-                                flexDirection: "column",
-                                alignItems: "center",
-                              }}
-                            >
-                              <PlusAddIcon />
-                              <Text
-                                style={{
-                                  color: globalColors.orange,
-                                  fontFamily: "montserrat-bold",
-                                }}
-                              >
-                                {translate("Your Logo")}
-                              </Text>
-                              <Text style={styles.addLogoTextStyle}>
-                                {translate(
-                                  "Must be 993px by 284px and transparent"
-                                )}
-                              </Text>
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                      <View style={{ flexDirection: "row" }}>
-                        {/* <TouchableOpacity
-                          disabled={this.props.coverLoading}
-                          onPress={() => {
-                            this.props.tutorialLinks(
-                              "ad_cover",
-                              I18nManager.isRTL ? "ar" : "en"
-                            );
-                            this.setState({ showExampleModal: true });
-                          }}
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            bottom: 15,
-                          }}
-                        >
-                          <InfoIcon />
-                        </TouchableOpacity> */}
-                        <PenIconBrand
-                          disabled={this.props.coverLoading}
-                          style={{ justifyContent: "flex-start" }}
-                          data={this.props.data}
-                          coverHeadlineError={coverHeadlineError}
-                          changeHeadline={this.changeHeadline}
-                          coverHeadline={coverHeadline}
-                          field={"Headline"}
-                          mainBusiness={this.props.mainBusiness}
-                          rejected={this.rejected}
-                          screenProps={this.props.screenProps}
-                        />
-                      </View>
-                      <MediaButton
-                        type={"cover"}
-                        cover={true}
-                        _pickImage={() =>
-                          this.state.cover === "//"
-                            ? this._pickImage()
-                            : this.setMediaModalVisible(true)
-                        }
-                        image={this.state.cover}
-                        media={this.state.cover}
-                        screenProps={this.props.screenProps}
-                        disabled={this.props.coverLoading}
-                      />
+                      <Text
+                        style={{
+                          color: globalColors.orange,
+                          fontFamily: "montserrat-bold",
+                          fontSize: 14,
+                        }}
+                      >
+                        {translate("Your Logo")}
+                      </Text>
+                      <Text style={styles.addLogoTextStyle}>
+                        {translate(
+                          "Must be Transparent PNG (without Background)"
+                        )}
+                      </Text>
                     </View>
                   </View>
-                </>
+                </TouchableOpacity>
               )}
-            </KeyboardShift>
-            <Text
-              style={[
-                styles.subText,
-                {
-                  // bottom: -10
-                },
-              ]}
-            >
-              {translate(
-                "The cover shows on the\nDiscover page among\nsubscriptions and trending content"
-              )}
-            </Text>
-          </Content>
-
-          <Footer style={styles.footerStyle}>
-            {cover && (this.props.coverLoading || this.state.isVisible) ? (
-              <View style={styles.loadingContainer}>
-                <AnimatedCircularProgress
-                  size={50}
-                  width={5}
-                  fill={Math.round(this.state.loaded)}
-                  rotation={360}
-                  lineCap="round"
-                  tintColor={globalColors.orange}
-                  backgroundColor="rgba(255,255,255,0.3)"
-                  adDetails={false}
+              <View style={styles.placeholder1}>
+                <RNImageOrCacheImage
+                  media={cover}
+                  style={{ width: "100%", height: "100%", opacity: 0.7 }}
+                  // style={styles.placeholder1}
+                  resizeMode="cover"
                 />
-                <Text style={styles.uplaodPercentageText}>
-                  {Math.round(this.state.loaded, 2)} %
-                </Text>
+                <MediaButton
+                  type={"cover"}
+                  cover={true}
+                  _pickImage={() =>
+                    this.state.cover === "//"
+                      ? this._pickImage()
+                      : this.setMediaModalVisible(true)
+                  }
+                  image={this.state.cover}
+                  media={this.state.cover}
+                  screenProps={this.props.screenProps}
+                  disabled={this.props.coverLoading}
+                />
               </View>
-            ) : cover ? (
-              <View style={styles.footerButtonsContainer}>
+
+              <PenIconBrand
+                disabled={this.props.coverLoading}
+                data={this.selectedCampaign}
+                coverHeadlineError={coverHeadlineError}
+                changeHeadline={this.changeHeadline}
+                coverHeadline={coverHeadline}
+                field={"Headline"}
+                mainBusiness={this.props.mainBusiness}
+                rejected={this.rejected}
+                screenProps={this.props.screenProps}
+              />
+            </View>
+            <Footer style={[styles.footerStyle]}>
+              {cover && (this.props.coverLoading || this.state.isVisible) ? (
+                <View style={styles.loadingContainer}>
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={Math.round(this.state.loaded)}
+                    rotation={360}
+                    lineCap="round"
+                    tintColor={globalColors.orange}
+                    backgroundColor="rgba(255,255,255,0.3)"
+                    adDetails={false}
+                  />
+                  <Text style={styles.uplaodPercentageText}>
+                    {Math.round(this.state.loaded, 2)} %
+                  </Text>
+                </View>
+              ) : cover ? (
+                // <View style={[styles.footerButtonsContainer]}>
                 <LowerButton
                   screenProps={this.props.screenProps}
                   function={this._handleSubmission}
                   style={[styles.proceedButtonRTL]}
+                  checkmark
+                  purpleViolet={false}
+                  bottom={1}
                 />
-              </View>
-            ) : (
-              <Text style={styles.footerTextStyle}>
-                {translate("Please add media to proceed")}
-              </Text>
-            )}
-          </Footer>
+              ) : (
+                // </View>
+                <Text style={styles.footerTextStyle}>
+                  {translate("Please add media to proceed")}
+                </Text>
+              )}
+            </Footer>
+          </KeyboardAwareScrollView>
         </Container>
         <MediaModal
           _pickImage={(mediaEditor, editImage) =>
@@ -1152,5 +1132,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetRejectedCampaignData()),
   tutorialLinks: (screenName, appLang) =>
     dispatch(actionCreators.tutorialLinks(screenName, appLang)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdCover);

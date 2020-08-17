@@ -66,6 +66,7 @@ class ReachBar extends Component {
                 screenProps={this.props.screenProps}
                 style={[styles.reachBarLowerButton]}
                 function={() => this.props._handleSubmission()}
+                purpleViolet
               />
             ))}
         </View>

@@ -25,6 +25,7 @@ export default class StoryAdCards extends Component {
         _handleStoryAdCards={this.props._handleStoryAdCards}
         removeSnapCard={this.props.removeSnapCard}
         snapCardInfo={item}
+        setTheState={this.props.setTheState}
       />
     );
   };

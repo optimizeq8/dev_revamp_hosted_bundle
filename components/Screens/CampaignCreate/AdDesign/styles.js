@@ -80,9 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   contentContainer: {
-    // flexGrow: 1,
-    padding: 10,
-    // height: "80%",
+    paddingTop: 10,
   },
   mainSafeArea: {
     height: "100%",

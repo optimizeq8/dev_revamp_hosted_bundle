@@ -73,6 +73,7 @@ export default class AgeOption extends Component {
           style={styles.button}
           checkmark={true}
           bottom={20}
+          purpleViolet
           function={() => this.props._handleSideMenuState(false)}
         />
       </Container>
