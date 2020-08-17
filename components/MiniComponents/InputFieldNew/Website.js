@@ -127,6 +127,12 @@ export default class WebsiteComponent extends React.Component {
                 {
                   fontFamily: "montserrat-light-english",
                   color: inputColor,
+                  fontSize:
+                    this.props.website && this.props.website.length > 38
+                      ? 8.75
+                      : this.props.website && this.props.website.length > 30
+                      ? 10
+                      : 12,
                 },
                 customTextStyle,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }
