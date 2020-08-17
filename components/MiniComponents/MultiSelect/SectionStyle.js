@@ -41,8 +41,7 @@ export default styles = StyleSheet.create({
   },
   searchTextInput: {
     color: "#FFF",
-    fontFamily: "montserrat-light",
-    fontSize: 14 / PixelRatio.getFontScale(),
+    fontSize: 17 / PixelRatio.getFontScale(),
     textAlign: I18nManager.isRTL ? "right" : "left",
   },
   item: {

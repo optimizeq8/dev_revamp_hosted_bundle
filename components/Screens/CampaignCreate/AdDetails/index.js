@@ -637,7 +637,7 @@ class AdDetails extends Component {
   };
 
   onSelectedVersionsChange = (selectedItem) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
     analytics.track(`a_ad_OS_version`, {

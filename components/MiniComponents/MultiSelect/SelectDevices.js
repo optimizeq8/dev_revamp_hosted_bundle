@@ -155,7 +155,7 @@ class SelectDevices extends Component {
                       />
                     </View>
                   }
-                  colors={colors}
+                  colors={{ ...colors, chipColor: globalColors.rum }}
                   searchPlaceholderText={translate("Search Devices")}
                   searchTextFontFamily={{
                     fontFamily: "montserrat-regular",
@@ -184,9 +184,6 @@ class SelectDevices extends Component {
                     this.props.onSelectedItemsChange(items, "devices")
                   }
                   selectedItems={this.props.selectedItems}
-                  colors={{
-                    chipColor: globalColors.rum,
-                  }}
                 />
                 {isNull(this.state.deviceBrands) && (
                   <ActivityIndicator color="#FFFF" size="large" />

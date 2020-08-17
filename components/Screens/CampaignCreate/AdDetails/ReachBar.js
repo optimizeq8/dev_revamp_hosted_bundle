@@ -46,6 +46,8 @@ class ReachBar extends Component {
               {"  " + translate("people")}
             </Text>
           </View>
+        </View>
+        <View style={{ flex: 0.5 }}>
           {((editCampaign &&
             startEditing &&
             campaignInfo.campaign_end &&

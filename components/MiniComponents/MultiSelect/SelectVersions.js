@@ -176,7 +176,7 @@ class SelectVersions extends Component {
                       />
                     </View>
                   }
-                  colors={colors}
+                  colors={{ ...colors, chipColor: globalColors.rum }}
                   searchPlaceholderText={translate("Search Versions")}
                   searchTextFontFamily={{
                     fontFamily: "montserrat-regular",
@@ -204,9 +204,6 @@ class SelectVersions extends Component {
                     this.onSelectedItemsChange(items, "version")
                   }
                   selectedItems={this.state.selectedItems}
-                  colors={{
-                    chipColor: globalColors.rum,
-                  }}
                 />
                 {this.state.versions.length === 0 && (
                   <LoadingScreen top={-10} />
