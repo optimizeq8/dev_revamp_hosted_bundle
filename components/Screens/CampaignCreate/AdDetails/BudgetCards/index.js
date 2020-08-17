@@ -16,8 +16,17 @@ export class BudgetCards extends Component {
     let x = event.nativeEvent.contentOffset.x;
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
   };
+  componentDidMount() {
+    if (this.props.data && this.props.data.hasOwnProperty("campaignInfo")) {
+      this.setState({ customValue: this.props.lifetime_budget_micro });
+    }
+  }
   componentDidUpdate(prevProps) {
-    if (prevProps.recBudget !== this.props.recBudget && this.props.data) {
+    if (
+      (prevProps.recBudget !== this.props.recBudget ||
+        prevProps.lifetime_budget_micro !== this.props.lifetime_budget_micro) &&
+      this.props.data
+    ) {
       this.setState({
         customValue: this.props.data.hasOwnProperty("campaignInfo")
           ? this.props.lifetime_budget_micro
@@ -85,8 +94,8 @@ export class BudgetCards extends Component {
     recBudget = parseFloat(recBudget);
 
     let cards = [
-      { recBudget, id: 1 },
-      { recBudget: recBudget * 2, id: 2 },
+      { recBudget: recBudget * 2, id: 1 },
+      { recBudget, id: 2 },
       { recBudget: recBudget * 3, id: 3 },
     ].map((bud, i) => (
       <BudgetCard

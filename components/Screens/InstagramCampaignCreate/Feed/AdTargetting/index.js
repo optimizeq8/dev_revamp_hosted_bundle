@@ -35,6 +35,8 @@ import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
+import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -205,17 +207,16 @@ class InstagramFeedAdTargetting extends Component {
         ) + 1
       );
       let recBudget = duration * 75;
-
       this.setState(
         {
           campaignInfo: {
             ...this.state.campaignInfo,
             campaign_id: this.props.campaign_id,
-            lifetime_budget_micro: recBudget,
+            lifetime_budget_micro: recBudget * 2,
           },
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          value: this.formatNumber(recBudget),
+          value: this.formatNumber(recBudget * 2),
           recBudget: recBudget,
         },
         async () => {
@@ -232,9 +233,12 @@ class InstagramFeedAdTargetting extends Component {
                 ...this.props.data,
                 campaignInfo: {
                   ...rep,
-                  lifetime_budget_micro: this.props.data.campaignDateChanged
-                    ? recBudget
-                    : this.props.data.campaignInfo.lifetime_budget_micro,
+                  lifetime_budget_micro:
+                    this.props.data && this.props.data.campaignDateChanged
+                      ? recBudget * 2
+                      : this.props.data
+                      ? this.props.data.campaignInfo.lifetime_budget_micro
+                      : 50,
                   campaign_id: this.props.campaign_id,
                   targeting: {
                     ...rep.targeting,
@@ -243,14 +247,17 @@ class InstagramFeedAdTargetting extends Component {
                   },
                 },
                 value: this.formatNumber(
-                  this.props.data.campaignDateChanged
-                    ? recBudget
-                    : this.props.data.campaignInfo.lifetime_budget_micro
+                  this.props.data && this.props.data.campaignDateChanged
+                    ? recBudget * 2
+                    : this.props.data
+                    ? this.props.data.campaignInfo.lifetime_budget_micro
+                    : 50
                 ),
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption
+                  : !isNull(this.props.data.budgetOption) ||
+                    !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
                 customInterests: this.props.data.customInterests,
@@ -265,6 +272,9 @@ class InstagramFeedAdTargetting extends Component {
                   });
                 }
                 this._calcReach();
+                this.props.save_campaign_info_instagram({
+                  budgetOption: this.state.budgetOption,
+                });
               }
             );
           } else {
@@ -592,7 +602,7 @@ class InstagramFeedAdTargetting extends Component {
             error_description:
               validateWrapper("Budget", rawValue) +
               " $" +
-              this.props.campaign.minValueBudget,
+              this.state.minValueBudget,
           });
         }
         showMessage({
@@ -1351,6 +1361,7 @@ class InstagramFeedAdTargetting extends Component {
                           budgetOption={this.state.budgetOption}
                           _handleBudget={this._handleBudget}
                           screenProps={this.props.screenProps}
+                          data={this.props.data}
                         />
 
                         {/*---------leave if in case we want to use it again---------*/}

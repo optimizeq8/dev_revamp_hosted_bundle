@@ -201,10 +201,12 @@ class AdObjective extends Component {
     this.props.save_campaign_info_instagram({ start_time: date });
   };
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date,
+        end_time: end_time.toISOString().split("T")[0],
       },
     });
     analytics.track(`a_ad_end_date`, {
