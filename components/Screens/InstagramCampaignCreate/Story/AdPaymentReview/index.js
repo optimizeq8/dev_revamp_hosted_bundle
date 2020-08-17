@@ -39,7 +39,7 @@ class InstagramAdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
-    this.props.save_campaign_info({ campaignDateChanged: false });
+    this.props.save_campaign_info_instagram({ campaignDateChanged: false });
     this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -609,8 +609,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  save_campaign_info: (info) =>
-    dispatch(actionCreators.save_campaign_info(info)),
+  save_campaign_info_instagram: (info) =>
+    dispatch(actionCreators.save_campaign_info_instagram(info)),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
   get_languages: () => dispatch(actionCreators.get_languages()),
