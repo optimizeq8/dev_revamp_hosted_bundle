@@ -308,9 +308,9 @@ class AdDetails extends Component {
                     : this.props.data.campaignInfo.lifetime_budget_micro,
                 },
                 value: this.formatNumber(
-                  this.props.data.campaignDateChanged
+                  this.props.data && this.props.data.campaignDateChanged
                     ? recBudget * 2
-                    : this.props.data.campaignInfo.lifetime_budget_micro
+                    :this.props.data ? this.props.data.campaignInfo.lifetime_budget_micro : 50
                 ),
                 showRegions: this.props.data.showRegions,
                 filteredLanguages: this.props.languages,
