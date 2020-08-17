@@ -35,6 +35,10 @@ import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
+import uniq from "lodash/uniq";
+import flatten from "lodash/flatten";
+import isUndefined from "lodash/isUndefined";
+import isNull from "lodash/isNull";
 import formatNumber from "../../../formatNumber";
 
 import {
@@ -47,7 +51,6 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { uniq, flatten, isUndefined, isNull } from "lodash";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
