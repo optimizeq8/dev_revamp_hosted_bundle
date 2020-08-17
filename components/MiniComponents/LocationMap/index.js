@@ -27,6 +27,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 export default class LocaionMap extends Component {
   state = {
     initialRegion: {
@@ -83,6 +84,14 @@ export default class LocaionMap extends Component {
     this.setState({ cirLat, cirLong, markerSelected: dragEnd });
   };
   handleRad = (subtract = false) => {
+    const { translate } = this.props.screenProps;
+    if (!this.state.dropped) {
+      showMessage({
+        message: translate("Please drop the pin first to choose a location"),
+        type: "warning",
+      });
+      return;
+    }
     let radius = this.state.marker.radius;
     let width = this.state.width;
     // if (subtract) {
@@ -179,7 +188,10 @@ export default class LocaionMap extends Component {
               : Math.round(radius / 1000) * 1000,
           },
           () => {
-            this.handleAddCir({ nativeEvent: { coordinate: coordinates } });
+            if (selectedLocation.saved)
+              this.handleAddCir({
+                nativeEvent: { coordinate: coordinates },
+              });
           }
         );
       }
@@ -217,6 +229,14 @@ export default class LocaionMap extends Component {
     this.setState({ showFlatList });
   };
   handleMapSubmission = () => {
+    const { translate } = this.props.screenProps;
+    if (!this.state.dropped) {
+      showMessage({
+        message: translate("Please drop the pin first to choose a location"),
+        type: "warning",
+      });
+      return;
+    }
     let markers = cloneDeep(this.state.markers);
     let marker = {
       coordinates: {
@@ -244,6 +264,22 @@ export default class LocaionMap extends Component {
             },
           },
         });
+  };
+  closeMap = () => {
+    if (!this.props.selectedLocation.saved) {
+      this.props.handleMarkers(null, this.props.selectedLocation, true);
+      this.props.handleMapModal(false);
+      return;
+    }
+    if (this.props.selectedLocation.saved)
+      this.props.handleMapModal(
+        false,
+        this.props.selectedLocation,
+        this.props.selectedLocation.index
+      );
+    else {
+      this.props.handleMapModal(false);
+    }
   };
   render() {
     let { cirLat, cirLong, radius } = this.state;
@@ -273,13 +309,7 @@ export default class LocaionMap extends Component {
             ]}
           >
             <Icon
-              onPress={() =>
-                this.props.handleMapModal(
-                  false,
-                  this.props.selectedLocation,
-                  this.props.selectedLocation.index
-                )
-              }
+              onPress={this.closeMap}
               name="close"
               type="FontAwesome"
               style={{ fontSize: 20, marginHorizontal: 10 }}
@@ -301,7 +331,10 @@ export default class LocaionMap extends Component {
               </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={this.handleMapSubmission}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={this.handleMapSubmission}
+          >
             <Text style={[styles.rangeStyle, { fontSize: 14 }]}>
               {translate("Save")}
             </Text>

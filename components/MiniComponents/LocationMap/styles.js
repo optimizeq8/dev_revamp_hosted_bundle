@@ -117,4 +117,18 @@ export default StyleSheet.create({
     fontSize: 12,
     color: "#9304FF",
   },
+  saveButton: {
+    borderWidth: 0.3,
+    padding: 10,
+    borderRadius: 40,
+    borderColor: globalColors.purple,
+    shadowColor: "#000",
+    backgroundColor: "#fff",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 1,
+  },
 });
