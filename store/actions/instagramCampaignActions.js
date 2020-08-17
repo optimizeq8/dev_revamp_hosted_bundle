@@ -217,6 +217,14 @@ export const saveBrandMediaInstagram = (
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
+        showMessage({
+          message:
+            error.message ||
+            error.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+        });
         // console.log(
         //   "error saveBrandMedia ",
         //   JSON.stringify(error.response.data || error.message, null, 2)
