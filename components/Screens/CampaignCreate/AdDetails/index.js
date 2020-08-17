@@ -317,7 +317,7 @@ class AdDetails extends Component {
                 recBudget,
                 filteredRegions: countryRegions ? countryRegions : [],
                 regions: countryRegions ? countryRegions : [],
-                budgetOption: this.props.data.campaignDateChanged
+                budgetOption:this.props.data && this.props.data.campaignDateChanged
                   ? 1
                   : !isNull(this.props.data.budgetOption) ||
                     !isUndefined(this.props.data.budgetOption)
