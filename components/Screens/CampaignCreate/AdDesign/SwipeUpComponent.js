@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Icon } from "native-base";
+import startCase from "lodash/startCase";
 import styles from "./styles";
 import SnapObjective from "../../../Data/snapchatObjectives.data";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -211,7 +212,9 @@ export default class SwipeUpComponent extends Component {
                     destination !== "REMOTE_WEBPAGE") ||
                     (destination === "COLLECTION" &&
                       collectionAdLinkForm === 2))
-                    ? translate(destination.replace("_", " ").toLowerCase())
+                    ? translate(
+                        startCase(destination.replace("_", " ").toLowerCase())
+                      )
                     : (destination === "REMOTE_WEBPAGE" &&
                         objective !== "WEB_CONVERSION") ||
                       (destination === "COLLECTION" &&
