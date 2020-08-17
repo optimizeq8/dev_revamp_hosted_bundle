@@ -42,6 +42,7 @@ import {
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import { isNull, isUndefined } from "lodash";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
@@ -211,11 +212,11 @@ class InstagramStoryAdTargetting extends Component {
           campaignInfo: {
             ...this.state.campaignInfo,
             campaign_id: this.props.campaign_id,
-            lifetime_budget_micro: recBudget,
+            lifetime_budget_micro: recBudget * 2,
           },
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          value: this.formatNumber(recBudget),
+          value: this.formatNumber(recBudget * 2),
           recBudget: recBudget,
         },
         async () => {
@@ -233,7 +234,7 @@ class InstagramStoryAdTargetting extends Component {
                 campaignInfo: {
                   ...rep,
                   lifetime_budget_micro: this.props.data.campaignDateChanged
-                    ? recBudget
+                    ? recBudget * 2
                     : this.props.data.campaignInfo.lifetime_budget_micro,
                   campaign_id: this.props.campaign_id,
                   targeting: {
@@ -244,13 +245,14 @@ class InstagramStoryAdTargetting extends Component {
                 },
                 value: this.formatNumber(
                   this.props.data.campaignDateChanged
-                    ? recBudget
+                    ? recBudget * 2
                     : this.props.data.campaignInfo.lifetime_budget_micro
                 ),
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption
+                  : !isNull(this.props.data.budgetOption) ||
+                    !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
                 customInterests: this.props.data.customInterests,
@@ -265,6 +267,9 @@ class InstagramStoryAdTargetting extends Component {
                   });
                 }
                 this._calcReach();
+                this.props.save_campaign_info_instagram({
+                  budgetOption: this.state.budgetOption,
+                });
               }
             );
           } else {
@@ -596,7 +601,7 @@ class InstagramStoryAdTargetting extends Component {
             error_description:
               validateWrapper("Budget", rawValue) +
               " $" +
-              this.props.campaign.minValueBudget,
+              this.state.minValueBudget,
           });
         }
         showMessage({
@@ -1304,6 +1309,7 @@ class InstagramStoryAdTargetting extends Component {
                           budgetOption={this.state.budgetOption}
                           _handleBudget={this._handleBudget}
                           screenProps={this.props.screenProps}
+                          data={this.props.data}
                         />
 
                         {/*---------leave if in case we want to use it again---------*/}

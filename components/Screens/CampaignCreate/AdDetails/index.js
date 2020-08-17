@@ -47,7 +47,7 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { uniq, flatten } from "lodash";
+import { uniq, flatten, isUndefined, isNull } from "lodash";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
@@ -258,11 +258,11 @@ class AdDetails extends Component {
           campaignInfo: {
             ...this.state.campaignInfo,
             campaign_id: this.props.campaign_id,
-            lifetime_budget_micro: recBudget,
+            lifetime_budget_micro: recBudget * 2,
           },
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          value: this.formatNumber(recBudget, true),
+          value: this.formatNumber(recBudget * 2, true),
           recBudget: recBudget,
         },
         async () => {
@@ -271,7 +271,6 @@ class AdDetails extends Component {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
-
             let savedRegionNames = this.props.data.regionNames;
             let countryRegions = rep.targeting.geos.map((cou) => {
               let foundCountryReg = find(
@@ -301,18 +300,13 @@ class AdDetails extends Component {
                 campaignInfo: {
                   ...rep,
                   campaign_id: this.props.campaign_id,
-                  lifetime_budget_micro:
-                    this.props.data.campaignDateChanged &&
-                    this.props.data.campaignInfo.lifetime_budget_micro <
-                      this.props.data.minValueBudget
-                      ? recBudget
-                      : this.props.data.campaignInfo.lifetime_budget_micro,
+                  lifetime_budget_micro: this.props.data.campaignDateChanged
+                    ? recBudget * 2
+                    : this.props.data.campaignInfo.lifetime_budget_micro,
                 },
                 value: this.formatNumber(
-                  this.props.data.campaignDateChanged &&
-                    this.props.data.campaignInfo.lifetime_budget_micro <
-                      this.props.data.minValueBudget
-                    ? recBudget
+                  this.props.data.campaignDateChanged
+                    ? recBudget * 2
                     : this.props.data.campaignInfo.lifetime_budget_micro
                 ),
                 showRegions: this.props.data.showRegions,
@@ -322,7 +316,8 @@ class AdDetails extends Component {
                 regions: countryRegions ? countryRegions : [],
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : this.props.data.budgetOption
+                  : !isNull(this.props.data.budgetOption) ||
+                    !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
                 regionNames: savedRegionNames,
@@ -351,6 +346,9 @@ class AdDetails extends Component {
               this.props.mainBusiness.country
             );
           }
+          this.props.save_campaign_info({
+            budgetOption: this.state.budgetOption,
+          });
           this._calcReach();
         }
       );
