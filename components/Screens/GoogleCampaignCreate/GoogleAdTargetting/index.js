@@ -63,7 +63,7 @@ class GoogleAdTargetting extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      budget: this.props.campaign.recommendedBudget * 2,
+          budget:  this.props.campaign &&  this.props.campaign.recommendedBudget ? this.props.campaign.recommendedBudget * 2: 0,
       age: ["Undetermined"],
       gender: "Undetermined",
       keywords: [],
