@@ -53,6 +53,7 @@ import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
+import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -115,7 +116,7 @@ class AdObjective extends Component {
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
       },
-      objectiveLabel: "Select Objective",
+      objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
     });
   }
 
@@ -173,7 +174,9 @@ class AdObjective extends Component {
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
         name: this.props.data.name ? this.props.data.name : "",
-        objective: this.props.data.objective ? this.props.data.objective : "",
+        objective: this.props.data.objective
+          ? this.props.data.objective
+          : snapchatObjectivesData[this.props.adType][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -188,7 +191,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : "Select Objective",
+          : snapchatObjectivesData[this.props.adType][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -212,7 +215,7 @@ class AdObjective extends Component {
           businessid:
             this.props.mainBusiness && this.props.mainBusiness.businessid,
           name: "",
-          objective: "",
+          objective: snapchatObjectivesData[this.props.adType][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
         },
@@ -220,7 +223,7 @@ class AdObjective extends Component {
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
-        objectiveLabel: "Select Objective",
+        objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",

@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   subtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    fontSize: 11,
     paddingTop: 5,
     color: "#fff",
     textAlign: "left",
-    width: "80%",
+    //  width: "80%", // Removed was cutting the sentence
     lineHeight: 18,
   },
   campaignButton: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    marginHorizontal: 25,
+    marginHorizontal: 20,
     borderRadius: 30,
     backgroundColor: "#fff",
     padding: 10,
