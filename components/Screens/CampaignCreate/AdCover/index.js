@@ -915,7 +915,9 @@ class AdCover extends Component {
               }}
             >
               {/* <InfoIcon /> */}
-              <Text style={styles.infoText}>Where does the cover show?</Text>
+              <Text style={styles.infoText}>
+                {translate("Where does the cover show")}
+              </Text>
             </TouchableOpacity>
             <View style={styles.placeholder}>
               {logo ? (
