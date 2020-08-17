@@ -306,6 +306,7 @@ class AdObjective extends Component {
       end_time: date,
       campaignDateChanged: true,
     });
+    this._handleSubmission();
   };
   setModalVisible = (visible) => {
     analytics.track(`ad_objective_modal`, {

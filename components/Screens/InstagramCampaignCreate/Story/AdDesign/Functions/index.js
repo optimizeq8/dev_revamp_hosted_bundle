@@ -157,14 +157,16 @@ export const formatMedia = (
       : campaignInfo.destination
   );
   body.append("link", data.link ? data.link : "BLANK"); // webiste link for destination as link
-  body.append("call_to_action", data.call_to_action.value);
+  body.append(
+    "call_to_action",
+    data.hasOwnProperty("call_to_action") ? data.call_to_action.value : "BLANK"
+  );
   body.append(
     "attachment",
     data.attachment === "BLANK"
       ? data.attachment
       : JSON.stringify(data.attachment)
   );
-
   setTheState({
     formatted: body,
   });

@@ -36,7 +36,7 @@ export default class BudgetCard extends Component {
           <View
             style={[
               styles.recIcon,
-              { left: I18nManager.isRTL ? "30%" : "47%" },
+              { left: I18nManager.isRTL ? "54%" : "73%" },
             ]}
           >
             <RecomenededIcon fill={"#fff"} style={{ right: 1 }} />

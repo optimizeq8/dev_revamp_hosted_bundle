@@ -252,7 +252,7 @@ class InstagramStoryAdTargetting extends Component {
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged
                   ? 1
-                  : !isNull(this.props.data.budgetOption) ||
+                  : !isNull(this.props.data.budgetOption) &&
                     !isUndefined(this.props.data.budgetOption)
                   ? this.props.data.budgetOption
                   : 1,
@@ -1010,6 +1010,7 @@ class InstagramStoryAdTargetting extends Component {
   };
   onSelectedCountryRegionsObjectsChange = (items) => {};
   render() {
+    console.log("sss", this.props.data.budgetOption);
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;

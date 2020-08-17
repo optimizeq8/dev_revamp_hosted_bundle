@@ -94,8 +94,8 @@ export class BudgetCards extends Component {
     recBudget = parseFloat(recBudget);
 
     let cards = [
-      { recBudget: recBudget * 2, id: 1 },
       { recBudget, id: 2 },
+      { recBudget: recBudget * 2, id: 1 },
       { recBudget: recBudget * 3, id: 3 },
     ].map((bud, i) => (
       <BudgetCard
