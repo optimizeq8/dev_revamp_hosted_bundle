@@ -69,7 +69,7 @@ class GoogleAdTargetting extends Component {
       keywords: [],
       sidemenustate: false,
       sidemenu: "gender",
-      value: this.props.campaign.recommendedBudget * 2,
+                budget:  this.props.campaign &&  this.props.campaign.recommendedBudget ? this.props.campaign.recommendedBudget * 2: 0,    
       modalVisible: false,
       selectionOption: "",
       budgetOption: 1,
