@@ -63,13 +63,19 @@ class GoogleAdTargetting extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          budget:  this.props.campaign &&  this.props.campaign.recommendedBudget ? this.props.campaign.recommendedBudget * 2: 0,
+      budget:
+        this.props.campaign && this.props.campaign.recommendedBudget
+          ? this.props.campaign.recommendedBudget * 2
+          : 0,
       age: ["Undetermined"],
       gender: "Undetermined",
       keywords: [],
       sidemenustate: false,
       sidemenu: "gender",
-                budget:  this.props.campaign &&  this.props.campaign.recommendedBudget ? this.props.campaign.recommendedBudget * 2: 0,    
+      budget:
+        this.props.campaign && this.props.campaign.recommendedBudget
+          ? this.props.campaign.recommendedBudget * 2
+          : 0,
       modalVisible: false,
       selectionOption: "",
       budgetOption: 1,
@@ -101,18 +107,25 @@ class GoogleAdTargetting extends Component {
     this.setState(
       {
         ...data,
-        budget: this.props.campaign && this.props.campaign.campaignDateChanged
-          ? this.props.campaign.recommendedBudget * 2
-          : this.props.campaign ?this.props.campaign.budget : 50,
-        value:this.props.campaign && this.props.campaign.campaignDateChanged
-          ? this.props.campaign.recommendedBudget * 2
-          : this.props.campaign ? this.props.campaign.budget : 50,
-        budgetOption: this.props.campaign && this.props.campaign.campaignDateChanged
-          ? 1
-          : !isNull(this.props.campaign.budgetOption) ||
-            !isUndefined(this.props.campaign.budgetOption)
-          ? this.props.campaign.budgetOption
-          : 1,
+        budget:
+          this.props.campaign && this.props.campaign.campaignDateChanged
+            ? this.props.campaign.recommendedBudget * 2
+            : this.props.campaign
+            ? this.props.campaign.budget
+            : 50,
+        value:
+          this.props.campaign && this.props.campaign.campaignDateChanged
+            ? this.props.campaign.recommendedBudget * 2
+            : this.props.campaign
+            ? this.props.campaign.budget
+            : 50,
+        budgetOption:
+          this.props.campaign && this.props.campaign.campaignDateChanged
+            ? 1
+            : !isNull(this.props.campaign.budgetOption) &&
+              !isUndefined(this.props.campaign.budgetOption)
+            ? this.props.campaign.budgetOption
+            : 1,
       },
       () =>
         this.props.save_google_campaign_data({

@@ -207,7 +207,6 @@ class InstagramFeedAdTargetting extends Component {
         ) + 1
       );
       let recBudget = duration * 75;
-
       this.setState(
         {
           campaignInfo: {
@@ -234,9 +233,12 @@ class InstagramFeedAdTargetting extends Component {
                 ...this.props.data,
                 campaignInfo: {
                   ...rep,
-                  lifetime_budget_micro: this.props.data && this.props.data.campaignDateChanged
-                    ? recBudget * 2
-                    :  this.props.data ? this.props.data.campaignInfo.lifetime_budget_micro : 50,
+                  lifetime_budget_micro:
+                    this.props.data && this.props.data.campaignDateChanged
+                      ? recBudget * 2
+                      : this.props.data
+                      ? this.props.data.campaignInfo.lifetime_budget_micro
+                      : 50,
                   campaign_id: this.props.campaign_id,
                   targeting: {
                     ...rep.targeting,
@@ -245,9 +247,11 @@ class InstagramFeedAdTargetting extends Component {
                   },
                 },
                 value: this.formatNumber(
-                 this.props.data && this.props.data.campaignDateChanged
+                  this.props.data && this.props.data.campaignDateChanged
                     ? recBudget * 2
-                    : this.props.data ? this.props.data.campaignInfo.lifetime_budget_micro : 50
+                    : this.props.data
+                    ? this.props.data.campaignInfo.lifetime_budget_micro
+                    : 50
                 ),
                 recBudget,
                 budgetOption: this.props.data.campaignDateChanged

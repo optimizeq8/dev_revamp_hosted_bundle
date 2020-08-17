@@ -303,26 +303,32 @@ class AdDetails extends Component {
                 campaignInfo: {
                   ...rep,
                   campaign_id: this.props.campaign_id,
-                  lifetime_budget_micro: this.props.data && this.props.data.campaignDateChanged
-                    ? recBudget * 2
-                    : this.props.data ?this.props.data.campaignInfo.lifetime_budget_micro:50,
+                  lifetime_budget_micro:
+                    this.props.data && this.props.data.campaignDateChanged
+                      ? recBudget * 2
+                      : this.props.data
+                      ? this.props.data.campaignInfo.lifetime_budget_micro
+                      : 50,
                 },
                 value: this.formatNumber(
                   this.props.data && this.props.data.campaignDateChanged
                     ? recBudget * 2
-                    :this.props.data ? this.props.data.campaignInfo.lifetime_budget_micro : 50
+                    : this.props.data
+                    ? this.props.data.campaignInfo.lifetime_budget_micro
+                    : 50
                 ),
                 showRegions: this.props.data.showRegions,
                 filteredLanguages: this.props.languages,
                 recBudget,
                 filteredRegions: countryRegions ? countryRegions : [],
                 regions: countryRegions ? countryRegions : [],
-                budgetOption:this.props.data && this.props.data.campaignDateChanged
-                  ? 1
-                  : !isNull(this.props.data.budgetOption) ||
-                    !isUndefined(this.props.data.budgetOption)
-                  ? this.props.data.budgetOption
-                  : 1,
+                budgetOption:
+                  this.props.data && this.props.data.campaignDateChanged
+                    ? 1
+                    : !isNull(this.props.data.budgetOption) ||
+                      !isUndefined(this.props.data.budgetOption)
+                    ? this.props.data.budgetOption
+                    : 1,
                 regionNames: savedRegionNames,
                 minValueBudget,
               },
