@@ -116,7 +116,9 @@ class AdObjective extends Component {
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
         name: this.props.data.name,
-        objective: this.props.data.objective ? this.props.data.objective : "",
+        objective: this.props.data.objective
+          ? this.props.data.objective
+          : instagramAdObjectives["InstagramStoryAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -130,7 +132,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : "Select Objective",
+          : instagramAdObjectives["InstagramStoryAd"][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -145,14 +147,14 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: "",
-          objective: "",
+          objective: instagramAdObjectives["InstagramStoryAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
           end_time: start_time.toISOString().split("T")[0],
         },
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
-        objectiveLabel: "Select Objective",
+        objectiveLabel: instagramAdObjectives["InstagramStoryAd"][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",

@@ -3,18 +3,18 @@ import * as ObjIcons from "../../assets/SVGs/Objectives";
 export default {
   CollectionAd: [
     {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "Website Traffic",
       value: "TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "Lead Generation",
@@ -54,18 +54,18 @@ export default {
   ],
   SnapAd: [
     {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "Website Traffic",
       value: "WEBSITE_TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "App Installs",
