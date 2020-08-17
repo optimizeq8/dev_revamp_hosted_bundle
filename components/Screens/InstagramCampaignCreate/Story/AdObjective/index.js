@@ -200,7 +200,11 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_ad_start_date",
     });
-    this.props.save_campaign_info_instagram({ start_time: date });
+    this.props.save_campaign_info_instagram({
+      start_time: date,
+      campaignDateChanged: true,
+    });
+    this._handleSubmission();
   };
   handleEndDatePicked = (date) => {
     let end_time = new Date(date);
