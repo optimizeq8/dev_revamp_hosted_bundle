@@ -101,13 +101,13 @@ class GoogleAdTargetting extends Component {
     this.setState(
       {
         ...data,
-        budget: this.props.campaign.campaignDateChanged
+        budget: this.props.campaign && this.props.campaign.campaignDateChanged
           ? this.props.campaign.recommendedBudget * 2
-          : this.props.campaign.budget,
-        value: this.props.campaign.campaignDateChanged
+          : this.props.campaign ?this.props.campaign.budget : 50,
+        value:this.props.campaign && this.props.campaign.campaignDateChanged
           ? this.props.campaign.recommendedBudget * 2
-          : this.props.campaign.budget,
-        budgetOption: this.props.campaign.campaignDateChanged
+          : this.props.campaign ? this.props.campaign.budget : 50,
+        budgetOption: this.props.campaign && this.props.campaign.campaignDateChanged
           ? 1
           : !isNull(this.props.campaign.budgetOption) ||
             !isUndefined(this.props.campaign.budgetOption)
