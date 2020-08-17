@@ -145,6 +145,7 @@ class AdDesign extends Component {
         message = "",
         media_type,
         media = "//",
+        fileReadyToUpload,
       } = this.props.data;
       let destination = "";
       if (
@@ -186,6 +187,7 @@ class AdDesign extends Component {
         },
         media_type,
         media,
+        fileReadyToUpload,
       });
       this.props.save_campaign_info_instagram({
         destination,

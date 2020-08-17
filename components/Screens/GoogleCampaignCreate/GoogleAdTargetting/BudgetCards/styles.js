@@ -1,10 +1,10 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { globalColors } from "../../../../../GlobalStyles";
 export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 5
+    paddingTop: 5,
   },
   budgetCardsStyle: { alignSelf: "center" },
   budgetCardStyle: {
@@ -16,12 +16,12 @@ export default StyleSheet.create({
     borderWidth: 2.5,
     height: 50,
     marginHorizontal: 5,
-    width: 105
+    width: 105,
   },
   budgetTextStyle: {
     color: globalColors.orange,
     fontFamily: "montserrat-bold",
-    fontSize: 18
+    fontSize: 18,
   },
   budget: {
     alignSelf: "center",
@@ -31,17 +31,17 @@ export default StyleSheet.create({
     textAlign: "center",
     width: "100%",
     paddingBottom: 0,
-    width: "100%"
+    width: "100%",
   },
   recIcon: {
     position: "absolute",
-    left: "47%",
+    left: I18nManager.isRTL ? "54%" : "73%",
     bottom: "70%",
     backgroundColor: globalColors.green,
     borderRadius: 50,
     width: 20,
     height: 20,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

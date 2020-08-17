@@ -559,9 +559,10 @@ const styles = StyleSheet.create({
   saveButton: {
     borderRadius: 50,
     backgroundColor: globalColors.purple,
-    width: 70,
+    width: "100%",
     height: 45,
     alignSelf: "center",
+    justifyContent: "center",
   },
   saveText: {
     fontFamily: "montserrat-bold",
