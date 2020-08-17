@@ -1262,6 +1262,7 @@ class AdDesign extends Component {
         screenProps={this.props.screenProps}
         brand_nameError={this.state.brand_nameError}
         headlineError={this.state.headlineError}
+        setTheState={this.setTheState}
       />
     ));
 
