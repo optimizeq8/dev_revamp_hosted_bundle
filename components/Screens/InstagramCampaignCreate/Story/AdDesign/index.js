@@ -566,6 +566,7 @@ class AdDesign extends Component {
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
                     setTheState={this.setTheState}
+                    adType={"InstagramStoryAd"}
                   />
                 </View>
                 <View style={styles.lowerBtn}>
