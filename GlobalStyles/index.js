@@ -41,6 +41,9 @@ const globalStyles = StyleSheet.create({
   whiteTextColor: {
     color: "#FFFFFF",
   },
+  rumTextColor: {
+    color: "#75647C",
+  },
   whiteBackgroundColor: {
     backgroundColor: "#FFFFFF",
   },

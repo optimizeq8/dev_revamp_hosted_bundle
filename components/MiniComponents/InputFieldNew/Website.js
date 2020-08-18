@@ -104,7 +104,7 @@ export default class WebsiteComponent extends React.Component {
                 ? iconFill
                 : this.state.highlight
                 ? globalColors.orange
-                : globalColors.white
+                : globalColors.rum
             }
           />
           <View style={styles.colView}>
@@ -115,7 +115,7 @@ export default class WebsiteComponent extends React.Component {
                   ? { color: labelColor }
                   : this.state.highlight
                   ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.whiteTextColor,
+                  : GlobalStyles.rumTextColor,
               ]}
             >
               {translate(label)}

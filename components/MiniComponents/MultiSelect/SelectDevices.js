@@ -34,19 +34,7 @@ class SelectDevices extends Component {
     // this.props.get_device_brands("");
     Segment.screen("Devices Brands Options");
 
-    switch (this.props.OSType) {
-      case "iOS":
-        this.props.get_device_brands("/1");
-        break;
-      case "ANDROID":
-        this.props.get_device_brands("/2");
-        break;
-
-      default:
-        this.props.get_device_brands("");
-
-        break;
-    }
+    this.getDeviceBrands();
   }
   componentDidUpdate(prevProps) {
     if (
@@ -61,6 +49,20 @@ class SelectDevices extends Component {
       this.setState({ deviceBrands: children });
     }
   }
+  getDeviceBrands = () => {
+    switch (this.props.OSType) {
+      case "iOS":
+        this.props.get_device_brands("/1");
+        break;
+      case "ANDROID":
+        this.props.get_device_brands("/2");
+        break;
+
+      default:
+        this.props.get_device_brands("");
+        break;
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (

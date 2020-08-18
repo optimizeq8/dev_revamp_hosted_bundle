@@ -514,7 +514,7 @@ export const get_interests = (countryCode) => {
 export const get_device_brands = (os) => {
   return (dispatch, getState) => {
     createBaseUrl()
-      .get(`deviceBrands${os}`)
+      .get(`deviceBrands${os}`, { timeout: 5000 })
       .then((res) => {
         return res.data.targeting_dimensions;
       })
