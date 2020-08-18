@@ -38,6 +38,7 @@ class SelectRegions extends Component {
           "Selecting regions will overwrite and reset your selected locations, are you sure you want to continue"
         ),
         [
+          { text: translate("Cancel") },
           {
             text: translate("Yes"),
             onPress: () => {
@@ -45,7 +46,6 @@ class SelectRegions extends Component {
               this.handleRegionSelection(c, fReg);
             },
           },
-          { text: translate("Cancel") },
         ]
       );
     } else this.handleRegionSelection(c, fReg);

@@ -96,13 +96,17 @@ export default class SnapchatLocation extends Component {
 
   checkForRegions = () => {
     let { translate } = this.props.screenProps;
-    if (this.props.regionsSelected) {
+    let regionsSelected = this.props.regionsSelected.some(
+      (geo) => geo.region_id.length > 0
+    );
+    if (regionsSelected) {
       Alert.alert(
         translate("Reset selected regions"),
         translate(
           "Selecting locations will overwrite and reset your selected regions, are you sure you want to continue"
         ),
         [
+          { text: translate("Cancel") },
           {
             text: translate("Yes"),
             onPress: () => {
@@ -110,7 +114,6 @@ export default class SnapchatLocation extends Component {
               this.props.onSelectedRegionChange(-1, null, null, true);
             },
           },
-          { text: translate("Cancel") },
         ]
       );
     } else this.handleSubmisionOfMarkers();

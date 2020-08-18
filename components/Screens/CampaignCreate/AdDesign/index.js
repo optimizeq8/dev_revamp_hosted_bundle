@@ -18,7 +18,7 @@ import {
   Linking,
   ScrollView,
 } from "react-native";
-import { Content, Text, Container, Footer, Button } from "native-base";
+import { Content, Text, Container, Footer, Button, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
@@ -85,6 +85,9 @@ import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
 import AdCover from "../AdCover";
+import Modal from "react-native-modal";
+import { BlurView } from "@react-native-community/blur";
+import { RNFFmpeg } from "react-native-ffmpeg";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -142,6 +145,7 @@ class AdDesign extends Component {
       swipeUpExpanded: false,
       showCover: false,
       coverError: false,
+      progress: 0,
     };
     this.adType = this.props.adType;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -480,7 +484,9 @@ class AdDesign extends Component {
       this.rejected,
       mediaEditor,
       editImage,
-      this.videoIsExporting
+      this.videoIsExporting,
+      this.statisticsCallback,
+      this.state.cancelled
     );
 
   getVideoUploadUrl = () => {
@@ -1261,6 +1267,18 @@ class AdDesign extends Component {
   setMaxHeight = (event) => {
     this.setState({ swipeUpMaxHeight: event.nativeEvent.layout.height });
   };
+  statisticsCallback = (statisticsData) => {
+    let progress = (statisticsData.time / (this.state.duration * 1000)) * 100;
+    this.setState({ progress });
+  };
+  handleVideoCaneling = () => {
+    this.setState({
+      videoIsLoading: false,
+      cancelled: true,
+      progress: 0,
+    });
+    RNFFmpeg.cancel();
+  };
   render() {
     let {
       media,
@@ -1446,7 +1464,53 @@ class AdDesign extends Component {
                         />
                       )
                     )}
-                    {videoIsLoading ? <CameraLoading /> : null}
+                    {videoIsLoading ? (
+                      <Modal isVisible={videoIsLoading} style={{ margin: 0 }}>
+                        <BlurView
+                          blurAmount={5}
+                          style={{ height: "100%", justifyContent: "center" }}
+                        >
+                          <Icon
+                            name="close"
+                            onPress={this.handleVideoCaneling}
+                            type="AntDesign"
+                            style={{
+                              color: globalColors.white,
+                              position: "absolute",
+                              top: 50,
+                              left: 10,
+                            }}
+                          />
+                          <View style={styles.animatedLoaderContainer}>
+                            <AnimatedCircularProgress
+                              size={100}
+                              width={10}
+                              fill={this.state.progress}
+                              rotation={360}
+                              lineCap="round"
+                              tintColor={globalColors.orange}
+                              backgroundColor="rgba(255,255,255,0.3)"
+                              adDetails={false}
+                            />
+                            <Text
+                              style={[
+                                styles.uplaodPercentageText,
+                                { top: "40%" },
+                              ]}
+                            >
+                              {this.state.progress.toFixed(0)}
+                              <Text style={styles.percentage}>%</Text>
+                            </Text>
+                          </View>
+                          <Text style={styles.subTitle}>
+                            {translate(
+                              "Processing and upscaling your video now"
+                            )}
+                            ...
+                          </Text>
+                        </BlurView>
+                      </Modal>
+                    ) : null}
 
                     {/* <TouchableOpacity
                     disabled={

@@ -16,7 +16,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
-import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
+import { RNFFprobe, RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg";
 
 import PhotoEditorConfiguration from "../../../../Functions/PhotoEditorConfiguration";
 // ADD TRANSLATE PROP
@@ -74,7 +74,9 @@ export const _pickImage = async (
   rejected,
   mediaEditor = {},
   editImage,
-  videoIsExporting
+  videoIsExporting,
+  statisticsCallback,
+  cancelled
 ) => {
   try {
     let result = {};
@@ -321,9 +323,9 @@ export const _pickImage = async (
             });
             showMessage({
               message: error.wrongAspect
-                ? error.message
-                : error.message ||
-                  error ||
+                ? translate(error.message)
+                : translate(error.message) ||
+                  translate(error) ||
                   translate(
                     "The dimensions are too large, please choose a different image"
                   ),
@@ -376,6 +378,7 @@ export const _pickImage = async (
               videoIsExporting(true);
               let newResult = {};
               if (manipResult.hasChanges) {
+                RNFFmpegConfig.enableStatisticsCallback(statisticsCallback);
                 newResult = await RNFFprobe.getMediaInformation(actualUri);
                 if (newResult.streams)
                   newResult = {
@@ -426,6 +429,9 @@ export const _pickImage = async (
                     outputUri[outputUri.length - 1]
                   }`
                 );
+                if (cancelled) {
+                  return Promise.reject("Video processing canceled");
+                }
                 newResult = await RNFFprobe.getMediaInformation(
                   `${FileSystem.documentDirectory}${
                     outputUri[outputUri.length - 1]
@@ -721,7 +727,7 @@ export const _pickImage = async (
               campaign_error_image: err,
             });
             showMessage({
-              message: err.message || err,
+              message: translate(err.message || err),
               type: "warning",
             });
           });

@@ -631,6 +631,25 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontSize: 13,
   },
+  animatedLoaderContainer: {
+    width: "100%",
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  subTitle: {
+    bottom: 5,
+    alignSelf: "center",
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center",
+  },
 });
 
 export default styles;

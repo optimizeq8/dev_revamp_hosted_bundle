@@ -163,8 +163,8 @@ class AdDetails extends Component {
           .lifetime_budget_micro;
         let value = this.state.value;
         if (this.state.budgetOption === 1) {
-          lifetime_budget_micro = recBudget;
-          value = this.formatNumber(recBudget, true);
+          lifetime_budget_micro = recBudget * 2;
+          value = this.formatNumber(recBudget * 2, true);
         }
         this.setState({
           campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
@@ -1290,9 +1290,7 @@ class AdDetails extends Component {
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.save_campaign_info}
             data={this.props.data}
-            regionsSelected={
-              campaignInfo.targeting.geos[0].region_id.length > 0
-            }
+            regionsSelected={campaignInfo.targeting.geos}
             onSelectedRegionChange={this.onSelectedRegionChange}
             onSelectedCountryChange={this.onSelectedCountryChange}
             _handleSideMenuState={this._handleSideMenuState}
