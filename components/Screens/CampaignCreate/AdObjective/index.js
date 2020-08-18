@@ -83,7 +83,7 @@ class AdObjective extends Component {
       end_timeError: "",
       incomplete: false,
       duration: 7,
-      savedObjective: "",
+      savedObjective: "WEBSITE_TRAFFIC",
     };
   }
   componentWillUnmount() {
@@ -204,7 +204,7 @@ class AdObjective extends Component {
           : this.state.duration,
         savedObjective: this.props.data.hasOwnProperty("savedObjective")
           ? this.props.data.savedObjective
-          : this.state.campaignInfo.objective,
+          : snapchatObjectivesData[this.props.adType][0].value,
       });
     } else {
       this.setState({
@@ -230,6 +230,7 @@ class AdObjective extends Component {
         start_timeError: "",
         end_timeError: "",
         duration: 7,
+        savedObjective: snapchatObjectivesData[this.props.adType][0].value,
       });
     }
   };
