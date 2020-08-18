@@ -43,6 +43,7 @@ import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
 import upperCase from "lodash/upperCase";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 const preview = {
   uri:
@@ -277,7 +278,7 @@ class AdDesignReview extends Component {
                         },
                       ]}
                     >
-                      <ArrowUpIcon />
+                      <ArrowUpIcon fill={"#000"} />
                     </View>
                   )}
                   <View
@@ -285,6 +286,11 @@ class AdDesignReview extends Component {
                       styles.adView,
                       {
                         flex: call_to_action === "BLANK" ? 1 : 0,
+                      },
+                      adType === "CollectionAd" && {
+                        position: "absolute",
+                        top: heightPercentageToDP(-7),
+                        right: 15,
                       },
                     ]}
                   >
@@ -295,10 +301,42 @@ class AdDesignReview extends Component {
                   <Animatable.View
                     animation={"fadeInUpBig"}
                     style={[
-                      styles.bottomView,
-                      globalStyles.transparentBackgroundColor,
+                      styles.bottomView1,
+                      globalStyles.whiteBackgroundColor,
                     ]}
                   >
+                    <Text
+                      style={[
+                        styles.callToActionText,
+                        (destination === "APP_INSTALL" ||
+                          adType === "CollectionAd") &&
+                          styles.appInstallCallToActionText,
+                        {
+                          color: "#000",
+                          alignSelf: "flex-start",
+                        },
+                      ]}
+                    >
+                      {call_to_action !== "BLANK"
+                        ? startCase(
+                            toLower(translate(upperCase(call_to_action)))
+                          )
+                        : ""}
+                    </Text>
+                    <View
+                      style={[
+                        styles.iconArrowUp,
+                        {
+                          // paddingRight: destination === "APP_INSTALL" ? 10 : 60,
+                          zIndex: 2,
+                          alignSelf: "center",
+                          marginTop: -22,
+                          marginBottom: 10,
+                        },
+                      ]}
+                    >
+                      <ArrowUpIcon stroke={"#000"} />
+                    </View>
                     <View style={styles.collectionView}>{collection}</View>
                   </Animatable.View>
                 )}
