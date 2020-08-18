@@ -1010,7 +1010,6 @@ class InstagramStoryAdTargetting extends Component {
   };
   onSelectedCountryRegionsObjectsChange = (items) => {};
   render() {
-    console.log("sss", this.props.data.budgetOption);
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
