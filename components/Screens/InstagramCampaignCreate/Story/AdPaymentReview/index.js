@@ -428,10 +428,10 @@ class InstagramAdPaymentReview extends Component {
                           title: "Business Name",
                           content: instagram_business_name,
                         },
-                        {
-                          title: "Headline",
-                          content: message,
-                        },
+                        // {
+                        //   title: "Headline",
+                        //   content: message,
+                        // },
                         {
                           title: "Swipe Up destination",
                           content: link,
