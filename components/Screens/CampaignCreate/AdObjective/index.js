@@ -33,7 +33,7 @@ import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
 //Data
-import ObjectiveData from "../../../Data/snapchatObjectives.data";
+import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -53,7 +53,6 @@ import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
-import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -65,7 +64,7 @@ class AdObjective extends Component {
       campaignInfo: {
         ad_account_id: "",
         name: "",
-        objective: "",
+        objective: snapchatObjectivesData[this.props.adType][0].value,
         start_time: "",
         end_time: "",
       },
@@ -73,9 +72,9 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: "Select Objective",
+      objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
       inputN: false,
-      objectives: ObjectiveData[this.props.adType],
+      objectives: snapchatObjectivesData[this.props.adType],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -115,6 +114,7 @@ class AdObjective extends Component {
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
+        objective: snapchatObjectivesData[this.props.adType][0].value,
       },
       objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
     });
@@ -176,7 +176,7 @@ class AdObjective extends Component {
         name: this.props.data.name ? this.props.data.name : "",
         objective: this.props.data.objective
           ? this.props.data.objective
-          : snapchatObjectivesData[this.props.adType][0].value,
+          : snapchatObjectivesData[this.props.adType || "SnapAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -233,6 +233,9 @@ class AdObjective extends Component {
         savedObjective: snapchatObjectivesData[this.props.adType][0].value,
       });
     }
+    this.props.save_campaign_info({
+      objectiveLabel: this.state.objectiveLabel,
+    });
   };
   setObjective = (choice) => {
     this.setState({
@@ -572,7 +575,7 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-    const list = ObjectiveData[this.props.adType].map((o) => (
+    const list = snapchatObjectivesData[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -649,7 +652,6 @@ class AdObjective extends Component {
                   setValue={this.setValue}
                   getValidInfo={this.getValidInfo}
                   disabled={this.props.loading}
-                  disabled={this.props.loading}
                   stateName1={"name"}
                   value={this.state.campaignInfo.name}
                   placeholder1={"Enter Your campaign’s name"}
@@ -657,7 +659,7 @@ class AdObjective extends Component {
                   maxLength={34}
                   autoFocus={false}
                   incomplete={this.state.incomplete}
-                  valueText={this.state.objectiveLabel}
+                  valueText={this.state.campaignInfo.name}
                   translate={this.props.screenProps.translate}
                 />
                 <ModalField
