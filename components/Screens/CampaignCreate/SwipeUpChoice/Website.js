@@ -124,7 +124,7 @@ class Website extends Component {
         message: translate(
           `${
             !this.state.campaignInfo.attachment.match(regex)
-              ? "Please enter a valid url"
+              ? "Please enter a valid URL"
               : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
           }`
         ),
