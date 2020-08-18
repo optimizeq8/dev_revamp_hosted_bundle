@@ -198,6 +198,7 @@ class Signin extends Component {
     });
   };
   render() {
+    console.log(this.props.checkingForToken);
     const { translate } = this.props.screenProps;
     if (this.props.userInfo) {
       return <LoadingScreen dash={true} />;
@@ -222,8 +223,10 @@ class Signin extends Component {
             style={styles.gradient}
           />
 
-          {this.props.checkingForToken ? (
-            <LoadingScreen dash={true} />
+          {!this.props.checkingForToken ? (
+            <View style={{ backgroundColor: "red" }}>
+              <LoadingScreen dash={true} />
+            </View>
           ) : (
             <View style={{ flex: 1 }}>
               <SignInCover

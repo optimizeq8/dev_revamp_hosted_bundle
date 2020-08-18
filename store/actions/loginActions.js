@@ -76,6 +76,8 @@ export const checkForExpiredToken = (navigation) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
     return SecureStore.getItemAsync("token").then((token) => {
+      console.log("CHECKINGGGG--------");
+
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
@@ -134,11 +136,11 @@ export const checkForExpiredToken = (navigation) => {
                 payload: false,
               });
 
-              navigation &&
-                NavigationService.navigate("Dashboard", {
-                  source: AppState.currentState,
-                  source_action: "a_check_expired_token",
-                });
+              // navigation &&
+              //   NavigationService.navigate("Dashboard", {
+              //     source: AppState.currentState,
+              //     source_action: "a_check_expired_token",
+              //   });
             })
             .catch((err) => {
               // console.log(

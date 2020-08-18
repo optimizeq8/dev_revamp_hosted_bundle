@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 8,
-    width: "95%",
+    width: "100%",
   },
   uplaodPercentageText: {
     position: "absolute",
