@@ -4,6 +4,18 @@ import {
   heightPercentageToDP,
 } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
+  callActionView: {
+    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -5,
+      height: 11,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15.19,
+
+    elevation: 23,
+  },
   safeAreaContainer: {
     backgroundColor: "black",
     height: "100%",

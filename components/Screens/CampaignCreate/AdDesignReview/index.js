@@ -223,18 +223,7 @@ class AdDesignReview extends Component {
                   {call_to_action !== "BLANK" && (
                     <View
                       style={[
-                        {
-                          flex: 1,
-                          shadowColor: "#000",
-                          shadowOffset: {
-                            width: -5,
-                            height: 11,
-                          },
-                          shadowOpacity: 1,
-                          shadowRadius: 15.19,
-
-                          elevation: 23,
-                        },
+                        styles.callActionView,
                         (destination === "APP_INSTALL" ||
                           adType === "CollectionAd") &&
                           styles.appInstallCallToActionText,
