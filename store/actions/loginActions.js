@@ -76,8 +76,6 @@ export const checkForExpiredToken = (navigation) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
     return SecureStore.getItemAsync("token").then((token) => {
-      console.log("CHECKINGGGG--------");
-
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
