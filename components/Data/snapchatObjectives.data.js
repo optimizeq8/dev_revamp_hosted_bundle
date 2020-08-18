@@ -4,7 +4,7 @@ export default {
   CollectionAd: [
     {
       label: "Website Traffic",
-      value: "TRAFFIC",
+      value: "WEBSITE_TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",

@@ -132,23 +132,6 @@ class AdObjective extends Component {
       this.setCampaignInfo();
       this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
     }
-    if (
-      (prevProps.adType !== this.props.adType &&
-        this.props.adType === "CollectionAd") ||
-      prevProps.currentCampaignSteps !== this.props.currentCampaignSteps
-    ) {
-      if (
-        this.props.adType === "CollectionAd" &&
-        // prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
-        this.props.collectionAdLinkForm !== 0
-      ) {
-        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-      } else if (this.props.adType === "CollectionAd") {
-        this._handleCollectionAdLinkForm(1);
-      }
-    } else if (prevProps.adType !== this.props.adType) {
-      this._handleCollectionAdLinkForm(0);
-    }
   }
 
   /**
@@ -219,7 +202,12 @@ class AdObjective extends Component {
           start_time: start_time.toISOString().split("T")[0],
           end_time: end_time.toISOString().split("T")[0],
         },
-        collectionAdLinkForm: 0,
+        collectionAdLinkForm:
+          this.props.adType === "CollectionAd"
+            ? this.props.collectionAdLinkForm !== 0
+              ? this.props.collectionAdLinkForm
+              : 1
+            : 0,
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
