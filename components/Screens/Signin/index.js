@@ -222,7 +222,7 @@ class Signin extends Component {
             style={styles.gradient}
           />
 
-          {!this.props.checkingForToken ? (
+          {this.props.checkingForToken ? (
             <LoadingScreen dash={true} />
           ) : (
             <View style={{ flex: 1 }}>
@@ -233,6 +233,7 @@ class Signin extends Component {
               <InputScrollView
                 {...ScrollView.props}
                 contentContainerStyle={styles.mainView}
+                keyboardShouldPersistTaps="handled"
               >
                 <View style={styles.logoContainer}>
                   <Logo
