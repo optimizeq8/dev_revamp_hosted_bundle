@@ -52,7 +52,7 @@ export default class ClickDestination extends Component {
           zIndex: 10,
         };
 
-    let SwipeIcon = instagramAdObjectives["InstagramFeedAd"].find(
+    let SwipeIcon = instagramAdObjectives[this.props.adType].find(
       (obj) =>
         obj.value === (this.props.campaignInfo.objective || "BRAND_AWARENESS")
     ).icon;
