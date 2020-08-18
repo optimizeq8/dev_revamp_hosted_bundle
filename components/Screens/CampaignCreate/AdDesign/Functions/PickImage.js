@@ -322,7 +322,8 @@ export const _pickImage = async (
             showMessage({
               message: error.wrongAspect
                 ? error.message
-                : error ||
+                : error.message ||
+                  error ||
                   translate(
                     "The dimensions are too large, please choose a different image"
                   ),
@@ -720,7 +721,7 @@ export const _pickImage = async (
               campaign_error_image: err,
             });
             showMessage({
-              message: err,
+              message: err.message || err,
               type: "warning",
             });
           });

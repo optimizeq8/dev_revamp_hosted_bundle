@@ -140,12 +140,13 @@ export const formatMedia = (
     body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
   }
   if (longformvideo_media) {
-    let resVideo = longformvideo_media.split("/ImagePicker/");
-    let formatVideo = resVideo[1].split(".");
+    let resVideo = longformvideo_media.split("/");
+    resVideo = resVideo[resVideo.length - 1];
+    let formatVideo = resVideo.split(".")[1];
     var video = {
       uri: longformvideo_media,
       type: longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1],
+      name: resVideo,
     };
 
     body.append("longformvideo_media", video);

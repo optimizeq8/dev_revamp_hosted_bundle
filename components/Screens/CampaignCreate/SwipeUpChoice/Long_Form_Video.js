@@ -25,6 +25,7 @@ import {
   SerializationExportType,
   TintMode,
 } from "react-native-videoeditorsdk";
+import { BlurView } from "@react-native-community/blur";
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/Video";
@@ -269,7 +270,7 @@ class Long_Form_Video extends Component {
                 : result.uri;
               this.setState({
                 longformvideo_media: result.uri,
-                longformvideo_media_type: result.type.toUpperCase(),
+                longformvideo_media_type: "VIDEO",
                 width: result.width,
                 height: result.height,
                 durationError: null,
@@ -405,7 +406,6 @@ class Long_Form_Video extends Component {
     });
   };
   render() {
-    console.log(this.state.serialization);
     const { translate } = this.props.screenProps;
     return (
       <ScrollView
@@ -547,61 +547,42 @@ class Long_Form_Video extends Component {
             customTextStyle={{ color: globalColors.rum }}
           />
 
-          <Modal isVisible={this.state.videoLoading}>
-            <Icon
-              name="close"
-              onPress={this.handleVideoCaneling}
-              type="AntDesign"
-              style={{
-                color: globalColors.white,
-
-                position: "absolute",
-                top: 30,
-              }}
-            />
-            <View style={styles.animatedLoaderContainer}>
-              <AnimatedCircularProgress
-                size={100}
-                width={10}
-                fill={this.state.progress}
-                rotation={360}
-                lineCap="round"
-                tintColor={globalColors.orange}
-                backgroundColor="rgba(255,255,255,0.3)"
-                adDetails={false}
-              />
-              <Text style={styles.uplaodPercentageText}>
-                {this.state.progress.toFixed(0)}
-                <Text style={styles.percentage}>%</Text>
-              </Text>
-            </View>
-            <Text style={styles.subTitle}>
-              {translate("Processing and upscaling your video now")}...
-            </Text>
-            {/* <LoadingScreen top={60} />
-            <View
-              style={{ alignItems: "center", justifyContent: "space-evenly" }}
+          <Modal isVisible={this.state.videoLoading} style={{ margin: 0 }}>
+            <BlurView
+              blurAmount={5}
+              style={{ height: "100%", justifyContent: "center" }}
             >
-              <ProgressBar
-                progress={this.state.progress / 100}
-                width={widthPercentageToDP(70)}
-                style={{ alignSelf: "center" }}
-                borderColor={globalColors.orange}
-                height={15}
-                borderRadius={50}
-                color={globalColors.orange}
-              />
-              <Text
+              <Icon
+                name="close"
+                onPress={this.handleVideoCaneling}
+                type="AntDesign"
                 style={{
-                  fontFamily: "montserrat-bold",
-                  color: "#fff",
-                  top: 10,
+                  color: globalColors.white,
+                  position: "absolute",
+                  top: 50,
+                  left: 10,
                 }}
-              >
-                {this.state.progress.toFixed(0)}%
+              />
+              <View style={styles.animatedLoaderContainer}>
+                <AnimatedCircularProgress
+                  size={100}
+                  width={10}
+                  fill={this.state.progress}
+                  rotation={360}
+                  lineCap="round"
+                  tintColor={globalColors.orange}
+                  backgroundColor="rgba(255,255,255,0.3)"
+                  adDetails={false}
+                />
+                <Text style={styles.uplaodPercentageText}>
+                  {this.state.progress.toFixed(0)}
+                  <Text style={styles.percentage}>%</Text>
+                </Text>
+              </View>
+              <Text style={styles.subTitle}>
+                {translate("Processing and upscaling your video now")}...
               </Text>
-            </View>
-          */}
+            </BlurView>
           </Modal>
           {this.props.swipeUpDestination && (
             <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
