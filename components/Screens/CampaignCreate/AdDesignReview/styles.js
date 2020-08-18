@@ -125,6 +125,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15.19,
+    elevation: 23,
   },
   getButton: {
     borderRadius: 20,
