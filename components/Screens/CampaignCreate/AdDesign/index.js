@@ -301,9 +301,13 @@ class AdDesign extends Component {
         ...this.state.campaignInfo,
         call_to_action: this.props.data.call_to_action
           ? this.props.data.call_to_action
-          : "BLANK",
-        attachment: this.props.data.attachment,
-        destination: this.props.data.destination,
+          : { value: "BLANK", label: "BLANK" },
+        attachment: this.props.data.attachment
+          ? this.props.data.attachment
+          : this.state.campaignInfo.attachment,
+        destination: this.props.data.destination
+          ? this.props.data.destination
+          : this.state.campaignInfo.destination,
       };
 
       this.setState({
@@ -654,7 +658,10 @@ class AdDesign extends Component {
             //   ? this.props.storyAdAttachment.attachment.icon_media_url &&
             //     this.props.storyAdAttachment.attachment.icon_media_url
             //   :
-            this.state.campaignInfo.attachment.icon_media_url,
+            this.state.campaignInfo.attachment &&
+            this.state.campaignInfo.attachment.icon_media_url
+              ? this.state.campaignInfo.attachment.icon_media_url
+              : "",
           coverHeadline: this.rejected
             ? this.selectedCampaign.story_headline
             : this.props.data.coverHeadline,

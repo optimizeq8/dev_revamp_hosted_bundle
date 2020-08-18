@@ -425,8 +425,9 @@ class AppChoice extends Component {
               deepLink={true}
               getValidInfo={this.getValidInfo}
               customStyle={styles.customModalField}
-              customIconColor={globalColors.rum}
+              iconFill={globalColors.rum}
               customTextStyle={{ color: globalColors.rum }}
+              labelColor={globalColors.rum}
             />
             <Text style={styles.warningText}>
               {translate(

@@ -26,6 +26,13 @@ export default {
   ],
   StoryAd: [
     {
+      label: "Lead Generation",
+      value: "LEAD_GENERATION",
+      info: "I WANT TO KNOW MY CUSTOMERS",
+      icon: ObjIcons.Group,
+      color: "#AA22DD",
+    },
+    {
       label: "Awareness",
       value: "BRAND_AWARENESS",
       info: "INFORM PEOPLE ABOUT MY BRAND",
@@ -38,13 +45,7 @@ export default {
       info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
     },
-    {
-      label: "Lead Generation",
-      value: "LEAD_GENERATION",
-      info: "I WANT TO KNOW MY CUSTOMERS",
-      icon: ObjIcons.Group,
-      color: "#AA22DD",
-    },
+
     // {
     //   label: "WhatsApp Campaign",
     //   value: "WEB_CONVERSION",
