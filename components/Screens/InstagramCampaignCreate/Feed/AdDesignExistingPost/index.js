@@ -215,9 +215,10 @@ class InstagramAdDesignExistingPost extends Component {
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
       this.props.data.objective !== "VIDEO_VIEWS" &&
-      this.props.data &&
-      this.props.data.call_to_action &&
-      this.props.data.call_to_action.label === "BLANK"
+      (!this.props.data.call_to_action ||
+        (this.props.data &&
+          this.props.data.call_to_action &&
+          this.props.data.call_to_action.label === "BLANK"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -659,30 +660,33 @@ class InstagramAdDesignExistingPost extends Component {
                   <VideoPlayer shouldPlay={true} media={media} />
                 )}
               </View>
-              {(this.state.campaignInfo.call_to_action.value ||
-                this.state.campaignInfo.call_to_action) !== "BLANK" && (
-                <View style={previewStyles.swipeUpView}>
-                  <Text style={previewStyles.callToActionText}>
-                    {this.state.campaignInfo.call_to_action.hasOwnProperty(
-                      "label"
-                    )
-                      ? translate(this.state.campaignInfo.call_to_action.label)
-                      : translate(
-                          this.state.campaignInfo.call_to_action.replace(
-                            "_",
-                            " "
+              {this.state.campaignInfo.call_to_action &&
+                (this.state.campaignInfo.call_to_action.value ||
+                  this.state.campaignInfo.call_to_action !== "BLANK") && (
+                  <View style={previewStyles.swipeUpView}>
+                    <Text style={previewStyles.callToActionText}>
+                      {this.state.campaignInfo.call_to_action.hasOwnProperty(
+                        "label"
+                      )
+                        ? translate(
+                            this.state.campaignInfo.call_to_action.label
                           )
-                        )}
-                  </Text>
-                  <ArrowBlueForward
-                    style={[
-                      previewStyles.icon,
-                      previewStyles.archiveIcon,
-                      previewStyles.forwadIcon,
-                    ]}
-                  />
-                </View>
-              )}
+                        : translate(
+                            this.state.campaignInfo.call_to_action.replace(
+                              "_",
+                              " "
+                            )
+                          )}
+                    </Text>
+                    <ArrowBlueForward
+                      style={[
+                        previewStyles.icon,
+                        previewStyles.archiveIcon,
+                        previewStyles.forwadIcon,
+                      ]}
+                    />
+                  </View>
+                )}
               <View style={previewStyles.iconView}>
                 <HeartOutline style={previewStyles.icon} />
                 <CommentOutline style={previewStyles.icon} />

@@ -244,9 +244,10 @@ class AdDesign extends Component {
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
       this.props.data.objective !== "VIDEO_VIEWS" &&
-      this.props.data &&
-      this.props.data.call_to_action &&
-      this.props.data.call_to_action.label === "BLANK"
+      (!this.props.data.call_to_action ||
+        (this.props.data &&
+          this.props.data.call_to_action &&
+          this.props.data.call_to_action.label === "BLANK"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),

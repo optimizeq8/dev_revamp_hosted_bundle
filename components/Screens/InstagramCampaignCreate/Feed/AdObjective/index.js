@@ -60,7 +60,7 @@ class AdObjective extends Component {
       campaignInfo: {
         ad_account_id: "",
         name: "",
-        objective: "",
+        objective: instagramAdObjectives["InstagramFeedAd"][0].value,
         start_time: "",
         end_time: "",
         existingPost: 0,
@@ -68,7 +68,7 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: "Select Objective",
+      objectiveLabel: instagramAdObjectives["InstagramFeedAd"][0].label,
       inputN: false,
       objectives: instagramAdObjectives["InstagramFeedAd"],
       closedContinueModal: false,
@@ -173,6 +173,9 @@ class AdObjective extends Component {
         end_timeError: "",
       });
     }
+    this.props.save_campaign_info_instagram({
+      objectiveLabel: this.state.objectiveLabel,
+    });
   };
   setObjective = (choice) => {
     this.setState({
