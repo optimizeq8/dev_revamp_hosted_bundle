@@ -695,14 +695,14 @@ class GoogleAdTargetting extends Component {
             {this.props.campaign.uploading ? (
               <ForwardLoading
                 mainViewStyle={{ width: wp(8), height: hp(8) }}
-                bottom={hp(25)}
+                // bottom={hp(25)}
                 style={{ width: wp(8), height: hp(8) }}
               />
             ) : (
               <LowerButton
                 screenProps={this.props.screenProps}
                 style={styles.proceedButtonRTL}
-                bottom={25}
+                // bottom={25}
                 function={this._handleSubmission}
               />
             )}
