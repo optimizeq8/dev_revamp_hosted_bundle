@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 15,
     width: "100%",
-    height: "80%",
+    // height: "80%",
   },
   destinationText: {
     fontFamily: "montserrat-bold",
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderWidth: 1,
     borderColor: globalColors.white,
-    width: "45%",
+    width: "50%",
     height: 50,
     marginHorizontal: 0,
   },
