@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
   inputBrand: {
     // position: "absolute",
     // alignSelf: "center",
-    height: "40%",
+    // height: "40%",
+    height: heightPercentageToDP(6.25),
     // top: "4%",
     // left: "4%",
     borderColor: "transparent",
@@ -296,7 +297,8 @@ const styles = StyleSheet.create({
   subtitleHeading: {
     textAlign: "left",
     fontSize: 10,
-    marginBottom: -10,
+    marginBottom: heightPercentageToDP(-1.6),
+    marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
   },
   MediaOptionsStyle: {

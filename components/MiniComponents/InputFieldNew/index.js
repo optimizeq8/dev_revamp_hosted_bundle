@@ -146,6 +146,13 @@ export default class InputField extends Component {
     this.props.getValidInfo(this.props.stateName2 + "Error", null);
   };
 
+  /**
+   * Even field is touched outside bring it to focus
+   */
+  bringFieldToFocus = () => {
+    this.refs["inputField"]._root.focus();
+    this.setState({ highlight: true });
+  };
   render() {
     let {
       stateName2,
@@ -175,7 +182,10 @@ export default class InputField extends Component {
         style={[{ width: "100%" }, animateCustomStyle]}
         animation={valueError1 || valueError2 ? "shake" : ""}
       >
-        <Item style={[styles.input1, customStyles]}>
+        <Item
+          style={[styles.input1, customStyles]}
+          onPress={this.bringFieldToFocus}
+        >
           {FieldIcon && (
             <FieldIcon
               style={[styles.iconSize, styles.icon]}
@@ -202,8 +212,9 @@ export default class InputField extends Component {
             </Text>
             <View style={[styles.rowView]}>
               <Input
+                ref={"inputField"}
                 placeholderTextColor={"#FFF"}
-                disabled={this.props.loading || disabled}
+                editable={this.props.loading || disabled}
                 placeholder={placeholder1 && translate(placeholder1)}
                 value={this.props.value}
                 style={[
@@ -232,7 +243,7 @@ export default class InputField extends Component {
               {stateName2 && (
                 <Input
                   placeholderTextColor={"#FFF"}
-                  disabled={this.props.loading || disabled}
+                  editable={this.props.loading || disabled}
                   placeholder={placeholder2 && translate(placeholder2)}
                   value={this.props.value2}
                   style={[
