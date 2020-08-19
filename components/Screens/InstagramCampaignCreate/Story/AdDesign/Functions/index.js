@@ -163,8 +163,8 @@ export const formatMedia = (
   );
   body.append(
     "attachment",
-    data.attachment === "BLANK"
-      ? data.attachment
+    !data.attachment || data.attachment === "BLANK"
+      ? "BLANK"
       : JSON.stringify(data.attachment)
   );
   setTheState({
