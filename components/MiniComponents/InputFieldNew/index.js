@@ -161,7 +161,7 @@ export default class InputField extends Component {
       label,
       translate,
       icon,
-      disabled,
+      disabled = false,
       autoFocus,
       maxLength,
       valueError1,
@@ -170,10 +170,10 @@ export default class InputField extends Component {
       customStyles,
       compulsory,
       animateCustomStyle,
+      loading = false,
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
-
     return (
       <Animatable.View
         onAnimationEnd={this.handleAnimationEnd}
@@ -214,7 +214,7 @@ export default class InputField extends Component {
               <Input
                 ref={"inputField"}
                 placeholderTextColor={"#FFF"}
-                editable={this.props.loading || disabled}
+                editable={!this.props.loading || !disabled}
                 placeholder={placeholder1 && translate(placeholder1)}
                 value={this.props.value}
                 style={[
@@ -243,7 +243,7 @@ export default class InputField extends Component {
               {stateName2 && (
                 <Input
                   placeholderTextColor={"#FFF"}
-                  editable={this.props.loading || disabled}
+                  editable={!this.props.loading || !disabled}
                   placeholder={placeholder2 && translate(placeholder2)}
                   value={this.props.value2}
                   style={[
