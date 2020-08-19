@@ -284,6 +284,7 @@ class MyWebsite extends Component {
             return index;
           }}
           renderItem={({ item }) => this.renderEachProduct(item)}
+          showsVerticalScrollIndicator={false}
         />
         <LoadingModal
           videoUrlLoading={false}

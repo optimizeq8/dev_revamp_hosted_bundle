@@ -330,6 +330,7 @@ export default class AppSearchModal extends Component {
                       )}
                       numcolumnns={3}
                       keyExtractor={(item, index) => item.unique_id.toString()}
+                      showsVerticalScrollIndicator={false}
                     />
                   </View>
                 )}

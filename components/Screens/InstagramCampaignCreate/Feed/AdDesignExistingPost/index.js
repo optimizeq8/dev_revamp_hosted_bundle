@@ -606,6 +606,7 @@ class InstagramAdDesignExistingPost extends Component {
                 justifyContent: "space-around",
                 alignItems: "center",
               }}
+              showsVerticalScrollIndicator={false}
             />
             {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>

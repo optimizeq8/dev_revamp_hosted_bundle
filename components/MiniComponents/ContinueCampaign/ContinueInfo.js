@@ -10,7 +10,7 @@ import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { connect } from "react-redux";
 import { Small } from "../StyledComponents";
 
-adCreatives = item => {
+adCreatives = (item) => {
   return (
     <MediaBox
       key={item.index}
@@ -33,26 +33,26 @@ adCreatives = item => {
                                 decides to change someting in the AdObjective screen, which will update this.props.data, but 
                                 doesn't submit  
  */
-ContinueInfo = props => {
+ContinueInfo = (props) => {
   let {
     data,
     oldTempAdType,
     storyAdsArray,
     collectionAdMedia,
-    oldTempData
+    oldTempData,
   } = props;
 
   return (
     <View
       style={{
         height: "60%",
-        top: 10
+        top: 10,
       }}
     >
       <Content
         contentContainerStyle={{
           alignItems: "center",
-          paddingBottom: "15%"
+          paddingBottom: "15%",
         }}
         style={styles.contentStyle}
       >
@@ -93,7 +93,7 @@ ContinueInfo = props => {
               ) : (
                 <View
                   style={{
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   {data && oldTempAdType === "CollectionAd" && (
@@ -105,13 +105,13 @@ ContinueInfo = props => {
                   )}
                   <FlatList
                     style={{
-                      top: "5%"
+                      top: "5%",
                     }}
                     contentContainerStyle={{
                       paddingBottom: "20%",
-                      alignItems: "center"
+                      alignItems: "center",
                     }}
-                    keyExtractor={item => item.index}
+                    keyExtractor={(item) => item.index}
                     data={
                       oldTempAdType === "CollectionAd"
                         ? collectionAdMedia
@@ -119,6 +119,7 @@ ContinueInfo = props => {
                     }
                     renderItem={this.adCreatives}
                     numColumns={2}
+                    showsVerticalScrollIndicator={false}
                   />
                 </View>
               )}
@@ -130,14 +131,14 @@ ContinueInfo = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   data: state.campaignC.data,
   oldTempAdType: state.campaignC.oldTempAdType,
   storyAdsArray: state.campaignC.storyAdsArray,
   collectionAdMedia: state.campaignC.collectionAdMedia,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  oldTempData: state.campaignC.oldTempData
+  oldTempData: state.campaignC.oldTempData,
 });
 
 export default connect(mapStateToProps, null)(ContinueInfo);

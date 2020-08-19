@@ -51,6 +51,7 @@ export default class StoryAdCards extends Component {
           renderItem={this.snapCards}
           style={{}}
           numColumns={3}
+          showsVerticalScrollIndicator={false}
         />
         <Text style={styles.holdToDeleteText}>
           {translate("Tap and hold to delete media")}
