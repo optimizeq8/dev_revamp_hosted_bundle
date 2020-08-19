@@ -58,7 +58,7 @@ const validation = {
   },
   deepLink: {
     format: {
-      pattern: /^((?!(http|https\:\/\/)?(www\.)?(twitter|snapchat|instagram|youtube|youtu.be|facebook|fb.me|whatsapp|wa.me)).)([a-z]+\.?\w*)+\w*:\/\/=?([a-z0-9]+([\-\.])?[a-z0-9]+)*(\w*\??[a-z]*\=?[a-z0-9]+)(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/gi,
+      pattern: /^((?!(http|https\:\/\/)?(www\.)?(twitter|snapchat|instagram|youtube|youtu.be|facebook|fb.me|whatsapp|wa.me)).)([a-z]+\.?\w*)+\w*:\/\/=?([a-z0-9]+([\-\.])?[a-z0-9]+)*(\w*\??[a-z]*\=?[a-z0-9]+)(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/i,
       message:
         "^Invalid deep link url. A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
     },
