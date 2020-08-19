@@ -247,6 +247,7 @@ class Website extends Component {
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[styles.scrollViewContainer]}
+          showsVerticalScrollIndicator={false}
         >
           {/* <WebsiteIcon style={styles.icon} fill={"#FFF"} /> */}
           <View style={[styles.textcontainer]}>
