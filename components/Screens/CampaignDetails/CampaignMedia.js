@@ -19,8 +19,8 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
           cover: selectedCampaign.story_preview_media,
           logo: selectedCampaign.story_logo_media,
         };
-  let storyOrCollection =
-    selectedCampaign.story_creatives || selectedCampaign.collection_creatives;
+  let storyOrCollection = selectedCampaign.story_creatives;
+  // || selectedCampaign.collection_creatives;
   let icon_media_url = "";
   let type = selectedCampaign.media_type;
   let call_to_action = selectedCampaign.call_to_action;
@@ -48,6 +48,7 @@ export const previewHandler = (selectedCampaign, navigation, source) => {
     campaign_channel: "snapchat",
     campaign_ad_type: selectedCampaign.campaign_type,
   });
+
   navigation.push(
     selectedCampaign.campaign_type !== "StoryAd"
       ? "AdDesignReview"
