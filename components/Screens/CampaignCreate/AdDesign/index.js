@@ -88,6 +88,7 @@ import AdCover from "../AdCover";
 import Modal from "react-native-modal";
 import { BlurView } from "@react-native-community/blur";
 import { RNFFmpeg } from "react-native-ffmpeg";
+import VideoProcessingLoader from "../../../MiniComponents/VideoProcessingLoader";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -485,8 +486,7 @@ class AdDesign extends Component {
       mediaEditor,
       editImage,
       this.videoIsExporting,
-      this.statisticsCallback,
-      this.state.cancelled
+      this.statisticsCallback
     );
 
   getVideoUploadUrl = () => {
@@ -1268,14 +1268,13 @@ class AdDesign extends Component {
   setMaxHeight = (event) => {
     this.setState({ swipeUpMaxHeight: event.nativeEvent.layout.height });
   };
-  statisticsCallback = (statisticsData) => {
-    let progress = (statisticsData.time / (this.state.duration * 1000)) * 100;
+  statisticsCallback = (statisticsData, duration) => {
+    let progress = (statisticsData.time / (duration * 1000)) * 100;
     this.setState({ progress });
   };
   handleVideoCaneling = () => {
     this.setState({
       videoIsLoading: false,
-      cancelled: true,
       progress: 0,
     });
     RNFFmpeg.cancel();
@@ -1466,51 +1465,12 @@ class AdDesign extends Component {
                       )
                     )}
                     {videoIsLoading ? (
-                      <Modal isVisible={videoIsLoading} style={{ margin: 0 }}>
-                        <BlurView
-                          blurAmount={5}
-                          style={{ height: "100%", justifyContent: "center" }}
-                        >
-                          <Icon
-                            name="close"
-                            onPress={this.handleVideoCaneling}
-                            type="AntDesign"
-                            style={{
-                              color: globalColors.white,
-                              position: "absolute",
-                              top: 50,
-                              left: 10,
-                            }}
-                          />
-                          <View style={styles.animatedLoaderContainer}>
-                            <AnimatedCircularProgress
-                              size={100}
-                              width={10}
-                              fill={this.state.progress}
-                              rotation={360}
-                              lineCap="round"
-                              tintColor={globalColors.orange}
-                              backgroundColor="rgba(255,255,255,0.3)"
-                              adDetails={false}
-                            />
-                            <Text
-                              style={[
-                                styles.uplaodPercentageText,
-                                { top: "40%" },
-                              ]}
-                            >
-                              {this.state.progress.toFixed(0)}
-                              <Text style={styles.percentage}>%</Text>
-                            </Text>
-                          </View>
-                          <Text style={styles.subTitle}>
-                            {translate(
-                              "Processing and upscaling your video now"
-                            )}
-                            ...
-                          </Text>
-                        </BlurView>
-                      </Modal>
+                      <VideoProcessingLoader
+                        handleVideoCaneling={this.handleVideoCaneling}
+                        progress={this.state.progress}
+                        translate={translate}
+                        videoLoading={videoIsLoading}
+                      />
                     ) : null}
 
                     {/* <TouchableOpacity

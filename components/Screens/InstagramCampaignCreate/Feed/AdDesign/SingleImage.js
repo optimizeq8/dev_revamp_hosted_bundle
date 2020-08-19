@@ -45,7 +45,7 @@ export default class SingleImage extends React.PureComponent {
         style={[
           styles.placeholder,
           {
-            aspectRatio: this.state.AP,
+            aspectRatio: !isNaN(this.state.AP) ? this.state.AP : 1 / 1,
           },
         ]}
       >
