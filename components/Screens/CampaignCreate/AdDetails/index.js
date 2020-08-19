@@ -876,7 +876,9 @@ class AdDetails extends Component {
             : translate("Budget can't be less than the minimum"),
           description:
             this.state.campaignInfo.targeting.geos.length > 1
-              ? `$25 x ${translate("Country")} = $${this.state.minValueBudget}`
+              ? `$25 x ${translate("Duration")} x ${translate(
+                  "Countries"
+                )} = $${this.state.minValueBudget}`
               : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",

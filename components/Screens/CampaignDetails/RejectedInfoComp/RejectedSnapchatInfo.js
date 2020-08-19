@@ -31,7 +31,9 @@ class RejectedSnapchatInfo extends Component {
     } = this.props;
     setRejectedAdType(selectedCampaign.campaign_type);
     let savedObjective =
-      selectedCampaign.destination === "REMOTE_WEBPAGE"
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
         ? "WEBSITE_TRAFFIC"
         : selectedCampaign.destination === "DEEP_LINK"
         ? "APP_TRAFFIC"

@@ -715,13 +715,14 @@ class AdDesign extends Component {
         ? this.props.collectionAdMedia.includes(undefined) ||
           this.props.collectionAdMedia.length < 4
         : false;
-
     const collectionMediaError =
       this.adType === "CollectionAd" &&
       this.props.collectionAdMedia &&
-      this.props.collectionAdMedia
-        .map((collection) => collection.collection_attachment)
-        .includes("BLANK");
+      this.props.collectionAdMedia.some(
+        (collection) =>
+          collection && collection.collection_attachment === "BLANK"
+      );
+
     let swipeUpError = null;
 
     let coverError =
