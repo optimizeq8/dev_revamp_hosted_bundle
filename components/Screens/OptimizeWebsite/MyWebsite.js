@@ -178,6 +178,8 @@ class MyWebsite extends Component {
               website={website}
               disabled={true}
               screenProps={this.props.screenProps}
+              iconFill={globalColors.white}
+              labelColor={globalColors.white}
             />
             <TouchableOpacity
               style={styles.copyIcon2}

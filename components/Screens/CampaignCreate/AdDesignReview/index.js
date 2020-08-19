@@ -245,7 +245,7 @@ class AdDesignReview extends Component {
                             ]}
                           >
                             <ArrowUpIcon
-                              stroke={"#e3e3e3"}
+                              stroke={"#FFFF"}
                               style={{ width: 5 }}
                             />
                           </View>
@@ -286,6 +286,8 @@ class AdDesignReview extends Component {
                       styles.adView,
                       {
                         flex: call_to_action === "BLANK" ? 1 : 0,
+                        alignSelf:
+                          destination === "APP_INSTALL" ? "center" : "flex-end",
                       },
                       adType === "CollectionAd" && {
                         position: "absolute",
