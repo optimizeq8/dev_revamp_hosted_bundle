@@ -177,6 +177,9 @@ const reducer = (state = initialState, action) => {
           },
           destination: "BLANK",
           link: "",
+          existingPost: action.payload.existingPost
+            ? action.payload.existingPost
+            : 0,
           reset: false,
         };
       }
