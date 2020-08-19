@@ -738,6 +738,7 @@ class InstagramAdDesignExistingPost extends Component {
                 maxClickHeight={this.state.maxClickHeight}
                 setTheState={this.setTheState}
                 existingPosts={true}
+                adType={"InstagramFeedAd"}
               />
             </View>
             <View
