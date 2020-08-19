@@ -290,6 +290,7 @@ class SelectInstagramPost extends React.Component {
                     );
                   }
                 }}
+                showsVerticalScrollIndicator={false}
               />
             )}
             {this.props.loadingMoreInstaPost && (

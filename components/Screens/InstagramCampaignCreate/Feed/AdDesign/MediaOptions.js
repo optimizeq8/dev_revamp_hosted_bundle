@@ -84,7 +84,7 @@ export default class MediaOptions extends Component {
               ? translate(
                   "Use any device to upload your media Aspect Ratio 9:16"
                 )
-              : translate("Dimensions 1080x1920 Aspect Ratio 9:16")}
+              : translate("Aspect Ratio 9:16 or 1:1 or 4:5")}
           </Text>
         </View>
       </TouchableOpacity>

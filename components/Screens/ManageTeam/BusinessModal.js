@@ -92,6 +92,7 @@ export default class BusinessModal extends Component {
                   keyExtractor={(item) => item.businessid.toString()}
                   extraData={this.state}
                   contentContainerStyle={{ paddingTop: 20 }}
+                  showsVerticalScrollIndicator={false}
                 />
                 {/* <Content
                   padder

@@ -298,6 +298,7 @@ class AppSearchModal extends Component {
                 ) : (
                   <View style={{ width: "85%", height: "70%" }}>
                     <FlatList
+                      showsVerticalScrollIndicator={false}
                       style={{ flex: 1, width: "100%" }}
                       contentContainerStyle={
                         styles.flatListContentContainerStyle

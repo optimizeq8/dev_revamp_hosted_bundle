@@ -168,6 +168,7 @@ export default class SnapchatLocation extends Component {
           keyExtractor={(item, index) => item.place_id + index}
           contentContainerStyle={{ height: "100%" }}
           style={{ width: "80%", height: "40%" }}
+          showsVerticalScrollIndicator={false}
         />
         <LowerButton
           checkmark

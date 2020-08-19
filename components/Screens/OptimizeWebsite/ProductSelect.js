@@ -218,6 +218,7 @@ class ProductSelect extends React.Component {
                 return index;
               }}
               renderItem={({ item }) => this.renderItem(item)}
+              showsVerticalScrollIndicator={false}
             />
           )}
           {this.props.loadingMoreInstaPost && (

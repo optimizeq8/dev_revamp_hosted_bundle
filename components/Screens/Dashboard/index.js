@@ -865,6 +865,7 @@ class Dashboard extends Component {
                             onRefresh={this.reloadData}
                             refreshing={this.state.fetching_from_server}
                             ListFooterComponent={this.renderFooter}
+                            showsVerticalScrollIndicator={false}
                           />
                         </Animatable.View>
                       )}
