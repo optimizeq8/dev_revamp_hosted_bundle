@@ -214,7 +214,7 @@ export default class InputField extends Component {
               <Input
                 ref={"inputField"}
                 placeholderTextColor={"#FFF"}
-                disabled={this.props.loading || disabled}
+                editable={this.props.loading || disabled}
                 placeholder={placeholder1 && translate(placeholder1)}
                 value={this.props.value}
                 style={[
@@ -243,7 +243,7 @@ export default class InputField extends Component {
               {stateName2 && (
                 <Input
                   placeholderTextColor={"#FFF"}
-                  disabled={this.props.loading || disabled}
+                  editable={this.props.loading || disabled}
                   placeholder={placeholder2 && translate(placeholder2)}
                   value={this.props.value2}
                   style={[
