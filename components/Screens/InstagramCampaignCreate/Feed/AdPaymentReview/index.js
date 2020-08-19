@@ -48,7 +48,7 @@ class InstagramAdPaymentReview extends Component {
     const data = this.props.data;
     let campaignInfo = data.campaignInfo;
 
-    let targeting = campaignInfo.targeting;
+    let targeting = campaignInfo ? campaignInfo.targeting : {};
     let interestNames = [];
     let customInterstNames = data.customInterests
       ? data.customInterests.map((interest) => interest.name)
@@ -260,7 +260,7 @@ class InstagramAdPaymentReview extends Component {
       };
       let campaignInfo = data.campaignInfo;
 
-      let targeting = campaignInfo.targeting;
+      let targeting = campaignInfo ? campaignInfo.targeting : {};
       let interestNames = [];
       let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
       let customInterstNames = data.customInterests

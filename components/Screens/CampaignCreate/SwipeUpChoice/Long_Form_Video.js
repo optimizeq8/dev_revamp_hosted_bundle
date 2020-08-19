@@ -65,7 +65,6 @@ class Long_Form_Video extends Component {
       inputCallToAction: false,
       duration: 0,
       progress: 0,
-      cancelled: false,
       serialization: null,
       uneditedVideo: "",
     };
@@ -162,7 +161,7 @@ class Long_Form_Video extends Component {
           editVideo ? this.state.serialization : null
         )
           .then(async (manipResult) => {
-            this.setState({ videoLoading: true, cancelled: false });
+            this.setState({ videoLoading: true });
             let newResult = {};
             if (manipResult) {
               let actualUri = manipResult.hasChanges
@@ -201,10 +200,10 @@ class Long_Form_Video extends Component {
                 size: true,
               });
               RNFFmpegConfig.enableStatisticsCallback(this.statisticsCallback);
-
+              let process = { rc: 0 };
               if (newResult.width < 1080) {
                 let outputUri = actualUri.split("/");
-                await RNFFmpeg.execute(
+                process = await RNFFmpeg.execute(
                   `-y -i ${actualUri} -vf "scale=${
                     newResult.width < newResult.height ? "1080:-2" : "-2:1080"
                   }"  ${FileSystem.documentDirectory}${
@@ -213,7 +212,7 @@ class Long_Form_Video extends Component {
                 );
                 //if user cancelled the export, the above command
                 //will exit and the code after will execute
-                if (this.state.cancelled) {
+                if (process.rc !== 0) {
                   return;
                 }
                 newResult = await RNFFprobe.getMediaInformation(
@@ -294,7 +293,6 @@ class Long_Form_Video extends Component {
               this.setState({
                 videoError: translate("Please choose a video"),
                 videoLoading: false,
-                cancelled: false,
               });
             }
           })
@@ -328,7 +326,6 @@ class Long_Form_Video extends Component {
     this.setState({
       longformvideo_media: null,
       videoLoading: false,
-      cancelled: true,
       progress: 0,
     });
     RNFFmpeg.cancel();

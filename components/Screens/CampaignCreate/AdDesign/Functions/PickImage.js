@@ -378,7 +378,6 @@ export const _pickImage = async (
               videoIsExporting(true);
               let newResult = {};
               if (manipResult.hasChanges) {
-                RNFFmpegConfig.enableStatisticsCallback(statisticsCallback);
                 newResult = await RNFFprobe.getMediaInformation(actualUri);
                 if (newResult.streams)
                   newResult = {
@@ -406,7 +405,11 @@ export const _pickImage = async (
                   duration: result.duration / 1000,
                 };
               }
+              RNFFmpegConfig.enableStatisticsCallback((stats) =>
+                statisticsCallback(stats, newResult.duration)
+              );
               let newSize = await FileSystem.getInfoAsync(actualUri);
+              let process = { rc: 0 }; //RNFFmpeg.execute is not cancelled it returns {rc:0}
               if (
                 (Math.floor(newResult.width / 9) !==
                   Math.floor(newResult.height / 16) ||
@@ -415,23 +418,12 @@ export const _pickImage = async (
                 newResult.duration >= 3.0
               ) {
                 let outputUri = actualUri.split("/");
-
-                await RNFFmpeg.execute(
-                  `-y -i ${actualUri} -vf scale=${
-                    // Math.floor(newResult.width / 9) !==
-                    // Math.floor(newResult.height / 16)
-                    //   ?
-                    "1080:1920"
-                    // : newResult.width < newResult.height
-                    // ? "1080:-2"
-                    // : "-2:1920" //-1 means scale inly by 1920 to keep aspect ratio
-                  } -vcodec libx264 ${FileSystem.documentDirectory}${
-                    outputUri[outputUri.length - 1]
-                  }`
+                prcoess = await RNFFmpeg.execute(
+                  `-y -i ${actualUri} -vf scale=${"1080:1920"} -vcodec libx264 ${
+                    FileSystem.documentDirectory
+                  }${outputUri[outputUri.length - 1]}`
                 );
-                if (cancelled) {
-                  return Promise.reject("Video processing canceled");
-                }
+
                 newResult = await RNFFprobe.getMediaInformation(
                   `${FileSystem.documentDirectory}${
                     outputUri[outputUri.length - 1]
@@ -457,6 +449,10 @@ export const _pickImage = async (
                 );
               }
               videoIsExporting(false);
+              console.log("PRCOESS", process);
+              if (process.rc !== 0) {
+                return Promise.reject("Video processing canceled");
+              }
               if (newResult.duration > 10.999) {
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
