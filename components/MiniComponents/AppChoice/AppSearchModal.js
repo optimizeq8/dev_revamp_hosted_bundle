@@ -45,10 +45,9 @@ class AppSearchModal extends Component {
     let appIdorName = this.props.mainState.appValue.includes(".");
     instance;
     Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.OP_fb_ad_account_id}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.fb_access_token}`
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
     )
       .then((res) => {
-        // console.log(res);
         return res.data;
       })
       .then((data) =>
@@ -91,28 +90,15 @@ class AppSearchModal extends Component {
   _searchIosApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/ios",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
-        },
-      },
-    });
-    let appIdorName = /^\d+$/.test(this.props.appValue);
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-      )
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
+    )
       .then((res) => {
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
       .then((data) => {
-        console.log(JSON.stringify(data, null, 2));
         this.props.setTheState({
-          data: data,
+          data: data.data,
           showList: true,
           loading: false,
         });
@@ -353,11 +339,7 @@ class AppSearchModal extends Component {
                         />
                       )}
                       numcolumnns={3}
-                      keyExtractor={(item, index) =>
-                        item.id
-                          ? item.id.toString()
-                          : item.application_id.toString()
-                      }
+                      keyExtractor={(item, index) => item.unique_id}
                     />
                   </View>
                 )}
@@ -380,7 +362,7 @@ class AppSearchModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  fb_access_token: state.generic.fb_access_token,
-  OP_fb_ad_account_id: state.generic.OP_fb_ad_account_id,
+  FBAccessTokenForAppSearch: state.generic.FBAccessTokenForAppSearch,
+  FBAdAccountIDForAppSearch: state.generic.FBAdAccountIDForAppSearch,
 });
 export default connect(mapStateToProps, null)(AppSearchModal);

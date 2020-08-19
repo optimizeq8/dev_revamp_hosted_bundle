@@ -14,7 +14,7 @@ export default class AppCard extends Component {
       _getAndroidAppIds,
       AppError,
       handleAppError,
-      showConfirmBtn
+      showConfirmBtn,
     } = this.props;
 
     return (
@@ -24,8 +24,8 @@ export default class AppCard extends Component {
           segmentEventTrack(
             `Selected App for ${appChoice === "iOS" ? "iOS" : "Android"}`,
             {
-              campaign_app_name: item.title,
-              campaign_app_id: item.id
+              campaign_app_name: item.name,
+              campaign_app_id: item.unique_id,
             }
           );
           appChoice === "iOS" ? _getIosAppIds(item) : _getAndroidAppIds(item);
@@ -34,12 +34,12 @@ export default class AppCard extends Component {
           styles.campaignButton,
           {
             backgroundColor:
-              attachment.ios_app_id === item.id ||
+              attachment.ios_app_id === item.unique_id ||
               attachment.android_app_url ===
-                (item.id ? item.id : item.application_id)
+                item.unique_id.replace("/store/apps/details?id=", "")
                 ? "#FF9D00"
-                : "transparent"
-          }
+                : "transparent",
+          },
         ]}
       >
         <Animatable.View
@@ -53,11 +53,11 @@ export default class AppCard extends Component {
             <Image
               style={[styles.media, styles.listImage]}
               source={{
-                uri: item.icon
+                uri: item.icon_url,
               }}
             />
           </View>
-          <Text style={[styles.listText]}>{item.title}</Text>
+          <Text style={[styles.listText]}>{item.name}</Text>
         </Animatable.View>
       </TouchableOpacity>
     );

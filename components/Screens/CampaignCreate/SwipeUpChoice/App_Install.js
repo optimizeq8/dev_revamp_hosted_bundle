@@ -233,17 +233,13 @@ class App_Install extends Component {
       !appError
     ) {
       console.log(JSON.stringify(attachment, null, 2));
-      // this.props._changeDestination(
-      //   "APP_INSTALL",
-      //   this.state.callaction,
-      //   attachment,
-      //   appChoice
-      // );
-      // this.props.toggle(false);
-      // this.props.navigation.navigate("AdDesign", {
-      //   source: "ad_swipe_up_destination",
-      //   source_action: "a_swipe_up_destination",
-      // });
+      this.props._changeDestination(
+        "APP_INSTALL",
+        this.state.callaction,
+        attachment,
+        appChoice
+      );
+      this.props.toggle(false);
     } else {
       showMessage({
         message: translate("Please select at least one app"),
