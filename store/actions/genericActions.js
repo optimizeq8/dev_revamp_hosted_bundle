@@ -48,6 +48,7 @@ export const checkForUpdate = (retries = 3) => {
       .get(`appVersion`)
       .then((res) => res.data)
       .then((data) => {
+        console.log(JSON.stringify(data, null, 2));
         dispatch({
           type: actionTypes.SET_ACTUAL_VERSION,
           payload: data,

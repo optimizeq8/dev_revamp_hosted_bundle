@@ -7,6 +7,7 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
 import SearchIcon from "../../../assets/SVGs/Search";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
@@ -20,7 +21,8 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-export default class AppSearchModal extends Component {
+import { log } from "react-native-reanimated";
+class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
     if (pervProps.appSelection !== this.props.appSelection)
@@ -41,20 +43,16 @@ export default class AppSearchModal extends Component {
       },
     });
     let appIdorName = this.props.mainState.appValue.includes(".");
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-        // `/applications/com.espn.score_center/metadata.json`
-      )
+    instance;
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
+    )
       .then((res) => {
-        // console.log(res);
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
       .then((data) =>
         this.props.setTheState({
-          androidData: data,
+          androidData: data.data,
           showList: true,
           loading: false,
         })
@@ -92,31 +90,19 @@ export default class AppSearchModal extends Component {
   _searchIosApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/ios",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
-        },
-      },
-    });
-    let appIdorName = /^\d+$/.test(this.props.appValue);
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-      )
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
+    )
       .then((res) => {
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
-      .then((data) =>
+      .then((data) => {
         this.props.setTheState({
-          data: data,
+          data: data.data,
           showList: true,
           loading: false,
-        })
-      )
+        });
+      })
       .catch((err) => {
         // console.log(err);
 
@@ -353,11 +339,7 @@ export default class AppSearchModal extends Component {
                         />
                       )}
                       numcolumnns={3}
-                      keyExtractor={(item, index) =>
-                        item.id
-                          ? item.id.toString()
-                          : item.application_id.toString()
-                      }
+                      keyExtractor={(item, index) => item.unique_id}
                     />
                   </View>
                 )}
@@ -378,3 +360,9 @@ export default class AppSearchModal extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  FBAccessTokenForAppSearch: state.generic.FBAccessTokenForAppSearch,
+  FBAdAccountIDForAppSearch: state.generic.FBAdAccountIDForAppSearch,
+});
+export default connect(mapStateToProps, null)(AppSearchModal);

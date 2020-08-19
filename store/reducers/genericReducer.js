@@ -16,6 +16,8 @@ const initialState = {
   ad_tutorial_type: "",
   ad_tutorial_link: "",
   ad_tutorial_media_type: "",
+  FBAccessTokenForAppSearch: "",
+  FBAdAccountIDForAppSearch: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,7 +36,11 @@ const reducer = (state = initialState, action) => {
         updateMessage_en: action.payload.updateMessage_en,
         customMessage_en: action.payload.customMessage_en,
         customMessage_ar: action.payload.customMessage_ar,
+        fb_access_token: action.payload.fb_access_token,
+        OP_fb_ad_account_id: action.payload.fb_ad_account_id,
         loadingChecker: false,
+        FBAccessTokenForAppSearch: action.payload.fb_access_token,
+        FBAdAccountIDForAppSearch: action.payload.fb_ad_account_id,
       };
     case actionTypes.SET_UPDATE_LOADING:
       return { ...state, loadingChecker: action.payload };
