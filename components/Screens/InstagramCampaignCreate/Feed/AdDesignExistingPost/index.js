@@ -295,7 +295,7 @@ class InstagramAdDesignExistingPost extends Component {
       body.append("call_to_action", data.call_to_action.value);
       body.append(
         "attachment",
-        data.attachment === "BLANK"
+        !data.attachment || data.attachment === "BLANK"
           ? data.attachment
           : JSON.stringify(data.attachment)
       );
@@ -738,6 +738,7 @@ class InstagramAdDesignExistingPost extends Component {
                 maxClickHeight={this.state.maxClickHeight}
                 setTheState={this.setTheState}
                 existingPosts={true}
+                adType={"InstagramFeedAd"}
               />
             </View>
             <View

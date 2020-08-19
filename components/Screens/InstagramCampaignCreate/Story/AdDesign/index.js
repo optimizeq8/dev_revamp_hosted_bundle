@@ -128,6 +128,7 @@ class AdDesign extends Component {
       serialization: null,
       maxClickHeight: 0,
       progress: 0,
+      swipeUpExpanded: false,
     };
   }
 
@@ -499,11 +500,9 @@ class AdDesign extends Component {
           contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
-          {!this.state.expanded ? (
-            //Made shared null to remove animation since it doesn't look good
-            <Transition style={styles.transition} shared="null">
-              <View style={styles.mainView}>
-                {/* <View style={styles.adImageOptionView}>
+          <Transition style={styles.transition} shared="null">
+            <View style={styles.mainView}>
+              {/* <View style={styles.adImageOptionView}>
                   <GradientButton
                     disabled={this.props.loading}
                     radius={100}
@@ -527,69 +526,71 @@ class AdDesign extends Component {
                   />
                 </View>
                */}
-                <View
-                  style={[styles.outerBlock, { paddingBottom: "25%" }]}
-                  onLayout={this.setMaxClickHeight}
-                >
-                  <View style={styles.profileBsnNameView}>
-                    <RNImage
-                      style={styles.businessProfilePic}
-                      source={{
-                        uri: this.state.campaignInfo.instagram_profile_pic,
-                      }}
-                    />
-                    <View style={styles.bsnNameView}>
-                      <Text style={styles.businessNameText}>
-                        {translate("Business Name")}
-                      </Text>
-                      <Text style={styles.businessName}>
-                        {this.state.campaignInfo.instagram_business_name}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {this.state.campaignInfo.media_option === "single" && (
-                    <SingleImage
-                      media_type={media_type || this.props.data.media_type}
-                      media={media}
-                      save_campaign_info_instagram={
-                        this.props.save_campaign_info_instagram
-                      }
-                      setTheState={this.setTheState}
-                      screenProps={this.props.screenProps}
-                      videoIsExporting={this.videoIsLoading}
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      disabled={this.props.loading}
-                    />
-                  )}
-                  {this.state.campaignInfo.media_option === "carousel" && (
-                    <CarouselImage
-                      media_type={media_type || this.props.data.media_type}
-                      media={media}
-                      save_campaign_info_instagram={
-                        this.props.save_campaign_info_instagram
-                      }
-                      setTheState={this.setTheState}
-                      screenProps={this.props.screenProps}
-                      videoIsLoading={this.videoIsLoading}
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      disabled={this.props.loading}
-                      carouselAdsArray={this.props.carouselAdsArray}
-                      _handlecarouselAdCards={this._handlecarouselAdCards}
-                    />
-                  )}
-                  <ClickDestination
-                    screenProps={this.props.screenProps}
-                    navigation={this.props.navigation}
-                    loading={this.props.loading}
-                    data={this.props.data}
-                    campaignInfo={this.state.campaignInfo}
-                    translate={translate}
-                    maxClickHeight={this.state.maxClickHeight}
-                    setTheState={this.setTheState}
-                    adType={"InstagramStoryAd"}
+              <View
+                style={[styles.outerBlock, { paddingBottom: "25%" }]}
+                onLayout={this.setMaxClickHeight}
+              >
+                <View style={styles.profileBsnNameView}>
+                  <RNImage
+                    style={styles.businessProfilePic}
+                    source={{
+                      uri: this.state.campaignInfo.instagram_profile_pic,
+                    }}
                   />
+                  <View style={styles.bsnNameView}>
+                    <Text style={styles.businessNameText}>
+                      {translate("Business Name")}
+                    </Text>
+                    <Text style={styles.businessName}>
+                      {this.state.campaignInfo.instagram_business_name}
+                    </Text>
+                  </View>
                 </View>
+
+                {this.state.campaignInfo.media_option === "single" && (
+                  <SingleImage
+                    media_type={media_type || this.props.data.media_type}
+                    media={media}
+                    save_campaign_info_instagram={
+                      this.props.save_campaign_info_instagram
+                    }
+                    setTheState={this.setTheState}
+                    screenProps={this.props.screenProps}
+                    videoIsExporting={this.videoIsLoading}
+                    setMediaModalVisible={this.setMediaModalVisible}
+                    disabled={this.props.loading}
+                  />
+                )}
+                {this.state.campaignInfo.media_option === "carousel" && (
+                  <CarouselImage
+                    media_type={media_type || this.props.data.media_type}
+                    media={media}
+                    save_campaign_info_instagram={
+                      this.props.save_campaign_info_instagram
+                    }
+                    setTheState={this.setTheState}
+                    screenProps={this.props.screenProps}
+                    videoIsLoading={this.videoIsLoading}
+                    setMediaModalVisible={this.setMediaModalVisible}
+                    disabled={this.props.loading}
+                    carouselAdsArray={this.props.carouselAdsArray}
+                    _handlecarouselAdCards={this._handlecarouselAdCards}
+                  />
+                )}
+                <ClickDestination
+                  screenProps={this.props.screenProps}
+                  navigation={this.props.navigation}
+                  loading={this.props.loading}
+                  data={this.props.data}
+                  campaignInfo={this.state.campaignInfo}
+                  translate={translate}
+                  maxClickHeight={this.state.maxClickHeight}
+                  setTheState={this.setTheState}
+                  adType={"InstagramStoryAd"}
+                />
+              </View>
+
+              {!this.state.swipeUpExpanded && (
                 <View style={styles.lowerBtn}>
                   <GradientButton
                     text={translate("Preview")}
@@ -664,68 +665,9 @@ class AdDesign extends Component {
                     />
                   )}
                 </View>
-              </View>
-            </Transition>
-          ) : (
-            <Animated.View
-              onPress={() => {
-                this.setState(
-                  {
-                    expanded: false,
-                  },
-                  () => {
-                    this.toggle();
-                  }
-                );
-              }}
-              style={[
-                { height: heightPercentageToDP(60) },
-                { transform: [{ translateY: this.state.animation }] },
-              ]}
-            >
-              <LowerButton
-                screenProps={this.props.screenProps}
-                style={{
-                  alignSelf: "flex-end",
-                  marginHorizontal: 50,
-                  marginBottom: 10,
-                }}
-                function={() => {
-                  this.handleCaptionExpand(false);
-                }}
-              />
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  Keyboard.dismiss();
-                  // this.handleCaptionExpand(false);
-                }}
-                accessible={false}
-              >
-                <View style={styles.captionMainView}>
-                  <Text style={styles.captionTextBig}>
-                    {translate("Caption")}
-                  </Text>
-                  <TextInput
-                    autoFocus={true}
-                    multiline={true}
-                    numberOfLines={12}
-                    style={styles.message}
-                    value={this.state.campaignInfo.message}
-                    onChangeText={(value) => {
-                      let replace = this.state.campaignInfo;
-                      replace.message = value;
-                      this.setState({
-                        campaignInfo: replace,
-                      });
-                      this.props.save_campaign_info_instagram({
-                        message: value,
-                      });
-                    }}
-                  />
-                </View>
-              </TouchableWithoutFeedback>
-            </Animated.View>
-          )}
+              )}
+            </View>
+          </Transition>
         </ScrollView>
         {videoIsLoading ? (
           <VideoProcessingLoader

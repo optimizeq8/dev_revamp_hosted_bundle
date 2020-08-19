@@ -488,7 +488,7 @@ class Long_Form_Video extends Component {
               </TouchableOpacity>
               <View style={[styles.textcontainer, {}]}>
                 <Text style={styles.titletext}>
-                  {translate("Upload") + translate("LongForm Video")}
+                  {translate("Upload") + " " + translate("LongForm Video")}
                 </Text>
                 <Text style={styles.subtext}>
                   {translate("This video will be seen when users swipe up")}
