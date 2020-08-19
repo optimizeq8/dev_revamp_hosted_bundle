@@ -195,6 +195,7 @@ class AdObjective extends Component {
     this.props.save_campaign_info_instagram({
       objective: choice.value,
       objectiveLabel: choice.label,
+      existingPost: this.state.campaignInfo.existingPost,
       reset: true,
     });
   };

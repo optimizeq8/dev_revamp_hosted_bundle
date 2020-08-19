@@ -599,7 +599,8 @@ class Dashboard extends Component {
                     }}
                     style={[styles.headerIcons]}
                   >
-                    {this.props.unread_converstaion === 0 ? (
+                    {!this.props.unread_converstaion ||
+                    this.props.unread_converstaion === 0 ? (
                       <IntercomIcon width={24} height={24} />
                     ) : (
                       <>

@@ -128,10 +128,12 @@ export default class WebsiteComponent extends React.Component {
                   fontFamily: "montserrat-light-english",
                   color: inputColor,
                   fontSize:
-                    this.props.website && this.props.website.length > 38
-                      ? 8.75
+                    this.props.website && this.props.website.length > 43
+                      ? 7
+                      : this.props.website && this.props.website.length > 38
+                      ? 8.5
                       : this.props.website && this.props.website.length > 30
-                      ? 10
+                      ? 9
                       : 12,
                 },
                 customTextStyle,
