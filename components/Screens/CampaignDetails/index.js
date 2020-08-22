@@ -224,10 +224,11 @@ class CampaignDetails extends Component {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
-      campaign.review_status.includes("APPROVED") &&
-      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= new Date()
+      campaign.review_status.includes("PENDING") ||
+      (campaign.review_status.includes("APPROVED") &&
+        new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+          new Date().setHours(0, 0, 0, 0) &&
+        new Date(campaign.end_time) >= new Date())
         ? null
         : campaign.campaign_end === "1" ||
           new Date(campaign.end_time) < new Date();
