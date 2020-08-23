@@ -9,7 +9,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fillAnimation: new Animated.Value(props.prefill)
+      fillAnimation: new Animated.Value(props.prefill),
     };
   }
 
@@ -26,7 +26,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
   reAnimate(prefill, toVal, dur, ease) {
     this.setState(
       {
-        fillAnimation: new Animated.Value(prefill)
+        fillAnimation: new Animated.Value(prefill),
       },
       () => this.animate(toVal, dur, ease)
     );
@@ -40,7 +40,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
     const anim = Animated.timing(this.state.fillAnimation, {
       toValue,
       easing,
-      duration
+      duration,
     });
     anim.start(this.props.onAnimationComplete);
 
@@ -51,17 +51,17 @@ export default class AnimatedCircularProgress extends React.PureComponent {
     let animateColors = [
       this.props.tintColor,
       this.props.tintColorSecondary,
-      this.props.tintColorThirdy
+      this.props.tintColorThirdy,
     ];
     if (this.props.adDetails) {
       animateColorsPercentages = [0, 15, 35, 65, 85, 100];
       animateColors = [
         globalColors.red,
-        globalColors.yellow,
-        globalColors.green,
-        globalColors.green,
-        globalColors.yellow,
-        globalColors.red
+        globalColors.purple1,
+        globalColors.purple2,
+        globalColors.purple2,
+        globalColors.purple1,
+        globalColors.red,
       ];
     }
     if (!this.props.tintColorSecondary && !this.props.adDetails) {
@@ -70,7 +70,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
 
     const tintAnimation = this.state.fillAnimation.interpolate({
       inputRange: animateColorsPercentages,
-      outputRange: animateColors
+      outputRange: animateColors,
     });
 
     return tintAnimation;
@@ -94,11 +94,11 @@ AnimatedCircularProgress.propTypes = {
   prefill: PropTypes.number,
   duration: PropTypes.number,
   easing: PropTypes.func,
-  onAnimationComplete: PropTypes.func
+  onAnimationComplete: PropTypes.func,
 };
 
 AnimatedCircularProgress.defaultProps = {
   duration: 500,
   easing: Easing.out(Easing.ease),
-  prefill: 0
+  prefill: 0,
 };

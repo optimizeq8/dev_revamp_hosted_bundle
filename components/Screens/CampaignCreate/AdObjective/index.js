@@ -33,7 +33,7 @@ import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
 //Data
-import ObjectiveData from "../../../Data/snapchatObjectives.data";
+import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -64,7 +64,7 @@ class AdObjective extends Component {
       campaignInfo: {
         ad_account_id: "",
         name: "",
-        objective: "",
+        objective: snapchatObjectivesData[this.props.adType][0].value,
         start_time: "",
         end_time: "",
       },
@@ -72,9 +72,9 @@ class AdObjective extends Component {
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
-      objectiveLabel: "Select Objective",
+      objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
       inputN: false,
-      objectives: ObjectiveData[this.props.adType],
+      objectives: snapchatObjectivesData[this.props.adType],
       closedContinueModal: false,
       nameError: "",
       objectiveError: "",
@@ -82,7 +82,7 @@ class AdObjective extends Component {
       end_timeError: "",
       incomplete: false,
       duration: 7,
-      savedObjective: "",
+      savedObjective: "WEBSITE_TRAFFIC",
     };
   }
   componentWillUnmount() {
@@ -97,15 +97,6 @@ class AdObjective extends Component {
     if (this.props.navigation.getParam("adType", false)) {
       this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
     }
-    if (this.props.adType === "CollectionAd") {
-      if (this.props.collectionAdLinkForm !== 0) {
-        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-      } else {
-        this._handleCollectionAdLinkForm(1);
-      }
-    } else {
-      this._handleCollectionAdLinkForm(0);
-    }
     this.setState({
       ...this.state,
       campaignInfo: {
@@ -114,8 +105,15 @@ class AdObjective extends Component {
           this.props.mainBusiness && this.props.mainBusiness.snap_ad_account_id,
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
+        objective:
+          this.props.data && this.props.data.savedObjective
+            ? this.props.data.savedObjective
+            : snapchatObjectivesData[this.props.adType || "SnapAd"][0].value,
       },
-      objectiveLabel: "Select Objective",
+      objectiveLabel:
+        this.props.data && this.props.data.objectiveLabel
+          ? this.props.data.objectiveLabel
+          : snapchatObjectivesData[this.props.adType || "SnapAd"][0].label,
     });
   }
 
@@ -130,23 +128,6 @@ class AdObjective extends Component {
     if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
       this.setCampaignInfo();
       this.handleAdOnjectiveFocus(); //track the change of adType if user creates a new ad instead of resuming
-    }
-    if (
-      (prevProps.adType !== this.props.adType &&
-        this.props.adType === "CollectionAd") ||
-      prevProps.currentCampaignSteps !== this.props.currentCampaignSteps
-    ) {
-      if (
-        this.props.adType === "CollectionAd" &&
-        // prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
-        this.props.collectionAdLinkForm !== 0
-      ) {
-        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-      } else if (this.props.adType === "CollectionAd") {
-        this._handleCollectionAdLinkForm(1);
-      }
-    } else if (prevProps.adType !== this.props.adType) {
-      this._handleCollectionAdLinkForm(0);
     }
   }
 
@@ -173,7 +154,9 @@ class AdObjective extends Component {
         businessid:
           this.props.mainBusiness && this.props.mainBusiness.businessid,
         name: this.props.data.name ? this.props.data.name : "",
-        objective: this.props.data.objective ? this.props.data.objective : "",
+        objective: this.props.data.savedObjective
+          ? this.props.data.savedObjective
+          : snapchatObjectivesData[this.props.adType || "SnapAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -181,53 +164,80 @@ class AdObjective extends Component {
           ? this.props.data.end_time
           : end_time.toISOString().split("T")[0],
       };
-      this.setState({
-        collectionAdLinkForm: this.props.collectionAdLinkForm,
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        modalVisible: this.props.data.modalVisible,
-        objectiveLabel: this.props.data.objectiveLabel
-          ? this.props.data.objectiveLabel
-          : "Select Objective",
-        inputN: this.props.data.inputN,
-        nameError: this.props.data.nameError,
-        objectiveError: this.props.data.objectiveError,
-        start_timeError: this.props.data.start_timeError,
-        end_timeError: this.props.data.end_timeError,
-        campaignInfo: { ...rep },
-        modalVisible: false,
-        duration: this.props.data.duration
-          ? this.props.data.duration
-          : this.state.duration,
-        savedObjective: this.props.data.hasOwnProperty("savedObjective")
-          ? this.props.data.savedObjective
-          : this.state.campaignInfo.objective,
-      });
-    } else {
-      this.setState({
-        campaignInfo: {
-          ad_account_id:
-            this.props.mainBusiness &&
-            this.props.mainBusiness.snap_ad_account_id,
-          businessid:
-            this.props.mainBusiness && this.props.mainBusiness.businessid,
-          name: "",
-          objective: "",
-          start_time: start_time.toISOString().split("T")[0],
-          end_time: end_time.toISOString().split("T")[0],
+      this.setState(
+        {
+          collectionAdLinkForm:
+            this.props.adType === "CollectionAd"
+              ? this.props.collectionAdLinkForm !== 0
+                ? this.props.collectionAdLinkForm
+                : 1
+              : 0,
+          minValueBudget: this.props.data.minValueBudget,
+          maxValueBudget: this.props.data.maxValueBudget,
+          modalVisible: this.props.data.modalVisible,
+          objectiveLabel: this.props.data.objectiveLabel
+            ? this.props.data.objectiveLabel
+            : snapchatObjectivesData[this.props.adType][0].label,
+          inputN: this.props.data.inputN,
+          nameError: this.props.data.nameError,
+          objectiveError: this.props.data.objectiveError,
+          start_timeError: this.props.data.start_timeError,
+          end_timeError: this.props.data.end_timeError,
+          campaignInfo: { ...rep },
+          modalVisible: false,
+          duration: this.props.data.duration
+            ? this.props.data.duration
+            : this.state.duration,
+          savedObjective: this.props.data.hasOwnProperty("savedObjective")
+            ? this.props.data.savedObjective
+            : snapchatObjectivesData[this.props.adType][0].value,
+
+          objectiveLabel: this.props.data.objectiveLabel
+            ? this.props.data.objectiveLabel
+            : snapchatObjectivesData[this.props.adType || "SnapAd"][0].label,
         },
-        collectionAdLinkForm: 0,
-        minValueBudget: 0,
-        maxValueBudget: 0,
-        modalVisible: false,
-        objectiveLabel: "Select Objective",
-        inputN: false,
-        nameError: "",
-        objectiveError: "",
-        start_timeError: "",
-        end_timeError: "",
-        duration: 7,
-      });
+        () =>
+          this.props.save_campaign_info({
+            objectiveLabel: this.state.objectiveLabel,
+          })
+      );
+    } else {
+      this.setState(
+        {
+          campaignInfo: {
+            ad_account_id:
+              this.props.mainBusiness &&
+              this.props.mainBusiness.snap_ad_account_id,
+            businessid:
+              this.props.mainBusiness && this.props.mainBusiness.businessid,
+            name: "",
+            objective: snapchatObjectivesData[this.props.adType][0].value,
+            start_time: start_time.toISOString().split("T")[0],
+            end_time: end_time.toISOString().split("T")[0],
+          },
+          collectionAdLinkForm:
+            this.props.adType === "CollectionAd"
+              ? this.props.collectionAdLinkForm !== 0
+                ? this.props.collectionAdLinkForm
+                : 1
+              : 0,
+          minValueBudget: 0,
+          maxValueBudget: 0,
+          modalVisible: false,
+          objectiveLabel: snapchatObjectivesData[this.props.adType][0].label,
+          inputN: false,
+          nameError: "",
+          objectiveError: "",
+          start_timeError: "",
+          end_timeError: "",
+          duration: 7,
+          savedObjective: snapchatObjectivesData[this.props.adType][0].value,
+        },
+        () =>
+          this.props.save_campaign_info({
+            objectiveLabel: this.state.objectiveLabel,
+          })
+      );
     }
   };
   setObjective = (choice) => {
@@ -303,6 +313,7 @@ class AdObjective extends Component {
       end_time: date,
       campaignDateChanged: true,
     });
+    this._handleSubmission();
   };
   setModalVisible = (visible) => {
     analytics.track(`ad_objective_modal`, {
@@ -567,7 +578,7 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-    const list = ObjectiveData[this.props.adType].map((o) => (
+    const list = snapchatObjectivesData[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -644,7 +655,6 @@ class AdObjective extends Component {
                   setValue={this.setValue}
                   getValidInfo={this.getValidInfo}
                   disabled={this.props.loading}
-                  disabled={this.props.loading}
                   stateName1={"name"}
                   value={this.state.campaignInfo.name}
                   placeholder1={"Enter Your campaign’s name"}
@@ -652,7 +662,7 @@ class AdObjective extends Component {
                   maxLength={34}
                   autoFocus={false}
                   incomplete={this.state.incomplete}
-                  valueText={this.state.objectiveLabel}
+                  valueText={this.state.campaignInfo.name}
                   translate={this.props.screenProps.translate}
                 />
                 <ModalField
@@ -826,6 +836,15 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
+            <TouchableOpacity
+              style={{
+                width: "100%",
+                height: "20%",
+                position: "absolute",
+              }}
+              onPress={() => this.setModalVisible(false)}
+              activeOpacity={1}
+            ></TouchableOpacity>
             <View style={styles.objectiveModal}>
               <CustomHeader
                 screenProps={this.props.screenProps}

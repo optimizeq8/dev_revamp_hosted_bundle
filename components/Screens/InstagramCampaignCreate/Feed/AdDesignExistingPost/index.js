@@ -28,6 +28,7 @@ import * as actionCreators from "../../../../../store/actions";
 // Style
 import styles from "../../styles/adDesign.styles";
 import previewStyles from "../../styles/adFeedReview.styles";
+import existPostStyles from "../../styles/adExistingPost.styles";
 
 import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper";
 
@@ -215,9 +216,10 @@ class InstagramAdDesignExistingPost extends Component {
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
       this.props.data.objective !== "VIDEO_VIEWS" &&
-      this.props.data &&
-      this.props.data.call_to_action &&
-      this.props.data.call_to_action.label === "BLANK"
+      (!this.props.data.call_to_action ||
+        (this.props.data &&
+          this.props.data.call_to_action &&
+          this.props.data.call_to_action.label === "BLANK"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -294,7 +296,7 @@ class InstagramAdDesignExistingPost extends Component {
       body.append("call_to_action", data.call_to_action.value);
       body.append(
         "attachment",
-        data.attachment === "BLANK"
+        !data.attachment || data.attachment === "BLANK"
           ? data.attachment
           : JSON.stringify(data.attachment)
       );
@@ -554,15 +556,7 @@ class InstagramAdDesignExistingPost extends Component {
           title={"Compose"}
         />
         {!this.state.showPreview && (
-          <View
-            style={{
-              height: heightPercentageToDP(70),
-              backgroundColor: "rgba(0,0,0,0.16)",
-              marginHorizontal: 15,
-              borderRadius: 20,
-              marginVertical: 15,
-            }}
-          >
+          <View style={existPostStyles.outerPreview}>
             <View style={styles.profileBsnNameView}>
               <RNImage
                 style={styles.businessProfilePic}
@@ -580,31 +574,15 @@ class InstagramAdDesignExistingPost extends Component {
               </View>
             </View>
 
-            <Text
-              style={{
-                color: "#FFF",
-                fontSize: 14,
-                fontFamily: "montserrat-regular",
-                paddingHorizontal: 20,
-              }}
-            >
+            <Text style={existPostStyles.promoteText}>
               {translate("Select a post to promote")}
             </Text>
             <FlatList
               data={this.props.instagramExistingPost}
               renderItem={this.renderEachPost}
               numColumns={4}
-              style={
-                {
-                  // alignItems: "center",
-                }
-              }
-              contentContainerStyle={{
-                display: "flex",
-                marginBottom: heightPercentageToDP(20),
-                justifyContent: "space-around",
-                alignItems: "center",
-              }}
+              contentContainerStyle={existPostStyles.flatListContentStyle}
+              showsVerticalScrollIndicator={false}
             />
             {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>
@@ -613,15 +591,11 @@ class InstagramAdDesignExistingPost extends Component {
         )}
         {this.state.showPreview && (
           <ScrollView
-            style={{ height: "100%" }}
-            contentContainerStyle={{
-              paddingTop: "5%",
-              paddingBottom: "25%",
-              alignItems: "center",
-            }}
+            style={existPostStyles.scrollView}
+            contentContainerStyle={existPostStyles.scrollContent}
           >
             <View
-              style={[previewStyles.container, { marginBottom: 20 }]}
+              style={[previewStyles.container, existPostStyles.container]}
               onLayout={this.setMaxClickHeight}
             >
               <View style={previewStyles.profilePicView}>
@@ -659,30 +633,33 @@ class InstagramAdDesignExistingPost extends Component {
                   <VideoPlayer shouldPlay={true} media={media} />
                 )}
               </View>
-              {(this.state.campaignInfo.call_to_action.value ||
-                this.state.campaignInfo.call_to_action) !== "BLANK" && (
-                <View style={previewStyles.swipeUpView}>
-                  <Text style={previewStyles.callToActionText}>
-                    {this.state.campaignInfo.call_to_action.hasOwnProperty(
-                      "label"
-                    )
-                      ? translate(this.state.campaignInfo.call_to_action.label)
-                      : translate(
-                          this.state.campaignInfo.call_to_action.replace(
-                            "_",
-                            " "
+              {this.state.campaignInfo.call_to_action &&
+                (this.state.campaignInfo.call_to_action.value ||
+                  this.state.campaignInfo.call_to_action !== "BLANK") && (
+                  <View style={previewStyles.swipeUpView}>
+                    <Text style={previewStyles.callToActionText}>
+                      {this.state.campaignInfo.call_to_action.hasOwnProperty(
+                        "label"
+                      )
+                        ? translate(
+                            this.state.campaignInfo.call_to_action.label
                           )
-                        )}
-                  </Text>
-                  <ArrowBlueForward
-                    style={[
-                      previewStyles.icon,
-                      previewStyles.archiveIcon,
-                      previewStyles.forwadIcon,
-                    ]}
-                  />
-                </View>
-              )}
+                        : translate(
+                            this.state.campaignInfo.call_to_action.replace(
+                              "_",
+                              " "
+                            )
+                          )}
+                    </Text>
+                    <ArrowBlueForward
+                      style={[
+                        previewStyles.icon,
+                        previewStyles.archiveIcon,
+                        previewStyles.forwadIcon,
+                      ]}
+                    />
+                  </View>
+                )}
               <View style={previewStyles.iconView}>
                 <HeartOutline style={previewStyles.icon} />
                 <CommentOutline style={previewStyles.icon} />
@@ -734,27 +711,12 @@ class InstagramAdDesignExistingPost extends Component {
                 maxClickHeight={this.state.maxClickHeight}
                 setTheState={this.setTheState}
                 existingPosts={true}
+                adType={"InstagramFeedAd"}
               />
             </View>
-            <View
-              style={[
-                styles.lowerBtn,
-                {
-                  top: "20%",
-                  width: "90%",
-                },
-              ]}
-            >
+            <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
               {this.props.loading ? (
-                <View
-                  style={{
-                    width: "45%",
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
+                <View style={existPostStyles.bottomView}>
                   <Text style={styles.uploadingText}>
                     {translate("Uploading")}
                   </Text>

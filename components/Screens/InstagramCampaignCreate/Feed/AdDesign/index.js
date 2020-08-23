@@ -74,6 +74,8 @@ import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import CarouselImage from "./Carousel/CarouselImage";
 import { formatCarouselAd } from "./Functions/formatCarouselAd";
 import ClickDestination from "./ClickDestination";
+import VideoProcessingLoader from "../../../../MiniComponents/VideoProcessingLoader";
+import { RNFFmpeg } from "react-native-ffmpeg";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -120,12 +122,13 @@ class AdDesign extends Component {
       isVisible: false,
       expanded: false,
       animation: new Animated.Value(100),
-      isVideoLoading: false,
+      videoIsLoading: false,
       mediaModalVisible: false,
       uneditedImageUri: "",
       serialization: null,
       maxClickHeight: 0,
       swipeUpExpanded: false,
+      progress: 0,
     };
   }
 
@@ -220,7 +223,7 @@ class AdDesign extends Component {
   };
   videoIsLoading = (value) => {
     this.setState({
-      isVideoLoading: value,
+      videoIsLoading: value,
     });
   };
   _getUploadState = (loading) => {
@@ -244,9 +247,10 @@ class AdDesign extends Component {
     if (
       this.props.data.objective !== "BRAND_AWARENESS" &&
       this.props.data.objective !== "VIDEO_VIEWS" &&
-      this.props.data &&
-      this.props.data.call_to_action &&
-      this.props.data.call_to_action.label === "BLANK"
+      (!this.props.data.call_to_action ||
+        (this.props.data &&
+          this.props.data.call_to_action &&
+          this.props.data.call_to_action.label === "BLANK"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -411,7 +415,9 @@ class AdDesign extends Component {
       this.videoIsLoading,
       this.state.carouselAdCards,
       this.props.carouselAdsArray,
-      this.state.campaignInfo.media_option
+      this.state.campaignInfo.media_option,
+      this.statisticsCallback,
+      this.state.cancelled
       // this.adType,
       // this.rejected,
     );
@@ -455,9 +461,27 @@ class AdDesign extends Component {
       maxClickHeight: event.nativeEvent.layout.height,
     });
   };
+  handleVideoCaneling = () => {
+    this.setState({
+      videoIsLoading: false,
+      cancelled: true,
+      progress: 0,
+    });
+    RNFFmpeg.cancel();
+  };
+  statisticsCallback = (statisticsData, duration) => {
+    let progress = (statisticsData.time / (duration * 1000)) * 100;
+    this.setState({ progress });
+  };
   render() {
     const { translate } = this.props.screenProps;
-    var { media, mediaModalVisible, media_type, carouselAdCards } = this.state;
+    var {
+      media,
+      mediaModalVisible,
+      media_type,
+      carouselAdCards,
+      videoIsLoading,
+    } = this.state;
     //Added checking for data becuase when going to successRedirect, data turns to null and crashs the app on this screen
     if (
       this.props.data &&
@@ -597,6 +621,7 @@ class AdDesign extends Component {
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
                     setTheState={this.setTheState}
+                    adType={"InstagramFeedAd"}
                   />
                 </View>
                 {!this.state.swipeUpExpanded && (
@@ -614,7 +639,7 @@ class AdDesign extends Component {
                     {this.props.loading ? (
                       <View
                         style={{
-                          width: "45%",
+                          width: "50%",
                           position: "relative",
                           display: "flex",
                           flexDirection: "row",
@@ -738,6 +763,14 @@ class AdDesign extends Component {
             </Animated.View>
           )}
         </ScrollView>
+        {videoIsLoading ? (
+          <VideoProcessingLoader
+            handleVideoCaneling={this.handleVideoCaneling}
+            progress={this.state.progress}
+            translate={translate}
+            videoLoading={videoIsLoading}
+          />
+        ) : null}
         <MediaModal
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)

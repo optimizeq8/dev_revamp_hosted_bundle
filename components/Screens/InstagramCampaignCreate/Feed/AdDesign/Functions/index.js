@@ -161,8 +161,8 @@ export const formatMedia = (
   body.append("call_to_action", data.call_to_action.value);
   body.append(
     "attachment",
-    data.attachment === "BLANK"
-      ? data.attachment
+    !data.attachment || data.attachment === "BLANK"
+      ? "BLANK"
       : JSON.stringify(data.attachment)
   );
 

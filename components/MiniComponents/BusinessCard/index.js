@@ -13,7 +13,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
-    cat => cat.value === this.props.business.businesscategory
+    (cat) => cat.value === this.props.business.businesscategory
   );
   swipeoutBtns = [
     {
@@ -31,7 +31,7 @@ class BusinessCard extends Component {
           [
             {
               text: this.translate("Cancel"),
-              style: "cancel"
+              style: "cancel",
             },
             {
               text: this.translate("Delete"),
@@ -39,15 +39,15 @@ class BusinessCard extends Component {
                 this.props.deleteBusinessAccount(
                   this.props.business.businessid
                 ),
-              style: "destructive"
-            }
+              style: "destructive",
+            },
           ]
           // { cancelable: false }
         );
 
         //
-      }
-    }
+      },
+    },
   ];
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
@@ -58,7 +58,7 @@ class BusinessCard extends Component {
         source: "open_hamburger",
         source_action: "a_switch_account",
         timestamp: new Date().getTime(),
-        action_status: "success"
+        action_status: "success",
       });
       this.props.changeBusiness(this.props.business);
       this.props.resetCampaignInfo();
@@ -70,8 +70,9 @@ class BusinessCard extends Component {
     //it's not being used anymore until further notice
     let changeState = {
       color: "#c6c6c6",
-      textColor: "#5F5F5F"
+      textColor: "#5F5F5F",
     };
+    const { translate } = this.props.screenProps;
     if (
       !this.props.manageTeam &&
       this.props.mainBusiness &&
@@ -94,15 +95,15 @@ class BusinessCard extends Component {
           onPress={this.handleSwitchBusiness}
           style={[
             styles.businessButton,
-            { backgroundColor: changeState.backgroundColor }
+            { backgroundColor: changeState.backgroundColor },
           ]}
         >
           <View
             style={[
               styles.businessIconStyle,
               {
-                backgroundColor: changeState.color
-              }
+                backgroundColor: changeState.color,
+              },
             ]}
           >
             <BusinessIcon width={30} height={30} />
@@ -114,15 +115,15 @@ class BusinessCard extends Component {
                 { color: changeState.textColor },
                 !isStringArabic(this.props.business.businessname)
                   ? {
-                      fontFamily: "montserrat-bold-english"
+                      fontFamily: "montserrat-bold-english",
                     }
-                  : {}
+                  : {},
               ]}
             >
               {this.props.business.businessname}
             </Text>
             <Text style={[styles.subtext, { color: changeState.textColor }]}>
-              {this.businessCategory && this.businessCategory.label}
+              {this.businessCategory && translate(this.businessCategory.label)}
             </Text>
           </View>
         </TouchableOpacity>
@@ -130,17 +131,18 @@ class BusinessCard extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   businessAccounts: state.account.businessAccounts,
   mainBusiness: state.account.mainBusiness,
-  deleteBusinessLoading: state.account.deleteBusinessLoading
+  deleteBusinessLoading: state.account.deleteBusinessLoading,
 });
-const mapDispatchToProps = dispatch => ({
-  changeBusiness: business => dispatch(actionCreators.changeBusiness(business)),
+const mapDispatchToProps = (dispatch) => ({
+  changeBusiness: (business) =>
+    dispatch(actionCreators.changeBusiness(business)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
-  deleteBusinessAccount: business_id =>
+  deleteBusinessAccount: (business_id) =>
     dispatch(actionCreators.deleteBusinessAccount(business_id)),
   rest_google_campaign_data: () =>
-    dispatch(actionCreators.rest_google_campaign_data())
+    dispatch(actionCreators.rest_google_campaign_data()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessCard);

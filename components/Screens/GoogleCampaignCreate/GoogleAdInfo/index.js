@@ -177,7 +177,9 @@ class GoogleAdInfo extends Component {
 
     this.props.save_google_campaign_data({
       end_time: end_time.toISOString(),
+      campaignDateChanged: true,
     });
+    this._handleSubmission();
   };
 
   setModalVisible = (visible) => {

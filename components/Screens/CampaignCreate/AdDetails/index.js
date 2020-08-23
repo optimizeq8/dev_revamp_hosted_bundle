@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content } from "native-base";
+import { Text, Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
@@ -35,6 +35,10 @@ import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
+import uniq from "lodash/uniq";
+import flatten from "lodash/flatten";
+import isUndefined from "lodash/isUndefined";
+import isNull from "lodash/isNull";
 import formatNumber from "../../../formatNumber";
 
 import {
@@ -47,7 +51,9 @@ import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { uniq, flatten } from "lodash";
+import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
+import { globalColors } from "../../../../GlobalStyles";
+import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -79,12 +85,12 @@ class AdDetails extends Component {
             },
           ],
           geos: [{ country_code: "", region_id: [] }],
-          // locations: [
-          //   {
-          //     circles: [],
-          //     operation: "INCLUDE",
-          //   },
-          // ],
+          locations: [
+            {
+              circles: [],
+              operation: "INCLUDE",
+            },
+          ],
         },
       },
       filteredRegions: country_regions[0].regions,
@@ -106,6 +112,7 @@ class AdDetails extends Component {
       recBudget: 0,
       budgetOption: 1,
       startEditing: true,
+      locationsInfo: [],
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -156,8 +163,8 @@ class AdDetails extends Component {
           .lifetime_budget_micro;
         let value = this.state.value;
         if (this.state.budgetOption === 1) {
-          lifetime_budget_micro = recBudget;
-          value = this.formatNumber(recBudget, true);
+          lifetime_budget_micro = recBudget * 2;
+          value = this.formatNumber(recBudget * 2, true);
         }
         this.setState({
           campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
@@ -172,7 +179,9 @@ class AdDetails extends Component {
     if (!this.props.navigation.isFocused()) {
       return false;
     }
-    this.props.navigation.goBack();
+    if (this.state.sidemenustate) {
+      this._handleSideMenuState(false);
+    } else this.props.navigation.goBack();
     return true;
   };
   async componentDidMount() {
@@ -252,11 +261,11 @@ class AdDetails extends Component {
           campaignInfo: {
             ...this.state.campaignInfo,
             campaign_id: this.props.campaign_id,
-            lifetime_budget_micro: recBudget,
+            lifetime_budget_micro: recBudget * 2,
           },
           minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
-          value: this.formatNumber(recBudget, true),
+          value: this.formatNumber(recBudget * 2, true),
           recBudget: recBudget,
         },
         async () => {
@@ -265,7 +274,6 @@ class AdDetails extends Component {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
-
             let savedRegionNames = this.props.data.regionNames;
             let countryRegions = rep.targeting.geos.map((cou) => {
               let foundCountryReg = find(
@@ -296,27 +304,31 @@ class AdDetails extends Component {
                   ...rep,
                   campaign_id: this.props.campaign_id,
                   lifetime_budget_micro:
-                    this.props.data.campaignDateChanged &&
-                    this.props.data.campaignInfo.lifetime_budget_micro <
-                      this.props.data.minValueBudget
-                      ? recBudget
-                      : this.props.data.campaignInfo.lifetime_budget_micro,
+                    this.props.data && this.props.data.campaignDateChanged
+                      ? recBudget * 2
+                      : this.props.data
+                      ? this.props.data.campaignInfo.lifetime_budget_micro
+                      : 50,
                 },
                 value: this.formatNumber(
-                  this.props.data.campaignDateChanged &&
-                    this.props.data.campaignInfo.lifetime_budget_micro <
-                      this.props.data.minValueBudget
-                    ? recBudget
-                    : this.props.data.campaignInfo.lifetime_budget_micro
+                  this.props.data && this.props.data.campaignDateChanged
+                    ? recBudget * 2
+                    : this.props.data
+                    ? this.props.data.campaignInfo.lifetime_budget_micro
+                    : 50
                 ),
                 showRegions: this.props.data.showRegions,
                 filteredLanguages: this.props.languages,
                 recBudget,
                 filteredRegions: countryRegions ? countryRegions : [],
                 regions: countryRegions ? countryRegions : [],
-                budgetOption: this.props.data.campaignDateChanged
-                  ? 1
-                  : this.props.data.budgetOption,
+                budgetOption:
+                  this.props.data && this.props.data.campaignDateChanged
+                    ? 1
+                    : !isNull(this.props.data.budgetOption) ||
+                      !isUndefined(this.props.data.budgetOption)
+                    ? this.props.data.budgetOption
+                    : 1,
                 regionNames: savedRegionNames,
                 minValueBudget,
               },
@@ -343,6 +355,9 @@ class AdDetails extends Component {
               this.props.mainBusiness.country
             );
           }
+          this.props.save_campaign_info({
+            budgetOption: this.state.budgetOption,
+          });
           this._calcReach();
         }
       );
@@ -383,16 +398,18 @@ class AdDetails extends Component {
   onSelectedCountryChange = async (
     selectedItem,
     mounting = null,
-    countryName
+    countryName,
+    addCountryOfLocations = false
   ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let newCountry = selectedItem;
     let regionNames = this.state.regionNames;
-
+    let locationsInfo = this.state.locationsInfo;
     if (newCountry) {
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        replace.targeting.geos.length === 1
+        replace.targeting.geos.length === 1 &&
+        !addCountryOfLocations
       ) {
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
@@ -401,8 +418,11 @@ class AdDetails extends Component {
         };
         countryName = [];
         regionNames = [];
+        locationsInfo = [];
+        replace.targeting.locations[0].circles = [];
       } else if (
-        replace.targeting.geos.find((co) => co.country_code === newCountry)
+        replace.targeting.geos.find((co) => co.country_code === newCountry) &&
+        !addCountryOfLocations
       ) {
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
@@ -414,6 +434,13 @@ class AdDetails extends Component {
         );
         //To remove the country name from the country names
         countryName = this.state.countryName.filter((co) => co !== countryName);
+        locationsInfo = this.state.locationsInfo.filter((loc, i) => {
+          if (loc.country_code !== newCountry) {
+            return loc;
+          } else {
+            replace.targeting.locations[0].circles.splice(i, 1);
+          }
+        });
       } else if (replace.targeting.geos[0].country_code === "") {
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
@@ -424,24 +451,39 @@ class AdDetails extends Component {
         regionNames = this.state.regionNames.filter(
           (reg) => reg.country_code !== newCountry
         );
-      } else {
+      } else if (
+        addCountryOfLocations
+          ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
+          : true
+      ) {
         //To add the coutnry to geos array
         replace.targeting.geos.push({
           country_code: newCountry,
           region_id: [],
         });
         countryName = [...this.state.countryName, countryName];
+      } else {
+        countryName = [...this.state.countryName];
       }
 
       let reg = country_regions.find((c) => c.country_code === newCountry);
-      if (this.state.regions.find((c) => c.country_code === newCountry)) {
+      if (
+        this.state.regions.find((c) => c.country_code === newCountry) &&
+        !addCountryOfLocations
+      ) {
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
         reg = this.state.regions.filter((coReg) => {
           return coReg.country_code !== newCountry;
         });
-      } else {
+      } else if (
+        addCountryOfLocations
+          ? !this.state.regions.find((c) => c.country_code === newCountry)
+          : true
+      ) {
         reg = [...this.state.regions, reg];
+      } else {
+        reg = [...this.state.regions];
       }
 
       replace.targeting.interests[0].category_id = [];
@@ -459,6 +501,7 @@ class AdDetails extends Component {
           regionNames,
           interestNames: [],
           countryName,
+          locationsInfo,
         },
         () => {
           //To show the regions options if one of the selected countries has more than 3 regions
@@ -472,6 +515,8 @@ class AdDetails extends Component {
               countryName,
               showRegions: showRegions,
               regionNames,
+              markers: replace.targeting.locations[0].circles,
+              locationsInfo,
             });
           this.setState({ showRegions });
         }
@@ -599,7 +644,7 @@ class AdDetails extends Component {
   };
 
   onSelectedVersionsChange = (selectedItem) => {
-    let replace = this.state.campaignInfo;
+    let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
     analytics.track(`a_ad_OS_version`, {
@@ -617,9 +662,12 @@ class AdDetails extends Component {
       });
   };
 
-  onSelectedMapChange = (selectedItems) => {
+  onSelectedMapChange = (selectedItems, unselect = false, locationsInfo) => {
     let stateRep = cloneDeep(this.state.campaignInfo);
-    stateRep.targeting.locations[0].circles = selectedItems;
+    if (unselect) {
+      stateRep.targeting.locations[0].circles = [];
+      this.props.save_campaign_info({ markers: [], locationsInfo: [] });
+    } else stateRep.targeting.locations[0].circles = selectedItems;
     analytics.track(`a_ad_map_locations`, {
       source: "ad_targeting",
       source_action: "a_ad_map_locations",
@@ -627,6 +675,7 @@ class AdDetails extends Component {
     });
     this.setState({
       campaignInfo: { ...stateRep },
+      locationsInfo,
     });
     !this.editCampaign &&
       this.props.save_campaign_info({
@@ -656,7 +705,12 @@ class AdDetails extends Component {
   //     });
   // };
 
-  onSelectedRegionChange = (selectedItem, regionName, country_code) => {
+  onSelectedRegionChange = (
+    selectedItem,
+    regionName,
+    country_code,
+    unselect = false
+  ) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let coRegIndex = 0;
     let rIds = [];
@@ -675,7 +729,7 @@ class AdDetails extends Component {
       this.state.regions.forEach((reg) => {
         if (reg.regions.length > 3) regionsLength += reg.regions.length;
       });
-      if (regionsLength === this.state.regionNames.length) {
+      if (regionsLength === this.state.regionNames.length || unselect) {
         //if all the regions of all selected countries are selected
         //then regionNames.length will === all the regions of the selected countries
         //Meaning that this will unselect all the regions
@@ -822,7 +876,9 @@ class AdDetails extends Component {
             : translate("Budget can't be less than the minimum"),
           description:
             this.state.campaignInfo.targeting.geos.length > 1
-              ? `$25 x ${translate("Country")} = $${this.state.minValueBudget}`
+              ? `$25 x ${translate("Duration")} x ${translate(
+                  "Countries"
+                )} = $${this.state.minValueBudget}`
               : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
@@ -1194,6 +1250,9 @@ class AdDetails extends Component {
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
+            ageValuesRange={[13, 50]}
+            minAge={this.state.campaignInfo.targeting.demographics[0].min_age}
+            maxAge={this.state.campaignInfo.targeting.demographics[0].max_age}
           />
         );
         break;
@@ -1209,6 +1268,10 @@ class AdDetails extends Component {
             regions={this.state.regions}
             region_id={this.state.campaignInfo.targeting.geos}
             filterRegions={this.filterRegions}
+            locationsSelected={
+              campaignInfo.targeting.locations[0].circles.length > 0
+            }
+            onSelectedMapChange={this.onSelectedMapChange}
           />
         );
 
@@ -1219,14 +1282,20 @@ class AdDetails extends Component {
           LocationMap = require("../../../MiniComponents/LocationMap").default;
         }
         menu = (
-          <LocationMap
+          <SnapchatLocation
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
-            onSelectedMapChange={this.onSelectedMapChange}
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}
+            onSelectedMapChange={this.onSelectedMapChange}
+            save_campaign_info={this.props.save_campaign_info}
+            data={this.props.data}
+            regionsSelected={campaignInfo.targeting.geos}
+            onSelectedRegionChange={this.onSelectedRegionChange}
+            onSelectedCountryChange={this.onSelectedCountryChange}
+            _handleSideMenuState={this._handleSideMenuState}
           />
         );
         break;
@@ -1295,15 +1364,16 @@ class AdDetails extends Component {
     let regions_names = [];
     regions_names = this.state.regionNames.map((regN) => regN.name).join(", ");
     let languages_names = [];
-    this.props.languages.forEach((r) => {
-      if (
-        this.state.campaignInfo.targeting.demographics[0].languages.find(
-          (i) => i === r.id
-        )
-      ) {
-        languages_names.push(translate(r.name));
-      }
-    });
+    if (typeof this.props.languages === "object")
+      this.props.languages.forEach((r) => {
+        if (
+          this.state.campaignInfo.targeting.demographics[0].languages.find(
+            (i) => i === r.id
+          )
+        ) {
+          languages_names.push(translate(r.name));
+        }
+      });
     languages_names = languages_names.join(", ");
 
     let interests_names = [];
@@ -1328,111 +1398,132 @@ class AdDetails extends Component {
         : this.props.navigation.getParam("media", "//");
 
     return (
-      <Sidemenu
-        onChange={(isOpen) => {
-          if (isOpen === false) {
-            this._handleSideMenuState(isOpen);
-            this._calcReach();
-          }
-        }}
-        disableGestures={true}
-        menu={this.state.sidemenustate && menu}
-        menuPosition={I18nManager.isRTL ? "left" : "right"}
-        openMenuOffset={wp("85%")}
-        isOpen={this.state.sidemenustate}
-        // edgeHitWidth={-60}
-      >
-        <View style={[styles.safeArea]}>
-          <SafeAreaView
-            style={{ backgroundColor: "#fff" }}
-            forceInset={{ bottom: "never", top: "always" }}
+      <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        {!this.editCampaign ? (
+          <TopStepsHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Ad Details Back Button",
+              obj: {
+                businessname: this.props.mainBusiness.businessname,
+              },
+              source: "ad_targeting",
+              source_action: "a_go_back",
+            }}
+            actionButton={
+              this.editCampaign
+                ? () => this.props.navigation.navigate("CampaignDetails")
+                : undefined
+            }
+            icon="snapchat"
+            actionButton={this.handleBackButton}
+            adType={this.props.adType}
+            currentScreen="Audience"
+            title={"Campaign details"}
           />
-          <NavigationEvents
-            onDidFocus={this.handleAdDetailsFocus}
-            onBlur={this.handleAdDetailsBlur}
+        ) : (
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={false}
+            segment={{
+              str: "Ad Details Back Button",
+              obj: {
+                businessname: this.props.mainBusiness.businessname,
+              },
+              source: "ad_targeting",
+              source_action: "a_go_back",
+            }}
+            actionButton={
+              this.editCampaign
+                ? () => this.props.navigation.navigate("CampaignDetails")
+                : undefined
+            }
+            showTopRightButton={
+              this.editCampaign &&
+              this.state.campaignInfo.campaign_end === "0" &&
+              new Date(this.state.campaignInfo.end_time) > new Date() &&
+              !this.props.campaignEnded &&
+              this.props.mainBusiness.user_role !== "3"
+            }
+            topRightButtonFunction={() => {
+              this.setState({ startEditing: !startEditing });
+            }}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
+            topRightButtonText={translate("Edit")}
+            navigation={this.editCampaign ? undefined : this.props.navigation}
+            title={this.editCampaign ? "Audience" : "Campaign details"}
           />
-          <Container style={styles.mainContainer}>
-            <Container style={styles.container}>
-              {!this.editCampaign ? (
-                <TopStepsHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  segment={{
-                    str: "Ad Details Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname,
-                    },
-                    source: "ad_targeting",
-                    source_action: "a_go_back",
-                  }}
-                  actionButton={
-                    this.editCampaign
-                      ? () => this.props.navigation.navigate("CampaignDetails")
-                      : undefined
-                  }
-                  icon="snapchat"
-                  actionButton={this.handleBackButton}
-                  adType={this.props.adType}
-                  currentScreen="Audience"
-                  title={"Campaign details"}
-                />
-              ) : (
-                <CustomHeader
-                  screenProps={this.props.screenProps}
-                  closeButton={false}
-                  segment={{
-                    str: "Ad Details Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname,
-                    },
-                    source: "ad_targeting",
-                    source_action: "a_go_back",
-                  }}
-                  actionButton={
-                    this.editCampaign
-                      ? () => this.props.navigation.navigate("CampaignDetails")
-                      : undefined
-                  }
-                  showTopRightButton={
-                    this.editCampaign &&
-                    this.state.campaignInfo.campaign_end === "0" &&
-                    new Date(this.state.campaignInfo.end_time) > new Date() &&
-                    !this.props.campaignEnded &&
-                    this.props.mainBusiness.user_role !== "3"
-                  }
-                  topRightButtonFunction={() => {
-                    this.setState({ startEditing: !startEditing });
-                  }}
-                  topRightButtonText={translate("Edit")}
-                  navigation={
-                    this.editCampaign ? undefined : this.props.navigation
-                  }
-                  title={this.editCampaign ? "Audience" : "Campaign details"}
-                />
-              )}
-              <Content
-                scrollEnabled={false}
-                contentContainerStyle={styles.contentContainer}
-              >
-                {!this.editCampaign ? (
-                  <>
-                    <Text uppercase style={styles.subHeadings}>
-                      {translate("Set your budget")}
-                    </Text>
-                    <BudgetCards
-                      value={this.state.value}
-                      recBudget={this.state.recBudget}
-                      lifetime_budget_micro={
-                        this.state.campaignInfo.lifetime_budget_micro
-                      }
-                      budgetOption={this.state.budgetOption}
-                      _handleBudget={this._handleBudget}
-                      screenProps={this.props.screenProps}
-                      data={this.props.data}
-                    />
+        )}
+        <View style={{ height: "100%" }}>
+          <Sidemenu
+            onChange={(isOpen) => {
+              if (isOpen === false) {
+                this._handleSideMenuState(isOpen);
+                this._calcReach();
+              }
+            }}
+            disableGestures={true}
+            menu={this.state.sidemenustate && menu}
+            menuPosition={I18nManager.isRTL ? "left" : "right"}
+            openMenuOffset={wp(100)}
+            isOpen={this.state.sidemenustate}
+            // edgeHitWidth={-60}
+          >
+            <View style={[styles.safeArea]}>
+              <NavigationEvents
+                onDidFocus={this.handleAdDetailsFocus}
+                onBlur={this.handleAdDetailsBlur}
+              />
+              <Container style={styles.mainContainer}>
+                <Container style={styles.container}>
+                  <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.contentContainer}
+                  >
+                    {!this.editCampaign ? (
+                      <>
+                        <Row
+                          size={-1}
+                          style={{
+                            alignItems: "center",
+                            paddingHorizontal: 20,
+                          }}
+                        >
+                          <WalletIcon
+                            width={30}
+                            height={30}
+                            fill={globalColors.rum}
+                          />
+                          <Text
+                            uppercase
+                            style={[
+                              styles.subHeadings,
+                              { paddingHorizontal: 10 },
+                            ]}
+                          >
+                            {translate("Set your budget")}
+                          </Text>
+                        </Row>
+                        <BudgetCards
+                          value={this.state.value}
+                          recBudget={this.state.recBudget}
+                          lifetime_budget_micro={
+                            this.state.campaignInfo.lifetime_budget_micro
+                          }
+                          budgetOption={this.state.budgetOption}
+                          _handleBudget={this._handleBudget}
+                          screenProps={this.props.screenProps}
+                          data={this.props.data}
+                        />
 
-                    {/*---------leave if in case we want to use it again---------*/}
-                    {/* <View style={styles.sliderContainer}>
+                        {/*---------leave if in case we want to use it again---------*/}
+                        {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
@@ -1464,56 +1555,58 @@ class AdDetails extends Component {
                       />
                     </View>
                   */}
-                  </>
-                ) : (
-                  startEditing && (
-                    <View style={styles.sliderPlaceHolder}>
-                      <Text style={styles.subHeadings}>
-                        {translate(
-                          "Editing budget and duration\nis currently unavailable"
-                        )}
+                      </>
+                    ) : (
+                      startEditing && (
+                        <View style={styles.sliderPlaceHolder}>
+                          <Text style={styles.subHeadings}>
+                            {translate(
+                              "Editing budget and duration\nis currently unavailable"
+                            )}
+                          </Text>
+                        </View>
+                      )
+                    )}
+                    {startEditing && (
+                      <Text
+                        uppercase
+                        style={[styles.subHeadings, { width: "60%" }]}
+                      >
+                        {translate("Who would you like to reach?")}
                       </Text>
-                    </View>
-                  )
-                )}
-                {startEditing && (
-                  <Text
-                    uppercase
-                    style={[styles.subHeadings, { width: "60%" }]}
-                  >
-                    {translate("Who would you like to reach?")}
-                  </Text>
-                )}
-                <TargetAudience
-                  screenProps={this.props.screenProps}
-                  _renderSideMenu={this._renderSideMenu}
-                  loading={this.props.loading}
-                  gender={gender}
-                  targeting={this.state.campaignInfo.targeting}
-                  regions_names={regions_names}
-                  languages_names={languages_names}
-                  interests_names={interests_names}
-                  OSType={OSType}
-                  mainState={this.state}
-                  translate={translate}
-                  editCampaign={this.editCampaign}
-                  startEditing={startEditing}
-                />
+                    )}
+                    <TargetAudience
+                      screenProps={this.props.screenProps}
+                      _renderSideMenu={this._renderSideMenu}
+                      loading={this.props.loading}
+                      gender={gender}
+                      targeting={this.state.campaignInfo.targeting}
+                      regions_names={regions_names}
+                      languages_names={languages_names}
+                      interests_names={interests_names}
+                      OSType={OSType}
+                      mainState={this.state}
+                      translate={translate}
+                      editCampaign={this.editCampaign}
+                      startEditing={startEditing}
+                    />
 
-                <ReachBar
-                  loading={this.props.loading}
-                  campaignInfo={campaignInfo}
-                  _handleSubmission={this._handleSubmission}
-                  startEditing={startEditing}
-                  campaignInfo={campaignInfo}
-                  editCampaign={this.editCampaign}
-                  screenProps={this.props.screenProps}
-                />
-              </Content>
-            </Container>
-          </Container>
+                    <ReachBar
+                      loading={this.props.loading}
+                      campaignInfo={campaignInfo}
+                      _handleSubmission={this._handleSubmission}
+                      startEditing={startEditing}
+                      campaignInfo={campaignInfo}
+                      editCampaign={this.editCampaign}
+                      screenProps={this.props.screenProps}
+                    />
+                  </Content>
+                </Container>
+              </Container>
+            </View>
+          </Sidemenu>
         </View>
-      </Sidemenu>
+      </View>
     );
   }
 }

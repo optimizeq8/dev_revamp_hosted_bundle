@@ -3,6 +3,13 @@ import * as ObjIcons from "../../assets/SVGs/Objectives";
 export const instagramAdObjectives = {
   InstagramFeedAd: [
     {
+      label: "Traffic",
+      value: "LINK_CLICKS",
+      info: "Send more people to a destination such as a website or app",
+      icon: ObjIcons.BRAND_AWARENESS,
+      color: "#4BD6C6",
+    },
+    {
       label: "Brand Awareness",
       value: "BRAND_AWARENESS",
       info:
@@ -24,13 +31,7 @@ export const instagramAdObjectives = {
       icon: ObjIcons.Video,
       color: "#9325FF",
     },
-    {
-      label: "Traffic",
-      value: "LINK_CLICKS",
-      info: "Send more people to a destination such as a website or app",
-      icon: ObjIcons.BRAND_AWARENESS,
-      color: "#4BD6C6",
-    },
+
     // {
     //   label: "Lead Generation",
     //   value: "LEAD_GENERATION",
@@ -53,6 +54,13 @@ export const instagramAdObjectives = {
   ],
   InstagramStoryAd: [
     {
+      label: "Traffic",
+      value: "LINK_CLICKS",
+      info: "Send more people to a destination such as a website or app",
+      icon: ObjIcons.BRAND_AWARENESS,
+      color: "#4BD6C6",
+    },
+    {
       label: "Brand Awareness",
       value: "BRAND_AWARENESS",
       info:
@@ -73,13 +81,6 @@ export const instagramAdObjectives = {
       info: "Get more people to view your video content",
       icon: ObjIcons.Video,
       color: "#9325FF",
-    },
-    {
-      label: "Traffic",
-      value: "LINK_CLICKS",
-      info: "Send more people to a destination such as a website or app",
-      icon: ObjIcons.BRAND_AWARENESS,
-      color: "#4BD6C6",
     },
   ],
 };

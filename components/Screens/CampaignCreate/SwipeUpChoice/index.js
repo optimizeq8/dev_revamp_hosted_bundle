@@ -101,7 +101,11 @@ class SwipeUpChoice extends Component {
     const { translate } = this.props.screenProps;
     let objective = this.props.objective;
     let _changeDestination = this.props._changeDestination;
-
+    let savedObjective =
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("savedObjective")
+        ? this.props.rejCampaign.savedObjective
+        : this.props.savedObjective;
     let menu = <View />;
     if (this.props.adType === "CollectionAd") {
       switch (this.props.collectionAdLinkForm) {
@@ -143,7 +147,7 @@ class SwipeUpChoice extends Component {
     } else {
       if (
         objective === "LEAD_GENERATION" ||
-        this.props.savedObjective === "WEBSITE_TRAFFIC"
+        savedObjective === "WEBSITE_TRAFFIC"
       )
         menu = (
           <Website
@@ -179,7 +183,7 @@ class SwipeUpChoice extends Component {
             />
           </>
         );
-      } else if (this.props.savedObjective.toLowerCase() === "app_traffic") {
+      } else if (savedObjective.toLowerCase() === "app_traffic") {
         menu = (
           <>
             <NavigationEvents onDidFocus={this.segment} />
@@ -205,7 +209,6 @@ class SwipeUpChoice extends Component {
         );
       }
     }
-
     // if (this.props.adType === "CollectionAd") return menu;
     // else
     return (
@@ -246,6 +249,7 @@ const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   savedObjective: state.campaignC.savedObjective,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 export default connect(mapStateToProps, null)(SwipeUpChoice);

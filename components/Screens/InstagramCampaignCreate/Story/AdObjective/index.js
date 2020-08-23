@@ -116,7 +116,9 @@ class AdObjective extends Component {
         ad_account_id: this.props.mainBusiness.fb_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
         name: this.props.data.name,
-        objective: this.props.data.objective ? this.props.data.objective : "",
+        objective: this.props.data.objective
+          ? this.props.data.objective
+          : instagramAdObjectives["InstagramStoryAd"][0].value,
         start_time: this.props.data.start_time
           ? this.props.data.start_time
           : start_time.toISOString().split("T")[0],
@@ -130,7 +132,7 @@ class AdObjective extends Component {
         modalVisible: this.props.data.modalVisible,
         objectiveLabel: this.props.data.objectiveLabel
           ? this.props.data.objectiveLabel
-          : "Select Objective",
+          : instagramAdObjectives["InstagramStoryAd"][0].label,
         inputN: this.props.data.inputN,
         nameError: this.props.data.nameError,
         objectiveError: this.props.data.objectiveError,
@@ -145,14 +147,14 @@ class AdObjective extends Component {
           ad_account_id: this.props.mainBusiness.fb_ad_account_id,
           businessid: this.props.mainBusiness.businessid,
           name: "",
-          objective: "",
+          objective: instagramAdObjectives["InstagramStoryAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
-          end_time: start_time.toISOString().split("T")[0],
+          end_time: end_time.toISOString().split("T")[0],
         },
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
-        objectiveLabel: "Select Objective",
+        objectiveLabel: instagramAdObjectives["InstagramStoryAd"][0].label,
         inputN: false,
         nameError: "",
         objectiveError: "",
@@ -198,13 +200,19 @@ class AdObjective extends Component {
       source: "ad_objective",
       source_action: "a_ad_start_date",
     });
-    this.props.save_campaign_info_instagram({ start_time: date });
+    this.props.save_campaign_info_instagram({
+      start_time: date,
+      campaignDateChanged: true,
+    });
+    this._handleSubmission();
   };
   handleEndDatePicked = (date) => {
+    let end_time = new Date(date);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date,
+        end_time: end_time.toISOString().split("T")[0],
       },
     });
     analytics.track(`a_ad_end_date`, {

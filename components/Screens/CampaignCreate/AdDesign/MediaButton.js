@@ -7,6 +7,7 @@ import styles from "./styles";
 import EditCameraIcon from "../../../../assets/SVGs/CameraCircleOutline";
 import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
 import segmentEventTrack from "../../../segmentEventTrack";
+import NavigationService from "../../../../NavigationService";
 export default class MediaButton extends Component {
   render() {
     let {
@@ -19,6 +20,8 @@ export default class MediaButton extends Component {
       setMediaModalVisible,
       type,
       disabled,
+      navigateToCover,
+      rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
 
@@ -28,23 +31,26 @@ export default class MediaButton extends Component {
           disabled={disabled}
           transparent
           onPress={() => {
-            segmentEventTrack(
-              `Button clicked to  ${
-                snapAdCard
-                  ? "Edit Media for Story Ad Card"
-                  : cover
-                  ? "Select image for story ad cover"
-                  : "Open Upload Media Modal"
-              } `
-            );
-            snapAdCard
-              ? _handleStoryAdCards({
-                  index: snapCardInfo.index,
-                  ...snapCardInfo.item,
-                })
-              : cover
-              ? _pickImage("Images")
-              : setMediaModalVisible(true);
+            if (navigateToCover) {
+            } else {
+              segmentEventTrack(
+                `Button clicked to  ${
+                  snapAdCard
+                    ? "Edit Media for Story Ad Card"
+                    : cover
+                    ? "Select image for story ad cover"
+                    : "Open Upload Media Modal"
+                } `
+              );
+              snapAdCard
+                ? _handleStoryAdCards({
+                    index: snapCardInfo.index,
+                    ...snapCardInfo.item,
+                  })
+                : cover
+                ? _pickImage("Images")
+                : setMediaModalVisible(true);
+            }
           }}
           style={[
             styles.inputMiddleButton2,
@@ -88,23 +94,27 @@ export default class MediaButton extends Component {
             ]}
             onPress={() => {
               // this._pickImage();
-              segmentEventTrack(
-                `Button clicked to  ${
-                  snapAdCard
-                    ? "Add Media for Story Ad Card"
-                    : cover
-                    ? "Select image for story ad cover"
-                    : "Open Upload Media Modal"
-                } `
-              );
-              snapAdCard
-                ? _handleStoryAdCards({
-                    index: snapCardInfo.index,
-                    ...snapCardInfo.item,
-                  })
-                : cover
-                ? _pickImage("Images")
-                : setMediaModalVisible(true);
+              if (navigateToCover) {
+                NavigationService.navigate("AdCover", { rejected });
+              } else {
+                segmentEventTrack(
+                  `Button clicked to  ${
+                    snapAdCard
+                      ? "Add Media for Story Ad Card"
+                      : cover
+                      ? "Select image for story ad cover"
+                      : "Open Upload Media Modal"
+                  } `
+                );
+                snapAdCard
+                  ? _handleStoryAdCards({
+                      index: snapCardInfo.index,
+                      ...snapCardInfo.item,
+                    })
+                  : cover
+                  ? _pickImage("Images")
+                  : setMediaModalVisible(true);
+              }
             }}
           >
             <EditCameraIcon width={"100%"} height={"100%"} name="camera" />

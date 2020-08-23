@@ -1,31 +1,36 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../../../GlobalStyles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 15,
+    paddingVertical: 10,
   },
   budgetCardsStyle: { alignSelf: "center" },
   budgetCardStyle: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff3",
-    borderRadius: 12,
-    borderColor: globalColors.orange,
+    backgroundColor: "#fff",
+    borderRadius: 40,
+    borderColor: globalColors.purple,
     borderWidth: 2.5,
-    height: 50,
+    height: widthPercentageToDP(10),
     marginHorizontal: 5,
-    width: 105,
+    width: widthPercentageToDP(25),
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 0 },
+    shadowRadius: 7,
+    shadowOpacity: 0.1,
   },
   budgetTextStyle: {
-    color: globalColors.orange,
+    color: globalColors.purple,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
+    fontSize: 16,
   },
   budget: {
     alignSelf: "center",
-    color: globalColors.orange,
+    color: globalColors.purple,
     fontSize: 19 / PixelRatio.getFontScale(),
     fontFamily: "montserrat-bold",
     textAlign: "center",

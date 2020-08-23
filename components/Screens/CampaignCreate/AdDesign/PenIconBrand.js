@@ -7,7 +7,83 @@ import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
-  state = { input: false, brand_nameError: "", headlineError: "" };
+  state = {
+    input: false,
+    brand_nameError: "",
+    headlineError: "",
+  };
+  handleBlur = () => {
+    let {
+      brand_name,
+      field,
+      headline,
+
+      setTheState,
+    } = this.props;
+    this.setState({ input: false });
+    if (field === "Business Name") {
+      segmentEventTrack("Changed Business Name", {
+        campaign_brand_name: brand_name,
+      });
+      this.setState(
+        {
+          brand_nameError: validateWrapper("mandatory", brand_name),
+          headlineError: validateWrapper(
+            "mandatory",
+            field === "Business Name" ? brand_name : headline
+          ),
+        },
+        () => {
+          setTheState({
+            brand_nameError: validateWrapper("mandatory", brand_name),
+          });
+        }
+      );
+    } else {
+      this.setState(
+        {
+          brand_nameError: validateWrapper("mandatory", brand_name),
+          headlineError: validateWrapper("mandatory", headline),
+        },
+        () => {
+          setTheState({
+            headlineError: validateWrapper("mandatory", headline),
+          });
+        }
+      );
+      segmentEventTrack("Changed Headline", {
+        campaign_headline: headline,
+      });
+    }
+    this.setState(
+      {
+        brand_nameError: validateWrapper(
+          "mandatory",
+          field === "Business Name" ? brand_name : headline
+        ),
+        headlineError: validateWrapper(
+          "mandatory",
+          field === "Business Name" ? brand_name : headline
+        ),
+      },
+      () => {
+        if (this.state.brand_nameError) {
+          segmentEventTrack(
+            `Error occured on blur of ${
+              field === "Business Name" ? "Brand Name" : "Headline"
+            } Ad Design Screen`,
+            {
+              [`${
+                field === "Business Name"
+                  ? "camapign_error_brand_name"
+                  : "campaign_error_headline"
+              }`]: this.state.brand_nameError,
+            }
+          );
+        }
+      }
+    );
+  };
   render() {
     let {
       brand_name,
@@ -20,6 +96,7 @@ export default class PenIconBrand extends Component {
       storyAdSelected,
       disabled,
       headlineError,
+      setTheState,
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -28,10 +105,10 @@ export default class PenIconBrand extends Component {
           fill={
             this.state.input
               ? "#FF9D00"
-              : (field === "Business Name" && brand_nameError) ||
-                this.state.brand_nameError ||
-                (field === "Promotional Message" && headlineError) ||
-                this.state.headlineError
+              : (field === "Business Name" &&
+                  (brand_nameError || this.state.brand_nameError)) ||
+                (field === "Promotional Message" &&
+                  (headlineError || this.state.headlineError))
               ? "red"
               : "#fff"
           }
@@ -85,46 +162,7 @@ export default class PenIconBrand extends Component {
             onFocus={() => {
               this.setState({ input: true });
             }}
-            onBlur={() => {
-              this.setState({ input: false });
-              if (field === "Business Name") {
-                segmentEventTrack("Changed Business Name", {
-                  campaign_brand_name: brand_name,
-                });
-              } else {
-                segmentEventTrack("Changed Headline", {
-                  campaign_headline: headline,
-                });
-              }
-              this.setState(
-                {
-                  brand_nameError: validateWrapper(
-                    "mandatory",
-                    field === "Business Name" ? brand_name : headline
-                  ),
-                  headlineError: validateWrapper(
-                    "mandatory",
-                    field === "Business Name" ? brand_name : headline
-                  ),
-                },
-                () => {
-                  if (this.state.brand_nameError) {
-                    segmentEventTrack(
-                      `Error occured on blur of ${
-                        field === "Business Name" ? "Brand Name" : "Headline"
-                      } Ad Design Screen`,
-                      {
-                        [`${
-                          field === "Business Name"
-                            ? "camapign_error_brand_name"
-                            : "campaign_error_headline"
-                        }`]: this.state.brand_nameError,
-                      }
-                    );
-                  }
-                }
-              );
-            }}
+            onBlur={this.handleBlur}
           />
         </View>
       </Item>

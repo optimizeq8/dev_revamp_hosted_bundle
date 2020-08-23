@@ -488,6 +488,7 @@ class GoogleAdDesign extends Component {
             )}
 
             <InputScrollView
+              showsVerticalScrollIndicator={false}
               keyboardAvoidingViewProps={{ behavior: "padding" }}
               {...ScrollView.props}
               contentContainerStyle={[

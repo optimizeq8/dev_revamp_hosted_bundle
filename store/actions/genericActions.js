@@ -41,15 +41,18 @@ export const setAuthToken = (token) => {
   }
 };
 
-export const checkForUpdate = (retries = 3) => {
+export const checkForUpdate = (facebookIDsOnly, retries = 3) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: true });
     createBaseUrl()
       .get(`appVersion`)
       .then((res) => res.data)
       .then((data) => {
+        console.log(JSON.stringify(data, null, 2));
         dispatch({
-          type: actionTypes.SET_ACTUAL_VERSION,
+          type: facebookIDsOnly
+            ? actionTypes.SET_FACEBOOK_IDS
+            : actionTypes.SET_ACTUAL_VERSION,
           payload: data,
         });
       })
@@ -58,7 +61,10 @@ export const checkForUpdate = (retries = 3) => {
           dispatch(checkForUpdate(retries - 1));
           return;
         }
-        dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: false });
+        dispatch({
+          type: actionTypes.SET_UPDATE_LOADING,
+          payload: false,
+        });
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",

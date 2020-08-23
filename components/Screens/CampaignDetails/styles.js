@@ -504,8 +504,9 @@ const styles = StyleSheet.create({
   remainingBudgetText: {
     fontFamily: "montserrat-regular",
     color: "white",
-    fontSize: 12,
+    fontSize: 13,
     width: "85%",
+    textAlign: "left",
   },
 });
 

@@ -25,15 +25,15 @@ class ReachBar extends Component {
     let { startEditing, editCampaign, campaignInfo } = this.props;
 
     return (
-      <View style={styles.bottom}>
+      <View style={[styles.bottom]}>
         <AnimatedCircularProgress
-          size={85}
+          size={hp(10)}
           width={8}
           fill={this.props.total_reach}
           rotation={360}
           lineCap="round"
           style={[styles.chart]}
-          backgroundColor="rgba(255,255,255,0.3)"
+          backgroundColor="rgba(0,0,0,0.1)"
           adDetails={true}
         />
         <View style={styles.chartItems}>
@@ -46,6 +46,8 @@ class ReachBar extends Component {
               {"  " + translate("people")}
             </Text>
           </View>
+        </View>
+        <View style={{ flex: 0.5 }}>
           {((editCampaign &&
             startEditing &&
             campaignInfo.campaign_end &&
@@ -64,6 +66,7 @@ class ReachBar extends Component {
                 screenProps={this.props.screenProps}
                 style={[styles.reachBarLowerButton]}
                 function={() => this.props._handleSubmission()}
+                purpleViolet
               />
             ))}
         </View>

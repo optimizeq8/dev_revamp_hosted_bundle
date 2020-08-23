@@ -12,6 +12,39 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
+  downIcon: {
+    position: "absolute",
+    right: 15,
+    color: globalColors.rum,
+    width: 25,
+    height: 25,
+    fontSize: 30,
+    // marginVertical: 2,
+    // bottom: 5,
+    alignSelf: "center",
+  },
+  swipeUpView: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 10,
+    // width: wp(60),
+    // marginHorizontal: 100,
+  },
+  swipeUpText: {
+    alignSelf: "flex-start",
+    color: globalColors.rum,
+    fontFamily: "montserrat-bold",
+    fontSize: 15,
+    textTransform: "uppercase",
+  },
+  swipeUpSubText: {
+    fontSize: 12,
+    textAlign: "center",
+    fontFamily: "montserrat-medium-english",
+    color: globalColors.purple,
+  },
   placeHolderStoryAd: {
     height: hp(45),
   },
@@ -388,6 +421,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 15,
     width: "100%",
+    // height: "12%",
   },
   destinationText: {
     fontFamily: "montserrat-bold",
@@ -422,6 +456,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light-english",
     color: globalColors.purple,
     fontSize: 12,
+    textAlign: "center",
   },
   uplaodPercentageText: {
     position: "absolute",
@@ -441,7 +476,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderWidth: 1,
     borderColor: globalColors.white,
-    width: "45%",
+    width: "50%",
     height: 50,
     marginHorizontal: 0,
   },

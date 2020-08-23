@@ -5,6 +5,7 @@ import { Input, Item, Icon } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import styles from "../MultiSelect/styles";
 import LowerButton from "../LowerButton";
+import { globalColors } from "../../../GlobalStyles";
 
 export default class SelectLanguages extends Component {
   componentDidMount() {
@@ -51,7 +52,7 @@ export default class SelectLanguages extends Component {
                 <Input
                   placeholder={translate("Search Language")}
                   style={styles.inputtext}
-                  placeholderTextColor="#fff"
+                  placeholderTextColor={globalColors.rum}
                   onChangeText={(value) => {
                     let filteredC = this.props.languages.filter((c) =>
                       translate(c.name)
@@ -71,6 +72,7 @@ export default class SelectLanguages extends Component {
           <LowerButton
             screenProps={this.props.screenProps}
             checkmark={true}
+            purpleViolet
             style={[styles.button]}
             function={() => this.props._handleSideMenuState(false)}
           />

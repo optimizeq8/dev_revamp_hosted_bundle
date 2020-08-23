@@ -80,9 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   contentContainer: {
-    // flexGrow: 1,
-    padding: 10,
-    // height: "80%",
+    paddingTop: 10,
   },
   mainSafeArea: {
     height: "100%",
@@ -174,7 +172,8 @@ const styles = StyleSheet.create({
   inputBrand: {
     // position: "absolute",
     // alignSelf: "center",
-    height: "40%",
+    // height: "40%",
+    height: heightPercentageToDP(6.25),
     // top: "4%",
     // left: "4%",
     borderColor: "transparent",
@@ -298,7 +297,8 @@ const styles = StyleSheet.create({
   subtitleHeading: {
     textAlign: "left",
     fontSize: 10,
-    marginBottom: -10,
+    marginBottom: heightPercentageToDP(-1.6),
+    marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
   },
   MediaOptionsStyle: {
@@ -632,6 +632,25 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
     textTransform: "uppercase",
     fontSize: 13,
+  },
+  animatedLoaderContainer: {
+    width: "100%",
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  subTitle: {
+    bottom: 5,
+    alignSelf: "center",
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center",
   },
 });
 

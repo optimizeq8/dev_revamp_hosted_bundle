@@ -1,23 +1,23 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   onlineStoreHomeIcon: {
     position: "absolute",
     bottom: "-6%",
     left: -10,
-    zIndex: -1
+    zIndex: -1,
   },
   createWebsiteText: {
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });
 export default styles;

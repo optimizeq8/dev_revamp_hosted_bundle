@@ -19,6 +19,7 @@ class SnapCard extends Component {
       removeSnapCard,
       _handleStoryAdCards,
       rejected,
+      setTheState,
     } = this.props;
     const { translate } = this.props.screenProps;
     let videoPlayer = this.props.loadingStoryAdsArray[
@@ -39,7 +40,6 @@ class SnapCard extends Component {
         style={{ height: "100%", width: "100%" }}
       />
     );
-
     return (
       <TouchableOpacity
         disabled={this.props.loadingStoryAdsArray.includes(true)}
@@ -63,7 +63,14 @@ class SnapCard extends Component {
           ) : (
             <RNImageOrCacheImage
               media={
-                rejected || !this.props.loadingStoryAdsArray[snapCardInfo.index]
+                snapCardInfo.item.id === -1
+                  ? rejected
+                    ? this.props.rejCampaign
+                      ? this.props.rejCampaign.story_preview_media
+                      : "//"
+                    : (this.props.data && this.props.data.cover) || "//"
+                  : rejected ||
+                    !this.props.loadingStoryAdsArray[snapCardInfo.index]
                   ? snapCardInfo.item["media"]
                   : "//"
               }
@@ -77,7 +84,7 @@ class SnapCard extends Component {
         </View>
         <TouchableOpacity
           style={{
-            width: 24,
+            width: snapCardInfo.item.id === -1 ? 50 : 24,
             height: 24,
             alignItems: "center",
             justifyContent: "center",
@@ -103,8 +110,12 @@ class SnapCard extends Component {
             }
           }}
         >
-          <Text style={{ color: "#fff" }}>
-            {this.state.showDelete ? "X" : snapCardInfo.index + 1}
+          <Text style={{ color: "#fff", fontFamily: "montserrat-regular" }}>
+            {this.state.showDelete
+              ? "X"
+              : snapCardInfo.item.id === -1
+              ? "Cover"
+              : snapCardInfo.index}
           </Text>
         </TouchableOpacity>
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
@@ -118,11 +129,15 @@ class SnapCard extends Component {
               snapAdCard={true}
               snapCardInfo={snapCardInfo}
               screenProps={this.props.screenProps}
+              navigateToCover={snapCardInfo.item.id === -1}
+              setTheState={this.props.setTheState}
+              rejected={rejected}
             />
           ) : (
             <TouchableOpacity
               onLongPress={() => {
                 snapCardInfo.item.media !== "//" &&
+                  snapCardInfo.item.id !== -1 &&
                   this.setState({ showDelete: !this.state.showDelete });
               }}
               onPress={() => {
@@ -193,6 +208,8 @@ class SnapCard extends Component {
 const mapStateToProps = (state) => ({
   storyAdsArray: state.campaignC.storyAdsArray,
   loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray,
+  data: state.campaignC.data,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 const mapDispatchToProps = (dispatch) => ({

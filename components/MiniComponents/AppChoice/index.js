@@ -175,12 +175,12 @@ class AppChoice extends Component {
       ...this.state,
       attachment: {
         ...this.state.attachment,
-        app_name: app.title,
-        ios_app_id: app.id,
-        icon_media_url: app.icon,
+        app_name: app.name,
+        ios_app_id: app.unique_id,
+        icon_media_url: app.icon_url,
       },
-      iosApp_name: app.title,
-      iosApp_icon: app.icon,
+      iosApp_name: app.name,
+      iosApp_icon: app.icon_url,
       iosAppSelected: true,
     });
   };
@@ -190,12 +190,14 @@ class AppChoice extends Component {
       ...this.state,
       attachment: {
         ...this.state.attachment,
-        app_name: app.title,
-        icon_media_url: app.icon,
-        android_app_url: app.id ? app.id : app.application_id,
+        app_name: app.name,
+        icon_media_url: app.icon_url,
+        android_app_url: app.unique_id.includes("/store/apps/")
+          ? app.unique_id.replace("/store/apps/details?id=", "")
+          : app.unique_id,
       },
-      androidApp_name: app.title,
-      androidApp_icon: app.icon,
+      androidApp_name: app.name,
+      androidApp_icon: app.icon_url,
       androidAppSelected: true,
     });
   };
@@ -366,7 +368,10 @@ class AppChoice extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     const { translate } = this.props.screenProps;
     return (
-      <InputScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <InputScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContainer}
+      >
         <AppBox
           appstorelink={this.props.mainBusiness.appstorelink}
           playstorelink={this.props.mainBusiness.playstorelink}
@@ -425,8 +430,9 @@ class AppChoice extends Component {
               deepLink={true}
               getValidInfo={this.getValidInfo}
               customStyle={styles.customModalField}
-              customIconColor={globalColors.rum}
+              iconFill={globalColors.rum}
               customTextStyle={{ color: globalColors.rum }}
+              labelColor={globalColors.rum}
             />
             <Text style={styles.warningText}>
               {translate(

@@ -1,27 +1,39 @@
 import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
+  callActionView: {
+    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -5,
+      height: 11,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15.19,
+
+    elevation: 23,
+  },
   safeAreaContainer: {
     backgroundColor: "black",
-    height: "100%"
+    height: "100%",
   },
   container: {
     backgroundColor: "black",
     height: "100%",
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   header: {
     backgroundColor: "transparent",
     borderBottomWidth: 0,
     paddingTop: 0.1,
-    height: 35
+    height: 35,
   },
   headerBody: {
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   brandName: {
     textAlign: "left",
@@ -31,7 +43,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 1,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   headline: {
     textAlign: "left",
@@ -41,122 +53,141 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 1,
-    paddingLeft: 10
+    paddingLeft: 10,
     // flex: 1
   },
   content: {
     flex: 1,
     margin: 0,
     padding: 0,
-    height: "100%"
+    height: "100%",
   },
   mainCard: {
-    borderRadius: 15,
+    // borderRadius: 15,
     flex: 1,
     margin: 0,
-    padding: 0
+    padding: 0,
   },
   video: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   placeholder: {
-    borderRadius: 15,
+    // borderRadius: 15,
     width: "100%",
     height: "100%",
     zIndex: 0,
     backgroundColor: "black",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   callToActionContainer: {
     bottom: "12%",
+    zIndex: 1,
     // marginBottom: -60,
     height: "5%",
-    width: "100%",
+    // width: "100%",
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   callToActionText: {
     textAlign: "center",
-    color: "#fff",
+    color: "#000",
     fontFamily: "montserrat-bold",
-    fontSize: 20,
-    textShadowColor: "rgba(0, 0, 0, 0.8)",
-    textShadowOffset: { width: 0, height: 0.5 },
-    textShadowRadius: 20,
-    flex: 1
+    fontSize: 14,
+    // textShadowColor: "rgba(0, 0, 0, 0.8)",
+    // textShadowOffset: { width: 0, height: 0.5 },
+    // textShadowRadius: 20,
+    // flex: 1,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    borderRadius: 30,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    letterSpacing: 0.5,
     // width: "100%",
     // paddingLeft: 50
   },
   appInstallCallToActionText: {
-    textAlign: "left",
-    paddingLeft: 10,
+    // textAlign: "left",
+    // paddingLeft: 10,
     flex: 0,
-    fontSize: 14
+    fontSize: 13,
+    backgroundColor: "#0000",
+    color: "#FFF",
+    letterSpacing: 0,
   },
   AD: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1.5 },
+    textShadowColor: "rgba(0,0,0,1)",
+    textShadowOffset: { width: -10, height: 30 },
     textShadowRadius: 10,
     textAlign: "right",
-    paddingRight: 20
+    paddingVertical: 2,
+    paddingHorizontal: 5,
   },
   appInstallCallToActionContainer: {
-    bottom: heightPercentageToDP(17),
-    justifyContent: "space-between"
+    bottom: heightPercentageToDP(15),
+    justifyContent: "space-between",
   },
   iconArrowUp: {
     // flex: 2,
     alignSelf: "center",
     justifyContent: "center",
-    textAlign: "center"
+    textAlign: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -10,
+      height: -5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 55.19,
+    elevation: 23,
   },
   getButton: {
     borderRadius: 20,
     alignSelf: "center",
-    padding: 0,
-    width: widthPercentageToDP(25),
-    height: 35,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    // width: widthPercentageToDP(25),
+    // height: 35,
     marginRight: 10,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "#0099E3",
   },
   getButtonText: {
     textAlign: "center",
-    flex: 1,
     fontFamily: "montserrat-bold",
-    fontSize: 16,
-    alignSelf: "center",
-    alignItems: "center"
+    fontSize: 12,
+    color: "#FFF",
+    textTransform: "capitalize",
   },
   headlineBottomText: {
     fontSize: 12,
     paddingTop: 2,
-    fontFamily: "montserrat-bold",
-    textAlign: "left"
+    fontFamily: "montserrat-regular",
+    textAlign: "left",
+    color: "#000",
   },
   brandNameBottomText: {
-    color: "black",
+    color: "#000",
     fontFamily: "montserrat-bold",
     //   fontSize: 16
-    fontSize: heightPercentageToDP(2.4),
-    textAlign: "left"
+    fontSize: heightPercentageToDP(1.7),
+    textAlign: "left",
   },
   appIconBottom: {
     width: widthPercentageToDP(14),
     height: heightPercentageToDP(8),
-    borderWidth: 1,
     borderRadius: 15,
-    marginHorizontal: 10
-    // padding: 5
+    marginHorizontal: 10,
   },
   textContainerBottom: {
-    flex: 1
+    flex: 1,
   },
   collectionPlaceholder: {
     backgroundColor: "rgba(255, 255, 255, 1)",
@@ -168,7 +199,7 @@ const styles = StyleSheet.create({
     // borderRadius: 20,
     paddingVertical: 1,
     paddingHorizontal: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   collectionImage: {
     overflow: "hidden",
@@ -177,28 +208,26 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     zIndex: 0,
-    alignItems: "center"
+    alignItems: "center",
     // justifyContent: "center"
   },
   collectionView: {
-    alignContent: "center",
+    // alignContent: "center",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    bottom: "10%",
-    flex: 1,
-    position: "absolute",
-    height: heightPercentageToDP(13),
+    alignItems: "flex-start",
+    justifyContent: "space-around",
+    // flex: 1,
+    // position: "absolute",
+    // height: heightPercentageToDP(1),
     // minHeight: 90,
     width: "100%",
-    bottom: 0,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   bottomView: {
     width: widthPercentageToDP(94),
-    height: heightPercentageToDP(12),
+    height: heightPercentageToDP(9),
     borderRadius: 10,
-    bottom: heightPercentageToDP(17),
+    bottom: heightPercentageToDP(15),
     marginHorizontal: 10,
     display: "flex",
     flexDirection: "row",
@@ -207,19 +236,48 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.5,
     shadowOffset: { width: -2, height: 2 },
-    shadowRadius: 10
+    shadowRadius: 10,
+  },
+  bottomView1: {
+    width: widthPercentageToDP(100),
+    height: heightPercentageToDP(26),
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    bottom: heightPercentageToDP(22),
+    zIndex: 1,
+    // marginHorizontal: 10,
+    display: "flex",
+
+    alignSelf: "center",
+    alignItems: "center",
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    shadowOffset: { width: -2, height: 2 },
+    shadowRadius: 10,
   },
   closeButton: {
     left: widthPercentageToDP(0),
-    top: heightPercentageToDP(0)
+    top: heightPercentageToDP(0),
   },
   appInstallAndBlankCallToActionContainer: {
     flexDirection: "column",
     height: 50,
     paddingLeft: 50,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
+  adView: {
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 20,
+    overflow: "hidden",
+  },
 });
 
 export default styles;

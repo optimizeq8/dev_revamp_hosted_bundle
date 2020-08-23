@@ -313,6 +313,7 @@ class Messenger extends Component {
               <>
                 <View style={styles.flexEmptyView} />
                 <FlatList
+                  showsVerticalScrollIndicator={false}
                   inverted
                   ref={(ref) => {
                     this.flatList = ref;

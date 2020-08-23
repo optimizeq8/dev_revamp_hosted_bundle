@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../../formatNumber";
 import { Icon } from "native-base";
 import segmentEventTrack from "../../../../../segmentEventTrack";
+import RecomenededIcon from "../../../../../../assets/SVGs/AdDetails/RecomenededIcon.svg";
+
 export default class BudgetCard extends Component {
   render() {
     let { bud, _handleBudget, budgetOption } = this.props;
@@ -13,7 +15,7 @@ export default class BudgetCard extends Component {
         <TouchableOpacity
           onPress={() => {
             segmentEventTrack("Campaign Budget Change", {
-              campaign_budget: bud.recBudget
+              campaign_budget: bud.recBudget,
             });
             _handleBudget(
               "$" + bud.recBudget,
@@ -24,7 +26,7 @@ export default class BudgetCard extends Component {
           }}
           style={[
             styles.budgetCardStyle,
-            budgetOption == bud.id ? { borderWidth: 2.5 } : { borderWidth: 0 }
+            budgetOption == bud.id ? { borderWidth: 2.5 } : { borderWidth: 0 },
           ]}
         >
           <Text style={styles.budgetTextStyle}>
@@ -32,12 +34,13 @@ export default class BudgetCard extends Component {
           </Text>
         </TouchableOpacity>
         {bud.id === 1 && (
-          <View style={styles.recIcon}>
-            <Icon
-              name="thumbs-up"
-              type="Feather"
-              style={{ fontSize: 12, color: "#fff" }}
-            />
+          <View
+            style={[
+              styles.recIcon,
+              { left: I18nManager.isRTL ? "54%" : "73%" },
+            ]}
+          >
+            <RecomenededIcon fill={"#fff"} style={{ right: 1 }} />
           </View>
         )}
       </>

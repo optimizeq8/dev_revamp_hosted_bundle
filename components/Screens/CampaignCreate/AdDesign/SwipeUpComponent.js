@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Icon } from "native-base";
+import startCase from "lodash/startCase";
 import styles from "./styles";
 import SnapObjective from "../../../Data/snapchatObjectives.data";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -40,6 +41,7 @@ export default class SwipeUpComponent extends Component {
       objective,
       media,
     } = this.props;
+
     if (adType === "CollectionAd") {
       this.setState({
         swipeUpProps: {
@@ -139,6 +141,7 @@ export default class SwipeUpComponent extends Component {
         type: LayoutAnimation.Types.easeInEaseOut,
       },
     });
+    this.props.setTheState({ swipeUpExpanded: expanded });
     this.setState({
       expanded: expanded, //Step 2
     });
@@ -210,7 +213,9 @@ export default class SwipeUpComponent extends Component {
                     destination !== "REMOTE_WEBPAGE") ||
                     (destination === "COLLECTION" &&
                       collectionAdLinkForm === 2))
-                    ? translate(destination.replace("_", " ").toLowerCase())
+                    ? translate(
+                        startCase(destination.replace("_", " ").toLowerCase())
+                      )
                     : (destination === "REMOTE_WEBPAGE" &&
                         objective !== "WEB_CONVERSION") ||
                       (destination === "COLLECTION" &&
@@ -270,7 +275,6 @@ export default class SwipeUpComponent extends Component {
                 swipeUpProps={this.state.swipeUpProps}
                 screenProps={this.props.screenProps}
                 navigation={this.props.navigation}
-                toggle={this.toggle}
                 toggle={this.toggle}
               />
             ) : (

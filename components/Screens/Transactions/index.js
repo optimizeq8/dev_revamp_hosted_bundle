@@ -151,6 +151,7 @@ class Transactions extends Component {
                 data={this.props.filteredTransactions}
                 contentContainerStyle={styles.contentContainer}
                 keyExtractor={(item) => item.payment_id}
+                showsVerticalScrollIndicator={false}
               />
             </View>
           </SafeAreaView>

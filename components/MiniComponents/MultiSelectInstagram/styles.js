@@ -12,17 +12,19 @@ const styles = StyleSheet.create({
     // backgroundColor: globalColors.purple,
   },
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-between",
+    height: "75%",
   },
   dataContainer: {
     alignItems: "center",
     width: "100%",
     marginTop: 30,
-    flex: 1,
+    // flex: 1,
     justifyContent: "space-between",
+    height: "80%",
   },
   countrySelectorText: {
     paddingVertical: 20,
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-bold",
     fontSize: 16,
     // width: 150,
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
   },
   subHeadings: {
     textAlign: "center",
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingVertical: 20,
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
   },
   selectVersionIcon: {
     fontSize: 60,
-    color: "#fff",
+    color: globalColors.rum,
   },
   scrollContainer: {
     marginVertical: 10,
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: globalColors.orange,
     // marginRight: 20,
-    // color: "#fff"
+    // color: globalColors.rum
   },
   itemCircles: {
     fontSize: 30,
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
     marginBottom: 40,
+    position: "relative",
   },
   stickyFooterButton: {
     backgroundColor: "transparent",
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 70,
-    color: "#fff",
+    color: globalColors.rum,
     paddingLeft: 5,
     alignSelf: "center",
     justifyContent: "center",
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 17 / PixelRatio.getFontScale(),
-    color: "#fff",
+    color: globalColors.rum,
     alignSelf: "center",
     textAlign: "center",
     paddingTop: 10,
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
-    color: "#fff",
+    color: globalColors.rum,
     fontSize: 14 / PixelRatio.getFontScale(),
   },
   selectTextContainer: {
@@ -156,14 +159,14 @@ const styles = StyleSheet.create({
   },
   optionsTextContainer: {
     fontFamily: "montserrat-bold",
-    color: "#fff",
+    color: globalColors.rum,
     fontSize: 14,
     paddingLeft: 20,
   },
   inactivetext: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#fff",
+    color: globalColors.rum,
   },
   activetext: {
     fontFamily: "montserrat-bold",
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
   },
   interestSection: {
     fontFamily: "montserrat-bold",
-    color: "#FFF",
+    color: globalColors.rum,
     marginVertical: 10,
   },
 });

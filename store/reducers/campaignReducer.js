@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { cloneDeep } from "lodash";
 
 const initialState = {
   message: "",
@@ -27,6 +28,13 @@ const initialState = {
   regionNames: [],
   campaignEnded: false,
   storyAdsArray: [
+    {
+      id: -1,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK",
+    },
     {
       id: 0,
       call_to_action: { label: "BLANK", value: "BLANK" },
@@ -557,6 +565,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingStoryAdsArray: [...deletedLoadingAr],
         storyAdsArray: [...deleteStoryAds],
+        currentCampaignSteps: ["Dashboard", "AdObjective", "AdDesign"],
       };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
@@ -649,6 +658,13 @@ const reducer = (state = initialState, action) => {
         interestNames: interestNames,
         regionNames: regionNames,
         storyAdsArray: [
+          {
+            id: -1,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
           {
             id: 0,
             call_to_action: { label: "BLANK", value: "BLANK" },
@@ -814,9 +830,9 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_REJECTED_STORYADS:
       let rejAds = action.payload;
-      let oldStoryAdsArray = state.storyAdsArray;
+      let rejNewStoryAdsArray = [];
       let oldStoryAdAttachment = state.storyAdAttachment;
-      oldStoryAdsArray = rejAds.map((ad, i) => {
+      rejNewStoryAdsArray = rejAds.map((ad, i) => {
         let atch =
           ad.attachment !== "BLANK" ? JSON.parse(ad.attachment) : ad.attachment;
         if (atch.hasOwnProperty("block_preload")) {
@@ -837,25 +853,32 @@ const reducer = (state = initialState, action) => {
         };
       });
       oldStoryAdAttachment = {
-        attachment: oldStoryAdsArray[0].attachment,
-        call_to_action: oldStoryAdsArray[0].call_to_action,
-        destination: oldStoryAdsArray[0].destination,
+        attachment: rejNewStoryAdsArray[0].attachment,
+        call_to_action: rejNewStoryAdsArray[0].call_to_action,
+        destination: rejNewStoryAdsArray[0].destination,
       };
-      oldStoryAdsArray = [
-        ...oldStoryAdsArray,
-        {
-          id:
-            parseInt(oldStoryAdsArray[oldStoryAdsArray.length - 1].story_id) +
-            1,
-          call_to_action: { label: "BLANK", value: "BLANK" },
-          media: "//",
-          destination: "BLANK",
-          attachment: "BLANK",
-        },
-      ];
+      let stateAdArray = cloneDeep(state.storyAdsArray);
+      if (stateAdArray[0].id !== -1) {
+        stateAdArray = [
+          {
+            id: -1,
+            call_to_action: { label: "BLANK", value: "BLANK" },
+            media: "//",
+            destination: "BLANK",
+            attachment: "BLANK",
+          },
+          ...stateAdArray,
+        ];
+      }
+      stateAdArray.splice(
+        1,
+        rejNewStoryAdsArray.length,
+        ...rejNewStoryAdsArray
+      );
+
       return {
         ...state,
-        storyAdsArray: oldStoryAdsArray,
+        storyAdsArray: stateAdArray,
         storyAdAttachment: oldStoryAdAttachment,
       };
     case actionTypes.SET_REJECTED_COLLECTIONADS:

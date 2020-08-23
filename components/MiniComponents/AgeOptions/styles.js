@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    color: "#fff",
+    color: globalColors.rum,
     paddingTop: 20,
     alignSelf: "center",
     fontSize: 16,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     textAlign: "center",
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 14,
     width: 250,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   track: {
     height: 3,
-    backgroundColor: "#fff",
+    backgroundColor: globalColors.rum,
   },
   button: {
     alignSelf: "center",
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
   breaker: {
     width: 5,
     height: 20,
-    backgroundColor: "#fff",
+    backgroundColor: globalColors.rum,
     borderRadius: 14,
   },
-  markerStyle: { paddingHorizontal: 0 },
+  markerStyle: { paddingHorizontal: 0, color: globalColors.rum },
 });
 
 export default styles;

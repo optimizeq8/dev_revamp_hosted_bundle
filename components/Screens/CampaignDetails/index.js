@@ -224,10 +224,11 @@ class CampaignDetails extends Component {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
-      campaign.review_status.includes("APPROVED") &&
-      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        new Date().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= new Date()
+      campaign.review_status.includes("PENDING") ||
+      (campaign.review_status.includes("APPROVED") &&
+        new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+          new Date().setHours(0, 0, 0, 0) &&
+        new Date(campaign.end_time) >= new Date())
         ? null
         : campaign.campaign_end === "1" ||
           new Date(campaign.end_time) < new Date();
@@ -541,6 +542,33 @@ class CampaignDetails extends Component {
                   <Text style={styles.remainingBudgetText}>
                     {translate(
                       "Your Remaining budget will be added to Your wallet in the next 48 hours"
+                    )}
+                  </Text>
+                </View>
+              )}
+            {selectedCampaign &&
+              selectedCampaign.review_status === "PENDING" &&
+              !this.campaignEndedOrNot(selectedCampaign) &&
+              !this.state.expand && (
+                <View
+                  style={[
+                    styles.remainingBudgetContainer,
+                    { backgroundColor: globalColors.white },
+                  ]}
+                >
+                  <Icon
+                    style={{ fontSize: 35, color: globalColors.orange }}
+                    type="Ionicons"
+                    name="ios-alert"
+                  />
+                  <Text
+                    style={[
+                      styles.remainingBudgetText,
+                      { color: globalColors.rum },
+                    ]}
+                  >
+                    {translate(
+                      "Please note that Snapchat's review process can take up to 72 hours or more"
                     )}
                   </Text>
                 </View>

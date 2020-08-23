@@ -105,18 +105,21 @@ export const formatMedia = (
   allIosVideos = false;
   let cardMedia = "";
   let cardUrl = "";
+  let allIosVideos = false;
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
   if (fileReadyToUpload && adType === "StoryAd") {
-    storyAd = storyAdsArray.find((card) => {
-      if (card && card.media !== "//" && !card.media.includes("https://"))
+    storyAd = {};
+    storyAdsArray.forEach((card) => {
+      if (card && card.media !== "//" && !card.media.includes("https://")) {
+        storyAd = card;
         cardMedia = card.media;
+      }
       if (card && card.media !== "//" && card.media.includes("https://"))
         cardUrl = card.media;
       allIosVideos =
         (!cardMedia && cardUrl && Platform.OS === "ios") ||
         card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
-      return !allIosVideos ? cardMedia : cardUrl;
     });
     if (storyAd.media === "//" && !allIosVideos) {
       storyAd.media = tempImage;
@@ -137,12 +140,13 @@ export const formatMedia = (
     body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
   }
   if (longformvideo_media) {
-    let resVideo = longformvideo_media.split("/ImagePicker/");
-    let formatVideo = resVideo[1].split(".");
+    let resVideo = longformvideo_media.split("/");
+    resVideo = resVideo[resVideo.length - 1];
+    let formatVideo = resVideo.split(".")[1];
     var video = {
       uri: longformvideo_media,
-      type: longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1],
+      type: longformvideo_media_type + "/" + formatVideo,
+      name: resVideo,
     };
 
     body.append("longformvideo_media", video);

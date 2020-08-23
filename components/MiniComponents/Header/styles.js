@@ -3,6 +3,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   container: {
     justifyContent: "space-evenly",
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
   edit: {
     fontSize: 12,
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     textDecorationLine: "underline",
   },

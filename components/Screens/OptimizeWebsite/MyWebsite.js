@@ -178,6 +178,8 @@ class MyWebsite extends Component {
               website={website}
               disabled={true}
               screenProps={this.props.screenProps}
+              iconFill={globalColors.white}
+              labelColor={globalColors.white}
             />
             <TouchableOpacity
               style={styles.copyIcon2}
@@ -190,7 +192,7 @@ class MyWebsite extends Component {
                 Clipboard.setString(website);
               }}
             >
-              <CopyIcon style={styles.copyIcon} />
+              <CopyIcon fill={"#FFF"} style={styles.copyIcon} />
             </TouchableOpacity>
 
             {/* <View style={styles.colView}>

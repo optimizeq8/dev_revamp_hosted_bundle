@@ -14,7 +14,8 @@ export default (props) => {
   let { translate } = screenProps;
   let statusOfCampaign = campaign
     ? new Date().setUTCHours(0, 0, 0, 0) <
-      new Date(campaign.start_time).setUTCHours(0, 0, 0, 0)
+        new Date(campaign.start_time).setUTCHours(0, 0, 0, 0) ||
+      campaign.review_status === "PENDING"
       ? "starts"
       : new Date().setUTCHours(0, 0, 0, 0) <=
         new Date(campaign.end_time).setUTCHours(0, 0, 0, 0)

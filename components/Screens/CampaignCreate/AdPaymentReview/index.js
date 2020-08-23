@@ -23,6 +23,7 @@ import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { isUndefined } from "lodash";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -128,7 +129,9 @@ class AdPaymentReview extends Component {
   };
   formatAttributes = () => {
     const { translate } = this.props.screenProps;
-    let targeting = this.props.data.campaignInfo.targeting;
+    let targeting = !isUndefined(this.props.data.campaignInfo)
+      ? this.props.data.campaignInfo.targeting
+      : {};
     let interestNames = [];
     if (this.props.interestNames.length > 0) {
       interestNames = this.props.interestNames.map((interest) => interest.name);
@@ -246,7 +249,7 @@ class AdPaymentReview extends Component {
       this.props.loading ||
       this.props.languagesListLoading ||
       !this.props.data ||
-      !this.props.data.campaignInfo.targeting
+      isUndefined(this.props.data.campaignInfo)
     ) {
       return (
         <>
@@ -258,7 +261,9 @@ class AdPaymentReview extends Component {
         </>
       );
     } else {
-      let targeting = this.props.data.campaignInfo.targeting;
+      let targeting = !isUndefined(this.props.data.campaignInfo)
+        ? this.props.data.campaignInfo.targeting
+        : {};
       const {
         interestNames,
         end_time,

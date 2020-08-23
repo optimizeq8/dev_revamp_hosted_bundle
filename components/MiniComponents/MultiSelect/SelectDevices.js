@@ -21,6 +21,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {
   state = { deviceBrands: null };
@@ -33,19 +34,7 @@ class SelectDevices extends Component {
     // this.props.get_device_brands("");
     Segment.screen("Devices Brands Options");
 
-    switch (this.props.OSType) {
-      case "iOS":
-        this.props.get_device_brands("/1");
-        break;
-      case "ANDROID":
-        this.props.get_device_brands("/2");
-        break;
-
-      default:
-        this.props.get_device_brands("");
-
-        break;
-    }
+    this.getDeviceBrands();
   }
   componentDidUpdate(prevProps) {
     if (
@@ -60,6 +49,20 @@ class SelectDevices extends Component {
       this.setState({ deviceBrands: children });
     }
   }
+  getDeviceBrands = () => {
+    switch (this.props.OSType) {
+      case "iOS":
+        this.props.get_device_brands("/1");
+        break;
+      case "ANDROID":
+        this.props.get_device_brands("/2");
+        break;
+
+      default:
+        this.props.get_device_brands("");
+        break;
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -154,7 +157,7 @@ class SelectDevices extends Component {
                       />
                     </View>
                   }
-                  colors={colors}
+                  colors={{ ...colors, chipColor: globalColors.rum }}
                   searchPlaceholderText={translate("Search Devices")}
                   searchTextFontFamily={{
                     fontFamily: "montserrat-regular",
@@ -194,6 +197,7 @@ class SelectDevices extends Component {
             screenProps={this.props.screenProps}
             style={styles.button}
             checkmark={true}
+            purpleViolet
             function={() => this.props._handleSideMenuState(false)}
           />
         </View>
