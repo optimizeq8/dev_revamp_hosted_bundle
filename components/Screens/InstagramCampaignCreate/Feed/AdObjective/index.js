@@ -107,7 +107,6 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = () => {
-    // console.log("data", this.props.data);
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date();
@@ -159,7 +158,7 @@ class AdObjective extends Component {
           name: "",
           objective: instagramAdObjectives["InstagramFeedAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
-          end_time: start_time.toISOString().split("T")[0],
+          end_time: end_time.toISOString().split("T")[0],
           existingPost: 0,
         },
         minValueBudget: 0,

@@ -409,7 +409,7 @@ export const _pickImage = async (
               RNFFmpegConfig.enableStatisticsCallback((stats) =>
                 statisticsCallback(stats, newResult.duration)
               );
-              let prcoess = { rc: 0 }; //RNFFmpeg.execute is not cancelled it returns {rc:0}
+              let process = { rc: 0 }; //RNFFmpeg.execute is not cancelled it returns {rc:0}
               if (
                 newResult.width < 500 &&
                 newResult.duration <= 120 &&
@@ -417,7 +417,7 @@ export const _pickImage = async (
               ) {
                 let outputUri = actualUri.split("/");
 
-                prcoess = await RNFFmpeg.execute(
+                process = await RNFFmpeg.execute(
                   `-y -i ${actualUri} -vf scale=${
                     "500:-2" //-1 means scale inly by 1920 to keep aspect ratio
                   } -vcodec libx264 ${FileSystem.documentDirectory}${
@@ -449,6 +449,7 @@ export const _pickImage = async (
                 );
               }
               videoIsExporting(false);
+              console.log("process.rc", process.rc);
               if (process.rc !== 0) {
                 return Promise.reject("Video processing canceled");
               }

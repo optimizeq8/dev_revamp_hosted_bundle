@@ -44,6 +44,7 @@ export default {
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
+      color: "#FF7A09",
     },
 
     // {

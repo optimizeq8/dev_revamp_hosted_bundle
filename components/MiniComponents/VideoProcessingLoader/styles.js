@@ -19,15 +19,14 @@ export default StyleSheet.create({
   },
   animatedLoaderContainer: {
     width: "100%",
-    position: "relative",
-    display: "flex",
+    height: "100%",
+    backgroundColor: "#0000",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
   },
   subTitle: {
-    bottom: 5,
+    top: "60%",
     alignSelf: "center",
     fontFamily: "montserrat-bold",
     fontSize: 14,
@@ -35,5 +34,6 @@ export default StyleSheet.create({
     color: "#fff",
     paddingHorizontal: 20,
     textAlign: "center",
+    position: "absolute",
   },
 });

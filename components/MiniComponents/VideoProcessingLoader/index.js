@@ -13,20 +13,23 @@ export default class VideoProcessingLoader extends Component {
       <Modal isVisible={videoLoading} style={{ margin: 0 }}>
         <BlurView
           blurAmount={5}
-          style={{ height: "100%", justifyContent: "center" }}
+          style={{
+            height: "100%",
+            justifyContent: "center",
+          }}
         >
-          <Icon
-            name="close"
-            onPress={handleVideoCaneling}
-            type="AntDesign"
-            style={{
-              color: globalColors.white,
-              position: "absolute",
-              top: 50,
-              left: 10,
-            }}
-          />
           <View style={styles.animatedLoaderContainer}>
+            <Icon
+              name="close"
+              onPress={handleVideoCaneling}
+              type="AntDesign"
+              style={{
+                color: globalColors.white,
+                position: "absolute",
+                top: 50,
+                left: 10,
+              }}
+            />
             <AnimatedCircularProgress
               size={100}
               width={10}
@@ -42,10 +45,10 @@ export default class VideoProcessingLoader extends Component {
               <Text style={styles.percentage}>%</Text>
             </Text>
           </View>
-          <Text style={styles.subTitle}>
-            {translate("Processing and upscaling your video now")}...
-          </Text>
         </BlurView>
+        <Text style={styles.subTitle}>
+          {translate("Processing and upscaling your video now")}...
+        </Text>
       </Modal>
     );
   }

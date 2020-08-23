@@ -18,6 +18,8 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import ProgressBar from "../../../MiniComponents/ProgressBar";
 import * as actionCreators from "../../../../store/actions";
 import VideoPreviewIcon from "../../../../assets/SVGs/VideoPreview";
+import VideoProcessingLoader from "../../../MiniComponents/VideoProcessingLoader";
+
 import {
   VESDK,
   Configuration,
@@ -543,44 +545,12 @@ class Long_Form_Video extends Component {
             customIconColor={globalColors.rum}
             customTextStyle={{ color: globalColors.rum }}
           />
-
-          <Modal isVisible={this.state.videoLoading} style={{ margin: 0 }}>
-            <BlurView
-              blurAmount={5}
-              style={{ height: "100%", justifyContent: "center" }}
-            >
-              <Icon
-                name="close"
-                onPress={this.handleVideoCaneling}
-                type="AntDesign"
-                style={{
-                  color: globalColors.white,
-                  position: "absolute",
-                  top: 50,
-                  left: 10,
-                }}
-              />
-              <View style={styles.animatedLoaderContainer}>
-                <AnimatedCircularProgress
-                  size={100}
-                  width={10}
-                  fill={this.state.progress}
-                  rotation={360}
-                  lineCap="round"
-                  tintColor={globalColors.orange}
-                  backgroundColor="rgba(255,255,255,0.3)"
-                  adDetails={false}
-                />
-                <Text style={styles.uplaodPercentageText}>
-                  {this.state.progress.toFixed(0)}
-                  <Text style={styles.percentage}>%</Text>
-                </Text>
-              </View>
-              <Text style={styles.subTitle}>
-                {translate("Processing and upscaling your video now")}...
-              </Text>
-            </BlurView>
-          </Modal>
+          <VideoProcessingLoader
+            handleVideoCaneling={this.handleVideoCaneling}
+            progress={this.state.progress}
+            translate={translate}
+            videoLoading={this.state.videoLoading}
+          />
           {this.props.swipeUpDestination && (
             <Text style={styles.footerText} onPress={this.props.toggleSideMenu}>
               {translate("Change Swipe-up Destination")}

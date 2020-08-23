@@ -149,7 +149,7 @@ class AdObjective extends Component {
           name: "",
           objective: instagramAdObjectives["InstagramStoryAd"][0].value,
           start_time: start_time.toISOString().split("T")[0],
-          end_time: start_time.toISOString().split("T")[0],
+          end_time: end_time.toISOString().split("T")[0],
         },
         minValueBudget: 0,
         maxValueBudget: 0,
