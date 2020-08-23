@@ -145,7 +145,7 @@ export const formatMedia = (
     let formatVideo = resVideo.split(".")[1];
     var video = {
       uri: longformvideo_media,
-      type: longformvideo_media_type + "/" + formatVideo[1],
+      type: longformvideo_media_type + "/" + formatVideo,
       name: resVideo,
     };
 

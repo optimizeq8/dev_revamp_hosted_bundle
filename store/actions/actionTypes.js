@@ -252,6 +252,7 @@ export const SET_LANGUAGE_CHANGE_LOADING = "SET_LANGUAGE_CHANGE_LOADING";
 
 //Generic action types
 export const SET_ACTUAL_VERSION = "SET_ACTUAL_VERSION";
+export const SET_FACEBOOK_IDS = "SET_FACEBOOK_IDS";
 export const SET_UPDATE_LOADING = "SET_UPDATE_LOADING";
 export const SET_TUTORIAL_MEDIA_LINK = "SET_TUTORIAL_MEDIA_LINK";
 //Google Ads Campiagn Action Types

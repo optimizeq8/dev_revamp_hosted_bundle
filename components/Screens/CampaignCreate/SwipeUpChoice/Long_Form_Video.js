@@ -103,6 +103,22 @@ class Long_Form_Video extends Component {
           .longformvideo_media_type,
         callaction: this.props.storyAdAttachment.call_to_action,
       });
+    } else if (this.props.rejCampaign.hasOwnProperty("uneditedLongformVideo")) {
+      this.setState({
+        uneditedVideo: this.props.rejCampaign.uneditedLongformVideo,
+        longformvideo_media_type: "VIDEO",
+        longformvideo_media: this.props.rejCampaign.longformvideo_media,
+
+        serialization: this.props.rejCampaign.longFormVideoSerialization
+          ? this.props.rejCampaign.longFormVideoSerialization
+          : null,
+      });
+    } else if (this.props.rejCampaign.hasOwnProperty("longformvideo_media")) {
+      this.setState({
+        longformvideo_media: this.props.rejCampaign.longformvideo_media,
+        longformvideo_media_type: this.props.rejCampaign
+          .longformvideo_media_type,
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -281,11 +297,20 @@ class Long_Form_Video extends Component {
                 progress: 0,
                 uneditedVideo,
               });
-              !this.props.rejCampaign &&
-                this.props.save_campaign_info({
-                  uneditedLongformVideo: uneditedVideo,
-                  longFormVideoSerialization: manipResult.serialization,
-                });
+              !this.props.rejCampaign
+                ? this.props.save_campaign_info({
+                    uneditedLongformVideo: uneditedVideo,
+                    longFormVideoSerialization: manipResult.serialization,
+                    longformvideo_media: result.uri,
+                    longformvideo_media_type: "VIDEO",
+                  })
+                : this.props.setRejectedCampaignData({
+                    ...this.props.rejCampaign,
+                    uneditedLongformVideo: uneditedVideo,
+                    longFormVideoSerialization: manipResult.serialization,
+                    longformvideo_media: result.uri,
+                    longformvideo_media_type: "VIDEO",
+                  });
             } else {
               showMessage({
                 message: translate("Please choose a video"),
@@ -579,5 +604,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   save_campaign_info: (data) =>
     dispatch(actionCreators.save_campaign_info(data)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Long_Form_Video);

@@ -42,6 +42,12 @@ const reducer = (state = initialState, action) => {
         FBAccessTokenForAppSearch: action.payload.fb_access_token,
         FBAdAccountIDForAppSearch: action.payload.fb_ad_account_id,
       };
+    case actionTypes.SET_FACEBOOK_IDS:
+      return {
+        ...state,
+        FBAccessTokenForAppSearch: action.payload.fb_access_token,
+        FBAdAccountIDForAppSearch: action.payload.fb_ad_account_id,
+      };
     case actionTypes.SET_UPDATE_LOADING:
       return { ...state, loadingChecker: action.payload };
     case actionTypes.CHECK_NOTIFICATION:

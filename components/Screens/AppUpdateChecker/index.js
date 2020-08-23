@@ -91,6 +91,8 @@ class AppUpdateChecker extends PureComponent {
         updateIsAvalible: false,
         checkedForUpdate: false,
       });
+    } finally {
+      this.props.checkForUpdate(true);
     }
   };
 
@@ -258,6 +260,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  checkForUpdate: () => dispatch(actionCreators.checkForUpdate()),
+  checkForUpdate: (facebookIDsOnly) =>
+    dispatch(actionCreators.checkForUpdate(facebookIDsOnly)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AppUpdateChecker);

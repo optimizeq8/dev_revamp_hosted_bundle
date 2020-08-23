@@ -65,7 +65,7 @@ class AppSearchModal extends Component {
           error_page: "app_search_modal",
           error_description:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
@@ -74,7 +74,7 @@ class AppSearchModal extends Component {
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           type: "warning",
           position: "top",
@@ -104,14 +104,12 @@ class AppSearchModal extends Component {
         });
       })
       .catch((err) => {
-        // console.log(err);
-
         this.props.setTheState({ loading: false });
         analytics.track(`a_error`, {
           error_page: "app_search_modal",
           error_description:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
@@ -120,7 +118,7 @@ class AppSearchModal extends Component {
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           type: "warning",
           position: "top",
@@ -345,7 +343,7 @@ class AppSearchModal extends Component {
                   </View>
                 )}
               </View>
-              <FlashMessage ref="modalFlash" position="top" />
+              <FlashMessage ref="modalFlash" position="top" floating />
               {this.state.showBtn && (
                 <LowerButton
                   screenProps={this.props.screenProps}
