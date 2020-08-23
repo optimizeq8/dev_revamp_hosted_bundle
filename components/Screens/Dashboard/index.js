@@ -599,7 +599,8 @@ class Dashboard extends Component {
                     }}
                     style={[styles.headerIcons]}
                   >
-                    {this.props.unread_converstaion === 0 ? (
+                    {!this.props.unread_converstaion ||
+                    this.props.unread_converstaion === 0 ? (
                       <IntercomIcon width={24} height={24} />
                     ) : (
                       <>
@@ -763,6 +764,7 @@ class Dashboard extends Component {
                                   top: I18nManager.isRTL ? 5 : 0,
                                 }}
                                 horizontal
+                                showsHorizontalScrollIndicator={false}
                               >
                                 {adButtons}
                               </ScrollView>
@@ -863,6 +865,7 @@ class Dashboard extends Component {
                             onRefresh={this.reloadData}
                             refreshing={this.state.fetching_from_server}
                             ListFooterComponent={this.renderFooter}
+                            showsVerticalScrollIndicator={false}
                           />
                         </Animatable.View>
                       )}

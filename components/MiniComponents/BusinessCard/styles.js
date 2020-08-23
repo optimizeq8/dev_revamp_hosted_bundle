@@ -3,7 +3,7 @@ import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   subtext: {
-    fontFamily: "montserrat-regular-english",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
   },

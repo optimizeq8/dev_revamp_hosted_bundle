@@ -59,10 +59,11 @@ class CampaignCard extends Component {
   campaignEndedOrNot = (campaign, endDate) => {
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
-      this.review_status.includes("APPROVED") &&
-      new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
-        this.currentDate().setHours(0, 0, 0, 0) &&
-      new Date(campaign.end_time) >= this.currentDate()
+      this.review_status.includes("PENDING") ||
+      (this.review_status.includes("APPROVED") &&
+        new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+          this.currentDate().setHours(0, 0, 0, 0) &&
+        new Date(campaign.end_time) >= this.currentDate())
         ? null
         : campaign.campaign_end === "1" ||
           new Date(campaign.end_time) < this.currentDate();

@@ -28,7 +28,7 @@ export default class SelectOS extends Component {
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <OperatingSystemIcon
-              fill="#fff"
+              fill={globalColors.rum}
               width={100}
               height={100}
               style={styles.icon}
@@ -129,6 +129,7 @@ export default class SelectOS extends Component {
             screenProps={this.props.screenProps}
             style={[styles.button]}
             checkmark={true}
+            purpleViolet
             function={() => this.props._handleSideMenuState(false)}
           />
         </View>

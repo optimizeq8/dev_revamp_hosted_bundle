@@ -85,4 +85,17 @@ export default StyleSheet.create({
   icon: {
     marginLeft: 15,
   },
+  inputScrollViewStyle: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    // height: "100%",
+  },
+  uploadText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: "#75647C",
+    marginHorizontal: 5,
+    textTransform: "uppercase",
+  },
 });

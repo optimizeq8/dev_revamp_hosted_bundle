@@ -39,7 +39,7 @@ class InstagramAdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
-    this.props.save_campaign_info({ campaignDateChanged: false });
+    this.props.save_campaign_info_instagram({ campaignDateChanged: false });
     this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -48,7 +48,7 @@ class InstagramAdPaymentReview extends Component {
     const data = this.props.data;
     let campaignInfo = data.campaignInfo;
 
-    let targeting = campaignInfo.targeting;
+    let targeting = campaignInfo ? campaignInfo.targeting : {};
     let interestNames = [];
     let customInterstNames = data.customInterests
       ? data.customInterests.map((interest) => interest.name)
@@ -165,6 +165,16 @@ class InstagramAdPaymentReview extends Component {
       campaign_region: regionNames,
       campaign_devices: user_devices,
       camapign_OS: OSContnet,
+      campaign_max_age:
+        this.props.data &&
+        this.props.data.campaignInfo &&
+        this.props.data.campaignInfo.targeting &&
+        this.props.data.campaignInfo.targeting.age_max,
+      campaign_min_age:
+        this.props.data &&
+        this.props.data.campaignInfo &&
+        this.props.data.campaignInfo.targeting &&
+        this.props.data.campaignInfo.targeting.age_min,
     };
     analytics.track(`ad_review`, {
       source,
@@ -242,13 +252,15 @@ class InstagramAdPaymentReview extends Component {
             ],
             user_device: ["2.1", "6.1 plus", "a1000"],
             user_os: ["Android"],
+            age_min: 13,
+            age_max: 65,
           },
           lifetime_budget_micro: "75",
         },
       };
       let campaignInfo = data.campaignInfo;
 
-      let targeting = campaignInfo.targeting;
+      let targeting = campaignInfo ? campaignInfo.targeting : {};
       let interestNames = [];
       let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
       let customInterstNames = data.customInterests
@@ -299,10 +311,7 @@ class InstagramAdPaymentReview extends Component {
       let user_devices = targeting.user_device;
       const media = data.media ? data.media : "//";
       // -------Keep commented code incase we will add it--------------//
-      // let ageGroupContent =
-      //   targeting.min_age +
-      //   "-" +
-      //   targeting.max_age;
+      let ageGroupContent = targeting.age_min + "-" + targeting.age_max;
 
       // if (
       //   targeting.geos[0].hasOwnProperty("region_id") &&
@@ -459,10 +468,10 @@ class InstagramAdPaymentReview extends Component {
                         //   title: "Language",
                         //   content: languageNames.join(", ")
                         // },
-                        // {
-                        //   title: "Age group",
-                        //   content: ageGroupContent
-                        // },
+                        {
+                          title: "Age group",
+                          content: ageGroupContent,
+                        },
                         interestNames.length > 0 && {
                           title: "Interests",
                           content: interestNames + "",
@@ -609,8 +618,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  save_campaign_info: (info) =>
-    dispatch(actionCreators.save_campaign_info(info)),
+  save_campaign_info_instagram: (info) =>
+    dispatch(actionCreators.save_campaign_info_instagram(info)),
   saveCampaignSteps: (step) =>
     dispatch(actionCreators.saveCampaignStepsInstagram(step)),
   get_languages: () => dispatch(actionCreators.get_languages()),

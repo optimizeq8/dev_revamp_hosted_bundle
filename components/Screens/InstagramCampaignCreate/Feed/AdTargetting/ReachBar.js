@@ -19,19 +19,38 @@ import { Text } from "native-base";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class ReachBar extends Component {
+  state = { total_reach: 0 };
+  componentDidMount() {
+    if (this.props.total_reach) {
+      this.setState({
+        total_reach: this.props.total_reach,
+      });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.total_reach !== this.props.total_reach &&
+      this.props.total_reach
+    ) {
+      this.setState({
+        total_reach:
+          this.props.total_reach > 100 ? 100 : this.props.total_reach,
+      });
+    }
+  }
   render() {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo } = this.props;
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress
-          size={85}
+          size={hp(10)}
           width={8}
-          fill={this.props.total_reach}
+          fill={this.state.total_reach || 0}
           rotation={360}
           lineCap="round"
           style={[styles.chart]}
-          backgroundColor="rgba(255,255,255,0.3)"
+          backgroundColor="rgba(0,0,0,0.1)"
           adDetails={true}
         />
         <View style={styles.chartItems}>
@@ -61,6 +80,7 @@ class ReachBar extends Component {
               <LowerButton
                 screenProps={this.props.screenProps}
                 style={[styles.reachBarLowerButton]}
+                purpleViolet
                 function={() => this.props._handleSubmission()}
               />
             ))}

@@ -231,8 +231,10 @@ class Signin extends Component {
                 height={heightPercentageToDP(42)}
               />
               <InputScrollView
+                showsVerticalScrollIndicator={false}
                 {...ScrollView.props}
                 contentContainerStyle={styles.mainView}
+                keyboardShouldPersistTaps="handled"
               >
                 <View style={styles.logoContainer}>
                   <Logo

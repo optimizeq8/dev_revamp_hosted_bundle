@@ -124,7 +124,7 @@ class Website extends Component {
         message: translate(
           `${
             !this.state.campaignInfo.attachment.match(regex)
-              ? "Please enter a valid url"
+              ? "Please enter a valid URL"
               : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
           }`
         ),
@@ -247,6 +247,7 @@ class Website extends Component {
         <InputScrollView
           {...ScrollView.props}
           contentContainerStyle={[styles.scrollViewContainer]}
+          showsVerticalScrollIndicator={false}
         >
           {/* <WebsiteIcon style={styles.icon} fill={"#FFF"} /> */}
           <View style={[styles.textcontainer]}>
@@ -302,6 +303,8 @@ class Website extends Component {
             customTextStyle={{
               color: globalColors.rum,
             }}
+            iconFill={globalColors.rum}
+            labelColor={globalColors.rum}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&

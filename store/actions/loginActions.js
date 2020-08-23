@@ -134,11 +134,11 @@ export const checkForExpiredToken = (navigation) => {
                 payload: false,
               });
 
-              navigation &&
-                NavigationService.navigate("Dashboard", {
-                  source: AppState.currentState,
-                  source_action: "a_check_expired_token",
-                });
+              // navigation &&
+              //   NavigationService.navigate("Dashboard", {
+              //     source: AppState.currentState,
+              //     source_action: "a_check_expired_token",
+              //   });
             })
             .catch((err) => {
               // console.log(

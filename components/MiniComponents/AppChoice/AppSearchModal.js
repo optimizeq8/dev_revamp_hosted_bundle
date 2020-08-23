@@ -7,6 +7,7 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
 import SearchIcon from "../../../assets/SVGs/Search";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
@@ -20,7 +21,8 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-export default class AppSearchModal extends Component {
+import { log } from "react-native-reanimated";
+class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
     if (pervProps.appSelection !== this.props.appSelection)
@@ -32,29 +34,15 @@ export default class AppSearchModal extends Component {
   _searchAndroidApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/android",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
-        },
-      },
-    });
-    let appIdorName = this.props.mainState.appValue.includes(".");
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-        // `/applications/com.espn.score_center/metadata.json`
-      )
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
+    )
       .then((res) => {
-        // console.log(res);
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
       .then((data) =>
         this.props.setTheState({
-          androidData: data,
+          androidData: data.data,
           showList: true,
           loading: false,
         })
@@ -67,7 +55,7 @@ export default class AppSearchModal extends Component {
           error_page: "app_search_modal",
           error_description:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
@@ -76,7 +64,7 @@ export default class AppSearchModal extends Component {
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           type: "warning",
           position: "top",
@@ -92,40 +80,26 @@ export default class AppSearchModal extends Component {
   _searchIosApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/ios",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
-        },
-      },
-    });
-    let appIdorName = /^\d+$/.test(this.props.appValue);
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.mainState.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-      )
+    Axios.get(
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
+    )
       .then((res) => {
-        return !appIdorName ? res.data.content : [res.data.content];
+        return res.data;
       })
-      .then((data) =>
+      .then((data) => {
         this.props.setTheState({
-          data: data,
+          data: data.data,
           showList: true,
           loading: false,
-        })
-      )
+        });
+      })
       .catch((err) => {
-        // console.log(err);
-
         this.props.setTheState({ loading: false });
         analytics.track(`a_error`, {
           error_page: "app_search_modal",
           error_description:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           source: "ad_swipe_up_destination",
           source_action: "a_app_search_modal",
@@ -134,7 +108,7 @@ export default class AppSearchModal extends Component {
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
-              ? err.response.data.error
+              ? err.response.data.error.message
               : "Something went wrong!",
           type: "warning",
           position: "top",
@@ -312,6 +286,7 @@ export default class AppSearchModal extends Component {
                 ) : (
                   <View style={{ width: "85%", height: "70%" }}>
                     <FlatList
+                      showsVerticalScrollIndicator={false}
                       style={{ flex: 1, width: "100%" }}
                       contentContainerStyle={
                         styles.flatListContentContainerStyle
@@ -353,16 +328,12 @@ export default class AppSearchModal extends Component {
                         />
                       )}
                       numcolumnns={3}
-                      keyExtractor={(item, index) =>
-                        item.id
-                          ? item.id.toString()
-                          : item.application_id.toString()
-                      }
+                      keyExtractor={(item, index) => item.unique_id}
                     />
                   </View>
                 )}
               </View>
-              <FlashMessage ref="modalFlash" position="top" />
+              <FlashMessage ref="modalFlash" position="top" floating />
               {this.state.showBtn && (
                 <LowerButton
                   screenProps={this.props.screenProps}
@@ -378,3 +349,9 @@ export default class AppSearchModal extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  FBAccessTokenForAppSearch: state.generic.FBAccessTokenForAppSearch,
+  FBAdAccountIDForAppSearch: state.generic.FBAdAccountIDForAppSearch,
+});
+export default connect(mapStateToProps, null)(AppSearchModal);

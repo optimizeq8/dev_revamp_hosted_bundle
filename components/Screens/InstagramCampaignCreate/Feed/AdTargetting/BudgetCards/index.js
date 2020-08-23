@@ -7,10 +7,45 @@ import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskedView from "@react-native-community/masked-view";
 export class BudgetCards extends Component {
-  state = { placeholder: false, scrollX: 1 };
+  state = {
+    placeholder: false,
+    scrollX: 1,
+    customValue: this.props.recBudget,
+  };
+  componentDidMount() {
+    if (this.props.data && this.props.data.hasOwnProperty("campaignInfo")) {
+      this.setState({ customValue: this.props.lifetime_budget_micro });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (
+      (prevProps.recBudget !== this.props.recBudget ||
+        prevProps.lifetime_budget_micro !== this.props.lifetime_budget_micro) &&
+      this.props.data
+    ) {
+      this.setState({
+        customValue: this.props.data.hasOwnProperty("campaignInfo")
+          ? this.props.lifetime_budget_micro
+          : this.props.recBudget,
+      });
+    }
+  }
   handleFading = (event) => {
     let x = event.nativeEvent.contentOffset.x;
     this.setState({ scrollX: x > 20 ? x / 20 : 1 });
+  };
+  handleCustomBudgetChange = (value, rawText) => {
+    if (!isNaN(rawText)) {
+      this.props._handleBudget(value, rawText, false, 0);
+      this.setState({ customValue: rawText });
+    } else {
+      this.props._handleBudget(
+        this.state.customValue,
+        this.state.customValue,
+        false,
+        0
+      );
+    }
   };
   render() {
     let {
@@ -23,8 +58,8 @@ export class BudgetCards extends Component {
     const { translate } = this.props.screenProps;
     recBudget = parseFloat(recBudget);
     let cards = [
-      { recBudget, id: 1 },
-      { recBudget: recBudget * 2, id: 2 },
+      { recBudget, id: 2 },
+      { recBudget: recBudget * 2, id: 1 },
       { recBudget: recBudget * 3, id: 3 },
     ].map((bud, i) => (
       <BudgetCard
@@ -77,8 +112,8 @@ export class BudgetCards extends Component {
                         fontSize:
                           budgetOption !== 0 ||
                           (value === "$0" && !this.state.placeholder)
-                            ? 10
-                            : 20,
+                            ? 9
+                            : 15,
                       },
                     ]}
                   >
@@ -96,13 +131,10 @@ export class BudgetCards extends Component {
                   }}
                   focus={this.state.placeholder}
                   maxLength={8}
-                  value={value + ""}
-                  onChangeText={(value, rawText) => {
-                    _handleBudget(value, rawText, false, 0);
-                  }}
+                  value={this.state.customValue}
+                  onChangeText={this.handleCustomBudgetChange}
                   onFocus={() => {
                     this.setState({ placeholder: true });
-                    _handleBudget("$0", 0, false, 0);
                   }}
                   onBlur={() => {
                     _handleBudget(value, lifetime_budget_micro, true, 0);
@@ -115,7 +147,7 @@ export class BudgetCards extends Component {
                         budgetOption !== 0 ||
                         (value === "$0" && !this.state.placeholder)
                           ? 10
-                          : 20,
+                          : 15,
                     },
                   ]}
                   ref={(ref) => (this.moneyField = ref)}

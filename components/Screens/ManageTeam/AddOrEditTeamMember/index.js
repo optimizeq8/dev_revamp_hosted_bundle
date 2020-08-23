@@ -256,6 +256,7 @@ class AddOrEditTeamMember extends Component {
           }}
         />
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={{
             paddingHorizontal: 26,

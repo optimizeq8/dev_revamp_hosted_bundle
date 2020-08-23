@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   BackHandler,
   Platform,
-  Image as RNImage
+  Image as RNImage,
 } from "react-native";
 import {
   Container,
@@ -22,7 +22,7 @@ import {
   Title,
   Subtitle,
   Button,
-  Text
+  Text,
 } from "native-base";
 import { Image } from "react-native-expo-image-cache";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
@@ -43,23 +43,19 @@ import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
 import upperCase from "lodash/upperCase";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 const preview = {
   uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 class AdDesignReview extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   state = { videoIsLoading: false, storyAdIndex: 0 };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
-    Segment.screenWithProperties("Ad Preview", {
-      category: "Campaign Creation",
-      channel: "snapchat"
-    });
   }
   handleBackButton = () => {
     this.props.navigation.goBack();
@@ -69,7 +65,7 @@ class AdDesignReview extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  collectionComp = col => (
+  collectionComp = (col) => (
     <View style={styles.collectionPlaceholder}>
       {!isUndefined(col) && (
         <RNImageOrCacheImage
@@ -91,7 +87,7 @@ class AdDesignReview extends Component {
     let storyAdsArray =
       campaignDetails && !adDesign
         ? this.props.navigation.getParam("storyAdsArray", [])
-        : this.props.storyAdsArray.filter(ad => ad.media !== "//");
+        : this.props.storyAdsArray.filter((ad) => ad.media !== "//");
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -144,7 +140,7 @@ class AdDesignReview extends Component {
     if (this.props.navigation.getParam("collectionAdMedia", []))
       collection = this.props.navigation
         .getParam("collectionAdMedia", [])
-        .map(col => this.collectionComp(col));
+        .map((col) => this.collectionComp(col));
 
     const { translate } = this.props.screenProps;
     return (
@@ -186,7 +182,7 @@ class AdDesignReview extends Component {
                     storyAdsArray &&
                     this.state.storyAdIndex + 1 !== storyAdsArray.length
                       ? this.setState({
-                          storyAdIndex: this.state.storyAdIndex + 1
+                          storyAdIndex: this.state.storyAdIndex + 1,
                         })
                       : this.setState({ storyAdIndex: 0 })
                   }
@@ -202,7 +198,7 @@ class AdDesignReview extends Component {
                         }
                         onLoad={() => this.setState({ videoIsLoading: false })}
                         source={{
-                          uri: media
+                          uri: media,
                         }}
                         isLooping={true}
                         shouldPlay={true}
@@ -222,41 +218,105 @@ class AdDesignReview extends Component {
                     styles.callToActionContainer,
                     (destination === "APP_INSTALL" ||
                       adType === "CollectionAd") &&
-                      styles.appInstallCallToActionContainer
+                      styles.appInstallCallToActionContainer,
                   ]}
                 >
-                  <View
-                    style={[
-                      styles.callToActionText,
-                      (destination === "APP_INSTALL" ||
-                        adType === "CollectionAd") &&
-                        styles.appInstallCallToActionText,
-                      destination !== "APP_INSTALL" &&
+                  {call_to_action !== "BLANK" && (
+                    <View
+                      style={[
+                        styles.callActionView,
+                        (destination === "APP_INSTALL" ||
+                          adType === "CollectionAd") &&
+                          styles.appInstallCallToActionText,
+                        destination !== "APP_INSTALL" &&
+                          adType !== "CollectionAd" &&
+                          destination !== "BLANK" &&
+                          styles.appInstallAndBlankCallToActionContainer,
+                      ]}
+                    >
+                      {destination !== "APP_INSTALL" &&
                         adType !== "CollectionAd" &&
                         destination !== "BLANK" &&
-                        styles.appInstallAndBlankCallToActionContainer
-                    ]}
-                  >
-                    {destination !== "APP_INSTALL" &&
-                      adType !== "CollectionAd" &&
-                      destination !== "BLANK" &&
-                      destination !== "SNAP_AD" && (
-                        <View
+                        destination !== "SNAP_AD" && (
+                          <View
+                            style={[
+                              styles.iconArrowUp,
+                              { paddingRight: 0, marginBottom: 5 },
+                            ]}
+                          >
+                            <ArrowUpIcon
+                              stroke={"#FFFF"}
+                              style={{ width: 5 }}
+                            />
+                          </View>
+                        )}
+                      <View style={{ borderRadius: 20, overflow: "hidden" }}>
+                        <Text
                           style={[
-                            styles.iconArrowUp,
-                            { paddingRight: 0, marginBottom: 5 }
+                            styles.callToActionText,
+                            (destination === "APP_INSTALL" ||
+                              adType === "CollectionAd") &&
+                              styles.appInstallCallToActionText,
                           ]}
                         >
-                          <ArrowUpIcon />
-                        </View>
-                      )}
-
+                          {call_to_action !== "BLANK"
+                            ? startCase(
+                                toLower(translate(upperCase(call_to_action)))
+                              )
+                            : ""}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                  {(destination === "APP_INSTALL" ||
+                    adType === "CollectionAd") && (
+                    <View
+                      style={[
+                        styles.iconArrowUp,
+                        {
+                          paddingRight: destination === "APP_INSTALL" ? 10 : 60,
+                        },
+                      ]}
+                    >
+                      <ArrowUpIcon fill={"#000"} />
+                    </View>
+                  )}
+                  <View
+                    style={[
+                      styles.adView,
+                      {
+                        flex: call_to_action === "BLANK" ? 1 : 0,
+                        alignSelf:
+                          destination === "APP_INSTALL" ? "center" : "flex-end",
+                      },
+                      adType === "CollectionAd" && {
+                        position: "absolute",
+                        top: heightPercentageToDP(-7),
+                        right: 15,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.AD}>{translate("Ad")}</Text>
+                  </View>
+                </View>
+                {adType === "CollectionAd" && (
+                  <Animatable.View
+                    animation={"fadeInUpBig"}
+                    style={[
+                      styles.bottomView1,
+                      globalStyles.whiteBackgroundColor,
+                    ]}
+                  >
                     <Text
                       style={[
                         styles.callToActionText,
                         (destination === "APP_INSTALL" ||
                           adType === "CollectionAd") &&
-                          styles.appInstallCallToActionText
+                          styles.appInstallCallToActionText,
+                        {
+                          color: "#000",
+                          alignSelf: "flex-start",
+                        },
                       ]}
                     >
                       {call_to_action !== "BLANK"
@@ -265,31 +325,20 @@ class AdDesignReview extends Component {
                           )
                         : ""}
                     </Text>
-                  </View>
-
-                  {(destination === "APP_INSTALL" ||
-                    adType === "CollectionAd") && (
                     <View
                       style={[
                         styles.iconArrowUp,
                         {
-                          paddingRight: destination === "APP_INSTALL" ? 10 : 60
-                        }
+                          // paddingRight: destination === "APP_INSTALL" ? 10 : 60,
+                          zIndex: 2,
+                          alignSelf: "center",
+                          marginTop: -22,
+                          marginBottom: 10,
+                        },
                       ]}
                     >
-                      <ArrowUpIcon />
+                      <ArrowUpIcon stroke={"#000"} />
                     </View>
-                  )}
-                  <Text style={styles.AD}>{translate("Ad")}</Text>
-                </View>
-                {adType === "CollectionAd" && (
-                  <Animatable.View
-                    animation={"fadeInUpBig"}
-                    style={[
-                      styles.bottomView,
-                      globalStyles.transparentBackgroundColor
-                    ]}
-                  >
                     <View style={styles.collectionView}>{collection}</View>
                   </Animatable.View>
                 )}
@@ -298,7 +347,7 @@ class AdDesignReview extends Component {
                     animation={"fadeInUpBig"}
                     style={[
                       styles.bottomView,
-                      globalStyles.whiteBackgroundColor
+                      globalStyles.whiteBackgroundColor,
                     ]}
                   >
                     <View style={{}}>
@@ -306,9 +355,8 @@ class AdDesignReview extends Component {
                         {...{ preview, uri: appIcon }}
                         // source={{ uri: appIcon }}
                         style={[
-                          globalStyles.grayBorderColor,
                           styles.appIconBottom,
-                          { width: 60, height: 60 }
+                          { width: 50, height: 50 },
                         ]}
                         resizeMode="contain"
                       />
@@ -322,24 +370,16 @@ class AdDesignReview extends Component {
                       </Text>
                       <Text
                         numberOfLines={1}
-                        style={[
-                          globalStyles.grayTextColor,
-                          styles.headlineBottomText
-                        ]}
+                        style={[styles.headlineBottomText]}
                       >
                         {headline}
                       </Text>
                     </View>
-                    <Button
-                      style={[
-                        styles.getButton,
-                        globalStyles.darkGrayBackgroundColor
-                      ]}
-                    >
+                    <TouchableOpacity style={[styles.getButton]}>
                       <Text style={styles.getButtonText}>
-                        {translate("GET")}
+                        {translate("Install")}
                       </Text>
-                    </Button>
+                    </TouchableOpacity>
                   </Animatable.View>
                 )}
               </View>
@@ -350,12 +390,12 @@ class AdDesignReview extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
   adType: state.campaignC.adType,
   data: state.campaignC.data,
   storyAdsArray: state.campaignC.storyAdsArray,
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
 });
 export default connect(mapStateToProps, null)(AdDesignReview);

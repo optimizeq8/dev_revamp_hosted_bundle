@@ -53,6 +53,7 @@ import OptimizeWebsite from "../Screens/OptimizeWebsite";
 import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationSuccess";
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
+import EditProduct from "../Screens/OptimizeWebsite/EditProduct/EditProduct";
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
@@ -71,6 +72,9 @@ import InstagramStoryAdPaymentReview from "../Screens/InstagramCampaignCreate/St
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
 import ImagePreview from "../MiniComponents/ImagePreview";
 import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
+import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
+import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/SelectProduct";
+import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
 
 export default FluidNavigator(
   {
@@ -155,6 +159,10 @@ export default FluidNavigator(
     ImagePreview: ImagePreview,
     InstagramCampaignDetails: InstagramCampaignDetails,
     InstagramAdDesignExistingPost: InstagramAdDesignExistingPost,
+    EditProduct: EditProduct,
+    ReviewProductDetail: ReviewProductDetail,
+    MyWebsiteSelectProducts: MyWebsiteSelectProducts,
+    MyWebsiteECommerce: MyWebsiteECommerce,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

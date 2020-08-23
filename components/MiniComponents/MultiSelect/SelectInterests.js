@@ -20,6 +20,7 @@ import * as actionCreators from "../../../store/actions";
 import Picker from "../Picker";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectInterests extends Component {
   state = { interests: null, open: false };
@@ -75,7 +76,7 @@ class SelectInterests extends Component {
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
-            <InterestsIcon width={100} height={100} fill="#fff" />
+            <InterestsIcon width={100} height={100} fill={globalColors.rum} />
             <Text style={styles.title}> {translate("Select Interests")}</Text>
             <Text style={styles.subHeadings}>
               {translate("Choose Interests that best describe your audience")}
@@ -109,9 +110,12 @@ class SelectInterests extends Component {
                 single={false}
                 screenName={"Select Interests"}
                 closeCategoryModal={() => this.setState({ open: false })}
+                customColors={{
+                  chipColor: globalColors.rum,
+                }}
               />
               {isNull(this.state.interests) && (
-                <ActivityIndicator color="#FFFF" size="large" />
+                <ActivityIndicator color={globalColors.rum} size="large" />
               )}
             </View>
           </View>
@@ -119,6 +123,7 @@ class SelectInterests extends Component {
             screenProps={this.props.screenProps}
             checkmark={true}
             style={styles.button}
+            purpleViolet
             function={() => this.handleSideMenu()}
           />
         </View>

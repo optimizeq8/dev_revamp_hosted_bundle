@@ -4,14 +4,13 @@ import createBaseUrl from "./createBaseUrl";
 import analytics from "@segment/analytics-react-native";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../components/segmentEventTrack";
 
-export const verifyInstagramHandleWebsite = insta_handle => {
-  return async dispatch => {
+export const verifyInstagramHandleWebsite = (insta_handle) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.SET_INSTAGRAM_POST_LOADING,
-        payload: false
+        payload: false,
       });
       var response = await axios.get(
         `https://www.instagram.com/${insta_handle}`
@@ -29,16 +28,16 @@ export const verifyInstagramHandleWebsite = insta_handle => {
             type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
             payload: {
               error: true,
-              errorMessage: `${insta_handle} is a private account Try with some other account`
-            }
+              errorMessage: `${insta_handle} is a private account Try with some other account`,
+            },
           });
         } else {
           return dispatch({
             type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
             payload: {
               error: false,
-              errorMessage: null
-            }
+              errorMessage: null,
+            },
           });
         }
       }
@@ -48,20 +47,20 @@ export const verifyInstagramHandleWebsite = insta_handle => {
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
         payload: {
           error: true,
-          errorMessage: `${insta_handle} doesn't exist Try another account name`
-        }
+          errorMessage: `${insta_handle} doesn't exist Try another account name`,
+        },
       });
     }
   };
 };
-export const getInstagramPostInitialWebsite = insta_handle => {
+export const getInstagramPostInitialWebsite = (insta_handle) => {
   // console.log("insta_handle", insta_handle);
 
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.GET_INSTAGRAM_POST_LOADING,
-        payload: true
+        payload: true,
       });
       // console.log('getInstagramPost insta_handle', insta_handle);
       var response = await axios.get(
@@ -88,8 +87,8 @@ export const getInstagramPostInitialWebsite = insta_handle => {
         // console.log("mediaArrayLength", mediaArray.length);
 
         if (mediaArray && mediaArray.length > 0) {
-          var imagesList = mediaArray.map(media => {
-            // console.log('media', media);
+          var imagesList = mediaArray.map((media) => {
+            // console.log("media", JSON.stringify(media, null, 2));
             // if (!media.node.is_video)
             return {
               imageUrl: media.node.display_url,
@@ -99,7 +98,7 @@ export const getInstagramPostInitialWebsite = insta_handle => {
                 media.node.edge_media_to_caption.edges.length > 0
                   ? media.node.edge_media_to_caption.edges[0].node.text
                   : "",
-              isVideo: media.node.is_video
+              isVideo: media.node.is_video,
             };
           });
 
@@ -115,8 +114,8 @@ export const getInstagramPostInitialWebsite = insta_handle => {
               imagesList: imagesList,
               instaHandleId: data.id,
               instaHasNextPage: hasNextPage,
-              instaEndCursor: end_cursor
-            }
+              instaEndCursor: end_cursor,
+            },
           });
           // console.log('imageListAfterSize', imagesList.length);
         }
@@ -128,8 +127,8 @@ export const getInstagramPostInitialWebsite = insta_handle => {
             imagesList: [],
             instaHandleId: null,
             instaHasNextPage: null,
-            instaEndCursor: null
-          }
+            instaEndCursor: null,
+          },
         });
       }
     } catch (error) {
@@ -141,19 +140,19 @@ export const getInstagramPostInitialWebsite = insta_handle => {
         type: actionTypes.ERROR_GET_INSTAGRAM_POSTS,
         payload: {
           error: true,
-          errorMessage: null
-        }
+          errorMessage: null,
+        },
       });
     }
   };
 };
 
 export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: actionTypes.LOADING_MORE_INSTAGRAM_POSTS,
-        payload: true
+        payload: true,
       });
       const responseMedia = await axios.get(
         `https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${instaHandleId}","first":12,"after":"${instaEndCursor}"}`
@@ -161,7 +160,7 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
       // console.log("responseMediA", responseMedia.data);
 
       let mediaArray = [
-        ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges
+        ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges,
       ];
 
       let hasNextPage =
@@ -174,10 +173,10 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
         source: "my_website_products",
         source_action: "a_load_more_posts",
         action_status:
-          mediaArray && mediaArray.length > 0 ? "success" : "failure"
+          mediaArray && mediaArray.length > 0 ? "success" : "failure",
       });
       if (mediaArray && mediaArray.length > 0) {
-        var imagesList = mediaArray.map(media => {
+        var imagesList = mediaArray.map((media) => {
           return {
             imageUrl: media.node.display_url,
             shortcode: media.node.shortcode,
@@ -186,7 +185,7 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
               media.node.edge_media_to_caption.edges.length > 0
                 ? media.node.edge_media_to_caption.edges[0].node.text
                 : "",
-            isVideo: media.node.is_video
+            isVideo: media.node.is_video,
           };
         });
 
@@ -198,8 +197,8 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
           payload: {
             imagesList: imagesList,
             instaHasNextPage: hasNextPage,
-            instaEndCursor: end_cursor
-          }
+            instaEndCursor: end_cursor,
+          },
         });
       }
     } catch (error) {
@@ -210,8 +209,8 @@ export const loadMoreInstagramPostWebsite = (instaHandleId, instaEndCursor) => {
         payload: {
           imagesList: [],
           instaHasNextPage: null,
-          instaEndCursor: null
-        }
+          instaEndCursor: null,
+        },
       });
     }
     // console.log('imageListAfterSize', imagesList.length);
@@ -247,12 +246,12 @@ export const saveWebProductsToHide = (
           businesslogo,
           no_of_products_to_show,
           insta_handle,
-          id: products_to_hide_id
+          id: products_to_hide_id,
         })
-        .then(response => {
+        .then((response) => {
           return response.data;
         })
-        .then(data => {
+        .then((data) => {
           analytics.track(`a_submit_my_website_products`, {
             source: "open_my_website",
             source_action: "a_submit_my_website_products",
@@ -262,34 +261,29 @@ export const saveWebProductsToHide = (
             webproductsToHide,
             businesslogo,
             products_to_hide_id,
-            insta_handle
+            insta_handle,
           });
           showMessage({
             type: data.success ? "success" : "warning",
-            message: data.message
-          });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo
+            message: data.message,
           });
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl }
+              payload: { weburl: data.weburl },
             });
           }
 
           return data;
         })
-        .then(data => {
+        .then((data) => {
           data.success &&
             NavigationService.navigate("MyWebsite", {
               source: "open_my_website",
-              source_action: "a_submit_my_website_products"
+              source_action: "a_submit_my_website_products",
             });
         })
-        .catch(error => {
+        .catch((error) => {
           // console.log("saveWebProductsToHide", error.response || error.message);
         });
     } else {
@@ -299,12 +293,12 @@ export const saveWebProductsToHide = (
           businessid,
           businesslogo,
           no_of_products_to_show,
-          insta_handle
+          insta_handle,
         })
-        .then(response => {
+        .then((response) => {
           return response.data;
         })
-        .then(data => {
+        .then((data) => {
           analytics.track(`a_submit_my_website_products`, {
             source: "my_website_products",
             source_action: "a_submit_my_website_products",
@@ -314,33 +308,29 @@ export const saveWebProductsToHide = (
             webproductsToHide,
             businesslogo,
             insta_handle,
-            weburl: data.weburl
+            weburl: data.weburl,
           });
-          segmentEventTrack(data.message, {
-            businessid,
-            insta_handle,
-            businesslogo
-          });
+
           if (data.success) {
             dispatch({
               type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
-              payload: { weburl: data.weburl, businesslogo: businesslogo }
+              payload: { weburl: data.weburl, businesslogo: businesslogo },
             });
           }
 
           return data;
         })
-        .then(data => {
+        .then((data) => {
           // console.log("businesswebProducts data", data);
 
           if (data.success) {
             NavigationService.navigate("WebsiteRegistartionSuccess", {
               source: "my_website_products",
-              source_action: "a_submit_my_website_products"
+              source_action: "a_submit_my_website_products",
             });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           // console.log("saveWebProductsToHide", error.response || error.message);
         });
     }
@@ -352,21 +342,21 @@ export const saveWebProductsToHide = (
  * @param {*} businessid
  * To get the list of webproducts that are not be shown on client website
  */
-export const getWebProductsToHide = businessid => {
-  return dispatch => {
+export const getWebProductsToHide = (businessid) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_HIDDEN_INSTAGRAM_POST,
       payload: {
         products_to_hide_id: null,
-        products_to_hide_list: []
-      }
+        products_to_hide_list: [],
+      },
     });
     createBaseUrl()
       .get(`businesswebProducts/${businessid}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         // console.log("getWebProductsToHide data", data);
         if (data.success) {
           var webProducts = JSON.parse(data.productsinfo.webproducts);
@@ -375,19 +365,19 @@ export const getWebProductsToHide = businessid => {
             payload: {
               products_to_hide_id: data.productsinfo.id,
               products_to_hide_list:
-                webProducts && webProducts.length > 0 ? webProducts : []
-            }
+                webProducts && webProducts.length > 0 ? webProducts : [],
+            },
           });
         }
         return dispatch({
           type: actionTypes.SET_HIDDEN_INSTAGRAM_POST,
           payload: {
             products_to_hide_id: null,
-            products_to_hide_list: []
-          }
+            products_to_hide_list: [],
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         // console.log(
         //   "getWebProductsToHide error",
         //   error.response || error.message
@@ -397,9 +387,239 @@ export const getWebProductsToHide = businessid => {
           type: actionTypes.SET_HIDDEN_INSTAGRAM_POST,
           payload: {
             products_to_hide_id: null,
-            products_to_hide_list: []
-          }
+            products_to_hide_list: [],
+          },
         });
       });
+  };
+};
+
+/**
+ *
+ * @param {*} edit to update products list
+ * @param {*} webproductsToHide list of products to be added
+ */
+export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
+  return (dispatch) => {
+    const info = {
+      business_id: businessid,
+      products: webproductsToAdd,
+    };
+
+    delete axios.defaults.headers.common["Authorization"];
+
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products`, info, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        // console.log("data save", data);
+        analytics.track(`a_submit_my_website_products`, {
+          source: "open_select_product",
+          source_action: "a_submit_my_website_products",
+          action_status: data.data ? "success" : "failure",
+          // error_description: !data.success && data.message,
+          webproductsToAdd,
+        });
+
+        NavigationService.navigate("MyWebsiteECommerce", {
+          source: "open_select_product",
+          source_action: "a_submit_my_website_products",
+        });
+
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS,
+          payload: data.data,
+        });
+      })
+
+      .catch((error) => {
+        // console.log(
+        //   "saveWebProductsToAdd error",
+        //   error.response || error.message
+        // );
+      });
+  };
+};
+
+export const getWebProductsList = (businessid) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+      payload: true,
+    });
+
+    axios
+      .get(
+        `https://optimizeapp.com/ecommerce/api/business/${businessid}/products`
+      )
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS_LIST,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        return dispatch({
+          type: actionTypes.SET_WEB_PRODUCTS_LIST,
+          payload: [],
+        });
+      });
+  };
+};
+
+export const deleteWebProduct = (product_id) => {
+  return (dispatch) => {
+    delete axios.defaults.headers.common["Authorization"];
+
+    axios
+      .delete(`https://optimizeapp.com/ecommerce/api/products/${product_id}`)
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        analytics.track(`a_delete_product`, {
+          source: "open_edit_product",
+          source_action: "a_delete_product",
+          action_status: data === 204 ? "success" : "failure",
+          // error_description:  data.message,
+        });
+        if (data === 204) {
+          NavigationService.navigate("MyWebsiteECommerce", {
+            source: "open_edit_product",
+            source_action: "a_delete_product",
+          });
+          return dispatch({
+            type: actionTypes.DELETE_WEB_PRODUCT,
+            payload: product_id,
+          });
+        }
+      })
+
+      .catch((error) => {
+        // console.log("deleteWebProduct error", error.response || error.message);
+      });
+  };
+};
+
+export const saveSingleWebProduct = (product_id, info) => {
+  // console.log("product_id", product_id);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+      payload: true,
+    });
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .patch(
+        `https://optimizeapp.com/ecommerce/api/products/${product_id}`,
+        info
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_save_product_detail`, {
+          source: "open_edit_product",
+          source_action: "a_save_product_detail",
+          product_id,
+          product: info,
+          action_status: data.data ? "success" : "failure",
+        });
+        // console.log("data save product", data);
+        NavigationService.navigate("MyWebsiteECommerce", {
+          source: "open_edit_product",
+          source_action: "a_save_product_detail",
+        });
+        dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        // console.log("saveSingleWebProduct", err.response || err.message);
+
+        return dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const saveSingleMedia = (
+  media,
+  loading,
+  cancelUplaod,
+  onToggleModal
+) => {
+  onToggleModal(true);
+
+  // console.log("media save", media);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_PRODUCT_MEDIA,
+      payload: {},
+    });
+
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products/media`, media, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log("data save media", data);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: data.data ? "success" : "failure",
+        });
+        onToggleModal(false);
+        return dispatch({
+          type: actionTypes.SAVE_PRODUCT_MEDIA,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        loading(0);
+        onToggleModal(false);
+        analytics.track(`a_add_product_media`, {
+          source: "open_edit_product",
+          source_action: "a_add_product_media",
+          media,
+          action_status: "failure",
+          error_description: err.response || err.message,
+        });
+        // console.log("saveSingleWebProduct error", err.response || err.message);
+      });
+  };
+};
+
+export const setSavingToInitial = () => {
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+      payload: false,
+    });
   };
 };

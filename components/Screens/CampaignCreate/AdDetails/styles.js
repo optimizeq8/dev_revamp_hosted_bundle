@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     flex: 1,
-    // ...StyleSheet.absoluteFillObject,
     backgroundColor: "#0000",
   },
   mainContainer: {
@@ -43,13 +42,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    flex: 1,
+    height: "85%",
   },
   subHeadings: {
-    color: "#fff",
+    color: globalColors.gray,
     fontFamily: "montserrat-bold",
-    fontSize: 18,
-    paddingVertical: 10,
+    fontSize: 16,
+    paddingVertical: 5,
     paddingHorizontal: 30,
     textAlign: "left",
   },
@@ -121,6 +120,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 8,
+    backgroundColor: "#fff",
+    borderRadius: 50,
+    padding: 10,
   },
   icon: {
     alignSelf: "center",
@@ -131,59 +133,59 @@ const styles = StyleSheet.create({
     // width: widthPercentageToDP(25)
   },
   bottom: {
-    display: "flex",
-    flex: 1,
     flexDirection: "row",
+    justifyContent: "center",
+    paddingLeft: 10,
+    height: "14%",
     alignItems: "center",
-    justifyContent: "space-between",
-    position: "absolute",
-    bottom: 0,
-    marginLeft: 25,
+    alignSelf: "center",
     width: "100%",
-    // marginHorizontal: 30
-    paddingBottom: 15,
+    bottom: 10,
+    flex: 1,
   },
   chartText: {
-    color: "#fff",
+    color: globalColors.rum,
     textAlign: "left",
     fontFamily: "montserrat-bold",
-    fontSize: 17,
+    fontSize: 15 / PixelRatio.getFontScale(),
   },
   chartTextNum: {
-    color: "#fff",
+    color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 16,
     textAlign: "left",
   },
   chartItems: {
     flexDirection: "row",
+    flex: 1,
   },
   reachBarLowerButton: {
-    width: 55,
-    height: 55,
-    marginRight: widthPercentageToDP(35),
+    width: 60,
+    height: 60,
     flex: 0,
   },
   reachPeopleView: {
-    flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
-    paddingHorizontal: 8,
+    marginHorizontal: 8,
+    width: "100%",
+    flex: 1,
   },
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
     fontFamily: "montserrat-bold",
-    color: "#fff",
+    color: globalColors.gray,
     textAlign: "left",
     textTransform: "uppercase",
   },
   menudetails: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    color: "#fff",
+    color: globalColors.gray,
+
     fontFamily: "montserrat-regular",
     fontSize: 11,
     textAlign: "left",
@@ -191,6 +193,7 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+  menuComponentStyle: { top: 0 },
 });
 
 export default styles;

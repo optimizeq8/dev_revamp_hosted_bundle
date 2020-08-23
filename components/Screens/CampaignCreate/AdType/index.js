@@ -164,7 +164,7 @@ class AdType extends Component {
       } else if (
         adType.mediaType === "instagram" &&
         fb_connected === "1" &&
-        (isNull() || fb_ad_account_id === "")
+        (isNull(fb_ad_account_id) || fb_ad_account_id === "")
       ) {
         showMessage({
           message: translate(

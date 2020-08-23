@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import compareVersions from "compare-versions";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
+import { globalColors } from "../../../GlobalStyles";
 
 class SelectVersions extends Component {
   state = {
@@ -175,7 +176,7 @@ class SelectVersions extends Component {
                       />
                     </View>
                   }
-                  colors={colors}
+                  colors={{ ...colors, chipColor: globalColors.rum }}
                   searchPlaceholderText={translate("Search Versions")}
                   searchTextFontFamily={{
                     fontFamily: "montserrat-regular",
@@ -214,6 +215,7 @@ class SelectVersions extends Component {
             screenProps={this.props.screenProps}
             style={[styles.button]}
             checkmark={true}
+            purpleViolet
             function={() => this._handleSubmission()}
           />
         </View>

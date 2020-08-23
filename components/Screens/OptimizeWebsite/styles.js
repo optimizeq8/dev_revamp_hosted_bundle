@@ -562,6 +562,19 @@ const styles = StyleSheet.create({
     marginLeft: 13,
     width: "100%",
   },
+  businessLogoImage: {
+    width: 95,
+    height: 95,
+  },
+  changeLogoView: {
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "center",
+    marginBottom: 13,
+  },
+  scrollViewContainer: {
+    backgroundColor: "#f8f8f8",
+  },
 });
 
 export default styles;

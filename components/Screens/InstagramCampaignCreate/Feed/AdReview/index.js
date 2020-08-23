@@ -40,11 +40,10 @@ class AdFeedDesignReview extends React.Component {
   };
 
   componentDidMount() {
-    let data = !this.props.campaignDetails
+    let data = !this.props.navigation.getParam("campaignDetails", false)
       ? this.props.data
       : this.props.navigation.state.params;
     if (data.media) {
-      console.log("uuuuuu");
       Image.getSize(data.media, (width, height) => {
         this.setState({
           AP: width / height,
@@ -167,7 +166,12 @@ class AdFeedDesignReview extends React.Component {
                 <Text style={styles.dot}>.</Text>
               </View>
             </View>
-            <View style={[styles.mediaView, { aspectRatio: this.state.AP }]}>
+            <View
+              style={[
+                styles.mediaView,
+                { aspectRatio: this.state.AP || 1 / 1 },
+              ]}
+            >
               {mediaView}
             </View>
             {(call_to_action.value || call_to_action) !== "BLANK" && (

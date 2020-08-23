@@ -77,6 +77,9 @@ export default class WebsiteComponent extends React.Component {
       disabled,
       label = "Website",
       placeholder = "Enter your website's URL",
+      iconFill,
+      labelColor,
+      inputColor = "#FFF",
       customIconColor,
       customTextStyle,
     } = this.props;
@@ -96,15 +99,23 @@ export default class WebsiteComponent extends React.Component {
             width={23}
             height={24}
             style={styles.icon}
-            fill={this.state.highlight ? globalColors.orange : customIconColor}
+            fill={
+              iconFill
+                ? iconFill
+                : this.state.highlight
+                ? globalColors.orange
+                : globalColors.rum
+            }
           />
           <View style={styles.colView}>
             <Text
               style={[
                 styles.inputLabel,
-                this.state.highlight
-                  ? [GlobalStyles.orangeTextColor]
-                  : customTextStyle,
+                labelColor
+                  ? { color: labelColor }
+                  : this.state.highlight
+                  ? GlobalStyles.orangeTextColor
+                  : GlobalStyles.rumTextColor,
               ]}
             >
               {translate(label)}
@@ -114,8 +125,16 @@ export default class WebsiteComponent extends React.Component {
               style={[
                 styles.inputText,
                 {
-                  fontFamily: "montserrat-regular-english",
-                  marginBottom: 0,
+                  fontFamily: "montserrat-light-english",
+                  color: inputColor,
+                  fontSize:
+                    this.props.website && this.props.website.length > 43
+                      ? 7
+                      : this.props.website && this.props.website.length > 38
+                      ? 8.5
+                      : this.props.website && this.props.website.length > 30
+                      ? 9
+                      : 12,
                 },
                 customTextStyle,
                 // I18nManager.isRTL ? { textAlign: "right" } : { textAlign: "left" }

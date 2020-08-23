@@ -217,6 +217,7 @@ class PersonalInfo extends Component {
         />
         <View style={styles.mainCard}>
           <InputScrollView
+            showsVerticalScrollIndicator={false}
             {...ScrollView.props}
             contentContainerStyle={[styles.businessView]}
           >

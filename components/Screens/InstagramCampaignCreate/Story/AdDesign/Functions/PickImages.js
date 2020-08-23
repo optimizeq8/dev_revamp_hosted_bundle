@@ -19,7 +19,7 @@ import {
 } from "react-native-videoeditorsdk";
 import PhotoEditorConfiguration from "../../../../../Functions/PhotoEditorConfiguration";
 
-import { RNFFprobe, RNFFmpeg } from "react-native-ffmpeg";
+import { RNFFprobe, RNFFmpeg, RNFFmpegConfig } from "react-native-ffmpeg";
 // ADD TRANSLATE PROP
 export const askForPermssion = async (screenProps) => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -73,7 +73,9 @@ export const _pickImage = async (
   videoIsExporting,
   carouselAdCards = {},
   carouselAdsArray,
-  media_option = "single"
+  media_option = "single",
+  statisticsCallback,
+  cancelled
 ) => {
   try {
     let result = {};
@@ -122,11 +124,7 @@ export const _pickImage = async (
               ) {
                 //check for aspect ration incase user undos the cropping
                 setTheState({
-                  mediaError: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
-                    media_option === "single"
-                      ? "500px x 500px"
-                      : "600px x 600px"
-                  }.`,
+                  mediaError: `Image's aspect ratio must be 9:16\nwith a minimum size of 500px`,
                   media: "//",
                   media_type: "",
                 });
@@ -138,17 +136,11 @@ export const _pickImage = async (
 
                 return Promise.reject({
                   wrongAspect: true,
-                  message: `Image's aspect ratio must be 1:1\nwith a minimum size of ${
-                    media_option === "single"
-                      ? "500px x 500px"
-                      : "600px x 600px"
-                  }`,
+                  message: `Image's aspect ratio must be 9:16\nwith a minimum size of 500px`,
                 });
               }
-              let size =
-                media_option === "single"
-                  ? { width: 500, height: 500 }
-                  : { width: 600, height: 600 };
+              let size = { width: 1080, height: 1920 };
+
               manipResult = await ImageManipulator.manipulateAsync(
                 manipResult.uri,
                 [
@@ -345,8 +337,7 @@ export const _pickImage = async (
         )
 
           .then(async (manipResult) => {
-            // console.log("manipResult", manipResult);
-
+            setTheState({ cancelled: false });
             if (manipResult) {
               let actualUri = manipResult.hasChanges
                 ? manipResult.video
@@ -375,55 +366,56 @@ export const _pickImage = async (
                   duration: result.duration / 1000,
                 };
               }
+              console.log("newResult", JSON.stringify(newResult, null, 2));
+
+              RNFFmpegConfig.enableStatisticsCallback((stats) =>
+                statisticsCallback(stats, newResult.duration)
+              );
               let newSize = await FileSystem.getInfoAsync(actualUri);
-              // if (
-              //   ((Math.floor(newResult.width / 9) !==
-              //     Math.floor(newResult.height / 16) &&
-              //     Math.floor(newResult.width / 4) !==
-              //       Math.floor(newResult.height / 5) &&
-              //     Math.floor(newResult.width / 1) !==
-              //       Math.floor(newResult.height / 1)) ||
-              //     newResult.width < 500) &&
-              //   newResult.duration <= 120 &&
-              //   newResult.duration >= 1.0
-              // ) {
-              //   let outputUri = actualUri.split("/");
+              let process = { rc: 0 }; //RNFFmpeg.execute is not cancelled it returns {rc:0}
+              if (
+                newResult.width < 500 &&
+                newResult.duration <= 120 &&
+                newResult.duration >= 1.0
+              ) {
+                let outputUri = actualUri.split("/");
 
-              //   // await RNFFmpeg.execute(
-              //   //   `-y -i ${actualUri} -vf scale=${
-              //   //     Math.floor(newResult.width / 9) !==
-              //   //     Math.floor(newResult.height / 16)
-              //   //       ? "1080:1920"
-              //   //       : "-1:1920" //-1 means scale inly by 1920 to keep aspect ratio
-              //   //   } -vcodec libx264 ${FileSystem.documentDirectory}${
-              //   //     outputUri[outputUri.length - 1]
-              //   //   }`
-              //   // );
-              //   newResult = await RNFFprobe.getMediaInformation(
-              //     `${FileSystem.documentDirectory}${
-              //       outputUri[outputUri.length - 1]
-              //     }`
-              //   );
+                process = await RNFFmpeg.execute(
+                  `-y -i ${actualUri} -vf scale=${
+                    "500:-2" //-2 means scale only by 500 to keep aspect ratio
+                  } -vcodec libx264 ${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+                newResult = await RNFFprobe.getMediaInformation(
+                  `${FileSystem.documentDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
 
-              //   newResult = {
-              //     width:
-              //       newResult.streams[
-              //         newResult.streams[0].hasOwnProperty("width") ? 0 : 1
-              //       ].width,
-              //     height:
-              //       newResult.streams[
-              //         newResult.streams[0].hasOwnProperty("height") ? 0 : 1
-              //       ].height,
-              //     duration: newResult.duration / 1000,
-              //     newUri: newResult.path,
-              //   };
-              //   newSize = await FileSystem.getInfoAsync(
-              //     `${FileSystem.cacheDirectory}${
-              //       outputUri[outputUri.length - 1]
-              //     }`
-              //   );
-              // }
+                newResult = {
+                  width:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("width") ? 0 : 1
+                    ].width,
+                  height:
+                    newResult.streams[
+                      newResult.streams[0].hasOwnProperty("height") ? 0 : 1
+                    ].height,
+                  duration: newResult.duration / 1000,
+                  newUri: newResult.path,
+                };
+                newSize = await FileSystem.getInfoAsync(
+                  `${FileSystem.cacheDirectory}${
+                    outputUri[outputUri.length - 1]
+                  }`
+                );
+              }
               videoIsExporting(false);
+
+              if (process.rc !== 0) {
+                return Promise.reject("Video processing canceled");
+              }
               if (newResult.duration > 120) {
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
@@ -487,13 +479,7 @@ export const _pickImage = async (
                 // onToggleModal((false);
                 setTheState({ sourceChanging: false });
                 return false;
-              } else if (
-                (Math.floor(newResult.width / 9) !==
-                  Math.floor(newResult.height / 16) &&
-                  Math.floor(newResult.width / 4) !==
-                    Math.floor(newResult.height / 5)) ||
-                newResult.width < 500
-              ) {
+              } else if (newResult.width < 500) {
                 analytics.track(`a_error`, {
                   campaign_channel: "instagram",
                   campaign_ad_type: "InstagramStoryAd",
@@ -689,7 +675,7 @@ export const _pickImage = async (
             });
 
             showMessage({
-              message: err,
+              message: err.message || err,
               type: "warning",
             });
           });

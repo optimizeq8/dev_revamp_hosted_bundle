@@ -86,13 +86,9 @@ export const formatStoryAd = async (
   card.story_id && storyBody.append("story_id", card.story_id);
   storyBody.append(
     "ios_upload",
-    (Platform.OS === "ios" && card.iosVideoUploaded) ||
-      card.uploadedFromDifferentDevice
-      ? 1
-      : 0
+    !card.fileReadyToUpload || card.uploadedFromDifferentDevice ? 1 : 0
   );
   storyBody.append("story_media_upload", card.fileReadyToUpload ? 1 : 0);
-
   await handleUpload();
   await uploadStoryAdCard(
     storyBody,

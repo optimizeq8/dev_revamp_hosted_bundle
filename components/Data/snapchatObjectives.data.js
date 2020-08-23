@@ -3,18 +3,18 @@ import * as ObjIcons from "../../assets/SVGs/Objectives";
 export default {
   CollectionAd: [
     {
+      label: "Website Traffic",
+      value: "WEBSITE_TRAFFIC",
+      info: "INCREASE MY WEBSITE VISITS",
+      icon: ObjIcons.BRAND_AWARENESS,
+      color: "#4BD6C6",
+    },
+    {
       label: "Awareness",
       value: "BRAND_AWARENESS",
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
       color: "#EF6C57",
-    },
-    {
-      label: "Website Traffic",
-      value: "TRAFFIC",
-      info: "INCREASE MY WEBSITE VISITS",
-      icon: ObjIcons.BRAND_AWARENESS,
-      color: "#4BD6C6",
     },
     {
       label: "Lead Generation",
@@ -25,6 +25,13 @@ export default {
     },
   ],
   StoryAd: [
+    {
+      label: "Lead Generation",
+      value: "LEAD_GENERATION",
+      info: "I WANT TO KNOW MY CUSTOMERS",
+      icon: ObjIcons.Group,
+      color: "#AA22DD",
+    },
     {
       label: "Awareness",
       value: "BRAND_AWARENESS",
@@ -37,14 +44,9 @@ export default {
       value: "APP_INSTALLS",
       info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
+      color: "#FF7A09",
     },
-    {
-      label: "Lead Generation",
-      value: "LEAD_GENERATION",
-      info: "I WANT TO KNOW MY CUSTOMERS",
-      icon: ObjIcons.Group,
-      color: "#AA22DD",
-    },
+
     // {
     //   label: "WhatsApp Campaign",
     //   value: "WEB_CONVERSION",
@@ -54,18 +56,18 @@ export default {
   ],
   SnapAd: [
     {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
-    {
       label: "Website Traffic",
       value: "WEBSITE_TRAFFIC",
       info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     {
       label: "App Installs",

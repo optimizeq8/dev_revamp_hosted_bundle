@@ -361,7 +361,10 @@ class AppChoice extends Component {
     let { iosAppSelected, androidAppSelected } = this.state;
     const { translate } = this.props.screenProps;
     return (
-      <InputScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <InputScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContainer}
+      >
         <AppBox
           appstorelink={this.props.mainBusiness.appstorelink}
           playstorelink={this.props.mainBusiness.playstorelink}

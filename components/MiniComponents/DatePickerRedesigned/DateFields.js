@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager, Modal } from "react-native";
+import { View, I18nManager, Modal, TouchableOpacity } from "react-native";
 import { Text } from "native-base";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -334,6 +334,15 @@ class DateFields extends Component {
           transparent
           animationType="slide"
         >
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              height: "20%",
+              position: "absolute",
+            }}
+            onPress={() => this.setState({ modalVisible: false })}
+            activeOpacity={1}
+          ></TouchableOpacity>
           <View style={styles.safeArea}>
             <View style={{ alignItems: "center" }}>
               <CustomHeader

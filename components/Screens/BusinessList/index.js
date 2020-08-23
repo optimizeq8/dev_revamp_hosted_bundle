@@ -189,6 +189,7 @@ class BusinessList extends Component {
               renderItem={this.renderBusinessCards}
               onRefresh={this.props.getBusinessAccounts}
               refreshing={this.props.businessesLoading}
+              showsVerticalScrollIndicator={false}
             />
           </View>
           {this.state.activeTab === "INVITATION" &&

@@ -9,13 +9,14 @@ import {
   VictoryVoronoiContainer,
   VictoryAxis,
   VictoryArea,
-  VictoryScatter
+  VictoryScatter,
+  VictoryGroup,
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
@@ -23,10 +24,10 @@ class LineGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      valuesGreaterThanThousand: false // Keep track of all values on xAxis  > 999
+      valuesGreaterThanThousand: false, // Keep track of all values on xAxis  > 999
     };
   }
-  kFormatter = num => {
+  kFormatter = (num) => {
     // OR condition added so that it shows up values properly
     return Math.abs(num) > 999 || this.state.valuesGreaterThanThousand
       ? (this.props.chartChoice === "Spend" ? "$" : "") +
@@ -42,7 +43,7 @@ class LineGraph extends Component {
       this.state.valuesGreaterThanThousand
     ) {
       this.setState({
-        valuesGreaterThanThousand: false
+        valuesGreaterThanThousand: false,
       });
     }
   }
@@ -74,7 +75,7 @@ ${day}/${shortMonths[month]}`;
           !this.state.valuesGreaterThanThousand
         ) {
           this.setState({
-            valuesGreaterThanThousand: true
+            valuesGreaterThanThousand: true,
           });
         }
 
@@ -98,7 +99,7 @@ ${day}/${shortMonths[month]}`;
             this.props.granularity !== "DAY"
               ? i
               : `${day}/${shortMonths[month]}`,
-          y: tickValues
+          y: tickValues,
         };
       });
     }
@@ -107,7 +108,7 @@ ${day}/${shortMonths[month]}`;
       <View
         style={{
           paddingLeft: I18nManager.isRTL ? wp(12) : wp(5),
-          paddingRight: I18nManager.isRTL ? wp(15) : wp(5)
+          paddingRight: I18nManager.isRTL ? wp(15) : wp(5),
         }}
       >
         <ScrollView
@@ -132,8 +133,8 @@ ${day}/${shortMonths[month]}`;
                 styles.ScrollChartArea,
                 {
                   width:
-                    this.props.campaignStats.length <= 4 ? wp(100) : wp(150)
-                }
+                    this.props.campaignStats.length <= 4 ? wp(100) : wp(150),
+                },
               ]}
             />
           )}
@@ -164,7 +165,7 @@ ${day}/${shortMonths[month]}`;
               top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
-              right: 50
+              right: 50,
             }}
             width={this.props.campaignStats.length <= 4 ? wp(100) : wp(120)}
           >
@@ -182,25 +183,39 @@ ${day}/${shortMonths[month]}`;
                   data: {
                     stroke: "#FF7D08",
                     fill: "url(#myGradient)",
-                    strokeWidth: 5
-                  }
+                    strokeWidth: 5,
+                  },
                 }}
                 size={8}
                 data={data}
               />
             ) : (
-              <VictoryArea
-                categories={{ x: category }}
-                interpolation="catmullRom"
-                style={{
-                  data: {
-                    stroke: "#FF7D08",
-                    fill: "url(#myGradient)",
-                    strokeWidth: 5
-                  }
-                }}
-                data={data}
-              />
+              <VictoryGroup>
+                <VictoryArea
+                  standalone={true}
+                  categories={{ x: category }}
+                  interpolation="catmullRom"
+                  style={{
+                    data: {
+                      stroke: "#FF7D08",
+                      fill: "url(#myGradient)",
+                      strokeWidth: 5,
+                    },
+                  }}
+                  data={data}
+                />
+                <VictoryScatter
+                  categories={{ x: category }}
+                  style={{
+                    data: {
+                      fill: "#fff",
+                      strokeWidth: 5,
+                    },
+                  }}
+                  size={8}
+                  data={data}
+                />
+              </VictoryGroup>
             )}
             <VictoryAxis
               tickCount={5}
@@ -214,23 +229,23 @@ ${day}/${shortMonths[month]}`;
           style={[
             styles.xAxisStyle,
             I18nManager.isRTL && {
-              width: 0
-            }
+              width: 0,
+            },
           ]}
         >
           <VictoryAxis
             height={heightPercentageToDP(38)}
             domainPadding={{
-              y: this.props.campaignStats.length === 1 ? 60 : 40
+              y: this.props.campaignStats.length === 1 ? 60 : 40,
             }}
             dependentAxis
-            tickFormat={t => this.kFormatter(t)}
+            tickFormat={(t) => this.kFormatter(t)}
             tickCount={5}
             padding={{
               top: 20,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
-              right: 60
+              right: 60,
             }}
             domain={
               independentTickValues.length > 0
@@ -253,14 +268,14 @@ let tickLabelStyles = {
     fontSize: 12,
     padding: 6,
     fontFamily: "Helvetica",
-    fontWeight: "100"
+    fontWeight: "100",
   },
-  ticks: { stroke: "#fff", size: 6, padding: 0 }
+  ticks: { stroke: "#fff", size: 6, padding: 0 },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaignStats: state.dashboard.campaignStats,
-  granularity: state.dashboard.granularity
+  granularity: state.dashboard.granularity,
 });
 
 export default connect(mapStateToProps, null)(LineGraph);

@@ -7,6 +7,9 @@ export const globalColors = {
   orange: "#FF790A",
   darkOrange: "#FF790A",
   purple: "#9300FF",
+  purple1: "#BF77F4",
+  purple2: "#8B56B0",
+  purpleTran: "rgba(147,4,255,0.31)",
   green: "#66D072",
   yellow: "#FFFC00",
   white: "#FFFFFF",
@@ -16,8 +19,8 @@ export const globalColors = {
   lightGray: "#C6C6C6",
   lightGray: "#C6C6C6",
   darkGray: "#717171",
-  gray: "#A0A0A0",
   rum: "#75647C",
+  gray: "#75647C",
 };
 const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
@@ -37,6 +40,9 @@ const globalStyles = StyleSheet.create({
   },
   whiteTextColor: {
     color: "#FFFFFF",
+  },
+  rumTextColor: {
+    color: "#75647C",
   },
   whiteBackgroundColor: {
     backgroundColor: "#FFFFFF",

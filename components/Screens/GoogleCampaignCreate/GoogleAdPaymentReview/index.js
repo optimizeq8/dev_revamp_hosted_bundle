@@ -128,7 +128,7 @@ class AdPaymentReview extends Component {
     let country = CountriesList.find(
       (c) => c.criteria_id === this.props.campaign.country
     ).name;
-
+    this.props.save_google_campaign_data({ campaignDateChanged: false });
     this.setState({
       end_time: end_time,
       start_time: start_time,
@@ -417,5 +417,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   save_google_campaign_steps: (value) =>
     dispatch(actionCreators.save_google_campaign_steps(value)),
+  save_google_campaign_data: (info) =>
+    dispatch(actionCreators.save_google_campaign_data(info)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdPaymentReview);
