@@ -40,7 +40,7 @@ class AdFeedDesignReview extends React.Component {
   };
 
   componentDidMount() {
-    let data = !this.props.campaignDetails
+    let data = !this.props.navigation.getParam("campaignDetails", false)
       ? this.props.data
       : this.props.navigation.state.params;
     if (data.media) {

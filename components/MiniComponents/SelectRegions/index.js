@@ -29,7 +29,7 @@ class SelectRegions extends Component {
   //     this.props.onSelectedRegionChange(region.id, region.name)
   //   );
   // };
-  checkForLocations = (c, fReg) => {
+  checkForLocations = (c, fReg, selectAll = false) => {
     let { translate } = this.props.screenProps;
     if (this.props.locationsSelected) {
       Alert.alert(
@@ -43,12 +43,17 @@ class SelectRegions extends Component {
             text: translate("Yes"),
             onPress: () => {
               this.props.onSelectedMapChange(null, true);
-              this.handleRegionSelection(c, fReg);
+              selectAll
+                ? this.props.onSelectedRegionChange(-1, "all")
+                : this.handleRegionSelection(c, fReg);
             },
           },
         ]
       );
-    } else this.handleRegionSelection(c, fReg);
+    } else
+      selectAll
+        ? this.props.onSelectedRegionChange(-1, "all")
+        : this.handleRegionSelection(c, fReg);
   };
   handleRegionSelection = (c, fReg) => {
     this.props.onSelectedRegionChange(
@@ -147,7 +152,7 @@ class SelectRegions extends Component {
               {!this.props.addressForm && (
                 <TouchableOpacity
                   style={[styles.languageRowConatiner, { alignSelf: "center" }]}
-                  onPress={() => this.props.onSelectedRegionChange(-1, "all")}
+                  onPress={() => this.checkForLocations(-1, "all", true)}
                 >
                   <Text
                     style={[

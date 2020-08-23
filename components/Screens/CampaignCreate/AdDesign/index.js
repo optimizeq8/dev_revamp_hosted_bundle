@@ -1348,13 +1348,14 @@ class AdDesign extends Component {
     ));
 
     //Workaround changing the source, it wasn't updating the video instantly
-    let videoPlayer = sourceChanging ? null : (
-      <VideoPlayer
-        storyAdCards={storyAdCards}
-        media={media}
-        videoIsLoading={() => {}}
-      />
-    );
+    let videoPlayer =
+      sourceChanging || this.adType === "StoryAd" ? null : (
+        <VideoPlayer
+          storyAdCards={storyAdCards}
+          media={this.adType !== "StoryAd" && media !== "//" ? media : "//"}
+          videoIsLoading={() => {}}
+        />
+      );
 
     return (
       <View style={styles.mainSafeArea}>
