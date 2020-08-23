@@ -215,6 +215,7 @@ class Website extends Component {
     const { translate } = this.props.screenProps;
     return (
       <InputScrollView
+        showsVerticalScrollIndicator={false}
         {...ScrollView.props}
         contentContainerStyle={[styles.websiteContent]}
       >

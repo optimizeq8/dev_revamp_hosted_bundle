@@ -283,6 +283,7 @@ class EditProduct extends Component {
           showTopRightButtonIcon={"delete"}
         />
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={styles.inputScrollViewStyle}
         >

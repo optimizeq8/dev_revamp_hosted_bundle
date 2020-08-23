@@ -293,6 +293,7 @@ class BillingAddressCard extends React.Component {
         />
 
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={styles.contentScrollViewContainer}
         >

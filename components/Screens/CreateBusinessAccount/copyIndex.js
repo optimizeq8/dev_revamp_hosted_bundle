@@ -607,6 +607,7 @@ class CreateBusinessAccount extends Component {
         )}
 
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={{ paddingBottom: "30%", paddingTop: 13 }}
         >

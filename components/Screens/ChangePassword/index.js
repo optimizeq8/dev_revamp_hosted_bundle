@@ -229,6 +229,7 @@ class ChangePassword extends Component {
         />
 
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={styles.contentContainer}
         >

@@ -12,7 +12,7 @@ import styles from "./styles";
 export default class AppChoiceBusiness extends Component {
   state = {
     fadeIOSLogo: new Animated.Value(1),
-    fadeAndroidLogo: new Animated.Value(1)
+    fadeAndroidLogo: new Animated.Value(1),
   };
 
   handleAndroidAppSelection = () => {
@@ -20,14 +20,14 @@ export default class AppChoiceBusiness extends Component {
       setModalVisible,
       playstorelink,
       toggleAppSelection,
-      appSelections
+      appSelections,
     } = this.props;
     if (playstorelink && playstorelink.android_app_url === "")
       setModalVisible(true, "ANDROID");
     else {
       Animated.timing(this.state.fadeAndroidLogo, {
         toValue: !appSelections.androidAppSelected ? 1 : 0.5,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
       toggleAppSelection(true);
     }
@@ -37,14 +37,14 @@ export default class AppChoiceBusiness extends Component {
       setModalVisible,
       appstorelink,
       toggleAppSelection,
-      appSelections
+      appSelections,
     } = this.props;
     if (appstorelink && appstorelink.ios_app_id === "")
       setModalVisible(true, "iOS");
     else {
       Animated.timing(this.state.fadeIOSLogo, {
         toValue: !appSelections.iosAppSelected ? 1 : 0.5,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
       toggleAppSelection(false);
     }
@@ -54,7 +54,7 @@ export default class AppChoiceBusiness extends Component {
       setModalVisible,
       playstorelink,
       appstorelink,
-      appSelections
+      appSelections,
     } = this.props;
 
     const { translate } = this.props.screenProps;
@@ -65,7 +65,7 @@ export default class AppChoiceBusiness extends Component {
           style={[globalStyles.column, styles.appStoreButtons]}
         >
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
-            <AppStoreIcon />
+            <AppStoreIcon fill={"#FFF"} />
           </Animated.View>
           <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
             {translate(`apple\napp store`)}

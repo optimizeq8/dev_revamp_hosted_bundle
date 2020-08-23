@@ -714,6 +714,7 @@ class CreateBusinessAccount extends Component {
         )}
 
         <InputScrollView
+          showsVerticalScrollIndicator={false}
           {...ScrollView.props}
           contentContainerStyle={[
             !this.props.registering && styles.businessView,
@@ -884,9 +885,9 @@ class CreateBusinessAccount extends Component {
             incomplete={false}
             translate={this.props.screenProps.translate}
             icon={LocationIcon}
-            isVisible={
-              this.props.registering ? this.props.inputC : this.state.inputC
-            }
+            // isVisible={
+            //   this.props.registering ? this.props.inputC : this.state.inputC
+            // }
           />
 
           {/** Webiste Component for  */}
@@ -901,6 +902,8 @@ class CreateBusinessAccount extends Component {
                 // width: widthPercentageToDP(85),
                 paddingHorizontal: 0,
               }}
+              iconFill={"#FFF"}
+              labelColor={"#FFF"}
               optional={true}
               website={this.state.businessAccount.websitelink}
               setWebsiteValue={this.setWebsiteValue}
