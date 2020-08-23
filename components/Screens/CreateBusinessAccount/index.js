@@ -555,15 +555,15 @@ class CreateBusinessAccount extends Component {
       businessAccount: {
         ...this.state.businessAccount,
         appstorelink: {
-          app_name: app.title,
-          ios_app_id: app.id,
-          icon_media_url: app.icon,
+          app_name: app.name,
+          ios_app_id: app.unique_id,
+          icon_media_url: app.icon_url,
         },
       },
       attachment: {
-        app_name: app.title,
-        ios_app_id: app.id,
-        icon_media_url: app.icon,
+        app_name: app.name,
+        ios_app_id: app.unique_id,
+        icon_media_url: app.icon_url,
       },
       iosAppSelected: true,
     });
@@ -575,15 +575,19 @@ class CreateBusinessAccount extends Component {
       businessAccount: {
         ...this.state.businessAccount,
         playstorelink: {
-          app_name: app.title,
+          app_name: app.name,
           icon_media_url: app.icon,
-          android_app_url: app.id ? app.id : app.application_id,
+          android_app_url: app.unique_id.includes("/store/apps/")
+            ? app.unique_id.replace("/store/apps/details?id=", "")
+            : app.unique_id,
         },
       },
       attachment: {
-        app_name: app.title,
-        icon_media_url: app.icon,
-        android_app_url: app.id ? app.id : app.application_id,
+        app_name: app.name,
+        icon_media_url: app.icon_url,
+        android_app_url: app.unique_id.includes("/store/apps/")
+          ? app.unique_id.replace("/store/apps/details?id=", "")
+          : app.unique_id,
       },
       androidAppSelected: true,
     });

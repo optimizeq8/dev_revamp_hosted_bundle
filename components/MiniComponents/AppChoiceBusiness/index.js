@@ -56,7 +56,6 @@ export default class AppChoiceBusiness extends Component {
       appstorelink,
       appSelections,
     } = this.props;
-
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.advertiseOSButtonView}>
@@ -67,13 +66,15 @@ export default class AppChoiceBusiness extends Component {
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
             <AppStoreIcon fill={"#FFF"} />
           </Animated.View>
-          <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
+          <Text
+            uppercase
+            style={[appConfirmStyles.appStoreButtonsText, { color: "#fff" }]}
+          >
             {translate(`apple\napp store`)}
           </Text>
           <Text style={styles.appStyle}>
             {appstorelink &&
-              appstorelink.app_name + "\n" + "id: " + appstorelink &&
-              appstorelink.ios_app_id}
+              appstorelink.app_name + "\n" + "id: " + appstorelink.ios_app_id}
           </Text>
           {/* iOSSwich */}
           <Toggle
@@ -99,13 +100,18 @@ export default class AppChoiceBusiness extends Component {
           <Animated.View style={{ opacity: this.state.fadeAndroidLogo }}>
             <PlayStoreIcon />
           </Animated.View>
-          <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
+          <Text
+            uppercase
+            style={[appConfirmStyles.appStoreButtonsText, { color: "#fff" }]}
+          >
             {translate(`google\nplay store`)}
           </Text>
           <Text style={styles.appStyle}>
             {playstorelink &&
-              playstorelink.app_name + "\n" + "id:" + playstorelink &&
-              playstorelink.android_app_url}
+              playstorelink.app_name +
+                "\n" +
+                "id:" +
+                playstorelink.android_app_url}
           </Text>
           {/* Android switch */}
           <Toggle

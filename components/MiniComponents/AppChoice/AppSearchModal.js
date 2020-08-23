@@ -34,16 +34,6 @@ class AppSearchModal extends Component {
   _searchAndroidApps = () => {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/android",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM",
-        },
-      },
-    });
-    let appIdorName = this.props.mainState.appValue.includes(".");
-    instance;
     Axios.get(
       `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
     )
