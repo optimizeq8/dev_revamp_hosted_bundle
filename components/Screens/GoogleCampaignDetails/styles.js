@@ -604,6 +604,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
     width: "85%",
+    textAlign: "left",
   },
 });
 
