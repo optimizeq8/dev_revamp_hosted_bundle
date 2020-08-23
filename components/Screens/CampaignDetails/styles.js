@@ -506,6 +506,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 13,
     width: "85%",
+    textAlign: "left",
   },
 });
 
