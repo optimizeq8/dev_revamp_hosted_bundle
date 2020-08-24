@@ -440,6 +440,8 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
+
           //   easing: Easing.linear
         }).start(() => {
           analytics.track(`a_change_password`, {

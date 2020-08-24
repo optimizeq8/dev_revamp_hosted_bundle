@@ -212,6 +212,7 @@ class InstagramCampaignDetails extends Component {
   toggle = () => {
     Animated.spring(this.state.chartAnimation, {
       toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight,
+      useNativeDriver: true,
     }).start();
   };
 

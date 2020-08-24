@@ -119,6 +119,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
         }).start(() => {
           showMessage({
             message: respData.data.message,
@@ -139,6 +140,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
         }).start(() => {
           analytics.track(`a_business_address`, {
             source: "open_business_address",

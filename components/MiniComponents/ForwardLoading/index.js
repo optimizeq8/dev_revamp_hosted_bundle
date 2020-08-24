@@ -4,7 +4,7 @@ import LottieView from "lottie-react-native";
 import CircleLoader from "../CircleLoader/CircleLoader";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import styles from "./styles";
 
@@ -14,13 +14,14 @@ class ForwardLoading extends React.Component {
     this.state = {
       forwardLoader: require("../../../assets/animation/forwardLoader.json"),
       progress: new Animated.Value(0),
-      loop: false
+      loop: false,
     };
   }
   componentDidMount() {
     Animated.timing(this.state.progress, {
       toValue: 1,
-      duration: 2500
+      duration: 2500,
+      useNativeDriver: true,
       //   easing: Easing.linear
     }).start();
     this.animation.play();
@@ -40,11 +41,11 @@ class ForwardLoading extends React.Component {
             style={[
               styles.mainView,
               { bottom: this.props.bottom ? this.props.bottom : 18 },
-              { ...this.props.mainViewStyle }
+              { ...this.props.mainViewStyle },
             ]}
           >
             <LottieView
-              ref={animation => {
+              ref={(animation) => {
                 this.animation = animation;
               }}
               onAnimationFinish={() => this.setState({ loop: true })}

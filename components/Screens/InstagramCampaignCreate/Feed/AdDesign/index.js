@@ -205,6 +205,7 @@ class AdDesign extends Component {
       velocity: 3,
       tension: 2,
       friction: 8,
+      useNativeDriver: true,
     }).start();
   };
   selectImageOption = (media_option) => {

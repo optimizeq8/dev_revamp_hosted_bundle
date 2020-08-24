@@ -11,7 +11,7 @@ import { colors } from "../../GradiantColors/colors";
 
 class SplashScreen extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -23,13 +23,15 @@ class SplashScreen extends Component {
     Animated.spring(this.animatedValue, {
       toValue: 1,
       friction: 4,
-      delay: 2500
+      delay: 2500,
+      useNativeDriver: true,
     }).start();
 
     Animated.timing(this.animatedValue2, {
       toValue: 1,
       delay: 200,
-      duration: 3000
+      duration: 3000,
+      useNativeDriver: true,
     }).start();
   }
   render() {
@@ -50,10 +52,7 @@ class SplashScreen extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SplashScreen);
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen);
