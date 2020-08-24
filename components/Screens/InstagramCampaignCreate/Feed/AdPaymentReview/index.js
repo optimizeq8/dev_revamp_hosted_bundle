@@ -194,75 +194,86 @@ class InstagramAdPaymentReview extends Component {
     const { translate } = this.props.screenProps;
     if (
       this.props.loading ||
-      this.props.languagesListLoading
-      // ||
-      // !this.props.data
-      // !this.props.data.campaignInfo.targeting
+      this.props.languagesListLoading ||
+      !this.props.data ||
+      !this.props.data.campaignInfo
     ) {
       return <LoadingScreen top={50} />;
     } else {
-      let data = this.props.data || {
-        //Object for testing
-        lifetime_budget_micro: "75",
-        objectiveLabel: "Brand Awareness",
-        instagram_business_name: "optimizeapp",
-        message: `Captions here, 
+      let data =
+        this.props.data &&
+        this.props.data.hasOwnProperty("lifetime_budget_micro")
+          ? this.props.data
+          : {
+              //Object for testing
+              lifetime_budget_micro: "75",
+              objectiveLabel: "Brand Awareness",
+              instagram_business_name: "optimizeapp",
+              message: `Captions here, 
         New line here`,
-        link: "https://svsberbsd.sdv",
-        end_time: "2020-03-19",
-        start_time: "2020-03-18",
-        campaignInfo: {
-          targeting: {
-            genders: ["1"],
-            os_version_max: "3.2",
-            os_version_min: "10.2",
+              link: "https://svsberbsd.sdv",
+              end_time: "2020-03-19",
+              start_time: "2020-03-18",
+              campaignInfo: {
+                targeting: {
+                  genders: ["1"],
+                  os_version_max: "3.2",
+                  os_version_min: "10.2",
 
-            geo_locations: {
-              countries: ["KW", "AE"],
-              regions: [
-                {
-                  country: "SA",
-                  key: "3203",
-                  name: "Al-Qassim Region",
+                  geo_locations: {
+                    countries: ["KW", "AE"],
+                    regions: [
+                      {
+                        country: "SA",
+                        key: "3203",
+                        name: "Al-Qassim Region",
+                      },
+                      {
+                        country: "SA",
+                        key: "3199",
+                        name: "Al Bahah Region",
+                      },
+                    ],
+                  },
+                  flexible_spec: [
+                    {
+                      interests: [
+                        {
+                          id: "6003030029655",
+                          name: "Chinese cuisine",
+                        },
+                        {
+                          id: "6003102988840",
+                          name: "Latin American cuisine",
+                        },
+                        {
+                          id: "6003134986700",
+                          name: "Baking",
+                        },
+                      ],
+                    },
+                  ],
+                  user_device: ["2.1", "6.1 plus", "a1000"],
+                  user_os: ["Android"],
+                  age_min: 13,
+                  age_max: 65,
                 },
-                {
-                  country: "SA",
-                  key: "3199",
-                  name: "Al Bahah Region",
-                },
-              ],
-            },
-            flexible_spec: [
-              {
-                interests: [
-                  {
-                    id: "6003030029655",
-                    name: "Chinese cuisine",
-                  },
-                  {
-                    id: "6003102988840",
-                    name: "Latin American cuisine",
-                  },
-                  {
-                    id: "6003134986700",
-                    name: "Baking",
-                  },
-                ],
+                lifetime_budget_micro: "75",
               },
-            ],
-            user_device: ["2.1", "6.1 plus", "a1000"],
-            user_os: ["Android"],
-            age_min: 13,
-            age_max: 65,
-          },
-          lifetime_budget_micro: "75",
-        },
-      };
+            };
       let campaignInfo = data.campaignInfo;
 
-      let targeting = campaignInfo ? campaignInfo.targeting : {};
+      let targeting = campaignInfo
+        ? campaignInfo.targeting
+        : {
+            flexible_spec: [{}],
+            genders: {},
+            geo_locations: { countries: {} },
+          };
       let interestNames = [];
-      let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
+      let lifetime_budget_micro = campaignInfo
+        ? campaignInfo.lifetime_budget_micro
+        : "50";
       let customInterstNames = data.customInterests
         ? data.customInterests.map((interest) => interest.name)
         : [];
@@ -272,9 +283,8 @@ class InstagramAdPaymentReview extends Component {
           customInterstNames,
         ];
       }
-      let end_time = new Date(data.end_time || "01-01-1970");
-
-      let start_time = new Date(data.start_time || "01-01-1970");
+      let end_time = new Date(data.end_time);
+      let start_time = new Date(data.start_time);
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
       let gender = targeting.genders
