@@ -1288,12 +1288,6 @@ class AdDetails extends Component {
       ? {
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.adType,
-          campaign_duration:
-            Math.ceil(
-              (new Date(this.props.data.end_time) -
-                new Date(this.props.data.start_time)) /
-                (1000 * 60 * 60 * 24)
-            ) + 1,
           campaign_name: this.props.data.name,
           campaign_id: this.props.data.campaign_id,
           campaign_brand_name: this.props.data.brand_name,
