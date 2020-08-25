@@ -25,7 +25,6 @@ export default Chart = (props) => {
         rotation={0}
         lineCap="round"
         style={styles.chart}
-        tintColor={globalColors.orange}
         backgroundColor="#0004"
         tintColorSecondary={globalColors.orange}
         tintColorThirdy={globalColors.green}
