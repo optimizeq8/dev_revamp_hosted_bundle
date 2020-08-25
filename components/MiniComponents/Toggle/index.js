@@ -97,7 +97,7 @@ class Item extends Component {
         ? 0
         : 1,
       duration: this.props.duration,
-      useNativeDriver: true,
+      useNativeDriver: false,
     };
     Animated.timing(this.state.animXValue, animValue).start();
     // Animated.timing(this.state.anim, animValue).start(() => this.runAnimation());
