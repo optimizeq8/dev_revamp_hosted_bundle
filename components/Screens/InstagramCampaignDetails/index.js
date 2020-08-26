@@ -590,7 +590,9 @@ class InstagramCampaignDetails extends Component {
             >
               <View style={[styles.mainCard]}>
                 {!loading &&
-                  (false ? (
+                  ((selectedCampaign &&
+                    selectedCampaign.review_status !== "REJECTED") ||
+                  new Date(selectedCampaign.end_time) < new Date() ? (
                     <TouchableOpacity
                       onLayout={this.onLayout}
                       disabled={this.state.expand}
