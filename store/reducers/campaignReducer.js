@@ -1,6 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
 import { cloneDeep } from "lodash";
-import storyAdsData from "./storyAdsData";
 
 const initialState = {
   message: "",
@@ -862,7 +861,6 @@ const reducer = (state = initialState, action) => {
           call_to_action: rejNewStoryAdsArray[0].call_to_action,
           destination: rejNewStoryAdsArray[0].destination,
         };
-        stateAdArray = storyAdsData;
         if (stateAdArray[0].id !== -1) {
           stateAdArray = [
             {
