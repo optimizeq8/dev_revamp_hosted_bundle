@@ -13,14 +13,23 @@ import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage"
 import segmentEventTrack from "../../../../segmentEventTrack";
 class SnapCard extends Component {
   state = { uploading: false, showDelete: false };
+  handleDeletion = () => {
+    let { snapCardInfo, removeSnapCard } = this.props;
+    if (
+      this.state.showDelete &&
+      !this.props.loadingStoryAdsArray[snapCardInfo.index]
+    ) {
+      this.props.deleteStoryAdCard(
+        snapCardInfo.item.story_id,
+        snapCardInfo,
+        removeSnapCard
+      );
+
+      this.setState({ showDelete: false });
+    }
+  };
   render() {
-    let {
-      snapCardInfo,
-      removeSnapCard,
-      _handleStoryAdCards,
-      rejected,
-      setTheState,
-    } = this.props;
+    let { snapCardInfo, _handleStoryAdCards, rejected } = this.props;
     const { translate } = this.props.screenProps;
     let videoPlayer = this.props.loadingStoryAdsArray[
       snapCardInfo.index
@@ -96,19 +105,7 @@ class SnapCard extends Component {
             snapCardInfo.item.media !== "//" &&
               this.setState({ showDelete: true });
           }}
-          onPress={() => {
-            if (
-              this.state.showDelete &&
-              !this.props.loadingStoryAdsArray[snapCardInfo.index]
-            ) {
-              this.props.deleteStoryAdCard(
-                snapCardInfo.item.story_id,
-                snapCardInfo,
-                removeSnapCard
-              );
-              this.setState({ showDelete: false });
-            }
-          }}
+          onPress={this.handleDeletion}
         >
           <Text style={{ color: "#fff", fontFamily: "montserrat-regular" }}>
             {this.state.showDelete

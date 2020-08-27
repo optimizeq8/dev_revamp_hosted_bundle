@@ -88,6 +88,8 @@ class App_Install extends Component {
         },
         callaction: this.props.storyAdAttachment.call_to_action,
         appChoice:
+          this.props.data &&
+          this.props.data.attachment &&
           this.props.data.attachment.ios_app_id !== "" &&
           this.props.data.attachment.android_app_url !== ""
             ? null

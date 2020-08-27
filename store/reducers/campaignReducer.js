@@ -1,5 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import { cloneDeep } from "lodash";
+import storyAdsData from "./storyAdsData";
 
 const initialState = {
   message: "",
@@ -832,50 +833,54 @@ const reducer = (state = initialState, action) => {
       let rejAds = action.payload;
       let rejNewStoryAdsArray = [];
       let oldStoryAdAttachment = state.storyAdAttachment;
-      rejNewStoryAdsArray = rejAds.map((ad, i) => {
-        let atch =
-          ad.attachment !== "BLANK" ? JSON.parse(ad.attachment) : ad.attachment;
-        if (atch.hasOwnProperty("block_preload")) {
-          delete atch.block_preload;
-          if (atch.url.includes("?utm_source")) {
-            atch.url = atch.url.split("?utm_source")[0];
-          }
-        }
-        return {
-          ...ad,
-          index: ad.story_order,
-          id: ad.story_id,
-          call_to_action: {
-            label: ad.call_to_action.replace("_", " "),
-            value: ad.call_to_action,
-          },
-          attachment: atch,
-        };
-      });
-      oldStoryAdAttachment = {
-        attachment: rejNewStoryAdsArray[0].attachment,
-        call_to_action: rejNewStoryAdsArray[0].call_to_action,
-        destination: rejNewStoryAdsArray[0].destination,
-      };
       let stateAdArray = cloneDeep(state.storyAdsArray);
-      if (stateAdArray[0].id !== -1) {
-        stateAdArray = [
-          {
-            id: -1,
-            call_to_action: { label: "BLANK", value: "BLANK" },
-            media: "//",
-            destination: "BLANK",
-            attachment: "BLANK",
-          },
-          ...stateAdArray,
-        ];
+      if (rejAds) {
+        rejNewStoryAdsArray = rejAds.map((ad, i) => {
+          let atch =
+            ad.attachment !== "BLANK"
+              ? JSON.parse(ad.attachment)
+              : ad.attachment;
+          if (atch.hasOwnProperty("block_preload")) {
+            delete atch.block_preload;
+            if (atch.url.includes("?utm_source")) {
+              atch.url = atch.url.split("?utm_source")[0];
+            }
+          }
+          return {
+            ...ad,
+            index: ad.story_order,
+            id: ad.story_id,
+            call_to_action: {
+              label: ad.call_to_action.replace("_", " "),
+              value: ad.call_to_action,
+            },
+            attachment: atch,
+          };
+        });
+        oldStoryAdAttachment = {
+          attachment: rejNewStoryAdsArray[0].attachment,
+          call_to_action: rejNewStoryAdsArray[0].call_to_action,
+          destination: rejNewStoryAdsArray[0].destination,
+        };
+        stateAdArray = storyAdsData;
+        if (stateAdArray[0].id !== -1) {
+          stateAdArray = [
+            {
+              id: -1,
+              call_to_action: { label: "BLANK", value: "BLANK" },
+              media: "//",
+              destination: "BLANK",
+              attachment: "BLANK",
+            },
+            ...stateAdArray,
+          ];
+        }
+        rejNewStoryAdsArray.forEach(
+          (story) => (stateAdArray[story.index] = story)
+        );
+      } else {
+        stateAdArray = state.storyAdsArray;
       }
-      stateAdArray.splice(
-        1,
-        rejNewStoryAdsArray.length,
-        ...rejNewStoryAdsArray
-      );
-
       return {
         ...state,
         storyAdsArray: stateAdArray,
