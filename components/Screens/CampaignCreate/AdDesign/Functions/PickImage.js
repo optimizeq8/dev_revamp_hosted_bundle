@@ -75,8 +75,7 @@ export const _pickImage = async (
   mediaEditor = {},
   editImage,
   videoIsExporting,
-  statisticsCallback,
-  cancelled
+  statisticsCallback
 ) => {
   try {
     let result = {};

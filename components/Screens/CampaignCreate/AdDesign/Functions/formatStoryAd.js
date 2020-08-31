@@ -57,7 +57,7 @@ export const formatStoryAd = async (
     "story_name",
     //the rejected campaign would already have a name but if it was uploaded from a different device
     //then it doesn't have a name
-    !card.uploadedFromDifferentDevice && rejected
+    !card.uploadedFromDifferentDevice && rejected && card.name
       ? card.name
       : campaignInfo.brand_name + " " + card.index
   );

@@ -115,7 +115,9 @@ ContinueInfo = (props) => {
                     data={
                       oldTempAdType === "CollectionAd"
                         ? collectionAdMedia
-                        : storyAdsArray.slice(0, storyAdsArray.length - 1)
+                        : storyAdsArray
+                            .slice(0, storyAdsArray.length - 1)
+                            .filter((ad) => ad.media && ad.media !== "//")
                     }
                     renderItem={this.adCreatives}
                     numColumns={2}

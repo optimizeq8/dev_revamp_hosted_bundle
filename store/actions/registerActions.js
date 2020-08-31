@@ -596,8 +596,19 @@ export const registerGuestUser = (
           source_action: "a_sign_up",
           action_status: data.success ? "success" : "failure",
           email: userInfo.email,
+          business_invite: businessInvite === "0",
         });
 
+        // For users creating new business while registering
+        if (businessInvite === "1") {
+          analytics.track(`a_create_buiness_account`, {
+            source: "open_create_business_account",
+            source_action: `a_create_buiness_account`,
+            action_status: data.success ? "success" : "failure",
+            timestamp: new Date().getTime(),
+            ...userInfo,
+          });
+        }
         let adjustRegiserTracker = new AdjustEvent("eivlhl");
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);

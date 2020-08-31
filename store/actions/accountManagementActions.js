@@ -575,7 +575,10 @@ export const getTempUserInfo = (member_id) => {
         else {
           showMessage({ message: data.message, type: "warning" });
           //reset navigation
-          NavigationService.navigate("SwitchLanguage");
+          NavigationService.navigate("SwitchLanguage", {
+            source: "registration_detail",
+            source_action: "a_set_business_detail",
+          });
           dispatch({
             type: actionTypes.SET_TEMP_USERINFO,
             payload: null,

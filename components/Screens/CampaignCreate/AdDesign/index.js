@@ -89,6 +89,7 @@ import Modal from "react-native-modal";
 import { BlurView } from "@react-native-community/blur";
 import { RNFFmpeg } from "react-native-ffmpeg";
 import VideoProcessingLoader from "../../../MiniComponents/VideoProcessingLoader";
+import { persistor } from "../../../../store";
 class AdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -486,7 +487,10 @@ class AdDesign extends Component {
       mediaEditor,
       editImage,
       this.videoIsExporting,
-      this.statisticsCallback
+      this.statisticsCallback,
+      this.selectedCampaign.hasOwnProperty("story_creatives")
+        ? this.props.rejCampaign.story_creatives
+        : []
     );
 
   getVideoUploadUrl = () => {
@@ -706,9 +710,7 @@ class AdDesign extends Component {
 
     const validCards =
       this.adType === "StoryAd"
-        ? this.rejected
-          ? this.selectedCampaign.story_creatives.filter((ad) => ad.story_id)
-          : this.props.storyAdsArray.filter((ad) => ad.media !== "//")
+        ? this.props.storyAdsArray.filter((ad) => ad.media !== "//")
         : [1, 2, 3];
     const collectionError =
       this.adType === "CollectionAd"
@@ -1010,7 +1012,12 @@ class AdDesign extends Component {
     if (!this.props.navigation.isFocused()) {
       return false;
     }
-    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
+    if (this.props.rejCampaign) {
+      this.props.resetRejectedCampaignData();
+      this.props.setRejectedStoryAds(false);
+      this.props.resetCampaignInfo();
+      persistor.purge();
+    }
     this.state.storyAdCards.storyAdSelected
       ? this.setState({
           ...this.state,
@@ -1892,5 +1899,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.tutorialLinks(screenName, appLang)),
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData()),
+  resetCampaignInfo: (resetAdType) =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

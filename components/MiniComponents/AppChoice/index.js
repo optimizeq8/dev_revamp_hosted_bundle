@@ -141,6 +141,8 @@ class AppChoice extends Component {
               ? this.data.iosApp_name
               : this.data.attachment.app_name
               ? this.data.attachment.app_name
+              : this.data.hasOwnProperty("story_creatives")
+              ? JSON.parse(this.data.story_creatives[0].attachment).app_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
             : "",
@@ -157,6 +159,8 @@ class AppChoice extends Component {
               ? this.data.androidApp_name
               : this.data.attachment.app_name
               ? this.data.attachment.app_name
+              : this.data.hasOwnProperty("story_creatives")
+              ? JSON.parse(this.data.story_creatives[0].attachment).app_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
             : "",
