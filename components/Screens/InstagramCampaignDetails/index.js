@@ -504,26 +504,6 @@ class InstagramCampaignDetails extends Component {
               <View style={{ margin: 5 }}>
                 <PlaceholderLine />
               </View>
-            ) : this.campaignEndedOrNot(selectedCampaign) ? (
-              !this.state.expand && (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.orange,
-                      },
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.orange }]}
-                  >
-                    {translate("Campaign ended")}
-                  </Text>
-                </View>
-              )
             ) : (
               !this.state.expand && (
                 <View style={[styles.adStatus]}>
@@ -531,13 +511,7 @@ class InstagramCampaignDetails extends Component {
                     style={[
                       styles.circleIcon,
                       {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange,
+                        color: selectedCampaign.ad_status_color_code,
                       },
                     ]}
                     name={
@@ -555,29 +529,11 @@ class InstagramCampaignDetails extends Component {
                     style={[
                       styles.reviewText,
                       {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : !selectedCampaign.review_status.includes(
-                              "PENDING"
-                            ) && selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange,
+                        color: selectedCampaign.ad_status_color_code,
                       },
                     ]}
                   >
-                    {translate(
-                      `${
-                        selectedCampaign.review_status.includes("PENDING")
-                          ? "In Review"
-                          : selectedCampaign.review_status.includes("REJECTED")
-                          ? "Ad Rejected"
-                          : selectedCampaign.status === "LIVE"
-                          ? "LIVE"
-                          : "Campaign Paused"
-                      }`
-                    )}
+                    {translate(`${selectedCampaign.ad_status}`)}
                   </Text>
                 </View>
               )
@@ -590,9 +546,19 @@ class InstagramCampaignDetails extends Component {
             >
               <View style={[styles.mainCard]}>
                 {!loading &&
-                  ((selectedCampaign &&
-                    selectedCampaign.review_status !== "REJECTED") ||
-                  new Date(selectedCampaign.end_time) < new Date() ? (
+                selectedCampaign &&
+                selectedCampaign.ad_status === "Ad Rejected" ? (
+                  <RejectedSnapchatInfo
+                    loading={loading}
+                    screenProps={this.props.screenProps}
+                    review_status_reason={
+                      selectedCampaign.review_status_reason || []
+                    }
+                    navigation={this.props.navigation}
+                    selectedCampaign={selectedCampaign}
+                  />
+                ) : (
+                  selectedCampaign && (
                     <TouchableOpacity
                       onLayout={this.onLayout}
                       disabled={this.state.expand}
@@ -616,17 +582,8 @@ class InstagramCampaignDetails extends Component {
                         chartExpanded={this.state.expand}
                       />
                     </TouchableOpacity>
-                  ) : (
-                    <RejectedSnapchatInfo
-                      loading={loading}
-                      screenProps={this.props.screenProps}
-                      review_status_reason={
-                        selectedCampaign.review_status_reason || []
-                      }
-                      navigation={this.props.navigation}
-                      selectedCampaign={selectedCampaign}
-                    />
-                  ))}
+                  )
+                )}
 
                 {!this.state.expand && (
                   <View style={styles.campaignMediaAndInfo}>
@@ -666,12 +623,11 @@ class InstagramCampaignDetails extends Component {
                           (selectedCampaign.campaign_end === "0" &&
                           !this.props.campaignEnded &&
                           new Date(selectedCampaign.end_time) > new Date() ? (
-                            selectedCampaign.review_status === "APPROVED" &&
-                            new Date(selectedCampaign.start_time) >
-                              new Date() ? (
+                            selectedCampaign.campaign_start_date ? (
                               <View style={[styles.campaignStatus]}>
                                 <Text style={styles.reviewtext}>
-                                  {translate("Scheduled for")} {start_time}
+                                  {translate("Scheduled for")}{" "}
+                                  {selectedCampaign.campaign_start_date}
                                 </Text>
                               </View>
                             ) : (
