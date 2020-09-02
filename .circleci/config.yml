@@ -21,7 +21,7 @@ workflows:
   main:
     jobs:
       - deploy:
-          context: aws
+          context: aws-bh
           filters:
             branches:
               only: master-copy
