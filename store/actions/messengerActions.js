@@ -45,6 +45,10 @@ export const connect_user_to_intercom = (user_id) => {
         }
       })
       .catch((err) => {
+        // console.log(
+        //   "connect_user_to_intercom error",
+        //   err.message || err.response
+        // );
         showMessage({
           message:
             err.message ||
