@@ -4,14 +4,11 @@ import { Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
-import slowlog from "react-native-slowlog";
-import dateFormat from "dateformat";
 
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import CampaignCircleChart from "../InstagramCampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
@@ -28,6 +25,8 @@ class CampaignCard extends Component {
   }
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
+  ad_status = this.props.campaign.ad_status;
+  ad_status_color_code = this.props.campaign.ad_status_color_code;
 
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
@@ -111,87 +110,40 @@ class CampaignCard extends Component {
                 >
                   {this.props.campaign.name}
                 </Text>
-                {this.campaignEndedOrNot(campaign, endDate) ? (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: globalColors.orange,
-                        },
-                      ]}
-                      name={"circle"}
-                      type={"FontAwesome"}
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        { color: globalColors.orange },
-                      ]}
-                    >
-                      {translate("Campaign ended")}
-                    </Text>
-                  </View>
-                ) : (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: this.review_status.includes("REJECTED")
-                            ? globalColors.red
-                            : this.campaign_status === "LIVE" &&
-                              !this.review_status.includes("PENDING")
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                      name={
-                        this.review_status.includes("REJECTED")
-                          ? "circle-slash"
-                          : "circle"
-                      }
-                      type={
-                        this.review_status.includes("REJECTED")
-                          ? "Octicons"
-                          : "FontAwesome"
-                      }
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        {
-                          color: this.review_status.includes("REJECTED")
-                            ? globalColors.red
-                            : !this.review_status.includes("PENDING") &&
-                              this.campaign_status === "LIVE"
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                    >
-                      {translate(
-                        `${
-                          this.review_status.includes("PENDING")
-                            ? "In Review"
-                            : this.review_status.includes("REJECTED")
-                            ? "Ad Rejected"
-                            : this.campaign_status === "LIVE"
-                            ? new Date(campaign.start_time) > new Date()
-                              ? "Scheduled for"
-                              : "LIVE"
-                            : "Campaign Paused"
-                        }`
-                      ) +
-                        " " +
-                        (this.campaign_status === "LIVE" &&
-                        !this.review_status.includes("PENDING") &&
-                        new Date(campaign.start_time) > new Date()
-                          ? dateFormat(new Date(campaign.start_time), "mmm dS")
-                          : "")}
-                    </Text>
-                  </View>
-                )}
+
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: this.ad_status_color_code,
+                      },
+                    ]}
+                    name={
+                      this.ad_status && this.ad_status.includes("Ad Rejected")
+                        ? "circle-slash"
+                        : "circle"
+                    }
+                    type={
+                      this.ad_status && this.ad_status.includes("Ad Rejected")
+                        ? "Octicons"
+                        : "FontAwesome"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.reviewText,
+                      {
+                        color: this.ad_status_color_code,
+                      },
+                    ]}
+                  >
+                    {translate(`${this.ad_status}`) + " "}
+                    {campaign && campaign.campaign_start_date
+                      ? campaign.campaign_start_date
+                      : ""}
+                  </Text>
+                </View>
               </View>
               {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
@@ -212,18 +164,13 @@ class CampaignCard extends Component {
                 )}
             </View>
 
-            {!this.review_status.includes("PENDING") &&
-              this.review_status.includes("REJECTED") &&
-              !(
-                campaign.campaign_end === "1" ||
-                new Date(campaign.end_time) < new Date()
-              ) && (
-                <Text style={[styles.subtext]}>
-                  {translate("Tap to submit your Ad again")}
-                </Text>
-              )}
+            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
+              <Text style={[styles.subtext]}>
+                {translate("Tap to submit your Ad again")}
+              </Text>
+            )}
 
-            {this.review_status.includes("APPROVED") && (
+            {this.review_status === "APPROVED" && (
               <View style={styles.chartContainer}>
                 <CampaignCircleChart
                   channel={this.props.channel}

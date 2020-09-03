@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
 import { Text } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
@@ -29,13 +30,23 @@ class ContinueCampaign extends Component {
     this.state = {
       isVisible: false,
       resumeLoading: false,
-      outdatedDates: false,
     };
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
-    if (this.props.data.incompleteCampaign && !this.props.data.campaignResumed)
+    if (
+      this.props.data.incompleteCampaign &&
+      !this.props.data.campaignResumed
+    ) {
+      analytics.track("continue_campaign_modal", {
+        source: "ad_objective",
+        // source_action: ""
+        campaign_channel: "google",
+        campaign_ad_type: "GoogleSEAd",
+        timestamp: new Date().getTime(),
+      });
       this.continueCampaign();
+    }
   }
 
   /**
@@ -45,9 +56,15 @@ class ContinueCampaign extends Component {
   navigateToContinue = () => {
     //Array of navigation routes to set in the stack
     let continueRoutes = this.props.data.campaignSteps.map((route) =>
-      NavigationActions.navigate({
-        routeName: route,
-      })
+      NavigationActions.navigate(
+        {
+          routeName: route,
+        },
+        {
+          source: "continue_campaign_modal",
+          source_action: "a_continue_campaign",
+        }
+      )
     );
     //resets the navigation stack
     resetAction = StackActions.reset({
@@ -78,11 +95,7 @@ class ContinueCampaign extends Component {
   continueCampaign = () => {
     if (this.props.data.incompleteCampaign) {
       setTimeout(() => {
-        this.setState({ isVisible: true }, () => {
-          if (this.state.isVisible) {
-            Segment.screen("Continue Google Campaign Modal");
-          }
-        });
+        this.setState({ isVisible: true });
       }, 800);
     }
   };
@@ -130,7 +143,6 @@ class ContinueCampaign extends Component {
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.setState({ outdatedDates: true });
       this.props.dateField.showModal(true);
       this.handleSubmition(false, false);
     } else {

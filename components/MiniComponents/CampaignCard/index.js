@@ -29,6 +29,8 @@ class CampaignCard extends Component {
   }
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
+  ad_status_color = this.props.campaign.ad_status_color_code;
+  ad_status = this.props.campaign.ad_status;
 
   //New date returns the current date with a timezone of -3
   //So I add back the offset so the dates from the backend are compared properly
@@ -123,92 +125,40 @@ class CampaignCard extends Component {
                 >
                   {this.props.campaign.name}
                 </Text>
-                {this.campaignEndedOrNot(campaign, endDate) ? (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: globalColors.orange,
-                        },
-                      ]}
-                      name={"circle"}
-                      type={"FontAwesome"}
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        { color: globalColors.orange },
-                      ]}
-                    >
-                      {translate("Campaign ended")}
-                    </Text>
-                  </View>
-                ) : (
-                  <View style={[styles.adStatus]}>
-                    <Icon
-                      style={[
-                        styles.circleIcon,
-                        {
-                          color: this.review_status.includes("REJECTED")
-                            ? globalColors.red
-                            : this.campaign_status === "LIVE" &&
-                              !this.review_status.includes("PENDING")
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                      name={
-                        this.review_status.includes("REJECTED")
-                          ? "circle-slash"
-                          : "circle"
-                      }
-                      type={
-                        this.review_status.includes("REJECTED")
-                          ? "Octicons"
-                          : "FontAwesome"
-                      }
-                    />
-                    <Text
-                      style={[
-                        styles.reviewText,
-                        {
-                          color: this.review_status.includes("REJECTED")
-                            ? globalColors.red
-                            : !this.review_status.includes("PENDING") &&
-                              this.campaign_status === "LIVE"
-                            ? globalColors.green
-                            : globalColors.orange,
-                        },
-                      ]}
-                    >
-                      {translate(
-                        `${
-                          this.review_status.includes("PENDING")
-                            ? "In Review"
-                            : this.review_status.includes("REJECTED")
-                            ? "Ad Rejected"
-                            : this.campaign_status === "LIVE"
-                            ? new Date(campaign.start_time).setHours(
-                                0,
-                                0,
-                                0,
-                                0
-                              ) > this.currentDate().setHours(0, 0, 0, 0)
-                              ? "Scheduled for"
-                              : "LIVE"
-                            : "Campaign Paused"
-                        }`
-                      ) +
-                        " " +
-                        (this.campaign_status === "LIVE" &&
-                        !this.review_status.includes("PENDING") &&
-                        new Date(campaign.start_time) > this.currentDate()
-                          ? dateFormat(new Date(campaign.start_time), "mmm dS")
-                          : "")}
-                    </Text>
-                  </View>
-                )}
+                <View style={[styles.adStatus]}>
+                  <Icon
+                    style={[
+                      styles.circleIcon,
+                      {
+                        color: this.ad_status_color,
+                      },
+                    ]}
+                    name={
+                      this.review_status.includes("REJECTED")
+                        ? "circle-slash"
+                        : "circle"
+                    }
+                    type={
+                      this.review_status.includes("REJECTED")
+                        ? "Octicons"
+                        : "FontAwesome"
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.reviewText,
+                      {
+                        color: this.ad_status_color,
+                      },
+                    ]}
+                  >
+                    {translate(`${this.ad_status}`) +
+                      " " +
+                      (campaign && campaign.campaign_start_date
+                        ? campaign.campaign_start_date
+                        : "")}
+                  </Text>
+                </View>
               </View>
               {/* {campaign.snap_ad_id &&
                 campaign.campaign_end === "0" &&
@@ -229,16 +179,11 @@ class CampaignCard extends Component {
                 )} */}
             </View>
 
-            {!this.review_status.includes("PENDING") &&
-              this.review_status.includes("REJECTED") &&
-              !(
-                campaign.campaign_end === "1" ||
-                new Date(campaign.end_time) < this.currentDate()
-              ) && (
-                <Text style={[styles.subtext]}>
-                  {translate("Tap to submit your Ad again")}
-                </Text>
-              )}
+            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
+              <Text style={[styles.subtext]}>
+                {translate("Tap to submit your Ad again")}
+              </Text>
+            )}
 
             {this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>

@@ -548,7 +548,7 @@ class CampaignDetails extends Component {
               )}
             {selectedCampaign &&
               selectedCampaign.review_status === "PENDING" &&
-              !this.campaignEndedOrNot(selectedCampaign) &&
+              selectedCampaign.ad_status !== "Campaign ended" &&
               !this.state.expand && (
                 <View
                   style={[
@@ -577,26 +577,6 @@ class CampaignDetails extends Component {
               <View style={{ margin: 5 }}>
                 <PlaceholderLine />
               </View>
-            ) : this.campaignEndedOrNot(selectedCampaign) ? (
-              !this.state.expand && (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.orange,
-                      },
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.orange }]}
-                  >
-                    {translate("Campaign ended")}
-                  </Text>
-                </View>
-              )
             ) : (
               !this.state.expand && (
                 <View style={[styles.adStatus]}>
@@ -604,13 +584,7 @@ class CampaignDetails extends Component {
                     style={[
                       styles.circleIcon,
                       {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange,
+                        color: selectedCampaign.ad_status_color_code,
                       },
                     ]}
                     name={
@@ -628,29 +602,11 @@ class CampaignDetails extends Component {
                     style={[
                       styles.reviewText,
                       {
-                        color: selectedCampaign.review_status.includes(
-                          "REJECTED"
-                        )
-                          ? globalColors.red
-                          : !selectedCampaign.review_status.includes(
-                              "PENDING"
-                            ) && selectedCampaign.status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange,
+                        color: selectedCampaign.ad_status_color_code,
                       },
                     ]}
                   >
-                    {translate(
-                      `${
-                        selectedCampaign.review_status.includes("PENDING")
-                          ? "In Review"
-                          : selectedCampaign.review_status.includes("REJECTED")
-                          ? "Ad Rejected"
-                          : selectedCampaign.status === "LIVE"
-                          ? "LIVE"
-                          : "Campaign Paused"
-                      }`
-                    )}
+                    {translate(`${selectedCampaign.ad_status}`)}
                   </Text>
                 </View>
               )
@@ -663,33 +619,8 @@ class CampaignDetails extends Component {
             >
               <View style={[styles.mainCard]}>
                 {!loading &&
-                  ((selectedCampaign &&
-                    selectedCampaign.review_status !== "REJECTED") ||
-                  new Date(selectedCampaign.end_time) < new Date() ? (
-                    <TouchableOpacity
-                      onLayout={this.onLayout}
-                      disabled={this.state.expand}
-                      onPress={this.handleChartToggle}
-                    >
-                      {this.state.expand && (
-                        <ChartDateChoices
-                          selectedCampaign={selectedCampaign}
-                          dateField={this.dateField}
-                          durationChange={this.durationChange}
-                          screenProps={this.props.screenProps}
-                        />
-                      )}
-                      <CampaignCircleChart
-                        channel={"snapchat"}
-                        campaign={selectedCampaign}
-                        detail={true}
-                        screenProps={this.props.screenProps}
-                        loading={loading}
-                        handleChartToggle={this.handleChartToggle}
-                        chartExpanded={this.state.expand}
-                      />
-                    </TouchableOpacity>
-                  ) : (
+                  (selectedCampaign &&
+                  selectedCampaign.review_status === "REJECTED" ? (
                     <RejectedSnapchatInfo
                       loading={loading}
                       screenProps={this.props.screenProps}
@@ -699,6 +630,32 @@ class CampaignDetails extends Component {
                       navigation={this.props.navigation}
                       selectedCampaign={selectedCampaign}
                     />
+                  ) : (
+                    selectedCampaign && (
+                      <TouchableOpacity
+                        onLayout={this.onLayout}
+                        disabled={this.state.expand}
+                        onPress={this.handleChartToggle}
+                      >
+                        {this.state.expand && (
+                          <ChartDateChoices
+                            selectedCampaign={selectedCampaign}
+                            dateField={this.dateField}
+                            durationChange={this.durationChange}
+                            screenProps={this.props.screenProps}
+                          />
+                        )}
+                        <CampaignCircleChart
+                          channel={"snapchat"}
+                          campaign={selectedCampaign}
+                          detail={true}
+                          screenProps={this.props.screenProps}
+                          loading={loading}
+                          handleChartToggle={this.handleChartToggle}
+                          chartExpanded={this.state.expand}
+                        />
+                      </TouchableOpacity>
+                    )
                   ))}
 
                 {!this.state.expand && (
