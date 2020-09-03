@@ -344,6 +344,11 @@ PODS:
   - RNAnalytics (1.1.1-beta.6):
     - Analytics (= 3.9.0)
     - React
+  - RNAnalyticsIntegration-Adjust (1.3.0):
+    - Analytics
+    - React
+    - RNAnalytics
+    - Segment-Adjust
   - RNAnalyticsIntegration-Mixpanel (1.1.1-beta.6):
     - Analytics
     - React
@@ -378,6 +383,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.9)
+  - Segment-Adjust (2.1.1):
+    - Adjust (~> 4.18)
+    - Analytics
   - Segment-Mixpanel (1.6.0):
     - Analytics (~> 3.0)
     - Mixpanel (~> 3.5)
@@ -469,6 +477,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Adjust (from `../node_modules/@segment/analytics-react-native-adjust`)"
   - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -509,6 +518,7 @@ SPEC REPOS:
     - Mixpanel
     - mobile-ffmpeg-https-gpl
     - PhotoEditorSDK
+    - Segment-Adjust
     - Segment-Mixpanel
     - Sentry
     - VideoEditorSDK
@@ -630,6 +640,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-autogrow-textinput"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
+  RNAnalyticsIntegration-Adjust:
+    :path: "../node_modules/@segment/analytics-react-native-adjust"
   RNAnalyticsIntegration-Mixpanel:
     :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
@@ -754,6 +766,7 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNAnalytics: 0176cbd15962b36479c9ab76a2c613be9a34528c
+  RNAnalyticsIntegration-Adjust: 0a027f6fc50ee29ff9eaf82b9965b15cea41e378
   RNAnalyticsIntegration-Mixpanel: 2a7b237e57efc5b5a17fd028820b55d1dd0b1afb
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161
@@ -767,6 +780,7 @@ SPEC CHECKSUMS:
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RNVideoEditorSDK: 074e38b47debbda36c4f4329676ecfc88f87c4ee
+  Segment-Adjust: d90c13ad220a0454927b957f3db9b29fa83da875
   Segment-Mixpanel: b5d949a7eda1018a8d5afbb2cfcb59c870ecce34
   Sentry: 795e8ffe1c45d9d20b3aa398774d7ea6a443fb05
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
@@ -785,6 +799,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: ca906fafa351722a4e3e60c44e43e119c822fc30
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: ba65a44ccf180d116e818532cb15b7feea171976
+PODFILE CHECKSUM: 2b3e9c6ee566e6064a9f71d4a5bf7a23350f67c2
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

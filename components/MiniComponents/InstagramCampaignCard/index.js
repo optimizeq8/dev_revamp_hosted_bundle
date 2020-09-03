@@ -4,14 +4,11 @@ import { Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
-import slowlog from "react-native-slowlog";
-import dateFormat from "dateformat";
 
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import CampaignCircleChart from "../InstagramCampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
@@ -123,12 +120,12 @@ class CampaignCard extends Component {
                       },
                     ]}
                     name={
-                      this.ad_status.includes("Ad Rejected")
+                      this.ad_status && this.ad_status.includes("Ad Rejected")
                         ? "circle-slash"
                         : "circle"
                     }
                     type={
-                      this.ad_status.includes("Ad Rejected")
+                      this.ad_status && this.ad_status.includes("Ad Rejected")
                         ? "Octicons"
                         : "FontAwesome"
                     }
@@ -167,7 +164,7 @@ class CampaignCard extends Component {
                 )}
             </View>
 
-            {this.ad_status.includes("Ad Rejected") && (
+            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
               <Text style={[styles.subtext]}>
                 {translate("Tap to submit your Ad again")}
               </Text>

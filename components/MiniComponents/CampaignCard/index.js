@@ -179,7 +179,7 @@ class CampaignCard extends Component {
                 )} */}
             </View>
 
-            {this.ad_status.includes("Ad Rejected") && (
+            {this.ad_status && this.ad_status.includes("Ad Rejected") && (
               <Text style={[styles.subtext]}>
                 {translate("Tap to submit your Ad again")}
               </Text>

@@ -20,7 +20,7 @@ Card = ({
   editField,
   changePhoneNo,
   onPress,
-  valid
+  valid,
 }) => {
   const { translate } = screenProps;
   return (
@@ -35,7 +35,7 @@ Card = ({
         <View
           style={[
             { flex: 1 },
-            stateName === "mobile" && { paddingHorizontal: 10 }
+            stateName === "mobile" && { paddingHorizontal: 10 },
           ]}
         >
           <Text style={styles.heading}>{translate(heading)}</Text>
