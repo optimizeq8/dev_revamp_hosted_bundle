@@ -947,7 +947,6 @@ export const changeBusinessLogo = (
   onToggleModal
 ) => {
   onToggleModal(true);
-
   return (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
@@ -978,7 +977,7 @@ export const changeBusinessLogo = (
           source: "open_my_website",
           source_action: "a_select_media",
           ...info,
-          action_status: data.success ? success : "failure",
+          action_status: data.success ? data.success : "failure",
           error_description: !data.success && data.message,
         });
         if (data.success) {
