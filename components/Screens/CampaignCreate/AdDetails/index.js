@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content, Row } from "native-base";
+import { View, BackHandler, I18nManager, Text } from "react-native";
+import { Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
@@ -54,6 +54,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1501,7 +1502,6 @@ class AdDetails extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
-                            uppercase
                             style={[
                               styles.subHeadings,
                               { paddingHorizontal: 10 },
@@ -1568,12 +1568,35 @@ class AdDetails extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          width: "100%",
+
+                          // justifyContent: "center",
+                        }}
                       >
-                        {translate("Who would you like to reach?")}
-                      </Text>
+                        <Text style={[styles.subHeadings, { width: "40%" }]}>
+                          {translate("Who would you like to reach?")}
+                        </Text>
+                        <GradientButton
+                          uppercase={true}
+                          text={"Choose Existing Audience"}
+                          transparent={true}
+                          textStyle={{ fontSize: 12, color: "#9300FF" }}
+                          height={50}
+                          // width={"55%"}
+                          style={{
+                            borderWidth: 2,
+                            borderColor: "#9300FF",
+                            paddingHorizontal: 20,
+                            marginHorizontal: 0,
+                          }}
+                          radius={50}
+                        />
+                      </View>
                     )}
                     <TargetAudience
                       screenProps={this.props.screenProps}
