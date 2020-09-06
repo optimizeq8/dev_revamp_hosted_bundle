@@ -45,8 +45,11 @@ class RejectedSnapchatInfo extends Component {
   };
 
   render() {
-    const { review_status_reason, screenProps } = this.props;
+    const { review_status_reason, screenProps, selectedCampaign } = this.props;
 
+    const campaignEnd =
+      new Date(selectedCampaign.end_time).setHours(0, 0, 0, 0) <
+      new Date().setHours(0, 0, 0, 0);
     const { translate } = this.props.screenProps;
     let rejReasons = review_status_reason.map((reason, i) => (
       <RejectedReason
@@ -74,14 +77,16 @@ class RejectedSnapchatInfo extends Component {
             {rejReasons}
           </View>
         </ScrollView>
-        <CustomButtons
-          screenProps={this.props.screenProps}
-          onPressFunction={this.handleSnapchatRejection}
-          content="Review Ad"
-          filled
-          buttonStyle={styles.customButtonStyle}
-          textStyle={styles.customButtonText}
-        />
+        {!campaignEnd && (
+          <CustomButtons
+            screenProps={this.props.screenProps}
+            onPressFunction={this.handleSnapchatRejection}
+            content="Review Ad"
+            filled
+            buttonStyle={styles.customButtonStyle}
+            textStyle={styles.customButtonText}
+          />
+        )}
         <RejectedReasonModal
           screenProps={screenProps}
           isVisible={this.state.isVisible}
