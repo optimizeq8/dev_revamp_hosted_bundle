@@ -1584,6 +1584,11 @@ class AdDetails extends Component {
                         <GradientButton
                           uppercase={true}
                           text={"Choose Existing Audience"}
+                          onPressAction={() => {
+                            this.props.navigation.navigate(
+                              "SnapchatAudienceList"
+                            );
+                          }}
                           transparent={true}
                           textStyle={{ fontSize: 12, color: "#9300FF" }}
                           height={50}
@@ -1598,6 +1603,7 @@ class AdDetails extends Component {
                         />
                       </View>
                     )}
+
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}

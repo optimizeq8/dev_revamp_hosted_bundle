@@ -90,8 +90,9 @@ import { MixpanelInstance } from "react-native-mixpanel";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
+// TODO: Set back to LIVE
 const MixpanelSDK = new MixpanelInstance(
-  "ef78d7f5f4160b74fda35568224f6cfa",
+  "c9ade508d045eb648f95add033dfb017",
   false,
   false
 );
@@ -196,8 +197,8 @@ class App extends React.Component {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
-
-    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
+    //TODO: Set back to PROD
+    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [Mixpanel],
       // Record screen views automatically!
       recordScreenViews: true,

@@ -75,7 +75,7 @@ import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
 import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
 import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/SelectProduct";
 import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
-
+import SnapchatAudienceList from "../Screens/SnapchatCampaignAudience";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -163,6 +163,7 @@ export default FluidNavigator(
     ReviewProductDetail: ReviewProductDetail,
     MyWebsiteSelectProducts: MyWebsiteSelectProducts,
     MyWebsiteECommerce: MyWebsiteECommerce,
+    SnapchatAudienceList: SnapchatAudienceList,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
