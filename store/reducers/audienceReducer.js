@@ -6,6 +6,14 @@ const initialState = {
   audience: {
     name: "",
     audience_id: "",
+    targeting: {
+      demographics: [
+        { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
+      ],
+      geos: [{ countries: ["kw"], region_id: [] }],
+      interests: [{ category_id: [] }],
+      devices: [{ os_type: "", marketing_name: ["Asus 1"] }],
+    },
   },
 };
 const reducer = (state = initialState, action) => {
