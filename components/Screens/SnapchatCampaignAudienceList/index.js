@@ -17,7 +17,11 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 // STYLES
 import styles from "./styles";
 
-export default class SnapchatCampaignAudience extends React.Component {
+// REDUX
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+class SnapchatCampaignAudience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +49,7 @@ export default class SnapchatCampaignAudience extends React.Component {
           <TouchableOpacity
             style={styles.editAudienceIcon}
             onPress={() => {
+              this.props.setAudienceDetail({ reset: true, ...item });
               this.props.navigation.navigate("SnapchatAudienceTagetting", {
                 editAudience: true,
               });
@@ -59,6 +64,10 @@ export default class SnapchatCampaignAudience extends React.Component {
       </TouchableOpacity>
     );
   };
+  createNewAudience = () => {
+    this.props.setAudienceDetail({ reset: true });
+    this.props.navigation.navigate("SnapchatAudienceTagetting");
+  };
   render() {
     return (
       <View style={styles.campaignAudienceListOuterView}>
@@ -71,9 +80,7 @@ export default class SnapchatCampaignAudience extends React.Component {
           iconColor={globalColors.purple}
           showTopRightButton={true}
           topRightButtonText={"Create"}
-          topRightButtonFunction={() => {
-            this.props.navigation.navigate("SnapchatAudienceTagetting");
-          }}
+          topRightButtonFunction={this.createNewAudience}
         />
 
         <FlatList
@@ -93,3 +100,14 @@ export default class SnapchatCampaignAudience extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  setAudienceDetail: (audienceInfo) =>
+    dispatch(actionCreators.setAudienceDetail(audienceInfo)),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SnapchatCampaignAudience);

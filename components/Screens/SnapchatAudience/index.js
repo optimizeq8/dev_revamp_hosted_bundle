@@ -7,7 +7,6 @@ import {
   Platform,
   I18nManager,
 } from "react-native";
-import { connect } from "react-redux";
 
 import { SafeAreaView } from "react-navigation";
 import MaskedView from "@react-native-community/masked-view";
@@ -32,6 +31,10 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import segmentEventTrack from "../../segmentEventTrack";
 import Header from "../../MiniComponents/Header";
 import InputField from "../../MiniComponents/InputFieldNew";
+
+// REDUX
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 export class TargetAudience extends Component {
   constructor(props) {
@@ -79,9 +82,7 @@ export class TargetAudience extends Component {
     this.props.navigation.goBack();
   };
   setAudienceName = (stateName, value) => {
-    this.setState({
-      [stateName]: value,
-    });
+    this.props.setAudienceDetail({ name: value });
   };
   getValidAudienceName = (stateName, value) => {
     this.setState({
@@ -89,6 +90,7 @@ export class TargetAudience extends Component {
     });
   };
   render() {
+    console.log("this.props.audience", this.props.audience);
     let {
       loading = true,
       gender = [{ label: "All", value: "All" }],
@@ -142,7 +144,7 @@ export class TargetAudience extends Component {
             stateName1={"audienceName"}
             placeholder1={"Enter a name for your audience"}
             setValue={this.setAudienceName}
-            value={this.state.audienceName}
+            value={this.props.audience.name}
             getValidInfo={this.getValidAudienceName}
             customStyles={{ backgroundColor: "#FFF" }}
             inputStyle={{ color: globalColors.gray }}
@@ -565,8 +567,13 @@ export class TargetAudience extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  audience: state.audience.audience,
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = (dispatch) => ({
+  setAudienceDetail: (audienceInfo) =>
+    dispatch(actionCreators.setAudienceDetail(audienceInfo)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(TargetAudience);
