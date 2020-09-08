@@ -12,6 +12,7 @@ import languageReducer from "./languageReducer";
 import googleAdsReducer from "./googleAdsCampaignReducer";
 import websiteReducer from "./optimizeWebsiteReducer";
 import instagramAds from "./instagramCampaignReducer";
+import audienceReducer from "./audienceReducer";
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -27,6 +28,7 @@ const appReducer = combineReducers({
   googleAds: googleAdsReducer,
   website: websiteReducer,
   instagramAds: instagramAds,
+  audience: audienceReducer,
 });
 
 const rootReducer = (state, action) => {
