@@ -5,14 +5,23 @@ const initialState = {
   audienceDetailLoading: false,
   saveAudienceLoading: false,
   audience: {
+    id: "",
     name: "",
     targeting: {
       demographics: [
         { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
       ],
-      geos: [{ country_code: "kw", countries: ["kw"], region_id: [] }],
+      geos: [{ country_code: "", region_id: [] }],
       interests: [{ category_id: [] }],
-      devices: [{ os_type: "", marketing_name: [] }],
+      devices: [
+        {
+          os_type: "",
+          marketing_name: [],
+          os_version_max: "",
+          os_version_min: "",
+        },
+      ],
+      locations: [{ circles: [] }],
     },
   },
 };
