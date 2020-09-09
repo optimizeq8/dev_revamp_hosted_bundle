@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-navigation";
 import MaskedView from "@react-native-community/masked-view";
 import cloneDeep from "lodash/cloneDeep";
 import analytics from "@segment/analytics-react-native";
+import find from "lodash/find";
 
 //icons
 import PurpleCheckmarkIcon from "../../../assets/SVGs/PurpleCheckmark";
@@ -50,9 +51,13 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 // DATA
-import { gender, OSType } from "../CampaignCreate/AdDetails/data";
+import {
+  gender,
+  OSType,
+  country_regions,
+} from "../CampaignCreate/AdDetails/data";
 
-export class TargetAudience extends Component {
+export class SnapchatAudience extends Component {
   constructor(props) {
     super(props);
     this.state = state = {
@@ -60,6 +65,10 @@ export class TargetAudience extends Component {
       advance: true,
       audienceName: "",
       audienceNameError: "",
+      countryName: "",
+      regions: [],
+      interestNames: [],
+      regionNames: [],
       campaignInfo: {
         campaign_id: "",
         lifetime_budget_micro: 50,
@@ -95,10 +104,23 @@ export class TargetAudience extends Component {
     this.editAudience = this.props.navigation.getParam("editAudience", false);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.get_languages();
     this.props.get_interests("kw");
+
+    // // To by default set the country to that of the business country selected
+    // let country_code = find(
+    //   countries,
+    //   (country) => country.label === this.props.mainBusiness.country
+    // ).value;
+    // await this.onSelectedCountryChange(
+    //   country_code,
+    //   null,
+    //   this.props.mainBusiness.country
+    // );
   }
+
+  handleSubmissionCreateNewAudience = () => {};
 
   handleFading = (event) => {
     let y = event.nativeEvent.contentOffset.y;
@@ -150,16 +172,20 @@ export class TargetAudience extends Component {
     countryName,
     addCountryOfLocations = false
   ) => {
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     let newCountry = selectedItem;
     let regionNames = this.state.regionNames;
     let locationsInfo = this.state.locationsInfo;
+
     if (newCountry) {
+      console.log("issue 1");
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         replace.targeting.geos.length === 1 &&
         !addCountryOfLocations
       ) {
+        console.log("issue 2");
+
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
           country_code: "",
@@ -173,14 +199,18 @@ export class TargetAudience extends Component {
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         !addCountryOfLocations
       ) {
+        console.log("issue 3");
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
           (co) => co.country_code !== newCountry
         );
         //To remove the regions from the the region names
-        regionNames = this.state.regionNames.filter(
-          (reg) => reg.country_code !== newCountry
-        );
+        regionNames =
+          this.state.regionNames.length > 0
+            ? this.state.regionNames.filter(
+                (reg) => reg.country_code !== newCountry
+              )
+            : [];
         //To remove the country name from the country names
         countryName = this.state.countryName.filter((co) => co !== countryName);
         locationsInfo = this.state.locationsInfo.filter((loc, i) => {
@@ -191,6 +221,7 @@ export class TargetAudience extends Component {
           }
         });
       } else if (replace.targeting.geos[0].country_code === "") {
+        console.log("issuee 4");
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
           country_code: newCountry,
@@ -205,6 +236,7 @@ export class TargetAudience extends Component {
           ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
           : true
       ) {
+        console.log("issue 5");
         //To add the coutnry to geos array
         replace.targeting.geos.push({
           country_code: newCountry,
@@ -212,6 +244,7 @@ export class TargetAudience extends Component {
         });
         countryName = [...this.state.countryName, countryName];
       } else {
+        console.log("issue 6");
         countryName = [...this.state.countryName];
       }
 
@@ -220,6 +253,7 @@ export class TargetAudience extends Component {
         this.state.regions.find((c) => c.country_code === newCountry) &&
         !addCountryOfLocations
       ) {
+        console.log("issue 7");
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
         reg = this.state.regions.filter((coReg) => {
@@ -230,12 +264,17 @@ export class TargetAudience extends Component {
           ? !this.state.regions.find((c) => c.country_code === newCountry)
           : true
       ) {
-        reg = [...this.state.regions, reg];
+        console.log("issuee 8");
+        console.log("reg", reg);
+        if (reg) reg = [...this.state.regions, reg];
       } else {
+        console.log("issuee 9");
+
         reg = [...this.state.regions];
       }
 
-      replace.targeting.interests[0].category_id = [];
+      if (replace.targeting.interests)
+        replace.targeting.interests[0].category_id = [];
       analytics.track(`a_audience_country`, {
         source: "ad_targeting",
         source_action: "a_audience_country",
@@ -244,7 +283,6 @@ export class TargetAudience extends Component {
       let showRegions = false;
       this.setState(
         {
-          campaignInfo: replace,
           regions: reg,
           filteredRegions: reg,
           regionNames,
@@ -253,20 +291,28 @@ export class TargetAudience extends Component {
           locationsInfo,
         },
         () => {
+          console.log("issuee 10");
+          console.log("this.state.regions", this.state.regions);
+
           //To show the regions options if one of the selected countries has more than 3 regions
-          showRegions = this.state.regions.some(
-            (reg) => reg.regions.length > 3
-          );
-          !this.editCampaign &&
-            this.props.setAudienceDetail({
-              campaignInfo: replace,
-              country_code: newCountry,
-              countryName,
-              showRegions: showRegions,
-              regionNames,
-              markers: replace.targeting.locations[0].circles,
-              locationsInfo,
-            });
+          showRegions =
+            this.state.regions && this.state.regions.length > 0
+              ? this.state.regions.some(
+                  (reg) => reg.regions && reg.regions.length > 3
+                )
+              : false;
+          console.log("show showRegions", showRegions);
+          this.props.setAudienceDetail({
+            targeting: replace,
+            country_code: newCountry,
+            countryName,
+            showRegions: showRegions,
+            regionNames,
+            markers:
+              replace.targeting.locations &&
+              replace.targeting.locations[0].circles,
+            locationsInfo,
+          });
           this.setState({ showRegions });
         }
       );
@@ -274,11 +320,9 @@ export class TargetAudience extends Component {
   };
 
   onSelectedInterestsChange = (selectedItems) => {
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     replace.targeting.interests[0].category_id = selectedItems;
-    this.setState({ campaignInfo: replace });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({ campaignInfo: replace });
+    this.props.setAudienceDetail({ ...replace });
   };
 
   onSelectedDevicesChange = (selectedItems) => {
@@ -307,10 +351,12 @@ export class TargetAudience extends Component {
       source_action: "a_audience_interests",
       audience_interests_names: names && names.length > 0 && names.join(", "),
     });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({
-        interestNames: selectedItems,
-      });
+    this.setState({
+      interestNames: names,
+    });
+    // this.props.setAudienceDetail({
+    //   interestNames: names,
+    // });
   };
 
   onSelectedLangsChange = (selectedItem) => {
@@ -442,7 +488,8 @@ export class TargetAudience extends Component {
       //Select all option
       let regionsLength = 0;
       this.state.regions.forEach((reg) => {
-        if (reg.regions.length > 3) regionsLength += reg.regions.length;
+        if (reg.regions && reg.regions.length > 3)
+          regionsLength += reg.regions.length;
       });
       if (regionsLength === this.state.regionNames.length || unselect) {
         //if all the regions of all selected countries are selected
@@ -734,9 +781,9 @@ export class TargetAudience extends Component {
           <MultiSelectSections
             screenProps={this.props.screenProps}
             countries={countries}
-            country_code={this.props.audience.targeting.geos[0]}
+            country_code={this.props.audience.targeting.geos}
             onSelectedCountryChange={this.onSelectedCountryChange}
-            country_codes={this.props.audience.targeting.geos[0]}
+            country_codes={this.props.audience.targeting.geos}
             _handleSideMenuState={this._handleSideMenuState}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
@@ -854,7 +901,7 @@ export class TargetAudience extends Component {
                   // { height: editCampaign ? heightPercentageToDP(60) : "90%" },
                 ]}
               >
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   disabled={loading}
                   onPress={() => this.callFunction("selectors", "countries")}
                   style={styles.targetTouchable}
@@ -881,16 +928,15 @@ export class TargetAudience extends Component {
                       </Text>
                     </View>
                   </View>
-                  {startEditing &&
-                    (targeting.geos[0].country_code ? (
-                      <PurpleCheckmarkIcon
-                        width={30}
-                        height={30}
-                        fill={globalColors.purple}
-                      />
-                    ) : (
-                      <PurplePlusIcon width={30} height={30} />
-                    ))}
+                  {targeting.geos[0].country_code ? (
+                    <PurpleCheckmarkIcon
+                      width={30}
+                      height={30}
+                      fill={globalColors.purple}
+                    />
+                  ) : (
+                    <PurplePlusIcon width={30} height={30} />
+                  )}
                 </TouchableOpacity>
 
                 {mainState.showRegions ? ( //for campaign creation
@@ -974,7 +1020,7 @@ export class TargetAudience extends Component {
                     ) : (
                       <PurplePlusIcon width={30} height={30} />
                     ))}
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                   disabled={loading}
@@ -1080,46 +1126,38 @@ export class TargetAudience extends Component {
                       <PurplePlusIcon width={30} height={30} />
                     ))}
                 </TouchableOpacity>
-                {/* 
-                {((!startEditing && editCampaign && interests_names) ||
-                  !editCampaign ||
-                  startEditing) && (
-                  <TouchableOpacity
-                    disabled={loading}
-                    onPress={() => this.callFunction("selectors", "interests")}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <InterestsIcon
-                        width={30}
-                        height={30}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Interests")}
-                        </Text>
-                        <Text
-                          numberOfLines={startEditing ? 1 : 10}
-                          style={styles.menudetails}
-                        >
-                          {interests_names}
-                        </Text>
-                      </View>
+
+                <TouchableOpacity
+                  disabled={loading}
+                  onPress={() => this.callFunction("selectors", "interests")}
+                  style={styles.targetTouchable}
+                >
+                  <View style={[globalStyles.row, styles.flex]}>
+                    <InterestsIcon
+                      width={30}
+                      height={30}
+                      style={styles.icon}
+                      fill={globalColors.purple}
+                    />
+                    <View style={[globalStyles.column, styles.flex]}>
+                      <Text style={styles.menutext}>
+                        {translate("Interests")}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.menudetails}>
+                        {interests_names}
+                      </Text>
                     </View>
-                    <View style={globalStyles.column}>
-                      {startEditing &&
-                        (targeting.interests &&
-                        targeting.interests[0].category_id.length !== 0 ? (
-                          <PurpleCheckmarkIcon width={30} height={30} />
-                        ) : (
-                          <PurplePlusIcon width={30} height={30} />
-                        ))}
-                    </View>
-                  </TouchableOpacity>
-                )}
-                        */}
+                  </View>
+                  <View style={globalStyles.column}>
+                    {startEditing &&
+                      (targeting.interests &&
+                      targeting.interests[0].category_id.length !== 0 ? (
+                        <PurpleCheckmarkIcon width={30} height={30} />
+                      ) : (
+                        <PurplePlusIcon width={30} height={30} />
+                      ))}
+                  </View>
+                </TouchableOpacity>
 
                 <TouchableOpacity
                   disabled={loading}
@@ -1162,7 +1200,7 @@ export class TargetAudience extends Component {
                       <PurplePlusIcon width={30} height={30} />
                     ))}
                 </TouchableOpacity>
-                {/*
+
                 {((!startEditing &&
                   editCampaign &&
                   targeting.devices[0].os_version_min) ||
@@ -1192,71 +1230,56 @@ export class TargetAudience extends Component {
                         </Text>
                         <Text style={styles.menudetails}>
                           {targeting.devices &&
-                            targeting.devices[0].os_version_min +
-                              ", " +
-                              targeting.devices &&
+                            targeting.devices[0].os_version_min + ", "}
+                          {targeting.devices &&
                             targeting.devices[0].os_version_max}
                         </Text>
                       </View>
                     </View>
 
-                    {startEditing &&
-                      (targeting.devices &&
-                      targeting.devices[0].os_version_min !== "" ? (
-                        <PurpleCheckmarkIcon width={30} height={30} />
-                      ) : (
-                        <PurplePlusIcon width={30} height={30} />
-                      ))}
+                    {targeting.devices &&
+                    targeting.devices[0].os_version_min !== "" ? (
+                      <PurpleCheckmarkIcon width={30} height={30} />
+                    ) : (
+                      <PurplePlusIcon width={30} height={30} />
+                    )}
                   </TouchableOpacity>
                 )}
 
-                {((!startEditing &&
-                  editCampaign &&
-                  targeting.devices &&
-                  targeting.devices[0].marketing_name.length > 0) ||
-                  !editCampaign ||
-                  startEditing) && (
-                  <TouchableOpacity
-                    disabled={loading}
-                    onPress={() =>
-                      this.callFunction("selectors", "deviceBrands")
-                    }
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <DeviceMakeIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                        fill={globalColors.purple}
-                      />
+                <TouchableOpacity
+                  disabled={loading}
+                  onPress={() => this.callFunction("selectors", "deviceBrands")}
+                  style={styles.targetTouchable}
+                >
+                  <View style={[globalStyles.row, styles.flex]}>
+                    <DeviceMakeIcon
+                      width={25}
+                      height={25}
+                      style={styles.icon}
+                      fill={globalColors.purple}
+                    />
 
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Device Make")}
-                        </Text>
-                        <Text
-                          numberOfLines={startEditing ? 1 : 10}
-                          style={styles.menudetails}
-                        >
-                          {targeting.devices[0].marketing_name}
-                        </Text>
-                      </View>
+                    <View style={[globalStyles.column, styles.flex]}>
+                      <Text style={styles.menutext}>
+                        {translate("Device Make")}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.menudetails}>
+                        {targeting.devices &&
+                          targeting.devices[0].marketing_name.join(", ")}
+                      </Text>
                     </View>
+                  </View>
 
-                    {startEditing &&
-                      (targeting.devices[0].marketing_name.length !== 0 ? (
-                        <PurpleCheckmarkIcon width={30} height={30} />
-                      ) : (
-                        <PurplePlusIcon width={30} height={30} />
-                      ))}
-                  </TouchableOpacity>
-                )}
-                 */}
+                  {targeting.devices &&
+                  targeting.devices[0].marketing_name.length !== 0 ? (
+                    <PurpleCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PurplePlusIcon width={30} height={30} />
+                  )}
+                </TouchableOpacity>
               </ScrollView>
             </MaskedView>
             {this.state.scrollY < heightPercentageToDP(0.8) &&
-              !editCampaign &&
               heightPercentageToDP(100) < 700 && (
                 <Text
                   onPress={() => {
@@ -1280,6 +1303,7 @@ const mapStateToProps = (state) => ({
   audience: state.audience.audience,
   languages: state.campaignC.languagesList,
   audienceDetailLoading: state.audience.audienceDetailLoading,
+  mainBusiness: state.account.mainBusiness,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1290,4 +1314,4 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.get_interests(countryCode)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TargetAudience);
+export default connect(mapStateToProps, mapDispatchToProps)(SnapchatAudience);

@@ -10,7 +10,7 @@ const initialState = {
       demographics: [
         { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
       ],
-      geos: [{ country_code: "", countries: ["kw"], region_id: [] }],
+      geos: [{ country_code: "kw", countries: ["kw"], region_id: [] }],
       interests: [{ category_id: [] }],
       devices: [{ os_type: "", marketing_name: [] }],
     },

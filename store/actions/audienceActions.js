@@ -61,11 +61,14 @@ export const getAudienceDetail = (audienceId) => {
       .then((res) => res.data)
       .then((data) => {
         console.log("data", data);
-        dispatch({
-          type: actionTypes.LOADING_AUDIENCE_DETAIL,
-          payload: false,
-        });
+        // dispatch({
+        //   type: actionTypes.LOADING_AUDIENCE_DETAIL,
+        //   payload: false,
+        // });
         if (data.success) {
+          // FOR THE MISSING PIECE OF INFORMATION FROM TARGETING SET IT TO DEFAULT
+          let targeting = data.data.targeting;
+          console.log("targeting", targeting);
           dispatch(setAudienceDetail({ reset: true, ...data.data }));
         }
       })

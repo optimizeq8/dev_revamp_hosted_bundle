@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: "left",
   },
+  flex: {
+    flex: 1,
+  },
 });
 
 export default styles;
