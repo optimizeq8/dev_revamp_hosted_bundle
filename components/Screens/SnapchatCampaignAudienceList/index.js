@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 // Components
@@ -28,18 +28,40 @@ class SnapchatCampaignAudience extends React.Component {
       selected_audience_id: 1,
     };
   }
+  componentWillMount() {
+    this.props.getAudienceList();
+  }
+
+  showAlert = (audience) => {
+    console.log("aud delete", JSON.stringify(audience, null, 2));
+    Alert.alert(
+      "Delete",
+      `Are you sure you want to delete ${audience.name} ?`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => this.props.deleteAudience(audience.id),
+        },
+      ],
+      { cancelable: true }
+    );
+  };
   renderCard = ({ item }) => {
     return (
       <TouchableOpacity
         key={item.name}
         style={[
           styles.cardView,
-          this.state.selected_audience_id === item.audience_id &&
-            styles.activeCardView,
+          this.state.selected_audience_id === item.id && styles.activeCardView,
         ]}
         onPress={() => {
           this.setState({
-            selected_audience_id: item.audience_id,
+            selected_audience_id: item.id,
           });
         }}
       >
@@ -49,7 +71,8 @@ class SnapchatCampaignAudience extends React.Component {
           <TouchableOpacity
             style={styles.editAudienceIcon}
             onPress={() => {
-              this.props.setAudienceDetail({ reset: true, ...item });
+              // this.props.setAudienceDetail({ reset: true, ...item });
+              this.props.getAudienceDetail(item.id);
               this.props.navigation.navigate("SnapchatAudienceTagetting", {
                 editAudience: true,
               });
@@ -57,7 +80,10 @@ class SnapchatCampaignAudience extends React.Component {
           >
             <PenIcon width={20} height={20} fill={globalColors.purple} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteAudienceIcon}>
+          <TouchableOpacity
+            style={styles.deleteAudienceIcon}
+            onPress={() => this.showAlert(item)}
+          >
             <TrashIcon width={20} height={20} fill={globalColors.purple} />
           </TouchableOpacity>
         </View>
@@ -84,11 +110,8 @@ class SnapchatCampaignAudience extends React.Component {
         />
 
         <FlatList
-          data={[
-            { name: "KWT-GRP 01", audience_id: 1 },
-            { name: "KSA-GRP 01", audience_id: 2 },
-            { name: "BH-GRP 01", audience_id: 3 },
-          ]}
+          refreshing={this.props.audienceListLoading}
+          data={this.props.audienceList}
           renderItem={this.renderCard}
           keyExtractor={(item) => item.name}
           contentContainerStyle={{
@@ -101,11 +124,19 @@ class SnapchatCampaignAudience extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  audienceList: state.audience.audienceList,
+  audienceListLoading: state.audience.audienceListLoading,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   setAudienceDetail: (audienceInfo) =>
     dispatch(actionCreators.setAudienceDetail(audienceInfo)),
+  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+  getAudienceDetail: (audienceId) =>
+    dispatch(actionCreators.getAudienceDetail(audienceId)),
+  deleteAudience: (audienceId) =>
+    dispatch(actionCreators.deleteAudience(audienceId)),
 });
 export default connect(
   mapStateToProps,

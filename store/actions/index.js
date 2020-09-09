@@ -211,4 +211,5 @@ export {
   deleteAudience,
   updateAudience,
   setAudienceDetail,
+  getAudienceDetail,
 } from "./audienceActions";

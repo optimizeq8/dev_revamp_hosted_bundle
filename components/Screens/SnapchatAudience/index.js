@@ -90,9 +90,14 @@ export class TargetAudience extends Component {
           ],
         },
       },
-      filteredLanguages: [],
+      filteredLanguages: this.props.languages,
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
+  }
+
+  componentDidMount() {
+    this.props.get_languages();
+    this.props.get_interests("kw");
   }
 
   handleFading = (event) => {
@@ -104,7 +109,7 @@ export class TargetAudience extends Component {
 
     if (
       (option === "regions" || option === "interests") &&
-      this.props.targeting.geos[0].country_code === ""
+      this.props.audience.targeting.geos[0].country_code === ""
     ) {
       showMessage({
         message: translate("Please select a country first"),
@@ -277,7 +282,7 @@ export class TargetAudience extends Component {
   };
 
   onSelectedDevicesChange = (selectedItems) => {
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     replace.targeting.devices[0].marketing_name = selectedItems;
 
     analytics.track(`a_audience_devices`, {
@@ -287,13 +292,9 @@ export class TargetAudience extends Component {
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
     });
 
-    this.setState({
-      campaignInfo: replace,
+    this.props.setAudienceDetail({
+      ...replace,
     });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({
-        campaignInfo: replace,
-      });
   };
   onSelectedInterestsNamesChange = (selectedItems) => {
     this.setState({
@@ -314,7 +315,7 @@ export class TargetAudience extends Component {
 
   onSelectedLangsChange = (selectedItem) => {
     const { translate } = this.props.screenProps;
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     let langs = [];
     if (
       replace.targeting.demographics[0].languages.find(
@@ -356,18 +357,16 @@ export class TargetAudience extends Component {
       });
     }
     this.setState({
-      campaignInfo: replace,
       languagesError:
-        this.state.campaignInfo.targeting.demographics[0].languages.length === 0
+        this.props.audience.targeting.demographics[0].languages.length === 0
           ? "Please choose a language."
           : null,
     });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({ campaignInfo: replace });
+    this.props.setAudienceDetail({ ...replace });
   };
 
   onSelectedOSChange = (selectedItem) => {
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     replace.targeting.devices[0].os_type = selectedItem;
     replace.targeting.devices[0].os_version_min = "";
     replace.targeting.devices[0].os_version_max = "";
@@ -378,17 +377,14 @@ export class TargetAudience extends Component {
       audience_os_min_ver: "",
       audience_os_max_ver: "",
     });
-    this.setState({
-      campaignInfo: { ...replace },
+
+    this.props.setAudienceDetail({
+      ...replace,
     });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({
-        campaignInfo: { ...replace },
-      });
   };
 
   onSelectedVersionsChange = (selectedItem) => {
-    let replace = cloneDeep(this.state.campaignInfo);
+    let replace = cloneDeep(this.props.audience);
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
     analytics.track(`a_audience_OS_version`, {
@@ -397,13 +393,10 @@ export class TargetAudience extends Component {
       audience_os_min_ver: selectedItem[0],
       audience_os_max_ver: selectedItem[1],
     });
-    this.setState({
-      campaignInfo: { ...replace },
+
+    this.props.setAudienceDetail({
+      ...replace,
     });
-    !this.editCampaign &&
-      this.props.setAudienceDetail({
-        campaignInfo: { ...replace },
-      });
   };
 
   onSelectedMapChange = (selectedItems, unselect = false, locationsInfo) => {
@@ -586,6 +579,25 @@ export class TargetAudience extends Component {
       audienceNameError: value,
     });
   };
+
+  getLanguagesName = () => {
+    // Map language code to actual language name
+    let languages_names = [];
+    languages_names =
+      this.props.audience.targeting.demographics[0].languages.length > 0 &&
+      this.props.audience.targeting.demographics[0].languages.map(
+        (lang_code) => {
+          return (
+            this.props.languages &&
+            this.props.languages.length > 0 &&
+            this.props.languages.find((lang) => lang.id == lang_code).name
+          );
+        }
+      );
+    return languages_names && languages_names.length > 0
+      ? languages_names.join(", ")
+      : [];
+  };
   render() {
     console.log(
       "this.props.audience",
@@ -595,7 +607,7 @@ export class TargetAudience extends Component {
       loading = false,
       audience,
       regions_names,
-      languages_names = [],
+      audienceDetailLoading,
       interests_names,
       mainState = {
         countryName: "",
@@ -606,7 +618,7 @@ export class TargetAudience extends Component {
     } = this.props;
     const { targeting } = audience;
     const { translate } = this.props.screenProps;
-
+    let languages_names = this.getLanguagesName();
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -624,13 +636,25 @@ export class TargetAudience extends Component {
         menu = (
           <AgeOption
             screenProps={this.props.screenProps}
-            state={this.props.audience.targeting.demographics[0]}
+            state={
+              this.props.audience.targeting.demographics
+                ? this.props.audience.targeting.demographics[0]
+                : { min_age: 13, max_age: 50 }
+            }
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 50]}
-            minAge={this.props.audience.targeting.demographics[0].min_age}
-            maxAge={this.props.audience.targeting.demographics[0].max_age}
+            minAge={
+              this.props.audience.targeting.demographics
+                ? this.props.audience.targeting.demographics[0].min_age
+                : 13
+            }
+            maxAge={
+              this.props.audience.targeting.demographics
+                ? this.props.audience.targeting.demographics[0].max_age
+                : 13
+            }
           />
         );
         break;
@@ -686,7 +710,7 @@ export class TargetAudience extends Component {
             onSelectedLangsChange={this.onSelectedLangsChange}
             _handleSideMenuState={this._handleSideMenuState}
             languages={this.props.languages}
-            demographics={this.state.campaignInfo.targeting.demographics}
+            demographics={this.props.audience.targeting.demographics}
             filterLanguages={this.filterLanguages}
           />
         );
@@ -697,7 +721,7 @@ export class TargetAudience extends Component {
         menu = (
           <SelectOS
             screenProps={this.props.screenProps}
-            campaignInfo={this.state.campaignInfo}
+            campaignInfo={this.props.audience}
             onSelectedOSChange={this.onSelectedOSChange}
             _handleSideMenuState={this._handleSideMenuState}
           />
@@ -710,27 +734,27 @@ export class TargetAudience extends Component {
           <MultiSelectSections
             screenProps={this.props.screenProps}
             countries={countries}
-            country_code={this.state.campaignInfo.targeting.geos}
+            country_code={this.props.audience.targeting.geos[0]}
             onSelectedCountryChange={this.onSelectedCountryChange}
-            country_codes={this.state.campaignInfo.targeting.geos}
+            country_codes={this.props.audience.targeting.geos[0]}
             _handleSideMenuState={this._handleSideMenuState}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
             selectedItems={
-              this.state.campaignInfo.targeting.interests[0].category_id
+              this.props.audience.targeting.interests[0].category_id
             }
             selectedDevices={
-              this.state.campaignInfo.targeting.devices[0].marketing_name
+              this.props.audience.targeting.devices[0].marketing_name
             }
             onSelectedDevicesChange={this.onSelectedDevicesChange}
             selectedMinVersions={
-              this.state.campaignInfo.targeting.devices[0].os_version_min
+              this.props.audience.targeting.devices[0].os_version_min
             }
             selectedMaxVersions={
-              this.state.campaignInfo.targeting.devices[0].os_version_max
+              this.props.audience.targeting.devices[0].os_version_max
             }
             onSelectedVersionsChange={this.onSelectedVersionsChange}
-            OSType={this.state.campaignInfo.targeting.devices[0].os_type}
+            OSType={this.props.audience.targeting.devices[0].os_type}
             option={this.state.selectionOption}
             editCampaign={this.editCampaign}
           />
@@ -738,6 +762,17 @@ export class TargetAudience extends Component {
         break;
       }
     }
+
+    if (this.props.audienceDetailLoading)
+      return (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#f8f8f8",
+            background: "#f8f8f8",
+          }}
+        ></View>
+      );
     return (
       <View
         style={{
@@ -899,7 +934,7 @@ export class TargetAudience extends Component {
 
                     {startEditing &&
                       (targeting.geos.some(
-                        (geo) => geo.region_id.length !== 0
+                        (geo) => geo.region_id && geo.region_id.length !== 0
                       ) ? (
                         <PurpleCheckmarkIcon width={30} height={30} />
                       ) : (
@@ -956,17 +991,19 @@ export class TargetAudience extends Component {
                     <View style={globalStyles.column}>
                       <Text style={styles.menutext}>{translate("Gender")}</Text>
                       <Text style={styles.menudetails}>
-                        {translate(
-                          gender.find((r) => {
-                            if (r.value === targeting.demographics[0].gender)
-                              return r;
-                          }).label
-                        )}
+                        {targeting.demographics &&
+                          translate(
+                            gender.find((r) => {
+                              if (r.value === targeting.demographics[0].gender)
+                                return r;
+                            }).label
+                          )}
                       </Text>
                     </View>
                   </View>
                   <View style={globalStyles.column}>
                     {startEditing &&
+                      targeting.demographics &&
                       (targeting.demographics[0].gender === "" ||
                       targeting.demographics[0].gender ? (
                         <PurpleCheckmarkIcon width={30} height={30} />
@@ -991,15 +1028,21 @@ export class TargetAudience extends Component {
                     <View style={globalStyles.column}>
                       <Text style={styles.menutext}>{translate("Age")}</Text>
                       <Text style={styles.menudetails}>
-                        {targeting.demographics[0].min_age} -{" "}
-                        {targeting.demographics[0].max_age +
-                          (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                        {targeting.demographics &&
+                          targeting.demographics[0].min_age}{" "}
+                        -{" "}
+                        {targeting.demographics &&
+                          targeting.demographics[0].max_age +
+                            (targeting.demographics[0].max_age === 50
+                              ? "+"
+                              : "")}
                       </Text>
                     </View>
                   </View>
 
                   {startEditing &&
-                    (targeting.demographics[0].max_age ? (
+                    (targeting.demographics &&
+                    targeting.demographics[0].max_age ? (
                       <PurpleCheckmarkIcon width={30} height={30} />
                     ) : (
                       <PurplePlusIcon width={30} height={30} />
@@ -1037,7 +1080,7 @@ export class TargetAudience extends Component {
                       <PurplePlusIcon width={30} height={30} />
                     ))}
                 </TouchableOpacity>
-
+                {/* 
                 {((!startEditing && editCampaign && interests_names) ||
                   !editCampaign ||
                   startEditing) && (
@@ -1067,7 +1110,8 @@ export class TargetAudience extends Component {
                     </View>
                     <View style={globalStyles.column}>
                       {startEditing &&
-                        (targeting.interests[0].category_id.length !== 0 ? (
+                        (targeting.interests &&
+                        targeting.interests[0].category_id.length !== 0 ? (
                           <PurpleCheckmarkIcon width={30} height={30} />
                         ) : (
                           <PurplePlusIcon width={30} height={30} />
@@ -1075,6 +1119,7 @@ export class TargetAudience extends Component {
                     </View>
                   </TouchableOpacity>
                 )}
+                        */}
 
                 <TouchableOpacity
                   disabled={loading}
@@ -1095,7 +1140,12 @@ export class TargetAudience extends Component {
                       <Text style={styles.menudetails}>
                         {translate(
                           OSType.find((r) => {
-                            if (r.value === targeting.devices[0].os_type)
+                            if (
+                              r.value ===
+                              (targeting.devices && targeting.devices[0].os_type
+                                ? targeting.devices[0].os_type
+                                : "")
+                            )
                               return r;
                           }).label
                         )}
@@ -1104,14 +1154,15 @@ export class TargetAudience extends Component {
                   </View>
 
                   {startEditing &&
-                    (targeting.devices[0].os_type === "" ||
-                    targeting.devices[0].os_type ? (
+                    ((targeting.devices &&
+                      targeting.devices[0].os_type === "") ||
+                    (targeting.devices && targeting.devices[0].os_type) ? (
                       <PurpleCheckmarkIcon width={30} height={30} />
                     ) : (
                       <PurplePlusIcon width={30} height={30} />
                     ))}
                 </TouchableOpacity>
-
+                {/*
                 {((!startEditing &&
                   editCampaign &&
                   targeting.devices[0].os_version_min) ||
@@ -1140,15 +1191,18 @@ export class TargetAudience extends Component {
                           {translate("OS Versions")}
                         </Text>
                         <Text style={styles.menudetails}>
-                          {targeting.devices[0].os_version_min +
-                            ", " +
+                          {targeting.devices &&
+                            targeting.devices[0].os_version_min +
+                              ", " +
+                              targeting.devices &&
                             targeting.devices[0].os_version_max}
                         </Text>
                       </View>
                     </View>
 
                     {startEditing &&
-                      (targeting.devices[0].os_version_min !== "" ? (
+                      (targeting.devices &&
+                      targeting.devices[0].os_version_min !== "" ? (
                         <PurpleCheckmarkIcon width={30} height={30} />
                       ) : (
                         <PurplePlusIcon width={30} height={30} />
@@ -1158,6 +1212,7 @@ export class TargetAudience extends Component {
 
                 {((!startEditing &&
                   editCampaign &&
+                  targeting.devices &&
                   targeting.devices[0].marketing_name.length > 0) ||
                   !editCampaign ||
                   startEditing) && (
@@ -1197,6 +1252,7 @@ export class TargetAudience extends Component {
                       ))}
                   </TouchableOpacity>
                 )}
+                 */}
               </ScrollView>
             </MaskedView>
             {this.state.scrollY < heightPercentageToDP(0.8) &&
@@ -1222,11 +1278,16 @@ export class TargetAudience extends Component {
 
 const mapStateToProps = (state) => ({
   audience: state.audience.audience,
+  languages: state.campaignC.languagesList,
+  audienceDetailLoading: state.audience.audienceDetailLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAudienceDetail: (audienceInfo) =>
     dispatch(actionCreators.setAudienceDetail(audienceInfo)),
+  get_languages: () => dispatch(actionCreators.get_languages()),
+  get_interests: (countryCode) =>
+    dispatch(actionCreators.get_interests(countryCode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TargetAudience);

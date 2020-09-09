@@ -2,17 +2,17 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   audienceList: [],
   audienceListLoading: false,
+  audienceDetailLoading: false,
   saveAudienceLoading: false,
   audience: {
     name: "",
-    audience_id: "",
     targeting: {
       demographics: [
         { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
       ],
-      geos: [{ countries: ["kw"], region_id: [] }],
+      geos: [{ country_code: "", countries: ["kw"], region_id: [] }],
       interests: [{ category_id: [] }],
-      devices: [{ os_type: "", marketing_name: ["Asus 1"] }],
+      devices: [{ os_type: "", marketing_name: [] }],
     },
   },
 };
@@ -36,6 +36,28 @@ const reducer = (state = initialState, action) => {
         audience,
       };
 
+    case actionTypes.SET_AUDIENCE_LIST:
+      return {
+        ...state,
+        audienceList: action.payload,
+      };
+    case actionTypes.AUDIENCE_LIST_LOADING:
+      return {
+        ...state,
+        audienceListLoading: action.payload,
+      };
+
+    case actionTypes.LOADING_AUDIENCE_DETAIL:
+      return {
+        ...state,
+        audienceDetailLoading: action.payload,
+      };
+
+    case actionTypes.SAVE_AUDIENCE_DETAIL_LOADING:
+      return {
+        ...state,
+        saveAudienceLoading: action.payload,
+      };
     default:
       return state;
   }

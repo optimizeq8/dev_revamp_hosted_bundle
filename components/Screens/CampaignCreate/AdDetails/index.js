@@ -366,7 +366,7 @@ class AdDetails extends Component {
   }
 
   _handleMaxAge = (value) => {
-    let rep = this.state.campaignInfo;
+    let rep = cloneDeep(this.state.campaignInfo);
     rep.targeting.demographics[0].max_age = parseInt(value);
 
     analytics.track(`a_ad_age`, {
@@ -381,7 +381,7 @@ class AdDetails extends Component {
   };
 
   _handleMinAge = (value) => {
-    let rep = this.state.campaignInfo;
+    let rep = cloneDeep(this.state.campaignInfo);
     rep.targeting.demographics[0].min_age = value;
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
