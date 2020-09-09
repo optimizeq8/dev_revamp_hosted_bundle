@@ -20,8 +20,9 @@ export const getAudienceList = () => {
       .then((data) => {
         dispatch({
           type: actionTypes.AUDIENCE_LIST_LOADING,
-          payload: true,
+          payload: false,
         });
+        console.log("getAudienceList data", data);
         return dispatch({
           type: actionTypes.SET_AUDIENCE_LIST,
           payload: data.success ? data.data : [],
@@ -31,7 +32,7 @@ export const getAudienceList = () => {
         console.log("getAudienceList error", error.response || error.message);
         dispatch({
           type: actionTypes.AUDIENCE_LIST_LOADING,
-          payload: true,
+          payload: false,
         });
         return dispatch({
           type: actionTypes.SET_AUDIENCE_LIST,
@@ -61,15 +62,15 @@ export const getAudienceDetail = (audienceId) => {
       .then((res) => res.data)
       .then((data) => {
         console.log("data", data);
-        // dispatch({
-        //   type: actionTypes.LOADING_AUDIENCE_DETAIL,
-        //   payload: false,
-        // });
+        dispatch({
+          type: actionTypes.LOADING_AUDIENCE_DETAIL,
+          payload: false,
+        });
         if (data.success) {
-          // FOR THE MISSING PIECE OF INFORMATION FROM TARGETING SET IT TO DEFAULT
-          let targeting = data.data.targeting;
-          console.log("targeting", targeting);
-          dispatch(setAudienceDetail({ reset: true, ...data.data }));
+          return dispatch({
+            type: actionTypes.SET_AUDIENCE_DETAIL,
+            payload: data.data,
+          });
         }
       })
       .catch((error) => {
@@ -79,10 +80,11 @@ export const getAudienceDetail = (audienceId) => {
 };
 
 /**
- * Creates a new audience
- * @param {*} targeting
+ *
+ * @param {*} audience Object of id, name and targeting
  */
-export const createAudience = (targeting) => {
+export const createAudience = (audience) => {
+  console.log("createAudience targeting ", audience.targeting);
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
@@ -91,7 +93,8 @@ export const createAudience = (targeting) => {
     createBaseUrl()
       .post(`snapchatsavedaudience`, {
         businessid: getState().account.mainBusiness.businessid,
-        targeting,
+        name: audience.name,
+        targeting: audience.targeting,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -101,7 +104,7 @@ export const createAudience = (targeting) => {
           payload: true,
         });
         if (data.success) {
-          dispatch(getAudienceDetail());
+          dispatch(getAudienceList());
           NavigationService.navigate("SnapchatAudienceList");
         }
       })
@@ -148,7 +151,13 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
         targeting,
       })
       .then((res) => res.data)
-      .then((data) => console.log(" updateAudience data", data))
+      .then((data) => {
+        console.log("updateAudience data", data);
+        if (data.success) {
+          dispatch(getAudienceList());
+          NavigationService.navigate("SnapchatAudienceList");
+        }
+      })
       .catch((error) =>
         console.log("updateAudience error", error.response || error.message)
       );

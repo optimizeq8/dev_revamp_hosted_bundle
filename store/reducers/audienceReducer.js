@@ -67,6 +67,36 @@ const reducer = (state = initialState, action) => {
         ...state,
         saveAudienceLoading: action.payload,
       };
+
+    case actionTypes.SET_AUDIENCE_DETAIL:
+      console.log("action.payload.targeting", action.payload.targeting);
+      let audienceCopy = {
+        ...action.payload,
+        targeting: {
+          // initialising it blank state
+          demographics: [
+            { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
+          ],
+          geos: [{ country_code: "", region_id: [] }],
+          interests: [{ category_id: [] }],
+          devices: [
+            {
+              os_type: "",
+              marketing_name: [],
+              os_version_max: "",
+              os_version_min: "",
+            },
+          ],
+          locations: [{ circles: [] }],
+          ...action.payload.targeting,
+        },
+      };
+      console.log("audienceCopy", JSON.stringify(audienceCopy, null, 2));
+      return {
+        ...state,
+        audience: audienceCopy,
+      };
+
     default:
       return state;
   }

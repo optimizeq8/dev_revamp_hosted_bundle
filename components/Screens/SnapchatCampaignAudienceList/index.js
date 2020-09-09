@@ -28,12 +28,12 @@ class SnapchatCampaignAudience extends React.Component {
       selected_audience_id: 1,
     };
   }
-  componentWillMount() {
+
+  componentDidMount() {
     this.props.getAudienceList();
   }
 
   showAlert = (audience) => {
-    console.log("aud delete", JSON.stringify(audience, null, 2));
     Alert.alert(
       "Delete",
       `Are you sure you want to delete ${audience.name} ?`,
@@ -52,6 +52,7 @@ class SnapchatCampaignAudience extends React.Component {
     );
   };
   renderCard = ({ item }) => {
+    console.log("item", JSON.stringify(item, null, 2));
     return (
       <TouchableOpacity
         key={item.name}
