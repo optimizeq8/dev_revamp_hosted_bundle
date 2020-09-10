@@ -34,7 +34,6 @@ class MultiSelectList extends Component {
     };
   }
   componentDidMount() {
-    console.log(" this.props.country_code", this.props.country_code);
     if (!this.props.addressForm) {
       let country_code = this.props.country_code.map(
         (cCode) => cCode.country_code

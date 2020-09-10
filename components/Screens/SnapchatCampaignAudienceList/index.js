@@ -64,6 +64,18 @@ class SnapchatCampaignAudience extends React.Component {
           this.setState({
             selected_audience_id: item.id,
           });
+          this.props.save_campaign_info({
+            campaignInfo: {
+              ...this.props.data,
+              targeting: {
+                ...item.targeting,
+              },
+            },
+          });
+          this.props.navigation.push("AdDetails", {
+            source: "audience_list",
+            source_action: "a_select_audience",
+          });
         }}
       >
         <Text style={styles.audienceName}>{item.name}</Text>
@@ -128,6 +140,7 @@ class SnapchatCampaignAudience extends React.Component {
 const mapStateToProps = (state) => ({
   audienceList: state.audience.audienceList,
   audienceListLoading: state.audience.audienceListLoading,
+  data: state.campaignC.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -138,6 +151,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getAudienceDetail(audienceId)),
   deleteAudience: (audienceId) =>
     dispatch(actionCreators.deleteAudience(audienceId)),
+  save_campaign_info: (info) =>
+    dispatch(actionCreators.save_campaign_info(info)),
 });
 export default connect(
   mapStateToProps,

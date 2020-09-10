@@ -1151,6 +1151,17 @@ class AdDetails extends Component {
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
 
+        /** If the audience list is empty for the first time create a new audience */
+        if (this.props.audienceList.length === 0) {
+          this.props.createAudience(
+            {
+              name: "Audience",
+              targeting: rep.targeting,
+            },
+            false
+          );
+        }
+
         this.props.ad_details(
           rep,
           {
@@ -1579,7 +1590,17 @@ class AdDetails extends Component {
                           // justifyContent: "center",
                         }}
                       >
-                        <Text style={[styles.subHeadings, { width: "40%" }]}>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            {
+                              width:
+                                this.props.audienceList.length > 0
+                                  ? "40%"
+                                  : "100%",
+                            },
+                          ]}
+                        >
                           {translate("Who would you like to reach?")}
                         </Text>
                         {this.props.audienceList.length > 0 && (
@@ -1678,5 +1699,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+  createAudience: (audience, navigate) =>
+    dispatch(actionCreators.createAudience(audience, navigate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

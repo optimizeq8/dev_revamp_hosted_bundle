@@ -1,4 +1,3 @@
-import { showMessage } from "react-native-flash-message";
 import * as actionTypes from "./actionTypes";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
@@ -22,14 +21,14 @@ export const getAudienceList = () => {
           type: actionTypes.AUDIENCE_LIST_LOADING,
           payload: false,
         });
-        console.log("getAudienceList data", data);
+        // console.log("getAudienceList data", data);
         return dispatch({
           type: actionTypes.SET_AUDIENCE_LIST,
           payload: data.success ? data.data : [],
         });
       })
       .catch((error) => {
-        console.log("getAudienceList error", error.response || error.message);
+        // console.log("getAudienceList error", error.response || error.message);
         dispatch({
           type: actionTypes.AUDIENCE_LIST_LOADING,
           payload: false,
@@ -61,7 +60,7 @@ export const getAudienceDetail = (audienceId) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        console.log("data", data);
+        // console.log("data", data);
         dispatch({
           type: actionTypes.LOADING_AUDIENCE_DETAIL,
           payload: false,
@@ -74,7 +73,7 @@ export const getAudienceDetail = (audienceId) => {
         }
       })
       .catch((error) => {
-        console.log("getAudienceDetail error", error.response || error.message);
+        // console.log("getAudienceDetail error", error.response || error.message);
       });
   };
 };
@@ -83,11 +82,11 @@ export const getAudienceDetail = (audienceId) => {
  *
  * @param {*} audience Object of id, name and targeting
  */
-export const createAudience = (audience) => {
-  console.log(
-    "createAudience targeting ",
-    JSON.stringify(audience.targeting, null, 2)
-  );
+export const createAudience = (audience, navigate = true) => {
+  // console.log(
+  //   "createAudience targeting ",
+  //   JSON.stringify(audience.targeting, null, 2)
+  // );
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
@@ -97,23 +96,22 @@ export const createAudience = (audience) => {
       .post(`snapchatsavedaudience`, {
         businessid: getState().account.mainBusiness.businessid,
         name: audience.name,
-        targeting: JSON.stringify(audience.targeting),
+        targeting: audience.targeting,
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("data createAudience", data);
         dispatch({
           type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
           payload: true,
         });
         if (data.success) {
           dispatch(getAudienceList());
-          NavigationService.navigate("SnapchatAudienceList");
+          navigate && NavigationService.navigate("SnapchatAudienceList");
         }
       })
-      .catch((error) =>
-        console.log("createAudience error", error.response || error.message)
-      );
+      .catch((error) => {
+        // console.log("createAudience error", error.response || error.message)
+      });
   };
 };
 
@@ -128,13 +126,12 @@ export const deleteAudience = (audienceId) => {
       .delete(`/snapchatsavedaudience/${audienceId}`)
       .then((res) => res.data)
       .then((data) => {
-        console.log("delete audince data", data);
         if (data.success) {
           dispatch(getAudienceList());
         }
       })
       .catch((error) => {
-        console.log("deleteAudience error", error.response || error.message);
+        // console.log("deleteAudience error", error.response || error.message);
       });
   };
 };
@@ -155,15 +152,14 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("updateAudience data", data);
         if (data.success) {
           dispatch(getAudienceList());
           NavigationService.navigate("SnapchatAudienceList");
         }
       })
-      .catch((error) =>
-        console.log("updateAudience error", error.response || error.message)
-      );
+      .catch((error) => {
+        // console.log("updateAudience error", error.response || error.message);
+      });
   };
 };
 

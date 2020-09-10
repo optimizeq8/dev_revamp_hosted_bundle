@@ -252,7 +252,8 @@ export class SnapchatAudience extends Component {
         this.props.updateAudience(rep.id, rep.name, rep.targeting);
       } else {
         console.log("handle submit rep", rep);
-        this.props.createAudience(rep);
+        rep.targeting = JSON.stringify(rep.targeting);
+        this.props.createAudience(rep, true);
       }
     }
   };
