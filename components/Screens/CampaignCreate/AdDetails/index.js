@@ -1580,16 +1580,7 @@ class AdDetails extends Component {
                       )
                     )}
                     {startEditing && (
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          width: "100%",
-
-                          // justifyContent: "center",
-                        }}
-                      >
+                      <View style={styles.reachView}>
                         <Text
                           style={[
                             styles.subHeadings,
@@ -1613,15 +1604,9 @@ class AdDetails extends Component {
                               );
                             }}
                             transparent={true}
-                            textStyle={{ fontSize: 12, color: "#9300FF" }}
+                            textStyle={styles.existingButtonText}
                             height={50}
-                            // width={"55%"}
-                            style={{
-                              borderWidth: 2,
-                              borderColor: "#9300FF",
-                              paddingHorizontal: 20,
-                              marginHorizontal: 0,
-                            }}
+                            style={styles.existingButton}
                             radius={50}
                           />
                         )}
