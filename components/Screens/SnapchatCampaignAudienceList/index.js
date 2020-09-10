@@ -104,7 +104,9 @@ class SnapchatCampaignAudience extends React.Component {
   };
   createNewAudience = () => {
     this.props.setAudienceDetail({ reset: true });
-    this.props.navigation.navigate("SnapchatAudienceTagetting");
+    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+      editCampaign: true,
+    });
   };
   render() {
     return (

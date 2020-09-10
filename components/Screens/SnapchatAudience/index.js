@@ -1152,6 +1152,7 @@ export class SnapchatAudience extends Component {
                         </Text>
                         <Text style={styles.menudetails}>
                           {targeting.demographics &&
+                            targeting.demographics[0].gender &&
                             translate(
                               gender.find((r) => {
                                 if (
