@@ -180,7 +180,10 @@ export class SnapchatAudience extends Component {
       ) {
         delete rep.targeting.interests;
       }
-      if (rep.targeting.devices[0].marketing_name.length === 0) {
+      if (
+        rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
+        rep.targeting.devices[0].marketing_name.length === 0
+      ) {
         delete rep.targeting.devices[0].marketing_name;
       }
       if (rep.targeting.devices[0].os_type === "") {
@@ -1431,12 +1434,14 @@ export class SnapchatAudience extends Component {
                         </Text>
                         <Text numberOfLines={1} style={styles.menudetails}>
                           {targeting.devices &&
+                            targeting.devices[0].marketing_name &&
                             targeting.devices[0].marketing_name.join(", ")}
                         </Text>
                       </View>
                     </View>
 
                     {targeting.devices &&
+                    targeting.devices[0].marketing_name &&
                     targeting.devices[0].marketing_name.length !== 0 ? (
                       <PurpleCheckmarkIcon width={30} height={30} />
                     ) : (

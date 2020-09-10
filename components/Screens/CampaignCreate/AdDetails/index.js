@@ -187,6 +187,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -1581,26 +1582,28 @@ class AdDetails extends Component {
                         <Text style={[styles.subHeadings, { width: "40%" }]}>
                           {translate("Who would you like to reach?")}
                         </Text>
-                        <GradientButton
-                          uppercase={true}
-                          text={"Choose Existing Audience"}
-                          onPressAction={() => {
-                            this.props.navigation.navigate(
-                              "SnapchatAudienceList"
-                            );
-                          }}
-                          transparent={true}
-                          textStyle={{ fontSize: 12, color: "#9300FF" }}
-                          height={50}
-                          // width={"55%"}
-                          style={{
-                            borderWidth: 2,
-                            borderColor: "#9300FF",
-                            paddingHorizontal: 20,
-                            marginHorizontal: 0,
-                          }}
-                          radius={50}
-                        />
+                        {this.props.audienceList.length > 0 && (
+                          <GradientButton
+                            uppercase={true}
+                            text={"Choose Existing Audience"}
+                            onPressAction={() => {
+                              this.props.navigation.navigate(
+                                "SnapchatAudienceList"
+                              );
+                            }}
+                            transparent={true}
+                            textStyle={{ fontSize: 12, color: "#9300FF" }}
+                            height={50}
+                            // width={"55%"}
+                            style={{
+                              borderWidth: 2,
+                              borderColor: "#9300FF",
+                              paddingHorizontal: 20,
+                              marginHorizontal: 0,
+                            }}
+                            radius={50}
+                          />
+                        )}
                       </View>
                     )}
 
@@ -1654,6 +1657,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   interests: state.campaignC.interests,
   campaignDateChanged: state.campaignC.campaignDateChanged,
+  audienceList: state.audience.audienceList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1673,5 +1677,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
+  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

@@ -84,7 +84,10 @@ export const getAudienceDetail = (audienceId) => {
  * @param {*} audience Object of id, name and targeting
  */
 export const createAudience = (audience) => {
-  console.log("createAudience targeting ", audience.targeting);
+  console.log(
+    "createAudience targeting ",
+    JSON.stringify(audience.targeting, null, 2)
+  );
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
@@ -94,7 +97,7 @@ export const createAudience = (audience) => {
       .post(`snapchatsavedaudience`, {
         businessid: getState().account.mainBusiness.businessid,
         name: audience.name,
-        targeting: audience.targeting,
+        targeting: JSON.stringify(audience.targeting),
       })
       .then((res) => res.data)
       .then((data) => {
@@ -148,7 +151,7 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
       .put(`snapchatsavedaudience/${audienceId}`, {
         businessid: getState().account.mainBusiness.businessid,
         name: audienceName,
-        targeting,
+        targeting: JSON.stringify(targeting),
       })
       .then((res) => res.data)
       .then((data) => {
