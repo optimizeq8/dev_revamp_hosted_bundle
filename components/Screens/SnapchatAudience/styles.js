@@ -3,6 +3,22 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
+  outerView: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+    background: "#f8f8f8",
+  },
+  innerView: {
+    marginHorizontal: 30,
+    height: "100%",
+    flex: 1,
+    backgroundColor: "#0000",
+  },
+  maskedView: { height: "100%" },
+  versionIcon: {
+    color: globalColors.purple,
+    right: 2,
+  },
   targetList: {
     flexDirection: "column",
     paddingBottom: 40,

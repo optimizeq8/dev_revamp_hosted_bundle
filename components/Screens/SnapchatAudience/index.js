@@ -75,36 +75,6 @@ export class SnapchatAudience extends Component {
       regionNames: [],
       showRegions: false,
       locationsInfo: [],
-      campaignInfo: {
-        campaign_id: "",
-        lifetime_budget_micro: 50,
-        targeting: {
-          demographics: [
-            {
-              gender: "",
-              languages: ["ar", "en"],
-              min_age: 13,
-              max_age: 50,
-            },
-          ],
-          interests: [{ category_id: [] }],
-          devices: [
-            {
-              marketing_name: [],
-              os_type: "",
-              os_version_min: "",
-              os_version_max: "",
-            },
-          ],
-          geos: [{ country_code: "", region_id: [] }],
-          locations: [
-            {
-              circles: [],
-              operation: "INCLUDE",
-            },
-          ],
-        },
-      },
       filteredLanguages: this.props.languages,
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
@@ -1006,24 +976,10 @@ export class SnapchatAudience extends Component {
     }
 
     if (this.props.audienceDetailLoading) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#f8f8f8",
-            background: "#f8f8f8",
-          }}
-        ></View>
-      );
+      return <View style={styles.outerView} />;
     } else
       return (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#f8f8f8",
-            background: "#f8f8f8",
-          }}
-        >
+        <View style={styles.outerView}>
           <Sidemenu
             onChange={(isOpen) => {
               if (isOpen === false) {
@@ -1049,19 +1005,7 @@ export class SnapchatAudience extends Component {
               topRightButtonFunction={this._handleSubmission}
             />
 
-            <View
-              style={{
-                marginHorizontal: 30,
-                // height: editAudience
-                //   ? heightPercentageToDP(60)
-                //   : heightPercentageToDP(100) > 700
-                //   ? "65%"
-                //   : "55%",
-                height: "100%",
-                flex: 1,
-                backgroundColor: "#0000",
-              }}
-            >
+            <View style={styles.innerView}>
               <InputField
                 translate={this.props.screenProps.translate}
                 label={"Audience Name"}
@@ -1082,7 +1026,7 @@ export class SnapchatAudience extends Component {
                     colors={["black", "black", "transparent"]}
                     start={[0, 0]}
                     end={[0, this.state.scrollY]}
-                    style={{ height: "100%" }}
+                    style={styles.maskedView}
                   />
                 }
               >
@@ -1388,10 +1332,7 @@ export class SnapchatAudience extends Component {
                           type="Octicons"
                           width={25}
                           height={25}
-                          style={{
-                            color: globalColors.purple,
-                            right: 2,
-                          }}
+                          style={styles.versionIcon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
                           <Text style={styles.menutext}>
