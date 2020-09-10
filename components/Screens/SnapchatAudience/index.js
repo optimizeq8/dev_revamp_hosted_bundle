@@ -221,7 +221,6 @@ export class SnapchatAudience extends Component {
       if (this.editAudience) {
         this.props.updateAudience(rep.id, rep.name, rep.targeting);
       } else {
-        console.log("handle submit rep", rep);
         rep.targeting = JSON.stringify(rep.targeting);
         this.props.createAudience(rep, true);
       }
@@ -276,20 +275,17 @@ export class SnapchatAudience extends Component {
     countryName,
     addCountryOfLocations = false
   ) => {
-    console.log("mounting", mounting);
     let replace = cloneDeep(this.props.audience);
     let newCountry = selectedItem;
     let regionNames = this.state.regionNames;
     let locationsInfo = this.state.locationsInfo;
 
     if (newCountry) {
-      console.log("newCountry", newCountry);
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         replace.targeting.geos.length === 1 &&
         !addCountryOfLocations
       ) {
-        console.log("issue 2");
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
           country_code: "",
@@ -303,12 +299,10 @@ export class SnapchatAudience extends Component {
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         !addCountryOfLocations
       ) {
-        console.log("issue 3");
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
           (co) => co.country_code !== newCountry
         );
-        console.log("replace.targeting.geos", replace.targeting.geos);
 
         //To remove the regions from the the region names
         regionNames =
@@ -329,7 +323,6 @@ export class SnapchatAudience extends Component {
             }
           });
       } else if (replace.targeting.geos[0].country_code === "") {
-        console.log("issuee 4");
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
           country_code: newCountry,
@@ -344,7 +337,6 @@ export class SnapchatAudience extends Component {
           ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
           : true
       ) {
-        console.log("issue 5");
         //To add the coutnry to geos array
         replace.targeting.geos.push({
           country_code: newCountry,
@@ -356,7 +348,6 @@ export class SnapchatAudience extends Component {
         this.state.regions.find((c) => c.country_code === newCountry) &&
         !addCountryOfLocations
       ) {
-        console.log("issue 7");
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
         reg = this.state.regions.filter((coReg) => {
@@ -367,11 +358,8 @@ export class SnapchatAudience extends Component {
           ? !this.state.regions.find((c) => c.country_code === newCountry)
           : true
       ) {
-        console.log("issuee 8");
-        console.log("reg", reg);
         if (reg) reg = [...this.state.regions, reg];
       } else {
-        console.log("issuee 9");
         reg = [...this.state.regions];
       }
       if (replace.targeting.interests)
@@ -392,7 +380,6 @@ export class SnapchatAudience extends Component {
           locationsInfo,
         },
         () => {
-          // console.log("issuee 10");
           // console.log("this.state.regions", this.state.regions);
           // //To show the regions options if one of the selected countries has more than 3 regions
           showRegions =
@@ -401,7 +388,7 @@ export class SnapchatAudience extends Component {
                   (reg) => reg.regions && reg.regions.length > 3
                 )
               : false;
-          // console.log("show showRegions", showRegions);
+
           this.props.setAudienceDetail({
             ...replace,
             // country_code: newCountry,

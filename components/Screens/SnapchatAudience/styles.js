@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
   outerView: {
     flex: 1,
     backgroundColor: "#f8f8f8",
-    background: "#f8f8f8",
   },
   innerView: {
     marginHorizontal: 30,

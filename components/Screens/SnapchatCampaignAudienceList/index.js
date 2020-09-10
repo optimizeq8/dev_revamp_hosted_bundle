@@ -40,7 +40,7 @@ class SnapchatCampaignAudience extends React.Component {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {},
           style: "cancel",
         },
         {
@@ -52,7 +52,6 @@ class SnapchatCampaignAudience extends React.Component {
     );
   };
   renderCard = ({ item }) => {
-    console.log("item", JSON.stringify(item, null, 2));
     return (
       <TouchableOpacity
         key={item.name}
