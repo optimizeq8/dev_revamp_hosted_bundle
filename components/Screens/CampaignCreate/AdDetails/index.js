@@ -953,10 +953,11 @@ class AdDetails extends Component {
       }
       if (
         r.geos.some((re) => re.hasOwnProperty("region_id")) &&
-        r.geos.some((re) => re.region_id.length === 0)
+        r.geos.some((re) => re.region_id && re.region_id.length === 0)
       ) {
         r.geos.forEach(
-          (re) => re.region_id.length === 0 && delete re.region_id
+          (re) =>
+            re.region_id && re.region_id.length === 0 && delete re.region_id
         );
       }
       if (
@@ -1067,13 +1068,22 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.interests;
       }
-      if (rep.targeting.devices[0].marketing_name.length === 0) {
+      if (
+        rep.targeting.devices[0].marketing_name &&
+        rep.targeting.devices[0].marketing_name.length === 0
+      ) {
         delete rep.targeting.devices[0].marketing_name;
       }
-      if (rep.targeting.devices[0].os_type === "") {
+      if (
+        rep.targeting.devices[0].os_type &&
+        rep.targeting.devices[0].os_type === ""
+      ) {
         delete rep.targeting.devices[0].os_type;
       }
-      if (rep.targeting.devices[0].os_version_max === "") {
+      if (
+        rep.targeting.devices[0].os_version_max &&
+        rep.targeting.devices[0].os_version_max === ""
+      ) {
         delete rep.targeting.devices[0].os_version_max;
         delete rep.targeting.devices[0].os_version_min;
       }
@@ -1189,6 +1199,64 @@ class AdDetails extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
+    if (this.props.navigation.getParam("audienceSelected", false)) {
+      let editedCampaign = cloneDeep(this.state.campaignInfo);
+      editedCampaign.targeting = {
+        ...editedCampaign.targeting,
+        ...this.props.navigation.getParam("campaignTargeting", {}),
+      };
+
+      let editedCountryCodes = editedCampaign.targeting.geos.map(
+        (geo) => geo.country_code
+      );
+      this.props.get_interests(editedCountryCodes.join(","));
+      editedCampaign.targeting.demographics[0].max_age = parseInt(
+        editedCampaign.targeting.demographics[0].max_age
+      );
+      let getCountryName = editedCampaign.targeting.geos.map(
+        (geo, i) =>
+          countries.find(
+            (country) =>
+              country.value === editedCampaign.targeting.geos[i].country_code
+          ).label
+      );
+      let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
+        country_regions.find(
+          (country_region) =>
+            country_region.country_code ===
+            editedCampaign.targeting.geos[i].country_code
+        )
+      );
+      let stateRegionNames = [];
+      this.setState(
+        {
+          campaignInfo: editedCampaign,
+          // startEditing: false,
+          countryName: getCountryName,
+          regions: editedRegionNames,
+          filteredRegions: editedRegionNames,
+        },
+        () => {
+          editedCampaign.targeting.geos.forEach(
+            (geo, i) =>
+              editedCampaign.targeting.geos[i].region_id &&
+              editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+                let regN = editedRegionNames[i].regions.find(
+                  (region) => region.id === id
+                );
+                regN.country_code =
+                  editedCampaign.targeting.geos[i].country_code;
+                stateRegionNames.push(regN);
+              })
+          );
+          let showRegions = this.state.regions.some(
+            (reg) => reg.regions.length > 3
+          );
+          this._calcReach();
+          this.setState({ regionNames: stateRegionNames, showRegions });
+        }
+      );
+    }
     const segmentInfo = this.props.data
       ? {
           campaign_channel: "snapchat",
@@ -1587,8 +1655,10 @@ class AdDetails extends Component {
                             {
                               width:
                                 this.props.audienceList.length > 0
-                                  ? "40%"
+                                  ? "42%"
                                   : "100%",
+                              fontSize:
+                                this.props.audienceList.length > 0 ? 12 : 16,
                             },
                           ]}
                         >

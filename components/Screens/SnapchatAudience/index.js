@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Platform,
   I18nManager,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
@@ -99,6 +101,10 @@ export class SnapchatAudience extends Component {
 
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
+    const audienceNameError =
+      this.props.audience.name.length === 0
+        ? "Please enter name for your audience"
+        : null;
     const languagesError =
       this.props.audience.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
@@ -108,7 +114,13 @@ export class SnapchatAudience extends Component {
       "mandatory",
       this.props.audience.targeting.geos[0].country_code
     );
-    if (countryError) {
+    if (audienceNameError) {
+      showMessage({
+        message: translate(audienceNameError),
+        type: "warning",
+        position: "top",
+      });
+    } else if (countryError) {
       showMessage({
         message: translate("Please choose a country"),
         type: "warning",
@@ -122,7 +134,7 @@ export class SnapchatAudience extends Component {
       });
     }
     // segment track for error on final submit
-    if (countryError || languagesError) {
+    if (countryError || languagesError || audienceNameError) {
       analytics.track(`a_error_form`, {
         error_page: "audience_targeting",
         source_action: "a_save_audience_targeting",
@@ -133,7 +145,7 @@ export class SnapchatAudience extends Component {
         error_description: countryError || languagesError,
       });
     }
-    if (!languagesError && !countryError) {
+    if (!languagesError && !countryError && !audienceNameError) {
       let rep = cloneDeep(this.props.audience);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
@@ -695,9 +707,6 @@ export class SnapchatAudience extends Component {
     );
   };
 
-  saveAudienceDetail = () => {
-    this.props.navigation.goBack();
-  };
   setAudienceName = (stateName, value) => {
     this.props.setAudienceDetail({ name: value });
   };
@@ -807,6 +816,24 @@ export class SnapchatAudience extends Component {
         }
       });
     return regionNames && regionNames.length > 0 ? regionNames.join(", ") : "";
+  };
+  goBack = () => {
+    Alert.alert(
+      "Warning",
+      `Going back without saving will loose this information?`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => this.props.navigation.goBack(),
+        },
+      ],
+      { cancelable: true }
+    );
   };
   render() {
     console.log(
@@ -963,7 +990,22 @@ export class SnapchatAudience extends Component {
     }
 
     if (this.props.audienceDetailLoading) {
-      return <View style={styles.outerView} />;
+      return (
+        <View style={styles.outerView}>
+          <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+          <Header
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            iconColor={globalColors.purple}
+            title={`${this.editAudience ? "Edit" : "Create"} Audience`}
+            titleStyle={{ color: globalColors.purple }}
+            showTopRightButton={true}
+            topRightButtonText={"SAVE"}
+            topRightButtonFunction={this._handleSubmission}
+          />
+          <ActivityIndicator size={"large"} color={globalColors.orange} />
+        </View>
+      );
     } else
       return (
         <View style={styles.outerView}>
@@ -983,7 +1025,7 @@ export class SnapchatAudience extends Component {
             <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
             <Header
               screenProps={this.props.screenProps}
-              navigation={this.props.navigation}
+              actionButton={this.goBack}
               iconColor={globalColors.purple}
               title={`${this.editAudience ? "Edit" : "Create"} Audience`}
               titleStyle={{ color: globalColors.purple }}
