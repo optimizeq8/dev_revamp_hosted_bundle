@@ -182,7 +182,9 @@ export class TargetAudience extends Component {
                 </View>
 
                 {startEditing &&
-                  (targeting.geos.some((geo) => geo.region_id.length !== 0) ? (
+                  (targeting.geos.some(
+                    (geo) => geo.region_id && geo.region_id.length !== 0
+                  ) ? (
                     <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PurplePlusIcon width={30} height={30} />
@@ -237,12 +239,14 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
-                    {translate(
-                      gender.find((r) => {
-                        if (r.value === targeting.demographics[0].gender)
-                          return r;
-                      }).label
-                    )}
+                    {targeting.demographics[0].gender &&
+                      targeting.demographics[0].gender !== "" &&
+                      translate(
+                        gender.find((r) => {
+                          if (r.value === targeting.demographics[0].gender)
+                            return r;
+                        }).label
+                      )}
                   </Text>
                 </View>
               </View>
@@ -370,16 +374,19 @@ export class TargetAudience extends Component {
                     {translate("Operating System")}
                   </Text>
                   <Text style={styles.menudetails}>
-                    {translate(
-                      OSType.find((r) => {
-                        if (r.value === targeting.devices[0].os_type) return r;
-                      }).label
-                    )}
+                    {targeting.devices[0] &&
+                      translate(
+                        OSType.find((r) => {
+                          if (r.value === targeting.devices[0].os_type)
+                            return r;
+                        }).label
+                      )}
                   </Text>
                 </View>
               </View>
 
               {startEditing &&
+                targeting.devices[0] &&
                 (targeting.devices[0].os_type === "" ||
                 targeting.devices[0].os_type ? (
                   <PurpleCheckmarkIcon width={30} height={30} />
@@ -390,8 +397,10 @@ export class TargetAudience extends Component {
 
             {((!startEditing &&
               editCampaign &&
+              targeting.devices[0] &&
               targeting.devices[0].os_version_min) ||
               ((!editCampaign || startEditing) &&
+                targeting.devices[0] &&
                 targeting.devices[0].os_type !== "")) && (
               <TouchableOpacity
                 disabled={loading}
@@ -414,15 +423,18 @@ export class TargetAudience extends Component {
                       {translate("OS Versions")}
                     </Text>
                     <Text style={styles.menudetails}>
-                      {targeting.devices[0].os_version_min +
-                        ", " +
+                      {targeting.devices[0] &&
+                        targeting.devices[0].os_version_min +
+                          ", " +
+                          targeting.devices[0] &&
                         targeting.devices[0].os_version_max}
                     </Text>
                   </View>
                 </View>
 
                 {startEditing &&
-                  (targeting.devices[0].os_version_min !== "" ? (
+                  (targeting.devices[0] &&
+                  targeting.devices[0].os_version_min !== "" ? (
                     <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PurplePlusIcon width={30} height={30} />
@@ -432,6 +444,8 @@ export class TargetAudience extends Component {
 
             {((!startEditing &&
               editCampaign &&
+              targeting.devices[0] &&
+              targeting.devices[0].marketing_name &&
               targeting.devices[0].marketing_name.length > 0) ||
               !editCampaign ||
               startEditing) && (
@@ -456,13 +470,16 @@ export class TargetAudience extends Component {
                       numberOfLines={startEditing ? 1 : 10}
                       style={styles.menudetails}
                     >
-                      {targeting.devices[0].marketing_name}
+                      {targeting.devices[0] &&
+                        targeting.devices[0].marketing_name}
                     </Text>
                   </View>
                 </View>
 
                 {startEditing &&
-                  (targeting.devices[0].marketing_name.length !== 0 ? (
+                  (targeting.devices[0] &&
+                  targeting.devices[0].marketing_name &&
+                  targeting.devices[0].marketing_name.length !== 0 ? (
                     <PurpleCheckmarkIcon width={30} height={30} />
                   ) : (
                     <PurplePlusIcon width={30} height={30} />

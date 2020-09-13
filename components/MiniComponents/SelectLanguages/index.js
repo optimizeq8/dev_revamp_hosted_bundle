@@ -13,31 +13,33 @@ export default class SelectLanguages extends Component {
   }
   render() {
     const { translate } = this.props.screenProps;
-    let languagelist = this.props.filteredLanguages.map((c) => (
-      <TouchableOpacity
-        key={c.id}
-        style={styles.languageRowConatiner}
-        onPress={() => {
-          this.props.onSelectedLangsChange(c.id);
-        }}
-      >
-        <Icon
-          type="MaterialCommunityIcons"
-          name={
-            this.props.demographics[0].languages.find((l) => l === c.id)
-              ? "circle"
-              : "circle-outline"
-          }
-          style={[
-            this.props.demographics[0].languages.find((l) => l === c.id)
-              ? styles.activetext
-              : styles.inactivetext,
-            styles.optionsIconSize,
-          ]}
-        />
-        <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
-      </TouchableOpacity>
-    ));
+    let languagelist =
+      this.props.filteredLanguages &&
+      this.props.filteredLanguages.map((c) => (
+        <TouchableOpacity
+          key={c.id}
+          style={styles.languageRowConatiner}
+          onPress={() => {
+            this.props.onSelectedLangsChange(c.id);
+          }}
+        >
+          <Icon
+            type="MaterialCommunityIcons"
+            name={
+              this.props.demographics[0].languages.find((l) => l === c.id)
+                ? "circle"
+                : "circle-outline"
+            }
+            style={[
+              this.props.demographics[0].languages.find((l) => l === c.id)
+                ? styles.activetext
+                : styles.inactivetext,
+              styles.optionsIconSize,
+            ]}
+          />
+          <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
+        </TouchableOpacity>
+      ));
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}

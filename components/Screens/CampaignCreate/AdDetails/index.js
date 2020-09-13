@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content, Row } from "native-base";
+import { View, BackHandler, I18nManager, Text } from "react-native";
+import { Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
@@ -54,6 +54,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -186,6 +187,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -365,7 +367,7 @@ class AdDetails extends Component {
   }
 
   _handleMaxAge = (value) => {
-    let rep = this.state.campaignInfo;
+    let rep = cloneDeep(this.state.campaignInfo);
     rep.targeting.demographics[0].max_age = parseInt(value);
 
     analytics.track(`a_ad_age`, {
@@ -380,7 +382,7 @@ class AdDetails extends Component {
   };
 
   _handleMinAge = (value) => {
-    let rep = this.state.campaignInfo;
+    let rep = cloneDeep(this.state.campaignInfo);
     rep.targeting.demographics[0].min_age = value;
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
@@ -951,10 +953,11 @@ class AdDetails extends Component {
       }
       if (
         r.geos.some((re) => re.hasOwnProperty("region_id")) &&
-        r.geos.some((re) => re.region_id.length === 0)
+        r.geos.some((re) => re.region_id && re.region_id.length === 0)
       ) {
         r.geos.forEach(
-          (re) => re.region_id.length === 0 && delete re.region_id
+          (re) =>
+            re.region_id && re.region_id.length === 0 && delete re.region_id
         );
       }
       if (
@@ -1065,13 +1068,22 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.interests;
       }
-      if (rep.targeting.devices[0].marketing_name.length === 0) {
+      if (
+        rep.targeting.devices[0].marketing_name &&
+        rep.targeting.devices[0].marketing_name.length === 0
+      ) {
         delete rep.targeting.devices[0].marketing_name;
       }
-      if (rep.targeting.devices[0].os_type === "") {
+      if (
+        rep.targeting.devices[0].os_type &&
+        rep.targeting.devices[0].os_type === ""
+      ) {
         delete rep.targeting.devices[0].os_type;
       }
-      if (rep.targeting.devices[0].os_version_max === "") {
+      if (
+        rep.targeting.devices[0].os_version_max &&
+        rep.targeting.devices[0].os_version_max === ""
+      ) {
         delete rep.targeting.devices[0].os_version_max;
         delete rep.targeting.devices[0].os_version_min;
       }
@@ -1149,6 +1161,17 @@ class AdDetails extends Component {
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
         // });
 
+        /** If the audience list is empty for the first time create a new audience */
+        if (this.props.audienceList.length === 0) {
+          this.props.createAudience(
+            {
+              name: "Audience",
+              targeting: rep.targeting,
+            },
+            false
+          );
+        }
+
         this.props.ad_details(
           rep,
           {
@@ -1176,6 +1199,64 @@ class AdDetails extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
+    if (this.props.navigation.getParam("audienceSelected", false)) {
+      let editedCampaign = cloneDeep(this.state.campaignInfo);
+      editedCampaign.targeting = {
+        ...editedCampaign.targeting,
+        ...this.props.navigation.getParam("campaignTargeting", {}),
+      };
+
+      let editedCountryCodes = editedCampaign.targeting.geos.map(
+        (geo) => geo.country_code
+      );
+      this.props.get_interests(editedCountryCodes.join(","));
+      editedCampaign.targeting.demographics[0].max_age = parseInt(
+        editedCampaign.targeting.demographics[0].max_age
+      );
+      let getCountryName = editedCampaign.targeting.geos.map(
+        (geo, i) =>
+          countries.find(
+            (country) =>
+              country.value === editedCampaign.targeting.geos[i].country_code
+          ).label
+      );
+      let editedRegionNames = editedCampaign.targeting.geos.map((geo, i) =>
+        country_regions.find(
+          (country_region) =>
+            country_region.country_code ===
+            editedCampaign.targeting.geos[i].country_code
+        )
+      );
+      let stateRegionNames = [];
+      this.setState(
+        {
+          campaignInfo: editedCampaign,
+          // startEditing: false,
+          countryName: getCountryName,
+          regions: editedRegionNames,
+          filteredRegions: editedRegionNames,
+        },
+        () => {
+          editedCampaign.targeting.geos.forEach(
+            (geo, i) =>
+              editedCampaign.targeting.geos[i].region_id &&
+              editedCampaign.targeting.geos[i].region_id.forEach((id) => {
+                let regN = editedRegionNames[i].regions.find(
+                  (region) => region.id === id
+                );
+                regN.country_code =
+                  editedCampaign.targeting.geos[i].country_code;
+                stateRegionNames.push(regN);
+              })
+          );
+          let showRegions = this.state.regions.some(
+            (reg) => reg.regions.length > 3
+          );
+          this._calcReach();
+          this.setState({ regionNames: stateRegionNames, showRegions });
+        }
+      );
+    }
     const segmentInfo = this.props.data
       ? {
           campaign_channel: "snapchat",
@@ -1501,7 +1582,6 @@ class AdDetails extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
-                            uppercase
                             style={[
                               styles.subHeadings,
                               { paddingHorizontal: 10 },
@@ -1568,13 +1648,41 @@ class AdDetails extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
-                      >
-                        {translate("Who would you like to reach?")}
-                      </Text>
+                      <View style={styles.reachView}>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            {
+                              width:
+                                this.props.audienceList.length > 0
+                                  ? "42%"
+                                  : "100%",
+                              fontSize:
+                                this.props.audienceList.length > 0 ? 12 : 16,
+                            },
+                          ]}
+                        >
+                          {translate("Who would you like to reach?")}
+                        </Text>
+                        {this.props.audienceList.length > 0 && (
+                          <GradientButton
+                            uppercase={true}
+                            text={"Choose Existing Audience"}
+                            onPressAction={() => {
+                              this.props.navigation.navigate(
+                                "SnapchatAudienceList"
+                              );
+                            }}
+                            transparent={true}
+                            textStyle={styles.existingButtonText}
+                            height={50}
+                            style={styles.existingButton}
+                            radius={50}
+                          />
+                        )}
+                      </View>
                     )}
+
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
@@ -1625,6 +1733,7 @@ const mapStateToProps = (state) => ({
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   interests: state.campaignC.interests,
   campaignDateChanged: state.campaignC.campaignDateChanged,
+  audienceList: state.audience.audienceList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1644,5 +1753,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
+  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+  createAudience: (audience, navigate) =>
+    dispatch(actionCreators.createAudience(audience, navigate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
