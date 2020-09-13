@@ -344,7 +344,7 @@ PODS:
   - RNAnalytics (1.1.1-beta.6):
     - Analytics (= 3.9.0)
     - React
-  - RNAnalyticsIntegration-Adjust (1.3.0):
+  - RNAnalyticsIntegration-Adjust (1.3.1):
     - Analytics
     - React
     - RNAnalytics
@@ -766,7 +766,7 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNAnalytics: 0176cbd15962b36479c9ab76a2c613be9a34528c
-  RNAnalyticsIntegration-Adjust: 0a027f6fc50ee29ff9eaf82b9965b15cea41e378
+  RNAnalyticsIntegration-Adjust: c3525c3bfffec62acf320462d5d2b22f67af3aa9
   RNAnalyticsIntegration-Mixpanel: 2a7b237e57efc5b5a17fd028820b55d1dd0b1afb
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161

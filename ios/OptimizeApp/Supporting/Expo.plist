@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>EXUpdatesReleaseChannel</key>
-	<string>sprint_28-07</string>
+	<string>dev-01</string>
 	<key>EXUpdatesSDKVersion</key>
 	<string>37.0.0</string>
 	<key>EXUpdatesURL</key>
-	<string>https://optimizeq8.github.io/optimizeapp_staging_hosted_bundle/ios-index.json</string>
+	<string>https://exp.host/@samyoptimize/optimize_app</string>
 </dict>
 </plist>
