@@ -836,11 +836,6 @@ export class SnapchatAudience extends Component {
     );
   };
   render() {
-    console.log(
-      "this.props.audience",
-      JSON.stringify(this.props.audience, null, 2)
-    );
-
     let {
       loading = false,
       audience,

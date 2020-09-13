@@ -69,7 +69,6 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.SET_AUDIENCE_DETAIL:
-      console.log("action.payload.targeting", action.payload.targeting);
       let audienceCopy = {
         ...action.payload,
         targeting: {
@@ -91,7 +90,7 @@ const reducer = (state = initialState, action) => {
           ...action.payload.targeting,
         },
       };
-      console.log("audienceCopy", JSON.stringify(audienceCopy, null, 2));
+
       return {
         ...state,
         audience: audienceCopy,
