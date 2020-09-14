@@ -199,7 +199,10 @@ class App extends React.Component {
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
-      using: [Mixpanel],
+      using: [
+        Mixpanel,
+        //  AdjustIntegration
+      ],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
