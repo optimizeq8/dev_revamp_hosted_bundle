@@ -65,6 +65,7 @@ import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
+import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
 import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
@@ -509,7 +510,13 @@ class Dashboard extends Component {
     };
     const businesscategoryName = this.getBusinessCategoryName();
     let placeHolderCards = [1, 2, 3, 4].map((x) => (
-      <View key={x} style={styles.placeHolderCardsStyle} />
+      <PlaceHolderLine
+        key={x}
+        style={styles.placeHolderCardsStyle}
+        width={"90%"}
+        height={150}
+        color={"rgba(0,0,0,0.1)"}
+      />
     ));
     let menu =
       !this.state.open && FilterMenu ? (
