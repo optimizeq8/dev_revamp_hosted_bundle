@@ -1056,6 +1056,8 @@ class AdDetails extends Component {
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
+
+      // TODO: Region_id can be for multiple geos, not sure if need to clean/delete that too before sending to save target
       if (
         rep.targeting.geos[0].hasOwnProperty("region_id") &&
         rep.targeting.geos[0].region_id.length === 0
@@ -1095,6 +1097,18 @@ class AdDetails extends Component {
       }
       if (rep.targeting.demographics[0].max_age === 50) {
         rep.targeting.demographics[0].max_age = "50+";
+      }
+
+      if (
+        rep.targeting.locations &&
+        rep.targeting.locations[0].circles &&
+        rep.targeting.locations[0].circles.length === 0
+      ) {
+        delete rep.targeting.locations[0].circles;
+      }
+
+      if (rep.targeting.enable_targeting_expansion) {
+        delete rep.targeting.enable_targeting_expansion;
       }
       rep.targeting = JSON.stringify(rep.targeting);
       let interestNamesList = [];
@@ -1227,6 +1241,7 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      // LOCATIONS MAP
       let stateRegionNames = [];
       this.setState(
         {

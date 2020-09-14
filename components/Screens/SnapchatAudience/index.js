@@ -836,15 +836,7 @@ export class SnapchatAudience extends Component {
     );
   };
   render() {
-    let {
-      loading = false,
-      audience,
-      audienceDetailLoading,
-      mainState = {
-        countryName: "",
-        showRegions: true,
-      },
-    } = this.props;
+    let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
     const { translate } = this.props.screenProps;
     let languages_names = this.getLanguagesName();
@@ -1066,7 +1058,7 @@ export class SnapchatAudience extends Component {
                   ]}
                 >
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("selectors", "countries")}
                     style={styles.targetTouchable}
                   >
@@ -1141,7 +1133,7 @@ export class SnapchatAudience extends Component {
                     </TouchableOpacity>
                   ) : null}
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("map")}
                     style={styles.targetTouchable}
                   >
@@ -1172,7 +1164,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("gender")}
                     style={styles.targetTouchable}
                   >
@@ -1212,7 +1204,7 @@ export class SnapchatAudience extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("age")}
                     style={styles.targetTouchable}
                   >
@@ -1246,7 +1238,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("languages")}
                     style={styles.targetTouchable}
                   >
@@ -1273,7 +1265,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("selectors", "interests")}
                     style={styles.targetTouchable}
                   >
@@ -1303,7 +1295,7 @@ export class SnapchatAudience extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("OS")}
                     style={styles.targetTouchable}
                   >
@@ -1345,7 +1337,7 @@ export class SnapchatAudience extends Component {
                   </TouchableOpacity>
                   {targeting.devices && targeting.devices[0].os_type !== "" && (
                     <TouchableOpacity
-                      disabled={loading}
+                      disabled={saveAudienceLoading}
                       onPress={() =>
                         this.callFunction("selectors", "deviceVersions")
                       }
@@ -1381,7 +1373,7 @@ export class SnapchatAudience extends Component {
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() =>
                       this.callFunction("selectors", "deviceBrands")
                     }
@@ -1441,6 +1433,7 @@ const mapStateToProps = (state) => ({
   audience: state.audience.audience,
   languages: state.campaignC.languagesList,
   audienceDetailLoading: state.audience.audienceDetailLoading,
+  saveAudienceLoading: state.audience.saveAudienceLoading,
   mainBusiness: state.account.mainBusiness,
   interests: state.campaignC.interests,
 });
