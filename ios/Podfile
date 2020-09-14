@@ -80,7 +80,6 @@ target 'OptimizeApp' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
-  pod 'RNAnalyticsIntegration-Adjust', :path => '../node_modules/@segment/analytics-react-native-adjust'
 
 end
 

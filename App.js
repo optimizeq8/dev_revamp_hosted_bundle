@@ -23,7 +23,7 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
-import AdjustIntegration from "@segment/analytics-react-native-adjust";
+// import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 import segmentEventTrack from "./components/segmentEventTrack";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -199,7 +199,10 @@ class App extends React.Component {
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
-      using: [Mixpanel, AdjustIntegration],
+      using: [
+        Mixpanel,
+        //  AdjustIntegration
+      ],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!

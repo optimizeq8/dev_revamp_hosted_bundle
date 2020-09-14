@@ -6,7 +6,7 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;
+// import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;
 import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
