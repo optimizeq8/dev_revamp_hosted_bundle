@@ -1064,14 +1064,11 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.devices[0].marketing_name;
       }
-      if (
-        rep.targeting.devices[0].os_type &&
-        rep.targeting.devices[0].os_type === ""
-      ) {
+      if (rep.targeting.devices[0] && rep.targeting.devices[0].os_type === "") {
         delete rep.targeting.devices[0].os_type;
       }
       if (
-        rep.targeting.devices[0].os_version_max &&
+        rep.targeting.devices[0] &&
         rep.targeting.devices[0].os_version_max === ""
       ) {
         delete rep.targeting.devices[0].os_version_max;
@@ -1093,6 +1090,12 @@ class AdDetails extends Component {
         rep.targeting.locations[0].circles.length === 0
       ) {
         delete rep.targeting.locations[0].circles;
+      }
+      if (
+        Object.entries(rep.targeting.locations[0]).length === 0 &&
+        rep.targeting.locations[0].constructor === Object
+      ) {
+        delete rep.targeting.locations;
       }
 
       if (rep.targeting.enable_targeting_expansion) {
