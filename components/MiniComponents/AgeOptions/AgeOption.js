@@ -4,7 +4,6 @@ import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
-import * as Segment from "expo-analytics-segment";
 
 //Styles
 import styles from "./styles";
@@ -23,7 +22,6 @@ export default class AgeOption extends Component {
   };
 
   componentDidMount() {
-    Segment.screen("Age Option");
     this.setState({
       values: [this.props.minAge, this.props.maxAge],
     });
