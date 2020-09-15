@@ -102,7 +102,7 @@ export const createAudience = (audience, navigate = true) => {
       .then((data) => {
         dispatch({
           type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
-          payload: true,
+          payload: false,
         });
         if (data.success) {
           dispatch(getAudienceList());
@@ -144,6 +144,10 @@ export const deleteAudience = (audienceId) => {
  */
 export const updateAudience = (audienceId, audienceName, targeting) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
+      payload: true,
+    });
     createBaseUrl()
       .put(`snapchatsavedaudience/${audienceId}`, {
         businessid: getState().account.mainBusiness.businessid,
@@ -152,6 +156,10 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        dispatch({
+          type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
+          payload: false,
+        });
         if (data.success) {
           dispatch(getAudienceList());
           NavigationService.navigate("SnapchatAudienceList");

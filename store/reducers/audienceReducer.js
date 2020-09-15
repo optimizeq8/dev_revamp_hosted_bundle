@@ -60,6 +60,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         audienceDetailLoading: action.payload,
+        saveAudienceLoading: false,
       };
 
     case actionTypes.SAVE_AUDIENCE_DETAIL_LOADING:

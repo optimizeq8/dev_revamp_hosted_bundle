@@ -151,13 +151,22 @@ export default class Header extends Component {
             </Text>
           </View>
         )}
-        <View style={[styles.right, rightViewStyle]}>
+        <View
+          pointerEvents={disabled ? "none" : "auto"}
+          style={[styles.right, rightViewStyle]}
+        >
           {showTopRightButton ? (
-            <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
-              {topRightButtonText}
-            </Text>
+            <TouchableOpacity
+              disabled={disabled}
+              onPress={() => topRightButtonFunction()}
+            >
+              <Text style={styles.edit}>{topRightButtonText}</Text>
+            </TouchableOpacity>
           ) : showTopRightButtonIcon ? (
-            <TouchableOpacity onPress={topRightButtonFunction}>
+            <TouchableOpacity
+              disabled={disabled}
+              onPress={topRightButtonFunction}
+            >
               {showTopRightButtonIcon === "settings" ? (
                 <Settings width={30} fill={iconColor} />
               ) : showTopRightButtonIcon === "delete" ? (
