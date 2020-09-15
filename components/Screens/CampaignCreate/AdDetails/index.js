@@ -1191,6 +1191,13 @@ class AdDetails extends Component {
     }
   };
 
+  chooseExistingAudience = () => {
+    this.props.navigation.navigate("SnapchatAudienceList", {
+      source: "ad_targeting",
+      source_action: "a_open_audience_list",
+    });
+  };
+
   handleAdDetailsFocus = () => {
     BackHandler.addEventListener(
       "hardwareBackPressAdDetails",
@@ -1674,11 +1681,7 @@ class AdDetails extends Component {
                           <GradientButton
                             uppercase={true}
                             text={"Choose Existing Audience"}
-                            onPressAction={() => {
-                              this.props.navigation.navigate(
-                                "SnapchatAudienceList"
-                              );
-                            }}
+                            onPressAction={this.chooseExistingAudience}
                             transparent={true}
                             textStyle={styles.existingButtonText}
                             height={50}

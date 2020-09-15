@@ -1,6 +1,7 @@
 import React from "react";
 import { View, FlatList, Alert, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 
 // Components
 import Header from "../../MiniComponents/Header";
@@ -31,13 +32,24 @@ class SnapchatCampaignAudience extends React.Component {
   }
 
   showAlert = (audience) => {
+    analytics.track("audience_delete_warning", {
+      source: "audience_list",
+      source_action: "a_delete_audience",
+      audience_id: audience.id,
+      audience_name: audience.name,
+    });
     Alert.alert(
       "Delete",
       `Are you sure you want to delete ${audience.name} ?`,
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => {
+            analytics.track("a_cancel_delete", {
+              source: "audience_list",
+              source_action: "a_cancel_delete",
+            });
+          },
           style: "cancel",
         },
         {
@@ -67,11 +79,30 @@ class SnapchatCampaignAudience extends React.Component {
   };
   createNewAudience = () => {
     this.props.setAudienceDetail({ reset: true });
-    this.props.navigation.navigate("SnapchatAudienceTagetting");
+    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+      source: "audience_list",
+      source_action: "a_create_audience_detail",
+      audience_channel: "snapchat",
+    });
+  };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track("audience_list", {
+      source,
+      source_action,
+    });
   };
   render() {
     return (
       <View style={styles.campaignAudienceListOuterView}>
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
         <Header
           title={"Audience"}
