@@ -366,28 +366,16 @@ class AdDetails extends Component {
     }
   }
 
-  _handleMaxAge = (value) => {
+  _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].max_age = parseInt(value);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",
-      campaign_max_age: parseInt(value),
-    });
-    this.setState({
-      campaignInfo: rep,
-    });
-    !this.editCampaign && this.props.save_campaign_info({ campaignInfo: rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].min_age = value;
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(value),
+      campaign_min_age: parseInt(values[0]),
+      campaign_max_age: parseInt(values[1]),
     });
     this.setState({
       campaignInfo: rep,
@@ -1343,8 +1331,7 @@ class AdDetails extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
+            _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 50]}
             minAge={this.state.campaignInfo.targeting.demographics[0].min_age}

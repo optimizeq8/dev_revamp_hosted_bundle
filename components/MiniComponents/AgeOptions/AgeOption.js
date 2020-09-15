@@ -29,8 +29,7 @@ export default class AgeOption extends Component {
     });
   }
   multiSliderValuesChange = (values) => {
-    this.props._handleMinAge(values[0]);
-    this.props._handleMaxAge(values[1]);
+    this.props._handleAge(values);
     this.setState({
       values,
     });

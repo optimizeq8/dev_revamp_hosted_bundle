@@ -258,25 +258,16 @@ export class SnapchatAudience extends Component {
     } else this._renderSideMenu(selector, option);
   };
 
-  _handleMaxAge = (value) => {
+  _handleAge = (values) => {
     let rep = cloneDeep(this.props.audience);
-    rep.targeting.demographics[0].max_age = parseInt(value);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_audience_age`, {
       source: "ad_targeting",
       source_action: "a_audience_age",
-      audience_max_age: parseInt(value),
-    });
-    this.props.setAudienceDetail({ ...rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = cloneDeep(this.props.audience);
-    rep.targeting.demographics[0].min_age = value;
-    analytics.track(`a_audience_age`, {
-      source: "ad_targeting",
-      source_action: "a_audience_age",
-      audience_min_age: parseInt(value),
+      audience_max_age: parseInt(values[0]),
+      audience_min_age: parseInt(values[1]),
     });
     this.props.setAudienceDetail({ ...rep });
   };
@@ -862,9 +853,8 @@ export class SnapchatAudience extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.props.audience.targeting.demographics[0]}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
+            _handleAge={this._handleAge}
             ageValuesRange={[13, 50]}
             minAge={this.props.audience.targeting.demographics[0].min_age}
             maxAge={this.props.audience.targeting.demographics[0].max_age}
@@ -975,7 +965,10 @@ export class SnapchatAudience extends Component {
         break;
       }
     }
-
+    console.log(
+      " targeting.demographics[0]",
+      JSON.stringify(targeting.demographics[0], null, 2)
+    );
     if (this.props.audienceDetailLoading) {
       return (
         <View style={styles.outerView}>

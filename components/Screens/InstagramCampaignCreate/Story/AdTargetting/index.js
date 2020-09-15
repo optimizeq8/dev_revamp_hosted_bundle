@@ -295,29 +295,16 @@ class InstagramStoryAdTargetting extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  _handleMaxAge = (value) => {
-    let rep = this.state.campaignInfo;
-    rep.targeting.age_max = parseInt(value);
+  _handleAge = (values) => {
+    let rep = cloneDeep(this.state.campaignInfo);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",
-      campaign_max_age: parseInt(value),
-    });
-    this.setState({
-      campaignInfo: rep,
-    });
-    !this.editCampaign &&
-      this.props.save_campaign_info_instagram({ campaignInfo: rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = this.state.campaignInfo;
-    rep.targeting.age_min = value;
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(value),
+      campaign_min_age: parseInt(values[0]),
+      campaign_max_age: parseInt(values[1]),
     });
     this.setState({
       campaignInfo: rep,
@@ -327,7 +314,6 @@ class InstagramStoryAdTargetting extends Component {
         campaignInfo: rep,
       });
   };
-
   onSelectedInterestsChange = (selectedItems) => {
     // No more used, kept for PICKER component
   };
@@ -1032,8 +1018,7 @@ class InstagramStoryAdTargetting extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
+            _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 65]}
             minAge={this.state.campaignInfo.targeting.age_min || 13}
