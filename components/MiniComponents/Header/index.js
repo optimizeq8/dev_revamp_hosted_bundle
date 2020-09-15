@@ -43,6 +43,7 @@ export default class Header extends Component {
       changeHeaderColor = false,
       iconColor = "#FFF",
       titleContainerStyle,
+      rightViewStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -150,7 +151,7 @@ export default class Header extends Component {
             </Text>
           </View>
         )}
-        <View style={[styles.right]}>
+        <View style={[styles.right, rightViewStyle]}>
           {showTopRightButton ? (
             <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
               {topRightButtonText}

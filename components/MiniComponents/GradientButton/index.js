@@ -30,7 +30,8 @@ class GradientButton extends React.PureComponent {
       orangeDark,
       uppercase,
       transparent,
-      numberOfLines = 1
+      numberOfLines = 1,
+      activeOpacity = 0.2,
     } = this.props;
     const orangeDarkColor = ["#FF9D00", "#FF5C14"];
     const transparentColor = ["rgba(0,0,0,0)", "rgba(0,0,0,0)"];
@@ -42,31 +43,32 @@ class GradientButton extends React.PureComponent {
     const deepBlueColor = ["#4F73C3", "#3C46A2"];
     const disabledColor = [
       disabledGradientBegin || "#FF9D00",
-      disabledGradientEnd || "#FF5C14"
+      disabledGradientEnd || "#FF5C14",
     ];
 
     const horizontalGradient = {
       start: { x: 0, y: 0.5 },
-      end: { x: 1, y: 0.5 }
+      end: { x: 1, y: 0.5 },
     };
 
     const verticalGradient = {
       start: { x: 0, y: 0 },
-      end: { x: 0, y: 1 }
+      end: { x: 0, y: 1 },
     };
 
     const diagonalGradient = {
       start: { x: 0, y: 0 },
-      end: { x: 1, y: 1 }
+      end: { x: 1, y: 1 },
     };
 
     return (
       <TouchableOpacity
+        activeOpacity={activeOpacity}
         style={[
           styles.button,
           { height, width },
           style,
-          { borderRadius: radius }
+          { borderRadius: radius },
         ]}
         onPress={
           disabled
@@ -142,7 +144,7 @@ GradientButton.defaultProps = {
   textStyle: {},
   disabled: false,
   disabledGradientBegin: "#FF9D00",
-  disabledGradientEnd: "#FF5C14"
+  disabledGradientEnd: "#FF5C14",
 };
 
 export default GradientButton;

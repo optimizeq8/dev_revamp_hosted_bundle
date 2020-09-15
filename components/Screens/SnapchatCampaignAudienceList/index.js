@@ -82,6 +82,7 @@ class SnapchatCampaignAudience extends React.Component {
           showTopRightButton={true}
           topRightButtonText={"Create"}
           topRightButtonFunction={this.createNewAudience}
+          rightViewStyle={styles.rightViewStyle}
         />
         {this.props.audienceListLoading ? (
           <ActivityIndicator size={"large"} color={globalColors.orange} />

@@ -1668,10 +1668,11 @@ class AdDetails extends Component {
                           style={[
                             styles.subHeadings,
                             {
+                              paddingHorizontal: 0,
                               width:
                                 this.props.audienceList.length > 0
-                                  ? "42%"
-                                  : "100%",
+                                  ? "30%"
+                                  : "60%",
                               fontSize:
                                 this.props.audienceList.length > 0 ? 12 : 16,
                             },
