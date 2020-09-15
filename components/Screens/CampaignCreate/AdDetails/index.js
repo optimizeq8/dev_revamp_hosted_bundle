@@ -1671,10 +1671,10 @@ class AdDetails extends Component {
                               paddingHorizontal: 0,
                               width:
                                 this.props.audienceList.length > 0
-                                  ? "30%"
+                                  ? "25%"
                                   : "60%",
                               fontSize:
-                                this.props.audienceList.length > 0 ? 12 : 16,
+                                this.props.audienceList.length > 0 ? 10 : 16,
                             },
                           ]}
                         >
@@ -1692,6 +1692,7 @@ class AdDetails extends Component {
                             transparent={true}
                             textStyle={styles.existingButtonText}
                             height={50}
+                            // width={"80%"}
                             style={styles.existingButton}
                             radius={50}
                           />
