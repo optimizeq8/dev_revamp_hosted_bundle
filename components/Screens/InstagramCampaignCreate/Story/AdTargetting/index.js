@@ -1066,6 +1066,7 @@ class InstagramStoryAdTargetting extends Component {
             selectedOSType={this.state.campaignInfo.targeting.user_os[0]}
             iosName={"iOS"}
             androidName={"Android"}
+            data={OSType}
             objective={this.props.data.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}

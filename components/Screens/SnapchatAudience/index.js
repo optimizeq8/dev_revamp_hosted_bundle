@@ -958,6 +958,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             campaignInfo={this.props.audience}
             onSelectedOSChange={this.onSelectedOSChange}
+            data={OSType}
             _handleSideMenuState={this._handleSideMenuState}
           />
         );

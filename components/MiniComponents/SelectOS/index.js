@@ -20,6 +20,7 @@ export default class SelectOS extends Component {
       : this.props.campaignInfo.targeting.user_os[0];
     const { translate } = this.props.screenProps;
     let disabled = this.props.objective === "APP_INSTALLS";
+    const data = this.props.data;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -38,91 +39,43 @@ export default class SelectOS extends Component {
               {translate(`Select your audience's OS`)}{" "}
             </Text>
             <View style={[styles.optionsContainer]}>
-              <TouchableOpacity
-                disabled={disabled}
-                style={[
-                  styles.optionsRowContainer,
-                  { opacity: disabled ? 0.5 : 1 },
-                ]}
-                onPress={() => this.props.onSelectedOSChange("")}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={devices === "" ? "circle" : "circle-outline"}
+              {data.map((item) => (
+                <TouchableOpacity
+                  key={item.value}
+                  disabled={disabled}
                   style={[
-                    devices === "" ? styles.activetext : styles.inactivetext,
-                    styles.optionsIconSize,
+                    styles.optionsRowContainer,
+                    { opacity: disabled ? 0.5 : 1 },
                   ]}
-                />
-                <Text style={[styles.inactivetext, { fontSize: 14 }]}>
-                  {translate("All")}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                disabled={disabled}
-                style={[
-                  styles.optionsRowContainer,
-                  { opacity: disabled ? 0.5 : 1 },
-                ]}
-                onPress={() => this.props.onSelectedOSChange("iOS")}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={devices === "iOS" ? "circle" : "circle-outline"}
-                  style={[
-                    devices === "iOS" ? styles.activetext : styles.inactivetext,
-                    styles.optionsIconSize,
-                  ]}
-                />
-                <Text
-                  style={[
-                    styles.inactivetext,
-                    styles.optionsTextContainer,
-                    I18nManager.isRTL && !isStringArabic(translate("iOS"))
-                      ? {
-                          marginTop: 0,
-                          marginBottom: 15,
-                        }
-                      : {},
-                  ]}
+                  onPress={() => this.props.onSelectedOSChange(item.value)}
                 >
-                  {translate("iOS")}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                disabled={disabled}
-                style={[
-                  styles.optionsRowContainer,
-                  { opacity: disabled ? 0.5 : 1 },
-                ]}
-                onPress={() => this.props.onSelectedOSChange("ANDROID")}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={devices === "ANDROID" ? "circle" : "circle-outline"}
-                  style={[
-                    devices === "ANDROID"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize,
-                  ]}
-                />
-                <Text
-                  style={[
-                    styles.inactivetext,
-                    styles.optionsTextContainer,
-                    I18nManager.isRTL && !isStringArabic(translate("ANDROID"))
-                      ? {
-                          marginBottom: 20,
-                        }
-                      : {},
-                  ]}
-                >
-                  {translate("ANDROID")}
-                </Text>
-              </TouchableOpacity>
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name={devices === item.value ? "circle" : "circle-outline"}
+                    style={[
+                      devices === item.value
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      styles.optionsIconSize,
+                    ]}
+                  />
+                  <Text
+                    style={[
+                      styles.inactivetext,
+                      styles.optionsTextContainer,
+                      I18nManager.isRTL &&
+                      !isStringArabic(translate(item.label))
+                        ? {
+                            marginTop: 0,
+                            marginBottom: 15,
+                          }
+                        : {},
+                    ]}
+                  >
+                    {translate(item.label)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
           <LowerButton

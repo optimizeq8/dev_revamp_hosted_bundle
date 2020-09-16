@@ -338,7 +338,9 @@ class AdDetails extends Component {
                 if (this.props.data.appChoice) {
                   let navAppChoice =
                     this.props.data.iosApp_name &&
-                    this.props.data.androidApp_name
+                    this.props.data.iosApp_name !== "" &&
+                    this.props.data.androidApp_name &&
+                    this.props.data.androidApp_name !== ""
                       ? ""
                       : this.props.data.appChoice;
                   let rep = cloneDeep(this.state.campaignInfo);
@@ -1176,7 +1178,6 @@ class AdDetails extends Component {
             false
           );
         }
-
         this.props.ad_details(
           rep,
           {
@@ -1265,6 +1266,22 @@ class AdDetails extends Component {
           let showRegions = this.state.regions.some(
             (reg) => reg.regions.length > 3
           );
+
+          if (this.props.data.appChoice) {
+            let navAppChoice =
+              this.props.data.iosApp_name &&
+              this.props.data.iosApp_name !== "" &&
+              this.props.data.androidApp_name &&
+              this.props.data.androidApp_name !== ""
+                ? ""
+                : this.props.data.appChoice;
+            let rep = cloneDeep(this.state.campaignInfo);
+            rep.targeting.devices[0].os_type = navAppChoice;
+            this.setState({
+              campaignInfo: rep,
+            });
+          }
+
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
         }
@@ -1414,6 +1431,20 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
+            data={
+              this.props.data.appChoice &&
+              this.props.data.iosApp_name &&
+              this.props.data.iosApp_name !== "" &&
+              this.props.data.androidApp_name &&
+              this.props.data.androidApp_name !== ""
+                ? OSType
+                : [
+                    {
+                      value: this.props.data.appChoice,
+                      label: this.props.data.appChoice,
+                    },
+                  ]
+            }
             _handleSideMenuState={this._handleSideMenuState}
           />
         );
