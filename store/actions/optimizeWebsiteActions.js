@@ -623,3 +623,47 @@ export const setSavingToInitial = () => {
     });
   };
 };
+
+export const addNewProduct = (info) => {
+  // console.log("product_id", product_id);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+      payload: true,
+    });
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products`, info)
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_save_product_detail`, {
+          source: "open_add_product",
+          source_action: "a_save_product_detail",
+
+          product: info,
+          action_status: data.data ? "success" : "failure",
+        });
+        // console.log("data save product", data);
+        NavigationService.navigate("MyWebsiteECommerce", {
+          source: "open_add_product",
+          source_action: "a_save_product_detail",
+        });
+        dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
+        return dispatch({
+          type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        // console.log("saveSingleWebProduct", err.response || err.message);
+
+        return dispatch({
+          type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
+          payload: false,
+        });
+      });
+  };
+};

@@ -25,6 +25,8 @@ import CloseIcon from "../../../../assets/SVGs/Checkmark";
 // MiniComponents
 import LowerButton from "../../../MiniComponents/LowerButton";
 import Header from "../../../MiniComponents/Header";
+import GradientButton from "../../../MiniComponents/GradientButton";
+
 import { SafeAreaView } from "react-navigation";
 
 class ProductSelect extends React.Component {
@@ -246,6 +248,49 @@ class ProductSelect extends React.Component {
           title={"Add Products"}
         />
 
+        <GradientButton
+          text={"Add Your own product"}
+          textStyle={{
+            color: globalColors.purple,
+            padding: 0,
+            fontFamily: "montserrat-bold",
+          }}
+          height={40}
+          uppercase
+          screenProps={this.props.screenProps}
+          transparent
+          style={{
+            borderColor: globalColors.purple,
+            borderWidth: 1,
+            marginHorizontal: 0,
+            paddingHorizontal: 16,
+            alignSelf: "center",
+          }}
+          onPressAction={() => this.props.navigation.navigate("AddProduct")}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "montserrat-bold",
+            color: globalColors.gray,
+            textAlign: "center",
+            marginVertical: 4,
+          }}
+        >
+          ---OR---
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            fontFamily: "montserrat-bold",
+            color: globalColors.gray,
+            textAlign: "center",
+            marginVertical: 4,
+          }}
+        >
+          Select from existing instagram posts
+        </Text>
         {this.props.instagramPostLoading && (
           <ActivityIndicator color={globalColors.orange} size="large" />
         )}
@@ -311,22 +356,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       actionCreators.loadMoreInstagramPostWebsite(instaHandleId, instaEndCursor)
     ),
-  saveWebProductsToHide: (
-    edit,
-    webprodcutsToHide,
-    businessid,
-    businessLogo,
-    no_of_products_to_show
-  ) =>
-    dispatch(
-      actionCreators.saveWebProductsToHide(
-        edit,
-        webprodcutsToHide,
-        businessid,
-        businessLogo,
-        no_of_products_to_show
-      )
-    ),
+
   getWebProductsToHide: (businessid) =>
     dispatch(actionCreators.getWebProductsToHide(businessid)),
   saveWebProductsToAdd: (webProducts, businessid) =>

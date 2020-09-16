@@ -118,6 +118,7 @@ class MyWebsite extends Component {
       source: "open_my_website",
       source_action: "a_add_more_products",
     });
+    // MyWebsiteSelectProducts
     this.props.navigation.navigate("MyWebsiteSelectProducts", {
       source: "open_my_website",
       source_action: "a_add_more_products",

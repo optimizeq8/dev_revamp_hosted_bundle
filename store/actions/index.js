@@ -177,6 +177,7 @@ export {
   saveSingleWebProduct,
   saveSingleMedia,
   setSavingToInitial,
+  addNewProduct,
 } from "./optimizeWebsiteActions";
 
 export {
