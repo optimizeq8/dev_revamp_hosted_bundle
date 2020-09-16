@@ -812,16 +812,17 @@ export class SnapchatAudience extends Component {
     return regionNames && regionNames.length > 0 ? regionNames.join(", ") : "";
   };
   goBack = () => {
+    const { translate } = this.props.screenProps;
     analytics.track("go_back_warning", {
       source: "audience_detail",
       source_action: "a_go_back",
     });
     Alert.alert(
-      "Warning",
-      `Going back without saving will loose this information?`,
+      translate("Warning"),
+      translate(`Going back without saving will loose this information?`),
       [
         {
-          text: "Cancel",
+          text: translate("Cancel"),
           onPress: () => {
             analytics.track("a_cancel_go_back", {
               source: "audience_detail",
@@ -831,7 +832,7 @@ export class SnapchatAudience extends Component {
           style: "cancel",
         },
         {
-          text: "Yes",
+          text: translate("Yes"),
           onPress: () => {
             analytics.track("a_go_back", {
               source: "audience_detail",
@@ -1013,7 +1014,7 @@ export class SnapchatAudience extends Component {
             title={`${this.editAudience ? "Edit" : "Create"} Audience`}
             titleStyle={{ color: globalColors.purple }}
             showTopRightButton={true}
-            topRightButtonText={"SAVE"}
+            topRightButtonText={translate("Save")}
             topRightButtonFunction={this._handleSubmission}
             disabled={saveAudienceLoading || this.props.audienceDetailLoading}
           />
@@ -1045,7 +1046,7 @@ export class SnapchatAudience extends Component {
               title={`${this.editAudience ? "Edit" : "Create"} Audience`}
               titleStyle={{ color: globalColors.purple }}
               showTopRightButton={true}
-              topRightButtonText={"SAVE"}
+              topRightButtonText={translate("Save")}
               topRightButtonFunction={this._handleSubmission}
               disabled={saveAudienceLoading || this.props.audienceDetailLoading}
             />

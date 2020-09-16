@@ -32,6 +32,8 @@ class SnapchatCampaignAudience extends React.Component {
   }
 
   showAlert = (audience) => {
+    const { translate } = this.props.screenProps;
+
     analytics.track("audience_delete_warning", {
       source: "audience_list",
       source_action: "a_delete_audience",
@@ -39,11 +41,13 @@ class SnapchatCampaignAudience extends React.Component {
       audience_name: audience.name,
     });
     Alert.alert(
-      "Delete",
-      `Are you sure you want to delete ${audience.name} ?`,
+      translate("Delete"),
+      translate(`Are you sure you want to delete {{audienceName}} ?`, {
+        audienceName: audience.name,
+      }),
       [
         {
-          text: "Cancel",
+          text: translate("Cancel"),
           onPress: () => {
             analytics.track("a_cancel_delete", {
               source: "audience_list",
@@ -53,7 +57,7 @@ class SnapchatCampaignAudience extends React.Component {
           style: "cancel",
         },
         {
-          text: "Delete",
+          text: translate("Delete"),
           onPress: () => this.props.deleteAudience(audience.id),
         },
       ],
@@ -68,6 +72,7 @@ class SnapchatCampaignAudience extends React.Component {
   renderCard = ({ item }) => {
     return (
       <AudienceCard
+        screenProps={this.props.screenProps}
         item={item}
         navigation={this.props.navigation}
         showAlert={this.showAlert}
@@ -100,6 +105,7 @@ class SnapchatCampaignAudience extends React.Component {
     });
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.campaignAudienceListOuterView}>
         <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -111,7 +117,7 @@ class SnapchatCampaignAudience extends React.Component {
           navigation={this.props.navigation}
           iconColor={globalColors.purple}
           showTopRightButton={true}
-          topRightButtonText={"Create"}
+          topRightButtonText={translate("Create")}
           topRightButtonFunction={this.createNewAudience}
           rightViewStyle={styles.rightViewStyle}
         />

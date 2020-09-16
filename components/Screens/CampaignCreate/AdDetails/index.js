@@ -1711,12 +1711,11 @@ class AdDetails extends Component {
                         {this.props.audienceList.length > 0 && (
                           <GradientButton
                             uppercase={true}
-                            text={"Choose Existing Audience"}
+                            text={translate("Choose Existing Audience")}
                             onPressAction={this.chooseExistingAudience}
                             transparent={true}
                             textStyle={styles.existingButtonText}
                             height={50}
-                            // width={"80%"}
                             style={styles.existingButton}
                             radius={50}
                           />
