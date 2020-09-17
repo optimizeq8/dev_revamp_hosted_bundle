@@ -15,35 +15,32 @@ import Axios from "axios";
 
 //Redux
 import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
-// import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
-import Pen from "../../../assets/SVGs/Pen";
-import CopyIcon from "../../../assets/SVGs/CopyIcon";
-import PlusIcon from "../../../assets/SVGs/Plus";
+// import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
+import Pen from "../../../../assets/SVGs/Pen";
+import CopyIcon from "../../../../assets/SVGs/CopyIcon";
+import PlusIcon from "../../../../assets/SVGs/Plus";
 
 // Style
 import styles from "./styles";
-import myWebsiteStyles from "./myWebsiteEcommerceStyle";
+import myWebsiteStyles from "../myWebsiteEcommerceStyle";
 
-import Header from "../../MiniComponents/Header";
-import Website from "../../MiniComponents/InputFieldNew/Website";
-import ProductSelect from "./ProductSelect";
-import { globalColors } from "../../../GlobalStyles";
-import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
+import Header from "../../../MiniComponents/Header";
+import Website from "../../../MiniComponents/InputFieldNew/Website";
+import { globalColors } from "../../../../GlobalStyles";
+import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
-import { _pickImage } from "./PickImage";
+import { _pickImage } from "../PickImage";
 
 class MyWebsite extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signal: null,
-      loaded: 0,
-      isVisible: false,
-    };
-  }
+  state = {
+    signal: null,
+    loaded: 0,
+    isVisible: false,
+  };
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -67,25 +64,17 @@ class MyWebsite extends Component {
       "source_action",
       this.props.screenProps.prevAppState
     );
-    analytics.track(`open_my_website`, {
+    analytics.track(`open_my_category`, {
       source,
       source_action,
       timestamp: new Date().getTime(),
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-  goToManageProducts = () => {
-    this.props.navigation.navigate("ManageProducts");
-  };
-  topRightButtonFunction = () => {
-    this.props.navigation.navigate("WebsiteSetting", {
-      source: "open_my_website",
-      source_action: "a_open_my_website_detail",
-    });
-  };
+
   goBack = () => {
     this.props.navigation.navigate("Dashboard", {
-      source: "open_my_website",
+      source: "open_my_category",
       source_action: "a_go_back",
     });
   };
@@ -114,14 +103,14 @@ class MyWebsite extends Component {
     this.setState({ isVisible: visibile });
   };
   goToSelectProduct = () => {
-    analytics.track(`a_add_more_products`, {
-      source: "open_my_website",
-      source_action: "a_add_more_products",
+    analytics.track(`a_add_more_categories`, {
+      source: "open_my_category",
+      source_action: "a_add_more_categories",
     });
     // MyWebsiteSelectProducts
-    this.props.navigation.navigate("MyWebsiteSelectProducts", {
-      source: "open_my_website",
-      source_action: "a_add_more_products",
+    this.props.navigation.navigate("AddCategory", {
+      source: "open_my_category",
+      source_action: "a_add_more_categories",
     });
   };
 
@@ -139,15 +128,15 @@ class MyWebsite extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          analytics.track(`a_select_product_to_edit`, {
-            source: "open_my_website",
-            source_action: "a_select_product_to_edit",
+          analytics.track(`a_select_category_to_edit`, {
+            source: "open_my_category",
+            source_action: "a_select_category_to_edit",
             product_id: item.id,
           });
-          this.props.navigation.navigate("EditProduct", {
+          this.props.navigation.navigate("EditCategory", {
             product: item,
-            source: "open_my_website",
-            source_action: "a_select_product_to_edit",
+            source: "open_my_category",
+            source_action: "a_select_category_to_edit",
           });
         }}
         style={myWebsiteStyles.productCard}
@@ -177,9 +166,6 @@ class MyWebsite extends Component {
       </TouchableOpacity>
     );
   };
-  goToCategory = () => {
-    this.props.navigation.navigate("CategoryList");
-  };
   render() {
     const { translate } = this.props.screenProps;
     const { mainBusiness } = this.props;
@@ -198,104 +184,21 @@ class MyWebsite extends Component {
           segment={{
             str: "MyWebsite Back Button",
             obj: { businessname: this.props.mainBusiness.businessname },
-            source: "open_my_website",
+            source: "open_my_category",
             source_action: "a_go_back",
           }}
-          showTopRightButtonIcon={"settings"}
           // navigation={this.props.navigation}
+          showTopRightButton={true}
+          topRightButtonText={"Create Category"}
           actionButton={this.goBack}
-          topRightButtonFunction={this.topRightButtonFunction}
-          title={"My Website"}
+          topRightButtonFunction={this.goToSelectProduct}
+          title={"My Categories"}
           titleStyle={{
             color: "#75647C",
           }}
           iconColor={"#75647C"}
         />
 
-        <View style={styles.businesslogoView}>
-          <Image
-            style={styles.businessLogoImage}
-            source={{
-              uri: mainBusiness.businesslogo || this.props.businessLogo,
-            }}
-          />
-        </View>
-        {/* <Text style={styles.bsnNameText}>
-            {this.props.mainBusiness.businessname}
-          </Text> */}
-        <TouchableOpacity
-          style={styles.changeLogoView}
-          onPress={this.uploadPhoto}
-        >
-          <Pen width={15} fill={globalColors.purple} />
-          <Text style={[styles.changeLogoText, { color: globalColors.purple }]}>
-            {translate("Change Logo")}
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.weburlView}>
-          <Website
-            label={"Your URL"}
-            website={website}
-            disabled={true}
-            screenProps={this.props.screenProps}
-            iconFill={"#75647C"}
-            labelColor={"#75647C"}
-            inputColor={"#75647C"}
-            customStyle={{
-              backgroundColor: globalColors.white,
-            }}
-          />
-          <TouchableOpacity
-            style={styles.copyIcon2}
-            onPress={() => {
-              analytics.track(`a_copy_my_website_url`, {
-                source: "open_my_website",
-                source_action: "a_copy_my_website_url",
-                weburl: website,
-              });
-              Clipboard.setString(website);
-            }}
-          >
-            <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={[
-            myWebsiteStyles.myproductsView,
-            {
-              alignItems: "center",
-            },
-          ]}
-        >
-          <Text style={myWebsiteStyles.myproductsText}>
-            {translate("MY PRODUCTS")}
-          </Text>
-          <View>
-            <TouchableOpacity
-              onPress={this.goToSelectProduct}
-              style={myWebsiteStyles.addProductsView}
-            >
-              <View style={myWebsiteStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <Text style={myWebsiteStyles.addProductText}>
-                {translate("Add Products")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={this.goToCategory}
-              style={myWebsiteStyles.addProductsView}
-            >
-              <View style={myWebsiteStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <Text style={myWebsiteStyles.addProductText}>
-                Manage Categories
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
         <FlatList
           contentContainerStyle={styles.list}
           initialNumToRender={12}
@@ -331,17 +234,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateUserInfo: (info, navigation) =>
-    dispatch(actionCreators.updateUserInfo(info, navigation)),
-  changeBusinessLogo: (info, loading, cancelUpload, onToggleModal) =>
-    dispatch(
-      actionCreators.changeBusinessLogo(
-        info,
-        loading,
-        cancelUpload,
-        onToggleModal
-      )
-    ),
   getWebProductsList: (businessid) =>
     dispatch(actionCreators.getWebProductsList(businessid)),
 });
