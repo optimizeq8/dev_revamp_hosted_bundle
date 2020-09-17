@@ -250,45 +250,17 @@ class ProductSelect extends React.Component {
 
         <GradientButton
           text={"Add Your own product"}
-          textStyle={{
-            color: globalColors.purple,
-            padding: 0,
-            fontFamily: "montserrat-bold",
-          }}
+          textStyle={styles.ownProductText}
           height={40}
           uppercase
           screenProps={this.props.screenProps}
           transparent
-          style={{
-            borderColor: globalColors.purple,
-            borderWidth: 1,
-            marginHorizontal: 0,
-            paddingHorizontal: 16,
-            alignSelf: "center",
-          }}
+          style={styles.ownProductButton}
           onPressAction={() => this.props.navigation.navigate("AddProduct")}
         />
 
-        <Text
-          style={{
-            fontSize: 16,
-            fontFamily: "montserrat-bold",
-            color: globalColors.gray,
-            textAlign: "center",
-            marginVertical: 4,
-          }}
-        >
-          ---OR---
-        </Text>
-        <Text
-          style={{
-            fontSize: 14,
-            fontFamily: "montserrat-bold",
-            color: globalColors.gray,
-            textAlign: "center",
-            marginVertical: 4,
-          }}
-        >
+        <Text style={styles.orText}>OR</Text>
+        <Text style={styles.selectExistingText}>
           Select from existing instagram posts
         </Text>
         {this.props.instagramPostLoading && (

@@ -577,6 +577,32 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     backgroundColor: "#f8f8f8",
   },
+  ownProductText: {
+    color: globalColors.purple,
+    padding: 0,
+    fontFamily: "montserrat-bold",
+  },
+  ownProductButton: {
+    borderColor: globalColors.purple,
+    borderWidth: 1,
+    marginHorizontal: 0,
+    paddingHorizontal: 16,
+    alignSelf: "center",
+  },
+  orText: {
+    fontSize: 16,
+    fontFamily: "montserrat-bold",
+    color: globalColors.gray,
+    textAlign: "center",
+    marginVertical: 4,
+  },
+  selectExistingText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: globalColors.gray,
+    textAlign: "center",
+    marginVertical: 4,
+  },
 });
 
 export default styles;
