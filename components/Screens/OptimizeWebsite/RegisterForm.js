@@ -73,9 +73,7 @@ class RegisterForm extends Component {
       whatsappnumber:
         whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
     });
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

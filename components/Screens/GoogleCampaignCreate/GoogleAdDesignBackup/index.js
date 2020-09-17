@@ -10,7 +10,6 @@ import {
   I18nManager,
 } from "react-native";
 import { Text, Item, Input, Container, Textarea } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -258,14 +257,6 @@ class GoogleAdDesign extends Component {
                 "GoogleAdInfo",
                 "GoogleAdDesign",
               ]);
-            Segment.screenWithProperties("Google SE Design AD", {
-              category: "Campaign Creation",
-              channel: "google",
-            });
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 3,
-              business_name: this.props.mainBusiness.businessname,
-            });
           }}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { View, ScrollView, BackHandler } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
@@ -138,16 +137,7 @@ class CreateBusinessAccount extends Component {
       "editBusinessInfo",
       false
     );
-    Segment.screen(
-      editBusinessInfo
-        ? "Edit Business Info"
-        : this.props.registering
-        ? "Business Info Registration"
-        : "Create New Business",
-      {
-        category: this.props.registering ? "Sign Up" : "User Menu",
-      }
-    );
+
     // prefilling the values in case of updating business info
     if (this.props.mainBusiness && editBusinessInfo) {
       const website = this.props.mainBusiness.websitelink;

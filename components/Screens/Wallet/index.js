@@ -115,9 +115,6 @@ class Wallet extends Component {
       source_action,
       timestamp: new Date().getTime(),
     });
-    // Segment.screenWithProperties("Wallet", {
-    //   category: "Wallet Top Up"
-    // });
   };
   render() {
     const { translate } = this.props.screenProps;

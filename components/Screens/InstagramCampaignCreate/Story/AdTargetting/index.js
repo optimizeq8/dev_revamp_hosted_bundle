@@ -4,7 +4,6 @@ import { View, BackHandler, I18nManager } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -1265,15 +1264,6 @@ class InstagramStoryAdTargetting extends Component {
                       "InstagramStoryAdTargetting",
                     ]);
                   }
-                  Segment.screenWithProperties("Instagram Story Ad Targeting", {
-                    category: "Campaign Creation",
-                    channel: "instagram",
-                  });
-                  Segment.trackWithProperties("Viewed Checkout Step", {
-                    checkout_id: this.props.campaign_id,
-                    step: 3,
-                    business_name: this.props.mainBusiness.businessname,
-                  });
                 }}
               />
               <Container style={styles.mainContainer}>

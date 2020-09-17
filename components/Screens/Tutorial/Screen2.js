@@ -2,7 +2,6 @@ import React from "react";
 import { View, Image, Text, I18nManager, Platform } from "react-native";
 import { Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
-import * as Segment from "expo-analytics-segment";
 
 import PenIcon from "../../../assets/SVGs/Pen";
 import EditCameraIcon from "../../../assets/SVGs/CameraCircleOutline";
@@ -15,7 +14,7 @@ export default class Screen2 extends React.Component {
     super(props);
     this.state = {
       animateMedia: false,
-      animateSwipe: false
+      animateSwipe: false,
     };
   }
   componentDidUpdate() {
@@ -26,7 +25,7 @@ export default class Screen2 extends React.Component {
         this.bsnViewBtn.animate({
           0: { scale: 1, translateX: 0 },
           0.5: { scale: 1.2, translateX: I18nManager.isRTL ? -30 : 30 },
-          1: { scale: 1, translateX: 0 }
+          1: { scale: 1, translateX: 0 },
         });
 
       this.bsnView &&
@@ -35,9 +34,9 @@ export default class Screen2 extends React.Component {
             0: { scale: 1, translateX: 0 },
             0.5: {
               scale: 1.4,
-              translateX: I18nManager.isRTL ? -30 : 30
+              translateX: I18nManager.isRTL ? -30 : 30,
             },
-            1: { scale: 1, translateX: 0 }
+            1: { scale: 1, translateX: 0 },
           })
           .then(() => {
             this.mediaBtnRef &&
@@ -45,32 +44,32 @@ export default class Screen2 extends React.Component {
                 .animate({
                   0: {
                     scale: 1,
-                    translateX: 0
+                    translateX: 0,
                   },
                   0.5: {
                     scale: 1.5,
-                    translateX: 0
+                    translateX: 0,
                   },
                   1: {
                     scale: 1,
-                    translateX: 0
-                  }
+                    translateX: 0,
+                  },
                 })
                 .then(() => {
                   this.swipeViewRef &&
                     this.swipeViewRef.animate({
                       0: {
                         scale: 1,
-                        translateX: 0
+                        translateX: 0,
                       },
                       0.5: {
                         scale: 1.25,
-                        translateX: 0
+                        translateX: 0,
                       },
                       1: {
                         scale: 1,
-                        translateX: 0
-                      }
+                        translateX: 0,
+                      },
                     });
                 });
           });
@@ -81,15 +80,12 @@ export default class Screen2 extends React.Component {
     const { id, activeSlide } = this.props;
 
     const { translate } = this.props.screenProps;
-    if (id === activeSlide) {
-      Segment.screen(`Tutorial 2`);
-    }
 
     return (
       <Animatable.View>
         {/* For android the view was cropping so had to remove from the inner view and place it in top most parent view */}
         <Animatable.View
-          ref={ref => (this.bsnViewBtn = ref)}
+          ref={(ref) => (this.bsnViewBtn = ref)}
           duration={2000}
           style={[styles.bsnBtnView]}
         >
@@ -105,7 +101,7 @@ export default class Screen2 extends React.Component {
             style={{
               borderRadius: 30,
               position: "absolute",
-              height: "100%"
+              height: "100%",
             }}
           >
             <Image
@@ -113,13 +109,13 @@ export default class Screen2 extends React.Component {
                 borderRadius: 30,
                 opacity: 0.4,
                 overflow: "hidden",
-                height: "100%"
+                height: "100%",
               }}
               source={require("../../../assets/images/AdImagePlaceholder.png")}
             />
           </View>
           <Animatable.View
-            ref={ref => (this.bsnView = ref)}
+            ref={(ref) => (this.bsnView = ref)}
             duration={2000}
             style={[styles.bsnView, { paddingTop: 20 }]}
           >
@@ -143,7 +139,7 @@ export default class Screen2 extends React.Component {
             </Animatable.View>
           </Animatable.View>
           <Animatable.View
-            ref={ref => (this.mediaBtnRef = ref)}
+            ref={(ref) => (this.mediaBtnRef = ref)}
             style={styles.mediaButtonView}
             duration={2000}
           >
@@ -157,7 +153,7 @@ export default class Screen2 extends React.Component {
             <Text style={styles.editText}>{translate("Edit Media")}</Text>
           </Animatable.View>
           <Animatable.View
-            ref={ref => (this.swipeViewRef = ref)}
+            ref={(ref) => (this.swipeViewRef = ref)}
             duration={2000}
             style={styles.swipeUpView}
           >

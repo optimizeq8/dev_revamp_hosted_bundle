@@ -4,6 +4,14 @@ import createBaseUrl from "./createBaseUrl";
 import analytics from "@segment/analytics-react-native";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
+import store from "../index";
+
+OptimizeWebsiteBackendURL = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/ecommerce/api/"
+      : "https://optimizeapp.com/ecommerce/api/",
+  });
 
 export const verifyInstagramHandleWebsite = (insta_handle) => {
   return async (dispatch) => {
@@ -408,8 +416,8 @@ export const saveWebProductsToAdd = (webproductsToAdd, businessid) => {
 
     delete axios.defaults.headers.common["Authorization"];
 
-    axios
-      .post(`https://optimizeapp.com/ecommerce/api/products`, info, {
+    OptimizeWebsiteBackendURL()
+      .post(`products`, info, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -455,10 +463,8 @@ export const getWebProductsList = (businessid) => {
       payload: true,
     });
 
-    axios
-      .get(
-        `https://optimizeapp.com/ecommerce/api/business/${businessid}/products`
-      )
+    OptimizeWebsiteBackendURL()
+      .get(`business/${businessid}/products`)
       .then((res) => {
         return res.data;
       })
@@ -481,8 +487,8 @@ export const deleteWebProduct = (product_id) => {
   return (dispatch) => {
     delete axios.defaults.headers.common["Authorization"];
 
-    axios
-      .delete(`https://optimizeapp.com/ecommerce/api/products/${product_id}`)
+    OptimizeWebsiteBackendURL()
+      .delete(`products/${product_id}`)
       .then((response) => {
         return response.data;
       })
@@ -512,18 +518,17 @@ export const deleteWebProduct = (product_id) => {
 };
 
 export const saveSingleWebProduct = (product_id, info) => {
-  // console.log("product_id", product_id);
+  console.log("product_id", product_id);
+
+  console.log("info", JSON.stringify(info, null, 2));
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
       payload: true,
     });
     delete axios.defaults.headers.common["Authorization"];
-    axios
-      .patch(
-        `https://optimizeapp.com/ecommerce/api/products/${product_id}`,
-        info
-      )
+    OptimizeWebsiteBackendURL()
+      .patch(`products/${product_id}`, info)
       .then((res) => res.data)
       .then((data) => {
         analytics.track(`a_save_product_detail`, {
@@ -533,7 +538,7 @@ export const saveSingleWebProduct = (product_id, info) => {
           product: info,
           action_status: data.data ? "success" : "failure",
         });
-        // console.log("data save product", data);
+        console.log("data save product", JSON.stringify(data, null, 2));
         NavigationService.navigate("MyWebsiteECommerce", {
           source: "open_edit_product",
           source_action: "a_save_product_detail",
@@ -574,8 +579,8 @@ export const saveSingleMedia = (
     });
 
     delete axios.defaults.headers.common["Authorization"];
-    axios
-      .post(`https://optimizeapp.com/ecommerce/api/products/media`, media, {
+    OptimizeWebsiteBackendURL()
+      .post(`products/media`, media, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -664,6 +669,71 @@ export const addNewProduct = (info) => {
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
           payload: false,
         });
+      });
+  };
+};
+
+export const getAllCategories = () => {
+  return (dispatch, getState) => {};
+};
+
+export const addCategory = (info) => {};
+
+export const editCategory = (info) => {};
+
+export const uploadCategoryImage = (
+  media,
+  loading,
+  cancelUplaod,
+  onToggleModal
+) => {
+  onToggleModal(true);
+
+  // console.log("media save", media);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_PRODUCT_MEDIA,
+      payload: {},
+    });
+
+    delete axios.defaults.headers.common["Authorization"];
+    axios
+      .post(`https://optimizeapp.com/ecommerce/api/products/media`, media, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log("data save media", data);
+        analytics.track(`a_add_category_media`, {
+          source: "open_edit_category",
+          source_action: "a_add_category_media",
+          media,
+          action_status: data.data ? "success" : "failure",
+        });
+        onToggleModal(false);
+        return dispatch({
+          type: actionTypes.SAVE_PRODUCT_MEDIA,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        loading(0);
+        onToggleModal(false);
+        analytics.track(`a_add_category_media`, {
+          source: "open_edit_category",
+          source_action: "a_add_category_media",
+          media,
+          action_status: "failure",
+          error_description: err.response || err.message,
+        });
+        // console.log("saveSingleWebProduct error", err.response || err.message);
       });
   };
 };

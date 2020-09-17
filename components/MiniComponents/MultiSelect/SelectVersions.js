@@ -5,7 +5,6 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
@@ -32,7 +31,6 @@ class SelectVersions extends Component {
   };
 
   componentDidMount() {
-    Segment.screen("OS Versions");
     this.props.OSType === "iOS"
       ? this.props.get_ios_verisons()
       : this.props.get_android_versions();

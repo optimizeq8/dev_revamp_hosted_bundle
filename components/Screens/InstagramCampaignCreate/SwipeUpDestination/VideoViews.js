@@ -7,7 +7,6 @@ import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";
@@ -294,11 +293,7 @@ class VideoViews extends Component {
   };
   openCallToActionModal = () => {
     segmentEventTrack("Button Clicked to open Call to action Modal");
-    this.setState({ inputCallToAction: true }, () => {
-      if (this.state.inputCallToAction) {
-        Segment.screen("Call to Action Modal");
-      }
-    });
+    this.setState({ inputCallToAction: true });
   };
   render() {
     const { translate } = this.props.screenProps;

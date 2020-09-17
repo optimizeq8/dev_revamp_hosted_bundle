@@ -4,7 +4,6 @@ import { Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
-import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -32,7 +31,6 @@ class SelectDevices extends Component {
     //   this.props.OSType
     // );
     // this.props.get_device_brands("");
-    Segment.screen("Devices Brands Options");
 
     this.getDeviceBrands();
   }

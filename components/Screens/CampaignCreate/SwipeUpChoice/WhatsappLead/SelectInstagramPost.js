@@ -10,7 +10,6 @@ import {
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from "expo-analytics-segment";
 import findIndex from "lodash/findIndex";
 import find from "lodash/find";
 import { connect } from "react-redux";
@@ -35,7 +34,6 @@ class SelectInstagramPost extends React.Component {
   }
   componentDidMount() {
     // console.log("campaignData", this.props.data);
-    Segment.screen("Select Instagram Posts");
     const insta_handle = this.props.navigation.getParam("insta_handle", "");
     this.props.getInstagramPostInitial(insta_handle);
     // console.log("campaign_id", this.props.data.campaign_id);
@@ -188,9 +186,6 @@ class SelectInstagramPost extends React.Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
-        <NavigationEvents
-          onDidFocus={() => Segment.screen("Select Instagram Posts")}
-        />
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}

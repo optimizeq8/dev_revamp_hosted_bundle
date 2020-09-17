@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, BackHandler, Text } from "react-native";
 
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 //icons
 import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
@@ -27,7 +26,6 @@ export default class MyWebsite extends Component {
     return true;
   };
   componentDidMount() {
-    Segment.screenWithProperties("Website Setting");
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState

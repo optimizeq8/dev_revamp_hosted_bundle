@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { View, BackHandler, Image } from "react-native";
 import { Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleSEAPreview from "../../MiniComponents/GoogleSEAPreview";
 // Style
@@ -41,14 +40,6 @@ class GoogleSEAPreviewScreen extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.screenWithProperties("Google SE Design AD Review", {
-              category: "Campaign Creation",
-              channel: "google",
-            });
-          }}
-        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}

@@ -57,7 +57,6 @@ export default class TutorialWeb extends React.Component {
     return true;
   };
   componentDidMount() {
-    // Segment.screen("Website Introduction");
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState

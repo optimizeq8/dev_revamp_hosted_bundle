@@ -4,9 +4,8 @@ import { Button, Text } from "native-base";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -15,9 +14,6 @@ import CustomHeader from "../../MiniComponents/Header";
 //styles
 import styles from "./styles";
 export default class SuspendedWarning extends Component {
-  componentDidMount() {
-    Segment.screen("Suspended Warning");
-  }
   render() {
     const { translate } = this.props.screenProps;
 
@@ -31,7 +27,7 @@ export default class SuspendedWarning extends Component {
             style={{
               justifyContent: "center",
               flex: 1,
-              alignSelf: "center"
+              alignSelf: "center",
             }}
           >
             <Suspended
@@ -55,15 +51,15 @@ export default class SuspendedWarning extends Component {
               style={styles.button}
               onPressAction={() => {
                 let continueRoutes = ["Dashboard", "MessengerLoading"].map(
-                  route =>
+                  (route) =>
                     NavigationActions.navigate({
-                      routeName: route
+                      routeName: route,
                     })
                 );
                 //resets the navigation stack
                 resetAction = StackActions.reset({
                   index: continueRoutes.length - 1, //index of the last screen route
-                  actions: continueRoutes
+                  actions: continueRoutes,
                 });
 
                 this.props.navigation.dispatch(resetAction);

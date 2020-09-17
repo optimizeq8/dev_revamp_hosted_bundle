@@ -187,10 +187,9 @@ class MyWebsite extends Component {
             source: "open_my_category",
             source_action: "a_go_back",
           }}
-          // navigation={this.props.navigation}
+          navigation={this.props.navigation}
           showTopRightButton={true}
           topRightButtonText={"Create Category"}
-          actionButton={this.goBack}
           topRightButtonFunction={this.goToSelectProduct}
           title={"My Categories"}
           titleStyle={{
@@ -236,5 +235,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getWebProductsList: (businessid) =>
     dispatch(actionCreators.getWebProductsList(businessid)),
+  getAllCategories: () => dispatch(actionCreators.getAllCategories()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyWebsite);

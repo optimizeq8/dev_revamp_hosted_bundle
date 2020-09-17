@@ -7,7 +7,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { Icon, Item, Text } from "native-base";
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -45,12 +44,6 @@ class PhoneNo extends Component {
       numExists: "",
       pickerData: null,
     };
-  }
-
-  componentDidMount() {
-    Segment.screenWithProperties("Phone No. Registration", {
-      category: "Sign Up",
-    });
   }
 
   handlePickerData = (data) => {

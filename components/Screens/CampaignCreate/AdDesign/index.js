@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as WebBrowser from "expo-web-browser";
-import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -416,9 +415,6 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = (visible) => {
-    if (visible) {
-      Segment.screen("Upload Media Modal");
-    }
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -1034,9 +1030,6 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
-    if (val) {
-      Segment.screen(`Upload media from Different Device Modal`);
-    }
     this.setState({
       uploadMediaDifferentDeviceModal: val,
     });
@@ -1051,9 +1044,6 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = (val) => {
-    if (val) {
-      Segment.screen("Download media from Different Device Modal");
-    }
     this.setState({
       downloadMediaModal: val,
     });
@@ -1252,15 +1242,6 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-    // Segment.screenWithProperties("Snap Ad Design", {
-    //   category: "Campaign Creation",
-    //   channel: "snapchat",
-    // });
-    // Segment.trackWithProperties("Viewed Checkout Step", {
-    //   checkout_id: this.props.campaign_id,
-    //   step: 3,
-    //   business_name: this.props.mainBusiness.businessname,
-    // });
 
     let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustAdDesignTracker.addPartnerParameter(

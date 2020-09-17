@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Icon } from "native-base";
 import styles from "../MultiSelect/styles";
@@ -11,9 +10,6 @@ import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import LowerButton from "../LowerButton";
 export default class SelectOS extends Component {
-  componentDidMount() {
-    Segment.screen("OS Type Options");
-  }
   render() {
     let devices = this.props.campaignInfo.targeting.hasOwnProperty("devices")
       ? this.props.campaignInfo.targeting.devices[0].os_type

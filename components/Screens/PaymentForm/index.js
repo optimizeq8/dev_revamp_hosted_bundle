@@ -13,7 +13,6 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
 
 import { BlurView } from "expo-blur";
-import * as Segment from "expo-analytics-segment";
 import * as WebBrowser from "expo-web-browser";
 
 //Redux
@@ -103,16 +102,9 @@ class PaymentForm extends Component {
     //   this.reviewPurchase();
   };
   showRemoveAmountModal = () => {
-    this.setState(
-      {
-        showRemoveWalletAmount: !this.state.showRemoveWalletAmount,
-      },
-      () => {
-        if (this.state.showRemoveWalletAmount) {
-          Segment.screen("Remove Wallet Amount");
-        }
-      }
-    );
+    this.setState({
+      showRemoveWalletAmount: !this.state.showRemoveWalletAmount,
+    });
   };
   _openWebBrowserAsync = async () => {
     try {
@@ -143,10 +135,6 @@ class PaymentForm extends Component {
         //       browserLoading: false
         //     });
         // });
-        Segment.screenWithProperties("Knet Payment", {
-          businessname: this.props.mainBusiness.businessname,
-          campaign_id: this.props.campaign_id,
-        });
       }
       if (this.state.choice === 3) {
         this.props.navigation.navigate("WebView", {
@@ -167,10 +155,6 @@ class PaymentForm extends Component {
         //       browserLoading: false
         //     });
         // });
-        Segment.screenWithProperties("Credit Card Payment", {
-          businessname: this.props.mainBusiness.businessname,
-          campaign_id: this.props.campaign_id,
-        });
       }
       this.closeBrowserLoading();
       this._removeLinkingListener();
@@ -239,12 +223,6 @@ class PaymentForm extends Component {
           this.state.choice === 2 ? "KNET" : "CREDIT CARD"
         );
       } else if (this.state.choice === 2) {
-        Segment.trackWithProperties("Completed Checkout Step", {
-          step: 6,
-          business_name: this.props.mainBusiness.businessname,
-          checkout_id: this.props.campaign_id,
-          paymentMethod: "KNET",
-        });
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -252,12 +230,6 @@ class PaymentForm extends Component {
           this.closeBrowserLoading
         );
       } else if (this.state.choice === 3) {
-        Segment.trackWithProperties("Completed Checkout Step", {
-          step: 6,
-          business_name: this.props.mainBusiness.businessname,
-          checkout_id: this.props.campaign_id,
-          paymentMethod: "CREDIT CARD",
-        });
         this.props.payment_request_credit_card(
           this.props.campaign_id,
           this._openWebBrowserAsync,
@@ -341,9 +313,6 @@ class PaymentForm extends Component {
   };
 
   setShowWalletModal = (value) => {
-    if (value) {
-      Segment.screen("Payment through WALLET");
-    }
     this.setState({
       showWalletModal: value,
     });
@@ -374,9 +343,6 @@ class PaymentForm extends Component {
         source_action,
         top_up_amount: amount,
       });
-      // Segment.screenWithProperties("Payment Selection", {
-      //   category: "Wallet Top Up"
-      // });
     } else {
       analytics.track(`payment_mode`, {
         source,
@@ -388,16 +354,6 @@ class PaymentForm extends Component {
           : campaign_channel,
         campaign_budget: this.props.campaign_budget,
       });
-      // Segment.screenWithProperties("Payment Selection", {
-      //   businessname: this.props.mainBusiness.businessname,
-      //   campaign_id: this.props.campaign_id,
-      //   category: "Campaign Creation"
-      // });
-      // Segment.trackWithProperties("Viewed Checkout Step", {
-      //   step: 6,
-      //   business_name: this.props.mainBusiness.businessname,
-      //   checkout_id: this.props.campaign_id
-      // });
     }
     if (this.state.addingCredits) {
       // let adjustWalletPaymentFormTracker = new AdjustEvent("x8ckdv");

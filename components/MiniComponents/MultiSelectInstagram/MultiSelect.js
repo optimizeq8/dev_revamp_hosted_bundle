@@ -14,7 +14,6 @@ import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
 import Picker from "../Picker";
 import GradientButton from "../GradientButton";
-import * as Segment from "expo-analytics-segment";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -58,9 +57,6 @@ class MultiSelectList extends Component {
       selectedVersions: this.props.selectedVersions,
       selectedCustomInterests: this.props.selectedCustomItems,
     });
-    if (this.props.option === "countries") {
-      Segment.screen("Country Options");
-    }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.interests !== this.props.interests) {

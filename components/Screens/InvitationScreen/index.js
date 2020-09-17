@@ -5,16 +5,15 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Animated,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 
 import GetInviteCode from "../GetInviteCode";
@@ -33,7 +32,7 @@ import globalStyles from "../../../GlobalStyles";
 
 export default class Invitation extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -41,7 +40,7 @@ export default class Invitation extends Component {
       registeredWithInvite: null,
       renderInviteCode: true,
       animationActive: false,
-      firstAnimation: true
+      firstAnimation: true,
     };
     this.animation = new Animated.Value(1);
 
@@ -49,26 +48,24 @@ export default class Invitation extends Component {
   }
 
   componentDidMount() {
-    // Segment.screen("Invitation Code Request");
-
     AsyncStorage.getItem("registeredWithInvite")
-      .then(value => {
+      .then((value) => {
         if (value == null) {
           this.setState({
-            registeredWithInvite: false
+            registeredWithInvite: false,
           });
         } else {
           this.setState({
-            registeredWithInvite: true
+            registeredWithInvite: true,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         showMessage({
           message: "Something went wrong!",
           type: "warning",
           position: "top",
-          description: "Please try again later."
+          description: "Please try again later.",
         });
         //  console.log(err)
       });
@@ -77,7 +74,7 @@ export default class Invitation extends Component {
   movePannel(val) {
     Animated.timing(this.animation, {
       toValue: val,
-      Duration: 500
+      Duration: 500,
     }).start();
   }
 
@@ -85,7 +82,7 @@ export default class Invitation extends Component {
     this.setState(
       {
         renderInviteCode: !this.state.renderInviteCode,
-        animationActive: !this.state.animationActive
+        animationActive: !this.state.animationActive,
       },
       () => {
         if (this.state.renderInviteCode) this.movePannel(1);
@@ -99,7 +96,7 @@ export default class Invitation extends Component {
     const { translate } = this.props.screenProps;
     const interpolation = this.animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [widthPercentageToDP(-100), widthPercentageToDP(100)]
+      outputRange: [widthPercentageToDP(-100), widthPercentageToDP(100)],
     });
 
     if (this.state.registeredWithInvite == null) {
@@ -126,13 +123,6 @@ export default class Invitation extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              Segment.screenWithProperties("Invitation Code Request", {
-                category: "Pre Registration"
-              });
-            }}
-          />
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
@@ -174,9 +164,9 @@ export default class Invitation extends Component {
                           !this.state.animationActive &&
                           this.state.renderInviteCode
                             ? interpolation
-                            : interpolation
+                            : interpolation,
                       },
-                      styles.slidingContainer
+                      styles.slidingContainer,
                     ]}
                   >
                     <Animatable.View
@@ -219,7 +209,7 @@ export default class Invitation extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.navigate("Signin", {
-                        invite: true
+                        invite: true,
                       });
                     }}
                   >

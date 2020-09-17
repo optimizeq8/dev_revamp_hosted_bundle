@@ -4,7 +4,6 @@ import { TouchableOpacity, BackHandler, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
@@ -49,9 +48,6 @@ class ChangePassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    // Segment.screenWithProperties("Change Password", {
-    //   category: "User Menu"
-    // });
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState

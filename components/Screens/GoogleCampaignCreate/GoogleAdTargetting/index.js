@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Text, Container, Icon, Content } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -445,14 +444,6 @@ class GoogleAdTargetting extends Component {
       "GoogleAdDesign",
       "GoogleAdTargetting",
     ]);
-    // Segment.screenWithProperties("Google Ad Targetting", {
-    //   category: "Campaign Creation",
-    //   channel: "google",
-    // });
-    // Segment.trackWithProperties("Viewed Checkout Step", {
-    //   checkout_id: this.props.campaign.id,
-    //   step: 4,
-    // });
     let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
     adjustGoogleAdDetailsTracker.addPartnerParameter(
       `Google_SEM`,

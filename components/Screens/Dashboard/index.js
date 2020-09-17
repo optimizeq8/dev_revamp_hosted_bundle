@@ -443,7 +443,6 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
-    // Segment.screen("Dashboard");
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
   };
@@ -888,15 +887,6 @@ class Dashboard extends Component {
 
             <Animatable.View
               useNativeDriver
-              onAnimationEnd={() => {
-                if (this.state.anim) {
-                  Segment.screenWithProperties("Home Menu", {
-                    category: "User Menu",
-                  });
-                } else {
-                  Segment.screen("Dashboard");
-                }
-              }}
               duration={100}
               animation={
                 (this.props.campaignList &&

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
-import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -96,7 +95,6 @@ class CollectionMedia extends Component {
   }
 
   async componentDidMount() {
-    Segment.screen("Collection Media");
     let order = this.props.navigation.getParam("collection_order");
     const { translate } = this.props.screenProps;
     await this.setState({

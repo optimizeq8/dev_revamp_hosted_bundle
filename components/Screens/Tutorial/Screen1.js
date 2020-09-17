@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, I18nManager } from "react-native";
 import * as Animatable from "react-native-animatable";
-import * as Segment from "expo-analytics-segment";
 
 import { snapAds, googleAds } from "../../Data/adTypes.data";
 import styles from "./styles";
@@ -14,14 +13,11 @@ export default class Screen1 extends Component {
   render() {
     const { translate } = this.props.screenProps;
     const { id, activeSlide, changed } = this.props;
-    if (id === activeSlide) {
-      Segment.screen(`Tutorial 1`);
-    }
 
     return (
       <View style={styles.screen1OuterView}>
         {id === activeSlide &&
-          this.adTypesData.map(item => {
+          this.adTypesData.map((item) => {
             let AdIcon = item.icon;
             let ChannelIcon = item.channelIcon;
             return (
@@ -45,11 +41,11 @@ export default class Screen1 extends Component {
                         styles.channelIcon,
                         I18nManager.isRTL
                           ? {
-                              right: -30
+                              right: -30,
                             }
                           : {
-                              left: -30
-                            }
+                              left: -30,
+                            },
                       ]}
                       fill={item.mediaType === "google" && "#0000"}
                     />
@@ -62,8 +58,8 @@ export default class Screen1 extends Component {
                       fontFamily:
                         item.mediaType === "google"
                           ? "montserrat-bold"
-                          : "montserrat-bold-english"
-                    }
+                          : "montserrat-bold-english",
+                    },
                   ]}
                 >
                   {translate(item.title)}

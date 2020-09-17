@@ -178,6 +178,10 @@ export {
   saveSingleMedia,
   setSavingToInitial,
   addNewProduct,
+  getAllCategories,
+  addCategory,
+  editCategory,
+  uploadCategoryImage,
 } from "./optimizeWebsiteActions";
 
 export {

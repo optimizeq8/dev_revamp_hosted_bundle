@@ -16,7 +16,6 @@ import isEmpty from "lodash/isEmpty";
 import upperCase from "lodash/upperCase";
 // import { Modal } from 'react-native-paper';
 import { BlurView } from "expo-blur";
-import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -199,7 +198,6 @@ class WhatsApp extends Component {
       // )
       this.props.productInfoId
     ) {
-      Segment.screen("Change Insta Handle Modal");
       this.setState({
         showChangeInstaHandle: true,
       });
@@ -540,11 +538,7 @@ class WhatsApp extends Component {
                   segmentEventTrack(
                     "Button Clicked to open Call to action Modal"
                   );
-                  this.setState({ inputCallToAction: true }, () => {
-                    if (this.state.inputCallToAction) {
-                      Segment.screen("Call to Action Modal");
-                    }
-                  });
+                  this.setState({ inputCallToAction: true });
                 }}
               >
                 <Text style={styles.callActionLabel}>

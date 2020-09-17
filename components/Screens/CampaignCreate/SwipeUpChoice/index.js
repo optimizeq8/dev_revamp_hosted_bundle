@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Content, Container, View, Text, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import CustomeHeader from "../../../MiniComponents/Header";
 import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
 import Website from "./Website";
@@ -46,19 +45,8 @@ class SwipeUpChoice extends Component {
           campaign_channel: "snapchat",
           campaign_ad_type,
         });
-        // Segment.trackWithProperties(
-        //   "Selected Lead Generation Website Swipeup",
-        //   {
-        //     category: "Campaign Creation"
-        //   }
-        // );
         break;
       case "VIDEO_VIEWS":
-        Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
-          category: "Campaign Creation",
-          channel: "snapchat",
-          label: "Video Views Objective",
-        });
         analytics.track(`ad_swipe_up_destination`, {
           source,
           source_action,
@@ -81,11 +69,6 @@ class SwipeUpChoice extends Component {
         });
         break;
       default:
-        Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
-          category: "Campaign Creation",
-          channel: "snapchat",
-          label: "App Install Objective",
-        });
         analytics.track(`ad_swipe_up_destination`, {
           source,
           source_action,

@@ -5,7 +5,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
-import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -840,15 +839,7 @@ class AdCover extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: "StoryAd",
     });
-    Segment.screenWithProperties("Snap Ad Design", {
-      category: "Campaign Creation",
-      channel: "snapchat",
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 3,
-      business_name: this.props.mainBusiness.businessname,
-    });
+
     let adjustAdCoverTracker = new AdjustEvent("s62u9o");
     Adjust.trackEvent(adjustAdCoverTracker);
   };

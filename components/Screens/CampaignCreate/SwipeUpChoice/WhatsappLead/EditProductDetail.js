@@ -10,7 +10,6 @@ import { globalColors } from "../../../../../GlobalStyles";
 import findIndex from "lodash/findIndex";
 import formatNumber from "../../../../formatNumber";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from "expo-analytics-segment";
 import segmentEventTrack from "../../../../segmentEventTrack";
 
 export default class EditProductDetail extends React.Component {
@@ -24,7 +23,6 @@ export default class EditProductDetail extends React.Component {
     };
   }
   componentDidMount() {
-    Segment.screen("Edit Product");
     const item = this.props.navigation.getParam("item", {});
     const list = this.props.navigation.getParam("cartList", []);
     // console.log('item', item);
@@ -91,7 +89,6 @@ export default class EditProductDetail extends React.Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
-        <NavigationEvents onDidFocus={() => Segment.screen("Edit Product")} />
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
