@@ -18,7 +18,6 @@ import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -67,7 +66,6 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
-import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 //Logs reasons why a component might be uselessly re-rendering
@@ -251,11 +249,7 @@ class Dashboard extends Component {
       campaign_ad_type: adType.value,
       device_id: this.props.screenProps.device_id,
     });
-    Segment.trackWithProperties("Completed Checkout Step", {
-      step: 1,
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title,
-    });
+
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }

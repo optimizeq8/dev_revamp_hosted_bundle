@@ -1,4 +1,3 @@
-import * as Segment from "expo-analytics-segment";
 import * as WebBrowser from "expo-web-browser";
 import { showMessage } from "react-native-flash-message";
 export const openTerms = async (closeBrowserLoading = () => {}) => {

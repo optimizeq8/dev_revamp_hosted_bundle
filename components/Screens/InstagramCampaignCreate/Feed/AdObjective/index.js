@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";

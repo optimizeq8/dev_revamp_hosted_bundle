@@ -34,7 +34,6 @@ import list from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { RNFFprobe } from "react-native-ffmpeg";
 import * as actionCreators from "../../../../store/actions";
 
@@ -224,17 +223,8 @@ class VideoViews extends Component {
     this.setState({
       videoError,
     });
-    if (videoError || this.state.durationError) {
-      segmentEventTrack("Error Submit Longform Video", {
-        campaign_error_longform_video: videoError,
-        campaign_error_longform_video_duration: this.state.durationError,
-      });
-    }
+
     if (!videoError && !this.state.durationError) {
-      segmentEventTrack("Submitted Longform Video Success", {
-        campaign_call_to_action: this.state.callaction,
-        campaign_longform_video_media_type: this.state.longformvideo_media_type,
-      });
       this.props.save_campaign_info_instagram({
         ...this.props.data,
         call_to_action: this.state.callaction,
@@ -268,9 +258,6 @@ class VideoViews extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      segmentEventTrack("Selected Long Form Video Call to Action", {
-        campaign_call_to_action: value[0].label,
-      });
       this.setState(
         {
           callaction: {
@@ -292,7 +279,6 @@ class VideoViews extends Component {
     });
   };
   openCallToActionModal = () => {
-    segmentEventTrack("Button Clicked to open Call to action Modal");
     this.setState({ inputCallToAction: true });
   };
   render() {

@@ -684,9 +684,6 @@ class AdDetails extends Component {
   //   }
   //   let replace = this.state.campaignInfo;
   //   replace.lifetime_budget_micro = budget;
-  //   segmentEventTrack(`Campaign Budget Change`, {
-  //     campaign_budget: this.formatNumber(budget)
-  //   });
   //   this.setState({
   //     campaignInfo: replace,
   //     value: this.formatNumber(budget)

@@ -1,6 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 
 import { AsyncStorage, Animated } from "react-native";
@@ -69,11 +68,6 @@ const reducer = (state = initialState, action) => {
           revenue: main.revenue,
           ltv: main.ltv,
           wallet_amount: main.wallet_amount,
-        });
-        Segment.identifyWithTraits(action.payload.userid, {
-          businessid: main.businessid,
-          businessname: main.businessname,
-          revenue: main.revenue,
         });
       }
 

@@ -19,7 +19,6 @@ import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import segmentEventTrack from "../../../../segmentEventTrack";
 export class TargetAudience extends Component {
   state = { scrollY: 1, advance: true };
   handleFading = (event) => {
@@ -28,11 +27,7 @@ export class TargetAudience extends Component {
   };
   callFunction = (selector, option) => {
     const { translate } = this.props.screenProps;
-    segmentEventTrack(
-      "Cliked button to open sidemenu for " + selector + " " + option
-        ? option
-        : ""
-    );
+
     if (this.props.startEditing) this.props._renderSideMenu(selector, option);
   };
   render() {

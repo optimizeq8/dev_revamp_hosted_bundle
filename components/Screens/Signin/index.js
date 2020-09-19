@@ -13,7 +13,6 @@ import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Segment from "expo-analytics-segment";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //Redux
@@ -365,7 +364,6 @@ class Signin extends Component {
                 {this.state.activeTab === 1 && (
                   <TouchableOpacity
                     onPress={() => {
-                      Segment.track("Forgot Password Button");
                       this.props.navigation.push("ForgotPassword");
                     }}
                   >

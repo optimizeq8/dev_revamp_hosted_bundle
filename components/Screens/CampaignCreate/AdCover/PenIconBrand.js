@@ -5,7 +5,6 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { globalColors } from "../../../../GlobalStyles";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
@@ -53,29 +52,13 @@ export default class PenIconBrand extends Component {
               this.setState({ input: true });
             }}
             onBlur={() => {
-              segmentEventTrack("Changed Story Ad Cover Headline", {
-                campaign_stoty_ad_cover_headline: this.props.coverHeadline,
-              });
               this.setState({ input: false });
-              this.setState(
-                {
-                  coverHeadlineError: validateWrapper(
-                    "mandatory",
-                    this.props.coverHeadline
-                  ),
-                },
-                () => {
-                  if (this.state.coverHeadlineError) {
-                    segmentEventTrack(
-                      "Error occured on Cover Headline input Blur",
-                      {
-                        campaign_error_stoty_ad_cover_headline: this.state
-                          .coverHeadlineError,
-                      }
-                    );
-                  }
-                }
-              );
+              this.setState({
+                coverHeadlineError: validateWrapper(
+                  "mandatory",
+                  this.props.coverHeadline
+                ),
+              });
             }}
           />
         </View>

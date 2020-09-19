@@ -19,7 +19,6 @@ import * as actionCreators from "../../../../../store/actions";
 import CustomeHeader from "../../../../MiniComponents/Header";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
-import segmentEventTrack from "../../../../segmentEventTrack";
 import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 
 class SelectInstagramPost extends React.Component {
@@ -104,16 +103,12 @@ class SelectInstagramPost extends React.Component {
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     if (this.state.counter <= 3) {
-      segmentEventTrack("Error Submit Select Instagram Post", {
-        campaign_error_sme_products_list: "Select minimum 3 post",
-      });
       showMessage({
         message: translate("Select minimum 3 post"),
         duration: 2000,
         type: "warning",
       });
     } else {
-      segmentEventTrack("Submitted Select Instagram Post Success");
       // console.log('cartList', this.state.cartList);
       this.props.navigation.navigate("SelectedInstagramProductsList", {
         selectetedItems: this.state.cartList,
@@ -133,9 +128,6 @@ class SelectInstagramPost extends React.Component {
     );
     // console.log('checkifALreadyExist', checkifALreadyExist);
     if (this.state.counter >= 7 && !checkifALreadyExist) {
-      segmentEventTrack("Error adding product to cart", {
-        campaign_error_sme_products_list: "Maximum 6 Selected",
-      });
       showMessage({
         message: translate("Maximum 6 Selected"),
         duration: 2000,
@@ -145,9 +137,6 @@ class SelectInstagramPost extends React.Component {
         errorImage: true,
       });
     } else if (!checkifALreadyExist) {
-      segmentEventTrack("Added product to cart", {
-        campaign_sme_products_list_item: { ...item },
-      });
       newCartList.push(item);
       const counterNew = this.state.counter;
       this.setState({
@@ -157,9 +146,7 @@ class SelectInstagramPost extends React.Component {
       });
     } else {
       const index = newCartList.indexOf(checkifALreadyExist);
-      segmentEventTrack("Removed product from cart", {
-        campaign_sme_products_list_item: { ...item },
-      });
+
       // console.log('index', index);
       const counterNew = this.state.counter;
 
@@ -173,7 +160,6 @@ class SelectInstagramPost extends React.Component {
   };
 
   onScrollHandler = () => {
-    segmentEventTrack("Button clicked to view more instagram post");
     this.props.loadMoreInstagramPost(
       this.props.instaHandleId,
       this.props.instaEndCursor

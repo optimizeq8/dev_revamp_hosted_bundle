@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import { ActivityIndicator } from "react-native-paper";
-import * as Segment from "expo-analytics-segment";
 //Redux
 import { connect } from "react-redux";
 
@@ -59,11 +58,6 @@ class AcceptTermsConditionLoading extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <NavigationEvents
-          onDidFocus={() => {
-            Segment.track("Accept Term and Condition Loading");
-          }}
-        />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />
           <Text style={styles.loadingText}>

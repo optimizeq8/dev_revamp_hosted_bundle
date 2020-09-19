@@ -7,7 +7,6 @@ import * as actionCreators from "../../../../../store/actions";
 
 import { connect } from "react-redux";
 import styles from "../styles";
-import segmentEventTrack from "../../../../segmentEventTrack";
 
 class AddCard extends Component {
   render() {
@@ -19,20 +18,19 @@ class AddCard extends Component {
             style={{
               alignSelf: "center",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <GradientButton
               style={styles.addButtonStyle}
               onPressAction={() => {
-                segmentEventTrack("Button clicked to add snap story ad card");
                 this.props.addSnapCard();
               }}
             >
               <Icon
                 style={{
                   alignSelf: "center",
-                  color: "#FFF"
+                  color: "#FFF",
                 }}
                 name="plus"
                 type="MaterialCommunityIcons"
@@ -45,10 +43,10 @@ class AddCard extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({
-  addSnapCard: () => dispatch(actionCreators.addSnapCard())
+const mapDispatchToProps = (dispatch) => ({
+  addSnapCard: () => dispatch(actionCreators.addSnapCard()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCard);

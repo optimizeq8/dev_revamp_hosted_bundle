@@ -10,7 +10,6 @@ import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
-import segmentEventTrack from "../../../../segmentEventTrack";
 class SnapCard extends Component {
   state = { uploading: false, showDelete: false };
   handleDeletion = () => {
@@ -138,8 +137,6 @@ class SnapCard extends Component {
                   this.setState({ showDelete: !this.state.showDelete });
               }}
               onPress={() => {
-                segmentEventTrack("Button clicked to edit snap story ad card");
-
                 _handleStoryAdCards({
                   index: snapCardInfo.index,
                   ...snapCardInfo.item,
@@ -181,7 +178,6 @@ class SnapCard extends Component {
           <Icon
             onPress={() => {
               //   this.props.cancelUpload();
-              segmentEventTrack("Button clicked to delete snap story ad card");
               !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                 this.props.deleteStoryAdCard(
                   snapCardInfo.item.story_id,

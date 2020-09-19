@@ -3,7 +3,6 @@ import WebView from "react-native-webview";
 
 import { View, BackHandler, I18nManager } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents, SafeAreaView } from "react-navigation";
 import Loading from "../../MiniComponents/LoadingScreen";

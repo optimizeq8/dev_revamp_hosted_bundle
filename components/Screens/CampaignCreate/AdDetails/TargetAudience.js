@@ -27,7 +27,6 @@ import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import segmentEventTrack from "../../../segmentEventTrack";
 export class TargetAudience extends Component {
   state = { scrollY: 1, advance: true };
   handleFading = (event) => {
@@ -36,22 +35,11 @@ export class TargetAudience extends Component {
   };
   callFunction = (selector, option) => {
     const { translate } = this.props.screenProps;
-    segmentEventTrack(
-      "Cliked button to open sidemenu for " + selector + " " + option
-        ? option
-        : ""
-    );
 
     if (
       (option === "regions" || option === "interests") &&
       this.props.targeting.geos[0].country_code === ""
     ) {
-      segmentEventTrack(
-        "Error occured on button click to open sidemenu for " + selector,
-        {
-          campaign_interest_error: "Please select a country first",
-        }
-      );
       showMessage({
         message: translate("Please select a country first"),
         position: "top",

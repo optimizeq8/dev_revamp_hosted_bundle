@@ -7,7 +7,6 @@ import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
 import styles from "../../styles/mediaModal.styles";
-import segmentEventTrack from "../../../../segmentEventTrack";
 
 export default class MediaModal extends Component {
   render() {
@@ -50,9 +49,6 @@ export default class MediaModal extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
-                  segmentEventTrack(
-                    "Button clicked to close Upload Media Modal"
-                  );
                   this.props.setMediaModalVisible(false);
                 }}
                 title={"UPLOAD MEDIA"}

@@ -9,7 +9,6 @@ import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
 
 import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
@@ -17,20 +16,14 @@ export default class MediaOptions extends Component {
     let { title } = this.props;
 
     if (title === "Upload media from a different device") {
-      segmentEventTrack("Option upload media from different device selected");
       this.props.setUploadFromDifferentDeviceModal(true);
       this.props.setMediaModalVisible(false);
     } else if (title === "Download media from a different device") {
-      segmentEventTrack("Option download media from different device selected");
       this.props.setDownloadMediaModal(true);
       this.props.getWebUploadLinkMedia();
     } else if (title === "Media") {
-      segmentEventTrack(
-        ` Media Picker option selected to open gallery to upload Media `
-      );
       this.props._pickImage("All");
     } else {
-      segmentEventTrack(` Image edit option selected`);
       this.props._pickImage(
         "All",
         {

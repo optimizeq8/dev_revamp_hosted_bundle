@@ -140,9 +140,7 @@ class GoogleAdTargetting extends Component {
   //     budget: budget,
   //     value: this.formatNumber(budget)
   //   });
-  //   segmentEventTrack("Selected Budget Change", {
-  //     campaign_budget: budget
-  //   });
+
   //   this.props.save_google_campaign_data({ budget: budget });
   //   this.props.setCampaignInfoForTransaction({
   //     campaign_id: this.props.campaign.id,

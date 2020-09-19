@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import globalStyles from "../../../GlobalStyles";
 import GradientButton from "../../MiniComponents/GradientButton";
-import segmentEventTrack from "../../segmentEventTrack";
 const tabs = [
   {
     name: "Businesses",
@@ -113,7 +112,6 @@ class BusinessList extends Component {
     });
   };
   createNewBuiness = () => {
-    // segmentEventTrack("Button Clicked to add a new business");
     analytics.track(`a_create_buiness_account`, {
       source: "open_hamburger",
       source_action: `a_create_buiness_account`,

@@ -17,8 +17,6 @@ import Card from "./Card";
 import { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-import * as Segment from "expo-analytics-segment";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class VerifyAccount extends Component {
   inputRef = createRef();
@@ -191,7 +189,6 @@ class VerifyAccount extends Component {
    *   */
   sendEmail = () => {
     // Taking USER's original phone number that was used while registeration
-    segmentEventTrack("Button Pressed to send mobile code on email");
     const mobile = this.props.userInfo.mobile.substring(3);
     this.props.resendVerifyMobileCodeByEmail({
       country_code: this.state.country_code,
@@ -288,7 +285,6 @@ class VerifyAccount extends Component {
    * VERIFY OTP
    */
   verifyOTP = () => {
-    segmentEventTrack("Button Pressed to verify mobile code");
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),

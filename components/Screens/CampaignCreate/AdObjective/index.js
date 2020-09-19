@@ -11,8 +11,7 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
-import { Content, Text, Container, Icon, Button } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import { Content, Text, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";

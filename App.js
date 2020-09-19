@@ -25,7 +25,6 @@ import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
 // import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
-import segmentEventTrack from "./components/segmentEventTrack";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
 
@@ -302,7 +301,6 @@ class App extends React.Component {
   };
 
   _handleNotification = async (handleScreen) => {
-    segmentEventTrack("Notification received");
     // console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
     // console.log(handleScreen.notification.request.content.data.screenName);
     this.setState({ notificationData: handleScreen });
@@ -423,8 +421,6 @@ class App extends React.Component {
           JSON.stringify(handleScreen.data)
         )
       );
-
-      segmentEventTrack("Pressed notification");
     }
     //   this.setState({
     //     uploadMediaDifferentDeviceModal: false,

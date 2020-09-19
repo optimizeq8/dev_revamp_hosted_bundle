@@ -9,7 +9,6 @@ import {
 import { Badge } from "native-base";
 import { isUndefined } from "lodash";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 
 //icons
 import BackIcon from "../../../assets/SVGs/BackButtonPurple";
@@ -29,7 +28,6 @@ export default class TopStepsHeader extends Component {
         source: segment.source,
         source_action: segment.source_action,
       });
-      Segment.trackWithProperties(segment.str, segment.obj);
     }
     if (!isUndefined(navigation)) navigation.goBack();
     else actionButton();

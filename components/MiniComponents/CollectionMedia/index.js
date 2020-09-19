@@ -27,6 +27,7 @@ import {
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
+import analytics from "@segment/analytics-react-native";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
@@ -52,7 +53,6 @@ import { netLoc } from "../../Data/callactions.data";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
 import split from "lodash/split";
-import segmentEventTrack from "../../segmentEventTrack";
 import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
@@ -354,10 +354,7 @@ class CollectionMedia extends Component {
                     collection_media: null,
                   },
                 });
-                segmentEventTrack("Error Collection Ad Media", {
-                  campaign_error_collection_media_image:
-                    "User undid the cropping,Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px",
-                });
+
                 this.onToggleModal(false);
 
                 return Promise.reject({
@@ -395,10 +392,7 @@ class CollectionMedia extends Component {
                   collection_media: null,
                 },
               });
-              segmentEventTrack("Error Collection Ad Media", {
-                campaign_error_collection_media_image:
-                  "Image must be less than 2 MBs",
-              });
+
               this.onToggleModal(false);
               showMessage({
                 message: translate("Image must be less than {{fileSize}} MBs", {
@@ -422,10 +416,7 @@ class CollectionMedia extends Component {
                 uneditedImageUri,
                 serialization: result.serialization || {},
               });
-              segmentEventTrack("Selected Collection Ad Image successfully");
-              segmentEventTrack("Selected Collection Ad Image serialization", {
-                ...result.serialization,
-              });
+
               this.onToggleModal(false);
               showMessage({
                 message: translate("Image has been selected successfully"),
@@ -436,10 +427,7 @@ class CollectionMedia extends Component {
           })
           .catch((error) => {
             // console.log(error);
-            segmentEventTrack("Error Collection Ad Media", {
-              campaign_error_collection_media_image:
-                "Please choose another image",
-            });
+
             this.onToggleModal(false);
             showMessage({
               message: error.wrongAspect
@@ -459,10 +447,7 @@ class CollectionMedia extends Component {
               collection_media: null,
             },
           });
-          segmentEventTrack("Error Collection Ad Media", {
-            campaign_error_collection_media_image:
-              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px",
-          });
+
           this.onToggleModal(false);
           showMessage({
             message: translate(
@@ -478,9 +463,6 @@ class CollectionMedia extends Component {
         !result.cancelled &&
         isNull(this.state.collection.collection_media)
       ) {
-        segmentEventTrack("Error Collection Ad Media", {
-          campaign_error_collection_media_image: "Please choose a media file",
-        });
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
@@ -602,9 +584,9 @@ class CollectionMedia extends Component {
       if (this.props.collectionAdLinkForm === 1) {
         const validUrl = await this.validateUrl();
         if (!validUrl || !validImage) {
-          segmentEventTrack("Error Collection Media Submit", {
-            campaign_error_collection_media_image: this.state.imageError,
-            campaign_error_collection_ad_website_url: this.state.urlError,
+          analytics.track("a_error", {
+            error_page: "collection_media",
+            error_description: !validUrl || !validImage,
           });
         }
         if (validUrl && validImage) {
@@ -622,10 +604,9 @@ class CollectionMedia extends Component {
       } else {
         const validDeepLinkURL = await this.validateDeepLinkUrl();
         if (!validDeepLinkURL || !validImage) {
-          segmentEventTrack("Error Collection Media Submit", {
-            campaign_error_collection_media_image: this.state.imageError,
-            campaign_error_collection_media_deeplink_url: this.state
-              .deep_link_uriError,
+          analytics.track("a_error", {
+            error_page: "collection_media",
+            error_description: !validDeepLinkURL || !validImage,
           });
         }
         if (validDeepLinkURL && validImage) {
@@ -679,7 +660,6 @@ class CollectionMedia extends Component {
           disabled={this.props.loading}
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
-            segmentEventTrack("Opened Gallery to select Collection Ad media");
             if (this.state.collection.collection_media) {
               this.setMediaModalVisible(true);
             } else this._pickImage();
@@ -695,7 +675,6 @@ class CollectionMedia extends Component {
           disabled={this.props.loading}
           style={styles.inputMiddleButton}
           onPress={() => {
-            segmentEventTrack("Opened Gallery to select Collection Ad media");
             this._pickImage();
           }}
         >
@@ -808,25 +787,6 @@ class CollectionMedia extends Component {
                               },
                             });
                           }}
-                          onBlur={async () => {
-                            segmentEventTrack(
-                              "Changed Collection Media deep link url Attachment",
-                              {
-                                campaign_collection_attachment: this.state
-                                  .collection.collection_attachment,
-                              }
-                            );
-                            const valid = await this.validateDeepLinkUrl();
-                            if (!valid) {
-                              segmentEventTrack(
-                                "Error Collection on blur deep link url",
-                                {
-                                  campaign_error_collection_deeplink_url: this
-                                    .state.deep_link_uriError,
-                                }
-                              );
-                            }
-                          }}
                         />
                       </Item>
                     </Animatable.View>
@@ -860,24 +820,12 @@ class CollectionMedia extends Component {
                               ]}
                               onPress={() => {
                                 if (this.state.networkString === "https://") {
-                                  segmentEventTrack(
-                                    "Changed Collection Media Website url Network String",
-                                    {
-                                      campaign_collection_ad_website_network_string:
-                                        "http://"
-                                    }
-                                  );
+                                 
                                   this.setState({
                                     networkString: "http://"
                                   });
                                 } else {
-                                  segmentEventTrack(
-                                    "Changed Collection Media Website url Network String",
-                                    {
-                                      campaign_collection_ad_website_network_string:
-                                        "https://"
-                                    }
-                                  );
+                                  
                                   this.setState({
                                     networkString: "https://"
                                   });
@@ -915,25 +863,6 @@ class CollectionMedia extends Component {
                                   rejectionColUpload: true,
                                 })
                               }
-                              onBlur={async () => {
-                                segmentEventTrack(
-                                  "Changed Collection Media Website url",
-                                  {
-                                    campaign_collection_ad_website_url: this
-                                      .state.collection.collection_attachment,
-                                  }
-                                );
-                                const valid = await this.validateUrl();
-                                if (!valid) {
-                                  segmentEventTrack(
-                                    "Error on Blur Collection Ad Website URL ",
-                                    {
-                                      campaign_error_collection_ad_website_url: this
-                                        .state.urlError,
-                                    }
-                                  );
-                                }
-                              }}
                             />
                           </Item>
                         </View>

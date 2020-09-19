@@ -20,7 +20,6 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 //styles
 import styles from "./styles";
-import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
 class DownloadMediaFromDifferentDevice extends Component {
@@ -88,9 +87,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                   style={styles.marginH20}
                   fill={"#FFF"}
                   onPress={() => {
-                    segmentEventTrack(
-                      "Button clicked to close Download media from different device "
-                    );
                     this.props.setDownloadMediaModal(false);
                   }}
                   // onPress={() => this.props.handleDownloadMedia("//", "")}
@@ -99,9 +95,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                   screenProps={this.props.screenProps}
                   checkmark={true}
                   function={() => {
-                    segmentEventTrack(
-                      "Button clicked downloads the media file to own device that has been uploaded from a different device"
-                    );
                     this.props.handleDownloadMedia(
                       this.props.mediaWebLink,
                       this.props.mediaTypeWebLink
@@ -184,9 +177,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                     style={styles.marginH20}
                     fill={"#FFF"}
                     onPress={() => {
-                      segmentEventTrack(
-                        "Button clicked to close Download media from different device"
-                      );
                       this.props.setDownloadMediaModal(false);
                     }}
                     // onPress={() => this.props.handleDownloadMedia("//", "")}
@@ -195,9 +185,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                     screenProps={this.props.screenProps}
                     checkmark
                     function={() => {
-                      segmentEventTrack(
-                        "Button clicked downloads the media file to own devicee that has been uploaded from a different device"
-                      );
                       this.props.handleDownloadMediaStoryAds(
                         this.props.mediaStoryAdsDifferentDevice
                       );
@@ -296,9 +283,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                       style={styles.marginH20}
                       fill={"#FFF"}
                       onPress={() => {
-                        segmentEventTrack(
-                          "Button clicked to close Download media from different device"
-                        );
                         this.props.setDownloadMediaModal(false);
                       }}
                       // onPress={() => this.props.handleDownloadMedia("//", "")}
@@ -307,9 +291,6 @@ class DownloadMediaFromDifferentDevice extends Component {
                       screenProps={this.props.screenProps}
                       checkmark
                       function={() => {
-                        segmentEventTrack(
-                          "Button clicked downloads the media file to own device that has been uploaded from a different device"
-                        );
                         this.props.handleDownloadMediaCollectionAds(
                           this.props.collectionMainMediaWebLink,
                           this.props.collectionMainMediaTypeWebLink,

@@ -8,7 +8,6 @@ import MSGBackIcon from "../../../assets/SVGs/MSGBackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
 import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds";
-import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
@@ -67,7 +66,6 @@ export default class Header extends Component {
                 source: segment.source,
                 source_action: segment.source_action,
               });
-              Segment.trackWithProperties(segment.str, segment.obj);
             }
             if (!isUndefined(navigation)) navigation.goBack();
             else actionButton();

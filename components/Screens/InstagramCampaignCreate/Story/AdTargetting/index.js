@@ -383,21 +383,14 @@ class InstagramStoryAdTargetting extends Component {
   //       r => r !== selectedItem
   //     );
   //     langs = replace.targeting.demographics[0].languages;
-  //     // segmentEventTrack(`Selected Languages`, {
-  //     //   campaign_languages: langs.join(", ")
-  //     // });
+  //
   //   } else {
   //     replace.targeting.demographics[0].languages.push(selectedItem);
   //     langs = replace.targeting.demographics[0].languages;
-  //     // segmentEventTrack(`Selected Languages`, {
-  //     //   campaign_languages: langs.join(", ")
-  //     // });
+
   //   }
 
   //   if (replace.targeting.demographics[0].languages.length === 0) {
-  //     // segmentEventTrack(`Error Selecting Language`, {
-  //     //   campaign_languages_error: "Please choose a language"
-  //     // });
 
   //     showMessage({
   //       message: translate("Please choose a language"),
@@ -423,9 +416,6 @@ class InstagramStoryAdTargetting extends Component {
     replace.targeting.os_version_max = "";
     replace.targeting.os_version_min = "";
 
-    // segmentEventTrack(`Selected OS Type`, {
-    //   campaign_os_type: selectedItem === "" ? "ALL" : selectedItem
-    // });
     analytics.track(`a_ad_OS_type`, {
       source: "ad_targeting",
       source_action: "a_ad_OS_type",
@@ -471,9 +461,7 @@ class InstagramStoryAdTargetting extends Component {
     }
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
-    // segmentEventTrack(`Campaign Budget Change`, {
-    //   campaign_budget: this.formatNumber(budget)
-    // });
+
     this.setState({
       campaignInfo: replace,
       value: this.formatNumber(budget),
@@ -492,7 +480,6 @@ class InstagramStoryAdTargetting extends Component {
   //   if (selectedItem === -1) {
   //     if (this.state.regions.length === this.state.regionNames.length) {
   //       replace.targeting.geo_locations.region_id = [];
-  //       // segmentEventTrack(`Selected No Regions`);
   //       this.setState({
   //         regionNames: [],
   //         campaignInfo: replace
@@ -501,9 +488,7 @@ class InstagramStoryAdTargetting extends Component {
   //       rNamesSelected = this.state.regions.map(r => r.name);
   //       rIds = this.state.regions.map(r => r.id);
   //       replace.targeting.geo_locations.region_id = rIds;
-  //       // segmentEventTrack(`Selected Regions`, {
-  //       //   campaign_region_names: rNamesSelected.join(", ")
-  //       // });
+  //
   //       this.setState({
   //         regionNames: rNamesSelected,
   //         campaignInfo: replace
@@ -529,9 +514,6 @@ class InstagramStoryAdTargetting extends Component {
   //       replace.targeting.geo_locations.region_id.push(selectedItem);
   //       rNamesSelected.push(regionName);
   //     }
-  //     // segmentEventTrack(`Selected Regions`, {
-  //     //   campaign_region_names: rNamesSelected.join(", ")
-  //     // });
 
   //     this.setState({
   //       campaignInfo: replace,
@@ -599,9 +581,7 @@ class InstagramStoryAdTargetting extends Component {
           position: "top",
         });
       }
-      // segmentEventTrack("Custom Campaign Budget Change", {
-      //   campaign_budget: rawValue
-      // });
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,

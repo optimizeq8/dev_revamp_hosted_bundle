@@ -33,7 +33,6 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import split from "lodash/split";
-import segmentEventTrack from "../../../segmentEventTrack";
 
 class GoogleAdDesign extends Component {
   static navigationOptions = {
@@ -141,24 +140,7 @@ class GoogleAdDesign extends Component {
       description2Error,
       urlError,
     });
-    // set segment track for error
-    if (
-      headline1Error ||
-      headline2Error ||
-      headline3Error ||
-      descriptionError ||
-      description2Error ||
-      urlError
-    ) {
-      segmentEventTrack("Error occured on ad design screen sumbit button", {
-        campaign_error_headline1: headline1Error,
-        campaign_error_headline2: headline2Error,
-        campaign_error_headline3: headline3Error,
-        campaign_error_description: descriptionError,
-        campaign_error_description2: description2Error,
-        campaign_error_url: urlError,
-      });
-    }
+
     if (
       !headline1Error &&
       !headline2Error &&
@@ -341,29 +323,13 @@ class GoogleAdDesign extends Component {
                       this.setState({ inputH1: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("headline1 Field on Blur", {
-                        campaign_headline1: this.state.headline1,
-                      });
                       this.setState({ inputH1: false });
-                      this.setState(
-                        {
-                          headline1Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline1
-                          ),
-                        },
-                        () => {
-                          if (this.state.headline1Error) {
-                            segmentEventTrack(
-                              "Error at headline1 field on blur",
-                              {
-                                campaign_error_headline1: this.state
-                                  .headline1Error,
-                              }
-                            );
-                          }
-                        }
-                      );
+                      this.setState({
+                        headline1Error: validateWrapper(
+                          "mandatory",
+                          this.state.headline1
+                        ),
+                      });
                     }}
                     onSubmitEditing={() => {
                       this.focusTheField("inputH2");
@@ -415,29 +381,13 @@ class GoogleAdDesign extends Component {
                       this.setState({ inputH2: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("headline2 Field on Blur", {
-                        campaign_headline2: this.state.headline2,
-                      });
                       this.setState({ inputH2: false });
-                      this.setState(
-                        {
-                          headline2Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline2
-                          ),
-                        },
-                        () => {
-                          if (this.state.headline2Error) {
-                            segmentEventTrack(
-                              "Error at headline2 field on blur",
-                              {
-                                campaign_error_headline2: this.state
-                                  .headline2Error,
-                              }
-                            );
-                          }
-                        }
-                      );
+                      this.setState({
+                        headline2Error: validateWrapper(
+                          "mandatory",
+                          this.state.headline2
+                        ),
+                      });
                     }}
                     ref={(input) => {
                       this.inputs["inputH2"] = input;
@@ -492,29 +442,13 @@ class GoogleAdDesign extends Component {
                       this.setState({ inputH3: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("headline3 Field on Blur", {
-                        campaign_headline3: this.state.headline3,
-                      });
                       this.setState({ inputH3: false });
-                      this.setState(
-                        {
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline3
-                          ),
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error at headline3 Field on Blur",
-                              {
-                                campaign_error_headline3: this.state
-                                  .headline3Error,
-                              }
-                            );
-                          }
-                        }
-                      );
+                      this.setState({
+                        headline3Error: validateWrapper(
+                          "mandatory",
+                          this.state.headline3
+                        ),
+                      });
                     }}
                     onSubmitEditing={() => {
                       this.focusTheField("inputURL");
@@ -682,29 +616,13 @@ class GoogleAdDesign extends Component {
                       this.setState({ inputD: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("description Field on Blur", {
-                        campaign_description: this.state.description,
-                      });
                       this.setState({ inputD: false });
-                      this.setState(
-                        {
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.description
-                          ),
-                        },
-                        () => {
-                          if (this.state.descriptionError) {
-                            segmentEventTrack(
-                              "Error description Field on Blur",
-                              {
-                                campaign_error_description: this.state
-                                  .descriptionError,
-                              }
-                            );
-                          }
-                        }
-                      );
+                      this.setState({
+                        headline3Error: validateWrapper(
+                          "mandatory",
+                          this.state.description
+                        ),
+                      });
                     }}
                     onSubmitEditing={() => {
                       this.focusTheField("inputD2");
@@ -773,29 +691,13 @@ class GoogleAdDesign extends Component {
                       this.setState({ inputD2: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("description2 Field on Blur", {
-                        campaign_description2: this.state.description2,
-                      });
                       this.setState({ inputD2: false });
-                      this.setState(
-                        {
-                          description2Error: validateWrapper(
-                            "mandatory",
-                            this.state.description2
-                          ),
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error description2 Field on Blur",
-                              {
-                                campaign_error_description2: this.state
-                                  .description2Error,
-                              }
-                            );
-                          }
-                        }
-                      );
+                      this.setState({
+                        description2Error: validateWrapper(
+                          "mandatory",
+                          this.state.description2
+                        ),
+                      });
                     }}
                     ref={(input) => {
                       this.inputs["inputD2"] = input;

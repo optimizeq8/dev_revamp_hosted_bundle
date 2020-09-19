@@ -75,7 +75,6 @@ import {
 } from "./Functions/index";
 import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
-import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
@@ -339,9 +338,6 @@ class AdDesign extends Component {
   _handleNotification = async (uploadMediaNotification) => {
     // console.log("uploadMediaNotification", uploadMediaNotification);
     if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
-      segmentEventTrack(
-        "Received Notifcation on successful upload media from different device"
-      );
       this.setState({
         uploadMediaDifferentDeviceModal: false,
         uploadMediaNotification: uploadMediaNotification,

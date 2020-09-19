@@ -3,7 +3,6 @@ import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
 import { Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as actionCreators from "../../../store/actions";
@@ -19,7 +18,6 @@ import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
 import Loading from "../LoadingScreen";
-import segmentEventTrack from "../../segmentEventTrack";
 
 /**
  * The modal that shows up when there's a campaign to resume
@@ -83,7 +81,6 @@ class ContinueCampaign extends Component {
   handleSubmition = (isVisible, resetCampaign) => {
     this.setState({ isVisible });
     if (resetCampaign) {
-      segmentEventTrack("Button Clicked to create a new campaign");
       //if resetCampaign is true, then resetCampaignInfo is called
       this.props.rest_google_campaign_data();
       persistor.purge();
@@ -105,7 +102,6 @@ class ContinueCampaign extends Component {
    */
   handleContinue = () => {
     const { translate } = this.props.screenProps;
-    segmentEventTrack("Button Clicked to resume previous campaign");
     let updated_transaction_data = {
       channel: "google",
     };

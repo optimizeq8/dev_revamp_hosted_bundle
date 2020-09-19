@@ -6,7 +6,6 @@ import { Video } from "expo-av";
 import CustomHeader from "../../../MiniComponents/Header";
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
-import segmentEventTrack from "../../../segmentEventTrack";
 
 export default class LongFormVideoPreview extends Component {
   componentDidMount() {

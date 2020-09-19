@@ -3,37 +3,34 @@ import qs from "qs";
 import { AsyncStorage, I18nManager } from "react-native";
 import i18n from "i18n-js";
 import * as actionTypes from "./actionTypes";
-import * as Segment from "expo-analytics-segment";
 import store from "../index";
 import arabicStrings from "../../components/Data/translationArabic";
 import englishStrings from "../../components/Data/translationEnglish";
 
 import createBaseUrl from "./createBaseUrl";
 
-export const getLanguageListPOEdit = language => {
+export const getLanguageListPOEdit = (language) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
         type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
-        payload: true
+        payload: true,
       });
       const response = await axios.post(
         "https://api.poeditor.com/v2/terms/list",
         qs.stringify({
           api_token: "12aec028da2333797aaaa1768d444fb9",
           id: "283545",
-          language
+          language,
         })
       );
-      Segment.trackWithProperties("Selected App Language", {
-        app_language: language
-      });
+
       if (response.data.response.status === "success") {
         await AsyncStorage.setItem("appLanguage", language);
         const terms = response.data.result.terms;
         if (terms.length > 0) {
           var modifierJson = {};
-          terms.map(term => {
+          terms.map((term) => {
             modifierJson[term.term] = term.translation.content;
           });
 
@@ -42,21 +39,15 @@ export const getLanguageListPOEdit = language => {
           // console.log("language getLanguageListPOEdit", language);
           // console.log("modiferJson", modifierJson);
           i18n.translations = {
-            [language]: modifierJson
+            [language]: modifierJson,
           };
-
-          if (getState().auth.userid) {
-            Segment.identifyWithTraits(getState().auth.userid, {
-              app_language: language
-            });
-          }
 
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
               terms: modifierJson,
-              language
-            }
+              language,
+            },
           });
         }
       } else {
@@ -68,35 +59,27 @@ export const getLanguageListPOEdit = language => {
         I18nManager.forceRTL(language === "ar");
         if (data) {
           i18n.translations = {
-            [language]: data
+            [language]: data,
           };
-          if (getState().auth.userid) {
-            Segment.identifyWithTraits(getState().auth.userid, {
-              app_language: language
-            });
-          }
+
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
               terms: data,
-              language
-            }
+              language,
+            },
           });
         } else {
           i18n.translations = {
-            [language]: language === "ar" ? arabicStrings : englishStrings
+            [language]: language === "ar" ? arabicStrings : englishStrings,
           };
-          if (getState().auth.userid) {
-            Segment.identifyWithTraits(getState().auth.userid, {
-              app_language: language
-            });
-          }
+
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
               terms: language === "ar" ? arabicStrings : englishStrings,
-              language
-            }
+              language,
+            },
           });
         }
       }
@@ -107,19 +90,15 @@ export const getLanguageListPOEdit = language => {
       I18nManager.allowRTL(language === "ar");
       I18nManager.forceRTL(language === "ar");
       i18n.translations = {
-        [language]: language === "ar" ? arabicStrings : englishStrings
+        [language]: language === "ar" ? arabicStrings : englishStrings,
       };
-      if (getState().auth.userid) {
-        Segment.identifyWithTraits(getState().auth.userid, {
-          app_language: language
-        });
-      }
+
       return dispatch({
         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
         payload: {
           terms: language === "ar" ? arabicStrings : englishStrings,
-          language
-        }
+          language,
+        },
       });
     }
   };

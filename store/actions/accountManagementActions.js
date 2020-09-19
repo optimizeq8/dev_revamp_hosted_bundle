@@ -1,7 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
 import { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
@@ -311,7 +310,6 @@ export const updateUserInfo = (info, navigation) => {
         });
         if (data.success) {
           setAuthToken(data.accessToken);
-          Segment.track("Profile updated Successfully");
           showMessage({
             message: data.message,
             type: "success",

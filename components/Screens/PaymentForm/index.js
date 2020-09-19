@@ -36,7 +36,6 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 
@@ -638,10 +637,6 @@ class PaymentForm extends Component {
                   <GradientButton
                     uppercase={true}
                     onPressAction={() => {
-                      segmentEventTrack(
-                        "Button clicked to CONFIRM remove wallet amount and go back to ad payment review screen"
-                      );
-
                       this.removeWalletAmountAndGoBack();
                     }}
                     style={styles.walletButton}
@@ -653,9 +648,6 @@ class PaymentForm extends Component {
                     uppercase={true}
                     transparent={true}
                     onPressAction={() => {
-                      segmentEventTrack(
-                        "Cancel Button clicked to close remove wallet amount modal"
-                      );
                       this.showRemoveAmountModal();
                     }}
                     style={[styles.walletButton, styles.transaprentButton]}

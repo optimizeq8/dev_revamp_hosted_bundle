@@ -21,7 +21,6 @@ import { colors } from "../../GradiantColors/colors";
 //Functions
 import isNull from "lodash/isNull";
 import { globalColors } from "../../../GlobalStyles";
-import segmentEventTrack from "../../segmentEventTrack";
 const slidesData = [
   {
     id: 0,

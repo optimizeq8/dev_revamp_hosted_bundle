@@ -9,7 +9,6 @@ import DownloadIcon from "../../../../assets/SVGs/DownloadDevice";
 
 import { globalColors } from "../../../../GlobalStyles";
 import styles from "./styles";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
@@ -17,12 +16,8 @@ export default class MediaOptions extends Component {
     let { title } = this.props;
 
     if (title === "Image") {
-      segmentEventTrack(
-        ` Cover Image Picker option selected to open gallery to upload Cover Image `
-      );
       this.props._pickImage();
     } else {
-      segmentEventTrack(`Cover Image edit option selected`);
       this.props._pickImage(
         {
           mediaUri: this.props.mediaUri,

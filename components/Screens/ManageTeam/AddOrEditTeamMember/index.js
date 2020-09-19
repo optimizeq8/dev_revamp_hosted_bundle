@@ -14,7 +14,6 @@ import { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
 
@@ -164,9 +163,6 @@ class AddOrEditTeamMember extends Component {
         businessid: this.props.mainBusiness.businessid,
       });
     } else {
-      segmentEventTrack("Error updating team member", {
-        error_manage_team: "Please Choose a role for the team member",
-      });
       showMessage({
         message: this.translate("Please Choose a role for the team member"),
         type: "warning",
@@ -177,7 +173,6 @@ class AddOrEditTeamMember extends Component {
   };
 
   handleDelete = () => {
-    segmentEventTrack("Button Clicked to delete member");
     Alert.alert(
       this.translate("Team member") + this.translate("deletion"),
       this.translate("Are you sure you want to delete this member"),

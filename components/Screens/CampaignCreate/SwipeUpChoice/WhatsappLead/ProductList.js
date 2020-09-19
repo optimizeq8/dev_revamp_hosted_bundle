@@ -17,7 +17,6 @@ import {
 } from "react-native-responsive-screen";
 import PenIcon from "../../../../../assets/SVGs/Pen";
 import isStringArabic from "../../../../isStringArabic";
-import segmentEventTrack from "../../../../segmentEventTrack";
 
 class ProductList extends React.Component {
   constructor(props) {
@@ -46,11 +45,6 @@ class ProductList extends React.Component {
   };
 
   editItem = (item) => {
-    segmentEventTrack("Clicked on edit item details", {
-      campaign_sme_product_item: {
-        ...item,
-      },
-    });
     this.props.navigation.navigate("EditProductDetailInstagramPost", {
       cartList: this.state.cartList,
       item: item,

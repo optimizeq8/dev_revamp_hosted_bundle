@@ -48,7 +48,6 @@ import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 import MediaModal from "./MediaModal";
@@ -335,10 +334,7 @@ class AdCover extends Component {
             error_description:
               "Wrong aspect ratio for logo, Please crop the image to the correct size",
           });
-          segmentEventTrack("Seleeted Image Error", {
-            campaign_error_image:
-              "Wrong aspect ratio for logo, Please crop the image to the correct size",
-          });
+
           showMessage({
             message: error.wrongAspect ? error.message : error,
             position: "top",
@@ -388,23 +384,7 @@ class AdCover extends Component {
           duration: editedLogo.uri === "" ? 2000 : 10000,
           type: editedLogo.uri !== "" ? "success" : "warning",
         });
-        segmentEventTrack(
-          `${
-            editedLogo.uri !== ""
-              ? "Logo selected successfully"
-              : "Selected Logo Error"
-          }`,
-          {
-            campaign_error_story_ad_logo:
-              editedLogo.uri !== ""
-                ? ""
-                : "Logo must be exactly 993px by 284px,In png format and transparent background ",
-          }
-        );
-        editedLogo.uri !== "" &&
-          segmentEventTrack("Selected Story Ad Logo serialization", {
-            ...serialization,
-          });
+
         !this.rejected
           ? this.props.save_campaign_info({
               logo: editedLogo.uri !== "" ? editedLogo.uri : "",
@@ -512,10 +492,7 @@ class AdCover extends Component {
                   position: "top",
                   type: "warning",
                 });
-                segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                  campaign_error_story_ad_cover_image:
-                    "Image must be less than 2 MBs",
-                });
+
                 return;
               }
               this.setState({
@@ -539,10 +516,7 @@ class AdCover extends Component {
                 source_action: "a_media_editor",
                 image_for: "campaign_cover",
               });
-              segmentEventTrack("Selected Story Ad Cover Media successfully");
-              segmentEventTrack("Selected Story Ad Cover serialization", {
-                ...result.serialization,
-              });
+
               showMessage({
                 message: translate("Image has been selected successfully"),
                 position: "top",
@@ -570,11 +544,7 @@ class AdCover extends Component {
                   ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
                   : "Please choose an image",
               });
-              segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                campaign_error_story_ad_cover_image: error.wrongAspect
-                  ? "Wrong aspect ratio for logo, Please crop the image to the correct size "
-                  : "Please choose an image",
-              });
+
               showMessage({
                 message: error.wrongAspect
                   ? error.message
@@ -596,10 +566,6 @@ class AdCover extends Component {
             error_page: "ad_cover",
             error_description: "Please make sure the image is in png format",
           });
-          segmentEventTrack("Error in selecting Story Ad Cover Media", {
-            campaign_error_story_ad_cover_image:
-              "Please make sure the image is in png format",
-          });
         }
       } else if (result && !result.cancelled && isNull(this.state.cover)) {
         analytics.track(`a_error`, {
@@ -613,9 +579,7 @@ class AdCover extends Component {
           position: "top",
           type: "warning",
         });
-        segmentEventTrack("Error in selecting Story Ad Cover Media", {
-          campaign_error_story_ad_cover_image: "Please choose a media file",
-        });
+
         this.onToggleModal(false);
         return;
       } else if (result.cancelled) {
@@ -804,7 +768,6 @@ class AdCover extends Component {
     });
   };
   handleLogo = () => {
-    segmentEventTrack("Button clicked to select Logo from gallery");
     this.state.campaignInfo.logo === "//"
       ? this._pickLogo()
       : this.setMediaModalVisible(true, true);

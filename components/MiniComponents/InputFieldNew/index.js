@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 
 //styles
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
-import segmentEventTrack from "../../segmentEventTrack";
 
 export default class InputField extends Component {
   typingTimeout = null;
@@ -122,15 +121,11 @@ export default class InputField extends Component {
     //Either way, sets the values for the parent component
     if (secondHalf) {
       // set segments
-      segmentEventTrack(`${this.props.stateName2} Field on Blur`, {
-        [`campaign_${this.props.stateName2}`]: this.props.value2,
-      });
+
       this.props.setValue(this.props.stateName2, this.props.value2);
     } else {
       // set segments
-      segmentEventTrack(`${this.props.stateName1} Field on Blur`, {
-        [`campaign_${this.props.stateName1}`]: this.props.value,
-      });
+
       this.props.setValue(this.props.stateName1, this.props.value);
     }
     this.validate(secondHalf);

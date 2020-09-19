@@ -6,7 +6,6 @@ import { showMessage } from "react-native-flash-message";
 import { getUniqueId } from "react-native-device-info";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
-import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import {
   setAuthToken,
@@ -18,7 +17,6 @@ import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 
-import segmentEventTrack from "../../components/segmentEventTrack";
 import { Adjust, AdjustEvent } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
 
@@ -81,10 +79,6 @@ export const verifyBusinessName = (
 //       })
 //       .then(async user => {
 //         if (user.success === true)
-//           Segment.trackWithProperties("Complete Registration", {
-//             category: "Sign Up",
-//             label: "Successfully Registered"
-//           });
 
 //         const decodedUser = jwt_decode(user.token);
 //         let peomise = await setAuthToken(user.token);
@@ -127,11 +121,6 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
       })
       .then(async (user) => {
         if (user.success === true) {
-          Segment.trackWithProperties("Register Business Info", {
-            category: "Sign Up",
-            label: "Step 3 of Registration",
-          });
-
           const decodedUser = jwt_decode(user.token);
           let peomise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
@@ -205,13 +194,6 @@ export const sendMobileNo = (mobileNo) => {
         return res.data;
       })
       .then((data) => {
-        if (data.success === true) {
-          segmentEventTrack("Successfully code sent on mobile", {
-            category: "Account Verification",
-            label: "Step 1 of Account Verification",
-          });
-        }
-
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -333,15 +315,11 @@ export const resendVerifyMobileCode = (mobileAuth) => {
       })
       .then((data) => {
         if (data.success === true)
-          Segment.trackWithProperties("Resend Verification Code by Phone No.", {
-            category: "Sign Up",
-            label: "Request a new Verification Code",
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top",
           });
-        showMessage({
-          message: data.message,
-          type: data.success ? "success" : "warning",
-          position: "top",
-        });
 
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
@@ -377,13 +355,6 @@ export const resendVerifyMobileCodeByEmail = (mobileAuth) => {
         return res.data;
       })
       .then((data) => {
-        if (data.success === true) {
-          Segment.trackWithProperties("Resend Verification Code by Email", {
-            category: "Account Verification",
-            label: "Request a new Verification Code",
-          });
-        }
-
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -437,10 +408,6 @@ export const verifyEmail = (email, userInfo, navigation) => {
       })
       .then((data) => {
         if (data.success) {
-          // Segment.trackWithProperties("Register Email Info", {
-          //   category: "Sign Up",
-          //   label: "Step 1 of Registration",
-          // });
           navigation.push("MainForm", {
             source: "email_registration",
             source_action: "a_create_account",
@@ -613,11 +580,6 @@ export const registerGuestUser = (
         adjustRegiserTracker.setCallbackId(userInfo.mobile);
         Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
-          // Segment.trackWithProperties("Register Details Error", {
-          //   category: "Sign Up",
-          //   label: "Step 2 of Registration",
-          //   error: data.message
-          // });
           showMessage({
             message: data.message,
             type: data.success ? "success" : "warning",

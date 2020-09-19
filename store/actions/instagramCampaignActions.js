@@ -3,12 +3,9 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import analytics from "@segment/analytics-react-native";
-import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
-import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import segmentEventTrack from "../../components/segmentEventTrack";
 
 InstagramBackendURL = () =>
   axios.create({

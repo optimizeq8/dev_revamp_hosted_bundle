@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../formatNumber";
 import { Icon } from "native-base";
-import segmentEventTrack from "../../../../segmentEventTrack";
 import RecomenededIcon from "../../../../../assets/SVGs/AdDetails/RecomenededIcon.svg";
 export default class BudgetCard extends Component {
   render() {
@@ -13,9 +12,6 @@ export default class BudgetCard extends Component {
       <>
         <TouchableOpacity
           onPress={() => {
-            segmentEventTrack("Campaign Budget Change", {
-              campaign_budget: bud.recBudget,
-            });
             _handleBudget(
               "$" + bud.recBudget,
               parseInt(bud.recBudget),

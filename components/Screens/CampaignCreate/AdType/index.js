@@ -10,7 +10,6 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
@@ -102,26 +101,11 @@ class AdType extends Component {
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
     ) {
-      Segment.trackWithProperties("Navigate to VerifyAccount", {
-        step: 1,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
       this.props.navigation.navigate("VerifyAccount", {
         source: "ad_type",
         source_action: "a_campaign_ad_type",
       });
     } else {
-      Segment.trackWithProperties("Selected Ad Type", {
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
-      Segment.trackWithProperties("Completed Checkout Step", {
-        step: 1,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
-
       if (
         this.props.adType !== adType.value &&
         !this.props.incompleteCampaign
