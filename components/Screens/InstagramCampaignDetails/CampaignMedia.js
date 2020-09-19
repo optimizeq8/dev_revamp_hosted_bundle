@@ -55,7 +55,6 @@ export const previewHandler = (
     campaign_channel: "instagram",
     campaign_ad_type: selectedCampaign.campaign_type,
   });
-
   navigation.navigate(
     selectedCampaign.campaign_type !== "InstagramStoryAd"
       ? "AdFeedDesignReview"
@@ -72,6 +71,7 @@ export const previewHandler = (
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
       instagram_business_name: selectedCampaign.instagram_business_name,
+      instagram_profile_pic: selectedCampaign.instagram_profile_pic,
       message: selectedCampaign.message,
       source: source,
       campaignDetails: campaignDetails,
