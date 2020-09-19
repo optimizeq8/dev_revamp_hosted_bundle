@@ -5,7 +5,7 @@ import {
   Dimensions,
   Animated,
   TouchableWithoutFeedback,
-  I18nManager,
+  I18nManager
 } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
@@ -103,7 +103,7 @@ export default class SideMenu extends React.Component {
       openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
       hiddenMenuOffsetPercentage,
       hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
-      left,
+      left
     };
 
     this.state.left.addListener(({ value }) =>
@@ -122,7 +122,7 @@ export default class SideMenu extends React.Component {
       onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
       onPanResponderMove: this.onPanResponderMove,
       onPanResponderRelease: this.onPanResponderRelease,
-      onPanResponderTerminate: this.onPanResponderTerminate,
+      onPanResponderTerminate: this.onPanResponderTerminate
     });
   }
 
@@ -159,11 +159,11 @@ export default class SideMenu extends React.Component {
     }
 
     const { width, height } = this.state;
-    const ref = (sideMenu) => (this.sideMenu = sideMenu);
+    const ref = sideMenu => (this.sideMenu = sideMenu);
     const style = [
       styles.frontView,
       { width, height },
-      this.props.animationStyle(this.state.left),
+      this.props.animationStyle(this.state.left)
     ];
 
     return (
@@ -264,13 +264,9 @@ export default class SideMenu extends React.Component {
     const menu = (
       <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>
     );
-    const { menuContainerStyle } = this.props;
 
     return (
-      <View
-        style={[styles.container, menuContainerStyle]}
-        onLayout={this.onLayoutChange}
-      >
+      <View style={styles.container} onLayout={this.onLayoutChange}>
         {menu}
         {this.getContentView()}
       </View>
@@ -296,7 +292,7 @@ SideMenu.propTypes = {
   onStartShouldSetResponderCapture: PropTypes.func,
   isOpen: PropTypes.bool,
   bounceBackOnOverdraw: PropTypes.bool,
-  autoClosing: PropTypes.bool,
+  autoClosing: PropTypes.bool
 };
 
 SideMenu.defaultProps = {
@@ -313,20 +309,20 @@ SideMenu.defaultProps = {
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
   onSliding: () => {},
-  animationStyle: (value) => ({
+  animationStyle: value => ({
     transform: [
       {
-        translateX: value,
-      },
-    ],
+        translateX: value
+      }
+    ]
   }),
   animationFunction: (prop, value) =>
     Animated.spring(prop, {
       toValue: value,
-      friction: 8,
+      friction: 8
     }),
   onAnimationComplete: () => {},
   isOpen: false,
   bounceBackOnOverdraw: true,
-  autoClosing: true,
+  autoClosing: true
 };

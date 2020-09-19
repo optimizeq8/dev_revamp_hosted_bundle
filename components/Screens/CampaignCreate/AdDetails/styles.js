@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 30,
     textAlign: "left",
-    textTransform: "uppercase",
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -195,19 +194,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuComponentStyle: { top: 0 },
-  reachView: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-  },
-  existingButton: {
-    borderWidth: 2,
-    borderColor: "#9300FF",
-    paddingHorizontal: 20,
-    marginHorizontal: 0,
-  },
-  existingButtonText: { fontSize: 12, color: "#9300FF" },
 });
 
 export default styles;
