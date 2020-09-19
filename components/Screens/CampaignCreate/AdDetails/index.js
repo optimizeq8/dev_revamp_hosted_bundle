@@ -230,7 +230,6 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
-    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -1007,11 +1006,10 @@ class AdDetails extends Component {
       }
       if (
         r.geos.some((re) => re.hasOwnProperty("region_id")) &&
-        r.geos.some((re) => re.region_id && re.region_id.length === 0)
+        r.geos.some((re) => re.region_id.length === 0)
       ) {
         r.geos.forEach(
-          (re) =>
-            re.region_id && re.region_id.length === 0 && delete re.region_id
+          (re) => re.region_id.length === 0 && delete re.region_id
         );
       }
       if (
@@ -1126,10 +1124,7 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.interests;
       }
-      if (
-        rep.targeting.devices[0].marketing_name &&
-        rep.targeting.devices[0].marketing_name.length === 0
-      ) {
+      if (rep.targeting.devices[0].marketing_name.length === 0) {
         delete rep.targeting.devices[0].marketing_name;
       }
       if (rep.targeting.devices[0] && rep.targeting.devices[0].os_type === "") {
@@ -1720,6 +1715,7 @@ class AdDetails extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
+                            uppercase
                             style={[
                               styles.subHeadings,
                               { paddingHorizontal: 10 },
@@ -1827,7 +1823,6 @@ class AdDetails extends Component {
                         )}
                       </View>
                     )}
-
                     <TargetAudience
                       screenProps={this.props.screenProps}
                       _renderSideMenu={this._renderSideMenu}
