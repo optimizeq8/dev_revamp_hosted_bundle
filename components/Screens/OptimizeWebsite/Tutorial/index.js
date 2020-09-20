@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import { connect } from "react-redux";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import analytics from "@segment/analytics-react-native";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
@@ -32,18 +33,16 @@ const slidesData = [
     id: 2,
   },
 ];
-export default class TutorialWeb extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inverted: I18nManager.isRTL && Platform.OS === "android",
-      activeSlide: 0,
-      slidesData:
-        I18nManager.isRTL && Platform.OS === "android"
-          ? slidesData.reverse()
-          : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
-    };
-  }
+class TutorialWeb extends React.Component {
+  state = {
+    inverted: I18nManager.isRTL && Platform.OS === "android",
+    activeSlide: 0,
+    slidesData:
+      I18nManager.isRTL && Platform.OS === "android"
+        ? slidesData.reverse()
+        : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
+  };
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -159,10 +158,21 @@ export default class TutorialWeb extends React.Component {
     });
   };
   getStartWebsiteReg = () => {
-    this.props.navigation.navigate("OptimizeWebsite", {
-      source: "my_website_tutorial",
-      source_action: "a_open_my_website_detail",
-    });
+    if (
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account
+    ) {
+      this.props.navigation.navigate("VerifyAccount", {
+        source: "my_website_tutorial",
+        source_action: "a_open_my_website_detail",
+      });
+    } else {
+      this.props.navigation.navigate("OptimizeWebsite", {
+        source: "my_website_tutorial",
+        source_action: "a_open_my_website_detail",
+      });
+    }
   };
 
   render() {
@@ -240,3 +250,9 @@ export default class TutorialWeb extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  userInfo: state.auth.userInfo,
+});
+
+export default connect(mapStateToProps, null)(TutorialWeb);
