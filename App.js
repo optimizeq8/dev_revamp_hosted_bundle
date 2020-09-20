@@ -48,7 +48,6 @@ import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
-import * as Segment from "expo-analytics-segment";
 import * as Icon from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
@@ -224,10 +223,6 @@ class App extends React.Component {
       });
     });
 
-    // Segment.initialize({
-    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
-    // });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();

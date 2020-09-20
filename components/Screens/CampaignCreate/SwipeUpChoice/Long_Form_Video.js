@@ -101,7 +101,10 @@ class Long_Form_Video extends Component {
           .longformvideo_media_type,
         callaction: this.props.storyAdAttachment.call_to_action,
       });
-    } else if (this.props.rejCampaign.hasOwnProperty("uneditedLongformVideo")) {
+    } else if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("uneditedLongformVideo")
+    ) {
       this.setState({
         uneditedVideo: this.props.rejCampaign.uneditedLongformVideo,
         longformvideo_media_type: "VIDEO",
@@ -111,7 +114,10 @@ class Long_Form_Video extends Component {
           ? this.props.rejCampaign.longFormVideoSerialization
           : null,
       });
-    } else if (this.props.rejCampaign.hasOwnProperty("longformvideo_media")) {
+    } else if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("longformvideo_media")
+    ) {
       this.setState({
         longformvideo_media: this.props.rejCampaign.longformvideo_media,
         longformvideo_media_type: this.props.rejCampaign
