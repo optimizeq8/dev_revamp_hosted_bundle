@@ -36,11 +36,11 @@ export const formatStoryAd = async (
     storyAdAttachment.rejectionLongVidUpload
   ) {
     let resVideo = storyAdAttachment.longformvideo_media.split("/ImagePicker/");
-    let formatVideo = resVideo[1].split(".");
+    let formatVideo = resVideo[0].split(".");
     var video = {
       uri: card.longformvideo_media,
       type: card.longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1],
+      name: resVideo[0],
     };
 
     storyBody.append("story_longformvideo_media", video);
