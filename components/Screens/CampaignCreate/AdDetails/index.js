@@ -1428,13 +1428,13 @@ class AdDetails extends Component {
               this.props.data.iosApp_name !== "" &&
               this.props.data.androidApp_name &&
               this.props.data.androidApp_name !== ""
-                ? OSType
-                : [
+                ? [
                     {
                       value: this.props.data.appChoice,
                       label: this.props.data.appChoice,
                     },
                   ]
+                : OSType
             }
             _handleSideMenuState={this._handleSideMenuState}
           />
