@@ -40,52 +40,50 @@ import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import styles from "../../../MiniComponents/InputFieldNew/styles";
 
+const sizes = [
+  {
+    size: "XS",
+    id: "XS",
+  },
+  {
+    size: "S",
+    id: "S",
+  },
+  {
+    size: "M",
+    id: "M",
+  },
+  {
+    size: "L",
+    id: "L",
+  },
+  {
+    size: "XL",
+    id: "XL",
+  },
+  {
+    size: "One Size",
+    id: "One Size",
+  },
+];
 class EditProduct extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signal: null,
-      loaded: 0,
-      isVisible: false,
-      showPriceModal: false,
-      showSizeModal: false,
-      product: {
-        prices: [],
-        media: [],
-        sizes: [],
-        // is_featured: true,
-      },
-      prices: [{ currency: "KWD", price: null, id: "" }],
-      sizes: [
-        {
-          size: "XS",
-          id: "XS",
-        },
-        {
-          size: "S",
-          id: "S",
-        },
-        {
-          size: "M",
-          id: "M",
-        },
-        {
-          size: "L",
-          id: "L",
-        },
-        {
-          size: "XL",
-          id: "XL",
-        },
-        {
-          size: "One Size",
-          id: "One Size",
-        },
-      ],
-      activeCountryCurrency: "KWD",
-      activeUploadMediaPos: 1,
-    };
-  }
+  state = {
+    signal: null,
+    loaded: 0,
+    isVisible: false,
+    showPriceModal: false,
+    showSizeModal: true,
+    product: {
+      prices: [],
+      media: [],
+      sizes: [],
+      // is_featured: true,
+    },
+    prices: [{ currency: "KWD", price: null, id: "" }],
+    sizes: [],
+    activeCountryCurrency: "KWD",
+    activeUploadMediaPos: 1,
+  };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -117,7 +115,7 @@ class EditProduct extends Component {
     });
     // console.log("product1", product);
     this.setState({
-      product: { ...product },
+      product: { ...product, sizes: [] },
       prices: product && product.prices,
     });
 
@@ -232,6 +230,22 @@ class EditProduct extends Component {
       product: {
         ...this.state.product,
         prices: this.state.prices,
+      },
+    });
+  };
+  saveSize = () => {
+    analytics.track(`a_toggle_price_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_price_modal",
+      product_id: this.state.product.id,
+      open: false,
+      product_sizes: this.state.sizes,
+    });
+    this.setState({
+      showSizeModal: false,
+      product: {
+        ...this.state.product,
+        sizes: this.state.sizes,
       },
     });
   };
@@ -552,7 +566,13 @@ class EditProduct extends Component {
               <View style={editProductStyles.fieldTextView}>
                 <Text style={editProductStyles.subHeading}>{"Sizes"}</Text>
 
-                <Text style={[editProductStyles.subText]}>Add Sizes</Text>
+                <Text style={[editProductStyles.subText]}>
+                  {this.state.product &&
+                  this.state.product.sizes &&
+                  this.state.product.sizes.length > 0
+                    ? this.state.product.sizes.join(", ")
+                    : "Add Sizes"}
+                </Text>
               </View>
             </TouchableOpacity>
 
@@ -829,35 +849,65 @@ class EditProduct extends Component {
                 marginVertical: 15,
               }}
             >
-              {this.state.sizes.map((size) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    // if (this.state.product && this.state.product.sizes.length ) {
-                    // }
-                    // let productSizes = [this.state.product.sizes];
-                  }}
-                  style={{
-                    borderColor: globalColors.rum,
-                    borderWidth: 1,
-                    width: size.size === "One Size" ? 70 : 30,
-                    height: 30,
-                    borderRadius: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  key={size.size}
-                >
-                  <Text
-                    style={{
-                      fontFamily: "montserrat-bold",
-                      fontSize: 12,
-                      color: globalColors.rum,
+              {sizes.map((size) => {
+                const sizeFound =
+                  this.state.sizes &&
+                  this.state.sizes.length > 0 &&
+                  this.state.sizes.find((sz) => sz === size.size);
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      let newSizesArray = [...this.state.sizes];
+                      if (newSizesArray.length === 0) {
+                        newSizesArray.push(size.size);
+                      } else {
+                        let elemIndex = this.state.sizes.findIndex(
+                          (element) => element === size.size
+                        );
+                        if (elemIndex === -1) {
+                          newSizesArray.push(size.size);
+                        } else {
+                          newSizesArray.splice(elemIndex, 1);
+                        }
+                      }
+                      this.setState({
+                        sizes: newSizesArray,
+                      });
                     }}
+                    style={[
+                      {
+                        borderColor: globalColors.rum,
+                        borderWidth: 1,
+                        width: size.size === "One Size" ? 70 : 30,
+                        height: 30,
+                        borderRadius: 20,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      },
+                      sizeFound && {
+                        borderColor: globalColors.purple,
+                        borderWidth: 2,
+                      },
+                    ]}
+                    key={size.size}
                   >
-                    {size.size}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={[
+                        {
+                          fontFamily: "montserrat-bold",
+                          fontSize: 12,
+                          color: globalColors.rum,
+                        },
+                        sizeFound && {
+                          color: globalColors.purple,
+                        },
+                      ]}
+                    >
+                      {size.size}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
             <View
               style={[
@@ -870,7 +920,7 @@ class EditProduct extends Component {
                 purpleViolet
                 text={translate("Save")}
                 uppercase
-                onPressAction={this.savePrice}
+                onPressAction={this.saveSize}
               />
             </View>
           </View>

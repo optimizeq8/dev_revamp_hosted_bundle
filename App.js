@@ -213,6 +213,7 @@ class App extends React.Component {
       ios: {
         trackAdvertising: true,
         trackDeepLinks: true,
+        trackPushNotifications: true,
       },
       debug: true,
     });
