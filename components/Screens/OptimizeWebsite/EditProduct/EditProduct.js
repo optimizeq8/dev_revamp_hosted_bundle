@@ -403,7 +403,6 @@ class EditProduct extends Component {
             source: "open_edit_product",
             source_action: "a_go_back",
           }}
-          showTopRightButtonIcon={"settings"}
           // navigation={this.props.navigation}
           actionButton={this.goBack}
           topRightButtonFunction={this.topRightButtonFunction}

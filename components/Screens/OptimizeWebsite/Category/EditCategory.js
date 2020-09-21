@@ -228,19 +228,44 @@ class EditCategory extends Component {
   };
 
   onSelectedCategoriesItemsChange = (item) => {
-    console.log("item", item);
     this.setState({
       products: [...item],
     });
   };
   onSelectedItemCategoriesObjectsChange = (itemObj) => {
-    console.log("itemObj", itemObj);
     this.setState({
       category: {
         ...this.state.category,
         products: [...itemObj],
       },
     });
+  };
+
+  topRightButtonFunction = () => {
+    this.createButtonAlert();
+  };
+  createButtonAlert = () => {
+    const { translate } = this.props.screenProps;
+    analytics.track(`open_delete_category_prompt`, {
+      source: "open_edit_category",
+      source_action: "a_delete_category",
+      category_id: this.state.category.id,
+    });
+    return Alert.alert(
+      "Delete Category",
+      "Are you sure you want to delete this category ?",
+      [
+        {
+          text: translate("YES"),
+          onPress: () => this.props.deleteWebCategory(this.state.category.id),
+        },
+        {
+          text: translate("Cancel"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -260,10 +285,12 @@ class EditCategory extends Component {
           }}
           actionButton={this.goBack}
           title={"Edit Category"}
+          topRightButtonFunction={this.topRightButtonFunction}
           titleStyle={{
             color: "#75647C",
           }}
           iconColor={"#75647C"}
+          showTopRightButtonIcon={"delete"}
         />
         <InputScrollView
           showsVerticalScrollIndicator={false}
