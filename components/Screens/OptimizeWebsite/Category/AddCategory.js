@@ -28,6 +28,8 @@ import CameraCircleOutlineIcon from "../../../../assets/SVGs/CameraCircleOutline
 import editProductStyles from "./styles";
 
 import Header from "../../../MiniComponents/Header";
+import Picker from "../../../MiniComponents/Picker";
+
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
@@ -42,6 +44,7 @@ class AddCategory extends Component {
     signal: null,
     loaded: 0,
     isVisible: false,
+    showProductModal: false,
     category: {
       name: "",
       media: [],
@@ -175,6 +178,43 @@ class AddCategory extends Component {
     });
   };
 
+  closeProductsModal = () => {
+    analytics.track(`open_products_modal`, {
+      source: "open_add_category",
+      source_action: "a_toggle_products_modal",
+      category_id: this.state.category.id,
+      open: false,
+    });
+
+    this.setState({
+      showProductModal: false,
+    });
+  };
+  openProductsModal = () => {
+    analytics.track(`open_products_modal`, {
+      source: "open_add_category",
+      source_action: "a_toggle_products_modal",
+      category_id: this.state.category.id,
+      open: true,
+    });
+    this.setState({
+      showProductModal: true,
+    });
+  };
+
+  onSelectedCategoriesItemsChange = (item) => {
+    this.setState({
+      products: [...item],
+    });
+  };
+  onSelectedItemCategoriesObjectsChange = (itemObj) => {
+    this.setState({
+      category: {
+        ...this.state.category,
+        product: [...itemObj],
+      },
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -289,6 +329,22 @@ class AddCategory extends Component {
                 />
               </View>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={this.openProductsModal}
+              style={editProductStyles.feildView}
+              disabled={this.props.saving}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>{"Products"}</Text>
+                <Text style={editProductStyles.subText}>
+                  {this.state.category.products}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </InputScrollView>
 
@@ -331,6 +387,21 @@ class AddCategory extends Component {
           loaded={this.state.loaded}
           screenProps={this.props.screenProps}
         />
+        <Picker
+          screenProps={this.props.screenProps}
+          uniqueKey={"id"}
+          displayKey={"name"}
+          single={false}
+          open={this.state.showProductModal}
+          data={this.props.webproducts}
+          onSelectedItemsChange={this.onSelectedCategoriesItemsChange}
+          onSelectedItemObjectsChange={
+            this.onSelectedItemCategoriesObjectsChange
+          }
+          selectedItems={this.state.categories}
+          showIcon={true}
+          closeCategoryModal={this.closeProductsModal}
+        />
       </View>
     );
   }
@@ -341,6 +412,7 @@ const mapStateToProps = (state) => ({
   businessLogo: state.website.businessLogo,
   media: state.website.media,
   saving: state.website.saving,
+  webproducts: state.website.webproducts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

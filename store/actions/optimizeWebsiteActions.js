@@ -637,8 +637,8 @@ export const addNewProduct = (info) => {
       payload: true,
     });
     delete axios.defaults.headers.common["Authorization"];
-    axios
-      .post(`https://optimizeapp.com/ecommerce/api/products`, info)
+    OptimizeWebsiteBackendURL()
+      .post(`addsingleproduct`, info)
       .then((res) => res.data)
       .then((data) => {
         analytics.track(`a_save_product_detail`, {
@@ -648,7 +648,7 @@ export const addNewProduct = (info) => {
           product: info,
           action_status: data.data ? "success" : "failure",
         });
-        // console.log("data save product", data);
+        console.log("data save product", data);
         NavigationService.navigate("MyWebsiteECommerce", {
           source: "open_add_product",
           source_action: "a_save_product_detail",

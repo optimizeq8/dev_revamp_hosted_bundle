@@ -31,6 +31,7 @@ import CameraCircleOutlineIcon from "../../../../assets/SVGs/CameraCircleOutline
 import editProductStyles from "./editProductStyles";
 
 import Header from "../../../MiniComponents/Header";
+import Picker from "../../../MiniComponents/Picker";
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
@@ -73,16 +74,28 @@ class EditProduct extends Component {
     isVisible: false,
     showPriceModal: false,
     showSizeModal: false,
+    showCategoryModal: false,
     product: {
       prices: [],
       media: [],
       sizes: [],
+      categories: [],
       // is_featured: true,
     },
     prices: [{ currency: "KWD", price: null, id: "" }],
     sizes: [],
+    categories: [],
     activeCountryCurrency: "KWD",
     activeUploadMediaPos: 1,
+    allCountries: [
+      ...country,
+      {
+        currency: "USD",
+        label: "International",
+        value: "global",
+        flag: require("../../../../assets/images/global.png"),
+      },
+    ],
   };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -217,6 +230,29 @@ class EditProduct extends Component {
       showSizeModal: true,
     });
   };
+  closeCategoriesModal = () => {
+    analytics.track(`open_categories_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_categories_modal",
+      product_id: this.state.product.id,
+      open: false,
+    });
+
+    this.setState({
+      showCategoryModal: false,
+    });
+  };
+  openCategoriesModal = () => {
+    analytics.track(`open_categories_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_categories_modal",
+      product_id: this.state.product.id,
+      open: true,
+    });
+    this.setState({
+      showCategoryModal: true,
+    });
+  };
   savePrice = () => {
     analytics.track(`a_toggle_price_modal`, {
       source: "open_edit_product",
@@ -338,6 +374,19 @@ class EditProduct extends Component {
       ],
       { cancelable: false }
     );
+  };
+  onSelectedCategoriesItemsChange = (item) => {
+    this.setState({
+      categories: [...item],
+    });
+  };
+  onSelectedItemCategoriesObjectsChange = (itemObj) => {
+    this.setState({
+      product: {
+        ...this.state.product,
+        categories: [...itemObj],
+      },
+    });
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -623,6 +672,28 @@ class EditProduct extends Component {
                 </Text>
               </View>
             </TouchableOpacity>
+            <TouchableOpacity
+              disabled={this.props.saving}
+              onPress={this.openCategoriesModal}
+              style={editProductStyles.feildView}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>{"Categories"}</Text>
+
+                <Text style={[editProductStyles.subText]}>
+                  {this.state.product &&
+                  this.state.product.categories &&
+                  this.state.product.categories.length > 0
+                    ? this.state.product.categories
+                        .map((cat) => cat.name)
+                        .join(", ")
+                    : "Add Categories"}
+                </Text>
+              </View>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={editProductStyles.feildView}
@@ -680,7 +751,6 @@ class EditProduct extends Component {
             </TouchableOpacity>
           </View>
         </InputScrollView>
-
         <View style={editProductStyles.bottomBtns}>
           <GradientButton
             text={translate("Preview")}
@@ -722,7 +792,6 @@ class EditProduct extends Component {
             />
           )}
         </View>
-
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}
@@ -752,7 +821,7 @@ class EditProduct extends Component {
             </View>
 
             <View style={editProductStyles.countryOuterView}>
-              {country.map((ctr) => (
+              {this.state.allCountries.map((ctr) => (
                 <TouchableOpacity
                   style={editProductStyles.countryEachView}
                   key={ctr.country}
@@ -874,7 +943,6 @@ class EditProduct extends Component {
             </View>
           </View>
         </Modal>
-
         <Modal
           visible={this.state.showSizeModal}
           onDismiss={this.closeSizesModal}
@@ -973,6 +1041,26 @@ class EditProduct extends Component {
             </View>
           </View>
         </Modal>
+        <Picker
+          screenProps={this.props.screenProps}
+          uniqueKey={"id"}
+          displayKey={"name"}
+          single={false}
+          open={this.state.showCategoryModal}
+          data={[
+            { id: "20", name: "Category 1" },
+            { id: "21", name: "Category 2" },
+            { id: "22", name: "Category 3" },
+            { id: "23", name: "Category 4" },
+          ]}
+          onSelectedItemsChange={this.onSelectedCategoriesItemsChange}
+          onSelectedItemObjectsChange={
+            this.onSelectedItemCategoriesObjectsChange
+          }
+          selectedItems={this.state.categories}
+          showIcon={true}
+          closeCategoryModal={this.closeCategoriesModal}
+        />
       </View>
     );
   }

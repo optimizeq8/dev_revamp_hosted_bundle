@@ -31,6 +31,7 @@ import CameraCircleOutlineIcon from "../../../../assets/SVGs/CameraCircleOutline
 import editProductStyles from "./addProductsStyles";
 
 import Header from "../../../MiniComponents/Header";
+import Picker from "../../../MiniComponents/Picker";
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
@@ -76,10 +77,12 @@ class AddProduct extends Component {
       loaded: 0,
       isVisible: false,
       showPriceModal: false,
+      showCategoryModal: false,
       product: {
         prices: [],
         media: [],
         sizes: [],
+        categories: [],
         is_featured: 0,
       },
       sizes: [],
@@ -211,7 +214,29 @@ class AddProduct extends Component {
       showSizeModal: true,
     });
   };
+  closeCategoriesModal = () => {
+    analytics.track(`open_categories_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_categories_modal",
+      product_id: this.state.product.id,
+      open: false,
+    });
 
+    this.setState({
+      showCategoryModal: false,
+    });
+  };
+  openCategoriesModal = () => {
+    analytics.track(`open_categories_modal`, {
+      source: "open_edit_product",
+      source_action: "a_toggle_categories_modal",
+      product_id: this.state.product.id,
+      open: true,
+    });
+    this.setState({
+      showCategoryModal: true,
+    });
+  };
   savePrice = () => {
     analytics.track(`a_toggle_price_modal`, {
       source: "open_add_product",
@@ -250,30 +275,29 @@ class AddProduct extends Component {
         type: "warning",
         message: "Please add atleast 1 product image",
       });
-    }
-    if (this.state.product.name && this.state.product.name.length === 0) {
+    } else if (
+      this.state.product.name &&
+      this.state.product.name.length === 0
+    ) {
       showMessage({
         type: "warning",
         message: "Please add name for your product",
       });
+    } else {
+      let info = {
+        name: this.state.product.name,
+        prices: this.state.product.prices,
+        business_id: this.props.mainBusiness.businessid,
+        description_en: this.state.product.description_en,
+        description_ar: this.state.product.description_ar,
+        instagram_pid: 0,
+        media:
+          this.state.product.media &&
+          this.state.product.media.map((md) => md.media_path),
+        is_featured: this.state.product.is_featured,
+      };
+      this.props.addNewProduct(info);
     }
-    let info = {
-      name: this.state.product.name,
-      prices: this.state.product.prices,
-      business_id: this.state.product.business_id,
-      description_en: this.state.product.description_en,
-      description_ar: this.state.product.description_ar,
-      // instagram_pid: this.state.product.instagram_pid,
-      media:
-        this.state.product.media &&
-        this.state.product.media.map((md) => md.media_path),
-      is_featured: this.state.product.is_featured,
-    };
-
-    console.log("info", JSON.stringify(info, null, 2));
-    // Check atleast 1 media is uploaded
-
-    // this.props.addNewProduct(info);
   };
 
   componentDidUpdate(prevProps) {
@@ -306,6 +330,19 @@ class AddProduct extends Component {
       product: {
         ...this.state.product,
         media,
+      },
+    });
+  };
+  onSelectedCategoriesItemsChange = (item) => {
+    this.setState({
+      categories: [...item],
+    });
+  };
+  onSelectedItemCategoriesObjectsChange = (itemObj) => {
+    this.setState({
+      product: {
+        ...this.state.product,
+        categories: [...itemObj],
       },
     });
   };
@@ -587,6 +624,29 @@ class AddProduct extends Component {
                   this.state.product.sizes.length > 0
                     ? this.state.product.sizes.join(", ")
                     : "Add Sizes"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={this.props.saving}
+              onPress={this.openCategoriesModal}
+              style={editProductStyles.feildView}
+            >
+              <View style={editProductStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <View style={editProductStyles.fieldTextView}>
+                <Text style={editProductStyles.subHeading}>{"Categories"}</Text>
+
+                <Text style={[editProductStyles.subText]}>
+                  {this.state.product &&
+                  this.state.product.categories &&
+                  this.state.product.categories.length > 0
+                    ? this.state.product.categories
+                        .map((cat) => cat.name)
+                        .join(", ")
+                    : "Add Categories"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -948,6 +1008,26 @@ class AddProduct extends Component {
             </View>
           </View>
         </Modal>
+        <Picker
+          screenProps={this.props.screenProps}
+          uniqueKey={"id"}
+          displayKey={"name"}
+          single={false}
+          open={this.state.showCategoryModal}
+          data={[
+            { id: "20", name: "Category 1" },
+            { id: "21", name: "Category 2" },
+            { id: "22", name: "Category 3" },
+            { id: "23", name: "Category 4" },
+          ]}
+          onSelectedItemsChange={this.onSelectedCategoriesItemsChange}
+          onSelectedItemObjectsChange={
+            this.onSelectedItemCategoriesObjectsChange
+          }
+          selectedItems={this.state.categories}
+          showIcon={true}
+          closeCategoryModal={this.closeCategoriesModal}
+        />
       </View>
     );
   }
