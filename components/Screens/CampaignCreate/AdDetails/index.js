@@ -358,20 +358,20 @@ class AdDetails extends Component {
               null,
               this.props.mainBusiness.country
             );
-          }
-          if (this.props.data && this.props.data.appChoice) {
-            let navAppChoice =
-              this.props.data.attachment.ios_app_id &&
-              this.props.data.attachment.ios_app_id !== "" &&
-              this.props.data.attachment.android_app_url &&
-              this.props.data.attachment.android_app_url !== ""
-                ? ""
-                : this.props.data.appChoice;
-            let rep = cloneDeep(this.state.campaignInfo);
-            rep.targeting.devices[0].os_type = navAppChoice;
-            this.setState({
-              campaignInfo: rep,
-            });
+            if (this.props.data && this.props.data.appChoice) {
+              let navAppChoice =
+                this.props.data.attachment.ios_app_id &&
+                this.props.data.attachment.ios_app_id !== "" &&
+                this.props.data.attachment.android_app_url &&
+                this.props.data.attachment.android_app_url !== ""
+                  ? ""
+                  : this.props.data.appChoice;
+              let rep = cloneDeep(this.state.campaignInfo);
+              rep.targeting.devices[0].os_type = navAppChoice;
+              this.setState({
+                campaignInfo: rep,
+              });
+            }
           }
           this.props.save_campaign_info({
             budgetOption: this.state.budgetOption,
