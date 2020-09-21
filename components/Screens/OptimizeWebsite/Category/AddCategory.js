@@ -48,7 +48,9 @@ class AddCategory extends Component {
     category: {
       name: "",
       media: [],
+      products: [],
     },
+    products: [],
     activeUploadMediaPos: 0,
   };
 
