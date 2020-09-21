@@ -337,10 +337,10 @@ class AdDetails extends Component {
               () => {
                 if (this.props.data.appChoice) {
                   let navAppChoice =
-                    this.props.data.iosApp_name &&
-                    this.props.data.iosApp_name !== "" &&
-                    this.props.data.androidApp_name &&
-                    this.props.data.androidApp_name !== ""
+                    this.props.data.attachment.ios_app_id &&
+                    this.props.data.attachment.ios_app_id !== "" &&
+                    this.props.data.attachment.android_app_url &&
+                    this.props.data.attachment.android_app_url !== ""
                       ? ""
                       : this.props.data.appChoice;
                   let rep = cloneDeep(this.state.campaignInfo);
@@ -358,6 +358,20 @@ class AdDetails extends Component {
               null,
               this.props.mainBusiness.country
             );
+          }
+          if (this.props.data && this.props.data.appChoice) {
+            let navAppChoice =
+              this.props.data.attachment.ios_app_id &&
+              this.props.data.attachment.ios_app_id !== "" &&
+              this.props.data.attachment.android_app_url &&
+              this.props.data.attachment.android_app_url !== ""
+                ? ""
+                : this.props.data.appChoice;
+            let rep = cloneDeep(this.state.campaignInfo);
+            rep.targeting.devices[0].os_type = navAppChoice;
+            this.setState({
+              campaignInfo: rep,
+            });
           }
           this.props.save_campaign_info({
             budgetOption: this.state.budgetOption,
@@ -1424,14 +1438,20 @@ class AdDetails extends Component {
             onSelectedOSChange={this.onSelectedOSChange}
             data={
               this.props.data.appChoice &&
-              this.props.data.iosApp_name &&
-              this.props.data.iosApp_name !== "" &&
-              this.props.data.androidApp_name &&
-              this.props.data.androidApp_name !== ""
+              ((this.props.data.attachment.ios_app_id &&
+                this.props.data.attachment.ios_app_id !== "") ||
+                (this.props.data.attachment.android_app_url &&
+                  this.props.data.attachment.android_app_url !== ""))
                 ? [
                     {
-                      value: this.props.data.appChoice,
-                      label: this.props.data.appChoice,
+                      value: this.state.campaignInfo.targeting.devices[0]
+                        .os_type,
+                      label:
+                        this.state.campaignInfo.targeting.devices[0].os_type ===
+                        ""
+                          ? "All"
+                          : this.state.campaignInfo.targeting.devices[0]
+                              .os_type,
                     },
                   ]
                 : OSType

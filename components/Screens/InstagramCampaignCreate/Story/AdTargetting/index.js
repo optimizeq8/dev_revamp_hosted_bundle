@@ -221,7 +221,7 @@ class InstagramStoryAdTargetting extends Component {
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
-            rep = {
+            let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
@@ -273,6 +273,14 @@ class InstagramStoryAdTargetting extends Component {
               }
             );
           } else {
+            if (this.props.data && this.props.data.appChoice) {
+              let navAppChoice = this.props.data.appChoice;
+              let rep = this.state.campaignInfo;
+              rep.targeting.user_os = [navAppChoice];
+              this.setState({
+                campaignInfo: rep,
+              });
+            }
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
