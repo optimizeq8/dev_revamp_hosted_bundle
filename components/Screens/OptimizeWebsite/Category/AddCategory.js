@@ -146,7 +146,7 @@ class AddCategory extends Component {
       body.append("name", this.state.category.name);
 
       console.log("body", JSON.stringify(body, null, 2));
-
+      // This is to add a new category
       this.props.addCategory(body, this._getUploadState, this.cancelUpload);
     }
   };

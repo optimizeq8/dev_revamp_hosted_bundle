@@ -92,17 +92,22 @@ class EditCategory extends Component {
     this.props.navigation.goBack();
   };
   startUpload = (media) => {
-    var body = new FormData();
-    // body.append("businessid", this.props.mainBusiness.businessid);
-    body.append("media", media, media.name);
-
+    // var body = new FormData();
+    // // body.append("businessid", this.props.mainBusiness.businessid);
+    // body.append("media", media, media.name);
+    this.setState({
+      category: {
+        ...this.state.category,
+        media,
+      },
+    });
     // console.log("media", media);
-    this.props.saveSingleMedia(
-      body,
-      this._getUploadState,
-      this.cancelUpload,
-      this.onToggleModal
-    );
+    // this.props.saveSingleMedia(
+    //   body,
+    //   this._getUploadState,
+    //   this.cancelUpload,
+    //   this.onToggleModal
+    // );
   };
   handleUpload = () => {
     this.setState({ signal: Axios.CancelToken.source() });
@@ -137,36 +142,40 @@ class EditCategory extends Component {
     });
   };
 
-  saveProduct = () => {
-    if (this.state.category.media && this.state.category.media.length === 0) {
+  /**
+   * Before submiting from editing category check
+   * if the media for the category should not be empty
+   * if the name for the category feild should not be empty
+   */
+  saveCategory = () => {
+    if (this.state.category.media && this.state.category.media.uri === "") {
       showMessage({
         type: "warning",
         message: "Please add atleast 1 category image",
       });
-    }
-    if (this.state.category.name && this.state.category.name.length === 0) {
+    } else if (
+      this.state.category.name &&
+      this.state.category.name.length === 0
+    ) {
       showMessage({
         type: "warning",
         message: "Please add name for your category",
       });
+    } else {
+      var body = new FormData();
+      body.append("businessid", this.props.mainBusiness.businessid);
+      body.append(
+        "media",
+        this.state.category.media,
+        this.state.category.media.name
+      );
+      body.append("name", this.state.category.name);
+      body.append("products", this.state.category.products);
+
+      console.log("body", JSON.stringify(body, null, 2));
+      // This is to edit an existing category
+      this.props.editCategory(body, this._getUploadState, this.cancelUpload);
     }
-    let info = {
-      name: this.state.category.name,
-      prices: this.state.category.prices,
-      business_id: this.state.category.business_id,
-      description_en: this.state.category.description_en,
-      description_ar: this.state.category.description_ar,
-      // instagram_pid: this.state.category.instagram_pid,
-      media:
-        this.state.category.media &&
-        this.state.category.media.map((md) => md.media_path),
-      is_featured: this.state.category.is_featured,
-    };
-
-    console.log("info", JSON.stringify(info, null, 2));
-    // Check atleast 1 media is uploaded
-
-    // this.props.addNewProduct(info);
   };
 
   componentDidUpdate(prevProps) {
@@ -428,7 +437,7 @@ class EditCategory extends Component {
               purpleViolet
               style={editProductStyles.saveBtn}
               uppercase
-              onPressAction={this.saveProduct}
+              onPressAction={this.saveCategory}
               disabled={this.props.saving}
               disabledGradientBegin={"#9300FF"}
               disabledGradientEnd={"#9300FF"}
@@ -475,7 +484,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addNewProduct: (info) => dispatch(actionCreators.addNewProduct(info)),
+  editCategory: (info, loading, cancelUpload) =>
+    dispatch(actionCreators.editCategory(info, loading, cancelUpload)),
   saveSingleMedia: (media, _getUploadState, cancelUpload, onToggleModal) =>
     dispatch(
       actionCreators.saveSingleMedia(
