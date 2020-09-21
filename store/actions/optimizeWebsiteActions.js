@@ -538,7 +538,7 @@ export const saveSingleWebProduct = (product_id, info) => {
           product: info,
           action_status: data.data ? "success" : "failure",
         });
-        console.log("data save product", JSON.stringify(data, null, 2));
+        // console.log("data save product", JSON.stringify(data, null, 2));
         NavigationService.navigate("MyWebsiteECommerce", {
           source: "open_edit_product",
           source_action: "a_save_product_detail",
@@ -631,7 +631,7 @@ export const setSavingToInitial = () => {
 
 export const addNewProduct = (info) => {
   // console.log("product_id", product_id);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
       payload: true,
@@ -648,18 +648,21 @@ export const addNewProduct = (info) => {
           product: info,
           action_status: data.data ? "success" : "failure",
         });
-        console.log("data save product", data);
-        NavigationService.navigate("MyWebsiteECommerce", {
-          source: "open_add_product",
-          source_action: "a_save_product_detail",
-        });
+        // console.log("data save product", data);
         dispatch({
           type: actionTypes.SAVE_WEB_PRODUCT_LOADER,
           payload: false,
         });
-        return dispatch({
-          type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
-          payload: data.data,
+        // return dispatch({
+        //   type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
+        //   payload: data.data,
+        // });
+        dispatch(
+          getWebProductsList(getState().account.mainBusiness.businessid)
+        );
+        NavigationService.navigate("MyWebsiteECommerce", {
+          source: "open_add_product",
+          source_action: "a_save_product_detail",
         });
       })
       .catch((err) => {
@@ -674,7 +677,30 @@ export const addNewProduct = (info) => {
 };
 
 export const getAllCategories = () => {
-  return (dispatch, getState) => {};
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+      payload: true,
+    });
+
+    OptimizeWebsiteBackendURL()
+      .get(`business/${getState().account.mainBusiness.businessid}/categories`)
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        return dispatch({
+          type: actionTypes.GET_WEB_CATEGORIES_LIST,
+          payload: data.data,
+        });
+      })
+      .catch((err) => {
+        return dispatch({
+          type: actionTypes.GET_WEB_CATEGORIES_LIST,
+          payload: [],
+        });
+      });
+  };
 };
 
 export const addCategory = (info) => {};

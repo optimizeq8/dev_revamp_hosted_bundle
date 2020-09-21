@@ -150,13 +150,11 @@ class MyWebsite extends Component {
         />
         <View style={myWebsiteStyles.productDetailView}>
           <Text style={myWebsiteStyles.productNamesubhead}>
-            {translate("Product Name")}
+            {translate("Category Name")}
           </Text>
           <Text style={myWebsiteStyles.productNameText}>
             {item.name ? item.name : translate("Untitled")}
           </Text>
-          <Text style={myWebsiteStyles.pricesubhead}>{translate("price")}</Text>
-          <Text style={myWebsiteStyles.priceText}>{prices}</Text>
         </View>
         <Pen
           style={myWebsiteStyles.penIcon}
@@ -202,7 +200,7 @@ class MyWebsite extends Component {
           contentContainerStyle={styles.list}
           initialNumToRender={12}
           horizontal={false}
-          data={this.props.webproducts}
+          data={this.props.webcategories}
           keyExtractor={(item, index) => {
             if (item && item.id) {
               return item.id.toString();
@@ -230,6 +228,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
   webproducts: state.website.webproducts,
+  webcategories: state.website.webcategories,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -178,7 +178,17 @@ class MyWebsite extends Component {
     );
   };
   goToCategory = () => {
-    this.props.navigation.navigate("CategoryList");
+    if (this.props.webcategories && this.props.webcategories.length > 0) {
+      this.props.navigation.navigate("CategoryList", {
+        source: "open_my_website",
+        source_action: "a_go_to_category_list",
+      });
+    } else {
+      this.props.navigation.navigate("AddCategory", {
+        source: "open_my_website",
+        source_action: "a_go_to_category_list",
+      });
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -328,6 +338,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
   webproducts: state.website.webproducts,
+  webcategories: state.website.webcategories,
 });
 
 const mapDispatchToProps = (dispatch) => ({
