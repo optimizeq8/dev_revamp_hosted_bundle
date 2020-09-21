@@ -46,7 +46,7 @@ class AddCategory extends Component {
     showProductModal: false,
     category: {
       name: "",
-      media: [],
+      media: { uri: "" },
       products: [],
     },
     products: [],
@@ -122,18 +122,18 @@ class AddCategory extends Component {
   };
 
   saveCategory = () => {
-    if (this.state.category.media && this.state.category.media.length === 0) {
-      showMessage({
-        type: "warning",
-        message: "Please add category image",
-      });
-    } else if (
-      this.state.category.name &&
-      this.state.category.name.length === 0
-    ) {
+    if (this.state.category.name && this.state.category.name.length === 0) {
       showMessage({
         type: "warning",
         message: "Please add name for your category",
+      });
+    } else if (
+      this.state.category.media &&
+      this.state.category.media.uri === ""
+    ) {
+      showMessage({
+        type: "warning",
+        message: "Please add category image",
       });
     } else {
       var body = new FormData();
@@ -144,17 +144,10 @@ class AddCategory extends Component {
         this.state.category.media.name
       );
       body.append("name", this.state.category.name);
-      // let info = {
-      //   name: this.state.category.name,
-      //   business_id: this.props.mainBusiness.businessid,
-      //   // instagram_pid: this.state.category.instagram_pid,
-      //   media: this.state.category.media,
-      // };
 
       console.log("body", JSON.stringify(body, null, 2));
-      // Check atleast 1 media is uploaded
 
-      // this.props.addCategory(body);
+      this.props.addCategory(body, this._getUploadState, this.cancelUpload);
     }
   };
 
@@ -362,7 +355,9 @@ class AddCategory extends Component {
         <View style={editProductStyles.bottomBtns}>
           {this.props.saving && (
             <View style={editProductStyles.uploadingView}>
-              <Text style={styles.uploadText}>{translate("Uploading")}</Text>
+              <Text style={styles.uploadText}>
+                {translate("Uploading") + "\n" + this.state.loaded + "%"}
+              </Text>
               <AnimatedCircularProgress
                 size={50}
                 width={5}
@@ -427,7 +422,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addCategory: (info) => dispatch(actionCreators.addCategory(info)),
+  addCategory: (info, loading, cancelToken) =>
+    dispatch(actionCreators.addCategory(info, loading, cancelToken)),
   setSavingToInitial: () => dispatch(actionCreators.setSavingToInitial()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddCategory);

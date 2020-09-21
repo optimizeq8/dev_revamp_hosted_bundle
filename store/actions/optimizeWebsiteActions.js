@@ -703,7 +703,68 @@ export const getAllCategories = () => {
   };
 };
 
-export const addCategory = (info) => {};
+/**
+ *
+ * @param {*} info
+ *  Object of
+ *  {
+ *    name: category name,
+ *    media: Object of media file,
+ *    products: [Array of product ids]
+ *  }
+ */
+export const addCategory = (info, loading, cancelUplaod) => {
+  // console.log("product_id", product_id);
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SAVE_WEB_CATEGORY_LOADER,
+      payload: true,
+    });
+    delete axios.defaults.headers.common["Authorization"];
+    OptimizeWebsiteBackendURL()
+      .post(`addsingleproduct`, info, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+
+        onUploadProgress: (ProgressEvent) =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_save_category_detail`, {
+          source: "open_add_category",
+          source_action: "a_save_category_detail",
+          category: info,
+          action_status: data.data ? "success" : "failure",
+        });
+        // console.log("data save category", data);
+        dispatch({
+          type: actionTypes.SAVE_WEB_CATEGORY_LOADER,
+          payload: false,
+        });
+        // return dispatch({
+        //   type: actionTypes.SAVE_SINGLE_WEB_PRODUCT,
+        //   payload: data.data,
+        // });
+        dispatch(getAllCategories());
+        NavigationService.navigate("CategoryList", {
+          source: "open_add_category",
+          source_action: "a_save_category_detail",
+        });
+      })
+      .catch((err) => {
+        // console.log("addCategory", err.response || err.message);
+        loading(0);
+        return dispatch({
+          type: actionTypes.SAVE_WEB_CATEGORY_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
 
 export const editCategory = (info) => {};
 
