@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.22.1):
-    - Adjust/Core (= 4.22.1)
-  - Adjust/Core (4.22.1)
+  - Adjust (4.23.0):
+    - Adjust/Core (= 4.23.0)
+  - Adjust/Core (4.23.0)
   - Analytics (3.9.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -288,8 +288,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
-  - react-native-adjust (4.22.0):
-    - Adjust (= 4.22.1)
+  - react-native-adjust (4.23.0):
+    - Adjust (= 4.23.0)
     - React
   - react-native-blur (0.8.0):
     - React
@@ -713,7 +713,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 7cd2d1cf61dff44d2d15541d83ffde87abbcd193
+  Adjust: 552e4f9bbc77501b2000f483491b20642081749a
   Analytics: 67cce2129e4b0df5b532bf0c043043f292b32f5f
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-adjust: 2b4ee6c45a4a74602174f209ff19d0ef7f20b188
+  react-native-adjust: 2a86dea62f6ce09463f36ac3ee60f615e790ee8c
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
