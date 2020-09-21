@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     color: "#75647C",
     textTransform: "capitalize",
     marginBottom: 5,
+    marginTop: 25,
   },
   priceAmountBigText: {
     fontSize: 23,
@@ -149,6 +150,34 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     color: globalColors.purple,
+  },
+  availSizeText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    lineHeight: 29,
+    color: globalColors.rum,
+    textTransform: "uppercase",
+    paddingLeft: 10,
+  },
+  sizeView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+  },
+  eachSizeView: {
+    borderColor: globalColors.purple3,
+    borderWidth: 1,
+    width: 26,
+    height: 26,
+    borderRadius: 26,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 4,
+  },
+  eachSizeText: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.purple3,
+    fontSize: 10,
   },
 });
 export default styles;

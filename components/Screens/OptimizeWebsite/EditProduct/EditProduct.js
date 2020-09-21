@@ -72,7 +72,7 @@ class EditProduct extends Component {
     loaded: 0,
     isVisible: false,
     showPriceModal: false,
-    showSizeModal: true,
+    showSizeModal: false,
     product: {
       prices: [],
       media: [],
@@ -297,6 +297,25 @@ class EditProduct extends Component {
       },
     });
   };
+
+  deleteMediaWarning = (index) => {
+    const { translate } = this.props.screenProps;
+    return Alert.alert(
+      translate("Delete"),
+      translate("Are you sure you want to delete this image ?"),
+      [
+        {
+          text: translate("YES"),
+          onPress: () => this.deleteMedia(index),
+        },
+        {
+          text: translate("Cancel"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   createButtonAlert = () => {
     const { translate } = this.props.screenProps;
     analytics.track(`open_delete_product_prompt`, {
@@ -356,22 +375,51 @@ class EditProduct extends Component {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={editProductStyles.imageViewContainer}
           >
-            <Image
-              style={editProductStyles.image}
-              source={{
-                uri:
-                  this.state.product.media &&
-                  this.state.product.media[0] &&
-                  this.state.product.media[0].url,
-              }}
-            />
+            <View style={editProductStyles.imageHolderView}>
+              {this.state.product.media &&
+                this.state.product.media[0] &&
+                this.state.product.media[0].url && (
+                  <TouchableOpacity
+                    style={editProductStyles.deleteMediaView}
+                    onPress={() => this.deleteMediaWarning(0)}
+                  >
+                    <Text style={editProductStyles.crossButtonText}>X</Text>
+                  </TouchableOpacity>
+                )}
+              <TouchableOpacity
+                style={editProductStyles.placeholderView}
+                onPress={() => this.uploadPhoto(0)}
+                disabled={this.props.saving}
+              >
+                <Image
+                  style={editProductStyles.imagePlaceholder}
+                  source={{
+                    uri:
+                      this.state.product.media &&
+                      this.state.product.media[0] &&
+                      this.state.product.media[0].url,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => this.uploadPhoto(0)}
+                  disabled={this.props.saving}
+                  disabled={this.props.saving}
+                >
+                  <CameraCircleOutlineIcon width={70} height={70} />
+                  <Text style={editProductStyles.addMediaText}>
+                    {translate("Add Media")}
+                  </Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+
             <View style={editProductStyles.imageHolderView}>
               {this.state.product.media &&
                 this.state.product.media[1] &&
                 this.state.product.media[1].url && (
                   <TouchableOpacity
                     style={editProductStyles.deleteMediaView}
-                    onPress={() => this.deleteMedia(1)}
+                    onPress={() => this.deleteMediaWarning(1)}
                   >
                     <Text style={editProductStyles.crossButtonText}>X</Text>
                   </TouchableOpacity>
@@ -408,7 +456,7 @@ class EditProduct extends Component {
                 this.state.product.media[2].url && (
                   <TouchableOpacity
                     style={editProductStyles.deleteMediaView}
-                    onPress={() => this.deleteMedia(2)}
+                    onPress={() => this.deleteMediaWarning(2)}
                   >
                     <Text style={editProductStyles.crossButtonText}>X</Text>
                   </TouchableOpacity>
