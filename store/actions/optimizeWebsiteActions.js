@@ -679,7 +679,7 @@ export const addNewProduct = (info) => {
 export const getAllCategories = () => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+      type: actionTypes.GET_WEB_CATEGORIES_LOADING,
       payload: true,
     });
 

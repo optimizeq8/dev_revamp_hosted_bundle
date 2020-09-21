@@ -14,7 +14,6 @@ import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
 import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
-import isEmpty from "lodash/isEmpty";
 
 //Redux
 import { connect } from "react-redux";
@@ -51,7 +50,6 @@ class AddCategory extends Component {
       products: [],
     },
     products: [],
-    activeUploadMediaPos: 0,
   };
 
   componentWillUnmount() {
@@ -89,17 +87,22 @@ class AddCategory extends Component {
     this.props.navigation.goBack();
   };
   startUpload = (media) => {
-    var body = new FormData();
-    // body.append("businessid", this.props.mainBusiness.businessid);
-    body.append("media", media, media.name);
+    // var body = new FormData();
+    // // body.append("businessid", this.props.mainBusiness.businessid);
+    // body.append("media", media, media.name);
+    this.setState({
+      category: {
+        ...this.state.category,
+        media,
+      },
+    });
 
-    // console.log("media", media);
-    this.props.saveSingleMedia(
-      body,
-      this._getUploadState,
-      this.cancelUpload,
-      this.onToggleModal
-    );
+    // this.props.saveSingleMedia(
+    //   body,
+    //   this._getUploadState,
+    //   this.cancelUpload,
+    //   this.onToggleModal
+    // );
   };
   handleUpload = () => {
     this.setState({ signal: Axios.CancelToken.source() });
@@ -124,45 +127,37 @@ class AddCategory extends Component {
         type: "warning",
         message: "Please add category image",
       });
-    }
-    if (this.state.category.name && this.state.category.name.length === 0) {
+    } else if (
+      this.state.category.name &&
+      this.state.category.name.length === 0
+    ) {
       showMessage({
         type: "warning",
         message: "Please add name for your category",
       });
+    } else {
+      var body = new FormData();
+      body.append("businessid", this.props.mainBusiness.businessid);
+      body.append(
+        "media",
+        this.state.category.media,
+        this.state.category.media.name
+      );
+      body.append("name", this.state.category.name);
+      // let info = {
+      //   name: this.state.category.name,
+      //   business_id: this.props.mainBusiness.businessid,
+      //   // instagram_pid: this.state.category.instagram_pid,
+      //   media: this.state.category.media,
+      // };
+
+      console.log("body", JSON.stringify(body, null, 2));
+      // Check atleast 1 media is uploaded
+
+      // this.props.addCategory(body);
     }
-    let info = {
-      name: this.state.category.name,
-      business_id: this.props.mainBusiness.businessid,
-      // instagram_pid: this.state.category.instagram_pid,
-      media:
-        this.state.category.media &&
-        this.state.category.media.map((md) => md.media_path),
-    };
-
-    console.log("info", JSON.stringify(info, null, 2));
-    // Check atleast 1 media is uploaded
-
-    // this.props.addNewProduct(info);
   };
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.media !== this.props.media &&
-      this.props.media &&
-      !isEmpty(this.props.media)
-    ) {
-      let media = this.state.category.media;
-      media[this.state.activeUploadMediaPos] = this.props.media;
-      // console.log("did update media", media);
-      this.setState({
-        category: {
-          ...this.state.category,
-          media,
-        },
-      });
-    }
-  }
   deleteMedia = (index) => {
     const media = [...this.state.category.media];
     analytics.track(`a_delete_single_media`, {
@@ -205,15 +200,18 @@ class AddCategory extends Component {
   };
 
   onSelectedCategoriesItemsChange = (item) => {
+    console.log("item", item);
+
     this.setState({
       products: [...item],
     });
   };
   onSelectedItemCategoriesObjectsChange = (itemObj) => {
+    console.log("itemObj", itemObj);
     this.setState({
       category: {
         ...this.state.category,
-        product: [...itemObj],
+        products: [...itemObj],
       },
     });
   };
@@ -275,7 +273,13 @@ class AddCategory extends Component {
                     uri:
                       this.state.category.media &&
                       this.state.category.media[0] &&
-                      this.state.category.media[0].url,
+                      this.state.category.media[0].url
+                        ? this.state.category.media[0].url
+                        : this.state.category.media &&
+                          this.state.category.media &&
+                          this.state.category.media.uri
+                        ? this.state.category.media.uri
+                        : "",
                   }}
                 />
                 <TouchableOpacity
@@ -343,7 +347,12 @@ class AddCategory extends Component {
               <View style={editProductStyles.fieldTextView}>
                 <Text style={editProductStyles.subHeading}>{"Products"}</Text>
                 <Text style={editProductStyles.subText}>
-                  {this.state.category.products}
+                  {this.state.category.products &&
+                  this.state.category.products.length > 0
+                    ? this.state.category.products
+                        .map((pr) => pr.name)
+                        .join(", ")
+                    : "Add Products"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -400,7 +409,7 @@ class AddCategory extends Component {
           onSelectedItemObjectsChange={
             this.onSelectedItemCategoriesObjectsChange
           }
-          selectedItems={this.state.categories}
+          selectedItems={this.state.products}
           showIcon={true}
           closeCategoryModal={this.closeProductsModal}
         />
@@ -418,16 +427,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addNewProduct: (info) => dispatch(actionCreators.addNewProduct(info)),
-  saveSingleMedia: (media, _getUploadState, cancelUpload, onToggleModal) =>
-    dispatch(
-      actionCreators.saveSingleMedia(
-        media,
-        _getUploadState,
-        cancelUpload,
-        onToggleModal
-      )
-    ),
+  addCategory: (info) => dispatch(actionCreators.addCategory(info)),
   setSavingToInitial: () => dispatch(actionCreators.setSavingToInitial()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddCategory);

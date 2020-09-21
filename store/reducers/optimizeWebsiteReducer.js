@@ -182,6 +182,11 @@ const optimizeWebsiteReducer = (state = defaultState, action) => {
       };
       return { ...state, webproducts: webProd };
     }
+    case actionTypes.GET_WEB_CATEGORIES_LOADING: {
+      return {
+        getWebCategoriesLoading: action.payload,
+      };
+    }
     case actionTypes.GET_WEB_CATEGORIES_LIST: {
       return {
         webcategories: action.payload,

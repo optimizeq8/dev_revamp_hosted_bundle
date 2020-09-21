@@ -228,6 +228,7 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
   webproducts: state.website.webproducts,
+  getWebCategoriesLoading: state.website.getWebCategoriesLoading,
   webcategories: state.website.webcategories,
 });
 
