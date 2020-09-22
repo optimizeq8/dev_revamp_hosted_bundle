@@ -444,6 +444,11 @@ class InstagramAdDesignExistingPost extends Component {
               message: product.message,
               instagram_post_id: product.promotable_id,
             },
+            media_type:
+              product.attachments.data[0].type === "photo" ||
+              product.attachments.data[0].type === "album"
+                ? "IMAGE"
+                : "VIDEO",
             showPreview: true,
           });
           this.props.save_campaign_info_instagram({
