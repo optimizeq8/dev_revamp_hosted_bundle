@@ -117,7 +117,7 @@ class InstagramAdDesignExistingPost extends Component {
         media_option = "single",
         link,
         call_to_action,
-        attachment,
+        attachment = "BLANK",
         message = "",
         media_type,
         media = "//",
@@ -150,6 +150,7 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
         }
       }
+      console.log("attachment", attachment);
       this.setState({
         campaignInfo: {
           ...this.props.data,
@@ -304,6 +305,10 @@ class InstagramAdDesignExistingPost extends Component {
         campaign_media_type: this.state.campaignInfo.media_type,
         // campaign_appChoice: this.state.appChoice,
       };
+      console.log(
+        "this.state.campaignInfo.media_type",
+        this.state.campaignInfo.media_type
+      );
       if (!this.props.loading) {
         await this.props.saveInstgramExistpost(
           "InstagramFeedAdTargetting",
@@ -569,7 +574,11 @@ class InstagramAdDesignExistingPost extends Component {
                     }}
                   />
                 ) : (
-                  <VideoPlayer shouldPlay={true} media={media} />
+                  <VideoPlayer
+                    shouldPlay={true}
+                    media={media}
+                    isMuted={false}
+                  />
                 )}
               </View>
               {this.props.data &&
