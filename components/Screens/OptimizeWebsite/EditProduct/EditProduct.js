@@ -413,384 +413,390 @@ class EditProduct extends Component {
           iconColor={"#75647C"}
           showTopRightButtonIcon={"delete"}
         />
-        <InputScrollView
-          showsVerticalScrollIndicator={false}
-          {...ScrollView.props}
-          contentContainerStyle={styles.inputScrollViewStyle}
-        >
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={editProductStyles.imageViewContainer}
+        <ScrollView contentContainerStyle={[styles.inputScrollViewStyle]}>
+          <InputScrollView
+            showsVerticalScrollIndicator={false}
+            {...ScrollView.props}
+            contentContainerStyle={[styles.inputScrollViewStyle]}
           >
-            <View style={editProductStyles.imageHolderView}>
-              {this.state.product.media &&
-                this.state.product.media[0] &&
-                this.state.product.media[0].url && (
-                  <TouchableOpacity
-                    style={editProductStyles.deleteMediaView}
-                    onPress={() => this.deleteMediaWarning(0)}
-                  >
-                    <Text style={editProductStyles.crossButtonText}>X</Text>
-                  </TouchableOpacity>
-                )}
-              <TouchableOpacity
-                style={editProductStyles.placeholderView}
-                onPress={() => this.uploadPhoto(0)}
-                disabled={this.props.saving}
-              >
-                <Image
-                  style={editProductStyles.imagePlaceholder}
-                  source={{
-                    uri:
-                      this.state.product.media &&
-                      this.state.product.media[0] &&
-                      this.state.product.media[0].url,
-                  }}
-                />
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={editProductStyles.imageViewContainer}
+            >
+              <View style={editProductStyles.imageHolderView}>
+                {this.state.product.media &&
+                  this.state.product.media[0] &&
+                  this.state.product.media[0].url && (
+                    <TouchableOpacity
+                      style={editProductStyles.deleteMediaView}
+                      onPress={() => this.deleteMediaWarning(0)}
+                    >
+                      <Text style={editProductStyles.crossButtonText}>X</Text>
+                    </TouchableOpacity>
+                  )}
                 <TouchableOpacity
+                  style={editProductStyles.placeholderView}
                   onPress={() => this.uploadPhoto(0)}
                   disabled={this.props.saving}
-                  disabled={this.props.saving}
                 >
-                  <CameraCircleOutlineIcon width={70} height={70} />
-                  <Text style={editProductStyles.addMediaText}>
-                    {translate("Add Media")}
-                  </Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-
-            <View style={editProductStyles.imageHolderView}>
-              {this.state.product.media &&
-                this.state.product.media[1] &&
-                this.state.product.media[1].url && (
+                  <Image
+                    style={editProductStyles.imagePlaceholder}
+                    source={{
+                      uri:
+                        this.state.product.media &&
+                        this.state.product.media[0] &&
+                        this.state.product.media[0].url,
+                    }}
+                  />
                   <TouchableOpacity
-                    style={editProductStyles.deleteMediaView}
-                    onPress={() => this.deleteMediaWarning(1)}
+                    onPress={() => this.uploadPhoto(0)}
+                    disabled={this.props.saving}
+                    disabled={this.props.saving}
                   >
-                    <Text style={editProductStyles.crossButtonText}>X</Text>
+                    <CameraCircleOutlineIcon width={70} height={70} />
+                    <Text style={editProductStyles.addMediaText}>
+                      {translate("Add Media")}
+                    </Text>
                   </TouchableOpacity>
-                )}
-              <TouchableOpacity
-                style={editProductStyles.placeholderView}
-                onPress={() => this.uploadPhoto(1)}
-                disabled={this.props.saving}
-              >
-                <Image
-                  style={editProductStyles.imagePlaceholder}
-                  source={{
-                    uri:
-                      this.state.product.media &&
-                      this.state.product.media[1] &&
-                      this.state.product.media[1].url,
-                  }}
-                />
+                </TouchableOpacity>
+              </View>
+
+              <View style={editProductStyles.imageHolderView}>
+                {this.state.product.media &&
+                  this.state.product.media[1] &&
+                  this.state.product.media[1].url && (
+                    <TouchableOpacity
+                      style={editProductStyles.deleteMediaView}
+                      onPress={() => this.deleteMediaWarning(1)}
+                    >
+                      <Text style={editProductStyles.crossButtonText}>X</Text>
+                    </TouchableOpacity>
+                  )}
                 <TouchableOpacity
+                  style={editProductStyles.placeholderView}
                   onPress={() => this.uploadPhoto(1)}
                   disabled={this.props.saving}
+                >
+                  <Image
+                    style={editProductStyles.imagePlaceholder}
+                    source={{
+                      uri:
+                        this.state.product.media &&
+                        this.state.product.media[1] &&
+                        this.state.product.media[1].url,
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => this.uploadPhoto(1)}
+                    disabled={this.props.saving}
+                    disabled={this.props.saving}
+                  >
+                    <CameraCircleOutlineIcon width={70} height={70} />
+                    <Text style={editProductStyles.addMediaText}>
+                      {translate("Add Media")}
+                    </Text>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
+              <View style={editProductStyles.imageHolderView}>
+                {this.state.product.media &&
+                  this.state.product.media[2] &&
+                  this.state.product.media[2].url && (
+                    <TouchableOpacity
+                      style={editProductStyles.deleteMediaView}
+                      onPress={() => this.deleteMediaWarning(2)}
+                    >
+                      <Text style={editProductStyles.crossButtonText}>X</Text>
+                    </TouchableOpacity>
+                  )}
+                <TouchableOpacity
+                  style={editProductStyles.placeholderView}
+                  onPress={() => this.uploadPhoto(2)}
                   disabled={this.props.saving}
                 >
-                  <CameraCircleOutlineIcon width={70} height={70} />
-                  <Text style={editProductStyles.addMediaText}>
-                    {translate("Add Media")}
-                  </Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-            <View style={editProductStyles.imageHolderView}>
-              {this.state.product.media &&
-                this.state.product.media[2] &&
-                this.state.product.media[2].url && (
+                  <Image
+                    style={editProductStyles.imagePlaceholder}
+                    source={{
+                      uri:
+                        this.state.product.media &&
+                        this.state.product.media[2] &&
+                        this.state.product.media[2].url,
+                    }}
+                  />
                   <TouchableOpacity
-                    style={editProductStyles.deleteMediaView}
-                    onPress={() => this.deleteMediaWarning(2)}
+                    disabled={this.props.saving}
+                    onPress={() => this.uploadPhoto(2)}
                   >
-                    <Text style={editProductStyles.crossButtonText}>X</Text>
+                    <CameraCircleOutlineIcon width={70} height={70} />
+                    <Text style={editProductStyles.addMediaText}>
+                      {translate("Add Media")}
+                    </Text>
                   </TouchableOpacity>
-                )}
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+            <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
               <TouchableOpacity
-                style={editProductStyles.placeholderView}
-                onPress={() => this.uploadPhoto(2)}
+                onPress={() => {
+                  this.state.productNameInput.focus();
+                }}
+                style={editProductStyles.feildView}
                 disabled={this.props.saving}
               >
-                <Image
-                  style={editProductStyles.imagePlaceholder}
-                  source={{
-                    uri:
-                      this.state.product.media &&
-                      this.state.product.media[2] &&
-                      this.state.product.media[2].url,
-                  }}
-                />
-                <TouchableOpacity
-                  disabled={this.props.saving}
-                  onPress={() => this.uploadPhoto(2)}
-                >
-                  <CameraCircleOutlineIcon width={70} height={70} />
-                  <Text style={editProductStyles.addMediaText}>
-                    {translate("Add Media")}
+                <View style={editProductStyles.plusIconView}>
+                  <PlusIcon width={7} fill={globalColors.purple} />
+                </View>
+                <View style={editProductStyles.fieldTextView}>
+                  <Text style={editProductStyles.subHeading}>
+                    {translate("Product Name")}
                   </Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-          <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.state.productNameInput.focus();
-              }}
-              style={editProductStyles.feildView}
-              disabled={this.props.saving}
-            >
-              <View style={editProductStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <View style={editProductStyles.fieldTextView}>
-                <Text style={editProductStyles.subHeading}>
-                  {translate("Product Name")}
-                </Text>
-                {/* <Text style={editProductStyles.subText}>
+                  {/* <Text style={editProductStyles.subText}>
                 {translate("Add Name")}
               </Text> */}
-                <TextInput
-                  editable={!this.props.saving}
-                  placeholder={translate("Add Name")}
-                  style={editProductStyles.subText}
-                  value={this.state.product.name}
-                  ref={(input) => {
-                    this.state.productNameInput = input;
-                  }}
-                  onChangeText={(text) => {
-                    analytics.track(`a_product_name`, {
-                      source: "open_edit_product",
-                      source_action: "a_product_name",
-                      product_id: this.state.product.id,
-                      product_name: text,
-                    });
-                    this.setState({
-                      product: {
-                        ...this.state.product,
-                        name: text,
-                      },
-                    });
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={this.props.saving}
-              onPress={this.openPriceModal}
-              style={editProductStyles.feildView}
-            >
-              <View style={editProductStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <View style={editProductStyles.fieldTextView}>
-                <Text style={editProductStyles.subHeading}>
-                  {translate("price")}
-                </Text>
-                <Text
-                  style={[
-                    editProductStyles.subText,
-                    this.state.product &&
-                      this.state.product.prices &&
-                      this.state.product.prices.length > 0 && {
-                        fontFamily: "montserrat-regular-english",
-                      },
-                  ]}
-                >
-                  {this.state.product &&
-                  this.state.product.prices &&
-                  this.state.product.prices.length > 0
-                    ? this.state.product.prices
-                        .map((pr) => pr.currency + " " + pr.price)
-                        .join(", ")
-                    : translate("Add Price")}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={this.props.saving}
-              onPress={() => {
-                this.state.productDescInput.focus();
-              }}
-              style={editProductStyles.feildView}
-            >
-              <View style={editProductStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <View style={editProductStyles.fieldTextView}>
-                <Text style={editProductStyles.subHeading}>
-                  {translate("Description")}
-                </Text>
+                  <TextInput
+                    editable={!this.props.saving}
+                    placeholder={translate("Add Name")}
+                    style={editProductStyles.subText}
+                    value={this.state.product.name}
+                    ref={(input) => {
+                      this.state.productNameInput = input;
+                    }}
+                    onChangeText={(text) => {
+                      analytics.track(`a_product_name`, {
+                        source: "open_edit_product",
+                        source_action: "a_product_name",
+                        product_id: this.state.product.id,
+                        product_name: text,
+                      });
+                      this.setState({
+                        product: {
+                          ...this.state.product,
+                          name: text,
+                        },
+                      });
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={this.props.saving}
+                onPress={this.openPriceModal}
+                style={editProductStyles.feildView}
+              >
+                <View style={editProductStyles.plusIconView}>
+                  <PlusIcon width={7} fill={globalColors.purple} />
+                </View>
+                <View style={editProductStyles.fieldTextView}>
+                  <Text style={editProductStyles.subHeading}>
+                    {translate("price")}
+                  </Text>
+                  <Text
+                    style={[
+                      editProductStyles.subText,
+                      this.state.product &&
+                        this.state.product.prices &&
+                        this.state.product.prices.length > 0 && {
+                          fontFamily: "montserrat-regular-english",
+                        },
+                    ]}
+                  >
+                    {this.state.product &&
+                    this.state.product.prices &&
+                    this.state.product.prices.length > 0
+                      ? this.state.product.prices
+                          .map((pr) => pr.currency + " " + pr.price)
+                          .join(", ")
+                      : translate("Add Price")}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={this.props.saving}
+                onPress={() => {
+                  this.state.productDescInput.focus();
+                }}
+                style={editProductStyles.feildView}
+              >
+                <View style={editProductStyles.plusIconView}>
+                  <PlusIcon width={7} fill={globalColors.purple} />
+                </View>
+                <View style={editProductStyles.fieldTextView}>
+                  <Text style={editProductStyles.subHeading}>
+                    {translate("Description")}
+                  </Text>
 
-                <TextInput
-                  editable={!this.props.saving}
-                  style={[editProductStyles.subText]}
-                  multiline={true}
-                  value={this.state.product.description_en}
-                  ref={(input) => {
-                    this.state.productDescInput = input;
-                  }}
-                  onChangeText={(text) => {
-                    analytics.track(`a_product_description`, {
-                      source: "open_edit_product",
-                      source_action: "a_product_description",
-                      product_id: this.state.product.id,
-                      product_description: text,
-                    });
-                    this.setState({
-                      product: {
-                        ...this.state.product,
-                        description_en: text,
-                      },
-                    });
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
+                  <TextInput
+                    editable={!this.props.saving}
+                    style={[editProductStyles.subText]}
+                    multiline={true}
+                    value={this.state.product.description_en}
+                    ref={(input) => {
+                      this.state.productDescInput = input;
+                    }}
+                    onChangeText={(text) => {
+                      analytics.track(`a_product_description`, {
+                        source: "open_edit_product",
+                        source_action: "a_product_description",
+                        product_id: this.state.product.id,
+                        product_description: text,
+                      });
+                      this.setState({
+                        product: {
+                          ...this.state.product,
+                          description_en: text,
+                        },
+                      });
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              disabled={this.props.saving}
-              onPress={this.openSizeModal}
-              style={editProductStyles.feildView}
-            >
-              <View style={editProductStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <View style={editProductStyles.fieldTextView}>
-                <Text style={editProductStyles.subHeading}>{"Sizes"}</Text>
+              <TouchableOpacity
+                disabled={this.props.saving}
+                onPress={this.openSizeModal}
+                style={editProductStyles.feildView}
+              >
+                <View style={editProductStyles.plusIconView}>
+                  <PlusIcon width={7} fill={globalColors.purple} />
+                </View>
+                <View style={editProductStyles.fieldTextView}>
+                  <Text style={editProductStyles.subHeading}>{"Sizes"}</Text>
 
-                <Text style={[editProductStyles.subText]}>
-                  {this.state.product &&
-                  this.state.product.sizes &&
-                  this.state.product.sizes.length > 0
-                    ? this.state.product.sizes.join(", ")
-                    : "Add Sizes"}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={this.props.saving}
-              onPress={this.openCategoriesModal}
-              style={editProductStyles.feildView}
-            >
-              <View style={editProductStyles.plusIconView}>
-                <PlusIcon width={7} fill={globalColors.purple} />
-              </View>
-              <View style={editProductStyles.fieldTextView}>
-                <Text style={editProductStyles.subHeading}>{"Categories"}</Text>
+                  <Text style={[editProductStyles.subText]}>
+                    {this.state.product &&
+                    this.state.product.sizes &&
+                    this.state.product.sizes.length > 0
+                      ? this.state.product.sizes.join(", ")
+                      : "Add Sizes"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                disabled={this.props.saving}
+                onPress={this.openCategoriesModal}
+                style={editProductStyles.feildView}
+              >
+                <View style={editProductStyles.plusIconView}>
+                  <PlusIcon width={7} fill={globalColors.purple} />
+                </View>
+                <View style={editProductStyles.fieldTextView}>
+                  <Text style={editProductStyles.subHeading}>
+                    {"Categories"}
+                  </Text>
 
-                <Text style={[editProductStyles.subText]}>
-                  {this.state.product &&
-                  this.state.product.categories &&
-                  this.state.product.categories.length > 0
-                    ? this.state.product.categories
-                        .map((cat) => cat.name)
-                        .join(", ")
-                    : "Add Categories"}
-                </Text>
-              </View>
-            </TouchableOpacity>
+                  <Text style={[editProductStyles.subText]}>
+                    {this.state.product &&
+                    this.state.product.categories &&
+                    this.state.product.categories.length > 0
+                      ? this.state.product.categories
+                          .map((cat) => cat.name)
+                          .join(", ")
+                      : "Add Categories"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={editProductStyles.feildView}
-              onPress={() => {
-                analytics.track(`a_toggle_is_featured`, {
-                  source: "open_edit_product",
-                  source_action: `a_toggle_is_featured`,
-                  product_id: this.state.product.id,
-                  product_is_featured:
-                    this.state.product.is_featured === 0 ? 1 : 0,
-                });
-                this.setState({
-                  product: {
-                    ...this.state.product,
-                    is_featured: this.state.product.is_featured === 0 ? 1 : 0,
-                  },
-                });
-              }}
-            >
-              <CheckBox
-                value={this.state.product.is_featured === 1}
-                onValueChange={(newValue) => {
+              <TouchableOpacity
+                style={editProductStyles.feildView}
+                onPress={() => {
                   analytics.track(`a_toggle_is_featured`, {
                     source: "open_edit_product",
                     source_action: `a_toggle_is_featured`,
                     product_id: this.state.product.id,
-                    product_is_featured: newValue ? 1 : 0,
+                    product_is_featured:
+                      this.state.product.is_featured === 0 ? 1 : 0,
                   });
                   this.setState({
                     product: {
                       ...this.state.product,
-                      is_featured: newValue ? 1 : 0,
+                      is_featured: this.state.product.is_featured === 0 ? 1 : 0,
                     },
                   });
                 }}
-                tintColors={{
-                  true: globalColors.purple,
-                  false: globalColors.rum,
-                }}
-                tintColor={globalColors.rum}
-                onCheckColor={globalColors.purple}
-                onTintColor={globalColors.purple}
-                onFillColor={"#9300FF29"}
-                lineWidth={1}
-                style={editProductStyles.checkBox}
-              />
-              <Text
-                style={[
-                  editProductStyles.fieldTextView,
-                  editProductStyles.subHeading,
-                ]}
               >
-                {translate("FEATURED")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </InputScrollView>
-        <View style={editProductStyles.bottomBtns}>
-          <GradientButton
-            text={translate("Preview")}
-            screenProps={this.props.screenProps}
-            transparent
-            style={editProductStyles.previewBtn}
-            uppercase
-            textStyle={editProductStyles.previewText}
-            onPressAction={this.goToPreview}
-            disabled={this.props.saving}
-            disabledGradientBegin={"#0000"}
-            disabledGradientEnd={"#0000"}
-          />
-          {this.props.saving && (
-            <View style={editProductStyles.uploadingView}>
-              <Text style={styles.uploadText}>{translate("Uploading")}</Text>
-              <AnimatedCircularProgress
-                size={50}
-                width={5}
-                fill={100}
-                tintColor={globalColors.purple}
-                backgroundColor={"#9300FF99"}
-              />
+                <CheckBox
+                  value={this.state.product.is_featured === 1}
+                  onValueChange={(newValue) => {
+                    analytics.track(`a_toggle_is_featured`, {
+                      source: "open_edit_product",
+                      source_action: `a_toggle_is_featured`,
+                      product_id: this.state.product.id,
+                      product_is_featured: newValue ? 1 : 0,
+                    });
+                    this.setState({
+                      product: {
+                        ...this.state.product,
+                        is_featured: newValue ? 1 : 0,
+                      },
+                    });
+                  }}
+                  tintColors={{
+                    true: globalColors.purple,
+                    false: globalColors.rum,
+                  }}
+                  tintColor={globalColors.rum}
+                  onCheckColor={globalColors.purple}
+                  onTintColor={globalColors.purple}
+                  onFillColor={"#9300FF29"}
+                  lineWidth={1}
+                  style={editProductStyles.checkBox}
+                />
+                <Text
+                  style={[
+                    editProductStyles.fieldTextView,
+                    editProductStyles.subHeading,
+                  ]}
+                >
+                  {translate("FEATURED")}
+                </Text>
+              </TouchableOpacity>
             </View>
-          )}
+            <View style={editProductStyles.bottomBtns}>
+              <GradientButton
+                text={translate("Preview")}
+                screenProps={this.props.screenProps}
+                transparent
+                style={editProductStyles.previewBtn}
+                uppercase
+                textStyle={editProductStyles.previewText}
+                onPressAction={this.goToPreview}
+                disabled={this.props.saving}
+                disabledGradientBegin={"#0000"}
+                disabledGradientEnd={"#0000"}
+              />
+              {this.props.saving && (
+                <View style={editProductStyles.uploadingView}>
+                  <Text style={styles.uploadText}>
+                    {translate("Uploading")}
+                  </Text>
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={100}
+                    tintColor={globalColors.purple}
+                    backgroundColor={"#9300FF99"}
+                  />
+                </View>
+              )}
 
-          {!this.props.saving && (
-            <GradientButton
-              text={translate("Save")}
-              screenProps={this.props.screenProps}
-              purpleViolet
-              style={editProductStyles.saveBtn}
-              uppercase
-              onPressAction={this.saveProduct}
-              disabled={this.props.saving}
-              disabledGradientBegin={"#9300FF"}
-              disabledGradientEnd={"#9300FF"}
-              // textStyle={editProductStyles.previewText}
-            />
-          )}
-        </View>
+              {!this.props.saving && (
+                <GradientButton
+                  text={translate("Save")}
+                  screenProps={this.props.screenProps}
+                  purpleViolet
+                  style={editProductStyles.saveBtn}
+                  uppercase
+                  onPressAction={this.saveProduct}
+                  disabled={this.props.saving}
+                  disabledGradientBegin={"#9300FF"}
+                  disabledGradientEnd={"#9300FF"}
+                  // textStyle={editProductStyles.previewText}
+                />
+              )}
+            </View>
+          </InputScrollView>
+        </ScrollView>
         <LoadingModal
           videoUrlLoading={false}
           loading={this.props.loading}

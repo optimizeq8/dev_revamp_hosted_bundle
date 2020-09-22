@@ -193,8 +193,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     marginVertical: 20,
-    bottom: 10,
-    position: "absolute",
+
     width: "100%",
     // alignSelf: "flex-end",
   },

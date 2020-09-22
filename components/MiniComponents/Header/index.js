@@ -169,7 +169,12 @@ export default class Header extends Component {
                 <Settings width={30} fill={iconColor} />
               ) : showTopRightButtonIcon === "delete" ? (
                 <View
-                  style={{ display: "flex", flexDirection: "row", right: 20 }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    right: 20,
+                    alignItems: "center",
+                  }}
                 >
                   <BinIcon width={30} fill="#9300ff" />
                   <Text
