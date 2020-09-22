@@ -178,25 +178,11 @@ class InstagramAdDesignExistingPost extends Component {
       friction: 8,
     }).start();
   };
-  selectImageOption = (media_option) => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        media_option,
-      },
-    });
-    this.props.save_campaign_info_instagram({
-      media_option,
-    });
-  };
+
   setTheState = (state) => {
     this.setState({ ...state });
   };
-  videoIsLoading = (value) => {
-    this.setState({
-      isVideoLoading: value,
-    });
-  };
+
   _getUploadState = (loading) => {
     this.setState({
       loaded: loading,
@@ -336,21 +322,7 @@ class InstagramAdDesignExistingPost extends Component {
       // }
     }
   };
-  handleCaptionExpand = (value) => {
-    analytics.track(`instagram_caption`, {
-      visibile: value,
-      source: "ad_design",
-      source_action: "a_toggle_caption",
-    });
-    this.setState(
-      {
-        expanded: value,
-      },
-      () => {
-        this.toggle();
-      }
-    );
-  };
+
   handleReview = async () => {
     const noError = this.validator();
 
@@ -368,45 +340,7 @@ class InstagramAdDesignExistingPost extends Component {
       });
     }
   };
-  _handlecarouselAdCards = (card) => {
-    this.setState({ sourceChanging: true });
-    this.setState({
-      ...this.state,
-      carouselAdCards: {
-        ...this.state.carouselAdCards,
-        carouselAdSelected: true,
-        selectedCarouselAd: { ...card },
-      },
-      type: card.media_type,
-      sourceChanging: false,
-    });
-    this.setMediaModalVisible(true);
-  };
 
-  setMediaModalVisible = (visibile) => {
-    this.setState({ mediaModalVisible: visibile });
-  };
-
-  adDesignPickImage = (mediaTypes, mediaEditor, editImage) => {
-    if (this.props.data.objective === "VIDEO_VIEWS") {
-      mediaTypes = "Videos";
-    }
-    _pickImage(
-      mediaTypes,
-      this.props.save_campaign_info_instagram,
-      this.setTheState,
-      this.props.screenProps,
-      this.setMediaModalVisible,
-      mediaEditor,
-      editImage,
-      this.videoIsLoading,
-      this.state.carouselAdCards,
-      this.props.carouselAdsArray,
-      this.state.campaignInfo.media_option
-      // this.adType,
-      // this.rejected,
-    );
-  };
   renderEachPost = (item) => {
     const product = item.item;
 
