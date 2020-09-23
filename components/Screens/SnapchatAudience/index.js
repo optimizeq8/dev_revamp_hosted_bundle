@@ -86,19 +86,29 @@ export class SnapchatAudience extends Component {
     this.props.get_languages();
 
     // To by default set the country to that of the business country selected
-    let country_code = find(
-      countries,
-      (country) => country.label === this.props.mainBusiness.country
-    ).value;
-    this.props.get_interests(country_code);
-
-    await this.onSelectedCountryChange(
-      country_code,
-      true,
-      this.props.mainBusiness.country
-    );
   }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.audienceDetailLoading !== this.props.audienceDetailLoading &&
+      this.props.audience.targeting.geos[0].country_code !== ""
+    ) {
+      let showRegions = false;
+      let countryRegions = this.props.audience.targeting.geos.map((cou) => {
+        let foundCountryReg = find(
+          country_regions,
+          (country) => country.country_code === cou.country_code
+        );
+        showRegions = foundCountryReg.regions.length > 3;
 
+        return foundCountryReg;
+      });
+      this.setState({
+        regions: countryRegions ? countryRegions : [],
+        filteredRegions: countryRegions ? countryRegions : [],
+        showRegions: showRegions,
+      });
+    }
+  }
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     const audienceNameError =
@@ -147,40 +157,40 @@ export class SnapchatAudience extends Component {
     }
     if (!languagesError && !countryError && !audienceNameError) {
       let rep = cloneDeep(this.props.audience);
-      if (rep.targeting.demographics[0].gender === "") {
-        delete rep.targeting.demographics[0].gender;
-      }
-      if (
-        rep.targeting.geos[0].hasOwnProperty("region_id") &&
-        rep.targeting.geos[0].region_id.length === 0
-      ) {
-        delete rep.targeting.geos[0].region_id;
-      }
-      if (
-        rep.targeting.hasOwnProperty("interests") &&
-        rep.targeting.interests[0].category_id.length === 0
-      ) {
-        delete rep.targeting.interests;
-      }
-      if (
-        rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
-        rep.targeting.devices[0].marketing_name.length === 0
-      ) {
-        delete rep.targeting.devices[0].marketing_name;
-      }
-      if (rep.targeting.devices[0].os_type === "") {
-        delete rep.targeting.devices[0].os_type;
-      }
-      if (rep.targeting.devices[0].os_version_max === "") {
-        delete rep.targeting.devices[0].os_version_max;
-        delete rep.targeting.devices[0].os_version_min;
-      }
-      if (
-        Object.entries(rep.targeting.devices[0]).length === 0 &&
-        rep.targeting.devices[0].constructor === Object
-      ) {
-        delete rep.targeting.devices;
-      }
+      // if (rep.targeting.demographics[0].gender === "") {
+      //   delete rep.targeting.demographics[0].gender;
+      // }
+      // if (
+      //   rep.targeting.geos[0].hasOwnProperty("region_id") &&
+      //   rep.targeting.geos[0].region_id.length === 0
+      // ) {
+      //   delete rep.targeting.geos[0].region_id;
+      // }
+      // if (
+      //   rep.targeting.hasOwnProperty("interests") &&
+      //   rep.targeting.interests[0].category_id.length === 0
+      // ) {
+      //   delete rep.targeting.interests;
+      // }
+      // if (
+      //   rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
+      //   rep.targeting.devices[0].marketing_name.length === 0
+      // ) {
+      //   delete rep.targeting.devices[0].marketing_name;
+      // }
+      // if (rep.targeting.devices[0].os_type === "") {
+      //   delete rep.targeting.devices[0].os_type;
+      // }
+      // if (rep.targeting.devices[0].os_version_max === "") {
+      //   delete rep.targeting.devices[0].os_version_max;
+      //   delete rep.targeting.devices[0].os_version_min;
+      // }
+      // if (
+      //   Object.entries(rep.targeting.devices[0]).length === 0 &&
+      //   rep.targeting.devices[0].constructor === Object
+      // ) {
+      //   delete rep.targeting.devices;
+      // }
       if (rep.targeting.demographics[0].max_age === 50) {
         rep.targeting.demographics[0].max_age = "50+";
       }
@@ -287,7 +297,8 @@ export class SnapchatAudience extends Component {
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         replace.targeting.geos.length === 1 &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
@@ -300,7 +311,8 @@ export class SnapchatAudience extends Component {
         replace.targeting.locations[0].circles = [];
       } else if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
@@ -325,7 +337,7 @@ export class SnapchatAudience extends Component {
               replace.targeting.locations[0].circles.splice(i, 1);
             }
           });
-      } else if (replace.targeting.geos[0].country_code === "") {
+      } else if (replace.targeting.geos[0].country_code === "" && !mounting) {
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
           country_code: newCountry,
@@ -336,9 +348,10 @@ export class SnapchatAudience extends Component {
           (reg) => reg.country_code !== newCountry
         );
       } else if (
-        addCountryOfLocations
+        (addCountryOfLocations
           ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
-          : true
+          : true) &&
+        !mounting
       ) {
         //To add the coutnry to geos array
         replace.targeting.geos.push({
@@ -349,7 +362,8 @@ export class SnapchatAudience extends Component {
       let reg = country_regions.find((c) => c.country_code === newCountry);
       if (
         this.state.regions.find((c) => c.country_code === newCountry) &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
@@ -357,9 +371,10 @@ export class SnapchatAudience extends Component {
           return coReg.country_code !== newCountry;
         });
       } else if (
-        addCountryOfLocations
+        (addCountryOfLocations
           ? !this.state.regions.find((c) => c.country_code === newCountry)
-          : true
+          : true) &&
+        !mounting
       ) {
         if (reg) reg = [...this.state.regions, reg];
       } else {
@@ -392,17 +407,10 @@ export class SnapchatAudience extends Component {
                 )
               : false;
 
-          this.props.setAudienceDetail({
-            ...replace,
-            // country_code: newCountry,
-            // countryName,
-            // showRegions: showRegions,
-            // regionNames,
-            // markers:
-            //   replace.targeting.locations &&
-            //   replace.targeting.locations[0].circles,
-            // locationsInfo,
-          });
+          !mounting &&
+            this.props.setAudienceDetail({
+              ...replace,
+            });
           this.setState({ showRegions });
         }
       );
@@ -723,6 +731,7 @@ export class SnapchatAudience extends Component {
           return (
             this.props.languages &&
             this.props.languages.length > 0 &&
+            typeof this.props.languages === "object" &&
             translate(
               this.props.languages.find((lang) => lang.id == lang_code).name
             )
@@ -819,7 +828,7 @@ export class SnapchatAudience extends Component {
     });
     Alert.alert(
       translate("Warning"),
-      translate(`Going back without saving will loose this information?`),
+      translate(`Going back without saving will lose this information?`),
       [
         {
           text: translate("Cancel"),
