@@ -122,7 +122,11 @@ class SnapchatCampaignAudience extends React.Component {
           rightViewStyle={styles.rightViewStyle}
         />
         {this.props.audienceListLoading ? (
-          <ActivityIndicator size={"large"} color={globalColors.orange} />
+          <ActivityIndicator
+            style={{ top: "20%" }}
+            size={"large"}
+            color={globalColors.orange}
+          />
         ) : (
           <FlatList
             refreshing={this.props.audienceListLoading}

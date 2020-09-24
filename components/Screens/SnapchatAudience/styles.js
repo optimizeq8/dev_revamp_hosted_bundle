@@ -56,6 +56,13 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+  loader: {
+    backgroundColor: "#0004",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    alignSelf: "center",
+  },
 });
 
 export default styles;

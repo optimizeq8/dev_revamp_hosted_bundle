@@ -59,6 +59,7 @@ import countries, {
   OSType,
   country_regions,
 } from "../CampaignCreate/AdDetails/data";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
@@ -1459,6 +1460,11 @@ export class SnapchatAudience extends Component {
                   </Text>
                 )}
             </View>
+            {saveAudienceLoading && (
+              <View style={styles.loader}>
+                <LoadingScreen dash={true} />
+              </View>
+            )}
           </Sidemenu>
         </View>
       );
