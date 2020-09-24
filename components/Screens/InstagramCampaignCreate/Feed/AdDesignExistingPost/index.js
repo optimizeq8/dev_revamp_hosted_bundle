@@ -9,6 +9,7 @@ import {
   Image as RNImage,
   Text,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
@@ -525,13 +526,21 @@ class InstagramAdDesignExistingPost extends Component {
             <Text style={existPostStyles.promoteText}>
               {translate("Select a post to promote")}
             </Text>
-            <FlatList
-              data={this.props.instagramExistingPost}
-              renderItem={this.renderEachPost}
-              numColumns={4}
-              contentContainerStyle={existPostStyles.flatListContentStyle}
-              showsVerticalScrollIndicator={false}
-            />
+            {this.props.postsLoading ? (
+              <ActivityIndicator
+                size={"large"}
+                color={globalColors.orange}
+                style={{ marginTop: 20 }}
+              />
+            ) : (
+              <FlatList
+                data={this.props.instagramExistingPost}
+                renderItem={this.renderEachPost}
+                numColumns={4}
+                contentContainerStyle={existPostStyles.flatListContentStyle}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
             {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>
             </TouchableOpacity> */}
@@ -716,6 +725,7 @@ const mapStateToProps = (state) => ({
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
   instagramExistingPost: state.instagramAds.instagramExistingPost,
   paging: state.instagramAds.paging,
+  postsLoading: state.instagramAds.postsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

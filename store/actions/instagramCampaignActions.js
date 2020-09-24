@@ -790,6 +790,10 @@ export const deleteCarouselCard = (story_id, card) => {
 
 export const getInstagramExistingPost = (businessid) => {
   return (dispatch) => {
+    dispatch({
+      type: actionTypes.LOADING_INSTAGRAM_POSTS,
+      payload: true,
+    });
     InstagramBackendURL()
       .get(`instaFeed/${businessid}`)
       .then((res) => {
@@ -797,14 +801,24 @@ export const getInstagramExistingPost = (businessid) => {
       })
       .then((data) => {
         if (data.success) {
-          return dispatch({
+          dispatch({
             type: actionTypes.GET_INSTAGRAM_POST_AD,
             payload: {
               data: data.data,
               paging: data.paging,
             },
           });
+          return dispatch({
+            type: actionTypes.LOADING_INSTAGRAM_POSTS,
+            payload: false,
+          });
         }
+      })
+      .catch((err) => {
+        return dispatch({
+          type: actionTypes.LOADING_INSTAGRAM_POSTS,
+          payload: false,
+        });
       });
   };
 };
