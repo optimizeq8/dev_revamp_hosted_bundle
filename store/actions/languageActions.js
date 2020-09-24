@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs";
-import { AsyncStorage, I18nManager } from "react-native";
+import { I18nManager } from "react-native";
 import i18n from "i18n-js";
 import * as actionTypes from "./actionTypes";
 import store from "../index";
@@ -8,6 +8,7 @@ import arabicStrings from "../../components/Data/translationArabic";
 import englishStrings from "../../components/Data/translationEnglish";
 
 import createBaseUrl from "./createBaseUrl";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const getLanguageListPOEdit = (language) => {
   return async (dispatch, getState) => {

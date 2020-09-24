@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { getUniqueId } from "react-native-device-info";

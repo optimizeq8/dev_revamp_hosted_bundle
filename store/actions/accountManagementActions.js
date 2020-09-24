@@ -1,7 +1,7 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
-import { AsyncStorage, Animated } from "react-native";
+import { Animated } from "react-native";
 import { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";

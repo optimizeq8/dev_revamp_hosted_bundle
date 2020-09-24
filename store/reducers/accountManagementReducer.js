@@ -2,7 +2,10 @@ import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
 import analytics from "@segment/analytics-react-native";
 
-import { AsyncStorage, Animated } from "react-native";
+import { Animated } from "react-native";
+
+import AsyncStorage from "@react-native-community/async-storage";
+
 const initialState = {
   loading: false,
   businessAccounts: [],

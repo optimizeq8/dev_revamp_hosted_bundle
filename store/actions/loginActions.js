@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage, Animated, AppState } from "react-native";
+import { Animated, AppState } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";

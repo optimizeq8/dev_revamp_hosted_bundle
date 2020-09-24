@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   View,
-  AsyncStorage,
   TouchableWithoutFeedback,
   Keyboard,
   Animated,
@@ -29,6 +28,7 @@ import Background from "../../../assets/SVGs/Background";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default class Invitation extends Component {
   static navigationOptions = {

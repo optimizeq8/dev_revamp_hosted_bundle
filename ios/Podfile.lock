@@ -380,6 +380,8 @@ PODS:
     - Segment-Mixpanel
   - RNBootSplash (2.2.5):
     - React
+  - RNCAsyncStorage (1.12.0):
+    - React
   - RNCCheckbox (0.5.3):
     - React
   - RNCMaskedView (0.1.10):
@@ -500,6 +502,7 @@ DEPENDENCIES:
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
   - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -665,6 +668,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNCCheckbox:
     :path: "../node_modules/@react-native-community/checkbox"
   RNCMaskedView:
@@ -788,6 +793,7 @@ SPEC CHECKSUMS:
   RNAnalytics: 589e1b1072d9df2646899627e4582d20c3255127
   RNAnalyticsIntegration-Mixpanel: c25ce5710f9b87d8eb631567f65cc2005993f735
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
+  RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCCheckbox: 47d045535fbb16796df628022a7cd631c78a4d9b
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: 5eb11f4aef9395cca403c0c92dff458252fc0b2c
@@ -819,4 +825,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 107bb2d737711ab4b88b3d278b853db1609e1fb5
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4

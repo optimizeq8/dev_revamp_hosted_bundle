@@ -1,7 +1,8 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
