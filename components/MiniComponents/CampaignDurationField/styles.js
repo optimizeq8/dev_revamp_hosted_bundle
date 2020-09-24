@@ -43,6 +43,7 @@ export default StyleSheet.create({
   durButton: {
     width: "50%",
     height: "80%",
+    alignSelf: "center",
     justifyContent: "center",
     backgroundColor: globalColors.orange,
   },
@@ -64,6 +65,7 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 25,
     color: "#fff",
+    textAlign: "center",
   },
   durationData: {
     fontFamily: "montserrat-bold",
