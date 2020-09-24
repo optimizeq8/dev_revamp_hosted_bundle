@@ -445,7 +445,7 @@ class AdDesign extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         headline: headline.replace(
-          /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+          /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
           ""
         ),
       },
@@ -454,7 +454,7 @@ class AdDesign extends Component {
       source: "ad_design",
       source_action: "a_edit_promotional_message",
       campaign_headline: headline.replace(
-        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+        /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
         ""
       ),
       timestamp: new Date().getTime(),

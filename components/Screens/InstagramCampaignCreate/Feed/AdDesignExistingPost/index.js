@@ -636,6 +636,7 @@ class InstagramAdDesignExistingPost extends Component {
                   previewStyles.businessNameText,
                   previewStyles.captionTextExist,
                 ]}
+                numberOfLines={2}
               >
                 {this.state.campaignInfo.instagram_business_name}
 
