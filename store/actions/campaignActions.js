@@ -67,10 +67,6 @@ export const verifyBusinessUrl = (weburl) => {
       .post(`verifyBusinessUrl`, { weburl })
       .then((res) => res.data)
       .then((data) => {
-        // Segment.trackWithProperties("Register Business Info", {
-        //   category: "Sign Up",
-        //   label: "Step 4 of Registration"
-        // });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",

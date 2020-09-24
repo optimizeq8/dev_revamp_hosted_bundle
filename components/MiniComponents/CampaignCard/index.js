@@ -47,6 +47,7 @@ class CampaignCard extends Component {
       source_action: "a_open_campaign_card",
       timestamp: new Date().getTime(),
       campaign_id: this.props.campaign.campaign_id,
+      campaign_channel: "snapchat",
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,

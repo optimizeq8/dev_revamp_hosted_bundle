@@ -469,7 +469,6 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
         });
       })
       .then(() => {
-        // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
         navigation.navigate(
           segmentInfo.campaign_ad_type === "InstagramStoryAd"
