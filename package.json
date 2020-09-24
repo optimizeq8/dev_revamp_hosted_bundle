@@ -5,7 +5,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "doc": "jsdoc -c jsdoc.conf.json"
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
@@ -47,6 +48,8 @@
     "lodash": "^4.17.20",
     "lottie-react-native": "~2.6.1",
     "native-base": "^2.13.14",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
