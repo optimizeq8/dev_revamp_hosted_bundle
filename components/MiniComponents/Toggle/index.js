@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
 } from "react-native";
 
 import PropTypes from "prop-types";
@@ -19,19 +19,19 @@ class Item extends Component {
       height: 36,
       borderRadius: 18,
       backgroundColor: "rgb(227,227,227)",
-      padding: 3
+      padding: 3,
     },
     circleStyle: {
       width: 30,
       height: 30,
       borderRadius: 15,
-      backgroundColor: "white" // rgb(102,134,205)
+      backgroundColor: "white", // rgb(102,134,205)
     },
     backgroundColorOn: "rgb(227,227,227)",
     backgroundColorOff: "rgb(215,215,215)",
     circleColorOff: "white",
     circleColorOn: "rgb(102,134,205)",
-    duration: 300
+    duration: 300,
   };
 
   static propTypes = {
@@ -58,7 +58,7 @@ class Item extends Component {
     buttonStyle: PropTypes.any,
     buttonContainerStyle: PropTypes.any,
     rightContainerStyle: PropTypes.any,
-    leftContainerStyle: PropTypes.any
+    leftContainerStyle: PropTypes.any,
   };
 
   componentWillReceiveProps(newProps) {
@@ -96,7 +96,8 @@ class Item extends Component {
         : this.props.switchOn
         ? 0
         : 1,
-      duration: this.props.duration
+      duration: this.props.duration,
+      useNativeDriver: false,
     };
     Animated.timing(this.state.animXValue, animValue).start();
     // Animated.timing(this.state.anim, animValue).start(() => this.runAnimation());
@@ -118,7 +119,7 @@ class Item extends Component {
           : this.props.switchOn
           ? 1
           : 0
-      )
+      ),
     };
   }
 
@@ -141,14 +142,14 @@ class Item extends Component {
                 outputRange: I18nManager.isRTL
                   ? [
                       this.props.backgroundColorOn,
-                      this.props.backgroundColorOff
+                      this.props.backgroundColorOff,
                     ]
                   : [
                       this.props.backgroundColorOff,
-                      this.props.backgroundColorOn
-                    ]
-              })
-            }
+                      this.props.backgroundColorOn,
+                    ],
+              }),
+            },
           ]}
         >
           {this.generateLeftText()}
@@ -160,8 +161,8 @@ class Item extends Component {
                   inputRange: I18nManager.isRTL ? [-1, 0] : [0, 1],
                   outputRange: I18nManager.isRTL
                     ? [this.props.circleColorOn, this.props.circleColorOff]
-                    : [this.props.circleColorOff, this.props.circleColorOn]
-                })
+                    : [this.props.circleColorOff, this.props.circleColorOn],
+                }),
               },
               {
                 transform: [
@@ -170,13 +171,13 @@ class Item extends Component {
                       inputRange: [0, 1],
                       outputRange: [
                         this.state.circlePosXStart,
-                        this.state.circlePosXEnd
-                      ]
-                    })
-                  }
-                ]
+                        this.state.circlePosXEnd,
+                      ],
+                    }),
+                  },
+                ],
               },
-              this.props.buttonStyle
+              this.props.buttonStyle,
             ]}
           >
             <Animated.View style={this.props.buttonContainerStyle}>
@@ -213,8 +214,8 @@ class Item extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default Item;

@@ -217,7 +217,9 @@ class App extends React.Component {
       },
       debug: true,
     });
-    RNBootSplash.hide({ duration: 350 });
+    setTimeout(() => {
+      RNBootSplash.hide();
+    }, 1000);
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
         anonymous_userId: anonId,
@@ -486,6 +488,7 @@ class App extends React.Component {
     // ]).start();
     Animated.timing(this.state.translateY, {
       toValue: heightPercentageToDP(100),
+      useNativeDriver: true,
       // duration: 1000,
     }).start(() => {
       this.setState({ isLoadingComplete: true });

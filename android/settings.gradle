@@ -1,8 +1,6 @@
 rootProject.name = 'OptimizeApp'
-// include ':@segment_analytics-react-native-adjust'
-// project(':@segment_analytics-react-native-adjust').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-adjust/android')
-include ':@react-native-community_checkbox'
-project(':@react-native-community_checkbox').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/checkbox/android')
+// include ':@react-native-community_checkbox'
+// project(':@react-native-community_checkbox').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/checkbox/android')
 include ':react-native-maps'
 project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/lib/android')
 // include ':@react-native-community_masked-view'

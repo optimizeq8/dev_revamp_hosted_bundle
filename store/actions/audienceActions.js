@@ -61,11 +61,6 @@ export const getAudienceDetail = (audienceId) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        // console.log("data", data);
-        dispatch({
-          type: actionTypes.LOADING_AUDIENCE_DETAIL,
-          payload: false,
-        });
         if (data.success) {
           return dispatch({
             type: actionTypes.SET_AUDIENCE_DETAIL,

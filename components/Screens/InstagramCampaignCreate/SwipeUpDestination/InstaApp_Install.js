@@ -110,15 +110,10 @@ class InstaApp_Install extends Component {
           ...this.props.mainBusiness.playstorelink,
         },
         iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
-        androidAppSelected:
-          this.props.mainBusiness.appstorelink.android_app_url !== "",
         appChoice:
-          this.props.mainBusiness.appstorelink.ios_app_id !== "" &&
-          this.props.mainBusiness.playstorelink.android_app_url !== ""
-            ? null
-            : this.props.mainBusiness.playstorelink.android_app_url !== ""
-            ? "ANDROID"
-            : "iOS",
+          this.props.mainBusiness.appstorelink.ios_app_id !== ""
+            ? "iOS"
+            : "ANDROID",
       });
     }
   }

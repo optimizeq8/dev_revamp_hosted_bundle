@@ -175,6 +175,7 @@ class InstagramAdDesignExistingPost extends Component {
       velocity: 3,
       tension: 2,
       friction: 8,
+      useNativeDriver: true,
     }).start();
   };
 

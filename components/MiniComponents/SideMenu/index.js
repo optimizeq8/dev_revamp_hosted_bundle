@@ -324,6 +324,7 @@ SideMenu.defaultProps = {
     Animated.spring(prop, {
       toValue: value,
       friction: 8,
+      useNativeDriver: true,
     }),
   onAnimationComplete: () => {},
   isOpen: false,
