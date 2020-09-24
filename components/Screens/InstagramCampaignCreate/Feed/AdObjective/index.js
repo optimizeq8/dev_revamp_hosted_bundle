@@ -304,6 +304,7 @@ class AdObjective extends Component {
         campaign_start_date: this.state.campaignInfo.start_time,
         campaign_end_date: this.state.campaignInfo.end_time,
         campaign_objective: this.state.campaignInfo.objective,
+        campaign_existing_post: this.state.campaignInfo.existingPost,
       };
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -405,14 +406,20 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
-  selectPostType = () => {
+  selectPostType = (postType) => {
     let replace = cloneDeep(this.state.campaignInfo);
-    replace.existingPost = this.state.campaignInfo.existingPost === 0 ? 1 : 0;
+    replace.existingPost = postType;
     this.setState({
       campaignInfo: replace,
     });
+    analytics.track("a_change_post_type", {
+      source: "ad_objective",
+      source_action: "a_change_objective",
+      campaign_channel: "instagram",
+      campaign_existing_post: postType === 0,
+    });
     this.props.save_campaign_info_instagram({
-      existingPost: this.state.campaignInfo.existingPost === 0 ? 1 : 0,
+      existingPost: postType,
     });
   };
   handleDuration = (subtract = false) => {
@@ -488,7 +495,7 @@ class AdObjective extends Component {
                   style={styles.gradientBtn}
                   screenProps={this.props.screenProps}
                   transparent={this.state.campaignInfo.existingPost !== 0}
-                  onPressAction={this.selectPostType}
+                  onPressAction={() => this.selectPostType(0)}
                 >
                   <View style={styles.buttonView}>
                     <UserProfile />
@@ -506,7 +513,7 @@ class AdObjective extends Component {
                   style={styles.gradientBtn}
                   screenProps={this.props.screenProps}
                   transparent={this.state.campaignInfo.existingPost !== 1}
-                  onPressAction={this.selectPostType}
+                  onPressAction={() => this.selectPostType(1)}
                 >
                   <View style={styles.buttonView}>
                     <PenBox />
