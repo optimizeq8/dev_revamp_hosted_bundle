@@ -549,7 +549,7 @@ class AdObjective extends Component {
     );
   };
 
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 1
         ? this.state.duration - 1
@@ -570,10 +570,11 @@ class AdObjective extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     let adType = this.props.adType;
