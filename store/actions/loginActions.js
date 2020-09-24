@@ -13,6 +13,7 @@ import * as SecureStore from "expo-secure-store";
 import { update_app_status_chat_notification } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
+import { errorMessageHandler } from "./ErrorActions";
 
 export const chanege_base_url = (admin) => {
   return (dispatch) => {
@@ -75,90 +76,97 @@ export const send_push_notification = () => {
 export const checkForExpiredToken = (navigation) => {
   return (dispatch, getState) => {
     dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
-    return SecureStore.getItemAsync("token").then((token) => {
-      if (token) {
-        const currentTime = Date.now() / 1000;
-        const user = jwt_decode(token);
+    return SecureStore.getItemAsync("token")
+      .then((token) => {
+        if (token) {
+          const currentTime = Date.now() / 1000;
+          const user = jwt_decode(token);
 
-        if (user.exp >= currentTime && user.tmp_pwd !== "1") {
-          if (
-            [
-              "nouf@optimizeapp.com",
-              "sam.omran@hotmail.com",
-              "imran@optimizekw.com",
-              "saadiya@optimizekw.com",
-              "shorook@optimizekw.com",
-              "samy@optimizeapp.com",
-            ].includes(user.email)
-          )
-            dispatch(chanege_base_url(true));
-          // check if the local store token is same as in db
-          createBaseUrl()
-            .get("verifyAccessToken", {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            })
-            .then((responseToken) => {
-              if (responseToken.data.success) {
-                setAuthToken(token)
-                  .then(() =>
-                    dispatch(
-                      setCurrentUser({
-                        user: user,
-                        message: "Logged-in Successfully",
-                      })
+          if (user.exp >= currentTime && user.tmp_pwd !== "1") {
+            if (
+              [
+                "nouf@optimizeapp.com",
+                "sam.omran@hotmail.com",
+                "imran@optimizekw.com",
+                "saadiya@optimizekw.com",
+                "shorook@optimizekw.com",
+                "samy@optimizeapp.com",
+              ].includes(user.email)
+            )
+              dispatch(chanege_base_url(true));
+            // check if the local store token is same as in db
+            console.log("Checking for token");
+            createBaseUrl()
+              .get("verifyAccessToken", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                timeout: 10000,
+                timeoutErrorMessage:
+                  "Something went wrong, please try again later",
+              })
+              .then((responseToken) => {
+                if (responseToken.data.success) {
+                  setAuthToken(token)
+                    .then(() =>
+                      dispatch(
+                        setCurrentUser({
+                          user: user,
+                          message: "Logged-in Successfully",
+                        })
+                      )
                     )
-                  )
-                  .then(() => {
-                    dispatch(send_push_notification());
-                    dispatch(getBusinessAccounts());
-                  })
-                  .then(() => {
-                    analytics.identify(getState().auth.userInfo.userid, {
-                      logged_out: false,
-                    });
-                    navigation &&
-                      NavigationService.navigate("Dashboard", {
-                        source: AppState.currentState,
-                        source_action: "a_check_expired_token",
+                    .then(() => {
+                      dispatch(send_push_notification());
+                      dispatch(getBusinessAccounts());
+                    })
+                    .then(() => {
+                      analytics.identify(getState().auth.userInfo.userid, {
+                        logged_out: false,
                       });
-                  });
-              } else {
-                dispatch(clearPushToken(navigation, user.userid));
-              }
-            })
-            .then(() => {
-              dispatch({
-                type: actionTypes.CHECKING_FOR_TOKEN,
-                payload: false,
-              });
+                      navigation &&
+                        NavigationService.navigate("Dashboard", {
+                          source: AppState.currentState,
+                          source_action: "a_check_expired_token",
+                        });
+                    });
+                } else {
+                  dispatch(clearPushToken(navigation, user.userid));
+                }
+              })
+              .then(() => {
+                dispatch({
+                  type: actionTypes.CHECKING_FOR_TOKEN,
+                  payload: false,
+                });
 
-              // navigation &&
-              //   NavigationService.navigate("Dashboard", {
-              //     source: AppState.currentState,
-              //     source_action: "a_check_expired_token",
-              //   });
-            })
-            .catch((err) => {
-              // console.log(
-              //   "verifyAccessToken error",
-              //   JSON.stringify(err.response, null, 2)
-              // );
-              dispatch({
-                type: actionTypes.CHECKING_FOR_TOKEN_ERROR,
-                payload: true,
+                // navigation &&
+                //   NavigationService.navigate("Dashboard", {
+                //     source: AppState.currentState,
+                //     source_action: "a_check_expired_token",
+                //   });
+              })
+              .catch((err) => {
+                // console.log(
+                //   "verifyAccessToken error",
+                //   JSON.stringify(err.response, null, 2)
+                // );
+                errorMessageHandler(err);
+                dispatch({
+                  type: actionTypes.CHECKING_FOR_TOKEN_ERROR,
+                  payload: true,
+                });
               });
-            });
-        } else {
-          dispatch(clearPushToken(navigation, user.userid));
-        }
-      } else
-        dispatch({
-          type: actionTypes.CHECKING_FOR_TOKEN,
-          payload: false,
-        });
-    });
+          } else {
+            dispatch(clearPushToken(navigation, user.userid));
+          }
+        } else
+          dispatch({
+            type: actionTypes.CHECKING_FOR_TOKEN,
+            payload: false,
+          });
+      })
+      .catch((err) => console.log("CHECK FOR EXPIRED TOKEN", err));
   };
 };
 
@@ -440,6 +448,8 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
+
           //   easing: Easing.linear
         }).start(() => {
           analytics.track(`a_change_password`, {

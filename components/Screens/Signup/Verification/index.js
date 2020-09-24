@@ -191,7 +191,11 @@ class Verification extends Component {
                     autoFocus
                     keyboardType="numeric"
                     space={10}
-                    onFulfill={(code) => this._handleSentCode(code)}
+                    onChangeText={(code) => {
+                      if (code.length === 5) {
+                        this._handleSentCode(code);
+                      }
+                    }}
                     ref={this.inputRef}
                   />
                 </View>
