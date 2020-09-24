@@ -41,6 +41,12 @@ export default class ClickDestination extends Component {
         compHeight: event.nativeEvent.layout.height,
       });
   };
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.closeAnimation && this.props.closeAnimation) {
+      this.toggleClickDestination(false);
+    }
+  }
   render() {
     let translate = this.props.translate;
     let sty = !this.state.expanded
@@ -163,6 +169,7 @@ export default class ClickDestination extends Component {
                 </Text>
               </TouchableOpacity>
               <InstagramSwipeUpDestination
+                expanded={this.state.expanded}
                 toggleClickDestination={this.toggleClickDestination}
                 screenProps={this.props.screenProps}
               />

@@ -97,15 +97,8 @@ class Website extends Component {
         },
       });
     }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-  handleBackButton = () => {
-    this.props.navigation.goBack();
-    return true;
-  };
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
+
   validateUrl = () => {
     const { translate } = this.props.screenProps;
     const urlError = validateWrapper("url", this.state.campaignInfo.link);

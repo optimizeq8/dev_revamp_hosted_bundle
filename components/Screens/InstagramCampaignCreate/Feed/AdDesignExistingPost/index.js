@@ -100,17 +100,15 @@ class InstagramAdDesignExistingPost extends Component {
       uneditedImageUri: "",
       serialization: null,
       maxClickHeight: 0,
+      swipeUpExpanded: false,
+      closeAnimation: false,
     };
   }
-
   componentWillUnmount() {
-    //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
   }
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
     this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
     if (this.props.data) {
       let {
@@ -181,7 +179,7 @@ class InstagramAdDesignExistingPost extends Component {
   };
 
   setTheState = (state) => {
-    this.setState({ ...state });
+    this.setState({ ...state, closeAnimation: false });
   };
 
   _getUploadState = (loading) => {
@@ -417,13 +415,18 @@ class InstagramAdDesignExistingPost extends Component {
     );
   };
   goBack = () => {
-    if (this.state.showPreview) {
+    if (this.state.swipeUpExpanded) {
+      this.setState({
+        closeAnimation: true,
+      });
+    } else if (this.state.showPreview) {
       this.setState({
         showPreview: false,
       });
     } else {
       this.props.navigation.goBack();
     }
+    return true;
   };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
@@ -654,6 +657,7 @@ class InstagramAdDesignExistingPost extends Component {
                 setTheState={this.setTheState}
                 existingPosts={true}
                 adType={"InstagramFeedAd"}
+                closeAnimation={this.state.closeAnimation}
               />
             </View>
             <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
