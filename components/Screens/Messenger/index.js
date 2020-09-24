@@ -14,7 +14,6 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import analytics from "@segment/analytics-react-native";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import { ActivityIndicator } from "react-native-paper";
 import socketIOClient from "socket.io-client";
 import * as Permissions from "expo-permissions";
