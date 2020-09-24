@@ -13,7 +13,6 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal, ActivityIndicator } from "react-native-paper";
 
 import { BlurView } from "expo-blur";
-import * as WebBrowser from "expo-web-browser";
 
 //Redux
 import { connect } from "react-redux";
@@ -24,9 +23,6 @@ import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
-
-//terms&conditions
-import { openTerms } from "../../Terms&Conditions";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
@@ -107,7 +103,6 @@ class PaymentForm extends Component {
   };
   _openWebBrowserAsync = async () => {
     try {
-      this._addLinkingListener();
       analytics.track(`payment_processing`, {
         source: "payment_mode",
         source_action: "a_payment_processing",
@@ -124,16 +119,6 @@ class PaymentForm extends Component {
           source: "payment_processing",
           source_action: "a_payment_processing",
         });
-        // await WebBrowser.openBrowserAsync(
-        //   this.state.addingCredits
-        //     ? this.props.payment_data_wallet.knet_payment_url
-        //     : this.props.payment_data.knet_payment_url
-        // ).then(action => {
-        //   if (action.type === "cancel")
-        //     this.setState({
-        //       browserLoading: false
-        //     });
-        // });
       }
       if (this.state.choice === 3) {
         this.props.navigation.navigate("WebView", {
@@ -144,16 +129,6 @@ class PaymentForm extends Component {
           source: "payment_processing",
           source_action: "a_payment_processing",
         });
-        // await WebBrowser.openBrowserAsync(
-        //   this.state.addingCredits
-        //     ? this.props.payment_data_wallet.cc_payment_url
-        //     : this.props.payment_data.cc_payment_url
-        // ).then(action => {
-        //   if (action.type === "cancel")
-        //     this.setState({
-        //       browserLoading: false
-        //     });
-        // });
       }
       this.closeBrowserLoading();
       this._removeLinkingListener();
@@ -177,23 +152,6 @@ class PaymentForm extends Component {
         browserLoading: false,
       });
     }
-  };
-  _addLinkingListener = () => {
-    Linking.addEventListener("url", this._handleRedirect);
-  };
-
-  _removeLinkingListener = () => {
-    Linking.removeEventListener("url", this._handleRedirect);
-  };
-
-  _handleRedirect = (event) => {
-    WebBrowser.dismissBrowser();
-    // this.setState({
-    //   browserLoading: false
-    // });
-    let data = Linking.parse(event.url);
-
-    // this.setState({ redirectData: data });
   };
 
   _changeToKnet = () => {
@@ -602,8 +560,6 @@ class PaymentForm extends Component {
                       source: "payment_mode",
                       source_action: "a_open_app_TNC",
                     });
-                    // this.setState({ browserLoading: true });
-                    // openTerms(this.closeBrowserLoading);
                   }}
                   style={[styles.link, styles.tNcText]}
                 >

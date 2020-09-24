@@ -17,7 +17,6 @@ export default class MediaModal extends Component {
     ].map((op) => {
       return (
         <MediaOptions
-          getVideoUploadUrl={this.props.getVideoUploadUrl}
           _pickImage={this.props._pickImage}
           key={op}
           title={op}

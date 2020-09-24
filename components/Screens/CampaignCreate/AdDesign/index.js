@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
-import * as WebBrowser from "expo-web-browser";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -484,132 +483,6 @@ class AdDesign extends Component {
         ? this.props.rejCampaign.story_creatives
         : []
     );
-
-  getVideoUploadUrl = () => {
-    this.setMediaModalVisible(false);
-    if (this.adType === "StoryAd") {
-      let story_id = this.state.storyAdCards.selectedStoryAd.hasOwnProperty(
-        "story_id"
-      )
-        ? "&" + this.state.storyAdCards.selectedStoryAd.story_id
-        : "";
-      let testingOrLiveServer = this.props.admin
-        ? "https://www.optimizekwtestingserver.com/optimize/"
-        : "https://www.optimizeapp.com/optimize/";
-      this.setState(
-        {
-          creativeVideoUrl:
-            `${testingOrLiveServer}fileupload/uploadCreative?` +
-            (this.rejected
-              ? this.selectedCampaign.campaign_id
-              : this.props.campaign_id) +
-            story_id,
-        },
-        () => this.openUploadVideo()
-      );
-    } else
-      this.props.getVideoUploadUrl(
-        this.rejected
-          ? this.selectedCampaign.campaign_id
-          : this.props.campaign_id,
-        this.openUploadVideo
-      );
-  };
-  openUploadVideo = async () => {
-    const { translate } = this.props.screenProps;
-
-    try {
-      this._addLinkingListener();
-      // this.props.navigation.replace("WebView", {
-      //   url:
-      //     this.adType === "StoryAd"
-      //       ? this.state.creativeVideoUrl
-      //       : this.props.videoUrl,
-      //   title: "Upload Video"
-      // });
-      await WebBrowser.openBrowserAsync(
-        this.adType === "StoryAd"
-          ? this.state.creativeVideoUrl
-          : this.props.videoUrl
-      );
-      this._removeLinkingListener();
-    } catch (error) {
-      WebBrowser.dismissBrowser();
-      showMessage({
-        message: translate("Something went wrong!"),
-        type: "warning",
-        position: "top",
-        description: translate("Please try again later"),
-      });
-    }
-  };
-
-  _addLinkingListener = () => {
-    Linking.addEventListener("url", this._handleRedirect);
-  };
-
-  _removeLinkingListener = () => {
-    Linking.removeEventListener("url", this._handleRedirect);
-  };
-
-  _handleRedirect = (event) => {
-    WebBrowser.dismissBrowser();
-
-    let data = Linking.parse(event.url);
-    if (this.adType === "StoryAd") {
-      let cards = this.props.storyAdsArray;
-      let card = this.props.storyAdsArray[
-        this.state.storyAdCards.selectedStoryAd.index
-      ];
-      let selectedImage = this.state.storyAdCards.selectedStoryAd;
-      selectedImage.media = "//";
-      card = {
-        ...card,
-        index: this.state.storyAdCards.selectedStoryAd.index,
-        story_id: data.queryParams.story_id,
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        media_type: "VIDEO",
-        uploaded: true,
-      };
-      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      this.setState({
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          selectedStoryAd: {
-            ...card,
-          },
-        },
-        videoIsLoading: false,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true,
-      });
-      !this.rejected &&
-        this.props.save_campaign_info({
-          selectedStoryAd: card,
-          iosVideoUploaded: true,
-          type: "VIDEO",
-          fileReadyToUpload: true,
-        });
-    } else {
-      this.setState({
-        ...this.state,
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        videoIsLoading: false,
-        fileReadyToUpload: true,
-      });
-      !this.rejected &&
-        this.props.save_campaign_info({
-          media: data.queryParams.media,
-          iosVideoUploaded: true,
-          type: "VIDEO",
-          fileReadyToUpload: true,
-        });
-    }
-  };
 
   _getUploadState = (loading) => {
     this.setState({
@@ -1708,7 +1581,6 @@ class AdDesign extends Component {
           </KeyboardAwareScrollView>
         </Container>
         <MediaModal
-          getVideoUploadUrl={this.getVideoUploadUrl}
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
           }

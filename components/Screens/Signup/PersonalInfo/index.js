@@ -4,13 +4,11 @@ import { View, ScrollView, I18nManager, Text } from "react-native";
 import { Item, Input, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 
-import LowerButton from "../../../MiniComponents/LowerButton";
 import InputFeild from "../../../MiniComponents/InputFieldNew";
 import PhoneNoField from "../PhoneNo/PhoneNoFieldNew";
 import BusinessAccount from "../../CreateBusinessAccount";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import InputScrollView from "react-native-input-scroll-view";
-import { openPrivacy, openTerms } from "../../../Terms&Conditions";
 
 //icons
 import UserProfile from "../../../../assets/SVGs/UserProfile";
@@ -666,14 +664,28 @@ class PersonalInfo extends Component {
             {translate(`By tapping the button below you agree to all the`) +
               " "}
             <Text
-              onPress={() => openTerms()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/terms_conditions",
+                  title: "Terms & Conditions",
+                  source: "registration_detail",
+                  source_action: "a_open_app_TNC",
+                })
+              }
               style={[styles.link, styles.tNcLink]}
             >
               {translate(`Terms & Conditions`)}
             </Text>{" "}
             {translate(`mentioned in this`) + " "}
             <Text
-              onPress={() => openPrivacy()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/privacy",
+                  title: "Privacy Policy",
+                  source: "registration_detail",
+                  source_action: "a_open_app_privacy_policy",
+                })
+              }
               style={[styles.link, styles.tNcLink, styles.agreementLink]}
             >
               {translate(`agreement`)}
