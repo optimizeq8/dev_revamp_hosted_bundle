@@ -45,7 +45,7 @@
     "i18n-js": "^3.7.1",
     "jwt-decode": "^3.0.0-beta.2",
     "lodash": "^4.17.20",
-    "lottie-react-native": "~2.6.1",
+    "lottie-react-native": "^3.4.0",
     "native-base": "^2.13.14",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",

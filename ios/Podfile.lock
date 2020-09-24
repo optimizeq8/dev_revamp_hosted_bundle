@@ -64,10 +64,6 @@ PODS:
     - UMCore
   - EXSecureStore (9.2.0):
     - UMCore
-  - EXSegment (9.0.0):
-    - Analytics (~> 4.0)
-    - UMConstantsInterface
-    - UMCore
   - EXSplashScreen (0.6.1):
     - React
     - UMCore
@@ -119,9 +115,9 @@ PODS:
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
   - imglyKit (10.21.0)
-  - lottie-ios (2.5.3)
-  - lottie-react-native (2.6.1):
-    - lottie-ios (~> 2.5.0)
+  - lottie-ios (3.1.8)
+  - lottie-react-native (3.5.0):
+    - lottie-ios (~> 3.1.8)
     - React
   - Mixpanel (3.6.2)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
@@ -460,7 +456,6 @@ DEPENDENCIES:
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXScreenOrientation (from `../node_modules/expo-screen-orientation/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
-  - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
@@ -590,8 +585,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-screen-orientation/ios"
   EXSecureStore:
     :path: "../node_modules/expo-secure-store/ios"
-  EXSegment:
-    :path: "../node_modules/expo-analytics-segment/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   EXSQLite:
@@ -748,7 +741,6 @@ SPEC CHECKSUMS:
   EXPermissions: 30cbe5b72bd209b65c00884180ad058a60bb413d
   EXScreenOrientation: 9110f49798fae74322f6fa959eab1da5d4805cf0
   EXSecureStore: 579cbccd9cd093e6f4336aba073b059008bd78e0
-  EXSegment: a354d6e65fad4dbb97701a24db763ea425d783e9
   EXSplashScreen: c496093747ee7f4e933c6312c0f52681612592e3
   EXSQLite: d0d8677c13e60d5db2812387f059c697be27d3fb
   EXUpdates: 9ed0693ab1c8df9f0472cfb4549d5edccdf05849
@@ -760,8 +752,8 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   imglyKit: 15dc44e9fae7f62d90562097880ae9886b5b19dd
-  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+  lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0a78141d1a073308201f76c55c3e629535e72b47
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   PhotoEditorSDK: 921291e24f9dc707e8856ca401b184d45add60ea
