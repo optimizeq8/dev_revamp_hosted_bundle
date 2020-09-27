@@ -401,7 +401,7 @@ export const _pickImage = async (
                 (Math.floor(newResult.width / 9) !==
                   Math.floor(newResult.height / 16) ||
                   (newResult.width < 1080 && newResult.height < 1920)) &&
-                newResult.duration <= 10.999 &&
+                newResult.duration <= 30.999 &&
                 newResult.duration >= 3.0
               ) {
                 let outputUri = actualUri.split("/");
@@ -440,13 +440,13 @@ export const _pickImage = async (
               if (process.rc !== 0) {
                 return Promise.reject("Video processing canceled");
               }
-              if (newResult.duration > 10.999) {
+              if (newResult.duration > 30.999) {
                 analytics.track(`a_error`, {
                   error_page: "ad_design",
-                  error_description: "Maximum video duration  is 10 seconds.",
+                  error_description: "Maximum video duration  is 30 seconds.",
                 });
                 setTheState({
-                  mediaError: "Maximum video duration  is 10 seconds.",
+                  mediaError: "Maximum video duration  is 30 seconds.",
                   media: "//",
                   sourceChanging: true,
                   uneditedImageUri: "//",
@@ -458,7 +458,7 @@ export const _pickImage = async (
                   });
 
                 showMessage({
-                  message: translate("Maximum video duration is 10 seconds"),
+                  message: translate("Maximum video duration is 30 seconds"),
                   description:
                     translate("Selected video duration") +
                     newResult.duration.toFixed(2) +
