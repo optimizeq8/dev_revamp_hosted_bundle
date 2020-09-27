@@ -639,22 +639,16 @@ class InstagramAdDesignExistingPost extends Component {
                   <VideoPlayer shouldPlay={true} media={media} />
                 )}
               </View>
-              {this.state.campaignInfo.call_to_action &&
-                (this.state.campaignInfo.call_to_action.value ||
-                  this.state.campaignInfo.call_to_action !== "BLANK") && (
+              {this.props.data.call_to_action &&
+                (this.props.data.call_to_action.value ||
+                  this.props.data.call_to_action !== "BLANK" ||
+                  this.props.data.call_to_action.value !== "BLANK") && (
                   <View style={previewStyles.swipeUpView}>
                     <Text style={previewStyles.callToActionText}>
-                      {this.state.campaignInfo.call_to_action.hasOwnProperty(
-                        "label"
-                      )
-                        ? translate(
-                            this.state.campaignInfo.call_to_action.label
-                          )
+                      {this.props.data.call_to_action.hasOwnProperty("label")
+                        ? translate(this.props.data.call_to_action.label)
                         : translate(
-                            this.state.campaignInfo.call_to_action.replace(
-                              "_",
-                              " "
-                            )
+                            this.props.data.call_to_action.replace("_", " ")
                           )}
                     </Text>
                     <ArrowBlueForward
