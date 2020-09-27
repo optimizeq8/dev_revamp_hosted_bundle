@@ -1,6 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager, Text } from "react-native";
+import {
+  View,
+  BackHandler,
+  I18nManager,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
@@ -1710,16 +1716,16 @@ class AdDetails extends Component {
                               paddingHorizontal: 0,
                               width:
                                 this.props.audienceList.length > 0
-                                  ? "25%"
+                                  ? "30%"
                                   : "60%",
                               fontSize:
-                                this.props.audienceList.length > 0 ? 10 : 16,
+                                this.props.audienceList.length > 0 ? 13 : 16,
                             },
                           ]}
                         >
                           {translate("Who would you like to reach?")}
                         </Text>
-                        {this.props.audienceList.length > 0 && (
+                        {this.props.audienceList.length > 0 ? (
                           <GradientButton
                             uppercase={true}
                             text={translate("Choose Existing Audience")}
@@ -1730,6 +1736,16 @@ class AdDetails extends Component {
                             style={styles.existingButton}
                             radius={50}
                           />
+                        ) : (
+                          this.props.audienceListLoading && (
+                            <ActivityIndicator
+                              color={globalColors.purple}
+                              size="small"
+                              style={{
+                                right: "100%",
+                              }}
+                            />
+                          )
                         )}
                       </View>
                     )}
@@ -1785,6 +1801,7 @@ const mapStateToProps = (state) => ({
   interests: state.campaignC.interests,
   campaignDateChanged: state.campaignC.campaignDateChanged,
   audienceList: state.audience.audienceList,
+  audienceListLoading: state.audience.audienceListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
