@@ -179,39 +179,40 @@ export class TargetAudience extends Component {
                   ))}
               </TouchableOpacity>
             ) : null}
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("map")}
-              style={styles.targetTouchable}
-            >
-              <View style={globalStyles.row}>
-                <LocationIcon
-                  width={30}
-                  height={30}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                />
+            {mainState.showRegions && (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("map")}
+                style={styles.targetTouchable}
+              >
+                <View style={globalStyles.row}>
+                  <LocationIcon
+                    width={30}
+                    height={30}
+                    style={styles.icon}
+                    fill={globalColors.purple}
+                  />
 
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Map")}</Text>
-                  <Text style={styles.menudetails}>
-                    {mainState.locationsInfo &&
-                    mainState.locationsInfo.length > 0
-                      ? mainState.locationsInfo
-                          .map((loc) => translate(loc.countryName))
-                          .join(", ")
-                      : ""}
-                  </Text>
+                  <View style={globalStyles.column}>
+                    <Text style={styles.menutext}>{translate("Map")}</Text>
+                    <Text style={styles.menudetails}>
+                      {mainState.locationsInfo &&
+                      mainState.locationsInfo.length > 0
+                        ? mainState.locationsInfo
+                            .map((loc) => translate(loc.countryName))
+                            .join(", ")
+                        : ""}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              {startEditing &&
-                (targeting.geos[0].country_code ? (
-                  <PurpleCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PurplePlusIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
-
+                {startEditing &&
+                  (targeting.locations[0].circles.length > 0 ? (
+                    <PurpleCheckmarkIcon width={30} height={30} />
+                  ) : (
+                    <PurplePlusIcon width={30} height={30} />
+                  ))}
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("gender")}

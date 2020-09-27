@@ -1,26 +1,26 @@
 export default [
-  {
-    description: "Kuwait",
-    address_components: [{ long_name: "Kuwait", short_name: "kw" }],
-    geometry: {
-      location: {
-        lat: 29.31166,
-        lng: 47.481766,
-      },
-      viewport: {
-        northeast: {
-          lat: 30.1036993,
-          lng: 48.5184,
-        },
-        southwest: {
-          lat: 28.5244463,
-          lng: 46.55303989999999,
-        },
-      },
-    },
+  // {
+  //   description: "Kuwait",
+  //   address_components: [{ long_name: "Kuwait", short_name: "kw" }],
+  //   geometry: {
+  //     location: {
+  //       lat: 29.31166,
+  //       lng: 47.481766,
+  //     },
+  //     viewport: {
+  //       northeast: {
+  //         lat: 30.1036993,
+  //         lng: 48.5184,
+  //       },
+  //       southwest: {
+  //         lat: 28.5244463,
+  //         lng: 46.55303989999999,
+  //       },
+  //     },
+  //   },
 
-    place_id: "ChIJoVHqvj82xT8R0u3Yks1rcnQ",
-  },
+  //   place_id: "ChIJoVHqvj82xT8R0u3Yks1rcnQ",
+  // },
   {
     description: "Saudi Arabia",
     address_components: [{ long_name: "Saudi Arabia", short_name: "sa" }],
@@ -42,27 +42,27 @@ export default [
     },
     place_id: "ChIJQSqV5z-z5xURm7YawktQYFk",
   },
-  {
-    description: "Bahrain",
-    place_id: "ChIJQSqV5z-ChIJEaJHak5SSD4RRhDa2",
-    address_components: [{ long_name: "Bahrain", short_name: "bh" }],
-    geometry: {
-      location: {
-        lat: 26.0667,
-        lng: 50.5577,
-      },
-      viewport: {
-        northeast: {
-          lat: 26.3469001,
-          lng: 50.8509064,
-        },
-        southwest: {
-          lat: 25.5349999,
-          lng: 50.324246,
-        },
-      },
-    },
-  },
+  // {
+  //   description: "Bahrain",
+  //   place_id: "ChIJQSqV5z-ChIJEaJHak5SSD4RRhDa2",
+  //   address_components: [{ long_name: "Bahrain", short_name: "bh" }],
+  //   geometry: {
+  //     location: {
+  //       lat: 26.0667,
+  //       lng: 50.5577,
+  //     },
+  //     viewport: {
+  //       northeast: {
+  //         lat: 26.3469001,
+  //         lng: 50.8509064,
+  //       },
+  //       southwest: {
+  //         lat: 25.5349999,
+  //         lng: 50.324246,
+  //       },
+  //     },
+  //   },
+  // },
   {
     description: "UAE",
     place_id: "ChIJvRKrsd9IXj4RpwoIwFYv0zM",
@@ -84,27 +84,27 @@ export default [
       },
     },
   },
-  {
-    description: "Qatar",
-    place_id: "ChIJf-jc_zTFRT4RMkArgc-I-hw",
-    address_components: [{ long_name: "Qatar", short_name: "qa" }],
-    geometry: {
-      location: {
-        lat: 25.354826,
-        lng: 51.183884,
-      },
-      viewport: {
-        northeast: {
-          lat: 26.2171,
-          lng: 51.7144001,
-        },
-        southwest: {
-          lat: 24.471118,
-          lng: 50.7211001,
-        },
-      },
-    },
-  },
+  // {
+  //   description: "Qatar",
+  //   place_id: "ChIJf-jc_zTFRT4RMkArgc-I-hw",
+  //   address_components: [{ long_name: "Qatar", short_name: "qa" }],
+  //   geometry: {
+  //     location: {
+  //       lat: 25.354826,
+  //       lng: 51.183884,
+  //     },
+  //     viewport: {
+  //       northeast: {
+  //         lat: 26.2171,
+  //         lng: 51.7144001,
+  //       },
+  //       southwest: {
+  //         lat: 24.471118,
+  //         lng: 50.7211001,
+  //       },
+  //     },
+  //   },
+  // },
   {
     description: "Oman",
     place_id: "ChIJv5vVqWaf1j0RF6ixZXZMBjo",

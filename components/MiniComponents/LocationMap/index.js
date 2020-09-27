@@ -200,31 +200,6 @@ export default class LocaionMap extends Component {
     }
   };
 
-  handleInitialRegion = () => {
-    let { country_code } = this.props;
-    let countryName = "";
-    if (country_code === "sa") {
-      countryName = "Saudi Arabia";
-    } else if (country_code === "ae") {
-      countryName = "United Arab Emirates";
-    } else
-      countryName = countries.find((country) => country.value === country_code)
-        .label;
-    Axios.get(
-      `https://api.geocodify.com/v2/geocode?api_key=710870f62a633c72ad91bc4ab46c4aee88e4dd78&q=${countryName}`
-    )
-      .then((res) => res.data)
-      .then((data) => {
-        let features = data.response.features;
-        let country = features.find(
-          (country) => country.properties.country === countryName
-        );
-        let countryCoords = country.geometry.coordinates;
-        let bBox = country.bbox; //boundries of country
-        this.handleRegionChange(countryCoords, bBox);
-      })
-      .catch((err) => {});
-  };
   handleShowFlatList = (showFlatList) => {
     this.setState({ showFlatList });
   };
