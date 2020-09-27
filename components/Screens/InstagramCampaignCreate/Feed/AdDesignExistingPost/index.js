@@ -10,6 +10,7 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
@@ -49,7 +50,6 @@ import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 
 import { globalColors } from "../../../../../GlobalStyles";
-import { ScrollView } from "react-native-gesture-handler";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import ClickDestination from "../AdDesign/ClickDestination";
 import { Video } from "expo";
@@ -149,7 +149,7 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
         }
       }
-      console.log("attachment", attachment);
+      // console.log("attachment", attachment);
       this.setState({
         campaignInfo: {
           ...this.props.data,
@@ -305,10 +305,7 @@ class InstagramAdDesignExistingPost extends Component {
         campaign_media_type: this.state.campaignInfo.media_type,
         // campaign_appChoice: this.state.appChoice,
       };
-      console.log(
-        "this.state.campaignInfo.media_type",
-        this.state.campaignInfo.media_type
-      );
+
       if (!this.props.loading) {
         await this.props.saveInstgramExistpost(
           "InstagramFeedAdTargetting",

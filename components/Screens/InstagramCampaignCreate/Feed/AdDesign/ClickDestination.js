@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, LayoutAnimation } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, LayoutAnimation, TouchableOpacity } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import styles from "../../styles/adDesign.styles";
 import { globalColors } from "../../../../../GlobalStyles";

@@ -16,7 +16,6 @@ import WhatsApp from "./WhatsApp";
 //Redux
 import { connect } from "react-redux";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { globalColors } from "../../../../GlobalStyles";
 // import * as actionCreators from "../../../../store/actions";
 
