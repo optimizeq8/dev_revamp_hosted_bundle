@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Animated } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
-// import Toggle from "react-native-switch-toggle";
 import Toggle from "../Toggle";
 
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
