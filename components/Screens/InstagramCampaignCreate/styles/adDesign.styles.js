@@ -625,7 +625,6 @@ const styles = StyleSheet.create({
   clickContainer: {
     width: "90%",
     alignSelf: "center",
-    backgroundColor: "blue",
     top: 75,
   },
 });
