@@ -639,7 +639,8 @@ class InstagramAdDesignExistingPost extends Component {
                   <VideoPlayer shouldPlay={true} media={media} />
                 )}
               </View>
-              {this.props.data.call_to_action &&
+              {this.props.data &&
+                this.props.data.call_to_action &&
                 (this.props.data.call_to_action.value ||
                   this.props.data.call_to_action !== "BLANK" ||
                   this.props.data.call_to_action.value !== "BLANK") && (
