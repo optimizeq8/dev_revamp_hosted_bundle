@@ -70,7 +70,7 @@ class InstagramAdDesignExistingPost extends Component {
         media_type: "",
       },
       showPreview: false,
-
+      media_type: "",
       fileReadyToUpload: false,
       carouselAdCards: {
         carouselAdSelected: false,
@@ -444,6 +444,11 @@ class InstagramAdDesignExistingPost extends Component {
               message: product.message,
               instagram_post_id: product.promotable_id,
             },
+            media_type:
+              product.attachments.data[0].type === "photo" ||
+              product.attachments.data[0].type === "album"
+                ? "IMAGE"
+                : "VIDEO",
             showPreview: true,
           });
           this.props.save_campaign_info_instagram({
@@ -583,6 +588,7 @@ class InstagramAdDesignExistingPost extends Component {
               numColumns={4}
               contentContainerStyle={existPostStyles.flatListContentStyle}
               showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => item.promotable_id}
             />
             {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>
@@ -633,22 +639,17 @@ class InstagramAdDesignExistingPost extends Component {
                   <VideoPlayer shouldPlay={true} media={media} />
                 )}
               </View>
-              {this.state.campaignInfo.call_to_action &&
-                (this.state.campaignInfo.call_to_action.value ||
-                  this.state.campaignInfo.call_to_action !== "BLANK") && (
+              {this.props.data &&
+                this.props.data.call_to_action &&
+                (this.props.data.call_to_action.value ||
+                  this.props.data.call_to_action !== "BLANK" ||
+                  this.props.data.call_to_action.value !== "BLANK") && (
                   <View style={previewStyles.swipeUpView}>
                     <Text style={previewStyles.callToActionText}>
-                      {this.state.campaignInfo.call_to_action.hasOwnProperty(
-                        "label"
-                      )
-                        ? translate(
-                            this.state.campaignInfo.call_to_action.label
-                          )
+                      {this.props.data.call_to_action.hasOwnProperty("label")
+                        ? translate(this.props.data.call_to_action.label)
                         : translate(
-                            this.state.campaignInfo.call_to_action.replace(
-                              "_",
-                              " "
-                            )
+                            this.props.data.call_to_action.replace("_", " ")
                           )}
                     </Text>
                     <ArrowBlueForward
