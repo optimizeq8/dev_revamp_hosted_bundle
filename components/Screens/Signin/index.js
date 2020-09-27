@@ -6,8 +6,8 @@ import {
   Linking,
   Platform,
   ScrollView,
+  Text,
 } from "react-native";
-import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";

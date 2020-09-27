@@ -20,8 +20,8 @@ import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
-import FlashMessage, { showMessage } from "react-native-flash-message";
-import { log } from "react-native-reanimated";
+import FlashMessage from "react-native-flash-message";
+
 class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {

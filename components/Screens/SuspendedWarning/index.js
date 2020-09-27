@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Modal, Platform } from "react-native";
-import { Button, Text } from "native-base";
+import { View, Text } from "react-native";
 import {
   SafeAreaView,
   NavigationActions,
@@ -35,10 +34,7 @@ export default class SuspendedWarning extends Component {
               height={322}
               style={{ alignSelf: "center", marginBottom: 20 }}
             />
-            <Text
-              uppercase
-              style={[styles.title, { fontSize: 16, alignSelf: "center" }]}
-            >
+            <Text style={[styles.title, { fontSize: 16, alignSelf: "center" }]}>
               {translate("Account Suspended")}
             </Text>
             <Text style={[styles.pauseDes]}>

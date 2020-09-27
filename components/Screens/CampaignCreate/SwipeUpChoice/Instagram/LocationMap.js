@@ -16,7 +16,6 @@ import isEmpty from "lodash/isEmpty";
 import upperCase from "lodash/upperCase";
 // import { Modal } from 'react-native-paper';
 import { BlurView } from "expo-blur";
-// import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import Picker from "../../../../MiniComponents/Picker";
