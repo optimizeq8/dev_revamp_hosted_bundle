@@ -28,7 +28,7 @@ class SnapchatCampaignAudience extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAudienceList();
+    if (this.props.audienceList.length === 0) this.props.getAudienceList();
   }
 
   showAlert = (audience) => {
@@ -104,6 +104,9 @@ class SnapchatCampaignAudience extends React.Component {
       source_action,
     });
   };
+  retrieveAudinece = () => {
+    this.props.getAudienceList();
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -137,6 +140,8 @@ class SnapchatCampaignAudience extends React.Component {
               minHeight: heightPercentageToDP(50),
               flex: 0,
             }}
+            onRefresh={this.retrieveAudinece}
+            refreshing={this.props.audienceListLoading}
           />
         )}
       </View>
