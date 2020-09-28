@@ -7,15 +7,15 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingVertical: 13,
-    alignItems: "center"
+    alignItems: "center",
   },
   amountContainer: {
-    flexDirection: "column"
+    flexDirection: "column",
   },
   amountText: {
     fontSize: 26,
     paddingHorizontal: 0,
-    color: "#FF8D04"
+    color: "#FF8D04",
   },
   cardStyle: {
     justifyContent: "space-between",
@@ -25,30 +25,30 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginVertical: 9,
     paddingVertical: 18,
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
   },
   text: {
     color: "#FFF",
     fontFamily: "montserrat-bold",
     fontSize: 13,
-    textAlign: "left"
+    textAlign: "left",
   },
   amountTextTitle: {
     color: "#FFF",
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    textAlign: "center"
+    textAlign: "center",
   },
   dateText: {
     color: "#FF8D04",
     fontFamily: "montserrat-bold-english",
     fontSize: 18,
-    textAlign: "left"
+    textAlign: "left",
   },
   header: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   titleText: {
     textAlign: "left",
@@ -57,22 +57,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 0,
     paddingHorizontal: 10,
-    width: 200
+    width: 200,
   },
   subText: {
     fontFamily: "montserrat-regular-english",
     fontSize: 14,
     color: "#FFF",
     textAlign: "left",
-    marginTop: 3
+    marginTop: 3,
   },
   icon: {
     color: "#FFFF",
-    fontSize: 35
+    fontSize: 35,
   },
   transactionText: {
-    marginTop: 7
-  }
+    marginTop: 7,
+  },
+  instagramIcon: {
+    marginRight: -25,
+    marginLeft: -20,
+    marginBottom: -25,
+    marginTop: -20,
+  },
 });
 
 export default styles;

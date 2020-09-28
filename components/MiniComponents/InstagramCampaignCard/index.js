@@ -6,7 +6,9 @@ import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+// import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+import InstagramIcon from "../../../assets/images/AdTypes/InstaWhiteLogo";
+
 import whyDidYouRender from "@welldone-software/why-did-you-render";
 
 import { globalColors } from "../../../GlobalStyles";
@@ -90,7 +92,12 @@ class CampaignCard extends Component {
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <InstagramIcon width={25} height={25} fill={"#FFF"} />
+              <InstagramIcon
+                width={55}
+                height={55}
+                fill={"#FFF"}
+                style={{ marginRight: -15, marginLeft: -10, marginBottom: -10 }}
+              />
               <View
                 style={{
                   display: "flex",

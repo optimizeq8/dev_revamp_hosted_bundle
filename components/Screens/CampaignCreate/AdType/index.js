@@ -51,8 +51,9 @@ class AdType extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (
-      this.props.mainBusiness &&
-      this.props.mainBusiness.instagram_access === "0"
+      (this.props.mainBusiness &&
+        this.props.mainBusiness.instagram_access === "0") ||
+      !this.props.mainBusiness.instagram_access
     ) {
       let socialMediaPlatforms =
         Platform.OS === "android" && I18nManager.isRTL
