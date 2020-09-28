@@ -146,40 +146,14 @@ class AdDetails extends Component {
       prevState.campaignInfo.targeting.geos.length !==
       this.state.campaignInfo.targeting.geos.length
     ) {
-      let languages = this.state.campaignInfo.targeting.demographics[0]
-        .languages;
-      if (this.state.campaignInfo.targeting.geos.length > 1) {
-        languages.length = 1;
-      }
-      if (!this.editCampaign) {
-        let duration = Math.round(
-          Math.abs(
-            (new Date(this.props.data.start_time).getTime() -
-              new Date(this.props.data.end_time).getTime()) /
-              86400000
-          ) + 1
-        );
-
-        let recBudget =
-          this.state.campaignInfo.targeting.geos.length * duration * 75;
-
-        let minValueBudget =
-          this.props.data.minValueBudget *
-          this.state.campaignInfo.targeting.geos.length;
-        let lifetime_budget_micro = this.state.campaignInfo
-          .lifetime_budget_micro;
-        let value = this.state.value;
-        if (this.state.budgetOption === 1) {
-          lifetime_budget_micro = recBudget * 2;
-          value = this.formatNumber(recBudget * 2, true);
-        }
-        this.setState({
-          campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
-          value,
-          minValueBudget,
-          recBudget,
-        });
-      }
+      this.handleMultipleCountrySelection();
+    }
+    if (
+      JSON.stringify(this.state.campaignInfo) !==
+      JSON.stringify(prevState.campaignInfo)
+    ) {
+      //to not set the audince again from navigation when AdDetails is focused
+      this.props.navigation.setParams({ audienceSelected: false });
     }
   }
   handleBackButton = () => {
@@ -190,6 +164,73 @@ class AdDetails extends Component {
       this._handleSideMenuState(false);
     } else this.props.navigation.goBack();
     return true;
+  };
+
+  handleMultipleCountrySelection = () => {
+    let languages = this.state.campaignInfo.targeting.demographics[0].languages;
+    if (this.state.campaignInfo.targeting.geos.length > 1) {
+      languages.length = 1;
+    }
+    if (!this.editCampaign) {
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let recBudget =
+        this.state.campaignInfo.targeting.geos.length * duration * 75;
+
+      let minValueBudget =
+        this.props.data.minValueBudget *
+        this.state.campaignInfo.targeting.geos.length;
+      let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
+      let value = this.state.value;
+      if (this.state.budgetOption !== 0) {
+        switch (this.state.budgetOption) {
+          case 1:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          case 2:
+            lifetime_budget_micro = recBudget;
+            value = this.formatNumber(recBudget, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          case 3:
+            lifetime_budget_micro = recBudget * 3;
+            value = this.formatNumber(recBudget * 3, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          default:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            break;
+        }
+      }
+
+      this.setState({
+        campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
+        value,
+        minValueBudget,
+        recBudget,
+      });
+    }
   };
   async componentDidMount() {
     this.props.get_languages();
@@ -1298,7 +1339,7 @@ class AdDetails extends Component {
               campaignInfo: rep,
             });
           }
-
+          this.handleMultipleCountrySelection();
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
         }
