@@ -96,7 +96,7 @@ class CampaignCard extends Component {
                 width={55}
                 height={55}
                 fill={"#FFF"}
-                style={{ marginRight: -15, marginLeft: -10 }}
+                style={{ marginRight: -15, marginLeft: -10, marginBottom: -10 }}
               />
               <View
                 style={{
