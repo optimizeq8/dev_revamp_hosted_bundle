@@ -563,7 +563,8 @@ class AdDesign extends Component {
     );
     let brandHeadlineError = null;
     if (
-      this.state.campaignInfo.brand_name === this.state.campaignInfo.headline
+      this.state.campaignInfo.brand_name.toLowerCase().trim() ===
+      this.state.campaignInfo.headline.toLowerCase().trim()
     ) {
       brandHeadlineError =
         "Business name and Promotional Message can not be the same";

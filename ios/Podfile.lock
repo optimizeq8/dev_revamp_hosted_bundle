@@ -117,7 +117,7 @@ PODS:
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
-  - Mixpanel (3.6.2)
+  - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
   - PhotoEditorSDK (10.21.0):
     - imglyKit (= 10.21.0)
@@ -748,7 +748,7 @@ SPEC CHECKSUMS:
   imglyKit: 15dc44e9fae7f62d90562097880ae9886b5b19dd
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
-  Mixpanel: 0a78141d1a073308201f76c55c3e629535e72b47
+  Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   PhotoEditorSDK: 921291e24f9dc707e8856ca401b184d45add60ea
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
@@ -813,4 +813,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 107bb2d737711ab4b88b3d278b853db1609e1fb5
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3
