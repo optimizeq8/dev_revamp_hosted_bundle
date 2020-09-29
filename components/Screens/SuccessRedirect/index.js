@@ -14,7 +14,6 @@ import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
-import { persistor } from "../../../store";
 import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class SuccessRedirect extends Component {

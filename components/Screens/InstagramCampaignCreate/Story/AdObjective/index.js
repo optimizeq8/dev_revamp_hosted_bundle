@@ -394,9 +394,9 @@ class AdObjective extends Component {
   };
   handleDuration = (subtract = false) => {
     let duration = subtract
-      ? this.state.duration - 1 > 1
+      ? this.state.duration - 1 > 3
         ? this.state.duration - 1
-        : 1
+        : 3
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
