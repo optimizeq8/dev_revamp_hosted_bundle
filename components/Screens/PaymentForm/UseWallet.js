@@ -92,7 +92,18 @@ class UseWallet extends Component {
             >
               <View style={styles.walletPaymentModalContainer}>
                 {this.props.loading ? (
-                  <LoadingScreen top={50} />
+                  <>
+                    <Text style={styles.warningLoadmessage}>
+                      {translate("Please wait a while")}
+                    </Text>
+                    <Text style={styles.warningLoadmessage}>
+                      {translate("Your transaction is being completed")}
+                    </Text>
+                    <Text style={styles.warningLoadmessage}>
+                      {translate("Do not close the App")}
+                    </Text>
+                    <LoadingScreen top={40} />
+                  </>
                 ) : (
                   <>
                     <WalletIcon width={80} height={80} />

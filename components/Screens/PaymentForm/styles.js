@@ -285,6 +285,14 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
   },
+  warningLoadmessage: {
+    color: globalColors.white,
+    fontSize: 14,
+    lineHeight: 18,
+    textTransform: "uppercase",
+    textAlign: "center",
+    fontFamily: "montserrat-bold",
+  },
 });
 
 export default styles;
