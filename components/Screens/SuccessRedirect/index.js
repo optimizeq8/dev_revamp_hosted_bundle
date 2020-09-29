@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 import GradientButton from "../../MiniComponents/GradientButton";
 //Redux

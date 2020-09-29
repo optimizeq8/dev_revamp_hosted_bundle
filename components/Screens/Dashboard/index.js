@@ -281,7 +281,7 @@ class Dashboard extends Component {
         this.props.navigation.navigate("SuspendedWarning");
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
-          url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
           source: "dashboard",
           source_action: "a_campaign_ad_type",

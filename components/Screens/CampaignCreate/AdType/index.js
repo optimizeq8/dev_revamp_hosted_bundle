@@ -141,7 +141,7 @@ class AdType extends Component {
         this.props.navigation.navigate("SuspendedWarning");
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
-          url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
           source: "ad_type",
           source_action: "a_campaign_ad_type",
@@ -251,6 +251,7 @@ class AdType extends Component {
       "fb_ad_account_id",
       null
     );
+    console.log("fb_ad_account_id", fb_ad_account_id);
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
       this.props.updateBusinessConnectedToFacebook({
         fb_connected: "1",
@@ -405,7 +406,7 @@ class AdType extends Component {
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+                  url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
                   title: "Instagram",
                   source: "ad_type",
                   source_action: "a_connect_to_facebook",
