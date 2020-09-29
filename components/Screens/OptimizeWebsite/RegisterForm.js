@@ -125,7 +125,10 @@ class RegisterForm extends Component {
     }
   };
 
-  _handleSubmissionUpdate = () => {
+  _handleSubmissionUpdate = async () => {
+    const error = await this.props.verifyInstagramHandle(
+      this.state.insta_handle
+    );
     const { translate } = this.props.screenProps;
     const valid = this.validate();
     if (!valid || this.props.errorInstaHandle) {
