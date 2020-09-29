@@ -330,6 +330,7 @@ class InstagramFeedAdTargetting extends Component {
   };
   onSelectedInterestsNamesChange = (selectedItems, custom = false) => {
     let replace = cloneDeep(this.state.campaignInfo);
+    selectedItems = selectedItems.filter((item) => item);
     let interestArray =
       selectedItems.length > 0
         ? selectedItems.map((item) => {
