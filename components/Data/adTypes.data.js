@@ -77,7 +77,7 @@ export const snapAds = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     createRout: "SnapchatCreateAdAcc",
-    title: "Story",
+    title: "Explore",
     value: "StoryAd",
     media: require("../../assets/images/AdTypes/StoryAd.gif"),
     icon: AdIcons.StoryAd,
