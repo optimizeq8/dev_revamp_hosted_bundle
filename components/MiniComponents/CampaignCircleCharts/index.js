@@ -201,7 +201,8 @@ class CampaignCircleChart extends Component {
                           ? campaign.cpm
                           : campaign.swipes
                         : 0,
-                      campaign.objective !== "BRAND_AWARENESS"
+                      campaign.objective !== "BRAND_AWARENESS",
+                      campaign.objective === "BRAND_AWARENESS"
                     )}
                   </Text>
                   <Text
@@ -242,7 +243,7 @@ class CampaignCircleChart extends Component {
                   >
                     {campaign
                       ? parseFloat(campaign.paid_frequency).toFixed(2)
-                      : 0}
+                      : parseFloat(0).toFixed(2)}
                   </Text>
                 </View>
               </View>

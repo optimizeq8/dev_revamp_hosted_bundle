@@ -251,7 +251,6 @@ class AdType extends Component {
       "fb_ad_account_id",
       null
     );
-    console.log("fb_ad_account_id", fb_ad_account_id);
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
       this.props.updateBusinessConnectedToFacebook({
         fb_connected: "1",
@@ -329,7 +328,11 @@ class AdType extends Component {
                       styles.activeMediaIcon,
                   ]}
                 >
-                  <MediaIcon width={"100%"} height={"100%"} />
+                  <MediaIcon
+                    stroke={social.title === "Snapchat" ? "#000000" : "none"}
+                    width={"100%"}
+                    height={social.title === "Snapchat" ? 30 : "100%"}
+                  />
                 </TouchableOpacity>
               );
             })}
