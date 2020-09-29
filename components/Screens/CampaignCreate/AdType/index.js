@@ -247,9 +247,15 @@ class AdType extends Component {
       "success",
       false
     );
-
+    const fb_ad_account_id = this.props.navigation.getParam(
+      "fb_ad_account_id",
+      null
+    );
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
-      this.props.updateBusinessConnectedToFacebook("1");
+      this.props.updateBusinessConnectedToFacebook({
+        fb_connected: "1",
+        fb_ad_account_id: fb_ad_account_id,
+      });
     }
   };
 
@@ -493,7 +499,7 @@ const mapDispatchToProps = (dispatch) => ({
   set_adType: (value) => dispatch(actionCreators.set_adType(value)),
   resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  updateBusinessConnectedToFacebook: (fb_connected) =>
-    dispatch(actionCreators.updateBusinessConnectedToFacebook(fb_connected)),
+  updateBusinessConnectedToFacebook: (data) =>
+    dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

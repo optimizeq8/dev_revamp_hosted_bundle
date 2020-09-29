@@ -1027,13 +1027,16 @@ export const changeBusinessLogo = (
       });
   };
 };
-
-export const updateBusinessConnectedToFacebook = (fb_connected) => {
+/**
+ *
+ * @param {*} data {fb_connected: "1", fb_ad_account_id: //value coming from navigator}
+ */
+export const updateBusinessConnectedToFacebook = (data) => {
   return (dispatch) => {
     return dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
       payload: {
-        fb_connected: fb_connected,
+        ...data,
       },
     });
   };
