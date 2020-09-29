@@ -88,7 +88,10 @@ class RegisterForm extends Component {
     });
     // }
   };
-  _handleSubmissionRegister = () => {
+  _handleSubmissionRegister = async () => {
+    const error = await this.props.verifyInstagramHandle(
+      this.state.insta_handle
+    );
     const valid = this.validate();
     if (valid && !this.props.errorInstaHandle) {
       const callnumber =
