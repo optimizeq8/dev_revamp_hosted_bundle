@@ -1219,6 +1219,8 @@ class InstagramStoryAdTargetting extends Component {
             }}
             topRightButtonText={translate("Edit")}
             title={this.editCampaign ? "Audience" : "Campaign details"}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
           />
         )}
         <View style={{ height: "100%" }}>

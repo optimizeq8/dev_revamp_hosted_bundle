@@ -25,6 +25,7 @@ class SelectInterests extends Component {
   state = { interests: null, customInterests: null, open: false };
   componentDidMount() {
     this.props.get_interests_instagram();
+
     if (this.props.interests) {
       let interests = [];
       if (this.props.interests.length === 0) {

@@ -1272,9 +1272,16 @@ class AdDetails extends Component {
     );
     if (this.props.navigation.getParam("audienceSelected", false)) {
       let editedCampaign = cloneDeep(this.state.campaignInfo);
+      let campaignTargeting = this.props.navigation.getParam(
+        "campaignTargeting",
+        {}
+      );
+      if (this.editCampaign) {
+        campaignTargeting.geos = editedCampaign.targeting.geos;
+      }
       editedCampaign.targeting = {
         ...editedCampaign.targeting,
-        ...this.props.navigation.getParam("campaignTargeting", {}),
+        ...campaignTargeting,
       };
 
       let editedCountryCodes = editedCampaign.targeting.geos.map(

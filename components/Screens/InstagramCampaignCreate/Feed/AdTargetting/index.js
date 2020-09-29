@@ -330,6 +330,7 @@ class InstagramFeedAdTargetting extends Component {
   };
   onSelectedInterestsNamesChange = (selectedItems, custom = false) => {
     let replace = cloneDeep(this.state.campaignInfo);
+    selectedItems = selectedItems.filter((item) => item);
     let interestArray =
       selectedItems.length > 0
         ? selectedItems.map((item) => {
@@ -625,8 +626,8 @@ class InstagramFeedAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].min_age = parseInt(values[0]);
-    rep.targeting.demographics[0].max_age = parseInt(values[1]);
+    rep.targeting.min_age = parseInt(values[0]);
+    rep.targeting.max_age = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
@@ -1225,6 +1226,8 @@ class InstagramFeedAdTargetting extends Component {
             topRightButtonText={translate("Edit")}
             navigation={this.editCampaign ? undefined : this.props.navigation}
             title={this.editCampaign ? "Audience" : "Campaign details"}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
           />
         )}
         <View style={{ height: "100%" }}>
