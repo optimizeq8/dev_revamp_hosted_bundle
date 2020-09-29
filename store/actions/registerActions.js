@@ -252,10 +252,14 @@ export const verifyMobileCode = (mobileAuth, verification_channel) => {
         await setAuthToken(data.token);
         const decodedUser = jwt_decode(data.token);
 
-        return { user: decodedUser, message: data.message };
+        return {
+          user: decodedUser,
+          message: data.message,
+          success: data.success,
+        };
       })
       .then((decodedUser) => {
-        if (decodedUser && decodedUser.user) {
+        if (decodedUser && decodedUser.user && decodedUser.success) {
           analytics.track(`a_otp_verify`, {
             source: "otp_verify",
             source_action: "a_otp_verify",
@@ -267,14 +271,17 @@ export const verifyMobileCode = (mobileAuth, verification_channel) => {
           });
           dispatch(setCurrentUser(decodedUser));
         }
+        return decodedUser.success;
       })
-      .then(() => {
-        let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
-        Adjust.trackEvent(adjustVerifyAccountTracker);
-        NavigationService.navigate("Dashboard", {
-          source: "otp_verify",
-          source_action: "a_otp_verify",
-        });
+      .then((success) => {
+        if (success) {
+          let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
+          Adjust.trackEvent(adjustVerifyAccountTracker);
+          NavigationService.navigate("Dashboard", {
+            source: "otp_verify",
+            source_action: "a_otp_verify",
+          });
+        }
       })
       .catch((err) => {
         // console.log("verifyMobileCode error", err.message || err.response);
