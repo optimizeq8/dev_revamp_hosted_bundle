@@ -21,7 +21,34 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage from "react-native-flash-message";
-
+const appsToRemove = [
+  "WhatsApp Messenger",
+  "WhatsApp Business",
+  "Twitter",
+  "LinkedIn: Network & Job Finder", // iOS
+  "LinkedIn: Jobs, Business News & Social Networking", //android
+  "TikTok - Trends Start Here",
+  "Facebook",
+  "Facebook Lite",
+  "Messenger", // facebook messenger for iOS
+  "Messenger – Text and Video Chat for Free", //android
+  "Messenger Lite: Free Calls & Messages",
+  "Instagram",
+  "IGTV: Watch Instagram Videos",
+  "YouTube VR",
+  "YouTube Music - Stream Songs & Music Videos",
+  "YouTube TV - Watch & Record Live TV",
+  "YouTube for Android TV", //android
+  "YouTube Studio",
+  "YouTube Music",
+  "YouTube Kids",
+  "YouTube", //android
+  "YouTube: Watch, Listen, Stream", //iOS,
+  "YouTube TV", //iOS
+  "Snapchat",
+  "Pinterest",
+  "Pinterest Lite",
+];
 class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
@@ -40,13 +67,19 @@ class AppSearchModal extends Component {
       .then((res) => {
         return res.data;
       })
-      .then((data) =>
+      .then((data) => {
+        let list = [];
+        if (data.data && data.data.length > 0) {
+          list = data.data.filter((item) => {
+            return !appsToRemove.includes(item.name);
+          });
+        }
         this.props.setTheState({
-          androidData: data.data,
+          androidData: list,
           showList: true,
           loading: false,
-        })
-      )
+        });
+      })
       .catch((err) => {
         // console.log(err);
 
@@ -87,8 +120,14 @@ class AppSearchModal extends Component {
         return res.data;
       })
       .then((data) => {
+        let list = [];
+        if (data.data && data.data.length > 0) {
+          list = data.data.filter((item) => {
+            return !appsToRemove.includes(item.name);
+          });
+        }
         this.props.setTheState({
-          data: data.data,
+          data: list,
           showList: true,
           loading: false,
         });
