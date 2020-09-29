@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 41,
     fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
   },
   lottieViewContainer: {
     zIndex: 1,
