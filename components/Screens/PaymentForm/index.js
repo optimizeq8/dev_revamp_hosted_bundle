@@ -131,7 +131,7 @@ class PaymentForm extends Component {
         });
       }
       this.closeBrowserLoading();
-      this._removeLinkingListener();
+
     } catch (error) {
       analytics.track(`payment_processing`, {
         source: "payment_mode",
