@@ -18,18 +18,29 @@ export const previewHandler = (
   source,
   campaignDetails
 ) => {
-  let media =
-    selectedCampaign.campaign_type !== "StoryAd"
-      ? { media: selectedCampaign.media }
-      : {
-          cover: selectedCampaign.story_preview_media,
-          logo: selectedCampaign.story_logo_media,
-        };
-
+  let media = { media: selectedCampaign.media };
+  // let storyOrCollection =
+  //   selectedCampaign.story_creatives || selectedCampaign.collection_creatives;
+  let icon_media_url = "";
   let type = selectedCampaign.media_type;
   let call_to_action = selectedCampaign.call_to_action;
   let destination = selectedCampaign.destination;
-
+  // if (storyOrCollection) {
+  //   icon_media_url =
+  //     storyOrCollection[0].attachment &&
+  //     storyOrCollection[0].attachment !== "BLANK"
+  //       ? JSON.parse(storyOrCollection[0].attachment).icon_media_url
+  //       : "";
+  //   type = storyOrCollection[0].media_type;
+  //   call_to_action = storyOrCollection[0].call_to_action;
+  //   destination = storyOrCollection[0].destination;
+  // } else {
+  //   icon_media_url =
+  //     typeof selectedCampaign.attachment === "string" &&
+  //     selectedCampaign.attachment !== "BLANK"
+  //       ? JSON.parse(selectedCampaign.attachment).icon_media_url
+  //       : "";
+  // }
   analytics.track(`a_preview_ad`, {
     source: "campaign_details",
     source_action: "a_preview_ad",

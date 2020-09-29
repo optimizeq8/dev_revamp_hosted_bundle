@@ -165,7 +165,10 @@ class Dashboard extends Component {
         this.setState({
           adButtons,
         });
-      } else if (this.props.mainBusiness.instagram_access === "0") {
+      } else if (
+        !this.props.mainBusiness.instagram_access ||
+        this.props.mainBusiness.instagram_access === "0"
+      ) {
         let adButtons = [...snapAds, ...googleAds];
         this.setState({
           adButtons,
