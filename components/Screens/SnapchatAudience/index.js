@@ -829,7 +829,9 @@ export class SnapchatAudience extends Component {
     });
     Alert.alert(
       translate("Warning"),
-      translate(`Going back without saving will lose this information?`),
+      translate(
+        `You didn't save your changes Do you want go back without saving`
+      ),
       [
         {
           text: translate("Cancel"),

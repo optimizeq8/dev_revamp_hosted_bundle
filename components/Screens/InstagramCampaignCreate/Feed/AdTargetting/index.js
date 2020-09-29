@@ -1226,6 +1226,8 @@ class InstagramFeedAdTargetting extends Component {
             topRightButtonText={translate("Edit")}
             navigation={this.editCampaign ? undefined : this.props.navigation}
             title={this.editCampaign ? "Audience" : "Campaign details"}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
           />
         )}
         <View style={{ height: "100%" }}>
