@@ -53,6 +53,7 @@ export const previewHandler = (
       adType: selectedCampaign.campaign_type,
       storyAdsArray: selectedCampaign.story_creatives,
       collectionAdMedia: selectedCampaign.collection_creatives,
+      instagram_profile_pic: selectedCampaign.instagram_profile_pic,
       instagram_business_name: selectedCampaign.instagram_business_name,
       message: selectedCampaign.message,
       source: source,
@@ -111,6 +112,7 @@ export default (props) => {
           )}
           {!loading &&
           selectedCampaign &&
+          selectedCampaign.media &&
           !selectedCampaign.media.includes(".jpg") &&
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
