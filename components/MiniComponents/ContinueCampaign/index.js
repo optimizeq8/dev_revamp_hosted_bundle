@@ -74,7 +74,7 @@ class ContinueCampaign extends Component {
    * @param {Bool} isVisible boolean to show the modal or not
    * @param {Bool} resetCampaign boolean to handle if user chooses to create a new campaign
    */
-  handleSubmition = (isVisible, resetCampaign) => {
+  handleSubmition = async (isVisible, resetCampaign) => {
     this.setState({ isVisible });
     let tempAdType = this.props.navigation.getParam(
       "tempAdType",
@@ -83,8 +83,9 @@ class ContinueCampaign extends Component {
     if (resetCampaign) {
       segmentEventTrack("Button clicked to start with new campaign");
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
-      this.props.resetCampaignInfo(!resetCampaign);
+      await this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType(tempAdType);
+      await this.props.setCampaignInfo();
       persistor.purge();
     }
   };
