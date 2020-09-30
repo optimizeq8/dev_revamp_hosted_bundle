@@ -84,7 +84,7 @@ export const snapAds = [
     channelIcon: Snapchat,
     image: StoryAd,
     description:
-      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+      "Explore Ads are made up to 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
     suitableFor: [
       {
         icon: Corporate,
