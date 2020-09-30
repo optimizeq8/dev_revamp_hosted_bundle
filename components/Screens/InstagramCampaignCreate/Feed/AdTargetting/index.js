@@ -913,6 +913,7 @@ class InstagramFeedAdTargetting extends Component {
   };
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
+    console.log("item", item);
     let replace = cloneDeep(this.state.campaignInfo);
     let countryArrayFromSelectedArray = countries.filter((country) =>
       item.includes(country.value)
@@ -1073,6 +1074,7 @@ class InstagramFeedAdTargetting extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
+            countries={countries}
             screenProps={this.props.screenProps}
             country_regions={country_regions}
             selectedItemsRegionsCountry={this.state.selectedCountriesAndRegions}

@@ -90,14 +90,37 @@ export class TargetAudience extends Component {
                 />
 
                 <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Location")}</Text>
-                  <Text style={styles.menudetails}>
-                    {countries_names}, {regions_names}
-                  </Text>
+                  <Text style={styles.menutext}>{translate("Countries")}</Text>
+                  <Text style={styles.menudetails}>{countries_names}</Text>
                 </View>
               </View>
               {startEditing &&
-                (countries_names.length !== 0 || regions_names.length !== 0 ? (
+                (countries_names.length !== 0 ? (
+                  <PurpleCheckmarkIcon width={30} height={30} />
+                ) : (
+                  <PurplePlusIcon width={30} height={30} />
+                ))}
+            </TouchableOpacity>
+            <TouchableOpacity
+              disabled={loading}
+              onPress={() => this.callFunction("selectors", "regions")}
+              style={styles.targetTouchable}
+            >
+              <View style={[globalStyles.row, { width: "80%" }]}>
+                <LocationIcon
+                  width={30}
+                  height={30}
+                  style={styles.icon}
+                  fill={globalColors.purple}
+                />
+
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Regions")}</Text>
+                  <Text style={styles.menudetails}>{regions_names}</Text>
+                </View>
+              </View>
+              {startEditing &&
+                (regions_names.length !== 0 ? (
                   <PurpleCheckmarkIcon width={30} height={30} />
                 ) : (
                   <PurplePlusIcon width={30} height={30} />
