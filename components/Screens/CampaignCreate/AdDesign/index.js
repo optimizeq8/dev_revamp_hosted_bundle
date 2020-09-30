@@ -1152,7 +1152,6 @@ class AdDesign extends Component {
       loaded,
       isVisible,
     } = this.state;
-
     const { translate } = this.props.screenProps;
 
     let validCards =
@@ -1246,6 +1245,7 @@ class AdDesign extends Component {
             currentScreen="Compose"
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            rejected={this.rejected}
           />
           <KeyboardAwareScrollView
             style={styles.contentContainer}
@@ -1610,6 +1610,7 @@ class AdDesign extends Component {
               : this.state.storyAdCards.selectedStoryAd.serialization
           }
           screenProps={this.props.screenProps}
+          rejected={this.rejected}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
