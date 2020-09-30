@@ -1245,6 +1245,7 @@ class AdDesign extends Component {
             currentScreen="Compose"
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            rejected={this.rejected}
           />
           <KeyboardAwareScrollView
             style={styles.contentContainer}
