@@ -63,7 +63,7 @@ export const snapAds = [
     channelIcon: Snapchat,
     image: CollectionAd,
     description:
-      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+      "Collection Ads are made-for-commerce ads that allow you to feature a series of products that Snapchatters can tap to get more details",
     suitableFor: [
       {
         icon: OnlineStore,
@@ -84,7 +84,7 @@ export const snapAds = [
     channelIcon: Snapchat,
     image: StoryAd,
     description:
-      "Explore Ads are made up to 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+      "Explore Ads are made up of 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
     suitableFor: [
       {
         icon: Corporate,
