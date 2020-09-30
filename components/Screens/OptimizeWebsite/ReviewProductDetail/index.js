@@ -36,7 +36,7 @@ class ReviewProductDetail extends Component {
       loaded: 0,
       isVisible: false,
       activeSlide: 0,
-      product: { media: [], prices: [] },
+      product: { media: [], prices: [], sizes: [] },
     };
   }
   componentWillUnmount() {
@@ -158,6 +158,17 @@ class ReviewProductDetail extends Component {
           <Text style={styles.productDesc}>
             {this.state.product.description_en}
           </Text>
+
+          <Text style={styles.availSizeText}>Available Sizes</Text>
+          <View style={styles.sizeView}>
+            {this.state.product.sizes.map((size) => (
+              <View
+                style={[styles.eachSizeView, size.length > 2 && { width: 60 }]}
+              >
+                <Text style={styles.eachSizeText}>{size}</Text>
+              </View>
+            ))}
+          </View>
         </View>
         <View style={styles.priceView}>
           <View>

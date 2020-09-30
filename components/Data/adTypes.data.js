@@ -51,31 +51,6 @@ export const snapAds = [
     ],
   },
   {
-    id: 2,
-    mediaType: "snapchat",
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    createRout: "SnapchatCreateAdAcc",
-    title: "Story",
-    value: "StoryAd",
-    media: require("../../assets/images/AdTypes/StoryAd.gif"),
-    icon: AdIcons.StoryAd,
-    channelIcon: Snapchat,
-    image: StoryAd,
-    description:
-      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
-    suitableFor: [
-      {
-        icon: Corporate,
-        name: "Corporate",
-      },
-      {
-        icon: StoryTeller,
-        name: "Story-Tellers",
-      },
-    ],
-  },
-  {
     id: 3,
     mediaType: "snapchat",
     text: "Create Your Ad Now!",
@@ -93,6 +68,31 @@ export const snapAds = [
       {
         icon: OnlineStore,
         name: "E-COMMERCE & Online Stores",
+      },
+    ],
+  },
+  {
+    id: 2,
+    mediaType: "snapchat",
+    text: "Create Your Ad Now!",
+    rout: "AdObjective",
+    createRout: "SnapchatCreateAdAcc",
+    title: "Explore",
+    value: "StoryAd",
+    media: require("../../assets/images/AdTypes/StoryAd.gif"),
+    icon: AdIcons.StoryAd,
+    channelIcon: Snapchat,
+    image: StoryAd,
+    description:
+      "Story Ads are made up 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times",
+    suitableFor: [
+      {
+        icon: Corporate,
+        name: "Corporate",
+      },
+      {
+        icon: StoryTeller,
+        name: "Story-Tellers",
       },
     ],
   },

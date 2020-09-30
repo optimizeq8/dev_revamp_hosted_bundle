@@ -1,8 +1,7 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
-import { AsyncStorage, Animated } from "react-native";
+import { Animated } from "react-native";
 import { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
 import { setAuthToken, getBusinessAccounts } from "./genericActions";
@@ -49,6 +48,7 @@ export const createBusinessAccount = (account, navigation) => {
           action_status: data.success ? "success" : "failure",
           timestamp: new Date().getTime(),
           ...account,
+          newBusiness: data.success ? data.data : "",
         });
         showMessage({
           message: data.message,
@@ -57,9 +57,16 @@ export const createBusinessAccount = (account, navigation) => {
         });
         //incase of an error?? need handling
         if (data.success) {
+          analytics.identify(getState().auth.userid, {
+            businessname: data.data.businessname,
+            businessid: data.data.businessid,
+            revenue: 0,
+            ltv: 0,
+            wallet_amount: 0,
+          });
           dispatch({
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-            payload: { ...data.data, ...account },
+            payload: { ...data.data },
           });
           navigation.navigate("Dashboard", {
             source: "open_create_business_account",
@@ -69,7 +76,6 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
               ...data.data,
-              ...account,
             },
           });
         }
@@ -120,6 +126,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
         }).start(() => {
           showMessage({
             message: respData.data.message,
@@ -140,6 +147,7 @@ export const addressForm = (address, navigation, addressId, translate) => {
         Animated.timing(time, {
           toValue: 1,
           duration: 2000,
+          useNativeDriver: true,
         }).start(() => {
           analytics.track(`a_business_address`, {
             source: "open_business_address",
@@ -311,7 +319,6 @@ export const updateUserInfo = (info, navigation) => {
         });
         if (data.success) {
           setAuthToken(data.accessToken);
-          Segment.track("Profile updated Successfully");
           showMessage({
             message: data.message,
             type: "success",
@@ -1020,13 +1027,16 @@ export const changeBusinessLogo = (
       });
   };
 };
-
-export const updateBusinessConnectedToFacebook = (fb_connected) => {
+/**
+ *
+ * @param {*} data {fb_connected: "1", fb_ad_account_id: //value coming from navigator}
+ */
+export const updateBusinessConnectedToFacebook = (data) => {
   return (dispatch) => {
     return dispatch({
       type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
       payload: {
-        fb_connected: fb_connected,
+        ...data,
       },
     });
   };

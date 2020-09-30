@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Animated } from "react-native";
+import { Text, View, TouchableOpacity, Animated } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 import Toggle from "../Toggle";
 
@@ -7,7 +7,6 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles from "../../../GlobalStyles";
-import { Text } from "native-base";
 import styles from "./styles";
 export default class AppChoiceBusiness extends Component {
   state = {

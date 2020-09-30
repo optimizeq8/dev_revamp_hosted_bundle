@@ -118,6 +118,7 @@ class MyWebsite extends Component {
       source: "open_my_website",
       source_action: "a_add_more_products",
     });
+    // MyWebsiteSelectProducts
     this.props.navigation.navigate("MyWebsiteSelectProducts", {
       source: "open_my_website",
       source_action: "a_add_more_products",
@@ -175,6 +176,19 @@ class MyWebsite extends Component {
         />
       </TouchableOpacity>
     );
+  };
+  goToCategory = () => {
+    if (this.props.webcategories && this.props.webcategories.length > 0) {
+      this.props.navigation.navigate("CategoryList", {
+        source: "open_my_website",
+        source_action: "a_go_to_category_list",
+      });
+    } else {
+      this.props.navigation.navigate("AddCategory", {
+        source: "open_my_website",
+        source_action: "a_go_to_category_list",
+      });
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -255,22 +269,42 @@ class MyWebsite extends Component {
             <CopyIcon style={styles.copyIcon} fill={globalColors.purple} />
           </TouchableOpacity>
         </View>
-        <View style={myWebsiteStyles.myproductsView}>
+        <View
+          style={[
+            myWebsiteStyles.myproductsView,
+            {
+              alignItems: "center",
+            },
+          ]}
+        >
           <Text style={myWebsiteStyles.myproductsText}>
             {translate("MY PRODUCTS")}
           </Text>
+          <View>
+            <TouchableOpacity
+              onPress={this.goToSelectProduct}
+              style={myWebsiteStyles.addProductsView}
+            >
+              <View style={myWebsiteStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <Text style={myWebsiteStyles.addProductText}>
+                {translate("Add Products")}
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={this.goToSelectProduct}
-            style={myWebsiteStyles.addProductsView}
-          >
-            <View style={myWebsiteStyles.plusIconView}>
-              <PlusIcon width={7} fill={globalColors.purple} />
-            </View>
-            <Text style={myWebsiteStyles.addProductText}>
-              {translate("Add Products")}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.goToCategory}
+              style={myWebsiteStyles.addProductsView}
+            >
+              <View style={myWebsiteStyles.plusIconView}>
+                <PlusIcon width={7} fill={globalColors.purple} />
+              </View>
+              <Text style={myWebsiteStyles.addProductText}>
+                Manage Categories
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <FlatList
           contentContainerStyle={styles.list}
@@ -304,6 +338,8 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   businessLogo: state.website.businessLogo,
   webproducts: state.website.webproducts,
+  webcategories: state.website.webcategories,
+  getWebCategoriesLoading: state.website.getWebCategoriesLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

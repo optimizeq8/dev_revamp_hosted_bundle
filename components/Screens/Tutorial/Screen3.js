@@ -3,7 +3,6 @@ import { View, Text, I18nManager, Image } from "react-native";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
-import * as Segment from "expo-analytics-segment";
 
 import CampaignCircleChart from "../../MiniComponents/CampaignCircleCharts";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
@@ -14,15 +13,12 @@ export default class Screen3 extends React.Component {
   render() {
     const { translate } = this.props.screenProps;
     const { id, activeSlide, changed } = this.props;
-    if (id === activeSlide) {
-      Segment.screen(`Tutorial 3`);
-    }
 
     return (
       <View>
         {id === activeSlide && (
           <Animatable.View
-            ref={ref => (this.bsnViewBtn = ref)}
+            ref={(ref) => (this.bsnViewBtn = ref)}
             animation={I18nManager.isRTL ? "slideInLeft" : "slideInRight"}
             style={styles.shopCard}
           >
@@ -40,7 +36,7 @@ export default class Screen3 extends React.Component {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      paddingHorizontal: 10
+                      paddingHorizontal: 10,
                       // flex: 1
                     }}
                   >
@@ -50,7 +46,7 @@ export default class Screen3 extends React.Component {
                       style={[
                         styles.titleText,
 
-                        { fontFamily: "montserrat-bold-english" }
+                        { fontFamily: "montserrat-bold-english" },
                       ]}
                     >
                       SHOP ONLINE ANYWHERE
@@ -61,8 +57,8 @@ export default class Screen3 extends React.Component {
                         style={[
                           styles.circleIcon,
                           {
-                            color: globalColors.green
-                          }
+                            color: globalColors.green,
+                          },
                         ]}
                         name={"circle"}
                         type={"FontAwesome"}
@@ -71,8 +67,8 @@ export default class Screen3 extends React.Component {
                         style={[
                           styles.reviewText,
                           {
-                            color: globalColors.green
-                          }
+                            color: globalColors.green,
+                          },
                         ]}
                       >
                         {translate("LIVE")}
@@ -87,7 +83,7 @@ export default class Screen3 extends React.Component {
                     campaign={{
                       spends: 500,
                       swipes: 40000,
-                      impressions: 400000
+                      impressions: 400000,
                     }}
                     detail={false}
                     screenProps={this.props.screenProps}

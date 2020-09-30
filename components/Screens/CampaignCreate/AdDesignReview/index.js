@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 

@@ -129,17 +129,28 @@ class AdDesign extends Component {
       maxClickHeight: 0,
       swipeUpExpanded: false,
       progress: 0,
+      closeAnimation: false,
     };
   }
 
   componentWillUnmount() {
-    //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
   }
+
+  goBack = () => {
+    if (this.state.swipeUpExpanded) {
+      this.setState({
+        closeAnimation: true,
+      });
+    } else if (this.state.expanded) {
+      this.handleCaptionExpand(false);
+    } else {
+      this.props.navigation.goBack();
+    }
+    return true;
+  };
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
     if (this.props.data) {
       let {
         media_option = "single",
@@ -205,6 +216,7 @@ class AdDesign extends Component {
       velocity: 3,
       tension: 2,
       friction: 8,
+      useNativeDriver: true,
     }).start();
   };
   selectImageOption = (media_option) => {
@@ -219,7 +231,7 @@ class AdDesign extends Component {
     });
   };
   setTheState = (state) => {
-    this.setState({ ...state });
+    this.setState({ ...state, closeAnimation: false });
   };
   videoIsLoading = (value) => {
     this.setState({
@@ -507,7 +519,7 @@ class AdDesign extends Component {
           }}
           icon="instagram"
           currentScreen="Compose"
-          navigation={this.props.navigation}
+          actionButton={this.goBack}
           title={"Compose"}
         />
 
@@ -622,6 +634,7 @@ class AdDesign extends Component {
                     maxClickHeight={this.state.maxClickHeight}
                     setTheState={this.setTheState}
                     adType={"InstagramFeedAd"}
+                    closeAnimation={this.state.closeAnimation}
                   />
                 </View>
                 {!this.state.swipeUpExpanded && (

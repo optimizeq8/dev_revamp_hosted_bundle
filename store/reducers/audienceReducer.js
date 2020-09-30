@@ -60,6 +60,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         audienceDetailLoading: action.payload,
+        saveAudienceLoading: false,
       };
 
     case actionTypes.SAVE_AUDIENCE_DETAIL_LOADING:
@@ -76,24 +77,28 @@ const reducer = (state = initialState, action) => {
           demographics: [
             { gender: "", min_age: 13, max_age: 50, languages: ["ar", "en"] },
           ],
-          geos: [{ country_code: "", region_id: [] }],
           interests: [{ category_id: [] }],
+          ...action.payload.targeting,
           devices: [
             {
               os_type: "",
               marketing_name: [],
               os_version_max: "",
               os_version_min: "",
+              ...action.payload.targeting.devices[0],
             },
           ],
-          locations: [{ circles: [] }],
-          ...action.payload.targeting,
+          geos: [...action.payload.targeting.geos],
+          locations: [
+            { circles: [], ...action.payload.targeting.locations[0] },
+          ],
         },
       };
 
       return {
         ...state,
         audience: audienceCopy,
+        audienceDetailLoading: false,
       };
 
     default:

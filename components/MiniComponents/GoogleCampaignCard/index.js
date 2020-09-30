@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, I18nManager } from "react-native";
 import { Text, Icon } from "native-base";
+import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import GoogleAd from "../../../assets/SVGs/GoogleAds";
 import { globalColors } from "../../../GlobalStyles";
@@ -19,6 +19,13 @@ class GoogleCampaignCard extends Component {
   campaign_status = this.props.campaign.status;
 
   handleCampaignPress = () => {
+    analytics.track(`a_open_campaign_card`, {
+      source: "dashboard",
+      source_action: "a_open_campaign_card",
+      timestamp: new Date().getTime(),
+      campaign_id: this.props.campaign.campaign_id,
+      campaign_channel: "google",
+    });
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,
       this.props.campaign.start_time,
@@ -33,9 +40,6 @@ class GoogleCampaignCard extends Component {
       campaign: this.props.campaign,
       source: "dashboard",
       source_action: "a_open_campaign_details",
-    });
-    Segment.trackWithProperties("Pressed Google Campaign Card", {
-      campaign_id: this.props.campaign.campaign_id,
     });
   };
   render() {

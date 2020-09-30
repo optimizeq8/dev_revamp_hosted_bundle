@@ -101,6 +101,7 @@ const initialState = {
   paging: {},
 
   customInterests: [],
+  postsLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -465,6 +466,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         instagramExistingPost: action.payload.data,
         paging: action.payload.paging,
+      };
+    }
+    case actionTypes.LOADING_INSTAGRAM_POSTS: {
+      return {
+        ...state,
+        postsLoading: action.payload,
       };
     }
     default:

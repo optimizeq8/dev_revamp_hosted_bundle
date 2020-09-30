@@ -1,14 +1,20 @@
 import React, { Component, createRef } from "react";
-import { Text, View, TouchableOpacity, AppState } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  AppState,
+  StyleSheet,
+} from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import CodeInput from "react-native-confirmation-code-field";
+import { CodeField, Cursor } from "react-native-confirmation-code-field";
 import analytics from "@segment/analytics-react-native";
 //components
 import Header from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
 
 //styles
-import styles from "./styles";
+import styles, { codeFieldStyle } from "./styles";
 
 //Redux
 import { connect } from "react-redux";
@@ -17,8 +23,6 @@ import Card from "./Card";
 import { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-import * as Segment from "expo-analytics-segment";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class VerifyAccount extends Component {
   inputRef = createRef();
@@ -191,7 +195,6 @@ class VerifyAccount extends Component {
    *   */
   sendEmail = () => {
     // Taking USER's original phone number that was used while registeration
-    segmentEventTrack("Button Pressed to send mobile code on email");
     const mobile = this.props.userInfo.mobile.substring(3);
     this.props.resendVerifyMobileCodeByEmail({
       country_code: this.state.country_code,
@@ -288,7 +291,6 @@ class VerifyAccount extends Component {
    * VERIFY OTP
    */
   verifyOTP = () => {
-    segmentEventTrack("Button Pressed to verify mobile code");
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),
@@ -357,7 +359,7 @@ class VerifyAccount extends Component {
       );
     }
 
-    if (this.props.successNo) {
+    if (!this.props.successNo) {
       content = (
         <View style={styles.mobileDetailCard}>
           <Text style={styles.codeSentText}>
@@ -369,19 +371,33 @@ class VerifyAccount extends Component {
             {verifyByMobile ? this.state.phoneNum : userInfo.email}
           </Text>
           <View style={{ marginVertical: 10 }}>
-            <CodeInput
-              cellProps={{
-                style: styles.cellProps,
-              }}
-              inputProps={{
-                style: styles.inputProps,
-              }}
+            <CodeField
               autoFocus
-              keyboardType="numeric"
-              space={5}
-              onFulfill={(code) => this._handleSentCode(code)}
+              cellCount={5}
+              onChangeText={(code) => {
+                this.setState({ code });
+                if (code.length === 5) {
+                  console.log("HHHH");
+                  this._handleSentCode(code);
+                }
+              }}
+              textContentType="oneTimeCode"
+              rootStyle={codeFieldStyle.codeFieldRoot}
               ref={this.inputRef}
-              defaultCode={this.state.code}
+              keyboardType="number-pad"
+              value={this.state.code}
+              renderCell={({ index, symbol, isFocused }) => (
+                <Text
+                  key={index}
+                  style={[
+                    codeFieldStyle.cell,
+                    isFocused && codeFieldStyle.focusCell,
+                  ]}
+                  // onLayout={getCellOnLayoutHandler(index)}
+                >
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              )}
             />
           </View>
 

@@ -3,12 +3,9 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import analytics from "@segment/analytics-react-native";
-import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
-import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import segmentEventTrack from "../../components/segmentEventTrack";
 
 InstagramBackendURL = () =>
   axios.create({
@@ -472,7 +469,6 @@ export const ad_details_instagram = (info, navigation, segmentInfo) => {
         });
       })
       .then(() => {
-        // Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         // Ad the route here for
         navigation.navigate(
           segmentInfo.campaign_ad_type === "InstagramStoryAd"
@@ -794,6 +790,10 @@ export const deleteCarouselCard = (story_id, card) => {
 
 export const getInstagramExistingPost = (businessid) => {
   return (dispatch) => {
+    dispatch({
+      type: actionTypes.LOADING_INSTAGRAM_POSTS,
+      payload: true,
+    });
     InstagramBackendURL()
       .get(`instaFeed/${businessid}`)
       .then((res) => {
@@ -801,14 +801,24 @@ export const getInstagramExistingPost = (businessid) => {
       })
       .then((data) => {
         if (data.success) {
-          return dispatch({
+          dispatch({
             type: actionTypes.GET_INSTAGRAM_POST_AD,
             payload: {
               data: data.data,
               paging: data.paging,
             },
           });
+          return dispatch({
+            type: actionTypes.LOADING_INSTAGRAM_POSTS,
+            payload: false,
+          });
         }
+      })
+      .catch((err) => {
+        return dispatch({
+          type: actionTypes.LOADING_INSTAGRAM_POSTS,
+          payload: false,
+        });
       });
   };
 };

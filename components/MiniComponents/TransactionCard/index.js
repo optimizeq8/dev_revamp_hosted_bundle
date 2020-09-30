@@ -10,12 +10,14 @@ import globalStyles from "../../../GlobalStyles";
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds.svg";
+import InstagramIcon from "../../../assets/images/AdTypes/InstaWhiteLogo";
+
 import isStringArabic from "../../isStringArabic";
 
 class TransactionCard extends Component {
   state = {
     paused: false,
-    status: "PAUSED"
+    status: "PAUSED",
   };
   toggleStatus = () => {
     this.setState({ paused: !this.state.paused });
@@ -26,12 +28,19 @@ class TransactionCard extends Component {
     return (
       <View style={styles.cardStyle}>
         <View style={styles.header}>
-          {transaction.iswallet === "1" ? (
-            <WalletIcon fill="#FFF" style={[styles.icon]} />
+          {transaction.channel === "instagram" ? (
+            <InstagramIcon
+              width={75}
+              height={75}
+              fill={"#FFF"}
+              style={styles.instagramIcon}
+            />
           ) : transaction.channel === "snapchat" ? (
             <SnapGhostIcon width={35} height={35} />
-          ) : (
+          ) : transaction.channel === "google" ? (
             <GoogleSE width={35} height={35} />
+          ) : (
+            <WalletIcon fill="#FFF" style={[styles.icon]} />
           )}
           <Text
             numberOfLines={2}
@@ -41,9 +50,9 @@ class TransactionCard extends Component {
               transaction.campaign_name !== "Wallet Topup" &&
               !isStringArabic(transaction.campaign_name)
                 ? {
-                    fontFamily: "montserrat-bold-english"
+                    fontFamily: "montserrat-bold-english",
                   }
-                : {}
+                : {},
             ]}
           >
             {transaction.campaign_name === "Wallet Topup"

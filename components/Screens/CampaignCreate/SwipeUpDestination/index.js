@@ -9,7 +9,6 @@ import {
 import { Content, Text, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
@@ -63,10 +62,7 @@ class SwipeUpDestination extends Component {
         ...this.props.swipeUpProps,
       });
     }
-    // Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
-    //   category: "Campaign Creation",
-    //   channel: "snapchat",
-    // });
+
     let media = this.props.navigation.getParam("media", "");
     let destination = this.props.navigation.getParam("destination", false);
     const source = this.props.navigation.getParam(
@@ -151,10 +147,6 @@ class SwipeUpDestination extends Component {
             "objective",
             "objective"
           ),
-        });
-        Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
-          category: "Campaign Creation",
-          channel: "snapchat",
         });
       });
     else {

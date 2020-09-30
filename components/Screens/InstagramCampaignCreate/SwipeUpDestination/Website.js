@@ -12,7 +12,6 @@ import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
 import InputScrollView from "react-native-input-scroll-view";
 import isEmpty from "lodash/isEmpty";
-import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
@@ -34,7 +33,6 @@ import { netLoc } from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import * as actionCreators from "../../../../store/actions";
-import segmentEventTrack from "../../../segmentEventTrack";
 
 class Website extends Component {
   static navigationOptions = {
@@ -99,15 +97,8 @@ class Website extends Component {
         },
       });
     }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-  handleBackButton = () => {
-    this.props.navigation.goBack();
-    return true;
-  };
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
+
   validateUrl = () => {
     const { translate } = this.props.screenProps;
     const urlError = validateWrapper("url", this.state.campaignInfo.link);
@@ -127,21 +118,12 @@ class Website extends Component {
     }
   };
   _handleSubmission = () => {
-    if (!this.validateUrl()) {
-      // segmentEventTrack("Error Submit Website SwipeUp", {
-      //   campaign_website_url: this.state.campaignInfo.attachment,
-      //   campaign_error_website_url: this.state.urlError
-      // });
-    }
     if (this.validateUrl()) {
       this.props.save_campaign_info_instagram({
         ...this.props.data,
         call_to_action: this.state.campaignInfo.call_to_action,
         link: this.state.campaignInfo.link,
       });
-      // segmentEventTrack("Submitted Website SwipeUp Success", {
-      //   campaign_website_url: this.state.campaignInfo.attachment
-      // });
 
       this.props.toggleClickDestination(false);
       // this.props.navigation.navigate(`${this.props.data.campaign_type}Design`);
@@ -168,9 +150,6 @@ class Website extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      // segmentEventTrack("Selected Website Call to Action", {
-      //   campaign_call_to_action: value[0].label
-      // });
       this.setState(
         {
           campaignInfo: {

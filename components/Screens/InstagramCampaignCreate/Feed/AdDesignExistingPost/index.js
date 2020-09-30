@@ -9,6 +9,8 @@ import {
   Image as RNImage,
   Text,
   FlatList,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
@@ -48,7 +50,6 @@ import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 
 import { globalColors } from "../../../../../GlobalStyles";
-import { ScrollView } from "react-native-gesture-handler";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import ClickDestination from "../AdDesign/ClickDestination";
 import { Video } from "expo";
@@ -100,24 +101,22 @@ class InstagramAdDesignExistingPost extends Component {
       uneditedImageUri: "",
       serialization: null,
       maxClickHeight: 0,
+      swipeUpExpanded: false,
+      closeAnimation: false,
     };
   }
-
   componentWillUnmount() {
-    //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
   }
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
     this.props.getInstagramExistingPost(this.props.mainBusiness.businessid);
     if (this.props.data) {
       let {
         media_option = "single",
         link,
         call_to_action,
-        attachment,
+        attachment = "BLANK",
         message = "",
         media_type,
         media = "//",
@@ -150,6 +149,7 @@ class InstagramAdDesignExistingPost extends Component {
             destination = "BLANK";
         }
       }
+      // console.log("attachment", attachment);
       this.setState({
         campaignInfo: {
           ...this.props.data,
@@ -176,27 +176,14 @@ class InstagramAdDesignExistingPost extends Component {
       velocity: 3,
       tension: 2,
       friction: 8,
+      useNativeDriver: true,
     }).start();
   };
-  selectImageOption = (media_option) => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        media_option,
-      },
-    });
-    this.props.save_campaign_info_instagram({
-      media_option,
-    });
-  };
+
   setTheState = (state) => {
-    this.setState({ ...state });
+    this.setState({ ...state, closeAnimation: false });
   };
-  videoIsLoading = (value) => {
-    this.setState({
-      isVideoLoading: value,
-    });
-  };
+
   _getUploadState = (loading) => {
     this.setState({
       loaded: loading,
@@ -318,6 +305,7 @@ class InstagramAdDesignExistingPost extends Component {
         campaign_media_type: this.state.campaignInfo.media_type,
         // campaign_appChoice: this.state.appChoice,
       };
+
       if (!this.props.loading) {
         await this.props.saveInstgramExistpost(
           "InstagramFeedAdTargetting",
@@ -336,21 +324,7 @@ class InstagramAdDesignExistingPost extends Component {
       // }
     }
   };
-  handleCaptionExpand = (value) => {
-    analytics.track(`instagram_caption`, {
-      visibile: value,
-      source: "ad_design",
-      source_action: "a_toggle_caption",
-    });
-    this.setState(
-      {
-        expanded: value,
-      },
-      () => {
-        this.toggle();
-      }
-    );
-  };
+
   handleReview = async () => {
     const noError = this.validator();
 
@@ -368,45 +342,7 @@ class InstagramAdDesignExistingPost extends Component {
       });
     }
   };
-  _handlecarouselAdCards = (card) => {
-    this.setState({ sourceChanging: true });
-    this.setState({
-      ...this.state,
-      carouselAdCards: {
-        ...this.state.carouselAdCards,
-        carouselAdSelected: true,
-        selectedCarouselAd: { ...card },
-      },
-      type: card.media_type,
-      sourceChanging: false,
-    });
-    this.setMediaModalVisible(true);
-  };
 
-  setMediaModalVisible = (visibile) => {
-    this.setState({ mediaModalVisible: visibile });
-  };
-
-  adDesignPickImage = (mediaTypes, mediaEditor, editImage) => {
-    if (this.props.data.objective === "VIDEO_VIEWS") {
-      mediaTypes = "Videos";
-    }
-    _pickImage(
-      mediaTypes,
-      this.props.save_campaign_info_instagram,
-      this.setTheState,
-      this.props.screenProps,
-      this.setMediaModalVisible,
-      mediaEditor,
-      editImage,
-      this.videoIsLoading,
-      this.state.carouselAdCards,
-      this.props.carouselAdsArray,
-      this.state.campaignInfo.media_option
-      // this.adType,
-      // this.rejected,
-    );
-  };
   renderEachPost = (item) => {
     const product = item.item;
 
@@ -444,6 +380,11 @@ class InstagramAdDesignExistingPost extends Component {
               message: product.message,
               instagram_post_id: product.promotable_id,
             },
+            media_type:
+              product.attachments.data[0].type === "photo" ||
+              product.attachments.data[0].type === "album"
+                ? "IMAGE"
+                : "VIDEO",
             showPreview: true,
           });
           this.props.save_campaign_info_instagram({
@@ -473,13 +414,18 @@ class InstagramAdDesignExistingPost extends Component {
     );
   };
   goBack = () => {
-    if (this.state.showPreview) {
+    if (this.state.swipeUpExpanded) {
+      this.setState({
+        closeAnimation: true,
+      });
+    } else if (this.state.showPreview) {
       this.setState({
         showPreview: false,
       });
     } else {
       this.props.navigation.goBack();
     }
+    return true;
   };
   onDidFocus = () => {
     if (!this.props.currentCampaignSteps.includes("InstagramFeedAdDetails")) {
@@ -577,13 +523,21 @@ class InstagramAdDesignExistingPost extends Component {
             <Text style={existPostStyles.promoteText}>
               {translate("Select a post to promote")}
             </Text>
-            <FlatList
-              data={this.props.instagramExistingPost}
-              renderItem={this.renderEachPost}
-              numColumns={4}
-              contentContainerStyle={existPostStyles.flatListContentStyle}
-              showsVerticalScrollIndicator={false}
-            />
+            {this.props.postsLoading ? (
+              <ActivityIndicator
+                size={"large"}
+                color={globalColors.orange}
+                style={{ marginTop: 20 }}
+              />
+            ) : (
+              <FlatList
+                data={this.props.instagramExistingPost}
+                renderItem={this.renderEachPost}
+                numColumns={4}
+                contentContainerStyle={existPostStyles.flatListContentStyle}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
             {/* <TouchableOpacity>
               <Text> LOAD MORE</Text>
             </TouchableOpacity> */}
@@ -630,25 +584,23 @@ class InstagramAdDesignExistingPost extends Component {
                     }}
                   />
                 ) : (
-                  <VideoPlayer shouldPlay={true} media={media} />
+                  <VideoPlayer
+                    shouldPlay={true}
+                    media={media}
+                    isMuted={false}
+                  />
                 )}
               </View>
-              {this.state.campaignInfo.call_to_action &&
-                (this.state.campaignInfo.call_to_action.value ||
-                  this.state.campaignInfo.call_to_action !== "BLANK") && (
+              {this.props.data &&
+                this.props.data.call_to_action &&
+                (this.props.data.call_to_action.value ||
+                  this.props.data.call_to_action !== "BLANK") && (
                   <View style={previewStyles.swipeUpView}>
                     <Text style={previewStyles.callToActionText}>
-                      {this.state.campaignInfo.call_to_action.hasOwnProperty(
-                        "label"
-                      )
-                        ? translate(
-                            this.state.campaignInfo.call_to_action.label
-                          )
+                      {this.props.data.call_to_action.hasOwnProperty("label")
+                        ? translate(this.props.data.call_to_action.label)
                         : translate(
-                            this.state.campaignInfo.call_to_action.replace(
-                              "_",
-                              " "
-                            )
+                            this.props.data.call_to_action.replace("_", " ")
                           )}
                     </Text>
                     <ArrowBlueForward
@@ -691,6 +643,7 @@ class InstagramAdDesignExistingPost extends Component {
                   previewStyles.businessNameText,
                   previewStyles.captionTextExist,
                 ]}
+                numberOfLines={2}
               >
                 {this.state.campaignInfo.instagram_business_name}
 
@@ -712,6 +665,7 @@ class InstagramAdDesignExistingPost extends Component {
                 setTheState={this.setTheState}
                 existingPosts={true}
                 adType={"InstagramFeedAd"}
+                closeAnimation={this.state.closeAnimation}
               />
             </View>
             <View style={[styles.lowerBtn, existPostStyles.lowerBtn]}>
@@ -768,6 +722,7 @@ const mapStateToProps = (state) => ({
   loadingCarouselAdsArray: state.instagramAds.loadingCarouselAdsArray,
   instagramExistingPost: state.instagramAds.instagramExistingPost,
   paging: state.instagramAds.paging,
+  postsLoading: state.instagramAds.postsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

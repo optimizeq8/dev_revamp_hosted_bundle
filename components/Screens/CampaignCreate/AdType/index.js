@@ -10,7 +10,6 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
@@ -52,8 +51,9 @@ class AdType extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (
-      this.props.mainBusiness &&
-      this.props.mainBusiness.instagram_access === "0"
+      (this.props.mainBusiness &&
+        this.props.mainBusiness.instagram_access === "0") ||
+      !this.props.mainBusiness.instagram_access
     ) {
       let socialMediaPlatforms =
         Platform.OS === "android" && I18nManager.isRTL
@@ -102,26 +102,11 @@ class AdType extends Component {
       this.props.userInfo.hasOwnProperty("verified_account") &&
       !this.props.userInfo.verified_account
     ) {
-      Segment.trackWithProperties("Navigate to VerifyAccount", {
-        step: 1,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
       this.props.navigation.navigate("VerifyAccount", {
         source: "ad_type",
         source_action: "a_campaign_ad_type",
       });
     } else {
-      Segment.trackWithProperties("Selected Ad Type", {
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
-      Segment.trackWithProperties("Completed Checkout Step", {
-        step: 1,
-        business_name: this.props.mainBusiness.businessname,
-        campaign_type: adType.value,
-      });
-
       if (
         this.props.adType !== adType.value &&
         !this.props.incompleteCampaign
@@ -156,7 +141,7 @@ class AdType extends Component {
         this.props.navigation.navigate("SuspendedWarning");
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
-          url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
           source: "ad_type",
           source_action: "a_campaign_ad_type",
@@ -262,9 +247,15 @@ class AdType extends Component {
       "success",
       false
     );
-
+    const fb_ad_account_id = this.props.navigation.getParam(
+      "fb_ad_account_id",
+      null
+    );
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
-      this.props.updateBusinessConnectedToFacebook("1");
+      this.props.updateBusinessConnectedToFacebook({
+        fb_connected: "1",
+        fb_ad_account_id: fb_ad_account_id,
+      });
     }
   };
 
@@ -337,7 +328,11 @@ class AdType extends Component {
                       styles.activeMediaIcon,
                   ]}
                 >
-                  <MediaIcon width={"100%"} height={"100%"} />
+                  <MediaIcon
+                    stroke={social.title === "Snapchat" ? "#000000" : "none"}
+                    width={"100%"}
+                    height={social.title === "Snapchat" ? 30 : "100%"}
+                  />
                 </TouchableOpacity>
               );
             })}
@@ -414,7 +409,7 @@ class AdType extends Component {
             <GradientButton
               onPressAction={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+                  url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
                   title: "Instagram",
                   source: "ad_type",
                   source_action: "a_connect_to_facebook",
@@ -508,7 +503,7 @@ const mapDispatchToProps = (dispatch) => ({
   set_adType: (value) => dispatch(actionCreators.set_adType(value)),
   resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
-  updateBusinessConnectedToFacebook: (fb_connected) =>
-    dispatch(actionCreators.updateBusinessConnectedToFacebook(fb_connected)),
+  updateBusinessConnectedToFacebook: (data) =>
+    dispatch(actionCreators.updateBusinessConnectedToFacebook(data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdType);

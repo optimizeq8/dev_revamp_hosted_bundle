@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
-import { Text } from "native-base";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -9,7 +8,6 @@ import businessList from "../../Data/newBusinessCategoryList.data";
 import isStringArabic from "../../isStringArabic";
 import Swipeout from "react-native-swipeout";
 import { ActivityIndicator } from "react-native-paper";
-import segmentEventTrack from "../../segmentEventTrack";
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
@@ -51,7 +49,6 @@ class BusinessCard extends Component {
   ];
   handleSwitchBusiness = () => {
     if (!this.props.manageTeam) {
-      // segmentEventTrack("Switched business", this.props.business);
       analytics.track(`a_switch_account`, {
         prev_businessid: this.props.mainBusiness.businessid,
         new_businessid: this.props.business.businessid,

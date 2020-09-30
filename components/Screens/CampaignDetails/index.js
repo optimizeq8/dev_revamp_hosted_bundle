@@ -209,6 +209,7 @@ class CampaignDetails extends Component {
   toggle = () => {
     Animated.spring(this.state.chartAnimation, {
       toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight,
+      useNativeDriver: false,
     }).start();
   };
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { Platform, AsyncStorage } from "react-native";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
@@ -23,7 +22,7 @@ export default FluidNavigator(
     ForgotPassword: ForgotPassword,
     SwitchLanguage: SwitchLanguage,
     SwitchLanguageLoading: SwitchLanguageLoading,
-    RegistrationSuccess: RegistrationSuccess
+    RegistrationSuccess: RegistrationSuccess,
 
     // Invitation: Invitation
   },
@@ -34,16 +33,16 @@ export default FluidNavigator(
       header: null,
 
       headerStyle: {
-        backgroundColor: "#0000"
+        backgroundColor: "#0000",
       },
       headerTintColor: "#0000",
       headerTextStyle: {
-        fontWeight: "bold"
-      }
+        fontWeight: "bold",
+      },
     },
     cardStyle: {
-      backgroundColor: "#751AFF"
-    }
+      backgroundColor: "#751AFF",
+    },
   }
 );
 

@@ -6,7 +6,6 @@ import styles from "./styles";
 
 import EditCameraIcon from "../../../../assets/SVGs/CameraCircleOutline";
 import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
-import segmentEventTrack from "../../../segmentEventTrack";
 import NavigationService from "../../../../NavigationService";
 export default class MediaButton extends Component {
   render() {
@@ -33,15 +32,6 @@ export default class MediaButton extends Component {
           onPress={() => {
             if (navigateToCover) {
             } else {
-              segmentEventTrack(
-                `Button clicked to  ${
-                  snapAdCard
-                    ? "Edit Media for Story Ad Card"
-                    : cover
-                    ? "Select image for story ad cover"
-                    : "Open Upload Media Modal"
-                } `
-              );
               snapAdCard
                 ? _handleStoryAdCards({
                     index: snapCardInfo.index,
@@ -97,15 +87,6 @@ export default class MediaButton extends Component {
               if (navigateToCover) {
                 NavigationService.navigate("AdCover", { rejected });
               } else {
-                segmentEventTrack(
-                  `Button clicked to  ${
-                    snapAdCard
-                      ? "Add Media for Story Ad Card"
-                      : cover
-                      ? "Select image for story ad cover"
-                      : "Open Upload Media Modal"
-                  } `
-                );
                 snapAdCard
                   ? _handleStoryAdCards({
                       index: snapCardInfo.index,

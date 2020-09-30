@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Animated } from "react-native";
+import { Text, View, TouchableOpacity, Animated } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
-// import Toggle from "react-native-switch-toggle";
 import Toggle from "../Toggle";
 
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
-import { Text, Icon } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
   state = {

@@ -5,7 +5,6 @@ import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
@@ -43,14 +42,12 @@ class CampaignCard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   handleCampaignPress = () => {
-    Segment.trackWithProperties("Pressed Campaign Card", {
-      campaign_id: this.props.campaign.campaign_id,
-    });
     analytics.track(`a_open_campaign_card`, {
       source: "dashboard",
       source_action: "a_open_campaign_card",
       timestamp: new Date().getTime(),
       campaign_id: this.props.campaign.campaign_id,
+      campaign_channel: "snapchat",
     });
     this.props.getCampaignDetails(
       this.props.campaign.campaign_id,

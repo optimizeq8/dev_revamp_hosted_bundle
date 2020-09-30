@@ -1,7 +1,6 @@
 //Components
 import React, { Component } from "react";
 import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
@@ -165,16 +164,6 @@ class CreateBusinessAccount extends Component {
         }
       );
     }
-    Segment.screen(
-      editBusinessInfo
-        ? "Edit Business Info"
-        : this.props.registering
-        ? "Business Info Registration"
-        : "Create New Business",
-      {
-        category: this.props.registering ? "Sign Up" : "User Menu",
-      }
-    );
 
     // prefilling the values in case of updating business info
     if (this.props.mainBusiness && editBusinessInfo) {

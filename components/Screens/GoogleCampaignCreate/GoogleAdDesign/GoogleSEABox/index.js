@@ -4,24 +4,17 @@ import { View } from "react-native";
 import { Text, Input, Textarea } from "native-base";
 import GlobalStyles, { globalColors } from "../../../../../GlobalStyles";
 import styles from "./styles";
-import segmentEventTrack from "../../../../segmentEventTrack";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 
 const handleHttp = (networkString, setVal) => {
   if (networkString === "https://") {
     setVal({ networkString: "http://" });
-    segmentEventTrack("Changed Google Url Website network string", {
-      campaign_website_network_string: "http://"
-    });
   } else {
     setVal({ networkString: "https://" });
-    segmentEventTrack("Changed Google Url Website network string", {
-      campaign_website_network_string: "https://"
-    });
   }
 };
 
-export default GoogleSEABox = props => {
+export default GoogleSEABox = (props) => {
   let {
     screenProps,
     path1 = "",
@@ -32,7 +25,7 @@ export default GoogleSEABox = props => {
     blur,
     submitEditing,
     reference,
-    campaign
+    campaign,
   } = props;
   let {
     headline1,
@@ -53,7 +46,7 @@ export default GoogleSEABox = props => {
     headline3Error,
     descriptionError,
     description2Error,
-    finalurlError
+    finalurlError,
   } = props.parentState;
   const { translate } = screenProps;
 
@@ -70,14 +63,14 @@ export default GoogleSEABox = props => {
             {
               alignSelf:
                 campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10
+              paddingRight: 10,
             },
             styles.titlePadding,
             inputURL
               ? GlobalStyles.orangeTextColor
               : finalurlError
               ? GlobalStyles.redTextColor
-              : GlobalStyles.darkGrayTextColor
+              : GlobalStyles.darkGrayTextColor,
           ]}
         >
           {translate("Website")} {translate("url")}
@@ -87,8 +80,8 @@ export default GoogleSEABox = props => {
             styles.row,
             {
               paddingTop: 5,
-              paddingLeft: 20
-            }
+              paddingLeft: 20,
+            },
           ]}
         >
           <Input
@@ -102,10 +95,10 @@ export default GoogleSEABox = props => {
               styles.input,
               styles.linkText,
               finalurlError && GlobalStyles.redTextColor,
-              { textAlign: campaign.language === "1019" ? "right" : "left" }
+              { textAlign: campaign.language === "1019" ? "right" : "left" },
             ]}
             autoCapitalize="none"
-            onChangeText={value => {
+            onChangeText={(value) => {
               setVal({ finalurl: value });
             }}
             onSubmitEditing={() => {
@@ -117,7 +110,7 @@ export default GoogleSEABox = props => {
             blurOnSubmit={false}
             onFocus={() => focus({ inputURL: true }, true)}
             returnKeyType={"next"}
-            ref={input => reference("inputURL", input)}
+            ref={(input) => reference("inputURL", input)}
           />
         </View>
       </View>
@@ -136,13 +129,13 @@ export default GoogleSEABox = props => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10
+                  paddingRight: 10,
                 },
                 inputH1
                   ? GlobalStyles.orangeTextColor
                   : headline1Error
                   ? GlobalStyles.redTextColor
-                  : GlobalStyles.darkGrayTextColor
+                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("1")}
@@ -152,14 +145,14 @@ export default GoogleSEABox = props => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10
+                    paddingRight: 10,
                   },
                   styles.smallFont,
                   inputH1
                     ? GlobalStyles.orangeTextColor
                     : headline1Error
                     ? GlobalStyles.redTextColor
-                    : GlobalStyles.darkGrayTextColor
+                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${30 - headline1.length})`}</Text>
             </Text>
@@ -170,10 +163,10 @@ export default GoogleSEABox = props => {
               value={headline1}
               style={[
                 styles.input,
-                { textAlign: campaign.language === "1019" ? "right" : "left" }
+                { textAlign: campaign.language === "1019" ? "right" : "left" },
               ]}
               placeholder={translate("Input headline text")}
-              onChangeText={value => {
+              onChangeText={(value) => {
                 setVal({ headline1: value });
               }}
               onSubmitEditing={() => {
@@ -185,7 +178,7 @@ export default GoogleSEABox = props => {
               blurOnSubmit={false}
               onFocus={() => focus({ inputH1: true })}
               returnKeyType={"next"}
-              ref={input => reference("inputH1", input)}
+              ref={(input) => reference("inputH1", input)}
             />
           </View>
         </View>
@@ -199,13 +192,13 @@ export default GoogleSEABox = props => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10
+                  paddingRight: 10,
                 },
                 inputH2
                   ? GlobalStyles.orangeTextColor
                   : headline2Error
                   ? GlobalStyles.redTextColor
-                  : GlobalStyles.darkGrayTextColor
+                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("2")}
@@ -215,14 +208,14 @@ export default GoogleSEABox = props => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10
+                    paddingRight: 10,
                   },
                   styles.smallFont,
                   inputH2
                     ? GlobalStyles.orangeTextColor
                     : headline2Error
                     ? GlobalStyles.redTextColor
-                    : GlobalStyles.darkGrayTextColor
+                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${30 - headline2.length})`}</Text>
             </Text>
@@ -233,10 +226,10 @@ export default GoogleSEABox = props => {
               autoCorrect={true}
               style={[
                 styles.input,
-                { textAlign: campaign.language === "1019" ? "right" : "left" }
+                { textAlign: campaign.language === "1019" ? "right" : "left" },
               ]}
               maxLength={30}
-              onChangeText={value => {
+              onChangeText={(value) => {
                 setVal({ headline2: value });
               }}
               onSubmitEditing={() => {
@@ -248,7 +241,7 @@ export default GoogleSEABox = props => {
               blurOnSubmit={false}
               onFocus={() => focus({ inputH2: true }, true)}
               returnKeyType={"next"}
-              ref={input => reference("inputH2", input)}
+              ref={(input) => reference("inputH2", input)}
             />
           </View>
         </View>
@@ -262,11 +255,11 @@ export default GoogleSEABox = props => {
                 {
                   alignSelf:
                     campaign.language === "1019" ? "flex-end" : "flex-start",
-                  paddingRight: 10
+                  paddingRight: 10,
                 },
                 inputH3
                   ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.darkGrayTextColor
+                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Headline")} {translate("3")}
@@ -276,12 +269,12 @@ export default GoogleSEABox = props => {
                   {
                     alignSelf:
                       campaign.language === "1019" ? "flex-end" : "flex-start",
-                    paddingRight: 10
+                    paddingRight: 10,
                   },
                   styles.smallFont,
                   inputH3
                     ? GlobalStyles.orangeTextColor
-                    : GlobalStyles.darkGrayTextColor
+                    : GlobalStyles.darkGrayTextColor,
                 ]}
               >{` (${translate("optional")}) (${30 - headline3.length})`}</Text>
             </Text>
@@ -292,10 +285,10 @@ export default GoogleSEABox = props => {
               autoCorrect={true}
               style={[
                 styles.input,
-                { textAlign: campaign.language === "1019" ? "right" : "left" }
+                { textAlign: campaign.language === "1019" ? "right" : "left" },
               ]}
               maxLength={30}
-              onChangeText={value => {
+              onChangeText={(value) => {
                 setVal({ headline3: value });
               }}
               onSubmitEditing={() => {
@@ -307,7 +300,7 @@ export default GoogleSEABox = props => {
               blurOnSubmit={false}
               onFocus={() => focus({ inputH3: true }, true)}
               returnKeyType={"next"}
-              ref={input => reference("inputH3", input)}
+              ref={(input) => reference("inputH3", input)}
             />
           </View>
         </View>
@@ -321,14 +314,14 @@ export default GoogleSEABox = props => {
             {
               alignSelf:
                 campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10
+              paddingRight: 10,
             },
             styles.titlePadding,
             inputD
               ? GlobalStyles.orangeTextColor
               : descriptionError
               ? GlobalStyles.redTextColor
-              : GlobalStyles.darkGrayTextColor
+              : GlobalStyles.darkGrayTextColor,
           ]}
         >
           {translate("Description") + " " + translate("1")}
@@ -338,14 +331,14 @@ export default GoogleSEABox = props => {
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10
+                paddingRight: 10,
               },
               styles.smallFont,
               inputD
                 ? GlobalStyles.orangeTextColor
                 : descriptionError
                 ? GlobalStyles.redTextColor
-                : GlobalStyles.darkGrayTextColor
+                : GlobalStyles.darkGrayTextColor,
             ]}
           >{` (${90 - description.length})`}</Text>
         </Text>
@@ -356,13 +349,13 @@ export default GoogleSEABox = props => {
           style={[
             styles.input,
             styles.textArea,
-            { textAlign: campaign.language === "1019" ? "right" : "left" }
+            { textAlign: campaign.language === "1019" ? "right" : "left" },
           ]}
           placeholderTextColor={globalColors.lightGray}
           autoCorrect={true}
           maxLength={90}
           placeholder={translate("Input Description 1 text")}
-          onChangeText={value => {
+          onChangeText={(value) => {
             setVal({ description: value });
           }}
           onSubmitEditing={() => {
@@ -374,7 +367,7 @@ export default GoogleSEABox = props => {
           blurOnSubmit={true}
           onFocus={() => focus({ inputD: true }, true)}
           returnKeyType={"next"}
-          ref={input => reference("inputD", input)}
+          ref={(input) => reference("inputD", input)}
         />
 
         <Text
@@ -384,12 +377,12 @@ export default GoogleSEABox = props => {
             {
               alignSelf:
                 campaign.language === "1019" ? "flex-end" : "flex-start",
-              paddingRight: 10
+              paddingRight: 10,
             },
             styles.titlePadding,
             inputD2
               ? GlobalStyles.orangeTextColor
-              : GlobalStyles.darkGrayTextColor
+              : GlobalStyles.darkGrayTextColor,
           ]}
         >
           {translate("Description") + " " + translate("2")}
@@ -399,12 +392,12 @@ export default GoogleSEABox = props => {
               {
                 alignSelf:
                   campaign.language === "1019" ? "flex-end" : "flex-start",
-                paddingRight: 10
+                paddingRight: 10,
               },
               styles.smallFont,
               inputD2
                 ? GlobalStyles.orangeTextColor
-                : GlobalStyles.darkGrayTextColor
+                : GlobalStyles.darkGrayTextColor,
             ]}
           >{` (${translate("optional")}) (${90 - description2.length})`}</Text>
         </Text>
@@ -415,13 +408,13 @@ export default GoogleSEABox = props => {
           style={[
             styles.input,
             styles.textArea,
-            { textAlign: campaign.language === "1019" ? "right" : "left" }
+            { textAlign: campaign.language === "1019" ? "right" : "left" },
           ]}
           placeholderTextColor={globalColors.lightGray}
           autoCorrect={true}
           maxLength={90}
           placeholder={translate("Input Description 2 text")}
-          onChangeText={value => {
+          onChangeText={(value) => {
             setVal({ description2: value });
           }}
           onBlur={() => {
@@ -430,7 +423,7 @@ export default GoogleSEABox = props => {
           blurOnSubmit={true}
           onFocus={() => focus({ inputD2: true }, true)}
           returnKeyType={"done"}
-          ref={input => reference("inputD2", input)}
+          ref={(input) => reference("inputD2", input)}
         />
       </View>
     </View>
@@ -446,5 +439,5 @@ GoogleSEAPreview.propTypes = {
   description: PropTypes.string.isRequired,
   description2: PropTypes.string.isRequired,
   path1: PropTypes.string,
-  path2: PropTypes.string
+  path2: PropTypes.string,
 };

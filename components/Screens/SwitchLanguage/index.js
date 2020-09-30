@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, AsyncStorage, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Text, Container } from "native-base";
+import { Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -24,6 +24,8 @@ const imageLogo = require("../../../assets/images/people.png");
 
 //redux
 import * as actionCreators from "../../../store/actions";
+
+import AsyncStorage from "@react-native-community/async-storage";
 
 class SwitchLanguage extends Component {
   static navigationOptions = {

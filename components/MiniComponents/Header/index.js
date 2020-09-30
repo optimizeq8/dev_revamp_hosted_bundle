@@ -8,7 +8,6 @@ import MSGBackIcon from "../../../assets/SVGs/MSGBackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
 import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 import GoogleSE from "../../../assets/SVGs/GoogleAds";
-import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
@@ -43,6 +42,7 @@ export default class Header extends Component {
       changeHeaderColor = false,
       iconColor = "#FFF",
       titleContainerStyle,
+      rightViewStyle,
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -66,7 +66,6 @@ export default class Header extends Component {
                 source: segment.source,
                 source_action: segment.source_action,
               });
-              Segment.trackWithProperties(segment.str, segment.obj);
             }
             if (!isUndefined(navigation)) navigation.goBack();
             else actionButton();
@@ -150,18 +149,32 @@ export default class Header extends Component {
             </Text>
           </View>
         )}
-        <View style={[styles.right]}>
+        <View
+          pointerEvents={disabled ? "none" : "auto"}
+          style={[styles.right, rightViewStyle]}
+        >
           {showTopRightButton ? (
-            <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
-              {topRightButtonText}
-            </Text>
+            <TouchableOpacity
+              disabled={disabled}
+              onPress={() => topRightButtonFunction()}
+            >
+              <Text style={styles.edit}>{topRightButtonText}</Text>
+            </TouchableOpacity>
           ) : showTopRightButtonIcon ? (
-            <TouchableOpacity onPress={topRightButtonFunction}>
+            <TouchableOpacity
+              disabled={disabled}
+              onPress={topRightButtonFunction}
+            >
               {showTopRightButtonIcon === "settings" ? (
                 <Settings width={30} fill={iconColor} />
               ) : showTopRightButtonIcon === "delete" ? (
                 <View
-                  style={{ display: "flex", flexDirection: "row", right: 20 }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    right: 20,
+                    alignItems: "center",
+                  }}
                 >
                   <BinIcon width={30} fill="#9300ff" />
                   <Text

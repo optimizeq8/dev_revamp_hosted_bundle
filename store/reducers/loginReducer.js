@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import * as Segment from "expo-analytics-segment";
 const initialState = {
   exponentPushToken: null,
   admin: false,

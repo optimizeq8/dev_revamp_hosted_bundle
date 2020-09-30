@@ -41,7 +41,6 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
-import segmentEventTrack from "../../segmentEventTrack";
 
 class Menu extends Component {
   constructor(props) {
@@ -92,7 +91,6 @@ class Menu extends Component {
     }
   };
   handleNavigation = (route, checkForBusinessId = false, params) => {
-    segmentEventTrack(`Clicked ${route}`);
     const { translate } = this.props.screenProps;
     if (checkForBusinessId) {
       if (this.props.mainBusiness.hasOwnProperty("businessid")) {
@@ -265,7 +263,7 @@ class Menu extends Component {
                     mainBusiness.weburl &&
                     mainBusiness.weburl !== ""
                   ) {
-                    // TODO: Change this path back to MyWebsite ECommerce after releasing to production for now
+                    // TODO: Change this path back to MyWebsiteECommerce after releasing to production for now
                     this.props.navigation.navigate("MyWebsite", {
                       source: "open_hamburger",
                       source_action: "a_open_my_website",
@@ -443,7 +441,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/199/
+                {Constants.nativeAppVersion}/225/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

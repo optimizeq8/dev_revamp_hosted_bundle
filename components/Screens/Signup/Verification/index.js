@@ -4,7 +4,6 @@ import { View, ScrollView, I18nManager } from "react-native";
 import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -35,14 +34,6 @@ class Verification extends Component {
     emailError: "",
     InputE: false,
   };
-  componentDidMount() {
-    Segment.screenWithProperties(
-      this.props.invite ? "Invite Code" : "OTP Verification",
-      {
-        category: "Sign Up",
-      }
-    );
-  }
 
   componentWillUnmount() {
     clearInterval(this.clockCall);
@@ -200,7 +191,11 @@ class Verification extends Component {
                     autoFocus
                     keyboardType="numeric"
                     space={10}
-                    onFulfill={(code) => this._handleSentCode(code)}
+                    onChangeText={(code) => {
+                      if (code.length === 5) {
+                        this._handleSentCode(code);
+                      }
+                    }}
                     ref={this.inputRef}
                   />
                 </View>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BackHandler } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -25,7 +24,7 @@ import isEqual from "react-fast-compare";
 
 class AddressForm extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -37,7 +36,7 @@ class AddressForm extends Component {
         street: "",
         building: "",
         office: "",
-        avenue: ""
+        avenue: "",
       },
       addressId: null,
       country_code: "",
@@ -54,7 +53,7 @@ class AddressForm extends Component {
       areaError: "",
       blockError: "",
       streetError: "",
-      buildingError: ""
+      buildingError: "",
     };
   }
 
@@ -74,31 +73,18 @@ class AddressForm extends Component {
     );
     const source_action = this.props.navigation.getParam(
       "source_action",
-   this.props.screenProps.prevAppState
+      this.props.screenProps.prevAppState
     );
     analytics.track(`open_business_address`, {
       source,
       source_action,
       timestamp: new Date().getTime(),
-      ...this.props.address
+      ...this.props.address,
     });
-    this.setState(
-      {
-        from: this.props.navigation.getParam("from", null),
-        kdamount: this.props.navigation.getParam("kdamount", null)
-      },
-      () => {
-        if (this.state.from === "creditCard")
-          Segment.screenWithProperties("Address Select", {
-            category: "Campaign Creation"
-          });
-        else {
-          Segment.screenWithProperties("Address Form", {
-            category: "User Menu"
-          });
-        }
-      }
-    );
+    this.setState({
+      from: this.props.navigation.getParam("from", null),
+      kdamount: this.props.navigation.getParam("kdamount", null),
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -115,15 +101,15 @@ class AddressForm extends Component {
         street: this.props.address.street,
         building: this.props.address.building,
         avenue: this.props.address.avenue,
-        office: this.props.address.office
+        office: this.props.address.office,
       };
       let country_code = Countries.find(
-        co => co.label === this.props.address.country
+        (co) => co.label === this.props.address.country
       );
       this.setState({
         address: bsn_address,
         addressId: this.props.address.id,
-        country_code: country_code ? country_code.value : ""
+        country_code: country_code ? country_code.value : "",
       });
     }
   }
@@ -132,14 +118,14 @@ class AddressForm extends Component {
     if (key === "address") {
       this.setState({
         address: value,
-        country_code
+        country_code,
       });
     } else {
       this.setState({
         address: {
           ...this.state.address,
-          [key]: value
-        }
+          [key]: value,
+        },
         // country_code
       });
     }
@@ -191,19 +177,19 @@ class AddressForm extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   address: state.account.address,
   loading: state.account.loadingBillingAddress,
   saving: state.account.savingBillingAddress,
   errorLoading: state.account.errorLoadingBillingAddress,
-  progressSaving: state.account.progressSaving
+  progressSaving: state.account.progressSaving,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   addressForm: (address, navigation, addressId, translate) =>
     dispatch(
       actionCreators.addressForm(address, navigation, addressId, translate)
     ),
-  getAddressDetail: () => dispatch(actionCreators.getAddressForm())
+  getAddressDetail: () => dispatch(actionCreators.getAddressForm()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

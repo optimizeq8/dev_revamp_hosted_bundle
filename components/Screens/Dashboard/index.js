@@ -18,7 +18,6 @@ import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -65,8 +64,8 @@ import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
+import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
-import segmentEventTrack from "../../segmentEventTrack";
 import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 //Logs reasons why a component might be uselessly re-rendering
@@ -250,11 +249,7 @@ class Dashboard extends Component {
       campaign_ad_type: adType.value,
       device_id: this.props.screenProps.device_id,
     });
-    Segment.trackWithProperties("Completed Checkout Step", {
-      step: 1,
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: adType.title,
-    });
+
     if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
@@ -286,7 +281,7 @@ class Dashboard extends Component {
         this.props.navigation.navigate("SuspendedWarning");
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
-          url: `https://www.optimizeapp.com/facebooklogintestapp/login.php?b=${this.props.mainBusiness.businessid}`,
+          url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
           title: "Instagram",
           source: "dashboard",
           source_action: "a_campaign_ad_type",
@@ -442,7 +437,6 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
-    // Segment.screen("Dashboard");
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
   };
@@ -509,7 +503,13 @@ class Dashboard extends Component {
     };
     const businesscategoryName = this.getBusinessCategoryName();
     let placeHolderCards = [1, 2, 3, 4].map((x) => (
-      <View key={x} style={styles.placeHolderCardsStyle} />
+      <PlaceHolderLine
+        key={x}
+        style={styles.placeHolderCardsStyle}
+        width={"90%"}
+        height={150}
+        color={"rgba(0,0,0,0.1)"}
+      />
     ));
     let menu =
       !this.state.open && FilterMenu ? (
@@ -881,15 +881,6 @@ class Dashboard extends Component {
 
             <Animatable.View
               useNativeDriver
-              onAnimationEnd={() => {
-                if (this.state.anim) {
-                  Segment.screenWithProperties("Home Menu", {
-                    category: "User Menu",
-                  });
-                } else {
-                  Segment.screen("Dashboard");
-                }
-              }}
               duration={100}
               animation={
                 (this.props.campaignList &&

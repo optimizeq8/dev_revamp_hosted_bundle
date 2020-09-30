@@ -9,6 +9,7 @@ export const globalColors = {
   purple: "#9300FF",
   purple1: "#BF77F4",
   purple2: "#8B56B0",
+  purple3: "#A496AC",
   purpleTran: "rgba(147,4,255,0.31)",
   green: "#66D072",
   yellow: "#FFFC00",

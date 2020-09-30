@@ -17,8 +17,6 @@ import {
 } from "react-native-responsive-screen";
 import PenIcon from "../../../../../assets/SVGs/Pen";
 import isStringArabic from "../../../../isStringArabic";
-import * as Segment from "expo-analytics-segment";
-import segmentEventTrack from "../../../../segmentEventTrack";
 
 class ProductList extends React.Component {
   constructor(props) {
@@ -29,7 +27,6 @@ class ProductList extends React.Component {
     };
   }
   componentDidMount() {
-    Segment.screen("Selected Products List");
     const list = this.props.navigation.getParam("selectetedItems", []);
     // console.log("list", list);
     this.setState({
@@ -48,11 +45,6 @@ class ProductList extends React.Component {
   };
 
   editItem = (item) => {
-    segmentEventTrack("Clicked on edit item details", {
-      campaign_sme_product_item: {
-        ...item,
-      },
-    });
     this.props.navigation.navigate("EditProductDetailInstagramPost", {
       cartList: this.state.cartList,
       item: item,
@@ -81,7 +73,6 @@ class ProductList extends React.Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            Segment.screen("Selected Products List");
             const list = this.props.navigation.getParam("selectetedItems", []);
             // const checkIfHasKeyProductName = list.map(item =>
             //   item.hasOwnProperty("productName")

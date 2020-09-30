@@ -1,7 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-navigation";
-import { Text, View, I18nManager } from "react-native";
-import * as Segment from "expo-analytics-segment";
+import { Text, View } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import RegisterSuccess from "../../../assets/SVGs/RegisterSuccess";
 import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";

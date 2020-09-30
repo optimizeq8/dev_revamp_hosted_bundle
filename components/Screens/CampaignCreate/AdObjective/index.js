@@ -11,8 +11,7 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
-import { Content, Text, Container, Icon, Button } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import { Content, Text, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -550,11 +549,11 @@ class AdObjective extends Component {
     );
   };
 
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
-      ? this.state.duration - 1 > 1
+      ? this.state.duration - 1 > 3
         ? this.state.duration - 1
-        : 1
+        : 3
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
@@ -571,10 +570,11 @@ class AdObjective extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     let adType = this.props.adType;

@@ -13,7 +13,6 @@ import CustomHeader from "../../../MiniComponents/Header";
 
 //styles
 import styles from "./styles";
-import segmentEventTrack from "../../../segmentEventTrack";
 
 class UploadMediaFromDifferentDevice extends Component {
   componentDidUpdate(prevProps) {
@@ -52,9 +51,6 @@ class UploadMediaFromDifferentDevice extends Component {
                 screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
-                  segmentEventTrack(
-                    "Button clicked to close Upload Media from Different Device Modal"
-                  );
                   this.props.setUploadFromDifferentDeviceModal(false);
                 }}
                 title={"UPLOAD MEDIA"}
@@ -85,11 +81,6 @@ class UploadMediaFromDifferentDevice extends Component {
                       )}
                     </Text>
                     <Text
-                      onLongPress={() => {
-                        segmentEventTrack(
-                          "Copy the Url to upload media from different device"
-                        );
-                      }}
                       selectable={true}
                       style={styles.uploadMediaFromDifferentDeviceSubtitleText}
                     >
@@ -107,9 +98,6 @@ class UploadMediaFromDifferentDevice extends Component {
                       {translate("Enter your Access code")}
                     </Text>
                     <Text
-                      onLongPress={() => {
-                        segmentEventTrack("Copy the access code to share");
-                      }}
                       selectable={true}
                       style={styles.uploadMediaFromDifferentDeviceSubtitleText}
                     >

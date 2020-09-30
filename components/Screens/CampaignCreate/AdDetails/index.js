@@ -1,6 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager, Text } from "react-native";
+import {
+  View,
+  BackHandler,
+  I18nManager,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { Container, Content, Row } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
@@ -140,40 +146,14 @@ class AdDetails extends Component {
       prevState.campaignInfo.targeting.geos.length !==
       this.state.campaignInfo.targeting.geos.length
     ) {
-      let languages = this.state.campaignInfo.targeting.demographics[0]
-        .languages;
-      if (this.state.campaignInfo.targeting.geos.length > 1) {
-        languages.length = 1;
-      }
-      if (!this.editCampaign) {
-        let duration = Math.round(
-          Math.abs(
-            (new Date(this.props.data.start_time).getTime() -
-              new Date(this.props.data.end_time).getTime()) /
-              86400000
-          ) + 1
-        );
-
-        let recBudget =
-          this.state.campaignInfo.targeting.geos.length * duration * 75;
-
-        let minValueBudget =
-          this.props.data.minValueBudget *
-          this.state.campaignInfo.targeting.geos.length;
-        let lifetime_budget_micro = this.state.campaignInfo
-          .lifetime_budget_micro;
-        let value = this.state.value;
-        if (this.state.budgetOption === 1) {
-          lifetime_budget_micro = recBudget * 2;
-          value = this.formatNumber(recBudget * 2, true);
-        }
-        this.setState({
-          campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
-          value,
-          minValueBudget,
-          recBudget,
-        });
-      }
+      this.handleMultipleCountrySelection();
+    }
+    if (
+      JSON.stringify(this.state.campaignInfo) !==
+      JSON.stringify(prevState.campaignInfo)
+    ) {
+      //to not set the audince again from navigation when AdDetails is focused
+      this.props.navigation.setParams({ audienceSelected: false });
     }
   }
   handleBackButton = () => {
@@ -184,6 +164,73 @@ class AdDetails extends Component {
       this._handleSideMenuState(false);
     } else this.props.navigation.goBack();
     return true;
+  };
+
+  handleMultipleCountrySelection = () => {
+    let languages = this.state.campaignInfo.targeting.demographics[0].languages;
+    if (this.state.campaignInfo.targeting.geos.length > 1) {
+      languages.length = 1;
+    }
+    if (!this.editCampaign) {
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let recBudget =
+        this.state.campaignInfo.targeting.geos.length * duration * 75;
+
+      let minValueBudget =
+        this.props.data.minValueBudget *
+        this.state.campaignInfo.targeting.geos.length;
+      let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
+      let value = this.state.value;
+      if (this.state.budgetOption !== 0) {
+        switch (this.state.budgetOption) {
+          case 1:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          case 2:
+            lifetime_budget_micro = recBudget;
+            value = this.formatNumber(recBudget, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          case 3:
+            lifetime_budget_micro = recBudget * 3;
+            value = this.formatNumber(recBudget * 3, true);
+            console.log(
+              "lifetime_budget_micro",
+              lifetime_budget_micro,
+              this.state.budgetOption
+            );
+            break;
+          default:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            break;
+        }
+      }
+
+      this.setState({
+        campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
+        value,
+        minValueBudget,
+        recBudget,
+      });
+    }
   };
   async componentDidMount() {
     this.props.get_languages();
@@ -337,8 +384,10 @@ class AdDetails extends Component {
               () => {
                 if (this.props.data.appChoice) {
                   let navAppChoice =
-                    this.props.data.iosApp_name &&
-                    this.props.data.androidApp_name
+                    this.props.data.attachment.ios_app_id &&
+                    this.props.data.attachment.ios_app_id !== "" &&
+                    this.props.data.attachment.android_app_url &&
+                    this.props.data.attachment.android_app_url !== ""
                       ? ""
                       : this.props.data.appChoice;
                   let rep = cloneDeep(this.state.campaignInfo);
@@ -356,6 +405,20 @@ class AdDetails extends Component {
               null,
               this.props.mainBusiness.country
             );
+            if (this.props.data && this.props.data.appChoice) {
+              let navAppChoice =
+                this.props.data.attachment.ios_app_id &&
+                this.props.data.attachment.ios_app_id !== "" &&
+                this.props.data.attachment.android_app_url &&
+                this.props.data.attachment.android_app_url !== ""
+                  ? ""
+                  : this.props.data.appChoice;
+              let rep = cloneDeep(this.state.campaignInfo);
+              rep.targeting.devices[0].os_type = navAppChoice;
+              this.setState({
+                campaignInfo: rep,
+              });
+            }
           }
           this.props.save_campaign_info({
             budgetOption: this.state.budgetOption,
@@ -366,28 +429,16 @@ class AdDetails extends Component {
     }
   }
 
-  _handleMaxAge = (value) => {
+  _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].max_age = parseInt(value);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",
-      campaign_max_age: parseInt(value),
-    });
-    this.setState({
-      campaignInfo: rep,
-    });
-    !this.editCampaign && this.props.save_campaign_info({ campaignInfo: rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].min_age = value;
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(value),
+      campaign_min_age: parseInt(values[0]),
+      campaign_max_age: parseInt(values[1]),
     });
     this.setState({
       campaignInfo: rep,
@@ -694,9 +745,6 @@ class AdDetails extends Component {
   //   }
   //   let replace = this.state.campaignInfo;
   //   replace.lifetime_budget_micro = budget;
-  //   segmentEventTrack(`Campaign Budget Change`, {
-  //     campaign_budget: this.formatNumber(budget)
-  //   });
   //   this.setState({
   //     campaignInfo: replace,
   //     value: this.formatNumber(budget)
@@ -1056,6 +1104,8 @@ class AdDetails extends Component {
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
+
+      // TODO: Region_id can be for multiple geos, not sure if need to clean/delete that too before sending to save target
       if (
         rep.targeting.geos[0].hasOwnProperty("region_id") &&
         rep.targeting.geos[0].region_id.length === 0
@@ -1074,14 +1124,11 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.devices[0].marketing_name;
       }
-      if (
-        rep.targeting.devices[0].os_type &&
-        rep.targeting.devices[0].os_type === ""
-      ) {
+      if (rep.targeting.devices[0] && rep.targeting.devices[0].os_type === "") {
         delete rep.targeting.devices[0].os_type;
       }
       if (
-        rep.targeting.devices[0].os_version_max &&
+        rep.targeting.devices[0] &&
         rep.targeting.devices[0].os_version_max === ""
       ) {
         delete rep.targeting.devices[0].os_version_max;
@@ -1095,6 +1142,24 @@ class AdDetails extends Component {
       }
       if (rep.targeting.demographics[0].max_age === 50) {
         rep.targeting.demographics[0].max_age = "50+";
+      }
+
+      if (
+        rep.targeting.locations &&
+        rep.targeting.locations[0].circles &&
+        rep.targeting.locations[0].circles.length === 0
+      ) {
+        delete rep.targeting.locations[0].circles;
+      }
+      if (
+        Object.entries(rep.targeting.locations[0]).length === 0 &&
+        rep.targeting.locations[0].constructor === Object
+      ) {
+        delete rep.targeting.locations;
+      }
+
+      if (rep.targeting.enable_targeting_expansion) {
+        delete rep.targeting.enable_targeting_expansion;
       }
       rep.targeting = JSON.stringify(rep.targeting);
       let interestNamesList = [];
@@ -1171,7 +1236,6 @@ class AdDetails extends Component {
             false
           );
         }
-
         this.props.ad_details(
           rep,
           {
@@ -1184,6 +1248,13 @@ class AdDetails extends Component {
         );
       }
     }
+  };
+
+  chooseExistingAudience = () => {
+    this.props.navigation.navigate("SnapchatAudienceList", {
+      source: "ad_targeting",
+      source_action: "a_open_audience_list",
+    });
   };
 
   handleAdDetailsFocus = () => {
@@ -1201,9 +1272,16 @@ class AdDetails extends Component {
     );
     if (this.props.navigation.getParam("audienceSelected", false)) {
       let editedCampaign = cloneDeep(this.state.campaignInfo);
+      let campaignTargeting = this.props.navigation.getParam(
+        "campaignTargeting",
+        {}
+      );
+      if (this.editCampaign) {
+        campaignTargeting.geos = editedCampaign.targeting.geos;
+      }
       editedCampaign.targeting = {
         ...editedCampaign.targeting,
-        ...this.props.navigation.getParam("campaignTargeting", {}),
+        ...campaignTargeting,
       };
 
       let editedCountryCodes = editedCampaign.targeting.geos.map(
@@ -1227,6 +1305,7 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      // LOCATIONS MAP
       let stateRegionNames = [];
       this.setState(
         {
@@ -1252,6 +1331,22 @@ class AdDetails extends Component {
           let showRegions = this.state.regions.some(
             (reg) => reg.regions.length > 3
           );
+
+          if (this.props.data.appChoice) {
+            let navAppChoice =
+              this.props.data.iosApp_name &&
+              this.props.data.iosApp_name !== "" &&
+              this.props.data.androidApp_name &&
+              this.props.data.androidApp_name !== ""
+                ? ""
+                : this.props.data.appChoice;
+            let rep = cloneDeep(this.state.campaignInfo);
+            rep.targeting.devices[0].os_type = navAppChoice;
+            this.setState({
+              campaignInfo: rep,
+            });
+          }
+          this.handleMultipleCountrySelection();
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
         }
@@ -1261,12 +1356,6 @@ class AdDetails extends Component {
       ? {
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.adType,
-          campaign_duration:
-            Math.ceil(
-              (new Date(this.props.data.end_time) -
-                new Date(this.props.data.start_time)) /
-                (1000 * 60 * 60 * 24)
-            ) + 1,
           campaign_name: this.props.data.name,
           campaign_id: this.props.data.campaign_id,
           campaign_brand_name: this.props.data.brand_name,
@@ -1328,8 +1417,7 @@ class AdDetails extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
+            _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 50]}
             minAge={this.state.campaignInfo.targeting.demographics[0].min_age}
@@ -1402,6 +1490,26 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
+            data={
+              this.props.data.appChoice &&
+              ((this.props.data.attachment.ios_app_id &&
+                this.props.data.attachment.ios_app_id !== "") ||
+                (this.props.data.attachment.android_app_url &&
+                  this.props.data.attachment.android_app_url !== ""))
+                ? [
+                    {
+                      value: this.state.campaignInfo.targeting.devices[0]
+                        .os_type,
+                      label:
+                        this.state.campaignInfo.targeting.devices[0].os_type ===
+                        ""
+                          ? "All"
+                          : this.state.campaignInfo.targeting.devices[0]
+                              .os_type,
+                    },
+                  ]
+                : OSType
+            }
             _handleSideMenuState={this._handleSideMenuState}
           />
         );
@@ -1653,32 +1761,39 @@ class AdDetails extends Component {
                           style={[
                             styles.subHeadings,
                             {
+                              paddingHorizontal: 0,
                               width:
                                 this.props.audienceList.length > 0
-                                  ? "42%"
-                                  : "100%",
+                                  ? "30%"
+                                  : "60%",
                               fontSize:
-                                this.props.audienceList.length > 0 ? 12 : 16,
+                                this.props.audienceList.length > 0 ? 13 : 16,
                             },
                           ]}
                         >
                           {translate("Who would you like to reach?")}
                         </Text>
-                        {this.props.audienceList.length > 0 && (
+                        {this.props.audienceList.length > 0 ? (
                           <GradientButton
                             uppercase={true}
-                            text={"Choose Existing Audience"}
-                            onPressAction={() => {
-                              this.props.navigation.navigate(
-                                "SnapchatAudienceList"
-                              );
-                            }}
+                            text={translate("Choose Existing Audience")}
+                            onPressAction={this.chooseExistingAudience}
                             transparent={true}
                             textStyle={styles.existingButtonText}
                             height={50}
                             style={styles.existingButton}
                             radius={50}
                           />
+                        ) : (
+                          this.props.audienceListLoading && (
+                            <ActivityIndicator
+                              color={globalColors.purple}
+                              size="small"
+                              style={{
+                                right: "100%",
+                              }}
+                            />
+                          )
                         )}
                       </View>
                     )}
@@ -1734,6 +1849,7 @@ const mapStateToProps = (state) => ({
   interests: state.campaignC.interests,
   campaignDateChanged: state.campaignC.campaignDateChanged,
   audienceList: state.audience.audienceList,
+  audienceListLoading: state.audience.audienceListLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

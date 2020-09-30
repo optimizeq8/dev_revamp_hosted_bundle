@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import MaskedView from "@react-native-community/masked-view";
 import cloneDeep from "lodash/cloneDeep";
 import analytics from "@segment/analytics-react-native";
@@ -59,6 +59,7 @@ import countries, {
   OSType,
   country_regions,
 } from "../CampaignCreate/AdDetails/data";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
@@ -86,19 +87,29 @@ export class SnapchatAudience extends Component {
     this.props.get_languages();
 
     // To by default set the country to that of the business country selected
-    let country_code = find(
-      countries,
-      (country) => country.label === this.props.mainBusiness.country
-    ).value;
-    this.props.get_interests(country_code);
-
-    await this.onSelectedCountryChange(
-      country_code,
-      true,
-      this.props.mainBusiness.country
-    );
   }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.audienceDetailLoading !== this.props.audienceDetailLoading &&
+      this.props.audience.targeting.geos[0].country_code !== ""
+    ) {
+      let showRegions = false;
+      let countryRegions = this.props.audience.targeting.geos.map((cou) => {
+        let foundCountryReg = find(
+          country_regions,
+          (country) => country.country_code === cou.country_code
+        );
+        showRegions = foundCountryReg.regions.length > 3;
 
+        return foundCountryReg;
+      });
+      this.setState({
+        regions: countryRegions ? countryRegions : [],
+        filteredRegions: countryRegions ? countryRegions : [],
+        showRegions: showRegions,
+      });
+    }
+  }
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     const audienceNameError =
@@ -142,45 +153,45 @@ export class SnapchatAudience extends Component {
 
         // campaign_channel: "snapchat",
         // campaign_ad_type: this.props.adType,
-        error_description: countryError || languagesError,
+        error_description: countryError || languagesError || audienceNameError,
       });
     }
     if (!languagesError && !countryError && !audienceNameError) {
       let rep = cloneDeep(this.props.audience);
-      if (rep.targeting.demographics[0].gender === "") {
-        delete rep.targeting.demographics[0].gender;
-      }
-      if (
-        rep.targeting.geos[0].hasOwnProperty("region_id") &&
-        rep.targeting.geos[0].region_id.length === 0
-      ) {
-        delete rep.targeting.geos[0].region_id;
-      }
-      if (
-        rep.targeting.hasOwnProperty("interests") &&
-        rep.targeting.interests[0].category_id.length === 0
-      ) {
-        delete rep.targeting.interests;
-      }
-      if (
-        rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
-        rep.targeting.devices[0].marketing_name.length === 0
-      ) {
-        delete rep.targeting.devices[0].marketing_name;
-      }
-      if (rep.targeting.devices[0].os_type === "") {
-        delete rep.targeting.devices[0].os_type;
-      }
-      if (rep.targeting.devices[0].os_version_max === "") {
-        delete rep.targeting.devices[0].os_version_max;
-        delete rep.targeting.devices[0].os_version_min;
-      }
-      if (
-        Object.entries(rep.targeting.devices[0]).length === 0 &&
-        rep.targeting.devices[0].constructor === Object
-      ) {
-        delete rep.targeting.devices;
-      }
+      // if (rep.targeting.demographics[0].gender === "") {
+      //   delete rep.targeting.demographics[0].gender;
+      // }
+      // if (
+      //   rep.targeting.geos[0].hasOwnProperty("region_id") &&
+      //   rep.targeting.geos[0].region_id.length === 0
+      // ) {
+      //   delete rep.targeting.geos[0].region_id;
+      // }
+      // if (
+      //   rep.targeting.hasOwnProperty("interests") &&
+      //   rep.targeting.interests[0].category_id.length === 0
+      // ) {
+      //   delete rep.targeting.interests;
+      // }
+      // if (
+      //   rep.targeting.devices[0].hasOwnProperty("marketing_name") &&
+      //   rep.targeting.devices[0].marketing_name.length === 0
+      // ) {
+      //   delete rep.targeting.devices[0].marketing_name;
+      // }
+      // if (rep.targeting.devices[0].os_type === "") {
+      //   delete rep.targeting.devices[0].os_type;
+      // }
+      // if (rep.targeting.devices[0].os_version_max === "") {
+      //   delete rep.targeting.devices[0].os_version_max;
+      //   delete rep.targeting.devices[0].os_version_min;
+      // }
+      // if (
+      //   Object.entries(rep.targeting.devices[0]).length === 0 &&
+      //   rep.targeting.devices[0].constructor === Object
+      // ) {
+      //   delete rep.targeting.devices;
+      // }
       if (rep.targeting.demographics[0].max_age === 50) {
         rep.targeting.demographics[0].max_age = "50+";
       }
@@ -258,25 +269,16 @@ export class SnapchatAudience extends Component {
     } else this._renderSideMenu(selector, option);
   };
 
-  _handleMaxAge = (value) => {
+  _handleAge = (values) => {
     let rep = cloneDeep(this.props.audience);
-    rep.targeting.demographics[0].max_age = parseInt(value);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_audience_age`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_age",
-      audience_max_age: parseInt(value),
-    });
-    this.props.setAudienceDetail({ ...rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = cloneDeep(this.props.audience);
-    rep.targeting.demographics[0].min_age = value;
-    analytics.track(`a_audience_age`, {
-      source: "ad_targeting",
-      source_action: "a_audience_age",
-      audience_min_age: parseInt(value),
+      audience_max_age: parseInt(values[0]),
+      audience_min_age: parseInt(values[1]),
     });
     this.props.setAudienceDetail({ ...rep });
   };
@@ -296,7 +298,8 @@ export class SnapchatAudience extends Component {
       if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
         replace.targeting.geos.length === 1 &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To overwrite the object in geos instead of filtering it out
         replace.targeting.geos[0] = {
@@ -309,7 +312,8 @@ export class SnapchatAudience extends Component {
         replace.targeting.locations[0].circles = [];
       } else if (
         replace.targeting.geos.find((co) => co.country_code === newCountry) &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To remove the country from the array
         replace.targeting.geos = replace.targeting.geos.filter(
@@ -334,7 +338,7 @@ export class SnapchatAudience extends Component {
               replace.targeting.locations[0].circles.splice(i, 1);
             }
           });
-      } else if (replace.targeting.geos[0].country_code === "") {
+      } else if (replace.targeting.geos[0].country_code === "" && !mounting) {
         //To overwrite the only object in geos instead of pushing the new country
         replace.targeting.geos[0] = {
           country_code: newCountry,
@@ -345,9 +349,10 @@ export class SnapchatAudience extends Component {
           (reg) => reg.country_code !== newCountry
         );
       } else if (
-        addCountryOfLocations
+        (addCountryOfLocations
           ? !replace.targeting.geos.find((co) => co.country_code === newCountry)
-          : true
+          : true) &&
+        !mounting
       ) {
         //To add the coutnry to geos array
         replace.targeting.geos.push({
@@ -358,7 +363,8 @@ export class SnapchatAudience extends Component {
       let reg = country_regions.find((c) => c.country_code === newCountry);
       if (
         this.state.regions.find((c) => c.country_code === newCountry) &&
-        !addCountryOfLocations
+        !addCountryOfLocations &&
+        !mounting
       ) {
         //To remove the region from the list of country regions that shows all regions of countriees when
         //the country is unselected
@@ -366,9 +372,10 @@ export class SnapchatAudience extends Component {
           return coReg.country_code !== newCountry;
         });
       } else if (
-        addCountryOfLocations
+        (addCountryOfLocations
           ? !this.state.regions.find((c) => c.country_code === newCountry)
-          : true
+          : true) &&
+        !mounting
       ) {
         if (reg) reg = [...this.state.regions, reg];
       } else {
@@ -377,7 +384,7 @@ export class SnapchatAudience extends Component {
       if (replace.targeting.interests)
         replace.targeting.interests[0].category_id = [];
       // analytics.track(`a_audience_country`, {
-      //   source: "ad_targeting",
+      //   source: "audience_detail",
       //   source_action: "a_audience_country",
       //   audience_country_name: countryName,
       // });
@@ -401,17 +408,10 @@ export class SnapchatAudience extends Component {
                 )
               : false;
 
-          this.props.setAudienceDetail({
-            ...replace,
-            // country_code: newCountry,
-            // countryName,
-            // showRegions: showRegions,
-            // regionNames,
-            // markers:
-            //   replace.targeting.locations &&
-            //   replace.targeting.locations[0].circles,
-            // locationsInfo,
-          });
+          !mounting &&
+            this.props.setAudienceDetail({
+              ...replace,
+            });
           this.setState({ showRegions });
         }
       );
@@ -429,7 +429,7 @@ export class SnapchatAudience extends Component {
     replace.targeting.devices[0].marketing_name = selectedItems;
 
     analytics.track(`a_audience_devices`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_devices",
       audience_devices_name:
         selectedItems.length > 0 ? selectedItems.join(", ") : "",
@@ -443,7 +443,7 @@ export class SnapchatAudience extends Component {
     let names = [];
     names = selectedItems.length > 0 && selectedItems.map((item) => item.name);
     analytics.track(`a_audience_interests`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_interests",
       audience_interests_names: names && names.length > 0 && names.join(", "),
     });
@@ -469,7 +469,7 @@ export class SnapchatAudience extends Component {
       );
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_audience_languages`, {
-        source: "ad_targeting",
+        source: "audience_detail",
         source_action: "a_audience_languages",
         audience_languages: langs.join(", "),
       });
@@ -479,7 +479,7 @@ export class SnapchatAudience extends Component {
       } else replace.targeting.demographics[0].languages.push(selectedItem);
       langs = replace.targeting.demographics[0].languages;
       analytics.track(`a_audience_languages`, {
-        source: "ad_targeting",
+        source: "audience_detail",
         source_action: "a_audience_languages",
         audience_languages: langs.join(", "),
       });
@@ -487,7 +487,7 @@ export class SnapchatAudience extends Component {
 
     if (replace.targeting.demographics[0].languages.length === 0) {
       analytics.track(`a_error_form`, {
-        error_page: "ad_targeting",
+        error_page: "audience_detail",
         source_action: "a_audience_languages",
         error_description: "Please choose a language",
       });
@@ -513,7 +513,7 @@ export class SnapchatAudience extends Component {
     replace.targeting.devices[0].os_version_min = "";
     replace.targeting.devices[0].os_version_max = "";
     analytics.track(`a_audience_OS_type`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_OS_type",
       audience_os_type: selectedItem === "" ? "ALL" : selectedItem,
       audience_os_min_ver: "",
@@ -530,7 +530,7 @@ export class SnapchatAudience extends Component {
     replace.targeting.devices[0].os_version_min = selectedItem[0];
     replace.targeting.devices[0].os_version_max = selectedItem[1];
     analytics.track(`a_audience_OS_version`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_OS_version",
       audience_os_min_ver: selectedItem[0],
       audience_os_max_ver: selectedItem[1],
@@ -548,7 +548,7 @@ export class SnapchatAudience extends Component {
       // this.props.setAudienceDetail({ markers: [], locationsInfo: [] });
     } else stateRep.targeting.locations[0].circles = selectedItems;
     analytics.track(`a_audience_map_locations`, {
-      source: "ad_targeting",
+      source: "audience_detail",
       source_action: "a_audience_map_locations",
       audience_map_locations: selectedItems,
     });
@@ -595,7 +595,7 @@ export class SnapchatAudience extends Component {
           (co, i) => (replace.targeting.geos[i].region_id = [])
         );
         analytics.track(`a_audience_regions`, {
-          source: "ad_targeting",
+          source: "audience_detail",
           source_action: "a_audience_regions",
           audience_region_names: [],
         });
@@ -633,7 +633,7 @@ export class SnapchatAudience extends Component {
             : [];
         });
         analytics.track(`a_audience_regions`, {
-          source: "ad_targeting",
+          source: "audience_detail",
           source_action: "a_audience_regions",
           audience_region_names: rNamesSelected.join(", "),
         });
@@ -664,7 +664,7 @@ export class SnapchatAudience extends Component {
         });
       }
       analytics.track(`a_audience_regions`, {
-        source: "ad_targeting",
+        source: "audience_detail",
         source_action: "a_audience_regions",
         audience_region_names: rNamesSelected.join(", "),
       });
@@ -708,6 +708,9 @@ export class SnapchatAudience extends Component {
   };
 
   setAudienceName = (stateName, value) => {
+    analytics.track("a_audience_name", {
+      audience_name: value,
+    });
     this.props.setAudienceDetail({ name: value });
   };
   getValidAudienceName = (stateName, value) => {
@@ -729,6 +732,7 @@ export class SnapchatAudience extends Component {
           return (
             this.props.languages &&
             this.props.languages.length > 0 &&
+            typeof this.props.languages === "object" &&
             translate(
               this.props.languages.find((lang) => lang.id == lang_code).name
             )
@@ -818,33 +822,59 @@ export class SnapchatAudience extends Component {
     return regionNames && regionNames.length > 0 ? regionNames.join(", ") : "";
   };
   goBack = () => {
+    const { translate } = this.props.screenProps;
+    analytics.track("go_back_warning", {
+      source: "audience_detail",
+      source_action: "a_go_back",
+    });
     Alert.alert(
-      "Warning",
-      `Going back without saving will loose this information?`,
+      translate("Warning"),
+      translate(
+        `You didn't save your changes Do you want go back without saving`
+      ),
       [
         {
-          text: "Cancel",
-          onPress: () => {},
+          text: translate("Cancel"),
+          onPress: () => {
+            analytics.track("a_cancel_go_back", {
+              source: "audience_detail",
+              source_action: "a_go_back",
+            });
+          },
           style: "cancel",
         },
         {
-          text: "Yes",
-          onPress: () => this.props.navigation.goBack(),
+          text: translate("Yes"),
+          onPress: () => {
+            analytics.track("a_go_back", {
+              source: "audience_detail",
+              source_action: "a_go_back",
+            });
+            this.props.navigation.goBack();
+          },
         },
       ],
       { cancelable: true }
     );
   };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track("audience_detail", {
+      source,
+      source_action,
+      new: !this.editAudience,
+      audience_channel: "snapchat",
+    });
+  };
   render() {
-    let {
-      loading = false,
-      audience,
-      audienceDetailLoading,
-      mainState = {
-        countryName: "",
-        showRegions: true,
-      },
-    } = this.props;
+    let { saveAudienceLoading = false, audience } = this.props;
     const { targeting } = audience;
     const { translate } = this.props.screenProps;
     let languages_names = this.getLanguagesName();
@@ -870,9 +900,8 @@ export class SnapchatAudience extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.props.audience.targeting.demographics[0]}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
+            _handleAge={this._handleAge}
             ageValuesRange={[13, 50]}
             minAge={this.props.audience.targeting.demographics[0].min_age}
             maxAge={this.props.audience.targeting.demographics[0].max_age}
@@ -942,6 +971,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             campaignInfo={this.props.audience}
             onSelectedOSChange={this.onSelectedOSChange}
+            data={OSType}
             _handleSideMenuState={this._handleSideMenuState}
           />
         );
@@ -988,6 +1018,7 @@ export class SnapchatAudience extends Component {
       return (
         <View style={styles.outerView}>
           <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+          <NavigationEvents onDidFocus={this.onDidFocus} />
           <Header
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
@@ -995,8 +1026,9 @@ export class SnapchatAudience extends Component {
             title={`${this.editAudience ? "Edit" : "Create"} Audience`}
             titleStyle={{ color: globalColors.purple }}
             showTopRightButton={true}
-            topRightButtonText={"SAVE"}
+            topRightButtonText={translate("Save")}
             topRightButtonFunction={this._handleSubmission}
+            disabled={saveAudienceLoading || this.props.audienceDetailLoading}
           />
           <ActivityIndicator size={"large"} color={globalColors.orange} />
         </View>
@@ -1017,6 +1049,7 @@ export class SnapchatAudience extends Component {
             isOpen={this.state.sidemenustate}
             menuContainerStyle={{ top: this.state.sidemenustate ? 80 : 0 }}
           >
+            <NavigationEvents onDidFocus={this.onDidFocus} />
             <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
             <Header
               screenProps={this.props.screenProps}
@@ -1025,8 +1058,9 @@ export class SnapchatAudience extends Component {
               title={`${this.editAudience ? "Edit" : "Create"} Audience`}
               titleStyle={{ color: globalColors.purple }}
               showTopRightButton={true}
-              topRightButtonText={"SAVE"}
+              topRightButtonText={translate("Save")}
               topRightButtonFunction={this._handleSubmission}
+              disabled={saveAudienceLoading || this.props.audienceDetailLoading}
             />
 
             <View style={styles.innerView}>
@@ -1060,13 +1094,10 @@ export class SnapchatAudience extends Component {
                   ref={(ref) => (this.scrollView = ref)}
                   indicatorStyle="white"
                   contentContainerStyle={{ paddingBottom: 100 }}
-                  style={[
-                    styles.targetList,
-                    // { height: editAudience ? heightPercentageToDP(60) : "90%" },
-                  ]}
+                  style={[styles.targetList]}
                 >
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("selectors", "countries")}
                     style={styles.targetTouchable}
                   >
@@ -1141,7 +1172,7 @@ export class SnapchatAudience extends Component {
                     </TouchableOpacity>
                   ) : null}
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("map")}
                     style={styles.targetTouchable}
                   >
@@ -1172,7 +1203,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("gender")}
                     style={styles.targetTouchable}
                   >
@@ -1212,7 +1243,7 @@ export class SnapchatAudience extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("age")}
                     style={styles.targetTouchable}
                   >
@@ -1246,7 +1277,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("languages")}
                     style={styles.targetTouchable}
                   >
@@ -1273,7 +1304,7 @@ export class SnapchatAudience extends Component {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("selectors", "interests")}
                     style={styles.targetTouchable}
                   >
@@ -1303,7 +1334,7 @@ export class SnapchatAudience extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() => this.callFunction("OS")}
                     style={styles.targetTouchable}
                   >
@@ -1345,7 +1376,7 @@ export class SnapchatAudience extends Component {
                   </TouchableOpacity>
                   {targeting.devices && targeting.devices[0].os_type !== "" && (
                     <TouchableOpacity
-                      disabled={loading}
+                      disabled={saveAudienceLoading}
                       onPress={() =>
                         this.callFunction("selectors", "deviceVersions")
                       }
@@ -1381,7 +1412,7 @@ export class SnapchatAudience extends Component {
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity
-                    disabled={loading}
+                    disabled={saveAudienceLoading}
                     onPress={() =>
                       this.callFunction("selectors", "deviceBrands")
                     }
@@ -1431,6 +1462,11 @@ export class SnapchatAudience extends Component {
                   </Text>
                 )}
             </View>
+            {saveAudienceLoading && (
+              <View style={styles.loader}>
+                <LoadingScreen dash={true} />
+              </View>
+            )}
           </Sidemenu>
         </View>
       );
@@ -1441,6 +1477,7 @@ const mapStateToProps = (state) => ({
   audience: state.audience.audience,
   languages: state.campaignC.languagesList,
   audienceDetailLoading: state.audience.audienceDetailLoading,
+  saveAudienceLoading: state.audience.saveAudienceLoading,
   mainBusiness: state.account.mainBusiness,
   interests: state.campaignC.interests,
 });

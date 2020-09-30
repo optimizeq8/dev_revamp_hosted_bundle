@@ -1,3 +1,4 @@
+import analytics from "@segment/analytics-react-native";
 import * as actionTypes from "./actionTypes";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
@@ -60,11 +61,6 @@ export const getAudienceDetail = (audienceId) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        // console.log("data", data);
-        dispatch({
-          type: actionTypes.LOADING_AUDIENCE_DETAIL,
-          payload: false,
-        });
         if (data.success) {
           return dispatch({
             type: actionTypes.SET_AUDIENCE_DETAIL,
@@ -102,11 +98,23 @@ export const createAudience = (audience, navigate = true) => {
       .then((data) => {
         dispatch({
           type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
-          payload: true,
+          payload: false,
+        });
+        analytics.track("a_create_audience", {
+          source: "audience_detail",
+          source_action: "a_create_audience",
+          action_status: data.success ? "success" : "failure",
+          action_description: data.message,
+          audience_name: audience.name,
+          audience_targeting: audience.targeting,
         });
         if (data.success) {
           dispatch(getAudienceList());
-          navigate && NavigationService.navigate("SnapchatAudienceList");
+          navigate &&
+            NavigationService.navigate("SnapchatAudienceList", {
+              source: "audience_detail",
+              source_action: "a_create_audience",
+            });
         }
       })
       .catch((error) => {
@@ -126,6 +134,13 @@ export const deleteAudience = (audienceId) => {
       .delete(`/snapchatsavedaudience/${audienceId}`)
       .then((res) => res.data)
       .then((data) => {
+        analytics.track("a_delete_audience", {
+          source: "audience_list",
+          source_action: "a_delete_audience",
+          action_status: data.success ? "success" : "failure",
+          action_description: data.message,
+          audience_id: audienceId,
+        });
         if (data.success) {
           dispatch(getAudienceList());
         }
@@ -144,6 +159,10 @@ export const deleteAudience = (audienceId) => {
  */
 export const updateAudience = (audienceId, audienceName, targeting) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
+      payload: true,
+    });
     createBaseUrl()
       .put(`snapchatsavedaudience/${audienceId}`, {
         businessid: getState().account.mainBusiness.businessid,
@@ -152,9 +171,25 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        dispatch({
+          type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
+          payload: false,
+        });
+        analytics.track("a_update_audience", {
+          source: "audience_detail",
+          source_action: "a_update_audience",
+          action_status: data.success ? "success" : "failure",
+          action_description: data.message,
+          audience_id: audienceId,
+          audience_name: audienceName,
+          audience_targeting: targeting,
+        });
         if (data.success) {
           dispatch(getAudienceList());
-          NavigationService.navigate("SnapchatAudienceList");
+          NavigationService.navigate("SnapchatAudienceList", {
+            source: "audience_detail",
+            source_action: "a_update_audience",
+          });
         }
       })
       .catch((error) => {

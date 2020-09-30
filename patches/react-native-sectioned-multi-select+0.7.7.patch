@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-sectioned-multi-select/lib/sectioned-multi-select.js b/node_modules/react-native-sectioned-multi-select/lib/sectioned-multi-select.js
+index c07b4a3..f48123a 100644
+--- a/node_modules/react-native-sectioned-multi-select/lib/sectioned-multi-select.js
++++ b/node_modules/react-native-sectioned-multi-select/lib/sectioned-multi-select.js
+@@ -787,7 +787,8 @@ class SectionedMultiSelect extends PureComponent {
+     const { styles, colors } = this.state
+     return selectedItems.map((singleSelectedItem) => {
+       const item = this._findItem(singleSelectedItem)
+-      const isParent = item[subKey] && item[subKey].length
++      const isParent =item&& item[subKey] && item[subKey].length
+ 
+       if (!item || !item[displayKey]) return null
+ 

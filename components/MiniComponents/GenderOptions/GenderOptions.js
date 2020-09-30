@@ -4,14 +4,10 @@ import { SafeAreaView } from "react-navigation";
 import { Text, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
-import * as Segment from "expo-analytics-segment";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class GenderOptions extends Component {
-  componentDidMount() {
-    Segment.screen("Gender Options");
-  }
   render() {
     let selectedGender = this.props.campaignInfo.targeting.hasOwnProperty(
       "demographics"

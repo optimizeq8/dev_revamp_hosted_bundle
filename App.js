@@ -15,7 +15,6 @@ import {
   Text as TextReactNative,
   I18nManager,
   AppState,
-  AsyncStorage,
   ActivityIndicator,
   Dimensions,
   Linking,
@@ -25,7 +24,6 @@ import analytics from "@segment/analytics-react-native";
 import Mixpanel from "@segment/analytics-react-native-mixpanel";
 // import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
-import segmentEventTrack from "./components/segmentEventTrack";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
 
@@ -49,7 +47,6 @@ import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
-import * as Segment from "expo-analytics-segment";
 import * as Icon from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
@@ -88,6 +85,7 @@ if (!__DEV__) {
   });
 }
 import { MixpanelInstance } from "react-native-mixpanel";
+import AsyncStorage from "@react-native-community/async-storage";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
@@ -215,20 +213,19 @@ class App extends React.Component {
       ios: {
         trackAdvertising: true,
         trackDeepLinks: true,
+        trackPushNotifications: true,
       },
       debug: true,
     });
-    RNBootSplash.hide({ duration: 350 });
+    setTimeout(() => {
+      RNBootSplash.hide();
+    }, 1000);
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
         anonymous_userId: anonId,
       });
     });
 
-    // Segment.initialize({
-    //   androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
-    //   iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
-    // });
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
@@ -302,7 +299,6 @@ class App extends React.Component {
   };
 
   _handleNotification = async (handleScreen) => {
-    segmentEventTrack("Notification received");
     // console.log("handleScreen app", JSON.stringify(handleScreen, null, 2));
     // console.log(handleScreen.notification.request.content.data.screenName);
     this.setState({ notificationData: handleScreen });
@@ -423,8 +419,6 @@ class App extends React.Component {
           JSON.stringify(handleScreen.data)
         )
       );
-
-      segmentEventTrack("Pressed notification");
     }
     //   this.setState({
     //     uploadMediaDifferentDeviceModal: false,
@@ -494,6 +488,7 @@ class App extends React.Component {
     // ]).start();
     Animated.timing(this.state.translateY, {
       toValue: heightPercentageToDP(100),
+      useNativeDriver: true,
       // duration: 1000,
     }).start(() => {
       this.setState({ isLoadingComplete: true });

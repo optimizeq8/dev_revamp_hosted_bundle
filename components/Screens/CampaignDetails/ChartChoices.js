@@ -24,6 +24,7 @@ export default class ChartChoices extends Component {
       choices.push("website interactions");
     choices = choices.map((choice) => (
       <GradientButton
+        activeOpacity={0.8}
         key={choice}
         onPressAction={() => {
           this.props.changeChart(choice);

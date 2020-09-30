@@ -33,11 +33,12 @@ const styles = StyleSheet.create({
   },
   mediaIcon: {
     alignItems: "center",
+    justifyContent: "center",
     width: 55,
     height: 55,
     borderRadius: 50,
     marginHorizontal: 5,
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.16)",
   },
   activeMediaIcon: {
     borderColor: "#FF790A",

@@ -54,6 +54,11 @@ import WebsiteRegistartionSuccess from "../Screens/OptimizeWebsite/RegistrationS
 import WebsiteSetting from "../Screens/OptimizeWebsite/WebsiteSetting";
 import MyWebsite from "../Screens/OptimizeWebsite/MyWebsite";
 import EditProduct from "../Screens/OptimizeWebsite/EditProduct/EditProduct";
+import AddProduct from "../Screens/OptimizeWebsite/AddProduct/AddProduct";
+import AddCategory from "../Screens/OptimizeWebsite/Category/AddCategory";
+import EditCategory from "../Screens/OptimizeWebsite/Category/EditCategory";
+import CategoryList from "../Screens/OptimizeWebsite/Category/CategoryList";
+
 import VerifyAccount from "../Screens/VerifyAccount";
 import TutorialWeb from "../Screens/OptimizeWebsite/Tutorial";
 import InstagramFeedAdObjective from "../Screens/InstagramCampaignCreate/Feed/AdObjective";
@@ -161,11 +166,15 @@ export default FluidNavigator(
     InstagramCampaignDetails: InstagramCampaignDetails,
     InstagramAdDesignExistingPost: InstagramAdDesignExistingPost,
     EditProduct: EditProduct,
+    AddProduct: AddProduct,
     ReviewProductDetail: ReviewProductDetail,
     MyWebsiteSelectProducts: MyWebsiteSelectProducts,
     MyWebsiteECommerce: MyWebsiteECommerce,
     SnapchatAudienceList: SnapchatAudienceList,
     SnapchatAudienceTagetting: SnapchatAudienceTagetting,
+    AddCategory: AddCategory,
+    EditCategory: EditCategory,
+    CategoryList: CategoryList,
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

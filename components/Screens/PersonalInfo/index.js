@@ -9,7 +9,6 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import InputScrollView from "react-native-input-scroll-view";
-import * as Segment from "expo-analytics-segment";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 //Redux
 import { connect } from "react-redux";
@@ -82,9 +81,6 @@ class PersonalInfo extends Component {
       source_action,
       timestamp: new Date().getTime(),
     });
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

@@ -3,7 +3,12 @@ import { Video } from "expo-av";
 import styles from "./styles";
 export default class VideoPlayer extends Component {
   render() {
-    let { shouldPlay = true, media, videoIsLoading } = this.props;
+    let {
+      shouldPlay = true,
+      media,
+      videoIsLoading,
+      isMuted = true,
+    } = this.props;
     return (
       <Video
         onLoadStart={() =>
@@ -15,7 +20,7 @@ export default class VideoPlayer extends Component {
         }}
         shouldPlay={shouldPlay}
         isLooping
-        isMuted
+        isMuted={isMuted}
         resizeMode={"stretch"}
         style={styles.video}
       />

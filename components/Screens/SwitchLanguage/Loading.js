@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, ActivityIndicator, Text } from "react-native";
 import * as Updates from "expo-updates";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { ActivityIndicator } from "react-native-paper";
 import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";

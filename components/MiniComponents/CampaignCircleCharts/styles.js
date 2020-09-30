@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
   subtextDetail: {
     fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
   },
   chart: {
     alignItems: "center",

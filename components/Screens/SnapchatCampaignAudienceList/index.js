@@ -1,6 +1,7 @@
 import React from "react";
 import { View, FlatList, Alert, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import analytics from "@segment/analytics-react-native";
 
 // Components
 import Header from "../../MiniComponents/Header";
@@ -27,21 +28,36 @@ class SnapchatCampaignAudience extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAudienceList();
+    if (this.props.audienceList.length === 0) this.props.getAudienceList();
   }
 
   showAlert = (audience) => {
+    const { translate } = this.props.screenProps;
+
+    analytics.track("audience_delete_warning", {
+      source: "audience_list",
+      source_action: "a_delete_audience",
+      audience_id: audience.id,
+      audience_name: audience.name,
+    });
     Alert.alert(
-      "Delete",
-      `Are you sure you want to delete ${audience.name} ?`,
+      translate("Delete"),
+      translate(`Are you sure you want to delete {{audienceName}} ?`, {
+        audienceName: audience.name,
+      }),
       [
         {
-          text: "Cancel",
-          onPress: () => {},
+          text: translate("Cancel"),
+          onPress: () => {
+            analytics.track("a_cancel_delete", {
+              source: "audience_list",
+              source_action: "a_cancel_delete",
+            });
+          },
           style: "cancel",
         },
         {
-          text: "Delete",
+          text: translate("Delete"),
           onPress: () => this.props.deleteAudience(audience.id),
         },
       ],
@@ -56,6 +72,7 @@ class SnapchatCampaignAudience extends React.Component {
   renderCard = ({ item }) => {
     return (
       <AudienceCard
+        screenProps={this.props.screenProps}
         item={item}
         navigation={this.props.navigation}
         showAlert={this.showAlert}
@@ -67,11 +84,34 @@ class SnapchatCampaignAudience extends React.Component {
   };
   createNewAudience = () => {
     this.props.setAudienceDetail({ reset: true });
-    this.props.navigation.navigate("SnapchatAudienceTagetting");
+    this.props.navigation.navigate("SnapchatAudienceTagetting", {
+      source: "audience_list",
+      source_action: "a_create_audience_detail",
+      audience_channel: "snapchat",
+    });
+  };
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    const source_action = this.props.navigation.getParam(
+      "source_action",
+      this.props.screenProps.prevAppState
+    );
+    analytics.track("audience_list", {
+      source,
+      source_action,
+    });
+  };
+  retrieveAudinece = () => {
+    this.props.getAudienceList();
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.campaignAudienceListOuterView}>
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
         <Header
           title={"Audience"}
@@ -80,11 +120,16 @@ class SnapchatCampaignAudience extends React.Component {
           navigation={this.props.navigation}
           iconColor={globalColors.purple}
           showTopRightButton={true}
-          topRightButtonText={"Create"}
+          topRightButtonText={translate("Create")}
           topRightButtonFunction={this.createNewAudience}
+          rightViewStyle={styles.rightViewStyle}
         />
         {this.props.audienceListLoading ? (
-          <ActivityIndicator size={"large"} color={globalColors.orange} />
+          <ActivityIndicator
+            style={{ top: "20%" }}
+            size={"large"}
+            color={globalColors.orange}
+          />
         ) : (
           <FlatList
             refreshing={this.props.audienceListLoading}
@@ -95,6 +140,8 @@ class SnapchatCampaignAudience extends React.Component {
               minHeight: heightPercentageToDP(50),
               flex: 0,
             }}
+            onRefresh={this.retrieveAudinece}
+            refreshing={this.props.audienceListLoading}
           />
         )}
       </View>

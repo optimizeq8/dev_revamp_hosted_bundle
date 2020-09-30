@@ -90,4 +90,23 @@ const styles = StyleSheet.create({
   },
 });
 
+export const codeFieldStyle = StyleSheet.create({
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 30,
+    fontSize: 20,
+    borderWidth: 2,
+    borderColor: "#00000030",
+    textAlign: "center",
+    borderRadius: 15,
+    color: globalColors.orange,
+  },
+  codeFieldRoot: {
+    paddingHorizontal: 40,
+  },
+  focusCell: {
+    borderColor: globalColors.orange,
+  },
+});
 export default styles;

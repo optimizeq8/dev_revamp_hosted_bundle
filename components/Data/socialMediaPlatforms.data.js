@@ -1,5 +1,8 @@
 import React from "react";
-import Snapchat from "../../assets/SVGs/AdType/Snapchat";
+import Snapchat from "../../assets/SVGs/Snapchat-Border";
+// import Snapchat from "../../assets/SVGs/AdType/Snapchat";
+
+// import Snapchat from "../../assets/SVGs/AdType/Snapchat";
 import Twitter from "../../assets/SVGs/AdType/Twitter";
 import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
 import Instagram from "../../assets/images/AdTypes/InstagramLogo";

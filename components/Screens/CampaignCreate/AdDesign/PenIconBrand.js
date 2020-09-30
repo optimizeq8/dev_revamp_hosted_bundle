@@ -5,7 +5,6 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
   state = {
     input: false,
@@ -22,9 +21,6 @@ export default class PenIconBrand extends Component {
     } = this.props;
     this.setState({ input: false });
     if (field === "Business Name") {
-      segmentEventTrack("Changed Business Name", {
-        campaign_brand_name: brand_name,
-      });
       this.setState(
         {
           brand_nameError: validateWrapper("mandatory", brand_name),
@@ -51,38 +47,17 @@ export default class PenIconBrand extends Component {
           });
         }
       );
-      segmentEventTrack("Changed Headline", {
-        campaign_headline: headline,
-      });
     }
-    this.setState(
-      {
-        brand_nameError: validateWrapper(
-          "mandatory",
-          field === "Business Name" ? brand_name : headline
-        ),
-        headlineError: validateWrapper(
-          "mandatory",
-          field === "Business Name" ? brand_name : headline
-        ),
-      },
-      () => {
-        if (this.state.brand_nameError) {
-          segmentEventTrack(
-            `Error occured on blur of ${
-              field === "Business Name" ? "Brand Name" : "Headline"
-            } Ad Design Screen`,
-            {
-              [`${
-                field === "Business Name"
-                  ? "camapign_error_brand_name"
-                  : "campaign_error_headline"
-              }`]: this.state.brand_nameError,
-            }
-          );
-        }
-      }
-    );
+    this.setState({
+      brand_nameError: validateWrapper(
+        "mandatory",
+        field === "Business Name" ? brand_name : headline
+      ),
+      headlineError: validateWrapper(
+        "mandatory",
+        field === "Business Name" ? brand_name : headline
+      ),
+    });
   };
   render() {
     let {
@@ -141,7 +116,7 @@ export default class PenIconBrand extends Component {
                   : ""
                 : headline
                 ? headline.replace(
-                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                    /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
                     ""
                   )
                 : ""
@@ -151,10 +126,16 @@ export default class PenIconBrand extends Component {
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={(value) => {
-              value = value.replace(
-                /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
-                ""
-              );
+              value =
+                field === "Business Name"
+                  ? value.replace(
+                      /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                      ""
+                    )
+                  : value.replace(
+                      /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
+                      ""
+                    );
               field === "Business Name"
                 ? changeBusinessName(value)
                 : changeHeadline(value);

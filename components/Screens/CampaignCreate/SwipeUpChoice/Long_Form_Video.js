@@ -7,7 +7,6 @@ import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";
@@ -42,7 +41,6 @@ import list from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import segmentEventTrack from "../../../segmentEventTrack";
 import { RNFFmpeg, RNFFprobe, RNFFmpegConfig } from "react-native-ffmpeg";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
@@ -103,7 +101,10 @@ class Long_Form_Video extends Component {
           .longformvideo_media_type,
         callaction: this.props.storyAdAttachment.call_to_action,
       });
-    } else if (this.props.rejCampaign.hasOwnProperty("uneditedLongformVideo")) {
+    } else if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("uneditedLongformVideo")
+    ) {
       this.setState({
         uneditedVideo: this.props.rejCampaign.uneditedLongformVideo,
         longformvideo_media_type: "VIDEO",
@@ -113,7 +114,10 @@ class Long_Form_Video extends Component {
           ? this.props.rejCampaign.longFormVideoSerialization
           : null,
       });
-    } else if (this.props.rejCampaign.hasOwnProperty("longformvideo_media")) {
+    } else if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("longformvideo_media")
+    ) {
       this.setState({
         longformvideo_media: this.props.rejCampaign.longformvideo_media,
         longformvideo_media_type: this.props.rejCampaign
@@ -362,17 +366,8 @@ class Long_Form_Video extends Component {
     this.setState({
       videoError,
     });
-    if (videoError || this.state.durationError) {
-      segmentEventTrack("Error Submit Longform Video", {
-        campaign_error_longform_video: videoError,
-        campaign_error_longform_video_duration: this.state.durationError,
-      });
-    }
+
     if (!videoError && !this.state.durationError) {
-      segmentEventTrack("Submitted Longform Video Success", {
-        campaign_call_to_action: this.state.callaction,
-        campaign_longform_video_media_type: this.state.longformvideo_media_type,
-      });
       this.props._changeDestination("LONGFORM_VIDEO", this.state.callaction, {
         longformvideo_media: this.state.longformvideo_media,
         longformvideo_media_type: this.state.longformvideo_media_type,
@@ -398,9 +393,6 @@ class Long_Form_Video extends Component {
 
   onSelectedCallToActionChange = (value) => {
     if (value && !isEmpty(value)) {
-      segmentEventTrack("Selected Long Form Video Call to Action", {
-        campaign_call_to_action: value[0].label,
-      });
       this.setState(
         {
           callaction: {
@@ -422,12 +414,7 @@ class Long_Form_Video extends Component {
     });
   };
   openCallToActionModal = () => {
-    segmentEventTrack("Button Clicked to open Call to action Modal");
-    this.setState({ inputCallToAction: true }, () => {
-      if (this.state.inputCallToAction) {
-        Segment.screen("Call to Action Modal");
-      }
-    });
+    this.setState({ inputCallToAction: true });
   };
   render() {
     const { translate } = this.props.screenProps;

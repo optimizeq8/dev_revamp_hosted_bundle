@@ -19,14 +19,18 @@ export default class CampaignDuration extends Component {
           <View style={styles.durationButtons}>
             <Button
               onPressOut={() => this.props.stopTimer()}
-              onPressIn={() => this.props.handleDuration(true)}
+              onLongPress={() => this.props.handleDuration(true)}
+              onPress={() => this.props.handleDuration(true, true)}
+              delayLongPress={75}
               style={[styles.durButton, styles.leftButton]}
             >
               <Text style={styles.buttonText}>-</Text>
             </Button>
             <Button
               onPressOut={() => this.props.stopTimer()}
-              onPressIn={() => this.props.handleDuration(false)}
+              onLongPress={() => this.props.handleDuration(false)}
+              onPress={() => this.props.handleDuration(false, true)}
+              delayLongPress={75}
               style={[styles.durButton, styles.rightButton]}
             >
               <Text style={styles.buttonText}>+</Text>

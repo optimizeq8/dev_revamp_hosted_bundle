@@ -2,15 +2,11 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Input, Item, Icon } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import styles from "../MultiSelect/styles";
 import LowerButton from "../LowerButton";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class SelectLanguages extends Component {
-  componentDidMount() {
-    Segment.screen("Languages Options");
-  }
   render() {
     const { translate } = this.props.screenProps;
     let languagelist =

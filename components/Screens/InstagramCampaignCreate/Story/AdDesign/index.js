@@ -129,17 +129,26 @@ class AdDesign extends Component {
       maxClickHeight: 0,
       progress: 0,
       swipeUpExpanded: false,
+      closeAnimation: false,
     };
   }
 
   componentWillUnmount() {
-    //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
   }
+
+  goBack = () => {
+    if (this.state.swipeUpExpanded) {
+      this.setState({
+        closeAnimation: true,
+      });
+    } else {
+      this.props.navigation.goBack();
+    }
+    return true;
+  };
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
     if (this.props.data) {
       let {
         media_option = "single",
@@ -204,6 +213,7 @@ class AdDesign extends Component {
       velocity: 3,
       tension: 2,
       friction: 8,
+      v,
     }).start();
   };
   selectImageOption = (media_option) => {
@@ -218,7 +228,7 @@ class AdDesign extends Component {
     });
   };
   setTheState = (state) => {
-    this.setState({ ...state });
+    this.setState({ ...state, closeAnimation: false });
   };
   videoIsLoading = (value) => {
     this.setState({
@@ -492,7 +502,7 @@ class AdDesign extends Component {
           }}
           icon="instagram"
           currentScreen="Compose"
-          navigation={this.props.navigation}
+          actionButton={this.goBack}
           title={"Compose"}
         />
 
@@ -587,6 +597,7 @@ class AdDesign extends Component {
                   maxClickHeight={this.state.maxClickHeight}
                   setTheState={this.setTheState}
                   adType={"InstagramStoryAd"}
+                  closeAnimation={this.state.closeAnimation}
                 />
               </View>
 

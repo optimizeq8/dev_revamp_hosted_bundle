@@ -3,7 +3,6 @@ import { View, ScrollView, ActivityIndicator } from "react-native";
 import { Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import isNull from "lodash/isNull";
-import * as Segment from "expo-analytics-segment";
 //Icons
 import BackButton from "../../MiniComponents/BackButton";
 import InterestsIcon from "../../../assets/SVGs/Interests";
@@ -25,7 +24,6 @@ import { globalColors } from "../../../GlobalStyles";
 class SelectInterests extends Component {
   state = { interests: null, open: false };
   componentDidMount() {
-    Segment.screen("Interests Options");
     // !this.props.addressForm &&
     //   this.props.get_interests(this.props.country_code);
     this.setState({

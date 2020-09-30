@@ -6,14 +6,13 @@ import {
   Linking,
   Platform,
   ScrollView,
+  Text,
 } from "react-native";
-import { Text } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Segment from "expo-analytics-segment";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //Redux
@@ -171,8 +170,8 @@ class Signin extends Component {
   /**
    * change active tab
    */
-  changeActiveTab = () => {
-    let activeTabSignUp = this.state.activeTab === 0;
+  changeActiveTab = (activeTabSignUp) => {
+    // let activeTabSignUp = this.state.activeTab === 0;
     const anonymous_userId = this.props.screenProps.anonymous_userId;
     const device_id = this.props.screenProps.device_id;
 
@@ -244,7 +243,8 @@ class Signin extends Component {
                   />
                   <View style={styles.signTextContainer}>
                     <TouchableOpacity
-                      onPress={this.changeActiveTab}
+                      activeOpacity={1}
+                      onPress={() => this.changeActiveTab(0)}
                       disabled={this.props.emailLoading}
                       style={[
                         styles.tabView,
@@ -266,7 +266,8 @@ class Signin extends Component {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={this.changeActiveTab}
+                      activeOpacity={1}
+                      onPress={() => this.changeActiveTab(1)}
                       disabled={this.props.emailLoading}
                       style={[
                         styles.tabView,
@@ -365,7 +366,6 @@ class Signin extends Component {
                 {this.state.activeTab === 1 && (
                   <TouchableOpacity
                     onPress={() => {
-                      Segment.track("Forgot Password Button");
                       this.props.navigation.push("ForgotPassword");
                     }}
                   >

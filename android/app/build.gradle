@@ -144,13 +144,19 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
-     packagingOptions {
+    packagingOptions {
+        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        pickFirst "lib/arm64-v8a/libc++_shared.so"
+        pickFirst "lib/x86/libc++_shared.so"
+        pickFirst "lib/x86_64/libc++_shared.so"
+    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    packagingOptions {
         pickFirst 'lib/x86/libc++_shared.so'
         pickFirst 'lib/x86_64/libc++_shared.so'
         pickFirst 'lib/armeabi-v7a/libc++_shared.so'
         pickFirst 'lib/arm64-v8a/libc++_shared.so'
     }
-    compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -211,8 +217,7 @@ android {
 }
 
 dependencies {
-    // implementation project(':@segment_analytics-react-native-adjust')
-    implementation project(':@react-native-community_checkbox')
+    // implementation project(':@react-native-community_checkbox')
     implementation project(':react-native-maps')
     // implementation project(':@react-native-community_masked-view')
     // implementation project(':@react-native-community_blur')

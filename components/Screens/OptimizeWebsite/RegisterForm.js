@@ -73,9 +73,7 @@ class RegisterForm extends Component {
       whatsappnumber:
         whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
     });
-    // Segment.screenWithProperties("Personal Info", {
-    //   category: "User Menu"
-    // });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -90,7 +88,10 @@ class RegisterForm extends Component {
     });
     // }
   };
-  _handleSubmissionRegister = () => {
+  _handleSubmissionRegister = async () => {
+    const error = await this.props.verifyInstagramHandle(
+      this.state.insta_handle
+    );
     const valid = this.validate();
     if (valid && !this.props.errorInstaHandle) {
       const callnumber =
@@ -124,7 +125,10 @@ class RegisterForm extends Component {
     }
   };
 
-  _handleSubmissionUpdate = () => {
+  _handleSubmissionUpdate = async () => {
+    const error = await this.props.verifyInstagramHandle(
+      this.state.insta_handle
+    );
     const { translate } = this.props.screenProps;
     const valid = this.validate();
     if (!valid || this.props.errorInstaHandle) {

@@ -22,7 +22,6 @@ import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList
 import EditModal from "./EditModal";
 // functions
 import * as actionCreators from "../../../../store/actions";
-import segmentEventTrack from "../../../segmentEventTrack";
 
 // icons
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -61,20 +60,13 @@ class EditKeywords extends Component {
   }
   _handleAddKeyword = (keyword) => {
     if (keyword === "Reset") {
-      segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       return;
     }
     var res = this.state.keywords.filter((l) => l !== keyword);
     if (isUndefined(this.state.keywords.find((l) => l === keyword))) {
-      segmentEventTrack("Selected Campaign keywords", {
-        campaign_keywords: [...res, keyword],
-      });
       this.setState({ keywords: [...res, keyword] });
     } else {
-      segmentEventTrack("Selected Campaign keywords", {
-        campaign_keywords: res,
-      });
       this.setState({ keywords: res });
     }
   };

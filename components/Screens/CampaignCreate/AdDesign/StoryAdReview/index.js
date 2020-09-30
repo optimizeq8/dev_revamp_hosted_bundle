@@ -8,7 +8,6 @@ import {
   Platform,
 } from "react-native";
 import { connect } from "react-redux";
-import * as Segment from "expo-analytics-segment";
 import { Container, Content, Text } from "native-base";
 
 import { Transition } from "react-navigation-fluid-transitions";
@@ -32,11 +31,6 @@ class StoryAdDesignReview extends Component {
   state = { videoIsLoading: false };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
-    Segment.screenWithProperties("Ad Preview", {
-      category: "Campaign Creation",
-      channel: "snapchat",
-    });
   }
   handleBackButton = () => {
     this.props.navigation.goBack();

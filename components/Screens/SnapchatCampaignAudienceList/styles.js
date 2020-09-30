@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
   deleteAudienceIcon: {
     marginHorizontal: 5,
   },
+  rightViewStyle: {
+    width: widthPercentageToDP("12%"),
+  },
 });
 
 export default styles;

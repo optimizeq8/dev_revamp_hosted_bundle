@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AsyncStorage, View, Text, Platform, I18nManager } from "react-native";
+import { View, Text, Platform, I18nManager } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import analytics from "@segment/analytics-react-native";
@@ -21,7 +21,9 @@ import { colors } from "../../GradiantColors/colors";
 //Functions
 import isNull from "lodash/isNull";
 import { globalColors } from "../../../GlobalStyles";
-import segmentEventTrack from "../../segmentEventTrack";
+
+import AsyncStorage from "@react-native-community/async-storage";
+
 const slidesData = [
   {
     id: 0,

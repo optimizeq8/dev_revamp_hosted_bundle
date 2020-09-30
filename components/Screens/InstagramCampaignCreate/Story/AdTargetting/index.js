@@ -4,7 +4,6 @@ import { View, BackHandler, I18nManager } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
-import * as Segment from "expo-analytics-segment";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -222,7 +221,7 @@ class InstagramStoryAdTargetting extends Component {
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
-            rep = {
+            let rep = {
               ...this.state.campaignInfo,
               ...this.props.data.campaignInfo,
             };
@@ -274,6 +273,14 @@ class InstagramStoryAdTargetting extends Component {
               }
             );
           } else {
+            if (this.props.data && this.props.data.appChoice) {
+              let navAppChoice = this.props.data.appChoice;
+              let rep = this.state.campaignInfo;
+              rep.targeting.user_os = [navAppChoice];
+              this.setState({
+                campaignInfo: rep,
+              });
+            }
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
@@ -295,29 +302,16 @@ class InstagramStoryAdTargetting extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  _handleMaxAge = (value) => {
-    let rep = this.state.campaignInfo;
-    rep.targeting.age_max = parseInt(value);
+  _handleAge = (values) => {
+    let rep = cloneDeep(this.state.campaignInfo);
+    rep.targeting.demographics[0].min_age = parseInt(values[0]);
+    rep.targeting.demographics[0].max_age = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",
-      campaign_max_age: parseInt(value),
-    });
-    this.setState({
-      campaignInfo: rep,
-    });
-    !this.editCampaign &&
-      this.props.save_campaign_info_instagram({ campaignInfo: rep });
-  };
-
-  _handleMinAge = (value) => {
-    let rep = this.state.campaignInfo;
-    rep.targeting.age_min = value;
-    analytics.track(`a_ad_age`, {
-      source: "ad_targeting",
-      source_action: "a_ad_age",
-      campaign_min_age: parseInt(value),
+      campaign_min_age: parseInt(values[0]),
+      campaign_max_age: parseInt(values[1]),
     });
     this.setState({
       campaignInfo: rep,
@@ -327,7 +321,6 @@ class InstagramStoryAdTargetting extends Component {
         campaignInfo: rep,
       });
   };
-
   onSelectedInterestsChange = (selectedItems) => {
     // No more used, kept for PICKER component
   };
@@ -398,21 +391,14 @@ class InstagramStoryAdTargetting extends Component {
   //       r => r !== selectedItem
   //     );
   //     langs = replace.targeting.demographics[0].languages;
-  //     // segmentEventTrack(`Selected Languages`, {
-  //     //   campaign_languages: langs.join(", ")
-  //     // });
+  //
   //   } else {
   //     replace.targeting.demographics[0].languages.push(selectedItem);
   //     langs = replace.targeting.demographics[0].languages;
-  //     // segmentEventTrack(`Selected Languages`, {
-  //     //   campaign_languages: langs.join(", ")
-  //     // });
+
   //   }
 
   //   if (replace.targeting.demographics[0].languages.length === 0) {
-  //     // segmentEventTrack(`Error Selecting Language`, {
-  //     //   campaign_languages_error: "Please choose a language"
-  //     // });
 
   //     showMessage({
   //       message: translate("Please choose a language"),
@@ -438,9 +424,6 @@ class InstagramStoryAdTargetting extends Component {
     replace.targeting.os_version_max = "";
     replace.targeting.os_version_min = "";
 
-    // segmentEventTrack(`Selected OS Type`, {
-    //   campaign_os_type: selectedItem === "" ? "ALL" : selectedItem
-    // });
     analytics.track(`a_ad_OS_type`, {
       source: "ad_targeting",
       source_action: "a_ad_OS_type",
@@ -486,9 +469,7 @@ class InstagramStoryAdTargetting extends Component {
     }
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
-    // segmentEventTrack(`Campaign Budget Change`, {
-    //   campaign_budget: this.formatNumber(budget)
-    // });
+
     this.setState({
       campaignInfo: replace,
       value: this.formatNumber(budget),
@@ -507,7 +488,6 @@ class InstagramStoryAdTargetting extends Component {
   //   if (selectedItem === -1) {
   //     if (this.state.regions.length === this.state.regionNames.length) {
   //       replace.targeting.geo_locations.region_id = [];
-  //       // segmentEventTrack(`Selected No Regions`);
   //       this.setState({
   //         regionNames: [],
   //         campaignInfo: replace
@@ -516,9 +496,7 @@ class InstagramStoryAdTargetting extends Component {
   //       rNamesSelected = this.state.regions.map(r => r.name);
   //       rIds = this.state.regions.map(r => r.id);
   //       replace.targeting.geo_locations.region_id = rIds;
-  //       // segmentEventTrack(`Selected Regions`, {
-  //       //   campaign_region_names: rNamesSelected.join(", ")
-  //       // });
+  //
   //       this.setState({
   //         regionNames: rNamesSelected,
   //         campaignInfo: replace
@@ -544,9 +522,6 @@ class InstagramStoryAdTargetting extends Component {
   //       replace.targeting.geo_locations.region_id.push(selectedItem);
   //       rNamesSelected.push(regionName);
   //     }
-  //     // segmentEventTrack(`Selected Regions`, {
-  //     //   campaign_region_names: rNamesSelected.join(", ")
-  //     // });
 
   //     this.setState({
   //       campaignInfo: replace,
@@ -614,9 +589,7 @@ class InstagramStoryAdTargetting extends Component {
           position: "top",
         });
       }
-      // segmentEventTrack("Custom Campaign Budget Change", {
-      //   campaign_budget: rawValue
-      // });
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -1032,8 +1005,7 @@ class InstagramStoryAdTargetting extends Component {
           <AgeOption
             screenProps={this.props.screenProps}
             state={this.state.campaignInfo}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
+            _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 65]}
             minAge={this.state.campaignInfo.targeting.age_min || 13}
@@ -1081,6 +1053,7 @@ class InstagramStoryAdTargetting extends Component {
             selectedOSType={this.state.campaignInfo.targeting.user_os[0]}
             iosName={"iOS"}
             androidName={"Android"}
+            data={OSType}
             objective={this.props.data.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
@@ -1246,6 +1219,8 @@ class InstagramStoryAdTargetting extends Component {
             }}
             topRightButtonText={translate("Edit")}
             title={this.editCampaign ? "Audience" : "Campaign details"}
+            titleStyle={{ color: globalColors.rum }}
+            iconColor={globalColors.rum}
           />
         )}
         <View style={{ height: "100%" }}>
@@ -1279,15 +1254,6 @@ class InstagramStoryAdTargetting extends Component {
                       "InstagramStoryAdTargetting",
                     ]);
                   }
-                  Segment.screenWithProperties("Instagram Story Ad Targeting", {
-                    category: "Campaign Creation",
-                    channel: "instagram",
-                  });
-                  Segment.trackWithProperties("Viewed Checkout Step", {
-                    checkout_id: this.props.campaign_id,
-                    step: 3,
-                    business_name: this.props.mainBusiness.businessname,
-                  });
                 }}
               />
               <Container style={styles.mainContainer}>

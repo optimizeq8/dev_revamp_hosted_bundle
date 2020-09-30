@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, LayoutAnimation } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, LayoutAnimation, TouchableOpacity } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import styles from "../../styles/adDesign.styles";
 import { globalColors } from "../../../../../GlobalStyles";
@@ -41,6 +40,12 @@ export default class ClickDestination extends Component {
         compHeight: event.nativeEvent.layout.height,
       });
   };
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.closeAnimation && this.props.closeAnimation) {
+      this.toggleClickDestination(false);
+    }
+  }
   render() {
     let translate = this.props.translate;
     let sty = !this.state.expanded
@@ -163,6 +168,7 @@ export default class ClickDestination extends Component {
                 </Text>
               </TouchableOpacity>
               <InstagramSwipeUpDestination
+                expanded={this.state.expanded}
                 toggleClickDestination={this.toggleClickDestination}
                 screenProps={this.props.screenProps}
               />

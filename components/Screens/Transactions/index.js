@@ -9,7 +9,6 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
 import Sidemenu from "../../MiniComponents/SideMenu";
-import * as Segment from "expo-analytics-segment";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -44,9 +43,6 @@ class Transactions extends Component {
     return true;
   };
   componentDidMount() {
-    // Segment.screenWithProperties("Transactions List", {
-    //   category: "User Menu"
-    // });
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState

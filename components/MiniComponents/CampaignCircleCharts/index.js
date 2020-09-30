@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, I18nManager } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import Chart from "../CircleChart/Chart";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -12,7 +12,6 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
-import { Text, Button, Icon } from "native-base";
 import CampaignStats from "../../Screens/CampaignDetails/CampStats/CampaignStats";
 import InstaCampaignStats from "../../Screens/InstagramCampaignDetails/CampStats/CampaignStats";
 import CampDetailsInfo from "./CampDetailsInfo";
@@ -61,7 +60,7 @@ class CampaignCircleChart extends Component {
             {/* To switch between date choices and header of the component */}
             {!chartExpanded && (
               <>
-                <Text uppercase style={globalStyles.title}>
+                <Text style={globalStyles.title}>
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton
@@ -144,10 +143,7 @@ class CampaignCircleChart extends Component {
                     true
                   )}
                 </Text>
-                <Text
-                  uppercase
-                  style={[styles.subtext, detail && styles.subtextDetail]}
-                >
+                <Text style={[styles.subtext, detail && styles.subtextDetail]}>
                   {!detail ||
                   (campaign && campaign.objective === "BRAND_AWARENESS")
                     ? translate("Impressions")
@@ -166,7 +162,6 @@ class CampaignCircleChart extends Component {
                 />
                 <View style={styles.campaignInfo}>
                   <Text
-                    uppercase
                     style={[styles.subtext, , detail && styles.subtextDetail]}
                   >
                     {translate("Reach")}
@@ -206,11 +201,11 @@ class CampaignCircleChart extends Component {
                           ? campaign.cpm
                           : campaign.swipes
                         : 0,
-                      campaign.objective !== "BRAND_AWARENESS"
+                      campaign.objective !== "BRAND_AWARENESS",
+                      campaign.objective === "BRAND_AWARENESS"
                     )}
                   </Text>
                   <Text
-                    uppercase
                     style={[styles.subtext, , detail && styles.subtextDetail]}
                   >
                     {campaign && campaign.objective === "BRAND_AWARENESS"
@@ -229,7 +224,6 @@ class CampaignCircleChart extends Component {
                 />
                 <View style={styles.campaignInfo}>
                   <Text
-                    uppercase
                     style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {translate("Frequency")}
@@ -249,7 +243,7 @@ class CampaignCircleChart extends Component {
                   >
                     {campaign
                       ? parseFloat(campaign.paid_frequency).toFixed(2)
-                      : 0}
+                      : parseFloat(0).toFixed(2)}
                   </Text>
                 </View>
               </View>

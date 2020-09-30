@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { View, Modal, Platform } from "react-native";
-import { Button, Text } from "native-base";
+import { View, Text } from "react-native";
 import {
   SafeAreaView,
   NavigationActions,
-  StackActions
+  StackActions,
 } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -15,9 +13,6 @@ import CustomHeader from "../../MiniComponents/Header";
 //styles
 import styles from "./styles";
 export default class SuspendedWarning extends Component {
-  componentDidMount() {
-    Segment.screen("Suspended Warning");
-  }
   render() {
     const { translate } = this.props.screenProps;
 
@@ -31,7 +26,7 @@ export default class SuspendedWarning extends Component {
             style={{
               justifyContent: "center",
               flex: 1,
-              alignSelf: "center"
+              alignSelf: "center",
             }}
           >
             <Suspended
@@ -39,10 +34,7 @@ export default class SuspendedWarning extends Component {
               height={322}
               style={{ alignSelf: "center", marginBottom: 20 }}
             />
-            <Text
-              uppercase
-              style={[styles.title, { fontSize: 16, alignSelf: "center" }]}
-            >
+            <Text style={[styles.title, { fontSize: 16, alignSelf: "center" }]}>
               {translate("Account Suspended")}
             </Text>
             <Text style={[styles.pauseDes]}>
@@ -55,15 +47,15 @@ export default class SuspendedWarning extends Component {
               style={styles.button}
               onPressAction={() => {
                 let continueRoutes = ["Dashboard", "MessengerLoading"].map(
-                  route =>
+                  (route) =>
                     NavigationActions.navigate({
-                      routeName: route
+                      routeName: route,
                     })
                 );
                 //resets the navigation stack
                 resetAction = StackActions.reset({
                   index: continueRoutes.length - 1, //index of the last screen route
-                  actions: continueRoutes
+                  actions: continueRoutes,
                 });
 
                 this.props.navigation.dispatch(resetAction);

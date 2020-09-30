@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler, Linking } from "react-native";
-import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
@@ -34,7 +33,6 @@ class ErrorComponent extends Component {
   }
 
   componentDidMount() {
-    Segment.screen("Error");
     //On android, the deep link for optimize://main_navigator from adjust goes to the dashboard, if there is no userInfo
     //then the error component mounts so I check for the deep link and navigate accordingly. On iOS it just opens the app without navigating
     Linking.addEventListener("url", this.handleDeepLink);

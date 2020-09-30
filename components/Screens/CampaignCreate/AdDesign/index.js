@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
-import * as WebBrowser from "expo-web-browser";
-import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -76,7 +74,6 @@ import {
 } from "./Functions/index";
 import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
-import segmentEventTrack from "../../../segmentEventTrack";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
 import { Adjust, AdjustEvent } from "react-native-adjust";
@@ -340,9 +337,6 @@ class AdDesign extends Component {
   _handleNotification = async (uploadMediaNotification) => {
     // console.log("uploadMediaNotification", uploadMediaNotification);
     if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
-      segmentEventTrack(
-        "Received Notifcation on successful upload media from different device"
-      );
       this.setState({
         uploadMediaDifferentDeviceModal: false,
         uploadMediaNotification: uploadMediaNotification,
@@ -416,9 +410,6 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = (visible) => {
-    if (visible) {
-      Segment.screen("Upload Media Modal");
-    }
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -453,7 +444,7 @@ class AdDesign extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         headline: headline.replace(
-          /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+          /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
           ""
         ),
       },
@@ -462,7 +453,7 @@ class AdDesign extends Component {
       source: "ad_design",
       source_action: "a_edit_promotional_message",
       campaign_headline: headline.replace(
-        /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+        /[^ a-zA-Z0-9\.\!\%\@\u0621-\u064A\u0660-\u0669]/gi,
         ""
       ),
       timestamp: new Date().getTime(),
@@ -492,132 +483,6 @@ class AdDesign extends Component {
         ? this.props.rejCampaign.story_creatives
         : []
     );
-
-  getVideoUploadUrl = () => {
-    this.setMediaModalVisible(false);
-    if (this.adType === "StoryAd") {
-      let story_id = this.state.storyAdCards.selectedStoryAd.hasOwnProperty(
-        "story_id"
-      )
-        ? "&" + this.state.storyAdCards.selectedStoryAd.story_id
-        : "";
-      let testingOrLiveServer = this.props.admin
-        ? "https://www.optimizekwtestingserver.com/optimize/"
-        : "https://www.optimizeapp.com/optimize/";
-      this.setState(
-        {
-          creativeVideoUrl:
-            `${testingOrLiveServer}fileupload/uploadCreative?` +
-            (this.rejected
-              ? this.selectedCampaign.campaign_id
-              : this.props.campaign_id) +
-            story_id,
-        },
-        () => this.openUploadVideo()
-      );
-    } else
-      this.props.getVideoUploadUrl(
-        this.rejected
-          ? this.selectedCampaign.campaign_id
-          : this.props.campaign_id,
-        this.openUploadVideo
-      );
-  };
-  openUploadVideo = async () => {
-    const { translate } = this.props.screenProps;
-
-    try {
-      this._addLinkingListener();
-      // this.props.navigation.replace("WebView", {
-      //   url:
-      //     this.adType === "StoryAd"
-      //       ? this.state.creativeVideoUrl
-      //       : this.props.videoUrl,
-      //   title: "Upload Video"
-      // });
-      await WebBrowser.openBrowserAsync(
-        this.adType === "StoryAd"
-          ? this.state.creativeVideoUrl
-          : this.props.videoUrl
-      );
-      this._removeLinkingListener();
-    } catch (error) {
-      WebBrowser.dismissBrowser();
-      showMessage({
-        message: translate("Something went wrong!"),
-        type: "warning",
-        position: "top",
-        description: translate("Please try again later"),
-      });
-    }
-  };
-
-  _addLinkingListener = () => {
-    Linking.addEventListener("url", this._handleRedirect);
-  };
-
-  _removeLinkingListener = () => {
-    Linking.removeEventListener("url", this._handleRedirect);
-  };
-
-  _handleRedirect = (event) => {
-    WebBrowser.dismissBrowser();
-
-    let data = Linking.parse(event.url);
-    if (this.adType === "StoryAd") {
-      let cards = this.props.storyAdsArray;
-      let card = this.props.storyAdsArray[
-        this.state.storyAdCards.selectedStoryAd.index
-      ];
-      let selectedImage = this.state.storyAdCards.selectedStoryAd;
-      selectedImage.media = "//";
-      card = {
-        ...card,
-        index: this.state.storyAdCards.selectedStoryAd.index,
-        story_id: data.queryParams.story_id,
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        media_type: "VIDEO",
-        uploaded: true,
-      };
-      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      this.setState({
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          selectedStoryAd: {
-            ...card,
-          },
-        },
-        videoIsLoading: false,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true,
-      });
-      !this.rejected &&
-        this.props.save_campaign_info({
-          selectedStoryAd: card,
-          iosVideoUploaded: true,
-          type: "VIDEO",
-          fileReadyToUpload: true,
-        });
-    } else {
-      this.setState({
-        ...this.state,
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        videoIsLoading: false,
-        fileReadyToUpload: true,
-      });
-      !this.rejected &&
-        this.props.save_campaign_info({
-          media: data.queryParams.media,
-          iosVideoUploaded: true,
-          type: "VIDEO",
-          fileReadyToUpload: true,
-        });
-    }
-  };
 
   _getUploadState = (loading) => {
     this.setState({
@@ -698,7 +563,8 @@ class AdDesign extends Component {
     );
     let brandHeadlineError = null;
     if (
-      this.state.campaignInfo.brand_name === this.state.campaignInfo.headline
+      this.state.campaignInfo.brand_name.toLowerCase().trim() ===
+      this.state.campaignInfo.headline.toLowerCase().trim()
     ) {
       brandHeadlineError =
         "Business name and Promotional Message can not be the same";
@@ -1034,9 +900,6 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = (val) => {
-    if (val) {
-      Segment.screen(`Upload media from Different Device Modal`);
-    }
     this.setState({
       uploadMediaDifferentDeviceModal: val,
     });
@@ -1051,9 +914,6 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = (val) => {
-    if (val) {
-      Segment.screen("Download media from Different Device Modal");
-    }
     this.setState({
       downloadMediaModal: val,
     });
@@ -1252,15 +1112,6 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_collectionAdLinkForm
         : this.props.data.campaign_collectionAdLinkForm,
     });
-    // Segment.screenWithProperties("Snap Ad Design", {
-    //   category: "Campaign Creation",
-    //   channel: "snapchat",
-    // });
-    // Segment.trackWithProperties("Viewed Checkout Step", {
-    //   checkout_id: this.props.campaign_id,
-    //   step: 3,
-    //   business_name: this.props.mainBusiness.businessname,
-    // });
 
     let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
     adjustAdDesignTracker.addPartnerParameter(
@@ -1731,7 +1582,6 @@ class AdDesign extends Component {
           </KeyboardAwareScrollView>
         </Container>
         <MediaModal
-          getVideoUploadUrl={this.getVideoUploadUrl}
           _pickImage={(mediaTypes, mediaEditor, editImage) =>
             this.adDesignPickImage(mediaTypes, mediaEditor, editImage)
           }

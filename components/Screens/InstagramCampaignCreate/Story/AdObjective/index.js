@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Content, Text, Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
 import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -395,9 +394,9 @@ class AdObjective extends Component {
   };
   handleDuration = (subtract = false) => {
     let duration = subtract
-      ? this.state.duration - 1 > 1
+      ? this.state.duration - 1 > 3
         ? this.state.duration - 1
-        : 1
+        : 3
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);

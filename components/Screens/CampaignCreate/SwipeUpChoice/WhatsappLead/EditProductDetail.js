@@ -10,8 +10,6 @@ import { globalColors } from "../../../../../GlobalStyles";
 import findIndex from "lodash/findIndex";
 import formatNumber from "../../../../formatNumber";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from "expo-analytics-segment";
-import segmentEventTrack from "../../../../segmentEventTrack";
 
 export default class EditProductDetail extends React.Component {
   constructor(props) {
@@ -24,7 +22,6 @@ export default class EditProductDetail extends React.Component {
     };
   }
   componentDidMount() {
-    Segment.screen("Edit Product");
     const item = this.props.navigation.getParam("item", {});
     const list = this.props.navigation.getParam("cartList", []);
     // console.log('item', item);
@@ -58,10 +55,6 @@ export default class EditProductDetail extends React.Component {
       ) &&
       this.state.item.price !== 0
     ) {
-      segmentEventTrack("Error Submit Edit SME Product Item", {
-        campaign_error_sme_product_item: "Please enter a valid price",
-        campaign_sme_product_item_price: this.state.item.price,
-      });
       showMessage({
         message: translate("Please enter a valid price"),
         position: "top",
@@ -76,9 +69,7 @@ export default class EditProductDetail extends React.Component {
       );
       newList[index] = this.state.item;
       // console.log('newList', newList);
-      segmentEventTrack("Submitted Edit SME Product Item Success", {
-        campaign_sme_product_item: { ...this.state.item },
-      });
+
       this.props.navigation.navigate("SelectedInstagramProductsList", {
         selectetedItems: newList,
       });
@@ -91,7 +82,6 @@ export default class EditProductDetail extends React.Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
-        <NavigationEvents onDidFocus={() => Segment.screen("Edit Product")} />
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
@@ -142,15 +132,7 @@ export default class EditProductDetail extends React.Component {
                                 productNameError: value.length === 0,
                               });
                             }}
-                            onBlur={() => {
-                              segmentEventTrack(
-                                "Changed Product Name Sme Growth",
-                                {
-                                  campaign_sme_product_item_name: this.state
-                                    .item.productName,
-                                }
-                              );
-                            }}
+
                             // onBlur={() => this.validateUrl()}
                           />
                         </Item>
@@ -188,15 +170,7 @@ export default class EditProductDetail extends React.Component {
                                 priceError: value.length === 0,
                               });
                             }}
-                            onBlur={() => {
-                              segmentEventTrack(
-                                "Changed Product Price Sme Growth",
-                                {
-                                  campaign_sme_product_item_price: this.state
-                                    .item.price,
-                                }
-                              );
-                            }}
+
                             // onBlur={() => this.validateUrl()}
                           />
                         </Item>
