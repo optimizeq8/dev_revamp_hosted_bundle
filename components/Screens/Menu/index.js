@@ -264,7 +264,7 @@ class Menu extends Component {
                     mainBusiness.weburl !== ""
                   ) {
                     // TODO: Change this path back to MyWebsiteECommerce after releasing to production for now
-                    this.props.navigation.navigate("MyWebsiteECommerce", {
+                    this.props.navigation.navigate("MyWebsite", {
                       source: "open_hamburger",
                       source_action: "a_open_my_website",
                     });
