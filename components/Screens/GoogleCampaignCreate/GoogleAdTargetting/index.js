@@ -266,7 +266,7 @@ class GoogleAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= this.props.campaign.minValueBudget &&
+      rawValue >= 25 &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -291,17 +291,14 @@ class GoogleAdTargetting extends Component {
           analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
-            error_description:
-              validateWrapper("Budget", rawValue) +
-              " $" +
-              this.props.campaign.minValueBudget,
+            error_description: validateWrapper("Budget", rawValue) + " $" + 25,
           });
         }
         showMessage({
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.props.campaign.minValueBudget,
+          description: "$" + 25,
           type: "warning",
           position: "top",
         });
@@ -567,7 +564,7 @@ class GoogleAdTargetting extends Component {
             contentContainerStyle={styles.contentContainer}
           >
             <Text style={styles.subHeadings}>
-              {translate("Set your budget")}
+              {translate("Set your daily budget")}
             </Text>
             <BudgetCards
               value={this.state.value}
