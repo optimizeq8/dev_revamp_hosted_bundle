@@ -92,6 +92,7 @@ class InstagramStoryAdTargetting extends Component {
       budgetOption: 1,
       startEditing: true,
       customInterests: [],
+      duration: 3,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -205,7 +206,7 @@ class InstagramStoryAdTargetting extends Component {
         ) + 1
       );
 
-      let recBudget = duration * 75;
+      let recBudget = 75;
 
       this.setState(
         {
@@ -214,10 +215,11 @@ class InstagramStoryAdTargetting extends Component {
             campaign_id: this.props.campaign_id,
             lifetime_budget_micro: recBudget * 2,
           },
-          minValueBudget: this.props.data.minValueBudget,
+          minValueBudget: 25,
           maxValueBudget: this.props.data.maxValueBudget,
           value: this.formatNumber(recBudget * 2),
           recBudget: recBudget,
+          duration,
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -542,7 +544,7 @@ class InstagramStoryAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= this.state.minValueBudget &&
+      rawValue >= 25 &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -574,17 +576,14 @@ class InstagramStoryAdTargetting extends Component {
           analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
-            error_description:
-              validateWrapper("Budget", rawValue) +
-              " $" +
-              this.state.minValueBudget,
+            error_description: validateWrapper("Budget", rawValue) + " $" + 25,
           });
         }
         showMessage({
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.state.minValueBudget,
+          description: "$" + 25,
           type: "warning",
           position: "top",
         });
@@ -798,6 +797,8 @@ class InstagramStoryAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
+      rep.lifetime_budget_micro =
+        this.state.duration * this.state.campaignInfo.lifetime_budget_micro;
       if (
         rep.targeting.flexible_spec[0].interests.length > 0 &&
         this.state.customInterests &&
@@ -1265,7 +1266,7 @@ class InstagramStoryAdTargetting extends Component {
                     {!this.editCampaign ? (
                       <>
                         <Text uppercase style={styles.subHeadings}>
-                          {translate("Set your budget")}
+                          {translate("Set your daily budget")}
                         </Text>
                         <BudgetCards
                           value={this.state.value}
