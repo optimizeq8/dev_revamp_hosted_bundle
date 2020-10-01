@@ -99,9 +99,9 @@ class AdObjective extends Component {
   setCampaignInfo = () => {
     // console.log("data", this.props.data);
     let start_time = new Date();
-    start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    start_time.setDate(start_time.getDate() + 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -152,6 +152,7 @@ class AdObjective extends Component {
         },
         minValueBudget: 0,
         maxValueBudget: 0,
+        duration: 7,
         modalVisible: false,
         objectiveLabel: instagramAdObjectives["InstagramStoryAd"][0].label,
         inputN: false,
@@ -566,6 +567,7 @@ class AdObjective extends Component {
           dateField={this.dateField}
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
+          setCampaignInfo={this.setCampaignInfo}
         />
         <Modal
           animationType={"slide"}

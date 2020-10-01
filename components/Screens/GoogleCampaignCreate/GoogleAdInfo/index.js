@@ -101,9 +101,9 @@ class GoogleAdInfo extends Component {
   }
   setCampaignInfo = () => {
     let start_time = new Date();
-    start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    start_time.setDate(start_time.getDate() + 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });

@@ -79,9 +79,9 @@ class ContinueCampaign extends Component {
     );
     if (resetCampaign) {
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
-      this.props.resetCampaignInfo(!resetCampaign);
+      await  this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType_instagram(tempAdType);
-      persistor.purge();
+      await  persistor.purge();
     }
   };
   /**
