@@ -104,36 +104,36 @@ class Website extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  // validateUrl = () => {
-  //   const { translate } = this.props.screenProps;
-  //   const urlError = validateWrapper(
-  //     "website",
-  //     this.state.campaignInfo.attachment
-  //   );
+  validateUrl = () => {
+    const { translate } = this.props.screenProps;
+    const urlError = validateWrapper(
+      "website",
+      this.state.campaignInfo.attachment
+    );
 
-  //   this.setState({
-  //     urlError,
-  //   });
+    this.setState({
+      urlError,
+    });
 
-  //   if (urlError) {
-  //     const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
-  //     showMessage({
-  //       message: translate(
-  //         `${
-  //           !this.state.campaignInfo.attachment.match(regex)
-  //             ? "Please enter a valid URL"
-  //             : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
-  //         }`
-  //       ),
-  //       type: "warning",
-  //       position: "top",
-  //       duration: 7000,
-  //     });
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // };
+    if (urlError) {
+      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+      showMessage({
+        message: translate(
+          `${
+            !this.state.campaignInfo.attachment.match(regex)
+              ? "Please enter a valid URL"
+              : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+          }`
+        ),
+        type: "warning",
+        position: "top",
+        duration: 7000,
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
   setWebsiteValue = (value) => {
     const campaignInfo = {
       ...this.state.campaignInfo,
@@ -319,13 +319,14 @@ class Website extends Component {
               screenProps={this.props.screenProps}
               checkmark={true}
               bottom={-5}
-              function={() =>
-                this.props.verifyDestinationUrl(
-                  this.state.campaignInfo.attachment,
-                  this._handleSubmission,
-                  this.props.screenProps.translate
-                )
-              }
+              function={() => {
+                if (this.validateUrl())
+                  this.props.verifyDestinationUrl(
+                    this.state.campaignInfo.attachment,
+                    this._handleSubmission,
+                    this.props.screenProps.translate
+                  );
+              }}
               purpleViolet
             />
           </View>

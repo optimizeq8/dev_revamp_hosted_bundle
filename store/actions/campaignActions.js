@@ -1482,7 +1482,7 @@ export const overWriteObjectiveData = (value) => {
   };
 };
 
-export const verifyDestinationUrl = (url, submit) => {
+export const verifyDestinationUrl = (url, submit, translate) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.VERIFY_DESTINATION_URL,
@@ -1497,7 +1497,6 @@ export const verifyDestinationUrl = (url, submit) => {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("data", data);
         if (data.success) {
           submit(url);
         }
@@ -1511,8 +1510,9 @@ export const verifyDestinationUrl = (url, submit) => {
           });
           showMessage({
             type: "warning",
-            message:
-              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+            message: translate(
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+            ),
           });
         }
         return dispatch({

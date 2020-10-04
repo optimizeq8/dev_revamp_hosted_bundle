@@ -93,7 +93,6 @@ export const _handleSubmission = async (
       }
     }
   } else {
-    console.log("data submit", JSON.stringify(data.attachment, null, 2));
     if (validator()) {
       if (
         data &&
