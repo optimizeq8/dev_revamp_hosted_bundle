@@ -46,17 +46,11 @@ class SelectRegions extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    console.log("filteredRegions", this.state.filteredRegions);
+    // console.log("filteredRegions", this.state.filteredRegions);
     let regionlist = this.state.filteredRegions.map((fReg) => {
       countryName = fReg.name;
       coReg = fReg.regions;
 
-      // let coRegIndex = this.props.region_id.findIndex(
-      //   (coR) => coR === fReg.country_code
-      // );
-
-      // let coReg = fReg.regions;
-      console.log("this.props.region_id", this.props.region_id);
       return (
         <View key={countryName}>
           <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
@@ -72,12 +66,12 @@ class SelectRegions extends Component {
               <Icon
                 type="MaterialCommunityIcons"
                 name={
-                  this.props.region_id.includes(c.key)
+                  this.props.region_id.find((reg) => reg.key === c.key)
                     ? "circle"
                     : "circle-outline"
                 }
                 style={[
-                  this.props.region_id.includes(c.key)
+                  this.props.region_id.find((reg) => reg.key === c.key)
                     ? styles.activetext
                     : styles.inactivetext,
                   styles.optionsIconSize,
@@ -146,7 +140,7 @@ class SelectRegions extends Component {
               {!this.props.addressForm && (
                 <TouchableOpacity
                   style={[styles.languageRowConatiner, { alignSelf: "center" }]}
-                  onPress={() => this.checkForLocations(-1, "all", true)}
+                  onPress={() => this.handleRegionSelection("all")}
                 >
                   <Text
                     style={[
