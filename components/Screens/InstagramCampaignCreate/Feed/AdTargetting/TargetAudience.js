@@ -103,7 +103,7 @@ export class TargetAudience extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               disabled={loading}
-              onPress={() => this.callFunction("selectors", "regions")}
+              onPress={() => this.callFunction("regions")}
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, { width: "80%" }]}>

@@ -110,10 +110,6 @@ class MultiSelectList extends Component {
 
   selectCountry = () => {
     const { translate } = this.props.screenProps;
-    console.log(
-      " this.props.selectedItemsRegionsCountry",
-      this.props.selectedItemsRegionsCountry
-    );
     let countrylist = this.state.filteredCountreis.map((c) => {
       let country_code = this.props.selectedItemsRegionsCountry.find(
         (co) => co === c.value
@@ -123,7 +119,7 @@ class MultiSelectList extends Component {
           key={c.value}
           style={styles.selectTextContainer}
           onPress={() => {
-            this.props.onSelectedCountryRegionChange([c.value]);
+            this.props.onSelectedCountryRegionChange(c.value);
           }}
         >
           <Text
@@ -263,9 +259,9 @@ class MultiSelectList extends Component {
       case "countries":
         return this.selectCountry();
         break;
-      case "regions":
-        return this.selectRegions();
-        break;
+      // case "regions":
+      //   return this.selectRegions();
+      //   break;
       case "interests":
         return (
           <SelectInterests
