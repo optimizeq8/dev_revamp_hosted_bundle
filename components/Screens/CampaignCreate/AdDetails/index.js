@@ -1326,6 +1326,17 @@ class AdDetails extends Component {
           this.handleMultipleCountrySelection();
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
+          !this.editCampaign &&
+            this.props.save_campaign_info({
+              campaignInfo: editedCampaign,
+              countryName: getCountryName,
+              regions: editedRegionNames,
+              filteredRegions: editedRegionNames,
+              showRegions,
+              regionNames: stateRegionNames,
+              // markers: replace.targeting.locations[0].circles,
+              // locationsInfo,
+            });
         }
       );
     }
