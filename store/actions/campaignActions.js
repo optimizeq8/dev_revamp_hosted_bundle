@@ -1481,3 +1481,32 @@ export const overWriteObjectiveData = (value) => {
     });
   };
 };
+
+export const verifyDestinationUrl = (url) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_DESTINATION_URL,
+      payload: {
+        success: false,
+        loading: true,
+      },
+    });
+    createBaseUrl(`checkDestinationURL`, {
+      url,
+    })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log("data", data);
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: data.success, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: false, loading: false },
+        });
+      });
+  };
+};
