@@ -43,6 +43,7 @@ import {
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import { globalColors } from "../../../../../GlobalStyles";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
