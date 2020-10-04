@@ -107,9 +107,9 @@ class AdObjective extends Component {
    */
   setCampaignInfo = () => {
     let start_time = new Date();
-    start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    start_time.setDate(start_time.getDate() + 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -148,6 +148,7 @@ class AdObjective extends Component {
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
         modalVisible: false,
+        duration: this.props.data.duration ? this.props.data.duration : 7,
       });
     } else {
       this.setState({
@@ -162,6 +163,7 @@ class AdObjective extends Component {
         },
         minValueBudget: 0,
         maxValueBudget: 0,
+        duration: 7,
         modalVisible: false,
         objectiveLabel: instagramAdObjectives["InstagramFeedAd"][0].label,
         inputN: false,
@@ -422,7 +424,7 @@ class AdObjective extends Component {
       existingPost: postType,
     });
   };
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 3
         ? this.state.duration - 1
@@ -443,10 +445,11 @@ class AdObjective extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (
@@ -633,6 +636,7 @@ class AdObjective extends Component {
           dateField={this.dateField}
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
+          setCampaignInfo={this.setCampaignInfo}
         />
         <Modal
           animationType={"slide"}

@@ -135,9 +135,9 @@ class AdObjective extends Component {
    */
   setCampaignInfo = () => {
     let start_time = new Date();
-    start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    start_time.setDate(start_time.getDate() + 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -184,9 +184,7 @@ class AdObjective extends Component {
           end_timeError: this.props.data.end_timeError,
           campaignInfo: { ...rep },
           modalVisible: false,
-          duration: this.props.data.duration
-            ? this.props.data.duration
-            : this.state.duration,
+          duration: this.props.data.duration ? this.props.data.duration : 7,
           savedObjective: this.props.data.hasOwnProperty("savedObjective")
             ? this.props.data.savedObjective
             : snapchatObjectivesData[this.props.adType][0].value,
@@ -829,6 +827,7 @@ class AdObjective extends Component {
             dateField={this.dateField}
             screenProps={this.props.screenProps}
             handleClosingContinueModal={this.handleClosingContinueModal}
+            setCampaignInfo={this.setCampaignInfo}
           />
           <Modal
             animationType={"slide"}

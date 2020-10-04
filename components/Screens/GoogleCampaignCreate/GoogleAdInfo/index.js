@@ -101,9 +101,9 @@ class GoogleAdInfo extends Component {
   }
   setCampaignInfo = () => {
     let start_time = new Date();
-    start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    start_time.setDate(start_time.getDate() + 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -439,7 +439,7 @@ class GoogleAdInfo extends Component {
     this.setState({ ...state });
     this.props.save_google_campaign_data({ name: value });
   };
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 7
         ? this.state.duration - 1
@@ -457,10 +457,11 @@ class GoogleAdInfo extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 50);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const { translate } = this.props.screenProps;
