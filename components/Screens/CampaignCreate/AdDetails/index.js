@@ -856,7 +856,7 @@ class AdDetails extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= 25 &&
+      rawValue >= this.state.minValueBudget &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -901,10 +901,10 @@ class AdDetails extends Component {
             : translate("Budget can't be less than the minimum"),
           description:
             this.state.campaignInfo.targeting.geos.length > 1
-              ? `$25 x ${translate("Duration")} x ${translate(
-                  "Countries"
-                )} = $${this.state.campaignInfo.targeting.geos.length * 25}`
-              : "$" + 25,
+              ? `$25 x ${translate("no of Countries")} = $${
+                  this.state.minValueBudget
+                }`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
