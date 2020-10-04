@@ -1499,7 +1499,7 @@ export const verifyDestinationUrl = (url, submit) => {
       .then((data) => {
         console.log("data", data);
         if (data.success) {
-          submit();
+          submit(url);
         }
         if (!data.success) {
           analytics.track(`a_error_form`, {
