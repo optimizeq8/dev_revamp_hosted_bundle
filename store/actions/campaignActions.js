@@ -1482,7 +1482,7 @@ export const overWriteObjectiveData = (value) => {
   };
 };
 
-export const verifyDestinationUrl = (url) => {
+export const verifyDestinationUrl = (url, submit) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.VERIFY_DESTINATION_URL,
@@ -1491,12 +1491,30 @@ export const verifyDestinationUrl = (url) => {
         loading: true,
       },
     });
-    createBaseUrl(`checkDestinationURL`, {
-      url,
-    })
+    createBaseUrl()
+      .post(`checkDestinationURL`, {
+        url,
+      })
       .then((res) => res.data)
       .then((data) => {
         console.log("data", data);
+        if (data.success) {
+          submit();
+        }
+        if (!data.success) {
+          analytics.track(`a_error_form`, {
+            error_page: "ad_swipe_up_destination",
+            error_description:
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+            campaign_channel: "snapchat",
+            campaign_url: url,
+          });
+          showMessage({
+            type: "warning",
+            message:
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+          });
+        }
         return dispatch({
           type: actionTypes.VERIFY_DESTINATION_URL,
           payload: { success: data.success, loading: false },
