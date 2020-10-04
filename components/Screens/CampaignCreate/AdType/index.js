@@ -329,7 +329,7 @@ class AdType extends Component {
                   ]}
                 >
                   <MediaIcon
-                    stroke={social.title === "Snapchat" ? "#000000" : "none"}
+                    fill={"black"}
                     width={"100%"}
                     height={social.title === "Snapchat" ? 30 : "100%"}
                   />
