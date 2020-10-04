@@ -224,6 +224,8 @@ const initialState = {
   languagesListLoading: false,
   languagesListError: false,
   savedObjective: "",
+  destinationURLValid: false,
+  loadingDestinationURLValid: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1117,6 +1119,13 @@ const reducer = (state = initialState, action) => {
         languagesList: [],
         languagesListLoading: action.payload,
         languagesListError: false,
+      };
+    }
+    case actionTypes.VERIFY_DESTINATION_URL: {
+      return {
+        ...state,
+        destinationURLValid: action.payload.success,
+        loadingDestinationURLValid: action.payload.loading,
       };
     }
     default:
