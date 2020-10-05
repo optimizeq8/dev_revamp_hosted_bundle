@@ -13,7 +13,7 @@ import { Icon } from "native-base";
 
 export default class MediaOptions extends Component {
   handleOptionSelect = () => {
-    let { title, rejected, media_type } = this.props;
+    let { title } = this.props;
 
     if (title === "Upload media from a different device") {
       this.props.setUploadFromDifferentDeviceModal(true);
@@ -22,12 +22,10 @@ export default class MediaOptions extends Component {
       this.props.setDownloadMediaModal(true);
       this.props.getWebUploadLinkMedia();
     } else if (title === "Media") {
-      this.props._pickImage(
-        rejected ? (media_type === "IMAGE" ? "Images" : "Videos") : "All"
-      );
+      this.props._pickImage("All");
     } else {
       this.props._pickImage(
-        rejected ? (media_type === "IMAGE" ? "Images" : "Videos") : "All",
+        "All",
         {
           mediaUri: this.props.mediaUri,
           serialization: this.props.serialization,

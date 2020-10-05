@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, BackHandler, ScrollView } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -8,16 +9,17 @@ import InputScrollView from "react-native-input-scroll-view";
 import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import CustomHeader from "../../../MiniComponents/Header";
 
 //icons
+import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 import WindowIcon from "../../../../assets/SVGs/Window";
 
-//redux
-import * as actions from "../../../../store/actions";
 // Style
 import styles from "./styles";
-import { globalColors } from "../../../../GlobalStyles";
+import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -27,6 +29,7 @@ import { netLoc } from "../../../Data/callactions.data";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class Website extends Component {
   static navigationOptions = {
     header: null,
@@ -149,24 +152,35 @@ class Website extends Component {
       : this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE"
       ? this.props.storyAdAttachment.destination
       : this.props.objective;
+    if (!this.validateUrl()) {
+      analytics.track(`a_error_form`, {
+        error_page: "ad_swipe_up_destination",
+        error_description: this.state.urlError,
+        campaign_channel: "snapchat",
+        campaign_url: this.state.campaignInfo.attachment,
+      });
+    }
+    if (this.validateUrl()) {
+      this.props._changeDestination(
+        // this.props.adType !== "CollectionAd"
+        //   ?
+        this.props.collectionAdLinkForm === 0
+          ? objective !== "LEAD_GENERATION"
+            ? "REMOTE_WEBPAGE"
+            : "LEAD_GENERATION"
+          : "COLLECTION",
 
-    this.props._changeDestination(
-      this.props.collectionAdLinkForm === 0
-        ? objective !== "LEAD_GENERATION"
-          ? "REMOTE_WEBPAGE"
-          : "LEAD_GENERATION"
-        : "COLLECTION",
-
-      this.state.campaignInfo.callaction,
-      {
-        url: this.state.campaignInfo.attachment,
-      }
-    );
-    this.props.toggle(false);
-    // this.props.navigation.navigate("AdDesign", {
-    //   source: "ad_swipe_up_destination",
-    //   source_action: "a_swipe_up_destination",
-    // });
+        this.state.campaignInfo.callaction,
+        {
+          url: this.state.campaignInfo.attachment,
+        }
+      );
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
+    }
   };
   onSelectedCallToActionIdChange = (value) => {
     // NOTE: compulsory to pass this function
@@ -291,7 +305,6 @@ class Website extends Component {
             }}
             iconFill={globalColors.rum}
             labelColor={globalColors.rum}
-            disabled={this.props.loadingDestinationURLValid}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&
@@ -319,14 +332,7 @@ class Website extends Component {
               screenProps={this.props.screenProps}
               checkmark={true}
               bottom={-5}
-              function={() => {
-                if (this.validateUrl())
-                  this.props.verifyDestinationUrl(
-                    this.state.campaignInfo.attachment,
-                    this._handleSubmission,
-                    this.props.screenProps.translate
-                  );
-              }}
+              function={this._handleSubmission}
               purpleViolet
             />
           </View>
@@ -342,12 +348,7 @@ const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   mainBusiness: state.account.mainBusiness,
-  destinationURLValid: state.campaignC.destinationURLValid,
-  loadingDestinationURLValid: state.campaignC.loadingDestinationURLValid,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  verifyDestinationUrl: (url, submit, translate) =>
-    dispatch(actions.verifyDestinationUrl(url, submit, translate)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Website);

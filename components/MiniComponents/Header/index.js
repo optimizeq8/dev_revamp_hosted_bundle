@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, I18nManager } from "react-native";
-import { Icon, Text } from "native-base";
+import { Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
@@ -167,12 +167,6 @@ export default class Header extends Component {
             >
               {showTopRightButtonIcon === "settings" ? (
                 <Settings width={30} fill={iconColor} />
-              ) : showTopRightButtonIcon === "edit" ? (
-                <Icon
-                  name="edit"
-                  type="FontAwesome5"
-                  style={{ fontSize: 23, color: "#FFF" }}
-                />
               ) : showTopRightButtonIcon === "delete" ? (
                 <View
                   style={{
