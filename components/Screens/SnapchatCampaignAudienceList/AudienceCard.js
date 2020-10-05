@@ -24,6 +24,7 @@ export default AudienceCard = (props) => {
         props.navigation.navigate("AdDetails", {
           audienceSelected: true,
           campaignTargeting: item.targeting,
+          coordinates: item.coordinates,
           source: "audience_list",
           source_action: "a_select_audience",
         });

@@ -574,14 +574,20 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation, segmentInfo) => {
+export const ad_details = (
+  info,
+  names,
+  navigation,
+  segmentInfo,
+  locationsInfo
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true,
     });
     createBaseUrl()
-      .post(`savetargeting`, info)
+      .post(`savetargeting`, { ...info, coordinates: locationsInfo })
       .then((res) => {
         return res.data;
       })

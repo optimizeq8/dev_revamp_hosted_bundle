@@ -97,7 +97,7 @@ export default class SnapchatLocation extends Component {
   checkForRegions = () => {
     let { translate } = this.props.screenProps;
     let regionsSelected = this.props.regionsSelected.some(
-      (geo) => geo.region_id.length > 0
+      (geo) => geo.region_id && geo.region_id.length > 0
     );
     if (regionsSelected) {
       Alert.alert(

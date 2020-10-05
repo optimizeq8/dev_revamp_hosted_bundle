@@ -237,6 +237,12 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let editedMapLocation = [];
+      let markers = [];
+      if (editedCampaign.coordinates) {
+        editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
+        markers = editedCampaign.targeting.locations[0].circles;
+      }
       let stateRegionNames = [];
       this.setState(
         {
@@ -245,6 +251,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo: editedMapLocation,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach((geo, i) =>
@@ -1210,7 +1218,8 @@ class AdDetails extends Component {
               name: "Audience",
               targeting: rep.targeting,
             },
-            false
+            false,
+            this.state.locationsInfo
           );
         }
         this.props.ad_details(
@@ -1221,7 +1230,8 @@ class AdDetails extends Component {
             countryName: this.state.countryName,
           },
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.locationsInfo
         );
       }
     }
@@ -1253,6 +1263,7 @@ class AdDetails extends Component {
         "campaignTargeting",
         {}
       );
+      let locationsInfo = this.props.navigation.getParam("coordinates", {});
       if (this.editCampaign) {
         campaignTargeting.geos = editedCampaign.targeting.geos;
       }
@@ -1282,6 +1293,11 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let markers = [];
+      if (locationsInfo) {
+        locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+        markers = campaignTargeting.locations[0].circles;
+      }
       // LOCATIONS MAP
       let stateRegionNames = [];
       this.setState(
@@ -1291,6 +1307,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach(
@@ -1334,8 +1352,8 @@ class AdDetails extends Component {
               filteredRegions: editedRegionNames,
               showRegions,
               regionNames: stateRegionNames,
-              // markers: replace.targeting.locations[0].circles,
-              // locationsInfo,
+              markers,
+              locationsInfo,
             });
         }
       );
@@ -1841,8 +1859,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_details: (info, names, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_details(info, names, navigation, segmentInfo)),
+  ad_details: (info, names, navigation, segmentInfo, locationsInfo) =>
+    dispatch(
+      actionCreators.ad_details(
+        info,
+        names,
+        navigation,
+        segmentInfo,
+        locationsInfo
+      )
+    ),
   updateCampaign: (info, businessid, navigation, segmentInfo) =>
     dispatch(
       actionCreators.updateCampaign(info, businessid, navigation, segmentInfo)
@@ -1858,7 +1884,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
-  createAudience: (audience, navigate) =>
-    dispatch(actionCreators.createAudience(audience, navigate)),
+  createAudience: (audience, navigate, locationInfo) =>
+    dispatch(actionCreators.createAudience(audience, navigate, locationInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
