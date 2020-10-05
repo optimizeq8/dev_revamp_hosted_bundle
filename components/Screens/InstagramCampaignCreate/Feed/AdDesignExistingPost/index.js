@@ -284,7 +284,7 @@ class InstagramAdDesignExistingPost extends Component {
       body.append(
         "attachment",
         !data.attachment || data.attachment === "BLANK"
-          ? data.attachment
+          ? "BLANK"
           : JSON.stringify(data.attachment)
       );
       // if (

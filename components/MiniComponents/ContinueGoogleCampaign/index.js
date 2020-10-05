@@ -78,11 +78,12 @@ class ContinueCampaign extends Component {
    * @param {Bool} isVisible boolean to show the modal or not
    * @param {Bool} resetCampaign boolean to handle if user chooses to create a new campaign
    */
-  handleSubmition = (isVisible, resetCampaign) => {
+  handleSubmition = async (isVisible, resetCampaign) => {
     this.setState({ isVisible });
     if (resetCampaign) {
       //if resetCampaign is true, then resetCampaignInfo is called
-      this.props.rest_google_campaign_data();
+      await this.props.rest_google_campaign_data();
+      await this.props.setCampaignInfo();
       persistor.purge();
     }
   };

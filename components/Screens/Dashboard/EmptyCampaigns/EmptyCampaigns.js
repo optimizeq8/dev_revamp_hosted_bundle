@@ -131,7 +131,7 @@ export default class EmptyCampaigns extends Component {
               style={styles.gradient}
             />
             <View style={styles.socialPlatformIconView}>
-              <Snapchat width={75} style={styles.snapchatIcon} />
+              <Snapchat width={75} style={styles.snapchatIcon} fill="black" />
               <Google
                 width={widthPercentageToDP(30)}
                 style={styles.googleIcon}

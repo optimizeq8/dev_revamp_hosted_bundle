@@ -328,11 +328,7 @@ class AdType extends Component {
                       styles.activeMediaIcon,
                   ]}
                 >
-                  <MediaIcon
-                    stroke={social.title === "Snapchat" ? "#000000" : "none"}
-                    width={"100%"}
-                    height={social.title === "Snapchat" ? 30 : "100%"}
-                  />
+                  <MediaIcon fill="black" width={"100%"} height={"100%"} />
                 </TouchableOpacity>
               );
             })}

@@ -108,8 +108,8 @@ class AdObjective extends Component {
   setCampaignInfo = () => {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
-    let end_time = new Date();
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+    let end_time = new Date(start_time);
+    end_time.setDate(this.state.duration);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -633,6 +633,7 @@ class AdObjective extends Component {
           dateField={this.dateField}
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
+          setCampaignInfo={this.setCampaignInfo}
         />
         <Modal
           animationType={"slide"}
