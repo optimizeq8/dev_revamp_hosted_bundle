@@ -241,7 +241,7 @@ class AdDetails extends Component {
       let markers = [];
       if (editedCampaign.coordinates) {
         editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
-        markers = editedCampaign.targeting.locations[0].circles;
+        markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
       }
       let stateRegionNames = [];
       this.setState(
@@ -1464,6 +1464,7 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}
+            locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.save_campaign_info}
             data={this.props.data}
@@ -1884,7 +1885,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
-  createAudience: (audience, navigate, locationInfo) =>
-    dispatch(actionCreators.createAudience(audience, navigate, locationInfo)),
+  createAudience: (audience, navigate, locationsInfo) =>
+    dispatch(actionCreators.createAudience(audience, navigate, locationsInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
