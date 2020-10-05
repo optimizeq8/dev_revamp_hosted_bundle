@@ -954,6 +954,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.props.audience.targeting.locations[0].circles}
+            locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.setAudienceDetail}
             data={this.props.audience}
