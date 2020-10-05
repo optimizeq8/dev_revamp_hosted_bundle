@@ -1425,6 +1425,7 @@ class AdDetails extends Component {
     );
   };
   render() {
+    console.log(this.props.audienceList);
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
