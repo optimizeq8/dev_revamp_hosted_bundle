@@ -92,7 +92,6 @@ class InstagramFeedAdTargetting extends Component {
       budgetOption: 1,
       startEditing: true,
       customInterests: [],
-      duration: 3,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -211,7 +210,7 @@ class InstagramFeedAdTargetting extends Component {
             86400000
         ) + 1
       );
-      let recBudget = 75;
+      let recBudget = duration * 75;
       this.setState(
         {
           campaignInfo: {
@@ -219,11 +218,10 @@ class InstagramFeedAdTargetting extends Component {
             campaign_id: this.props.campaign_id,
             lifetime_budget_micro: recBudget * 2,
           },
-          minValueBudget: 25,
+          minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
           value: this.formatNumber(recBudget * 2),
           recBudget: recBudget,
-          duration,
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -562,12 +560,7 @@ class InstagramFeedAdTargetting extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description:
-            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
-              ? `$25 x ${translate("no of Countries")} = $${
-                  this.state.minValueBudget
-                }`
-              : "$" + this.state.minValueBudget,
+          description: "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -804,8 +797,6 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
-      rep.lifetime_budget_micro =
-        this.state.duration * this.state.campaignInfo.lifetime_budget_micro;
       if (
         rep.targeting.flexible_spec[0].interests.length > 0 &&
         this.state.customInterests &&
@@ -1305,7 +1296,7 @@ class InstagramFeedAdTargetting extends Component {
                               },
                             ]}
                           >
-                            {translate("Set your daily budget")}
+                            {translate("Set your budget")}
                           </Text>
                         </Row>
 

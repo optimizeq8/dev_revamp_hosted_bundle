@@ -50,6 +50,30 @@ class RejectedSnapchatInfo extends Component {
       ]
     );
   };
+  /**
+   * handles the review and publish process
+   */
+  handleSnapchatRejection = () => {
+    let {
+      selectedCampaign,
+      setRejectedAdType,
+      setRejectedCampaignData,
+      navigation,
+    } = this.props;
+    setRejectedAdType(selectedCampaign.campaign_type);
+    let savedObjective =
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
+        ? "WEBSITE_TRAFFIC"
+        : selectedCampaign.destination === "DEEP_LINK"
+        ? "APP_TRAFFIC"
+        : selectedCampaign.objective;
+    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
+    navigation.navigate("AdDesign", {
+      rejected: true,
+    });
+  };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
