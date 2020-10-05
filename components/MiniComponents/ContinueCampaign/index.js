@@ -81,7 +81,9 @@ class ContinueCampaign extends Component {
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       await this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType(tempAdType);
-      await persistor.purge();
+      // set the  State to default
+      await this.props.setCampaignInfo();
+      persistor.purge();
     }
   };
   /**

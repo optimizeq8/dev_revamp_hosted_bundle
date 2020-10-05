@@ -81,7 +81,9 @@ class ContinueCampaign extends Component {
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       await this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType_instagram(tempAdType);
-      await persistor.purge();
+      //if resetCampaign is true, then reset the mainSTate in AdObjective to default
+      await this.props.setCampaignInfo();
+      persistor.purge();
     }
   };
   /**

@@ -138,6 +138,7 @@ class AdObjective extends Component {
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
+        duration: 7,
         modalVisible: false,
         duration: this.props.data.duration ? this.props.data.duration : 7,
       });

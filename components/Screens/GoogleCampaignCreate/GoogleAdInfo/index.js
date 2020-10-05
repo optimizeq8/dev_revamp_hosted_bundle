@@ -670,6 +670,7 @@ class GoogleAdInfo extends Component {
           dateField={this.dateField}
           screenProps={this.props.screenProps}
           handleClosingContinueModal={this.handleClosingContinueModal}
+          setCampaignInfo={this.setCampaignInfo}
         />
         <Modal
           animationType={"slide"}

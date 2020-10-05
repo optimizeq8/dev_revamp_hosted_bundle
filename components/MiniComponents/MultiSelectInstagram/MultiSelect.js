@@ -42,11 +42,13 @@ class MultiSelectList extends Component {
       selectedDevices: [],
       selectedVersions: [],
       selectedItemObjects: [],
+      filteredCountreis: [],
 
       interests: [],
       customSelection: false,
       selectedCustomInterests: [],
       openCountryModal: false,
+      openRegionModal: false,
     };
   }
   componentDidMount() {
@@ -56,6 +58,7 @@ class MultiSelectList extends Component {
       selectedDevices: this.props.selectedDevices,
       selectedVersions: this.props.selectedVersions,
       selectedCustomInterests: this.props.selectedCustomItems,
+      filteredCountreis: this.props.countries,
     });
   }
   componentDidUpdate(prevProps) {
@@ -107,6 +110,84 @@ class MultiSelectList extends Component {
 
   selectCountry = () => {
     const { translate } = this.props.screenProps;
+    let countrylist = this.state.filteredCountreis.map((c) => {
+      let country_code = this.props.selectedItemsRegionsCountry.find(
+        (co) => co === c.value
+      );
+      return (
+        <TouchableOpacity
+          key={c.value}
+          style={styles.selectTextContainer}
+          onPress={() => {
+            this.props.onSelectedCountryRegionChange(c.value);
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              color: (country_code ? country_code : "" === c.value)
+                ? "#FF9D00"
+                : globalColors.rum,
+              fontSize: 14,
+              // opacity: !disabled ? 1 : 0.5,
+            }}
+          >
+            {translate(c.label)}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+    return (
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
+        <View style={styles.container}>
+          <View style={styles.dataContainer}>
+            <LocationIcon width={70} height={70} fill={globalColors.rum} />
+            <Text style={styles.title}> {translate("Select Country")} </Text>
+
+            <View style={styles.slidercontainer}>
+              <Item>
+                <Input
+                  placeholder={translate("Search Country")}
+                  style={
+                    I18nManager.isRTL
+                      ? rtlStyles.searchInputText
+                      : styles.searchInputText
+                  }
+                  placeholderTextColor={globalColors.rum}
+                  onChangeText={(value) => {
+                    let filteredC = this.props.countries.filter((c) =>
+                      translate(c.label)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
+                    );
+                    this.setState({ filteredCountreis: filteredC });
+                  }}
+                />
+              </Item>
+
+              <ScrollView style={styles.countryScrollContainer}>
+                {countrylist}
+              </ScrollView>
+            </View>
+          </View>
+
+          <LowerButton
+            screenProps={this.props.screenProps}
+            style={styles.button}
+            checkmark={true}
+            purpleViolet
+            function={() => this.props._handleSideMenuState(false)}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  };
+
+  selectRegions = () => {
+    const { translate } = this.props.screenProps;
 
     return (
       <SafeAreaView
@@ -116,12 +197,12 @@ class MultiSelectList extends Component {
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={60} height={60} fill={globalColors.rum} />
-            <Text style={styles.title}> {translate("Select Country")} </Text>
+            <Text style={styles.title}> {translate("Select Regions")} </Text>
 
             <View style={styles.slidercontainer}>
               <GradientButton
                 style={[styles.toggleSelectorButton]}
-                onPressAction={() => this.setState({ openCountryModal: true })}
+                onPressAction={() => this.setState({ openRegionModal: true })}
               >
                 <PlusCircle width={53} height={53} />
               </GradientButton>
@@ -131,12 +212,12 @@ class MultiSelectList extends Component {
                   readOnlyHeadings={false}
                   showRemoveAll={true}
                   screenProps={this.props.screenProps}
-                  searchPlaceholderText={translate("Search Country")}
+                  searchPlaceholderText={translate("Search Regions")}
                   data={this.props.country_regions}
                   uniqueKey={"key"}
                   displayKey={"name"}
                   subKey="regions"
-                  open={this.state.openCountryModal}
+                  open={this.state.openRegionModal}
                   onSelectedItemsChange={
                     this.props.onSelectedCountryRegionChange
                   }
@@ -147,9 +228,9 @@ class MultiSelectList extends Component {
                   showIcon={true}
                   highlightChildren={true}
                   selectedItems={this.props.selectedItemsRegionsCountry}
-                  screenName={"Select Country"}
+                  screenName={"Select Region"}
                   closeCategoryModal={() =>
-                    this.setState({ openCountryModal: false })
+                    this.setState({ openRegionModal: false })
                   }
                   customColors={{
                     chipColor: globalColors.rum,
@@ -178,6 +259,9 @@ class MultiSelectList extends Component {
       case "countries":
         return this.selectCountry();
         break;
+      // case "regions":
+      //   return this.selectRegions();
+      //   break;
       case "interests":
         return (
           <SelectInterests

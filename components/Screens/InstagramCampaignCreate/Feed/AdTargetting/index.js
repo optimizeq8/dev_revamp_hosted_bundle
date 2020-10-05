@@ -8,7 +8,7 @@ import analytics from "@segment/analytics-react-native";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
-import SelectRegions from "../../../../MiniComponents/SelectRegions";
+import SelectRegions from "../../../../MiniComponents/SelectRegionsInstagram";
 import SelectLanguages from "../../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../../MiniComponents/AgeOptions/AgeOption";
@@ -295,10 +295,12 @@ class InstagramFeedAdTargetting extends Component {
                 (country) => country.name === this.props.mainBusiness.country
               )
               .regions.map((reg) => reg.key);
-            await this.onSelectedCountryRegionChange([
-              country_code,
-              ...allCountryRegions,
-            ]);
+            this.onSelectedCountryRegionChange(
+              // [
+              country_code
+              // ...allCountryRegions,
+              // ]
+            );
           }
           this._calcReach();
         }
@@ -469,60 +471,39 @@ class InstagramFeedAdTargetting extends Component {
       });
   };
 
-  // onSelectedRegionChange = (selectedItem, regionName) => {
-  //   let replace = this.state.campaignInfo;
-  //   let rIds = replace.targeting.geo_locations.region_id;
-  //   let rNamesSelected = this.state.regionNames;
+  onSelectedRegionChange = (selectedItem) => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    let regionsArray = cloneDeep(replace.targeting.geo_locations.regions);
+    if (selectedItem === "all") {
+      regionsArray = replace.targeting.geo_locations.countries.map((country) =>
+        allRegions.filter((cR) => {
+          if (cR.country === country) return cR;
+        })
+      );
+      regionsArray = regionsArray.flat(1);
+    } else {
+      let checkIfInRegionsArray = regionsArray.findIndex(
+        (reg) => reg.key === selectedItem.key
+      );
 
-  //   if (selectedItem === -1) {
-  //     if (this.state.regions.length === this.state.regionNames.length) {
-  //       replace.targeting.geo_locations.region_id = [];
-  //
-  //       this.setState({
-  //         regionNames: [],
-  //         campaignInfo: replace
-  //       });
-  //     } else {
-  //       rNamesSelected = this.state.regions.map(r => r.name);
-  //       rIds = this.state.regions.map(r => r.id);
-  //       replace.targeting.geo_locations.region_id = rIds;
-  //       this.setState({
-  //         regionNames: rNamesSelected,
-  //         campaignInfo: replace
-  //       });
-  //     }
+      if (checkIfInRegionsArray === -1) {
+        regionsArray = [...regionsArray, { ...selectedItem }];
+      } else {
+        regionsArray = regionsArray.splice(checkIfInRegionsArray, 1);
+      }
+    }
 
-  //  !this.editCampaign &&
-  //     this.props.save_campaign_info_instagram({
-  //       campaignInfo: replace,
-  //       regionNames: rNamesSelected
-  //     });
-  //     return;
-  //   } else {
-  //     // logic change
+    replace.targeting.geo_locations.regions = [...regionsArray];
 
-  //     // campignInfo region
-  //     if (rIds.find(r => r === selectedItem)) {
-  //       replace.targeting.geo_locations.region_id = rIds.filter(
-  //         r => r !== selectedItem
-  //       );
-  //       rNamesSelected = rNamesSelected.filter(r => r !== regionName);
-  //     } else {
-  //       replace.targeting.geo_locations.region_id.push(selectedItem);
-  //       rNamesSelected.push(regionName);
-  //     }
-
-  //     this.setState({
-  //       campaignInfo: replace,
-  //       regionNames: rNamesSelected
-  //     });
-  //  !this.editCampaign &&
-  //     this.props.save_campaign_info_instagram({
-  //       campaignInfo: replace,
-  //       regionNames: rNamesSelected
-  //     });
-  //   }
-  // };
+    this.setState({
+      campaignInfo: replace,
+      regions: regionsArray,
+    });
+    !this.editCampaign &&
+      this.props.save_campaign_info_instagram({
+        campaignInfo: replace,
+      });
+  };
 
   formatNumber = (num) => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -915,83 +896,52 @@ class InstagramFeedAdTargetting extends Component {
     }
     return [];
   };
+
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
     let replace = cloneDeep(this.state.campaignInfo);
-    let countryArrayFromSelectedArray = countries.filter((country) =>
-      item.includes(country.value)
-    );
-    let regionArrayFromSelectedArray = item;
-    // check if country exist
-    if (countryArrayFromSelectedArray.length > 0) {
-      countryArrayFromSelectedArray = countryArrayFromSelectedArray.map(
-        (country) => country.value
-      );
-      // filter out regions from selected items array
-      regionArrayFromSelectedArray = item.filter(
-        (key) => !countryArrayFromSelectedArray.includes(key)
-      );
-    }
-    replace.targeting.geo_locations.countries = countryArrayFromSelectedArray;
 
-    // name the regions appropriately
-    regionArrayFromSelectedArray = allRegions.filter((reg) =>
-      regionArrayFromSelectedArray.includes(reg.key)
-    );
-
-    replace.targeting.geo_locations.regions = regionArrayFromSelectedArray;
-    countries.map((country) => {
-      // filter regionsBasedOnCountries
-      let filteredRegionsOnCountry = regionArrayFromSelectedArray.filter(
-        (reg) => reg.country === country.value
+    // check if country exist in array remove it else add country and show regions for that country
+    if (
+      replace.targeting.geo_locations.countries &&
+      replace.targeting.geo_locations.countries.length > 0
+    ) {
+      let countryExist = replace.targeting.geo_locations.countries.find(
+        (ctry) => item === ctry
       );
-      const findOriginalRegionLength = country_regions.find(
-        (cR) => cR.key === country.value
-      );
-
-      if (
-        findOriginalRegionLength &&
-        filteredRegionsOnCountry.length ===
-          findOriginalRegionLength.regions.length
-      ) {
-        //  country name selcted so remove regions from regions array
-        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
-          (reg) => reg.country !== country.value
+      if (countryExist) {
+        replace.targeting.geo_locations.countries = replace.targeting.geo_locations.countries.filter(
+          (ctr) => ctr !== countryExist
         );
-      } else if (
-        findOriginalRegionLength &&
-        filteredRegionsOnCountry.length <
-          findOriginalRegionLength.regions.length
-      ) {
-        // all regions was selected initially and now removing ceratin regions from that country
-        if (item.includes(country.value)) {
-          item.splice(item.indexOf(country.value), 1);
-        }
-        if (replace.targeting.geo_locations.countries.includes(country.value)) {
-          replace.targeting.geo_locations.countries.splice(
-            replace.targeting.geo_locations.countries.indexOf(country.value),
-            1
-          );
-        }
+
+        // remove all regions of those countries
+        replace.targeting.geo_locations.regions = replace.targeting.geo_locations.regions.filter(
+          (ctr) => ctr.country !== countryExist
+        );
+      } else {
+        replace.targeting.geo_locations.countries.push(item);
       }
-    });
-    analytics.track(`a_ad_regions`, {
-      source: "ad_targeting",
-      source_action: "a_ad_regions",
-      campaign_region_names: replace.targeting.geo_locations.regions,
-    });
+    } // add the country
+    else {
+      replace.targeting.geo_locations.countries.push(item);
+      // show all regions of that country
+    }
 
     this.setState({
-      selectedCountriesAndRegions: item,
+      selectedCountriesAndRegions: replace.targeting.geo_locations.countries,
       campaignInfo: replace,
     });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
         campaignInfo: { ...replace },
-        selectedCountriesAndRegions: item, //to save the selection of countries and regions if they resumed
+        selectedCountriesAndRegions: replace.targeting.geo_locations.countries, //to save the selection of countries and regions if they resumed
       });
   };
   onSelectedCountryRegionsObjectsChange = (items) => {};
+  filterRegions = (value) => {
+    this.setState({ filteredRegions: value });
+  };
+
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
@@ -1024,24 +974,25 @@ class InstagramFeedAdTargetting extends Component {
         );
         break;
       }
-      // case "regions": {
-      //   menu = (
-      //     <SelectRegions
-      //       screenProps={this.props.screenProps}
-      //       countryName={this.state.countryName}
-      //       filteredRegions={this.state.filteredRegions}
-      //       onSelectedRegionChange={this.onSelectedRegionChange}
-      //       _handleSideMenuState={this._handleSideMenuState}
-      //       regions={this.state.regions}
-      //       region_id={
-      //         this.state.campaignInfo.targeting.geo_locations.region_id
-      //       }
-      //       filterRegions={this.filterRegions}
-      //     />
-      //   );
+      case "regions": {
+        menu = (
+          <SelectRegions
+            screenProps={this.props.screenProps}
+            countryName={this.state.countryName}
+            countries={
+              this.state.campaignInfo.targeting.geo_locations.countries
+            }
+            filteredRegions={this.state.filteredRegions}
+            onSelectedRegionChange={this.onSelectedRegionChange}
+            _handleSideMenuState={this._handleSideMenuState}
+            regions={this.state.regions}
+            region_id={this.state.campaignInfo.targeting.geo_locations.regions}
+            filterRegions={this.filterRegions}
+          />
+        );
 
-      //   break;
-      // }
+        break;
+      }
       // case "languages": {
       //   menu = (
       //     <SelectLanguages
@@ -1077,6 +1028,7 @@ class InstagramFeedAdTargetting extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
+            countries={countries}
             screenProps={this.props.screenProps}
             country_regions={country_regions}
             selectedItemsRegionsCountry={this.state.selectedCountriesAndRegions}
@@ -1137,9 +1089,14 @@ class InstagramFeedAdTargetting extends Component {
     //     regions_names.push(translate(r.name));
     //   }
     // });
+    // console.log(
+    //   "this.state.campaignInfo.targeting.geo_locations.regions",
+    //   this.state.campaignInfo.targeting.geo_locations.regions
+    // );
     if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
+      // GET COUNTRY then
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
-        (reg) => reg.name
+        (reg) => translate(reg.name)
       );
     }
     regions_names = regions_names.join(", ");
