@@ -314,8 +314,7 @@ class AdDetails extends Component {
                 uniq(flatten([savedRegionNames, filterSelectedRegions]));
               return foundCountryReg;
             });
-            let minValueBudget =
-              this.props.data.minValueBudget * rep.targeting.geos.length;
+            let minValueBudget = 25 * rep.targeting.geos.length;
             recBudget *= rep.targeting.geos.length;
             if (rep.targeting.geos.length > 1) {
               rep.targeting.demographics[0].languages.length = 1;

@@ -103,15 +103,21 @@ class InstagramFeedAdTargetting extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     // if(this.prevProps)
-    if (!isEqual(prevProps.languages, this.props.languages)) {
-      //   const campaign = { ...this.state.campaignInfo };
-      //   campaign.targeting.demographics[0].languages = this.props.languages.map(
-      //     lang => lang.id
-      //   );
-      this.setState({
-        // campaignInfo: campaign,
-        filteredLanguages: this.props.languages,
-      });
+    // if (!isEqual(prevProps.languages, this.props.languages)) {
+    //   const campaign = { ...this.state.campaignInfo };
+    //   campaign.targeting.demographics[0].languages = this.props.languages.map(
+    //     lang => lang.id
+    //   );
+    // this.setState({
+    // campaignInfo: campaign,
+    // filteredLanguages: this.props.languages,
+    // });
+    // }
+    if (
+      prevState.campaignInfo.targeting.geo_locations.countries.length !==
+      this.state.campaignInfo.targeting.geo_locations.countries.length
+    ) {
+      this.handleMultipleCountrySelection();
     }
   }
   handleBackButton = () => {
@@ -227,7 +233,9 @@ class InstagramFeedAdTargetting extends Component {
               ...this.props.data.campaignInfo,
             };
             // console.log("data campaignInfo", this.props.data);
-
+            let minValueBudget =
+              25 * rep.targeting.geo_locations.countries.length;
+            recBudget *= rep.targeting.geo_locations.countries.length;
             this.setState(
               {
                 ...this.state,
@@ -262,6 +270,7 @@ class InstagramFeedAdTargetting extends Component {
                   ? this.props.data.budgetOption
                   : 1,
                 customInterests: this.props.data.customInterests,
+                minValueBudget,
               },
               () => {
                 if (this.props.data.appChoice) {
@@ -512,7 +521,7 @@ class InstagramFeedAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= 25 &&
+      rawValue >= this.state.minValueBudget &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -554,7 +563,12 @@ class InstagramFeedAdTargetting extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + 25,
+          description:
+            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
+              ? `$25 x ${translate("no of Countries")} = $${
+                  this.state.minValueBudget
+                }`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -941,7 +955,43 @@ class InstagramFeedAdTargetting extends Component {
   filterRegions = (value) => {
     this.setState({ filteredRegions: value });
   };
+  handleMultipleCountrySelection = () => {
+    if (!this.editCampaign) {
+      let recBudget =
+        this.state.campaignInfo.targeting.geo_locations.countries.length * 75;
 
+      let minValueBudget =
+        25 * this.state.campaignInfo.targeting.geo_locations.countries.length;
+      let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
+      let value = this.state.value;
+      if (this.state.budgetOption !== 0) {
+        switch (this.state.budgetOption) {
+          case 1:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            break;
+          case 2:
+            lifetime_budget_micro = recBudget;
+            value = this.formatNumber(recBudget, true);
+            break;
+          case 3:
+            lifetime_budget_micro = recBudget * 3;
+            value = this.formatNumber(recBudget * 3, true);
+            break;
+          default:
+            lifetime_budget_micro = recBudget * 2;
+            value = this.formatNumber(recBudget * 2, true);
+            break;
+        }
+      }
+      this.setState({
+        campaignInfo: { ...this.state.campaignInfo, lifetime_budget_micro },
+        value,
+        minValueBudget,
+        recBudget,
+      });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
