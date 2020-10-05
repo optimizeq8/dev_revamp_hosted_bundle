@@ -112,15 +112,15 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.21.0)
+  - imglyKit (10.21.1)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
   - Mixpanel (3.6.2)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.21.0):
-    - imglyKit (= 10.21.0)
+  - PhotoEditorSDK (10.21.1):
+    - imglyKit (= 10.21.1)
   - RCTRequired (0.63.2)
   - RCTTypeSafety (0.63.2):
     - FBLazyVector (= 0.63.2)
@@ -428,8 +428,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.3.0)
   - UMTaskManagerInterface (5.3.0)
-  - VideoEditorSDK (10.21.0):
-    - imglyKit (= 10.21.0)
+  - VideoEditorSDK (10.21.1):
+    - imglyKit (= 10.21.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -745,12 +745,12 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: 15dc44e9fae7f62d90562097880ae9886b5b19dd
+  imglyKit: f762f3a8b7a062be4efe4b62bc1407d6295af900
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0a78141d1a073308201f76c55c3e629535e72b47
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: 921291e24f9dc707e8856ca401b184d45add60ea
+  PhotoEditorSDK: 1d8cb444ca7c9e76d2dd5f87b24101a8053ca93f
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
   React: e1c65dd41cb9db13b99f24608e47dd595f28ca9a
@@ -808,7 +808,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 61ae88818058b7849bbf5b79bf97872cb3c8e0eb
   UMSensorsInterface: 49bea41dcfcc041f0bbab27cfe4a6006f1dde0c0
   UMTaskManagerInterface: 6cad5929dbc0a5b986ad4d77caac497d4de730a7
-  VideoEditorSDK: 7ef42ef9bc85b753e6cd182fe340acb28eb18298
+  VideoEditorSDK: ca58c1298db2910182111dfa946cfa49a7a5c78a
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
 PODFILE CHECKSUM: 107bb2d737711ab4b88b3d278b853db1609e1fb5

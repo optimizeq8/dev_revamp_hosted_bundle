@@ -120,6 +120,7 @@ class AdDetails extends Component {
       budgetOption: 1,
       startEditing: true,
       locationsInfo: [],
+      duration: 3,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -172,20 +173,9 @@ class AdDetails extends Component {
       languages.length = 1;
     }
     if (!this.editCampaign) {
-      let duration = Math.round(
-        Math.abs(
-          (new Date(this.props.data.start_time).getTime() -
-            new Date(this.props.data.end_time).getTime()) /
-            86400000
-        ) + 1
-      );
+      let recBudget = this.state.campaignInfo.targeting.geos.length * 75;
 
-      let recBudget =
-        this.state.campaignInfo.targeting.geos.length * duration * 75;
-
-      let minValueBudget =
-        this.props.data.minValueBudget *
-        this.state.campaignInfo.targeting.geos.length;
+      let minValueBudget = 25 * this.state.campaignInfo.targeting.geos.length;
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
@@ -193,29 +183,14 @@ class AdDetails extends Component {
           case 1:
             lifetime_budget_micro = recBudget * 2;
             value = this.formatNumber(recBudget * 2, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           case 2:
             lifetime_budget_micro = recBudget;
             value = this.formatNumber(recBudget, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           case 3:
             lifetime_budget_micro = recBudget * 3;
             value = this.formatNumber(recBudget * 3, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           default:
             lifetime_budget_micro = recBudget * 2;
@@ -262,6 +237,12 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let editedMapLocation = [];
+      let markers = [];
+      if (editedCampaign.coordinates) {
+        editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
+        markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
+      }
       let stateRegionNames = [];
       this.setState(
         {
@@ -270,6 +251,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo: editedMapLocation,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach((geo, i) =>
@@ -297,7 +280,7 @@ class AdDetails extends Component {
         ) + 1
       );
 
-      let recBudget = duration * 75;
+      let recBudget = 75;
 
       // To by default set the country to that of the business country selected
       let country_code = find(
@@ -312,10 +295,10 @@ class AdDetails extends Component {
             campaign_id: this.props.campaign_id,
             lifetime_budget_micro: recBudget * 2,
           },
-          minValueBudget: this.props.data.minValueBudget,
-          maxValueBudget: this.props.data.maxValueBudget,
+          minValueBudget: 25,
           value: this.formatNumber(recBudget * 2, true),
           recBudget: recBudget,
+          duration,
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -339,8 +322,7 @@ class AdDetails extends Component {
                 uniq(flatten([savedRegionNames, filterSelectedRegions]));
               return foundCountryReg;
             });
-            let minValueBudget =
-              this.props.data.minValueBudget * rep.targeting.geos.length;
+            let minValueBudget = 25 * rep.targeting.geos.length;
             recBudget *= rep.targeting.geos.length;
             if (rep.targeting.geos.length > 1) {
               rep.targeting.demographics[0].languages.length = 1;
@@ -926,9 +908,9 @@ class AdDetails extends Component {
             : translate("Budget can't be less than the minimum"),
           description:
             this.state.campaignInfo.targeting.geos.length > 1
-              ? `$25 x ${translate("Duration")} x ${translate(
-                  "Countries"
-                )} = $${this.state.minValueBudget}`
+              ? `$25 x ${translate("no of Countries")} = $${
+                  this.state.minValueBudget
+                }`
               : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
@@ -1101,6 +1083,8 @@ class AdDetails extends Component {
       !countryError
     ) {
       let rep = cloneDeep(this.state.campaignInfo);
+      rep.lifetime_budget_micro =
+        this.state.duration * this.state.campaignInfo.lifetime_budget_micro;
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
@@ -1233,7 +1217,8 @@ class AdDetails extends Component {
               name: "Audience",
               targeting: rep.targeting,
             },
-            false
+            false,
+            this.state.locationsInfo
           );
         }
         this.props.ad_details(
@@ -1244,7 +1229,8 @@ class AdDetails extends Component {
             countryName: this.state.countryName,
           },
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.locationsInfo
         );
       }
     }
@@ -1276,6 +1262,7 @@ class AdDetails extends Component {
         "campaignTargeting",
         {}
       );
+      let locationsInfo = this.props.navigation.getParam("coordinates", {});
       if (this.editCampaign) {
         campaignTargeting.geos = editedCampaign.targeting.geos;
       }
@@ -1305,6 +1292,11 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let markers = [];
+      if (locationsInfo) {
+        locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+        markers = cloneDeep(campaignTargeting.locations[0].circles);
+      }
       // LOCATIONS MAP
       let stateRegionNames = [];
       this.setState(
@@ -1314,6 +1306,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach(
@@ -1349,6 +1343,17 @@ class AdDetails extends Component {
           this.handleMultipleCountrySelection();
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
+          !this.editCampaign &&
+            this.props.save_campaign_info({
+              campaignInfo: editedCampaign,
+              countryName: getCountryName,
+              regions: editedRegionNames,
+              filteredRegions: editedRegionNames,
+              showRegions,
+              regionNames: stateRegionNames,
+              markers,
+              locationsInfo,
+            });
         }
       );
     }
@@ -1458,6 +1463,7 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}
+            locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.save_campaign_info}
             data={this.props.data}
@@ -1695,7 +1701,7 @@ class AdDetails extends Component {
                               { paddingHorizontal: 10 },
                             ]}
                           >
-                            {translate("Set your budget")}
+                            {translate("Set your daily budget")}
                           </Text>
                         </Row>
                         <BudgetCards
@@ -1853,8 +1859,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_details: (info, names, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_details(info, names, navigation, segmentInfo)),
+  ad_details: (info, names, navigation, segmentInfo, locationsInfo) =>
+    dispatch(
+      actionCreators.ad_details(
+        info,
+        names,
+        navigation,
+        segmentInfo,
+        locationsInfo
+      )
+    ),
   updateCampaign: (info, businessid, navigation, segmentInfo) =>
     dispatch(
       actionCreators.updateCampaign(info, businessid, navigation, segmentInfo)
@@ -1870,7 +1884,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
-  createAudience: (audience, navigate) =>
-    dispatch(actionCreators.createAudience(audience, navigate)),
+  createAudience: (audience, navigate, locationsInfo) =>
+    dispatch(actionCreators.createAudience(audience, navigate, locationsInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

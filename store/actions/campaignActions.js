@@ -574,14 +574,20 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation, segmentInfo) => {
+export const ad_details = (
+  info,
+  names,
+  navigation,
+  segmentInfo,
+  locationsInfo
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true,
     });
     createBaseUrl()
-      .post(`savetargeting`, info)
+      .post(`savetargeting`, { ...info, coordinates: locationsInfo })
       .then((res) => {
         return res.data;
       })
@@ -1479,5 +1485,52 @@ export const overWriteObjectiveData = (value) => {
       type: actionTypes.OVERWRITE_OBJ_DATA,
       payload: value,
     });
+  };
+};
+
+export const verifyDestinationUrl = (url, submit, translate) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_DESTINATION_URL,
+      payload: {
+        success: false,
+        loading: true,
+      },
+    });
+    createBaseUrl()
+      .post(`checkDestinationURL`, {
+        url,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.success) {
+          submit(url);
+        }
+        if (!data.success) {
+          analytics.track(`a_error_form`, {
+            error_page: "ad_swipe_up_destination",
+            error_description:
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+            campaign_channel: "snapchat",
+            campaign_url: url,
+          });
+          showMessage({
+            type: "warning",
+            message: translate(
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+            ),
+          });
+        }
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: data.success, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: false, loading: false },
+        });
+      });
   };
 };

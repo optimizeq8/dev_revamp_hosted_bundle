@@ -551,7 +551,7 @@ class AdDesign extends Component {
     }
   };
 
-  validator = (mount) => {
+  validator = (mount = false) => {
     const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -1515,7 +1515,9 @@ class AdDesign extends Component {
                                   uploadStoryAdCard: this.props
                                     .uploadStoryAdCard,
                                 },
-                                this.props.screenProps
+                                this.props.screenProps,
+                                this.props.verifyDestinationUrl,
+                                this.props.data
                               );
                             }}
                             style={[
@@ -1568,7 +1570,9 @@ class AdDesign extends Component {
                                 signal: this.state.signal,
                                 uploadStoryAdCard: this.props.uploadStoryAdCard,
                               },
-                              this.props.screenProps
+                              this.props.screenProps,
+                              this.props.verifyDestinationUrl,
+                              this.props.data
                             )
                           }
                           adType={this.adType}
@@ -1752,5 +1756,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetRejectedCampaignData()),
   resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  verifyDestinationUrl: (url, submit, translate) =>
+    dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);
