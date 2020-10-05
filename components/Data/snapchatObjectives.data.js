@@ -62,13 +62,13 @@ export default {
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
     },
-    {
-      label: "Awareness",
-      value: "BRAND_AWARENESS",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
-      icon: ObjIcons.Awareness,
-      color: "#EF6C57",
-    },
+    // {
+    //   label: "Awareness",
+    //   value: "BRAND_AWARENESS",
+    //   info: "INFORM PEOPLE ABOUT MY BRAND",
+    //   icon: ObjIcons.Awareness,
+    //   color: "#EF6C57",
+    // },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
