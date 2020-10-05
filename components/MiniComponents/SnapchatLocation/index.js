@@ -66,7 +66,6 @@ export default class SnapchatLocation extends Component {
   handleMarkers = (marker, locInfo, remove = false) => {
     let markers = this.state.markers;
     let locationsInfo = this.state.locationsInfo;
-    console.log("this.state.locationsInfo", this.state.locationsInfo);
     let index = locationsInfo.findIndex(
       (loc) => loc.place_id === locInfo.place_id
     );

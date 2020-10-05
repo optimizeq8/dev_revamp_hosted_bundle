@@ -1295,7 +1295,7 @@ class AdDetails extends Component {
       let markers = [];
       if (locationsInfo) {
         locationsInfo = cloneDeep(JSON.parse(locationsInfo));
-        markers = campaignTargeting.locations[0].circles;
+        markers = cloneDeep(campaignTargeting.locations[0].circles);
       }
       // LOCATIONS MAP
       let stateRegionNames = [];
