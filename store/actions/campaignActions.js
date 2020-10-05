@@ -1503,6 +1503,12 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track(`a_verify_destination_url`, {
+          source: "ad_swipe_up_destination",
+          source_action: "a_verify_destination_url",
+          action_status: data.success ? "success" : "failure",
+          campaign_url: url,
+        });
         if (data.success) {
           submit(url);
         }
