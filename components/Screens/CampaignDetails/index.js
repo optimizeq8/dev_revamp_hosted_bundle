@@ -287,6 +287,22 @@ class CampaignDetails extends Component {
       });
     }
   };
+  handleSnapchatRejection = (selectedCampaign) => {
+    let { setRejectedAdType, setRejectedCampaignData, navigation } = this.props;
+    setRejectedAdType(selectedCampaign.campaign_type);
+    let savedObjective =
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
+        ? "WEBSITE_TRAFFIC"
+        : selectedCampaign.destination === "DEEP_LINK"
+        ? "APP_TRAFFIC"
+        : selectedCampaign.objective;
+    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
+    navigation.navigate("AdDesign", {
+      rejected: true,
+    });
+  };
   render() {
     let loading = this.props.loading;
     const { translate } = this.props.screenProps;
@@ -516,8 +532,20 @@ class CampaignDetails extends Component {
               containerStyle={{ height: 50 }}
               showTopRightButtonIcon={
                 !loading && selectedCampaign.review_status === "APPROVED"
+                  ? selectedCampaign.ad_status !== "LIVE" &&
+                    selectedCampaign.ad_status !== "Campaign Paused" &&
+                    selectedCampaign.ad_status !== "Campaign ended"
+                    ? "edit"
+                    : true
+                  : false
               }
-              topRightButtonFunction={() => this.showCSVModal(true)}
+              topRightButtonFunction={() =>
+                selectedCampaign.ad_status !== "Live" &&
+                selectedCampaign.ad_status !== "Paused" &&
+                selectedCampaign.campaign_end === 0
+                  ? this.handleSnapchatRejection(selectedCampaign)
+                  : this.showCSVModal(true)
+              }
               titleStyle={{
                 textAlign: "left",
                 fontSize: 15,
@@ -630,6 +658,7 @@ class CampaignDetails extends Component {
                       }
                       navigation={this.props.navigation}
                       selectedCampaign={selectedCampaign}
+                      handleSnapchatRejection={this.handleSnapchatRejection}
                     />
                   ) : (
                     selectedCampaign && (
@@ -816,5 +845,8 @@ const mapDispatchToProps = (dispatch) => ({
   get_languages: () => dispatch(actionCreators.get_languages()),
   downloadCSV: (campaign_id, email, showModalMessage) =>
     dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage)),
+  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

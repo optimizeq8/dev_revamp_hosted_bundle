@@ -1481,3 +1481,50 @@ export const overWriteObjectiveData = (value) => {
     });
   };
 };
+
+export const verifyDestinationUrl = (url, submit, translate) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_DESTINATION_URL,
+      payload: {
+        success: false,
+        loading: true,
+      },
+    });
+    createBaseUrl()
+      .post(`checkDestinationURL`, {
+        url,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.success) {
+          submit(url);
+        }
+        if (!data.success) {
+          analytics.track(`a_error_form`, {
+            error_page: "ad_swipe_up_destination",
+            error_description:
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+            campaign_channel: "snapchat",
+            campaign_url: url,
+          });
+          showMessage({
+            type: "warning",
+            message: translate(
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+            ),
+          });
+        }
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: data.success, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: false, loading: false },
+        });
+      });
+  };
+};

@@ -140,6 +140,7 @@ class AdObjective extends Component {
         campaignInfo: { ...rep },
         duration: 7,
         modalVisible: false,
+        duration: this.props.data.duration ? this.props.data.duration : 7,
       });
     } else {
       this.setState({
@@ -394,7 +395,7 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 3
         ? this.state.duration - 1
@@ -415,10 +416,11 @@ class AdObjective extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (

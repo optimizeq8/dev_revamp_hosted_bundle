@@ -85,6 +85,7 @@ export {
   updateStoryADS,
   setCollectionAdMediaArray,
   overWriteObjectiveData,
+  verifyDestinationUrl,
 } from "./campaignActions";
 
 export {
