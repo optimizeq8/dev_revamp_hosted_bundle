@@ -61,6 +61,7 @@ import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import AudienceReach from "./AudienceReach";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -1820,7 +1821,7 @@ class AdDetails extends Component {
                       startEditing={startEditing}
                     />
 
-                    <ReachBar
+                    <AudienceReach
                       loading={this.props.loading}
                       campaignInfo={campaignInfo}
                       _handleSubmission={this._handleSubmission}
