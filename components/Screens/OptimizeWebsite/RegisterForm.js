@@ -13,6 +13,7 @@ import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
 import SuccessIcon from "../../../assets/SVGs/Success";
 import ErrorIcon from "../../../assets/SVGs/Error";
 import LocationIcon from "../../../assets/SVGs/LocationOutline";
+import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 
 // Style
 import styles from "./styles";
@@ -37,6 +38,7 @@ class RegisterForm extends Component {
       type: "",
       whatsappnumber: "",
       insta_handle: "",
+      snapchat_handle: "",
       callnumber: "",
       validCallNumber: false,
       validWhatsAppNumber: false,
@@ -45,6 +47,7 @@ class RegisterForm extends Component {
       submissionLoading: false,
       googlemaplink: "",
       googleMapLinkError: null,
+      snapchat_handleError: null,
     };
   }
   componentWillUnmount() {
@@ -61,6 +64,7 @@ class RegisterForm extends Component {
       googlemaplink,
       whatsappnumber,
       callnumber,
+      snapchat_handle,
     } = this.props.mainBusiness;
     const countryCode =
       callnumber && callnumber !== "" && callnumber.substring(0, 3);
@@ -72,6 +76,7 @@ class RegisterForm extends Component {
       insta_handle,
       whatsappnumber:
         whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
+      snapchat_handle: snapchat_handle ? snapchat_handle : null,
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -108,6 +113,7 @@ class RegisterForm extends Component {
         insta_handle: this.state.insta_handle,
         callnumber,
         googlemaplink: this.state.googlemaplink ? this.state.googlemaplink : "",
+        snapchat_handle: this.state.snapchat_handle,
       };
 
       this.props.updateWebInfoForBusiness(info, this.props.submitNextStep);
@@ -120,7 +126,8 @@ class RegisterForm extends Component {
         error_description:
           this.props.errorInstaHandle ||
           this.state.insta_handleError ||
-          this.state.googleMapLinkError,
+          this.state.googleMapLinkError ||
+          this.state.snapchat_handleError,
       });
     }
   };
@@ -165,6 +172,9 @@ class RegisterForm extends Component {
       const changedInfo =
         this.state.insta_handle !== this.props.mainBusiness.insta_handle ||
         this.state.googlemaplink !== this.props.mainBusiness.googlemaplink ||
+        this.state.snapchat_handle !==
+          this.props.mainBusiness.snapchat_handle ||
+        this.state.googlemaplink !== this.props.mainBusiness.googlemaplink ||
         statewhatsappnumber !== whatsappnumber ||
         statecallnumber !== callnumber;
 
@@ -185,6 +195,7 @@ class RegisterForm extends Component {
           googlemaplink: this.state.googlemaplink
             ? this.state.googlemaplink
             : "",
+          snapchat_handle: this.state.snapchat_handle,
         };
 
         this.props.updateWebInfoForBusiness(info, false);
@@ -345,6 +356,25 @@ class RegisterForm extends Component {
         });
       }
     }
+    if (stateError === "snapchat_handleError") {
+      analytics.track(`a_business_snapchat_handle`, {
+        source: "my_website_detail",
+        source_action: "a_business_snapchat_handle",
+        new: this.props.edit ? false : true,
+        snapchat_handle: this.state.snapchat_handle,
+      });
+
+      if (this.state.snapchat_handleError) {
+        analytics.track(`a_error_form`, {
+          error_page: "my_website_detail",
+          source: "my_website_detail",
+          source_action: "a_business_snapchat_handle",
+          new: this.props.edit ? false : true,
+          snapchat_handle: this.state.snapchat_handle,
+          error_description: this.state.snapchat_handleError,
+        });
+      }
+    }
     state[stateError] = validWrap;
     this.setState({
       ...state,
@@ -462,6 +492,50 @@ class RegisterForm extends Component {
             </View>
           </Item>
         </View>
+        <InputField
+          // disabled={this.props.loadingUpdateInfo}
+          // customStyles={{ width: "100%", marginLeft: 0 }}
+          incomplete={false}
+          translate={this.props.screenProps.translate}
+          stateName1="snapchat_handle"
+          label="Snapchat"
+          placeholder1="Handle"
+          value={this.state.snapchat_handle}
+          valueError1={this.state.snapchat_handleError}
+          icon={() => (
+            <SnapchatIcon
+              fill={"black"}
+              width={30}
+              style={{ marginLeft: 15 }}
+            />
+          )}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          key={"snapchat_handle"}
+        />
+
+        {/* {this.props.errorInstaHandle && (
+          <ErrorIcon
+            width={25}
+            height={25}
+            style={styles.errorIcon}
+            fill={"#EA514B"}
+          />
+        )} */}
+        {/* {!this.props.errorInstaHandle && (
+          <SuccessIcon width={25} height={25} style={styles.errorIcon} />
+        )} */}
+        {/* {this.props.errorInstaHandleMessage && (
+          <Text style={styles.instagramErrorText}>
+            {translate(
+              `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+                this.props.errorInstaHandleMessage.indexOf(" ") + 1
+              )}`,
+              { insta_handle: this.state.insta_handle }
+            )}
+          </Text>
+        )} */}
+
         {this.props.edit ? (
           <LowerButton
             screenProps={this.props.screenProps}
