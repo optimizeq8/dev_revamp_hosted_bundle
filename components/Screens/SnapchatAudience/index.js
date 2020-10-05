@@ -1043,7 +1043,7 @@ export class SnapchatAudience extends Component {
             showTopRightButton={true}
             topRightButtonText={translate("Save")}
             topRightButtonFunction={this._handleSubmission}
-            disabled={saveAudienceLoading || this.props.audienceDetailLoading}
+            disabled={saveAudienceLoading}
           />
           <ActivityIndicator size={"large"} color={globalColors.orange} />
         </View>

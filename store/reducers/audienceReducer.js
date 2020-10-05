@@ -70,6 +70,12 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.SET_AUDIENCE_DETAIL:
+      let devices =
+        action.payload.targeting &&
+        action.payload.targeting.devices &&
+        action.payload.targeting.devices[0]
+          ? { ...action.payload.targeting.devices[0] }
+          : {};
       let audienceCopy = {
         ...action.payload,
         targeting: {
@@ -85,7 +91,7 @@ const reducer = (state = initialState, action) => {
               marketing_name: [],
               os_version_max: "",
               os_version_min: "",
-              ...action.payload.targeting.devices[0],
+              ...devices,
             },
           ],
           geos: [...action.payload.targeting.geos],
