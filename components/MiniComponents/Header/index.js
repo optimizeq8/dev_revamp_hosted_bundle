@@ -89,7 +89,7 @@ export default class Header extends Component {
         </TouchableOpacity>
         {icon === "snapchat" && (
           <View style={{ paddingHorizontal: 5 }}>
-            <SnapchatIcon width={30} height={30} />
+            <SnapchatIcon fill={"black"} width={30} height={30} />
           </View>
         )}
         {icon === "google" && (
