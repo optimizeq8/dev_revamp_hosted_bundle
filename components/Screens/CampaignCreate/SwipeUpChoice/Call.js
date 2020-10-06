@@ -282,14 +282,17 @@ class Call extends Component {
           />
 
           <View />
-
-          <PhoneInput
-            // disabled={!disabled}
-            phoneNum={this.props.mainBusiness.callnumber}
-            screenProps={this.props.screenProps}
-            // changeNo={changePhoneNo}
-            // valid={valid}
-          />
+          <View>
+            <PhoneInput
+              // disabled={!disabled}
+              phoneNum={`+${this.props.mainBusiness.callnumber}`}
+              screenProps={this.props.screenProps}
+              height={30}
+              fontSize={16}
+              // changeNo={changePhoneNo}
+              // valid={valid}
+            />
+          </View>
           <Text style={styles.warningText}>
             {translate("Enter your 6-digit verification code")}
           </Text>

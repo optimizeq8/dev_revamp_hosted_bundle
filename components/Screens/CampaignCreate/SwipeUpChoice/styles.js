@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   warningText: {
     color: globalColors.rum,
     textAlign: "center",
-    top: 10,
+    marginTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 13,
   },
@@ -581,7 +581,7 @@ export const codeFieldStyle = StyleSheet.create({
     color: globalColors.orange,
   },
   codeFieldRoot: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   focusCell: {
     borderColor: globalColors.orange,
