@@ -38,7 +38,7 @@ class Call extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        attachment: "",
+        attachment: { mobile: "" },
         callaction: list.SnapAd[5].call_to_action_list[0],
       },
       callActionLabel: "",
@@ -61,6 +61,7 @@ class Call extends Component {
             callaction: list.SnapAd[0].call_to_action_list[0],
           },
         });
+        this.changePhoneNo(callnumber);
       }
     }
     if (
@@ -193,6 +194,23 @@ class Call extends Component {
     });
     this.setState({ inputCallToAction: true });
   };
+  changePhoneNo = (number, country_code, numbertype, valid) => {
+    console.log(
+      "number, country_code, numbertype, valid",
+      number,
+      country_code,
+      numbertype,
+      valid
+    );
+    this.setState({
+      attachment: {
+        ...this.state.attachment,
+        mobile: number,
+      },
+      valid,
+      country_code,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -258,7 +276,7 @@ class Call extends Component {
               screenProps={this.props.screenProps}
               height={30}
               fontSize={16}
-              // changeNo={changePhoneNo}
+              changeNo={this.changePhoneNo}
               // valid={valid}
             />
           </View>
