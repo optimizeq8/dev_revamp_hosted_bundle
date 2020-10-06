@@ -53,11 +53,11 @@ class Call extends Component {
 
   componentDidMount() {
     if (this.props.mainBusiness) {
-      const { mobile } = this.props.mainBusiness;
-      if (mobile) {
+      const { callnumber } = this.props.mainBusiness;
+      if (callnumber) {
         this.setState({
           campaignInfo: {
-            attachment: { mobile: `+${mobile}` },
+            attachment: { mobile: `${callnumber}` },
             callaction: list.SnapAd[0].call_to_action_list[0],
           },
         });
@@ -131,7 +131,7 @@ class Call extends Component {
       "AD_TO_CALL",
       this.state.campaignInfo.callaction,
       {
-        mobile: this.state.campaignInfo.attachment,
+        mobile: this.state.campaignInfo.attachment.mobile,
       }
     );
     this.props.toggle(false);
