@@ -16,6 +16,10 @@ export const resetCampaignInfo = (resetAdType = false) => {
 
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.LOADING_SNAP_AUDIENCE_SIZE,
+      payload: true,
+    });
     createBaseUrl()
       .post(`snapaudiencesize`, info)
       .then((res) => {

@@ -6,6 +6,8 @@ const initialState = {
   data: null,
   campaign_id: "",
   average_reach: 0,
+  estimated_metrics: { impressions: 0, swipes: 0 },
+  estimatedMetricsLoading: false,
   kdamount: 0,
   minValueBudget: 0,
   maxValueBudget: 0,
@@ -413,11 +415,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         average_reach: action.payload.average_reach,
+        estimated_metrics: action.payload.estimated_metrics,
+        estimatedMetricsLoading: false,
+      };
+    case actionTypes.LOADING_SNAP_AUDIENCE_SIZE:
+      return {
+        ...state,
+        estimatedMetricsLoading: true,
       };
     case actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,
         average_reach: 0,
+        estimated_metrics: { impressions: 0, swipes: 0 },
       };
 
     case actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE:

@@ -146,15 +146,16 @@ const styles = StyleSheet.create({
   },
   chartText: {
     color: globalColors.rum,
-    textAlign: "left",
+    textAlign: "center",
     fontFamily: "montserrat-bold",
-    fontSize: 15 / PixelRatio.getFontScale(),
+    fontSize: 13 / PixelRatio.getFontScale(),
   },
   chartTextNum: {
     color: globalColors.rum,
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    textAlign: "left",
+    textAlign: "center",
+    width: "100%",
   },
   chartItems: {
     flexDirection: "row",
@@ -163,13 +164,11 @@ const styles = StyleSheet.create({
   reachBarLowerButton: {
     width: 60,
     height: 60,
-    flex: 0,
   },
   reachPeopleView: {
     flexDirection: "column",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 8,
     width: "100%",
     flex: 1,
   },
