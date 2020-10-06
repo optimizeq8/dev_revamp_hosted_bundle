@@ -29,6 +29,7 @@ import { netLoc } from "../../../Data/callactions.data";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
+import GradientButton from "../../../MiniComponents/GradientButton";
 class Call extends Component {
   static navigationOptions = {
     header: null,
@@ -52,21 +53,12 @@ class Call extends Component {
 
   componentDidMount() {
     if (this.props.mainBusiness) {
-      const { websitelink, weburl } = this.props.mainBusiness;
-      if (websitelink && websitelink !== "") {
+      const { mobile } = this.props.mainBusiness;
+      if (mobile) {
         this.setState({
           campaignInfo: {
-            attachment: websitelink,
+            attachment: { mobile: `+${mobile}` },
             callaction: list.SnapAd[0].call_to_action_list[0],
-          },
-        });
-      } else if (weburl && weburl !== "") {
-        this.setState({
-          campaignInfo: {
-            attachment: weburl.includes("https")
-              ? weburl
-              : `https://${weburl}.optimizeapp.com`,
-            callaction: list.SnapAd[5].call_to_action_list[0],
           },
         });
       }
@@ -74,30 +66,18 @@ class Call extends Component {
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
-      this.props.data.attachment !== "BLANK" &&
-      !this.props.data.attachment.hasOwnProperty("android_app_url")
+      this.props.data.attachment !== "BLANK"
     ) {
-      const url = this.props.data.attachment.url;
+      const mobile = this.props.data.attachment.mobile;
       this.setState({
         campaignInfo: {
-          attachment: url,
+          attachment: { mobile: mobile },
           callaction: this.props.data.call_to_action,
         },
         // networkString: url[0] + "://"
       });
-    } else if (
-      this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE" ||
-      this.props.storyAdAttachment.destination === "LEAD_GENERATION"
-    ) {
-      const url = this.props.storyAdAttachment.attachment.url;
-      this.setState({
-        campaignInfo: {
-          attachment: url,
-          callaction: this.props.storyAdAttachment.call_to_action,
-        },
-        // networkString: url[0] + "://"
-      });
     }
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
@@ -147,22 +127,11 @@ class Call extends Component {
     });
   };
   _handleSubmission = () => {
-    let objective = this.props.data
-      ? this.props.data.objective
-      : this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE"
-      ? this.props.storyAdAttachment.destination
-      : this.props.objective;
-
     this.props._changeDestination(
-      this.props.collectionAdLinkForm === 0
-        ? objective !== "LEAD_GENERATION"
-          ? "REMOTE_WEBPAGE"
-          : "LEAD_GENERATION"
-        : "COLLECTION",
-
+      "AD_TO_CALL",
       this.state.campaignInfo.callaction,
       {
-        url: this.state.campaignInfo.attachment,
+        mobile: this.state.campaignInfo.attachment,
       }
     );
     this.props.toggle(false);
@@ -285,7 +254,7 @@ class Call extends Component {
           <View>
             <PhoneInput
               // disabled={!disabled}
-              phoneNum={`+${this.props.mainBusiness.callnumber}`}
+              phoneNum={`+${this.state.campaignInfo.attachment.mobile}`}
               screenProps={this.props.screenProps}
               height={30}
               fontSize={16}
@@ -293,6 +262,23 @@ class Call extends Component {
               // valid={valid}
             />
           </View>
+          <GradientButton
+            text={"Send OTP"}
+            textStyle={{
+              color: globalColors.rum,
+            }}
+            uppercase
+            height={40}
+            width={100}
+            transparent
+            style={{
+              marginHorizontal: 0,
+              marginVertical: 10,
+              borderWidth: 1,
+              borderColor: globalColors.rum,
+              alignSelf: "center",
+            }}
+          />
           <Text style={styles.warningText}>
             {translate("Enter your 6-digit verification code")}
           </Text>
@@ -331,14 +317,15 @@ class Call extends Component {
             <LowerButton
               screenProps={this.props.screenProps}
               checkmark={true}
-              bottom={-5}
+              bottom={0}
               function={() => {
-                if (this.validateUrl())
-                  this.props.verifyDestinationUrl(
-                    this.state.campaignInfo.attachment,
-                    this._handleSubmission,
-                    this.props.screenProps.translate
-                  );
+                this._handleSubmission();
+                // if (this.validateUrl())
+                //   this.props.verifyDestinationUrl(
+                //     this.state.campaignInfo.attachment,
+                //     this._handleSubmission,
+                //     this.props.screenProps.translate
+                //   );
               }}
               purpleViolet
             />

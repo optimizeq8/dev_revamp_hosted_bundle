@@ -35,6 +35,17 @@ class SwipeUpChoice extends Component {
     const campaign_ad_type = this.props.screenProps.prevAppState;
 
     switch (this.props.objective) {
+      case "ENGAGEMENT":
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "ad_to_call",
+          campaign_objective: this.props.objective,
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        break;
       case "LEAD_GENERATION":
         analytics.track(`ad_swipe_up_destination`, {
           source,
