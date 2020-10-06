@@ -88,6 +88,8 @@ export {
   verifyDestinationUrl,
   isNumberSnapchatVerified,
   sendOTPSnapchat,
+  resetVerifiedNumberSnapchat,
+  verifyOTPCode,
 } from "./campaignActions";
 
 export {

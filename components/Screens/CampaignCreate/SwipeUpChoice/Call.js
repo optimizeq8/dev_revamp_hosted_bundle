@@ -45,7 +45,7 @@ class Call extends Component {
       // networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions: list.SnapAd[5].call_to_action_list,
-      urlError: "",
+      mobileError: null,
       inputCallToAction: false,
       code: "",
     };
@@ -55,13 +55,13 @@ class Call extends Component {
     if (this.props.mainBusiness) {
       const { callnumber } = this.props.mainBusiness;
       if (callnumber) {
+        this.props.resetVerifiedNumberSnapchat();
         this.setState({
           campaignInfo: {
             attachment: { mobile: `${callnumber}` },
             callaction: list.SnapAd[5].call_to_action_list[0],
           },
         });
-        this.changePhoneNo(callnumber);
       }
     }
     if (
@@ -88,27 +88,20 @@ class Call extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  validateUrl = () => {
+  validateMobileNo = () => {
     const { translate } = this.props.screenProps;
-    const urlError = validateWrapper(
-      "website",
-      this.state.campaignInfo.attachment
+    const mobileError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.attachment.mobile
     );
 
     this.setState({
-      urlError,
+      mobileError,
     });
 
-    if (urlError) {
-      const regex = /(snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)/g;
+    if (mobileError) {
       showMessage({
-        message: translate(
-          `${
-            !this.state.campaignInfo.attachment.match(regex)
-              ? "Please enter a valid URL"
-              : "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
-          }`
-        ),
+        message: translate(`${"Please enter a valid number"}`),
         type: "warning",
         position: "top",
         duration: 7000,
@@ -207,10 +200,11 @@ class Call extends Component {
         ...this.state.attachment,
         mobile: number,
       },
-      valid,
+      mobileError: valid,
       country_code,
     });
     if (valid) {
+      this.props.isNumberSnapchatVerified(number);
     }
   };
   sendOTP = () => {
@@ -319,6 +313,7 @@ class Call extends Component {
                   this.setState({ code });
                   if (code.length === 6) {
                     console.log("code", code);
+                    this.props.verifyOTPCode(code);
                     // this._handleSentCode(code);
                   }
                 }}
@@ -355,10 +350,10 @@ class Call extends Component {
               <LowerButton
                 screenProps={this.props.screenProps}
                 checkmark={true}
-                bottom={0}
+                bottom={-5}
                 function={() => {
                   this._handleSubmission();
-                  // if (this.validateUrl())
+                  // if (this.validateMobileNo())
                   //   this.props.verifyDestinationUrl(
                   //     this.state.campaignInfo.attachment,
                   //     this._handleSubmission,
@@ -394,5 +389,8 @@ const mapDispatchToProps = (dispatch) => ({
   isNumberSnapchatVerified: (number) =>
     dispatch(actions.isNumberSnapchatVerified(number)),
   sendOTPSnapchat: (number) => dispatch(actions.sendOTPSnapchat(number)),
+  resetVerifiedNumberSnapchat: () =>
+    dispatch(actions.resetVerifiedNumberSnapchat()),
+  verifyOTPCode: (code) => dispatch(actions.verifyOTPCode(code)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Call);

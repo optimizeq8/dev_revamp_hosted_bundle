@@ -1488,6 +1488,12 @@ export const overWriteObjectiveData = (value) => {
   };
 };
 
+/**
+ *
+ * @param {*} url the url to verify does not belong to any social media platform
+ * @param {*} submit function to do next action, either toggle or go to ad targetingscreen
+ * @param {*} translate
+ */
 export const verifyDestinationUrl = (url, submit, translate) => {
   return (dispatch) => {
     dispatch({
@@ -1548,6 +1554,7 @@ export const isNumberSnapchatVerified = (number) => {
       payload: {
         verified: true,
         loading: false,
+        otpSend: false,
       },
     });
   };
@@ -1558,6 +1565,26 @@ export const sendOTPSnapchat = (number) => {
     dispatch({
       type: actionTypes.SEND_OTP_SNAPCHAT,
       payload: true,
+    });
+  };
+};
+
+export const resetVerifiedNumberSnapchat = () => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.RESET_SNAPCHAT_VERIFIED_NUMBER,
+    });
+  };
+};
+
+export const verifyOTPCode = (code) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_OTP_SNAPCHAT,
+      payload: {
+        success: true,
+        loading: false,
+      },
     });
   };
 };
