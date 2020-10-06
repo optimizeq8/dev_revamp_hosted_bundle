@@ -867,14 +867,17 @@ class AdDetails extends Component {
       rawValue >= this.state.minValueBudget &&
       !isNan(rawValue)
     ) {
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue,
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            lifetime_budget_micro: rawValue,
+          },
+          value: value,
+          budgetOption,
         },
-        value: value,
-        budgetOption,
-      });
+        () => this._calcReach()
+      );
 
       analytics.track(`a_handle_budget`, {
         source: "ad_targeting",
@@ -1000,6 +1003,8 @@ class AdDetails extends Component {
       const obj = {
         targeting: JSON.stringify(r),
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
+        campaign_id: this.state.campaignInfo.campaign_id,
       };
 
       let totalReach = {
