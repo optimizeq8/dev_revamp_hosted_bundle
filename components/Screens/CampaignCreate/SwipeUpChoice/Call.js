@@ -58,7 +58,7 @@ class Call extends Component {
         this.setState({
           campaignInfo: {
             attachment: { mobile: `${callnumber}` },
-            callaction: list.SnapAd[0].call_to_action_list[0],
+            callaction: list.SnapAd[5].call_to_action_list[0],
           },
         });
         this.changePhoneNo(callnumber);
@@ -210,6 +210,11 @@ class Call extends Component {
       valid,
       country_code,
     });
+    if (valid) {
+    }
+  };
+  sendOTP = () => {
+    this.props.sendOTPSnapchat(this.state.campaignInfo.attachment.mobile);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -271,7 +276,7 @@ class Call extends Component {
           <View />
           <View>
             <PhoneInput
-              // disabled={!disabled}
+              disabled={this.props.verifyingNumber}
               phoneNum={`+${this.state.campaignInfo.attachment.mobile}`}
               screenProps={this.props.screenProps}
               height={30}
@@ -280,74 +285,90 @@ class Call extends Component {
               // valid={valid}
             />
           </View>
-          <GradientButton
-            text={"Send OTP"}
-            textStyle={{
-              color: globalColors.rum,
-            }}
-            uppercase
-            height={40}
-            width={100}
-            transparent
-            style={{
-              marginHorizontal: 0,
-              marginVertical: 10,
-              borderWidth: 1,
-              borderColor: globalColors.rum,
-              alignSelf: "center",
-            }}
-          />
-          <Text style={styles.warningText}>
-            {translate("Enter your 6-digit verification code")}
-          </Text>
-          <View style={{ marginVertical: 10 }}>
-            <CodeField
-              autoFocus
-              cellCount={6}
-              onChangeText={(code) => {
-                this.setState({ code });
-                if (code.length === 6) {
-                  console.log("code", code);
-                  // this._handleSentCode(code);
-                }
+          {!this.props.verifiedSnapchatNumber && !this.props.otpSend && (
+            <GradientButton
+              text={"Send OTP"}
+              textStyle={{
+                color: globalColors.rum,
               }}
-              textContentType="oneTimeCode"
-              rootStyle={codeFieldStyle.codeFieldRoot}
-              ref={this.inputRef}
-              keyboardType="number-pad"
-              value={this.state.code}
-              renderCell={({ index, symbol, isFocused }) => (
-                <Text
-                  key={index}
-                  style={[
-                    codeFieldStyle.cell,
-                    isFocused && codeFieldStyle.focusCell,
-                  ]}
-                  // onLayout={getCellOnLayoutHandler(index)}
-                >
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
-              )}
-            />
-          </View>
-
-          <View style={styles.bottonViewWebsite}>
-            <LowerButton
-              screenProps={this.props.screenProps}
-              checkmark={true}
-              bottom={0}
-              function={() => {
-                this._handleSubmission();
-                // if (this.validateUrl())
-                //   this.props.verifyDestinationUrl(
-                //     this.state.campaignInfo.attachment,
-                //     this._handleSubmission,
-                //     this.props.screenProps.translate
-                //   );
+              uppercase
+              height={40}
+              width={100}
+              transparent
+              style={{
+                marginHorizontal: 0,
+                marginVertical: 10,
+                borderWidth: 1,
+                borderColor: globalColors.rum,
+                alignSelf: "center",
               }}
-              purpleViolet
+              onPressAction={this.sendOTP}
             />
-          </View>
+          )}
+          {!this.props.verifiedSnapchatNumber && this.props.otpSend && (
+            <Text style={styles.warningText}>
+              {translate("Enter your 6-digit verification code")}
+            </Text>
+          )}
+          {!this.props.verifiedSnapchatNumber && this.props.otpSend && (
+            <View style={{ marginVertical: 10 }}>
+              <CodeField
+                autoFocus
+                cellCount={6}
+                onChangeText={(code) => {
+                  this.setState({ code });
+                  if (code.length === 6) {
+                    console.log("code", code);
+                    // this._handleSentCode(code);
+                  }
+                }}
+                textContentType="oneTimeCode"
+                rootStyle={codeFieldStyle.codeFieldRoot}
+                ref={this.inputRef}
+                keyboardType="number-pad"
+                value={this.state.code}
+                renderCell={({ index, symbol, isFocused }) => (
+                  <Text
+                    key={index}
+                    style={[
+                      codeFieldStyle.cell,
+                      isFocused && codeFieldStyle.focusCell,
+                    ]}
+                    // onLayout={getCellOnLayoutHandler(index)}
+                  >
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                  </Text>
+                )}
+              />
+            </View>
+          )}
+          {!this.props.verifiedSnapchatNumber && this.props.otpSend && (
+            <Text
+              onPress={this.sendOTP}
+              style={[styles.warningText, { textDecorationLine: "underline" }]}
+            >
+              {translate("Resend Code")}
+            </Text>
+          )}
+          {this.props.verifiedSnapchatNumber && (
+            <View style={styles.bottonViewWebsite}>
+              <LowerButton
+                screenProps={this.props.screenProps}
+                checkmark={true}
+                bottom={0}
+                function={() => {
+                  this._handleSubmission();
+                  // if (this.validateUrl())
+                  //   this.props.verifyDestinationUrl(
+                  //     this.state.campaignInfo.attachment,
+                  //     this._handleSubmission,
+                  //     this.props.screenProps.translate
+                  //   );
+                }}
+                purpleViolet
+              />
+            </View>
+          )}
         </InputScrollView>
       </View>
     );
@@ -362,10 +383,16 @@ const mapStateToProps = (state) => ({
   mainBusiness: state.account.mainBusiness,
   destinationURLValid: state.campaignC.destinationURLValid,
   loadingDestinationURLValid: state.campaignC.loadingDestinationURLValid,
+  verifiedSnapchatNumber: state.campaignC.verifiedSnapchatNumber,
+  verifyingNumber: state.campaignC.verifyingNumber,
+  otpSend: state.campaignC.otpSend,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   verifyDestinationUrl: (url, submit, translate) =>
     dispatch(actions.verifyDestinationUrl(url, submit, translate)),
+  isNumberSnapchatVerified: (number) =>
+    dispatch(actions.isNumberSnapchatVerified(number)),
+  sendOTPSnapchat: (number) => dispatch(actions.sendOTPSnapchat(number)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Call);

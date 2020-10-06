@@ -86,6 +86,8 @@ export {
   setCollectionAdMediaArray,
   overWriteObjectiveData,
   verifyDestinationUrl,
+  isNumberSnapchatVerified,
+  sendOTPSnapchat,
 } from "./campaignActions";
 
 export {

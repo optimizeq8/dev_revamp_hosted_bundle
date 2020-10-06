@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 13,
+    marginBottom: 10,
   },
   listText: {
     fontFamily: "montserrat-regular",

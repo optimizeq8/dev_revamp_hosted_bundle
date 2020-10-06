@@ -1540,3 +1540,24 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       });
   };
 };
+
+export const isNumberSnapchatVerified = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_SNAPCHAT_NUMBER,
+      payload: {
+        verified: true,
+        loading: false,
+      },
+    });
+  };
+};
+
+export const sendOTPSnapchat = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SEND_OTP_SNAPCHAT,
+      payload: true,
+    });
+  };
+};
