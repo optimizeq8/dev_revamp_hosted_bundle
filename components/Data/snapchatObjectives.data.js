@@ -67,7 +67,7 @@ export default {
       value: "ENGAGEMENT",
       info: "Get more Snapchatters to Engage with your Ad",
       color: "#EF6C57",
-      icon: ObjIcons.Awareness,
+      icon: ObjIcons.Phone,
     },
     // {
     //   label: "Awareness",
