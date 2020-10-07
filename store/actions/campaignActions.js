@@ -7,6 +7,7 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { getUniqueId } from "react-native-device-info";
+import NavigationService from "../../NavigationService";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -1541,6 +1542,42 @@ export const verifyDestinationUrl = (url, submit, translate) => {
           type: actionTypes.VERIFY_DESTINATION_URL,
           payload: { success: false, loading: false },
         });
+      });
+  };
+};
+
+/**
+ *  To move the amount to wallet when ad is rejected
+ * @param {*} campaign_id
+ */
+export const moveRejectedAdAmountToWallet = (campaign_id) => {
+  return (dispatch) => {
+    createBaseUrl()
+      .post(`moveAmountToWallet`, {
+        campaign_id,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_move_amount_to_wallet", {
+          source: "ad_detail",
+          source_action: "a_move_amount_to_wallet",
+          camapign_channel: "snapchat",
+          campaign_id: campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
+        if (data.success) {
+          showMessage({
+            type: "success",
+            message: data.message,
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_move_amount_to_wallet",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("moveAmountToWallet", err.response || err.message);
       });
   };
 };

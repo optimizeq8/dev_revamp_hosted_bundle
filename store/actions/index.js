@@ -86,6 +86,7 @@ export {
   setCollectionAdMediaArray,
   overWriteObjectiveData,
   verifyDestinationUrl,
+  moveRejectedAdAmountToWallet,
 } from "./campaignActions";
 
 export {
