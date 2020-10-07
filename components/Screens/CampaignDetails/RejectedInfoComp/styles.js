@@ -95,18 +95,5 @@ export default StyleSheet.create({
     borderColor: "#fff",
     width: 230,
   },
-  moveToWalletWarning: {
-    color: globalColors.white,
-    fontSize: 12,
-    letterSpacing: 0,
-    marginHorizontal: 5,
-  },
-  warningView: {
-    display: "flex",
-    flexDirection: "row",
-    marginHorizontal: 20,
-    alignItems: "flex-start",
-    marginTop: 10,
-  },
   rejectedButtonView: { display: "flex", flexDirection: "row" },
 });

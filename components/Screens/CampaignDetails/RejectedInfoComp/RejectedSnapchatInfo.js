@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, Alert } from "react-native";
 import { connect } from "react-redux";
 
 // Redux
@@ -28,7 +28,27 @@ class RejectedSnapchatInfo extends Component {
   };
   moveAmountToWallet = () => {
     const { selectedCampaign } = this.props;
-    this.props.moveRejectedAdAmountToWallet(selectedCampaign);
+    const { translate } = this.props.screenProps;
+
+    Alert.alert(
+      translate("Warning"),
+      translate(
+        "Once the amount is moved back to wallet you will not be able to re-launch this campaign again"
+      ) +
+        ". " +
+        translate("Are you sure you want to move amount to wallet?"),
+      [
+        { text: translate("Cancel") },
+        {
+          text: translate("Yes"),
+          onPress: () => {
+            this.props.moveRejectedAdAmountToWallet(
+              selectedCampaign.campaign_id
+            );
+          },
+        },
+      ]
+    );
   };
 
   render() {
@@ -87,15 +107,6 @@ class RejectedSnapchatInfo extends Component {
             />
           </View>
         )}
-        {selectedCampaign.campaign_end === "0" && (
-          <View style={styles.warningView}>
-            <Info width={20} />
-            <Text style={styles.moveToWalletWarning}>
-              Once the amount is moved back to wallet you will not be able to
-              re-launch this campaign again
-            </Text>
-          </View>
-        )}
         <RejectedReasonModal
           screenProps={screenProps}
           isVisible={this.state.isVisible}
@@ -111,8 +122,8 @@ const mapDispatchToProps = (dispatch) => ({
   setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
   setRejectedCampaignData: (rejCampaign) =>
     dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
-  moveRejectedAdAmountToWallet: (info) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWallet(info)),
+  moveRejectedAdAmountToWallet: (campaign_id) =>
+    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);
