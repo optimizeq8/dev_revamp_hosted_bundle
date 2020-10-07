@@ -26,6 +26,10 @@ class RejectedSnapchatInfo extends Component {
   setModalVisible = (visible, rejectedReason = "", reasonNum = "") => {
     this.setState({ isVisible: visible, rejectedReason, reasonNum });
   };
+  moveAmountToWallet = () => {
+    const { selectedCampaign } = this.props;
+    this.props.moveRejectedAdAmountToWallet(selectedCampaign);
+  };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
@@ -62,9 +66,7 @@ class RejectedSnapchatInfo extends Component {
           <View style={styles.rejectedButtonView}>
             <CustomButtons
               screenProps={this.props.screenProps}
-              onPressFunction={() =>
-                this.props.handleSnapchatRejection(selectedCampaign)
-              }
+              onPressFunction={this.moveAmountToWallet}
               content="Move Amount to Wallet"
               buttonStyle={[
                 styles.customButtonStyle,
@@ -109,6 +111,8 @@ const mapDispatchToProps = (dispatch) => ({
   setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
   setRejectedCampaignData: (rejCampaign) =>
     dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  moveRejectedAdAmountToWallet: (info) =>
+    dispatch(actionCreators.moveRejectedAdAmountToWallet(info)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);

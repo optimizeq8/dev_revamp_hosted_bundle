@@ -1544,3 +1544,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       });
   };
 };
+
+export const moveRejectedAdAmountToWallet = (campaign) => {
+  return (dispatch) => {};
+};
