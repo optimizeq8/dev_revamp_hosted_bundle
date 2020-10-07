@@ -232,7 +232,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
-    this.props.getAudienceList();
+    // this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -1384,6 +1384,13 @@ class AdDetails extends Component {
       ? {
           campaign_channel: "snapchat",
           campaign_ad_type: this.props.adType,
+          campaign_duration:
+            this.props.data.end_time &&
+            Math.ceil(
+              (new Date(this.props.data.end_time) -
+                new Date(this.props.data.start_time)) /
+                (1000 * 60 * 60 * 24)
+            ) + 1,
           campaign_name: this.props.data.name,
           campaign_id: this.props.data.campaign_id,
           campaign_brand_name: this.props.data.brand_name,
@@ -1396,7 +1403,7 @@ class AdDetails extends Component {
           campaign_appChoice: this.props.data.appChoice,
           campaign_objective: this.props.data.objective,
         }
-      : {};
+      : { campaign_channel: "snapchat" };
     analytics.track("ad_targeting", {
       timestamp: new Date().getTime(),
       source,
@@ -1425,7 +1432,6 @@ class AdDetails extends Component {
     );
   };
   render() {
-    console.log(this.props.audienceList);
     const { translate } = this.props.screenProps;
     let { campaignInfo, startEditing } = this.state;
     let menu;
