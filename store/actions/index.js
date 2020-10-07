@@ -19,6 +19,7 @@ export {
   updateWebInfoForBusiness,
   changeBusinessLogo,
   updateBusinessConnectedToFacebook,
+  crashAppForSpamUser,
 } from "./accountManagementActions";
 
 export {

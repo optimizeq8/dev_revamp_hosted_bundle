@@ -234,6 +234,7 @@ class App extends React.Component {
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
+    store.dispatch(actionCreators.crashAppForSpamUser());
 
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>

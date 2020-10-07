@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import * as SecureStore from "expo-secure-store";
 import analytics from "@segment/analytics-react-native";
 import { Animated } from "react-native";
 import { persistor } from "../index";
@@ -1039,5 +1040,24 @@ export const updateBusinessConnectedToFacebook = (data) => {
         ...data,
       },
     });
+  };
+};
+
+export const crashAppForSpamUser = () => {
+  return async (dispatch, getState) => {
+    const token = await SecureStore.getItemAsync("token");
+
+    if (token) {
+      createBaseUrl()
+        .get(`appAccessStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log("data crashAppForSpamUser", data);
+        });
+    }
   };
 };
