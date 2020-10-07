@@ -109,8 +109,7 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
-
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)

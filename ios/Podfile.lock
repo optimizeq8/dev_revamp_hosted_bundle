@@ -121,7 +121,7 @@ PODS:
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
-  - Mixpanel (3.6.2)
+  - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
   - PhotoEditorSDK (10.21.2):
     - imglyKit (= 10.21.2)
