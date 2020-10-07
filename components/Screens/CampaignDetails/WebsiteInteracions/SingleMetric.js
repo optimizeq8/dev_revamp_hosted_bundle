@@ -5,7 +5,7 @@ import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import globalStyles from "../../../../GlobalStyles";
 import ImpressionsIcons from "../../../../assets/SVGs/CampaignCards/ImpressionsIcon";
-import InstagramIcon from "../../../../assets/SVGs/InstagramIcon";
+import InstagramIcon from "../../../../assets/images/AdTypes/InstaWhiteLogo";
 import MobileIcon from "../../../../assets/SVGs/CampaignDetail/MobileIcon";
 import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 import LocationClicksIcon from "../../../../assets/SVGs/CampaignDetail/LocationClicksIcon";
@@ -28,7 +28,13 @@ export default class SingleMetric extends Component {
         Icon = LocationClicksIcon;
         break;
       case "instagram clicks":
-        Icon = InstagramIcon;
+        Icon = (
+          <InstagramIcon
+            width={heightPercentageToDP(8)}
+            height={heightPercentageToDP(8)}
+            style={{ marginRight: -15, marginLeft: -15 }}
+          />
+        );
         break;
       case "youtube clicks":
         if (metricValue === 0) {
@@ -43,7 +49,8 @@ export default class SingleMetric extends Component {
     }
     return (
       <View style={[styles.metricsStyle, { marginVertical: 20 }]}>
-        {Icon && (
+        {metric === "instagram clicks" && Icon}
+        {metric !== "instagram clicks" && Icon && (
           <Icon
             width={heightPercentageToDP(4)}
             height={heightPercentageToDP(4)}
