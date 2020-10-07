@@ -820,6 +820,12 @@ class Dashboard extends Component {
                             width={10}
                             height={10}
                             style={styles.lowerButton}
+                            function={() => {
+                              this.props.navigation.navigate("TutorialWeb", {
+                                source: "dashboard",
+                                source_action: "a_open_website_tutorial",
+                              });
+                            }}
                           />
                         </TouchableOpacity>
                       )}
