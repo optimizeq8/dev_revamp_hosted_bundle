@@ -9,8 +9,8 @@ project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../
 // project(':@react-native-community_masked-view').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/masked-view/android')
 // include ':@react-native-community_blur'
 // project(':@react-native-community_blur').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/blur/android')
-include ':react-native-mixpanel'
-project(':react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mixpanel/android')
+// include ':react-native-mixpanel'
+// project(':react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mixpanel/android')
 // include ':@segment_analytics-react-native-mixpanel'
 // project(':@segment_analytics-react-native-mixpanel').projectDir = new File(rootProject.projectDir, '../node_modules/@segment/analytics-react-native-mixpanel/android')
 include ':react-native-device-info'
@@ -31,6 +31,8 @@ include ':react-native-ffmpeg'
 project(':react-native-ffmpeg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ffmpeg/android')
 include ':lottie-react-native'
 project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
+include ':react-native-advertising-id'
+project(':react-native-advertising-id').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-advertising-id/android')
 
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
