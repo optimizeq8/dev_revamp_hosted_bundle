@@ -195,6 +195,9 @@ class Dashboard extends Component {
         adTypeChanged: true,
       });
     }
+    if (!prevProps.crashApp && this.props.crashApp) {
+      crash;
+    }
   }
 
   startAnimation = () => {
@@ -941,6 +944,7 @@ const mapStateToProps = (state) => ({
   clearTokenLoading: state.login.clearTokenLoading,
   instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  crashApp: state.account.crashApp,
 });
 
 const mapDispatchToProps = (dispatch) => ({

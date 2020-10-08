@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import * as SecureStore from "expo-secure-store";
 import analytics from "@segment/analytics-react-native";
 import { Animated } from "react-native";
 import { persistor } from "../index";
@@ -1039,5 +1040,39 @@ export const updateBusinessConnectedToFacebook = (data) => {
         ...data,
       },
     });
+  };
+};
+
+export const crashAppForSpamUser = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: actionTypes.CRASH_APP,
+      payload: false,
+    });
+    const token = await SecureStore.getItemAsync("token");
+    if (token) {
+      const result = await createBaseUrl().get(`appAccessStatus`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (result.data) {
+        const data = result.data;
+        if (data && data.error) {
+          analytics.track("app_crash", {
+            source: "suspicous_user",
+            source_action: "a_app_crash",
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "app_crash",
+            source_action: "a_app_crash",
+          });
+          return dispatch({
+            type: actionTypes.CRASH_APP,
+            payload: true,
+          });
+        }
+      }
+    }
   };
 };
