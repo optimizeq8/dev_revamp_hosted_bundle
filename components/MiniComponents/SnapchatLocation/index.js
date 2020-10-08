@@ -25,7 +25,7 @@ export default class SnapchatLocation extends Component {
     selectedLocation: {},
   };
   componentDidMount() {
-    if (this.props.data.hasOwnProperty("markers")) {
+    if (this.props.data && this.props.data.hasOwnProperty("markers")) {
       this.setState({
         markers: this.props.data.markers,
         locationsInfo: this.props.data.locationsInfo,

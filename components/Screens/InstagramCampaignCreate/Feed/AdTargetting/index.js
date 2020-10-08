@@ -304,14 +304,14 @@ class InstagramFeedAdTargetting extends Component {
                 (country) => country.name === this.props.mainBusiness.country
               )
               .regions.map((reg) => reg.key);
-            this.onSelectedCountryRegionChange(
+            await this.onSelectedCountryRegionChange(
               // [
               country_code
               // ...allCountryRegions,
               // ]
             );
           }
-          this._calcReach();
+          await this._calcReach();
         }
       );
     }
@@ -720,6 +720,8 @@ class InstagramFeedAdTargetting extends Component {
     const obj = {
       targeting: JSON.stringify(r),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: this.props.data.campaign_id,
+      daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
 
     if (totalReach.geo_locations.countries.length === 0) {
@@ -737,6 +739,8 @@ class InstagramFeedAdTargetting extends Component {
     const obj2 = {
       targeting: JSON.stringify(totalReach),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: this.props.data.campaign_id,
+      daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
     // console.log("obj2", obj2);
 
@@ -913,6 +917,7 @@ class InstagramFeedAdTargetting extends Component {
 
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
+    console.log("item", item);
     let replace = cloneDeep(this.state.campaignInfo);
 
     // check if country exist in array remove it else add country and show regions for that country

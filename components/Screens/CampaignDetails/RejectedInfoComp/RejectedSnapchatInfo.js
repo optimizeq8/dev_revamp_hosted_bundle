@@ -1,12 +1,19 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
-import { Text } from "native-base";
-import Rejected from "../../../../assets/SVGs/Rejected.svg";
-import CustomButtons from "../../../MiniComponents/CustomButtons";
+import { View, ScrollView, Text, Alert } from "react-native";
 import { connect } from "react-redux";
+
+// Redux
 import * as actionCreators from "../../../../store/actions";
+
+// Icons
+import Rejected from "../../../../assets/SVGs/Rejected.svg";
+import Info from "../../../../assets/SVGs/Info.svg";
+
+import CustomButtons from "../../../MiniComponents/CustomButtons";
 import RejectedReason from "./RejectedReason";
 import RejectedReasonModal from "./RejectedReasonModal";
+
+// Styles
 import styles from "./styles";
 
 /**
@@ -19,13 +26,34 @@ class RejectedSnapchatInfo extends Component {
   setModalVisible = (visible, rejectedReason = "", reasonNum = "") => {
     this.setState({ isVisible: visible, rejectedReason, reasonNum });
   };
+  moveAmountToWallet = () => {
+    const { selectedCampaign } = this.props;
+    const { translate } = this.props.screenProps;
+
+    Alert.alert(
+      translate("Warning"),
+      translate(
+        "Once the amount is moved back to wallet you will not be able to re-launch this campaign again"
+      ) +
+        ". " +
+        translate("Are you sure you want to move amount to wallet?"),
+      [
+        { text: translate("Cancel") },
+        {
+          text: translate("Yes"),
+          onPress: () => {
+            this.props.moveRejectedAdAmountToWallet(
+              selectedCampaign.campaign_id
+            );
+          },
+        },
+      ]
+    );
+  };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
 
-    const campaignEnd =
-      new Date(selectedCampaign.end_time).setHours(0, 0, 0, 0) <
-      new Date().setHours(0, 0, 0, 0);
     const { translate } = this.props.screenProps;
     let rejReasons = review_status_reason.map((reason, i) => (
       <RejectedReason
@@ -53,17 +81,31 @@ class RejectedSnapchatInfo extends Component {
             {rejReasons}
           </View>
         </ScrollView>
-        {!campaignEnd && (
-          <CustomButtons
-            screenProps={this.props.screenProps}
-            onPressFunction={() =>
-              this.props.handleSnapchatRejection(selectedCampaign)
-            }
-            content="Review Ad"
-            filled
-            buttonStyle={styles.customButtonStyle}
-            textStyle={styles.customButtonText}
-          />
+
+        {selectedCampaign.campaign_end === "0" && (
+          <View style={styles.rejectedButtonView}>
+            <CustomButtons
+              screenProps={this.props.screenProps}
+              onPressFunction={this.moveAmountToWallet}
+              content="Move Amount to Wallet"
+              buttonStyle={[
+                styles.customButtonStyle,
+                styles.moveToWalletButton,
+              ]}
+              textStyle={[styles.customButtonText]}
+            />
+
+            <CustomButtons
+              screenProps={this.props.screenProps}
+              onPressFunction={() =>
+                this.props.handleSnapchatRejection(selectedCampaign)
+              }
+              content="Update Ad"
+              filled
+              buttonStyle={styles.customButtonStyle}
+              textStyle={styles.customButtonText}
+            />
+          </View>
         )}
         <RejectedReasonModal
           screenProps={screenProps}
@@ -80,6 +122,8 @@ const mapDispatchToProps = (dispatch) => ({
   setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
   setRejectedCampaignData: (rejCampaign) =>
     dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  moveRejectedAdAmountToWallet: (campaign_id) =>
+    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);

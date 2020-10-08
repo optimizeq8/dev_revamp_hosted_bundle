@@ -40,6 +40,7 @@ const initialState = {
   invitedEmail: "",
   teamInviteLoading: false,
   pendingTeamInvites: [],
+  crashApp: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -331,6 +332,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, teamInviteLoading: action.payload };
     case actionTypes.SET_BUSINESS_INVITES:
       return { ...state, businessInvites: action.payload };
+    case actionTypes.CRASH_APP:
+      return {
+        ...state,
+        crashApp: action.payload,
+      };
     default:
       return state;
   }

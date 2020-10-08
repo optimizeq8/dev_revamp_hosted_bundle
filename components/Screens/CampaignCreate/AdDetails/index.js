@@ -61,6 +61,7 @@ import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import AudienceReach from "./AudienceReach";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -866,14 +867,17 @@ class AdDetails extends Component {
       rawValue >= this.state.minValueBudget &&
       !isNan(rawValue)
     ) {
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue,
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            lifetime_budget_micro: rawValue,
+          },
+          value: value,
+          budgetOption,
         },
-        value: value,
-        budgetOption,
-      });
+        () => this._calcReach()
+      );
 
       analytics.track(`a_handle_budget`, {
         source: "ad_targeting",
@@ -999,6 +1003,8 @@ class AdDetails extends Component {
       const obj = {
         targeting: JSON.stringify(r),
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
+        campaign_id: this.state.campaignInfo.campaign_id,
       };
 
       let totalReach = {
@@ -1820,7 +1826,7 @@ class AdDetails extends Component {
                       startEditing={startEditing}
                     />
 
-                    <ReachBar
+                    <AudienceReach
                       loading={this.props.loading}
                       campaignInfo={campaignInfo}
                       _handleSubmission={this._handleSubmission}

@@ -112,15 +112,15 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.21.1)
+  - imglyKit (10.21.2)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
-  - Mixpanel (3.6.2)
+  - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.21.1):
-    - imglyKit (= 10.21.1)
+  - PhotoEditorSDK (10.21.2):
+    - imglyKit (= 10.21.2)
   - RCTRequired (0.63.2)
   - RCTTypeSafety (0.63.2):
     - FBLazyVector (= 0.63.2)
@@ -384,13 +384,13 @@ PODS:
     - React
   - RNDeviceInfo (6.0.4):
     - React-Core
-  - RNGestureHandler (1.7.0):
+  - RNGestureHandler (1.8.0):
     - React
   - RNPhotoEditorSDK (2.5.0):
     - PhotoEditorSDK (~> 10.18)
     - React
     - React-RCTImage
-  - RNReanimated (1.13.0):
+  - RNReanimated (1.13.1):
     - React
   - RNScreens (2.10.1):
     - React
@@ -428,8 +428,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.3.0)
   - UMTaskManagerInterface (5.3.0)
-  - VideoEditorSDK (10.21.1):
-    - imglyKit (= 10.21.1)
+  - VideoEditorSDK (10.21.2):
+    - imglyKit (= 10.21.2)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -745,12 +745,12 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: f762f3a8b7a062be4efe4b62bc1407d6295af900
+  imglyKit: d0620363736f20e19f71eb5ff67377ff48af97d7
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
-  Mixpanel: 0a78141d1a073308201f76c55c3e629535e72b47
+  Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: 1d8cb444ca7c9e76d2dd5f87b24101a8053ca93f
+  PhotoEditorSDK: e91f4eedbc013e541843a823d0d594c874214c09
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
   React: e1c65dd41cb9db13b99f24608e47dd595f28ca9a
@@ -785,9 +785,9 @@ SPEC CHECKSUMS:
   RNCCheckbox: 47d045535fbb16796df628022a7cd631c78a4d9b
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: 5eb11f4aef9395cca403c0c92dff458252fc0b2c
-  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNPhotoEditorSDK: 985f356d246e78c4c65dbbdb55f721cda0887120
-  RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
+  RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSentry: cff88174a0b2e0289b2efe5be1abba1f6c54269d
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
@@ -808,7 +808,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 61ae88818058b7849bbf5b79bf97872cb3c8e0eb
   UMSensorsInterface: 49bea41dcfcc041f0bbab27cfe4a6006f1dde0c0
   UMTaskManagerInterface: 6cad5929dbc0a5b986ad4d77caac497d4de730a7
-  VideoEditorSDK: ca58c1298db2910182111dfa946cfa49a7a5c78a
+  VideoEditorSDK: 0dcdde1a786c79ad0391a921e198b1722ec61f01
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
 PODFILE CHECKSUM: 107bb2d737711ab4b88b3d278b853db1609e1fb5
