@@ -547,6 +547,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#FF9D00",
     textAlign: "left",
+    textTransform: "uppercase",
   },
   infoButton: { alignSelf: "flex-end" },
   xAxisStyle: {
