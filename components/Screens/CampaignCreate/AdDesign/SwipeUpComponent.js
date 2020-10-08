@@ -244,8 +244,8 @@ export default class SwipeUpComponent extends Component {
                     >
                       {attachment.hasOwnProperty("deep_link_uri")
                         ? attachment.deep_link_uri
-                        : attachment.hasOwnProperty("mobile")
-                        ? attachment.mobile
+                        : attachment.hasOwnProperty("phone_number_id")
+                        ? attachment.phone_number_id
                         : attachment.url}
                     </Text>
                   )}

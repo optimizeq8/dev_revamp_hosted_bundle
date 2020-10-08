@@ -1551,6 +1551,7 @@ export const verifyDestinationUrl = (url, submit, translate) => {
       });
   };
 };
+
 export const isNumberSnapchatVerified = (number) => {
   return (dispatch) => {
     dispatch({
@@ -1590,7 +1591,8 @@ export const verifyOTPCode = (code) => {
         loading: false,
       },
     });
-    
+  };
+};
 /**
  *  To move the amount to wallet when ad is rejected
  * @param {*} campaign_id

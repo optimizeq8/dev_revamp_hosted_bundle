@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { CodeField, Cursor } from "react-native-confirmation-code-field";
+// import { CodeField, Cursor } from "react-native-confirmation-code-field";
 
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
@@ -23,13 +23,12 @@ import { globalColors } from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
-import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
+
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-import GradientButton from "../../../MiniComponents/GradientButton";
+
 class Call extends Component {
   static navigationOptions = {
     header: null,
@@ -38,12 +37,10 @@ class Call extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        attachment: { mobile: "" },
+        attachment: { phone_number_id: "" },
         callaction: list.SnapAd[5].call_to_action_list[0],
       },
       callActionLabel: "",
-      // networkString: netLoc[0].label,
-      netLoc: netLoc,
       callactions: list.SnapAd[5].call_to_action_list,
       mobileError: null,
       inputCallToAction: false,
@@ -58,7 +55,7 @@ class Call extends Component {
         this.props.resetVerifiedNumberSnapchat();
         this.setState({
           campaignInfo: {
-            attachment: { mobile: `${callnumber}` },
+            attachment: { phone_number_id: `${callnumber}` },
             callaction: list.SnapAd[5].call_to_action_list[0],
           },
         });
@@ -72,7 +69,7 @@ class Call extends Component {
       const mobile = this.props.data.attachment.mobile;
       this.setState({
         campaignInfo: {
-          attachment: { mobile: mobile },
+          attachment: { phone_number_id: mobile },
           callaction: this.props.data.call_to_action,
         },
         // networkString: url[0] + "://"
@@ -92,7 +89,7 @@ class Call extends Component {
     const { translate } = this.props.screenProps;
     const mobileError = validateWrapper(
       "mandatory",
-      this.state.campaignInfo.attachment.mobile
+      this.state.campaignInfo.attachment.phone_number_id
     );
 
     this.setState({
@@ -125,7 +122,7 @@ class Call extends Component {
       "AD_TO_CALL",
       this.state.campaignInfo.callaction,
       {
-        mobile: this.state.campaignInfo.attachment.mobile,
+        phone_number_id: this.state.campaignInfo.attachment.phone_number_id,
       }
     );
     this.props.toggle(false);
@@ -271,7 +268,7 @@ class Call extends Component {
           <View>
             <PhoneInput
               disabled={this.props.verifyingNumber}
-              phoneNum={`+${this.state.campaignInfo.attachment.mobile}`}
+              phoneNum={`+${this.state.campaignInfo.attachment.phone_number_id}`}
               screenProps={this.props.screenProps}
               height={30}
               fontSize={16}
@@ -279,7 +276,8 @@ class Call extends Component {
               // valid={valid}
             />
           </View>
-          {!this.props.verifiedSnapchatNumber && !this.props.otpSend && (
+          {/** FOR LATER USE */}
+          {/* {!this.props.verifiedSnapchatNumber && !this.props.otpSend && (
             <GradientButton
               text={"Send OTP"}
               textStyle={{
@@ -298,8 +296,9 @@ class Call extends Component {
               }}
               onPressAction={this.sendOTP}
             />
-          )}
-          {!this.props.verifiedSnapchatNumber && this.props.otpSend && (
+          )} */}
+
+          {/* {!this.props.verifiedSnapchatNumber && this.props.otpSend && (
             <Text style={styles.warningText}>
               {translate("Enter your 6-digit verification code")}
             </Text>
@@ -344,26 +343,26 @@ class Call extends Component {
             >
               {translate("Resend Code")}
             </Text>
-          )}
-          {this.props.verifiedSnapchatNumber && (
-            <View style={styles.bottonViewWebsite}>
-              <LowerButton
-                screenProps={this.props.screenProps}
-                checkmark={true}
-                bottom={-5}
-                function={() => {
-                  this._handleSubmission();
-                  // if (this.validateMobileNo())
-                  //   this.props.verifyDestinationUrl(
-                  //     this.state.campaignInfo.attachment,
-                  //     this._handleSubmission,
-                  //     this.props.screenProps.translate
-                  //   );
-                }}
-                purpleViolet
-              />
-            </View>
-          )}
+          )} */}
+          {/* {this.props.verifiedSnapchatNumber && ( */}
+          <View style={styles.bottonViewWebsite}>
+            <LowerButton
+              screenProps={this.props.screenProps}
+              checkmark={true}
+              bottom={-5}
+              function={() => {
+                this._handleSubmission();
+                // if (this.validateMobileNo())
+                //   this.props.verifyDestinationUrl(
+                //     this.state.campaignInfo.attachment,
+                //     this._handleSubmission,
+                //     this.props.screenProps.translate
+                //   );
+              }}
+              purpleViolet
+            />
+          </View>
+          {/* )} */}
         </InputScrollView>
       </View>
     );
