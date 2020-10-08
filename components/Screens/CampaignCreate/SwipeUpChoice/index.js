@@ -8,6 +8,7 @@ import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
 import Deep_Link from "./Deep_Link";
+import Call from "./Call";
 
 // Style
 import styles from "./styles";
@@ -34,6 +35,17 @@ class SwipeUpChoice extends Component {
     const campaign_ad_type = this.props.screenProps.prevAppState;
 
     switch (this.props.objective) {
+      case "ENGAGEMENT":
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "ad_to_call",
+          campaign_objective: this.props.objective,
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        break;
       case "LEAD_GENERATION":
         analytics.track(`ad_swipe_up_destination`, {
           source,
@@ -182,6 +194,18 @@ class SwipeUpChoice extends Component {
           <>
             <NavigationEvents onDidFocus={this.segment} />
             <WhatsApp
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
+            />
+          </>
+        );
+      } else if (objective === "ENGAGEMENT") {
+        menu = (
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <Call
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}

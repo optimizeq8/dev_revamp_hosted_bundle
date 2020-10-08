@@ -123,11 +123,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   warningText: {
-    color: "#fff",
+    color: globalColors.rum,
     textAlign: "center",
-    top: 10,
+    marginTop: 10,
     fontFamily: "montserrat-bold",
     fontSize: 13,
+    marginBottom: 10,
   },
   listText: {
     fontFamily: "montserrat-regular",
@@ -568,5 +569,23 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
   },
 });
-
+export const codeFieldStyle = StyleSheet.create({
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 30,
+    fontSize: 20,
+    borderWidth: 2,
+    borderColor: "#00000030",
+    textAlign: "center",
+    borderRadius: 15,
+    color: globalColors.orange,
+  },
+  codeFieldRoot: {
+    paddingHorizontal: 20,
+  },
+  focusCell: {
+    borderColor: globalColors.orange,
+  },
+});
 export default styles;

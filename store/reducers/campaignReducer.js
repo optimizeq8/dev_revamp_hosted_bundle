@@ -228,6 +228,9 @@ const initialState = {
   savedObjective: "",
   destinationURLValid: false,
   loadingDestinationURLValid: false,
+  verifiedSnapchatNumber: false,
+  verifyingNumber: false,
+  otpSend: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1136,6 +1139,35 @@ const reducer = (state = initialState, action) => {
         ...state,
         destinationURLValid: action.payload.success,
         loadingDestinationURLValid: action.payload.loading,
+      };
+    }
+    case actionTypes.RESET_SNAPCHAT_VERIFIED_NUMBER: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: false,
+        verifyingNumber: false,
+        otpSend: false,
+      };
+    }
+    case actionTypes.VERIFIED_SNAPCHAT_NUMBER: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: action.payload.verified,
+        verifyingNumber: action.payload.loading,
+        otpSend: action.payload.otpSend,
+      };
+    }
+    case actionTypes.SEND_OTP_SNAPCHAT: {
+      return {
+        ...state,
+        otpSend: action.payload,
+      };
+    }
+    case actionTypes.VERIFIED_OTP_SNAPCHAT: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: action.payload,
+        verifyingNumber: false,
       };
     }
     default:
