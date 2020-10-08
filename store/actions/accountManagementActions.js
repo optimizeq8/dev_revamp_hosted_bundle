@@ -8,7 +8,7 @@ import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 import { update_user_on_intercom } from "./messengerActions";
 
@@ -251,8 +251,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
           action_status: data.success ? "success" : "failure",
         });
         if (data.success) {
-          let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
-          Adjust.trackEvent(adjustSnapAdAccTracker);
+          // let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
+          // Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data },
