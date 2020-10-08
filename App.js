@@ -235,7 +235,7 @@ class App extends React.Component {
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
-    this.interval = setInterval(async () => {
+    this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
     }, 300000);
 
