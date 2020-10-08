@@ -6,8 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   I18nManager,
+  Text,
 } from "react-native";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
 import InputScrollView from "react-native-input-scroll-view";

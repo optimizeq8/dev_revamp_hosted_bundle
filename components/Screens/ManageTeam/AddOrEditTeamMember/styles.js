@@ -94,5 +94,6 @@ export default StyleSheet.create({
   deleteText: {
     fontFamily: "montserrat-bold",
     fontSize: 14,
+    textTransform: "uppercase",
   },
 });
