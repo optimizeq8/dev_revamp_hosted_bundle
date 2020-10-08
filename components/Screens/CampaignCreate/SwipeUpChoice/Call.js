@@ -6,7 +6,6 @@ import analytics from "@segment/analytics-react-native";
 
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -45,6 +44,7 @@ class Call extends Component {
       mobileError: null,
       inputCallToAction: false,
       code: "",
+      valid: false,
     };
   }
 
@@ -52,10 +52,11 @@ class Call extends Component {
     if (this.props.mainBusiness) {
       const { callnumber } = this.props.mainBusiness;
       if (callnumber) {
-        this.props.resetVerifiedNumberSnapchat();
+        // this.props.resetVerifiedNumberSnapchat();
+        this.changePhoneNo(callnumber, null, null, true);
         this.setState({
           campaignInfo: {
-            attachment: { phone_number_id: `${callnumber}` },
+            attachment: { phone_number_id: `+${callnumber}` },
             callaction: list.SnapAd[5].call_to_action_list[0],
           },
         });
@@ -66,13 +67,12 @@ class Call extends Component {
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK"
     ) {
-      const mobile = this.props.data.attachment.mobile;
+      const phone_number_id = this.props.data.attachment.phone_number_id;
       this.setState({
         campaignInfo: {
-          attachment: { phone_number_id: mobile },
+          attachment: { phone_number_id: phone_number_id },
           callaction: this.props.data.call_to_action,
         },
-        // networkString: url[0] + "://"
       });
     }
 
@@ -108,24 +108,26 @@ class Call extends Component {
       return true;
     }
   };
-  setWebsiteValue = (value) => {
-    const campaignInfo = {
-      ...this.state.campaignInfo,
-      attachment: value,
-    };
-    this.setState({
-      campaignInfo,
-    });
-  };
+
   _handleSubmission = () => {
-    this.props._changeDestination(
-      "AD_TO_CALL",
-      this.state.campaignInfo.callaction,
-      {
-        phone_number_id: this.state.campaignInfo.attachment.phone_number_id,
-      }
-    );
-    this.props.toggle(false);
+    if (!this.state.valid && this.state.mobileError) {
+      showMessage({
+        message: translate(`${"Please enter a valid number"}`),
+        type: "warning",
+        position: "top",
+        duration: 7000,
+      });
+    }
+    if (this.state.valid && !this.state.mobileError) {
+      this.props._changeDestination(
+        "AD_TO_CALL",
+        this.state.campaignInfo.callaction,
+        {
+          phone_number_id: this.state.campaignInfo.attachment.phone_number_id,
+        }
+      );
+      this.props.toggle(false);
+    }
     // this.props.navigation.navigate("AdDesign", {
     //   source: "ad_swipe_up_destination",
     //   source_action: "a_swipe_up_destination",
@@ -185,24 +187,20 @@ class Call extends Component {
     this.setState({ inputCallToAction: true });
   };
   changePhoneNo = (number, country_code, numbertype, valid) => {
-    console.log(
-      "number, country_code, numbertype, valid",
-      number,
-      country_code,
-      numbertype,
-      valid
-    );
     this.setState({
-      attachment: {
-        ...this.state.attachment,
-        mobile: number,
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        attachment: {
+          ...this.state.attachment,
+          phone_number_id: number,
+        },
       },
-      mobileError: valid,
+      valid: valid,
       country_code,
     });
-    if (valid) {
-      this.props.isNumberSnapchatVerified(number);
-    }
+    // if (valid) {
+    //   this.props.isNumberSnapchatVerified(number);
+    // }
   };
   sendOTP = () => {
     this.props.sendOTPSnapchat(this.state.campaignInfo.attachment.mobile);
@@ -268,7 +266,7 @@ class Call extends Component {
           <View>
             <PhoneInput
               disabled={this.props.verifyingNumber}
-              phoneNum={`+${this.state.campaignInfo.attachment.phone_number_id}`}
+              phoneNum={`${this.state.campaignInfo.attachment.phone_number_id}`}
               screenProps={this.props.screenProps}
               height={30}
               fontSize={16}

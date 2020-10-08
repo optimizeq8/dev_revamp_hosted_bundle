@@ -834,7 +834,7 @@ class AdDesign extends Component {
           campaign_media_type: this.state.type,
           campaign_appChoice: this.state.appChoice,
         };
-        console.log(" this.state.formatted", this.state.formatted);
+
         if (!this.props.loading) {
           await this.props.ad_design(
             this.state.formatted,
