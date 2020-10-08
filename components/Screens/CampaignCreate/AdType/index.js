@@ -95,6 +95,10 @@ class AdType extends Component {
       campaign_channel: adType.mediaType,
       campaign_ad_type: adType.value,
       device_id,
+      context: {
+        device_id: device_id,
+        type: Platform.OS,
+      },
     });
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;

@@ -48,7 +48,7 @@ import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
 import InputField from "../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import { Linking } from "react-native";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
@@ -526,18 +526,18 @@ class AdObjective extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
     });
-    let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
-    adjustAdObjectiveTracker.addPartnerParameter(
-      `snap_${
-        this.props.incomplete
-          ? his.props.navigation.getParam("tempAdType", "SnapAd")
-          : this.props.adType
-      }`,
-      this.props.incomplete
-        ? his.props.navigation.getParam("tempAdType", "SnapAd")
-        : this.props.adType
-    );
-    Adjust.trackEvent(adjustAdObjectiveTracker);
+    // let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
+    // adjustAdObjectiveTracker.addPartnerParameter(
+    //   `snap_${
+    //     this.props.incomplete
+    //       ? his.props.navigation.getParam("tempAdType", "SnapAd")
+    //       : this.props.adType
+    //   }`,
+    //   this.props.incomplete
+    //     ? his.props.navigation.getParam("tempAdType", "SnapAd")
+    //     : this.props.adType
+    // );
+    // Adjust.trackEvent(adjustAdObjectiveTracker);
   };
 
   handleAdOnjectiveBlur = () => {

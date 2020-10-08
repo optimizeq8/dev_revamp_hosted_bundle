@@ -76,7 +76,7 @@ import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { manipulateAsync } from "expo-image-manipulator";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
@@ -1113,12 +1113,12 @@ class AdDesign extends Component {
         : this.props.data.campaign_collectionAdLinkForm,
     });
 
-    let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
-    adjustAdDesignTracker.addPartnerParameter(
-      `Snap_${this.adType}`,
-      this.adType
-    );
-    Adjust.trackEvent(adjustAdDesignTracker);
+    // let adjustAdDesignTracker = new AdjustEvent("o7pn8g");
+    // adjustAdDesignTracker.addPartnerParameter(
+    //   `Snap_${this.adType}`,
+    //   this.adType
+    // );
+    // Adjust.trackEvent(adjustAdDesignTracker);
   };
   videoIsExporting = (isLoading) =>
     this.setState({ videoIsLoading: isLoading });

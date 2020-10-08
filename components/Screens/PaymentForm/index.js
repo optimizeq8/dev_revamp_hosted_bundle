@@ -32,7 +32,7 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 
 class PaymentForm extends Component {

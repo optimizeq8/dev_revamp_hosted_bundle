@@ -55,7 +55,7 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
@@ -1393,12 +1393,12 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
-    let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
-    adjustAdDetailsTracker.addPartnerParameter(
-      `Snap_${this.props.adType}`,
-      this.props.adType
-    );
-    Adjust.trackEvent(adjustAdDetailsTracker);
+    // let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+    // adjustAdDetailsTracker.addPartnerParameter(
+    //   `Snap_${this.props.adType}`,
+    //   this.props.adType
+    // );
+    // Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
   handleAdDetailsBlur = () => {

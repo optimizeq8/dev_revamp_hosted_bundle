@@ -51,7 +51,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class GoogleAdTargetting extends Component {
@@ -448,13 +448,13 @@ class GoogleAdTargetting extends Component {
       "GoogleAdDesign",
       "GoogleAdTargetting",
     ]);
-    let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
-    adjustGoogleAdDetailsTracker.addPartnerParameter(
-      `Google_SEM`,
-      "google_sem"
-    );
+    // let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
+    // adjustGoogleAdDetailsTracker.addPartnerParameter(
+    //   `Google_SEM`,
+    //   "google_sem"
+    // );
 
-    Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+    // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
   };
   render() {
     const { translate } = this.props.screenProps;

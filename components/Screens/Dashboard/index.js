@@ -66,7 +66,7 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
-import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+// import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -300,8 +300,8 @@ class Dashboard extends Component {
         });
       } else {
         if (adType.value === "SnapAd") {
-          let adjustEvent = new AdjustEvent("kd8uvi");
-          Adjust.trackEvent(adjustEvent);
+          // let adjustEvent = new AdjustEvent("kd8uvi");
+          // Adjust.trackEvent(adjustEvent);
         }
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value,
@@ -386,8 +386,8 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
-    let adjustEvent = new AdjustEvent("7kk0e6");
-    Adjust.trackEvent(adjustEvent);
+    // let adjustEvent = new AdjustEvent("7kk0e6");
+    // Adjust.trackEvent(adjustEvent);
     const device_id = this.props.screenProps.device_id;
     const source = this.props.navigation.getParam(
       "source",

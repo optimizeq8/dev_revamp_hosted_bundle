@@ -52,7 +52,7 @@ import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 import MediaModal from "./MediaModal";
 import { SaveFormat } from "expo-image-manipulator";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdCover extends Component {
@@ -803,8 +803,8 @@ class AdCover extends Component {
       campaign_ad_type: "StoryAd",
     });
 
-    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
-    Adjust.trackEvent(adjustAdCoverTracker);
+    // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    // Adjust.trackEvent(adjustAdCoverTracker);
   };
 
   handleAdCoverBlur = () => {

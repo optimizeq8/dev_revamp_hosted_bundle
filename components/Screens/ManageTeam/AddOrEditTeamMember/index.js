@@ -14,7 +14,7 @@ import { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
 
 class AddOrEditTeamMember extends Component {
