@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
   BackHandler,
   ScrollView,
+  Text,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Item, Input, Text } from "native-base";
+import { Item, Input } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP,

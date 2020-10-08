@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginVertical: 5,
     width: "65%",
-    height: "18%"
+    height: "18%",
   },
   emptyButton: {
     ...globalStyles.transparentBackgroundColor,
@@ -18,10 +18,11 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginVertical: 5,
     width: "65%",
-    height: "18%"
+    height: "18%",
   },
   contentStyle: {
+    textTransform: "uppercase",
     ...globalStyles.whiteTextColor,
-    ...globalStyles.buttonText
-  }
+    ...globalStyles.buttonText,
+  },
 });

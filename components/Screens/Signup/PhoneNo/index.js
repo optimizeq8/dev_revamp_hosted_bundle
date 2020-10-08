@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  Text,
 } from "react-native";
-import { Icon, Item, Text } from "native-base";
+import { Icon, Item } from "native-base";
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import PhoneNoField from "./PhoneNoField";

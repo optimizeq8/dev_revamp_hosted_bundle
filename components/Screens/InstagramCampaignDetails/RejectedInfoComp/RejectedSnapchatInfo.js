@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
-import { Text } from "native-base";
+import { View, ScrollView, Text } from "react-native";
+
 import Rejected from "../../../../assets/SVGs/Rejected.svg";
 import CustomButtons from "../../../MiniComponents/CustomButtons";
 import { connect } from "react-redux";

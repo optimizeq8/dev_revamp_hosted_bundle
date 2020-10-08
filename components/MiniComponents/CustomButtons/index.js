@@ -1,10 +1,9 @@
 import React from "react";
-import { Button, Text } from "native-base";
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 import GradientButton from "../GradientButton";
 
-export default props => {
+export default (props) => {
   const { translate } = props.screenProps;
   let { content, filled, onPressFunction, buttonStyle, textStyle } = props;
   return (
@@ -13,7 +12,7 @@ export default props => {
       textStyle={[
         styles.contentStyle,
         !filled ? { color: globalColors.orange } : {},
-        textStyle
+        textStyle,
       ]}
       transparent={!filled}
       orangeDark={filled}

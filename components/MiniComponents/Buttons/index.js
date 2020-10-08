@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Text } from "native-base";
+import { Text } from "react-native";
+import { Button } from "native-base";
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
-export default props => {
+export default (props) => {
   let { content, filled, onPressFunction } = props;
   return (
     <Button
@@ -15,7 +16,7 @@ export default props => {
         uppercase
         style={[
           styles.contentStyle,
-          !filled ? { color: globalColors.orange } : {}
+          !filled ? { color: globalColors.orange } : {},
         ]}
       >
         {content}
