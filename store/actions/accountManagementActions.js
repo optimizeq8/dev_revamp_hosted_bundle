@@ -1044,20 +1044,35 @@ export const updateBusinessConnectedToFacebook = (data) => {
 };
 
 export const crashAppForSpamUser = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
+    dispatch({
+      type: actionTypes.CRASH_APP,
+      payload: false,
+    });
     const token = await SecureStore.getItemAsync("token");
-
     if (token) {
-      createBaseUrl()
-        .get(`appAccessStatus`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => res.data)
-        .then((data) => {
-          console.log("data crashAppForSpamUser", data);
-        });
+      const result = await createBaseUrl().get(`appAccessStatus`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (result.data) {
+        const data = result.data;
+        if (data && data.error) {
+          analytics.track("app_crash", {
+            source: "suspicous_user",
+            source_action: "a_app_crash",
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "app_crash",
+            source_action: "a_app_crash",
+          });
+          return dispatch({
+            type: actionTypes.CRASH_APP,
+            payload: true,
+          });
+        }
+      }
     }
   };
 };

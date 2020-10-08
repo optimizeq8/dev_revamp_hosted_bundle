@@ -153,6 +153,7 @@ class App extends React.Component {
       mounted: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
+    this.interval = null;
     // Instruct SplashScreen not to hide yet
     // SplashScreen.preventAutoHide();
     const adjustConfig = new AdjustConfig(
@@ -234,7 +235,9 @@ class App extends React.Component {
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
-    store.dispatch(actionCreators.crashAppForSpamUser());
+    this.interval = setInterval(async () => {
+      store.dispatch(actionCreators.crashAppForSpamUser());
+    }, 300000);
 
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>
@@ -453,6 +456,7 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
+    clearInterval(this.interval);
     AppState.removeEventListener("change", this._handleAppStateChange);
     Adjust.componentWillUnmount();
   }
