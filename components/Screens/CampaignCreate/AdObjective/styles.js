@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
     marginBottom: 15,
     fontFamily: "montserrat-regular",
+    fontSize: 12,
   },
 });
 

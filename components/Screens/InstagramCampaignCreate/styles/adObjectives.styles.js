@@ -299,6 +299,14 @@ const styles = StyleSheet.create({
     width: "95%",
     alignSelf: "center",
   },
+  minDurationText: {
+    color: "#FFF",
+    textAlign: "center",
+    marginTop: -20,
+    marginBottom: 15,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+  },
 });
 
 export default styles;
