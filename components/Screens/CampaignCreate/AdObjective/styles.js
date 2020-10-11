@@ -280,6 +280,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 20,
   },
+  minDurationText: {
+    color: "#FFF",
+    textAlign: "center",
+    marginTop: -20,
+    marginBottom: 15,
+    fontFamily: "montserrat-regular",
+  },
 });
 
 export default styles;

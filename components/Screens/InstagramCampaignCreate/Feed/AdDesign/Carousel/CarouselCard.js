@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  ActivityIndicator,
-  Text,
-  View,
-  Image as RNImage,
-  TouchableOpacity,
-} from "react-native";
+import { ActivityIndicator, Text, View, TouchableOpacity } from "react-native";
 import { Video } from "expo-av";
 import styles from "../../../styles/adDesign.styles";
 import MediaButton from "../MediaButton";

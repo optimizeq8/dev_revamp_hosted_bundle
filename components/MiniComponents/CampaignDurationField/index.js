@@ -18,12 +18,19 @@ export default class CampaignDuration extends Component {
           </Text>
           <View style={styles.durationButtons}>
             <TouchableOpacity
+              disabled={this.props.disabled}
               activeOpacity={0.8}
               onPressOut={() => this.props.stopTimer()}
               onLongPress={() => this.props.handleDuration(true)}
               onPress={() => this.props.handleDuration(true, true)}
               delayLongPress={75}
-              style={[styles.durButton, styles.leftButton]}
+              style={[
+                styles.durButton,
+                styles.leftButton,
+                this.props.disabled && {
+                  opacity: 0.6,
+                },
+              ]}
             >
               <Text style={styles.buttonText}>-</Text>
             </TouchableOpacity>
