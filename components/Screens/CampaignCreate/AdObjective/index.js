@@ -10,8 +10,9 @@ import {
   TouchableOpacity,
   StatusBar,
   Modal,
+  Text,
 } from "react-native";
-import { Content, Text, Container } from "native-base";
+import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -717,7 +718,7 @@ class AdObjective extends Component {
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
-                    <Text uppercase style={styles.collectionAdText}>
+                    <Text style={styles.collectionAdText}>
                       {translate("Where are you taking the user ?")}
                     </Text>
                     <View style={styles.topContainer}>
@@ -733,7 +734,6 @@ class AdObjective extends Component {
                         }}
                       >
                         <Text
-                          uppercase
                           style={[
                             this.state.collectionAdLinkForm === 1
                               ? styles.activeText
@@ -765,7 +765,6 @@ class AdObjective extends Component {
                         }}
                       >
                         <Text
-                          uppercase
                           style={[
                             this.state.collectionAdLinkForm === 2
                               ? styles.activeText

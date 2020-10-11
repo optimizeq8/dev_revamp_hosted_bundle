@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   chartText: {
+    textTransform: "uppercase",
     color: globalColors.rum,
     textAlign: "center",
     fontFamily: "montserrat-bold",
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     width: "100%",
+    textTransform: "uppercase",
   },
   chartItems: {
     flexDirection: "row",

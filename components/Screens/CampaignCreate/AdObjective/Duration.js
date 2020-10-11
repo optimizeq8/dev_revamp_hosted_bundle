@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { View, TouchableHighlight, I18nManager, Text } from "react-native";
 import dateFormat from "dateformat";
 
 import CalendarIcon from "../../../../assets/SVGs/Calendar";
