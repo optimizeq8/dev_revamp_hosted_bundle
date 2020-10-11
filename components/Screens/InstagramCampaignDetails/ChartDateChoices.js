@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
-import { Button } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 import dateFormat from "dateformat";
 export default class ChartDateChoices extends Component {

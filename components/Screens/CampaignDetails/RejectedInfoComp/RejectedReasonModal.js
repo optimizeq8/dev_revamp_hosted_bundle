@@ -1,6 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
-import { Text } from "native-base";
+import { View, SafeAreaView, ScrollView, Text } from "react-native";
 import Modal from "react-native-modal";
 import Header from "../../../MiniComponents/Header";
 import { BlurView } from "expo-blur";

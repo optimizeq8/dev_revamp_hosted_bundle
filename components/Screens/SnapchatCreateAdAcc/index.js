@@ -4,11 +4,10 @@ import WebView from "react-native-webview";
 import {
   ActivityIndicator,
   View,
-  Text,
   I18nManager,
   BackHandler,
 } from "react-native";
-import { Card, Button, Container } from "native-base";
+import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";

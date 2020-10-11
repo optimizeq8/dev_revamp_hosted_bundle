@@ -4,31 +4,18 @@ import isEmpty from "lodash/isEmpty";
 import {
   View,
   Animated,
-  TouchableOpacity,
-  Platform,
   BackHandler,
   Image as RNImage,
   ScrollView,
-  I18nManager,
-  TextInput,
-  Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
-import { Content, Text, Container, Footer, Button, Input } from "native-base";
+import { Text } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import * as IntentLauncher from "expo-intent-launcher";
-import Constants from "expo-constants";
-
-import CustomHeader from "../../../../MiniComponents/Header";
-import LoadingModal from "../../../../MiniComponents/LoadingImageModal";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
-
-import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
 const preview = {
   uri:
@@ -38,29 +25,9 @@ const preview = {
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 
-//icons
-// import EyeIcon from "../../../../assets/SVGs/Eye";
-// import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-// import InfoIcon from "../../../../assets/SVGs/InfoIcon";
-// import BackButton from "../../../../assets/SVGs/BackButton";
-import PenIcon from "../../../../../assets/SVGs/Pen";
-import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
-import EyeIcon from "../../../../../assets/SVGs/Eye";
-
-import MediaButtonIcon from "../../../../../assets/SVGs/CameraCircleOutline";
-
 // Style
 import styles from "../../styles/adDesign.styles";
 
-//Functions
-import isEqual from "lodash/isEqual";
-import validateWrapper from "../../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../../GlobalStyles";
 import LowerButton from "../../../../MiniComponents/LowerButton";

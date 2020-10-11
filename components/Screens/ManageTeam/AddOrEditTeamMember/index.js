@@ -9,7 +9,6 @@ import AddMember from "../AddMemberButton";
 import * as actionCreators from "../../../../store/actions";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
-import { Button } from "native-base";
 import { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";

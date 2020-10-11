@@ -5,10 +5,10 @@ import {
   BackHandler,
   ScrollView,
   TouchableOpacity,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 //Redux
 import { connect } from "react-redux";

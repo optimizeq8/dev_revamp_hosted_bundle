@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { View } from "react-native";
-import { Text, Input, Textarea } from "native-base";
+import { Text, Input } from "native-base";
 import GlobalStyles, { globalColors } from "../../../../../GlobalStyles";
 import styles from "./styles";
 import GradientButton from "../../../../MiniComponents/GradientButton";

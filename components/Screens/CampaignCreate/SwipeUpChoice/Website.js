@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView } from "react-native";
+import { View, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import split from "lodash/split";

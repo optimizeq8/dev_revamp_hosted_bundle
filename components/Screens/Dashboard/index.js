@@ -9,12 +9,13 @@ import {
   I18nManager,
   Linking,
   ActivityIndicator,
+  Text,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import * as Updates from "expo-updates";
-import { Button, Text, Container, Icon } from "native-base";
+import { Button, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
