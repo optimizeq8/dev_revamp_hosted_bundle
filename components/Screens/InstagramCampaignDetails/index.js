@@ -334,10 +334,6 @@ class InstagramCampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
-        console.log(
-          "selectedCampaign details",
-          JSON.stringify(selectedCampaign, null, 2)
-        );
         if (
           selectedCampaign.hasOwnProperty("story_creatives") ||
           selectedCampaign.hasOwnProperty("collection_creatives")
