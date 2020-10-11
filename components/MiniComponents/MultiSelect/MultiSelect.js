@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   I18nManager,
 } from "react-native";
-import { Button, Item, Input } from "native-base";
+import { Item, Input } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";

@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { View } from "react-native";
-import { Text, Input } from "native-base";
+import { View, Text } from "react-native";
+import { Input } from "native-base";
 import GlobalStyles, { globalColors } from "../../../../../GlobalStyles";
 import styles from "./styles";
-import GradientButton from "../../../../MiniComponents/GradientButton";
 
 const handleHttp = (networkString, setVal) => {
   if (networkString === "https://") {

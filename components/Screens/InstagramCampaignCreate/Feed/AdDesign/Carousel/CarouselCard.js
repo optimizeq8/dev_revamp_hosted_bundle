@@ -6,7 +6,6 @@ import {
   Image as RNImage,
   TouchableOpacity,
 } from "react-native";
-import { Button, Icon } from "native-base";
 import { Video } from "expo-av";
 import styles from "../../../styles/adDesign.styles";
 import MediaButton from "../MediaButton";

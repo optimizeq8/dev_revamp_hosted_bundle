@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { Text, View, FlatList, ActivityIndicator } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
@@ -14,7 +14,7 @@ import modalStyles from "./ModalStyle";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import LowerButton from "../LowerButton";
-import { Text, Input, Item, Icon } from "native-base";
+import { Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";

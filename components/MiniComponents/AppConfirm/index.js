@@ -1,18 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  BackHandler,
-  ScrollView,
-  Text,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Image, BackHandler, ScrollView, Text } from "react-native";
 import { Item, Input } from "native-base";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
 import Toggle from "../Toggle";
@@ -20,14 +8,12 @@ import Toggle from "../Toggle";
 //styles
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
-import { colors } from "../../GradiantColors/colors";
 
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import LowerButton from "../LowerButton";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import KeyboardShift from "../KeyboardShift";
 
 class index extends Component {
   state = { deep_link_uri: "", deep_link_uriError: "" };

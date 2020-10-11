@@ -8,10 +8,10 @@ import {
   ScrollView,
   StatusBar,
   Modal,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
-import { BlurView } from "@react-native-community/blur";
+import { Content, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
