@@ -313,9 +313,9 @@ class SwipeUpDestination extends Component {
                 }}
               />
             )} */}
-          {/* <Content contentContainerStyle={styles.contentContainer}> */}
-          <View style={styles.content}>{attachmentOptionsCard}</View>
-          {/* </Content> */}
+          <Content contentContainerStyle={styles.contentContainer}>
+            <View style={styles.content}>{attachmentOptionsCard}</View>
+          </Content>
         </Sidemenu>
       </View>
     );
