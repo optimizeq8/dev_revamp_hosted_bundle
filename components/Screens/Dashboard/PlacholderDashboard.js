@@ -82,9 +82,9 @@ export default class PlacholderDashboard extends Component {
                  
                   </Button> */}
                   <View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
-                    <Button style={styles.button}>
+                    <TouchableOpacity style={styles.button}>
                       <ActivityIndicator />
-                    </Button>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

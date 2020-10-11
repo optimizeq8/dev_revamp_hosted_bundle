@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  BackHandler,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
@@ -172,7 +178,7 @@ class ErrorRedirect extends Component {
                 {this.props.navigation.getParam("status", "")}
               </Text>
             </View>
-            <Button
+            <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 if (this.props.navigation.getParam("isWallet") === "1") {
@@ -193,8 +199,8 @@ class ErrorRedirect extends Component {
               }}
             >
               <Text style={styles.buttonText}> {translate("Retry")} </Text>
-            </Button>
-            <Button
+            </TouchableOpacity>
+            <TouchableOpacity
               style={styles.whitebutton}
               onPress={() => {
                 // if (this.props.channel === "") {
@@ -221,7 +227,7 @@ class ErrorRedirect extends Component {
               style={styles.whiteButton}
             >
               <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
-            </Button>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>

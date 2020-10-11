@@ -1,11 +1,5 @@
 import React, { Component, Fragment } from "react";
-import {
-  Text,
-  View,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import MapView, {
   PROVIDER_GOOGLE,
   Circle,
@@ -334,20 +328,22 @@ export default class LocaionMap extends Component {
             </View>
           </View>
           <View style={globalStyles.row}>
-            <Button
+            <TouchableOpacity
+              activeOpacity={0.8}
               onPressOut={() => this.stopTimer()}
               onPressIn={() => this.handleRad(true)}
               style={[styles.mapButtons, styles.leftButton]}
             >
               <Text style={styles.buttonText}>-</Text>
-            </Button>
-            <Button
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.8}
               onPressOut={() => this.stopTimer()}
               onPressIn={() => this.handleRad(false)}
               style={[styles.mapButtons, styles.rightButton]}
             >
               <Text style={styles.buttonText}>+</Text>
-            </Button>
+            </TouchableOpacity>
           </View>
         </View>
 
