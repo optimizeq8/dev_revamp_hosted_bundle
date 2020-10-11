@@ -1,12 +1,11 @@
 import React from "react";
-import { View, Platform, Image } from "react-native";
+import { ActivityIndicator, View, Platform, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
-import { ActivityIndicator } from "react-native-paper";
 import { globalColors } from "../../GlobalStyles";
 
 class MainLoadingScreen extends React.Component {
@@ -28,7 +27,7 @@ class MainLoadingScreen extends React.Component {
             ? heightPercentageToDP(40)
             : heightPercentageToDP(this.props.top),
 
-          alignSelf: "center"
+          alignSelf: "center",
         }}
       >
         {this.props.dash && (
@@ -44,7 +43,7 @@ class MainLoadingScreen extends React.Component {
                 style={{
                   width: 200,
                   height: 200,
-                  bottom: heightPercentageToDP(4)
+                  bottom: heightPercentageToDP(4),
                 }}
                 resizeMode="contain"
               />
@@ -55,14 +54,14 @@ class MainLoadingScreen extends React.Component {
           <ActivityIndicator color={globalColors.orange} size="large" />
         ) : (
           <LottieView
-            ref={animation => {
+            ref={(animation) => {
               this.animation = animation;
             }}
             style={{
               zIndex: 10,
               alignSelf: "center",
               width: widthPercentageToDP(150),
-              height: widthPercentageToDP(150)
+              height: widthPercentageToDP(150),
               // position: "absolute"
             }}
             resizeMode="contain"
@@ -83,6 +82,6 @@ const styles = {
     position: "absolute",
     alignSelf: "center",
     height: heightPercentageToDP(100),
-    width: widthPercentageToDP(100)
-  }
+    width: widthPercentageToDP(100),
+  },
 };

@@ -8,6 +8,7 @@ import {
   ScrollView,
   I18nManager,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -15,7 +16,7 @@ import { BlurView } from "expo-blur";
 import { Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
 
-import { Modal, ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";

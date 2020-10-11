@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler } from "react-native";
+import { ActivityIndicator, View, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { NavigationEvents, SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
-import { ActivityIndicator } from "react-native-paper";
 import { terms, secondTerms } from "../../Data/terms.google.data";
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleAd from "../../../assets/SVGs/GoogleAds";

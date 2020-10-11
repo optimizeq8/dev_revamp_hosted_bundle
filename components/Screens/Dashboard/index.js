@@ -4,11 +4,11 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  TouchableWithoutFeedback,
   BackHandler,
   ScrollView,
   I18nManager,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,7 +22,6 @@ import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
-import { ActivityIndicator } from "react-native-paper";
 // import FilterMenu from "../../MiniComponents/FilterMenu";
 let FilterMenu = null;
 import Axios from "axios";

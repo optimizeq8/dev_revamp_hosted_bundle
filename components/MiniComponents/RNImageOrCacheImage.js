@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Image as RNImage } from "react-native";
+import { Image as RNImage, ActivityIndicator } from "react-native";
 import { Image, CacheManager } from "react-native-expo-image-cache";
-import { ActivityIndicator } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
 const preview = {
   uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
 };
 export default class RNImageOrCacheImage extends Component {
   state = { path: "" };
@@ -30,7 +29,7 @@ export default class RNImageOrCacheImage extends Component {
                 style={{
                   position: "absolute",
                   alignSelf: "center",
-                  top: "30%"
+                  top: "30%",
                 }}
                 color="white"
               />
@@ -43,7 +42,7 @@ export default class RNImageOrCacheImage extends Component {
             resizeMode={resizeMode}
             style={style}
             source={{
-              uri: media
+              uri: media,
             }}
           />
         )}

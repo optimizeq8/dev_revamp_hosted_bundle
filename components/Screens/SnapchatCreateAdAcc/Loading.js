@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
-import { ActivityIndicator } from "react-native-paper";
 //Redux
 import { connect } from "react-redux";
 

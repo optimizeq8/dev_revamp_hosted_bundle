@@ -4,11 +4,11 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { Button, Container } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { ActivityIndicator } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
 
 //icons

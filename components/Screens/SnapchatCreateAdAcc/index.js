@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import WebView from "react-native-webview";
 
-import { View, Text, BackHandler, I18nManager } from "react-native";
+import { ActivityIndicator, View, Text, I18nManager } from "react-native";
 import { Card, Button, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { NavigationEvents, SafeAreaView } from "react-navigation";
-import Loading from "../../MiniComponents/LoadingScreen";
-import { ActivityIndicator } from "react-native-paper";
+import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import Snapchat from "../../../assets/SVGs/Snapchat-Border";
 

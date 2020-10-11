@@ -7,11 +7,12 @@ import {
   BackHandler,
   Linking,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import { Button, Container, Content, Footer } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Modal, ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 
 import { BlurView } from "expo-blur";
 

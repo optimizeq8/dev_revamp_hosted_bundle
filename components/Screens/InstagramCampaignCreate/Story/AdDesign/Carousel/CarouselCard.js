@@ -1,10 +1,15 @@
 import React, { Component } from "react";
-import { Text, View, Image as RNImage, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  Image as RNImage,
+  TouchableOpacity,
+} from "react-native";
 import { Button, Icon } from "native-base";
 import { Video } from "expo-av";
 import styles from "../../../styles/adDesign.styles";
 import MediaButton from "../MediaButton";
-import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../../../store/actions";
 import { globalColors } from "../../../../../../GlobalStyles";

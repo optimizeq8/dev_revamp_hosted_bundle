@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Text, View, TouchableOpacity } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import { Video } from "expo-av";
 import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";
