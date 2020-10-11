@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Alert, Text, ScrollView } from "react-native";
+import { View, Alert, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
 import InputScrollView from "react-native-input-scroll-view";
@@ -305,15 +305,15 @@ class AddOrEditTeamMember extends Component {
                 flex: 0.25,
               }}
             >
-              <Button
+              <TouchableOpacity
                 onPress={this.updateMember}
                 style={styles.deleteTeamMember}
               >
                 <Text style={styles.deleteText}>
                   {this.translate("Update")}
                 </Text>
-              </Button>
-              <Button
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={this.handleDelete}
                 style={[
                   styles.deleteTeamMember,
@@ -323,7 +323,7 @@ class AddOrEditTeamMember extends Component {
                 <Text style={[styles.deleteText]}>
                   {this.translate("Delete")}
                 </Text>
-              </Button>
+              </TouchableOpacity>
             </View>
           )}
         </InputScrollView>

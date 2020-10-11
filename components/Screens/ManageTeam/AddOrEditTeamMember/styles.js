@@ -85,7 +85,7 @@ export default StyleSheet.create({
   deleteTeamMember: {
     marginBottom: 10,
     width: "70%",
-
+    height: 50,
     borderRadius: 50,
     backgroundColor: globalColors.orange,
     alignSelf: "center",
@@ -95,5 +95,7 @@ export default StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 14,
     textTransform: "uppercase",
+    color: "#FFF",
+    textAlign: "center",
   },
 });
