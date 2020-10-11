@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { ActivityIndicator, View, ScrollView, BackHandler } from "react-native";
-import { Card, Button, Text, Container } from "native-base";
+import { Card, Text, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { NavigationEvents, SafeAreaView } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { terms, secondTerms } from "../../Data/terms.google.data";
 import CustomHeader from "../../MiniComponents/Header";
+import GradientButton from "../../MiniComponents/GradientButton";
 import GoogleAd from "../../../assets/SVGs/GoogleAds";
 
 //Redux
@@ -14,6 +15,7 @@ import { connect } from "react-redux";
 
 // Style
 import styles, { htmlStyles } from "./styles";
+import { globalColors } from "../../../GlobalStyles";
 
 class GoogleCreateAdAcc extends Component {
   static navigationOptions = {
@@ -111,13 +113,11 @@ class GoogleCreateAdAcc extends Component {
             </ScrollView>
             <View style={styles.bottomContainer}>
               {this.props.loading ? (
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large" color={globalColors.orange} />
               ) : (
-                <Button
-                  block
-                  dark
-                  style={[styles.button]}
-                  onPress={() => {
+                <GradientButton
+                  style={styles.button}
+                  onPressAction={() => {
                     this.props.create_google_ad_account(
                       {
                         businessid: this.props.mainBusiness.businessid,
@@ -125,9 +125,9 @@ class GoogleCreateAdAcc extends Component {
                       this.props.navigation
                     );
                   }}
-                >
-                  <Text style={styles.buttontext}>{translate("Accept")}</Text>
-                </Button>
+                  uppercase
+                  text={translate("Accept")}
+                />
               )}
             </View>
           </Card>
