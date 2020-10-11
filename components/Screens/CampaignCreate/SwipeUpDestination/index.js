@@ -276,17 +276,17 @@ class SwipeUpDestination extends Component {
 
     return (
       <View style={styles.safeAreaViewContainer}>
-        <Container style={styles.container}>
-          <Sidemenu
-            onChange={this.handleSideMenu}
-            menuPosition={I18nManager.isRTL ? "left" : "right"}
-            disableGestures={true}
-            isOpen={this.state.sidemenustate}
-            menu={this.state.sidemenustate && menu}
-            openMenuOffset={wp(110)}
-            screenProps={this.props.screenProps}
-          >
-            {/* {!this.props.rejCampaign ? (
+        <Sidemenu
+          onChange={this.handleSideMenu}
+          menuPosition={I18nManager.isRTL ? "left" : "right"}
+          disableGestures={true}
+          isOpen={this.state.sidemenustate}
+          menu={this.state.sidemenustate && menu}
+          openMenuOffset={wp(106.5)}
+          // menuContainerStyle={{ width: wp(80) }}
+          screenProps={this.props.screenProps}
+        >
+          {/* {!this.props.rejCampaign ? (
               <TopStepsHeader
                 screenProps={this.props.screenProps}
                 closeButton={false}
@@ -313,11 +313,10 @@ class SwipeUpDestination extends Component {
                 }}
               />
             )} */}
-            <Content contentContainerStyle={styles.contentContainer}>
-              <View style={styles.content}>{attachmentOptionsCard}</View>
-            </Content>
-          </Sidemenu>
-        </Container>
+          {/* <Content contentContainerStyle={styles.contentContainer}> */}
+          <View style={styles.content}>{attachmentOptionsCard}</View>
+          {/* </Content> */}
+        </Sidemenu>
       </View>
     );
   }

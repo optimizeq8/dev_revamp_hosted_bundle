@@ -425,7 +425,10 @@ class Long_Form_Video extends Component {
         }}
         contentContainerStyle={[
           styles.longFormVideoContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
         <View style={styles.longFormVideoContent}>

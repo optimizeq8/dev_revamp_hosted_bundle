@@ -227,7 +227,10 @@ class Website extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
         <InputScrollView

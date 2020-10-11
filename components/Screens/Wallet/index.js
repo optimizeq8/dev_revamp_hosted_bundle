@@ -189,15 +189,15 @@ class Wallet extends Component {
                 gradientDirection={"vertical"}
                 orangeDark={true}
               />
-              {/* <Button
-                full
+              {/* <GradientButton
+               
                 style={styles.button}
                 onPress={() => {
                   // this._handleSubmission();
                 }}
               >
                 <Text style={styles.buttontext}>Request Refund</Text>
-              </Button> */}
+              </GradientButton> */}
             </View>
           )}
           {this.props.walletTransactionListLoading && (

@@ -275,36 +275,37 @@ class Deep_Link extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
-        <View>
-          <View style={styles.deepLinkHeader}>
-            {/* <AppInstallIcon style={styles.icon} /> */}
-            <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>{translate("Deep Link")}</Text>
-              <Text style={styles.subtext}>
-                {translate("Send Snapchatters to a specific page in your app")}
-              </Text>
-            </View>
+        <View style={styles.deepLinkHeader}>
+          {/* <AppInstallIcon style={styles.icon} /> */}
+          <View style={styles.textcontainer}>
+            <Text style={styles.titletext}>{translate("Deep Link")}</Text>
+            <Text style={styles.subtext}>
+              {translate("Send Snapchatters to a specific page in your app")}
+            </Text>
           </View>
-          <AppChoice
-            handleCallaction={this.handleCallaction}
-            navigation={this.props.navigation}
-            selectApp={this.selectApp}
-            listNum={3}
-            attachment={this.state.attachment}
-            callaction={this.state.callaction}
-            swipeUpDestination={this.props.swipeUpDestination}
-            deep_link_uri={this.state.attachment.deep_link_uri}
-            toggleSideMenu={this.props.toggleSideMenu}
-            _handleSubmission={this._handleSubmission}
-            deepLink={true}
-            screenProps={this.props.screenProps}
-            appSelections={{ iosAppSelected, androidAppSelected }}
-            setTheState={this.setTheState}
-          />
         </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          navigation={this.props.navigation}
+          selectApp={this.selectApp}
+          listNum={3}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          swipeUpDestination={this.props.swipeUpDestination}
+          deep_link_uri={this.state.attachment.deep_link_uri}
+          toggleSideMenu={this.props.toggleSideMenu}
+          _handleSubmission={this._handleSubmission}
+          deepLink={true}
+          screenProps={this.props.screenProps}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </View>
     );
   }
