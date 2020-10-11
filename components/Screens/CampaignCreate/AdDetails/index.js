@@ -177,10 +177,12 @@ class AdDetails extends Component {
       );
 
       let recBudget =
-        this.state.campaignInfo.targeting.geos.length * duration * 75;
+        this.state.campaignInfo.targeting.geos.length *
+        duration *
+        this.state.recBudget;
 
       let minValueBudget =
-        this.props.data.minValueBudget *
+        this.state.minValueBudget *
         this.state.campaignInfo.targeting.geos.length;
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
@@ -343,7 +345,8 @@ class AdDetails extends Component {
                 uniq(flatten([savedRegionNames, filterSelectedRegions]));
               return foundCountryReg;
             });
-            let minValueBudget = 25 * rep.targeting.geos.length;
+            let minValueBudget =
+              this.props.data.minValueBudget * rep.targeting.geos.length;
             recBudget *= rep.targeting.geos.length;
             if (rep.targeting.geos.length > 1) {
               rep.targeting.demographics[0].languages.length = 1;

@@ -296,12 +296,12 @@ class InstagramFeedAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            let allCountryRegions = country_regions
-              .find(
-                (country) => country.name === this.props.mainBusiness.country
-              )
-              .regions.map((reg) => reg.key);
-            await this.onSelectedCountryRegionChange(
+            // let allCountryRegions = country_regions
+            //   .find(
+            //     (country) => country.name === this.props.mainBusiness.country
+            //   )
+            //   .regions.map((reg) => reg.key);
+            this.onSelectedCountryRegionChange(
               // [
               country_code
               // ...allCountryRegions,
@@ -952,10 +952,12 @@ class InstagramFeedAdTargetting extends Component {
   handleMultipleCountrySelection = () => {
     if (!this.editCampaign) {
       let recBudget =
-        this.state.campaignInfo.targeting.geo_locations.countries.length * 75;
+        this.state.campaignInfo.targeting.geo_locations.countries.length *
+        this.state.recBudget;
 
       let minValueBudget =
-        25 * this.state.campaignInfo.targeting.geo_locations.countries.length;
+        this.state.minValueBudget *
+        this.state.campaignInfo.targeting.geo_locations.countries.length;
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
