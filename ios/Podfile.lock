@@ -287,6 +287,8 @@ PODS:
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
   - React-jsinspector (0.63.2)
+  - react-native-advertising-id (1.0.11):
+    - React
   - react-native-blur (0.8.0):
     - React
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
@@ -481,6 +483,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
@@ -625,6 +628,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-advertising-id:
+    :path: "../node_modules/react-native-advertising-id"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
@@ -768,6 +773,7 @@ SPEC CHECKSUMS:
   React-jsi: 54245e1d5f4b690dec614a73a3795964eeef13a8
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
+  react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
