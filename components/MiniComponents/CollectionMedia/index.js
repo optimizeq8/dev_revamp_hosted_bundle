@@ -13,11 +13,11 @@ import {
   ScrollView,
   I18nManager,
   Linking,
+  Text,
 } from "react-native";
 import {
   Button,
   Content,
-  Text,
   Item,
   Input,
   Container,

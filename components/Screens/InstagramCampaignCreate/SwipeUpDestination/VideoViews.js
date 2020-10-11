@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler, I18nManager } from "react-native";
-import { Button, Text, Item, Icon } from "native-base";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+  I18nManager,
+} from "react-native";
+import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";

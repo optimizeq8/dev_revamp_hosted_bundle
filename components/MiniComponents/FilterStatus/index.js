@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "native-base";
+import { Text, View } from "react-native";
+import { Button } from "native-base";
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -14,17 +15,17 @@ class FilterStatus extends Component {
       data: [
         {
           label: "All",
-          value: "A"
+          value: "A",
         },
         {
           label: "Paused",
-          value: "PAUSED"
+          value: "PAUSED",
         },
         {
           label: "Active",
-          value: "LIVE"
-        }
-      ]
+          value: "LIVE",
+        },
+      ],
     };
   }
 
@@ -90,17 +91,14 @@ class FilterStatus extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaignList: state.dashboard.campaignList,
   campaignStartSearch: state.dashboard.campaignStartSearch,
   campaignEndSearch: state.dashboard.campaignEndSearch,
-  filterValue: state.dashboard.filterValue
+  filterValue: state.dashboard.filterValue,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query))
+const mapDispatchToProps = (dispatch) => ({
+  onSearch: (query) => dispatch(actionCreators.filterCampaigns(query)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterStatus);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterStatus);

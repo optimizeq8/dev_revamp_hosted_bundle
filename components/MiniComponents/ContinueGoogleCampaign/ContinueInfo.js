@@ -1,6 +1,6 @@
 import React from "react";
-import { View, FlatList } from "react-native";
-import { Content, Text } from "native-base";
+import { View, Text } from "react-native";
+import { Content } from "native-base";
 import GoogleAds from "../../../assets/SVGs/GoogleAds";
 import MediaBox from "../../Screens/CampaignDetails/MediaBox";
 import styles from "./styles";
@@ -17,7 +17,7 @@ import GoogleSEAPreview from "../GoogleSEAPreview";
  * @param {Objec} props
  * @param {Object} campaign the saved data from a previous campaign
  */
-ContinueInfo = props => {
+ContinueInfo = (props) => {
   let { campaign, screenProps } = props;
   const { translate } = screenProps;
 
@@ -33,7 +33,7 @@ ContinueInfo = props => {
         ) : null}
         {campaign.budget !== 0 && (
           <View style={styles.sections}>
-            <Text uppercase style={styles.text}>
+            <Text style={[styles.text, styles.uppercase]}>
               {translate("Budget")}
             </Text>
             <Text style={[globalStyles.numbers, { fontSize: 24 }]}>
@@ -42,7 +42,7 @@ ContinueInfo = props => {
           </View>
         )}
         <View style={styles.sections}>
-          <Text uppercase style={[styles.text, { fontSize: 14 }]}>
+          <Text style={[styles.text, styles.uppercase, { fontSize: 14 }]}>
             {translate("Duration")}
           </Text>
           {campaign.start_time !== "" ? (
@@ -80,8 +80,8 @@ ContinueInfo = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  campaign: state.googleAds
+const mapStateToProps = (state) => ({
+  campaign: state.googleAds,
 });
 
 export default connect(mapStateToProps, null)(ContinueInfo);

@@ -6,8 +6,9 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
+  Text,
 } from "react-native";
-import { Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
 // import BusinessList from "../BusinessList";
@@ -224,10 +225,7 @@ class Menu extends Component {
                 }
               >
                 <Icons.PersonalInfo style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Personal Info")}
                 </Text>
               </TouchableOpacity>
@@ -243,10 +241,7 @@ class Menu extends Component {
                 }}
               >
                 <Icons.BusinessIcon style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Business Info")}
                 </Text>
               </TouchableOpacity>
@@ -277,10 +272,7 @@ class Menu extends Component {
                 }}
               >
                 <Icons.WebsiteIcon width={32} style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("My Website")}
                 </Text>
               </TouchableOpacity>
@@ -294,10 +286,7 @@ class Menu extends Component {
                 }
               >
                 <Icons.Wallet style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Wallet")}
                 </Text>
               </TouchableOpacity>
@@ -311,10 +300,7 @@ class Menu extends Component {
                 }
               >
                 <Icons.TransactionIcon style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Transactions")}
                 </Text>
               </TouchableOpacity>
@@ -328,10 +314,7 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.ChangePassIcon style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Change Password")}
                 </Text>
               </TouchableOpacity>
@@ -346,10 +329,7 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Address")}
                 </Text>
               </TouchableOpacity>
@@ -359,10 +339,7 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.GroupIcon style={styles.icons} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Manage Team")}
                 </Text>
               </TouchableOpacity>
@@ -383,10 +360,7 @@ class Menu extends Component {
                   type="MaterialIcons"
                   style={[styles.icons]}
                 />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Privacy Policy")}
                 </Text>
               </TouchableOpacity>
@@ -410,10 +384,7 @@ class Menu extends Component {
                     // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                   ]}
                 />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Terms & Conditions")}
                 </Text>
               </TouchableOpacity>
@@ -432,10 +403,7 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.LogoutIcon style={[styles.icons]} />
-                <Text
-                  uppercase
-                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
-                >
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Logout")}
                 </Text>
               </TouchableOpacity>

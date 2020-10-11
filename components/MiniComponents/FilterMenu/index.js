@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { View, Text, TouchableHighlight, I18nManager } from "react-native";
 import dateFormat from "dateformat";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { View, I18nManager, Text } from "react-native";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";

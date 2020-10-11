@@ -1,7 +1,7 @@
 //Components
 import React, { Component, createRef } from "react";
-import { View, ScrollView, I18nManager } from "react-native";
-import { Text, Icon, Input, Label, Item, Button } from "native-base";
+import { Text, View, ScrollView, I18nManager } from "react-native";
+import { Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
 

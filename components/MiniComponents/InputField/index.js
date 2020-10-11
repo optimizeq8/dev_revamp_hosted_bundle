@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import styles from "./styles";
 import { Item, Input } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -166,7 +165,6 @@ export default class InputField extends Component {
       >
         <View style={styles.labelView}>
           <Text
-            uppercase
             style={[
               styles.inputLabel,
               this.state.highlight

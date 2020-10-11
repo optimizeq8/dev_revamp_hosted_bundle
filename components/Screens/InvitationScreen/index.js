@@ -5,8 +5,9 @@ import {
   Keyboard,
   Animated,
   TouchableOpacity,
+  Text,
 } from "react-native";
-import { Button, Text, Container, Footer, Content } from "native-base";
+import { Button, Container, Footer, Content } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
