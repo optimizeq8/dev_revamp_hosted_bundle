@@ -77,10 +77,6 @@ export default class PlacholderDashboard extends Component {
             <View padder style={[styles.mainCard, { height: "110%" }]}>
               <View style={styles.sideMenuCard}>
                 <View style={styles.sideMenuTop}>
-                  {/* <Button style={[styles.button, { padding: 63 }]}>
-                    <ActivityIndicator />
-                 
-                  </Button> */}
                   <View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
                     <TouchableOpacity style={styles.button}>
                       <ActivityIndicator />
