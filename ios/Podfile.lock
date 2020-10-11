@@ -405,7 +405,7 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
-  - Segment-Mixpanel (1.6.1):
+  - Segment-Mixpanel (1.7.0):
     - Analytics
     - Mixpanel (~> 3.5)
   - Sentry (5.2.2):
@@ -793,7 +793,7 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   RNVideoEditorSDK: 271682157e429f1df5bf3629d6bcb1143fe14089
-  Segment-Mixpanel: 05d5021ffa0edc37642980ef44e03748ceb804da
+  Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
   UMBarCodeScannerInterface: 017672479f93de88d94c3a50dfb66b5348b65989

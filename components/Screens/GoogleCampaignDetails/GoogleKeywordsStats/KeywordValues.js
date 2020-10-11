@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 
 import styles from "./styles";
 import ClicksIcon from "../../../../assets/SVGs/Performance/Clicks";
@@ -9,7 +9,6 @@ import CTRIcon from "../../../../assets/SVGs/Performance/CTR";
 import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
 import { Small } from "../../../MiniComponents/StyledComponents";
 import globalStyles from "../../../../GlobalStyles";
-import { ScrollView } from "react-native-gesture-handler";
 const kFormatter = (num) => {
   return Math.abs(num) > 999
     ? (Math.abs(num) / 1000).toFixed(1) + "k"

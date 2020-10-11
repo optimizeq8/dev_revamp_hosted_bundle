@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Button } from "native-base";
 // Redux
 import { connect } from "react-redux";
@@ -43,7 +43,7 @@ class FilterStatus extends Component {
         <View style={styles.flexDirectionCol}>
           <Text style={styles.text}> {translate("Active")} </Text>
 
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "LIVE" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
@@ -58,7 +58,7 @@ class FilterStatus extends Component {
         </View>
         <View style={[styles.flexDirectionCol, styles.middleBlock]}>
           <Text style={styles.text}> {translate("Inactive")} </Text>
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "PAUSED" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
@@ -73,7 +73,7 @@ class FilterStatus extends Component {
         </View>
         <View style={styles.flexDirectionCol}>
           <Text style={styles.text}> {translate("All")} </Text>
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "A" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
