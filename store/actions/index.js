@@ -216,3 +216,12 @@ export {
   saveInstgramExistpost,
   get_custom_interests_instagram,
 } from "./instagramCampaignActions";
+
+export {
+  getAudienceList,
+  createAudience,
+  deleteAudience,
+  updateAudience,
+  setAudienceDetail,
+  getAudienceDetail,
+} from "./audienceActions";

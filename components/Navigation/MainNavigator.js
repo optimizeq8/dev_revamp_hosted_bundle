@@ -76,6 +76,8 @@ import InstagramCampaignDetails from "../Screens/InstagramCampaignDetails";
 import ReviewProductDetail from "../Screens/OptimizeWebsite/ReviewProductDetail";
 import MyWebsiteSelectProducts from "../Screens/OptimizeWebsite/SelectProduct";
 import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
+import SnapchatCampaignAudienceList from "../Screens/SnapchatCampaignAudienceList";
+import SnapchatAudienceTagetting from "../Screens/SnapchatAudience";
 
 export default FluidNavigator(
   {
@@ -162,7 +164,7 @@ export default FluidNavigator(
     ReviewProductDetail: ReviewProductDetail,
     MyWebsiteSelectProducts: MyWebsiteSelectProducts,
     MyWebsiteECommerce: MyWebsiteECommerce,
-    SnapchatAudienceList: SnapchatAudienceList,
+    SnapchatAudienceList: SnapchatCampaignAudienceList,
     SnapchatAudienceTagetting: SnapchatAudienceTagetting,
     AddCategory: AddCategory,
     EditCategory: EditCategory,

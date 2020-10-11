@@ -230,6 +230,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
