@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, Alert } from "react-native";
+import { View, ScrollView, Text, Alert, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
 // Redux
@@ -22,8 +22,8 @@ import styles from "./styles";
  *
  */
 class RejectedSnapchatInfo extends Component {
-  state = { isVisible: false, rejectedReason: "", reasonNum: "" };
-  setModalVisible = (visible, rejectedReason = "", reasonNum = "") => {
+  state = { isVisible: false, rejectedReason: [], reasonNum: "" };
+  setModalVisible = (visible, rejectedReason = [], reasonNum = "") => {
     this.setState({ isVisible: visible, rejectedReason, reasonNum });
   };
   moveAmountToWallet = () => {
@@ -61,27 +61,35 @@ class RejectedSnapchatInfo extends Component {
         key={reason}
         reason={reason}
         index={i + 1}
-        setModalVisible={this.setModalVisible}
+        // setModalVisible={this.setModalVisible}
       />
     ));
     return (
       <View style={styles.rejectedOuterView}>
-        <ScrollView
-          contentContainerStyle={styles.contentStyle}
-          nestedScrollEnabled={true}
-        >
-          <View style={styles.rejectedHeader}>
-            <Rejected />
-            <Text uppercase style={styles.adRejectedTitle}>
-              {translate("Ad Rejected")}
-            </Text>
-            <Text style={styles.hereReasonsText}>
-              {translate("Here Are The Reasons") + ":"}
-            </Text>
+        <View style={{ width: "100%", alignItems: "center" }}>
+          <Rejected />
+          <Text uppercase style={styles.adRejectedTitle}>
+            {translate("Ad Rejected")}
+          </Text>
+          <Text style={styles.hereReasonsText}>
+            {translate("Here Are The Reasons") + ":"}
+          </Text>
+          <ScrollView
+            contentContainerStyle={[
+              styles.contentStyle,
+              styles.rejectedReasonContainer,
+            ]}
+            nestedScrollEnabled={true}
+          >
             {rejReasons}
-          </View>
-        </ScrollView>
-
+            <TouchableOpacity
+              style={styles.rejectedInfoButton}
+              onPress={() => this.setModalVisible(true, review_status_reason)}
+            >
+              <Info />
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
         {selectedCampaign.campaign_end === "0" && (
           <View style={styles.rejectedButtonView}>
             <CustomButtons

@@ -43,7 +43,7 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 15,
     color: "#fff",
-    width: "70%",
+    width: "90%",
     alignSelf: "center",
   },
   rejectedInfoButton: {
@@ -54,6 +54,8 @@ export default StyleSheet.create({
   rejectedReasonView: {
     paddingHorizontal: 20,
     paddingVertical: 15,
+    display: "flex",
+    flexDirection: "row",
   },
   hereReasonsText: {
     fontSize: 14,
@@ -96,4 +98,10 @@ export default StyleSheet.create({
     width: 230,
   },
   rejectedButtonView: { display: "flex", flexDirection: "row" },
+  reasonView: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    marginVertical: 5,
+  },
 });
