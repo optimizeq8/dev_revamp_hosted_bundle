@@ -60,7 +60,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
-
+import GradientButton from "../../../MiniComponents/GradientButton";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -233,6 +233,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
@@ -1862,5 +1863,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
+  getAudienceList: () => dispatch(actionCreators.getAudienceList()),
+  createAudience: (audience, navigate) =>
+    dispatch(actionCreators.createAudience(audience, navigate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
