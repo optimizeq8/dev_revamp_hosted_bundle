@@ -6,7 +6,7 @@ import MapView, {
   Marker,
   Callout,
 } from "react-native-maps";
-import { Button, Icon } from "native-base";
+import { Icon } from "native-base";
 import LowerButton from "../LowerButton";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";

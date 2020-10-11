@@ -5,7 +5,6 @@ import * as Animatable from "react-native-animatable";
 import LottieView from "lottie-react-native";
 import { BlurView } from "expo-blur";
 import { View, Text, Platform, I18nManager, Linking } from "react-native";
-import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";

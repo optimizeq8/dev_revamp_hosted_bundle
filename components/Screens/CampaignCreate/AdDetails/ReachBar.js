@@ -5,7 +5,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 //Styles
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";

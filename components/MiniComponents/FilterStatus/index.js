@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Button } from "native-base";
+
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
