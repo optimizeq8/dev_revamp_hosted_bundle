@@ -6,6 +6,18 @@ import {
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
+  scrollViewStyle: { maxHeight: "100%" },
+  scrollViewContentContainerStyle: { height: hp(115) },
+  alertIconStyle: { fontSize: 35, color: "#fff" },
+  headerTitleStyle: {
+    textAlign: "left",
+    fontSize: 15,
+    paddingTop: 3,
+    flex: 1,
+  },
+  headerContainerStyle: { height: 50 },
+  toggleView: { alignSelf: "center" },
+  safeAreaView: { height: "100%" },
   container: {
     // height: "100%",
     backgroundColor: "#000",
