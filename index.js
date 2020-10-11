@@ -1,4 +1,4 @@
-import "./logbox";
+// import "./logbox";
 import { registerRootComponent } from "expo";
 import App from "./App";
 
