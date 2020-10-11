@@ -37,6 +37,7 @@ export default StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14,
+    textTransform: "uppercase",
   },
   titleHeading: {
     textAlign: "left",
@@ -44,6 +45,7 @@ export default StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     lineHeight: 29,
+    textTransform: "uppercase",
   },
   subHeadings: {
     textAlign: "center",

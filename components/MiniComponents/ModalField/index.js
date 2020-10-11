@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import styles from "./styles";
 import { Item, Icon } from "native-base";
 import GlobalStyles from "../../../GlobalStyles";
@@ -47,7 +46,7 @@ export default class ModalField extends Component {
       setModalVisible,
       disabled,
       valueText,
-      valueError
+      valueError,
     } = this.props;
 
     return (
@@ -58,10 +57,7 @@ export default class ModalField extends Component {
         animation={valueError ? "shake" : ""}
       >
         <View style={styles.labelView}>
-          <Text
-            uppercase
-            style={[styles.inputLabel, GlobalStyles.whiteTextColor]}
-          >
+          <Text style={[styles.inputLabel, GlobalStyles.whiteTextColor]}>
             {translate(label)}
           </Text>
         </View>
@@ -90,5 +86,5 @@ ModalField.propTypes = {
   //the function that opens the modal
   setModalVisible: PropTypes.func,
   //the value that shows on the input field when modal is being used
-  valueText: PropTypes.string
+  valueText: PropTypes.string,
 };

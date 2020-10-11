@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity, I18nManager } from "react-native";
-import { Button, Text, Item, Input } from "native-base";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  I18nManager,
+} from "react-native";
+import { Button, Item, Input } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";

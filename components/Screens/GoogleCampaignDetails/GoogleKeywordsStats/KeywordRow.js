@@ -22,7 +22,7 @@ export default (props) => {
         <Text
           uppercase
           numberOfLines={1}
-          style={[styles.contsentStyle, { flex: 1 }]}
+          style={[styles.contentStyle, { flex: 1 }]}
         >
           {content.keyword}
         </Text>

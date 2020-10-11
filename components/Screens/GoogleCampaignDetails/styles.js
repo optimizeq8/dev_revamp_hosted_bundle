@@ -472,12 +472,14 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17,
+    textTransform: "uppercase",
   },
   chartTextNum: {
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 16,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   chartItems: {
     flexDirection: "row",

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BackHandler } from "react-native";
+import { BackHandler, Text } from "react-native";
 import isEmpty from "lodash/isEmpty";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";

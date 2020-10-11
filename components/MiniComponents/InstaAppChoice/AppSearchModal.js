@@ -197,7 +197,6 @@ export default class AppSearchModal extends Component {
                       height={50}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },
@@ -214,7 +213,6 @@ export default class AppSearchModal extends Component {
                       style={{ color: "#fff" }}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },

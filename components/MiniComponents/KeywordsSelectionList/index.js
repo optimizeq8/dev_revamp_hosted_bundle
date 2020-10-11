@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
-import { Text, Icon, Item, Input } from "native-base";
+import { Icon, Item, Input } from "native-base";
 import styles from "./styles";
 import isArray from "lodash/isArray";
 import isUndefined from "lodash/isUndefined";

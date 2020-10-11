@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 30,
     paddingHorizontal: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -16,7 +16,8 @@ export default StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    marginBottom: -10
+    marginBottom: -10,
+    textTransform: "uppercase",
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -26,7 +27,7 @@ export default StyleSheet.create({
     width: "100%",
     paddingVertical: 15,
     borderBottomColor: "transparent",
-    height: 50
+    height: 50,
   },
   labelView: {
     borderTopLeftRadius: 150,
@@ -38,14 +39,14 @@ export default StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   downicon: {
     fontSize: 20,
     color: "#fff",
-    marginLeft: -20
+    marginLeft: -20,
   },
   modalBar: {
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 });
