@@ -11,6 +11,13 @@ export const colors = {
   background2: "#751AFF",
 };
 const styles = StyleSheet.create({
+  horizontalDivider: {
+    borderWidth: 0.3,
+    borderColor: "#0003",
+    display: "flex",
+    height: 40,
+    alignSelf: "center",
+  },
   container: {
     backgroundColor: "transparent",
     marginTop: 0,
@@ -64,6 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     justifyContent: "center",
     flex: 1,
+    marginHorizontal: 0,
   },
   subtext: {
     bottom: 5,
@@ -567,6 +575,8 @@ const styles = StyleSheet.create({
   },
   saveText: {
     fontFamily: "montserrat-bold",
+    color: "#FFF",
+    textAlign: "center",
   },
 });
 export const codeFieldStyle = StyleSheet.create({
