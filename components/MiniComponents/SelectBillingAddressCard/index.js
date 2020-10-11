@@ -1,7 +1,5 @@
 import React from "react";
-import { View } from "react-native";
-import isEqual from "lodash/isEqual";
-import { Button, Text } from "native-base";
+import { View, TouchableOpacity, Text } from "react-native";
 
 // Style
 import styles from "./styles";
@@ -14,8 +12,7 @@ class SelectBillingAddressCard extends React.Component {
   render() {
     return (
       <View style={styles.mainCard}>
-        <Button
-          full
+        <TouchableOpacity
           style={styles.button}
           onPress={() => {
             //  this.props.navigation.navigate("PaymentForm", {
@@ -27,16 +24,15 @@ class SelectBillingAddressCard extends React.Component {
           <Text style={styles.buttontext}>
             Select Existing Billing Address{" "}
           </Text>
-        </Button>
-        <Button
-          full
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.button}
           onPress={() => {
             // this._handleSubmission();
           }}
         >
           <Text style={styles.buttontext}>Create New Address</Text>
-        </Button>
+        </TouchableOpacity>
       </View>
     );
   }
