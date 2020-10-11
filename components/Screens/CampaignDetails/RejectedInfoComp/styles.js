@@ -104,4 +104,5 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginVertical: 5,
   },
+  modalView: { margin: 0 },
 });

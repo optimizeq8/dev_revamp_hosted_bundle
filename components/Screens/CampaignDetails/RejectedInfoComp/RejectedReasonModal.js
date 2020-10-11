@@ -17,7 +17,7 @@ export default (props) => {
       animationIn={"fadeIn"}
       animationOut={"fadeOut"}
       isVisible={isVisible}
-      style={{ margin: 0 }}
+      style={styles.modalView}
     >
       <BlurView intensity={95} tint="dark" style={{ height: "100%" }}>
         <SafeAreaView />
@@ -32,10 +32,7 @@ export default (props) => {
             rejectedReason.length > 0 &&
             rejectedReason.map((reason, index) => (
               <View style={styles.reasonView} key={index}>
-                <Text
-                  uppercase
-                  style={[styles.reasonTitle, styles.rejectReasonWord]}
-                >
+                <Text style={[styles.reasonTitle, styles.rejectReasonWord]}>
                   {index + 1}
                   {".  "}
                 </Text>
