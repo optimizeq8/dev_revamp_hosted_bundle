@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
     textAlign: "center",
     fontSize: 21,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
@@ -235,12 +235,12 @@ const styles = StyleSheet.create({
   },
   kdText: {
     fontSize: 9,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     paddingRight: 2,
   },
   kdAmountText: {
     fontSize: 13,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
   },
   mastercardImage: {
     width: 250,

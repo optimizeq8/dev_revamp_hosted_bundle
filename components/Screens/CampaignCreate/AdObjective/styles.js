@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10
   },
   date: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     color: "#FF9D00",
     alignItems: "center",
     fontSize: 14,

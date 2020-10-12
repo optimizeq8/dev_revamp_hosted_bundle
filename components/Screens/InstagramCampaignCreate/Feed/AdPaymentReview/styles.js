@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
   kdText: {
     fontSize: 11,
     color: "#C6C6C6",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
   },
   kdAmountText: {
     fontSize: 13,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     paddingLeft: 4,
     color: "#C6C6C6",
   },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   money: {
     color: "#FF9D00",
     fontSize: 21,
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
   },
   feesAmountText: {
     color: "#fff",

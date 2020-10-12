@@ -209,7 +209,7 @@ class Menu extends Component {
                     { fontFamily: "montserrat-regular" },
                   ]}
                 >
-                  {"Invite received "}
+                  {translate("Invite received")}
                 </Text>
               ) : null}
             </GradientButton>

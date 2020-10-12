@@ -916,7 +916,6 @@ class InstagramFeedAdTargetting extends Component {
 
   // For picker not to crash
   onSelectedCountryRegionChange = (item) => {
-    console.log("item", item);
     let replace = cloneDeep(this.state.campaignInfo);
 
     // check if country exist in array remove it else add country and show regions for that country

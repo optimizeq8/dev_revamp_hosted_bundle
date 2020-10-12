@@ -1408,7 +1408,7 @@ const strings = {
   "Post Engagement": "التفاعل مع المنشور",
   "Get more people to install your app":
     "إحصل على المزيد من المستخدمين لتطبيقك",
-  "Instagram Story": "القصص في الانستقرام - Instagram Dtory",
+  "Instagram Story": "القصص في الانستقرام - Instagram Story",
   Compose: "إنشاء",
   "Single Image": "صورة واحدة",
   Carousel: "Carousel",
