@@ -440,6 +440,14 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
+    if (source_action === "a_move_amount_to_wallet") {
+      this.props.getCampaignList(
+        this.props.mainBusiness.businessid,
+        this.increasePage,
+        this.signal.token
+      );
+    }
+
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
   };

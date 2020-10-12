@@ -1598,7 +1598,7 @@ export const verifyOTPCode = (code) => {
  * @param {*} campaign_id
  */
 export const moveRejectedAdAmountToWallet = (campaign_id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     createBaseUrl()
       .post(`moveAmountToWallet`, {
         campaign_id,
