@@ -5,57 +5,58 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   safeArea: {
     height: "100%",
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   mainContainer: {
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   container: {
     backgroundColor: "#0000",
     overflow: "hidden",
     width: "100%",
     height: "100%",
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
-    flex: 1
+    flex: 1,
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    paddingVertical: 10
+    paddingVertical: 10,
+    textTransform: "uppercase",
   },
 
   targetList: {
     flexDirection: "column",
     marginHorizontal: 40,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 8
+    marginVertical: 8,
   },
   icon: {
     alignSelf: "center",
     color: globalColors.orange,
-    fontSize: 30
+    fontSize: 30,
   },
   menutext: {
     paddingHorizontal: 15,
     fontSize: 16,
     fontFamily: "montserrat-bold",
     textAlign: "left",
-    color: "#fff"
+    color: "#fff",
   },
   menudetails: {
     textAlign: "left",
@@ -63,11 +64,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    color: "#FF9D00"
+    color: "#FF9D00",
   },
   keywordsColumn: {
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   editButton: {
     overflow: "hidden",
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     paddingBottom: 0,
     borderColor: "#fff",
-    borderWidth: 1
+    borderWidth: 1,
   },
   editButtonText: {
     marginRight: 0,
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     alignSelf: "center",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   keywordButton: {
     overflow: "hidden",
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     margin: 3,
     paddingTop: 0,
     paddingRight: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   keywordButtonText: {
     marginRight: 0,
@@ -112,18 +113,18 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     alignSelf: "center",
     color: "#fff",
-    textAlign: "center"
+    textAlign: "center",
   },
   xIcon: {
     color: "#fff",
     fontSize: 20,
-    marginRight: 10
+    marginRight: 10,
   },
   keywordScrollView: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
     // marginHorizontal: 40
     // marginBottom: heightPercentageToDP(35)
     // height: "10%"
@@ -140,15 +141,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    elevation: -1
+    elevation: -1,
   },
   popupOverlay: {
-    height: "100%"
+    height: "100%",
   },
   proceedButtonRTL: {
     width: 65,
-    height: 65
-  }
+    height: 65,
+  },
 });
 
 export default styles;

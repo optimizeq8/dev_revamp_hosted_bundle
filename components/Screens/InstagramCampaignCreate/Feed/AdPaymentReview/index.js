@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ImageBackground, View, BackHandler } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { ImageBackground, Text, View, BackHandler } from "react-native";
+import { Content, Container } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";

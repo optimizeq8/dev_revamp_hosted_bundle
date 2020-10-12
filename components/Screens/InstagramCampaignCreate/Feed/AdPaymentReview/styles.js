@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
   },
   budgetDollarText: {
     color: "#FFFFFF",
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-medium-english",
     fontSize: 14,
   },
   budgetAmountText: {
     color: "#FF9D00",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 24,
   },
   contentContainerStyle: {

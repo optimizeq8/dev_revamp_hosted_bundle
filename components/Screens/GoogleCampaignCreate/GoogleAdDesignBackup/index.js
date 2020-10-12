@@ -8,8 +8,9 @@ import {
   ScrollView,
   TouchableOpacity,
   I18nManager,
+  Text,
 } from "react-native";
-import { Text, Item, Input, Container, Textarea } from "native-base";
+import { Item, Input, Container, Textarea } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, FlatList } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { SafeAreaView } from "react-navigation";
+import { View } from "react-native";
 import Axios from "axios";
 import countriesBillingAddress from "../../Data/countries.billingAddress";
-import SearchResault from "./SearchResault";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import PredefinedPlaces from "./PredefinedPlaces";
 import { Icon } from "native-base";

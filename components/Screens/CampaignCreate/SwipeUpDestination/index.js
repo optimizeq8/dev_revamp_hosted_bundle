@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { View, BackHandler, I18nManager } from "react-native";
 import { Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
-import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
 import App_Install from "../SwipeUpChoice/App_Install";

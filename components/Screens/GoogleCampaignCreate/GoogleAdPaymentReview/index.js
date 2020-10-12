@@ -4,7 +4,6 @@ import { Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
-import CustomHeader from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
 // Style

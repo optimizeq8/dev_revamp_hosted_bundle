@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     paddingVertical: 0,
+    textTransform: "uppercase",
   },
   deepLinkContainer: {
     flex: 1,

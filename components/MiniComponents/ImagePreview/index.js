@@ -12,7 +12,6 @@ import {
   I18nManager,
 } from "react-native";
 import { Container, Content } from "native-base";
-import RNImageOrCacheImage from "../RNImageOrCacheImage";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
 import ImageViewer from "react-native-image-zoom-viewer";
