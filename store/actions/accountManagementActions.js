@@ -1071,7 +1071,7 @@ export const crashAppForSpamUser = () => {
             source: "suspicous_user",
             source_action: "a_app_crash",
           });
-          NavigationService.navigate("Dashboard", {
+          NavigationService.navigate("SuspendedWarning", {
             source: "app_crash",
             source_action: "a_app_crash",
           });

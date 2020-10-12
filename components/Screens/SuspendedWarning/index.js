@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import analytics from "@segment/analytics-react-native";
 import {
   SafeAreaView,
   NavigationActions,
   StackActions,
+  NavigationEvents,
 } from "react-navigation";
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
@@ -13,6 +15,14 @@ import CustomHeader from "../../MiniComponents/Header";
 //styles
 import styles from "./styles";
 export default class SuspendedWarning extends Component {
+  onDidFocus = () => {
+    const source = this.props.navigation.getParam("source", "");
+    const source_action = this.props.navigation.getParam("source_action", "");
+    analytics.track("suspended_warning", {
+      source,
+      source_action,
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -21,6 +31,7 @@ export default class SuspendedWarning extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.popupOverlay}>
           <View
             style={{
@@ -46,15 +57,19 @@ export default class SuspendedWarning extends Component {
             <GradientButton
               style={styles.button}
               onPressAction={() => {
-                let continueRoutes = ["Dashboard", "MessengerLoading"].map(
-                  (route) =>
-                    NavigationActions.navigate({
-                      routeName: route,
-                    })
+                let continueRoutes = [
+                  // "Dashboard",
+                  "Messenger",
+                ].map((route) =>
+                  NavigationActions.navigate({
+                    routeName: route,
+                  })
                 );
                 //resets the navigation stack
                 resetAction = StackActions.reset({
-                  index: continueRoutes.length - 1, //index of the last screen route
+                  index: 0,
+
+                  // continueRoutes.length - 1, //index of the last screen route
                   actions: continueRoutes,
                 });
 
@@ -64,7 +79,7 @@ export default class SuspendedWarning extends Component {
               text={translate("Get in touch")}
               uppercase={true}
             />
-            <GradientButton
+            {/* <GradientButton
               transparent={true}
               style={styles.whitebutton}
               onPressAction={() => {
@@ -73,7 +88,7 @@ export default class SuspendedWarning extends Component {
               textStyle={styles.whitebuttontext}
               text={translate("Go Back")}
               uppercase={true}
-            />
+            /> */}
           </View>
         </View>
       </SafeAreaView>
