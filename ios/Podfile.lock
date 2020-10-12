@@ -112,15 +112,15 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.21.1)
+  - imglyKit (10.21.2)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
   - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.21.1):
-    - imglyKit (= 10.21.1)
+  - PhotoEditorSDK (10.21.2):
+    - imglyKit (= 10.21.2)
   - RCTRequired (0.63.2)
   - RCTTypeSafety (0.63.2):
     - FBLazyVector (= 0.63.2)
@@ -409,10 +409,10 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
-  - Segment-Adjust (3.0.0):
+  - Segment-Adjust (3.1.0):
     - Adjust (~> 4.23)
     - Analytics
-  - Segment-Mixpanel (1.6.1):
+  - Segment-Mixpanel (1.7.0):
     - Analytics
     - Mixpanel (~> 3.5)
   - Sentry (5.2.2):
@@ -435,8 +435,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.3.0)
   - UMTaskManagerInterface (5.3.0)
-  - VideoEditorSDK (10.21.1):
-    - imglyKit (= 10.21.1)
+  - VideoEditorSDK (10.21.2):
+    - imglyKit (= 10.21.2)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -757,12 +757,12 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: f762f3a8b7a062be4efe4b62bc1407d6295af900
+  imglyKit: d0620363736f20e19f71eb5ff67377ff48af97d7
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: 1d8cb444ca7c9e76d2dd5f87b24101a8053ca93f
+  PhotoEditorSDK: e91f4eedbc013e541843a823d0d594c874214c09
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
   React: e1c65dd41cb9db13b99f24608e47dd595f28ca9a
@@ -806,8 +806,8 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   RNVideoEditorSDK: 271682157e429f1df5bf3629d6bcb1143fe14089
-  Segment-Adjust: 36cb0acaefdbc13ae0e6b99213d4836e40ece18d
-  Segment-Mixpanel: 05d5021ffa0edc37642980ef44e03748ceb804da
+  Segment-Adjust: 3dd5e37785aff1aed6103e4cd00ec445b5b88f12
+  Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
   UMBarCodeScannerInterface: 017672479f93de88d94c3a50dfb66b5348b65989
@@ -822,7 +822,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 61ae88818058b7849bbf5b79bf97872cb3c8e0eb
   UMSensorsInterface: 49bea41dcfcc041f0bbab27cfe4a6006f1dde0c0
   UMTaskManagerInterface: 6cad5929dbc0a5b986ad4d77caac497d4de730a7
-  VideoEditorSDK: ca58c1298db2910182111dfa946cfa49a7a5c78a
+  VideoEditorSDK: 0dcdde1a786c79ad0391a921e198b1722ec61f01
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
 PODFILE CHECKSUM: 9f748cd0cdfdeb7f6ae227d45963dbf73a522aa1
