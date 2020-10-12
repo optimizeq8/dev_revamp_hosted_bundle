@@ -681,7 +681,14 @@ class AdObjective extends Component {
                   handleDuration={this.handleDuration}
                   duration={this.state.duration}
                   screenProps={this.props.screenProps}
+                  disabled={this.state.duration === 3}
                 />
+                {this.state.duration === 3 && (
+                  <Text style={styles.minDurationText}>
+                    {translate("Minimum Duration is {{n}} days", { n: 3 })}
+                  </Text>
+                )}
+
                 <Animatable.View
                   onAnimationEnd={() =>
                     this.setState({

@@ -5,6 +5,8 @@ import styles from "./styles";
 export default class CampaignDuration extends Component {
   render() {
     const { translate } = this.props.screenProps;
+    const { disabled } = this.props;
+
     return (
       <View style={styles.durationContainer}>
         <Icon type="AntDesign" name="clockcircleo" style={{ color: "#fff" }} />
@@ -22,7 +24,12 @@ export default class CampaignDuration extends Component {
               onLongPress={() => this.props.handleDuration(true)}
               onPress={() => this.props.handleDuration(true, true)}
               delayLongPress={75}
-              style={[styles.durButton, styles.leftButton]}
+              style={[
+                styles.durButton,
+                styles.leftButton,
+                disabled && { opacity: 0.7 },
+              ]}
+              disabled={disabled}
             >
               <Text style={styles.buttonText}>-</Text>
             </Button>

@@ -553,7 +553,13 @@ class GoogleAdInfo extends Component {
                 handleDuration={this.handleDuration}
                 duration={this.state.duration}
                 screenProps={this.props.screenProps}
+                disabled={this.state.duration === 7}
               />
+              {this.state.duration === 7 && (
+                <Text style={styles.minDurationText}>
+                  {translate("Minimum Duration is {{n}} days", { n: 7 })}
+                </Text>
+              )}
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({
