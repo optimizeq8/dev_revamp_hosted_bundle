@@ -144,9 +144,12 @@ class ErrorRedirect extends Component {
           <View style={styles.view}>
             <ErrorIcon fill="#E26A65" width={80} height={80} />
 
-            <Text style={styles.title}> Sorry </Text>
+            <Text style={styles.title}> {translate("Sorry")} </Text>
             <Text style={styles.errorText}>
-              {"There seems to be a problem with\nyour payment method"}.
+              {translate(
+                "There seems to be a problem with\nyour payment method"
+              )}
+              .
             </Text>
             <View style={styles.details}>
               <Text style={styles.text}>
@@ -193,48 +196,9 @@ class ErrorRedirect extends Component {
                   });
                 }
               }}
-              onPress={() => {
-                if (this.props.navigation.getParam("isWallet") === "1") {
-                  this.props.navigation.navigate("PaymentForm", {
-                    addingCredits: true,
-                    amount: this.props.navigation.getParam("amount", 0),
-                    source: "payment_mode",
-                    source_action: "a_retry_payment",
-                  });
-                } else {
-                  this.props.navigation.navigate("PaymentForm", {
-                    addingCredits: false,
-                    source: "payment_mode",
-                    source_action: "a_retry_payment",
-                    amount: this.props.navigation.getParam("amount", 0),
-                  });
-                }
-              }}
             />
             <GradientButton
               onPressAction={() => {
-                // if (this.props.channel === "") {
-                //   this.props.resetCampaignInfo();
-                //   this.props.reset_transaction_reducer();
-                // }
-                // if (this.props.channel === "google") {
-                //   this.props.rest_google_campaign_data();
-                //   this.props.reset_transaction_reducer();
-                // }
-                this.props.navigation.reset(
-                  [
-                    NavigationActions.navigate({
-                      routeName: "Dashboard",
-                      params: {
-                        source: "payment_end",
-                        source_action: "a_go_to_home",
-                      },
-                    }),
-                  ],
-                  0
-                );
-              }}
-              onPress={() => {
                 // if (this.props.channel === "") {
                 //   this.props.resetCampaignInfo();
                 //   this.props.reset_transaction_reducer();

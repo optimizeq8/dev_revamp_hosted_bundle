@@ -79,16 +79,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 14,
-    fontFamily: "montserrat-regular",
-  },
-  whiteButtonText: {
-    color: "#751AFF",
-    fontSize: 14,
-    fontFamily: "montserrat-regular",
-  },
+
   title: {
     marginTop: 15,
     color: "#fff",
