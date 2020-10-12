@@ -19,13 +19,9 @@ import GlobalStyles from "../../../../GlobalStyles";
 
 //Functions
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import isNull from "lodash/isNull";
-import isUndefined from "lodash/isUndefined";
 
 //Redux
 import { connect } from "react-redux";
-import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {

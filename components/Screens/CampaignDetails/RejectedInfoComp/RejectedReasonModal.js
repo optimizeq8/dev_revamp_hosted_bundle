@@ -10,7 +10,7 @@ import styles from "./styles";
  */
 export default (props) => {
   let { rejectedReason, isVisible, setModalVisible, screenProps } = props;
-  // const { translate } = props.screenProps;
+  const { translate } = screenProps;
   return (
     <Modal
       animationIn={"fadeIn"}

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { I18nManager, StyleSheet } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
 
 export default StyleSheet.create({
@@ -17,17 +17,17 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   reasonTitle: {
-    textAlign: "left",
+    // textAlign: "left",
     color: globalColors.orange,
     textTransform: "uppercase",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 13,
     marginBottom: 5,
   },
   rejectedReasonText: {
-    textAlign: "left",
+    // textAlign: "left",
     fontSize: 12,
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     color: "#fff",
     lineHeight: 16,
     textTransform: "uppercase",
@@ -39,8 +39,8 @@ export default StyleSheet.create({
     width: "75%",
   },
   rejectedModalReasonText: {
-    textAlign: "left",
-    fontFamily: "montserrat-regular",
+    // textAlign: "left",
+    fontFamily: "montserrat-regular-english",
     fontSize: 15,
     color: "#fff",
     width: "90%",
@@ -55,7 +55,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     display: "flex",
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
   },
   hereReasonsText: {
     fontSize: 14,
@@ -101,7 +101,7 @@ export default StyleSheet.create({
   reasonView: {
     display: "flex",
     alignItems: "flex-start",
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     marginVertical: 5,
   },
   modalView: { margin: 0 },

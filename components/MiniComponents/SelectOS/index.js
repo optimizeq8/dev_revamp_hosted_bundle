@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import LocationIcon from "../../../assets/SVGs/Location";
 import { Icon } from "native-base";
 import styles from "../MultiSelect/styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem";
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
