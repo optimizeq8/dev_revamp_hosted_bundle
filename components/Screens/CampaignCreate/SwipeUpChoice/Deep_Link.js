@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
-import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
-import CustomHeader from "../../../MiniComponents/Header";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -23,7 +18,6 @@ import * as actionsCreators from "../../../../store/actions";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class Deep_Link extends Component {
   static navigationOptions = {

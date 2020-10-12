@@ -7,10 +7,10 @@ import {
   BackHandler,
   Image as RNImage,
   ScrollView,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
-import { Text } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";

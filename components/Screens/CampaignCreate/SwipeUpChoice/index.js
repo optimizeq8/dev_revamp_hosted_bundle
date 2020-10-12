@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Content, Container, View, Text, Icon } from "native-base";
+import { NavigationEvents } from "react-navigation";
+import { View } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import CustomeHeader from "../../../MiniComponents/Header";
-import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
 import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
@@ -16,8 +14,6 @@ import WhatsApp from "./WhatsApp";
 
 //Redux
 import { connect } from "react-redux";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { globalColors } from "../../../../GlobalStyles";
 // import * as actionCreators from "../../../../store/actions";
 
 class SwipeUpChoice extends Component {

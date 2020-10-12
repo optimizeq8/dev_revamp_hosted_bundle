@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  I18nManager,
-} from "react-native";
-import { Content, Text, Container } from "native-base";
+import { View, BackHandler, I18nManager } from "react-native";
+import { Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";

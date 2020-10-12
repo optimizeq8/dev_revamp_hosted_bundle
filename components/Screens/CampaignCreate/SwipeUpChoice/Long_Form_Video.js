@@ -6,7 +6,6 @@ import {
   BackHandler,
   ScrollView,
 } from "react-native";
-import { Button, Item, Icon, ActionSheet } from "native-base";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";

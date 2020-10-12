@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Button, Text, Container, Item, Input } from "native-base";
+import { View, Text } from "react-native";
+import { Button, Container, Item, Input } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import PhoneNo from "../Signup/PhoneNo";
 import KeyboardShift from "../../MiniComponents/KeyboardShift";
@@ -17,7 +17,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 class GetInviteCode extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
@@ -27,20 +27,20 @@ class GetInviteCode extends Component {
     emailError: "",
     country_name: "",
     name_error: "",
-    name: ""
+    name: "",
   };
 
-  _getMobile = info => {
+  _getMobile = (info) => {
     info.valid
       ? this.setState({
           mobile: info.mobile,
           country_code: info.country_code,
-          country_name: info.country_name
+          country_name: info.country_name,
         })
       : this.setState({
           mobile: "",
           country_code: "",
-          country_name: ""
+          country_name: "",
         });
   };
   _handleGetInviteCode = () => {
@@ -53,7 +53,7 @@ class GetInviteCode extends Component {
       showMessage({
         message: translate("Please enter your valid info!"),
         type: "warning",
-        position: "top"
+        position: "top",
       });
     } else {
       this.props.requestInvitationCode({
@@ -61,7 +61,7 @@ class GetInviteCode extends Component {
         mobile: this.state.mobile,
         email: this.state.email,
         country_name: this.state.country_name,
-        name: this.state.name
+        name: this.state.name,
       });
     }
   };
@@ -82,9 +82,9 @@ class GetInviteCode extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   style={styles.inputText}
-                  onChangeText={name => {
+                  onChangeText={(name) => {
                     this.setState({
-                      name
+                      name,
                     });
                   }}
                   onBlur={() => {
@@ -92,7 +92,7 @@ class GetInviteCode extends Component {
                       showMessage({
                         message: translate("Please enter your name"),
                         type: "warning",
-                        position: "top"
+                        position: "top",
                       });
                     }
                   }}
@@ -110,9 +110,9 @@ class GetInviteCode extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   style={styles.inputText}
-                  onChangeText={email => {
+                  onChangeText={(email) => {
                     this.setState({
-                      email
+                      email,
                     });
                   }}
                   onBlur={() => {
@@ -120,7 +120,7 @@ class GetInviteCode extends Component {
                       showMessage({
                         message: translate("Please enter a valid email!"),
                         type: "warning",
-                        position: "top"
+                        position: "top",
                       });
                     }
                   }}
@@ -151,11 +151,8 @@ class GetInviteCode extends Component {
     );
   }
 }
-const mapDispatchToProps = dispatch => ({
-  requestInvitationCode: info =>
-    dispatch(actionCreators.requestInvitationCode(info))
+const mapDispatchToProps = (dispatch) => ({
+  requestInvitationCode: (info) =>
+    dispatch(actionCreators.requestInvitationCode(info)),
 });
-export default connect(
-  null,
-  mapDispatchToProps
-)(GetInviteCode);
+export default connect(null, mapDispatchToProps)(GetInviteCode);

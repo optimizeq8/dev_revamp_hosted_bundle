@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, ScrollView, I18nManager, Text } from "react-native";
-import { Item, Input, Container } from "native-base";
+import { View, ScrollView, Text } from "react-native";
+import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
 
 import InputFeild from "../../../MiniComponents/InputFieldNew";

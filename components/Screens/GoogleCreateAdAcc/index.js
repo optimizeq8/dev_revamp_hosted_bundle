@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { ActivityIndicator, View, ScrollView, BackHandler } from "react-native";
-import { Card, Text, Container } from "native-base";
+import {
+  Text,
+  ActivityIndicator,
+  View,
+  ScrollView,
+  BackHandler,
+} from "react-native";
+import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
