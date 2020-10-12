@@ -90,7 +90,7 @@ class SnapchatCreateAdAcc extends Component {
             title="Snapchat Ads Policies"
           />
 
-          <Snapchat style={{ alignSelf: "center", margin: 15 }} />
+          <Snapchat fill={"#000"} style={{ alignSelf: "center", margin: 15 }} />
           {/* <Image
             style={styles.media}
             source={require("../../../assets/images/logo01.png")}
