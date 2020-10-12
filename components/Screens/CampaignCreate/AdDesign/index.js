@@ -4,27 +4,15 @@ import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
 import analytics from "@segment/analytics-react-native";
-import {
-  View,
-  TouchableOpacity,
-  Platform,
-  BackHandler,
-  Image as RNImage,
-  I18nManager,
-  Linking,
-  ScrollView,
-} from "react-native";
-import { Content, Text, Container, Footer, Button, Icon } from "native-base";
+import { View, Platform, Linking, Text } from "react-native";
+import { Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";
-import Axios from "axios";
-import CustomHeader from "../../../MiniComponents/Header";
-import CameraLoading from "../../../MiniComponents/CameraLoading";
-import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import Axios from "axios";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
@@ -39,23 +27,12 @@ const preview = {
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
-//icons
-import EyeIcon from "../../../../assets/SVGs/Eye";
-import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-import InfoIcon from "../../../../assets/SVGs/InfoIcon";
-import BackButton from "../../../../assets/SVGs/BackButton";
-
 // Style
 import styles from "./styles";
 
 //Functions
 import isEqual from "react-fast-compare";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import PenIconBrand from "./PenIconBrand";
 import MediaButton from "./MediaButton";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
@@ -63,9 +40,6 @@ import CollectionComp from "./CollectionComp";
 import VideoPlayer from "./VideoPlayer";
 import SubmitButton from "./SubmitButton";
 import SwipeCompCondition from "./SwipeCompCondition";
-import CircleLoader from "../../../MiniComponents/CircleLoader/CircleLoader";
-import FooterText from "./FooterText";
-import LoadingModal from "./LoadingModal";
 import { colors } from "../../../GradiantColors/colors";
 import {
   _handleSubmission,
@@ -82,8 +56,6 @@ import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
 import AdCover from "../AdCover";
-import Modal from "react-native-modal";
-import { BlurView } from "@react-native-community/blur";
 import { RNFFmpeg } from "react-native-ffmpeg";
 import VideoProcessingLoader from "../../../MiniComponents/VideoProcessingLoader";
 import { persistor } from "../../../../store";
