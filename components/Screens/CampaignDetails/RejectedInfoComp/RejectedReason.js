@@ -10,19 +10,17 @@ import styles from "./styles";
 export default (props) => {
   let { reason, index } = props;
   return (
-    <View>
-      <View style={styles.rejectedReasonView}>
-        <Text uppercase style={styles.reasonTitle}>
-          {index}.{" "}
-        </Text>
-        <Text
-          style={styles.rejectedReasonText}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          {reason}
-        </Text>
-      </View>
+    <View style={styles.rejectedReasonView}>
+      <Text uppercase style={styles.reasonTitle}>
+        {index}.{" "}
+      </Text>
+      <Text
+        style={styles.rejectedReasonText}
+        numberOfLines={2}
+        ellipsizeMode="tail"
+      >
+        {reason}
+      </Text>
     </View>
   );
 };

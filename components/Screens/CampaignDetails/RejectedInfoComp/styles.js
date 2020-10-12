@@ -67,7 +67,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   rejectedOuterView: {
-    maxHeight: "40%",
+    // maxHeight: "40%",
     paddingHorizontal: "5%",
     marginTop: "5%",
   },
