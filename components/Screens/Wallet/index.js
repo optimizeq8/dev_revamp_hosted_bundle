@@ -7,14 +7,16 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
+  Text,
+  ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { BlurView } from "expo-blur";
-import { Text, Item, Input, Label, Container, Icon } from "native-base";
+import { Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
 
-import { Modal, ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
@@ -187,15 +189,15 @@ class Wallet extends Component {
                 gradientDirection={"vertical"}
                 orangeDark={true}
               />
-              {/* <Button
-                full
+              {/* <GradientButton
+               
                 style={styles.button}
                 onPress={() => {
                   // this._handleSubmission();
                 }}
               >
                 <Text style={styles.buttontext}>Request Refund</Text>
-              </Button> */}
+              </GradientButton> */}
             </View>
           )}
           {this.props.walletTransactionListLoading && (

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -19,7 +18,7 @@ export default class SingleMetric extends Component {
       metric,
       metricValue,
       translate,
-      detail
+      detail,
     } = this.props;
     let Icon = null;
 
@@ -57,17 +56,16 @@ export default class SingleMetric extends Component {
             style={[
               styles.metricView,
               {
-                flexDirection: detail ? "column" : "column-reverse"
-              }
+                flexDirection: detail ? "column" : "column-reverse",
+              },
             ]}
           >
             <Text
-              uppercase
               style={[
                 {
-                  fontFamily: detail ? "montserrat-bold" : "montserrat-regular"
+                  fontFamily: detail ? "montserrat-bold" : "montserrat-regular",
                 },
-                styles.metricText
+                styles.metricText,
               ]}
             >
               {translate(metric)}
@@ -79,8 +77,8 @@ export default class SingleMetric extends Component {
                   {
                     fontSize: 10,
                     color: "#FF9D00",
-                    fontFamily: "montserrat-regular"
-                  })
+                    fontFamily: "montserrat-regular",
+                  }),
                 ]}
               >
                 {metric === "cpc" || metric === "cpm" ? "$" : ""}
@@ -89,7 +87,7 @@ export default class SingleMetric extends Component {
                 style={[
                   styles.numbers,
                   ,
-                  detail && { fontFamily: "montserrat-regular" }
+                  detail && { fontFamily: "montserrat-regular" },
                 ]}
               >
                 {formatNumber(

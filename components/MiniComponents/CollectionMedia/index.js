@@ -11,19 +11,10 @@ import {
   Platform,
   BackHandler,
   ScrollView,
-  I18nManager,
   Linking,
-} from "react-native";
-import {
-  Button,
-  Content,
   Text,
-  Item,
-  Input,
-  Container,
-  Footer,
-  Icon,
-} from "native-base";
+} from "react-native";
+import { Item, Input, Container, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
@@ -44,7 +35,7 @@ import CameraEdit from "../../../assets/SVGs/CameraCircleOutline";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 //Data
 import { netLoc } from "../../Data/callactions.data";

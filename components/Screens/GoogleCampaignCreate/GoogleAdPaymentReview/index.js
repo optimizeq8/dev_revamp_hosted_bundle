@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, BackHandler } from "react-native";
-import { Content, Text } from "native-base";
+import { View, BackHandler, Text } from "react-native";
+import { Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";

@@ -15,8 +15,9 @@ import {
   BackHandler,
   Linking,
   I18nManager,
+  Text,
 } from "react-native";
-import { Content, Text, Container, Footer, Icon } from "native-base";
+import { Container, Footer, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";

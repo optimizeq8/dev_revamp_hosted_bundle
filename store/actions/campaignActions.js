@@ -7,6 +7,7 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { getUniqueId } from "react-native-device-info";
+import NavigationService from "../../NavigationService";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -1492,6 +1493,12 @@ export const overWriteObjectiveData = (value) => {
   };
 };
 
+/**
+ *
+ * @param {*} url the url to verify does not belong to any social media platform
+ * @param {*} submit function to do next action, either toggle or go to ad targetingscreen
+ * @param {*} translate
+ */
 export const verifyDestinationUrl = (url, submit, translate) => {
   return (dispatch) => {
     dispatch({
@@ -1541,6 +1548,83 @@ export const verifyDestinationUrl = (url, submit, translate) => {
           type: actionTypes.VERIFY_DESTINATION_URL,
           payload: { success: false, loading: false },
         });
+      });
+  };
+};
+
+export const isNumberSnapchatVerified = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_SNAPCHAT_NUMBER,
+      payload: {
+        verified: true,
+        loading: false,
+        otpSend: false,
+      },
+    });
+  };
+};
+
+export const sendOTPSnapchat = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SEND_OTP_SNAPCHAT,
+      payload: true,
+    });
+  };
+};
+
+export const resetVerifiedNumberSnapchat = () => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.RESET_SNAPCHAT_VERIFIED_NUMBER,
+    });
+  };
+};
+
+export const verifyOTPCode = (code) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_OTP_SNAPCHAT,
+      payload: {
+        success: true,
+        loading: false,
+      },
+    });
+  };
+};
+/**
+ *  To move the amount to wallet when ad is rejected
+ * @param {*} campaign_id
+ */
+export const moveRejectedAdAmountToWallet = (campaign_id) => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post(`moveAmountToWallet`, {
+        campaign_id,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_move_amount_to_wallet", {
+          source: "ad_detail",
+          source_action: "a_move_amount_to_wallet",
+          camapign_channel: "snapchat",
+          campaign_id: campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
+        if (data.success) {
+          showMessage({
+            type: "success",
+            message: data.message,
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_move_amount_to_wallet",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("moveAmountToWallet", err.response || err.message);
       });
   };
 };

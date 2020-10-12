@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import WebView from "react-native-webview";
 
-import { View, Text, BackHandler, I18nManager } from "react-native";
-import { Card, Button, Container } from "native-base";
+import {
+  ActivityIndicator,
+  View,
+  I18nManager,
+  BackHandler,
+} from "react-native";
+import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { NavigationEvents, SafeAreaView } from "react-navigation";
-import Loading from "../../MiniComponents/LoadingScreen";
-import { ActivityIndicator } from "react-native-paper";
+import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
+import GradientButton from "../../MiniComponents/GradientButton";
 import Snapchat from "../../../assets/SVGs/Snapchat-Border";
 
 //Redux
@@ -15,8 +19,7 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
 // Style
-import styles, { htmlStyles } from "./styles";
-import { colors } from "../../GradiantColors/colors";
+import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
 class SnapchatCreateAdAcc extends Component {
@@ -116,12 +119,10 @@ class SnapchatCreateAdAcc extends Component {
             />
 
             <View style={styles.bottomContainer}>
-              <Button
-                block
-                dark
+              <GradientButton
                 // disabled={!this.state.accept}
                 style={[styles.button]}
-                onPress={() => {
+                onPressAction={() => {
                   this.props.navigation.navigate(
                     "AcceptTermsConditionLoading",
                     {
@@ -134,9 +135,10 @@ class SnapchatCreateAdAcc extends Component {
                     this.props.navigation
                   );
                 }}
-              >
-                <Text style={styles.buttontext}>{translate("Accept")}</Text>
-              </Button>
+                uppercase
+                radius={50}
+                text={translate("Accept")}
+              />
             </View>
           </Card>
         </Container>

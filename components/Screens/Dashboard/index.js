@@ -4,17 +4,17 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  TouchableWithoutFeedback,
   BackHandler,
   ScrollView,
   I18nManager,
   Linking,
+  ActivityIndicator,
+  Text,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-import * as Updates from "expo-updates";
-import { Button, Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
@@ -22,7 +22,6 @@ import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
-import { ActivityIndicator } from "react-native-paper";
 // import FilterMenu from "../../MiniComponents/FilterMenu";
 let FilterMenu = null;
 import Axios from "axios";
@@ -278,7 +277,10 @@ class Dashboard extends Component {
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
-        this.props.navigation.navigate("SuspendedWarning");
+        this.props.navigation.navigate("SuspendedWarning", {
+          source: "dashboard",
+          source_action: "a_campaign_ad_type",
+        });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
@@ -437,6 +439,14 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
+    if (source_action === "a_move_amount_to_wallet") {
+      this.props.getCampaignList(
+        this.props.mainBusiness.businessid,
+        this.increasePage,
+        this.signal.token
+      );
+    }
+
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
   };
@@ -820,6 +830,12 @@ class Dashboard extends Component {
                             width={10}
                             height={10}
                             style={styles.lowerButton}
+                            function={() => {
+                              this.props.navigation.navigate("TutorialWeb", {
+                                source: "dashboard",
+                                source_action: "a_open_website_tutorial",
+                              });
+                            }}
                           />
                         </TouchableOpacity>
                       )}

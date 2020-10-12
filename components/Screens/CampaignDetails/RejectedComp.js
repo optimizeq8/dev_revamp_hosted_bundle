@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View } from "react-native";
-import { Button } from "native-base";
+import { Text, View, TouchableOpacity } from "react-native";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
 class RejectedComp extends Component {
@@ -17,7 +16,7 @@ class RejectedComp extends Component {
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
-            alignSelf: "center"
+            alignSelf: "center",
           }}
         >
           <View style={styles.dot} />
@@ -26,14 +25,14 @@ class RejectedComp extends Component {
               styles.subtext,
               {
                 fontFamily: "montserrat-regular",
-                width: "80%"
-              }
+                width: "80%",
+              },
             ]}
           >
             {selectedCampaign && selectedCampaign.review_status_reason}
           </Text>
         </View>
-        <Button
+        <TouchableOpacity
           onPress={() => {
             this.props.setRejectedAdType(selectedCampaign.campaign_type);
             this.props.setRejectedCampaignData(selectedCampaign);
@@ -46,7 +45,7 @@ class RejectedComp extends Component {
                 rejected: true,
                 objective: selectedCampaign.objective,
                 headline: selectedCampaign.headline,
-                campaign_id: selectedCampaign.campaign_id
+                campaign_id: selectedCampaign.campaign_id,
               }
             );
           }}
@@ -55,18 +54,15 @@ class RejectedComp extends Component {
           <Text style={styles.subHeadings}>
             {translate("Review Ad and publish")}
           </Text>
-        </Button>
+        </TouchableOpacity>
       </View>
     );
   }
 }
-const mapDispatchToProps = dispatch => ({
-  setRejectedAdType: info => dispatch(actionCreators.setRejectedAdType(info)),
-  setRejectedCampaignData: rejCampaign =>
-    dispatch(actionCreators.setRejectedCampaignData(rejCampaign))
+const mapDispatchToProps = (dispatch) => ({
+  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
+  setRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(RejectedComp);
+export default connect(null, mapDispatchToProps)(RejectedComp);

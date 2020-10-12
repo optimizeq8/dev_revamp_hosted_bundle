@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Animated } from "react-native";
+import { View, Text, TouchableOpacity, Animated } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 import Toggle from "../Toggle";
 
@@ -7,7 +7,6 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
-import { Text, Icon } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
   state = {
@@ -80,7 +79,7 @@ export default class AppBox extends Component {
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
             <AppStoreIcon fill={globalColors.rum} />
           </Animated.View>
-          <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
+          <Text style={appConfirmStyles.appStoreButtonsText}>
             {translate(`apple\napp store`)}
           </Text>
           <Text style={styles.appStyle}>
@@ -111,7 +110,7 @@ export default class AppBox extends Component {
             <PlayStoreIcon />
           </Animated.View>
 
-          <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
+          <Text style={appConfirmStyles.appStoreButtonsText}>
             {translate(`google\nplay store`)}
           </Text>
           <Text style={styles.appStyle}>

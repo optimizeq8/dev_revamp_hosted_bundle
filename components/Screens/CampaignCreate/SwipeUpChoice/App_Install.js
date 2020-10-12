@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
-import { Text, Container } from "native-base";
-import { SafeAreaView } from "react-navigation";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
 //Icons
@@ -14,10 +12,7 @@ import styles from "./styles";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+
 import * as actionsCreators from "../../../../store/actions";
 import { showMessage } from "react-native-flash-message";
 

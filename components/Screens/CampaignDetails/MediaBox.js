@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Text, View, TouchableOpacity } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import { Video } from "expo-av";
 import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";
@@ -14,7 +13,7 @@ export default class MediaBox extends Component {
           ? { media: this.props.selectedCampaign.media }
           : {
               cover: this.props.selectedCampaign.story_preview_media,
-              logo: this.props.selectedCampaign.story_logo_media
+              logo: this.props.selectedCampaign.story_logo_media,
             };
       let icon_media_url =
         this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
@@ -39,7 +38,7 @@ export default class MediaBox extends Component {
           adType: this.props.selectedCampaign.campaign_type,
           coverHeadline: this.props.selectedCampaign.story_headline,
           storyAdsArray: this.props.selectedCampaign.story_creatives,
-          collectionAdMedia: this.props.selectedCampaign.collection_creatives
+          collectionAdMedia: this.props.selectedCampaign.collection_creatives,
         }
       );
     }
@@ -63,7 +62,7 @@ export default class MediaBox extends Component {
             alignItems: "center",
             alignSelf: "center",
             top: 10,
-            zIndex: 2
+            zIndex: 2,
           }}
         >
           <Text
@@ -71,7 +70,7 @@ export default class MediaBox extends Component {
               fontFamily: "montserrat-bold",
               color: "#fff",
               fontSize: 10,
-              textAlign: "center"
+              textAlign: "center",
               // position: "relative"
             }}
           >
@@ -86,7 +85,7 @@ export default class MediaBox extends Component {
             borderRadius: 15,
             borderWidth: 2,
             height: "100%",
-            borderColor: globalColors.orange
+            borderColor: globalColors.orange,
           }}
         >
           {!this.state.imageLoaded && (
@@ -101,7 +100,7 @@ export default class MediaBox extends Component {
               onLoadStart={() => this.setState({ imageLoaded: true })}
               onLoad={() => this.setState({ imageLoaded: false })}
               source={{
-                uri: media
+                uri: media,
               }}
               isMuted
               resizeMode={"cover"}

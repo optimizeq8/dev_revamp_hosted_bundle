@@ -1,6 +1,5 @@
 import React from "react";
-import { View, SafeAreaView } from "react-native";
-import { Text } from "native-base";
+import { View, SafeAreaView, Text } from "react-native";
 import Modal from "react-native-modal";
 import Header from "../../../MiniComponents/Header";
 import { BlurView } from "expo-blur";
@@ -11,13 +10,13 @@ import styles from "./styles";
 /**
  * modal tha displays the rejected reason, will be modified in the future to contain more  info
  */
-export default props => {
+export default (props) => {
   let {
     reasonNum,
     rejectedReason,
     isVisible,
     setModalVisible,
-    screenProps
+    screenProps,
   } = props;
   const { translate } = props.screenProps;
   return (
@@ -41,10 +40,7 @@ export default props => {
           <View style={styles.rejectModalView}>
             <View style={styles.rejectedModalTitleContainer}>
               <RejectedIcon fill={globalColors.orange} />
-              <Text
-                uppercase
-                style={[styles.reasonTitle, styles.rejectReasonWord]}
-              >
+              <Text style={[styles.reasonTitle, styles.rejectReasonWord]}>
                 {translate("Rejected Reason")} {reasonNum}
               </Text>
             </View>

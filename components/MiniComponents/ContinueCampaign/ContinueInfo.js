@@ -1,6 +1,6 @@
 import React from "react";
-import { View, FlatList } from "react-native";
-import { Content, Text } from "native-base";
+import { View, FlatList, Text } from "react-native";
+import { Content } from "native-base";
 import Snapchat from "../../../assets/SVGs/Snapchat";
 import MediaBox from "../../Screens/CampaignDetails/MediaBox";
 import styles from "./styles";
@@ -62,7 +62,10 @@ ContinueInfo = (props) => {
         ) : null}
         {oldTempData && oldTempData.start_time && (
           <View style={styles.sections}>
-            <Text uppercase style={styles.text}>
+            <Text
+              uppercase
+              style={[styles.text, { textTransform: "uppercase" }]}
+            >
               Duration
             </Text>
             <Text style={globalStyles.numbers}>
@@ -80,7 +83,7 @@ ContinueInfo = (props) => {
         )}
         {data && data.media && (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
-            <Text uppercase style={[styles.text]}>
+            <Text style={[styles.text, { textTransform: "uppercase" }]}>
               Media
             </Text>
             <View style={styles.mediaContainer}>

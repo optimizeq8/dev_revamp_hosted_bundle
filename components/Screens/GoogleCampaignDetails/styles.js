@@ -294,6 +294,7 @@ const styles = StyleSheet.create({
     elevation: 0,
     borderRadius: 30,
     justifyContent: "center",
+    paddingVertical: 10,
   },
   choiceText: {
     fontFamily: "montserrat-bold",
@@ -472,12 +473,14 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17,
+    textTransform: "uppercase",
   },
   chartTextNum: {
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 16,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   chartItems: {
     flexDirection: "row",
@@ -547,6 +550,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#FF9D00",
     textAlign: "left",
+    textTransform: "uppercase",
   },
   infoButton: { alignSelf: "flex-end" },
   xAxisStyle: {

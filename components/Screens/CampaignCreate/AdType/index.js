@@ -142,7 +142,10 @@ class AdType extends Component {
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
-        this.props.navigation.navigate("SuspendedWarning");
+        this.props.navigation.navigate("SuspendedWarning", {
+          source: "ad_type",
+          source_action: "a_campaign_ad_type",
+        });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,

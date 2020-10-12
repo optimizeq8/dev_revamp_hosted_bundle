@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, Text } from "react-native";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 //Styles
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -16,7 +16,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import formatNumber from "../../../formatNumber";
-import { Text } from "native-base";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class ReachBar extends Component {
@@ -38,10 +37,8 @@ class ReachBar extends Component {
         />
         <View style={styles.chartItems}>
           <View style={styles.reachPeopleView}>
-            <Text uppercase style={styles.chartText}>
-              {translate("Potential Reach")}
-            </Text>
-            <Text uppercase style={styles.chartTextNum}>
+            <Text style={styles.chartText}>{translate("Potential Reach")}</Text>
+            <Text style={styles.chartTextNum}>
               {formatNumber(this.props.average_reach, true)}
               {"  " + translate("people")}
             </Text>

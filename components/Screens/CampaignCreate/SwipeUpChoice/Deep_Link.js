@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
-import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
-import CustomHeader from "../../../MiniComponents/Header";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -23,7 +18,6 @@ import * as actionsCreators from "../../../../store/actions";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -275,36 +269,37 @@ class Deep_Link extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
-        <View>
-          <View style={styles.deepLinkHeader}>
-            {/* <AppInstallIcon style={styles.icon} /> */}
-            <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>{translate("Deep Link")}</Text>
-              <Text style={styles.subtext}>
-                {translate("Send Snapchatters to a specific page in your app")}
-              </Text>
-            </View>
+        <View style={styles.deepLinkHeader}>
+          {/* <AppInstallIcon style={styles.icon} /> */}
+          <View style={styles.textcontainer}>
+            <Text style={styles.titletext}>{translate("Deep Link")}</Text>
+            <Text style={styles.subtext}>
+              {translate("Send Snapchatters to a specific page in your app")}
+            </Text>
           </View>
-          <AppChoice
-            handleCallaction={this.handleCallaction}
-            navigation={this.props.navigation}
-            selectApp={this.selectApp}
-            listNum={3}
-            attachment={this.state.attachment}
-            callaction={this.state.callaction}
-            swipeUpDestination={this.props.swipeUpDestination}
-            deep_link_uri={this.state.attachment.deep_link_uri}
-            toggleSideMenu={this.props.toggleSideMenu}
-            _handleSubmission={this._handleSubmission}
-            deepLink={true}
-            screenProps={this.props.screenProps}
-            appSelections={{ iosAppSelected, androidAppSelected }}
-            setTheState={this.setTheState}
-          />
         </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          navigation={this.props.navigation}
+          selectApp={this.selectApp}
+          listNum={3}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          swipeUpDestination={this.props.swipeUpDestination}
+          deep_link_uri={this.state.attachment.deep_link_uri}
+          toggleSideMenu={this.props.toggleSideMenu}
+          _handleSubmission={this._handleSubmission}
+          deepLink={true}
+          screenProps={this.props.screenProps}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </View>
     );
   }

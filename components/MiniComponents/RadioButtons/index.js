@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-navigation";
-import { Button, Text, Icon } from "native-base";
+import { View, TouchableOpacity, Text } from "react-native";
+import { Icon } from "native-base";
 import styles from "./styles";
 import isArray from "lodash/isArray";
 import isUndefined from "lodash/isUndefined";
@@ -10,21 +9,21 @@ export default class RadioButtons extends Component {
   constructor() {
     super();
     this.state = {
-      filteredList: []
+      filteredList: [],
     };
   }
   componentDidMount() {
     this.setState({
-      filteredList: this.props.data
+      filteredList: this.props.data,
     });
   }
   render() {
     const { translate } = this.props.screenProps;
-    let list = this.state.filteredList.map(x => {
+    let list = this.state.filteredList.map((x) => {
       var found;
       if (isArray(this.props.selected)) {
         found = !isUndefined(
-          this.props.selected.find(l => l === x[this.props.value])
+          this.props.selected.find((l) => l === x[this.props.value])
         );
       } else {
         found = this.props.selected === x[this.props.value];
@@ -43,7 +42,7 @@ export default class RadioButtons extends Component {
             name={found ? "circle" : "circle-outline"}
             style={[
               found ? styles.activetext : styles.inactivetext,
-              styles.optionsIconSize
+              styles.optionsIconSize,
             ]}
           />
           <Text style={[styles.inactivetext, styles.optionsTextContainer]}>

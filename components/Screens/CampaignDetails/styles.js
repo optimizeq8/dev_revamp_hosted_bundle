@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 100,
     justifyContent: "center",
+    paddingVertical: 10,
   },
   choiceText: {
     fontFamily: "montserrat-bold",

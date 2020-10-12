@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../formatNumber";
-import { Icon } from "native-base";
 import RecomenededIcon from "../../../../../assets/SVGs/AdDetails/RecomenededIcon.svg";
 export default class BudgetCard extends Component {
   render() {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
@@ -13,9 +13,8 @@ import modalStyles from "./ModalStyle";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import LowerButton from "../LowerButton";
-import { Text, Input, Item, Icon } from "native-base";
+import { Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import Axios from "axios";
@@ -197,7 +196,6 @@ export default class AppSearchModal extends Component {
                       height={50}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },
@@ -214,7 +212,6 @@ export default class AppSearchModal extends Component {
                       style={{ color: "#fff" }}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },

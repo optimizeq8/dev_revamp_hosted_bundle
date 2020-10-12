@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Text, Item, Input, Icon } from "native-base";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+import { Item, Input, Icon } from "native-base";
 import LoadingScreen from "../LoadingScreen";
 
 //Icon
@@ -17,22 +17,22 @@ class RegionsSelector extends Component {
   constructor() {
     super();
     this.state = {
-      filteredRegions: []
+      filteredRegions: [],
     };
   }
   componentDidMount() {
     this.setState({
-      filteredRegions: this.props.locationsFetchedList
+      filteredRegions: this.props.locationsFetchedList,
     });
   }
   componentDidUpdate(prevProps) {
     if (prevProps.loading !== this.props.loading) {
       this.setState({
-        filteredRegions: this.props.locationsFetchedList
+        filteredRegions: this.props.locationsFetchedList,
       });
     }
   }
-  kFormatter = num => {
+  kFormatter = (num) => {
     return Math.abs(num) > 999999
       ? (Math.abs(num) / 1000000).toFixed(1) + "M"
       : Math.abs(num) > 999
@@ -44,13 +44,13 @@ class RegionsSelector extends Component {
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
     } else {
-      let regionslist = this.state.filteredRegions.map(r => {
-        var found = !isUndefined(this.props.locations.find(l => l === r.id));
+      let regionslist = this.state.filteredRegions.map((r) => {
+        var found = !isUndefined(this.props.locations.find((l) => l === r.id));
         let textLocation = "";
 
         if (r.location.includes(", ")) {
           let locArray = r.location.split(", ");
-          locArray = locArray.map(loc => translate(loc));
+          locArray = locArray.map((loc) => translate(loc));
           textLocation = locArray.join(", ");
         } else {
           textLocation = translate(r.location);
@@ -70,7 +70,7 @@ class RegionsSelector extends Component {
                 name={found ? "circle" : "circle-outline"}
                 style={[
                   styles.itemCircles,
-                  { color: found ? "#FF9D00" : "#fff" }
+                  { color: found ? "#FF9D00" : "#fff" },
                 ]}
               />
               <Text style={styles.regionText} numberOfLines={2}>
@@ -94,13 +94,13 @@ class RegionsSelector extends Component {
                   placeholder={translate("Search Region") + "..."}
                   style={styles.searchInputText}
                   placeholderTextColor="#fff"
-                  onChangeText={value => {
+                  onChangeText={(value) => {
                     let filteredR = this.props.locationsFetchedList.filter(
-                      c => {
+                      (c) => {
                         let textLocation = "";
                         if (c.location.includes(", ")) {
                           let locArray = c.location.split(", ");
-                          locArray = locArray.map(loc => translate(loc));
+                          locArray = locArray.map((loc) => translate(loc));
                           textLocation = locArray.join(", ");
                         } else {
                           textLocation = translate(c.location);

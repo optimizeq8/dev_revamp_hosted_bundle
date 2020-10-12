@@ -19,6 +19,7 @@ export {
   updateWebInfoForBusiness,
   changeBusinessLogo,
   updateBusinessConnectedToFacebook,
+  crashAppForSpamUser,
 } from "./accountManagementActions";
 
 export {
@@ -86,6 +87,14 @@ export {
   setCollectionAdMediaArray,
   overWriteObjectiveData,
   verifyDestinationUrl,
+
+  isNumberSnapchatVerified,
+  sendOTPSnapchat,
+  resetVerifiedNumberSnapchat,
+  verifyOTPCode,
+
+  moveRejectedAdAmountToWallet,
+
 } from "./campaignActions";
 
 export {

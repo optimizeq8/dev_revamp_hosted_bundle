@@ -1,6 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
-import { Text } from "native-base";
+import { TouchableOpacity, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
 
@@ -123,8 +122,11 @@ class GradientButton extends React.PureComponent {
           ) : (
             <Text
               numberOfLines={numberOfLines}
-              uppercase={uppercase}
-              style={[styles.text, textStyle]}
+              style={[
+                styles.text,
+                { textTransform: uppercase ? "uppercase" : "none" },
+                textStyle,
+              ]}
             >
               {text}
             </Text>

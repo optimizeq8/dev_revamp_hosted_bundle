@@ -47,7 +47,7 @@ export default class Screen1 extends Component {
                               left: -30,
                             },
                       ]}
-                      fill={item.mediaType === "google" && "#0000"}
+                      fill={item.mediaType === "google" ? "#0000" : "black"}
                     />
                   )}
                 </View>

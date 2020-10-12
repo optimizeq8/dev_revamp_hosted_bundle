@@ -1,6 +1,5 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { Text, Item, Input, Icon } from "native-base";
 import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";

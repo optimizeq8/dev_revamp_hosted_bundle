@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, Text } from "react-native";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
@@ -7,7 +7,7 @@ import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import { Small } from "../../../MiniComponents/StyledComponents/index";
 //Styles
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -18,7 +18,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import formatNumber from "../../../formatNumber";
-import { Text } from "native-base";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
 import SwipeUpsIcon from "../../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 
@@ -67,7 +66,6 @@ class ReachBar extends Component {
                 <Text
                   adjustsFontSizeToFit
                   numberOfLines={1}
-                  uppercase
                   style={styles.chartText}
                 >
                   {translate("Impressions")}{" "}
@@ -79,7 +77,7 @@ class ReachBar extends Component {
               {this.props.estimatedMetricsLoading ? (
                 <PlaceholderLine />
               ) : (
-                <Text uppercase style={styles.chartTextNum}>
+                <Text style={styles.chartTextNum}>
                   {this.props.estimated_metrics &&
                     formatNumber(
                       this.props.estimated_metrics.impressions,
@@ -95,7 +93,6 @@ class ReachBar extends Component {
                 <Text
                   adjustsFontSizeToFit
                   numberOfLines={1}
-                  uppercase
                   style={styles.chartText}
                 >
                   {translate("Swipe Ups")}{" "}

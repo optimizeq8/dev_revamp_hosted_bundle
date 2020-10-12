@@ -1,6 +1,5 @@
 import React from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import Rejected from "../../../assets/SVGs/Rejected.svg";
 import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
@@ -28,9 +27,7 @@ export default RejectedInfo = (props) => {
   };
   let list = errors.map((e, i) => (
     <View style={styles.rejectedReasonContainer} key={i}>
-      <Text uppercase style={styles.reviewStatusReason}>
-        {e.name}
-      </Text>
+      <Text style={styles.reviewStatusReason}>{e.name}</Text>
       {/* <Text style={styles.reviewStatusText}>
         {translate("You can find more details here")}
       </Text> */}

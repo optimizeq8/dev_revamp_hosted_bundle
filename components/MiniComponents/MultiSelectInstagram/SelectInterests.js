@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, ScrollView, ActivityIndicator } from "react-native";
-import { Text, Icon } from "native-base";
+import { Text, View, ScrollView, ActivityIndicator } from "react-native";
+import { Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import isNull from "lodash/isNull";
 //Icons

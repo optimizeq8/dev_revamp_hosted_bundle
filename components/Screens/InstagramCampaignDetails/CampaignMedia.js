@@ -1,10 +1,9 @@
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
 import analytics from "@segment/analytics-react-native";
-import { View, TouchableOpacity, Text } from "react-native";
+import { ActivityIndicator, View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
-import { ActivityIndicator } from "react-native-paper";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 const preview = {

@@ -6,7 +6,8 @@ export default StyleSheet.create({
     fontSize: 18,
     fontFamily: "montserrat-bold",
     color: "#EA514B",
-    paddingVertical: 5
+    textTransform: "uppercase",
+    paddingVertical: 5,
   },
   rejectedReasonContainer: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -14,7 +15,7 @@ export default StyleSheet.create({
     flexDirection: "column",
     width: "80%",
     justifyContent: "space-evenly",
-    marginTop: 10
+    marginTop: 10,
   },
   reasonTitle: {
     textAlign: "left",
@@ -22,7 +23,7 @@ export default StyleSheet.create({
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     fontSize: 13,
-    marginBottom: 5
+    marginBottom: 5,
   },
   rejectedReasonText: {
     textAlign: "left",
@@ -30,13 +31,13 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     color: "#fff",
     lineHeight: 16,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   rejectedModalTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
     // justifyContent: "space-evenly",
-    width: "75%"
+    width: "75%",
   },
   rejectedModalReasonText: {
     textAlign: "left",
@@ -44,49 +45,49 @@ export default StyleSheet.create({
     fontSize: 15,
     color: "#fff",
     width: "70%",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   rejectedInfoButton: {
     alignSelf: "flex-end",
     marginHorizontal: 20,
-    marginBottom: 15
+    marginBottom: 15,
   },
   rejectedReasonView: {
     paddingHorizontal: 20,
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   hereReasonsText: {
     fontSize: 14,
     fontFamily: "montserrat-regular",
-    color: "#FFF"
+    color: "#FFF",
   },
   rejectedHeader: {
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   rejectedOuterView: {
     maxHeight: "40%",
     paddingHorizontal: "5%",
-    marginTop: "5%"
+    marginTop: "5%",
   },
   contentStyle: {
-    paddingBottom: "10%"
+    paddingBottom: "10%",
   },
   rejectReasonWord: {
     fontSize: 20,
-    marginLeft: 10
+    marginLeft: 10,
   },
   rejectModalView: {
     marginTop: "5%",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   customButtonStyle: {
     width: 160,
     height: 50,
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
   customButtonText: {
-    fontSize: 14
+    fontSize: 14,
     // paddingVertical: 5
-  }
+  },
 });

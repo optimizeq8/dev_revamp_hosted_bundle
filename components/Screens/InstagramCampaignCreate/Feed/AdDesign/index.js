@@ -13,10 +13,10 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 
-import { Content, Text, Container, Footer, Button, Input } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { showMessage } from "react-native-flash-message";

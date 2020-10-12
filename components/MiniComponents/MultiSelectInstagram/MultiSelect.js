@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   I18nManager,
   ActivityIndicator,
+  Text,
 } from "react-native";
-import { Button, Text, Item, Input, Icon } from "native-base";
+import { Button, Item, Input, Icon } from "native-base";
 import isNull from "lodash/isNull";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";

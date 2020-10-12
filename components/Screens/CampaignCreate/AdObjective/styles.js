@@ -209,17 +209,20 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "rgba(255,255,255,0.4)",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   activeText: {
     fontFamily: "montserrat-bold",
     fontSize: 11,
     color: "#fff",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   buttonSubText: {
     fontFamily: "montserrat-regular",
     paddingTop: 2,
     fontSize: 12,
+    textTransform: "none",
   },
   dateTextLabel: {
     borderTopLeftRadius: 150,
@@ -254,6 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-bold",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   proceedButtonRTL: {
     width: 65,
@@ -275,6 +279,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 30,
     paddingTop: 20,
+  },
+  minDurationText: {
+    color: "#FFF",
+    textAlign: "center",
+    marginTop: -20,
+    marginBottom: 15,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
   },
 });
 

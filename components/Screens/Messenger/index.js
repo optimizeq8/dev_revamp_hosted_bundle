@@ -9,12 +9,12 @@ import {
   KeyboardAvoidingView,
   I18nManager,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import analytics from "@segment/analytics-react-native";
-import { ActivityIndicator } from "react-native-paper";
 import socketIOClient from "socket.io-client";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -267,6 +267,7 @@ class Messenger extends Component {
         <CustomHeader
           backButton="messenger"
           screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
           closeButton={true}
           title={"Support"}
           titleStyle={{
@@ -276,12 +277,12 @@ class Messenger extends Component {
             source: "open_support",
             source_action: "a_go_back",
           }}
-          actionButton={() =>
-            this.props.navigation.navigate("Dashboard", {
-              source: "open_support",
-              source_action: "a_go_back",
-            })
-          }
+          // actionButton={() =>
+          //   this.props.navigation.navigate("Dashboard", {
+          //     source: "open_support",
+          //     source_action: "a_go_back",
+          //   })
+          // }
           containerStyle={{
             backgroundColor: "#F4F2F5",
           }}

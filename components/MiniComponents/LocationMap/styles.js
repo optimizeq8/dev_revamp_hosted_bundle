@@ -39,6 +39,7 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 25,
     color: "#fff",
+    textAlign: "center",
   },
   autoCompleteResaults: {
     backgroundColor: "#fff",

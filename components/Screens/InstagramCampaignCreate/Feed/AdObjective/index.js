@@ -8,10 +8,10 @@ import {
   ScrollView,
   StatusBar,
   Modal,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
-import { BlurView } from "@react-native-community/blur";
+import { Content, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../../MiniComponents/ObjectivesCard";
@@ -109,7 +109,8 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
+
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -577,7 +578,13 @@ class AdObjective extends Component {
                   handleDuration={this.handleDuration}
                   duration={this.state.duration}
                   screenProps={this.props.screenProps}
+                  disabled={this.state.duration === 3}
                 />
+                {this.state.duration === 3 && (
+                  <Text style={styles.minDurationText}>
+                    {translate("Minimum Duration is {{n}} days", { n: 3 })}
+                  </Text>
+                )}
                 <Duration
                   label={"Start Date"}
                   screenProps={this.props.screenProps}

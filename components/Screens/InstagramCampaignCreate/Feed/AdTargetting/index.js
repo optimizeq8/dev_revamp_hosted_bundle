@@ -1,8 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content, Row, Grid } from "native-base";
-import { Video } from "expo-av";
+import { View, BackHandler, I18nManager, Text } from "react-native";
+import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -1299,10 +1298,12 @@ class InstagramFeedAdTargetting extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
-                            uppercase
                             style={[
                               styles.subHeadings,
-                              { paddingHorizontal: 10 },
+                              {
+                                paddingHorizontal: 10,
+                                textTransform: "uppercase",
+                              },
                             ]}
                           >
                             {translate("Set your daily budget")}
@@ -1368,8 +1369,10 @@ class InstagramFeedAdTargetting extends Component {
                     )}
                     {startEditing && (
                       <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
+                        style={[
+                          styles.subHeadings,
+                          { width: "60%", textTransform: "uppercase" },
+                        ]}
                       >
                         {translate("Who would you like to reach?")}
                       </Text>

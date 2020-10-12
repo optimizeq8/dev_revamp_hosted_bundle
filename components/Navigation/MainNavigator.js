@@ -30,9 +30,6 @@ import CollectionMedia from "../MiniComponents/CollectionMedia";
 import Animated, { Easing } from "react-native-reanimated";
 import Messenger from "../Screens/Messenger";
 import MessengerLoading from "../Screens/Messenger/LoadingChatScreen";
-import SelectInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost";
-import SelectedInstagramProductsList from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList";
-import EditProductDetailInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail";
 import ManageTeam from "../Screens/ManageTeam";
 import AddOrEditTeamMember from "../Screens/ManageTeam/AddOrEditTeamMember";
 import TeamInvite from "../Screens/TeamInvite";
@@ -123,9 +120,6 @@ export default FluidNavigator(
       path: "Messenger/",
     },
     WebView: WebView,
-    SelectInstagramPost: SelectInstagramPost,
-    SelectedInstagramProductsList: SelectedInstagramProductsList,
-    EditProductDetailInstagramPost: EditProductDetailInstagramPost,
     ManageTeam: ManageTeam,
     AddOrEditTeamMember: AddOrEditTeamMember,
     TeamInvite: { screen: TeamInvite, path: "team_invite/" },

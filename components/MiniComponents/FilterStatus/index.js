@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, Button } from "native-base";
+import { Text, View, TouchableOpacity } from "react-native";
+
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -14,17 +15,17 @@ class FilterStatus extends Component {
       data: [
         {
           label: "All",
-          value: "A"
+          value: "A",
         },
         {
           label: "Paused",
-          value: "PAUSED"
+          value: "PAUSED",
         },
         {
           label: "Active",
-          value: "LIVE"
-        }
-      ]
+          value: "LIVE",
+        },
+      ],
     };
   }
 
@@ -42,7 +43,7 @@ class FilterStatus extends Component {
         <View style={styles.flexDirectionCol}>
           <Text style={styles.text}> {translate("Active")} </Text>
 
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "LIVE" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
@@ -57,7 +58,7 @@ class FilterStatus extends Component {
         </View>
         <View style={[styles.flexDirectionCol, styles.middleBlock]}>
           <Text style={styles.text}> {translate("Inactive")} </Text>
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "PAUSED" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
@@ -72,7 +73,7 @@ class FilterStatus extends Component {
         </View>
         <View style={styles.flexDirectionCol}>
           <Text style={styles.text}> {translate("All")} </Text>
-          <Button
+          <TouchableOpacity
             onPress={() =>
               this.setState({ selected: "A" }, () =>
                 this.props._handleSubmission(this.state.selected, true)
@@ -90,17 +91,14 @@ class FilterStatus extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   campaignList: state.dashboard.campaignList,
   campaignStartSearch: state.dashboard.campaignStartSearch,
   campaignEndSearch: state.dashboard.campaignEndSearch,
-  filterValue: state.dashboard.filterValue
+  filterValue: state.dashboard.filterValue,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query))
+const mapDispatchToProps = (dispatch) => ({
+  onSearch: (query) => dispatch(actionCreators.filterCampaigns(query)),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterStatus);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterStatus);

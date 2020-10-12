@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, I18nManager } from "react-native";
-import { Icon, Text } from "native-base";
+import { View, TouchableOpacity, Image, I18nManager, Text } from "react-native";
+import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
@@ -115,7 +115,6 @@ export default class Header extends Component {
             {title.map((text) => (
               <Text
                 key={text}
-                uppercase
                 style={[
                   styles.titleText,
                   !isStringArabic(text)
@@ -134,7 +133,6 @@ export default class Header extends Component {
           <View style={[styles.titleView, titleContainerStyle]}>
             <Text
               numberOfLines={2}
-              uppercase
               style={[
                 styles.titleText,
                 !isStringArabic(title)

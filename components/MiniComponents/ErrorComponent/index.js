@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler, Linking } from "react-native";
+import { View, Image, Text, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 // Redux

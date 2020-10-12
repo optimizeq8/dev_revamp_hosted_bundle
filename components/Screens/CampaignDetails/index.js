@@ -1,7 +1,13 @@
 import React, { Component } from "react";
-import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Animated,
+  BackHandler,
+  TouchableOpacity,
+} from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";

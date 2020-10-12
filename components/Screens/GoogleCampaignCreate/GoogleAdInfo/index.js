@@ -103,7 +103,7 @@ class GoogleAdInfo extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -554,7 +554,13 @@ class GoogleAdInfo extends Component {
                 handleDuration={this.handleDuration}
                 duration={this.state.duration}
                 screenProps={this.props.screenProps}
+                disabled={this.state.duration === 7}
               />
+              {this.state.duration === 7 && (
+                <Text style={styles.minDurationText}>
+                  {translate("Minimum Duration is {{n}} days", { n: 7 })}
+                </Text>
+              )}
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({

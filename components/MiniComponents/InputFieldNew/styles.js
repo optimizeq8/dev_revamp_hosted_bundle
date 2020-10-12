@@ -71,7 +71,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     marginLeft: 13,
     width: "100%",
-    height: 50,
+    height: 54,
   },
   rowView: {
     flexDirection: "row",
