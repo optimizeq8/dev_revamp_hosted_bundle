@@ -409,9 +409,6 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
-  - Segment-Adjust (3.1.0):
-    - Adjust (~> 4.23)
-    - Analytics
   - Segment-Mixpanel (1.7.0):
     - Analytics
     - Mixpanel (~> 3.5)
@@ -806,7 +803,6 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   RNVideoEditorSDK: 271682157e429f1df5bf3629d6bcb1143fe14089
-  Segment-Adjust: 3dd5e37785aff1aed6103e4cd00ec445b5b88f12
   Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
@@ -827,4 +823,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9f748cd0cdfdeb7f6ae227d45963dbf73a522aa1
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3
