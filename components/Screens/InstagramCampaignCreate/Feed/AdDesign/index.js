@@ -157,6 +157,12 @@ class AdDesign extends Component {
     if (prevProps.instaRejCampaign.link !== this.props.instaRejCampaign.link) {
       this.selectedCampaign = this.props.instaRejCampaign;
     }
+    if (
+      !this.rejected &&
+      JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
+    ) {
+      this.selectedCampaign = this.props.data;
+    }
   }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
@@ -213,7 +219,9 @@ class AdDesign extends Component {
         media_type,
         media,
         fileReadyToUpload,
-        uneditedImageUri: this.props.data.uneditedImageUri,
+        uneditedImageUri: this.rejected
+          ? media
+          : this.props.data.uneditedImageUri,
       });
       this.props.save_campaign_info_instagram({
         destination,
@@ -555,6 +563,7 @@ class AdDesign extends Component {
                     style={styles.adImageOptionButton}
                     text={translate("Single Media")}
                     uppercase
+                    disabled={this.rejected}
                     transparent={
                       this.state.campaignInfo.media_option !== "single"
                     }
@@ -567,6 +576,7 @@ class AdDesign extends Component {
                     transparent={
                       this.state.campaignInfo.media_option !== "carousel"
                     }
+                    disabled={this.rejected}
                     uppercase
                   />
                 </View>
@@ -609,7 +619,9 @@ class AdDesign extends Component {
                   )}
                   {this.state.campaignInfo.media_option === "carousel" && (
                     <CarouselImage
-                      media_type={media_type || this.props.data.media_type}
+                      media_type={
+                        media_type || this.selectedCampaign.media_type
+                      }
                       media={media}
                       save_campaign_info_instagram={
                         this.props.save_campaign_info_instagram
@@ -652,6 +664,7 @@ class AdDesign extends Component {
                     setTheState={this.setTheState}
                     adType={"InstagramFeedAd"}
                     closeAnimation={this.state.closeAnimation}
+                    rejected={this.rejected}
                   />
                 </View>
                 {!this.state.swipeUpExpanded && (

@@ -144,6 +144,20 @@ class Website extends Component {
   };
   _handleSubmission = () => {
     if (this.validateUrl()) {
+      console.log(
+        JSON.stringify(
+          {
+            ...(this.props.rejected
+              ? this.props.instaRejCampaign
+              : this.props.data),
+            call_to_action: this.state.campaignInfo.call_to_action,
+            link: this.state.campaignInfo.link,
+            rejected: this.props.rejected,
+          },
+          null,
+          2
+        )
+      );
       this.props.save_campaign_info_instagram({
         ...(this.props.rejected
           ? this.props.instaRejCampaign

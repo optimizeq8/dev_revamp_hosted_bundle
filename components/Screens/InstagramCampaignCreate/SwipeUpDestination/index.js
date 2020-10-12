@@ -17,7 +17,7 @@ class SwipeUpDestination extends React.Component {
   getSwipeUpDestination = () => {
     let listIndex = 0;
     let content = <></>;
-    let rejected = this.props.navigation.getParam("rejected", false);
+    let rejected = this.props.rejected;
     switch (
       rejected
         ? this.props.instaRejCampaign.objective
@@ -85,6 +85,7 @@ class SwipeUpDestination extends React.Component {
         listIndex = 0;
         break;
     }
+
     return { content };
   };
   render() {

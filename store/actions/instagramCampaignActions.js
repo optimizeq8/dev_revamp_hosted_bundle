@@ -176,8 +176,9 @@ export const saveBrandMediaInstagram = (
       payload: true,
     });
     console.log("info", info);
+    console.log(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`);
     InstagramBackendURL()
-      .post(`saveinstabrandmedia`, info, {
+      .post(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`, info, {
         onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token,

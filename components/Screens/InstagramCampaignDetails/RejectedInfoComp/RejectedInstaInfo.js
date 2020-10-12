@@ -32,7 +32,7 @@ class RejectedSnapchatInfo extends Component {
     setInstaRejectedAdType(selectedCampaign.campaign_type);
     setInstaRejectedCampaignData(selectedCampaign);
     navigation.navigate(
-      selectedCampaign.campaign_type === "InstagramStoryAd"
+      selectedCampaign.campaign_type === "InstagramFeedAd"
         ? "InstagramFeedAdDesign"
         : "InstagramStoryAdDesign",
       {
@@ -43,7 +43,7 @@ class RejectedSnapchatInfo extends Component {
 
   render() {
     const { review_status_reason, screenProps } = this.props;
-
+    console.log(this.props.selectedCampaign.campaign_type);
     const { translate } = this.props.screenProps;
     let rejReasons = review_status_reason.map((reason, i) => (
       <RejectedReason

@@ -74,7 +74,8 @@ export const _pickImage = async (
   carouselAdCards = {},
   carouselAdsArray,
   media_option = "single",
-  statisticsCallback
+  statisticsCallback,
+  rejected
 ) => {
   try {
     let result = {};

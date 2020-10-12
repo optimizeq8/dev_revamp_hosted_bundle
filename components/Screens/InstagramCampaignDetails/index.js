@@ -20,7 +20,7 @@ import StatusModal from "./StatusModal";
 import Toggle from "../../MiniComponents/Toggle";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import SlideUpPanel from "./SlideUpPanel";
-import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
+import RejectedInstaInfo from "./RejectedInfoComp/RejectedInstaInfo";
 
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -424,6 +424,7 @@ class InstagramCampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
+        console.log(JSON.stringify(selectedCampaign, null, 2));
       }
 
       return (
@@ -549,8 +550,8 @@ class InstagramCampaignDetails extends Component {
               <View style={[styles.mainCard]}>
                 {!loading &&
                 selectedCampaign &&
-                selectedCampaign.ad_status === "Ad Rejected" ? (
-                  <RejectedSnapchatInfo
+                selectedCampaign.ad_status !== "Ad Rejected" ? (
+                  <RejectedInstaInfo
                     loading={loading}
                     screenProps={this.props.screenProps}
                     review_status_reason={

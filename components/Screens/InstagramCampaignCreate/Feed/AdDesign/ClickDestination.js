@@ -171,6 +171,7 @@ export default class ClickDestination extends Component {
                 expanded={this.state.expanded}
                 toggleClickDestination={this.toggleClickDestination}
                 screenProps={this.props.screenProps}
+                rejected={this.props.rejected}
               />
             </>
           )}

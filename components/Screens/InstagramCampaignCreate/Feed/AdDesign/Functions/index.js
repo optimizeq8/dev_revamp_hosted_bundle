@@ -165,7 +165,7 @@ export const formatMedia = (
       ? "BLANK"
       : JSON.stringify(data.attachment)
   );
-
+  console.log(JSON.stringify(body, null, 2));
   setTheState({
     formatted: body,
   });
