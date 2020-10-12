@@ -168,7 +168,8 @@ export default class SwipeUpComponent extends Component {
       : {
           height: this.props.swipeUpMaxHeight,
           position: "absolute",
-          bottom: adType === "CollectionAd" ? -110 : -10,
+          marginTop: 0,
+          // bottom: adType === "CollectionAd" ? -110 : -10,
         };
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     const { translate } = this.props.screenProps;
@@ -178,9 +179,9 @@ export default class SwipeUpComponent extends Component {
         disabled={disabled || this.state.expanded}
         style={[
           styles.swipeUp,
-          {
-            marginBottom: adType === "CollectionAd" ? 110 : 10,
-          },
+          // {
+          //   marginBottom: adType === "CollectionAd" ? 110 : 10,
+          // },
           sty,
         ]}
         onPress={this.toggle}
