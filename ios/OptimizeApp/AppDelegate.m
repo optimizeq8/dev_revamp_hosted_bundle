@@ -50,6 +50,12 @@
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
+SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+
+[config use:[SEGAdjustIntegrationFactory instance]];
+
+[SEGAnalytics setupWithConfiguration:config];
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else

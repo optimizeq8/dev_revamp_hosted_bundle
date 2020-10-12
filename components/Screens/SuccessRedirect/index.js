@@ -14,7 +14,7 @@ import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -84,7 +84,7 @@ class SuccessRedirect extends Component {
     });
     //TODO: For adjust please add the analytics keywords accordinlgy for instagram channel
     if (this.props.navigation.getParam("isWallet") === "1") {
-      let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
+      // let adjustWalletPaymentTracker = new AdjustEvent("byiugh");
       // adjustWalletPaymentTracker.addPartnerParameter(
       //   this.props.channel === "google"
       //     ? `Google_SEM`
@@ -98,25 +98,25 @@ class SuccessRedirect extends Component {
       // adjustWalletPaymentTracker.setTransactionId(
       //   this.props.navigation.getParam("paymentId", "null")
       // );
-      Adjust.trackEvent(adjustWalletPaymentTracker);
+      // Adjust.trackEvent(adjustWalletPaymentTracker);
     } else if (!this.props.navigation.getParam("checkoutwithWallet", false)) {
-      let adjustPaymentTracker = new AdjustEvent("kdnzgg");
-      adjustPaymentTracker.addPartnerParameter(
-        this.props.channel === "google"
-          ? `Google_SEM`
-          : this.props.channel === "instagram"
-          ? `Instagram_${this.props.adType}`
-          : `Snap_${this.props.adType}`,
-        this.props.channel === "google" ? "google_sem" : this.props.adType
-      );
-      adjustPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.getParam("amount", "null")),
-        "USD"
-      );
-      adjustPaymentTracker.setTransactionId(
-        this.props.navigation.getParam("paymentId", "null")
-      );
-      Adjust.trackEvent(adjustPaymentTracker);
+      // let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      // adjustPaymentTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : this.props.channel === "instagram"
+      //     ? `Instagram_${this.props.adType}`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustPaymentTracker.setRevenue(
+      //   parseFloat(this.props.navigation.getParam("amount", "null")),
+      //   "USD"
+      // );
+      // adjustPaymentTracker.setTransactionId(
+      //   this.props.navigation.getParam("paymentId", "null")
+      // );
+      // Adjust.trackEvent(adjustPaymentTracker);
     }
     this.setState(this.props.navigation.state.params, () => {
       if (

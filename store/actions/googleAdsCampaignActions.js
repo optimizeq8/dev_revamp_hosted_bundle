@@ -7,7 +7,7 @@ import isUndefined from "lodash/isUndefined";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 GoogleBackendURL = () =>
   axios.create({
@@ -54,8 +54,8 @@ export const create_google_ad_account = (info, navigation) => {
             payload: false,
           });
         } else {
-          let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
-          Adjust.trackEvent(adjustGoogleAdAccTracker);
+          // let adjustGoogleAdAccTracker = new AdjustEvent("qvz33a");
+          // Adjust.trackEvent(adjustGoogleAdAccTracker);
           dispatch({
             type: actionTypes.CREATE_GOOGLE_AD_ACCOUNT,
             payload: { data: data },

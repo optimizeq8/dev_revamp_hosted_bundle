@@ -41,7 +41,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { showMessage } from "react-native-flash-message";
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?",
@@ -249,8 +249,8 @@ class Messenger extends Component {
       support_type: "intercom",
       timestamp: new Date().getTime(),
     });
-    let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
-    Adjust.trackEvent(adjustSupportTrackeer);
+    // let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
+    // Adjust.trackEvent(adjustSupportTrackeer);
   };
   render() {
     const { translate } = this.props.screenProps;

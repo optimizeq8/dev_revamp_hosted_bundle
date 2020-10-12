@@ -36,8 +36,8 @@ target 'OptimizeApp' do
 
   pod 'RNPhotoEditorSDK', :path => '../node_modules/react-native-photoeditorsdk'
 
-  pod 'react-native-adjust', :path => '../node_modules/react-native-adjust'
-
+  # pod 'react-native-adjust', :path => '../node_modules/react-native-adjust'
+  pod "Segment-Adjust"
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
   pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
