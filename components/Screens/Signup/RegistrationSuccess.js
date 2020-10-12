@@ -10,7 +10,7 @@ import {
 } from "react-native-responsive-screen";
 import GradientButton from "../../MiniComponents/GradientButton";
 import styles from "./MainForm/styles";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { connect } from "react-redux";
 
 class RegistartionSuccess extends React.Component {
@@ -34,10 +34,10 @@ class RegistartionSuccess extends React.Component {
       ...userInfo,
     });
 
-    let adjustRegiserTracker = new AdjustEvent("z1mpdo");
-    this.props.userInfo &&
-      adjustRegiserTracker.setCallbackId(this.props.userInfo.userid);
-    Adjust.trackEvent(adjustRegiserTracker);
+    // let adjustRegiserTracker = new AdjustEvent("z1mpdo");
+    // this.props.userInfo &&
+    //   adjustRegiserTracker.setCallbackId(this.props.userInfo.userid);
+    // Adjust.trackEvent(adjustRegiserTracker);
   }
   getStartedBtnAction = () => {
     const device_id = this.props.screenProps.device_id;

@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.23.0):
-    - Adjust/Core (= 4.23.0)
-  - Adjust/Core (4.23.0)
+  - Adjust (4.23.2):
+    - Adjust/Core (= 4.23.2)
+  - Adjust/Core (4.23.2)
   - Analytics (4.0.5)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -287,8 +287,7 @@ PODS:
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
   - React-jsinspector (0.63.2)
-  - react-native-adjust (4.23.0):
-    - Adjust (= 4.23.0)
+  - react-native-advertising-id (1.0.11):
     - React
   - react-native-blur (0.8.0):
     - React
@@ -369,6 +368,11 @@ PODS:
   - RNAnalytics (1.3.1):
     - Analytics (~> 4.0)
     - React
+  - RNAnalyticsIntegration-Adjust (1.3.1):
+    - Analytics
+    - React
+    - RNAnalytics
+    - Segment-Adjust
   - RNAnalyticsIntegration-Mixpanel (1.3.1):
     - Analytics
     - React
@@ -405,6 +409,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
+  - Segment-Adjust (3.1.0):
+    - Adjust (~> 4.23)
+    - Analytics
   - Segment-Mixpanel (1.7.0):
     - Analytics
     - Mixpanel (~> 3.5)
@@ -476,7 +483,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-adjust (from `../node_modules/react-native-adjust`)
+  - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
@@ -494,6 +501,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Adjust (from `../node_modules/@segment/analytics-react-native-adjust`)"
   - "RNAnalyticsIntegration-Mixpanel (from `../node_modules/@segment/analytics-react-native-mixpanel`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
@@ -508,6 +516,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNVideoEditorSDK (from `../node_modules/react-native-videoeditorsdk`)
+  - Segment-Adjust
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
@@ -535,6 +544,7 @@ SPEC REPOS:
     - Mixpanel
     - mobile-ffmpeg-https-gpl
     - PhotoEditorSDK
+    - Segment-Adjust
     - Segment-Mixpanel
     - Sentry
     - VideoEditorSDK
@@ -618,8 +628,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-adjust:
-    :path: "../node_modules/react-native-adjust"
+  react-native-advertising-id:
+    :path: "../node_modules/react-native-advertising-id"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-ffmpeg:
@@ -654,6 +664,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
+  RNAnalyticsIntegration-Adjust:
+    :path: "../node_modules/@segment/analytics-react-native-adjust"
   RNAnalyticsIntegration-Mixpanel:
     :path: "../node_modules/@segment/analytics-react-native-mixpanel"
   RNBootSplash:
@@ -712,7 +724,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 552e4f9bbc77501b2000f483491b20642081749a
+  Adjust: 2faf94752c2069c0bc68bc41c03d00175de4555f
   Analytics: 4bcf052c91e1f3339219e83d6a036fb2bd7c218d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
@@ -761,7 +773,7 @@ SPEC CHECKSUMS:
   React-jsi: 54245e1d5f4b690dec614a73a3795964eeef13a8
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
-  react-native-adjust: 2a86dea62f6ce09463f36ac3ee60f615e790ee8c
+  react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
@@ -779,6 +791,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
   RNAnalytics: 589e1b1072d9df2646899627e4582d20c3255127
+  RNAnalyticsIntegration-Adjust: c3525c3bfffec62acf320462d5d2b22f67af3aa9
   RNAnalyticsIntegration-Mixpanel: c25ce5710f9b87d8eb631567f65cc2005993f735
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
@@ -793,6 +806,7 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   RNVideoEditorSDK: 271682157e429f1df5bf3629d6bcb1143fe14089
+  Segment-Adjust: 3dd5e37785aff1aed6103e4cd00ec445b5b88f12
   Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
@@ -811,6 +825,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 0dcdde1a786c79ad0391a921e198b1722ec61f01
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
-PODFILE CHECKSUM: 107bb2d737711ab4b88b3d278b853db1609e1fb5
+PODFILE CHECKSUM: 9f748cd0cdfdeb7f6ae227d45963dbf73a522aa1
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4

@@ -49,7 +49,7 @@ import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
 import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -680,8 +680,8 @@ class CollectionMedia extends Component {
     this.setState({ mediaModalVisible: visible });
   };
   handleAdCollectionMediaFocus = () => {
-    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
-    Adjust.trackEvent(adjustAdCoverTracker);
+    // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    // Adjust.trackEvent(adjustAdCoverTracker);
   };
   render() {
     const { translate } = this.props.screenProps;

@@ -51,7 +51,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdInfo extends Component {
   static navigationOptions = {
@@ -402,12 +402,12 @@ class GoogleAdInfo extends Component {
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
-    let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
-    adjustGoogleAdObjectiveTracker.addPartnerParameter(
-      `Google_SEM`,
-      "google_sem"
-    );
-    Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
+    // let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
+    // adjustGoogleAdObjectiveTracker.addPartnerParameter(
+    //   `Google_SEM`,
+    //   "google_sem"
+    // );
+    // Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   getValidInfo = (stateError, validObj) => {
     if (validObj) {

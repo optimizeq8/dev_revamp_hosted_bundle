@@ -9,6 +9,7 @@
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <React/RCTBridgeDelegate.h>
 #import <UMCore/UMAppDelegateWrapper.h>
+#import <Segment-Adjust/SEGAdjustIntegrationFactory.h>
 
 #import <EXUpdates/EXUpdatesAppController.h>
 

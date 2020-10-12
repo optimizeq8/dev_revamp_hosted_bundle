@@ -38,7 +38,7 @@ import {
 } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
@@ -380,9 +380,9 @@ class GoogleAdDesign extends Component {
       ]);
 
     this.setState({ unmounted: false });
-    let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
-    adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
-    Adjust.trackEvent(adjustGoogleAdDesignTracker);
+    // let adjustGoogleAdDesignTracker = new AdjustEvent("o7pn8g");
+    // adjustGoogleAdDesignTracker.addPartnerParameter(`Google_SEM`, "google_sem");
+    // Adjust.trackEvent(adjustGoogleAdDesignTracker);
   };
 
   /**
