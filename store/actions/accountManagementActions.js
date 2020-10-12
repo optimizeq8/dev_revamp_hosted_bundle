@@ -80,6 +80,14 @@ export const createBusinessAccount = (account, navigation) => {
             },
           });
         }
+        if (!data.success) {
+          return dispatch({
+            type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
+            payload: {
+              loading: false,
+            },
+          });
+        }
       })
       .catch((err) => {
         // console.log("error creating new bsn", err.message || err.response);
