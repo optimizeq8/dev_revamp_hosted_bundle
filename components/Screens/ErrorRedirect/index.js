@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  BackHandler,
-  ScrollView,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, Image, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView, NavigationActions } from "react-navigation";
