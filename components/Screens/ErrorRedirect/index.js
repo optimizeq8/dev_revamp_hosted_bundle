@@ -23,6 +23,7 @@ import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { AdjustEvent, Adjust } from "react-native-adjust";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 class ErrorRedirect extends Component {
   static navigationOptions = {
@@ -57,7 +58,7 @@ class ErrorRedirect extends Component {
         payment_status: "failure",
         campaign_channel:
           this.props.channel === "" ? "snapchat" : this.props.channel,
-        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        amount: parseFloat(this.props.navigation.getParam("amount", 0)),
         campaign_ad_type:
           this.props.channel === "google"
             ? "GoogleSEAd"
@@ -65,10 +66,10 @@ class ErrorRedirect extends Component {
             ? this.props.adTypeInstagram
             : this.props.adType,
         campaign_ltv: parseFloat(
-          this.props.navigation.getParam("campaign_ltv", "null")
+          this.props.navigation.getParam("campaign_ltv", 0)
         ),
         campaign_revenue: parseFloat(
-          this.props.navigation.getParam("campaign_revenue", "null")
+          this.props.navigation.getParam("campaign_revenue", 0)
         ),
       };
     }
@@ -178,8 +179,27 @@ class ErrorRedirect extends Component {
                 {this.props.navigation.getParam("status", "")}
               </Text>
             </View>
-            <TouchableOpacity
+            <GradientButton
+              uppercase
               style={styles.button}
+              text={translate("Retry")}
+              onPressAction={() => {
+                if (this.props.navigation.getParam("isWallet") === "1") {
+                  this.props.navigation.navigate("PaymentForm", {
+                    addingCredits: true,
+                    amount: this.props.navigation.getParam("amount", 0),
+                    source: "payment_mode",
+                    source_action: "a_retry_payment",
+                  });
+                } else {
+                  this.props.navigation.navigate("PaymentForm", {
+                    addingCredits: false,
+                    source: "payment_mode",
+                    source_action: "a_retry_payment",
+                    amount: this.props.navigation.getParam("amount", 0),
+                  });
+                }
+              }}
               onPress={() => {
                 if (this.props.navigation.getParam("isWallet") === "1") {
                   this.props.navigation.navigate("PaymentForm", {
@@ -197,11 +217,30 @@ class ErrorRedirect extends Component {
                   });
                 }
               }}
-            >
-              <Text style={styles.buttonText}> {translate("Retry")} </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.whitebutton}
+            />
+            <GradientButton
+              onPressAction={() => {
+                // if (this.props.channel === "") {
+                //   this.props.resetCampaignInfo();
+                //   this.props.reset_transaction_reducer();
+                // }
+                // if (this.props.channel === "google") {
+                //   this.props.rest_google_campaign_data();
+                //   this.props.reset_transaction_reducer();
+                // }
+                this.props.navigation.reset(
+                  [
+                    NavigationActions.navigate({
+                      routeName: "Dashboard",
+                      params: {
+                        source: "payment_end",
+                        source_action: "a_go_to_home",
+                      },
+                    }),
+                  ],
+                  0
+                );
+              }}
               onPress={() => {
                 // if (this.props.channel === "") {
                 //   this.props.resetCampaignInfo();
@@ -224,10 +263,11 @@ class ErrorRedirect extends Component {
                   0
                 );
               }}
+              text={translate("Home")}
+              transparent
               style={styles.whiteButton}
-            >
-              <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
-            </TouchableOpacity>
+              uppercase
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -1,21 +1,21 @@
 import { StyleSheet } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#6268FF"
+  background2: "#6268FF",
 };
 const styles = StyleSheet.create({
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   contentContainerStyle: {
     flexGrow: 1,
-    paddingBottom: heightPercentageToDP(35)
+    paddingBottom: heightPercentageToDP(35),
   },
   container: {
     flex: 1,
@@ -23,27 +23,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   text: {
     marginTop: 3,
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-medium",
-    textAlign: "center"
+    textAlign: "center",
   },
   details: {
     marginTop: 10,
     paddingVertical: 10,
     borderRadius: 15,
     backgroundColor: "rgba(0,0,0,0.3)",
-    width: 250
+    width: 250,
   },
   view: {
     // flex: 2,
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   media: {
     // flex: 1,
@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(20),
     margin: 10,
     width: "100%",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   errorText: {
     marginTop: 15,
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-light",
-    textAlign: "center"
+    textAlign: "center",
   },
   button: {
     marginTop: 25,
@@ -67,33 +67,34 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   whiteButton: {
     marginTop: 15,
-    backgroundColor: "#fff",
+    borderColor: "#fff",
     borderRadius: 15,
+    borderWidth: 1,
     width: 250,
     height: 50,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttonText: {
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
   },
   whiteButtonText: {
     color: "#751AFF",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
   },
   title: {
     marginTop: 15,
     color: "#fff",
     fontSize: 41,
-    fontFamily: "montserrat-bold"
-  }
+    fontFamily: "montserrat-bold",
+  },
 });
 
 export default styles;
