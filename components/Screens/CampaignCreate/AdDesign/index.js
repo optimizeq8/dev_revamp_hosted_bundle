@@ -5,11 +5,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import analytics from "@segment/analytics-react-native";
-import { View, Platform, Linking, Text } from "react-native";
-import { Container, Footer } from "native-base";
+import { View, Platform, Linking, Text, ScrollView } from "react-native";
+import { Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Axios from "axios";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
@@ -1220,7 +1219,7 @@ class AdDesign extends Component {
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
             rejected={this.rejected}
           />
-          <KeyboardAwareScrollView
+          <ScrollView
             style={styles.contentContainer}
             contentContainerStyle={{ height: "100%", paddingBottom: 15 }}
           >
@@ -1547,7 +1546,7 @@ class AdDesign extends Component {
                 )}
               </View>
             )}
-          </KeyboardAwareScrollView>
+          </ScrollView>
         </Container>
         <MediaModal
           _pickImage={(mediaTypes, mediaEditor, editImage) =>

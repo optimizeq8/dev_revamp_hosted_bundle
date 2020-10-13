@@ -963,7 +963,7 @@ class AdCover extends Component {
                 screenProps={this.props.screenProps}
               />
             </View>
-            <Footer style={[styles.footerStyle]}>
+            <View style={[styles.footerStyle]}>
               {cover && (this.props.coverLoading || this.state.isVisible) ? (
                 <View style={styles.loadingContainer}>
                   <AnimatedCircularProgress
@@ -996,7 +996,7 @@ class AdCover extends Component {
                   {translate("Please add media to proceed")}
                 </Text>
               )}
-            </Footer>
+            </View>
           </KeyboardAwareScrollView>
         </Container>
         <MediaModal
