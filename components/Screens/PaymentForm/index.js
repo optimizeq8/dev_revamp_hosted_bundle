@@ -355,7 +355,13 @@ class PaymentForm extends Component {
               source: "payment_mode",
               source_action: "a_go_back",
             }}
-            icon={this.props.channel === "" ? "snapchat" : this.props.channel}
+            icon={
+              !this.props.channel
+                ? null
+                : this.props.channel === ""
+                ? "snapchat"
+                : this.props.channel
+            }
             actionButton={this.handleBackButton}
             adType={
               this.props.channel === "" || this.props.channel === "snapchat"
