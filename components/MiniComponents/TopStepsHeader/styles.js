@@ -1,15 +1,9 @@
-import { StyleSheet, I18nManager } from "react-native";
+import { StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF",
-};
+
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
-    // backgroundColor: "#FFF"
   },
   container: {
     flex: 1,

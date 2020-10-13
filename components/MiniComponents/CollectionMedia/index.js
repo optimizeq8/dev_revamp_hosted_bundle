@@ -19,11 +19,9 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import analytics from "@segment/analytics-react-native";
-import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
-import CameraLoading from "../CameraLoading";
 import * as IntentLauncher from "expo-intent-launcher";
 
 //Redux
@@ -43,7 +41,6 @@ import { netLoc } from "../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
-import split from "lodash/split";
 import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";

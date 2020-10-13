@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import CustomHeader from "../../MiniComponents/Header";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 //icons
 import EmailTransparentIcon from "../../../assets/SVGs/EmailTransparent";

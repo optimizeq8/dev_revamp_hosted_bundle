@@ -6,12 +6,9 @@ import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
 import LowerButton from "../LowerButton";
-import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import ModalField from "../InputFieldNew/ModalField";
 import WebsiteField from "../InputFieldNew/Website";
 import Picker from "../Picker";
-import AppCard from "./AppCard";
-import isStringArabic from "../../isStringArabic";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
@@ -22,8 +19,7 @@ import list from "../../Data/callactions.data";
 
 //Styles
 import styles from "./styles";
-import appConfirmStyles from "../AppConfirm/styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";

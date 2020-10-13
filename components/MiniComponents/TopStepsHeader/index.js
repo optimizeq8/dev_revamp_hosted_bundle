@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { Badge } from "native-base";
-import { isUndefined } from "lodash";
+import isUndefined from "lodash/isUndefined";
 import analytics from "@segment/analytics-react-native";
 
 //icons
