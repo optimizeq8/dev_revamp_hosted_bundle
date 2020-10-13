@@ -196,13 +196,15 @@ const styles = StyleSheet.create({
     height: 70,
     justifyContent: "center",
     flexDirection: "column",
+    marginHorizontal: 0,
   },
   activeButton: {
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     height: 70,
     width: 150,
     justifyContent: "center",
     flexDirection: "column",
+    marginHorizontal: 0,
   },
   inactiveText: {
     fontFamily: "montserrat-bold",

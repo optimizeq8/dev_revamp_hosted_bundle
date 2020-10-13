@@ -1,11 +1,5 @@
 import React, { Component, Fragment } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  I18nManager,
-  StatusBar,
-} from "react-native";
+import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { Badge } from "native-base";
 import { isUndefined } from "lodash";
 import analytics from "@segment/analytics-react-native";
@@ -19,6 +13,7 @@ import GoogleSE from "../../../assets/SVGs/GoogleAds";
 
 //styles
 import styles from "./styles";
+import isStringArabic from "../../isStringArabic";
 
 export default class TopStepsHeader extends Component {
   handleTouchableOpacity = () => {
@@ -124,7 +119,15 @@ export default class TopStepsHeader extends Component {
               <InstagramIcon width={30} height={30} />
             </View>
           )}
-          <Text style={styles.title}>
+          <Text
+            style={[
+              styles.title,
+              title &&
+                typeof title === "string" &&
+                !isStringArabic(title) &&
+                styles.english,
+            ]}
+          >
             {title && typeof title === "string" ? title : title.join(" ")}
           </Text>
         </View>

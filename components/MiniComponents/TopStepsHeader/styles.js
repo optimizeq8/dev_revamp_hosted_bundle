@@ -110,6 +110,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     textAlign: "center",
   },
+  english: {
+    fontFamily: "montserrat-bold-english",
+  },
   left: {
     width: "10%",
     padding: 10,
