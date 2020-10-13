@@ -5,7 +5,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "doc": "jsdoc -c jsdoc.conf.json"
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
@@ -23,7 +24,6 @@
     "dateformat": "^3.0.3",
     "deepmerge": "^4.1.1",
     "expo": "^38.0.0",
-    "expo-analytics-segment": "~8.2.1",
     "expo-av": "~8.2.1",
     "expo-blur": "~8.1.2",
     "expo-cli": "^3.17.24",

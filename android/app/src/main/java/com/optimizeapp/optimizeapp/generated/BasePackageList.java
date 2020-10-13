@@ -7,7 +7,6 @@ import org.unimodules.core.interfaces.Package;
 public class BasePackageList {
   public List<Package> getPackageList() {
     return Arrays.<Package>asList(
-        new expo.modules.analytics.segment.SegmentPackage(),
         new expo.modules.application.ApplicationPackage(),
         new expo.modules.av.AVPackage(),
         new expo.modules.constants.ConstantsPackage(),

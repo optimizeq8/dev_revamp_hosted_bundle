@@ -1,0 +1,35 @@
+diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+index 02e1db6..f84b6e0 100644
+--- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
++++ b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+@@ -1097,7 +1097,7 @@ function InternalTextInput(props: Props): React.Node {
+     <TextAncestor.Provider value={true}>
+       <TouchableWithoutFeedback
+         onLayout={props.onLayout}
+-        onPress={_onPress}
++        onPress={e => {_onPress(e);if (props.onPress) {props.onPress(e);}}}
+         accessible={props.accessible}
+         accessibilityLabel={props.accessibilityLabel}
+         accessibilityRole={props.accessibilityRole}
+diff --git a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+index 21f1a06..4673fc2 100644
+--- a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
++++ b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+@@ -275,7 +275,9 @@ - (void)displayLayer:(CALayer *)layer
+   if (_currentFrame) {
+     layer.contentsScale = self.animatedImageScale;
+     layer.contents = (__bridge id)_currentFrame.CGImage;
+-  }
++  } else {
++      [super displayLayer:layer];
++   }
+ }
+ 
+ #pragma mark - Util
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081
