@@ -17,6 +17,8 @@ import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import isEqual from "react-fast-compare";
+
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
@@ -37,8 +39,6 @@ import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
 import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 
-import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
-
 // Style
 import styles from "./styles";
 
@@ -49,7 +49,7 @@ import businessCategoriesList from "../../Data/businessCategoriesList.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import slowlog from "react-native-slowlog";
+
 //Functions
 import {
   widthPercentageToDP as wp,
@@ -59,7 +59,6 @@ import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
-import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";

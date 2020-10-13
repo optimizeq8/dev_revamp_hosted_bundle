@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Container } from "native-base";
 import LottieView from "lottie-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 
 //icons
@@ -21,10 +21,7 @@ import styles from "./styles";
 //Redux
 
 //Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default class PlacholderDashboard extends Component {
   render() {
