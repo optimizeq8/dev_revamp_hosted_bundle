@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   gradient: {
@@ -70,15 +67,6 @@ const styles = StyleSheet.create({
     fontSize: 41,
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
-  },
-  lottieViewContainer: {
-    zIndex: 1,
-    position: "absolute",
-    alignSelf: "center",
-    width: widthPercentageToDP(50),
-    height: heightPercentageToDP(40),
-    alignContent: "center",
-    alignItems: "center",
   },
 });
 
