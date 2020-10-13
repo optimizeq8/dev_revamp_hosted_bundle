@@ -21,13 +21,11 @@ import * as actionCreators from "../../../store/actions";
 
 import UseWallet from "./UseWallet";
 import formatNumber from "../../formatNumber";
-import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
-import BackDrop from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
@@ -348,7 +346,6 @@ class PaymentForm extends Component {
         <NavigationEvents onDidFocus={this.handlePaymentFormFocus} />
 
         <Container style={[styles.container]}>
-          {/* <BackDrop style={styles.backDrop} /> */}
           <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
@@ -358,7 +355,6 @@ class PaymentForm extends Component {
               source: "payment_mode",
               source_action: "a_go_back",
             }}
-            actionButton={this.reviewPurchase}
             icon={this.props.channel === "" ? "snapchat" : this.props.channel}
             actionButton={this.handleBackButton}
             adType={

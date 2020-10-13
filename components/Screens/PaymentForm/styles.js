@@ -5,8 +5,6 @@ import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
   contentStyle: { flex: 1, backgroundColor: "#0000" },
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   knetContainer: {
     flex: 1,
     alignItems: "center",
@@ -59,11 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  backDrop: {
-    position: "absolute",
-    top: -275,
-    alignSelf: "center",
-  },
   text: {
     textAlign: "center",
     color: "#fff",
@@ -72,25 +65,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10,
-  },
-
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14 / PixelRatio.getFontScale(),
-    alignSelf: "center",
-    textAlign: "center",
-  },
-  boldtext: {
-    color: "rgba(255,255,255,0.7)",
-    fontSize: 12,
-    fontFamily: "montserrat-bold",
-    alignSelf: "center",
-  },
-
-  snapbutton: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#fff",
   },
   link: {
     textAlign: "left",
@@ -105,20 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingHorizontal: 10,
     paddingVertical: 5,
-  },
-  header: {
-    fontFamily: "montserrat-medium",
-    textAlign: "center",
-    fontSize: 16,
-    color: "#fff",
-    alignSelf: "center",
-    paddingRight: 10,
-  },
-  headerview: {
-    marginTop: 10,
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 20,
   },
   bottomCard: {
     // display: "flex",
@@ -145,14 +105,6 @@ const styles = StyleSheet.create({
     top: "25%",
 
     paddingHorizontal: 20,
-  },
-  button: {
-    borderWidth: 0.3,
-    borderColor: "#fff",
-    marginTop: 15,
-    borderRadius: 10,
-    alignSelf: "center",
-    justifyContent: "center",
   },
   walletButton: {
     marginTop: 15,
@@ -201,9 +153,6 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontFamily: "montserrat-bold-english",
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject,
-  },
   optimizeFeesTextContainer: { flexDirection: "row", paddingTop: 10 },
   optimizeFeesText: {
     color: "#C6C6C6",
@@ -244,9 +193,6 @@ const styles = StyleSheet.create({
   },
   mastercardImage: {
     width: 250,
-  },
-  errorTextKNET: {
-    fontFamily: "montserrat-bold",
   },
   walletPaymentModalContainer: {
     height: "100%",
