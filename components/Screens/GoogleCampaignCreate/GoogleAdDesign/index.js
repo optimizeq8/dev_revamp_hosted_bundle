@@ -7,7 +7,6 @@ import {
   BackHandler,
   ScrollView,
   TouchableOpacity,
-  I18nManager,
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import analytics from "@segment/analytics-react-native";
@@ -24,7 +23,6 @@ import EyeIcon from "../../../../assets/SVGs/Eye";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
