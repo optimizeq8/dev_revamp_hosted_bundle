@@ -8,11 +8,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Components
-import CustomHeader from "../../../MiniComponents/Header";
 import PersonalInfo from "../PersonalInfo";
-import PhoneNo from "../PhoneNo";
-import Verification from "../Verification";
-import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // icons
 import BackIcon from "../../../../assets/SVGs/BackButtonPurple";

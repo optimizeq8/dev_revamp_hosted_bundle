@@ -7,7 +7,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import startCase from "lodash/startCase";
 import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../../MiniComponents/ReviewItemCard";
-import CustomHeader from "../../../../MiniComponents/Header";
+
 import LoadingScreen from "../../../../MiniComponents/LoadingScreen";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 import * as actionCreators from "../../../../../store/actions";
