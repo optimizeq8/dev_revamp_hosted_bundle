@@ -942,9 +942,18 @@ class InstagramStoryAdTargetting extends Component {
   };
   handleMultipleCountrySelection = () => {
     if (!this.editCampaign) {
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
       let recBudget =
         this.state.campaignInfo.targeting.geo_locations.countries.length *
-        this.state.recBudget;
+        75 *
+        duration;
 
       let minValueBudget =
         this.state.minValueBudget *

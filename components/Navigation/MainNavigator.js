@@ -79,8 +79,6 @@ import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
 import SnapchatCampaignAudienceList from "../Screens/SnapchatCampaignAudienceList";
 import SnapchatAudienceTagetting from "../Screens/SnapchatAudience";
 
-import SnapchatAudienceTagetting from "../Screens/SnapchatAudience";
-import SnapchatAudienceList from "../Screens/SnapchatCampaignAudienceList";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },

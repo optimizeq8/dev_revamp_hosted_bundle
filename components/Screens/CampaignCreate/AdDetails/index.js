@@ -177,12 +177,9 @@ class AdDetails extends Component {
       );
 
       let recBudget =
-        this.state.campaignInfo.targeting.geos.length *
-        duration *
-        this.state.recBudget;
-
+        this.state.campaignInfo.targeting.geos.length * duration * 75;
       let minValueBudget =
-        this.state.minValueBudget *
+        this.props.data.minValueBudget *
         this.state.campaignInfo.targeting.geos.length;
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
@@ -232,7 +229,7 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
-    // this.props.getAudienceList();
+    this.props.getAudienceList();
     if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
