@@ -71,7 +71,7 @@ class ReachBar extends Component {
                   {translate("Impressions")}{" "}
                 </Text>
                 <Small style={{ color: globalColors.rum, fontSize: 11 }}>
-                  (avg)
+                  ({translate("avg")})
                 </Small>
               </View>
               {this.props.estimatedMetricsLoading ? (
@@ -98,7 +98,7 @@ class ReachBar extends Component {
                   {translate("Swipe Ups")}{" "}
                 </Text>
                 <Small style={{ color: globalColors.rum, fontSize: 11 }}>
-                  (avg)
+                  ({translate("avg")})
                 </Small>
               </View>
 

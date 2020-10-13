@@ -181,6 +181,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 50,
     paddingHorizontal: 10,
+    marginVertical: 5,
+    paddingVertical: 0,
   },
   container: {
     backgroundColor: "transparent",
@@ -243,7 +245,8 @@ const styles = StyleSheet.create({
     // height: "63%",
     backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 15,
+    marginBottom: 10,
     flex: 1,
   },
   placeholderDownloadMedia: {
@@ -299,8 +302,8 @@ const styles = StyleSheet.create({
   subtitleHeading: {
     textAlign: "left",
     fontSize: 10,
-    marginBottom: heightPercentageToDP(-1.6),
-    marginTop: heightPercentageToDP(0.8),
+    marginBottom: heightPercentageToDP(-1.3),
+    // marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
   },
   MediaOptionsStyle: {

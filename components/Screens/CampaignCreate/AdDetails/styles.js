@@ -137,11 +137,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     paddingLeft: 10,
-    height: "14%",
+    // height: "14%",
     alignItems: "center",
     alignSelf: "center",
     width: "100%",
-    bottom: 10,
+    bottom: "6%",
     flex: 1,
   },
   chartText: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   chartTextNum: {
     color: globalColors.rum,
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 16,
     textAlign: "center",
     width: "100%",
