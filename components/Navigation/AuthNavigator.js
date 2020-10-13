@@ -7,7 +7,6 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import RegistrationSuccess from "../Screens/Signup/RegistrationSuccess";
 
 import Signin from "../Screens/Signin";
-// import Invitation from "../Screens/InvitationScreen";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import ForgotPassword from "../Screens/ForgotPassword";
@@ -23,8 +22,6 @@ export default FluidNavigator(
     SwitchLanguage: SwitchLanguage,
     SwitchLanguageLoading: SwitchLanguageLoading,
     RegistrationSuccess: RegistrationSuccess,
-
-    // Invitation: Invitation
   },
   {
     initialRouteName: "SwitchLanguage",
