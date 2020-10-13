@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
@@ -32,7 +33,6 @@ const initialState = {
   currentCampaignSteps: [],
   oldTempAdType: "",
   oldTempData: null,
-  storyAdAttachment: {},
   carouselAdsArray: [
     {
       id: 0,
@@ -102,7 +102,7 @@ const initialState = {
 
   customInterests: [],
   postsLoading: false,
-  rejCampaign: {},
+  instaRejCampaign: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -449,6 +449,29 @@ const reducer = (state = initialState, action) => {
         loadingCarouselAdsArray: [...deletedLoadingAr],
         carouselAdsArray: [...deleteStoryAds],
       };
+    case actionTypes.SET_INSTAGRAM_REJECTED_CAROUSEL:
+      let rejAds = action.payload;
+      let rejNewCarouselAdsArray = [];
+      let stateAdArray = cloneDeep(state.carouselAdsArray);
+      if (rejAds) {
+        rejNewCarouselAdsArray = rejAds.map((ad, i) => {
+          return {
+            ...ad,
+            index: ad.carousel_order,
+            id: ad.carousel_id,
+            destination: "BLANK",
+            attachment: "BLANK",
+          };
+        });
+        rejNewCarouselAdsArray.forEach(
+          (story) => (stateAdArray[story.index] = story)
+        );
+      }
+      return {
+        ...state,
+        carouselAdsArray: stateAdArray,
+      };
+
     case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
       let ar = state.loadingCarouselAdsArray;
       let storyPro = state.carouselAdsArray;
@@ -527,6 +550,8 @@ const reducer = (state = initialState, action) => {
         instaRejCampaign.attachment = instaRejCampaignAttacment;
       }
       return { ...state, instaRejCampaign };
+    case actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN:
+      return { ...state, instaRejCampaign: null };
     default:
       return state;
   }

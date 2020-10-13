@@ -76,6 +76,7 @@ import { formatCarouselAd } from "./Functions/formatCarouselAd";
 import ClickDestination from "./ClickDestination";
 import VideoProcessingLoader from "../../../../MiniComponents/VideoProcessingLoader";
 import { RNFFmpeg } from "react-native-ffmpeg";
+import { persistor } from "../../../../../store";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -134,7 +135,11 @@ class AdDesign extends Component {
     this.rejected = this.props.navigation.getParam("rejected", false);
     this.selectedCampaign = this.rejected
       ? this.props.instaRejCampaign
-      : this.props.data;
+        ? this.props.instaRejCampaign
+        : {}
+      : this.props.data
+      ? this.props.data
+      : {};
   }
 
   componentWillUnmount() {
@@ -149,12 +154,21 @@ class AdDesign extends Component {
     } else if (this.state.expanded) {
       this.handleCaptionExpand(false);
     } else {
+      if (this.rejected) {
+        this.props.resetInstagramRejectedCampaignData();
+        this.props.setRejectedCarouselAds(false);
+        this.props.resetCampaignInfoInstagram();
+        persistor.purge();
+      }
       this.props.navigation.goBack();
     }
     return true;
   };
   componentDidUpdate(prevProps) {
-    if (prevProps.instaRejCampaign.link !== this.props.instaRejCampaign.link) {
+    if (
+      this.props.instaRejCampaign &&
+      prevProps.instaRejCampaign.link !== this.props.instaRejCampaign.link
+    ) {
       this.selectedCampaign = this.props.instaRejCampaign;
     }
     if (
@@ -548,6 +562,7 @@ class AdDesign extends Component {
 
         <ScrollView
           scrollEnabled={!this.state.swipeUpExpanded}
+          nestedScrollEnabled={true}
           contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -902,5 +917,11 @@ const mapDispatchToProps = (dispatch) => ({
         finalSubmission
       )
     ),
+  resetInstagramRejectedCampaignData: () =>
+    dispatch(actionCreators.resetInstagramRejectedCampaignData()),
+  setRejectedCarouselAds: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
+  resetCampaignInfoInstagram: (resetAdType) =>
+    dispatch(actionCreators.resetCampaignInfoInstagram(resetAdType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

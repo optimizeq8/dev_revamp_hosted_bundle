@@ -31,6 +31,7 @@ class RejectedSnapchatInfo extends Component {
     } = this.props;
     setInstaRejectedAdType(selectedCampaign.campaign_type);
     setInstaRejectedCampaignData(selectedCampaign);
+    this.props.setRejectedCarouselAds(selectedCampaign.carousel_media);
     navigation.navigate(
       selectedCampaign.campaign_type === "InstagramFeedAd"
         ? "InstagramFeedAdDesign"
@@ -95,6 +96,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setInstaRejectedAdType(info)),
   setInstaRejectedCampaignData: (rejCampaign) =>
     dispatch(actionCreators.setInstaRejectedCampaignData(rejCampaign)),
+  setRejectedCarouselAds: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);

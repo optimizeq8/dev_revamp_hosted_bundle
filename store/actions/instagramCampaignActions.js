@@ -132,6 +132,15 @@ export const resetCampaignInfoInstagram = (resetAdType = false) => {
   };
 };
 
+export const setRejectedCarouselAds = (value) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SET_INSTAGRAM_REJECTED_CAROUSEL,
+      payload: value,
+    });
+  };
+};
+
 /**
  * Overwrites campaign's data with oldTempData plus what ever is specified
  * @param {Object} value what ever values in campaign's data to overwrite
@@ -902,5 +911,11 @@ export const setInstaRejectedCampaignData = (rejCampaign) => {
       type: actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN,
       payload: rejCampaign,
     });
+  };
+};
+
+export const resetInstagramRejectedCampaignData = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN });
   };
 };

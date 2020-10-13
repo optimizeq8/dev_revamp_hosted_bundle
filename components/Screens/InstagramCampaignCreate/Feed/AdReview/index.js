@@ -35,7 +35,9 @@ class AdFeedDesignReview extends React.Component {
     });
   };
   getCarouselMedia = () => {
-    let media = this.props.carouselAdsArray.filter((ad) => ad.media !== "//");
+    let media = this.props.navigation.getParam("campaignDetails", false)
+      ? this.props.navigation.getParam("carouselAdsArray", [])
+      : this.props.carouselAdsArray.filter((ad) => ad.media !== "//");
     return media;
   };
 
