@@ -7,19 +7,6 @@ import {
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  inputProps: {
-    backgroundColor: "rgba(0,0,0,0)",
-  },
-  cellProps: {
-    backgroundColor: "rgba(0,0,0,0.06)",
-    borderRadius: 14,
-    color: globalColors.orange,
-    fontFamily: "montserrat-bold",
-    // padding: 10,
-    borderColor: "rgba(0,0,0,0)",
-    width: 35,
-    height: 37,
-  },
   headingText: {
     textAlign: "center",
     color: globalColors.white,
