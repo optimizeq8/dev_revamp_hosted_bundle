@@ -9,7 +9,7 @@ import { globalColors } from "../../../../GlobalStyles";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
-    let { rejected, coverHeadline, disabled } = this.props;
+    let { disabled } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <Item disabled={disabled} style={styles.inputHeadline}>

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
-import { LinearGradient } from "expo-linear-gradient";
 import Axios from "axios";
 
 //Redux
@@ -29,7 +28,6 @@ import myWebsiteStyles from "./myWebsiteEcommerceStyle";
 
 import Header from "../../MiniComponents/Header";
 import Website from "../../MiniComponents/InputFieldNew/Website";
-import ProductSelect from "./ProductSelect";
 import { globalColors } from "../../../GlobalStyles";
 import LoadingModal from "../CampaignCreate/AdDesign/LoadingModal";
 
