@@ -615,9 +615,8 @@ class InstagramFeedAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.min_age = parseInt(values[0]);
-    rep.targeting.max_age = parseInt(values[1]);
-
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",

@@ -365,7 +365,7 @@ class VerifyAccount extends Component {
       );
     }
 
-    if (!this.props.successNo) {
+    if (this.props.successNo) {
       content = (
         <View style={styles.mobileDetailCard}>
           <Text style={styles.codeSentText}>
