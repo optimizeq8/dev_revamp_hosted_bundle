@@ -303,8 +303,7 @@ class VerifyAccount extends Component {
         verificationCode: this.state.code,
         userid: this.props.userInfo.userid,
       },
-      this.state.verifyByMobile ? "Mobile" : "Email",
-      source === "my_website_tutorial" ? "OptimizeWebsite" : "Dashboard"
+      this.state.verifyByMobile ? "Mobile" : "Email"
     );
   };
 
@@ -365,7 +364,7 @@ class VerifyAccount extends Component {
       );
     }
 
-    if (this.props.successNo) {
+    if (!this.props.successNo) {
       content = (
         <View style={styles.mobileDetailCard}>
           <Text style={styles.codeSentText}>
@@ -455,14 +454,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sendMobileNo: (mobileNo) => dispatch(actionCreators.sendMobileNo(mobileNo)),
-  verifyMobileCode: (mobileAuth, verification_channel, navigationPath) =>
-    dispatch(
-      actionCreators.verifyMobileCode(
-        mobileAuth,
-        verification_channel,
-        navigationPath
-      )
-    ),
+  verifyMobileCode: (mobileAuth, verification_channel) =>
+    dispatch(actionCreators.verifyMobileCode(mobileAuth, verification_channel)),
   resendVerifyMobileCode: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
   resendVerifyMobileCodeByEmail: (mobileAuth) =>

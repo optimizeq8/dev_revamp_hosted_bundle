@@ -50,30 +50,6 @@ class RejectedSnapchatInfo extends Component {
       ]
     );
   };
-  /**
-   * handles the review and publish process
-   */
-  handleSnapchatRejection = () => {
-    let {
-      selectedCampaign,
-      setRejectedAdType,
-      setRejectedCampaignData,
-      navigation,
-    } = this.props;
-    setRejectedAdType(selectedCampaign.campaign_type);
-    let savedObjective =
-      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
-      (selectedCampaign.destination === "COLLECTION" &&
-        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
-        ? "WEBSITE_TRAFFIC"
-        : selectedCampaign.destination === "DEEP_LINK"
-        ? "APP_TRAFFIC"
-        : selectedCampaign.objective;
-    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
-    navigation.navigate("AdDesign", {
-      rejected: true,
-    });
-  };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
@@ -90,7 +66,7 @@ class RejectedSnapchatInfo extends Component {
     ));
     return (
       <View style={styles.rejectedOuterView}>
-        <View style={styles.rejectedView}>
+        <View style={{ width: "100%", alignItems: "center" }}>
           <ScrollView
             contentContainerStyle={[
               styles.contentStyle,
@@ -98,7 +74,15 @@ class RejectedSnapchatInfo extends Component {
             ]}
             nestedScrollEnabled={true}
           >
-            <View style={styles.rejectedHeaderView}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 20,
+                paddingTop: 20,
+              }}
+            >
               <Rejected width={20} height={20} />
               <Text uppercase style={styles.adRejectedTitle}>
                 {translate("Ad Rejected")}
@@ -108,6 +92,12 @@ class RejectedSnapchatInfo extends Component {
               {`There are ${rejReasons.length} reasons for this:`}
             </Text>
             {rejReasons}
+            {/* <TouchableOpacity
+              style={styles.rejectedInfoButton}
+              onPress={() => this.setModalVisible(true, review_status_reason)}
+            >
+              <Info />
+            </TouchableOpacity> */}
             <CustomButtons
               screenProps={this.props.screenProps}
               onPressFunction={() =>
@@ -123,7 +113,31 @@ class RejectedSnapchatInfo extends Component {
             />
           </ScrollView>
         </View>
+        {/* {selectedCampaign.campaign_end === "0" && (
+          <View style={styles.rejectedButtonView}>
+            <CustomButtons
+              screenProps={this.props.screenProps}
+              onPressFunction={this.moveAmountToWallet}
+              content="Move Amount to Wallet"
+              buttonStyle={[
+                styles.customButtonStyle,
+                styles.moveToWalletButton,
+              ]}
+              textStyle={[styles.customButtonText]}
+            />
 
+            <CustomButtons
+              screenProps={this.props.screenProps}
+              onPressFunction={() =>
+                this.props.handleSnapchatRejection(selectedCampaign)
+              }
+              content="Update Ad"
+              filled
+              buttonStyle={styles.customButtonStyle}
+              textStyle={styles.customButtonText}
+            />
+          </View>
+        )} */}
         <RejectedReasonModal
           screenProps={screenProps}
           isVisible={this.state.isVisible}
