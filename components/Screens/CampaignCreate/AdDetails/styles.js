@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     // height: "14%",
     alignItems: "center",
     alignSelf: "center",
-    width: "100%",
+    // width: "100%",
     bottom: "6%",
     flex: 1,
   },
@@ -161,17 +161,17 @@ const styles = StyleSheet.create({
   },
   chartItems: {
     flexDirection: "row",
-    flex: 1,
+    // flex: 1,
   },
   reachBarLowerButton: {
     width: 60,
     height: 60,
   },
   reachPeopleView: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    // width: "100%",
     flex: 1,
   },
   menutext: {
@@ -212,6 +212,35 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
   existingButtonText: { fontSize: 12, color: "#9300FF" },
+  reachSubHeading: {
+    color: globalColors.purple3,
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    fontSize: 10 / PixelRatio.getFontScale(),
+  },
+  reachTextNum: {
+    color: globalColors.purple3,
+    fontFamily: "montserrat-regular-english",
+    fontSize: 10 / PixelRatio.getFontScale(),
+    textAlign: "left",
+    width: "100%",
+    textTransform: "uppercase",
+  },
+  expectedResultText: {
+    color: globalColors.rum,
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    marginVertical: 5,
+    marginHorizontal: 20,
+    textAlign: "left",
+  },
+  reachInnerView: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    marginLeft: 5,
+  },
+  bottomReachView: { flexDirection: "column", flex: 1 },
 });
 
 export default styles;
