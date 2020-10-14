@@ -202,29 +202,7 @@ class Deep_Link extends Component {
         });
     }
   };
-  finalHandleSubmit = (deep_link_uri) => {
-    let attachment = this.state.attachment;
-    let appChoice = this.state.appChoice;
-    attachment["deep_link_uri"] = deep_link_uri;
 
-    if (!this.state.iosAppSelected) {
-      attachment["ios_app_id"] = "";
-      appChoice = "ANDROID";
-    }
-    if (!this.state.androidAppSelected) {
-      attachment["android_app_url"] = "";
-      appChoice = "iOS";
-    }
-    this.props._changeDestination(
-      this.props.collectionAdLinkForm === 0 || !this.props.collectionAdLinkForm
-        ? "DEEP_LINK"
-        : "COLLECTION",
-      this.state.callaction,
-      attachment,
-      appChoice
-    );
-    this.props.toggle(false);
-  };
   _handleSubmission = async (deep_link_uri) => {
     const { translate } = this.props.screenProps;
     const appError = validateWrapper(
@@ -241,16 +219,36 @@ class Deep_Link extends Component {
         error_description: appError,
       });
     }
+    let attachment = this.state.attachment;
+    let appChoice = this.state.appChoice;
 
+    attachment["deep_link_uri"] = deep_link_uri;
     if (
       (this.state.iosAppSelected || this.state.androidAppSelected) &&
       !appError
     ) {
-      this.props.verifyDestinationUrl(
-        deep_link_uri,
-        this.finalHandleSubmit,
-        this.props.screenProps.translate
+      if (!this.state.iosAppSelected) {
+        attachment["ios_app_id"] = "";
+        appChoice = "ANDROID";
+      }
+      if (!this.state.androidAppSelected) {
+        attachment["android_app_url"] = "";
+        appChoice = "iOS";
+      }
+      this.props._changeDestination(
+        this.props.collectionAdLinkForm === 0 ||
+          !this.props.collectionAdLinkForm
+          ? "DEEP_LINK"
+          : "COLLECTION",
+        this.state.callaction,
+        attachment,
+        appChoice
       );
+      this.props.toggle(false);
+      // this.props.navigation.navigate("AdDesign", {
+      //   source: "ad_swipe_up_destination",
+      //   source_action: "a_swipe_up_destination",
+      // });
     } else
       showMessage({
         message: translate("Please select at least one app"),
@@ -317,7 +315,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   save_campaign_info: (info) =>
     dispatch(actionsCreators.save_campaign_info(info)),
-  verifyDestinationUrl: (url, submit, translate) =>
-    dispatch(actionsCreators.verifyDestinationUrl(url, submit, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Deep_Link);

@@ -92,7 +92,6 @@ class InstagramFeedAdTargetting extends Component {
       budgetOption: 1,
       startEditing: true,
       customInterests: [],
-      duration: 3,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -211,7 +210,7 @@ class InstagramFeedAdTargetting extends Component {
             86400000
         ) + 1
       );
-      let recBudget = 75;
+      let recBudget = duration * 75;
       this.setState(
         {
           campaignInfo: {
@@ -219,11 +218,10 @@ class InstagramFeedAdTargetting extends Component {
             campaign_id: this.props.campaign_id,
             lifetime_budget_micro: recBudget * 2,
           },
-          minValueBudget: 25,
+          minValueBudget: this.props.data.minValueBudget,
           maxValueBudget: this.props.data.maxValueBudget,
           value: this.formatNumber(recBudget * 2),
           recBudget: recBudget,
-          duration,
         },
         async () => {
           if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -298,12 +296,12 @@ class InstagramFeedAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            let allCountryRegions = country_regions
-              .find(
-                (country) => country.name === this.props.mainBusiness.country
-              )
-              .regions.map((reg) => reg.key);
-            await this.onSelectedCountryRegionChange(
+            // let allCountryRegions = country_regions
+            //   .find(
+            //     (country) => country.name === this.props.mainBusiness.country
+            //   )
+            //   .regions.map((reg) => reg.key);
+            this.onSelectedCountryRegionChange(
               // [
               country_code
               // ...allCountryRegions,
@@ -562,12 +560,7 @@ class InstagramFeedAdTargetting extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description:
-            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
-              ? `$25 x ${translate("no of Countries")} = $${
-                  this.state.minValueBudget
-                }`
-              : "$" + this.state.minValueBudget,
+          description: "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -622,9 +615,8 @@ class InstagramFeedAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.min_age = parseInt(values[0]);
-    rep.targeting.max_age = parseInt(values[1]);
-
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
       source_action: "a_ad_age",
@@ -804,8 +796,6 @@ class InstagramFeedAdTargetting extends Component {
       }
 
       let rep = cloneDeep(this.state.campaignInfo);
-      rep.lifetime_budget_micro =
-        this.state.duration * this.state.campaignInfo.lifetime_budget_micro;
       if (
         rep.targeting.flexible_spec[0].interests.length > 0 &&
         this.state.customInterests &&
@@ -960,11 +950,21 @@ class InstagramFeedAdTargetting extends Component {
   };
   handleMultipleCountrySelection = () => {
     if (!this.editCampaign) {
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
       let recBudget =
-        this.state.campaignInfo.targeting.geo_locations.countries.length * 75;
+        this.state.campaignInfo.targeting.geo_locations.countries.length *
+        75 *
+        duration;
 
       let minValueBudget =
-        25 * this.state.campaignInfo.targeting.geo_locations.countries.length;
+        this.props.data.minValueBudget *
+        this.state.campaignInfo.targeting.geo_locations.countries.length;
       let lifetime_budget_micro = this.state.campaignInfo.lifetime_budget_micro;
       let value = this.state.value;
       if (this.state.budgetOption !== 0) {
@@ -1305,7 +1305,7 @@ class InstagramFeedAdTargetting extends Component {
                               },
                             ]}
                           >
-                            {translate("Set your daily budget")}
+                            {translate("Set your budget")}
                           </Text>
                         </Row>
 

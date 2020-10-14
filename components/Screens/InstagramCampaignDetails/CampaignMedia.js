@@ -18,18 +18,29 @@ export const previewHandler = (
   source,
   campaignDetails
 ) => {
-  let media =
-    selectedCampaign.campaign_type !== "StoryAd"
-      ? { media: selectedCampaign.media }
-      : {
-          cover: selectedCampaign.story_preview_media,
-          logo: selectedCampaign.story_logo_media,
-        };
-
+  let media = { media: selectedCampaign.media };
+  // let storyOrCollection =
+  //   selectedCampaign.story_creatives || selectedCampaign.collection_creatives;
+  let icon_media_url = "";
   let type = selectedCampaign.media_type;
   let call_to_action = selectedCampaign.call_to_action;
   let destination = selectedCampaign.destination;
-
+  // if (storyOrCollection) {
+  //   icon_media_url =
+  //     storyOrCollection[0].attachment &&
+  //     storyOrCollection[0].attachment !== "BLANK"
+  //       ? JSON.parse(storyOrCollection[0].attachment).icon_media_url
+  //       : "";
+  //   type = storyOrCollection[0].media_type;
+  //   call_to_action = storyOrCollection[0].call_to_action;
+  //   destination = storyOrCollection[0].destination;
+  // } else {
+  //   icon_media_url =
+  //     typeof selectedCampaign.attachment === "string" &&
+  //     selectedCampaign.attachment !== "BLANK"
+  //       ? JSON.parse(selectedCampaign.attachment).icon_media_url
+  //       : "";
+  // }
   analytics.track(`a_preview_ad`, {
     source: "campaign_details",
     source_action: "a_preview_ad",
@@ -37,7 +48,6 @@ export const previewHandler = (
     campaign_channel: "instagram",
     campaign_ad_type: selectedCampaign.campaign_type,
   });
-
   navigation.navigate(
     selectedCampaign.campaign_type !== "InstagramStoryAd"
       ? "AdFeedDesignReview"
@@ -50,10 +60,10 @@ export const previewHandler = (
       destination: destination,
       campaignDetails: true,
       adType: selectedCampaign.campaign_type,
-      storyAdsArray: selectedCampaign.story_creatives,
-      collectionAdMedia: selectedCampaign.collection_creatives,
+      carousel_media: selectedCampaign.carousel_media,
       instagram_profile_pic: selectedCampaign.instagram_profile_pic,
       instagram_business_name: selectedCampaign.instagram_business_name,
+      instagram_profile_pic: selectedCampaign.instagram_profile_pic,
       message: selectedCampaign.message,
       source: source,
       campaignDetails: campaignDetails,
