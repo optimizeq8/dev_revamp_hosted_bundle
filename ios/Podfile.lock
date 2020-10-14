@@ -287,6 +287,8 @@ PODS:
   - react-native-adjust (4.23.0):
     - Adjust (= 4.23.0)
     - React
+  - react-native-advertising-id (1.0.11):
+    - React
   - react-native-blur (0.8.0):
     - React
   - react-native-ffmpeg/https-gpl-lts (0.4.4):
@@ -408,6 +410,9 @@ PODS:
     - React
     - React-RCTImage
     - VideoEditorSDK (~> 10.18)
+  - Segment-Adjust (3.1.0):
+    - Adjust (~> 4.23)
+    - Analytics
   - Segment-Mixpanel (1.7.0):
     - Analytics
     - Mixpanel (~> 3.5)
@@ -478,6 +483,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-adjust (from `../node_modules/react-native-adjust`)
   - react-native-advertising-id (from `../node_modules/react-native-advertising-id`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
@@ -623,6 +629,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-adjust:
+    :path: "../node_modules/react-native-adjust"
   react-native-advertising-id:
     :path: "../node_modules/react-native-advertising-id"
   react-native-blur:
@@ -770,6 +778,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-adjust: 2a86dea62f6ce09463f36ac3ee60f615e790ee8c
+  react-native-advertising-id: 91e0e65f5a1dd0667ce4b6e667ca7338e3c3414a
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
@@ -802,6 +811,7 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 368d6d8b8301224e5ffb6254191f4f8876c2be0d
   RNVideoEditorSDK: 271682157e429f1df5bf3629d6bcb1143fe14089
+  Segment-Adjust: 3dd5e37785aff1aed6103e4cd00ec445b5b88f12
   Segment-Mixpanel: 18c35e15fa95ee61ee2254577cf2c968db42e68a
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 61049c8d55590b74e9ae1d5429bf68d96b4a2528
@@ -820,6 +830,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 0dcdde1a786c79ad0391a921e198b1722ec61f01
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
-PODFILE CHECKSUM: b8d936bdf8310203607140bc781a956887fe9df5
+PODFILE CHECKSUM: a911ee4f5054d6143fce835b9e034ac8a69a4287
 
 COCOAPODS: 1.8.4
