@@ -12,8 +12,15 @@ import GradientButton from "../../../MiniComponents/GradientButton";
  * modal tha displays the rejected reason, will be modified in the future to contain more  info
  */
 export default (props) => {
-  let { rejectedReason, isVisible, setModalVisible, screenProps } = props;
+  let {
+    rejectedReason,
+    isVisible,
+    setModalVisible,
+    screenProps,
+    selectedCampaign,
+  } = props;
   const { translate } = screenProps;
+
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -59,6 +66,17 @@ export default (props) => {
           style={{
             alignSelf: "center",
             paddingVertical: 20,
+          }}
+          onPress={() => {
+            setModalVisible(false);
+            props.getWalletAmountInKwd(selectedCampaign.lifetime_budget_micro);
+            props.navigation.navigate("PaymentForm", {
+              amount: selectedCampaign.lifetime_budget_micro,
+              refundAmountToWallet: true,
+              selectedCampaign: selectedCampaign,
+              source: "open_wallet",
+              source_action: "a_return_amount_to_wallet",
+            });
           }}
         >
           <Text

@@ -146,6 +146,8 @@ class RejectedSnapchatInfo extends Component {
           rejectedReason={this.state.rejectedReason}
           handleSnapchatRejection={this.props.handleSnapchatRejection}
           selectedCampaign={selectedCampaign}
+          navigation={this.props.navigation}
+          getWalletAmountInKwd={this.props.getWalletAmountInKwd}
         />
       </View>
     );
@@ -157,6 +159,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
   moveRejectedAdAmountToWallet: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
+  getWalletAmountInKwd: (amount) =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);
