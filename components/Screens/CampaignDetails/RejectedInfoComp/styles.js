@@ -7,15 +7,16 @@ export default StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#EA514B",
     textTransform: "uppercase",
+    marginLeft: 4,
     // paddingVertical: 5,
   },
   rejectedReasonContainer: {
-    backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 20,
+    backgroundColor: "#0005",
+    borderRadius: 35,
     flexDirection: "column",
-    width: "80%",
+    width: "95%",
     justifyContent: "space-evenly",
-    marginTop: 10,
+    // marginTop: 10,
   },
   reasonTitle: {
     // textAlign: "left",
@@ -26,12 +27,13 @@ export default StyleSheet.create({
     marginBottom: 5,
   },
   rejectedReasonText: {
-    // textAlign: "left",
+    textAlign: "left",
     fontSize: 12,
     fontFamily: "montserrat-regular-english",
     color: "#fff",
-    // lineHeight: 16,
-    textTransform: "uppercase",
+    lineHeight: 16,
+    // textTransform: "uppercase",
+    marginLeft: 5,
   },
   rejectedModalTitleContainer: {
     flexDirection: "row",
@@ -54,14 +56,18 @@ export default StyleSheet.create({
   },
   rejectedReasonView: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 5,
     display: "flex",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignItems: "flex-start",
   },
   hereReasonsText: {
     fontSize: 14,
     fontFamily: "montserrat-regular",
     color: "#EA514B",
+    paddingTop: 5,
+    paddingHorizontal: 20,
+    paddingBottom: 8,
   },
   rejectedHeader: {
     alignItems: "center",
@@ -73,7 +79,7 @@ export default StyleSheet.create({
     marginTop: "5%",
   },
   contentStyle: {
-    paddingBottom: "10%",
+    paddingBottom: 20,
   },
   rejectReasonWord: {
     fontSize: 20,
@@ -96,7 +102,9 @@ export default StyleSheet.create({
   },
   moveToWalletButton: {
     borderColor: "#fff",
-    width: 230,
+    width: 180,
+    marginTop: 15,
+    marginRight: 20,
   },
   rejectedButtonView: { display: "flex", flexDirection: "row" },
   reasonView: {

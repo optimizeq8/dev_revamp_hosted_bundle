@@ -22,11 +22,12 @@ export default (props) => {
           // borderWidth: 1,
           backgroundColor: "#EA514B",
           borderRadius: 20,
+          alignSelf: "center",
         }}
-      ></View>
+      />
       <Text
         style={styles.rejectedReasonText}
-        numberOfLines={2}
+        numberOfLines={1}
         ellipsizeMode="tail"
       >
         {reason}

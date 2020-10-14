@@ -79,6 +79,8 @@ class RejectedSnapchatInfo extends Component {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                paddingHorizontal: 20,
+                paddingTop: 20,
               }}
             >
               <Rejected width={20} height={20} />
@@ -86,19 +88,32 @@ class RejectedSnapchatInfo extends Component {
                 {translate("Ad Rejected")}
               </Text>
             </View>
-            <Text style={styles.hereReasonsText}>
-              {`There are ${rejReasons.length + 1} reasons for this:`}
+            <Text style={[styles.hereReasonsText]}>
+              {`There are ${rejReasons.length} reasons for this:`}
             </Text>
             {rejReasons}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.rejectedInfoButton}
               onPress={() => this.setModalVisible(true, review_status_reason)}
             >
               <Info />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <CustomButtons
+              screenProps={this.props.screenProps}
+              onPressFunction={() =>
+                this.setModalVisible(true, review_status_reason)
+              }
+              content="Fix Now"
+              filled
+              buttonStyle={[
+                styles.customButtonStyle,
+                styles.moveToWalletButton,
+              ]}
+              textStyle={[styles.customButtonText]}
+            />
           </ScrollView>
         </View>
-        {selectedCampaign.campaign_end === "0" && (
+        {/* {selectedCampaign.campaign_end === "0" && (
           <View style={styles.rejectedButtonView}>
             <CustomButtons
               screenProps={this.props.screenProps}
@@ -122,7 +137,7 @@ class RejectedSnapchatInfo extends Component {
               textStyle={styles.customButtonText}
             />
           </View>
-        )}
+        )} */}
         <RejectedReasonModal
           screenProps={screenProps}
           isVisible={this.state.isVisible}
