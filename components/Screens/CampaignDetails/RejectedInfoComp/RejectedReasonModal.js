@@ -36,9 +36,7 @@ export default (props) => {
             rejectedReason.map((reason, index) => (
               <View style={styles.reasonView} key={index}>
                 <View style={styles.reasonNumberView}>
-                  <Text style={[styles.reasonTitle, styles.rejectReasonWord]}>
-                    {index + 1}
-                  </Text>
+                  <Text style={[styles.rejectReasonWord]}>{index + 1}</Text>
                 </View>
 
                 <Text style={styles.rejectedModalReasonText}>{reason}</Text>

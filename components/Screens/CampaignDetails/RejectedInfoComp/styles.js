@@ -47,6 +47,7 @@ export default StyleSheet.create({
     fontSize: 15,
     color: "#fff",
     width: "90%",
+    marginHorizontal: 2,
     alignSelf: "center",
   },
   rejectedInfoButton: {
@@ -58,7 +59,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     display: "flex",
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    flexDirection: "row",
     alignItems: "flex-start",
   },
   hereReasonsText: {
@@ -68,6 +69,7 @@ export default StyleSheet.create({
     paddingTop: 5,
     paddingHorizontal: 20,
     paddingBottom: 8,
+    textAlign: "left",
   },
   rejectedHeader: {
     alignItems: "center",
@@ -89,8 +91,8 @@ export default StyleSheet.create({
     textAlignVertical: "center",
   },
   rejectModalView: {
-    marginTop: "5%",
-    paddingHorizontal: 20,
+    // marginTop: "5%",
+    // paddingHorizontal: 20,
   },
   customButtonStyle: {
     width: 120,
@@ -115,6 +117,9 @@ export default StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     marginVertical: 5,
+    width: "90%",
+    alignSelf: "center",
+    marginHorizontal: 15,
   },
   modalView: { margin: 0 },
   reasonNumberView: {
