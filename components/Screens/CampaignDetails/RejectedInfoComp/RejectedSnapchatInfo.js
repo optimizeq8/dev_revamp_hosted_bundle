@@ -67,13 +67,6 @@ class RejectedSnapchatInfo extends Component {
     return (
       <View style={styles.rejectedOuterView}>
         <View style={{ width: "100%", alignItems: "center" }}>
-          <Rejected />
-          <Text uppercase style={styles.adRejectedTitle}>
-            {translate("Ad Rejected")}
-          </Text>
-          <Text style={styles.hereReasonsText}>
-            {translate("Here Are The Reasons") + ":"}
-          </Text>
           <ScrollView
             contentContainerStyle={[
               styles.contentStyle,
@@ -81,6 +74,21 @@ class RejectedSnapchatInfo extends Component {
             ]}
             nestedScrollEnabled={true}
           >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Rejected width={20} height={20} />
+              <Text uppercase style={styles.adRejectedTitle}>
+                {translate("Ad Rejected")}
+              </Text>
+            </View>
+            <Text style={styles.hereReasonsText}>
+              {`There are ${rejReasons.length + 1} reasons for this:`}
+            </Text>
             {rejReasons}
             <TouchableOpacity
               style={styles.rejectedInfoButton}

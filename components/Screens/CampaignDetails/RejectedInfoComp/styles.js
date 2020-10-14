@@ -6,7 +6,8 @@ export default StyleSheet.create({
     fontSize: 18,
     fontFamily: "montserrat-bold",
     color: "#EA514B",
-    paddingVertical: 5,
+    textTransform: "uppercase",
+    // paddingVertical: 5,
   },
   rejectedReasonContainer: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -29,7 +30,7 @@ export default StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-regular-english",
     color: "#fff",
-    lineHeight: 16,
+    // lineHeight: 16,
     textTransform: "uppercase",
   },
   rejectedModalTitleContainer: {
@@ -60,7 +61,7 @@ export default StyleSheet.create({
   hereReasonsText: {
     fontSize: 14,
     fontFamily: "montserrat-regular",
-    color: "#FFF",
+    color: "#EA514B",
   },
   rejectedHeader: {
     alignItems: "center",

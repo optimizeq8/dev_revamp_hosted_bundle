@@ -11,9 +11,19 @@ export default (props) => {
   let { reason, index } = props;
   return (
     <View style={styles.rejectedReasonView}>
-      <Text uppercase style={styles.reasonTitle}>
+      {/* <Text uppercase style={styles.reasonTitle}>
         {index}.{" "}
-      </Text>
+      </Text> */}
+      <View
+        style={{
+          display: "flex",
+          width: 10,
+          height: 10,
+          // borderWidth: 1,
+          backgroundColor: "#EA514B",
+          borderRadius: 20,
+        }}
+      ></View>
       <Text
         style={styles.rejectedReasonText}
         numberOfLines={2}
