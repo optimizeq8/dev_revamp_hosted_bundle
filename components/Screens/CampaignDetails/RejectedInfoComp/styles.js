@@ -82,8 +82,11 @@ export default StyleSheet.create({
     paddingBottom: 20,
   },
   rejectReasonWord: {
-    fontSize: 20,
-    marginLeft: 10,
+    fontSize: 12,
+    // marginLeft: 10,
+    color: "#fff",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
   rejectModalView: {
     marginTop: "5%",
@@ -114,4 +117,14 @@ export default StyleSheet.create({
     marginVertical: 5,
   },
   modalView: { margin: 0 },
+  reasonNumberView: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 25,
+    height: 25,
+    textAlign: "center",
+    borderRadius: 30,
+    marginRight: 4,
+    backgroundColor: globalColors.orange,
+  },
 });

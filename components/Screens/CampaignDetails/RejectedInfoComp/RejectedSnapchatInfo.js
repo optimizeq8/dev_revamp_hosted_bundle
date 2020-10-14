@@ -144,6 +144,8 @@ class RejectedSnapchatInfo extends Component {
           setModalVisible={this.setModalVisible}
           reasonNum={this.state.reasonNum}
           rejectedReason={this.state.rejectedReason}
+          handleSnapchatRejection={this.props.handleSnapchatRejection}
+          selectedCampaign={selectedCampaign}
         />
       </View>
     );
