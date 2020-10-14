@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.23.0):
-    - Adjust/Core (= 4.23.0)
-  - Adjust/Core (4.23.0)
+  - Adjust (4.23.2):
+    - Adjust/Core (= 4.23.2)
+  - Adjust/Core (4.23.2)
   - Analytics (4.0.5)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -723,7 +723,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 552e4f9bbc77501b2000f483491b20642081749a
+  Adjust: 2faf94752c2069c0bc68bc41c03d00175de4555f
   Analytics: 4bcf052c91e1f3339219e83d6a036fb2bd7c218d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -826,4 +826,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a911ee4f5054d6143fce835b9e034ac8a69a4287
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3
