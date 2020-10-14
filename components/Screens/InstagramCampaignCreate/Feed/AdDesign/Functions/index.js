@@ -50,8 +50,8 @@ export const _handleSubmission = async (
         (validStoryAds.length >= 2 || !validStoryAds.every((ad) => ad.uploaded))
       ) {
         await validStoryAds.forEach((ad) => {
-          formatCarouselAdParams.handleUpload();
-          if (!ad.uploaded)
+          if (!ad.uploaded) {
+            formatCarouselAdParams.handleUpload();
             formatCarouselAd(
               ad,
               carouselAdsArray,
@@ -64,6 +64,7 @@ export const _handleSubmission = async (
               setTheState,
               finalSubmission
             );
+          }
         });
       }
     } else {
@@ -101,19 +102,27 @@ export const formatMedia = (
 
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
+  let carouselAd = { media: "" };
   if (fileReadyToUpload && campaignInfo.media_option === "carousel") {
-    carouselAd = carouselAdsArray.find((card) => {
+    carouselAdsArray.forEach((card) => {
       if (card && card.media !== "//" && !card.media.includes("https://"))
-        cardMedia = card.media;
+        cardMedia = card;
       if (card && card.media !== "//" && card.media.includes("https://"))
-        cardUrl = card.media;
+        cardUrl = card;
       allIosVideos =
         (!cardMedia && cardUrl && Platform.OS === "ios") ||
         card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
-      return !allIosVideos ? cardMedia : cardUrl;
+      carouselAd = !allIosVideos ? cardMedia : cardUrl;
     });
   }
-  if (fileReadyToUpload && !allIosVideos && !media.includes("http")) {
+
+  if (
+    fileReadyToUpload &&
+    !allIosVideos &&
+    campaignInfo.media_option === "carousel"
+      ? !carouselAd.media.includes("http")
+      : !media.includes("http")
+  ) {
     let res = (campaignInfo.media_option !== "carousel"
       ? media
       : carouselAd.media
@@ -165,7 +174,6 @@ export const formatMedia = (
       ? "BLANK"
       : JSON.stringify(data.attachment)
   );
-  console.log(JSON.stringify(body, null, 2));
   setTheState({
     formatted: body,
   });
