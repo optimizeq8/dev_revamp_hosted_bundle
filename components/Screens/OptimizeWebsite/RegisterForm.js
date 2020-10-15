@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { View, ScrollView, BackHandler, Text } from "react-native";
 import InputScrollView from "react-native-input-scroll-view";
-
+import { showMessage } from "react-native-flash-message";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -19,8 +20,11 @@ import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
 import styles from "./styles";
 
 // import PhoneNoField from "./PhoneInput";
+
+// Function
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { showMessage } from "react-native-flash-message";
+
+// MiniComponents
 import LowerButton from "../../MiniComponents/LowerButton";
 import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
 import InputField from "../../MiniComponents/InputFieldNew";

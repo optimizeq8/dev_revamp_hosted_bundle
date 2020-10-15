@@ -3,21 +3,19 @@ import { connect } from "react-redux";
 import {
   View,
   BackHandler,
-  TouchableOpacity,
   ScrollView,
   Platform,
   Modal,
-  I18nManager,
+  Text,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Text, Item, Input, Icon, Button, Container } from "native-base";
+import { Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import isEmpty from "lodash/isEmpty";
 import upperCase from "lodash/upperCase";
 // import { Modal } from 'react-native-paper';
 import { BlurView } from "expo-blur";
 import Picker from "../../../MiniComponents/Picker";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 //icons
@@ -27,9 +25,6 @@ import SuccessIcon from "../../../../assets/SVGs/Success";
 import ErrorIcon from "../../../../assets/SVGs/Error";
 import WalletIcon from "../../../../assets/SVGs/Wallet";
 import CloseCircleIcon from "../../../../assets/SVGs/CloseCircle";
-import ForwardIcon from "../../../../assets/SVGs/ForwardButton";
-import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
-import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";

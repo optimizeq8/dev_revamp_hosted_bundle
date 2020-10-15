@@ -1,8 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content } from "native-base";
-import { Video } from "expo-av";
+import { View, Text, BackHandler, I18nManager } from "react-native";
+import { Container, Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -1132,7 +1131,7 @@ class InstagramStoryAdTargetting extends Component {
     // });
     if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
-        (reg) => reg.name
+        (reg) => translate(reg.name)
       );
     }
     regions_names = regions_names.join(", ");
@@ -1267,7 +1266,7 @@ class InstagramStoryAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Text uppercase style={styles.subHeadings}>
+                        <Text style={styles.subHeadings}>
                           {translate("Set your daily budget")}
                         </Text>
                         <BudgetCards
@@ -1328,10 +1327,7 @@ class InstagramStoryAdTargetting extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
-                      >
+                      <Text style={[styles.subHeadings, { width: "60%" }]}>
                         {translate("Who would you like to reach?")}
                       </Text>
                     )}

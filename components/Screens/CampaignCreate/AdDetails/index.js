@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Container, Content, Row } from "native-base";
-import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -47,11 +46,7 @@ import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 import formatNumber from "../../../formatNumber";
 
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
-import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";

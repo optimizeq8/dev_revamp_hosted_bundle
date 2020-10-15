@@ -4,7 +4,6 @@ import { View, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import LowerButton from "../../../MiniComponents/LowerButton";

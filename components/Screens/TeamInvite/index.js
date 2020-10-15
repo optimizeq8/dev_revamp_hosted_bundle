@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, I18nManager } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
 import { connect } from "react-redux";

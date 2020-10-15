@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { I18nManager, View } from "react-native";
-import { Icon } from "native-base";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";

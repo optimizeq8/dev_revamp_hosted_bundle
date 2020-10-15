@@ -8,21 +8,17 @@ import styles from "./styles";
  *  the state to show it in a modal
  */
 export default (props) => {
-  let { reason, index } = props;
+  let { reason } = props;
   return (
-    <View>
-      <View style={styles.rejectedReasonView}>
-        <Text uppercase style={styles.reasonTitle}>
-          {index}.{" "}
-        </Text>
-        <Text
-          style={styles.rejectedReasonText}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          {reason}
-        </Text>
-      </View>
+    <View style={styles.rejectedReasonView}>
+      <View style={styles.displayBlock} />
+      <Text
+        style={styles.rejectedReasonText}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {reason}
+      </Text>
     </View>
   );
 };

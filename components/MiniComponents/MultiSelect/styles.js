@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     color: globalColors.rum,
     fontSize: 14,
     paddingLeft: 20,
+    textAlign: "left",
   },
   inactivetext: {
     fontFamily: "montserrat-bold",

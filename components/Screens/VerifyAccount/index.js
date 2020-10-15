@@ -155,6 +155,11 @@ class VerifyAccount extends Component {
   };
 
   changePhoneNo = (number, countryCode, type, valid) => {
+    analytics.track(`a_change_mobile_number`, {
+      source: "start_verify",
+      source_action: "a_change_mobile_number",
+      mobile: number,
+    });
     this.setState({
       phoneNum: number,
       country_code: countryCode,

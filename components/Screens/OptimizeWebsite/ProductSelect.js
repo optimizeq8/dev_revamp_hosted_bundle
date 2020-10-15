@@ -23,9 +23,8 @@ import styles from "./styles";
 import CloseIcon from "../../../assets/SVGs/EyeCut";
 
 // MiniComponents
-import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+
 class ProductSelect extends React.Component {
   componentDidMount() {
     this.props.getInstagramPostInitialWebsite(

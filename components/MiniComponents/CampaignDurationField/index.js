@@ -12,8 +12,13 @@ export default class CampaignDuration extends Component {
           <Text style={styles.durationLabel}>{translate("Duration")}</Text>
           <Text style={[styles.durationData]}>
             {this.props.duration}{" "}
-            <Text style={[styles.durationData, { fontSize: 10 }]}>
-              day{this.props.duration > 1 ? "S" : ""}
+            <Text
+              style={[
+                styles.durationData,
+                { fontSize: 10, fontFamily: "montserrat-bold" },
+              ]}
+            >
+              {this.props.duration > 1 ? translate("days") : translate("day")}
             </Text>
           </Text>
           <View style={styles.durationButtons}>

@@ -217,14 +217,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   footerStyle: {
-    backgroundColor: "transparent",
-    borderTopWidth: 0,
-    elevation: 0,
-    justifyContent: "flex-end",
-    padding: 20,
-    alignItems: "center",
-    width: "100%",
-    top: 10,
+    marginVertical: 15,
+    alignSelf: "flex-end",
   },
   subtitleHeading: {
     color: "#fff",

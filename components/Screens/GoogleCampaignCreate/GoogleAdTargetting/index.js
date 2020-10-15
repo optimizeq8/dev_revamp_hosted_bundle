@@ -6,9 +6,10 @@ import {
   ScrollView,
   BackHandler,
   I18nManager,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text, Container, Icon, Content } from "native-base";
+import { Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";

@@ -209,7 +209,7 @@ class Menu extends Component {
                     { fontFamily: "montserrat-regular" },
                   ]}
                 >
-                  {"Invite received "}
+                  {translate("Invite received")}
                 </Text>
               ) : null}
             </GradientButton>
@@ -409,7 +409,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/245/
+                {Constants.nativeAppVersion}/251/
                 {Constants.nativeBuildVersion}
               </Text>
             </ScrollView>

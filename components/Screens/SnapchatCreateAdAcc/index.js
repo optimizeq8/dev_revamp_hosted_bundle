@@ -90,12 +90,7 @@ class SnapchatCreateAdAcc extends Component {
             title="Snapchat Ads Policies"
           />
 
-          <Snapchat style={{ alignSelf: "center", margin: 15 }} />
-          {/* <Image
-            style={styles.media}
-            source={require("../../../assets/images/logo01.png")}
-            resizeMode="contain"
-          /> */}
+          <Snapchat fill={"#000"} style={{ alignSelf: "center", margin: 15 }} />
 
           <Card padder style={styles.mainCard}>
             {/** Replace the hard code snapchat policies html data with webview so as to directly pull data from snapchat ad policies */}

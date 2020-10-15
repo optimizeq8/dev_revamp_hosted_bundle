@@ -6,8 +6,7 @@ import CalendarIcon from "../../../../assets/SVGs/Calendar";
 
 //styles
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+
 export default class Duration extends Component {
   render() {
     const { translate } = this.props.screenProps;

@@ -1,15 +1,6 @@
-import { StyleSheet, PixelRatio } from "react-native";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
-
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  gradient: {
-    ...StyleSheet.absoluteFillObject,
-  },
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%",

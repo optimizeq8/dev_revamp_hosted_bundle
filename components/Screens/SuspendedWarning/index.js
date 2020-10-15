@@ -10,7 +10,6 @@ import {
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";
-import CustomHeader from "../../MiniComponents/Header";
 
 //styles
 import styles from "./styles";

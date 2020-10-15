@@ -85,7 +85,8 @@ class Messenger extends Component {
     // room the user is subscribed to based on their id
     // the conversation is set as seen/read whe they open the messenger
     // at the same time the update_conversatusion_read_status gets called tp update the notifications indicator
-    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    if (this.props.userInfo)
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
 
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     socket.connect();

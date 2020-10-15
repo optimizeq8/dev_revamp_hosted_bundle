@@ -1,14 +1,7 @@
 import React from "react";
 import { SafeAreaView } from "react-navigation";
-import {
-  Text,
-  View,
-  Clipboard,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { Text, Clipboard, TouchableOpacity, ScrollView } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -21,6 +14,8 @@ import { connect } from "react-redux";
 
 // Icons
 import Award from "../../../assets/SVGs/award";
+import GreenCheckmark from "../../../assets/SVGs/GreenCheckmark";
+
 class WebsiteRegistartionSuccess extends React.Component {
   componentDidMount() {
     const source = this.props.navigation.getParam(

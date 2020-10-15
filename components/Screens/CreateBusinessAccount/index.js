@@ -23,24 +23,18 @@ import businessCategoryList from "../../Data/businessCategoriesList.data";
 
 // Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 //icons
-import StartUpIcon from "../../../assets/SVGs/UserProfile";
 import CorporateIcon from "../../../assets/SVGs/Corporate";
-import AgencyIcon from "../../../assets/SVGs/Agency";
 import LocationIcon from "../../../assets/SVGs/LocationOutline";
 import BusinessIcon from "../../../assets/SVGs/Briefcase";
-import EmailIcon from "../../../assets/SVGs/EmailOutline";
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import isStringArabic from "../../isStringArabic";
 import { showMessage } from "react-native-flash-message";
-import { widthPercentageToDP } from "react-native-responsive-screen";
 import AppSearchModal from "../../MiniComponents/AppChoice/AppSearchModal";
 import AppChoiceBusiness from "../../MiniComponents/AppChoiceBusiness";
 

@@ -124,10 +124,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     justifyContent: "center",
     flexDirection: "column",
+    marginHorizontal: 0,
   },
   activeButton: {
-    backgroundColor: "#FF9D00",
-
+    // backgroundColor: "#FF9D00",
+    marginHorizontal: 0,
     justifyContent: "center",
     flexDirection: "column",
   },

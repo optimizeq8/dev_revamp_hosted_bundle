@@ -6,8 +6,6 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  I18nManager,
-  TouchableOpacity,
   StatusBar,
   Modal,
   Text,
@@ -24,10 +22,6 @@ import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { BlurView } from "@react-native-community/blur";
-//Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone";
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
@@ -51,8 +45,8 @@ import InputField from "../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
-import { Linking } from "react-native";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -728,14 +722,15 @@ class AdObjective extends Component {
                       {translate("Where are you taking the user ?")}
                     </Text>
                     <View style={styles.topContainer}>
-                      <TouchableOpacity
+                      <GradientButton
+                        transparent={this.state.collectionAdLinkForm === 2}
                         style={[
                           this.state.collectionAdLinkForm === 1
                             ? styles.activeButton
                             : styles.button,
                           styles.collectionAdLinkForm1,
                         ]}
-                        onPress={() => {
+                        onPressAction={() => {
                           this._handleCollectionAdLinkForm(1);
                         }}
                       >
@@ -758,15 +753,16 @@ class AdObjective extends Component {
                         >
                           {translate("Links to your site")}
                         </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
+                      </GradientButton>
+                      <GradientButton
+                        transparent={this.state.collectionAdLinkForm === 1}
                         style={[
                           this.state.collectionAdLinkForm === 2
                             ? styles.activeButton
                             : styles.button,
                           styles.collectionAdLinkForm2,
                         ]}
-                        onPress={() => {
+                        onPressAction={() => {
                           this._handleCollectionAdLinkForm(2);
                         }}
                       >
@@ -789,7 +785,7 @@ class AdObjective extends Component {
                         >
                           {translate("Links to your App")}
                         </Text>
-                      </TouchableOpacity>
+                      </GradientButton>
                     </View>
                   </View>
                 )}
@@ -840,15 +836,6 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <TouchableOpacity
-              style={{
-                width: "100%",
-                height: "20%",
-                position: "absolute",
-              }}
-              onPress={() => this.setModalVisible(false)}
-              activeOpacity={1}
-            ></TouchableOpacity>
             <View style={styles.objectiveModal}>
               <CustomHeader
                 screenProps={this.props.screenProps}

@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 // import PhoneInput from "react-native-phone-input";
 import { View, Keyboard, TouchableWithoutFeedback, Text } from "react-native";
-import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import PhoneNoField from "./PhoneNoField";
 //Data

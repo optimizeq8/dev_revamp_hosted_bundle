@@ -15,6 +15,8 @@ import { colors } from "../../GradiantColors/colors";
 import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import GradientButton from "../../MiniComponents/GradientButton";
+
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class ErrorRedirect extends Component {

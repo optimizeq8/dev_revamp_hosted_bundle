@@ -85,7 +85,7 @@ class SwipeCompCondition extends Component {
       )
     );
   render() {
-    return <>{this.swipeUpComp()}</>;
+    return this.swipeUpComp();
   }
 }
 const mapStateToProps = (state) => ({

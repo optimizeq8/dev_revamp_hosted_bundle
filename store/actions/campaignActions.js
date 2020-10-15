@@ -1599,6 +1599,10 @@ export const verifyOTPCode = (code) => {
  */
 export const moveRejectedAdAmountToWallet = (campaign_id) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.MOVING_AMOUNT_TO_WALLET,
+      payload: true,
+    });
     createBaseUrl()
       .post(`moveAmountToWallet`, {
         campaign_id,
@@ -1611,6 +1615,10 @@ export const moveRejectedAdAmountToWallet = (campaign_id) => {
           camapign_channel: "snapchat",
           campaign_id: campaign_id,
           action_status: data.success ? "success" : "failure",
+        });
+        dispatch({
+          type: actionTypes.MOVING_AMOUNT_TO_WALLET,
+          payload: false,
         });
         if (data.success) {
           showMessage({

@@ -8,7 +8,6 @@ import {
   ScrollView,
   I18nManager,
   Text,
-  TouchableOpacity,
   StatusBar,
 } from "react-native";
 import { Content, Container } from "native-base";
@@ -30,14 +29,14 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
+import GradientButton from "../../../MiniComponents/GradientButton";
+
 //Icons
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
-import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
 import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
+
 //Data
 import CountriesList from "../../../Data/countries.googleSE.data";
 //Redux
@@ -51,6 +50,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
+
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdInfo extends Component {
@@ -594,48 +594,34 @@ class GoogleAdInfo extends Component {
                   {translate("Ad Language")}
                 </Text>
                 <View style={styles.topContainer}>
-                  <TouchableOpacity
+                  <GradientButton
+                    activeOpacity={1}
+                    transparent={this.state.language === "1019"}
                     style={[
                       this.state.language === "1000"
                         ? styles.activeButton
                         : styles.inactiveButton,
                       styles.choiceButtonLeft,
                     ]}
-                    onPress={() => {
+                    onPressAction={() => {
                       this._handleLanguageChange("1000");
                     }}
-                  >
-                    <Text
-                      style={[
-                        this.state.language === "1000"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                      ]}
-                    >
-                      {translate("English")}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
+                    text={translate("English")}
+                  />
+                  <GradientButton
+                    activeOpacity={1}
+                    transparent={this.state.language === "1000"}
                     style={[
                       this.state.language === "1019"
                         ? styles.activeButton
                         : styles.inactiveButton,
                       styles.choiceButtonRight,
                     ]}
-                    onPress={() => {
+                    onPressAction={() => {
                       this._handleLanguageChange("1019");
                     }}
-                  >
-                    <Text
-                      style={[
-                        this.state.language === "1019"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                      ]}
-                    >
-                      {translate("Arabic")}
-                    </Text>
-                  </TouchableOpacity>
+                    text={translate("Arabic")}
+                  />
                 </View>
               </View>
 

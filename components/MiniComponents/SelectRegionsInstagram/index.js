@@ -54,7 +54,7 @@ class SelectRegions extends Component {
       return (
         <View key={countryName}>
           <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
-            {countryName}
+            {translate(countryName)}
           </Text>
           {coReg.map((c) => (
             <TouchableOpacity

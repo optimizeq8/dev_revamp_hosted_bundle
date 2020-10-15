@@ -68,7 +68,7 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   durationData: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     color: globalColors.orange,
     fontSize: 14,
     paddingVertical: 5,

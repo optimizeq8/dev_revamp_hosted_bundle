@@ -30,7 +30,6 @@ import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
 
 // Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
 //Functions
 import dateFormat from "dateformat";
 

@@ -14,13 +14,22 @@ class ReviewItemCard extends Component {
           text += translate(element) + " ";
         });
       else text = e.title && translate(e.title);
-
       return (
         <View style={styles.listView} key={i}>
           <Text style={[styles.subText, styles.listTitleText]}>
             {text ? text : ""}
           </Text>
-          <Text style={[styles.subText, styles.contentText]}>{e.content}</Text>
+          <Text
+            style={[
+              styles.subText,
+              styles.contentText,
+              (e.title === "Start" || e.title === "End") && {
+                fontFamily: "montserrat-regular-english",
+              },
+            ]}
+          >
+            {e.content}
+          </Text>
         </View>
       );
     });

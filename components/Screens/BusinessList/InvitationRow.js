@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
+import { Icon } from "native-base";
+
 import LowerButton from "../../MiniComponents/LowerButton";
 import businessCardStyles from "../../MiniComponents/BusinessCard/styles";
 import isStringArabic from "../../isStringArabic";
-import { Icon } from "native-base";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
-import NavigationService from "../../../NavigationService";
+import globalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 export default class InvitationRow extends Component {
   render() {
