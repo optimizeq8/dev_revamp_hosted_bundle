@@ -168,52 +168,28 @@ class EditKeywords extends Component {
                 style={styles.gradient}
               />
             </View>
-            {rejected ? (
-              <Header
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                translateTitle={false}
-                title={this.props.selectedCampaign.campaign.name}
-                icon={"google"}
-                segment={{
-                  source: "ad_keywords",
-                  source_action: "a_go_back",
-                }}
-                actionButton={() => this.handleModalToggle()}
-                titleStyle={{
-                  textAlign: "left",
-                  fontSize: 15,
-                  paddingTop: 3,
-                  alignSelf: "center",
-                  justifyContent: "center",
-                  flex: 1,
-                  alignItems: "center",
-                }}
-              />
-            ) : (
-              <Header
-                screenProps={this.props.screenProps}
-                closeButton={false}
-                translateTitle={false}
-                title={this.props.selectedCampaign.campaign.name}
-                icon={"google"}
-                segment={{
-                  source: "ad_keywords",
-                  source_action: "a_go_back",
-                }}
-                navigation={this.props.navigation}
-                titleStyle={{
-                  textAlign: "left",
-                  fontSize: 15,
-                  paddingTop: 3,
-                  alignSelf: "center",
-                  justifyContent: "center",
-                  flex: 1,
-                  alignItems: "center",
-                }}
-              />
-            )}
-
+            <Header
+              screenProps={this.props.screenProps}
+              closeButton={false}
+              translateTitle={false}
+              title={this.props.selectedCampaign.campaign.name}
+              icon={"google"}
+              segment={{
+                source: "ad_keywords",
+                source_action: "a_go_back",
+              }}
+              navigation={!rejected ? this.props.navigation : undefined}
+              actionButton={rejected && this.handleModalToggle}
+              titleStyle={{
+                textAlign: "left",
+                fontSize: 15,
+                paddingTop: 3,
+                alignSelf: "center",
+                justifyContent: "center",
+                flex: 1,
+                alignItems: "center",
+              }}
+            />
             <KeywordsSelectionList
               screenProps={this.props.screenProps}
               _handleSearch={this.props.get_google_SE_keywords}
@@ -239,12 +215,13 @@ class EditKeywords extends Component {
             )}
           </Container>
         </TouchableWithoutFeedback>
-        <EditModal
-          handleModalToggle={this.handleModalToggle}
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-          modalVisible={this.state.modalVisible}
-        />
+        {this.state.modalVisible && (
+          <EditModal
+            handleModalToggle={this.handleModalToggle}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        )}
       </SafeAreaView>
     );
   }

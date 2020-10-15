@@ -386,9 +386,7 @@ class GoogleCampaignDetails extends Component {
                   source_action: "a_go_back",
                 }}
                 navigation={
-                  !this.state.expand
-                    ? this.props.navigation
-                    : this.props.navigation
+                  !this.state.expand ? this.props.navigation : undefined
                 }
                 actionButton={this.state.expand && this.handleChartToggle}
                 selectedCampaign={selectedCampaign}
