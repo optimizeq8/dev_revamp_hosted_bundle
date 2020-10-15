@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import store, { persistor } from "../index";
+import store from "../index";
 import analytics from "@segment/analytics-react-native";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
@@ -132,15 +132,6 @@ export const resetCampaignInfoInstagram = (resetAdType = false) => {
   };
 };
 
-export const setRejectedCarouselAds = (value) => {
-  return (dispatch) => {
-    dispatch({
-      type: actionTypes.SET_INSTAGRAM_REJECTED_CAROUSEL,
-      payload: value,
-    });
-  };
-};
-
 /**
  * Overwrites campaign's data with oldTempData plus what ever is specified
  * @param {Object} value what ever values in campaign's data to overwrite
@@ -176,16 +167,16 @@ export const saveBrandMediaInstagram = (
   loading,
   onToggleModal,
   cancelUplaod,
-  segmentInfo,
-  rejected
+  segmentInfo
 ) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
+    // console.log("info", info);
     InstagramBackendURL()
-      .post(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`, info, {
+      .post(`saveinstabrandmedia`, info, {
         onUploadProgress: (ProgressEvent) =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token,
@@ -194,34 +185,28 @@ export const saveBrandMediaInstagram = (
         return res.data;
       })
       .then((data) => {
+        // console.log("data", data);
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
         });
-        analytics.track(`a_submit_ad_design${rejected ? "_rejection" : ""}`, {
+        analytics.track(`a_submit_ad_design`, {
           source: "ad_design",
-          source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
+          source_action: "a_submit_ad_design",
           action_status: data.success ? "success" : "failure",
           ...segmentInfo,
         });
         if (data.success) {
           onToggleModal(false);
-          dispatch(save_campaign_info_instagram({ info }));
-          if (rejected) {
-            dispatch(resetInstagramRejectedCampaignData());
-            dispatch(setRejectedCarouselAds(false));
-            dispatch(resetCampaignInfoInstagram());
-            persistor.purge();
-          }
-          NavigationService.navigate(rejected ? "Dashboard" : path, {
+          dispatch(save_campaign_info_instagram({ formatted: info }));
+          NavigationService.navigate(path, {
             source: "ad_design",
-            source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
+            source_action: "a_submit_ad_design",
           });
-          if (!rejected)
-            return dispatch({
-              type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
-              payload: data,
-            });
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN_INSTAGRAM,
+            payload: data,
+          });
         }
       })
       .catch((error) => {
@@ -897,28 +882,5 @@ export const saveInstgramExistpost = (
         //   JSON.stringify(error.response.data || error.message, null, 2)
         // );
       });
-  };
-};
-export const setInstaRejectedAdType = (data) => {
-  return (dispatch) => {
-    dispatch({
-      type: actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE,
-      payload: data,
-    });
-  };
-};
-
-export const setInstaRejectedCampaignData = (rejCampaign) => {
-  return (dispatch) => {
-    dispatch({
-      type: actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN,
-      payload: rejCampaign,
-    });
-  };
-};
-
-export const resetInstagramRejectedCampaignData = () => {
-  return (dispatch) => {
-    dispatch({ type: actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN });
   };
 };

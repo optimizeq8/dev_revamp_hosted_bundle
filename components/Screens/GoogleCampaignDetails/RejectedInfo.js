@@ -29,21 +29,11 @@ export default RejectedInfo = (props) => {
   };
   let list = errors.map((e, i) => (
     <View style={styles.rejectedReasonContainer} key={i}>
-      <View
-        style={{
-          display: "flex",
-          width: 20,
-          height: 20,
-          backgroundColor: globalColors.orange,
-          borderRadius: 30,
-          marginRight: 5,
-        }}
-      />
       <Text style={styles.reviewStatusReason}>{e.name}</Text>
       {/* <Text style={styles.reviewStatusText}>
         {translate("You can find more details here")}
       </Text> */}
-      {/* <Text
+      <Text
         selectable={true}
         style={[
           styles.reviewStatusText,
@@ -51,24 +41,18 @@ export default RejectedInfo = (props) => {
         ]}
       >
         {e.description}
-      </Text> */}
+      </Text>
       {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
     </View>
   ));
   return (
     <View style={styles.rejectedHeader}>
-      <View
-        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-      >
-        <Rejected width={20} height={20} />
-        <Text style={styles.adRejectedTitle}>{translate("Ad Rejected")}</Text>
-      </View>
-
+      <Rejected />
+      <Text uppercase style={styles.adRejectedTitle}>
+        {translate("Ad Rejected")}
+      </Text>
       <Text style={styles.hereReasonsText}>
-        {errors.length === 1
-          ? `There is ${errors.length} reason for this`
-          : `There are ${errors.length} reasons for this`}
-        :
+        {translate("Here Are The Reasons")}:
       </Text>
       {list}
       <View style={{ display: "flex", flexDirection: "row" }}>

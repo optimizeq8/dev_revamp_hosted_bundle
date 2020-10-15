@@ -107,10 +107,9 @@ class AdObjective extends Component {
    */
   setCampaignInfo = () => {
     let start_time = new Date();
-    start_time.setDate(start_time.getDate() + 1);
+    start_time.setDate(new Date().getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(start_time.getDate() + this.state.duration - 1);
-
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -149,7 +148,6 @@ class AdObjective extends Component {
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep },
         modalVisible: false,
-        duration: this.props.data.duration ? this.props.data.duration : 7,
       });
     } else {
       this.setState({
@@ -450,7 +448,7 @@ class AdObjective extends Component {
       this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    if (this.timer) clearTimeout(this.timer);
+    clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramFeedAd"].map((o) => (

@@ -49,22 +49,13 @@ class InstaApp_Install extends Component {
 
   componentDidMount() {
     //This is for InstagramAd rejection process
-    if (this.props.rejected) {
+    if (this.props.rejCampaign && this.props.adType === "InstagramAd") {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.instaRejCampaign.attachment,
+          ...this.props.rejCampaign.attachment,
         },
-        callaction: this.props.instaRejCampaign.call_to_action,
-        appChoice:
-          this.props.instaRejCampaign.attachment.ios_app_id !== "" &&
-          this.props.instaRejCampaign.attachment.android_app_url !== ""
-            ? null
-            : this.props.instaRejCampaign.appChoice,
-        iosAppSelected:
-          this.props.instaRejCampaign.attachment.ios_app_id !== "",
-        androidAppSelected:
-          this.props.instaRejCampaign.attachment.android_app_url !== "",
+        callaction: this.props.rejCampaign.call_to_action,
       });
     } else if (
       this.props.data &&
@@ -172,7 +163,6 @@ class InstaApp_Install extends Component {
         iosApp_icon,
         androidApp_icon,
         appChoice,
-        rejected: this.props.rejected,
       });
     }
   };
@@ -235,7 +225,6 @@ class InstaApp_Install extends Component {
         attachment,
         appChoice,
         link: appUrl,
-        rejected: this.props.rejected,
       });
 
       this.props.toggleClickDestination(false);
@@ -293,7 +282,6 @@ class InstaApp_Install extends Component {
           setTheState={this.setTheState}
           socialMediaPlatform={"InstagramFeedAd"}
           data={this.props.data}
-          rejected={this.props.rejected}
         />
       </View>
     );
@@ -305,7 +293,7 @@ const mapStateToProps = (state) => ({
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
   storyAdAttachment: state.instagramAds.storyAdAttachment,
-  instaRejCampaign: state.instagramAds.instaRejCampaign,
+  rejCampaign: state.dashboard.rejCampaign,
   mainBusiness: state.account.mainBusiness,
 });
 

@@ -36,16 +36,14 @@ class AdFeedDesignReview extends React.Component {
   };
   getCarouselMedia = () => {
     let media = this.props.navigation.getParam("campaignDetails", false)
-      ? this.props.navigation.getParam("carouselAdsArray", [])
+      ? this.props.navigation.getParam("carousel_media", false)
       : this.props.carouselAdsArray.filter((ad) => ad.media !== "//");
     return media;
   };
 
   componentDidMount() {
     let data = !this.props.navigation.getParam("campaignDetails", false)
-      ? this.props.navigation.getParam("rejected", false)
-        ? this.props.instaRejCampaign
-        : this.props.data
+      ? this.props.data
       : this.props.navigation.state.params;
     if (data.media) {
       Image.getSize(data.media, (width, height) => {
@@ -87,8 +85,7 @@ class AdFeedDesignReview extends React.Component {
       "campaignDetails",
       false
     );
-    let rejected = this.props.navigation.getParam("rejected", false);
-    let {
+    const {
       instagram_business_name,
       instagram_profile_pic,
       message,
@@ -96,11 +93,7 @@ class AdFeedDesignReview extends React.Component {
       media_type,
       media_option = "single",
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = !campaignDetails
-      ? !rejected
-        ? this.props.data
-        : this.props.instaRejCampaign
-      : this.props.navigation.state.params;
+    } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_option === "single") {
@@ -188,7 +181,7 @@ class AdFeedDesignReview extends React.Component {
                 <Text style={styles.callToActionText}>
                   {call_to_action.hasOwnProperty("label")
                     ? translate(call_to_action.label)
-                    : translate(call_to_action.replace(/_/gi, " "))}
+                    : translate(call_to_action.replace("_", " "))}
                 </Text>
                 <ArrowBlueForward
                   style={[styles.icon, styles.archiveIcon, styles.forwadIcon]}
@@ -235,7 +228,6 @@ const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
-  instaRejCampaign: state.instagramAds.instaRejCampaign,
   loading: state.instagramAds.loadingDesign,
   admin: state.login.admin,
   carouselAdsArray: state.instagramAds.carouselAdsArray,

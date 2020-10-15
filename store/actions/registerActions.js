@@ -217,7 +217,11 @@ export const sendMobileNo = (mobileNo) => {
   };
 };
 
-export const verifyMobileCode = (mobileAuth, verification_channel) => {
+export const verifyMobileCode = (
+  mobileAuth,
+  verification_channel,
+  navigationPath = "Dashboard"
+) => {
   return (dispatch) => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
