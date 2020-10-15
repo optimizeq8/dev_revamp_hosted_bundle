@@ -41,14 +41,7 @@ export default class SingleImage extends React.PureComponent {
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <View
-        style={[
-          styles.placeholder,
-          {
-            aspectRatio: !isNaN(this.state.AP) ? this.state.AP : 1 / 1,
-          },
-        ]}
-      >
+      <View style={[styles.placeholder]}>
         {media_type === "VIDEO" && (
           <VideoPlayer
             shouldPlay={false}
@@ -58,7 +51,7 @@ export default class SingleImage extends React.PureComponent {
         )}
         {media_type === "IMAGE" && (
           <RNImageOrCacheImage
-            resizeMode="contain"
+            resizeMode="cover"
             media={media}
             style={[styles.placeholder1]}
           />

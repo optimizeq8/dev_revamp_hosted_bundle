@@ -67,6 +67,7 @@ class SwipeUpDestination extends React.Component {
             navigation={this.props.navigation}
             listNum={listIndex}
             toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
           />
         );
         break;

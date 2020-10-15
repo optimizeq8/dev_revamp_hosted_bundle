@@ -517,7 +517,6 @@ const reducer = (state = initialState, action) => {
         adType: action.payload,
       };
     case actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN:
-    case actionTypes.SET_REJECTED_CAMPAIGN:
       let instaRejCampaign = action.payload;
 
       //Since we receive call_to_action as "ORDER_NOW" for example from campaignDetails,

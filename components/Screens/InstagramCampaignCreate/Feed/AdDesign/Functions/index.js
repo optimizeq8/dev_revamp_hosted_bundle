@@ -103,6 +103,8 @@ export const formatMedia = (
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
   let carouselAd = { media: "" };
+  let cardMedia = {};
+  let cardUrl = {};
   if (fileReadyToUpload && campaignInfo.media_option === "carousel") {
     carouselAdsArray.forEach((card) => {
       if (card && card.media !== "//" && !card.media.includes("https://"))

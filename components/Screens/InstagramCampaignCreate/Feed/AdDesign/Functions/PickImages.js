@@ -152,6 +152,7 @@ export const _pickImage = async (
                   rejected,
                   media: "//",
                   media_type: "",
+                  rejected,
                 });
 
                 return Promise.reject({
@@ -206,6 +207,7 @@ export const _pickImage = async (
                   rejected,
                   media: "//",
                   media_type: "",
+                  rejected,
                 });
                 showMessage({
                   message: translate(
@@ -307,13 +309,13 @@ export const _pickImage = async (
                 type: "success",
               });
 
-              !rejected &&
-                save_campaign_info_instagram({
-                  media: result.uri,
-                  media_type: result.type.toUpperCase(),
-                  fileReadyToUpload: true,
-                  uneditedImageUri,
-                });
+              save_campaign_info_instagram({
+                media: result.uri,
+                media_type: result.type.toUpperCase(),
+                fileReadyToUpload: true,
+                uneditedImageUri,
+                rejected,
+              });
             }
           })
           .catch((error) => {
@@ -468,12 +470,12 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: "//",
-                    media_type: "",
-                    rejected,
-                  });
+
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  rejected,
+                });
 
                 showMessage({
                   message: translate("Maximum video duration is 120 seconds"),
@@ -502,12 +504,12 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: "//",
-                    media_type: "",
-                    rejected,
-                  });
+
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  rejected,
+                });
 
                 showMessage({
                   message: translate("Minimum video duration is 1 second"),
@@ -574,11 +576,12 @@ export const _pickImage = async (
                   media: "//",
                   uneditedImageUri: "//",
                 });
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: "//",
-                    media_type: "",
-                  });
+
+                save_campaign_info_instagram({
+                  media: "//",
+                  media_type: "",
+                  rejected,
+                });
 
                 showMessage({
                   message: translate(
@@ -689,15 +692,15 @@ export const _pickImage = async (
                   position: "top",
                   type: "success",
                 });
-                !rejected &&
-                  save_campaign_info_instagram({
-                    media: result.uri,
-                    media_type: result.type.toUpperCase(),
-                    fileReadyToUpload: true,
-                    uneditedImageUri,
-                    serialization: result.serialization,
-                    rejected,
-                  });
+
+                save_campaign_info_instagram({
+                  media: result.uri,
+                  media_type: result.type.toUpperCase(),
+                  fileReadyToUpload: true,
+                  uneditedImageUri,
+                  serialization: result.serialization,
+                  rejected,
+                });
                 setTheState({ sourceChanging: false });
               } else {
                 analytics.track(`a_error`, {
@@ -756,6 +759,7 @@ export const _pickImage = async (
         rejected,
         media: "//",
         media_type: "",
+        rejected,
       });
 
       return;

@@ -67,6 +67,7 @@ export default class ClickDestination extends Component {
           position: "absolute",
           width: "100%",
           bottom: 0,
+          overflow: "hidden",
         }}
         onLayout={this.getCompHeight}
       >

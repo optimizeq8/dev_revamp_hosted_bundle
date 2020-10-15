@@ -43,7 +43,9 @@ class AdFeedDesignReview extends React.Component {
 
   componentDidMount() {
     let data = !this.props.navigation.getParam("campaignDetails", false)
-      ? this.props.data
+      ? this.props.navigation.getParam("rejected", false)
+        ? this.props.instaRejCampaign
+        : this.props.data
       : this.props.navigation.state.params;
     if (data.media) {
       Image.getSize(data.media, (width, height) => {
@@ -186,7 +188,7 @@ class AdFeedDesignReview extends React.Component {
                 <Text style={styles.callToActionText}>
                   {call_to_action.hasOwnProperty("label")
                     ? translate(call_to_action.label)
-                    : translate(call_to_action.replace("_", " "))}
+                    : translate(call_to_action.replace(/_/gi, " "))}
                 </Text>
                 <ArrowBlueForward
                   style={[styles.icon, styles.archiveIcon, styles.forwadIcon]}

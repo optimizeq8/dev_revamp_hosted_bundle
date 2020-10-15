@@ -131,15 +131,15 @@ class AdDesign extends Component {
       swipeUpExpanded: false,
       progress: 0,
       closeAnimation: false,
+      selectedCampaign: this.props.navigation.getParam("rejected", false)
+        ? this.props.instaRejCampaign
+          ? this.props.instaRejCampaign
+          : {}
+        : this.props.data
+        ? this.props.data
+        : {},
     };
     this.rejected = this.props.navigation.getParam("rejected", false);
-    this.selectedCampaign = this.rejected
-      ? this.props.instaRejCampaign
-        ? this.props.instaRejCampaign
-        : {}
-      : this.props.data
-      ? this.props.data
-      : {};
   }
 
   componentWillUnmount() {
@@ -167,20 +167,22 @@ class AdDesign extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.instaRejCampaign &&
-      prevProps.instaRejCampaign.link !== this.props.instaRejCampaign.link
+      this.rejected &&
+      JSON.stringify(prevProps.instaRejCampaign) !==
+        JSON.stringify(this.props.instaRejCampaign)
     ) {
-      this.selectedCampaign = this.props.instaRejCampaign;
+      this.setState({ selectedCampaign: this.props.instaRejCampaign });
     }
     if (
       !this.rejected &&
       JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)
     ) {
-      this.selectedCampaign = this.props.data;
+      this.state.selectedCampaign = this.props.data;
     }
   }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.goBack);
-    if (this.selectedCampaign) {
+    if (this.state.selectedCampaign) {
       let {
         media_option = "single",
         link,
@@ -190,16 +192,16 @@ class AdDesign extends Component {
         media_type,
         media = "//",
         fileReadyToUpload,
-      } = this.selectedCampaign;
+      } = this.state.selectedCampaign;
       let destination = "";
 
       if (
-        this.selectedCampaign.destination &&
-        this.selectedCampaign.destination !== "BLANK"
+        this.state.selectedCampaign.destination &&
+        this.state.selectedCampaign.destination !== "BLANK"
       ) {
-        destination = this.selectedCampaign.destination;
+        destination = this.state.selectedCampaign.destination;
       } else {
-        switch (this.selectedCampaign.objective) {
+        switch (this.state.selectedCampaign.objective) {
           case "BRAND_AWARENESS":
             destination = "BLANK";
             break;
@@ -221,7 +223,7 @@ class AdDesign extends Component {
       }
       this.setState({
         campaignInfo: {
-          ...this.selectedCampaign,
+          ...this.state.selectedCampaign,
           media_option, // Oneof[ "single, caraousel"]
           destination,
           link,
@@ -291,12 +293,12 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
-      this.selectedCampaign.objective !== "BRAND_AWARENESS" &&
-      this.selectedCampaign.objective !== "VIDEO_VIEWS" &&
-      (!this.selectedCampaign.call_to_action ||
-        (this.selectedCampaign &&
-          this.selectedCampaign.call_to_action &&
-          this.selectedCampaign.call_to_action.label === "BLANK"))
+      this.state.selectedCampaign.objective !== "BRAND_AWARENESS" &&
+      this.state.selectedCampaign.objective !== "VIDEO_VIEWS" &&
+      (!this.state.selectedCampaign.call_to_action ||
+        (this.state.selectedCampaign &&
+          this.state.selectedCampaign.call_to_action &&
+          this.state.selectedCampaign.call_to_action.label === "BLANK"))
     ) {
       showMessage({
         message: translate("Choose A Swipe Up Destination"),
@@ -350,9 +352,9 @@ class AdDesign extends Component {
         this.state.media_type,
         this.props.mainBusiness,
         this.state.campaignInfo,
-        this.selectedCampaign,
+        this.state.selectedCampaign,
         this.setTheState,
-        this.selectedCampaign.objective,
+        this.state.selectedCampaign.objective,
         this.props.carouselAdsArray,
         false,
         this.state.fileReadyToUpload
@@ -368,7 +370,7 @@ class AdDesign extends Component {
         const segmentInfo = {
           campaign_channel: "instagram",
           campaign_ad_type: "InstagramFeedAd",
-          campaign_id: this.selectedCampaign.campaign_id,
+          campaign_id: this.state.selectedCampaign.campaign_id,
           campaign_business_name: this.state.campaignInfo.brand_name,
           campaign_caption: this.state.campaignInfo.headline,
           campaign_attachment: this.state.campaignInfo.attachment,
@@ -492,17 +494,17 @@ class AdDesign extends Component {
       source_action,
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
-      campaign_name: this.selectedCampaign.name,
-      campaign_id: this.selectedCampaign.campaign_id,
-      campaign_objective: this.selectedCampaign.objective,
+      campaign_name: this.state.selectedCampaign.name,
+      campaign_id: this.state.selectedCampaign.campaign_id,
+      campaign_objective: this.state.selectedCampaign.objective,
       campaign_duration:
         Math.ceil(
-          (new Date(this.selectedCampaign.end_time) -
-            new Date(this.selectedCampaign.start_time)) /
+          (new Date(this.state.selectedCampaign.end_time) -
+            new Date(this.state.selectedCampaign.start_time)) /
             (1000 * 60 * 60 * 24)
         ) + 1,
-      campaign_start_date: this.selectedCampaign.start_time,
-      campaign_end_date: this.selectedCampaign.end_time,
+      campaign_start_date: this.state.selectedCampaign.start_time,
+      campaign_end_date: this.state.selectedCampaign.end_time,
     });
   };
   setMaxClickHeight = (event) => {
@@ -563,7 +565,11 @@ class AdDesign extends Component {
         <ScrollView
           scrollEnabled={!this.state.swipeUpExpanded}
           nestedScrollEnabled={true}
-          contentContainerStyle={{ paddingTop: 10, paddingBottom: "20%" }}
+          contentContainerStyle={{
+            paddingTop: 10,
+            paddingBottom: "10%",
+            height: "100%",
+          }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
           {!this.state.expanded ? (
@@ -619,7 +625,9 @@ class AdDesign extends Component {
                   {this.state.campaignInfo.media_option === "single" && (
                     <SingleImage
                       media_type={
-                        media_type || this.selectedCampaign.media_type
+                        media_type ||
+                        (this.state.selectedCampaign &&
+                          this.state.selectedCampaign.media_type)
                       }
                       media={media}
                       save_campaign_info_instagram={
@@ -635,7 +643,9 @@ class AdDesign extends Component {
                   {this.state.campaignInfo.media_option === "carousel" && (
                     <CarouselImage
                       media_type={
-                        media_type || this.selectedCampaign.media_type
+                        media_type ||
+                        (this.state.selectedCampaign &&
+                          this.state.selectedCampaign.media_type)
                       }
                       media={media}
                       save_campaign_info_instagram={
@@ -672,7 +682,7 @@ class AdDesign extends Component {
                     screenProps={this.props.screenProps}
                     navigation={this.props.navigation}
                     loading={this.props.loading}
-                    data={this.selectedCampaign}
+                    data={this.state.selectedCampaign}
                     campaignInfo={this.state.campaignInfo}
                     translate={translate}
                     maxClickHeight={this.state.maxClickHeight}
@@ -743,7 +753,7 @@ class AdDesign extends Component {
                             {
                               //for formatCarouselAd
                               campaignInfo: this.state.campaignInfo,
-                              // selectedCampaign: this.selectedCampaign,
+                              // selectedCampaign: this.state.selectedCampaign,
                               campaign_id: this.props.campaign_id,
                               // rejected: this.rejected,
                               handleUpload: this.handleUpload,

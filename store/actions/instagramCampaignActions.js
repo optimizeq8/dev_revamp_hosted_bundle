@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import store from "../index";
+import store, { persistor } from "../index";
 import analytics from "@segment/analytics-react-native";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
@@ -184,8 +184,6 @@ export const saveBrandMediaInstagram = (
       type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
       payload: true,
     });
-    console.log("info", info);
-    console.log(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`);
     InstagramBackendURL()
       .post(rejected ? `updateinstabrandmedia` : `saveinstabrandmedia`, info, {
         onUploadProgress: (ProgressEvent) =>
@@ -196,7 +194,6 @@ export const saveBrandMediaInstagram = (
         return res.data;
       })
       .then((data) => {
-        console.log("data", data);
         dispatch({
           type: actionTypes.SET_AD_LOADING_DESIGN_INSTAGRAM,
           payload: false,
@@ -210,6 +207,12 @@ export const saveBrandMediaInstagram = (
         if (data.success) {
           onToggleModal(false);
           dispatch(save_campaign_info_instagram({ info }));
+          if (rejected) {
+            dispatch(resetInstagramRejectedCampaignData());
+            dispatch(setRejectedCarouselAds(false));
+            dispatch(resetCampaignInfoInstagram());
+            persistor.purge();
+          }
           NavigationService.navigate(rejected ? "Dashboard" : path, {
             source: "ad_design",
             source_action: `a_submit_ad_design${rejected ? "_rejection" : ""}`,
