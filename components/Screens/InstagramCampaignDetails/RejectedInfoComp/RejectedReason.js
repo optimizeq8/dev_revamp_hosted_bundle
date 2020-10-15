@@ -1,8 +1,5 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import RejectedIcon from "../../../../assets/SVGs/CampaignDetail/RejectedIcon";
-import { globalColors } from "../../../../GlobalStyles";
-import Info from "../../../../assets/SVGs/Info.svg";
+import { Text, View } from "react-native";
 import styles from "./styles";
 
 /**
@@ -10,29 +7,18 @@ import styles from "./styles";
  * @param props.setModalVisible function that opens the modal and sets the reason in it's number in
  *  the state to show it in a modal
  */
-export default props => {
-  let { reason, setModalVisible, index } = props;
-  const { translate } = props.screenProps;
+export default (props) => {
+  let { reason } = props;
   return (
-    <View style={styles.rejectedReasonContainer}>
-      <View style={styles.rejectedReasonView}>
-        <Text uppercase style={styles.reasonTitle}>
-          {translate("Rejected Reason")} {index}
-        </Text>
-        <Text
-          style={styles.rejectedReasonText}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          {reason}
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={styles.rejectedInfoButton}
-        onPress={() => setModalVisible(true, reason, index)}
+    <View style={styles.rejectedReasonView}>
+      <View style={styles.displayBlock} />
+      <Text
+        style={styles.rejectedReasonText}
+        numberOfLines={1}
+        ellipsizeMode="tail"
       >
-        <Info />
-      </TouchableOpacity>
+        {reason}
+      </Text>
     </View>
   );
 };
