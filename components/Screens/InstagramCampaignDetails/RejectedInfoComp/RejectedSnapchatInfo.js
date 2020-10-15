@@ -28,7 +28,7 @@ class RejectedSnapchatInfo extends Component {
   /**
    * handles the review and publish process
    */
-  handleSnapchatRejection = () => {
+  handleAdRejection = () => {
     let {
       selectedCampaign,
       setRejectedAdType,
@@ -70,15 +70,7 @@ class RejectedSnapchatInfo extends Component {
             ]}
             nestedScrollEnabled={true}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                paddingTop: 20,
-              }}
-            >
+            <View style={styles.adRejetcedHeader}>
               <Rejected width={20} height={20} />
               <Text uppercase style={styles.adRejectedTitle}>
                 {translate("Ad Rejected")}
@@ -116,7 +108,7 @@ class RejectedSnapchatInfo extends Component {
           setModalVisible={this.setModalVisible}
           reasonNum={this.state.reasonNum}
           rejectedReason={this.state.rejectedReason}
-          handleSnapchatRejection={this.handleSnapchatRejection}
+          handleSnapchatRejection={this.handleAdRejection}
           selectedCampaign={selectedCampaign}
           navigation={this.props.navigation}
           getWalletAmountInKwd={this.props.getWalletAmountInKwd}

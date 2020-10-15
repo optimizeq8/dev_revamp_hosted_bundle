@@ -151,4 +151,11 @@ export default StyleSheet.create({
     borderRadius: 20,
     alignSelf: "center",
   },
+  adRejetcedHeader: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
 });
