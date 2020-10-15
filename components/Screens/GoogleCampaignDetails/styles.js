@@ -6,12 +6,6 @@ import {
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  contactUsBtn: {
-    borderWidth: 1,
-    borderColor: globalColors.white,
-    marginHorizontal: 0,
-    alignSelf: "center",
-  },
   container: {
     height: "100%",
     backgroundColor: "#000",
