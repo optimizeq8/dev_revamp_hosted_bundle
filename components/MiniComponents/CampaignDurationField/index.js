@@ -5,6 +5,8 @@ import styles from "./styles";
 export default class CampaignDuration extends Component {
   render() {
     const { translate } = this.props.screenProps;
+    const { disabled } = this.props;
+
     return (
       <View style={styles.durationContainer}>
         <Icon type="AntDesign" name="clockcircleo" style={{ color: "#fff" }} />
@@ -32,10 +34,9 @@ export default class CampaignDuration extends Component {
               style={[
                 styles.durButton,
                 styles.leftButton,
-                this.props.disabled && {
-                  opacity: 0.6,
-                },
+                disabled && { opacity: 0.7 },
               ]}
+              disabled={disabled}
             >
               <Text style={styles.buttonText}>-</Text>
             </TouchableOpacity>

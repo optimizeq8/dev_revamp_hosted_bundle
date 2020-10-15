@@ -50,6 +50,30 @@ class RejectedSnapchatInfo extends Component {
       ]
     );
   };
+  /**
+   * handles the review and publish process
+   */
+  handleSnapchatRejection = () => {
+    let {
+      selectedCampaign,
+      setRejectedAdType,
+      setRejectedCampaignData,
+      navigation,
+    } = this.props;
+    setRejectedAdType(selectedCampaign.campaign_type);
+    let savedObjective =
+      selectedCampaign.destination === "REMOTE_WEBPAGE" ||
+      (selectedCampaign.destination === "COLLECTION" &&
+        !selectedCampaign.attachment.hasOwnProperty("deep_link_uri"))
+        ? "WEBSITE_TRAFFIC"
+        : selectedCampaign.destination === "DEEP_LINK"
+        ? "APP_TRAFFIC"
+        : selectedCampaign.objective;
+    setRejectedCampaignData({ ...selectedCampaign, savedObjective });
+    navigation.navigate("AdDesign", {
+      rejected: true,
+    });
+  };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
@@ -67,6 +91,13 @@ class RejectedSnapchatInfo extends Component {
     return (
       <View style={styles.rejectedOuterView}>
         <View style={{ width: "100%", alignItems: "center" }}>
+          <Rejected />
+          <Text uppercase style={styles.adRejectedTitle}>
+            {translate("Ad Rejected")}
+          </Text>
+          <Text style={styles.hereReasonsText}>
+            {translate("Here Are The Reasons") + ":"}
+          </Text>
           <ScrollView
             contentContainerStyle={[
               styles.contentStyle,
@@ -74,46 +105,16 @@ class RejectedSnapchatInfo extends Component {
             ]}
             nestedScrollEnabled={true}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                paddingTop: 20,
-              }}
-            >
-              <Rejected width={20} height={20} />
-              <Text uppercase style={styles.adRejectedTitle}>
-                {translate("Ad Rejected")}
-              </Text>
-            </View>
-            <Text style={[styles.hereReasonsText]}>
-              {`There are ${rejReasons.length} reasons for this:`}
-            </Text>
             {rejReasons}
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.rejectedInfoButton}
               onPress={() => this.setModalVisible(true, review_status_reason)}
             >
               <Info />
-            </TouchableOpacity> */}
-            <CustomButtons
-              screenProps={this.props.screenProps}
-              onPressFunction={() =>
-                this.setModalVisible(true, review_status_reason)
-              }
-              content="Fix Now"
-              filled
-              buttonStyle={[
-                styles.customButtonStyle,
-                styles.moveToWalletButton,
-              ]}
-              textStyle={[styles.customButtonText]}
-            />
+            </TouchableOpacity>
           </ScrollView>
         </View>
-        {/* {selectedCampaign.campaign_end === "0" && (
+        {selectedCampaign.campaign_end === "0" && (
           <View style={styles.rejectedButtonView}>
             <CustomButtons
               screenProps={this.props.screenProps}
@@ -137,17 +138,13 @@ class RejectedSnapchatInfo extends Component {
               textStyle={styles.customButtonText}
             />
           </View>
-        )} */}
+        )}
         <RejectedReasonModal
           screenProps={screenProps}
           isVisible={this.state.isVisible}
           setModalVisible={this.setModalVisible}
           reasonNum={this.state.reasonNum}
           rejectedReason={this.state.rejectedReason}
-          handleSnapchatRejection={this.props.handleSnapchatRejection}
-          selectedCampaign={selectedCampaign}
-          navigation={this.props.navigation}
-          getWalletAmountInKwd={this.props.getWalletAmountInKwd}
         />
       </View>
     );
@@ -159,8 +156,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
   moveRejectedAdAmountToWallet: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
-  getWalletAmountInKwd: (amount) =>
-    dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });
 
 export default connect(null, mapDispatchToProps)(RejectedSnapchatInfo);

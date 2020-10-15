@@ -50,8 +50,8 @@ export const _handleSubmission = async (
         (validStoryAds.length >= 2 || !validStoryAds.every((ad) => ad.uploaded))
       ) {
         await validStoryAds.forEach((ad) => {
-          if (!ad.uploaded) {
-            formatCarouselAdParams.handleUpload();
+          formatCarouselAdParams.handleUpload();
+          if (!ad.uploaded)
             formatCarouselAd(
               ad,
               carouselAdsArray,
@@ -64,7 +64,6 @@ export const _handleSubmission = async (
               setTheState,
               finalSubmission
             );
-          }
         });
       }
     } else {
@@ -102,29 +101,19 @@ export const formatMedia = (
 
   //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
   //back to the back end when they re-upload for rejection reasons without choosing any images
-  let carouselAd = { media: "" };
-  let cardMedia = {};
-  let cardUrl = {};
   if (fileReadyToUpload && campaignInfo.media_option === "carousel") {
-    carouselAdsArray.forEach((card) => {
+    carouselAd = carouselAdsArray.find((card) => {
       if (card && card.media !== "//" && !card.media.includes("https://"))
-        cardMedia = card;
+        cardMedia = card.media;
       if (card && card.media !== "//" && card.media.includes("https://"))
-        cardUrl = card;
+        cardUrl = card.media;
       allIosVideos =
         (!cardMedia && cardUrl && Platform.OS === "ios") ||
         card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
-      carouselAd = !allIosVideos ? cardMedia : cardUrl;
+      return !allIosVideos ? cardMedia : cardUrl;
     });
   }
-
-  if (
-    fileReadyToUpload &&
-    !allIosVideos &&
-    campaignInfo.media_option === "carousel"
-      ? !carouselAd.media.includes("http")
-      : !media.includes("http")
-  ) {
+  if (fileReadyToUpload && !allIosVideos) {
     let res = (campaignInfo.media_option !== "carousel"
       ? media
       : carouselAd.media
@@ -176,6 +165,7 @@ export const formatMedia = (
       ? "BLANK"
       : JSON.stringify(data.attachment)
   );
+
   setTheState({
     formatted: body,
   });

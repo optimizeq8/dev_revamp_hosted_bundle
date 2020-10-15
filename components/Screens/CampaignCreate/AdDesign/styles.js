@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontSize: 10,
     marginBottom: heightPercentageToDP(-1.3),
-    marginTop: heightPercentageToDP(0.8),
+    // marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
   },
   MediaOptionsStyle: {

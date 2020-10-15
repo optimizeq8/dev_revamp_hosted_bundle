@@ -215,10 +215,6 @@ export {
   getInstagramExistingPost,
   saveInstgramExistpost,
   get_custom_interests_instagram,
-  setInstaRejectedAdType,
-  setInstaRejectedCampaignData,
-  setRejectedCarouselAds,
-  resetInstagramRejectedCampaignData,
 } from "./instagramCampaignActions";
 
 export {
