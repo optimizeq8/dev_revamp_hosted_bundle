@@ -21,6 +21,7 @@ import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../GlobalStyles";
+import { connect } from "react-redux";
 const slidesData = [
   {
     id: 0,
@@ -32,7 +33,7 @@ const slidesData = [
     id: 2,
   },
 ];
-export default class TutorialWeb extends React.Component {
+class TutorialWeb extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -159,10 +160,21 @@ export default class TutorialWeb extends React.Component {
     });
   };
   getStartWebsiteReg = () => {
-    this.props.navigation.navigate("OptimizeWebsite", {
-      source: "my_website_tutorial",
-      source_action: "a_open_my_website_detail",
-    });
+    if (
+      this.props.userInfo &&
+      this.props.userInfo.hasOwnProperty("verified_account") &&
+      !this.props.userInfo.verified_account
+    ) {
+      this.props.navigation.navigate("VerifyAccount", {
+        source: "my_website_tutorial",
+        source_action: "a_open_my_website_detail",
+      });
+    } else {
+      this.props.navigation.navigate("OptimizeWebsite", {
+        source: "my_website_tutorial",
+        source_action: "a_open_my_website_detail",
+      });
+    }
   };
 
   render() {
@@ -240,3 +252,9 @@ export default class TutorialWeb extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  userInfo: state.auth.userInfo,
+});
+
+export default connect(mapStateToProps, null)(TutorialWeb);

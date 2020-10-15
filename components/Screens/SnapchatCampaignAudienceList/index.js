@@ -135,7 +135,7 @@ class SnapchatCampaignAudience extends React.Component {
             refreshing={this.props.audienceListLoading}
             data={this.props.audienceList}
             renderItem={this.renderCard}
-            keyExtractor={(item) => item.name}
+            keyExtractor={(item) => item.id}
             contentContainerStyle={{
               minHeight: heightPercentageToDP(50),
               flex: 0,

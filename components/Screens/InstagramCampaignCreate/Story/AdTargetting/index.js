@@ -295,17 +295,7 @@ class InstagramStoryAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            let allCountryRegions = country_regions
-              .find(
-                (country) => country.name === this.props.mainBusiness.country
-              )
-              .regions.map((reg) => reg.key);
-            this.onSelectedCountryRegionChange(
-              // [
-              country_code
-              // ...allCountryRegions,
-              // ]
-            );
+            this.onSelectedCountryRegionChange(country_code);
           }
           this._calcReach();
         }
@@ -317,8 +307,8 @@ class InstagramStoryAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].min_age = parseInt(values[0]);
-    rep.targeting.demographics[0].max_age = parseInt(values[1]);
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",

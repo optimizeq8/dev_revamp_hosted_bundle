@@ -65,7 +65,10 @@ class OptimizeWebsite extends Component {
       });
     }
 
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("TutorialWeb", {
+      source: "my_website_detail",
+      source_action: "a_go_back",
+    });
     return true;
   };
   componentDidMount() {

@@ -217,7 +217,11 @@ export const sendMobileNo = (mobileNo) => {
   };
 };
 
-export const verifyMobileCode = (mobileAuth, verification_channel) => {
+export const verifyMobileCode = (
+  mobileAuth,
+  verification_channel,
+  navigationPath = "Dashboard"
+) => {
   return (dispatch) => {
     createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
@@ -277,7 +281,7 @@ export const verifyMobileCode = (mobileAuth, verification_channel) => {
         if (success) {
           // let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
           // Adjust.trackEvent(adjustVerifyAccountTracker);
-          NavigationService.navigate("Dashboard", {
+          NavigationService.navigate(navigationPath, {
             source: "otp_verify",
             source_action: "a_otp_verify",
           });

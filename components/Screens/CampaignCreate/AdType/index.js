@@ -259,6 +259,20 @@ class AdType extends Component {
       null
     );
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
+      const instagram_username = this.props.navigation.getParam(
+        "instagram_username",
+        ""
+      );
+      showMessage({
+        type: "success",
+        message: translate(
+          `Your Instagram Business Account {{instagram_username}} has been connected successfully!`,
+          {
+            instagram_username: instagram_username,
+          }
+        ),
+        duration: 5000,
+      });
       this.props.updateBusinessConnectedToFacebook({
         fb_connected: "1",
         fb_ad_account_id: fb_ad_account_id,
