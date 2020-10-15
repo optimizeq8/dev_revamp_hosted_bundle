@@ -52,8 +52,8 @@ class InstagramAdPaymentReview extends Component {
       ? campaignInfo.targeting
       : { flexible_spec: [{}], genders: {}, geo_locations: { countries: {} } };
     let interestNames = [];
-    let lifetime_budget_micro = this.props.data.lifetime_budget_micro
-      ? this.props.data.lifetime_budget_micro
+    let lifetime_budget_micro = campaignInfo
+      ? campaignInfo.lifetime_budget_micro
       : "50";
     if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
       interestNames = targeting.flexible_spec[0].interests.map(
@@ -262,9 +262,8 @@ class InstagramAdPaymentReview extends Component {
 
       let targeting = campaignInfo.targeting;
       let interestNames = [];
-      let lifetime_budget_micro = this.props.data.lifetime_budget_micro
-        ? this.props.data.lifetime_budget_micro
-        : "50";
+      let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
+
       if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
         interestNames = targeting.flexible_spec[0].interests.map(
           (interest) => interest.name

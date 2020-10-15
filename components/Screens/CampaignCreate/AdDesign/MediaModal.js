@@ -10,7 +10,6 @@ import { BlurView } from "@react-native-community/blur";
 
 export default class MediaModal extends Component {
   render() {
-    let { mediaUri, media_type, rejected } = this.props;
     var options = [
       "Media",
       "Upload media from a different device",
@@ -29,10 +28,10 @@ export default class MediaModal extends Component {
           setDownloadMediaModal={this.props.setDownloadMediaModal}
           screenProps={this.props.screenProps}
           media_type={media_type}
-          rejected={rejected}
         />
       );
     });
+    let { mediaUri, media_type } = this.props;
     let { media, storyAdCards } = mediaUri;
 
     return (
@@ -86,7 +85,6 @@ export default class MediaModal extends Component {
                     }
                     media_type={media_type}
                     serialization={this.props.serialization}
-                    rejected={rejected}
                   />
                 )}
               </Content>

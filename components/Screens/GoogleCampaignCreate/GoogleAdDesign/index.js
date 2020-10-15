@@ -349,13 +349,12 @@ class GoogleAdDesign extends Component {
     const segmentInfo = {
       campaign_channel: "google",
       campaign_ad_type: "GoogleSEAd",
-      campaign_duration: this.props.campaign.start_time
-        ? Math.ceil(
-            (new Date(this.props.campaign.end_time) -
-              new Date(this.props.campaign.start_time)) /
-              (1000 * 60 * 60 * 24)
-          ) + 1
-        : 0,
+      campaign_duration:
+        Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1,
       campaign_name: this.props.campaign.name,
       campaign_language: this.props.campaign.language,
       campaign_start_date: this.props.campaign.start_time,

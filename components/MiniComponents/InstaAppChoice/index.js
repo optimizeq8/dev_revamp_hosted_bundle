@@ -120,9 +120,7 @@ class AppChoice extends Component {
       ) {
         this.setState({
           iosApp_name: this.props.attachment.ios_app_id
-            ? this.props.rejected
-              ? this.props.instaRejCampaign.attachment.app_name
-              : this.data.iosApp_name
+            ? this.data.iosApp_name
               ? this.data.iosApp_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
@@ -137,9 +135,7 @@ class AppChoice extends Component {
       ) {
         this.setState({
           androidApp_name: this.props.attachment.android_app_url
-            ? this.props.rejected
-              ? this.props.instaRejCampaign.attachment.app_name
-              : this.data.androidApp_name
+            ? this.data.androidApp_name
               ? this.data.androidApp_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
@@ -373,10 +369,7 @@ class AppChoice extends Component {
           androidApp_name={this.state.androidApp_name}
           screenProps={this.props.screenProps}
           appSelections={{ iosAppSelected, androidAppSelected }}
-          toggleAppSelection={
-            this.props.rejected ? () => {} : this.toggleAppSelection
-          }
-          rejected={this.props.rejected}
+          toggleAppSelection={this.toggleAppSelection}
         />
         <Text style={styles.OSNote}>
           {translate("Only one OS per campaign")}
@@ -471,7 +464,7 @@ class AppChoice extends Component {
 }
 const mapStateToProps = (state) => ({
   instaData: state.instagramAds.data,
-  instaRejCampaign: state.instagramAds.instaRejCampaign,
+  rejCampaign: state.dashboard.rejCampaign,
   mainBusiness: state.account.mainBusiness,
 });
 

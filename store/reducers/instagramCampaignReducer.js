@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash";
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
@@ -33,6 +32,7 @@ const initialState = {
   currentCampaignSteps: [],
   oldTempAdType: "",
   oldTempData: null,
+  storyAdAttachment: {},
   carouselAdsArray: [
     {
       id: 0,
@@ -102,7 +102,6 @@ const initialState = {
 
   customInterests: [],
   postsLoading: false,
-  instaRejCampaign: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -170,8 +169,6 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SAVE_CAMPAIGN_INFO_INSTAGRAM:
       let resetSwipeUps = {};
-      let savedData = { ...state.data };
-      let savedInstaRejCampaign = { ...state.instaRejCampaign };
       if (action.payload.reset) {
         resetSwipeUps = {
           attachment: "BLANK",
@@ -187,24 +184,13 @@ const reducer = (state = initialState, action) => {
           reset: false,
         };
       }
-      if (!action.payload.rejected) {
-        savedData = {
+      return {
+        ...state,
+        data: {
           ...state.data,
           ...action.payload,
           ...resetSwipeUps,
-        };
-      } else {
-        savedInstaRejCampaign = {
-          ...state.instaRejCampaign,
-          ...action.payload,
-          ...resetSwipeUps,
-        };
-      }
-
-      return {
-        ...state,
-        data: savedData,
-        instaRejCampaign: savedInstaRejCampaign,
+        },
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? //If objective is changed then AdDesign should be the current step again to set the swipe ups
@@ -449,29 +435,6 @@ const reducer = (state = initialState, action) => {
         loadingCarouselAdsArray: [...deletedLoadingAr],
         carouselAdsArray: [...deleteStoryAds],
       };
-    case actionTypes.SET_INSTAGRAM_REJECTED_CAROUSEL:
-      let rejAds = action.payload;
-      let rejNewCarouselAdsArray = [];
-      let stateAdArray = cloneDeep(state.carouselAdsArray);
-      if (rejAds) {
-        rejNewCarouselAdsArray = rejAds.map((ad, i) => {
-          return {
-            ...ad,
-            index: ad.carousel_order,
-            id: ad.carousel_id,
-            destination: "BLANK",
-            attachment: "BLANK",
-          };
-        });
-        rejNewCarouselAdsArray.forEach(
-          (story) => (stateAdArray[story.index] = story)
-        );
-      }
-      return {
-        ...state,
-        carouselAdsArray: stateAdArray,
-      };
-
     case actionTypes.SET_CAROUSELADCARD_LOADING_DESIGN:
       let ar = state.loadingCarouselAdsArray;
       let storyPro = state.carouselAdsArray;
@@ -511,46 +474,6 @@ const reducer = (state = initialState, action) => {
         postsLoading: action.payload,
       };
     }
-    case actionTypes.SET_INSTAGRAM_REJECTED_ADTYPE:
-      return {
-        ...state,
-        adType: action.payload,
-      };
-    case actionTypes.SET_INSTAGRAM_REJECTED_CAMPAIGN:
-      let instaRejCampaign = action.payload;
-
-      //Since we receive call_to_action as "ORDER_NOW" for example from campaignDetails,
-      //Turn it to an object so that the process for re-uploading is the same as normal
-      if (typeof instaRejCampaign.call_to_action === "string") {
-        instaRejCampaign.call_to_action = {
-          label: instaRejCampaign.call_to_action.replace("_", " "),
-          value: instaRejCampaign.call_to_action,
-        };
-      }
-
-      //Same thing, attachment comes in as a string from campaignDetails,
-      if (instaRejCampaign.hasOwnProperty("attachment")) {
-        let instaRejCampaignAttacment = instaRejCampaign.attachment;
-        //if its a string and not "BLANK" then parse it
-        instaRejCampaignAttacment =
-          typeof instaRejCampaignAttacment === "string" &&
-          instaRejCampaignAttacment !== "BLANK"
-            ? JSON.parse(instaRejCampaignAttacment)
-            : instaRejCampaignAttacment;
-        //Sometimes attachemnts have utm parameters, they are deleted so that
-        //if sent back they will be added from the backend
-        if (instaRejCampaign.hasOwnProperty("link")) {
-          if (instaRejCampaign.link.includes("?utm_source")) {
-            instaRejCampaign.link = instaRejCampaign.link.split(
-              "?utm_source"
-            )[0];
-          }
-        }
-        instaRejCampaign.attachment = instaRejCampaignAttacment;
-      }
-      return { ...state, instaRejCampaign };
-    case actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN:
-      return { ...state, instaRejCampaign: null };
     default:
       return state;
   }

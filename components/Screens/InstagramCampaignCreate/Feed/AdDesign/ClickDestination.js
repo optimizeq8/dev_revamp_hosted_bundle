@@ -67,7 +67,6 @@ export default class ClickDestination extends Component {
           position: "absolute",
           width: "100%",
           bottom: 0,
-          overflow: "hidden",
         }}
         onLayout={this.getCompHeight}
       >
@@ -172,7 +171,6 @@ export default class ClickDestination extends Component {
                 expanded={this.state.expanded}
                 toggleClickDestination={this.toggleClickDestination}
                 screenProps={this.props.screenProps}
-                rejected={this.props.rejected}
               />
             </>
           )}

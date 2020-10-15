@@ -363,7 +363,7 @@ class AdPaymentReview extends Component {
                     <Text style={styles.budgetDollarText}>$</Text>
                     <Text style={styles.budgetAmountText}>
                       {formatNumber(
-                        this.props.data.lifetime_budget_micro,
+                        this.props.data.campaignInfo.lifetime_budget_micro,
                         true
                       )}
                     </Text>
@@ -465,7 +465,10 @@ class AdPaymentReview extends Component {
                 <Text style={[styles.money, styles.dollarAmountText]}>$</Text>
 
                 <Text style={[styles.money, { paddingLeft: 3 }]}>
-                  {formatNumber(this.props.data.lifetime_budget_micro, true)}
+                  {formatNumber(
+                    this.props.data.campaignInfo.lifetime_budget_micro,
+                    true
+                  )}
                 </Text>
               </View>
               <View style={styles.kdAmountContainer}>
