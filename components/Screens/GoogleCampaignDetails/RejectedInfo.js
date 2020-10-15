@@ -5,6 +5,7 @@ import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
 
 import styles from "./styles";
+import { globalColors } from "../../../GlobalStyles";
 
 export default RejectedInfo = (props) => {
   const {
@@ -27,11 +28,21 @@ export default RejectedInfo = (props) => {
   };
   let list = errors.map((e, i) => (
     <View style={styles.rejectedReasonContainer} key={i}>
+      <View
+        style={{
+          display: "flex",
+          width: 20,
+          height: 20,
+          backgroundColor: globalColors.orange,
+          borderRadius: 30,
+          marginRight: 5,
+        }}
+      />
       <Text style={styles.reviewStatusReason}>{e.name}</Text>
       {/* <Text style={styles.reviewStatusText}>
         {translate("You can find more details here")}
       </Text> */}
-      <Text
+      {/* <Text
         selectable={true}
         style={[
           styles.reviewStatusText,
@@ -39,18 +50,24 @@ export default RejectedInfo = (props) => {
         ]}
       >
         {e.description}
-      </Text>
+      </Text> */}
       {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
     </View>
   ));
   return (
     <View style={styles.rejectedHeader}>
-      <Rejected />
-      <Text uppercase style={styles.adRejectedTitle}>
-        {translate("Ad Rejected")}
-      </Text>
+      <View
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <Rejected width={20} height={20} />
+        <Text style={styles.adRejectedTitle}>{translate("Ad Rejected")}</Text>
+      </View>
+
       <Text style={styles.hereReasonsText}>
-        {translate("Here Are The Reasons")}:
+        {errors.length === 1
+          ? `There is ${errors.length} reason for this`
+          : `There are ${errors.length} reasons for this`}
+        :
       </Text>
       {list}
       <CustomButtons
@@ -90,7 +107,7 @@ export default RejectedInfo = (props) => {
               source_action: "a_review_ad",
             });
         }}
-        content="Review Ad"
+        content="Fix Now"
         filled
         buttonStyle={styles.customButtonStyle}
         textStyle={styles.customButtonText}
