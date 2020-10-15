@@ -3,11 +3,10 @@ import { View, Text } from "react-native";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
-import { Small } from "../../../MiniComponents/StyledComponents/index";
 //Styles
 import styles from "./styles";
-import { globalColors } from "../../../../GlobalStyles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -20,6 +19,7 @@ import {
 import formatNumber from "../../../formatNumber";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
 import SwipeUpsIcon from "../../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
+import { globalColors } from "../../../../GlobalStyles";
 
 class ReachBar extends Component {
   state = { showMetrics: false };
@@ -111,10 +111,16 @@ class ReachBar extends Component {
             this.props.mainBusiness.user_role !== "3") ||
             (!editCampaign && startEditing)) &&
             (this.props.loading ? (
-              <ForwardLoading
-                mainViewStyle={{ width: wp(9), height: hp(9) }}
-                bottom={5}
-                style={{ width: wp(7), height: hp(7) }}
+              <AnimatedCircularProgress
+                size={50}
+                width={5}
+                fill={100}
+                rotation={360}
+                lineCap="round"
+                tintColor={globalColors.purple}
+                backgroundColor="rgba(255,255,255,0.3)"
+                adDetails={false}
+                style={{ alignSelf: "center" }}
               />
             ) : (
               <LowerButton
@@ -122,6 +128,9 @@ class ReachBar extends Component {
                 style={[styles.reachBarLowerButton]}
                 function={() => this.props._handleSubmission()}
                 purpleViolet
+                text={"Next"}
+                width={15}
+                height={15}
               />
             ))}
         </View>
