@@ -1,9 +1,9 @@
 import React from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import { BlurView } from "expo-blur";
 import Modal from "react-native-modal";
 import Header from "../../../MiniComponents/Header";
-import { BlurView } from "expo-blur";
 import styles from "./styles";
 import { globalColors } from "../../../../GlobalStyles";
 import GradientButton from "../../../MiniComponents/GradientButton";
