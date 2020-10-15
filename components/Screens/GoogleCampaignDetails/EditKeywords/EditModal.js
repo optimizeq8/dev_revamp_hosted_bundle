@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
 //Icons
 import PauseIcon from "../../../../assets/SVGs/ExclamationMark";
-import CloseIcon from "../../../../assets/SVGs/Close";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import CustomHeader from "../../../MiniComponents/Header";
 
@@ -39,18 +38,8 @@ export default class StatusModal extends Component {
             }}
           />
 
-          <View
-            style={{
-              justifyContent: "center",
-              alignSelf: "center",
-              height: "100%",
-            }}
-          >
-            <PauseIcon
-              width={43}
-              height={112}
-              style={{ alignSelf: "center", marginBottom: 20 }}
-            />
+          <View style={styles.modalView}>
+            <PauseIcon width={43} height={112} style={styles.pauseIcon} />
             <Text
               uppercase
               style={[styles.title, { fontSize: 16, alignSelf: "center" }]}

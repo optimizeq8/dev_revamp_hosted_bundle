@@ -7,6 +7,12 @@ import {
 } from "react-native-responsive-screen";
 
 export default StyleSheet.create({
+  modalView: {
+    justifyContent: "center",
+    alignSelf: "center",
+    height: "100%",
+  },
+  pauseIcon: { alignSelf: "center", marginBottom: 20 },
   gradient: {
     ...StyleSheet.absoluteFillObject,
   },
