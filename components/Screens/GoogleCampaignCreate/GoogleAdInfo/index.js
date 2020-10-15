@@ -439,7 +439,7 @@ class GoogleAdInfo extends Component {
     this.setState({ ...state });
     this.props.save_google_campaign_data({ name: value });
   };
-  handleDuration = (subtract = false, onePress = false) => {
+  handleDuration = (subtract = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 7
         ? this.state.duration - 1
@@ -457,11 +457,10 @@ class GoogleAdInfo extends Component {
       duration,
       campaignDateChanged: true,
     });
-    if (!onePress)
-      this.timer = setTimeout(() => this.handleDuration(subtract), 50);
+    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    if (this.timer) clearTimeout(this.timer);
+    clearTimeout(this.timer);
   };
   render() {
     const { translate } = this.props.screenProps;

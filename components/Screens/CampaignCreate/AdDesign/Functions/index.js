@@ -12,9 +12,7 @@ export const _handleSubmission = async (
   finalSubmission,
   setTheState,
   formatStoryAdParams,
-  screenProps,
-  verifyDestinationUrl,
-  data
+  screenProps
 ) => {
   const { translate } = screenProps;
   let validStoryAds = [false];
@@ -78,34 +76,10 @@ export const _handleSubmission = async (
         setTheState({ storyAdAttachChanged: false });
       }
     } else {
-      if (validator()) {
-        if (
-          data &&
-          data.attachment &&
-          (data.attachment.url || data.attachment.deep_link_uri)
-        ) {
-          verifyDestinationUrl(
-            data.attachment.url || data.attachment.deep_link_uri,
-            finalSubmission,
-            screenProps.translate
-          );
-        } else finalSubmission();
-      }
+      if (validator()) finalSubmission();
     }
   } else {
-    if (validator()) {
-      if (
-        data &&
-        data.attachment &&
-        (data.attachment.url || data.attachment.deep_link_uri)
-      ) {
-        verifyDestinationUrl(
-          data.attachment.url || data.attachment.deep_link_uri,
-          finalSubmission,
-          screenProps.translate
-        );
-      } else finalSubmission();
-    }
+    if (validator()) finalSubmission();
   }
 };
 

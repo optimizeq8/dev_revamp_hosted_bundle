@@ -64,7 +64,6 @@ class OptimizeWebsite extends Component {
         source_action: "a_go_back",
       });
     }
-
     this.props.navigation.navigate("TutorialWeb", {
       source: "my_website_detail",
       source_action: "a_go_back",

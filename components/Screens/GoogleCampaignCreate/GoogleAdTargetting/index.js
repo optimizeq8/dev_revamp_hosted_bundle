@@ -75,7 +75,7 @@ class GoogleAdTargetting extends Component {
       budget:
         this.props.campaign && this.props.campaign.recommendedBudget
           ? this.props.campaign.recommendedBudget * 2
-          : 75,
+          : 0,
       modalVisible: false,
       selectionOption: "",
       budgetOption: 1,
@@ -112,13 +112,13 @@ class GoogleAdTargetting extends Component {
             ? this.props.campaign.recommendedBudget * 2
             : this.props.campaign
             ? this.props.campaign.budget
-            : 75,
+            : 50,
         value:
           this.props.campaign && this.props.campaign.campaignDateChanged
             ? this.props.campaign.recommendedBudget * 2
             : this.props.campaign
             ? this.props.campaign.budget
-            : 75,
+            : 50,
         budgetOption:
           this.props.campaign && this.props.campaign.campaignDateChanged
             ? 1
@@ -267,7 +267,7 @@ class GoogleAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= 25 &&
+      rawValue >= this.props.campaign.minValueBudget &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -292,14 +292,17 @@ class GoogleAdTargetting extends Component {
           analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
-            error_description: validateWrapper("Budget", rawValue) + " $" + 25,
+            error_description:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget,
           });
         }
         showMessage({
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + 25,
+          description: "$" + this.props.campaign.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -336,17 +339,8 @@ class GoogleAdTargetting extends Component {
       campaign_id: this.props.campaign.id,
       campaign_budget: this.state.budget,
     });
-    let lifetime_budget =
-      Math.round(
-        Math.abs(
-          (new Date(this.props.campaign.start_time).getTime() -
-            new Date(this.props.campaign.end_time).getTime()) /
-            86400000
-        ) + 1
-      ) * this.state.budget;
-
     let data = {
-      budget: lifetime_budget,
+      budget: this.state.budget,
       age: this.state.age,
       gender: this.state.gender,
       keywords: this.state.keywords,
@@ -574,7 +568,7 @@ class GoogleAdTargetting extends Component {
             contentContainerStyle={styles.contentContainer}
           >
             <Text style={styles.subHeadings}>
-              {translate("Set your daily budget")}
+              {translate("Set your budget")}
             </Text>
             <BudgetCards
               value={this.state.value}

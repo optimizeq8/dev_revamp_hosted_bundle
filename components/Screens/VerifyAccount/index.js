@@ -296,6 +296,11 @@ class VerifyAccount extends Component {
    * VERIFY OTP
    */
   verifyOTP = () => {
+    const source = this.props.navigation.getParam(
+      "source",
+      this.props.screenProps.prevAppState
+    );
+    segmentEventTrack("Button Pressed to verify mobile code");
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),

@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import { connect } from "react-redux";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import analytics from "@segment/analytics-react-native";
 import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
@@ -34,17 +35,15 @@ const slidesData = [
   },
 ];
 class TutorialWeb extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inverted: I18nManager.isRTL && Platform.OS === "android",
-      activeSlide: 0,
-      slidesData:
-        I18nManager.isRTL && Platform.OS === "android"
-          ? slidesData.reverse()
-          : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
-    };
-  }
+  state = {
+    inverted: I18nManager.isRTL && Platform.OS === "android",
+    activeSlide: 0,
+    slidesData:
+      I18nManager.isRTL && Platform.OS === "android"
+        ? slidesData.reverse()
+        : slidesData, // To properly show reversed data for RTL and Adnroid setting it in initial state
+  };
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }

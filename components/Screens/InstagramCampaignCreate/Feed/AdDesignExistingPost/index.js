@@ -594,7 +594,8 @@ class InstagramAdDesignExistingPost extends Component {
               {this.props.data &&
                 this.props.data.call_to_action &&
                 (this.props.data.call_to_action.value ||
-                  this.props.data.call_to_action !== "BLANK") && (
+                  this.props.data.call_to_action !== "BLANK" ||
+                  this.props.data.call_to_action.value !== "BLANK") && (
                   <View style={previewStyles.swipeUpView}>
                     <Text style={previewStyles.callToActionText}>
                       {this.props.data.call_to_action.hasOwnProperty("label")
