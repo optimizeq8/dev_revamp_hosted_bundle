@@ -103,7 +103,7 @@ class GoogleAdInfo extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(end_time.getDate() + this.state.duration - 1);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -458,10 +458,10 @@ class GoogleAdInfo extends Component {
       campaignDateChanged: true,
     });
     if (!onePress)
-      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+      this.timer = setTimeout(() => this.handleDuration(subtract), 50);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const { translate } = this.props.screenProps;

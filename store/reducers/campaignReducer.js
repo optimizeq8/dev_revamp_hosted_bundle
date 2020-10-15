@@ -231,6 +231,7 @@ const initialState = {
   verifiedSnapchatNumber: false,
   verifyingNumber: false,
   otpSend: false,
+  movingAmountToWallet: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1168,6 +1169,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         verifiedSnapchatNumber: action.payload,
         verifyingNumber: false,
+      };
+    }
+    case actionTypes.MOVING_AMOUNT_TO_WALLET: {
+      return {
+        ...state,
+        movingAmountToWallet: action.payload,
       };
     }
     default:

@@ -98,10 +98,11 @@ class AdObjective extends Component {
    * Sets the state to what ever is in this.props.data
    */
   setCampaignInfo = () => {
+    // console.log("data", this.props.data);
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(end_time.getDate() + this.state.duration - 1);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -140,6 +141,7 @@ class AdObjective extends Component {
         campaignInfo: { ...rep },
         duration: 7,
         modalVisible: false,
+        duration: this.props.data.duration ? this.props.data.duration : 7,
       });
     } else {
       this.setState({
@@ -419,7 +421,7 @@ class AdObjective extends Component {
       this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (

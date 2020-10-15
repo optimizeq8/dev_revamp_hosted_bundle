@@ -1,5 +1,8 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 30,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -140,8 +144,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     // width: "100%",
-    bottom: "6%",
+    bottom: heightPercentageToDP(2),
     flex: 1,
+    backgroundColor: globalColors.white,
+    borderTopWidth: 1,
+    borderTopColor: "#75647C21",
   },
   chartText: {
     textTransform: "uppercase",
@@ -163,8 +170,8 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   reachBarLowerButton: {
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 50,
   },
   reachPeopleView: {
     flexDirection: "row",
