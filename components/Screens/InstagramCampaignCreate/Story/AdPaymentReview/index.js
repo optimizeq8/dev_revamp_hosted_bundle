@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ImageBackground, View, BackHandler } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { ImageBackground, View, BackHandler, Text } from "react-native";
+import { Content, Container } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -286,14 +286,17 @@ class InstagramAdPaymentReview extends Component {
       let countrySelections = [];
       targeting.geo_locations.countries.forEach((selectedCountry) => {
         countrySelections.push(
-          countries.find((countryData) => countryData.value === selectedCountry)
-            .label
+          translate(
+            countries.find(
+              (countryData) => countryData.value === selectedCountry
+            ).label
+          )
         );
       });
 
       if (targeting.geo_locations.hasOwnProperty("regions")) {
         var regionNames = targeting.geo_locations.regions.map((reg) => {
-          return reg.name;
+          return translate(reg.name);
         });
       } else regionNames = [""];
 

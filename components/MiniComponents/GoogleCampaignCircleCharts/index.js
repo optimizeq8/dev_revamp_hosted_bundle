@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
-import { Text } from "native-base";
+import { Text, View, ScrollView } from "react-native";
 import Chart from "../CircleChart/Chart";
 import CampaignStats from "./CampStats/CampaignStats";
 import SingleMetric from "./CampStats/SingleMetric";
@@ -32,7 +31,9 @@ class CampaignCircleChart extends Component {
             {/* To switch between date choices and header of the component */}
             {!chartExpanded && (
               <>
-                <Text uppercase style={globalStyles.title}>
+                <Text
+                  style={[globalStyles.title, { textTransform: "uppercase" }]}
+                >
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton

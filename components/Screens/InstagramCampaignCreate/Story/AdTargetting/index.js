@@ -1,8 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content } from "native-base";
-import { Video } from "expo-av";
+import { View, Text, BackHandler, I18nManager } from "react-native";
+import { Container, Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -294,17 +293,7 @@ class InstagramStoryAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            let allCountryRegions = country_regions
-              .find(
-                (country) => country.name === this.props.mainBusiness.country
-              )
-              .regions.map((reg) => reg.key);
-            this.onSelectedCountryRegionChange(
-              // [
-              country_code
-              // ...allCountryRegions,
-              // ]
-            );
+            this.onSelectedCountryRegionChange(country_code);
           }
           this._calcReach();
         }
@@ -316,8 +305,8 @@ class InstagramStoryAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.demographics[0].min_age = parseInt(values[0]);
-    rep.targeting.demographics[0].max_age = parseInt(values[1]);
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
@@ -575,7 +564,12 @@ class InstagramStoryAdTargetting extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.state.minValueBudget,
+          description:
+            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
+              ? `$25 x ${translate("no of Countries")} = $${
+                  this.state.minValueBudget
+                }`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -1050,7 +1044,7 @@ class InstagramStoryAdTargetting extends Component {
             iosName={"iOS"}
             androidName={"Android"}
             data={OSType}
-            objective={this.props.data.objective}
+            objective={!!this.props.data && this.props.data.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
@@ -1126,7 +1120,7 @@ class InstagramStoryAdTargetting extends Component {
     // });
     if (this.state.campaignInfo.targeting.geo_locations.regions.length > 0) {
       regions_names = this.state.campaignInfo.targeting.geo_locations.regions.map(
-        (reg) => reg.name
+        (reg) => translate(reg.name)
       );
     }
     regions_names = regions_names.join(", ");
@@ -1261,8 +1255,8 @@ class InstagramStoryAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Text uppercase style={styles.subHeadings}>
-                          {translate("Set your budget")}
+                        <Text style={styles.subHeadings}>
+                          {translate("Set your daily budget")}
                         </Text>
                         <BudgetCards
                           value={this.state.value}
@@ -1322,10 +1316,7 @@ class InstagramStoryAdTargetting extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
-                      >
+                      <Text style={[styles.subHeadings, { width: "60%" }]}>
                         {translate("Who would you like to reach?")}
                       </Text>
                     )}

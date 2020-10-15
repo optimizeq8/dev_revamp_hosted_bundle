@@ -6,7 +6,7 @@ import Header from "../../MiniComponents/Header";
 import { Content } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import LowerButton from "../../MiniComponents/LowerButton";
-import InputField from "../../MiniComponents/InputField";
+import InputField from "../../MiniComponents/InputFieldNew";
 import styles from "./Styles";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 export default class BusinessModal extends Component {

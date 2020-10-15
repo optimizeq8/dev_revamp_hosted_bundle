@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Content, Container, View, Text, Icon } from "native-base";
+import { NavigationEvents } from "react-navigation";
+import { View } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import CustomeHeader from "../../../MiniComponents/Header";
-import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
 import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
 import Deep_Link from "./Deep_Link";
+import Call from "./Call";
 
 // Style
 import styles from "./styles";
@@ -15,8 +14,6 @@ import WhatsApp from "./WhatsApp";
 
 //Redux
 import { connect } from "react-redux";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { globalColors } from "../../../../GlobalStyles";
 // import * as actionCreators from "../../../../store/actions";
 
 class SwipeUpChoice extends Component {
@@ -34,6 +31,17 @@ class SwipeUpChoice extends Component {
     const campaign_ad_type = this.props.screenProps.prevAppState;
 
     switch (this.props.objective) {
+      case "ENGAGEMENT":
+        analytics.track(`ad_swipe_up_destination`, {
+          source,
+          source_action,
+          timestamp: new Date().getTime(),
+          campaign_swipe_up_destination: "ad_to_call",
+          campaign_objective: this.props.objective,
+          campaign_channel: "snapchat",
+          campaign_ad_type,
+        });
+        break;
       case "LEAD_GENERATION":
         analytics.track(`ad_swipe_up_destination`, {
           source,
@@ -182,6 +190,18 @@ class SwipeUpChoice extends Component {
           <>
             <NavigationEvents onDidFocus={this.segment} />
             <WhatsApp
+              _changeDestination={_changeDestination}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+              toggle={this.props.toggle}
+            />
+          </>
+        );
+      } else if (objective === "ENGAGEMENT") {
+        menu = (
+          <>
+            <NavigationEvents onDidFocus={this.segment} />
+            <Call
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               screenProps={this.props.screenProps}

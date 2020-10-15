@@ -1,8 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, BackHandler, I18nManager } from "react-native";
-import { Text, Container, Content, Row, Grid } from "native-base";
-import { Video } from "expo-av";
+import { View, BackHandler, I18nManager, Text } from "react-native";
+import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -103,14 +102,14 @@ class InstagramFeedAdTargetting extends Component {
   componentDidUpdate(prevProps, prevState) {
     // if(this.prevProps)
     // if (!isEqual(prevProps.languages, this.props.languages)) {
-    //   //   const campaign = { ...this.state.campaignInfo };
-    //   //   campaign.targeting.demographics[0].languages = this.props.languages.map(
-    //   //     lang => lang.id
-    //   //   );
-    //   this.setState({
-    //     // campaignInfo: campaign,
-    //     filteredLanguages: this.props.languages,
-    //   });
+    //   const campaign = { ...this.state.campaignInfo };
+    //   campaign.targeting.demographics[0].languages = this.props.languages.map(
+    //     lang => lang.id
+    //   );
+    // this.setState({
+    // campaignInfo: campaign,
+    // filteredLanguages: this.props.languages,
+    // });
     // }
     if (
       prevState.campaignInfo.targeting.geo_locations.countries.length !==
@@ -297,19 +296,9 @@ class InstagramFeedAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            let allCountryRegions = country_regions
-              .find(
-                (country) => country.name === this.props.mainBusiness.country
-              )
-              .regions.map((reg) => reg.key);
-            this.onSelectedCountryRegionChange(
-              // [
-              country_code
-              // ...allCountryRegions,
-              // ]
-            );
+            await this.onSelectedCountryRegionChange(country_code);
           }
-          this._calcReach();
+          await this._calcReach();
         }
       );
     }
@@ -561,7 +550,12 @@ class InstagramFeedAdTargetting extends Component {
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.state.minValueBudget,
+          description:
+            this.state.campaignInfo.targeting.geo_locations.countries.length > 1
+              ? `$25 x ${translate("no of Countries")} = $${
+                  this.state.minValueBudget
+                }`
+              : "$" + this.state.minValueBudget,
           type: "warning",
           position: "top",
         });
@@ -616,8 +610,8 @@ class InstagramFeedAdTargetting extends Component {
 
   _handleAge = (values) => {
     let rep = cloneDeep(this.state.campaignInfo);
-    rep.targeting.min_age = parseInt(values[0]);
-    rep.targeting.max_age = parseInt(values[1]);
+    rep.targeting.age_min = parseInt(values[0]);
+    rep.targeting.age_max = parseInt(values[1]);
 
     analytics.track(`a_ad_age`, {
       source: "ad_targeting",
@@ -713,6 +707,8 @@ class InstagramFeedAdTargetting extends Component {
     const obj = {
       targeting: JSON.stringify(r),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: this.props.data.campaign_id,
+      daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
 
     if (totalReach.geo_locations.countries.length === 0) {
@@ -730,6 +726,8 @@ class InstagramFeedAdTargetting extends Component {
     const obj2 = {
       targeting: JSON.stringify(totalReach),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
+      campaign_id: this.props.data.campaign_id,
+      daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
     // console.log("obj2", obj2);
 
@@ -1285,10 +1283,12 @@ class InstagramFeedAdTargetting extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
-                            uppercase
                             style={[
                               styles.subHeadings,
-                              { paddingHorizontal: 10 },
+                              {
+                                paddingHorizontal: 10,
+                                textTransform: "uppercase",
+                              },
                             ]}
                           >
                             {translate("Set your budget")}
@@ -1354,8 +1354,10 @@ class InstagramFeedAdTargetting extends Component {
                     )}
                     {startEditing && (
                       <Text
-                        uppercase
-                        style={[styles.subHeadings, { width: "60%" }]}
+                        style={[
+                          styles.subHeadings,
+                          { width: "60%", textTransform: "uppercase" },
+                        ]}
                       >
                         {translate("Who would you like to reach?")}
                       </Text>

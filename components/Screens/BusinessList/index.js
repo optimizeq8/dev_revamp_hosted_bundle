@@ -1,8 +1,8 @@
 //Components
 import React, { Component, Fragment } from "react";
-import { View, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 import InvitationCard from "./InvitationCard";

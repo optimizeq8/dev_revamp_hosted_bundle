@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   moneyInputContainer: {
     flexDirection: "column",

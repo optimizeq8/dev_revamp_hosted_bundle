@@ -18,7 +18,7 @@ import { send_push_notification } from "./loginActions";
 import { connect_user_to_intercom } from "./messengerActions";
 import createBaseUrl from "./createBaseUrl";
 
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
 
 export const verifyBusinessName = (
@@ -279,9 +279,9 @@ export const verifyMobileCode = (
       })
       .then((success) => {
         if (success) {
-          let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
-          Adjust.trackEvent(adjustVerifyAccountTracker);
-          NavigationService.navigate("Dashboard", {
+          // let adjustVerifyAccountTracker = new AdjustEvent("gmanq8");
+          // Adjust.trackEvent(adjustVerifyAccountTracker);
+          NavigationService.navigate(navigationPath, {
             source: "otp_verify",
             source_action: "a_otp_verify",
           });
@@ -588,9 +588,9 @@ export const registerGuestUser = (
             ...userInfo,
           });
         }
-        let adjustRegiserTracker = new AdjustEvent("eivlhl");
-        adjustRegiserTracker.setCallbackId(userInfo.mobile);
-        Adjust.trackEvent(adjustRegiserTracker);
+        // let adjustRegiserTracker = new AdjustEvent("eivlhl");
+        // adjustRegiserTracker.setCallbackId(userInfo.mobile);
+        // Adjust.trackEvent(adjustRegiserTracker);
         if (!data.success) {
           showMessage({
             message: data.message,

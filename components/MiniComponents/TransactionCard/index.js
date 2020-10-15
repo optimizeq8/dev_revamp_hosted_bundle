@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
-import { Text, Icon } from "native-base";
+import { View, I18nManager, Text } from "react-native";
+import { Icon } from "native-base";
 
 // styles
 import styles from "./styles";
@@ -36,7 +36,7 @@ class TransactionCard extends Component {
               style={styles.instagramIcon}
             />
           ) : transaction.channel === "snapchat" ? (
-            <SnapGhostIcon width={35} height={35} />
+            <SnapGhostIcon fill={"#000"} width={35} height={35} />
           ) : transaction.channel === "google" ? (
             <GoogleSE width={35} height={35} />
           ) : (
@@ -44,7 +44,6 @@ class TransactionCard extends Component {
           )}
           <Text
             numberOfLines={2}
-            uppercase
             style={[
               styles.titleText,
               transaction.campaign_name !== "Wallet Topup" &&
@@ -65,34 +64,26 @@ class TransactionCard extends Component {
             {(transaction.payment_type === "KNET" ||
               transaction.payment_type === "Wallet") && (
               <View>
-                <Text uppercase style={styles.text}>
-                  {translate("Payment Method")}
-                </Text>
-                <Text uppercase style={styles.subText}>
-                  {transaction.payment_type}
-                </Text>
+                <Text style={styles.text}>{translate("Payment Method")}</Text>
+                <Text style={styles.subText}>{transaction.payment_type}</Text>
               </View>
             )}
             {transaction.payment_type === "MASTERCARD" && (
               <View>
-                <Text uppercase style={styles.text}>
-                  {transaction.payment_type}
-                </Text>
-                <Text uppercase style={styles.subText}>
+                <Text style={styles.text}>{transaction.payment_type}</Text>
+                <Text style={styles.subText}>
                   xxxx xxxx xxxx {transaction.card_ending_with}
                 </Text>
               </View>
             )}
 
-            <Text uppercase style={[styles.text, styles.transactionText]}>
+            <Text style={[styles.text, styles.transactionText]}>
               {translate("Transaction ID")}
             </Text>
             <Text style={[styles.subText]}>{transaction.reference_id}</Text>
           </View>
           <View style={styles.amountContainer}>
-            <Text uppercase style={[styles.amountTextTitle]}>
-              {translate("Amount")}
-            </Text>
+            <Text style={[styles.amountTextTitle]}>{translate("Amount")}</Text>
             <Text style={[globalStyles.numbers, styles.amountText]}>
               {I18nManager.isRTL && "$"}
               {transaction.total_amount}

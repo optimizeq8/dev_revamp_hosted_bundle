@@ -103,10 +103,20 @@ export class SnapchatAudience extends Component {
 
         return foundCountryReg;
       });
+
+      let locationsInfo = [];
+      let markers = [];
+      if (this.props.audience.coordinates) {
+        locationsInfo = cloneDeep(JSON.parse(this.props.audience.coordinates));
+        markers = cloneDeep(this.props.audience.targeting.locations[0].circles);
+      }
+
       this.setState({
         regions: countryRegions ? countryRegions : [],
         filteredRegions: countryRegions ? countryRegions : [],
         showRegions: showRegions,
+        locationsInfo,
+        markers,
       });
     }
   }
@@ -242,10 +252,15 @@ export class SnapchatAudience extends Component {
 
       // };
       if (this.editAudience) {
-        this.props.updateAudience(rep.id, rep.name, rep.targeting);
+        this.props.updateAudience(
+          rep.id,
+          rep.name,
+          rep.targeting,
+          this.state.locationsInfo
+        );
       } else {
         rep.targeting = JSON.stringify(rep.targeting);
-        this.props.createAudience(rep, true);
+        this.props.createAudience(rep, true, this.state.locationsInfo);
       }
     }
   };
@@ -939,6 +954,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.props.audience.targeting.locations[0].circles}
+            locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.setAudienceDetail}
             data={this.props.audience}
@@ -1028,7 +1044,7 @@ export class SnapchatAudience extends Component {
             showTopRightButton={true}
             topRightButtonText={translate("Save")}
             topRightButtonFunction={this._handleSubmission}
-            disabled={saveAudienceLoading || this.props.audienceDetailLoading}
+            disabled={saveAudienceLoading}
           />
           <ActivityIndicator size={"large"} color={globalColors.orange} />
         </View>
@@ -1488,11 +1504,16 @@ const mapDispatchToProps = (dispatch) => ({
   get_languages: () => dispatch(actionCreators.get_languages()),
   get_interests: (countryCode) =>
     dispatch(actionCreators.get_interests(countryCode)),
-  createAudience: (audience) =>
-    dispatch(actionCreators.createAudience(audience)),
-  updateAudience: (audienceId, audienceName, targeting) =>
+  createAudience: (audience, navigate, locationInfo) =>
+    dispatch(actionCreators.createAudience(audience, navigate, locationInfo)),
+  updateAudience: (audienceId, audienceName, targeting, locationInfo) =>
     dispatch(
-      actionCreators.updateAudience(audienceId, audienceName, targeting)
+      actionCreators.updateAudience(
+        audienceId,
+        audienceName,
+        targeting,
+        locationInfo
+      )
     ),
 });
 

@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text, Container, Icon } from "native-base";
+import { View, Text } from "react-native";
+import { Container, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 //Styles
 import styles from "./styles";
-
-//Functions
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 //Icon
 import GenderIcon from "../../../assets/SVGs/Gender.svg";

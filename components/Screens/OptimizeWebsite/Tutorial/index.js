@@ -22,6 +22,7 @@ import styles from "./styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import { globalColors } from "../../../../GlobalStyles";
+import { connect } from "react-redux";
 const slidesData = [
   {
     id: 0,

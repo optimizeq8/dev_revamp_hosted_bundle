@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { TouchableOpacity, BackHandler, ScrollView } from "react-native";
+import { BackHandler, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
@@ -8,10 +8,10 @@ import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import InputField from "../../MiniComponents/InputFieldNew";
+import LowerButton from "../../MiniComponents/LowerButton";
 
 //icons
 import PasswordOutline from "../../../assets/SVGs/PasswordOutline";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 // Style
 import styles from "./styles";
@@ -19,7 +19,6 @@ import styles from "./styles";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import LowerButton from "../../MiniComponents/LowerButton";
 
 class ChangePassword extends Component {
   static navigationOptions = {

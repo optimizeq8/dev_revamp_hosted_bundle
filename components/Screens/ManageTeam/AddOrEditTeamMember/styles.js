@@ -1,7 +1,7 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export default StyleSheet.create({
@@ -12,7 +12,7 @@ export default StyleSheet.create({
     borderColor: "transparent",
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 30,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     width: "100%",
     paddingVertical: 10,
     borderBottomColor: "transparent",
-    height: 50
+    height: 50,
   },
   labelView: {
     borderTopLeftRadius: 150,
@@ -44,54 +44,58 @@ export default StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   toggleStyle: {
     width: widthPercentageToDP("13"),
     height: heightPercentageToDP("2.7"),
     borderRadius: 25,
-    padding: 0
+    padding: 0,
   },
   toggleCircle: {
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
-    borderRadius: 50
+    borderRadius: 50,
   },
   membersTypes: {
     alignSelf: "flex-start",
     marginVertical: 10,
     width: "85%",
     flexDirection: "column",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   memberTypeView: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginVertical: 10
+    marginVertical: 10,
   },
   meberTypeStyle: {
     fontFamily: "montserrat-bold",
     fontSize: 14 / PixelRatio.getFontScale(),
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
+    textTransform: "uppercase",
   },
   memberDescription: {
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
   },
   deleteTeamMember: {
     marginBottom: 10,
     width: "70%",
-
+    height: 50,
     borderRadius: 50,
     backgroundColor: globalColors.orange,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   deleteText: {
     fontFamily: "montserrat-bold",
-    fontSize: 14
-  }
+    fontSize: 14,
+    textTransform: "uppercase",
+    color: "#FFF",
+    textAlign: "center",
+  },
 });

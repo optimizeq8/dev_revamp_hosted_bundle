@@ -6,12 +6,11 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  I18nManager,
-  TouchableOpacity,
   StatusBar,
   Modal,
+  Text,
 } from "react-native";
-import { Content, Text, Container } from "native-base";
+import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -23,10 +22,6 @@ import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { BlurView } from "@react-native-community/blur";
-//Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone";
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
@@ -48,10 +43,10 @@ import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
 import InputField from "../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
-import { Linking } from "react-native";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -137,7 +132,7 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -526,18 +521,18 @@ class AdObjective extends Component {
       campaign_channel: "snapchat",
       campaign_ad_type: this.props.adType,
     });
-    let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
-    adjustAdObjectiveTracker.addPartnerParameter(
-      `snap_${
-        this.props.incomplete
-          ? his.props.navigation.getParam("tempAdType", "SnapAd")
-          : this.props.adType
-      }`,
-      this.props.incomplete
-        ? his.props.navigation.getParam("tempAdType", "SnapAd")
-        : this.props.adType
-    );
-    Adjust.trackEvent(adjustAdObjectiveTracker);
+    // let adjustAdObjectiveTracker = new AdjustEvent("va71pj");
+    // adjustAdObjectiveTracker.addPartnerParameter(
+    //   `snap_${
+    //     this.props.incomplete
+    //       ? his.props.navigation.getParam("tempAdType", "SnapAd")
+    //       : this.props.adType
+    //   }`,
+    //   this.props.incomplete
+    //     ? his.props.navigation.getParam("tempAdType", "SnapAd")
+    //     : this.props.adType
+    // );
+    // Adjust.trackEvent(adjustAdObjectiveTracker);
   };
 
   handleAdOnjectiveBlur = () => {
@@ -688,7 +683,6 @@ class AdObjective extends Component {
                     {translate("Minimum Duration is {{n}} days", { n: 3 })}
                   </Text>
                 )}
-
                 <Animatable.View
                   onAnimationEnd={() =>
                     this.setState({
@@ -724,23 +718,23 @@ class AdObjective extends Component {
 
                 {this.props.adType === "CollectionAd" && (
                   <View style={styles.collectionAdView}>
-                    <Text uppercase style={styles.collectionAdText}>
+                    <Text style={styles.collectionAdText}>
                       {translate("Where are you taking the user ?")}
                     </Text>
                     <View style={styles.topContainer}>
-                      <TouchableOpacity
+                      <GradientButton
+                        transparent={this.state.collectionAdLinkForm === 2}
                         style={[
                           this.state.collectionAdLinkForm === 1
                             ? styles.activeButton
                             : styles.button,
                           styles.collectionAdLinkForm1,
                         ]}
-                        onPress={() => {
+                        onPressAction={() => {
                           this._handleCollectionAdLinkForm(1);
                         }}
                       >
                         <Text
-                          uppercase
                           style={[
                             this.state.collectionAdLinkForm === 1
                               ? styles.activeText
@@ -759,20 +753,20 @@ class AdObjective extends Component {
                         >
                           {translate("Links to your site")}
                         </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
+                      </GradientButton>
+                      <GradientButton
+                        transparent={this.state.collectionAdLinkForm === 1}
                         style={[
                           this.state.collectionAdLinkForm === 2
                             ? styles.activeButton
                             : styles.button,
                           styles.collectionAdLinkForm2,
                         ]}
-                        onPress={() => {
+                        onPressAction={() => {
                           this._handleCollectionAdLinkForm(2);
                         }}
                       >
                         <Text
-                          uppercase
                           style={[
                             this.state.collectionAdLinkForm === 2
                               ? styles.activeText
@@ -791,7 +785,7 @@ class AdObjective extends Component {
                         >
                           {translate("Links to your App")}
                         </Text>
-                      </TouchableOpacity>
+                      </GradientButton>
                     </View>
                   </View>
                 )}
@@ -842,15 +836,6 @@ class AdObjective extends Component {
             onDismiss={() => this.setModalVisible(false)}
             visible={this.state.modalVisible}
           >
-            <TouchableOpacity
-              style={{
-                width: "100%",
-                height: "20%",
-                position: "absolute",
-              }}
-              onPress={() => this.setModalVisible(false)}
-              activeOpacity={1}
-            ></TouchableOpacity>
             <View style={styles.objectiveModal}>
               <CustomHeader
                 screenProps={this.props.screenProps}

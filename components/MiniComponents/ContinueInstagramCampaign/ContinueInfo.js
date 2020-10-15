@@ -1,6 +1,6 @@
 import React from "react";
-import { View, FlatList } from "react-native";
-import { Content, Text } from "native-base";
+import { View, Text } from "react-native";
+import { Content } from "native-base";
 import Snapchat from "../../../assets/SVGs/Snapchat";
 import Instagram from "../../../assets/images/AdTypes/InstagramLogo";
 
@@ -12,7 +12,7 @@ import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { connect } from "react-redux";
 import { Small } from "../StyledComponents";
 
-adCreatives = item => {
+adCreatives = (item) => {
   return (
     <MediaBox
       key={item.index}
@@ -35,26 +35,26 @@ adCreatives = item => {
                                 decides to change someting in the AdObjective screen, which will update this.props.data, but 
                                 doesn't submit  
  */
-ContinueInfo = props => {
+ContinueInfo = (props) => {
   let {
     data,
     oldTempAdType,
     storyAdsArray,
     collectionAdMedia,
-    oldTempData
+    oldTempData,
   } = props;
 
   return (
     <View
       style={{
         height: "60%",
-        top: 10
+        top: 10,
       }}
     >
       <Content
         contentContainerStyle={{
           alignItems: "center",
-          paddingBottom: "15%"
+          paddingBottom: "15%",
         }}
         style={styles.contentStyle}
       >
@@ -64,9 +64,7 @@ ContinueInfo = props => {
         ) : null}
         {oldTempData && oldTempData.start_time && (
           <View style={styles.sections}>
-            <Text uppercase style={styles.text}>
-              Duration
-            </Text>
+            <Text style={[styles.text, styles.uppercase]}>Duration</Text>
             <Text style={globalStyles.numbers}>
               {dateFormat(new Date(oldTempData.start_time), "mmm dS, yyyy")}{" "}
               <Small>to</Small>{" "}
@@ -82,9 +80,7 @@ ContinueInfo = props => {
         )}
         {data && data.media && (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
-            <Text uppercase style={[styles.text]}>
-              Media
-            </Text>
+            <Text style={[styles.text, styles.uppercase]}>Media</Text>
             <View style={styles.mediaContainer}>
               {data && oldTempAdType === "InstagramFeedAd" && (
                 <MediaBox
@@ -101,14 +97,14 @@ ContinueInfo = props => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   adType: state.instagramAds.adType,
   data: state.instagramAds.data,
   oldTempAdType: state.instagramAds.oldTempAdType,
   storyAdsArray: state.instagramAds.storyAdsArray,
   collectionAdMedia: state.instagramAds.collectionAdMedia,
   collectionAdLinkForm: state.instagramAds.collectionAdLinkForm,
-  oldTempData: state.instagramAds.oldTempData
+  oldTempData: state.instagramAds.oldTempData,
 });
 
 export default connect(mapStateToProps, null)(ContinueInfo);

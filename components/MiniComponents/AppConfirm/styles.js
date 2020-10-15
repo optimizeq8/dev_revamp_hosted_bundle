@@ -345,6 +345,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     maxWidth: 80,
     textAlign: "center",
+    textTransform: "uppercase",
   },
 });
 

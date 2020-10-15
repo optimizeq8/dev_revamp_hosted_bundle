@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text } from "native-base";
+import { View, Text } from "react-native";
 import Toggle from "../../../MiniComponents/Toggle/";
 import styles from "./styles";
 
@@ -10,7 +9,7 @@ import styles from "./styles";
  * @param {Any} props the props that get sent from the parent function or component
  * @return {Component} the displayed component
  */
-export default props => {
+export default (props) => {
   let { member, userRole, handleMemberType, translate } = props;
   return (
     <View style={styles.memberTypeView}>
@@ -29,7 +28,7 @@ export default props => {
         style={{
           flexDirection: "column",
           justifyContent: "space-evenly",
-          paddingLeft: 10
+          paddingLeft: 10,
         }}
       >
         <Text uppercase style={styles.meberTypeStyle}>

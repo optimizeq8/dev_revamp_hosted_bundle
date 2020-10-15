@@ -8,7 +8,6 @@ import {
   ScrollView,
   I18nManager,
   Text,
-  TouchableOpacity,
   StatusBar,
 } from "react-native";
 import { Content, Container } from "native-base";
@@ -30,14 +29,14 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
+import GradientButton from "../../../MiniComponents/GradientButton";
+
 //Icons
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
-import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
 import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
+
 //Data
 import CountriesList from "../../../Data/countries.googleSE.data";
 //Redux
@@ -51,7 +50,8 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class GoogleAdInfo extends Component {
   static navigationOptions = {
@@ -103,7 +103,7 @@ class GoogleAdInfo extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(this.state.duration);
+    end_time.setDate(start_time.getDate() + this.state.duration - 1);
     let keys = Object.keys(this.state).filter((key) => {
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
@@ -402,12 +402,12 @@ class GoogleAdInfo extends Component {
     if (this.props.campaign.campaignResumed) {
       this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
     }
-    let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
-    adjustGoogleAdObjectiveTracker.addPartnerParameter(
-      `Google_SEM`,
-      "google_sem"
-    );
-    Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
+    // let adjustGoogleAdObjectiveTracker = new AdjustEvent("va71pj");
+    // adjustGoogleAdObjectiveTracker.addPartnerParameter(
+    //   `Google_SEM`,
+    //   "google_sem"
+    // );
+    // Adjust.trackEvent(adjustGoogleAdObjectiveTracker);
   };
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
@@ -593,48 +593,34 @@ class GoogleAdInfo extends Component {
                   {translate("Ad Language")}
                 </Text>
                 <View style={styles.topContainer}>
-                  <TouchableOpacity
+                  <GradientButton
+                    activeOpacity={1}
+                    transparent={this.state.language === "1019"}
                     style={[
                       this.state.language === "1000"
                         ? styles.activeButton
                         : styles.inactiveButton,
                       styles.choiceButtonLeft,
                     ]}
-                    onPress={() => {
+                    onPressAction={() => {
                       this._handleLanguageChange("1000");
                     }}
-                  >
-                    <Text
-                      style={[
-                        this.state.language === "1000"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                      ]}
-                    >
-                      {translate("English")}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
+                    text={translate("English")}
+                  />
+                  <GradientButton
+                    activeOpacity={1}
+                    transparent={this.state.language === "1000"}
                     style={[
                       this.state.language === "1019"
                         ? styles.activeButton
                         : styles.inactiveButton,
                       styles.choiceButtonRight,
                     ]}
-                    onPress={() => {
+                    onPressAction={() => {
                       this._handleLanguageChange("1019");
                     }}
-                  >
-                    <Text
-                      style={[
-                        this.state.language === "1019"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                      ]}
-                    >
-                      {translate("Arabic")}
-                    </Text>
-                  </TouchableOpacity>
+                    text={translate("Arabic")}
+                  />
                 </View>
               </View>
 

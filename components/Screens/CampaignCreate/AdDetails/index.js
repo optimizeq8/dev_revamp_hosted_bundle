@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Container, Content, Row } from "native-base";
-import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -47,20 +46,18 @@ import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 import formatNumber from "../../../formatNumber";
 
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
-import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import find from "lodash/find";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import AudienceReach from "./AudienceReach";
+
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -261,6 +258,12 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let editedMapLocation = [];
+      let markers = [];
+      if (editedCampaign.coordinates) {
+        editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
+        markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
+      }
       let stateRegionNames = [];
       this.setState(
         {
@@ -269,6 +272,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo: editedMapLocation,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach((geo, i) =>
@@ -882,14 +887,17 @@ class AdDetails extends Component {
       rawValue >= this.state.minValueBudget &&
       !isNan(rawValue)
     ) {
-      this.setState({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue,
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            lifetime_budget_micro: rawValue,
+          },
+          value: value,
+          budgetOption,
         },
-        value: value,
-        budgetOption,
-      });
+        () => this._calcReach()
+      );
 
       analytics.track(`a_handle_budget`, {
         source: "ad_targeting",
@@ -1014,6 +1022,8 @@ class AdDetails extends Component {
       const obj = {
         targeting: JSON.stringify(r),
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
+        campaign_id: this.state.campaignInfo.campaign_id,
       };
 
       let totalReach = {
@@ -1227,7 +1237,8 @@ class AdDetails extends Component {
               name: "Audience",
               targeting: rep.targeting,
             },
-            false
+            false,
+            this.state.locationsInfo
           );
         }
         this.props.ad_details(
@@ -1238,7 +1249,8 @@ class AdDetails extends Component {
             countryName: this.state.countryName,
           },
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.locationsInfo
         );
       }
     }
@@ -1270,6 +1282,7 @@ class AdDetails extends Component {
         "campaignTargeting",
         {}
       );
+      let locationsInfo = this.props.navigation.getParam("coordinates", {});
       if (this.editCampaign) {
         campaignTargeting.geos = editedCampaign.targeting.geos;
       }
@@ -1299,6 +1312,11 @@ class AdDetails extends Component {
             editedCampaign.targeting.geos[i].country_code
         )
       );
+      let markers = [];
+      if (locationsInfo) {
+        locationsInfo = cloneDeep(JSON.parse(locationsInfo));
+        markers = cloneDeep(campaignTargeting.locations[0].circles);
+      }
       // LOCATIONS MAP
       let stateRegionNames = [];
       this.setState(
@@ -1308,6 +1326,8 @@ class AdDetails extends Component {
           countryName: getCountryName,
           regions: editedRegionNames,
           filteredRegions: editedRegionNames,
+          locationsInfo,
+          markers,
         },
         () => {
           editedCampaign.targeting.geos.forEach(
@@ -1343,6 +1363,17 @@ class AdDetails extends Component {
           this.handleMultipleCountrySelection();
           this._calcReach();
           this.setState({ regionNames: stateRegionNames, showRegions });
+          !this.editCampaign &&
+            this.props.save_campaign_info({
+              campaignInfo: editedCampaign,
+              countryName: getCountryName,
+              regions: editedRegionNames,
+              filteredRegions: editedRegionNames,
+              showRegions,
+              regionNames: stateRegionNames,
+              markers,
+              locationsInfo,
+            });
         }
       );
     }
@@ -1376,12 +1407,12 @@ class AdDetails extends Component {
           : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
       );
     }
-    let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
-    adjustAdDetailsTracker.addPartnerParameter(
-      `Snap_${this.props.adType}`,
-      this.props.adType
-    );
-    Adjust.trackEvent(adjustAdDetailsTracker);
+    // let adjustAdDetailsTracker = new AdjustEvent("1mtblg");
+    // adjustAdDetailsTracker.addPartnerParameter(
+    //   `Snap_${this.props.adType}`,
+    //   this.props.adType
+    // );
+    // Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
   handleAdDetailsBlur = () => {
@@ -1452,6 +1483,7 @@ class AdDetails extends Component {
             screenProps={this.props.screenProps}
             _handleSideMenuState={this._handleSideMenuState}
             circles={this.state.campaignInfo.targeting.locations[0].circles}
+            locationsInfo={this.state.locationsInfo}
             onSelectedMapChange={this.onSelectedMapChange}
             save_campaign_info={this.props.save_campaign_info}
             data={this.props.data}
@@ -1808,7 +1840,7 @@ class AdDetails extends Component {
                       startEditing={startEditing}
                     />
 
-                    <ReachBar
+                    <AudienceReach
                       loading={this.props.loading}
                       campaignInfo={campaignInfo}
                       _handleSubmission={this._handleSubmission}
@@ -1847,8 +1879,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_details: (info, names, navigation, segmentInfo) =>
-    dispatch(actionCreators.ad_details(info, names, navigation, segmentInfo)),
+  ad_details: (info, names, navigation, segmentInfo, locationsInfo) =>
+    dispatch(
+      actionCreators.ad_details(
+        info,
+        names,
+        navigation,
+        segmentInfo,
+        locationsInfo
+      )
+    ),
   updateCampaign: (info, businessid, navigation, segmentInfo) =>
     dispatch(
       actionCreators.updateCampaign(info, businessid, navigation, segmentInfo)
@@ -1864,7 +1904,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
   get_interests: (info) => dispatch(actionCreators.get_interests(info)),
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
-  createAudience: (audience, navigate) =>
-    dispatch(actionCreators.createAudience(audience, navigate)),
+  createAudience: (audience, navigate, locationsInfo) =>
+    dispatch(actionCreators.createAudience(audience, navigate, locationsInfo)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

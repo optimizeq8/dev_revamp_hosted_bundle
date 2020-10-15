@@ -1,5 +1,4 @@
-import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import { StyleSheet, Platform, I18nManager } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({

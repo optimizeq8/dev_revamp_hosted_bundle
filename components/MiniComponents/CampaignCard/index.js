@@ -8,10 +8,7 @@ import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
-import slowlog from "react-native-slowlog";
-import dateFormat from "dateformat";
 
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import CampaignCircleChart from "../CampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
@@ -20,12 +17,6 @@ import globalStyles from "../../../GlobalStyles";
 
 whyDidYouRender(React);
 class CampaignCard extends Component {
-  constructor(props) {
-    super(props);
-    // slowlog(this, /.*/, {
-    // verbose: true
-    // }); //verbose logs all functions and their time
-  }
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
   ad_status_color = this.props.campaign.ad_status_color_code;

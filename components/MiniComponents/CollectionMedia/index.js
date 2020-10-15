@@ -11,28 +11,17 @@ import {
   Platform,
   BackHandler,
   ScrollView,
-  I18nManager,
   Linking,
-} from "react-native";
-import {
-  Button,
-  Content,
   Text,
-  Item,
-  Input,
-  Container,
-  Footer,
-  Icon,
-} from "native-base";
+} from "react-native";
+import { Item, Input, Container, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import analytics from "@segment/analytics-react-native";
-import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
-import CameraLoading from "../CameraLoading";
 import * as IntentLauncher from "expo-intent-launcher";
 
 //Redux
@@ -44,7 +33,7 @@ import CameraEdit from "../../../assets/SVGs/CameraCircleOutline";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 //Data
 import { netLoc } from "../../Data/callactions.data";
@@ -52,13 +41,12 @@ import { netLoc } from "../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
-import split from "lodash/split";
 import LowerButton from "../LowerButton";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
 import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -689,8 +677,8 @@ class CollectionMedia extends Component {
     this.setState({ mediaModalVisible: visible });
   };
   handleAdCollectionMediaFocus = () => {
-    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
-    Adjust.trackEvent(adjustAdCoverTracker);
+    // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    // Adjust.trackEvent(adjustAdCoverTracker);
   };
   render() {
     const { translate } = this.props.screenProps;

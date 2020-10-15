@@ -7,18 +7,21 @@ import android.net.Uri;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.airbnb.android.react.lottie.LottiePackage;
-// import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;
+import com.segment.analytics.reactnative.integration.adjust.RNAnalyticsIntegration_AdjustPackage;
 import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 import com.cmcewen.blurview.BlurViewPackage;
-import com.kevinejohn.RNMixpanel.RNMixpanel;
+// import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.zoontek.rnbootsplash.RNBootSplashPackage;
-import com.adjust.nativemodule.AdjustPackage;
+// import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
+import info.applike.advertisingid.RNAdvertisingIdPackage;
+
+// import com.adjust.nativemodule.AdjustPackage;
 import ly.img.react_native.pesdk.RNPhotoEditorSDKPackage;
 // import com.segment.analytics.reactnative.integration.mixpanel.RNAnalyticsIntegration_MixpanelPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-// import com.segment.analytics.reactnative.core.RNAnalyticsPackage;
+import com.segment.analytics.reactnative.core.RNAnalyticsPackage;
 // import io.sentry.RNSentryPackage;
 import ly.img.react_native.vesdk.RNVideoEditorSDKPackage;
 import com.arthenica.reactnative.RNFFmpegPackage;
@@ -95,7 +98,6 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
-
     if (!BuildConfig.DEBUG) {
       UpdatesController.initialize(this);
     }

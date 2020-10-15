@@ -6,10 +6,10 @@ import {
   ScrollView,
   BackHandler,
   TouchableOpacity,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Card, Text, Container, Icon, Content, Button } from "native-base";
-import Loading from "../../MiniComponents/LoadingScreen";
+import { Container, Icon } from "native-base";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
@@ -386,7 +386,9 @@ class GoogleCampaignDetails extends Component {
                   source_action: "a_go_back",
                 }}
                 navigation={
-                  !this.state.expand ? this.props.navigation : undefined
+                  !this.state.expand
+                    ? this.props.navigation
+                    : this.props.navigation
                 }
                 actionButton={this.state.expand && this.handleChartToggle}
                 selectedCampaign={selectedCampaign}

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import { Button, Icon } from "native-base";
 
 import styles from "../../styles/adDesign.styles";
 
+// Icons
 import EditCameraIcon from "../../../../../assets/SVGs/CameraCircleOutline";
+
 export default class MediaButton extends Component {
   render() {
     let {

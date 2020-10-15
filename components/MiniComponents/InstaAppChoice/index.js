@@ -1,18 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BackHandler } from "react-native";
+import { BackHandler, Text } from "react-native";
 import isEmpty from "lodash/isEmpty";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
 import LowerButton from "../LowerButton";
-import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import ModalField from "../InputFieldNew/ModalField";
 import WebsiteField from "../InputFieldNew/Website";
 import Picker from "../Picker";
-import AppCard from "./AppCard";
-import isStringArabic from "../../isStringArabic";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
@@ -23,8 +19,7 @@ import list from "../../Data/callactions.data";
 
 //Styles
 import styles from "./styles";
-import appConfirmStyles from "../AppConfirm/styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
@@ -125,7 +120,9 @@ class AppChoice extends Component {
       ) {
         this.setState({
           iosApp_name: this.props.attachment.ios_app_id
-            ? this.data.iosApp_name
+            ? this.props.rejected
+              ? this.props.instaRejCampaign.attachment.app_name
+              : this.data.iosApp_name
               ? this.data.iosApp_name
               : this.props.mainBusiness.appstorelink &&
                 this.props.mainBusiness.appstorelink.app_name
@@ -140,7 +137,9 @@ class AppChoice extends Component {
       ) {
         this.setState({
           androidApp_name: this.props.attachment.android_app_url
-            ? this.data.androidApp_name
+            ? this.props.rejected
+              ? this.props.instaRejCampaign.attachment.app_name
+              : this.data.androidApp_name
               ? this.data.androidApp_name
               : this.props.mainBusiness.playstorelink &&
                 this.props.mainBusiness.playstorelink.app_name
@@ -374,7 +373,10 @@ class AppChoice extends Component {
           androidApp_name={this.state.androidApp_name}
           screenProps={this.props.screenProps}
           appSelections={{ iosAppSelected, androidAppSelected }}
-          toggleAppSelection={this.toggleAppSelection}
+          toggleAppSelection={
+            this.props.rejected ? () => {} : this.toggleAppSelection
+          }
+          rejected={this.props.rejected}
         />
         <Text style={styles.OSNote}>
           {translate("Only one OS per campaign")}
@@ -469,7 +471,7 @@ class AppChoice extends Component {
 }
 const mapStateToProps = (state) => ({
   instaData: state.instagramAds.data,
-  rejCampaign: state.dashboard.rejCampaign,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   mainBusiness: state.account.mainBusiness,
 });
 

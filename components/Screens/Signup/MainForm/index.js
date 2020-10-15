@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, I18nManager } from "react-native";
-import { Text, Container, Badge } from "native-base";
+import { Text, View, TouchableOpacity, I18nManager } from "react-native";
+import { Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 //Redux
@@ -8,11 +8,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Components
-import CustomHeader from "../../../MiniComponents/Header";
 import PersonalInfo from "../PersonalInfo";
-import PhoneNo from "../PhoneNo";
-import Verification from "../Verification";
-import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // icons
 import BackIcon from "../../../../assets/SVGs/BackButtonPurple";

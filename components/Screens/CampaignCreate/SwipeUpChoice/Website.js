@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -241,7 +238,10 @@ class Website extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
         <InputScrollView

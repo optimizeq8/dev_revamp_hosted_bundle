@@ -32,12 +32,14 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 13,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   amountTextTitle: {
     color: "#FFF",
     fontFamily: "montserrat-bold",
     fontSize: 14,
     textAlign: "center",
+    textTransform: "uppercase",
   },
   dateText: {
     color: "#FF8D04",
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingHorizontal: 10,
     width: 200,
+    textTransform: "uppercase",
   },
   subText: {
     fontFamily: "montserrat-regular-english",
@@ -65,6 +68,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     textAlign: "left",
     marginTop: 3,
+    textTransform: "uppercase",
   },
   icon: {
     color: "#FFFF",

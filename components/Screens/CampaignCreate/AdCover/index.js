@@ -3,7 +3,6 @@ import React, { Component } from "react";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-import { BlurView } from "expo-blur";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
@@ -15,13 +14,14 @@ import {
   BackHandler,
   Linking,
   I18nManager,
+  Text,
 } from "react-native";
-import { Content, Text, Container, Footer, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import CustomHeader from "../../../MiniComponents/Header";
+import { SaveFormat } from "expo-image-manipulator";
+
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -33,7 +33,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //icons
-import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
 import PenIcon from "../../../../assets/SVGs/Pen";
 
 // Style
@@ -45,14 +44,12 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
 import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
 import MediaModal from "./MediaModal";
-import { SaveFormat } from "expo-image-manipulator";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import ExampleModal from "../../../MiniComponents/TutorialModal";
 class AdCover extends Component {
@@ -803,8 +800,8 @@ class AdCover extends Component {
       campaign_ad_type: "StoryAd",
     });
 
-    let adjustAdCoverTracker = new AdjustEvent("s62u9o");
-    Adjust.trackEvent(adjustAdCoverTracker);
+    // let adjustAdCoverTracker = new AdjustEvent("s62u9o");
+    // Adjust.trackEvent(adjustAdCoverTracker);
   };
 
   handleAdCoverBlur = () => {
@@ -962,7 +959,7 @@ class AdCover extends Component {
                 screenProps={this.props.screenProps}
               />
             </View>
-            <Footer style={[styles.footerStyle]}>
+            <View style={[styles.footerStyle]}>
               {cover && (this.props.coverLoading || this.state.isVisible) ? (
                 <View style={styles.loadingContainer}>
                   <AnimatedCircularProgress
@@ -995,7 +992,7 @@ class AdCover extends Component {
                   {translate("Please add media to proceed")}
                 </Text>
               )}
-            </Footer>
+            </View>
           </KeyboardAwareScrollView>
         </Container>
         <MediaModal

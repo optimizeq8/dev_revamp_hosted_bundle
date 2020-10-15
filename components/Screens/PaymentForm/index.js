@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   Platform,
   BackHandler,
-  Linking,
+  Text,
+  ActivityIndicator,
 } from "react-native";
-import { Button, Text, Container, Content, Footer } from "native-base";
+import { Container, Content, Footer } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Modal, ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 
 import { BlurView } from "expo-blur";
 
@@ -20,19 +21,17 @@ import * as actionCreators from "../../../store/actions";
 
 import UseWallet from "./UseWallet";
 import formatNumber from "../../formatNumber";
-import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
-import BackDrop from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
 
 class PaymentForm extends Component {
@@ -45,6 +44,11 @@ class PaymentForm extends Component {
     this.showKnet = this.props.mainBusiness.country.toLowerCase() === "kuwait";
     this.state = {
       addingCredits: this.props.navigation.getParam("addingCredits", false),
+      refundAmountToWallet: this.props.navigation.getParam(
+        "refundAmountToWallet",
+        false
+      ),
+      selectedCampaign: this.props.navigation.getParam("selectedCampaign", {}),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: this.showKnet ? 1 : 2,
       choice: this.showKnet ? 2 : 3,
@@ -72,6 +76,19 @@ class PaymentForm extends Component {
         amount: this.props.navigation.getParam("amount", 0),
         browserLoading: false,
       });
+      if (
+        prevState.refundAmountToWallet !== true &&
+        this.props.navigation.getParam("refundAmountToWallet") === true
+      ) {
+        this.setState({
+          refundAmountToWallet: this.props.navigation.getParam(
+            "refundAmountToWallet",
+            true
+          ),
+          amount: this.props.navigation.getParam("amount", 0),
+          browserLoading: false,
+        });
+      }
     }
   }
   componentWillUnmount() {
@@ -82,7 +99,7 @@ class PaymentForm extends Component {
     else if (
       !this.props.loading &&
       !this.state.browserLoading &&
-      this.state.addingCredits
+      (this.state.addingCredits || this.state.refundAmountToWallet)
     ) {
       //   this.props.navigation.navigate("Wallet");
       this.props.navigation.goBack();
@@ -159,7 +176,11 @@ class PaymentForm extends Component {
   };
 
   _handleSubmission = () => {
-    if (this.state.choice === 1) {
+    if (this.state.refundAmountToWallet) {
+      this.props.moveRejectedAdAmountToWallet(
+        this.state.selectedCampaign.campaign_id
+      );
+    } else if (this.state.choice === 1) {
       if (this.props.wallet && this.props.wallet !== "0")
         this.setState({
           showWalletModal: true,
@@ -337,6 +358,136 @@ class PaymentForm extends Component {
       // Adjust.trackEvent(adjustPaymentFormTracker);
     }
   };
+  renderContent = () => {
+    const { translate } = this.props.screenProps;
+    if (this.state.refundAmountToWallet) {
+      return (
+        <Content
+          padder
+          scrollEnabled={false}
+          contentContainerStyle={styles.contentStyle}
+        >
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <WalletIcon width={80} height={80} />
+            <Text
+              style={{
+                fontFamily: "montserrat-regular",
+                color: "#fff",
+                fontSize: 14,
+                textAlign: "center",
+              }}
+            >
+              You're requesting to refund to your wallet
+            </Text>
+            <Text
+              style={{
+                fontFamily: "montserrat-regular",
+                color: "#fff",
+                fontSize: 14,
+                textAlign: "center",
+              }}
+            >
+              {translate(
+                "Once the amount is moved back to wallet you will not be able to re-launch this campaign again"
+              )}
+            </Text>
+          </View>
+        </Content>
+      );
+    }
+    return (
+      <Content
+        padder
+        scrollEnabled={false}
+        contentContainerStyle={styles.contentStyle}
+      >
+        <View style={styles.buttonGroupBlock}>
+          {!this.state.addingCredits && (
+            <GradientButton
+              radius={35}
+              transparent={this.state.choice !== 1}
+              style={[styles.whitebutton]}
+              textStyle={[
+                styles.whitebuttontext,
+                this.state.choice === 1 && globalStyles.whiteTextColor,
+              ]}
+              onPressAction={() => this._handleChoice(1)}
+              text={translate("Wallet")}
+              uppercase={true}
+            />
+          )}
+
+          {this.showKnet && (
+            <GradientButton
+              radius={35}
+              transparent={this.state.choice !== 2}
+              style={[styles.whitebutton2]}
+              textStyle={[
+                styles.whitebuttontext,
+                this.state.choice === 2 && globalStyles.whiteTextColor,
+              ]}
+              onPressAction={() => this._handleChoice(2)}
+              text={translate("KNET")}
+              uppercase={true}
+            />
+          )}
+          <GradientButton
+            transparent={this.state.choice !== 3}
+            radius={35}
+            style={[styles.whitebutton3]}
+            textStyle={[
+              styles.whitebuttontext,
+              this.state.choice === 3 && globalStyles.whiteTextColor,
+            ]}
+            onPressAction={() => this._handleChoice(3)}
+            text={translate("Credit Card")}
+            uppercase={true}
+          />
+        </View>
+
+        {this.state.choice === 1 && (
+          <UseWallet
+            showWalletModal={this.state.showWalletModal}
+            setShowWalletModal={this.setShowWalletModal}
+            _changeToKnet={this._changeToKnet}
+            wallet={this.props.wallet}
+            screenProps={this.props.screenProps}
+          />
+        )}
+        {this.state.choice === 2 && (
+          <View style={styles.knetContainer}>
+            <Image
+              style={styles.media}
+              source={require("../../../assets/images/knet.png")}
+              resizeMode="contain"
+            />
+            <Text style={styles.errortext}>
+              {translate("You will be redirected to")}
+              {"\n"}
+              {translate("payment gateway for the")} {"\n"}
+              {translate("payment process")}
+            </Text>
+          </View>
+        )}
+        {this.state.choice === 3 && (
+          <View style={styles.mastercardContainer}>
+            <Image
+              style={[styles.media, styles.mastercardImage]}
+              source={require("../../../assets/images/mastercard.png")}
+              resizeMode="contain"
+            />
+            <Text style={styles.errortext}>
+              {translate("You will be redirected to")} {"\n"}
+              {translate("payment gateway for the")} {"\n"}
+              {translate("payment process")}
+            </Text>
+          </View>
+        )}
+      </Content>
+    );
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -348,7 +499,6 @@ class PaymentForm extends Component {
         <NavigationEvents onDidFocus={this.handlePaymentFormFocus} />
 
         <Container style={[styles.container]}>
-          {/* <BackDrop style={styles.backDrop} /> */}
           <TopStepsHeader
             screenProps={this.props.screenProps}
             closeButton={false}
@@ -358,8 +508,13 @@ class PaymentForm extends Component {
               source: "payment_mode",
               source_action: "a_go_back",
             }}
-            actionButton={this.reviewPurchase}
-            icon={this.props.channel === "" ? "snapchat" : this.props.channel}
+            icon={
+              !this.props.channel
+                ? null
+                : this.props.channel === ""
+                ? "snapchat"
+                : this.props.channel
+            }
             actionButton={this.handleBackButton}
             adType={
               this.props.channel === "" || this.props.channel === "snapchat"
@@ -367,96 +522,16 @@ class PaymentForm extends Component {
                 : null
             }
             currentScreen="Payment"
-            title={this.state.addingCredits ? "Top up wallet" : "Payment"}
+            title={
+              this.state.refundAmountToWallet
+                ? "Refund to wallet"
+                : this.state.addingCredits
+                ? "Top up wallet"
+                : "Payment"
+            }
           />
-          <Content
-            padder
-            scrollEnabled={false}
-            contentContainerStyle={styles.contentStyle}
-          >
-            <View style={styles.buttonGroupBlock}>
-              {!this.state.addingCredits && (
-                <GradientButton
-                  radius={35}
-                  transparent={this.state.choice !== 1}
-                  style={[styles.whitebutton]}
-                  textStyle={[
-                    styles.whitebuttontext,
-                    this.state.choice === 1 && globalStyles.whiteTextColor,
-                  ]}
-                  onPressAction={() => this._handleChoice(1)}
-                  text={translate("Wallet")}
-                  uppercase={true}
-                />
-              )}
+          {this.renderContent()}
 
-              {this.showKnet && (
-                <GradientButton
-                  radius={35}
-                  transparent={this.state.choice !== 2}
-                  style={[styles.whitebutton2]}
-                  textStyle={[
-                    styles.whitebuttontext,
-                    this.state.choice === 2 && globalStyles.whiteTextColor,
-                  ]}
-                  onPressAction={() => this._handleChoice(2)}
-                  text={translate("KNET")}
-                  uppercase={true}
-                />
-              )}
-              <GradientButton
-                transparent={this.state.choice !== 3}
-                radius={35}
-                style={[styles.whitebutton3]}
-                textStyle={[
-                  styles.whitebuttontext,
-                  this.state.choice === 3 && globalStyles.whiteTextColor,
-                ]}
-                onPressAction={() => this._handleChoice(3)}
-                text={translate("Credit Card")}
-                uppercase={true}
-              />
-            </View>
-
-            {this.state.choice === 1 && (
-              <UseWallet
-                showWalletModal={this.state.showWalletModal}
-                setShowWalletModal={this.setShowWalletModal}
-                _changeToKnet={this._changeToKnet}
-                wallet={this.props.wallet}
-                screenProps={this.props.screenProps}
-              />
-            )}
-            {this.state.choice === 2 && (
-              <View style={styles.knetContainer}>
-                <Image
-                  style={styles.media}
-                  source={require("../../../assets/images/knet.png")}
-                  resizeMode="contain"
-                />
-                <Text style={styles.errortext}>
-                  {translate("You will be redirected to")}
-                  {"\n"}
-                  {translate("payment gateway for the")} {"\n"}
-                  {translate("payment process")}
-                </Text>
-              </View>
-            )}
-            {this.state.choice === 3 && (
-              <View style={styles.mastercardContainer}>
-                <Image
-                  style={[styles.media, styles.mastercardImage]}
-                  source={require("../../../assets/images/mastercard.png")}
-                  resizeMode="contain"
-                />
-                <Text style={styles.errortext}>
-                  {translate("You will be redirected to")} {"\n"}
-                  {translate("payment gateway for the")} {"\n"}
-                  {translate("payment process")}
-                </Text>
-              </View>
-            )}
-          </Content>
           <View style={styles.curvedCard}>
             <Footer style={[styles.bottomCard]}>
               <View style={styles.bottomCardBlock1}>
@@ -473,7 +548,8 @@ class PaymentForm extends Component {
                     </Text>
 
                     <Text style={[styles.money, styles.colorOrange, {}]}>
-                      {this.state.addingCredits
+                      {this.state.addingCredits ||
+                      this.state.refundAmountToWallet
                         ? formatNumber(this.state.amount, true)
                         : this.props.walletUsed
                         ? formatNumber(this.props.campaign_balance_amount, true)
@@ -486,7 +562,8 @@ class PaymentForm extends Component {
                       KD {/* {"\t "} */}
                     </Text>
                     <Text style={[styles.money, styles.kdAmountText]}>
-                      {this.state.addingCredits
+                      {this.state.addingCredits ||
+                      this.state.refundAmountToWallet
                         ? this.props.walletAmountInKwd
                         : this.props.walletUsed
                         ? this.props.campaign_balance_amount_kwd
@@ -519,7 +596,9 @@ class PaymentForm extends Component {
                       uppercase={this.state.addingCredits}
                       style={styles.payNowText}
                     >
-                      {this.state.addingCredits
+                      {this.state.refundAmountToWallet
+                        ? translate("Refund Now")
+                        : this.state.addingCredits
                         ? translate("Top Up Now")
                         : translate("Pay Now")}
                     </Text>
@@ -615,7 +694,10 @@ class PaymentForm extends Component {
             </View>
           </BlurView>
         </Modal>
-        <Modal dismissable={false} visible={this.state.browserLoading}>
+        <Modal
+          dismissable={false}
+          visible={this.state.browserLoading || this.props.movingAmountToWallet}
+        >
           <LoadingScreen top={0} />
         </Modal>
       </View>
@@ -642,6 +724,7 @@ const mapStateToProps = (state) => ({
   wallet: state.transA.wallet,
   channel: state.transA.channel,
   adType: state.campaignC.adType,
+  movingAmountToWallet: state.campaignC.movingAmountToWallet,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
@@ -680,5 +763,7 @@ const mapDispatchToProps = (dispatch) => ({
         closeBrowserLoading
       )
     ),
+  moveRejectedAdAmountToWallet: (campaign_id) =>
+    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);

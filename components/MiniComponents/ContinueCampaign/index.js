@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, I18nManager, Text } from "react-native";
 import { connect } from "react-redux";
-import { Text } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";

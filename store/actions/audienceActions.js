@@ -78,7 +78,11 @@ export const getAudienceDetail = (audienceId) => {
  *
  * @param {*} audience Object of id, name and targeting
  */
-export const createAudience = (audience, navigate = true) => {
+export const createAudience = (
+  audience,
+  navigate = true,
+  locationsInfo = []
+) => {
   // console.log(
   //   "createAudience targeting ",
   //   JSON.stringify(audience.targeting, null, 2)
@@ -93,6 +97,7 @@ export const createAudience = (audience, navigate = true) => {
         businessid: getState().account.mainBusiness.businessid,
         name: audience.name,
         targeting: audience.targeting,
+        coordinates: locationsInfo,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -157,7 +162,12 @@ export const deleteAudience = (audienceId) => {
  * @param {*} audienceName
  * @param {*} targeting
  */
-export const updateAudience = (audienceId, audienceName, targeting) => {
+export const updateAudience = (
+  audienceId,
+  audienceName,
+  targeting,
+  locationsInfo = []
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SAVE_AUDIENCE_DETAIL_LOADING,
@@ -168,6 +178,7 @@ export const updateAudience = (audienceId, audienceName, targeting) => {
         businessid: getState().account.mainBusiness.businessid,
         name: audienceName,
         targeting: JSON.stringify(targeting),
+        coordinates: locationsInfo,
       })
       .then((res) => res.data)
       .then((data) => {

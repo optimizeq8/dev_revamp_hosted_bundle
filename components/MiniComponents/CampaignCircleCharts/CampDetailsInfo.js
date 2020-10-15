@@ -1,11 +1,10 @@
 import React from "react";
 import PlaceholderLine from "../PlaceholderLine";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import styles from "./styles";
 import ProgressBar from "../ProgressBar";
 import dateFormat from "dateformat";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { Text } from "native-base";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import { globalColors } from "../../../GlobalStyles";
 import isNaN from "lodash/isNaN";

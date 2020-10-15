@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ImageBackground, View, BackHandler } from "react-native";
-import { Content, Text } from "native-base";
+import { ImageBackground, View, BackHandler, Text } from "react-native";
+import { Content } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { Video } from "expo-av";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 
 import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { isUndefined } from "lodash";
 
@@ -120,12 +120,12 @@ class AdPaymentReview extends Component {
           ]
     );
 
-    let adjustAdReviewTracker = new AdjustEvent("rag8r1");
-    adjustAdReviewTracker.addPartnerParameter(
-      `Snap_${this.props.adType}`,
-      this.props.adType
-    );
-    Adjust.trackEvent(adjustAdReviewTracker);
+    // let adjustAdReviewTracker = new AdjustEvent("rag8r1");
+    // adjustAdReviewTracker.addPartnerParameter(
+    //   `Snap_${this.props.adType}`,
+    //   this.props.adType
+    // );
+    // Adjust.trackEvent(adjustAdReviewTracker);
   };
   formatAttributes = () => {
     const { translate } = this.props.screenProps;

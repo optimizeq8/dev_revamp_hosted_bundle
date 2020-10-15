@@ -1,7 +1,13 @@
 import React, { Component } from "react";
-import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Animated,
+  BackHandler,
+  TouchableOpacity,
+} from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
@@ -14,7 +20,7 @@ import StatusModal from "./StatusModal";
 import Toggle from "../../MiniComponents/Toggle";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import SlideUpPanel from "./SlideUpPanel";
-import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
+import RejectedInstaInfo from "./RejectedInfoComp/RejectedInstaInfo";
 
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -24,7 +30,6 @@ import DeviceMakeIcon from "../../../assets/SVGs/DeviceMake";
 
 // Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
 //Functions
 import dateFormat from "dateformat";
 
@@ -328,10 +333,6 @@ class InstagramCampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
-        console.log(
-          "selectedCampaign details",
-          JSON.stringify(selectedCampaign, null, 2)
-        );
         if (
           selectedCampaign.hasOwnProperty("story_creatives") ||
           selectedCampaign.hasOwnProperty("collection_creatives")
@@ -426,7 +427,7 @@ class InstagramCampaignDetails extends Component {
 
       return (
         <SafeAreaView
-          style={[{ height: "100%" }]}
+          style={styles.safeAreaView}
           forceInset={{ bottom: "never", top: "always" }}
         >
           <DateFields
@@ -470,17 +471,12 @@ class InstagramCampaignDetails extends Component {
                 !this.state.expand ? this.props.navigation : undefined
               }
               selectedCampaign={selectedCampaign}
-              containerStyle={{ height: 50 }}
+              containerStyle={styles.headerContainerStyle}
               showTopRightButtonIcon={
                 !loading && selectedCampaign.review_status === "APPROVED"
               }
               topRightButtonFunction={() => this.showCSVModal(true)}
-              titleStyle={{
-                textAlign: "left",
-                fontSize: 15,
-                paddingTop: 3,
-                flex: 1,
-              }}
+              titleStyle={styles.headerTitleStyle}
               segment={{
                 source: "campaign_detail",
                 source_action: "a_go_back",
@@ -494,7 +490,7 @@ class InstagramCampaignDetails extends Component {
               !this.state.expand && (
                 <View style={styles.remainingBudgetContainer}>
                   <Icon
-                    style={{ fontSize: 35, color: "#fff" }}
+                    style={styles.alertIconStyle}
                     type="Ionicons"
                     name="ios-alert"
                   />
@@ -506,7 +502,7 @@ class InstagramCampaignDetails extends Component {
                 </View>
               )}
             {loading ? (
-              <View style={{ margin: 5 }}>
+              <View style={styles.placeholderView}>
                 <PlaceholderLine />
               </View>
             ) : (
@@ -544,16 +540,16 @@ class InstagramCampaignDetails extends Component {
               )
             )}
             <ScrollView
-              contentContainerStyle={{ height: hp(115) }}
+              contentContainerStyle={styles.scrollViewContentContainerStyle}
               scrollEnabled={!this.state.expand}
               ref={(ref) => (this.scroll = ref)}
-              style={{ maxHeight: "100%" }}
+              style={styles.scrollViewStyle}
             >
               <View style={[styles.mainCard]}>
                 {!loading &&
                 selectedCampaign &&
                 selectedCampaign.ad_status === "Ad Rejected" ? (
-                  <RejectedSnapchatInfo
+                  <RejectedInstaInfo
                     loading={loading}
                     screenProps={this.props.screenProps}
                     review_status_reason={
@@ -617,11 +613,11 @@ class InstagramCampaignDetails extends Component {
                   </View>
                 )}
                 {loading ? (
-                  <View style={{ margin: 5 }}>
+                  <View style={styles.placeholderView}>
                     <PlaceholderLine />
                   </View>
                 ) : (
-                  <View style={{}}>
+                  <View>
                     {!this.state.expand && (
                       <View>
                         {selectedCampaign.review_status === "APPROVED" &&
@@ -638,7 +634,7 @@ class InstagramCampaignDetails extends Component {
                             ) : (
                               !this.props.campaignEnded && (
                                 <View padder style={styles.toggleSpace}>
-                                  <View style={{ alignSelf: "center" }}>
+                                  <View style={styles.toggleView}>
                                     {selectedCampaign && (
                                       <Toggle
                                         buttonTextStyle={

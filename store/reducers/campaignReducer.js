@@ -6,6 +6,8 @@ const initialState = {
   data: null,
   campaign_id: "",
   average_reach: 0,
+  estimated_metrics: { impressions: 0, swipes: 0 },
+  estimatedMetricsLoading: false,
   kdamount: 0,
   minValueBudget: 0,
   maxValueBudget: 0,
@@ -224,6 +226,12 @@ const initialState = {
   languagesListLoading: false,
   languagesListError: false,
   savedObjective: "",
+  destinationURLValid: false,
+  loadingDestinationURLValid: false,
+  verifiedSnapchatNumber: false,
+  verifyingNumber: false,
+  otpSend: false,
+  movingAmountToWallet: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -411,11 +419,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         average_reach: action.payload.average_reach,
+        estimated_metrics: action.payload.estimated_metrics,
+        estimatedMetricsLoading: false,
+      };
+    case actionTypes.LOADING_SNAP_AUDIENCE_SIZE:
+      return {
+        ...state,
+        estimatedMetricsLoading: true,
       };
     case actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,
         average_reach: 0,
+        estimated_metrics: { impressions: 0, swipes: 0 },
       };
 
     case actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE:
@@ -1117,6 +1133,48 @@ const reducer = (state = initialState, action) => {
         languagesList: [],
         languagesListLoading: action.payload,
         languagesListError: false,
+      };
+    }
+    case actionTypes.VERIFY_DESTINATION_URL: {
+      return {
+        ...state,
+        destinationURLValid: action.payload.success,
+        loadingDestinationURLValid: action.payload.loading,
+      };
+    }
+    case actionTypes.RESET_SNAPCHAT_VERIFIED_NUMBER: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: false,
+        verifyingNumber: false,
+        otpSend: false,
+      };
+    }
+    case actionTypes.VERIFIED_SNAPCHAT_NUMBER: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: action.payload.verified,
+        verifyingNumber: action.payload.loading,
+        otpSend: action.payload.otpSend,
+      };
+    }
+    case actionTypes.SEND_OTP_SNAPCHAT: {
+      return {
+        ...state,
+        otpSend: action.payload,
+      };
+    }
+    case actionTypes.VERIFIED_OTP_SNAPCHAT: {
+      return {
+        ...state,
+        verifiedSnapchatNumber: action.payload,
+        verifyingNumber: false,
+      };
+    }
+    case actionTypes.MOVING_AMOUNT_TO_WALLET: {
+      return {
+        ...state,
+        movingAmountToWallet: action.payload,
       };
     }
     default:

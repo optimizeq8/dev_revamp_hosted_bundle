@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { View, BackHandler } from "react-native";
-import { Content, Text } from "native-base";
+import { View, BackHandler, Text } from "react-native";
+import { Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
-import CustomHeader from "../../../MiniComponents/Header";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
 // Style
@@ -21,7 +20,7 @@ import isUndefined from "lodash/isUndefined";
 
 //Data
 import CountriesList from "../../../Data/countries.googleSE.data";
-import { Adjust, AdjustEvent } from "react-native-adjust";
+// import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class AdPaymentReview extends Component {
@@ -190,9 +189,9 @@ class AdPaymentReview extends Component {
       "GoogleAdPaymentReview",
     ]);
 
-    let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
-    adjustGoogleAdReviewTracker.addPartnerParameter(`Google_SEM`, "google_sem");
-    Adjust.trackEvent(adjustGoogleAdReviewTracker);
+    // let adjustGoogleAdReviewTracker = new AdjustEvent("rag8r1");
+    // adjustGoogleAdReviewTracker.addPartnerParameter(`Google_SEM`, "google_sem");
+    // Adjust.trackEvent(adjustGoogleAdReviewTracker);
   };
   goToPayment = () => {
     const { gender, age, regionsNames, country } = this.formatAttribute();

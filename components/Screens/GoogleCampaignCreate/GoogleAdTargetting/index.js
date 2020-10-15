@@ -6,9 +6,10 @@ import {
   ScrollView,
   BackHandler,
   I18nManager,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text, Container, Icon, Content } from "native-base";
+import { Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -51,7 +52,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class GoogleAdTargetting extends Component {
@@ -442,13 +443,13 @@ class GoogleAdTargetting extends Component {
       "GoogleAdDesign",
       "GoogleAdTargetting",
     ]);
-    let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
-    adjustGoogleAdDetailsTracker.addPartnerParameter(
-      `Google_SEM`,
-      "google_sem"
-    );
+    // let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
+    // adjustGoogleAdDetailsTracker.addPartnerParameter(
+    //   `Google_SEM`,
+    //   "google_sem"
+    // );
 
-    Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+    // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
   };
   render() {
     const { translate } = this.props.screenProps;

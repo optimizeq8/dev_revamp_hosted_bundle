@@ -2,26 +2,26 @@ import { StyleSheet, PixelRatio } from "react-native";
 import globalStyles from "../../../../GlobalStyles";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
 export default StyleSheet.create({
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   safeAreaView: {
     backgroundColor: "#0000",
-    height: "100%"
+    height: "100%",
   },
   container: {
     backgroundColor: "#000",
     display: "flex",
     flex: 2.5,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   slidercontainer: {
     paddingHorizontal: 23,
-    width: "100%"
+    width: "100%",
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
@@ -30,20 +30,22 @@ export default StyleSheet.create({
     borderBottomColor: "#0000",
     alignSelf: "center",
     textAlign: "center",
-    height: 37
+    height: 37,
   },
   title: {
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14
+    fontSize: 14,
+    textTransform: "uppercase",
   },
   titleHeading: {
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    lineHeight: 29
+    lineHeight: 29,
+    textTransform: "uppercase",
   },
   subHeadings: {
     textAlign: "center",
@@ -51,13 +53,13 @@ export default StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingVertical: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   scrollContainer: {
     // marginVertical: 10,
     // flexGrow: 1,
     width: "100%",
-    paddingBottom: "15%"
+    paddingBottom: "15%",
     // maxHeight: hp("45%")
 
     // flex: 1
@@ -69,7 +71,7 @@ export default StyleSheet.create({
     marginVertical: 5,
     width: "100%",
     height: 50,
-    borderRadius: 27
+    borderRadius: 27,
   },
   emptyButton: {
     backgroundColor: "rgba(0,0,0,0.15)",
@@ -78,26 +80,28 @@ export default StyleSheet.create({
     marginVertical: 5,
     width: "100%",
     height: 50,
-    borderRadius: 27
+    borderRadius: 27,
   },
   contentStyle: {
     ...globalStyles.whiteTextColor,
     ...globalStyles.buttonText,
     fontSize: 16,
-    textAlign: "left"
+    textAlign: "left",
+    textTransform: "uppercase",
     // lineHeight: 14
   },
   number: {
     textAlign: "left",
     color: "orange",
     fontFamily: "montserrat-regular",
-    fontSize: 19
+    fontSize: 19,
   },
   numbercontentStyle: {
     ...globalStyles.whiteTextColor,
     ...globalStyles.buttonText,
     fontSize: 12,
-    flexShrink: 1
+    flexShrink: 1,
+    textTransform: "uppercase",
   },
   outerBlock: {
     display: "flex",
@@ -105,18 +109,18 @@ export default StyleSheet.create({
     flexDirection: "row",
     width: "50%",
     justifyContent: "flex-start",
-    marginVertical: 8
+    marginVertical: 8,
   },
   innerBlock: {
     display: "flex",
     justifyContent: "flex-start",
     flexDirection: "column",
-    paddingLeft: 15
+    paddingLeft: 15,
   },
   subText: {
     color: "#FFF",
     fontFamily: "montserrat-regular",
-    fontSize: 12
+    fontSize: 12,
   },
   performanceView: { flexDirection: "row", marginBottom: 10 },
   bottomView: { flex: 1, padding: 24 },
@@ -125,14 +129,14 @@ export default StyleSheet.create({
     borderLeftWidth: 2,
     borderLeftColor: "rgba(255,255,255,0.15)",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   keywordRowView: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    alignContent: "flex-end"
+    alignContent: "flex-end",
   },
   keywordRowOuterView: {
     flexDirection: "row",
@@ -141,13 +145,13 @@ export default StyleSheet.create({
     alignContent: "center",
     paddingHorizontal: 10,
     zIndex: 100,
-    opacity: 1
+    opacity: 1,
   },
   statsOuterBlock: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "wrap",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 });

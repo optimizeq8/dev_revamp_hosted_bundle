@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
-import { Container, Content } from "native-base";
+import { Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";

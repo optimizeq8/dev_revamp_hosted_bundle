@@ -253,6 +253,15 @@ var list = {
         },
       ],
     },
+    {
+      type: "ENGAGEMENT",
+      call_to_action_list: [
+        {
+          label: "CALL NOW",
+          value: "CALL_NOW",
+        },
+      ],
+    },
   ],
   InstagramFeedAd: [
     {

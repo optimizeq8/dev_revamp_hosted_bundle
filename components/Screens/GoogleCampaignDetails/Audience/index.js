@@ -7,8 +7,9 @@ import {
   Keyboard,
   BackHandler,
   I18nManager,
+  Text,
 } from "react-native";
-import { Text, Container, Icon, Content } from "native-base";
+import { Container, Icon, Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import * as Animatable from "react-native-animatable";
 import { BlurView } from "expo-blur";

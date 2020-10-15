@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler, ScrollView } from "react-native";
+import { View, Image, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
 //Redux
 import { connect } from "react-redux";
@@ -16,7 +15,9 @@ import { colors } from "../../GradiantColors/colors";
 import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+import GradientButton from "../../MiniComponents/GradientButton";
+
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class ErrorRedirect extends Component {
   static navigationOptions = {
@@ -51,7 +52,7 @@ class ErrorRedirect extends Component {
         payment_status: "failure",
         campaign_channel:
           this.props.channel === "" ? "snapchat" : this.props.channel,
-        amount: parseFloat(this.props.navigation.getParam("amount", "null")),
+        amount: parseFloat(this.props.navigation.getParam("amount", 0)),
         campaign_ad_type:
           this.props.channel === "google"
             ? "GoogleSEAd"
@@ -59,10 +60,10 @@ class ErrorRedirect extends Component {
             ? this.props.adTypeInstagram
             : this.props.adType,
         campaign_ltv: parseFloat(
-          this.props.navigation.getParam("campaign_ltv", "null")
+          this.props.navigation.getParam("campaign_ltv", 0)
         ),
         campaign_revenue: parseFloat(
-          this.props.navigation.getParam("campaign_revenue", "null")
+          this.props.navigation.getParam("campaign_revenue", 0)
         ),
       };
     }
@@ -77,37 +78,37 @@ class ErrorRedirect extends Component {
     });
     //TODO: add adjust analytics accordingly
     if (this.props.navigation.getParam("isWallet") === "1") {
-      let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
-      adjustWalletPaymentTracker.addPartnerParameter(
-        this.props.channel === "google"
-          ? `Google_SEM`
-          : `Snap_${this.props.adType}`,
-        this.props.channel === "google" ? "google_sem" : this.props.adType
-      );
-      adjustWalletPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.getParam("amount", "null")),
-        "USD"
-      );
-      adjustWalletPaymentTracker.setTransactionId(
-        this.props.navigation.getParam("paymentId", "null")
-      );
-      Adjust.trackEvent(adjustWalletPaymentTracker);
+      // let adjustWalletPaymentTracker = new AdjustEvent("l70qk7");
+      // adjustWalletPaymentTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustWalletPaymentTracker.setRevenue(
+      //   parseFloat(this.props.navigation.getParam("amount", "null")),
+      //   "USD"
+      // );
+      // adjustWalletPaymentTracker.setTransactionId(
+      //   this.props.navigation.getParam("paymentId", "null")
+      // );
+      // Adjust.trackEvent(adjustWalletPaymentTracker);
     } else {
-      let adjustPaymentTracker = new AdjustEvent("kdnzgg");
-      adjustPaymentTracker.addPartnerParameter(
-        this.props.channel === "google"
-          ? `Google_SEM`
-          : `Snap_${this.props.adType}`,
-        this.props.channel === "google" ? "google_sem" : this.props.adType
-      );
-      adjustPaymentTracker.setRevenue(
-        parseFloat(this.props.navigation.getParam("amount", "null")),
-        "USD"
-      );
-      adjustPaymentTracker.setTransactionId(
-        this.props.navigation.getParam("paymentId", "null")
-      );
-      Adjust.trackEvent(adjustPaymentTracker);
+      // let adjustPaymentTracker = new AdjustEvent("kdnzgg");
+      // adjustPaymentTracker.addPartnerParameter(
+      //   this.props.channel === "google"
+      //     ? `Google_SEM`
+      //     : `Snap_${this.props.adType}`,
+      //   this.props.channel === "google" ? "google_sem" : this.props.adType
+      // );
+      // adjustPaymentTracker.setRevenue(
+      //   parseFloat(this.props.navigation.getParam("amount", "null")),
+      //   "USD"
+      // );
+      // adjustPaymentTracker.setTransactionId(
+      //   this.props.navigation.getParam("paymentId", "null")
+      // );
+      // Adjust.trackEvent(adjustPaymentTracker);
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -144,9 +145,12 @@ class ErrorRedirect extends Component {
           <View style={styles.view}>
             <ErrorIcon fill="#E26A65" width={80} height={80} />
 
-            <Text style={styles.title}> Sorry </Text>
+            <Text style={styles.title}> {translate("Sorry")} </Text>
             <Text style={styles.errorText}>
-              {"There seems to be a problem with\nyour payment method"}.
+              {translate(
+                "There seems to be a problem with\nyour payment method"
+              )}
+              .
             </Text>
             <View style={styles.details}>
               <Text style={styles.text}>
@@ -172,9 +176,11 @@ class ErrorRedirect extends Component {
                 {this.props.navigation.getParam("status", "")}
               </Text>
             </View>
-            <Button
+            <GradientButton
+              uppercase
               style={styles.button}
-              onPress={() => {
+              text={translate("Retry")}
+              onPressAction={() => {
                 if (this.props.navigation.getParam("isWallet") === "1") {
                   this.props.navigation.navigate("PaymentForm", {
                     addingCredits: true,
@@ -191,12 +197,9 @@ class ErrorRedirect extends Component {
                   });
                 }
               }}
-            >
-              <Text style={styles.buttonText}> {translate("Retry")} </Text>
-            </Button>
-            <Button
-              style={styles.whitebutton}
-              onPress={() => {
+            />
+            <GradientButton
+              onPressAction={() => {
                 // if (this.props.channel === "") {
                 //   this.props.resetCampaignInfo();
                 //   this.props.reset_transaction_reducer();
@@ -218,10 +221,11 @@ class ErrorRedirect extends Component {
                   0
                 );
               }}
+              text={translate("Home")}
+              transparent
               style={styles.whiteButton}
-            >
-              <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
-            </Button>
+              uppercase
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

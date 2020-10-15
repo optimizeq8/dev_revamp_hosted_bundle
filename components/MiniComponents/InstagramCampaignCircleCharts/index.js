@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import Chart from "../CircleChart/Chart";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -9,7 +9,6 @@ import formatNumber from "../../formatNumber";
 import ReachIcon from "../../../assets/SVGs/CampaignDetail/ReachIcon";
 import FrequencyIcon from "../../../assets/SVGs/CampaignDetail/FrequencyIcon";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { Text, Button, Icon } from "native-base";
 import CampaignStats from "../../Screens/CampaignDetails/CampStats/CampaignStats";
 import InstaCampaignStats from "../../Screens/InstagramCampaignDetails/CampStats/CampaignStats";
 import CampDetailsInfo from "./CampDetailsInfo";
@@ -58,7 +57,7 @@ class CampaignCircleChart extends Component {
             {/* To switch between date choices and header of the component */}
             {!chartExpanded && (
               <>
-                <Text uppercase style={globalStyles.title}>
+                <Text style={globalStyles.title}>
                   {translate("Ad Performance")}
                 </Text>
                 <LowerButton
@@ -140,8 +139,11 @@ class CampaignCircleChart extends Component {
                   )}
                 </Text>
                 <Text
-                  uppercase
-                  style={[styles.subtext, detail && styles.subtextDetail]}
+                  style={[
+                    styles.subtext,
+                    detail && styles.subtextDetail,
+                    { textTransform: "uppercase" },
+                  ]}
                 >
                   {!detail ||
                   (campaign && campaign.objective === "BRAND_AWARENESS")
@@ -161,8 +163,7 @@ class CampaignCircleChart extends Component {
                 />
                 <View style={styles.campaignInfo}>
                   <Text
-                    uppercase
-                    style={[styles.subtext, , detail && styles.subtextDetail]}
+                    style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {translate("Reach")}
                     <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
@@ -208,8 +209,7 @@ class CampaignCircleChart extends Component {
                     )}
                   </Text>
                   <Text
-                    uppercase
-                    style={[styles.subtext, , detail && styles.subtextDetail]}
+                    style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {campaign && campaign.objective === "BRAND_AWARENESS"
                       ? translate("cpm")
@@ -229,7 +229,6 @@ class CampaignCircleChart extends Component {
                 />
                 <View style={styles.campaignInfo}>
                   <Text
-                    uppercase
                     style={[styles.subtext, detail && styles.subtextDetail]}
                   >
                     {translate("Frequency")}

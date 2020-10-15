@@ -289,7 +289,6 @@ class Signin extends Component {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  {/* <Text style={styles.logoText}>Optimize</Text> */}
                 </View>
                 <Text style={styles.heading}>
                   {this.state.activeTab === 0

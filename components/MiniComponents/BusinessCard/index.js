@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Alert } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -7,7 +13,6 @@ import { connect } from "react-redux";
 import businessList from "../../Data/newBusinessCategoryList.data";
 import isStringArabic from "../../isStringArabic";
 import Swipeout from "react-native-swipeout";
-import { ActivityIndicator } from "react-native-paper";
 class BusinessCard extends Component {
   translate = this.props.screenProps.translate;
   businessCategory = businessList.find(

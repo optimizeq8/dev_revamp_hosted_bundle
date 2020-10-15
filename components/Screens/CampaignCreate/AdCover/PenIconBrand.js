@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
-import { Item, Input } from "native-base";
+import { Item } from "native-base";
 import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
@@ -9,7 +9,7 @@ import { globalColors } from "../../../../GlobalStyles";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
-    let { rejected, coverHeadline, disabled } = this.props;
+    let { disabled } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <Item disabled={disabled} style={styles.inputHeadline}>

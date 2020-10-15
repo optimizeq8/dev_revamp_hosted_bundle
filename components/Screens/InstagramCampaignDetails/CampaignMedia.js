@@ -1,10 +1,9 @@
 import React from "react";
 import { Image } from "react-native-expo-image-cache";
 import analytics from "@segment/analytics-react-native";
-import { View, TouchableOpacity, Text } from "react-native";
+import { ActivityIndicator, View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
-import { ActivityIndicator } from "react-native-paper";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 const preview = {
@@ -19,13 +18,7 @@ export const previewHandler = (
   source,
   campaignDetails
 ) => {
-  let media =
-    selectedCampaign.campaign_type !== "StoryAd"
-      ? { media: selectedCampaign.media }
-      : {
-          cover: selectedCampaign.story_preview_media,
-          logo: selectedCampaign.story_logo_media,
-        };
+  let media = { media: selectedCampaign.media };
 
   let type = selectedCampaign.media_type;
   let call_to_action = selectedCampaign.call_to_action;
@@ -50,8 +43,7 @@ export const previewHandler = (
       destination: destination,
       campaignDetails: true,
       adType: selectedCampaign.campaign_type,
-      storyAdsArray: selectedCampaign.story_creatives,
-      collectionAdMedia: selectedCampaign.collection_creatives,
+      carouselAdsArray: selectedCampaign.carousel_media,
       instagram_profile_pic: selectedCampaign.instagram_profile_pic,
       instagram_business_name: selectedCampaign.instagram_business_name,
       instagram_profile_pic: selectedCampaign.instagram_profile_pic,
