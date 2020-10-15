@@ -424,7 +424,6 @@ class InstagramCampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
-        console.log(JSON.stringify(selectedCampaign, null, 2));
       }
 
       return (
@@ -550,7 +549,7 @@ class InstagramCampaignDetails extends Component {
               <View style={[styles.mainCard]}>
                 {!loading &&
                 selectedCampaign &&
-                selectedCampaign.ad_status !== "Ad Rejected" ? (
+                selectedCampaign.ad_status === "Ad Rejected" ? (
                   <RejectedInstaInfo
                     loading={loading}
                     screenProps={this.props.screenProps}
