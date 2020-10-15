@@ -14,7 +14,7 @@ export default StyleSheet.create({
     backgroundColor: "#0005",
     borderRadius: 35,
     flexDirection: "column",
-    width: "95%",
+    // width: "95%",
     justifyContent: "space-evenly",
     // marginTop: 10,
   },
@@ -42,13 +42,19 @@ export default StyleSheet.create({
     width: "75%",
   },
   rejectedModalReasonText: {
-    // textAlign: "left",
+    textAlign: "left",
     fontFamily: "montserrat-regular-english",
-    fontSize: 15,
+    fontSize: 12,
     color: "#fff",
-    width: "90%",
     marginHorizontal: 2,
-    alignSelf: "center",
+  },
+  rejectedModalReasonHeadText: {
+    textAlign: "left",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 14,
+    color: "#fff",
+    marginHorizontal: 2,
+    textTransform: "uppercase",
   },
   rejectedInfoButton: {
     alignSelf: "flex-end",
@@ -142,8 +148,8 @@ export default StyleSheet.create({
     alignSelf: "center",
     paddingVertical: 20,
   },
-  updateAdButton: { alignSelf: "center" },
-  dispalyBlock: {
+  updateAdButton: { alignSelf: "center", marginBottom: 20 },
+  displayBlock: {
     display: "flex",
     width: 10,
     height: 10,

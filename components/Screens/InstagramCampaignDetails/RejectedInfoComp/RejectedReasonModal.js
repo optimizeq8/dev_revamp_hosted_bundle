@@ -48,8 +48,14 @@ export default (props) => {
                 <View style={styles.reasonNumberView}>
                   <Text style={[styles.rejectReasonWord]}>{index + 1}</Text>
                 </View>
-
-                <Text style={styles.rejectedModalReasonText}>{reason}</Text>
+                <View style={{ width: "90%" }}>
+                  <Text style={styles.rejectedModalReasonHeadText}>
+                    {Object.keys(reason)[0]}
+                  </Text>
+                  <Text style={styles.rejectedModalReasonText}>
+                    {Object.values(reason)[0]}
+                  </Text>
+                </View>
               </View>
             ))}
         </ScrollView>

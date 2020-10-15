@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, Text } from "react-native";
 
 // Redux
 import { connect } from "react-redux";
@@ -43,63 +43,64 @@ class RejectedSnapchatInfo extends Component {
         : "InstagramStoryAdDesign",
       {
         rejected: true,
+        source: "campaign_detail",
+        source_action: "a_review_ad",
       }
     );
   };
 
   render() {
     const { review_status_reason, screenProps, selectedCampaign } = this.props;
-
     const { translate } = this.props.screenProps;
-    let rejReasons = review_status_reason.map((reason, i) => (
-      <RejectedReason
-        screenProps={screenProps}
-        key={reason}
-        reason={reason}
-        index={i + 1}
-        // setModalVisible={this.setModalVisible}
-      />
-    ));
+    let rejReasons = review_status_reason.map((reason, i) => {
+      return (
+        <RejectedReason
+          screenProps={screenProps}
+          key={Object.keys(reason)[0]}
+          reason={Object.keys(reason)[0]}
+          index={i + 1}
+          // setModalVisible={this.setModalVisible}
+        />
+      );
+    });
     return (
       <View style={styles.rejectedOuterView}>
-        <View style={{ width: "100%", alignItems: "center" }}>
-          <ScrollView
-            contentContainerStyle={[
-              styles.contentStyle,
-              styles.rejectedReasonContainer,
-            ]}
-            nestedScrollEnabled={true}
-          >
-            <View style={styles.adRejetcedHeader}>
-              <Rejected width={20} height={20} />
-              <Text uppercase style={styles.adRejectedTitle}>
-                {translate("Ad Rejected")}
-              </Text>
-            </View>
-            <Text style={[styles.hereReasonsText]}>
-              {`There are ${rejReasons.length} reasons for this:`}
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "#0005",
+            borderRadius: 35,
+            paddingBottom: 20,
+          }}
+        >
+          <View style={styles.adRejetcedHeader}>
+            <Rejected width={20} height={20} />
+            <Text uppercase style={styles.adRejectedTitle}>
+              {translate("Ad Rejected")}
             </Text>
-            {rejReasons}
-            {/* <TouchableOpacity
+          </View>
+          <Text style={[styles.hereReasonsText]}>
+            {rejReasons.length === 1
+              ? `There is ${rejReasons.length} reason for this:`
+              : `There are ${rejReasons.length} reasons for this:`}
+          </Text>
+          {rejReasons}
+          {/* <TouchableOpacity
               style={styles.rejectedInfoButton}
               onPress={() => this.setModalVisible(true, review_status_reason)}
             >
               <Info />
             </TouchableOpacity> */}
-            <CustomButtons
-              screenProps={this.props.screenProps}
-              onPressFunction={() =>
-                this.setModalVisible(true, review_status_reason)
-              }
-              content="Fix Now"
-              filled
-              buttonStyle={[
-                styles.customButtonStyle,
-                styles.moveToWalletButton,
-              ]}
-              textStyle={[styles.customButtonText]}
-            />
-          </ScrollView>
+          <CustomButtons
+            screenProps={this.props.screenProps}
+            onPressFunction={() =>
+              this.setModalVisible(true, review_status_reason)
+            }
+            content="Fix Now"
+            filled
+            buttonStyle={[styles.customButtonStyle, styles.moveToWalletButton]}
+            textStyle={[styles.customButtonText]}
+          />
         </View>
 
         <RejectedReasonModal
