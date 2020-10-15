@@ -28,6 +28,7 @@ export default class CarouselImage extends Component {
           renderItem={this.snapCards}
           numColumns={3}
           showsVerticalScrollIndicator={false}
+          nestedScrollEnabled={true}
         />
         <Text style={styles.holdToDeleteText}>
           {translate("Tap and hold to delete media")}

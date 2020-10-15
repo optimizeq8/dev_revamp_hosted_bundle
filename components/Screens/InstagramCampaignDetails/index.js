@@ -20,7 +20,7 @@ import StatusModal from "./StatusModal";
 import Toggle from "../../MiniComponents/Toggle";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import SlideUpPanel from "./SlideUpPanel";
-import RejectedSnapchatInfo from "./RejectedInfoComp/RejectedSnapchatInfo";
+import RejectedInstaInfo from "./RejectedInfoComp/RejectedInstaInfo";
 
 //icons
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -549,7 +549,7 @@ class InstagramCampaignDetails extends Component {
                 {!loading &&
                 selectedCampaign &&
                 selectedCampaign.ad_status === "Ad Rejected" ? (
-                  <RejectedSnapchatInfo
+                  <RejectedInstaInfo
                     loading={loading}
                     screenProps={this.props.screenProps}
                     review_status_reason={

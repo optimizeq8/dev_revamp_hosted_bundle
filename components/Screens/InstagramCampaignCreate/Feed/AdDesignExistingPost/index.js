@@ -71,7 +71,7 @@ class InstagramAdDesignExistingPost extends Component {
         media_type: "",
       },
       showPreview: false,
-      media_type: "",
+
       fileReadyToUpload: false,
       carouselAdCards: {
         carouselAdSelected: false,
