@@ -23,15 +23,17 @@ export default class AppBox extends Component {
       appstorelink,
       toggleAppSelection,
       appSelections,
+      rejected,
     } = this.props;
     if (
-      this.props.iosApp_name === "" ||
-      (this.props.iosApp_name === "" &&
-        appstorelink &&
-        appstorelink.ios_app_id === "")
+      !rejected &&
+      (this.props.iosApp_name === "" ||
+        (this.props.iosApp_name === "" &&
+          appstorelink &&
+          appstorelink.ios_app_id === ""))
     )
       setModalVisible(true, "iOS");
-    else {
+    else if (!rejected) {
       Animated.timing(this.state.fadeIOSLogo, {
         toValue: !appSelections.iosAppSelected ? 1 : 0.5,
         useNativeDriver: true,
@@ -68,12 +70,18 @@ export default class AppBox extends Component {
       iosApp_name,
       androidApp_name,
       appSelections,
+      rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
+    console.log(rejected, appSelections.androidAppSelected);
     return (
       <View style={appConfirmStyles.advertiseOSButtonView}>
         <TouchableOpacity
-          onPress={() => setModalVisible(true, "iOS")}
+          onPress={() =>
+            (rejected ? appSelections.iosAppSelected : true)
+              ? setModalVisible(true, "iOS")
+              : null
+          }
           style={[globalStyles.column, appConfirmStyles.appStoreButtons]}
         >
           <Animated.View style={{ opacity: this.state.fadeIOSLogo }}>
@@ -103,7 +111,11 @@ export default class AppBox extends Component {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setModalVisible(true, "ANDROID")}
+          onPress={() =>
+            (rejected ? appSelections.androidAppSelected : true)
+              ? setModalVisible(true, "ANDROID")
+              : null
+          }
           style={[globalStyles.column, appConfirmStyles.appStoreButtons]}
         >
           <Animated.View style={{ opacity: this.state.fadeAndroidLogo }}>

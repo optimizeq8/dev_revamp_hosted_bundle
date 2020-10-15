@@ -31,14 +31,15 @@ class RejectedSnapchatInfo extends Component {
   handleAdRejection = () => {
     let {
       selectedCampaign,
-      setRejectedAdType,
-      setRejectedCampaignData,
+      setInstaRejectedAdType,
+      setInstaRejectedCampaignData,
       navigation,
     } = this.props;
-    setRejectedAdType(selectedCampaign.campaign_type);
-    setRejectedCampaignData(selectedCampaign);
+    setInstaRejectedAdType(selectedCampaign.campaign_type);
+    setInstaRejectedCampaignData(selectedCampaign);
+    this.props.setRejectedCarouselAds(selectedCampaign.carousel_media);
     navigation.navigate(
-      selectedCampaign.campaign_type === "InstagramStoryAd"
+      selectedCampaign.campaign_type === "InstagramFeedAd"
         ? "InstagramFeedAdDesign"
         : "InstagramStoryAdDesign",
       {
@@ -119,9 +120,12 @@ class RejectedSnapchatInfo extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  setRejectedAdType: (info) => dispatch(actionCreators.setRejectedAdType(info)),
-  setRejectedCampaignData: (rejCampaign) =>
-    dispatch(actionCreators.setRejectedCampaignData(rejCampaign)),
+  setInstaRejectedAdType: (info) =>
+    dispatch(actionCreators.setInstaRejectedAdType(info)),
+  setInstaRejectedCampaignData: (rejCampaign) =>
+    dispatch(actionCreators.setInstaRejectedCampaignData(rejCampaign)),
+  setRejectedCarouselAds: (rejCampaign) =>
+    dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
   moveRejectedAdAmountToWallet: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
   getWalletAmountInKwd: (amount) =>

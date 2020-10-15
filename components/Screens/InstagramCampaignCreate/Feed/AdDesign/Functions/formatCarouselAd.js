@@ -92,14 +92,18 @@ export const formatCarouselAd = async (
   //     : 0
   // );
   // carouselBody.append("story_media_upload", card.fileReadyToUpload ? 1 : 0);
+  if (card.fileReadyToUpload) {
+    await handleUpload();
+    await uploadCarouselAdCard(
+      carouselBody,
+      card,
+      null, //  rejected
+      finalSubmission
+    );
+  } else {
+    finalSubmission();
+  }
 
-  await handleUpload();
-  await uploadCarouselAdCard(
-    carouselBody,
-    card,
-    null, //  rejected
-    finalSubmission
-  );
   setTheState({
     carouselAdCards: {
       ...carouselAdCards,

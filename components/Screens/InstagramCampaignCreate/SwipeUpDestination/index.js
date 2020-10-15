@@ -17,7 +17,12 @@ class SwipeUpDestination extends React.Component {
   getSwipeUpDestination = () => {
     let listIndex = 0;
     let content = <></>;
-    switch (this.props.data.objective) {
+    let rejected = this.props.rejected;
+    switch (
+      rejected
+        ? this.props.instaRejCampaign.objective
+        : this.props.data.objective
+    ) {
       case "BRAND_AWARENESS":
         listIndex = 0;
         content = (
@@ -26,6 +31,7 @@ class SwipeUpDestination extends React.Component {
             navigation={this.props.navigation}
             listNum={listIndex}
             toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
           />
         );
         break;
@@ -37,6 +43,7 @@ class SwipeUpDestination extends React.Component {
             navigation={this.props.navigation}
             listNum={listIndex}
             toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
           />
         );
         break;
@@ -48,6 +55,7 @@ class SwipeUpDestination extends React.Component {
             navigation={this.props.navigation}
             listNum={listIndex}
             toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
           />
         );
         break;
@@ -59,6 +67,7 @@ class SwipeUpDestination extends React.Component {
             navigation={this.props.navigation}
             listNum={listIndex}
             toggleClickDestination={this.props.toggleClickDestination}
+            rejected={rejected}
           />
         );
         break;
@@ -77,6 +86,7 @@ class SwipeUpDestination extends React.Component {
         listIndex = 0;
         break;
     }
+
     return { content };
   };
   render() {
@@ -89,6 +99,7 @@ const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   adType: state.instagramAds.adType,
   admin: state.login.admin,
 });

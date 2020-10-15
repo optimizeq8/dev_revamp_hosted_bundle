@@ -67,8 +67,9 @@ class GradientButton extends React.PureComponent {
           styles.button,
           { height, width },
           style,
-          { borderRadius: radius },
+          { borderRadius: radius, opacity: disabled ? 0.4 : 1 },
         ]}
+        disabled={disabled}
         onPress={
           disabled
             ? null
@@ -82,9 +83,7 @@ class GradientButton extends React.PureComponent {
         <LinearGradient
           style={[styles.gradient]}
           colors={
-            disabled
-              ? disabledColor
-              : purpleViolet
+            purpleViolet
               ? purpleVioletColor
               : violetPink
               ? violetPinkColor
