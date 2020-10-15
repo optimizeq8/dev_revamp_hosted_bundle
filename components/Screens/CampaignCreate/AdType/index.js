@@ -278,20 +278,6 @@ class AdType extends Component {
         fb_connected: "1",
         fb_ad_account_id: fb_ad_account_id,
       });
-      const instagram_username = this.props.navigation.getParam(
-        "instagram_username",
-        ""
-      );
-      showMessage({
-        type: "success",
-        message: translate(
-          `Your Instagram Business Account {{instagram_username}} has been connected successfully!`,
-          {
-            instagram_username: instagram_username,
-          }
-        ),
-        duration: 5000,
-      });
     }
   };
 
