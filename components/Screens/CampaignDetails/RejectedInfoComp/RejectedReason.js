@@ -8,23 +8,10 @@ import styles from "./styles";
  *  the state to show it in a modal
  */
 export default (props) => {
-  let { reason, index } = props;
+  let { reason } = props;
   return (
     <View style={styles.rejectedReasonView}>
-      {/* <Text uppercase style={styles.reasonTitle}>
-        {index}.{" "}
-      </Text> */}
-      <View
-        style={{
-          display: "flex",
-          width: 10,
-          height: 10,
-          // borderWidth: 1,
-          backgroundColor: "#EA514B",
-          borderRadius: 20,
-          alignSelf: "center",
-        }}
-      />
+      <View style={styles.displayBlock} />
       <Text
         style={styles.rejectedReasonText}
         numberOfLines={1}

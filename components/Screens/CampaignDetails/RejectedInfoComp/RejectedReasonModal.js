@@ -3,10 +3,13 @@ import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import Modal from "react-native-modal";
-import Header from "../../../MiniComponents/Header";
+
+// Styles
 import styles from "./styles";
-import { globalColors } from "../../../../GlobalStyles";
+
+// MiniComponent
 import GradientButton from "../../../MiniComponents/GradientButton";
+import Header from "../../../MiniComponents/Header";
 
 /**
  * modal tha displays the rejected reason, will be modified in the future to contain more  info
@@ -56,17 +59,14 @@ export default (props) => {
           width={200}
           height={50}
           uppercase
-          style={{ alignSelf: "center" }}
+          style={styles.updateAdButton}
           onPressAction={() => {
             setModalVisible(false);
             props.handleSnapchatRejection(props.selectedCampaign);
           }}
         />
         <TouchableOpacity
-          style={{
-            alignSelf: "center",
-            paddingVertical: 20,
-          }}
+          style={styles.returnAmountWalletLinkView}
           onPress={() => {
             setModalVisible(false);
             props.getWalletAmountInKwd(selectedCampaign.lifetime_budget_micro);
@@ -79,15 +79,8 @@ export default (props) => {
             });
           }}
         >
-          <Text
-            style={{
-              fontSize: 12,
-              color: globalColors.orange,
-              textDecorationLine: "underline",
-              textAlign: "center",
-            }}
-          >
-            Return amount to wallet
+          <Text style={styles.returnAmountWalletLinkText}>
+            {translate("Return amount to wallet")}
           </Text>
         </TouchableOpacity>
       </BlurView>

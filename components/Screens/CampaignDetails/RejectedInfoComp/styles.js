@@ -132,4 +132,23 @@ export default StyleSheet.create({
     marginRight: 4,
     backgroundColor: globalColors.orange,
   },
+  returnAmountWalletLinkText: {
+    fontSize: 12,
+    color: globalColors.orange,
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
+  returnAmountWalletLinkView: {
+    alignSelf: "center",
+    paddingVertical: 20,
+  },
+  updateAdButton: { alignSelf: "center" },
+  dispalyBlock: {
+    display: "flex",
+    width: 10,
+    height: 10,
+    backgroundColor: "#EA514B",
+    borderRadius: 20,
+    alignSelf: "center",
+  },
 });
