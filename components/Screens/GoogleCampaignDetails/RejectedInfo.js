@@ -6,6 +6,7 @@ import CustomButtons from "../../MiniComponents/CustomButtons";
 
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 export default RejectedInfo = (props) => {
   const {
@@ -70,48 +71,66 @@ export default RejectedInfo = (props) => {
         :
       </Text>
       {list}
-      <CustomButtons
-        screenProps={props.screenProps}
-        onPressFunction={() => {
-          /**
-           * there are three error types that will come back if the ad is rejected
-           * 1 related to the Ad content
-           * 2 related to the keywords
-           * 3 rejection includes both (in this case I have both screens right after eachother)
-           * and the whole review is submitted through the keywords api
-           *
-           */
-          if (error_type === 1)
-            navigation.navigate("GoogleAdDesign", {
-              rejected: true,
-              id: campaign_id,
-              ad: ad,
-              error_type: error_type,
-              source: "campaign_detail",
-              source_action: "a_review_ad",
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <GradientButton
+          transparent
+          screenProps={props.screenProps}
+          uppercase
+          width={"47%"}
+          height={47}
+          style={styles.contactUsBtn}
+          text={"Contact Us"}
+          onPressAction={() => {
+            props.navigation.navigate("Messenger", {
+              source: "campaign_details",
+              source_action: "a_help",
             });
-          else if (error_type === 2)
-            props.navigation.navigate("GoogleEditKeywords", {
-              rejected: true,
-              error_type: error_type,
-              source: "campaign_detail",
-              source_action: "a_review_ad",
-            });
-          else
-            props.navigation.navigate("GoogleAdDesign", {
-              rejected: true,
-              id: campaign_id,
-              ad: ad,
-              error_type: error_type,
-              source: "campaign_detail",
-              source_action: "a_review_ad",
-            });
-        }}
-        content="Fix Now"
-        filled
-        buttonStyle={styles.customButtonStyle}
-        textStyle={styles.customButtonText}
-      />
+          }}
+        />
+
+        <CustomButtons
+          screenProps={props.screenProps}
+          onPressFunction={() => {
+            /**
+             * there are three error types that will come back if the ad is rejected
+             * 1 related to the Ad content
+             * 2 related to the keywords
+             * 3 rejection includes both (in this case I have both screens right after eachother)
+             * and the whole review is submitted through the keywords api
+             *
+             */
+            if (error_type === 1)
+              navigation.navigate("GoogleAdDesign", {
+                rejected: true,
+                id: campaign_id,
+                ad: ad,
+                error_type: error_type,
+                source: "campaign_detail",
+                source_action: "a_review_ad",
+              });
+            else if (error_type === 2)
+              props.navigation.navigate("GoogleEditKeywords", {
+                rejected: true,
+                error_type: error_type,
+                source: "campaign_detail",
+                source_action: "a_review_ad",
+              });
+            else
+              props.navigation.navigate("GoogleAdDesign", {
+                rejected: true,
+                id: campaign_id,
+                ad: ad,
+                error_type: error_type,
+                source: "campaign_detail",
+                source_action: "a_review_ad",
+              });
+          }}
+          content="Fix Now"
+          filled
+          buttonStyle={styles.customButtonStyle}
+          textStyle={styles.customButtonText}
+        />
+      </View>
     </View>
   );
 };
