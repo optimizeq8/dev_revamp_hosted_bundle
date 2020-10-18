@@ -522,7 +522,7 @@ class AdDesign extends Component {
     }
   };
 
-  validator = (mount) => {
+  validator = (mount = false) => {
     const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -1218,6 +1218,7 @@ class AdDesign extends Component {
             currentScreen="Compose"
             actionButton={this.toggleAdSelection}
             title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            rejected={this.rejected}
           />
           <ScrollView
             style={styles.contentContainer}
@@ -1577,6 +1578,7 @@ class AdDesign extends Component {
               : this.state.storyAdCards.selectedStoryAd.serialization
           }
           screenProps={this.props.screenProps}
+          rejected={this.rejected}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
@@ -1718,5 +1720,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.resetRejectedCampaignData()),
   resetCampaignInfo: (resetAdType) =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  verifyDestinationUrl: (url, submit, translate) =>
+    dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);

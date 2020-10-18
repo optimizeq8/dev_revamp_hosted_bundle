@@ -180,29 +180,14 @@ class AdDetails extends Component {
           case 1:
             lifetime_budget_micro = recBudget * 2;
             value = this.formatNumber(recBudget * 2, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           case 2:
             lifetime_budget_micro = recBudget;
             value = this.formatNumber(recBudget, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           case 3:
             lifetime_budget_micro = recBudget * 3;
             value = this.formatNumber(recBudget * 3, true);
-            console.log(
-              "lifetime_budget_micro",
-              lifetime_budget_micro,
-              this.state.budgetOption
-            );
             break;
           default:
             lifetime_budget_micro = recBudget * 2;

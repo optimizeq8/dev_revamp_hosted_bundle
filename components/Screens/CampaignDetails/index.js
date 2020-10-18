@@ -522,6 +522,19 @@ class CampaignDetails extends Component {
               containerStyle={{ height: 50 }}
               showTopRightButtonIcon={
                 !loading && selectedCampaign.review_status === "APPROVED"
+                  ? selectedCampaign.ad_status !== "LIVE" &&
+                    selectedCampaign.ad_status !== "Campaign Paused" &&
+                    selectedCampaign.ad_status !== "Campaign ended"
+                    ? "edit"
+                    : true
+                  : false
+              }
+              topRightButtonFunction={() =>
+                selectedCampaign.ad_status !== "Live" &&
+                selectedCampaign.ad_status !== "Paused" &&
+                selectedCampaign.campaign_end === 0
+                  ? this.handleSnapchatRejection(selectedCampaign)
+                  : this.showCSVModal(true)
               }
               topRightButtonFunction={() => this.showCSVModal(true)}
               titleStyle={{
