@@ -63,6 +63,19 @@ class Call extends Component {
       }
     }
     if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("attachment") &&
+      this.props.rejCampaign.attachment !== "BLANK"
+    ) {
+      const phone_number_id = this.props.rejCampaign.attachment.phone_number_id;
+      this.setState({
+        campaignInfo: {
+          attachment: { phone_number_id: phone_number_id },
+          callaction: this.props.rejCampaign.call_to_action,
+        },
+      });
+    }
+    if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK"
@@ -378,6 +391,7 @@ const mapStateToProps = (state) => ({
   verifiedSnapchatNumber: state.campaignC.verifiedSnapchatNumber,
   verifyingNumber: state.campaignC.verifyingNumber,
   otpSend: state.campaignC.otpSend,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 const mapDispatchToProps = (dispatch) => ({

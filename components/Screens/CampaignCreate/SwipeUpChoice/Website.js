@@ -68,7 +68,22 @@ class Website extends Component {
         });
       }
     }
+    console.log(JSON.stringify(this.props.data, null, 2));
     if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("attachment") &&
+      this.props.rejCampaign.attachment !== "BLANK" &&
+      !this.props.rejCampaign.attachment.hasOwnProperty("android_app_url")
+    ) {
+      const url = this.props.rejCampaign.attachment.url;
+      this.setState({
+        campaignInfo: {
+          attachment: url,
+          callaction: this.props.rejCampaign.call_to_action,
+        },
+        // networkString: url[0] + "://"
+      });
+    } else if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK" &&
@@ -348,6 +363,7 @@ const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   mainBusiness: state.account.mainBusiness,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

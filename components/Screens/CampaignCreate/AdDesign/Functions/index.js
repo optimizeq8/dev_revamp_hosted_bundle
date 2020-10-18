@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
 import store from "../../../../../store";
+import { setRejectedCampaignData } from "../../../../../store/actions";
 export const _handleSubmission = async (
   adType,
   storyAdsArray,
@@ -227,14 +228,23 @@ export const _changeDestination = (
       campaign_swipe_up_destination: destination,
     });
     if (whatsAppCampaign) {
-      !store.getState().dashboard.rejCampaign &&
-        save_campaign_info({
-          insta_handle: whatsAppCampaign.insta_handle,
-          whatsappnumber: whatsAppCampaign.whatsappnumber,
-          weburl: whatsAppCampaign.weburl,
-          callnumber: whatsAppCampaign.callnumber,
-          source: whatsAppCampaign.source,
-        });
+      !store.getState().dashboard.rejCampaign
+        ? save_campaign_info({
+            insta_handle: whatsAppCampaign.insta_handle,
+            whatsappnumber: whatsAppCampaign.whatsappnumber,
+            weburl: whatsAppCampaign.weburl,
+            callnumber: whatsAppCampaign.callnumber,
+            source: whatsAppCampaign.source,
+          })
+        : store.dispatch(
+            setRejectedCampaignData({
+              insta_handle: whatsAppCampaign.insta_handle,
+              whatsappnumber: whatsAppCampaign.whatsappnumber,
+              weburl: whatsAppCampaign.weburl,
+              callnumber: whatsAppCampaign.callnumber,
+              source: whatsAppCampaign.source,
+            })
+          );
     }
 
     setStoryAdAttachment({
@@ -269,12 +279,19 @@ export const _changeDestination = (
     });
     setTheState(newData);
 
-    !store.getState().dashboard.rejCampaign &&
-      save_campaign_info({
-        ...newData.campaignInfo,
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
-      });
+    !store.getState().dashboard.rejCampaign
+      ? save_campaign_info({
+          ...newData.campaignInfo,
+          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+        })
+      : store.dispatch(
+          setRejectedCampaignData({
+            ...newData.campaignInfo,
+            [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+            [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+          })
+        );
   } else {
     newData = {
       campaignInfo: {
@@ -314,22 +331,38 @@ export const _changeDestination = (
           googlemaplink: whatsAppCampaign.googlemaplink,
         },
       };
-      !store.getState().dashboard.rejCampaign &&
-        save_campaign_info({
-          insta_handle: whatsAppCampaign.insta_handle,
-          whatsappnumber: whatsAppCampaign.whatsappnumber,
-          weburl: whatsAppCampaign.weburl,
-          callnumber: whatsAppCampaign.callnumber,
-          source: whatsAppCampaign.source,
-          googlemaplink: whatsAppCampaign.googlemaplink,
-        });
+      !store.getState().dashboard.rejCampaign
+        ? save_campaign_info({
+            insta_handle: whatsAppCampaign.insta_handle,
+            whatsappnumber: whatsAppCampaign.whatsappnumber,
+            weburl: whatsAppCampaign.weburl,
+            callnumber: whatsAppCampaign.callnumber,
+            source: whatsAppCampaign.source,
+            googlemaplink: whatsAppCampaign.googlemaplink,
+          })
+        : store.dispatch(
+            setRejectedCampaignData({
+              insta_handle: whatsAppCampaign.insta_handle,
+              whatsappnumber: whatsAppCampaign.whatsappnumber,
+              weburl: whatsAppCampaign.weburl,
+              callnumber: whatsAppCampaign.callnumber,
+              source: whatsAppCampaign.source,
+              googlemaplink: whatsAppCampaign.googlemaplink,
+            })
+          );
     }
 
     setTheState(newData);
-    !store.getState().dashboard.rejCampaign &&
-      save_campaign_info({
-        ...newData.campaignInfo,
-        appChoice,
-      });
+    !store.getState().dashboard.rejCampaign
+      ? save_campaign_info({
+          ...newData.campaignInfo,
+          appChoice,
+        })
+      : store.dispatch(
+          setRejectedCampaignData({
+            ...newData.campaignInfo,
+            appChoice,
+          })
+        );
   }
 };
