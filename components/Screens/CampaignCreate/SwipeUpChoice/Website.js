@@ -7,7 +7,6 @@ import InputScrollView from "react-native-input-scroll-view";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import * as actionCreators from "../../../../store/actions";
 
 //icons
 
@@ -374,6 +373,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   verifyDestinationUrl: (url, submit, translate) =>
-    dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
+    dispatch(actions.verifyDestinationUrl(url, submit, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Website);
