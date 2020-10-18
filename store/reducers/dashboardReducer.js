@@ -303,7 +303,10 @@ const reducer = (state = initialState, action) => {
         }
         rejCampaign.attachment = rejCampaignAttacment;
       }
-      return { ...state, rejCampaign };
+      return {
+        ...state,
+        rejCampaign: { ...state.rejCampaign, ...rejCampaign },
+      };
     case actionTypes.RESET_REJECTED_CAMPAIGN:
       return { ...state, rejCampaign: null };
 

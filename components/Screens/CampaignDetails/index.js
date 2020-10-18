@@ -627,7 +627,7 @@ class CampaignDetails extends Component {
               <View style={[styles.mainCard]}>
                 {!loading &&
                   (selectedCampaign &&
-                  selectedCampaign.review_status === "REJECTED" ? (
+                  selectedCampaign.review_status !== "REJECTED" ? (
                     <RejectedSnapchatInfo
                       loading={loading}
                       screenProps={this.props.screenProps}
