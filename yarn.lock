@@ -13646,7 +13646,7 @@ react-native-phone-input@^0.2.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-photoeditorsdk@^2.3.2:
+react-native-photoeditorsdk@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-photoeditorsdk/-/react-native-photoeditorsdk-2.5.0.tgz#60124c48330e9c782cb1024684a90c0b9def5416"
   integrity sha512-cfEsKVRkaVU7Cqcr0miLsX9gzrJnXQSdo3Q1IwL4paTN/7Utw0h33g7hzp+N9y7YmlRshoZSxdd/FcpXb0PdXA==
