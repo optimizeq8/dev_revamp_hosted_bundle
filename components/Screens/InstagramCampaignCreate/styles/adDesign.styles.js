@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   mainView: {
     marginHorizontal: 40,
     backgroundColor: globalColors.transparent,
+    height: "100%",
   },
   captionTextView: { flex: 1 },
   penIcon: { alignSelf: "center" },
