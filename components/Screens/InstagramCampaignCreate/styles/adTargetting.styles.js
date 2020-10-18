@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 8,
     backgroundColor: "#fff",
     borderRadius: 50,
