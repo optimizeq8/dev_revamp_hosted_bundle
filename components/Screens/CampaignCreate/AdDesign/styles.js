@@ -183,6 +183,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 5,
     paddingVertical: 0,
+    alignItems: "center",
+    display: "flex",
   },
   container: {
     backgroundColor: "transparent",
@@ -190,7 +192,9 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
+    fontSize: I18nManager.isRTL
+      ? 10 / PixelRatio.getFontScale()
+      : 12 / PixelRatio.getFontScale(),
     textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8,
@@ -302,7 +306,7 @@ const styles = StyleSheet.create({
   subtitleHeading: {
     textAlign: "left",
     fontSize: 10,
-    marginBottom: heightPercentageToDP(-1.3),
+    marginBottom: heightPercentageToDP(-1.4),
     marginTop: heightPercentageToDP(0.8),
     fontFamily: "montserrat-regular",
   },

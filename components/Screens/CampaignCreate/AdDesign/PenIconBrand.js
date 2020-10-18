@@ -90,7 +90,7 @@ export default class PenIconBrand extends Component {
         />
         <View
           style={[
-            { flexDirection: "column", width: "90%" },
+            { flexDirection: "column", width: "90%", alignSelf: "center" },
             storyAdSelected || disabled ? { opacity: 0.5 } : { opacity: 1 },
           ]}
         >
