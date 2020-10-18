@@ -173,6 +173,17 @@ class Long_Form_Video extends Component {
         personalStickers: true,
         categories: [{ identifier: "imgly_sticker_category_shapes" }],
       },
+      textdesign: {
+        items: [
+          { identifier: "imgly_text_design_blocks_light" },
+          { identifier: "imgly_text_design_celebrate" },
+          { identifier: "imgly_text_design_sunshine" },
+          { identifier: "imgly_text_design_celebrate_simple" },
+          { identifier: "imgly_text_design_equal_width_fat" },
+          { identifier: "imgly_text_design_particles" },
+          { identifier: "imgly_text_design_multiline" },
+        ],
+      },
       export: {
         serialization: {
           enabled: true,

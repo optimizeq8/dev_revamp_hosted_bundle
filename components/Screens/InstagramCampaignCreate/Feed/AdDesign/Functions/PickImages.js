@@ -366,6 +366,17 @@ export const _pickImage = async (
             personalStickers: true,
             categories: [{ identifier: "imgly_sticker_category_shapes" }],
           },
+          textdesign: {
+            items: [
+              { identifier: "imgly_text_design_blocks_light" },
+              { identifier: "imgly_text_design_celebrate" },
+              { identifier: "imgly_text_design_sunshine" },
+              { identifier: "imgly_text_design_celebrate_simple" },
+              { identifier: "imgly_text_design_equal_width_fat" },
+              { identifier: "imgly_text_design_particles" },
+              { identifier: "imgly_text_design_multiline" },
+            ],
+          },
         };
         if (Platform.OS === "ios") {
           let resUri = result.uri.split("/");
