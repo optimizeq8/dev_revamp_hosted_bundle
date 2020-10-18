@@ -229,7 +229,6 @@ class App_Install extends Component {
       (this.state.iosAppSelected || this.state.androidAppSelected) &&
       !appError
     ) {
-      console.log(JSON.stringify(attachment, null, 2));
       this.props._changeDestination(
         "APP_INSTALL",
         this.state.callaction,

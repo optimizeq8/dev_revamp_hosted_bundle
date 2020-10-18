@@ -388,7 +388,6 @@ class VerifyAccount extends Component {
               onChangeText={(code) => {
                 this.setState({ code });
                 if (code.length === 5) {
-                  console.log("HHHH");
                   this._handleSentCode(code);
                 }
               }}

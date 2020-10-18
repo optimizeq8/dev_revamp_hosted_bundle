@@ -95,7 +95,6 @@ export const checkForExpiredToken = (navigation) => {
             )
               dispatch(chanege_base_url(true));
             // check if the local store token is same as in db
-            console.log("Checking for token");
             createBaseUrl()
               .get("verifyAccessToken", {
                 headers: {

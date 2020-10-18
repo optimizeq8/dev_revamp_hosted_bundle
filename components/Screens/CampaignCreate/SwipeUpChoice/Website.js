@@ -66,7 +66,6 @@ class Website extends Component {
         });
       }
     }
-    console.log(JSON.stringify(this.props.data, null, 2));
     if (
       this.props.rejCampaign &&
       this.props.rejCampaign.hasOwnProperty("attachment") &&

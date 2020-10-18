@@ -145,7 +145,6 @@ class AddCategory extends Component {
       );
       body.append("name", this.state.category.name);
 
-      console.log("body", JSON.stringify(body, null, 2));
       // This is to add a new category
       this.props.addCategory(body, this._getUploadState, this.cancelUpload);
     }
@@ -193,14 +192,11 @@ class AddCategory extends Component {
   };
 
   onSelectedCategoriesItemsChange = (item) => {
-    console.log("item", item);
-
     this.setState({
       products: [...item],
     });
   };
   onSelectedItemCategoriesObjectsChange = (itemObj) => {
-    console.log("itemObj", itemObj);
     this.setState({
       category: {
         ...this.state.category,

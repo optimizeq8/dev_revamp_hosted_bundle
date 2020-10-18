@@ -73,7 +73,6 @@ export default class AppBox extends Component {
       rejected,
     } = this.props;
     const { translate } = this.props.screenProps;
-    console.log(rejected, appSelections.androidAppSelected);
     return (
       <View style={appConfirmStyles.advertiseOSButtonView}>
         <TouchableOpacity

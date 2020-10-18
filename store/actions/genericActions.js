@@ -48,7 +48,6 @@ export const checkForUpdate = (facebookIDsOnly, retries = 3) => {
       .get(`appVersion`)
       .then((res) => res.data)
       .then((data) => {
-        console.log(JSON.stringify(data, null, 2));
         dispatch({
           type: facebookIDsOnly
             ? actionTypes.SET_FACEBOOK_IDS
