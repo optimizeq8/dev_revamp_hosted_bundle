@@ -1590,7 +1590,11 @@ class AdDetails extends Component {
       this.props.data && this.props.data.media
         ? this.props.data.media
         : this.props.navigation.getParam("media", "//");
+    console.log(
+      " edit ccondition",
 
+      this.state.campaignInfo.campaign_id
+    );
     return (
       <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
         <SafeAreaView

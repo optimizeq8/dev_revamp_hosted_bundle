@@ -62,6 +62,9 @@ export class TargetAudience extends Component {
       startEditing,
     } = this.props;
     const { translate } = this.props.screenProps;
+    console.log("editCampaign", editCampaign);
+    console.log("startEditing", startEditing);
+
     return (
       <View
         style={{
