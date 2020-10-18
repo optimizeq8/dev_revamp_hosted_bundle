@@ -339,8 +339,16 @@ class GoogleAdTargetting extends Component {
       campaign_id: this.props.campaign.id,
       campaign_budget: this.state.budget,
     });
+    let lifetime_budget =
+      Math.round(
+        Math.abs(
+          (new Date(this.props.campaign.start_time).getTime() -
+            new Date(this.props.campaign.end_time).getTime()) /
+            86400000
+        ) + 1
+      ) * this.state.budget;
     let data = {
-      budget: this.state.budget,
+      budget: lifetime_budget,
       age: this.state.age,
       gender: this.state.gender,
       keywords: this.state.keywords,
