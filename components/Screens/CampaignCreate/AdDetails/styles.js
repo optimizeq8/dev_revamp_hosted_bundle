@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   },
   menuComponentStyle: { top: 0 },
   reachView: {
+    flex: 0.5,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
