@@ -32,7 +32,7 @@ export default class TopStepsHeader extends Component {
     let { translate } = this.props.screenProps;
     let steps = this.props.rejected
       ? ["Compose"]
-      : [("Details", "Compose", "Audience", "Payment")];
+      : ["Details", "Compose", "Audience", "Payment"];
     // if (this.props.adType === "StoryAd") {
     //   steps = ["Details", "Cover", "Compose", "Audience", "Payment"];
     // }
