@@ -293,7 +293,7 @@ export const get_custom_interests_instagram = (keyword) => {
           }
         })
         .catch((error) => {
-          console.log("error get_interests_instagram", error);
+          // console.log("error get_interests_instagram", error);
           return dispatch({
             type: actionTypes.SET_CUSTOM_INSTAGRAM_INTERESTS,
             payload: [],

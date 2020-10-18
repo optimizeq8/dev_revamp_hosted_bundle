@@ -35,7 +35,9 @@ export default class MapSearchBar extends Component {
         let bBox = country.bbox; //boundries of country
         // this.props.handleRegionChange(coordinates, bBox);
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => {
+        //  console.log("err", err)}
+      });
   };
   handleAutoComplete = (location) => {
     this.SearchFilterFunction(location);
@@ -45,8 +47,6 @@ export default class MapSearchBar extends Component {
       )
         .then((res) => res.data)
         .then((data) => {
-          console.log(JSON.stringify(data, null, 2));
-
           let results = data.results;
           this.props.handleAutoFeatures(results);
           // this.props.handleShowFlatList(true);

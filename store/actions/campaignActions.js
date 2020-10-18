@@ -1632,7 +1632,7 @@ export const moveRejectedAdAmountToWallet = (campaign_id) => {
         }
       })
       .catch((err) => {
-        console.log("moveAmountToWallet", err.response || err.message);
+        // console.log("moveAmountToWallet", err.response || err.message);
       });
   };
 };

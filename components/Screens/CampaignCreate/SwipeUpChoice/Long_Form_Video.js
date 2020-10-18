@@ -344,7 +344,9 @@ class Long_Form_Video extends Component {
               });
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            //  console.log(err)
+          });
       } else {
         validateWrapper("duration", this.state.duration) &&
           showMessage({

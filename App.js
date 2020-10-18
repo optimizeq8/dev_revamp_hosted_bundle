@@ -201,14 +201,7 @@ class App extends React.Component {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
-    RNAdvertisingId.getAdvertisingId()
-      .then((response) => {
-        console.log({
-          advertisingId: response.advertisingId,
-          isLimitAdTrackingEnabled: response.isLimitAdTrackingEnabled,
-        });
-      })
-      .catch((error) => console.error(error));
+    RNAdvertisingId.getAdvertisingId();
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [

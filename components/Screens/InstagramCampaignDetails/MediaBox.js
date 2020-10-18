@@ -46,7 +46,6 @@ export default class MediaBox extends Component {
   render() {
     let { name } = this.props;
     let { media, media_type, localUri } = this.props.ad;
-    console.log("this.props.selectedCampaign", this.props.selectedCampaign);
     return (
       <TouchableOpacity
         onPress={this.previewHandler}
