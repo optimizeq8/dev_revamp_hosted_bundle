@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     width: "100%",
-    bottom: 10,
+    bottom: "15%",
+    position: "absolute",
   },
   chartText: {
     color: globalColors.rum,
