@@ -300,7 +300,6 @@ class VerifyAccount extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    segmentEventTrack("Button Pressed to verify mobile code");
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),
