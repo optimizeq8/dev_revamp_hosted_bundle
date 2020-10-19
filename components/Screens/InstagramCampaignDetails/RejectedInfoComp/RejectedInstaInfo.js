@@ -66,14 +66,7 @@ class RejectedSnapchatInfo extends Component {
     });
     return (
       <View style={styles.rejectedOuterView}>
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: "#0005",
-            borderRadius: 35,
-            paddingBottom: 20,
-          }}
-        >
+        <View style={styles.rejectedDetailView}>
           <View style={styles.adRejetcedHeader}>
             <Rejected width={20} height={20} />
             <Text uppercase style={styles.adRejectedTitle}>

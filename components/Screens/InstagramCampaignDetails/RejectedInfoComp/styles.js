@@ -164,4 +164,10 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
   },
+  rejectedDetailView: {
+    width: "100%",
+    backgroundColor: "#0005",
+    borderRadius: 35,
+    paddingBottom: 20,
+  },
 });
