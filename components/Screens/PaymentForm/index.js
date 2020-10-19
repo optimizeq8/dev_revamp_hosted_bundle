@@ -526,6 +526,9 @@ class PaymentForm extends Component {
                 : null
             }
             currentScreen="Payment"
+            onlyPayment={
+              this.state.refundAmountToWallet || this.state.addingCredits
+            }
             title={
               this.state.refundAmountToWallet
                 ? "Refund to wallet"
