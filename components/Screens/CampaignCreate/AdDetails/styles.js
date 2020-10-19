@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    height: "85%",
+    height: "100%",
   },
   subHeadings: {
     color: globalColors.gray,
@@ -144,11 +144,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     // width: "100%",
-    bottom: heightPercentageToDP(2),
-    flex: 1,
+    bottom: "8%",
+    position: "absolute",
+    // flex: 0.55,
     backgroundColor: globalColors.white,
     borderTopWidth: 1,
     borderTopColor: "#75647C21",
+    paddingVertical: 20,
   },
   chartText: {
     textTransform: "uppercase",
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
   },
   menuComponentStyle: { top: 0 },
   reachView: {
-    flex: 0.5,
+    // flex: ,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

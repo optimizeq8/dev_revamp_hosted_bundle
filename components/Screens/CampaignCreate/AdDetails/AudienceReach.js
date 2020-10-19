@@ -28,7 +28,15 @@ class ReachBar extends Component {
     let { startEditing, editCampaign, campaignInfo } = this.props;
 
     return (
-      <View style={[styles.bottom]}>
+      <View
+        style={[
+          styles.bottom,
+          startEditing &&
+            !editCampaign && {
+              bottom: "15%",
+            },
+        ]}
+      >
         <View style={styles.bottomReachView}>
           <Text style={styles.expectedResultText}>
             {translate("Expected Results")}

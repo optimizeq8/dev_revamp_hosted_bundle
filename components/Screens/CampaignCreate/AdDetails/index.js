@@ -1674,50 +1674,46 @@ class AdDetails extends Component {
                 onDidFocus={this.handleAdDetailsFocus}
                 onBlur={this.handleAdDetailsBlur}
               />
-              <Container style={styles.mainContainer}>
-                <Container style={styles.container}>
-                  <Content
-                    scrollEnabled={false}
-                    contentContainerStyle={styles.contentContainer}
-                  >
-                    {!this.editCampaign ? (
-                      <>
-                        <Row
-                          size={-1}
-                          style={{
-                            alignItems: "center",
-                            paddingHorizontal: 20,
-                          }}
-                        >
-                          <WalletIcon
-                            width={30}
-                            height={30}
-                            fill={globalColors.rum}
-                          />
-                          <Text
-                            uppercase
-                            style={[
-                              styles.subHeadings,
-                              { paddingHorizontal: 10 },
-                            ]}
-                          >
-                            {translate("Set your daily budget")}
-                          </Text>
-                        </Row>
-                        <BudgetCards
-                          value={this.state.value}
-                          recBudget={this.state.recBudget}
-                          lifetime_budget_micro={
-                            this.state.campaignInfo.lifetime_budget_micro
-                          }
-                          budgetOption={this.state.budgetOption}
-                          _handleBudget={this._handleBudget}
-                          screenProps={this.props.screenProps}
-                          data={this.props.data}
-                        />
 
-                        {/*---------leave if in case we want to use it again---------*/}
-                        {/* <View style={styles.sliderContainer}>
+              <Content
+                scrollEnabled={false}
+                contentContainerStyle={styles.contentContainer}
+              >
+                {!this.editCampaign ? (
+                  <>
+                    <Row
+                      size={-1}
+                      style={{
+                        alignItems: "center",
+                        paddingHorizontal: 20,
+                      }}
+                    >
+                      <WalletIcon
+                        width={30}
+                        height={30}
+                        fill={globalColors.rum}
+                      />
+                      <Text
+                        uppercase
+                        style={[styles.subHeadings, { paddingHorizontal: 10 }]}
+                      >
+                        {translate("Set your daily budget")}
+                      </Text>
+                    </Row>
+                    <BudgetCards
+                      value={this.state.value}
+                      recBudget={this.state.recBudget}
+                      lifetime_budget_micro={
+                        this.state.campaignInfo.lifetime_budget_micro
+                      }
+                      budgetOption={this.state.budgetOption}
+                      _handleBudget={this._handleBudget}
+                      screenProps={this.props.screenProps}
+                      data={this.props.data}
+                    />
+
+                    {/*---------leave if in case we want to use it again---------*/}
+                    {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
@@ -1749,88 +1745,84 @@ class AdDetails extends Component {
                       />
                     </View>
                   */}
-                      </>
+                  </>
+                ) : (
+                  startEditing && (
+                    <View style={styles.sliderPlaceHolder}>
+                      <Text style={styles.subHeadings}>
+                        {translate(
+                          "Editing budget and duration\nis currently unavailable"
+                        )}
+                      </Text>
+                    </View>
+                  )
+                )}
+                {startEditing && (
+                  <View style={styles.reachView}>
+                    <Text
+                      style={[
+                        styles.subHeadings,
+                        {
+                          paddingHorizontal: 0,
+                          width:
+                            this.props.audienceList.length > 0 ? "30%" : "60%",
+                          fontSize:
+                            this.props.audienceList.length > 0 ? 13 : 16,
+                        },
+                      ]}
+                    >
+                      {translate("Who would you like to reach?")}
+                    </Text>
+                    {this.props.audienceList.length > 0 ? (
+                      <GradientButton
+                        uppercase={true}
+                        text={translate("Choose Existing Audience")}
+                        onPressAction={this.chooseExistingAudience}
+                        transparent={true}
+                        textStyle={styles.existingButtonText}
+                        height={50}
+                        style={styles.existingButton}
+                        radius={50}
+                      />
                     ) : (
-                      startEditing && (
-                        <View style={styles.sliderPlaceHolder}>
-                          <Text style={styles.subHeadings}>
-                            {translate(
-                              "Editing budget and duration\nis currently unavailable"
-                            )}
-                          </Text>
-                        </View>
+                      this.props.audienceListLoading && (
+                        <ActivityIndicator
+                          color={globalColors.purple}
+                          size="small"
+                          style={{
+                            right: "100%",
+                          }}
+                        />
                       )
                     )}
-                    {startEditing && (
-                      <View style={styles.reachView}>
-                        <Text
-                          style={[
-                            styles.subHeadings,
-                            {
-                              paddingHorizontal: 0,
-                              width:
-                                this.props.audienceList.length > 0
-                                  ? "30%"
-                                  : "60%",
-                              fontSize:
-                                this.props.audienceList.length > 0 ? 13 : 16,
-                            },
-                          ]}
-                        >
-                          {translate("Who would you like to reach?")}
-                        </Text>
-                        {this.props.audienceList.length > 0 ? (
-                          <GradientButton
-                            uppercase={true}
-                            text={translate("Choose Existing Audience")}
-                            onPressAction={this.chooseExistingAudience}
-                            transparent={true}
-                            textStyle={styles.existingButtonText}
-                            height={50}
-                            style={styles.existingButton}
-                            radius={50}
-                          />
-                        ) : (
-                          this.props.audienceListLoading && (
-                            <ActivityIndicator
-                              color={globalColors.purple}
-                              size="small"
-                              style={{
-                                right: "100%",
-                              }}
-                            />
-                          )
-                        )}
-                      </View>
-                    )}
-                    <TargetAudience
-                      screenProps={this.props.screenProps}
-                      _renderSideMenu={this._renderSideMenu}
-                      loading={this.props.loading}
-                      gender={gender}
-                      targeting={this.state.campaignInfo.targeting}
-                      regions_names={regions_names}
-                      languages_names={languages_names}
-                      interests_names={interests_names}
-                      OSType={OSType}
-                      mainState={this.state}
-                      translate={translate}
-                      editCampaign={this.editCampaign}
-                      startEditing={startEditing}
-                    />
+                  </View>
+                )}
+                <TargetAudience
+                  screenProps={this.props.screenProps}
+                  _renderSideMenu={this._renderSideMenu}
+                  loading={this.props.loading}
+                  gender={gender}
+                  targeting={this.state.campaignInfo.targeting}
+                  regions_names={regions_names}
+                  languages_names={languages_names}
+                  interests_names={interests_names}
+                  OSType={OSType}
+                  mainState={this.state}
+                  translate={translate}
+                  editCampaign={this.editCampaign}
+                  startEditing={startEditing}
+                />
 
-                    <AudienceReach
-                      loading={this.props.loading}
-                      campaignInfo={campaignInfo}
-                      _handleSubmission={this._handleSubmission}
-                      startEditing={startEditing}
-                      campaignInfo={campaignInfo}
-                      editCampaign={this.editCampaign}
-                      screenProps={this.props.screenProps}
-                    />
-                  </Content>
-                </Container>
-              </Container>
+                <AudienceReach
+                  loading={this.props.loading}
+                  campaignInfo={campaignInfo}
+                  _handleSubmission={this._handleSubmission}
+                  startEditing={startEditing}
+                  campaignInfo={campaignInfo}
+                  editCampaign={this.editCampaign}
+                  screenProps={this.props.screenProps}
+                />
+              </Content>
             </View>
           </Sidemenu>
         </View>
