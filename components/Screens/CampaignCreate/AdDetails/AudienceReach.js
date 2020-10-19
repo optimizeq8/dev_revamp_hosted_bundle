@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-// import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 //Styles
@@ -12,10 +10,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
 import formatNumber from "../../../formatNumber";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
 import SwipeUpsIcon from "../../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
