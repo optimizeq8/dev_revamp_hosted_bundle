@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     height: "100%",
+    // paddingTop: ,
   },
   subHeadings: {
     color: globalColors.gray,
