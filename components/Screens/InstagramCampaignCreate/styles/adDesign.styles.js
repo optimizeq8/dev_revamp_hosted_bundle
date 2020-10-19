@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
   },
   placeHolderStoryAd: {
-    height: hp(40),
+    height: hp(35),
   },
   transition: { height: "100%" },
   mainView: {
