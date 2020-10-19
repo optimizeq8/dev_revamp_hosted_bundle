@@ -71,7 +71,7 @@ export default (props) => {
             props.handleSnapchatRejection(props.selectedCampaign);
           }}
         />
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.returnAmountWalletLinkView}
           onPress={() => {
             setModalVisible(false);
@@ -82,13 +82,14 @@ export default (props) => {
               selectedCampaign: selectedCampaign,
               source: "open_wallet",
               source_action: "a_return_amount_to_wallet",
+              channel: "instagram",
             });
           }}
         >
           <Text style={styles.returnAmountWalletLinkText}>
             {translate("Return amount to wallet")}
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </BlurView>
     </Modal>
   );

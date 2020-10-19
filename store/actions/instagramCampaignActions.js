@@ -922,3 +922,47 @@ export const resetInstagramRejectedCampaignData = () => {
     dispatch({ type: actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN });
   };
 };
+
+/**
+ *  To move the amount to wallet when ad is rejected
+ * @param {*} campaign_id
+ */
+export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
+      payload: true,
+    });
+    InstagramBackendURL()
+      .post(`moveAmountToWallet`, {
+        campaign_id,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_move_amount_to_wallet", {
+          source: "ad_detail",
+          source_action: "a_move_amount_to_wallet",
+          camapign_channel: "instagram",
+          campaign_id: campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
+        dispatch({
+          type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
+          payload: false,
+        });
+        if (data.success) {
+          showMessage({
+            type: "success",
+            message: data.message,
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_move_amount_to_wallet",
+          });
+        }
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};

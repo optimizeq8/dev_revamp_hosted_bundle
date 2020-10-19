@@ -148,7 +148,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     paddingVertical: 20,
   },
-  updateAdButton: { alignSelf: "center", marginBottom: 20 },
+  updateAdButton: { alignSelf: "center" },
   displayBlock: {
     display: "flex",
     width: 10,
@@ -163,5 +163,11 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 20,
+  },
+  rejectedDetailView: {
+    width: "100%",
+    backgroundColor: "#0005",
+    borderRadius: 35,
+    paddingBottom: 20,
   },
 });
