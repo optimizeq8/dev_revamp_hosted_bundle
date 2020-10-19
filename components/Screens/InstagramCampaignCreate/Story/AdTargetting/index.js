@@ -1092,6 +1092,7 @@ class InstagramStoryAdTargetting extends Component {
             onSelectedVersionsChange={this.onSelectedVersionsChange}
             OSType={this.state.campaignInfo.targeting.user_os[0]}
             option={this.state.selectionOption}
+            editCampaign={this.editCampaign}
           />
         );
         break;
