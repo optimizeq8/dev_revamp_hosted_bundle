@@ -126,8 +126,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setInstaRejectedCampaignData(rejCampaign)),
   setRejectedCarouselAds: (rejCampaign) =>
     dispatch(actionCreators.setRejectedCarouselAds(rejCampaign)),
-  moveRejectedAdAmountToWallet: (campaign_id) =>
-    dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
   getWalletAmountInKwd: (amount) =>
     dispatch(actionCreators.getWalletAmountInKwd(amount)),
 });

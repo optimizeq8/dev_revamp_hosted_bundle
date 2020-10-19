@@ -148,7 +148,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     paddingVertical: 20,
   },
-  updateAdButton: { alignSelf: "center", marginBottom: 20 },
+  updateAdButton: { alignSelf: "center" },
   displayBlock: {
     display: "flex",
     width: 10,

@@ -148,7 +148,6 @@ class PaymentForm extends Component {
         });
       }
       this.closeBrowserLoading();
-
     } catch (error) {
       analytics.track(`payment_processing`, {
         source: "payment_mode",
@@ -176,7 +175,12 @@ class PaymentForm extends Component {
   };
 
   _handleSubmission = () => {
-    if (this.state.refundAmountToWallet) {
+    const channel = this.props.navigation.getParam("channel", "");
+    if (channel === "instagram" && this.state.refundAmountToWallet) {
+      this.props.moveRejectedAdAmountToWalletInstagram(
+        this.state.selectedCampaign.campaign_id
+      );
+    } else if (this.state.refundAmountToWallet) {
       this.props.moveRejectedAdAmountToWallet(
         this.state.selectedCampaign.campaign_id
       );
@@ -696,7 +700,11 @@ class PaymentForm extends Component {
         </Modal>
         <Modal
           dismissable={false}
-          visible={this.state.browserLoading || this.props.movingAmountToWallet}
+          visible={
+            this.state.browserLoading ||
+            this.props.movingAmountToWallet ||
+            this.props.movingAmountToWalletInstagram
+          }
         >
           <LoadingScreen top={0} />
         </Modal>
@@ -725,6 +733,7 @@ const mapStateToProps = (state) => ({
   channel: state.transA.channel,
   adType: state.campaignC.adType,
   movingAmountToWallet: state.campaignC.movingAmountToWallet,
+  movingAmountToWalletInstagram: state.instagramAds.movingAmountToWallet,
 });
 const mapDispatchToProps = (dispatch) => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
@@ -765,5 +774,8 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   moveRejectedAdAmountToWallet: (campaign_id) =>
     dispatch(actionCreators.moveRejectedAdAmountToWallet(campaign_id)),
+
+  moveRejectedAdAmountToWalletInstagram: (campaign_id) =>
+    dispatch(actionCreators.moveRejectedAdAmountToWalletInstagram(campaign_id)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);

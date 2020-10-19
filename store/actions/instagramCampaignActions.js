@@ -933,7 +933,7 @@ export const moveRejectedAdAmountToWalletInstagram = (campaign_id) => {
       type: actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM,
       payload: true,
     });
-    createBaseUrl()
+    InstagramBackendURL()
       .post(`moveAmountToWallet`, {
         campaign_id,
       })
