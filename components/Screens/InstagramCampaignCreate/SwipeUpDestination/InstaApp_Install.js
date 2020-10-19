@@ -87,7 +87,10 @@ class InstaApp_Install extends Component {
         iosAppSelected: this.props.data.attachment.ios_app_id !== "",
         androidAppSelected: this.props.data.attachment.android_app_url !== "",
       });
-    } else if (this.props.storyAdAttachment.destination === "app_install") {
+    } else if (
+      this.props.storyAdAttachment &&
+      this.props.storyAdAttachment.destination === "app_install"
+    ) {
       this.setState({
         attachment: {
           ...this.state.attachment,
@@ -118,6 +121,7 @@ class InstaApp_Install extends Component {
           ...this.props.mainBusiness.playstorelink,
         },
         iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected: this.props.mainBusiness.android_app_url !== "",
         appChoice:
           this.props.mainBusiness.appstorelink.ios_app_id !== ""
             ? "iOS"
