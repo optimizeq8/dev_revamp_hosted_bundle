@@ -552,7 +552,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, instaRejCampaign };
     case actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN:
       return { ...state, instaRejCampaign: null };
-    case actionTypes.MOVING_AMOUNT_TO_WALLET: {
+    case actionTypes.MOVING_AMOUNT_TO_WALLET_INSTAGRAM: {
       return {
         ...state,
         movingAmountToWallet: action.payload,
