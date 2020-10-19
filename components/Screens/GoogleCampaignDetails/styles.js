@@ -539,6 +539,7 @@ const styles = StyleSheet.create({
     color: "#EA514B",
     marginTop: 5,
     marginBottom: 10,
+    textAlign: "left",
   },
   adRejectedTitle: {
     fontSize: 18,

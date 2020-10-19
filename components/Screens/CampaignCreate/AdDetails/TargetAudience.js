@@ -67,8 +67,8 @@ export class TargetAudience extends Component {
       <View
         style={{
           height: editCampaign
-            ? heightPercentageToDP(60)
-            : heightPercentageToDP(50),
+            ? heightPercentageToDP(100)
+            : heightPercentageToDP(100),
           // : heightPercentageToDP(100) > 700
           // ? "65%"
           // : "55%",
@@ -89,10 +89,15 @@ export class TargetAudience extends Component {
           onScroll={this.handleFading}
           ref={(ref) => (this.scrollView = ref)}
           indicatorStyle="white"
-          contentContainerStyle={{ paddingBottom: 100 }}
+          scrollEnabled={true}
+          contentContainerStyle={{ paddingBottom: heightPercentageToDP(20) }}
           style={[
             styles.targetList,
-            { height: editCampaign ? heightPercentageToDP(60) : "100%" },
+            {
+              marginBottom: editCampaign
+                ? heightPercentageToDP(20)
+                : heightPercentageToDP(25),
+            },
           ]}
         >
           <TouchableOpacity

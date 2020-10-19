@@ -115,8 +115,8 @@ const styles = StyleSheet.create({
   },
   targetList: {
     flexDirection: "column",
-    paddingBottom: 40,
-    height: "50%",
+    // paddingBottom: 40,
+    // height: "50%",
     marginHorizontal: 30,
   },
   targetTouchable: {

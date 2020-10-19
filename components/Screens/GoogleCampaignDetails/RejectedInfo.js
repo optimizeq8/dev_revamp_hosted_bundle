@@ -47,10 +47,15 @@ export default RejectedInfo = (props) => {
   ));
   return (
     <View style={styles.rejectedHeader}>
-      <Rejected />
-      <Text uppercase style={styles.adRejectedTitle}>
-        {translate("Ad Rejected")}
-      </Text>
+      <View
+        style={{ display: "flex", alignItems: "center", flexDirection: "row" }}
+      >
+        <Rejected width={25} />
+        <Text uppercase style={styles.adRejectedTitle}>
+          {translate("Ad Rejected")}
+        </Text>
+      </View>
+
       <Text style={styles.hereReasonsText}>
         {translate("Here Are The Reasons")}:
       </Text>
@@ -63,7 +68,7 @@ export default RejectedInfo = (props) => {
           width={"47%"}
           height={47}
           style={styles.contactUsBtn}
-          text={"Contact Us"}
+          text={translate("Contact Us")}
           onPressAction={() => {
             props.navigation.navigate("Messenger", {
               source: "campaign_details",
