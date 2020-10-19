@@ -103,6 +103,7 @@ const initialState = {
   customInterests: [],
   postsLoading: false,
   instaRejCampaign: {},
+  movingAmountToWallet: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -551,6 +552,12 @@ const reducer = (state = initialState, action) => {
       return { ...state, instaRejCampaign };
     case actionTypes.RESET_INSTAGRAM_REJECTED_CAMPAIGN:
       return { ...state, instaRejCampaign: null };
+    case actionTypes.MOVING_AMOUNT_TO_WALLET: {
+      return {
+        ...state,
+        movingAmountToWallet: action.payload,
+      };
+    }
     default:
       return state;
   }
