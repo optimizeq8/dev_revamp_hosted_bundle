@@ -105,7 +105,7 @@ export class TargetAudience extends Component {
             onPress={() => this.callFunction("selectors", "countries")}
             style={styles.targetTouchable}
           >
-            <View style={globalStyles.row}>
+            <View style={[globalStyles.row, styles.flex]}>
               <LocationIcon
                 width={30}
                 height={30}
