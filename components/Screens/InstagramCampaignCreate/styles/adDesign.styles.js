@@ -46,11 +46,13 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
   },
   placeHolderStoryAd: {
-    height: hp(35),
+    // height: hp(44),
+    flex: 1,
+    marginBottom: 100,
   },
   transition: { height: "100%" },
   mainView: {
-    marginHorizontal: 40,
+    marginHorizontal: 20,
     backgroundColor: globalColors.transparent,
     height: "100%",
   },
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
   lowerBtn: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     // alignSelf: "flex-end",
     marginTop: 10,
     marginHorizontal: 20,
@@ -331,7 +333,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
     marginTop: 12,
-    height: "80%",
+    // height: "100%",
+    flex: 1,
   },
   profileBsnNameView: {
     display: "flex",
