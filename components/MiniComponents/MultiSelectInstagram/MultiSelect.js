@@ -111,7 +111,8 @@ class MultiSelectList extends Component {
 
   selectCountry = () => {
     let countryGeos =
-      this.props.selectedItemsRegionsCountry[0] ||
+      (typeof this.props.selectedItemsRegionsCountry[0] !== "string" &&
+        this.props.selectedItemsRegionsCountry[0]) ||
       this.props.selectedItemsRegionsCountry;
     let disabled = this.props.editCampaign && countryGeos.length > 1;
     const { translate } = this.props.screenProps;
