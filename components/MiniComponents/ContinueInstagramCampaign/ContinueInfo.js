@@ -1,14 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Content } from "native-base";
-import Snapchat from "../../../assets/SVGs/Snapchat";
 import Instagram from "../../../assets/images/AdTypes/InstagramLogo";
 
 import MediaBox from "../../Screens/CampaignDetails/MediaBox";
 import styles from "../ContinueCampaign/styles";
-import formatNumber from "../../formatNumber";
 import dateFormat from "dateformat";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import globalStyles from "../../../GlobalStyles";
 import { connect } from "react-redux";
 import { Small } from "../StyledComponents";
 
