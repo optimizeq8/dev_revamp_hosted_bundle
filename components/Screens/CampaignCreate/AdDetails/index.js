@@ -1680,7 +1680,7 @@ class AdDetails extends Component {
                 contentContainerStyle={styles.contentContainer}
               >
                 {!this.editCampaign ? (
-                  <>
+                  <View style={{ marginTop: 0 }}>
                     <Row
                       size={-1}
                       style={{
@@ -1745,7 +1745,7 @@ class AdDetails extends Component {
                       />
                     </View>
                   */}
-                  </>
+                  </View>
                 ) : (
                   startEditing && (
                     <View style={styles.sliderPlaceHolder}>

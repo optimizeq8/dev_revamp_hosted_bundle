@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
     letterSpacing: 0,
-    lineHeight: 18,
+    lineHeight: 20,
     width: widthPercentageToDP(30),
     flexShrink: 1,
     textAlign: "center",

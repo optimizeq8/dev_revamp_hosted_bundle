@@ -96,7 +96,7 @@ export class TargetAudience extends Component {
             {
               marginBottom: editCampaign
                 ? heightPercentageToDP(20)
-                : heightPercentageToDP(25),
+                : heightPercentageToDP(30),
             },
           ]}
         >
