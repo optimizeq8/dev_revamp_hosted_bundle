@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "space-between",
     marginTop: 10,
-    marginBottom: 0,
+    marginBottom: 70,
   },
   captionText: {
     fontFamily: "montserrat-regular",
@@ -532,8 +532,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
   },
 
-  flatListView: { height: hp(35) },
-
   carouselEditMedia: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -590,7 +588,7 @@ const styles = StyleSheet.create({
     paddingBottom: hp(24),
     alignItems: "center",
   },
-  flatListView: { height: hp(35) },
+  flatListView: { height: hp(5) < 40 ? hp(29) : hp(38) },
 
   carouselEditMedia: {
     flexDirection: "row",
