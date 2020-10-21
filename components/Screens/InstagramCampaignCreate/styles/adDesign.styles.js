@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
-    height: hp(30),
+    height: hp(5) < 40 ? hp(24) : hp(38),
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
   },
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
     paddingBottom: hp(24),
     alignItems: "center",
   },
-  flatListView: { height: hp(5) < 40 ? hp(29) : hp(38) },
+  flatListView: { height: hp(5) < 40 ? hp(24) : hp(38) },
 
   carouselEditMedia: {
     flexDirection: "row",
