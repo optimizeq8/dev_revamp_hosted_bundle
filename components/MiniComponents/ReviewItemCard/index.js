@@ -23,7 +23,9 @@ class ReviewItemCard extends Component {
             style={[
               styles.subText,
               styles.contentText,
-              (e.title === "Start" || e.title === "End") && {
+              (e.title === "Start" ||
+                e.title === "End" ||
+                e.title === "Devices") && {
                 fontFamily: "montserrat-regular-english",
               },
             ]}
