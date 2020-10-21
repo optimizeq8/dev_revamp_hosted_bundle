@@ -11,6 +11,7 @@ import { ProgressBar, Colors } from "react-native-paper";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 import CustomHeader from "../../../../MiniComponents/Header";
+import RNImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
 // Redux
 import { connect } from "react-redux";
@@ -95,14 +96,7 @@ class AdStoryDesignReview extends React.Component {
     let mediaView = null;
     if (media_option === "single") {
       if (media_type === "IMAGE" && media) {
-        mediaView = (
-          <Image
-            style={styles.imagePreviewStory}
-            source={{
-              uri: media,
-            }}
-          />
-        );
+        mediaView = <RNImage style={styles.imagePreviewStory} media={media} />;
       }
       if (media_type === "VIDEO" && media) {
         mediaView = (
