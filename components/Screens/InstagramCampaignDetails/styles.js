@@ -422,6 +422,7 @@ const styles = StyleSheet.create({
     width: 160,
     borderRadius: 20,
     height: 50,
+    overflow: "hidden", // need to test
     // padding: "3%"
   },
   chartChoices: {
