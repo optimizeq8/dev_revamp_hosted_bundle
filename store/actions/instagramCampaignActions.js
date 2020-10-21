@@ -11,7 +11,7 @@ InstagramBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/instagram/"
-      : "http://optimizeapp.com/optimize/instagram/",
+      : "https://optimizeapp.com/optimize/instagram/",
   });
 
 /**
