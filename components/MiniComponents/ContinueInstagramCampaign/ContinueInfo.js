@@ -1,14 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Content } from "native-base";
-import Snapchat from "../../../assets/SVGs/Snapchat";
 import Instagram from "../../../assets/images/AdTypes/InstagramLogo";
 
 import MediaBox from "../../Screens/CampaignDetails/MediaBox";
 import styles from "../ContinueCampaign/styles";
-import formatNumber from "../../formatNumber";
 import dateFormat from "dateformat";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import globalStyles from "../../../GlobalStyles";
 import { connect } from "react-redux";
 import { Small } from "../StyledComponents";
 
@@ -42,7 +40,9 @@ ContinueInfo = (props) => {
     storyAdsArray,
     collectionAdMedia,
     oldTempData,
+    screenProps,
   } = props;
+  let { translate } = screenProps;
 
   return (
     <View
@@ -64,7 +64,9 @@ ContinueInfo = (props) => {
         ) : null}
         {oldTempData && oldTempData.start_time && (
           <View style={styles.sections}>
-            <Text style={[styles.text, styles.uppercase]}>Duration</Text>
+            <Text style={[styles.text, styles.uppercase]}>
+              {translate("Duration")}
+            </Text>
             <Text style={globalStyles.numbers}>
               {dateFormat(new Date(oldTempData.start_time), "mmm dS, yyyy")}{" "}
               <Small>to</Small>{" "}
@@ -73,14 +75,16 @@ ContinueInfo = (props) => {
             {new Date(oldTempData.start_time) < new Date() ||
               (new Date(oldTempData.end_time) < new Date() && (
                 <Text style={styles.text}>
-                  The date is no longer applicable
+                  {translate("The date is no longer applicable")}
                 </Text>
               ))}
           </View>
         )}
         {data && data.media && (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
-            <Text style={[styles.text, styles.uppercase]}>Media</Text>
+            <Text style={[styles.text, styles.uppercase]}>
+              {translate("Media")}
+            </Text>
             <View style={styles.mediaContainer}>
               {data && oldTempAdType === "InstagramFeedAd" && (
                 <MediaBox

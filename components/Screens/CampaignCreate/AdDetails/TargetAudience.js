@@ -105,7 +105,7 @@ export class TargetAudience extends Component {
             onPress={() => this.callFunction("selectors", "countries")}
             style={styles.targetTouchable}
           >
-            <View style={globalStyles.row}>
+            <View style={[globalStyles.row, styles.flex]}>
               <LocationIcon
                 width={30}
                 height={30}
@@ -235,14 +235,14 @@ export class TargetAudience extends Component {
               <View style={globalStyles.column}>
                 <Text style={styles.menutext}>{translate("Gender")}</Text>
                 <Text style={styles.menudetails}>
-                  {targeting.demographics[0].gender ||
-                    (targeting.demographics[0].gender === "" &&
-                      translate(
-                        gender.find((r) => {
-                          if (r.value === targeting.demographics[0].gender)
-                            return r;
-                        }).label
-                      ))}
+                  {(targeting.demographics[0].gender ||
+                    targeting.demographics[0].gender === "") &&
+                    translate(
+                      gender.find((r) => {
+                        if (r.value === targeting.demographics[0].gender)
+                          return r;
+                      }).label
+                    )}
                 </Text>
               </View>
             </View>

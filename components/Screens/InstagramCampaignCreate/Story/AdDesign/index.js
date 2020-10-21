@@ -518,7 +518,7 @@ class AdDesign extends Component {
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />
           <Transition style={styles.transition} shared="null">
-            <View style={[styles.mainView, { flex: 1 }]}>
+            <View style={[styles.mainView]}>
               {/* <View style={styles.adImageOptionView}>
                   <GradientButton
                     disabled={this.props.loading}

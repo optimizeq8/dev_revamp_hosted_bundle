@@ -1556,7 +1556,9 @@ class AdDetails extends Component {
     }
 
     let regions_names = [];
-    regions_names = this.state.regionNames.map((regN) => regN.name).join(", ");
+    regions_names = this.state.regionNames
+      .map((regN) => translate(regN.name))
+      .join(", ");
     let languages_names = [];
     if (typeof this.props.languages === "object")
       this.props.languages.forEach((r) => {

@@ -383,7 +383,7 @@ class PaymentForm extends Component {
                 textAlign: "center",
               }}
             >
-              You're requesting to refund to your wallet
+              {translate("You're requesting to refund to your wallet")}
             </Text>
             <Text
               style={{
@@ -494,6 +494,10 @@ class PaymentForm extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    const campaign_channel = this.props.navigation.getParam(
+      "campaign_channel",
+      null
+    );
     return (
       <View style={styles.safeAreaViewContainer}>
         <SafeAreaView
@@ -512,13 +516,7 @@ class PaymentForm extends Component {
               source: "payment_mode",
               source_action: "a_go_back",
             }}
-            icon={
-              !this.props.channel
-                ? null
-                : this.props.channel === ""
-                ? "snapchat"
-                : this.props.channel
-            }
+            icon={campaign_channel}
             actionButton={this.handleBackButton}
             adType={
               this.props.channel === "" || this.props.channel === "snapchat"
