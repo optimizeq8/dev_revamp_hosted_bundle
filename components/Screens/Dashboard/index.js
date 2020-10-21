@@ -855,6 +855,10 @@ class Dashboard extends Component {
                           />
                         </View>
                         <TouchableOpacity
+                          disabled={
+                            this.props.loadingCampaigns ||
+                            !this.props.campaignList
+                          }
                           style={styles.activebutton}
                           onPress={() => {
                             this._handleSideMenuState(true);
