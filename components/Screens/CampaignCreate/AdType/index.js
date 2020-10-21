@@ -33,6 +33,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
+import isStringArabic from "../../../isStringArabic";
 
 class AdType extends Component {
   static navigationOptions = {
@@ -465,7 +466,14 @@ class AdType extends Component {
                 >
                   <Image style={styles.adTypeImage} />
                   <View style={styles.descriptionView}>
-                    <Text style={styles.titleText}>
+                    <Text
+                      style={[
+                        styles.titleText,
+                        !isStringArabic(translate(item.title)) && {
+                          fontFamily: "montserrat-bold-english",
+                        },
+                      ]}
+                    >
                       {`\u200F ${translate(item.title)}`}
                       {/**Added speecial character for strings that has combination of english and arabic */}
                     </Text>
