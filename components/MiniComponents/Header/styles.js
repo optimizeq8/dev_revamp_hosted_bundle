@@ -5,6 +5,11 @@ import {
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
+  instaIcon: {
+    marginBottom: -10,
+    marginLeft: I18nManager.isRTL ? -20 : 0,
+    marginRight: I18nManager.isRTL ? 0 : -11,
+  },
   container: {
     justifyContent: "space-evenly",
     zIndex: 13,

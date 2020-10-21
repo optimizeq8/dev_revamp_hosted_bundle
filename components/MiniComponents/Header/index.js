@@ -13,7 +13,7 @@ import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
-import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+import InstagramIcon from "../../../assets/images/AdTypes/InstaWhiteLogo";
 import CalenderkIcon from "../../../assets/SVGs/Calender";
 import BinIcon from "../../../assets/SVGs/Bin";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -98,8 +98,13 @@ export default class Header extends Component {
           </View>
         )}
         {icon === "instagram" && (
-          <View style={{ paddingHorizontal: 5 }}>
-            <InstagramIcon width={30} height={24} fill="#fff" />
+          <View style={{ paddingHorizontal: 0 }}>
+            <InstagramIcon
+              style={styles.instaIcon}
+              width={50}
+              height={40}
+              fill="#fff"
+            />
           </View>
         )}
         {icon === "calendar" && (
