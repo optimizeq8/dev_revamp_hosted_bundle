@@ -1,4 +1,6 @@
 import { FluidNavigator } from "react-navigation-fluid-transitions";
+import { createStackNavigator } from "react-navigation-stack";
+
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
@@ -79,7 +81,7 @@ import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
 import SnapchatCampaignAudienceList from "../Screens/SnapchatCampaignAudienceList";
 import SnapchatAudienceTagetting from "../Screens/SnapchatAudience";
 
-export default FluidNavigator(
+export default createStackNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: { screen: Dashboard, path: "dashboard/" },
@@ -175,30 +177,42 @@ export default FluidNavigator(
   },
 
   {
-    transConfig,
     initialRouteName: "Dashboard",
     mode: "card",
+    headerMode: "none",
     navigationOptions: {
       gesturesEnabled: true,
       headerStyle: {
-        backgroundColor: "#0000",
+        backgroundColor: "#000",
       },
-      headerTintColor: "#0000",
+      headerTintColor: "#000",
       headerTextStyle: {
         fontWeight: "bold",
       },
     },
-    cardStyle: {
-      backgroundColor: "#0000",
-      opacity: 1,
-    },
+    transparentCard: true,
+    cardStyle: { opacity: 1 },
+    transitionConfig: () => ({
+      containerStyle: {
+        backgroundColor: "transparent",
+      },
+    }),
   }
 );
 
-const transConfig = () => ({
-  transitionSpec: {
-    duration: 0,
-    timing: Animated.timing,
-    easing: Easing.step0,
+const defaultHeaderStyle = {
+  borderBottomWidth: 0,
+  shadowOpacity: 0,
+  shadowOffset: {
+    height: 0,
   },
+  shadowRadius: 0,
+  elevation: 0,
+};
+const transConfig = () => ({
+  // transitionSpec: {
+  //   duration: 0,
+  //   timing: Animated.timing,
+  //   easing: Easing.step0,
+  // },
 });

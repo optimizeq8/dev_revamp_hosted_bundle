@@ -9,6 +9,8 @@ import {
   StatusBar,
   Modal,
   Text,
+  InteractionManager,
+  ActivityIndicator,
 } from "react-native";
 import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
@@ -25,6 +27,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 // Style
 import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 import GlobalStyles from "../../../../GlobalStyles";
 //Data
 import snapchatObjectivesData from "../../../Data/snapchatObjectives.data";
@@ -47,6 +50,8 @@ import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
 import ErrorComponent from "../../../MiniComponents/ErrorComponent";
 import CampaignDuration from "../../../MiniComponents/CampaignDurationField";
 import GradientButton from "../../../MiniComponents/GradientButton";
+import { LinearGradient } from "expo-linear-gradient";
+import globalStyles from "../../../../GlobalStyles";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -77,6 +82,7 @@ class AdObjective extends Component {
       incomplete: false,
       duration: 7,
       savedObjective: "WEBSITE_TRAFFIC",
+      isReady: false,
     };
   }
   componentWillUnmount() {
@@ -88,6 +94,11 @@ class AdObjective extends Component {
   async componentDidMount() {
     await this.setCampaignInfo();
 
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({
+        isReady: true,
+      });
+    });
     if (this.props.navigation.getParam("adType", false)) {
       this.props.set_adType(this.props.navigation.getParam("adType", "SnapAd"));
     }
@@ -595,13 +606,20 @@ class AdObjective extends Component {
           />
         </>
       );
+    } else if (!this.state.isReady) {
+      return <ActivityIndicator size="large" color={"#fff"} />;
     } else
       return (
         <View style={{ height: "100%" }}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <SafeAreaView
             style={styles.safeAreaView}
-            // forceInset={{ bottom: "never", top: "always" }}
+            forceInset={{ bottom: "never", top: "always" }}
           />
           <NavigationEvents
             onDidFocus={this.handleAdOnjectiveFocus}

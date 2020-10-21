@@ -1,9 +1,17 @@
-import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import {
+  StyleSheet,
+  PixelRatio,
+  I18nManager,
+  Platform,
+  StatusBar,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
+const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 35 : StatusBar.currentHeight;
+
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -11,10 +19,7 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
-  safeAreaView: {
-    backgroundColor: "#fff",
-    // height: "100%",
-  },
+  safeAreaView: { backgroundColor: "#fff" },
   container: {
     backgroundColor: "#0000",
     display: "flex",
@@ -289,6 +294,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontFamily: "montserrat-regular",
     fontSize: 12,
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
   },
 });
 
