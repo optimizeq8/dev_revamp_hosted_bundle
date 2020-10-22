@@ -5,7 +5,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import analytics from "@segment/analytics-react-native";
-import { View, Platform, Linking, Text, ScrollView } from "react-native";
+import {
+  View,
+  Platform,
+  Linking,
+  Text,
+  ScrollView,
+  BackHandler,
+} from "react-native";
 import { Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -126,12 +133,13 @@ class AdDesign extends Component {
 
   componentWillUnmount() {
     //Switched handleBackButton to toggleAdSelection
-    // BackHandler.removeEventListener(
-    //   "hardwareBackPressDesign",
-    //   this.toggleAdSelection
-    // );
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.toggleAdSelection
+    );
   }
   async componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
     this._notificationSubscription = Notifications.addNotificationReceivedListener(
       this._handleNotification
     );
