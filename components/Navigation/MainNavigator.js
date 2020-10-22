@@ -1,5 +1,6 @@
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-import { createStackNavigator } from "react-navigation-stack";
+// import { createStackNavigator } from "react-navigation-stack";
+import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator";
 
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
@@ -81,7 +82,7 @@ import MyWebsiteECommerce from "../Screens/OptimizeWebsite/MyWebsiteECommerce";
 import SnapchatCampaignAudienceList from "../Screens/SnapchatCampaignAudienceList";
 import SnapchatAudienceTagetting from "../Screens/SnapchatAudience";
 
-export default createStackNavigator(
+export default createNativeStackNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: { screen: Dashboard, path: "dashboard/" },

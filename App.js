@@ -99,6 +99,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 // Sentry.captureException(new Error("Oops!"));
 // crash;
+import { enableScreens } from "react-native-screens";
+enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
