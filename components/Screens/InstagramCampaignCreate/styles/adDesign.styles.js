@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   lowerBtn: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "flex-end",
+    justifyContent: "flex-end",
     // alignSelf: "flex-end",
     marginTop: 10,
     marginHorizontal: 20,

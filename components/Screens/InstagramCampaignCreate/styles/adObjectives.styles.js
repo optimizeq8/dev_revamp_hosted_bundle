@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     // justifyContent: 'flex-start',
     paddingBottom: hp(14),
-    paddingTop: 20,
+    paddingTop: 0,
     paddingHorizontal: 26,
   },
   scrollViewStyle: {

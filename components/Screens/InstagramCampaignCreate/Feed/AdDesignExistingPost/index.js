@@ -303,6 +303,7 @@ class InstagramAdDesignExistingPost extends Component {
         campaign_swipe_up_destination: this.state.campaignInfo.destination,
         campaign_media: this.state.campaignInfo.media,
         campaign_media_type: this.state.campaignInfo.media_type,
+        campaign_existing_post: true,
         // campaign_appChoice: this.state.appChoice,
       };
 
@@ -448,6 +449,7 @@ class InstagramAdDesignExistingPost extends Component {
       source_action,
       campaign_channel: "instagram",
       campaign_ad_type: "InstagramFeedAd",
+      campaign_existing_post: true,
       campaign_name: this.props.data.name,
       campaign_id: this.props.data.campaign_id,
       campaign_objective: this.props.data.objective,
