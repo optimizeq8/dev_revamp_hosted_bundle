@@ -27,6 +27,7 @@ class SwipeCompCondition extends Component {
           call_to_action_label={this.props.call_to_action.label}
           disabled={this.props.disabled}
           savedObjective={this.savedObjective}
+          swipeUpExpanded={this.props.swipeUpExpanded}
         />
       )
     ) : this.props.adType === "CollectionAd" ? (
@@ -43,6 +44,7 @@ class SwipeCompCondition extends Component {
         adType={this.props.adType}
         call_to_action_label={this.props.call_to_action.label}
         disabled={this.props.disabled}
+        swipeUpExpanded={this.props.swipeUpExpanded}
         savedObjective={this.savedObjective}
       />
     ) : this.props.adType === "StoryAd" &&
@@ -61,6 +63,7 @@ class SwipeCompCondition extends Component {
         call_to_action_label={this.props.storyAdAttachment.call_to_action.label}
         disabled={this.props.disabled}
         savedObjective={this.savedObjective}
+        swipeUpExpanded={this.props.swipeUpExpanded}
       />
     ) : (
       this.props.adType === "StoryAd" &&
@@ -81,6 +84,7 @@ class SwipeCompCondition extends Component {
           }
           disabled={this.props.disabled}
           savedObjective={this.savedObjective}
+          swipeUpExpanded={this.props.swipeUpExpanded}
         />
       )
     );

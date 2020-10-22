@@ -32,6 +32,9 @@ export default class SwipeUpComponent extends Component {
     if (prevProps.objective !== this.props.objective) {
       this.handleSwipeUp();
     }
+    if (prevProps.swipeUpExpanded && !this.props.swipeUpExpanded) {
+      this.toggle(false);
+    }
   }
   handleSwipeUp = () => {
     let {
@@ -184,7 +187,7 @@ export default class SwipeUpComponent extends Component {
           // },
           sty,
         ]}
-        onPress={this.toggle}
+        onPress={() => this.toggle(true)}
       >
         {!this.state.expanded ? (
           <>

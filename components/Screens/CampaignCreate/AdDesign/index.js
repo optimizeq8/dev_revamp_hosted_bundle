@@ -847,6 +847,12 @@ class AdDesign extends Component {
   toggleAdSelection = () => {
     // console.log("toggleAdSelec", this.props.navigation.isFocused());
 
+    if (this.state.swipeUpExpanded) {
+      this.setState({
+        swipeUpExpanded: false,
+      });
+      return true;
+    }
     if (!this.props.navigation.isFocused()) {
       return false;
     }
@@ -1213,7 +1219,6 @@ class AdDesign extends Component {
               source_action: "a_go_back",
             }}
             icon="snapchat"
-            actionButton={this.handleBackButton}
             adType={this.adType}
             currentScreen="Compose"
             actionButton={this.toggleAdSelection}
@@ -1332,6 +1337,7 @@ class AdDesign extends Component {
                   </View>
 
                   <SwipeCompCondition
+                    swipeUpExpanded={this.state.swipeUpExpanded}
                     screenProps={this.props.screenProps}
                     swipeUpMaxHeight={this.state.swipeUpMaxHeight}
                     setTheState={this.setTheState}
