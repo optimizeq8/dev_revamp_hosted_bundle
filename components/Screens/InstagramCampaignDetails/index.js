@@ -454,8 +454,8 @@ class InstagramCampaignDetails extends Component {
               ]}
             >
               <LinearGradient
-                colors={["#6200FF", "#8900FF"]}
-                locations={[1, 0.3]}
+                colors={["#9300FF", "#5600CB"]}
+                locations={[0, 1]}
                 style={styles.gradient}
               />
             </View>
