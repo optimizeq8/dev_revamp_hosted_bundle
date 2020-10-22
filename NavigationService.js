@@ -10,7 +10,7 @@ function navigate(routeName, params) {
   _navigator.dispatch(
     NavigationActions.navigate({
       routeName,
-      params
+      params,
     })
   );
 }
@@ -21,10 +21,10 @@ function navigateBack(screenName, routeName, params) {
       routeName: screenName,
       action: NavigationActions.navigate(
         {
-          routeName: routeName
+          routeName: routeName,
         },
         params
-      )
+      ),
     })
   );
 }
@@ -34,5 +34,5 @@ function navigateBack(screenName, routeName, params) {
 export default {
   navigate,
   navigateBack,
-  setTopLevelNavigator
+  setTopLevelNavigator,
 };

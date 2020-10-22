@@ -37,6 +37,8 @@ import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
 import WalletCard from "../../MiniComponents/WalletTopUpCard";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -126,6 +128,11 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Container
           style={[

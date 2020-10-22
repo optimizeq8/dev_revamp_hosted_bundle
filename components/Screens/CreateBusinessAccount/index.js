@@ -37,6 +37,9 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import AppSearchModal from "../../MiniComponents/AppChoice/AppSearchModal";
 import AppChoiceBusiness from "../../MiniComponents/AppChoiceBusiness";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
@@ -681,6 +684,13 @@ class CreateBusinessAccount extends Component {
           top: this.props.registering ? "never" : "always",
         }}
       >
+        {!this.props.registering && (
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
+        )}
         {!this.props.registering && (
           <View>
             <CustomHeader

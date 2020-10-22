@@ -25,6 +25,7 @@ export default class StoryAdCards extends Component {
         removeSnapCard={this.props.removeSnapCard}
         snapCardInfo={item}
         setTheState={this.props.setTheState}
+        navigation={this.props.navigation}
       />
     );
   };

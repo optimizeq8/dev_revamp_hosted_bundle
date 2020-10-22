@@ -21,6 +21,9 @@ import Countries from "../../Data/countries.billingAddress";
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 import isEqual from "react-fast-compare";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -146,6 +149,11 @@ class AddressForm extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         {/* TODO: When user selects CC display this */}
         {this.state.from === "creditCard" &&
         !isUndefined(this.state.addressId) &&

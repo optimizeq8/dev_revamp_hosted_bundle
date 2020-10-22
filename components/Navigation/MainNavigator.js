@@ -1,5 +1,5 @@
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-// import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "react-navigation-stack";
 import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator";
 
 import Menu from "../Screens/Menu";
@@ -200,20 +200,3 @@ export default createNativeStackNavigator(
     }),
   }
 );
-
-const defaultHeaderStyle = {
-  borderBottomWidth: 0,
-  shadowOpacity: 0,
-  shadowOffset: {
-    height: 0,
-  },
-  shadowRadius: 0,
-  elevation: 0,
-};
-const transConfig = () => ({
-  // transitionSpec: {
-  //   duration: 0,
-  //   timing: Animated.timing,
-  //   easing: Easing.step0,
-  // },
-});

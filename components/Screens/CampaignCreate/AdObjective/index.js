@@ -610,7 +610,7 @@ class AdObjective extends Component {
       return <ActivityIndicator size="large" color={"#fff"} />;
     } else
       return (
-        <View style={{ height: "100%" }}>
+        <View style={{ height: "100%", backgroundColor: "#0000" }}>
           <StatusBar barStyle="dark-content" backgroundColor="#fff" />
           <LinearGradient
             colors={[colors.background1, colors.background2]}

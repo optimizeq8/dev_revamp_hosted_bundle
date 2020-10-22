@@ -1289,6 +1289,7 @@ class AdDesign extends Component {
                         StoryAdCards={this.props.storyAdsArray}
                         _handleStoryAdCards={this._handleStoryAdCards}
                         setTheState={this.setTheState}
+                        navigation={this.props.navigation}
                       />
                     ) : (
                       !videoIsLoading && (

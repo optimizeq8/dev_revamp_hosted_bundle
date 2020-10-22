@@ -31,6 +31,7 @@ export default class MediaButton extends Component {
           transparent
           onPress={() => {
             if (navigateToCover) {
+              NavigationService.navigate("AdCover", { rejected });
             } else {
               snapAdCard
                 ? _handleStoryAdCards({
@@ -85,7 +86,7 @@ export default class MediaButton extends Component {
             onPress={() => {
               // this._pickImage();
               if (navigateToCover) {
-                NavigationService.navigate("AdCover", { rejected });
+                this.props.navigation.push("AdCover", { rejected });
               } else {
                 snapAdCard
                   ? _handleStoryAdCards({

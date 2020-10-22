@@ -132,6 +132,7 @@ class SnapCard extends Component {
               navigateToCover={snapCardInfo.item.id === -1}
               setTheState={this.props.setTheState}
               rejected={rejected}
+              navigation={this.props.navigation}
             />
           ) : (
             <TouchableOpacity

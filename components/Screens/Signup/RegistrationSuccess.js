@@ -14,6 +14,9 @@ import styles from "./MainForm/styles";
 import { connect } from "react-redux";
 
 class RegistartionSuccess extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
   componentDidMount() {
     const { userInfo } = this.props;
 
