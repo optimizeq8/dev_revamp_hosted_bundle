@@ -68,7 +68,7 @@ export default class TeamMember extends Component {
             disabled={loadingTeamMembers}
             onPress={this.resendInvite}
           >
-            <Text style={styles.resendStyle}>resend</Text>
+            <Text style={styles.resendStyle}>{translate("resend")}</Text>
           </TouchableOpacity>
         ) : (
           <PenIcon width={20} height={20} />
