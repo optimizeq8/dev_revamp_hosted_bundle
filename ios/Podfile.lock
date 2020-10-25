@@ -363,8 +363,8 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - ReactNativeAutogrowTextinput (5.4.0):
     - React
-  - RNAnalytics (1.3.1):
-    - Analytics (~> 4.0)
+  - RNAnalytics (1.3.2):
+    - Analytics (~> 4.1)
     - React
   - RNAnalyticsIntegration-Adjust (1.3.1):
     - Analytics
@@ -789,7 +789,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
-  RNAnalytics: 589e1b1072d9df2646899627e4582d20c3255127
+  RNAnalytics: ac18ac964dd53bac7f957994412963e8e2568c4d
   RNAnalyticsIntegration-Adjust: c3525c3bfffec62acf320462d5d2b22f67af3aa9
   RNAnalyticsIntegration-Mixpanel: c25ce5710f9b87d8eb631567f65cc2005993f735
   RNBootSplash: 6c2a4f7cf8a2d2f18043e11da177c95395da9f4b
