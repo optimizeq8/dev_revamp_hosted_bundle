@@ -58,7 +58,8 @@ class LineGraph extends Component {
         let date = new Date(stat.end_time.split("-07:00")[0]);
         let startDate = new Date(stat.start_time.split("-07:00")[0]);
 
-        let day = new Date(stat.end_time.split("T")[0]).getDate();
+        // Changing from stat.end_time to stat.start_time so as to show the result similar to snapchat ads manager
+        let day = new Date(stat.start_time.split("T")[0]).getDate();
         let month = date.getMonth();
         let hour = `${startDate.getHours()}:00 / ${date.getHours()}:00
 ${day}/${shortMonths[month]}`;
