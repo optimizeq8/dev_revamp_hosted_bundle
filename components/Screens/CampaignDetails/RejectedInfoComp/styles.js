@@ -140,9 +140,9 @@ export default StyleSheet.create({
   },
   returnAmountWalletLinkView: {
     alignSelf: "center",
-    paddingVertical: 20,
+    paddingBottom: 20,
   },
-  updateAdButton: { alignSelf: "center" },
+  updateAdButton: { alignSelf: "center", marginBottom: 20 },
   dispalyBlock: {
     display: "flex",
     width: 10,
