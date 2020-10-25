@@ -78,6 +78,8 @@ export default class index extends Component {
             contentContainerStyle={{ backgroundColor: "transparent" }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
+            cacheEnabled={false}
+            incognito={true}
           />
           {this.state.viewLoader && (
             <View
