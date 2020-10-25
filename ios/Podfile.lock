@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.23.2):
     - Adjust/Core (= 4.23.2)
   - Adjust/Core (4.23.2)
-  - Analytics (4.0.5)
+  - Analytics (4.1.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - EXApplication (2.2.1):
@@ -112,15 +112,15 @@ PODS:
   - GoogleMaps/Base (3.5.0)
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
-  - imglyKit (10.21.2)
+  - imglyKit (10.21.3)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
     - React
   - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
-  - PhotoEditorSDK (10.21.2):
-    - imglyKit (= 10.21.2)
+  - PhotoEditorSDK (10.21.3):
+    - imglyKit (= 10.21.3)
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
     - FBLazyVector (= 0.62.2)
@@ -363,8 +363,8 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - ReactNativeAutogrowTextinput (5.4.0):
     - React
-  - RNAnalytics (1.3.1):
-    - Analytics (~> 4.0)
+  - RNAnalytics (1.3.2):
+    - Analytics (~> 4.1)
     - React
   - RNAnalyticsIntegration-Adjust (1.3.1):
     - Analytics
@@ -433,8 +433,8 @@ PODS:
     - UMFontInterface
   - UMSensorsInterface (5.2.1)
   - UMTaskManagerInterface (5.2.1)
-  - VideoEditorSDK (10.21.2):
-    - imglyKit (= 10.21.2)
+  - VideoEditorSDK (10.21.3):
+    - imglyKit (= 10.21.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -724,7 +724,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Adjust: 2faf94752c2069c0bc68bc41c03d00175de4555f
-  Analytics: 4bcf052c91e1f3339219e83d6a036fb2bd7c218d
+  Analytics: 21202e6dee8b74c73944084d2f876ce5cfd65e07
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXApplication: d7ccb60c33fa4d506967ff6adde42a0f872d69ad
@@ -756,12 +756,12 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
-  imglyKit: d0620363736f20e19f71eb5ff67377ff48af97d7
+  imglyKit: f3091be82eedddd14ff23a684cba3d16b909a567
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
-  PhotoEditorSDK: e91f4eedbc013e541843a823d0d594c874214c09
+  PhotoEditorSDK: 31e041df15833c5de2d4d35a7571a6d3e9cc8e08
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
@@ -789,7 +789,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
-  RNAnalytics: 589e1b1072d9df2646899627e4582d20c3255127
+  RNAnalytics: ac18ac964dd53bac7f957994412963e8e2568c4d
   RNAnalyticsIntegration-Adjust: c3525c3bfffec62acf320462d5d2b22f67af3aa9
   RNAnalyticsIntegration-Mixpanel: c25ce5710f9b87d8eb631567f65cc2005993f735
   RNBootSplash: 6c2a4f7cf8a2d2f18043e11da177c95395da9f4b
@@ -821,9 +821,9 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 538efe92e781b5d7678cf95b34c46f2d0989a557
   UMSensorsInterface: cb5bf31d52c4349f0ff9e3c049bbe4df0d80d383
   UMTaskManagerInterface: 80653f25c55d9e6d79d6a0a65589fa213feaee11
-  VideoEditorSDK: 0dcdde1a786c79ad0391a921e198b1722ec61f01
+  VideoEditorSDK: 67c47723c31a0d827608163726cbe24e29479386
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
 PODFILE CHECKSUM: a911ee4f5054d6143fce835b9e034ac8a69a4287
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4
