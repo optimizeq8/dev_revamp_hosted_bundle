@@ -171,15 +171,16 @@ class AdPaymentReview extends Component {
 
     let languageNames = [];
     languageNames =
-      this.props.languages.length > 0 &&
-      targeting &&
-      targeting.demographics[0] &&
-      targeting.demographics[0].languages.map((languageId) => {
-        return translate(
-          this.props.languages &&
-            this.props.languages.find((lang) => lang.id === languageId).name
-        );
-      });
+      this.props.languages.length > 0
+        ? targeting &&
+          targeting.demographics[0] &&
+          targeting.demographics[0].languages.map((languageId) => {
+            return translate(
+              this.props.languages &&
+                this.props.languages.find((lang) => lang.id === languageId).name
+            );
+          })
+        : [];
 
     return {
       interestNames,
@@ -282,7 +283,6 @@ class AdPaymentReview extends Component {
         devices,
         languageNames,
       } = this.formatAttributes();
-
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
         <View style={[styles.safeAreaView]}>
