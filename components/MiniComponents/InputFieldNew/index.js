@@ -65,8 +65,9 @@ export default class InputField extends Component {
         this.props.stateName1 === "newEmail") &&
       valueError
     ) {
+      const { translate } = this.props;
       showMessage({
-        message: valueError,
+        message: translate(valueError),
         position: "top",
         type: "warning",
       });
