@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>EXUpdatesReleaseChannel</key>
-	<string>dev-62</string>
+	<string>navigation-changed</string>
 	<key>EXUpdatesSDKVersion</key>
 	<string>38.0.0</string>
 	<key>EXUpdatesURL</key>
