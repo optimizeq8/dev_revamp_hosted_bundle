@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: "#fff",
+    color: globalColors.purple,
     fontFamily: "montserrat-bold",
     fontSize: 11,
     textAlign: "left",
@@ -411,18 +411,45 @@ const styles = StyleSheet.create({
     left: "7%",
     opacity: 0.4,
   },
+  metricsStylePurple: {
+    flexDirection: "row",
+    alignItems: "center",
+    overflow: "hidden",
+    // flex: 1,
+    paddingHorizontal: 20,
+    marginVertical: 3,
+    marginHorizontal: 10,
+    backgroundColor: "#0003",
+    width: 160,
+    borderRadius: 20,
+    height: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    // elevation: 7,
+    // padding: "3%"
+  },
   metricsStyle: {
     flexDirection: "row",
     alignItems: "center",
     // flex: 1,
     paddingHorizontal: 20,
     marginVertical: 3,
-    marginRight: 10,
-    backgroundColor: "#0004",
+    marginHorizontal: 10,
+    backgroundColor: "#FFF",
     width: 160,
     borderRadius: 20,
     height: 50,
-    overflow: "hidden", // need to test
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 7,
     // padding: "3%"
   },
   chartChoices: {

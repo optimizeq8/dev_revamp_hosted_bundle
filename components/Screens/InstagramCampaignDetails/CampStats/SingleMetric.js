@@ -43,7 +43,7 @@ export default class SingleMetric extends Component {
         break;
     }
     return (
-      <View style={styles.metricsStyle}>
+      <View style={styles.metricsStylePurple}>
         {Icon && (
           <Icon
             width={heightPercentageToDP(3)}
@@ -54,7 +54,9 @@ export default class SingleMetric extends Component {
         )}
         {!loadingCampaignStats ? (
           <View>
-            <Text style={[styles.title]}>{translate(metric)}</Text>
+            <Text style={[styles.title, globalStyles.whiteTextColor]}>
+              {translate(metric)}
+            </Text>
             <View style={globalStyles.row}>
               {metric.toLowerCase().includes("c") &&
                 metric.toLowerCase() !== "ctr" &&

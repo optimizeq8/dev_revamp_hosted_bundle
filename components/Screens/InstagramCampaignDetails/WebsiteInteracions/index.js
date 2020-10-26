@@ -41,10 +41,9 @@ class WebsiteInteracions extends PureComponent {
   };
 
   render() {
-    let { smeMetrics } = this.props;
-
+    let { instaSMEMetrics } = this.props;
     let metrics = [];
-    let objectiveMetric = [...smeMetrics];
+    let objectiveMetric = [...instaSMEMetrics];
 
     while (objectiveMetric.length > 0)
       metrics.push(objectiveMetric.splice(0, 3));
@@ -63,6 +62,6 @@ class WebsiteInteracions extends PureComponent {
 
 const mapStateToProps = (state) => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
-  smeMetrics: state.dashboard.smeMetrics,
+  instaSMEMetrics: state.dashboard.instaSMEMetrics,
 });
 export default connect(mapStateToProps, null)(WebsiteInteracions);

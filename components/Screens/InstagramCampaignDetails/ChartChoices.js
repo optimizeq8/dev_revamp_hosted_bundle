@@ -16,11 +16,7 @@ export default class ChartChoices extends Component {
         ? "CPM"
         : "Clicks",
     ];
-    if (
-      selectedCampaign &&
-      selectedCampaign.source === "SME GROWTH" &&
-      "website interactions"
-    )
+    if (selectedCampaign && selectedCampaign.web_interaction)
       choices.push("website interactions");
     choices = choices.map((choice) => (
       <GradientButton
