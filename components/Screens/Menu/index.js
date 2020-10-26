@@ -410,7 +410,7 @@ class Menu extends Component {
               <Text style={styles.version}>
                 {translate("Version:")}
                 {Constants.nativeAppVersion}/277/
-                {Constants.nativeBuildVersion}
+                {Constants.nativeBuildVersion}/Navigation chaged
               </Text>
             </ScrollView>
           </View>
