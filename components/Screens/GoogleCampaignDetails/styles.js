@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 15,
+    // borderRadius: 15,
   },
   ScrollChartArea: {
     height: 35,
