@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   ScrollChartArea: {
     height: 35,
   },
-  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
+  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#000" },
   dot: {
     top: 10,
     width: 10,
