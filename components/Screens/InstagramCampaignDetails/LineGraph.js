@@ -113,7 +113,7 @@ class LineGraph extends Component {
           {this.props.campaignStats && this.props.campaignStats.length < 1 ? (
             <BlurView
               intensity={70}
-              tint="dark"
+              tint="light"
               style={styles.placeHolderChart}
             >
               <Text style={styles.placeHolderChartText}>

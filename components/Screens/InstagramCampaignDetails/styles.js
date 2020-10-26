@@ -357,14 +357,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    borderRadius: 15,
+    // borderRadius: 15,
   },
   ScrollChartArea: {
     height: 35,
   },
   placeHolderChartText: {
     fontFamily: "montserrat-medium",
-    color: "#fff",
+    color: "#000",
   },
   dot: {
     top: 10,
