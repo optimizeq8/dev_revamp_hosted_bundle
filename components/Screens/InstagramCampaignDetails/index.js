@@ -695,7 +695,7 @@ class InstagramCampaignDetails extends Component {
           )}
           <Animated.View
             style={[
-              { backgroundColor: "#000", overflow: "hidden" },
+              { backgroundColor: "#f8f8f8", overflow: "hidden" },
               { height: this.state.chartAnimation },
             ]}
           >

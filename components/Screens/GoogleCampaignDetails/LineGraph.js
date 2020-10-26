@@ -19,6 +19,7 @@ import {
   heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
+import { globalColors } from "../../../GlobalStyles";
 
 class LineGraph extends Component {
   constructor(props) {
@@ -112,7 +113,7 @@ class LineGraph extends Component {
           {this.props.campaignStats.length < 1 ? (
             <BlurView
               intensity={70}
-              tint="dark"
+              tint="light"
               style={styles.placeHolderChart}
             >
               <Text style={styles.placeHolderChartText}>
@@ -164,9 +165,9 @@ class LineGraph extends Component {
           >
             <Defs>
               <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
-                <Stop offset="0%" stopColor="#FF7D08" />
-                <Stop offset="5%" stopColor="#f07204" />
-                <Stop offset="60%" stopColor="#000" />
+                <Stop offset="0%" stopColor={globalColors.purple} />
+                <Stop offset="5%" stopColor={"#7400E5"} />
+                <Stop offset="90%" stopColor="#f8f8f8" />
               </LinearGradient>
             </Defs>
             {this.props.campaignStats.length === 1 ? (
@@ -174,7 +175,7 @@ class LineGraph extends Component {
                 categories={{ x: category }}
                 style={{
                   data: {
-                    stroke: "#FF7D08",
+                    stroke: "#9304FF",
                     fill: "url(#myGradient)",
                     strokeWidth: 5,
                   },
@@ -190,7 +191,7 @@ class LineGraph extends Component {
                   interpolation="catmullRom"
                   style={{
                     data: {
-                      stroke: "#FF7D08",
+                      stroke: "#9304FF",
                       fill: "url(#myGradient)",
                       strokeWidth: 5,
                     },
@@ -200,10 +201,7 @@ class LineGraph extends Component {
                 <VictoryScatter
                   categories={{ x: category }}
                   style={{
-                    data: {
-                      fill: "#fff",
-                      strokeWidth: 5,
-                    },
+                    data: { stroke: "#9304FF", strokeWidth: 1.5, fill: "#FFF" },
                   }}
                   size={8}
                   data={data}
@@ -258,14 +256,13 @@ class LineGraph extends Component {
 let tickLabelStyles = {
   axis: { stroke: "none" },
   tickLabels: {
-    stroke: "#fff",
-    fill: "#fff",
-    fontSize: 13,
-    padding: 5,
-    fontFamily: "Helvetica",
-    fontWeight: "100",
+    // stroke: "#A496AC",
+    fill: "#A496AC",
+    fontSize: 10,
+    padding: 6,
+    fontFamily: "montserrat-regular-english",
   },
-  ticks: { stroke: "#fff", size: 6, padding: 0 },
+  ticks: { stroke: "#A496AC", size: 6, padding: 0 },
 };
 
 const mapStateToProps = (state) => ({});

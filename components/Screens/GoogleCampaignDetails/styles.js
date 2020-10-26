@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "#f8f8f8",
   },
   media: {
     alignSelf: "center",
@@ -346,12 +346,12 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 15,
+    // borderRadius: 15,
   },
   ScrollChartArea: {
     height: 35,
   },
-  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
+  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#000" },
   dot: {
     top: 10,
     width: 10,
@@ -567,7 +567,7 @@ const styles = StyleSheet.create({
   infoButton: { alignSelf: "flex-end" },
   xAxisStyle: {
     position: "absolute",
-    backgroundColor: "#000",
+    backgroundColor: "#0000",
     width: "15%",
   },
   noKeywordsView: {

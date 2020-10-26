@@ -60,7 +60,7 @@ class WebsiteInteracions extends PureComponent {
 const styles = StyleSheet.create({
   metricView: {
     flexDirection: "row",
-    left: 10,
+    // left: 10,
   },
 });
 
