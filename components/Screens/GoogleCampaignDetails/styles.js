@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "#f8f8f8",
   },
   media: {
     alignSelf: "center",
@@ -567,7 +567,7 @@ const styles = StyleSheet.create({
   infoButton: { alignSelf: "flex-end" },
   xAxisStyle: {
     position: "absolute",
-    backgroundColor: "#000",
+    backgroundColor: "#0000",
     width: "15%",
   },
   noKeywordsView: {
