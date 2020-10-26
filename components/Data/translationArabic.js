@@ -52,7 +52,7 @@ const strings = {
   "Switch Account": "الإنتقال بين الحسابات",
   "Personal Info": "المعلومات الشخصية",
   Wallet: "المحفظة",
-  Transactions: "المعاملات",
+  Transactions: "السجل",
   "Change Password": "تغيير كلمة المرور",
   Address: "العنوان",
   "Privacy Policy": "سياسة الخصوصية",
@@ -65,7 +65,7 @@ const strings = {
   "Available Balance": "الرصيد المتوفر",
   "Top up wallet": "إعادة تعبئة المحفظة",
   "Your wallet can be used to purchase ads or to resume paused ads immediately":
-    "يمكنك إستخدام رصيد محفظتك لإطلاق الحملات أو لإعادة إطلاق الحملات المتوقفة",
+    "يمكنك إستخدام الرصيد المتوفر بالمحفظة لإطلاق أو لإعادة إطلاق الحملات المتوقفة",
   "Please input the amount You’d like to add to your wallet":
     "الرجاء إدخال المبلغ الذي تريد إضافته إلى محفظتك",
   "Top Up": "التعبئة",
@@ -135,7 +135,7 @@ const strings = {
   "You can switch between businesses here": "يمكنك الإنتقال بين المشاريع هنا",
   "Add a new Business": "إضافة مشروع جديد",
   Support: "الدعم",
-  "Connecting you to Your Agent": "جاري التواصل مع الموظف",
+  "Connecting you to Your Agent": "جاري التواصل مع فريق الدعم",
   "Something went wrong!": "يبدو أن هناك خطأ!",
   "Try again in sometime!": "حاول مرة أخرى في وقت لاحق!",
   "Type Your Message": "اكتب رسالتك",
@@ -365,7 +365,7 @@ const strings = {
   "Tap to submit your Ad again": "إضغط لتسجيل إعلانك مره أخرى",
   "Tap to view more": "إضغط لعرض المزيد",
   "In Review": "تحت المراجعة",
-  "Ad Rejected": "الإعلان مرفوض",
+  "Ad Rejected": "تم رفض الإعلان",
   LIVE: "فعالة",
   "Campaign Paused": "الحملة متوقفة مؤقتاً",
   "Campaign ended": "إنتهت الحملة",
@@ -1221,7 +1221,7 @@ const strings = {
   "GoogleSE Ad": "Google Ad",
   cpc: "cpc",
   "Rejected Reason": "سبب الرفض",
-  "Search transactions": "بحث المعاملات",
+  "Search transactions": "البحث في السجل",
   "Input Description 2 text": "إدخال الوصف الثاني",
   "Input Description 1 text": "إدخال الوصف الأول",
   "Input landing page url": "إدخال رابط صفحة الوصول",
@@ -1390,7 +1390,7 @@ const strings = {
     "تم إرسال رمز التحقق إلى رقم الهاتف الخاص بك",
   "We’ve sent a code to your Email": "تم إسال رمز التحقق الى بريدك الالكتروني",
   Instagram: "Instagram",
-  "Instagram Feed": "موجز Instagram",
+  "Instagram Feed": "Instagram Feed",
   "Instagram Feed Campaign": "حملة Instagram Feed",
   "Instagram Story Campaign": "حملة قصص الانستقرام",
   "Brand Awareness": "الوعي بالعلامة التجارية",
@@ -1403,12 +1403,12 @@ const strings = {
   "Get more people to send messages to your business in WhatsApp or Instagram Direct":
     "إحصل على المزيد من الرسائل من العملاء والمستخدمين عن طريق رقم الهاتف الخاص بمشروعك أو الرسائل الخاصة في الانستقرام",
   "Get more people to like, comment, and share your post":
-    "إحصل على المزيد من التفاعل في منشورك من خلال إبداء الإعجاب والتعليقات والمشاركة",
+    "إحصل على المزيد من التفاعل في البوست الخاص بك من خلال إبداء الإعجاب والتعليقات والمشاركة",
   Messages: "الرسائل",
-  "Post Engagement": "التفاعل مع المنشور",
+  "Post Engagement": "زيادة التفاعل مع البوست",
   "Get more people to install your app":
     "إحصل على المزيد من المستخدمين لتطبيقك",
-  "Instagram Story": "القصص في الانستقرام - Instagram Story",
+  "Instagram Story": "Instagram Story",
   Compose: "إنشاء",
   "Single Image": "صورة واحدة",
   Carousel: "Carousel",
@@ -1424,9 +1424,9 @@ const strings = {
     "يجب أن تكون أبعاد الفيديو ٤:٥، والحجم ٦٢٥ x ٥٠٠ كحد أدنى",
   "My Website": "الموقع الالكتروني الخاص بي",
   "youtube clicks": "يوتيوب",
-  Feed: "الموجز",
+  Feed: "Feed",
   "Create a new": "إنشاء حملة إعلانية جديدة",
-  "Suitable For:": "مناسب لـ:",
+  "Suitable For:": "مناسب لـ :",
   "Home Businesses": "المشاريع المنزلية",
   "Service Providers": "مزودي الخدمات",
   "Startups & SMEs": "المشاريع الصغيرة والمتوسطة",
@@ -1448,13 +1448,13 @@ const strings = {
   "WhatsApp Number": "رقم الواتساب",
   "WEBSITE SETTINGS": "إعدادات الموقع الالكتروني",
   "You can change your website info here":
-    "يمكنك تغيير معلومات الموقع الالكتروني الخاص بك هنا",
+    "لتغيير معلومات الموقع الالكتروني الخاص بك",
   "Add Products": "لإضافة منتجات",
   "These are the products that will show on your website Tap to remove products":
     "هذه المنتجات التي سوف تعرض في موقعك الالكتروني، يرجى الضغط لإزالة المنتجات",
   "WEBSITE REGISTRATION": "للتسجيل في الموقع الالكتروني",
   "Change Logo": "لتغيير الشعار",
-  "Tap to remove products": "يرجى الضغط لإزالة المنتجات",
+  "Tap to remove products": "يرجى الضغط لتحديد المنتجات التي ترغب بإزالتها",
   "These are the products that will show on your website":
     "هذه المنتجات التي سوف تعرض في موقعك الالكتروني",
   "Live Preview": "معاينة مباشرة",
@@ -1542,7 +1542,7 @@ const strings = {
     "الحد الأدنى لمقطع الفيديو هو ثانية واحدة",
   "link click": "عدد الضغطات على الرابط",
   frequency: "تكرار",
-  "Click destination": "رابط الوصول",
+  "Click destination": "إعدادات وجهة الوصول",
   "Only one OS per campaign": "حدد نظام تشغيل واحد لكل حملة",
   "Story Cover Example": "مثال على غلاف الStory",
   "The cover shows on the Discover page among subscriptions and trending content":
@@ -1555,10 +1555,10 @@ const strings = {
   Map: "الخريطة",
   "Single Media": "ملف واحد",
   "Select Campaign Duration": "حدد مدة الحملة",
-  "Existing Post": "منشور متوفر",
+  "Existing Post": "بوست جاهز",
   "Promote an existing Post from your Instagram account":
-    "للترويج لمنشور متوفر في الحساب الخاص بك على Instagram",
-  "New Post": "منشور جديد",
+    "للترويج لبوست متوفر في الحساب الخاص بك على Instagram",
+  "New Post": "بوست جديد",
   "Create a new ad using our photo editor":
     "قم بإنشاء حملة إعلانية جديدة باستخدام Photo Editor",
   "app install": "تحميل التطبيق",
@@ -1575,7 +1575,7 @@ const strings = {
   Upload: "حمل ",
   "This video will be seen when users swipe up":
     "سوف يظهر هذا الفيديو عند قيام المستخدمين بالسحب للأعلى",
-  "Select a post to promote": "قم باختيار منشور للترويج",
+  "Select a post to promote": "قم باختيار البوست",
   "Edit Product": "التعديل على المنتج",
   "Start Date": "تاريخ الإنطلاق",
   "MY PRODUCTS": "منتجاتي",
@@ -1617,7 +1617,7 @@ const strings = {
   YES: "نعم",
   "DEEP LINK": "Deep Link",
   "Please note that Snapchat's review process can take up to 72 hours or more":
-    "تتم مراجعة الإعلانات خلال 24 ساعة إلا إنها قد تستغرق وقتاً أطول في بعض الحالات",
+    "تتم مراجعة الإعلانات خلال 72 ساعة إلا إنها قد تستغرق وقتاً أطول في بعض الحالات",
   "Minimum width for video is 1080px": "الحد الأدنى لعرض الفيديو 1080 بكسل",
   FEATURED: "منتجات متميزة",
   "Edit Video": "تعديل الفيديو",
@@ -1639,7 +1639,7 @@ const strings = {
   "Please drop the pin first to choose a location":
     "Please drop the pin first to choose a location",
   "Longform Video": "فيديو تزيد مدته عن ١٥ ثانية",
-  "Click settings": "اضغط على الاعدادات",
+  "Click settings": "اختر",
   Install: "تحميل",
   "Video processing canceled": "تم إلغاء معاينة وتحميل الفيديو",
   "Editing canceled": "تم إلغاء التعديل",
@@ -1689,24 +1689,54 @@ const strings = {
   International: "دول أخرى\\عالمياً",
   "Your Instagram Business Account {{instagram_username}} has been connected successfully!":
     "تم ربط حساب الانستغرام الخاص بك {{instagram_username}} بنجاح!",
-  BLANK: "",
-  "Please wait a while": "",
-  "Your transaction is being completed": "",
-  "Do not close the App": "",
+  BLANK: "فارغ",
+  "Please wait a while": "يرجى الانتظار",
+  "Your transaction is being completed": "جاري استكمال العملية",
+  "Do not close the App": "يرجى عدم إغلاق التطبيق",
   Warning: "تحذير",
   "You didn't save your changes Do you want go back without saving":
     " لم يتم حفظ التغييرات. هل تريد العودة بدون الحفظ؟",
-  Explore: "",
+  Explore: "EXPLORE",
   "Explore Ads are made up of 3-18 Snap Ads, giving brands a chance to better communicate their message or showcase high production value videos Don’t forget to keep the viewers’ attention at all times":
-    "",
+    "سلسلة من المقاطع يتم عرضها ضمن صفحة البحث/Explore في سناب شات، تمكّن العلامات التجارية من إيصال رسالتهم بشكل أفضل وعرض مقاطع فيديو عالية الجودة.",
   "Collection Ads are made-for-commerce ads that allow you to feature a series of products that Snapchatters can tap to get more details":
-    "",
-  "Search Regions": "",
+    "يستخدم Collection Ads للمتاجر الالكترونية، تمكنكم عرض مجموعة من المنتجات، وتسمح للمستخدمين بالتسوق والحصول على المزيد من المعلومات عن تلك المنتجات.",
+  "Search Regions": "مناطق البحث",
   "Set your daily budget": "حدد ميزانيتك اليومية",
-  "Get more Snapchatters to Engage with your Ad": "",
-  Engagement: "",
+  "Get more Snapchatters to Engage with your Ad":
+    "للحصول على المزيد من التفاعل مع إعلانك عبر سناب شات",
+  Engagement: "التفاعل",
   "no of Countries": "عدد الدول",
-  avg: "",
+  avg: "المعدّل",
+  Call: "اتصال",
+  "People will contact your business on call":
+    "تمكّن المستخدمين من الاتصال بالمشروع الخاص بك",
+  "CALL NOW": "اتصّل الآن!",
+  "Enter your 6-digit verification code":
+    "يرجى إدخال رمز التحقق المتكون من ٦ أرقام",
+  "Ad To Call": "إعلان للاتصال",
+  "Refund Amount": "المبلغ المسترجع",
+  "Move Amount to Wallet": "استرجاع المبلغ للمحفظة",
+  "Update Ad": "تعديل الإعلان",
+  "Once the amount is moved back to wallet you will not be able to re-launch this campaign again":
+    "عند إسترجاع المبلغ للمحفظة، لن تتمكن من إطلاق هذه الحملة مرة أخرى",
+  "Are you sure you want to move amount to wallet?":
+    "هل أنت متأكد من إسترجاع المبلغ للمحفظة؟",
+  "Minimum Duration is {{n}} days": "أقل مدة هي {{n}} أيام",
+  "Invite received": "تم استلام الإضافة",
+  days: "أيام",
+  day: "يوم",
+  "Al Rakah Ash Shamaliyah": "الرقعه الشماليه",
+  "Expected Results": "النتائج المتوقعه",
+  "Fix Now": "للتعديل",
+  "Refund to wallet": "استرجاع المبلغ الى المحفظة",
+  "Refund Now": "استرجاع المبلغ الآن",
+  "Return amount to wallet": "استرجاع المبلغ للمحفظة",
+  "Contact Us": "تواصل معنا",
+  "You're requesting to refund to your wallet":
+    "لقد قمت بطلب استرجاع المبلغ للمحفظة",
+  "File does not exist": "الملف غير متاح",
+  resend: "إعادة إرسال",
 };
 
 export default strings;

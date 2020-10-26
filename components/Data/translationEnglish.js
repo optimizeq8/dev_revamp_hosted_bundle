@@ -1435,7 +1435,7 @@ const strings = {
   "youtube clicks": "Youtube",
   Feed: "Feed",
   "Create a new": "Create a new",
-  "Suitable For:": "Suitable For:",
+  "Suitable For:": "Suitable For :",
   "Home Businesses": "Home Businesses",
   "Service Providers": "Service Providers",
   "Startups & SMEs": "Startups & SMEs",
@@ -1716,5 +1716,34 @@ const strings = {
   Engagement: "Engagement",
   "no of Countries": "no. of Countries",
   avg: "avg",
+  Call: "Call",
+  "People will contact your business on call":
+    "People will contact your business on call",
+  "CALL NOW": "CALL NOW",
+  "Enter your 6-digit verification code":
+    "Enter your 6-digit verification code",
+  "Ad To Call": "Ad To Call",
+  "Refund Amount": "Refund Amount",
+  "Move Amount to Wallet": "Move Amount to Wallet",
+  "Update Ad": "Update Ad",
+  "Once the amount is moved back to wallet you will not be able to re-launch this campaign again":
+    "Once the amount is moved back to wallet you will not be able to re-launch this campaign again",
+  "Are you sure you want to move amount to wallet?":
+    "Are you sure you want to move amount to wallet?",
+  "Minimum Duration is {{n}} days": "Minimum Duration is {{n}} days",
+  "Invite received": "Invite received",
+  days: "days",
+  day: "day",
+  "Al Rakah Ash Shamaliyah": "Al Rakah Ash Shamaliyah",
+  "Expected Results": "Expected Results",
+  "Fix Now": "Fix Now",
+  "Refund to wallet": "Refund to wallet",
+  "Refund Now": "Refund Now",
+  "Return amount to wallet": "Return amount to wallet",
+  "Contact Us": "Contact Us",
+  "You're requesting to refund to your wallet":
+    "You're requesting to refund to your wallet",
+  "File does not exist": "File does not exist",
+  resend: "resend",
 };
 export default strings;
