@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    height: "100%",
+    height: "93%",
     // paddingTop: ,
   },
   subHeadings: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     // width: "100%",
-    bottom: "8%",
+    bottom: 0,
     position: "absolute",
     // flex: 0.55,
     backgroundColor: globalColors.white,
