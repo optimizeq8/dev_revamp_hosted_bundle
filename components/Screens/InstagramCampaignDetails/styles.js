@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   choicesStyles: {
-    elevation: 11,
+    // elevation: 11,
     zIndex: 11,
     position: "absolute",
     // width: "100%",
