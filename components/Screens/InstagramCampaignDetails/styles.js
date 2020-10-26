@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   safeAreaView: { height: "100%" },
   container: {
     // height: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "#f8f8f8",
   },
   media: {
     alignSelf: "center",
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
   },
   xAxisStyle: {
     position: "absolute",
-    backgroundColor: "#000",
+    backgroundColor: "#0000",
     width: "15%",
   },
   CSVText: {
