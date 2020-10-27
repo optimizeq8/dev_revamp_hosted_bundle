@@ -651,6 +651,10 @@ export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
         });
+        showMessage({
+          type: data.success ? "success" : "warning",
+          message: data.message,
+        });
         navigation.navigate("Dashboard", {
           source: "ad_targeting",
           source_action: "a_submit_ad_targeting",
