@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     // height: heightPercentageToDP(90),
     marginLeft: 0,
     marginRight: 0,
-    marginTop: 0,
+    marginTop: 5,
     marginBottom: 0,
   },
   button: {

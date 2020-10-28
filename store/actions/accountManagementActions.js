@@ -237,15 +237,26 @@ export const getAddressForm = () => {
       });
   };
 };
+
+/**
+ *
+ * @param {*} info
+ *  Object: {
+ *    businessid,
+ *    is_political,
+ *    paying_advertiser_name
+ *  }
+ * @param {*} navigation
+ */
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
-export const create_snapchat_ad_account = (id, navigation) => {
+export const create_snapchat_ad_account = (info, navigation) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
     });
     createBaseUrl()
-      .post("snapadaccounts", { businessid: id })
+      .post("snapadaccounts", info)
       .then((res) => {
         return res.data;
       })
