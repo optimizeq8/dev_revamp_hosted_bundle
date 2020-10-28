@@ -637,6 +637,10 @@ export const ad_details = (
 
 export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DETAIL,
+      payload: true,
+    });
     createBaseUrl()
       .put(`savetargeting`, { ...info, businessid })
       .then((res) => {
@@ -654,6 +658,10 @@ export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
         showMessage({
           type: data.success ? "success" : "warning",
           message: data.message,
+        });
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DETAIL,
+          payload: false,
         });
         navigation.navigate("Dashboard", {
           source: "ad_targeting",
