@@ -78,6 +78,7 @@ import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 // // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
+import { NativeModules } from "react-native";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {

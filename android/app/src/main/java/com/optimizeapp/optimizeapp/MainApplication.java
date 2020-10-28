@@ -30,6 +30,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.optimizeapp.optimizeapp.generated.BasePackageList;
+import com.optimizeapp.optimizeapp.CustomTweakHelper;
 
 import org.unimodules.adapters.react.ReactAdapterPackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
@@ -61,6 +62,8 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      packages.add(new CustomTweakHelper()); // <-- Add this line with your package name.
+
       return packages;
     }
 
