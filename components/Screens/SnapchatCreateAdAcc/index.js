@@ -8,6 +8,7 @@ import {
   BackHandler,
   Switch,
   Text,
+  TouchableOpacity,
 } from "react-native";
 import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -36,7 +37,7 @@ class SnapchatCreateAdAcc extends Component {
 
     this.state = {
       accept: false,
-      is_political: false,
+      is_political: null,
       paying_advertiser_name: "",
       paying_advertiser_nameError: false,
     };
@@ -81,9 +82,17 @@ class SnapchatCreateAdAcc extends Component {
     });
   };
   acceptTNC = () => {
-    // To validate the paying advertiser name should not be blank id it going to be political account
     const { translate } = this.props.screenProps;
-    if (this.state.is_political) {
+    // To validate the paying advertiser name should not be blank id it going to be political account
+
+    if (this.state.is_political === null) {
+      showMessage({
+        type: "warning",
+        message: translate(
+          "Please confirm if your ad account will be used for political and advocacy or not"
+        ),
+      });
+    } else if (this.state.is_political) {
       if (this.state.paying_advertiser_name === "") {
         this.setState({
           paying_advertiser_nameError: "Please enter paying advertiser name",
@@ -157,8 +166,37 @@ class SnapchatCreateAdAcc extends Component {
               {translate(
                 "Will you use this ad account for political and advocacy?"
               )}
+              *
             </Text>
-            <Switch
+            <View style={styles.radioView}>
+              <TouchableOpacity
+                style={[styles.answerRadio]}
+                onPress={() => {
+                  this.setState({
+                    is_political: true,
+                  });
+                }}
+              >
+                {is_political && <View style={styles.answerRadioSelect} />}
+              </TouchableOpacity>
+              <Text style={[styles.answerText]}>{translate("Yes")}</Text>
+            </View>
+            <View style={styles.radioView}>
+              <TouchableOpacity
+                style={[styles.answerRadio]}
+                onPress={() => {
+                  this.setState({
+                    is_political: false,
+                  });
+                }}
+              >
+                {is_political !== null && !is_political && (
+                  <View style={styles.answerRadioSelect} />
+                )}
+              </TouchableOpacity>
+              <Text style={[styles.answerText]}>{translate("No")}</Text>
+            </View>
+            {/* <Switch
               trackColor={{ false: "#FFF", true: "#FFF" }}
               ios_backgroundColor="#3e3e3e"
               thumbColor={is_political ? globalColors.orange : "#f8f8f8"}
@@ -171,7 +209,7 @@ class SnapchatCreateAdAcc extends Component {
                     : this.state.paying_advertiser_name,
                 });
               }}
-            />
+            /> */}
           </View>
           {is_political && (
             <Input
