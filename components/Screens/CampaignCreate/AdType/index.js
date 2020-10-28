@@ -167,7 +167,7 @@ class AdType extends Component {
           position: "top",
         });
       } else
-        this.props.navigation.navigate("SnapchatCreateAdAcc", {
+        this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value,
           source: "ad_type",
           source_action: "a_campaign_ad_type",
