@@ -102,7 +102,9 @@ class SnapchatCreateAdAcc extends Component {
         {
           businessid: this.props.mainBusiness.businessid,
           is_political: this.state.is_political ? 1 : 0,
-          paying_advertiser_name: this.state.paying_advertiser_name,
+          paying_advertiser_name: this.state.is_political
+            ? this.state.paying_advertiser_name
+            : null,
         },
         this.props.navigation
       );
