@@ -14,6 +14,7 @@ import formatNumber from "../../../formatNumber";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
 import SwipeUpsIcon from "../../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import { globalColors } from "../../../../GlobalStyles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class ReachBar extends Component {
   state = { showMetrics: false };
@@ -27,7 +28,7 @@ class ReachBar extends Component {
           styles.bottom,
           startEditing &&
             !editCampaign && {
-              bottom: "15%",
+              bottom: heightPercentageToDP(7),
             },
         ]}
       >

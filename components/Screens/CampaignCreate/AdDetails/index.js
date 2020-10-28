@@ -362,7 +362,7 @@ class AdDetails extends Component {
                 minValueBudget,
               },
               () => {
-                if (this.props.data.appChoice) {
+                if (this.props.data && this.props.data.appChoice) {
                   let navAppChoice =
                     this.props.data.attachment.ios_app_id &&
                     this.props.data.attachment.ios_app_id !== "" &&
@@ -1325,7 +1325,7 @@ class AdDetails extends Component {
             (reg) => reg.regions.length > 3
           );
 
-          if (this.props.data.appChoice) {
+          if (this.props.data && this.props.data.appChoice) {
             let navAppChoice =
               this.props.data.iosApp_name &&
               this.props.data.iosApp_name !== "" &&
@@ -1496,6 +1496,7 @@ class AdDetails extends Component {
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
             data={
+              this.props.data &&
               this.props.data.appChoice &&
               ((this.props.data.attachment.ios_app_id &&
                 this.props.data.attachment.ios_app_id !== "") ||
