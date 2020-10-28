@@ -74,6 +74,18 @@ const styles = StyleSheet.create({
     width: "60%",
     marginVertical: 20,
   },
+  questionText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    width: "70%",
+  },
+  questionView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
 });
 
 export default styles;

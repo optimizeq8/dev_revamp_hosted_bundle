@@ -81,6 +81,8 @@ class SnapchatCreateAdAcc extends Component {
     });
   };
   acceptTNC = () => {
+    // To validate the paying advertiser name should not be blank id it going to be political account
+    const { translate } = this.props.screenProps;
     if (this.state.is_political) {
       if (this.state.paying_advertiser_name === "") {
         this.setState({
@@ -88,7 +90,7 @@ class SnapchatCreateAdAcc extends Component {
         });
         showMessage({
           type: "warning",
-          message: "Please enter paying advertiser name",
+          message: translate("Please enter paying advertiser name"),
         });
       }
     } else {
@@ -135,22 +137,8 @@ class SnapchatCreateAdAcc extends Component {
           />
 
           <Snapchat fill={"#000"} style={{ alignSelf: "center", margin: 15 }} />
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "montserrat-bold",
-                color: "#FFF",
-                width: "70%",
-              }}
-            >
+          <View style={styles.questionView}>
+            <Text style={styles.questionText}>
               {translate(
                 "Will you use this ad account for political and advocacy?"
               )}
@@ -161,7 +149,6 @@ class SnapchatCreateAdAcc extends Component {
               thumbColor={is_political ? globalColors.orange : "#f8f8f8"}
               value={is_political}
               onValueChange={(val) => {
-                console.log("val", val);
                 this.setState({
                   is_political: val,
                   paying_advertiser_name: !val
