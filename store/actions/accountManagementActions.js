@@ -267,7 +267,7 @@ export const create_snapchat_ad_account = (info, navigation) => {
           campaign_channel: "snapchat",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          businessid: id,
+          ...info,
           action_status: data.success ? "success" : "failure",
         });
         if (data.success) {

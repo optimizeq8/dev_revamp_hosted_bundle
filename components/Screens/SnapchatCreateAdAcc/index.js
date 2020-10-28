@@ -36,7 +36,7 @@ class SnapchatCreateAdAcc extends Component {
 
     this.state = {
       accept: false,
-      is_political: true,
+      is_political: false,
       paying_advertiser_name: "",
       paying_advertiser_nameError: false,
     };
@@ -92,6 +92,19 @@ class SnapchatCreateAdAcc extends Component {
           type: "warning",
           message: translate("Please enter paying advertiser name"),
         });
+      } else {
+        this.props.navigation.navigate("AcceptTermsConditionLoading", {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+        });
+        this.props.create_snapchat_ad_account(
+          {
+            businessid: this.props.mainBusiness.businessid,
+            is_political: 1,
+            paying_advertiser_name: this.state.paying_advertiser_name,
+          },
+          this.props.navigation
+        );
       }
     } else {
       this.props.navigation.navigate("AcceptTermsConditionLoading", {
