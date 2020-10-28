@@ -6,7 +6,6 @@ import {
   View,
   I18nManager,
   BackHandler,
-  Switch,
   Text,
   TouchableOpacity,
 } from "react-native";
@@ -86,6 +85,12 @@ class SnapchatCreateAdAcc extends Component {
     // To validate the paying advertiser name should not be blank id it going to be political account
 
     if (this.state.is_political === null) {
+      analytics.track("a_error_form", {
+        error_page: "ad_TNC",
+        error_description:
+          "Please confirm if your ad account will be used for political and advocacy or not",
+        campaign_channel: "snapchat",
+      });
       showMessage({
         type: "warning",
         message: translate(
@@ -94,6 +99,11 @@ class SnapchatCreateAdAcc extends Component {
       });
     } else if (this.state.is_political) {
       if (this.state.paying_advertiser_name === "") {
+        analytics.track("a_error_form", {
+          error_page: "ad_TNC",
+          error_description: "Please enter paying advertiser name",
+          campaign_channel: "snapchat",
+        });
         this.setState({
           paying_advertiser_nameError: "Please enter paying advertiser name",
         });
