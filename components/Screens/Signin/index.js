@@ -72,7 +72,9 @@ class Signin extends Component {
 
   async componentDidMount() {
     const MPTweakHelper = NativeModules.MPTweakHelper;
-    // MPTweakHelper.getNumberOfLivesTweak("Hello world!");
+    // MPTweakHelper.getNumberOfLivesTweak((showButton) => {
+    //   console.log("showButton", showButton);
+    // });
     // MPTweakHelper.getNumberOfLivesTweak((err, tweakVal) => {
     //   console.log(tweakVal);
     //   this.setState({ tweakVal });

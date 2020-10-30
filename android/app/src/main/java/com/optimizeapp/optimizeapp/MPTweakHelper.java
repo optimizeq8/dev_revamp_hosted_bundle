@@ -10,13 +10,14 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.mixpanel.android.mpmetrics.Tweak;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
+import com.facebook.react.bridge.Callback;
+import android.content.Context;
 import java.util.Map;
 import java.util.HashMap;
 
 public class MPTweakHelper extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext;
-    private static Tweak<Boolean> showAds = MixpanelAPI.booleanTweak("show button",false);
+    private static Tweak<Boolean> showAds = MixpanelAPI.booleanTweak("show button",true);
 
     MPTweakHelper(ReactApplicationContext context) {
     super(context);
@@ -28,8 +29,15 @@ public class MPTweakHelper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getNumberOfLivesTweak(String message) {
-        Toast.makeText(getReactApplicationContext(), message,Toast.LENGTH_SHORT).show();
+    public void getNumberOfLivesTweak(Callback successCallback,String userId) {
+
+if(showAds.get()){
+        Toast.makeText(getReactApplicationContext(), "true",Toast.LENGTH_LONG).show();
+}else{
+        Toast.makeText(getReactApplicationContext(), "false",Toast.LENGTH_LONG).show();
+
+}      successCallback.invoke(showAds.get());
+
     }
 }
 

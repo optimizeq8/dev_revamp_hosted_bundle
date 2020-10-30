@@ -10,6 +10,7 @@ import {
   Linking,
   ActivityIndicator,
   Text,
+  NativeModules,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -89,6 +90,7 @@ class Dashboard extends Component {
       componentMounting: true,
       items: businessCategoriesList(translate),
       adButtons: [...snapAds, ...googleAds],
+      showButton: true,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -102,6 +104,11 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
+    // const MPTweakHelper = NativeModules.MPTweakHelper;
+    // MPTweakHelper.getNumberOfLivesTweak((showButton) => {
+    //   console.log("showButton", showButton);
+    //   this.setState({ showButton });
+    // }, this.props.userInfo.userid);
     Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
       this.props.mainBusiness &&
@@ -759,17 +766,19 @@ class Dashboard extends Component {
                                   flexDirection: "column",
                                 }}
                               >
-                                <GradientButton
-                                  style={styles.button}
-                                  radius={30}
-                                  onPressAction={this.handleNewCampaign}
-                                >
-                                  <Icon
-                                    name="plus"
-                                    type="MaterialCommunityIcons"
-                                    style={{ color: "#fff" }}
-                                  />
-                                </GradientButton>
+                                {this.state.showButton && (
+                                  <GradientButton
+                                    style={styles.button}
+                                    radius={30}
+                                    onPressAction={this.handleNewCampaign}
+                                  >
+                                    <Icon
+                                      name="plus"
+                                      type="MaterialCommunityIcons"
+                                      style={{ color: "#fff" }}
+                                    />
+                                  </GradientButton>
+                                )}
                               </View>
                               <ScrollView
                                 style={{
