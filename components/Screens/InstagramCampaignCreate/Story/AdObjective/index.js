@@ -537,9 +537,6 @@ class AdObjective extends Component {
                   dateField={this.dateField}
                 />
               </Animatable.View>
-              {/* <Text style={styles.minBudget}>
-                {translate("Minimum of $25/day")}
-              </Text> */}
 
               {this.props.loading ? (
                 <ForwardLoading
