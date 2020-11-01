@@ -1597,7 +1597,7 @@ class AdDetails extends Component {
     return (
       <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
         <SafeAreaView
-          style={{ backgroundColor: "#fff" }}
+          style={{ backgroundColor: "#F8F8F8" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
         {!this.editCampaign ? (
