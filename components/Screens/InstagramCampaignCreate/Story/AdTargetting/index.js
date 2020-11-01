@@ -296,7 +296,8 @@ class InstagramStoryAdTargetting extends Component {
             let country_code = country_regions.find(
               (country) => country.name === this.props.mainBusiness.country
             ).key;
-            this.onSelectedCountryRegionChange(country_code);
+
+            await this.onSelectedCountryRegionChange(country_code);
           }
           this._calcReach();
         }

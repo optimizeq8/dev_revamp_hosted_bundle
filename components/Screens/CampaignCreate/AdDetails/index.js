@@ -7,7 +7,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { Container, Content, Row } from "native-base";
+import { Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
