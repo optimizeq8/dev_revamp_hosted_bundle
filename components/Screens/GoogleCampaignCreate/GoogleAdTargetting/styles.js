@@ -209,6 +209,12 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     textTransform: "none",
   },
+  budgetHeader: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 25,
+  },
 });
 
 export default styles;

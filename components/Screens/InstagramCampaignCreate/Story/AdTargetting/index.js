@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
 import { View, Text, BackHandler, I18nManager } from "react-native";
-import { Container, Content } from "native-base";
+import { Container, Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../../MiniComponents/SideMenu";
@@ -43,6 +43,8 @@ import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../../GlobalStyles";
+
+import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
@@ -1259,9 +1261,28 @@ class InstagramStoryAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Text style={styles.subHeadings}>
-                          {translate("Set your daily budget")}
-                        </Text>
+                        <Row
+                          size={-1}
+                          style={{
+                            alignItems: "center",
+                            paddingHorizontal: 20,
+                          }}
+                        >
+                          <WalletIcon
+                            width={30}
+                            height={30}
+                            fill={globalColors.rum}
+                          />
+                          <Text
+                            uppercase
+                            style={[
+                              styles.subHeadings,
+                              { paddingHorizontal: 10 },
+                            ]}
+                          >
+                            {translate("Set your daily budget")}
+                          </Text>
+                        </Row>
                         <BudgetCards
                           value={this.state.value}
                           recBudget={this.state.recBudget}

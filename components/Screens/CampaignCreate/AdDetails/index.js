@@ -1683,7 +1683,7 @@ class AdDetails extends Component {
                 contentContainerStyle={styles.contentContainer}
               >
                 {!this.editCampaign ? (
-                  <View style={{ marginTop: 0 }}>
+                  <View style={{ marginTop: 5 }}>
                     <Row
                       size={-1}
                       style={{

@@ -55,6 +55,8 @@ import isNull from "lodash/isNull";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
+import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
     header: null,
@@ -572,9 +574,13 @@ class GoogleAdTargetting extends Component {
             scrollEnabled={false}
             contentContainerStyle={styles.contentContainer}
           >
-            <Text style={styles.subHeadings}>
-              {translate("Set your budget")}
-            </Text>
+            <View style={styles.budgetHeader}>
+              <WalletIcon fill={"#FFF"} />
+              <Text style={[styles.subHeadings, { paddingHorizontal: 10 }]}>
+                {translate("Set your daily budget")}
+              </Text>
+            </View>
+
             <BudgetCards
               value={this.state.value}
               recBudget={this.props.campaign.recommendedBudget}
