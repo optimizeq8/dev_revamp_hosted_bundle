@@ -63,6 +63,13 @@ export default {
       color: "#4BD6C6",
     },
     {
+      label: "Political Ad",
+      value: "POLITICAL_TRAFFIC",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#332BEF",
+    },
+    {
       label: "Engagement",
       value: "ENGAGEMENT",
       info: "Get more Snapchatters to Engage with your Ad",
