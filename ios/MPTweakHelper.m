@@ -19,7 +19,7 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(getNumberOfLivesTweak:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getNumberOfLivesTweak:(NSString *)name callback:(RCTResponseSenderBlock)callback)
 {
   BOOL x = MPTweakValue(@"show alternate view", NO);
   printf("Pretending to create an eventat %d %s", x, "<---");

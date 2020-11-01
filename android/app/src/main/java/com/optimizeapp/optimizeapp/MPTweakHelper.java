@@ -29,7 +29,7 @@ public class MPTweakHelper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getNumberOfLivesTweak(Callback successCallback,String userId) {
+    public void getNumberOfLivesTweak(String userId,Callback successCallback) {
 
 if(showAds.get()){
         Toast.makeText(getReactApplicationContext(), "true",Toast.LENGTH_LONG).show();

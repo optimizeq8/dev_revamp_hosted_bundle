@@ -104,11 +104,14 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
-    // const MPTweakHelper = NativeModules.MPTweakHelper;
-    // MPTweakHelper.getNumberOfLivesTweak((showButton) => {
-    //   console.log("showButton", showButton);
-    //   this.setState({ showButton });
-    // }, this.props.userInfo.userid);
+    const MPTweakHelper = NativeModules.MPTweakHelper;
+    MPTweakHelper.getNumberOfLivesTweak(
+      this.props.userInfo.userid,
+      (showButton) => {
+        console.log("showButton", showButton);
+        this.setState({ showButton });
+      }
+    );
     Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
       this.props.mainBusiness &&
