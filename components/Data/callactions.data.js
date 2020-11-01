@@ -262,6 +262,15 @@ var list = {
         },
       ],
     },
+    {
+      type: "POLITICAL_TRAFFIC",
+      call_to_action_list: [
+        {
+          label: "MORE",
+          value: "MORE",
+        },
+      ],
+    },
   ],
   InstagramFeedAd: [
     {

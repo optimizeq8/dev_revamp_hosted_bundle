@@ -469,12 +469,12 @@ class AdObjective extends Component {
         objective,
         duration: this.state.duration,
         savedObjective: this.state.savedObjective,
-        isPoitical: 1,
+        is_political: 1,
       };
       if (this.state.savedObjective !== "POLITICAL_TRAFFIC") {
-        delete info.isPoitical;
+        delete info.is_political;
       }
-      console.log("info", info);
+
       this.getMinimumCash();
       this.props.ad_objective(
         {

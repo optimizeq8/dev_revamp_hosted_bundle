@@ -63,7 +63,7 @@ export default {
       color: "#4BD6C6",
     },
     {
-      label: "Political Ad",
+      label: "Majlis 2020",
       value: "POLITICAL_TRAFFIC",
       info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,

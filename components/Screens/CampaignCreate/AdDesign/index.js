@@ -211,16 +211,17 @@ class AdDesign extends Component {
       (this.rejected && this.selectedCampaign.objective) ||
       (!this.rejected && this.props.data && this.props.data.objective);
     if (
-      (this.adType === "CollectionAd" &&
+      this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
+      ((this.adType === "CollectionAd" &&
         (!attch || obj === "BRAND_AWARENESS")) ||
-      (this.adType === "StoryAd" &&
-        this.props.storyAdAttachment.attachment === "BLANK") ||
-      (this.adType === "SnapAd" &&
-        this.state.objective !== "BRAND_AWARENESS") ||
-      (this.adType !== "StoryAd" &&
-        this.state.objective !== "BRAND_AWARENESS" &&
-        this.state.campaignInfo.attachment === "BLANK" &&
-        this.state.campaignInfo.call_to_action.label === "BLANK")
+        (this.adType === "StoryAd" &&
+          this.props.storyAdAttachment.attachment === "BLANK") ||
+        (this.adType === "SnapAd" &&
+          this.state.objective !== "BRAND_AWARENESS") ||
+        (this.adType !== "StoryAd" &&
+          this.state.objective !== "BRAND_AWARENESS" &&
+          this.state.campaignInfo.attachment === "BLANK" &&
+          this.state.campaignInfo.call_to_action.label === "BLANK"))
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -600,6 +601,7 @@ class AdDesign extends Component {
     } else if (
       // !this.rejected &&
       this.adType === "SnapAd" &&
+      this.props.data.savedObjective !== "POLITICAL_TRAFFIC" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
