@@ -10,17 +10,17 @@ export default class SlideUpPanel extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
     top: hp(80),
-    bottom: hp(27)
+    bottom: hp(27),
   };
   state = {
     chartAnimation: new Animated.Value(1),
     LineAnimation: new Animated.Value(0),
     chartChoice: "Spend",
     gotStats: false,
-    refreshing: false
+    refreshing: false,
   };
 
-  _onRefresh = async selectedCampaign => {
+  _onRefresh = async (selectedCampaign) => {
     this.setState({ refreshing: true });
     await this.props.getCampaignStats(
       selectedCampaign.campaign.id,
@@ -29,7 +29,7 @@ export default class SlideUpPanel extends Component {
     );
     this.setState({ refreshing: false });
   };
-  changeChart = chartChoice => {
+  changeChart = (chartChoice) => {
     this.setState({ chartChoice });
   };
 
@@ -49,8 +49,9 @@ export default class SlideUpPanel extends Component {
 
         <ScrollView
           contentContainerStyle={{
-            paddingBottom: 100
+            paddingBottom: 100,
           }}
+          showsVerticalScrollIndicator={false}
         >
           <LineChartGraphs
             screenProps={this.props.screenProps}

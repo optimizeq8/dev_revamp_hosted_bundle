@@ -79,6 +79,7 @@ export default class SlideUpPanel extends Component {
             flex: 1, // needed to occupy major graph part
           }}
           showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           {this.state.chartChoice !== "website interactions" ? (
             <LineChartGraphs
