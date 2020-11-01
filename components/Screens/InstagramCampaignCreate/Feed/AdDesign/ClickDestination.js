@@ -96,8 +96,8 @@ export default class ClickDestination extends Component {
                 <SwipeIcon
                   width={widthPercentageToDP(10)}
                   height={widthPercentageToDP(10)}
-                  fill="#000"
-                  stroke="#000"
+                  fill={globalColors.rum}
+                  // stroke="#000"
                 />
                 <View style={styles.swipeUpView}>
                   <Text style={[styles.swipeUpText, { fontSize: 9 }]}>
