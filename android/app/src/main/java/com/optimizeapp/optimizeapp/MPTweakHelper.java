@@ -36,7 +36,7 @@ if(showAds.get()){
 }else{
         Toast.makeText(getReactApplicationContext(), "false",Toast.LENGTH_LONG).show();
 
-}      successCallback.invoke(showAds.get());
+}      successCallback.invoke(null,showAds.get());
 
     }
 }
