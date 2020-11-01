@@ -10,7 +10,7 @@ import SingleMetric from "./SingleMetric";
  * @class
  */
 class WebsiteInteracions extends PureComponent {
-  renderMetrics = item => {
+  renderMetrics = (item) => {
     const { translate } = this.props.screenProps;
 
     return (
@@ -41,10 +41,9 @@ class WebsiteInteracions extends PureComponent {
   };
 
   render() {
-    let { smeMetrics } = this.props;
-
+    let { instaSMEMetrics } = this.props;
     let metrics = [];
-    let objectiveMetric = [...smeMetrics];
+    let objectiveMetric = [...instaSMEMetrics];
 
     while (objectiveMetric.length > 0)
       metrics.push(objectiveMetric.splice(0, 3));
@@ -53,17 +52,16 @@ class WebsiteInteracions extends PureComponent {
       <View
         style={{
           flexDirection: "row",
-          left: 10
         }}
       >
-        {metrics.map(metric => this.renderMetrics(metric))}
+        {metrics.map((metric) => this.renderMetrics(metric))}
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
-  smeMetrics: state.dashboard.smeMetrics
+  instaSMEMetrics: state.dashboard.instaSMEMetrics,
 });
 export default connect(mapStateToProps, null)(WebsiteInteracions);

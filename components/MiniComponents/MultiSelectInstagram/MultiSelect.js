@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   I18nManager,
   ActivityIndicator,
+  Text,
 } from "react-native";
-import { Button, Text, Item, Input, Icon } from "native-base";
+import { Button, Item, Input, Icon } from "native-base";
 import isNull from "lodash/isNull";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
@@ -109,11 +110,14 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
+    let countryGeos =
+      (typeof this.props.selectedItemsRegionsCountry[0] !== "string" &&
+        this.props.selectedItemsRegionsCountry[0]) ||
+      this.props.selectedItemsRegionsCountry;
+    let disabled = this.props.editCampaign && countryGeos.length > 1;
     const { translate } = this.props.screenProps;
     let countrylist = this.state.filteredCountreis.map((c) => {
-      let country_code = this.props.selectedItemsRegionsCountry.find(
-        (co) => co === c.value
-      );
+      let country_code = countryGeos.find((co) => co === c.value);
       return (
         <TouchableOpacity
           key={c.value}
@@ -121,15 +125,17 @@ class MultiSelectList extends Component {
           onPress={() => {
             this.props.onSelectedCountryRegionChange(c.value);
           }}
+          disabled={disabled}
         >
           <Text
             style={{
               fontFamily: "montserrat-bold",
-              color: (country_code ? country_code : "" === c.value)
-                ? "#FF9D00"
-                : globalColors.rum,
+              color:
+                (country_code ? country_code : "") === c.value
+                  ? "#FF9D00"
+                  : globalColors.rum,
               fontSize: 14,
-              // opacity: !disabled ? 1 : 0.5,
+              opacity: !disabled ? 1 : 0.5,
             }}
           >
             {translate(c.label)}

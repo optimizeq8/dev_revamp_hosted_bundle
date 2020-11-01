@@ -6,9 +6,10 @@ import {
   ScrollView,
   BackHandler,
   I18nManager,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text, Container, Icon, Content } from "native-base";
+import { Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -51,8 +52,10 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+
+import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -65,7 +68,7 @@ class GoogleAdTargetting extends Component {
       budget:
         this.props.campaign && this.props.campaign.recommendedBudget
           ? this.props.campaign.recommendedBudget * 2
-          : 0,
+          : 75,
       age: ["Undetermined"],
       gender: "Undetermined",
       keywords: [],
@@ -111,13 +114,13 @@ class GoogleAdTargetting extends Component {
             ? this.props.campaign.recommendedBudget * 2
             : this.props.campaign
             ? this.props.campaign.budget
-            : 50,
+            : 75,
         value:
           this.props.campaign && this.props.campaign.campaignDateChanged
             ? this.props.campaign.recommendedBudget * 2
             : this.props.campaign
             ? this.props.campaign.budget
-            : 50,
+            : 75,
         budgetOption:
           this.props.campaign && this.props.campaign.campaignDateChanged
             ? 1
@@ -266,7 +269,7 @@ class GoogleAdTargetting extends Component {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
-      rawValue >= this.props.campaign.minValueBudget &&
+      rawValue >= 25 &&
       !isNan(rawValue)
     ) {
       this.setState({
@@ -291,17 +294,14 @@ class GoogleAdTargetting extends Component {
           analytics.track(`a_error_form`, {
             error_page: "ad_targeting",
             source_action: "a_change_campaign_custom_budget",
-            error_description:
-              validateWrapper("Budget", rawValue) +
-              " $" +
-              this.props.campaign.minValueBudget,
+            error_description: validateWrapper("Budget", rawValue) + " $" + 25,
           });
         }
         showMessage({
           message: validateWrapper("Budget", rawValue)
             ? validateWrapper("Budget", rawValue)
             : translate("Budget can't be less than the minimum"),
-          description: "$" + this.props.campaign.minValueBudget,
+          description: "$" + 25,
           type: "warning",
           position: "top",
         });
@@ -338,8 +338,16 @@ class GoogleAdTargetting extends Component {
       campaign_id: this.props.campaign.id,
       campaign_budget: this.state.budget,
     });
+    let lifetime_budget =
+      Math.round(
+        Math.abs(
+          (new Date(this.props.campaign.start_time).getTime() -
+            new Date(this.props.campaign.end_time).getTime()) /
+            86400000
+        ) + 1
+      ) * this.state.budget;
     let data = {
-      budget: this.state.budget,
+      budget: lifetime_budget,
       age: this.state.age,
       gender: this.state.gender,
       keywords: this.state.keywords,
@@ -442,13 +450,13 @@ class GoogleAdTargetting extends Component {
       "GoogleAdDesign",
       "GoogleAdTargetting",
     ]);
-    let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
-    adjustGoogleAdDetailsTracker.addPartnerParameter(
-      `Google_SEM`,
-      "google_sem"
-    );
+    // let adjustGoogleAdDetailsTracker = new AdjustEvent("1mtblg");
+    // adjustGoogleAdDetailsTracker.addPartnerParameter(
+    //   `Google_SEM`,
+    //   "google_sem"
+    // );
 
-    Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+    // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -566,9 +574,13 @@ class GoogleAdTargetting extends Component {
             scrollEnabled={false}
             contentContainerStyle={styles.contentContainer}
           >
-            <Text style={styles.subHeadings}>
-              {translate("Set your budget")}
-            </Text>
+            <View style={styles.budgetHeader}>
+              <WalletIcon fill={"#FFF"} />
+              <Text style={[styles.subHeadings, { paddingHorizontal: 10 }]}>
+                {translate("Set your daily budget")}
+              </Text>
+            </View>
+
             <BudgetCards
               value={this.state.value}
               recBudget={this.props.campaign.recommendedBudget}

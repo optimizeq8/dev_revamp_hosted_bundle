@@ -4,25 +4,26 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  TouchableWithoutFeedback,
   BackHandler,
   ScrollView,
   I18nManager,
   Linking,
+  ActivityIndicator,
+  Text,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
-import * as Updates from "expo-updates";
-import { Button, Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import isEqual from "react-fast-compare";
+
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
-import { ActivityIndicator } from "react-native-paper";
 // import FilterMenu from "../../MiniComponents/FilterMenu";
 let FilterMenu = null;
 import Axios from "axios";
@@ -38,8 +39,6 @@ import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
 import OnlineStoreHome from "../../../assets/SVGs/OnlineStoreHome";
 
-import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
-
 // Style
 import styles from "./styles";
 
@@ -50,7 +49,7 @@ import businessCategoriesList from "../../Data/businessCategoriesList.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import slowlog from "react-native-slowlog";
+
 //Functions
 import {
   widthPercentageToDP as wp,
@@ -60,13 +59,12 @@ import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
-import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
 import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
-import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+// import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -281,7 +279,10 @@ class Dashboard extends Component {
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
-        this.props.navigation.navigate("SuspendedWarning");
+        this.props.navigation.navigate("SuspendedWarning", {
+          source: "dashboard",
+          source_action: "a_campaign_ad_type",
+        });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
@@ -303,8 +304,8 @@ class Dashboard extends Component {
         });
       } else {
         if (adType.value === "SnapAd") {
-          let adjustEvent = new AdjustEvent("kd8uvi");
-          Adjust.trackEvent(adjustEvent);
+          // let adjustEvent = new AdjustEvent("kd8uvi");
+          // Adjust.trackEvent(adjustEvent);
         }
         this.props.navigation.navigate(adType.rout, {
           tempAdType: adType.value,
@@ -389,8 +390,8 @@ class Dashboard extends Component {
   };
 
   handleNewCampaign = () => {
-    let adjustEvent = new AdjustEvent("7kk0e6");
-    Adjust.trackEvent(adjustEvent);
+    // let adjustEvent = new AdjustEvent("7kk0e6");
+    // Adjust.trackEvent(adjustEvent);
     const device_id = this.props.screenProps.device_id;
     const source = this.props.navigation.getParam(
       "source",
@@ -440,6 +441,14 @@ class Dashboard extends Component {
       timestamp: new Date().getTime(),
       device_id: this.props.screenProps.device_id,
     });
+    if (source_action === "a_move_amount_to_wallet") {
+      this.props.getCampaignList(
+        this.props.mainBusiness.businessid,
+        this.increasePage,
+        this.signal.token
+      );
+    }
+
     this.props.setCampaignInProgress(false);
     this.props.setCampaignInProgressInstagram(false);
   };
@@ -823,6 +832,12 @@ class Dashboard extends Component {
                             width={10}
                             height={10}
                             style={styles.lowerButton}
+                            function={() => {
+                              this.props.navigation.navigate("TutorialWeb", {
+                                source: "dashboard",
+                                source_action: "a_open_website_tutorial",
+                              });
+                            }}
                           />
                         </TouchableOpacity>
                       )}
@@ -840,6 +855,10 @@ class Dashboard extends Component {
                           />
                         </View>
                         <TouchableOpacity
+                          disabled={
+                            this.props.loadingCampaigns ||
+                            !this.props.campaignList
+                          }
                           style={styles.activebutton}
                           onPress={() => {
                             this._handleSideMenuState(true);

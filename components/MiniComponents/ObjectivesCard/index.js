@@ -1,7 +1,7 @@
 //Components
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Text } from "native-base";
+import { View, Text, TouchableOpacity } from "react-native";
+
 //Style
 import styles from "./styles";
 

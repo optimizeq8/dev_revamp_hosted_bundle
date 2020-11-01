@@ -518,9 +518,9 @@ export const deleteWebProduct = (product_id) => {
 };
 
 export const saveSingleWebProduct = (product_id, info) => {
-  console.log("product_id", product_id);
+  // console.log("product_id", product_id);
 
-  console.log("info", JSON.stringify(info, null, 2));
+  // console.log("info", JSON.stringify(info, null, 2));
   return (dispatch) => {
     dispatch({
       type: actionTypes.SAVE_WEB_PRODUCT_LOADER,

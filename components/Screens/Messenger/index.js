@@ -9,12 +9,12 @@ import {
   KeyboardAvoidingView,
   I18nManager,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import analytics from "@segment/analytics-react-native";
-import { ActivityIndicator } from "react-native-paper";
 import socketIOClient from "socket.io-client";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -41,7 +41,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { showMessage } from "react-native-flash-message";
 YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?",
@@ -85,7 +85,8 @@ class Messenger extends Component {
     // room the user is subscribed to based on their id
     // the conversation is set as seen/read whe they open the messenger
     // at the same time the update_conversatusion_read_status gets called tp update the notifications indicator
-    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    if (this.props.userInfo)
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
 
     // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     socket.connect();
@@ -249,8 +250,8 @@ class Messenger extends Component {
       support_type: "intercom",
       timestamp: new Date().getTime(),
     });
-    let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
-    Adjust.trackEvent(adjustSupportTrackeer);
+    // let adjustSupportTrackeer = new AdjustEvent("9nk8ku");
+    // Adjust.trackEvent(adjustSupportTrackeer);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -267,6 +268,7 @@ class Messenger extends Component {
         <CustomHeader
           backButton="messenger"
           screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
           closeButton={true}
           title={"Support"}
           titleStyle={{
@@ -276,12 +278,12 @@ class Messenger extends Component {
             source: "open_support",
             source_action: "a_go_back",
           }}
-          actionButton={() =>
-            this.props.navigation.navigate("Dashboard", {
-              source: "open_support",
-              source_action: "a_go_back",
-            })
-          }
+          // actionButton={() =>
+          //   this.props.navigation.navigate("Dashboard", {
+          //     source: "open_support",
+          //     source_action: "a_go_back",
+          //   })
+          // }
           containerStyle={{
             backgroundColor: "#F4F2F5",
           }}

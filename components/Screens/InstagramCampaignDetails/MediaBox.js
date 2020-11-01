@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Text, View, TouchableOpacity } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 import { Video } from "expo-av";
 import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";
@@ -47,7 +46,6 @@ export default class MediaBox extends Component {
   render() {
     let { name } = this.props;
     let { media, media_type, localUri } = this.props.ad;
-    console.log("this.props.selectedCampaign", this.props.selectedCampaign);
     return (
       <TouchableOpacity
         onPress={this.previewHandler}

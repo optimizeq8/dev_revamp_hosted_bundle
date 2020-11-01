@@ -1,53 +1,29 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   walletIcon: {
-    alignSelf: "center"
+    alignSelf: "center",
     // marginTop: 15
   },
   walletAmountText: {
     fontSize: 40,
-    left: "40%"
-  },
-  sendButton: {
-    position: "relative",
-    // left: "10%"
-    left: 5
+    left: "40%",
   },
   midContainer: { justifyContent: "center" },
   container: {
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
   },
   inputAnimatableView: {
-    paddingTop: 30
-  },
-  keyboardContainer: {},
-  title: {
-    fontSize: 18,
-    color: "#fff",
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
-  },
-  mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    borderColor: "transparent",
-    flex: 1,
-    marginTop: heightPercentageToDP(2),
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 }
+    paddingTop: 30,
   },
   button: {
     zIndex: 4,
@@ -59,7 +35,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    marginTop: 20
+    marginTop: 20,
   },
   buttonTransparent: {
     zIndex: 4,
@@ -72,18 +48,18 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     marginTop: 20,
-    borderWidth: 1
+    borderWidth: 1,
   },
   buttontext: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 14
+    fontSize: 14,
   },
   contentContainer: {
     flex: 1,
     justifyContent: "space-around",
-    paddingTop: 45
+    paddingTop: 45,
   },
   text: {
     textAlign: "center",
@@ -93,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 10,
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   mainText: {
     textAlign: "center",
@@ -103,12 +79,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // paddingHorizontal: 10,
     // marginTop: 30
-    width: widthPercentageToDP(60)
+    width: widthPercentageToDP(60),
   },
   dollar: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 25
+    fontSize: 25,
   },
 
   inputtext: {
@@ -116,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 31 / PixelRatio.getFontScale(),
     color: "#FF9D00",
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   labeltext: {
     // flex: 0,
@@ -126,7 +102,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#fff",
     position: "absolute",
-    left: "22%"
+    left: "22%",
     // top: 5
   },
   input: {
@@ -138,13 +114,10 @@ const styles = StyleSheet.create({
     width: 230,
     // height: 45,
     color: "#fff",
-    textAlign: "center"
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
+    textAlign: "center",
   },
   BlurView: {
-    height: "100%"
+    height: "100%",
   },
   subHeading: {
     textAlign: "center",
@@ -152,12 +125,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "montserrat-light",
     marginVertical: 20,
-    width: widthPercentageToDP(50)
+    width: widthPercentageToDP(50),
   },
   loader: {
     color: globalColors.orange,
     left: "20%",
-    top: 5
+    top: 5,
   },
   topUpHistory: {
     color: "#FFFFFF",
@@ -165,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 30,
     paddingVertical: 10,
-    textAlign: "left"
+    textAlign: "left",
   },
   amountLabelView: {
     width: 150,
@@ -175,23 +148,23 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     zIndex: 10,
     borderTopLeftRadius: 85,
-    borderTopRightRadius: 85
+    borderTopRightRadius: 85,
   },
   amountLabelText: {
     textAlign: "center",
     fontSize: 12,
     color: "#FFF",
     fontFamily: "montserrat-bold",
-    marginBottom: -10
+    marginBottom: -10,
   },
   contentScrollView: { paddingHorizontal: 15 },
   listLoader: {
     marginTop: 30,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   modalWalletIcon: {
-    marginTop: 50
-  }
+    marginTop: 50,
+  },
 });
 
 export default styles;

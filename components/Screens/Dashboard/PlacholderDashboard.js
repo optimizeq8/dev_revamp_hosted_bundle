@@ -4,11 +4,11 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
-import { Button, Container } from "native-base";
+import { Container } from "native-base";
 import LottieView from "lottie-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { ActivityIndicator } from "react-native-paper";
+import { SafeAreaView } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 
 //icons
@@ -21,10 +21,7 @@ import styles from "./styles";
 //Redux
 
 //Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default class PlacholderDashboard extends Component {
   render() {
@@ -77,14 +74,10 @@ export default class PlacholderDashboard extends Component {
             <View padder style={[styles.mainCard, { height: "110%" }]}>
               <View style={styles.sideMenuCard}>
                 <View style={styles.sideMenuTop}>
-                  {/* <Button style={[styles.button, { padding: 63 }]}>
-                    <ActivityIndicator />
-                 
-                  </Button> */}
                   <View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
-                    <Button style={styles.button}>
+                    <TouchableOpacity style={styles.button}>
                       <ActivityIndicator />
-                    </Button>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

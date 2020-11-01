@@ -1,15 +1,14 @@
 import React from "react";
 import PlaceholderLine from "../PlaceholderLine";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import styles from "./styles";
 import ProgressBar from "../ProgressBar";
 import dateFormat from "dateformat";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { Text } from "native-base";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import { globalColors } from "../../../GlobalStyles";
 import isNaN from "lodash/isNaN";
-export default props => {
+export default (props) => {
   let { campaign, loading, screenProps } = props;
   let { translate } = screenProps;
   let statusOfCampaign = campaign
@@ -62,7 +61,7 @@ export default props => {
           {statusOfCampaign !== "ended" && (
             <Text style={[styles.chartSubtext, { alignSelf: "flex-start" }]}>
               {translate(`Campaign {{statusOfCampaign}} on`, {
-                statusOfCampaign: statusOfCampaign
+                statusOfCampaign: statusOfCampaign,
               }) +
                 " " +
                 dateFormat(

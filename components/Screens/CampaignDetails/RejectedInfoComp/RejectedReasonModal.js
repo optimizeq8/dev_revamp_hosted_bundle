@@ -1,56 +1,94 @@
 import React from "react";
-import { View, SafeAreaView } from "react-native";
-import { Text } from "native-base";
-import Modal from "react-native-modal";
-import Header from "../../../MiniComponents/Header";
+import { View, ScrollView, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
-import { globalColors } from "../../../../GlobalStyles";
-import RejectedIcon from "../../../../assets/SVGs/CampaignDetail/RejectedIcon";
+import Modal from "react-native-modal";
+
+// Styles
 import styles from "./styles";
+
+// MiniComponent
+import GradientButton from "../../../MiniComponents/GradientButton";
+import Header from "../../../MiniComponents/Header";
 
 /**
  * modal tha displays the rejected reason, will be modified in the future to contain more  info
  */
-export default props => {
+export default (props) => {
   let {
-    reasonNum,
     rejectedReason,
     isVisible,
     setModalVisible,
-    screenProps
+    screenProps,
+    selectedCampaign,
   } = props;
-  const { translate } = props.screenProps;
+  const { translate } = screenProps;
+  let { campaign_end } = selectedCampaign;
   return (
     <Modal
       animationIn={"fadeIn"}
       animationOut={"fadeOut"}
       isVisible={isVisible}
-      style={{ margin: 0 }}
+      style={styles.modalView}
     >
       <BlurView intensity={95} tint="dark" style={{ height: "100%" }}>
-        <SafeAreaView
-          forceInset={{ bottom: "never", top: "always" }}
-          style={{ height: "100%" }}
-        >
-          <Header
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
+        <Header
+          screenProps={screenProps}
+          closeButton={true}
+          actionButton={() => setModalVisible(false)}
+          title={"Rejected Reason"}
+        />
+
+        <ScrollView style={styles.rejectModalView}>
+          {rejectedReason &&
+            rejectedReason.length > 0 &&
+            rejectedReason.map((reason, index) => (
+              <View style={styles.reasonView} key={index}>
+                <View style={styles.reasonNumberView}>
+                  <Text style={[styles.rejectReasonWord]}>{index + 1}</Text>
+                </View>
+
+                <Text style={styles.rejectedModalReasonText}>{reason}</Text>
+              </View>
+            ))}
+        </ScrollView>
+        {campaign_end === "0" && (
+          <GradientButton
             screenProps={screenProps}
-            title={""}
-            closeButton={true}
-            actionButton={() => setModalVisible(false)}
+            text={translate("Update Ad")}
+            width={200}
+            height={50}
+            uppercase
+            style={styles.updateAdButton}
+            onPressAction={() => {
+              setModalVisible(false);
+              props.handleSnapchatRejection(props.selectedCampaign);
+            }}
           />
-          <View style={styles.rejectModalView}>
-            <View style={styles.rejectedModalTitleContainer}>
-              <RejectedIcon fill={globalColors.orange} />
-              <Text
-                uppercase
-                style={[styles.reasonTitle, styles.rejectReasonWord]}
-              >
-                {translate("Rejected Reason")} {reasonNum}
-              </Text>
-            </View>
-            <Text style={styles.rejectedModalReasonText}>{rejectedReason}</Text>
-          </View>
-        </SafeAreaView>
+        )}
+        {campaign_end === "0" && (
+          <TouchableOpacity
+            style={styles.returnAmountWalletLinkView}
+            onPress={() => {
+              setModalVisible(false);
+              props.getWalletAmountInKwd(
+                selectedCampaign.lifetime_budget_micro
+              );
+              props.navigation.navigate("PaymentForm", {
+                amount: selectedCampaign.lifetime_budget_micro,
+                refundAmountToWallet: true,
+                selectedCampaign: selectedCampaign,
+                source: "open_wallet",
+                source_action: "a_return_amount_to_wallet",
+              });
+            }}
+          >
+            <Text style={styles.returnAmountWalletLinkText}>
+              {translate("Return amount to wallet")}
+            </Text>
+          </TouchableOpacity>
+        )}
       </BlurView>
     </Modal>
   );

@@ -1,18 +1,16 @@
-import React from "react";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
 import SwitchLanguage from "../Screens/SwitchLanguage";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import RegistrationSuccess from "../Screens/Signup/RegistrationSuccess";
+import createNativeStackNavigator from "react-native-screens/createNativeStackNavigator";
 
 import Signin from "../Screens/Signin";
-// import Invitation from "../Screens/InvitationScreen";
-import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import ForgotPassword from "../Screens/ForgotPassword";
 
-export default FluidNavigator(
+export default createNativeStackNavigator(
   {
     Tutorial: Tutorial,
     MainForm: { screen: MainForm, path: "register_team/" },
@@ -23,12 +21,11 @@ export default FluidNavigator(
     SwitchLanguage: SwitchLanguage,
     SwitchLanguageLoading: SwitchLanguageLoading,
     RegistrationSuccess: RegistrationSuccess,
-
-    // Invitation: Invitation
   },
   {
     initialRouteName: "SwitchLanguage",
     mode: "card",
+    headerMode: "none",
     navigationOptions: {
       header: null,
 

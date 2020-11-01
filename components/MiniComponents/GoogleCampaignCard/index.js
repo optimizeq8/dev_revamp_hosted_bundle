@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, I18nManager } from "react-native";
-import { Text, Icon } from "native-base";
+import { Text, View, TouchableOpacity, I18nManager } from "react-native";
+import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";

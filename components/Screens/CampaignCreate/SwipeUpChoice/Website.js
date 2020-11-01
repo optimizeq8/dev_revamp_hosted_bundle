@@ -1,25 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
-import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import CustomHeader from "../../../MiniComponents/Header";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
-import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
+
 import WindowIcon from "../../../../assets/SVGs/Window";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
+import { globalColors } from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -29,7 +25,6 @@ import { netLoc } from "../../../Data/callactions.data";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import WebsiteField from "../../../MiniComponents/InputFieldNew/Website";
 import ModalField from "../../../MiniComponents/InputFieldNew/ModalField";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 class Website extends Component {
   static navigationOptions = {
     header: null,
@@ -72,6 +67,20 @@ class Website extends Component {
       }
     }
     if (
+      this.props.rejCampaign &&
+      this.props.rejCampaign.hasOwnProperty("attachment") &&
+      this.props.rejCampaign.attachment !== "BLANK" &&
+      !this.props.rejCampaign.attachment.hasOwnProperty("android_app_url")
+    ) {
+      const url = this.props.rejCampaign.attachment.url;
+      this.setState({
+        campaignInfo: {
+          attachment: url,
+          callaction: this.props.rejCampaign.call_to_action,
+        },
+        // networkString: url[0] + "://"
+      });
+    } else if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK" &&
@@ -162,8 +171,6 @@ class Website extends Component {
     }
     if (this.validateUrl()) {
       this.props._changeDestination(
-        // this.props.adType !== "CollectionAd"
-        //   ?
         this.props.collectionAdLinkForm === 0
           ? objective !== "LEAD_GENERATION"
             ? "REMOTE_WEBPAGE"
@@ -241,7 +248,10 @@ class Website extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
         <InputScrollView
@@ -305,6 +315,7 @@ class Website extends Component {
             }}
             iconFill={globalColors.rum}
             labelColor={globalColors.rum}
+            disabled={this.props.loadingDestinationURLValid}
             // getValidInfo={this.validateUrl}
             // disabled={
             //   (this.state.editBusinessInfo &&
@@ -332,7 +343,14 @@ class Website extends Component {
               screenProps={this.props.screenProps}
               checkmark={true}
               bottom={-5}
-              function={this._handleSubmission}
+              function={() => {
+                if (this.validateUrl())
+                  this.props.verifyDestinationUrl(
+                    this.state.campaignInfo.attachment,
+                    this._handleSubmission,
+                    this.props.screenProps.translate
+                  );
+              }}
               purpleViolet
             />
           </View>
@@ -348,7 +366,13 @@ const mapStateToProps = (state) => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   storyAdAttachment: state.campaignC.storyAdAttachment,
   mainBusiness: state.account.mainBusiness,
+  destinationURLValid: state.campaignC.destinationURLValid,
+  loadingDestinationURLValid: state.campaignC.loadingDestinationURLValid,
+  rejCampaign: state.dashboard.rejCampaign,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  verifyDestinationUrl: (url, submit, translate) =>
+    dispatch(actionCreators.verifyDestinationUrl(url, submit, translate)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Website);

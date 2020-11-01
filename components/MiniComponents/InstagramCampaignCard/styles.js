@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   chartContainer: {
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    flexDirection: "row",
     alignItems: "center",
   },
   iconImpression: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   cardStatusDays: {
-    flex: 0.5,
+    flex: 0.35,
     alignItems: "center",
 
     alignSelf: "center",

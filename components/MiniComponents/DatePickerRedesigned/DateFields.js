@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, I18nManager, Modal, TouchableOpacity } from "react-native";
-import { Text } from "native-base";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 

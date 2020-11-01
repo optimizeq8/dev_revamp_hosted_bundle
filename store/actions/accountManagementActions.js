@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import * as SecureStore from "expo-secure-store";
 import analytics from "@segment/analytics-react-native";
 import { Animated } from "react-native";
 import { persistor } from "../index";
@@ -8,7 +9,7 @@ import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 import { update_user_on_intercom } from "./messengerActions";
 
@@ -76,6 +77,14 @@ export const createBusinessAccount = (account, navigation) => {
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
             payload: {
               ...data.data,
+            },
+          });
+        }
+        if (!data.success) {
+          return dispatch({
+            type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
+            payload: {
+              loading: false,
             },
           });
         }
@@ -228,15 +237,26 @@ export const getAddressForm = () => {
       });
   };
 };
+
+/**
+ *
+ * @param {*} info
+ *  Object: {
+ *    businessid,
+ *    is_political,
+ *    paying_advertiser_name
+ *  }
+ * @param {*} navigation
+ */
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
-export const create_snapchat_ad_account = (id, navigation) => {
+export const create_snapchat_ad_account = (info, navigation) => {
   return (dispatch) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true,
     });
     createBaseUrl()
-      .post("snapadaccounts", { businessid: id })
+      .post("snapadaccounts", info)
       .then((res) => {
         return res.data;
       })
@@ -247,12 +267,12 @@ export const create_snapchat_ad_account = (id, navigation) => {
           campaign_channel: "snapchat",
           timestamp: new Date().getTime(),
           device_id: getUniqueId(),
-          businessid: id,
+          ...info,
           action_status: data.success ? "success" : "failure",
         });
         if (data.success) {
-          let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
-          Adjust.trackEvent(adjustSnapAdAccTracker);
+          // let adjustSnapAdAccTracker = new AdjustEvent("vsf6z0");
+          // Adjust.trackEvent(adjustSnapAdAccTracker);
           return dispatch({
             type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data },
@@ -1039,5 +1059,39 @@ export const updateBusinessConnectedToFacebook = (data) => {
         ...data,
       },
     });
+  };
+};
+
+export const crashAppForSpamUser = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: actionTypes.CRASH_APP,
+      payload: false,
+    });
+    const token = await SecureStore.getItemAsync("token");
+    if (token) {
+      const result = await createBaseUrl().get(`appAccessStatus`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (result.data) {
+        const data = result.data;
+        if (data && data.error) {
+          analytics.track("app_crash", {
+            source: "suspicous_user",
+            source_action: "a_app_crash",
+          });
+          NavigationService.navigate("SuspendedWarning", {
+            source: "app_crash",
+            source_action: "a_app_crash",
+          });
+          return dispatch({
+            type: actionTypes.CRASH_APP,
+            payload: true,
+          });
+        }
+      }
+    }
   };
 };

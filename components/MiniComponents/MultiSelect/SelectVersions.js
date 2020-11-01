@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, StatusBar } from "react-native";
-import { Button, Icon } from "native-base";
+import { Text, View, ScrollView } from "react-native";
+import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";

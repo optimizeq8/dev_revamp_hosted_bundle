@@ -1,48 +1,29 @@
-import { StyleSheet, PixelRatio } from "react-native";
-import { globalColors } from "../../../GlobalStyles";
+import { StyleSheet } from "react-native";
 import {
   heightPercentageToDP,
-  widthPercentageToDP
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
     // top: 5,
-    backgroundColor: "#0000"
-  },
-  scrollViewContentContainer: {
-    // height: heightPercentageToDP("100%")
-    // flex: 1
-    paddingBottom: 50
-  },
-  scrollViewContainer: {
-    height: heightPercentageToDP(40)
-  },
-  htmlContainer: {
-    width: widthPercentageToDP(100),
-    alignSelf: "center"
+    backgroundColor: "#0000",
   },
   bottomContainer: {
     // flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   imageSlide: {
     height: 250,
-    width: 250
+    width: 250,
   },
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     // marginTop: 30,
-    backgroundColor: "#0000"
-  },
-  media: {
-    alignSelf: "center",
-    height: heightPercentageToDP(13),
-    width: heightPercentageToDP(13),
-    margin: 15
+    backgroundColor: "#0000",
   },
   mainCard: {
     // bottom: 15,
@@ -56,47 +37,34 @@ const styles = StyleSheet.create({
     // height: heightPercentageToDP(90),
     marginLeft: 0,
     marginRight: 0,
-    marginTop: 0,
-    marginBottom: 0
-  },
-  text: {
-    textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
+    marginTop: 5,
+    marginBottom: 0,
   },
   button: {
     // top: "3%",
-    backgroundColor: "#5F5F5F",
-    paddingHorizontal: 50,
-    borderRadius: 15,
+    // backgroundColor: "#5F5F5F",
+    // paddingHorizontal: 50,
+    borderRadius: 25,
     alignSelf: "center",
     width: 250,
-    height: 50
+    height: 50,
+    marginHorizontal: 0,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   contentWebView: {
     backgroundColor: "transparent",
-    height: "100%"
+    height: "100%",
   },
   webview: {
     backgroundColor: "transparent",
-    marginTop: -50
+    marginTop: -50,
   },
   loadingView: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   loadingText: {
     fontSize: 14,
@@ -105,42 +73,49 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     textAlign: "center",
     width: "60%",
-    marginVertical: 20
-  }
+    marginVertical: 20,
+  },
+  questionText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    width: "60%",
+  },
+  radioView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginHorizontal: 10,
+  },
+  answerText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    marginHorizontal: 2,
+  },
+  questionView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  answerRadio: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    backgroundColor: "#0005",
+    justifyContent: "center",
+  },
+  answerRadioSelect: {
+    width: 22,
+    height: 22,
+    borderRadius: 25,
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+  },
 });
 
-export const htmlStyles = {
-  h1: {
-    fontSize: 30 / PixelRatio.getFontScale()
-  },
-  a: {
-    fontWeight: "300",
-    color: globalColors.purple // make links coloured pink
-  },
-  ul: {
-    marginBottom: -50
-  },
-  div: {
-    marginTop: 10,
-    paddingBottom: 10
-  },
-  p: {
-    marginBottom: -50
-  },
-  h4: {
-    marginBottom: -30,
-    fontSize: 20 / PixelRatio.getFontScale()
-  },
-  img: {
-    width: 75,
-    height: 75
-  },
-  h2: {
-    marginBottom: -40,
-    fontSize: 25 / PixelRatio.getFontScale()
-  }
-};
 export default styles;
-function newFunction() {
-  return "#751AFF";
-}

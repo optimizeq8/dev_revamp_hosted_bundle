@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { View, TouchableOpacity, Image, I18nManager, Text } from "react-native";
+import { Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
@@ -13,7 +13,7 @@ import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 import ShareIcon from "../../../assets/SVGs/ShareIcon";
 import Settings from "../../../assets/SVGs/Settings";
-import InstagramIcon from "../../../assets/SVGs/InstagramIcon";
+import InstagramIcon from "../../../assets/images/AdTypes/InstaWhiteLogo";
 import CalenderkIcon from "../../../assets/SVGs/Calender";
 import BinIcon from "../../../assets/SVGs/Bin";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -89,7 +89,7 @@ export default class Header extends Component {
         </TouchableOpacity>
         {icon === "snapchat" && (
           <View style={{ paddingHorizontal: 5 }}>
-            <SnapchatIcon width={30} height={30} />
+            <SnapchatIcon fill={"black"} width={30} height={30} />
           </View>
         )}
         {icon === "google" && (
@@ -98,8 +98,13 @@ export default class Header extends Component {
           </View>
         )}
         {icon === "instagram" && (
-          <View style={{ paddingHorizontal: 5 }}>
-            <InstagramIcon width={30} height={24} fill="#fff" />
+          <View style={{ paddingHorizontal: 0 }}>
+            <InstagramIcon
+              style={styles.instaIcon}
+              width={50}
+              height={40}
+              fill="#fff"
+            />
           </View>
         )}
         {icon === "calendar" && (
@@ -115,7 +120,6 @@ export default class Header extends Component {
             {title.map((text) => (
               <Text
                 key={text}
-                uppercase
                 style={[
                   styles.titleText,
                   !isStringArabic(text)
@@ -134,7 +138,6 @@ export default class Header extends Component {
           <View style={[styles.titleView, titleContainerStyle]}>
             <Text
               numberOfLines={2}
-              uppercase
               style={[
                 styles.titleText,
                 !isStringArabic(title)
@@ -167,6 +170,12 @@ export default class Header extends Component {
             >
               {showTopRightButtonIcon === "settings" ? (
                 <Settings width={30} fill={iconColor} />
+              ) : showTopRightButtonIcon === "edit" ? (
+                <Icon
+                  name="edit"
+                  type="FontAwesome5"
+                  style={{ fontSize: 23, color: "#FFF" }}
+                />
               ) : showTopRightButtonIcon === "delete" ? (
                 <View
                   style={{

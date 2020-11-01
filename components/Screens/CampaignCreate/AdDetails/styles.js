@@ -1,5 +1,8 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -42,7 +45,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentContainer: {
-    height: "85%",
+    height: "93%",
+    // paddingTop: ,
   },
   subHeadings: {
     color: globalColors.gray,
@@ -112,12 +116,13 @@ const styles = StyleSheet.create({
   },
   targetList: {
     flexDirection: "column",
-    paddingBottom: 40,
-    height: "50%",
+    // paddingBottom: 40,
+    // height: "50%",
     marginHorizontal: 30,
   },
   targetTouchable: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 8,
     backgroundColor: "#fff",
@@ -136,40 +141,46 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     paddingLeft: 10,
-    height: "14%",
+    // height: "14%",
     alignItems: "center",
     alignSelf: "center",
-    width: "100%",
-    bottom: 10,
-    flex: 1,
+    // width: "100%",
+    bottom: 0,
+    position: "absolute",
+    // flex: 0.55,
+    backgroundColor: globalColors.white,
+    borderTopWidth: 1,
+    borderTopColor: "#75647C21",
+    paddingVertical: 20,
   },
   chartText: {
+    textTransform: "uppercase",
     color: globalColors.rum,
-    textAlign: "left",
+    textAlign: "center",
     fontFamily: "montserrat-bold",
-    fontSize: 15 / PixelRatio.getFontScale(),
+    fontSize: 13 / PixelRatio.getFontScale(),
   },
   chartTextNum: {
     color: globalColors.rum,
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 16,
-    textAlign: "left",
+    textAlign: "center",
+    width: "100%",
+    textTransform: "uppercase",
   },
   chartItems: {
     flexDirection: "row",
-    flex: 1,
+    // flex: 1,
   },
   reachBarLowerButton: {
-    width: 60,
-    height: 60,
-    flex: 0,
+    width: 100,
+    height: 50,
   },
   reachPeopleView: {
-    flexDirection: "column",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 8,
-    width: "100%",
+    // width: "100%",
     flex: 1,
   },
   menutext: {
@@ -195,6 +206,7 @@ const styles = StyleSheet.create({
   },
   menuComponentStyle: { top: 0 },
   reachView: {
+    // flex: ,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -210,6 +222,35 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
   existingButtonText: { fontSize: 12, color: "#9300FF" },
+  reachSubHeading: {
+    color: globalColors.purple3,
+    textTransform: "uppercase",
+    fontFamily: "montserrat-bold",
+    fontSize: 10 / PixelRatio.getFontScale(),
+  },
+  reachTextNum: {
+    color: globalColors.purple3,
+    fontFamily: "montserrat-regular-english",
+    fontSize: 10 / PixelRatio.getFontScale(),
+    textAlign: "left",
+    width: "100%",
+    textTransform: "uppercase",
+  },
+  expectedResultText: {
+    color: globalColors.rum,
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    marginVertical: 5,
+    marginHorizontal: 20,
+    textAlign: "left",
+  },
+  reachInnerView: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    marginLeft: 5,
+  },
+  bottomReachView: { flexDirection: "column", flex: 1 },
 });
 
 export default styles;

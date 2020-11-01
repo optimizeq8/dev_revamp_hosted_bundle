@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { ImageBackground, View, BackHandler } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { ImageBackground, Text, View, BackHandler } from "react-native";
+import { Content, Container } from "native-base";
 import { Video } from "expo-av";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import startCase from "lodash/startCase";
 import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../../MiniComponents/ReviewItemCard";
-import CustomHeader from "../../../../MiniComponents/Header";
 import LoadingScreen from "../../../../MiniComponents/LoadingScreen";
 import GradientButton from "../../../../MiniComponents/GradientButton";
 import * as actionCreators from "../../../../../store/actions";
@@ -53,7 +52,7 @@ class InstagramAdPaymentReview extends Component {
     let customInterstNames = data.customInterests
       ? data.customInterests.map((interest) => interest.name)
       : [];
-    let lifetime_budget_micro = campaignInfo.lifetime_budget_micro;
+    let lifetime_budget_micro = this.props.data.lifetime_budget_micro;
 
     if (targeting.flexible_spec[0].hasOwnProperty("interests")) {
       interestNames = [
@@ -271,8 +270,8 @@ class InstagramAdPaymentReview extends Component {
             geo_locations: { countries: {} },
           };
       let interestNames = [];
-      let lifetime_budget_micro = campaignInfo
-        ? campaignInfo.lifetime_budget_micro
+      let lifetime_budget_micro = this.props.data.lifetime_budget_micro
+        ? this.props.data.lifetime_budget_micro
         : "50";
       let customInterstNames = data.customInterests
         ? data.customInterests.map((interest) => interest.name)

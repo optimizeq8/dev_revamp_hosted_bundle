@@ -11,14 +11,14 @@ export default class SlideUpPanel extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
     top: hp(80),
-    bottom: hp(27)
+    bottom: hp(27),
   };
   state = {
     chartAnimation: new Animated.Value(1),
     LineAnimation: new Animated.Value(0),
     chartChoice: "Spend",
     gotStats: false,
-    refreshing: false
+    refreshing: false,
   };
   componentDidMount() {
     this.props.getCampaignStats(this.props.selectedCampaign, {
@@ -28,11 +28,11 @@ export default class SlideUpPanel extends Component {
       end_time:
         new Date(this.props.selectedCampaign.end_time) < new Date()
           ? this.props.selectedCampaign.end_time
-          : new Date()
+          : new Date(),
     });
   }
 
-  _onRefresh = async selectedCampaign => {
+  _onRefresh = async (selectedCampaign) => {
     this.setState({ refreshing: true });
     await this.props.getCampaignStats(selectedCampaign, {
       // start_time: "2019-05-09",
@@ -41,11 +41,11 @@ export default class SlideUpPanel extends Component {
       end_time:
         new Date(selectedCampaign.end_time) < new Date()
           ? selectedCampaign.end_time
-          : new Date()
+          : new Date(),
     });
     this.setState({ refreshing: false });
   };
-  changeChart = chartChoice => {
+  changeChart = (chartChoice) => {
     this.setState({ chartChoice });
   };
 
@@ -76,8 +76,10 @@ export default class SlideUpPanel extends Component {
           contentContainerStyle={{
             zIndex: 2,
             paddingBottom: 10,
-            flex: 1 // needed to occupy major graph part
+            flex: 1, // needed to occupy major graph part
           }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           {this.state.chartChoice !== "website interactions" ? (
             <LineChartGraphs

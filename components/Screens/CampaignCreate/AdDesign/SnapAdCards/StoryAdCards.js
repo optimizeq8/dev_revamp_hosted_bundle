@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { Text, View, FlatList } from "react-native";
 
 import styles from "../styles";
-import { Button, Icon } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import AddCard from "./AddCard";
+// import AddCard from "./AddCard";
 import SnapCard from "./SnapCard";
 export default class StoryAdCards extends Component {
   snapCards = (item) => {
@@ -26,6 +25,7 @@ export default class StoryAdCards extends Component {
         removeSnapCard={this.props.removeSnapCard}
         snapCardInfo={item}
         setTheState={this.props.setTheState}
+        navigation={this.props.navigation}
       />
     );
   };

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     width: wp(70),
     position: "absolute",
     alignSelf: "center",
-    bottom: hp(5) > 40 ? hp(7) : hp(12),
+    bottom: hp(5) > 40 ? hp(10) : hp(12),
   },
   bottomCard2: {
     borderRadius: 50,

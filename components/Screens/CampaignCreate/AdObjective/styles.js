@@ -1,9 +1,17 @@
-import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import {
+  StyleSheet,
+  PixelRatio,
+  I18nManager,
+  Platform,
+  StatusBar,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
+const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 35 : StatusBar.currentHeight;
+
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -11,10 +19,7 @@ export const colors = {
   background2: "#6268FF",
 };
 const styles = StyleSheet.create({
-  safeAreaView: {
-    backgroundColor: "#fff",
-    // height: "100%",
-  },
+  safeAreaView: { backgroundColor: "#fff" },
   container: {
     backgroundColor: "#0000",
     display: "flex",
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10
   },
   date: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     color: "#FF9D00",
     alignItems: "center",
     fontSize: 14,
@@ -196,30 +201,35 @@ const styles = StyleSheet.create({
     height: 70,
     justifyContent: "center",
     flexDirection: "column",
+    marginHorizontal: 0,
   },
   activeButton: {
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     height: 70,
     width: 150,
     justifyContent: "center",
     flexDirection: "column",
+    marginHorizontal: 0,
   },
   inactiveText: {
     fontFamily: "montserrat-bold",
     fontSize: 11,
     color: "rgba(255,255,255,0.4)",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   activeText: {
     fontFamily: "montserrat-bold",
     fontSize: 11,
     color: "#fff",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   buttonSubText: {
     fontFamily: "montserrat-regular",
     paddingTop: 2,
     fontSize: 12,
+    textTransform: "none",
   },
   dateTextLabel: {
     borderTopLeftRadius: 150,
@@ -254,6 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-bold",
     textAlign: "center",
+    textTransform: "uppercase",
   },
   proceedButtonRTL: {
     width: 65,
@@ -283,6 +294,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontFamily: "montserrat-regular",
     fontSize: 12,
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
   },
 });
 

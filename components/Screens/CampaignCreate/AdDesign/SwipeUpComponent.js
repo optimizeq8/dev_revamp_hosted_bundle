@@ -32,6 +32,9 @@ export default class SwipeUpComponent extends Component {
     if (prevProps.objective !== this.props.objective) {
       this.handleSwipeUp();
     }
+    if (prevProps.swipeUpExpanded && !this.props.swipeUpExpanded) {
+      this.toggle(false);
+    }
   }
   handleSwipeUp = () => {
     let {
@@ -168,7 +171,8 @@ export default class SwipeUpComponent extends Component {
       : {
           height: this.props.swipeUpMaxHeight,
           position: "absolute",
-          bottom: adType === "CollectionAd" ? -110 : -10,
+          marginTop: 0,
+          // bottom: adType === "CollectionAd" ? -110 : -10,
         };
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     const { translate } = this.props.screenProps;
@@ -178,12 +182,12 @@ export default class SwipeUpComponent extends Component {
         disabled={disabled || this.state.expanded}
         style={[
           styles.swipeUp,
-          {
-            marginBottom: adType === "CollectionAd" ? 110 : 10,
-          },
+          // {
+          //   marginBottom: adType === "CollectionAd" ? 110 : 10,
+          // },
           sty,
         ]}
-        onPress={this.toggle}
+        onPress={() => this.toggle(true)}
       >
         {!this.state.expanded ? (
           <>
@@ -199,8 +203,8 @@ export default class SwipeUpComponent extends Component {
               <SwipeIcon
                 width={widthPercentageToDP(10)}
                 height={widthPercentageToDP(10)}
-                fill="#000"
-                stroke="#000"
+                fill={globalColors.rum}
+                // stroke="#000"
               />
               <View style={styles.swipeUpView}>
                 <Text style={[styles.swipeUpText, { fontSize: 12 }]}>
@@ -226,12 +230,17 @@ export default class SwipeUpComponent extends Component {
                       (destination !== "BLANK" ||
                         selectedStoryAd.destination !== "BLANK")
                     ? translate("SME Growth")
+                    : objective === "WEB_CONVERSION"
+                    ? translate("Call")
                     : translate("Swipe Up destination")}
                 </Text>
                 {objective !== "WEB_CONVERSION" &&
-                  ["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(
-                    destination
-                  ) && (
+                  [
+                    "REMOTE_WEBPAGE",
+                    "DEEP_LINK",
+                    "LEAD_GENERATION",
+                    "AD_TO_CALL",
+                  ].includes(destination) && (
                     <Text
                       ellipsizeMode={"tail"}
                       numberOfLines={1}
@@ -239,6 +248,8 @@ export default class SwipeUpComponent extends Component {
                     >
                       {attachment.hasOwnProperty("deep_link_uri")
                         ? attachment.deep_link_uri
+                        : attachment.hasOwnProperty("phone_number_id")
+                        ? attachment.phone_number_id
                         : attachment.url}
                     </Text>
                   )}

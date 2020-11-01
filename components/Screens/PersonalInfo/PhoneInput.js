@@ -20,11 +20,11 @@ export default class PhoneNoField extends Component {
     this.myCountryPicker.open();
   };
 
-  selectCountry = country => {
+  selectCountry = (country) => {
     this.setState({
       country: country,
       dialCode: country.dialCode,
-      number: ""
+      number: "",
     });
     this.phone.selectCountry(country.iso2);
     this.props.changeNo(
@@ -35,7 +35,7 @@ export default class PhoneNoField extends Component {
     );
   };
 
-  onChangePhoneNumber = number => {
+  onChangePhoneNumber = (number) => {
     this.setState({ number });
     if (this.phone.isValidNumber()) {
       this.props.changeNo(
@@ -50,10 +50,11 @@ export default class PhoneNoField extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    const { height = 15, fontSize = 12 } = this.props;
     return (
       <View
         style={{
-          width: "100%"
+          width: "100%",
         }}
       >
         <Item rounded style={[styles.phoneInput]}>
@@ -69,12 +70,12 @@ export default class PhoneNoField extends Component {
           <PhoneInput
             disabled={this.props.disabled}
             textStyle={{
-              fontSize: 12,
-              height: 15,
+              fontSize: fontSize,
+              height: height,
               color: "#4b4b4b",
               fontFamily: "montserrat-regular-english",
               textAlign: I18nManager.isRTL ? "right" : "left",
-              borderBottomColor: this.props.valid ? "transparent" : "red"
+              borderBottomColor: this.props.valid ? "transparent" : "red",
             }}
             flagStyle={styles.flagStyle}
             textProps={{
@@ -86,21 +87,22 @@ export default class PhoneNoField extends Component {
                   showMessage({
                     message: translate("Please enter a valid number!"),
                     type: "warning",
-                    position: "top"
+                    position: "top",
                   });
                 }
                 if (this.phone.isValidNumber()) {
                   country_name = find(
                     this.phone.getAllCountries(),
-                    country => country.dialCode === this.phone.getCountryCode()
+                    (country) =>
+                      country.dialCode === this.phone.getCountryCode()
                   ).name;
                 }
-              }
+              },
             }}
-            ref={ref => {
+            ref={(ref) => {
               this.phone = ref;
             }}
-            onChangePhoneNumber={number => this.onChangePhoneNumber(number)}
+            onChangePhoneNumber={(number) => this.onChangePhoneNumber(number)}
             onPressFlag={this.onPressFlag}
             initialCountry={this.state.country.iso2}
             countriesList={countriesMobileData}
@@ -111,12 +113,12 @@ export default class PhoneNoField extends Component {
           />
         </Item>
         <CountryModal
-          ref={ref => {
+          ref={(ref) => {
             this.myCountryPicker = ref;
           }}
           optionTextStyle={styles.optionTextStyle}
           data={this.state.pickerData}
-          onChange={country => {
+          onChange={(country) => {
             this.selectCountry(country);
           }}
           cancelText="Cancel"

@@ -167,8 +167,8 @@ android {
         applicationId 'com.optimizeapp.optimizeapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 61
-        versionName "0.3.980"
+        versionCode 64
+        versionName "0.4.10"
         multiDexEnabled true
 
     }
@@ -221,12 +221,15 @@ dependencies {
     implementation project(':react-native-maps')
     // implementation project(':@react-native-community_masked-view')
     // implementation project(':@react-native-community_blur')
-    implementation project(':react-native-mixpanel')
+    // implementation project(':react-native-mixpanel')
 // implementation project(':@segment_analytics-react-native-mixpanel')
     implementation project(':react-native-device-info')
+    compile 'com.segment.analytics.android.integrations:adjust:+'
+    implementation project(':react-native-advertising-id')
+
 //    implementation project(':@segment_analytics-react-native')
     implementation project(':react-native-bootsplash')
-    implementation project(':react-native-adjust')
+//    implementation project(':react-native-adjust')
     implementation project(':react-native-photoeditorsdk')
     implementation project(':react-native-videoeditorsdk')
     implementation project(':react-native-ffmpeg')

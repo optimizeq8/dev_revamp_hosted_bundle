@@ -11,6 +11,7 @@ import { ProgressBar, Colors } from "react-native-paper";
 
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
 import CustomHeader from "../../../../MiniComponents/Header";
+import RNImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
 // Redux
 import { connect } from "react-redux";
@@ -77,6 +78,7 @@ class AdStoryDesignReview extends React.Component {
       "campaignDetails",
       false
     );
+    let rejected = this.props.navigation.getParam("rejected", false);
     const {
       instagram_business_name,
       instagram_profile_pic,
@@ -85,19 +87,16 @@ class AdStoryDesignReview extends React.Component {
       media_type,
       media_option = "single",
       media = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    } = !campaignDetails ? this.props.data : this.props.navigation.state.params;
+    } = !campaignDetails
+      ? !rejected
+        ? this.props.data
+        : this.props.instaRejCampaign
+      : this.props.navigation.state.params;
     const { translate } = this.props.screenProps;
     let mediaView = null;
     if (media_option === "single") {
       if (media_type === "IMAGE" && media) {
-        mediaView = (
-          <Image
-            style={styles.imagePreviewStory}
-            source={{
-              uri: media,
-            }}
-          />
-        );
+        mediaView = <RNImage style={styles.imagePreviewStory} media={media} />;
       }
       if (media_type === "VIDEO" && media) {
         mediaView = (
@@ -216,7 +215,7 @@ class AdStoryDesignReview extends React.Component {
                   >
                     {call_to_action.hasOwnProperty("label")
                       ? call_to_action.label
-                      : call_to_action.replace("_", " ")}
+                      : call_to_action.replace(/_/gi, " ")}
                   </Text>
                 </View>
               )}
@@ -237,6 +236,7 @@ const mapStateToProps = (state) => ({
   campaign_id: state.instagramAds.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.instagramAds.data,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   loading: state.instagramAds.loadingDesign,
   admin: state.login.admin,
   carouselAdsArray: state.instagramAds.carouselAdsArray,

@@ -29,6 +29,9 @@ import styles from "./styles";
 
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 class Transactions extends Component {
   state = {
@@ -81,7 +84,16 @@ class Transactions extends Component {
         />
       );
     } else if (this.props.loading || !this.props.filteredTransactions)
-      return <LoadingScreen dash={true} top={0} />;
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
+          <LoadingScreen dash={true} top={0} />
+        </>
+      );
     else {
       let menu = FilterMenu ? (
         <FilterMenu
@@ -106,6 +118,11 @@ class Transactions extends Component {
             style={styles.safeAreaContainer}
             forceInset={{ bottom: "never", top: "always" }}
           >
+            <LinearGradient
+              colors={[colors.background1, colors.background2]}
+              locations={[1, 0.3]}
+              style={globalStyles.gradient}
+            />
             <CustomHeader
               screenProps={this.props.screenProps}
               title={"Transactions"}

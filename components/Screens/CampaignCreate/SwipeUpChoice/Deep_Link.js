@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
-import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
-import CustomHeader from "../../../MiniComponents/Header";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -23,7 +18,6 @@ import * as actionsCreators from "../../../../store/actions";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
-import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -209,6 +203,29 @@ class Deep_Link extends Component {
     }
   };
 
+  finalHandleSubmit = (deep_link_uri) => {
+    let attachment = this.state.attachment;
+    let appChoice = this.state.appChoice;
+    attachment["deep_link_uri"] = deep_link_uri;
+
+    if (!this.state.iosAppSelected) {
+      attachment["ios_app_id"] = "";
+      appChoice = "ANDROID";
+    }
+    if (!this.state.androidAppSelected) {
+      attachment["android_app_url"] = "";
+      appChoice = "iOS";
+    }
+    this.props._changeDestination(
+      this.props.collectionAdLinkForm === 0 || !this.props.collectionAdLinkForm
+        ? "DEEP_LINK"
+        : "COLLECTION",
+      this.state.callaction,
+      attachment,
+      appChoice
+    );
+    this.props.toggle(false);
+  };
   _handleSubmission = async (deep_link_uri) => {
     const { translate } = this.props.screenProps;
     const appError = validateWrapper(
@@ -233,28 +250,11 @@ class Deep_Link extends Component {
       (this.state.iosAppSelected || this.state.androidAppSelected) &&
       !appError
     ) {
-      if (!this.state.iosAppSelected) {
-        attachment["ios_app_id"] = "";
-        appChoice = "ANDROID";
-      }
-      if (!this.state.androidAppSelected) {
-        attachment["android_app_url"] = "";
-        appChoice = "iOS";
-      }
-      this.props._changeDestination(
-        this.props.collectionAdLinkForm === 0 ||
-          !this.props.collectionAdLinkForm
-          ? "DEEP_LINK"
-          : "COLLECTION",
-        this.state.callaction,
-        attachment,
-        appChoice
+      this.props.verifyDestinationUrl(
+        deep_link_uri,
+        this.finalHandleSubmit,
+        this.props.screenProps.translate
       );
-      this.props.toggle(false);
-      // this.props.navigation.navigate("AdDesign", {
-      //   source: "ad_swipe_up_destination",
-      //   source_action: "a_swipe_up_destination",
-      // });
     } else
       showMessage({
         message: translate("Please select at least one app"),
@@ -273,36 +273,37 @@ class Deep_Link extends Component {
       <View
         style={[
           styles.safeAreaContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
-        <View>
-          <View style={styles.deepLinkHeader}>
-            {/* <AppInstallIcon style={styles.icon} /> */}
-            <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>{translate("Deep Link")}</Text>
-              <Text style={styles.subtext}>
-                {translate("Send Snapchatters to a specific page in your app")}
-              </Text>
-            </View>
+        <View style={styles.deepLinkHeader}>
+          {/* <AppInstallIcon style={styles.icon} /> */}
+          <View style={styles.textcontainer}>
+            <Text style={styles.titletext}>{translate("Deep Link")}</Text>
+            <Text style={styles.subtext}>
+              {translate("Send Snapchatters to a specific page in your app")}
+            </Text>
           </View>
-          <AppChoice
-            handleCallaction={this.handleCallaction}
-            navigation={this.props.navigation}
-            selectApp={this.selectApp}
-            listNum={3}
-            attachment={this.state.attachment}
-            callaction={this.state.callaction}
-            swipeUpDestination={this.props.swipeUpDestination}
-            deep_link_uri={this.state.attachment.deep_link_uri}
-            toggleSideMenu={this.props.toggleSideMenu}
-            _handleSubmission={this._handleSubmission}
-            deepLink={true}
-            screenProps={this.props.screenProps}
-            appSelections={{ iosAppSelected, androidAppSelected }}
-            setTheState={this.setTheState}
-          />
         </View>
+        <AppChoice
+          handleCallaction={this.handleCallaction}
+          navigation={this.props.navigation}
+          selectApp={this.selectApp}
+          listNum={3}
+          attachment={this.state.attachment}
+          callaction={this.state.callaction}
+          swipeUpDestination={this.props.swipeUpDestination}
+          deep_link_uri={this.state.attachment.deep_link_uri}
+          toggleSideMenu={this.props.toggleSideMenu}
+          _handleSubmission={this._handleSubmission}
+          deepLink={true}
+          screenProps={this.props.screenProps}
+          appSelections={{ iosAppSelected, androidAppSelected }}
+          setTheState={this.setTheState}
+        />
       </View>
     );
   }
@@ -320,5 +321,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   save_campaign_info: (info) =>
     dispatch(actionsCreators.save_campaign_info(info)),
+  verifyDestinationUrl: (url, submit, translate) =>
+    dispatch(actionsCreators.verifyDestinationUrl(url, submit, translate)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Deep_Link);

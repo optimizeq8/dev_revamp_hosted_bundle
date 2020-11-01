@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Text, Icon } from "native-base";
+import { View, Text } from "react-native";
+import { Icon } from "native-base";
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
 class ReviewItemCard extends Component {
   render() {
@@ -11,17 +10,28 @@ class ReviewItemCard extends Component {
       let text = "";
 
       if (typeof e.title === "object")
-        e.title.forEach(element => {
+        e.title.forEach((element) => {
           text += translate(element) + " ";
         });
       else text = e.title && translate(e.title);
-
       return (
         <View style={styles.listView} key={i}>
           <Text style={[styles.subText, styles.listTitleText]}>
             {text ? text : ""}
           </Text>
-          <Text style={[styles.subText, styles.contentText]}>{e.content}</Text>
+          <Text
+            style={[
+              styles.subText,
+              styles.contentText,
+              (e.title === "Start" ||
+                e.title === "End" ||
+                e.title === "Devices") && {
+                fontFamily: "montserrat-regular-english",
+              },
+            ]}
+          >
+            {e.content}
+          </Text>
         </View>
       );
     });

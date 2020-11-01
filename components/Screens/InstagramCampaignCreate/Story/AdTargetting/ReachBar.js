@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, Text } from "react-native";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import ForwardLoading from "../../../../MiniComponents/ForwardLoading";
@@ -15,7 +15,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import formatNumber from "../../../../formatNumber";
-import { Text } from "native-base";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 
 class ReachBar extends Component {
@@ -42,7 +41,14 @@ class ReachBar extends Component {
     const { translate } = this.props.screenProps;
     let { startEditing, editCampaign, campaignInfo } = this.props;
     return (
-      <View style={styles.bottom}>
+      <View
+        style={[
+          styles.bottom,
+          editCampaign && {
+            bottom: "10%",
+          },
+        ]}
+      >
         <AnimatedCircularProgress
           size={85}
           width={8}
@@ -55,10 +61,10 @@ class ReachBar extends Component {
         />
         <View style={styles.chartItems}>
           <View style={styles.reachPeopleView}>
-            <Text uppercase style={styles.chartText}>
+            <Text style={[styles.chartText, { textTransform: "uppercase" }]}>
               {translate("Potential Reach")}
             </Text>
-            <Text uppercase style={styles.chartTextNum}>
+            <Text style={[styles.chartTextNum, { textTransform: "uppercase" }]}>
               {formatNumber(this.props.average_reach, true)}
               {"  " + translate("people")}
             </Text>

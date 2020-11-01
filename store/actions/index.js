@@ -19,6 +19,7 @@ export {
   updateWebInfoForBusiness,
   changeBusinessLogo,
   updateBusinessConnectedToFacebook,
+  crashAppForSpamUser,
 } from "./accountManagementActions";
 
 export {
@@ -85,6 +86,12 @@ export {
   updateStoryADS,
   setCollectionAdMediaArray,
   overWriteObjectiveData,
+  verifyDestinationUrl,
+  isNumberSnapchatVerified,
+  sendOTPSnapchat,
+  resetVerifiedNumberSnapchat,
+  verifyOTPCode,
+  moveRejectedAdAmountToWallet,
 } from "./campaignActions";
 
 export {
@@ -208,6 +215,11 @@ export {
   getInstagramExistingPost,
   saveInstgramExistpost,
   get_custom_interests_instagram,
+  setInstaRejectedAdType,
+  setInstaRejectedCampaignData,
+  setRejectedCarouselAds,
+  resetInstagramRejectedCampaignData,
+  moveRejectedAdAmountToWalletInstagram,
 } from "./instagramCampaignActions";
 
 export {

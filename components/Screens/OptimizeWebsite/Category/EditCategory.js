@@ -172,7 +172,6 @@ class EditCategory extends Component {
       body.append("name", this.state.category.name);
       body.append("products", this.state.category.products);
 
-      console.log("body", JSON.stringify(body, null, 2));
       // This is to edit an existing category
       this.props.editCategory(body, this._getUploadState, this.cancelUpload);
     }

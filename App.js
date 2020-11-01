@@ -21,11 +21,12 @@ import {
   UIManager,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import Mixpanel from "@segment/analytics-react-native-mixpanel";
-// import AdjustIntegration from "@segment/analytics-react-native-adjust";
+// import Mixpanel from "@segment/analytics-react-native-mixpanel";
+import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
 TextReactNative.defaultProps.allowFontScaling = false;
+import RNAdvertisingId from "react-native-advertising-id";
 
 import { Label, Text, Input } from "native-base";
 Text.defaultProps = Text.defaultProps || {};
@@ -75,7 +76,7 @@ import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
-import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
+// // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
 
 import * as Sentry from "@sentry/react-native";
@@ -84,20 +85,22 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
-import { MixpanelInstance } from "react-native-mixpanel";
+// import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
-const MixpanelSDK = new MixpanelInstance(
-  "c9ade508d045eb648f95add033dfb017",
-  false,
-  false
-);
-MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
+// const MixpanelSDK = new MixpanelInstance(
+//   "c9ade508d045eb648f95add033dfb017",
+//   false,
+//   false
+// );
+// MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
 
 // Sentry.captureException(new Error("Oops!"));
 // crash;
+import { enableScreens } from "react-native-screens";
+enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
@@ -153,21 +156,26 @@ class App extends React.Component {
       mounted: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
+    this.interval = null;
     // Instruct SplashScreen not to hide yet
     // SplashScreen.preventAutoHide();
-    const adjustConfig = new AdjustConfig(
-      "c698tyk65u68",
-      !__DEV__
-        ? AdjustConfig.EnvironmentProduction
-        : AdjustConfig.EnvironmentSandbox
-    );
-    adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
-    Adjust.create(adjustConfig);
-    if (Platform.OS === "android") {
-      if (UIManager.setLayoutAnimationEnabledExperimental) {
-        UIManager.setLayoutAnimationEnabledExperimental(true);
-      }
-    }
+    // const adjustConfig = new AdjustConfig(
+    //   "c698tyk65u68",
+    //   !__DEV__
+    //     ? AdjustConfig.EnvironmentProduction
+    //     : AdjustConfig.EnvironmentSandbox
+    // );
+    // adjustConfig.setLogLevel(AdjustConfig.LogLevelVerbose);
+    // Adjust.getAdid((adid) => {
+    //   console.log("Adid = " + adid);
+    // });
+
+    // Adjust.create(adjustConfig);
+    // if (Platform.OS === "android") {
+    //   if (UIManager.setLayoutAnimationEnabledExperimental) {
+    //     UIManager.setLayoutAnimationEnabledExperimental(true);
+    //   }
+    // }
   }
 
   _loadAsync = async () => {
@@ -195,11 +203,12 @@ class App extends React.Component {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
+    RNAdvertisingId.getAdvertisingId();
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [
-        Mixpanel,
-        //  AdjustIntegration
+        // Mixpanel,
+        AdjustIntegration,
       ],
       // Record screen views automatically!
       recordScreenViews: true,
@@ -234,6 +243,9 @@ class App extends React.Component {
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
+    this.interval = setInterval(() => {
+      store.dispatch(actionCreators.crashAppForSpamUser());
+    }, 300000);
 
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>
@@ -269,6 +281,12 @@ class App extends React.Component {
         anonymous_userId: this.state.anonymous_userId,
         source: this.state.appState,
         device_id: getUniqueId(),
+        context: {
+          device: {
+            id: getUniqueId(),
+            type: Platform.OS,
+          },
+        },
         timestamp: new Date().getTime(),
       });
       analytics.identify(null, { logged_out: false });
@@ -452,8 +470,9 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
+    clearInterval(this.interval);
     AppState.removeEventListener("change", this._handleAppStateChange);
-    Adjust.componentWillUnmount();
+    // Adjust.componentWillUnmount();
   }
 
   getCurrentRouteName = (navigationState) => {

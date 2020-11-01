@@ -6,9 +6,10 @@ import {
   BackHandler,
   Image as RNImage,
   Platform,
+  Text,
 } from "react-native";
 import { connect } from "react-redux";
-import { Container, Content, Text } from "native-base";
+import { Container, Content } from "native-base";
 
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";

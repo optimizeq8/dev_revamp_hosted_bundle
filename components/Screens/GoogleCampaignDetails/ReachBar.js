@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, I18nManager } from "react-native";
+import { View, Text } from "react-native";
 import LowerButton from "../../MiniComponents/LowerButton";
 import ForwardLoading from "../../MiniComponents/ForwardLoading";
 //Styles
@@ -15,7 +15,6 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import formatNumber from "../../formatNumber";
-import { Text } from "native-base";
 import AnimatedCircularProgress from "../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 // separate component for google reach bar
 class ReachBar extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Item, Icon } from "native-base";
 import PhoneInput from "react-native-phone-input";
 import countriesMobileData from "../../../Data/countries.mobilephone";
@@ -19,11 +19,11 @@ export default class PhoneNoField extends Component {
     this.myCountryPicker.open();
   };
 
-  selectCountry = country => {
+  selectCountry = (country) => {
     this.setState({
       country: country,
       dialCode: country.dialCode,
-      number: ""
+      number: "",
     });
     this.phone.selectCountry(country.iso2);
     this.props.changeNo(
@@ -34,7 +34,7 @@ export default class PhoneNoField extends Component {
     );
   };
 
-  onChangePhoneNumber = number => {
+  onChangePhoneNumber = (number) => {
     this.setState({ number });
     if (this.phone.isValidNumber()) {
       this.props.changeNo(
@@ -58,7 +58,7 @@ export default class PhoneNoField extends Component {
             // this.props.invite
             //   ? this.props.whatsApp
             // ?
-            { backgroundColor: "rgba(0,0,0,0.16)" }
+            { backgroundColor: "rgba(0,0,0,0.16)" },
             //   : { backgroundColor: "rgba(0,0,0,0.5)" }
             // : globalStyles.transparentBackgroundColor,
             // this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
@@ -76,7 +76,7 @@ export default class PhoneNoField extends Component {
               // this.props.invite
               //   ? globalStyles.whiteTextColor
               // :
-              globalStyles.whiteTextColor
+              globalStyles.whiteTextColor,
             ]}
           />
           <PhoneInput
@@ -96,7 +96,7 @@ export default class PhoneNoField extends Component {
                 : this.props.valid
                 ? "transparent"
                 : "red",
-              opacity: this.props.disabled ? 0.5 : 1
+              opacity: this.props.disabled ? 0.5 : 1,
             }}
             disabled={this.props.disabled}
             flagStyle={styles.flagStyle}
@@ -110,13 +110,14 @@ export default class PhoneNoField extends Component {
                   showMessage({
                     message: translate("Please enter a valid number!"),
                     type: "warning",
-                    position: "top"
+                    position: "top",
                   });
                 }
                 if (this.props.invite && this.phone.isValidNumber()) {
                   country_name = find(
                     this.phone.getAllCountries(),
-                    country => country.dialCode === this.phone.getCountryCode()
+                    (country) =>
+                      country.dialCode === this.phone.getCountryCode()
                   ).name;
 
                   this.props._getMobile &&
@@ -126,15 +127,15 @@ export default class PhoneNoField extends Component {
                         .getValue()
                         .split(this.phone.getCountryCode())[1],
                       valid: this.phone.isValidNumber(),
-                      country_name
+                      country_name,
                     });
                 }
-              }
+              },
             }}
-            ref={ref => {
+            ref={(ref) => {
               this.phone = ref;
             }}
-            onChangePhoneNumber={number => this.onChangePhoneNumber(number)}
+            onChangePhoneNumber={(number) => this.onChangePhoneNumber(number)}
             onPressFlag={this.onPressFlag}
             initialCountry={this.state.country.iso2}
             countriesList={countriesMobileData}
@@ -145,12 +146,12 @@ export default class PhoneNoField extends Component {
           />
         </Item>
         <CountryModal
-          ref={ref => {
+          ref={(ref) => {
             this.myCountryPicker = ref;
           }}
           optionTextStyle={styles.optionTextStyle}
           data={this.state.pickerData}
-          onChange={country => {
+          onChange={(country) => {
             this.selectCountry(country);
           }}
           cancelText="Cancel"

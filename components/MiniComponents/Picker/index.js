@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, PixelRatio, I18nManager } from "react-native";
-import { Icon, Text, Input, Item } from "native-base";
+import { View, Text } from "react-native";
+import { Icon, Input, Item } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 import SearchIcon from "../../../assets/SVGs/Search";

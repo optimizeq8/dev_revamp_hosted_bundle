@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
-import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import AppChoice from "../../../MiniComponents/InstaAppChoice";
 
@@ -50,13 +49,22 @@ class InstaApp_Install extends Component {
 
   componentDidMount() {
     //This is for InstagramAd rejection process
-    if (this.props.rejCampaign && this.props.adType === "InstagramAd") {
+    if (this.props.rejected) {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.rejCampaign.attachment,
+          ...this.props.instaRejCampaign.attachment,
         },
-        callaction: this.props.rejCampaign.call_to_action,
+        callaction: this.props.instaRejCampaign.call_to_action,
+        appChoice:
+          this.props.instaRejCampaign.attachment.ios_app_id !== "" &&
+          this.props.instaRejCampaign.attachment.android_app_url !== ""
+            ? null
+            : this.props.instaRejCampaign.appChoice,
+        iosAppSelected:
+          this.props.instaRejCampaign.attachment.ios_app_id !== "",
+        androidAppSelected:
+          this.props.instaRejCampaign.attachment.android_app_url !== "",
       });
     } else if (
       this.props.data &&
@@ -79,7 +87,10 @@ class InstaApp_Install extends Component {
         iosAppSelected: this.props.data.attachment.ios_app_id !== "",
         androidAppSelected: this.props.data.attachment.android_app_url !== "",
       });
-    } else if (this.props.storyAdAttachment.destination === "app_install") {
+    } else if (
+      this.props.storyAdAttachment &&
+      this.props.storyAdAttachment.destination === "app_install"
+    ) {
       this.setState({
         attachment: {
           ...this.state.attachment,
@@ -110,6 +121,7 @@ class InstaApp_Install extends Component {
           ...this.props.mainBusiness.playstorelink,
         },
         iosAppSelected: this.props.mainBusiness.appstorelink.ios_app_id !== "",
+        androidAppSelected: this.props.mainBusiness.android_app_url !== "",
         appChoice:
           this.props.mainBusiness.appstorelink.ios_app_id !== ""
             ? "iOS"
@@ -164,6 +176,7 @@ class InstaApp_Install extends Component {
         iosApp_icon,
         androidApp_icon,
         appChoice,
+        rejected: this.props.rejected,
       });
     }
   };
@@ -226,6 +239,7 @@ class InstaApp_Install extends Component {
         attachment,
         appChoice,
         link: appUrl,
+        rejected: this.props.rejected,
       });
 
       this.props.toggleClickDestination(false);
@@ -283,6 +297,7 @@ class InstaApp_Install extends Component {
           setTheState={this.setTheState}
           socialMediaPlatform={"InstagramFeedAd"}
           data={this.props.data}
+          rejected={this.props.rejected}
         />
       </View>
     );
@@ -294,7 +309,7 @@ const mapStateToProps = (state) => ({
   data: state.instagramAds.data,
   adType: state.instagramAds.adType,
   storyAdAttachment: state.instagramAds.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   mainBusiness: state.account.mainBusiness,
 });
 

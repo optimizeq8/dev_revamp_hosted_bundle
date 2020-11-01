@@ -8,7 +8,7 @@ export default class ChartChoices extends Component {
   state = { selectedChoice: "Spend" };
   render() {
     const { translate } = this.props.screenProps;
-    let choices = ["Spend", "Clicks", "CPC", "ctr"].map(choice => (
+    let choices = ["Spend", "Clicks", "CPC", "ctr"].map((choice) => (
       <GradientButton
         key={choice}
         onPressAction={() => {
@@ -17,15 +17,16 @@ export default class ChartChoices extends Component {
         }}
         numberOfLines={2}
         style={[
-          styles.choiceButtons,
+          // styles.choiceButtons,
           {
             height: 35,
             width: I18nManager.isRTL ? null : "20%", // Since for arabic the name string are big it should take up the width of the content size
             marginHorizontal: 0,
-            borderRadius: 100
-          }
+            borderRadius: 100,
+          },
         ]}
         radius={50}
+        purpleViolet={this.state.selectedChoice === choice}
         transparent={this.state.selectedChoice !== choice}
         text={translate(choice)}
         uppercase
@@ -36,9 +37,9 @@ export default class ChartChoices extends Component {
             paddingHorizontal: I18nManager.isRTL ? 15 : 5,
             color:
               this.state.selectedChoice !== choice
-                ? globalColors.orange
-                : "#fff"
-          }
+                ? globalColors.purple3
+                : "#fff",
+          },
         ]}
       />
     ));

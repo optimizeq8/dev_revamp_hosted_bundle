@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { TouchableOpacity, Text } from "react-native";
+import { Icon } from "native-base";
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
-export default Keyword = props => {
+export default Keyword = (props) => {
   let { _handler, keyword, type = "Keyword", uploading } = props;
   return (
     <TouchableOpacity
@@ -35,5 +35,5 @@ export default Keyword = props => {
 Keyword.propTypes = {
   _handler: PropTypes.func.isRequired,
   keyword: PropTypes.string.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
 };

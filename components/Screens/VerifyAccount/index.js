@@ -155,6 +155,11 @@ class VerifyAccount extends Component {
   };
 
   changePhoneNo = (number, countryCode, type, valid) => {
+    analytics.track(`a_change_mobile_number`, {
+      source: "start_verify",
+      source_action: "a_change_mobile_number",
+      mobile: number,
+    });
     this.setState({
       phoneNum: number,
       country_code: countryCode,
@@ -295,7 +300,6 @@ class VerifyAccount extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    segmentEventTrack("Button Pressed to verify mobile code");
     this.props.verifyMobileCode(
       {
         mobile: this.state.phoneNum.substring(4),
@@ -365,7 +369,7 @@ class VerifyAccount extends Component {
       );
     }
 
-    if (!this.props.successNo) {
+    if (this.props.successNo) {
       content = (
         <View style={styles.mobileDetailCard}>
           <Text style={styles.codeSentText}>
@@ -383,7 +387,6 @@ class VerifyAccount extends Component {
               onChangeText={(code) => {
                 this.setState({ code });
                 if (code.length === 5) {
-                  console.log("HHHH");
                   this._handleSentCode(code);
                 }
               }}

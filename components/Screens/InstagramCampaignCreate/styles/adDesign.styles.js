@@ -46,21 +46,20 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
   },
   placeHolderStoryAd: {
-    height: hp(45),
+    // height: hp(44),
+    flex: 1,
+    marginBottom: 100,
   },
   transition: { height: "100%" },
   mainView: {
-    marginHorizontal: 40,
-    display: "flex",
-    // flex: 2.5,
-    overflow: "hidden",
+    marginHorizontal: 20,
     backgroundColor: globalColors.transparent,
+    height: "100%",
   },
   captionTextView: { flex: 1 },
   penIcon: { alignSelf: "center" },
   lowerBtn: {
     flexDirection: "row",
-    display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
     // alignSelf: "flex-end",
@@ -331,11 +330,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
   outerBlock: {
-    flex: 1,
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
-    marginVertical: 12,
-    paddingBottom: "30%",
+    marginTop: 12,
+    // height: "100%",
+    flex: 1,
   },
   profileBsnNameView: {
     display: "flex",
@@ -370,7 +369,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
-    // height: hp(35),
+    height: hp(5) < 40 ? hp(25) : hp(38),
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
   },
@@ -398,7 +397,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "space-between",
     marginTop: 10,
-    marginBottom: 0,
+    marginBottom: 70,
   },
   captionText: {
     fontFamily: "montserrat-regular",
@@ -533,8 +532,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
   },
 
-  flatListView: { height: hp(35) },
-
   carouselEditMedia: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -591,7 +588,7 @@ const styles = StyleSheet.create({
     paddingBottom: hp(24),
     alignItems: "center",
   },
-  flatListView: { height: hp(35) },
+  flatListView: { height: hp(5) < 40 ? hp(24) : hp(38) },
 
   carouselEditMedia: {
     flexDirection: "row",

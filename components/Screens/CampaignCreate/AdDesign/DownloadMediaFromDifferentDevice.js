@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Platform, ScrollView } from "react-native";
-import { Text } from "native-base";
+import { View, Platform, ScrollView, Text } from "react-native";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView } from "react-navigation";

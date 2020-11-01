@@ -33,6 +33,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from "react-native-responsive-screen";
+import isStringArabic from "../../../isStringArabic";
 
 class AdType extends Component {
   static navigationOptions = {
@@ -95,6 +96,10 @@ class AdType extends Component {
       campaign_channel: adType.mediaType,
       campaign_ad_type: adType.value,
       device_id,
+      context: {
+        device_id: device_id,
+        type: Platform.OS,
+      },
     });
     //Check if account is verified or not
     const { fb_connected, fb_ad_account_id } = this.props.mainBusiness;
@@ -138,7 +143,10 @@ class AdType extends Component {
         adType.mediaType === "google" &&
         this.props.mainBusiness.google_suspended === "1"
       ) {
-        this.props.navigation.navigate("SuspendedWarning");
+        this.props.navigation.navigate("SuspendedWarning", {
+          source: "ad_type",
+          source_action: "a_campaign_ad_type",
+        });
       } else if (adType.mediaType === "instagram" && fb_connected === "0") {
         this.props.navigation.navigate("WebView", {
           url: `https://www.optimizeapp.com/facebooklogin/login.php?b=${this.props.mainBusiness.businessid}`,
@@ -253,10 +261,6 @@ class AdType extends Component {
       null
     );
     if (changeFbConnectStatus && changeFbConnectStatus.includes("true")) {
-      this.props.updateBusinessConnectedToFacebook({
-        fb_connected: "1",
-        fb_ad_account_id: fb_ad_account_id,
-      });
       const instagram_username = this.props.navigation.getParam(
         "instagram_username",
         ""
@@ -270,6 +274,10 @@ class AdType extends Component {
           }
         ),
         duration: 5000,
+      });
+      this.props.updateBusinessConnectedToFacebook({
+        fb_connected: "1",
+        fb_ad_account_id: fb_ad_account_id,
       });
     }
   };
@@ -458,7 +466,14 @@ class AdType extends Component {
                 >
                   <Image style={styles.adTypeImage} />
                   <View style={styles.descriptionView}>
-                    <Text style={styles.titleText}>
+                    <Text
+                      style={[
+                        styles.titleText,
+                        !isStringArabic(translate(item.title)) && {
+                          fontFamily: "montserrat-bold-english",
+                        },
+                      ]}
+                    >
                       {`\u200F ${translate(item.title)}`}
                       {/**Added speecial character for strings that has combination of english and arabic */}
                     </Text>

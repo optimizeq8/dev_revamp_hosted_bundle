@@ -7,6 +7,7 @@ import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { getUniqueId } from "react-native-device-info";
+import NavigationService from "../../NavigationService";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -16,6 +17,10 @@ export const resetCampaignInfo = (resetAdType = false) => {
 
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.LOADING_SNAP_AUDIENCE_SIZE,
+      payload: true,
+    });
     createBaseUrl()
       .post(`snapaudiencesize`, info)
       .then((res) => {
@@ -574,14 +579,20 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation, segmentInfo) => {
+export const ad_details = (
+  info,
+  names,
+  navigation,
+  segmentInfo,
+  locationsInfo
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true,
     });
     createBaseUrl()
-      .post(`savetargeting`, info)
+      .post(`savetargeting`, { ...info, coordinates: locationsInfo })
       .then((res) => {
         return res.data;
       })
@@ -626,6 +637,10 @@ export const ad_details = (info, names, navigation, segmentInfo) => {
 
 export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DETAIL,
+      payload: true,
+    });
     createBaseUrl()
       .put(`savetargeting`, { ...info, businessid })
       .then((res) => {
@@ -639,6 +654,14 @@ export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
           source_action: "a_submit_ad_targeting",
           ...segmentInfo,
           action_status: data.success ? "success" : "failure",
+        });
+        showMessage({
+          type: data.success ? "success" : "warning",
+          message: data.message,
+        });
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DETAIL,
+          payload: false,
         });
         navigation.navigate("Dashboard", {
           source: "ad_targeting",
@@ -1479,5 +1502,149 @@ export const overWriteObjectiveData = (value) => {
       type: actionTypes.OVERWRITE_OBJ_DATA,
       payload: value,
     });
+  };
+};
+
+/**
+ *
+ * @param {*} url the url to verify does not belong to any social media platform
+ * @param {*} submit function to do next action, either toggle or go to ad targetingscreen
+ * @param {*} translate
+ */
+export const verifyDestinationUrl = (url, submit, translate) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_DESTINATION_URL,
+      payload: {
+        success: false,
+        loading: true,
+      },
+    });
+    createBaseUrl()
+      .post(`checkDestinationURL`, {
+        url,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track(`a_verify_destination_url`, {
+          source: "ad_swipe_up_destination",
+          source_action: "a_verify_destination_url",
+          action_status: data.success ? "success" : "failure",
+          campaign_url: url,
+        });
+        if (data.success) {
+          submit(url);
+        }
+        if (!data.success) {
+          analytics.track(`a_error_form`, {
+            error_page: "ad_swipe_up_destination",
+            error_description:
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media",
+            campaign_channel: "snapchat",
+            campaign_url: url,
+          });
+          showMessage({
+            type: "warning",
+            message: translate(
+              "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+            ),
+          });
+        }
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: data.success, loading: false },
+        });
+      })
+      .catch((error) => {
+        return dispatch({
+          type: actionTypes.VERIFY_DESTINATION_URL,
+          payload: { success: false, loading: false },
+        });
+      });
+  };
+};
+
+export const isNumberSnapchatVerified = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_SNAPCHAT_NUMBER,
+      payload: {
+        verified: true,
+        loading: false,
+        otpSend: false,
+      },
+    });
+  };
+};
+
+export const sendOTPSnapchat = (number) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.SEND_OTP_SNAPCHAT,
+      payload: true,
+    });
+  };
+};
+
+export const resetVerifiedNumberSnapchat = () => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.RESET_SNAPCHAT_VERIFIED_NUMBER,
+    });
+  };
+};
+
+export const verifyOTPCode = (code) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFIED_OTP_SNAPCHAT,
+      payload: {
+        success: true,
+        loading: false,
+      },
+    });
+  };
+};
+/**
+ *  To move the amount to wallet when ad is rejected
+ * @param {*} campaign_id
+ */
+export const moveRejectedAdAmountToWallet = (campaign_id) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.MOVING_AMOUNT_TO_WALLET,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`moveAmountToWallet`, {
+        campaign_id,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        analytics.track("a_move_amount_to_wallet", {
+          source: "ad_detail",
+          source_action: "a_move_amount_to_wallet",
+          camapign_channel: "snapchat",
+          campaign_id: campaign_id,
+          action_status: data.success ? "success" : "failure",
+        });
+        dispatch({
+          type: actionTypes.MOVING_AMOUNT_TO_WALLET,
+          payload: false,
+        });
+        if (data.success) {
+          showMessage({
+            type: "success",
+            message: data.message,
+          });
+          NavigationService.navigate("Dashboard", {
+            source: "ad_detail",
+            source_action: "a_move_amount_to_wallet",
+          });
+        }
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
   };
 };

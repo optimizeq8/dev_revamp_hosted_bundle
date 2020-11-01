@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>EXUpdatesReleaseChannel</key>
-	<string>dev-01</string>
+	<string>navigation-changed</string>
 	<key>EXUpdatesSDKVersion</key>
-	<string>39.0.0</string>
+	<string>38.0.0</string>
 	<key>EXUpdatesURL</key>
 	<string>https://exp.host/@samyoptimize/optimize_app</string>
 </dict>

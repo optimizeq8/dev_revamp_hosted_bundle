@@ -8,7 +8,7 @@ import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   container: {
     // height: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "#f8f8f8",
   },
   media: {
     alignSelf: "center",
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: "#fff",
+    color: globalColors.purple,
     fontFamily: "montserrat-bold",
     fontSize: 11,
     textAlign: "left",
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
   },
   numbers: {
     textAlign: "center",
-    color: "#FF9D00",
-    fontFamily: "montserrat-medium-english",
+    color: globalColors.orange,
+    fontFamily: "montserrat-bold-english",
     fontSize: 16,
   },
   toggleSpace: {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     width: wp("100"),
     flex: 1,
-    elevation: 10,
+    // elevation: 10,
     zIndex: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   choicesStyles: {
-    elevation: 11,
+    // elevation: 11,
     zIndex: 11,
     position: "absolute",
     // width: "100%",
@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 100,
     justifyContent: "center",
+    paddingVertical: 10,
   },
   choiceText: {
     fontFamily: "montserrat-bold",
@@ -344,14 +345,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    borderRadius: 15,
+    // borderRadius: 15,
   },
   ScrollChartArea: {
     height: 35,
   },
   placeHolderChartText: {
     fontFamily: "montserrat-medium",
-    color: "#fff",
+    color: "#000",
   },
   dot: {
     top: 10,
@@ -398,17 +399,45 @@ const styles = StyleSheet.create({
     left: "7%",
     opacity: 0.4,
   },
+  metricsStylePurple: {
+    flexDirection: "row",
+    alignItems: "center",
+    overflow: "hidden",
+    // flex: 1,
+    paddingHorizontal: 20,
+    marginVertical: 3,
+    marginHorizontal: 10,
+    backgroundColor: "#0003",
+    width: 160,
+    borderRadius: 20,
+    height: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    // elevation: 7,
+    // padding: "3%"
+  },
   metricsStyle: {
     flexDirection: "row",
     alignItems: "center",
     // flex: 1,
     paddingHorizontal: 20,
     marginVertical: 3,
-    marginRight: 10,
-    backgroundColor: "#0004",
+    marginHorizontal: 10,
+    backgroundColor: "#FFF",
     width: 160,
     borderRadius: 20,
     height: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 7,
     // padding: "3%"
   },
   chartChoices: {
@@ -443,7 +472,7 @@ const styles = StyleSheet.create({
   },
   xAxisStyle: {
     position: "absolute",
-    backgroundColor: "#000",
+    backgroundColor: "#0000",
     width: "15%",
   },
   CSVText: {
@@ -509,5 +538,4 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
 });
-
 export default styles;

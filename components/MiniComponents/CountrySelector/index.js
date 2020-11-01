@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Text, Item, Input } from "native-base";
+import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { Item, Input } from "native-base";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
@@ -13,18 +13,18 @@ class CountrySelector extends Component {
   constructor() {
     super();
     this.state = {
-      filteredCountreis: []
+      filteredCountreis: [],
     };
   }
   componentDidMount() {
     this.setState({
-      filteredCountreis: this.props.countries
+      filteredCountreis: this.props.countries,
     });
   }
 
   render() {
     const { translate } = this.props.screenProps;
-    let countrylist = this.state.filteredCountreis.map(c => (
+    let countrylist = this.state.filteredCountreis.map((c) => (
       <TouchableOpacity
         key={c.id}
         style={styles.selectTextContainer}
@@ -36,7 +36,7 @@ class CountrySelector extends Component {
           style={{
             fontFamily: "montserrat-bold",
             color: this.props.country === c.criteria_id ? "#FF9D00" : "#fff",
-            fontSize: 14
+            fontSize: 14,
           }}
         >
           {translate(c.name)}
@@ -54,8 +54,8 @@ class CountrySelector extends Component {
                 placeholder={translate("Search Country") + "..."}
                 style={styles.searchInputText}
                 placeholderTextColor="#fff"
-                onChangeText={value => {
-                  let filteredC = this.props.countries.filter(c =>
+                onChangeText={(value) => {
+                  let filteredC = this.props.countries.filter((c) =>
                     translate(c.name)
                       .toLowerCase()
                       .includes(value.toLowerCase())

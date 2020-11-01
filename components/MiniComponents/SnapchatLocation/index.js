@@ -25,10 +25,15 @@ export default class SnapchatLocation extends Component {
     selectedLocation: {},
   };
   componentDidMount() {
-    if (this.props.data.hasOwnProperty("markers")) {
+    if (this.props.data && this.props.data.hasOwnProperty("markers")) {
       this.setState({
         markers: this.props.data.markers,
         locationsInfo: this.props.data.locationsInfo,
+      });
+    } else {
+      this.setState({
+        markers: this.props.circles,
+        locationsInfo: this.props.locationsInfo,
       });
     }
   }
@@ -97,7 +102,7 @@ export default class SnapchatLocation extends Component {
   checkForRegions = () => {
     let { translate } = this.props.screenProps;
     let regionsSelected = this.props.regionsSelected.some(
-      (geo) => geo.region_id.length > 0
+      (geo) => geo.region_id && geo.region_id.length > 0
     );
     if (regionsSelected) {
       Alert.alert(

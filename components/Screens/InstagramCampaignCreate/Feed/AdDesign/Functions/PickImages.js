@@ -74,7 +74,8 @@ export const _pickImage = async (
   carouselAdCards = {},
   carouselAdsArray,
   media_option = "single",
-  statisticsCallback
+  statisticsCallback,
+  rejected
 ) => {
   try {
     let result = {};
@@ -148,8 +149,10 @@ export const _pickImage = async (
                 });
 
                 save_campaign_info_instagram({
+                  rejected,
                   media: "//",
                   media_type: "",
+                  rejected,
                 });
 
                 return Promise.reject({
@@ -201,8 +204,10 @@ export const _pickImage = async (
                 });
 
                 save_campaign_info_instagram({
+                  rejected,
                   media: "//",
                   media_type: "",
+                  rejected,
                 });
                 showMessage({
                   message: translate(
@@ -309,6 +314,7 @@ export const _pickImage = async (
                 media_type: result.type.toUpperCase(),
                 fileReadyToUpload: true,
                 uneditedImageUri,
+                rejected,
               });
             }
           })
@@ -449,7 +455,7 @@ export const _pickImage = async (
                 );
               }
               videoIsExporting(false);
-              console.log("process.rc", process.rc);
+              "process.rc", process.rc;
               if (process.rc !== 0) {
                 return Promise.reject("Video processing canceled");
               }
@@ -464,10 +470,11 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
+
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  //   rejected,
+                  rejected,
                 });
 
                 showMessage({
@@ -497,10 +504,11 @@ export const _pickImage = async (
                   sourceChanging: true,
                   uneditedImageUri: "//",
                 });
+
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  //   rejected,
+                  rejected,
                 });
 
                 showMessage({
@@ -542,7 +550,7 @@ export const _pickImage = async (
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
-                  //   rejected,
+                  rejected,
                 });
                 // onToggleModal((false);
 
@@ -568,10 +576,11 @@ export const _pickImage = async (
                   media: "//",
                   uneditedImageUri: "//",
                 });
-                // !rejected &&
+
                 save_campaign_info_instagram({
                   media: "//",
                   media_type: "",
+                  rejected,
                 });
 
                 showMessage({
@@ -683,13 +692,14 @@ export const _pickImage = async (
                   position: "top",
                   type: "success",
                 });
+
                 save_campaign_info_instagram({
                   media: result.uri,
                   media_type: result.type.toUpperCase(),
                   fileReadyToUpload: true,
                   uneditedImageUri,
                   serialization: result.serialization,
-                  //   rejected,
+                  rejected,
                 });
                 setTheState({ sourceChanging: false });
               } else {
@@ -746,8 +756,10 @@ export const _pickImage = async (
       });
 
       save_campaign_info_instagram({
+        rejected,
         media: "//",
         media_type: "",
+        rejected,
       });
 
       return;

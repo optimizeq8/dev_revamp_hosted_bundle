@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
@@ -7,20 +7,20 @@ import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
 import SearchIcon from "../../../assets/SVGs/Search";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import LowerButton from "../LowerButton";
-import { Text, Input, Item, Icon } from "native-base";
+import { Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-export default class AppSearchModal extends Component {
+class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
     if (pervProps.appSelection !== this.props.appSelection)
@@ -33,7 +33,7 @@ export default class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.mainBusiness.fb_ad_account_id}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.instaData.fb_access_token}`
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=GOOGLE_PLAY&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
     )
       .then((res) => {
         return res.data;
@@ -79,7 +79,7 @@ export default class AppSearchModal extends Component {
     const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     Axios.get(
-      `https://graph.facebook.com/v7.0/act_${this.props.mainBusiness.fb_ad_account_id}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.instaData.fb_access_token}`
+      `https://graph.facebook.com/v7.0/act_${this.props.FBAdAccountIDForAppSearch}/matched_search_applications?app_store=ITUNES&query_term=${this.props.mainState.appValue}&access_token=${this.props.FBAccessTokenForAppSearch}`
     )
       .then((res) => {
         return res.data;
@@ -197,7 +197,6 @@ export default class AppSearchModal extends Component {
                       height={50}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },
@@ -214,7 +213,6 @@ export default class AppSearchModal extends Component {
                       style={{ color: "#fff" }}
                     />
                     <Text
-                      uppercase
                       style={[
                         appConfirmStyles.appStoreButtonsText,
                         { fontSize: 14, maxWidth: 100 },
@@ -351,3 +349,9 @@ export default class AppSearchModal extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  FBAccessTokenForAppSearch: state.generic.FBAccessTokenForAppSearch,
+  FBAdAccountIDForAppSearch: state.generic.FBAdAccountIDForAppSearch,
+});
+export default connect(mapStateToProps, null)(AppSearchModal);

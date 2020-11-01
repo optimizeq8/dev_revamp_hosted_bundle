@@ -13,7 +13,7 @@ import com.zoontek.rnbootsplash.RNBootSplash;
 public class MainActivity extends ReactActivity {
  @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    super.onCreate(null);
     RNBootSplash.init(R.drawable.splashscreen, MainActivity.this); // <- display the generated bootsplash.xml drawable over our MainActivity
   }
 

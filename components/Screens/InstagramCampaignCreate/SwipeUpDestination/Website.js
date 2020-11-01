@@ -6,8 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   I18nManager,
+  Text,
 } from "react-native";
-import { Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
 import InputScrollView from "react-native-input-scroll-view";
@@ -44,15 +44,21 @@ class Website extends Component {
       campaignInfo: {
         link: "",
         call_to_action:
-          list[this.props.data["campaign_type"]][this.props.listNum]
-            .call_to_action_list[0],
+          list[
+            this.props.rejected
+              ? this.props.instaRejCampaign["campaign_type"]
+              : this.props.data["campaign_type"]
+          ][this.props.listNum].call_to_action_list[0],
       },
       callActionLabel: "",
       networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions:
-        list[this.props.data["campaign_type"]][this.props.listNum || 0]
-          .call_to_action_list,
+        list[
+          this.props.rejected
+            ? this.props.instaRejCampaign["campaign_type"]
+            : this.props.data["campaign_type"]
+        ][this.props.listNum || 0].call_to_action_list,
       urlError: "",
       inputCallToAction: false,
       callToActionError: null,
@@ -67,8 +73,11 @@ class Website extends Component {
           campaignInfo: {
             link: websitelink,
             call_to_action:
-              list[this.props.data["campaign_type"]][this.props.listNum]
-                .call_to_action_list[0],
+              list[
+                this.props.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][this.props.listNum].call_to_action_list[0],
           },
         });
       } else if (weburl && weburl !== "") {
@@ -78,8 +87,11 @@ class Website extends Component {
               ? weburl
               : `https://${weburl}.optimizeapp.com`,
             call_to_action:
-              list[this.props.data["campaign_type"]][this.props.listNum]
-                .call_to_action_list[0],
+              list[
+                this.props.rejected
+                  ? this.props.instaRejCampaign["campaign_type"]
+                  : this.props.data["campaign_type"]
+              ][this.props.listNum].call_to_action_list[0],
           },
         });
       }
@@ -94,6 +106,19 @@ class Website extends Component {
         campaignInfo: {
           link: this.props.data.link,
           call_to_action: this.props.data.call_to_action,
+        },
+      });
+    } else if (
+      this.props.rejected &&
+      this.props.instaRejCampaign &&
+      this.props.instaRejCampaign.hasOwnProperty("link") &&
+      this.props.instaRejCampaign.link !== "" &&
+      this.props.instaRejCampaign.link !== "BLANK"
+    ) {
+      this.setState({
+        campaignInfo: {
+          link: this.props.instaRejCampaign.link,
+          call_to_action: this.props.instaRejCampaign.call_to_action,
         },
       });
     }
@@ -123,6 +148,7 @@ class Website extends Component {
         ...this.props.data,
         call_to_action: this.state.campaignInfo.call_to_action,
         link: this.state.campaignInfo.link,
+        rejected: this.props.rejected,
       });
 
       this.props.toggleClickDestination(false);
@@ -277,6 +303,7 @@ class Website extends Component {
 
 const mapStateToProps = (state) => ({
   data: state.instagramAds.data,
+  instaRejCampaign: state.instagramAds.instaRejCampaign,
   adType: state.instagramAds.adType,
   mainBusiness: state.account.mainBusiness,
 });

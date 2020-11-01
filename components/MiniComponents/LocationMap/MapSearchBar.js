@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, FlatList } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { SafeAreaView } from "react-navigation";
+import { View } from "react-native";
 import Axios from "axios";
 import countriesBillingAddress from "../../Data/countries.billingAddress";
-import SearchResault from "./SearchResault";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import PredefinedPlaces from "./PredefinedPlaces";
 import { Icon } from "native-base";
@@ -38,7 +35,9 @@ export default class MapSearchBar extends Component {
         let bBox = country.bbox; //boundries of country
         // this.props.handleRegionChange(coordinates, bBox);
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => {
+        //  console.log("err", err)}
+      });
   };
   handleAutoComplete = (location) => {
     this.SearchFilterFunction(location);
@@ -48,8 +47,6 @@ export default class MapSearchBar extends Component {
       )
         .then((res) => res.data)
         .then((data) => {
-          console.log(JSON.stringify(data, null, 2));
-
           let results = data.results;
           this.props.handleAutoFeatures(results);
           // this.props.handleShowFlatList(true);

@@ -1,12 +1,6 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF",
-};
+
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     height: "100%",
@@ -48,10 +42,6 @@ const styles = StyleSheet.create({
   },
   selected: {
     backgroundColor: globalColors.orange,
-  },
-  unselected: {
-    backgroundColor: "rgba(255,255,255,0.3)",
-    height: 2,
   },
   track: {
     height: 3,

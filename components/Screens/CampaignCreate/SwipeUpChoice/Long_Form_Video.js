@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler, ScrollView } from "react-native";
-import { Button, Text, Item, Icon, ActionSheet } from "native-base";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+  ScrollView,
+} from "react-native";
 import { connect } from "react-redux";
 import * as ScreenOrientation from "expo-screen-orientation";
 import * as FileSystem from "expo-file-system";
@@ -44,6 +49,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { RNFFmpeg, RNFFprobe, RNFFmpegConfig } from "react-native-ffmpeg";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import AnimatedCircularProgress from "../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -327,7 +333,9 @@ class Long_Form_Video extends Component {
               });
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            //  console.log(err)
+          });
       } else {
         validateWrapper("duration", this.state.duration) &&
           showMessage({
@@ -425,7 +433,10 @@ class Long_Form_Video extends Component {
         }}
         contentContainerStyle={[
           styles.longFormVideoContainer,
-          this.props.swipeUpDestination && { width: "110%" },
+          this.props.swipeUpDestination && {
+            width: "100%",
+            marginLeft: 10,
+          },
         ]}
       >
         <View style={styles.longFormVideoContent}>
@@ -456,30 +467,25 @@ class Long_Form_Video extends Component {
                 </TouchableOpacity>
               </View>
               <View style={styles.videoButtons}>
-                <Button
-                  onPress={() => {
+                <GradientButton
+                  transparent
+                  text={translate("Change Video")}
+                  style={[styles.videoSelectButton]}
+                  textStyle={styles.videoButtonTexts}
+                  onPressAction={() => {
                     this._pickImage();
                   }}
-                  style={styles.videoSelectButton}
-                >
-                  <Text style={styles.videoButtonTexts}>
-                    {translate("Change Video")}
-                  </Text>
-                </Button>
-
-                <Button
-                  onPress={() => {
+                />
+                <View style={styles.horizontalDivider} />
+                <GradientButton
+                  transparent
+                  text={translate("Edit Video")}
+                  style={[styles.videoSelectButton]}
+                  textStyle={styles.videoButtonTexts}
+                  onPressAction={() => {
                     this._pickImage(true);
                   }}
-                  style={[
-                    styles.videoSelectButton,
-                    { borderLeftWidth: 0.3, borderColor: "#0003" },
-                  ]}
-                >
-                  <Text style={styles.videoButtonTexts}>
-                    {translate("Edit Video")}
-                  </Text>
-                </Button>
+                />
               </View>
             </View>
           )}
@@ -568,9 +574,16 @@ class Long_Form_Video extends Component {
               {translate("Change Swipe-up Destination")}
             </Text>
           )}
-          <Button style={styles.saveButton} onPress={this._handleSubmission}>
-            <Text style={styles.saveText}>{translate("Save")}</Text>
-          </Button>
+
+          <GradientButton
+            purpleViolet
+            text={translate("Save")}
+            style={styles.saveButton}
+            textStyle={styles.saveText}
+            uppercase
+            onPressAction={this._handleSubmission}
+          />
+
           {/* <LowerButton
             screenProps={this.props.screenProps}
             function={this._handleSubmission}

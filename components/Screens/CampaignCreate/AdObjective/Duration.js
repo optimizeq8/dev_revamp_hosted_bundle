@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight, I18nManager } from "react-native";
-import { Text } from "native-base";
+import { View, TouchableHighlight, I18nManager, Text } from "react-native";
 import dateFormat from "dateformat";
 
 import CalendarIcon from "../../../../assets/SVGs/Calendar";
 
 //styles
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+
 export default class Duration extends Component {
   render() {
     const { translate } = this.props.screenProps;

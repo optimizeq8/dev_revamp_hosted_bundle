@@ -1,14 +1,9 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#751AFF",
 };
 const styles = StyleSheet.create({
   customStyleInput: { width: "95%", alignSelf: "flex-start" },
@@ -17,7 +12,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -27,7 +22,7 @@ const styles = StyleSheet.create({
     borderRadius: 32.5,
     // bottom: 45,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputtext: {
     fontFamily: "montserrat-regular",
@@ -35,7 +30,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     // height: 40,
-    color: "#FFF"
+    color: "#FFF",
   },
   input: {
     height: 60,
@@ -44,14 +39,14 @@ const styles = StyleSheet.create({
     width: 100,
     borderColor: "#7039FF",
     flexDirection: "row",
-    borderBottomWidth: 1.5
+    borderBottomWidth: 1.5,
   },
   contentScrollViewContainer: {
     paddingBottom: "70%",
-    paddingHorizontal: 26
+    paddingHorizontal: 26,
   },
   marginVertical: {
-    marginBottom: 25
+    marginBottom: 25,
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -63,7 +58,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -72,24 +67,24 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 300,
     borderWidth: 0,
-    height: 50
+    height: 50,
   },
   pickerText: {
     fontFamily: "montserrat-regular-english",
     color: "#FFFFFF",
     textAlign: "center",
-    fontSize: 12
+    fontSize: 12,
   },
   iconDown: {
     color: "#FFF",
     fontSize: 20,
-    right: 15
+    right: 15,
   },
   itemView: {
     paddingHorizontal: 0,
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -99,11 +94,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 30,
     marginBottom: -10,
-    marginTop: I18nManager.isRTL ? -5 : 0
+    marginTop: I18nManager.isRTL ? -5 : 0,
   },
   locationIcon: {
-    marginLeft: 15
-  }
+    marginLeft: 15,
+  },
 });
 
 export default styles;

@@ -16,20 +16,18 @@ export default class ChartChoices extends Component {
         ? "CPM"
         : "Clicks",
     ];
-    if (
-      selectedCampaign &&
-      selectedCampaign.source === "SME GROWTH" &&
-      "website interactions"
-    )
+    if (selectedCampaign && selectedCampaign.web_interaction)
       choices.push("website interactions");
     choices = choices.map((choice) => (
       <GradientButton
+        activeOpacity={1}
         key={choice}
         onPressAction={() => {
           this.props.changeChart(choice);
           this.setState({ selectedChoice: choice });
         }}
         style={[styles.chartChoiceButtons]}
+        purpleViolet={this.state.selectedChoice === choice}
         transparent={this.state.selectedChoice !== choice}
         uppercase
         numberOfLines={2}
@@ -41,7 +39,7 @@ export default class ChartChoices extends Component {
             paddingHorizontal: 15,
             color:
               this.state.selectedChoice !== choice
-                ? globalColors.orange
+                ? globalColors.purple3
                 : "#fff",
           },
         ]}
@@ -62,6 +60,7 @@ export default class ChartChoices extends Component {
             width: choices.length === 4 ? null : "100%",
           },
         ]}
+        showsHorizontalScrollIndicator={false}
       >
         {choices}
       </ScrollView>

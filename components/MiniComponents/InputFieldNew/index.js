@@ -65,8 +65,9 @@ export default class InputField extends Component {
         this.props.stateName1 === "newEmail") &&
       valueError
     ) {
+      const { translate } = this.props;
       showMessage({
-        message: valueError,
+        message: translate(valueError),
         position: "top",
         type: "warning",
       });
@@ -166,6 +167,9 @@ export default class InputField extends Component {
       compulsory,
       animateCustomStyle,
       loading = false,
+      inputStyle,
+      placeholderColor = "#FFF",
+      labelColor = globalColors.white,
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -199,7 +203,7 @@ export default class InputField extends Component {
                 styles.inputLabel,
                 this.state.highlight
                   ? [GlobalStyles.orangeTextColor]
-                  : GlobalStyles.whiteTextColor,
+                  : { color: labelColor },
               ]}
             >
               {translate(label)}
@@ -208,7 +212,7 @@ export default class InputField extends Component {
             <View style={[styles.rowView]}>
               <Input
                 ref={"inputField"}
-                placeholderTextColor={"#FFF"}
+                placeholderTextColor={placeholderColor}
                 editable={!this.props.loading || !disabled}
                 placeholder={placeholder1 && translate(placeholder1)}
                 value={this.props.value}
@@ -216,6 +220,7 @@ export default class InputField extends Component {
                   styles.inputText,
                   stateName2 ? { maxWidth: "45%" } : {},
                   disabled ? { opacity: 0.6 } : {},
+                  inputStyle,
                 ]}
                 secureTextEntry={secureTextEntry}
                 autoCorrect={false}
@@ -237,7 +242,7 @@ export default class InputField extends Component {
               )}
               {stateName2 && (
                 <Input
-                  placeholderTextColor={"#FFF"}
+                  placeholderTextColor={placeholderColor}
                   editable={!this.props.loading || !disabled}
                   placeholder={placeholder2 && translate(placeholder2)}
                   value={this.props.value2}

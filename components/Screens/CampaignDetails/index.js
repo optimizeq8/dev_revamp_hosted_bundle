@@ -1,7 +1,13 @@
 import React, { Component } from "react";
-import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Animated,
+  BackHandler,
+  TouchableOpacity,
+} from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Text, Container, Icon } from "native-base";
+import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
@@ -496,8 +502,8 @@ class CampaignDetails extends Component {
               ]}
             >
               <LinearGradient
-                colors={["#6200FF", "#8900FF"]}
-                locations={[1, 0.3]}
+                colors={["#9300FF", "#5600CB"]}
+                locations={[0, 1]}
                 style={styles.gradient}
               />
             </View>
@@ -516,6 +522,19 @@ class CampaignDetails extends Component {
               containerStyle={{ height: 50 }}
               showTopRightButtonIcon={
                 !loading && selectedCampaign.review_status === "APPROVED"
+                  ? selectedCampaign.ad_status !== "LIVE" &&
+                    selectedCampaign.ad_status !== "Campaign Paused" &&
+                    selectedCampaign.ad_status !== "Campaign ended"
+                    ? "edit"
+                    : true
+                  : false
+              }
+              topRightButtonFunction={() =>
+                selectedCampaign.ad_status !== "Live" &&
+                selectedCampaign.ad_status !== "Paused" &&
+                selectedCampaign.campaign_end === 0
+                  ? this.handleSnapchatRejection(selectedCampaign)
+                  : this.showCSVModal(true)
               }
               topRightButtonFunction={() => this.showCSVModal(true)}
               titleStyle={{
@@ -763,7 +782,7 @@ class CampaignDetails extends Component {
           )}
           <Animated.View
             style={[
-              { backgroundColor: "#000", overflow: "hidden" },
+              { backgroundColor: "#f8f8f8", overflow: "hidden" },
               { height: this.state.chartAnimation },
             ]}
           >

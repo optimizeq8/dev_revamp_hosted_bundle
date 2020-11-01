@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import Header from "../../MiniComponents/Header";
 import styles from "./styles";
-import InputField from "../../MiniComponents/InputField";
+import InputField from "../../MiniComponents/InputFieldNew";
 import EmailTransparentIcon from "../../../assets/SVGs/EmailTransparent";
 import CustomButtons from "../../MiniComponents/CustomButtons";
 import FlashMessage from "react-native-flash-message";

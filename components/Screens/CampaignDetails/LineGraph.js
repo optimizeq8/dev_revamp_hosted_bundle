@@ -20,6 +20,7 @@ import {
 } from "react-native-responsive-screen";
 import { Defs, LinearGradient, Stop } from "react-native-svg";
 
+import { globalColors } from "../../../GlobalStyles";
 class LineGraph extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +59,8 @@ class LineGraph extends Component {
         let date = new Date(stat.end_time.split("-07:00")[0]);
         let startDate = new Date(stat.start_time.split("-07:00")[0]);
 
-        let day = new Date(stat.end_time.split("T")[0]).getDate();
+        // Changing from stat.end_time to stat.start_time so as to show the result similar to snapchat ads manager
+        let day = new Date(stat.start_time.split("T")[0]).getDate();
         let month = date.getMonth();
         let hour = `${startDate.getHours()}:00 / ${date.getHours()}:00
 ${day}/${shortMonths[month]}`;
@@ -119,7 +121,7 @@ ${day}/${shortMonths[month]}`;
           {this.props.campaignStats.length < 1 ? (
             <BlurView
               intensity={70}
-              tint="dark"
+              tint="light"
               style={styles.placeHolderChart}
             >
               <Text style={styles.placeHolderChartText}>
@@ -171,9 +173,9 @@ ${day}/${shortMonths[month]}`;
           >
             <Defs>
               <LinearGradient x1="0" y1="0" x2="0" y2="1.3" id="myGradient">
-                <Stop offset="0%" stopColor="#FF7D08" />
-                <Stop offset="5%" stopColor="#f07204" />
-                <Stop offset="60%" stopColor="#000" />
+                <Stop offset="0%" stopColor={globalColors.purple} />
+                <Stop offset="5%" stopColor={"#7400E5"} />
+                <Stop offset="90%" stopColor="#f8f8f8" />
               </LinearGradient>
             </Defs>
             {this.props.campaignStats.length === 1 ? (
@@ -181,7 +183,7 @@ ${day}/${shortMonths[month]}`;
                 categories={{ x: category }}
                 style={{
                   data: {
-                    stroke: "#FF7D08",
+                    stroke: "#9304FF",
                     fill: "url(#myGradient)",
                     strokeWidth: 5,
                   },
@@ -197,7 +199,7 @@ ${day}/${shortMonths[month]}`;
                   interpolation="catmullRom"
                   style={{
                     data: {
-                      stroke: "#FF7D08",
+                      stroke: "#9304FF",
                       fill: "url(#myGradient)",
                       strokeWidth: 5,
                     },
@@ -207,10 +209,7 @@ ${day}/${shortMonths[month]}`;
                 <VictoryScatter
                   categories={{ x: category }}
                   style={{
-                    data: {
-                      fill: "#fff",
-                      strokeWidth: 5,
-                    },
+                    data: { stroke: "#9304FF", strokeWidth: 1.5, fill: "#FFF" },
                   }}
                   size={8}
                   data={data}
@@ -263,14 +262,13 @@ ${day}/${shortMonths[month]}`;
 let tickLabelStyles = {
   axis: { stroke: "none" },
   tickLabels: {
-    stroke: "#fff",
-    fill: "#fff",
-    fontSize: 12,
+    // stroke: "#A496AC",
+    fill: "#A496AC",
+    fontSize: 10,
     padding: 6,
-    fontFamily: "Helvetica",
-    fontWeight: "100",
+    fontFamily: "montserrat-regular-english",
   },
-  ticks: { stroke: "#fff", size: 6, padding: 0 },
+  ticks: { stroke: "#A496AC", size: 6, padding: 0 },
 };
 
 const mapStateToProps = (state) => ({

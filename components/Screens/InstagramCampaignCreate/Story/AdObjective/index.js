@@ -8,9 +8,10 @@ import {
   ScrollView,
   StatusBar,
   Modal,
+  Text,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { Content, Text, Container } from "native-base";
+import { Content, Container } from "native-base";
 import { BlurView } from "@react-native-community/blur";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -41,6 +42,9 @@ import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampai
 import { persistor } from "../../../../../store";
 import InputField from "../../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
+import globalStyles from "../../../../../GlobalStyles";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -100,7 +104,7 @@ class AdObjective extends Component {
     let start_time = new Date();
     start_time.setDate(start_time.getDate() + 1);
     let end_time = new Date(start_time);
-    end_time.setDate(this.state.duration);
+    end_time.setDate(end_time.getDate() + this.state.duration - 1);
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -393,7 +397,7 @@ class AdObjective extends Component {
       campaign_ad_type: this.props.adType,
     });
   };
-  handleDuration = (subtract = false) => {
+  handleDuration = (subtract = false, onePress = false) => {
     let duration = subtract
       ? this.state.duration - 1 > 3
         ? this.state.duration - 1
@@ -414,10 +418,11 @@ class AdObjective extends Component {
       duration,
       campaignDateChanged: true,
     });
-    this.timer = setTimeout(() => this.handleDuration(subtract), 150);
+    if (!onePress)
+      this.timer = setTimeout(() => this.handleDuration(subtract), 150);
   };
   stopTimer = () => {
-    clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   };
   render() {
     const list = instagramAdObjectives["InstagramStoryAd"].map((o) => (
@@ -432,11 +437,16 @@ class AdObjective extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
@@ -527,9 +537,6 @@ class AdObjective extends Component {
                   dateField={this.dateField}
                 />
               </Animatable.View>
-              <Text style={styles.minBudget}>
-                {translate("Minimum of $25/day")}
-              </Text>
 
               {this.props.loading ? (
                 <ForwardLoading

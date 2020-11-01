@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import WebView from "react-native-webview";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../Header";
-import { Container, Content } from "native-base";
+import { Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../GradiantColors/colors";
@@ -69,6 +69,7 @@ export default class index extends Component {
           <WebView
             // startInLoadingState={true}
             onLoad={() => this.hideLoader()}
+            androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
             //     <Loading top={40} />
@@ -78,6 +79,8 @@ export default class index extends Component {
             contentContainerStyle={{ backgroundColor: "transparent" }}
             ref={(ref) => (this.webview = ref)}
             source={{ uri: url }}
+            cacheEnabled={false}
+            incognito={true}
           />
           {this.state.viewLoader && (
             <View

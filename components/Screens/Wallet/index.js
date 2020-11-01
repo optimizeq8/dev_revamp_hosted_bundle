@@ -7,14 +7,16 @@ import {
   BackHandler,
   ScrollView,
   I18nManager,
+  Text,
+  ActivityIndicator,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { BlurView } from "expo-blur";
-import { Text, Item, Input, Label, Container, Icon } from "native-base";
+import { Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
 
-import { Modal, ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
@@ -35,6 +37,8 @@ import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
 import WalletCard from "../../MiniComponents/WalletTopUpCard";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -124,6 +128,11 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Container
           style={[
@@ -144,89 +153,88 @@ class Wallet extends Component {
             }}
           />
           <WalletIcon style={styles.walletIcon} width={60} height={60} />
-          <View
-            style={{
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={[globalStyles.numbers, styles.walletAmountText]}>
-              {I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
-              {formatNumber(this.props.wallet, true)}
-              {!I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
-            </Text>
-            {this.props.loading ? (
-              <ActivityIndicator
-                color={globalColors.orange}
-                style={[styles.loader]}
-              />
-            ) : (
-              <Icon
-                onPress={this.props.getWalletAmount}
-                style={styles.loader}
-                name="refresh"
-                type="MaterialCommunityIcons"
-              />
-            )}
-          </View>
-          <Text style={styles.text}>{translate("Available Balance")}</Text>
-          {!this.state.modalVisible && (
-            <View>
-              <Text style={[styles.mainText]}>
-                {translate(
-                  "Your wallet can be used to purchase ads or to resume paused ads immediately"
-                )}
+          <ScrollView contentContainerStyle={styles.contentScrollView}>
+            <View
+              style={{
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={[globalStyles.numbers, styles.walletAmountText]}>
+                {I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
+                {formatNumber(this.props.wallet, true)}
+                {!I18nManager.isRTL && <Text style={styles.dollar}>$</Text>}
               </Text>
-              <GradientButton
-                style={styles.button}
-                onPressAction={this.handleModalVisibility}
-                text={translate("Top up wallet")}
-                textStyle={styles.buttontext}
-                uppercase={true}
-                gradientDirection={"vertical"}
-                orangeDark={true}
-              />
-              {/* <Button
-                full
+              {this.props.loading ? (
+                <ActivityIndicator
+                  color={globalColors.orange}
+                  style={[styles.loader]}
+                />
+              ) : (
+                <Icon
+                  onPress={this.props.getWalletAmount}
+                  style={styles.loader}
+                  name="refresh"
+                  type="MaterialCommunityIcons"
+                />
+              )}
+            </View>
+            <Text style={styles.text}>{translate("Available Balance")}</Text>
+            {!this.state.modalVisible && (
+              <View>
+                <Text style={[styles.mainText]}>
+                  {translate(
+                    "Your wallet can be used to purchase ads or to resume paused ads immediately"
+                  )}
+                </Text>
+                <GradientButton
+                  style={styles.button}
+                  onPressAction={this.handleModalVisibility}
+                  text={translate("Top up wallet")}
+                  textStyle={styles.buttontext}
+                  uppercase={true}
+                  gradientDirection={"vertical"}
+                  orangeDark={true}
+                />
+                {/* <GradientButton
+               
                 style={styles.button}
                 onPress={() => {
                   // this._handleSubmission();
                 }}
               >
                 <Text style={styles.buttontext}>Request Refund</Text>
-              </Button> */}
-            </View>
-          )}
-          {this.props.walletTransactionListLoading && (
-            <ActivityIndicator
-              size="large"
-              color={globalColors.orange}
-              style={styles.listLoader}
-            />
-          )}
-          {!this.props.walletTransactionListLoading &&
-            this.props.walletTransactionList &&
-            this.props.walletTransactionList.length > 0 && (
-              <Text uppercase style={styles.topUpHistory}>
-                {translate("Top-Up History")}
-              </Text>
+              </GradientButton> */}
+              </View>
             )}
-          {!this.props.walletTransactionListLoading &&
-            this.props.walletTransactionList &&
-            this.props.walletTransactionList.length > 0 && (
-              <ScrollView contentContainerStyle={styles.contentScrollView}>
-                {this.props.walletTransactionList.map((transaction) => {
-                  return (
-                    <WalletCard
-                      key={transaction.id}
-                      screenProps={this.props.screenProps}
-                      transaction={transaction}
-                    />
-                  );
-                })}
-              </ScrollView>
+            {this.props.walletTransactionListLoading && (
+              <ActivityIndicator
+                size="large"
+                color={globalColors.orange}
+                style={styles.listLoader}
+              />
             )}
+            {!this.props.walletTransactionListLoading &&
+              this.props.walletTransactionList &&
+              this.props.walletTransactionList.length > 0 && (
+                <Text uppercase style={styles.topUpHistory}>
+                  {translate("Top-Up History")}
+                </Text>
+              )}
+            {!this.props.walletTransactionListLoading &&
+              this.props.walletTransactionList &&
+              this.props.walletTransactionList.length > 0 &&
+              this.props.walletTransactionList.map((transaction) => {
+                return (
+                  <WalletCard
+                    key={transaction.id}
+                    screenProps={this.props.screenProps}
+                    transaction={transaction}
+                  />
+                );
+              })}
+          </ScrollView>
         </Container>
         <Modal
           animationType={"fade"}

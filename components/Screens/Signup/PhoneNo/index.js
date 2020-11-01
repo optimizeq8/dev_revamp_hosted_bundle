@@ -1,22 +1,14 @@
 //Components
 import React, { Component } from "react";
-import PhoneInput from "react-native-phone-input";
-import {
-  View,
-  TouchableOpacity,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { Icon, Item, Text } from "native-base";
-import CountryModal from "./CountryModal";
+// import PhoneInput from "react-native-phone-input";
+import { View, Keyboard, TouchableWithoutFeedback, Text } from "react-native";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import PhoneNoField from "./PhoneNoField";
 //Data
-import countriesMobileData from "../../../Data/countries.mobilephone";
+// import countriesMobileData from "../../../Data/countries.mobilephone";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";

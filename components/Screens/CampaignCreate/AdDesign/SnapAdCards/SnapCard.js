@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-import { Text, View, Image as RNImage, TouchableOpacity } from "react-native";
-import { Button, Icon } from "native-base";
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  Image as RNImage,
+  TouchableOpacity,
+} from "react-native";
 import { Video } from "expo-av";
 import styles from "../styles";
 import MediaButton from "../MediaButton";
-import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
@@ -128,6 +132,7 @@ class SnapCard extends Component {
               navigateToCover={snapCardInfo.item.id === -1}
               setTheState={this.props.setTheState}
               rejected={rejected}
+              navigation={this.props.navigation}
             />
           ) : (
             <TouchableOpacity

@@ -57,9 +57,9 @@ export default class KeyboardShift extends Component {
   handleKeyboardDidShow = (event) => {
     const { height: windowHeight } = Dimensions.get("window");
     const keyboardHeight = event.endCoordinates.height;
-    const currentlyFocusedField = TextInputState.currentlyFocusedField();
+    const currentlyFocusedInput = TextInputState.currentlyFocusedField();
     UIManager.measure(
-      currentlyFocusedField,
+      currentlyFocusedInput,
       (originX, originY, width, height, pageX, pageY) => {
         const fieldHeight = height;
         const fieldTop = pageY;

@@ -3,31 +3,30 @@ import * as ObjIcons from "../../assets/SVGs/Objectives";
 export const instagramAdObjectives = {
   InstagramFeedAd: [
     {
-      label: "Traffic",
+      label: "Website Traffic",
       value: "LINK_CLICKS",
-      info: "Send more people to a destination such as a website or app",
+      info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
     },
     {
       label: "Brand Awareness",
       value: "BRAND_AWARENESS",
-      info:
-        "Increase awareness for your brand by reaching people who are more likely to be interested in it",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
       color: "#EF6C57",
     },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
-      info: "Get more people to install your app",
+      info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
       color: "#FF7A09",
     },
     {
       label: "Video Views",
       value: "VIDEO_VIEWS",
-      info: "Get more people to view your video content",
+      info: "GET MORE VIEWS ON MY VIDEO",
       icon: ObjIcons.Video,
       color: "#9325FF",
     },
@@ -54,31 +53,30 @@ export const instagramAdObjectives = {
   ],
   InstagramStoryAd: [
     {
-      label: "Traffic",
+      label: "Website Traffic",
       value: "LINK_CLICKS",
-      info: "Send more people to a destination such as a website or app",
+      info: "INCREASE MY WEBSITE VISITS",
       icon: ObjIcons.BRAND_AWARENESS,
       color: "#4BD6C6",
     },
     {
       label: "Brand Awareness",
       value: "BRAND_AWARENESS",
-      info:
-        "Increase awareness for your brand by reaching people who are more likely to be interested in it",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
       icon: ObjIcons.Awareness,
       color: "#EF6C57",
     },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
-      info: "Get more people to install your app",
+      info: "INCREASE APP DOWNLOADS",
       icon: ObjIcons.Download,
       color: "#FF7A09",
     },
     {
       label: "Video Views",
       value: "VIDEO_VIEWS",
-      info: "Get more people to view your video content",
+      info: "GET MORE VIEWS ON MY VIDEO",
       icon: ObjIcons.Video,
       color: "#9325FF",
     },

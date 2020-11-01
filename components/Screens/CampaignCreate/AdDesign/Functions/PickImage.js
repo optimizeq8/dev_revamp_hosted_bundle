@@ -436,7 +436,6 @@ export const _pickImage = async (
                 );
               }
               videoIsExporting(false);
-              console.log("PRCOESS", process);
               if (process.rc !== 0) {
                 return Promise.reject("Video processing canceled");
               }

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
-import { Button } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 import dateFormat from "dateformat";
 
@@ -58,7 +57,8 @@ export default class ChartDateChoices extends Component {
     )
       disabledBtn = true;
     return (
-      <Button
+      <TouchableOpacity
+        activeOpacity={1}
         disabled={disabledBtn}
         key={choice}
         onPress={() => {
@@ -90,7 +90,7 @@ export default class ChartDateChoices extends Component {
         >
           {translate(choice)}
         </Text>
-      </Button>
+      </TouchableOpacity>
     );
   };
   render() {

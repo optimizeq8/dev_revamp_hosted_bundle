@@ -26,6 +26,7 @@ const initialState = {
   instaStatsLoading: false,
   instaCampaignStats: [],
   instaCampaignMetrics: [],
+  instaSMEMetrics: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -178,6 +179,7 @@ const reducer = (state = initialState, action) => {
       let instaCampStats = action.payload.data;
       let instaErr = action.payload.err;
       let instaCampaignMetrics = [];
+      let instaSMEMetrics = [];
 
       if (instaCampStats.hasOwnProperty("summary")) {
         Object.keys(instaCampStats.summary).map((metric, i) => {
@@ -198,6 +200,15 @@ const reducer = (state = initialState, action) => {
           }
         });
       }
+      if (instaCampStats.web_interaction) {
+        Object.keys(instaCampStats.web_interaction).map((metric, i) => {
+          instaSMEMetrics.push({
+            metric: metric.replace("_", " "),
+            metricValue: instaCampStats.web_interaction[metric],
+          });
+        });
+      }
+
       return {
         ...state,
         selectedCampaign: {
@@ -215,7 +226,9 @@ const reducer = (state = initialState, action) => {
               ? instaCampStats.summary.impressions
               : 0,
           cpc: !instaErr ? instaCampStats.cpc : 0,
+          web_interaction: instaCampStats.web_interaction,
         },
+        instaSMEMetrics: instaSMEMetrics,
         instaCampaignMetrics: instaCampaignMetrics,
         instaCampaignStats: instaCampStats.data,
         loadingCampaignStats: action.payload.loading,
@@ -303,7 +316,10 @@ const reducer = (state = initialState, action) => {
         }
         rejCampaign.attachment = rejCampaignAttacment;
       }
-      return { ...state, rejCampaign };
+      return {
+        ...state,
+        rejCampaign: { ...state.rejCampaign, ...rejCampaign },
+      };
     case actionTypes.RESET_REJECTED_CAMPAIGN:
       return { ...state, rejCampaign: null };
 

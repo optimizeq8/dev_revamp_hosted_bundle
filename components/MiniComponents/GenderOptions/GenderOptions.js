@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Text, Icon } from "native-base";
+import { Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
 import LowerButton from "../LowerButton";

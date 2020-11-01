@@ -1,16 +1,15 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import { Text } from "native-base";
+import { Text, View } from "react-native";
 import styles from "./styles";
 import { Small } from "../../../MiniComponents/StyledComponents";
 import GradientButton from "../../../MiniComponents/GradientButton";
 
-const kFormatter = num => {
+const kFormatter = (num) => {
   return Math.abs(num) > 999
     ? (Math.abs(num) / 1000).toFixed(1) + "k"
     : Math.abs(num).toFixed(Number.isInteger(num) ? 0 : 2);
 };
-export default props => {
+export default (props) => {
   let { content, selected, onPressFunction } = props;
   return (
     <GradientButton
@@ -32,29 +31,28 @@ export default props => {
             <Small style={{ fontSize: 8 }}>$</Small>
             <Text
               adjustsFontSizeToFit={true}
-              uppercase
-              style={[styles.numbercontentStyle, {}]}
+              style={[
+                styles.numbercontentStyle,
+                { textTransform: "uppercase" },
+              ]}
             >
               {kFormatter(content.spend)}
             </Text>
           </View>
           <View style={styles.displayStatsView}>
             <Text
-              uppercase
               numberOfLines={2}
               style={[
                 styles.numbercontentStyle,
-                { textAlign: "center", display: "flex" }
+                { textAlign: "center", display: "flex" },
+                { textTransform: "uppercase" },
               ]}
             >
               {kFormatter(content.clicks)}
             </Text>
           </View>
           <View style={styles.displayStatsView}>
-            <Text
-              uppercase
-              style={[styles.numbercontentStyle, { textAlign: "right" }]}
-            >
+            <Text style={[styles.numbercontentStyle, { textAlign: "right" }]}>
               {content.ctr}
             </Text>
             <Small style={{ fontSize: 9 }}>%</Small>

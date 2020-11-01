@@ -1,5 +1,5 @@
-import React, { Component, PureComponent } from "react";
-import { View } from "react-native";
+import React, { PureComponent } from "react";
+import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
 //icons
@@ -10,7 +10,7 @@ import SingleMetric from "./SingleMetric";
  * @class
  */
 class WebsiteInteracions extends PureComponent {
-  renderMetrics = item => {
+  renderMetrics = (item) => {
     const { translate } = this.props.screenProps;
 
     return (
@@ -50,20 +50,22 @@ class WebsiteInteracions extends PureComponent {
       metrics.push(objectiveMetric.splice(0, 3));
 
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          left: 10
-        }}
-      >
-        {metrics.map(metric => this.renderMetrics(metric))}
+      <View style={styles.metricView}>
+        {metrics.map((metric) => this.renderMetrics(metric))}
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const styles = StyleSheet.create({
+  metricView: {
+    flexDirection: "row",
+    // left: 10,
+  },
+});
+
+const mapStateToProps = (state) => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
-  smeMetrics: state.dashboard.smeMetrics
+  smeMetrics: state.dashboard.smeMetrics,
 });
 export default connect(mapStateToProps, null)(WebsiteInteracions);

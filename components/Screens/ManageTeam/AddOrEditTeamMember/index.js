@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Alert, ScrollView } from "react-native";
+import { View, Alert, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
 import InputScrollView from "react-native-input-scroll-view";
@@ -9,13 +9,14 @@ import AddMember from "../AddMemberButton";
 import * as actionCreators from "../../../../store/actions";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
-import { Button, Text, Content } from "native-base";
-import { globalColors } from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
-import { AdjustEvent, Adjust } from "react-native-adjust";
+// import { AdjustEvent, Adjust } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
 
 class AddOrEditTeamMember extends Component {
   state = {
@@ -240,6 +241,11 @@ class AddOrEditTeamMember extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}
@@ -305,25 +311,25 @@ class AddOrEditTeamMember extends Component {
                 flex: 0.25,
               }}
             >
-              <Button
+              <TouchableOpacity
                 onPress={this.updateMember}
                 style={styles.deleteTeamMember}
               >
-                <Text uppercase style={styles.deleteText}>
+                <Text style={styles.deleteText}>
                   {this.translate("Update")}
                 </Text>
-              </Button>
-              <Button
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={this.handleDelete}
                 style={[
                   styles.deleteTeamMember,
                   { backgroundColor: globalColors.red },
                 ]}
               >
-                <Text uppercase style={[styles.deleteText]}>
+                <Text style={[styles.deleteText]}>
                   {this.translate("Delete")}
                 </Text>
-              </Button>
+              </TouchableOpacity>
             </View>
           )}
         </InputScrollView>

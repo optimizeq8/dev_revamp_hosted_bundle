@@ -11,6 +11,7 @@ import {
   BackHandler,
   Platform,
   Image as RNImage,
+  Text,
 } from "react-native";
 import {
   Container,
@@ -20,8 +21,6 @@ import {
   Content,
   Title,
   Subtitle,
-  Button,
-  Text,
 } from "native-base";
 import { Image } from "react-native-expo-image-cache";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";

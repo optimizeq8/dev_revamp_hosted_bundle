@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     textAlign: "left",
+    textTransform: "uppercase",
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 8,
     backgroundColor: "#fff",
     borderRadius: 50,
@@ -141,7 +143,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     width: "100%",
-    bottom: 10,
+    bottom: "15%",
+    position: "absolute",
   },
   chartText: {
     color: globalColors.rum,

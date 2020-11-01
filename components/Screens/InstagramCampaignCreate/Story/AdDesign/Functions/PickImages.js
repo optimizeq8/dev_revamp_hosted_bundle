@@ -366,7 +366,6 @@ export const _pickImage = async (
                   duration: result.duration / 1000,
                 };
               }
-              console.log("newResult", JSON.stringify(newResult, null, 2));
 
               RNFFmpegConfig.enableStatisticsCallback((stats) =>
                 statisticsCallback(stats, newResult.duration)

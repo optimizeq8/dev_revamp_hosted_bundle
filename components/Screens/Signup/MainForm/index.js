@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, I18nManager } from "react-native";
-import { Text, Container, Badge } from "native-base";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  I18nManager,
+  StatusBar,
+} from "react-native";
+import { Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
 //Redux
@@ -8,11 +14,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Components
-import CustomHeader from "../../../MiniComponents/Header";
 import PersonalInfo from "../PersonalInfo";
-import PhoneNo from "../PhoneNo";
-import Verification from "../Verification";
-import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // icons
 import BackIcon from "../../../../assets/SVGs/BackButtonPurple";
@@ -21,6 +23,9 @@ import FowrwardIcon from "../../../../assets/SVGs/ArrowForwardPurple";
 import RegisterIcon from "../../../../assets/SVGs/RegisterIcon";
 // Style
 import styles from "./styles";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -74,10 +79,21 @@ class MainForm extends Component {
     );
 
     return (
-      <SafeAreaView
+      <View
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+
         <NavigationEvents onDidFocus={this.handleBusinessInvite} />
         <Container style={styles.container}>
           <View style={styles.progressCardView}>
@@ -133,7 +149,7 @@ class MainForm extends Component {
           </View>
           {content}
         </Container>
-      </SafeAreaView>
+      </View>
     );
   }
 }

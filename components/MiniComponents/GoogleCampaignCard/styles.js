@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   cardStatusDays: {
-    flex: 0.5,
+    flex: 0.35,
     alignItems: "center",
     alignSelf: "center",
     paddingLeft: 5,

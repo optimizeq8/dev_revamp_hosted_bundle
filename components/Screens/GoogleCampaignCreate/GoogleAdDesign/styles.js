@@ -1,27 +1,26 @@
 import { StyleSheet, PixelRatio } from "react-native";
 
-import { globalColors } from "../../../../GlobalStyles";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
     height: "100%",
-    flex: 1
+    flex: 1,
   },
   container: {
     backgroundColor: "#0000",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   mainContent: {
     paddingBottom: "10%",
     // flexGrow: 1,
     // height: "100%",
     // flex: 1,
-    paddingTop: 13
+    paddingTop: 13,
   },
   inputView: {
     borderTopLeftRadius: 150,
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
     zIndex: 1,
-    flex: 1
+    flex: 1,
   },
   input: {
     marginBottom: 30,
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     width: 300,
     borderColor: "transparent",
     backgroundColor: "rgba(0,0,0,0.2)",
-    borderRadius: 30
+    borderRadius: 30,
   },
   inputLabel: {
     fontFamily: "montserrat-bold",
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 10,
     borderBottomColor: "transparent",
-    height: 50
+    height: 50,
   },
   inputTextarea: {
     fontFamily: "montserrat-regular",
@@ -73,22 +72,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     paddingVertical: 10,
-    borderBottomColor: "transparent"
+    borderBottomColor: "transparent",
   },
   networkLabel: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
     textAlign: "center",
     color: "#fff",
-    top: 2
+    top: 2,
   },
   keyboardContainer: {
     flex: 1,
-    height: "100%"
+    height: "100%",
   },
   proceedButtonRTL: {
     width: 65,
-    height: 65
+    height: 65,
   },
   button: {
     alignSelf: "center",
@@ -100,8 +99,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginHorizontal: wp(10)
-  }
+    marginHorizontal: wp(10),
+  },
 });
 
 export default styles;
