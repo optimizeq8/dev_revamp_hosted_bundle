@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     // height: heightPercentageToDP(90),
     marginLeft: 0,
     marginRight: 0,
-    marginTop: 0,
+    marginTop: 5,
     marginBottom: 0,
   },
   button: {
@@ -73,6 +74,47 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "60%",
     marginVertical: 20,
+  },
+  questionText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    width: "60%",
+  },
+  radioView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginHorizontal: 10,
+  },
+  answerText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    marginHorizontal: 2,
+  },
+  questionView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  answerRadio: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    backgroundColor: "#0005",
+    justifyContent: "center",
+  },
+  answerRadioSelect: {
+    width: 22,
+    height: 22,
+    borderRadius: 25,
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
   },
 });
 

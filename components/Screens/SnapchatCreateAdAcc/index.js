@@ -6,12 +6,16 @@ import {
   View,
   I18nManager,
   BackHandler,
+  Text,
+  TouchableOpacity,
 } from "react-native";
 import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import GradientButton from "../../MiniComponents/GradientButton";
+import Input from "../../MiniComponents/InputFieldNew";
+
 import Snapchat from "../../../assets/SVGs/Snapchat-Border";
 
 //Redux
@@ -21,6 +25,7 @@ import { connect } from "react-redux";
 // Style
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
+import { showMessage } from "react-native-flash-message";
 
 class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
@@ -31,6 +36,9 @@ class SnapchatCreateAdAcc extends Component {
 
     this.state = {
       accept: false,
+      is_political: null,
+      paying_advertiser_name: "",
+      paying_advertiser_nameError: false,
     };
   }
 
@@ -62,9 +70,81 @@ class SnapchatCreateAdAcc extends Component {
     this.props.navigation.goBack();
     return true;
   };
+  setValue = (stateName1, value) => {
+    this.setState({
+      [stateName1]: value,
+    });
+  };
+  getValidInfo = (stateName1Error, value) => {
+    this.setState({
+      [stateName1Error]: value,
+    });
+  };
+  acceptTNC = () => {
+    const { translate } = this.props.screenProps;
+    // To validate the paying advertiser name should not be blank id it going to be political account
 
+    if (this.state.is_political === null) {
+      analytics.track("a_error_form", {
+        error_page: "ad_TNC",
+        error_description:
+          "Please confirm if your ad account will be used for political and advocacy or not",
+        campaign_channel: "snapchat",
+      });
+      showMessage({
+        type: "warning",
+        message: translate(
+          "Please confirm if your ad account will be used for political and advocacy or not"
+        ),
+      });
+    } else if (this.state.is_political) {
+      if (this.state.paying_advertiser_name === "") {
+        analytics.track("a_error_form", {
+          error_page: "ad_TNC",
+          error_description: "Please enter paying advertiser name",
+          campaign_channel: "snapchat",
+        });
+        this.setState({
+          paying_advertiser_nameError: "Please enter paying advertiser name",
+        });
+        showMessage({
+          type: "warning",
+          message: translate("Please enter paying advertiser name"),
+        });
+      } else {
+        this.props.navigation.navigate("AcceptTermsConditionLoading", {
+          source: "ad_TNC",
+          source_action: "a_accept_ad_TNC",
+        });
+        this.props.create_snapchat_ad_account(
+          {
+            businessid: this.props.mainBusiness.businessid,
+            is_political: 1,
+            paying_advertiser_name: this.state.paying_advertiser_name,
+          },
+          this.props.navigation
+        );
+      }
+    } else {
+      this.props.navigation.navigate("AcceptTermsConditionLoading", {
+        source: "ad_TNC",
+        source_action: "a_accept_ad_TNC",
+      });
+      this.props.create_snapchat_ad_account(
+        {
+          businessid: this.props.mainBusiness.businessid,
+          is_political: this.state.is_political ? 1 : 0,
+          paying_advertiser_name: this.state.is_political
+            ? this.state.paying_advertiser_name
+            : null,
+        },
+        this.props.navigation
+      );
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
+    const { is_political } = this.state;
     return (
       <SafeAreaView
         style={{
@@ -91,7 +171,69 @@ class SnapchatCreateAdAcc extends Component {
           />
 
           <Snapchat fill={"#000"} style={{ alignSelf: "center", margin: 15 }} />
-
+          <View style={styles.questionView}>
+            <Text style={styles.questionText}>
+              {translate(
+                "Will you use this ad account for political and advocacy?"
+              )}
+              *
+            </Text>
+            <View style={styles.radioView}>
+              <TouchableOpacity
+                style={[styles.answerRadio]}
+                onPress={() => {
+                  this.setState({
+                    is_political: true,
+                  });
+                }}
+              >
+                {is_political && <View style={styles.answerRadioSelect} />}
+              </TouchableOpacity>
+              <Text style={[styles.answerText]}>{translate("Yes")}</Text>
+            </View>
+            <View style={styles.radioView}>
+              <TouchableOpacity
+                style={[styles.answerRadio]}
+                onPress={() => {
+                  this.setState({
+                    is_political: false,
+                  });
+                }}
+              >
+                {is_political !== null && !is_political && (
+                  <View style={styles.answerRadioSelect} />
+                )}
+              </TouchableOpacity>
+              <Text style={[styles.answerText]}>{translate("No")}</Text>
+            </View>
+            {/* <Switch
+              trackColor={{ false: "#FFF", true: "#FFF" }}
+              ios_backgroundColor="#3e3e3e"
+              thumbColor={is_political ? globalColors.orange : "#f8f8f8"}
+              value={is_political}
+              onValueChange={(val) => {
+                this.setState({
+                  is_political: val,
+                  paying_advertiser_name: !val
+                    ? ""
+                    : this.state.paying_advertiser_name,
+                });
+              }}
+            /> */}
+          </View>
+          {is_political && (
+            <Input
+              translate={this.props.screenProps.translate}
+              label={"Paying Advertiser Name"}
+              value={this.state.paying_advertiser_name}
+              placeholder1={"Please enter paying advertiser name"}
+              customStyles={{ width: "95%" }}
+              stateName1={"paying_advertiser_name"}
+              setValue={this.setValue}
+              getValidInfo={this.getValidInfo}
+              incomplete={true}
+            />
+          )}
           <Card padder style={styles.mainCard}>
             {/** Replace the hard code snapchat policies html data with webview so as to directly pull data from snapchat ad policies */}
             <WebView
@@ -117,19 +259,7 @@ class SnapchatCreateAdAcc extends Component {
               <GradientButton
                 // disabled={!this.state.accept}
                 style={[styles.button]}
-                onPressAction={() => {
-                  this.props.navigation.navigate(
-                    "AcceptTermsConditionLoading",
-                    {
-                      source: "ad_TNC",
-                      source_action: "a_accept_ad_TNC",
-                    }
-                  );
-                  this.props.create_snapchat_ad_account(
-                    this.props.mainBusiness.businessid,
-                    this.props.navigation
-                  );
-                }}
+                onPressAction={this.acceptTNC}
                 uppercase
                 radius={50}
                 text={translate("Accept")}
@@ -149,8 +279,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  create_snapchat_ad_account: (id, navigation) =>
-    dispatch(actionCreators.create_snapchat_ad_account(id, navigation)),
+  create_snapchat_ad_account: (info, navigation) =>
+    dispatch(actionCreators.create_snapchat_ad_account(info, navigation)),
 });
 export default connect(
   mapStateToProps,
