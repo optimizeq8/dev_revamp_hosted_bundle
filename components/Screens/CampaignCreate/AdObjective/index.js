@@ -646,7 +646,7 @@ class AdObjective extends Component {
               adType === "SnapAd"
                 ? "Snap Ad"
                 : adType === "StoryAd"
-                ? "Story Ad"
+                ? "Explore Ad"
                 : "Collection Ad"
             }
           />
