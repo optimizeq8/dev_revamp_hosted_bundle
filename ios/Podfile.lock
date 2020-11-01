@@ -366,17 +366,17 @@ PODS:
   - RNAnalytics (1.3.2):
     - Analytics (~> 4.1)
     - React
-  - RNAnalyticsIntegration-Adjust (1.3.1):
+  - RNAnalyticsIntegration-Adjust (1.3.2):
     - Analytics
     - React
     - RNAnalytics
     - Segment-Adjust
-  - RNAnalyticsIntegration-Mixpanel (1.3.1):
+  - RNAnalyticsIntegration-Mixpanel (1.3.2):
     - Analytics
     - React
     - RNAnalytics
     - Segment-Mixpanel
-  - RNBootSplash (2.2.6):
+  - RNBootSplash (2.2.7):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -790,9 +790,9 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeAutogrowTextinput: 571f3260e200d91ea22fab160452f26d2fd5d55b
   RNAnalytics: ac18ac964dd53bac7f957994412963e8e2568c4d
-  RNAnalyticsIntegration-Adjust: c3525c3bfffec62acf320462d5d2b22f67af3aa9
-  RNAnalyticsIntegration-Mixpanel: c25ce5710f9b87d8eb631567f65cc2005993f735
-  RNBootSplash: 6c2a4f7cf8a2d2f18043e11da177c95395da9f4b
+  RNAnalyticsIntegration-Adjust: c1cd25b376ca111d997f9c90a63daef764649300
+  RNAnalyticsIntegration-Mixpanel: 2962c1d4c581d372e16586427a8818b2f954992a
+  RNBootSplash: a902017918cfd3e1f016ec7faef78fdf4c4e3cd0
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCCheckbox: 357578d3b42652c78ee9a1bb9bcfc3195af6e161
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
@@ -826,4 +826,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a911ee4f5054d6143fce835b9e034ac8a69a4287
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3
