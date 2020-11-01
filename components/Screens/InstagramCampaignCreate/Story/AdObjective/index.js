@@ -42,6 +42,9 @@ import ContinueCampaign from "../../../../MiniComponents/ContinueInstagramCampai
 import { persistor } from "../../../../../store";
 import InputField from "../../../../MiniComponents/InputFieldNew";
 import ModalField from "../../../../MiniComponents/InputFieldNew/ModalField";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
+import globalStyles from "../../../../../GlobalStyles";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -434,11 +437,16 @@ class AdObjective extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.safeAreaView}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>

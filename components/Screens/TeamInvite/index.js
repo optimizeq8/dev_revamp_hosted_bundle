@@ -10,6 +10,9 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import analytics from "@segment/analytics-react-native";
 import { Bold } from "../../MiniComponents/StyledComponents";
 import Loading from "../../MiniComponents/LoadingScreen";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 class TeamInvite extends Component {
   state = { wrongEmail: false, loggedOut: false };
   componentDidMount() {
@@ -108,6 +111,11 @@ class TeamInvite extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents onDidFocus={this.onDidFocus} />
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <Header
           screenProps={this.props.screenProps}
           actionButton={() => {

@@ -33,6 +33,8 @@ import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../MiniComponents/TopStepsHeader";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -450,7 +452,6 @@ class PaymentForm extends Component {
             uppercase={true}
           />
         </View>
-
         {this.state.choice === 1 && (
           <UseWallet
             showWalletModal={this.state.showWalletModal}
@@ -500,6 +501,11 @@ class PaymentForm extends Component {
     );
     return (
       <View style={styles.safeAreaViewContainer}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

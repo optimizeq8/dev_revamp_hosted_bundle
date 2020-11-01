@@ -33,7 +33,7 @@ import CameraEdit from "../../../assets/SVGs/CameraCircleOutline";
 
 // Style
 import styles from "./styles";
-import { globalColors } from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Data
 import { netLoc } from "../../Data/callactions.data";
@@ -46,6 +46,8 @@ import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../Functions/PhotoEditorConfiguration";
 import MediaModal from "../../Screens/CampaignCreate/AdCover/MediaModal";
 import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 
 class CollectionMedia extends Component {
@@ -687,6 +689,11 @@ class CollectionMedia extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "always", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <Container style={styles.container}>
           <CustomHeader
             screenProps={this.props.screenProps}

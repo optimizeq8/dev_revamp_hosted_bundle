@@ -19,6 +19,9 @@ import styles from "./styles";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 class ChangePassword extends Component {
   static navigationOptions = {
@@ -213,6 +216,11 @@ class ChangePassword extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Change Password"}

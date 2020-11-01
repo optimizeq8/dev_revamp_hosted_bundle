@@ -9,12 +9,14 @@ import AddMember from "../AddMemberButton";
 import * as actionCreators from "../../../../store/actions";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
-import { globalColors } from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import * as Animatable from "react-native-animatable";
 import MemberTypes from "./MemberTypes";
 import InputFields from "./InputFields";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
 
 class AddOrEditTeamMember extends Component {
   state = {
@@ -239,6 +241,11 @@ class AddOrEditTeamMember extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}

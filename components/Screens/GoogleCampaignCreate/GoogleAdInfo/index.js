@@ -50,6 +50,9 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
@@ -468,11 +471,16 @@ class GoogleAdInfo extends Component {
 
     return (
       <View style={styles.safeAreaView}>
+        <StatusBar barStyle="dark-content" />
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <StatusBar barStyle="dark-content" />
         <NavigationEvents onDidFocus={this.handleGoogleAdInfoFocus} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>

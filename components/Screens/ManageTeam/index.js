@@ -9,6 +9,9 @@ import styles from "./Styles";
 import AddMember from "./AddMemberButton";
 import TeamMember from "./TeamMember";
 import analytics from "@segment/analytics-react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 class ManageTeam extends Component {
   translate = this.props.screenProps.translate;
@@ -77,6 +80,11 @@ class ManageTeam extends Component {
         style={{ height: "100%" }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <Header
           screenProps={this.props.screenProps}

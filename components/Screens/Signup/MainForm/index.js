@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, I18nManager } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  I18nManager,
+  StatusBar,
+} from "react-native";
 import { Container, Badge } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import analytics from "@segment/analytics-react-native";
@@ -17,6 +23,9 @@ import FowrwardIcon from "../../../../assets/SVGs/ArrowForwardPurple";
 import RegisterIcon from "../../../../assets/SVGs/RegisterIcon";
 // Style
 import styles from "./styles";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -70,10 +79,21 @@ class MainForm extends Component {
     );
 
     return (
-      <SafeAreaView
+      <View
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
+        <SafeAreaView
+          style={{ backgroundColor: "#fff" }}
+          forceInset={{ bottom: "never", top: "always" }}
+        />
+        <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+
         <NavigationEvents onDidFocus={this.handleBusinessInvite} />
         <Container style={styles.container}>
           <View style={styles.progressCardView}>
@@ -129,7 +149,7 @@ class MainForm extends Component {
           </View>
           {content}
         </Container>
-      </SafeAreaView>
+      </View>
     );
   }
 }

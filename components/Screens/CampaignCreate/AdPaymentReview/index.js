@@ -24,6 +24,9 @@ import dateFormat from "dateformat";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import { isUndefined } from "lodash";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -168,15 +171,16 @@ class AdPaymentReview extends Component {
 
     let languageNames = [];
     languageNames =
-      this.props.languages.length > 0 &&
-      targeting &&
-      targeting.demographics[0] &&
-      targeting.demographics[0].languages.map((languageId) => {
-        return translate(
-          this.props.languages &&
-            this.props.languages.find((lang) => lang.id === languageId).name
-        );
-      });
+      this.props.languages.length > 0
+        ? targeting &&
+          targeting.demographics[0] &&
+          targeting.demographics[0].languages.map((languageId) => {
+            return translate(
+              this.props.languages &&
+                this.props.languages.find((lang) => lang.id === languageId).name
+            );
+          })
+        : [];
 
     return {
       interestNames,
@@ -257,6 +261,11 @@ class AdPaymentReview extends Component {
             onDidFocus={this.handlePaymentReviewFocus}
             onDidBlur={this.handlePaymentReviewBlur}
           />
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <LoadingScreen top={50} />
         </>
       );
@@ -274,10 +283,14 @@ class AdPaymentReview extends Component {
         devices,
         languageNames,
       } = this.formatAttributes();
-
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
         <View style={[styles.safeAreaView]}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <SafeAreaView
             style={{ backgroundColor: "#fff" }}
             forceInset={{ bottom: "never", top: "always" }}

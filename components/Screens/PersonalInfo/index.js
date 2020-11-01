@@ -29,6 +29,8 @@ import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
 import InputFeild from "../../MiniComponents/InputFieldNew";
 import PhoneNoField from "../Signup/PhoneNo/PhoneNoFieldNew";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class PersonalInfo extends Component {
   static navigationOptions = {
@@ -201,6 +203,11 @@ class PersonalInfo extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <CustomHeader
           screenProps={this.props.screenProps}
           title={"Personal Info"}

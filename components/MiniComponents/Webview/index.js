@@ -69,6 +69,7 @@ export default class index extends Component {
           <WebView
             // startInLoadingState={true}
             onLoad={() => this.hideLoader()}
+            androidHardwareAccelerationDisabled={true}
             // renderLoading={() => (
             //   <View style={{ height: "100%", backgroundColor: "#0000" }}>
             //     <Loading top={40} />

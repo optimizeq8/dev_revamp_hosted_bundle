@@ -44,7 +44,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
 import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
-import { globalColors } from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import { PESDK, Configuration } from "react-native-photoeditorsdk";
 import PhotoEditorConfiguration from "../../../Functions/PhotoEditorConfiguration";
@@ -816,6 +816,11 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainSafeArea}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -824,11 +829,7 @@ class AdCover extends Component {
           onDidFocus={this.handleAdCoverFocus}
           onDidBlur={this.handleAdCoverBlur}
         />
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[1, 0.3]}
-          style={styles.gradient}
-        />
+
         <Container style={styles.container}>
           <TopStepsHeader
             screenProps={this.props.screenProps}
