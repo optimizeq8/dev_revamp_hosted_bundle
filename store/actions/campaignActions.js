@@ -227,10 +227,15 @@ export const ad_design = (
       })
       .then(() => {
         if (!rejected)
-          navigation.navigate("AdDetails", {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
-          });
+          navigation.navigate(
+            segmentInfo.campaign_savedObjective === "POLITICAL_TRAFFIC"
+              ? "AdDetailsPolitical"
+              : "AdDetails",
+            {
+              source: "ad_design",
+              source_action: "a_submit_ad_design",
+            }
+          );
         else {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
@@ -584,7 +589,8 @@ export const ad_details = (
   names,
   navigation,
   segmentInfo,
-  locationsInfo
+  locationsInfo,
+  districts = []
 ) => {
   return (dispatch, getState) => {
     dispatch({
@@ -592,7 +598,7 @@ export const ad_details = (
       payload: true,
     });
     createBaseUrl()
-      .post(`savetargeting`, { ...info, coordinates: locationsInfo })
+      .post(`savetargeting`, { ...info, coordinates: locationsInfo, districts })
       .then((res) => {
         return res.data;
       })
@@ -635,14 +641,20 @@ export const ad_details = (
   };
 };
 
-export const updateCampaign = (info, businessid, navigation, segmentInfo) => {
+export const updateCampaign = (
+  info,
+  businessid,
+  navigation,
+  segmentInfo,
+  districts = []
+) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true,
     });
     createBaseUrl()
-      .put(`savetargeting`, { ...info, businessid })
+      .put(`savetargeting`, { ...info, businessid, districts })
       .then((res) => {
         // console.log("back end info", res.data);
 
@@ -1640,6 +1652,33 @@ export const moveRejectedAdAmountToWallet = (campaign_id) => {
           NavigationService.navigate("Dashboard", {
             source: "ad_detail",
             source_action: "a_move_amount_to_wallet",
+          });
+        }
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};
+
+export const getDistrictList = () => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.DISTRICT_LIST_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .get(`districtList`)
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch({
+          type: actionTypes.DISTRICT_LIST_LOADING,
+          payload: false,
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.SET_DISTRICT_LIST,
+            payload: data.data,
           });
         }
       })

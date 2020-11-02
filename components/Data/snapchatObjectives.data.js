@@ -63,6 +63,13 @@ export default {
       color: "#4BD6C6",
     },
     {
+      label: "Majlis 2020",
+      value: "POLITICAL_TRAFFIC",
+      info: "Reach people your district",
+      icon: ObjIcons.Awareness,
+      color: "#332BEF",
+    },
+    {
       label: "Engagement",
       value: "ENGAGEMENT",
       info: "Get more Snapchatters to Engage with your Ad",

@@ -83,6 +83,7 @@ class AdObjective extends Component {
       duration: 7,
       savedObjective: "WEBSITE_TRAFFIC",
       isReady: false,
+      objectivesList: snapchatObjectivesData,
     };
   }
   componentWillUnmount() {
@@ -93,7 +94,18 @@ class AdObjective extends Component {
   }
   async componentDidMount() {
     await this.setCampaignInfo();
-
+    const businessCountryIsKuwait =
+      this.props.mainBusiness.country === "Kuwait";
+    // Remove the objective label for non kuwait countries and if adtype is SnapAd
+    if (!businessCountryIsKuwait && this.props.adType === "SnapAd") {
+      let updatedList = snapchatObjectivesData;
+      updatedList["SnapAd"] = snapchatObjectivesData.SnapAd.filter(
+        (obj) => obj.value !== "POLITICAL_TRAFFIC"
+      );
+      this.setState({
+        objectivesList: updatedList,
+      });
+    }
     InteractionManager.runAfterInteractions(() => {
       this.setState({
         isReady: true,
@@ -266,6 +278,7 @@ class AdObjective extends Component {
       savedObjective: choice.value,
       reset: true,
     });
+    // this.handleDuration(false, true);
   };
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {
@@ -443,19 +456,26 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
       });
       let objective = this.state.campaignInfo.objective;
+
       if (objective !== "APP_INSTALLS") {
         objective = this.state.campaignInfo.objective.replace(
-          /WEBSITE_|APP_/g,
+          /WEBSITE_|APP_|POLITICAL_/g,
           ""
         );
       }
+
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
         objective,
         duration: this.state.duration,
         savedObjective: this.state.savedObjective,
+        is_political: 1,
       };
+      if (this.state.savedObjective !== "POLITICAL_TRAFFIC") {
+        delete info.is_political;
+      }
+
       this.getMinimumCash();
       this.props.ad_objective(
         {
@@ -554,10 +574,13 @@ class AdObjective extends Component {
   };
 
   handleDuration = (subtract = false, onePress = false) => {
+    let is_political =
+      this.props.data && this.props.data.savedObjective === "POLITICAL_TRAFFIC";
+    let minimumDuration = !is_political ? 3 : 1;
     let duration = subtract
-      ? this.state.duration - 1 > 3
+      ? this.state.duration - 1 > minimumDuration
         ? this.state.duration - 1
-        : 3
+        : minimumDuration
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
@@ -582,7 +605,10 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-    const list = snapchatObjectivesData[this.props.adType].map((o) => (
+    let is_political =
+      this.props.data && this.props.data.savedObjective === "POLITICAL_TRAFFIC";
+    let minimumDuration = !is_political ? 3 : 1;
+    const list = this.state.objectivesList[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -694,11 +720,17 @@ class AdObjective extends Component {
                   handleDuration={this.handleDuration}
                   duration={this.state.duration}
                   screenProps={this.props.screenProps}
-                  disabled={this.state.duration === 3}
+                  disabled={this.state.duration === minimumDuration}
                 />
-                {this.state.duration === 3 && (
+                {this.state.duration === minimumDuration && (
                   <Text style={styles.minDurationText}>
-                    {translate("Minimum Duration is {{n}} days", { n: 3 })}
+                    {minimumDuration === 1
+                      ? translate("Minimum Duration is 1 day", {
+                          n: 1,
+                        })
+                      : translate("Minimum Duration is {{n}} days", {
+                          n: minimumDuration,
+                        })}
                   </Text>
                 )}
                 <Animatable.View
