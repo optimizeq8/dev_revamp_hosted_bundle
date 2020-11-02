@@ -130,75 +130,76 @@ export class TargetAudience extends Component {
               </Text>
             </View>
             {districtListLoading && <ActivityIndicator size={"small"} />}
-            {districtList.map((district, index) => (
-              <TouchableOpacity
-                key={district.value}
-                style={styles.districtInnerView}
-                onPress={() => {
-                  handleDistricts(district.value);
-                }}
-                disabled={!startEditing}
-              >
-                <View style={styles.districtHeaderView}>
-                  <TouchableOpacity
-                    disabled={!startEditing}
-                    style={styles.districtHeaderInnerView}
-                    onPress={() => {
-                      handleDistricts(district.value);
-                    }}
-                  >
-                    <View style={styles.radioButton}>
-                      {districts.includes(district.value) && (
-                        <View style={styles.radioButtonSelected} />
-                      )}
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: globalColors.rum,
-                        fontFamily: "montserrat-bold",
-                        marginHorizontal: 5,
-                      }}
-                    >
-                      {district.name}
-                    </Text>
-                  </TouchableOpacity>
-                  {district.areas && district.areas.length > 0 && (
+            {districtList &&
+              districtList.map((district, index) => (
+                <TouchableOpacity
+                  key={district.value}
+                  style={styles.districtInnerView}
+                  onPress={() => {
+                    handleDistricts(district.value);
+                  }}
+                  disabled={!startEditing}
+                >
+                  <View style={styles.districtHeaderView}>
                     <TouchableOpacity
+                      disabled={!startEditing}
+                      style={styles.districtHeaderInnerView}
                       onPress={() => {
-                        let showDistrics = [...this.state.showDistricts];
-                        showDistrics = showDistrics.map(
-                          (val, i) => i === index
-                        );
-                        this.setState({
-                          showDistricts: showDistrics,
-                        });
+                        handleDistricts(district.value);
                       }}
                     >
-                      <Icon
-                        name={
-                          this.state.showDistricts[index]
-                            ? "keyboard-arrow-up"
-                            : "keyboard-arrow-down"
-                        }
-                        type="MaterialIcons"
-                        width={25}
-                        height={25}
-                        style={styles.arrow}
-                      />
+                      <View style={styles.radioButton}>
+                        {districts.includes(district.value) && (
+                          <View style={styles.radioButtonSelected} />
+                        )}
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: globalColors.rum,
+                          fontFamily: "montserrat-bold",
+                          marginHorizontal: 5,
+                        }}
+                      >
+                        {district.name}
+                      </Text>
                     </TouchableOpacity>
-                  )}
-                </View>
-                {district.areas &&
-                  district.areas.length > 0 &&
-                  this.state.showDistricts[index] &&
-                  district.areas.map((area) => (
-                    <Text style={styles.areaName} key={area}>
-                      {translate(area)}
-                    </Text>
-                  ))}
-              </TouchableOpacity>
-            ))}
+                    {district.areas && district.areas.length > 0 && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          let showDistrics = [...this.state.showDistricts];
+                          showDistrics = showDistrics.map(
+                            (val, i) => i === index
+                          );
+                          this.setState({
+                            showDistricts: showDistrics,
+                          });
+                        }}
+                      >
+                        <Icon
+                          name={
+                            this.state.showDistricts[index]
+                              ? "keyboard-arrow-up"
+                              : "keyboard-arrow-down"
+                          }
+                          type="MaterialIcons"
+                          width={25}
+                          height={25}
+                          style={styles.arrow}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {district.areas &&
+                    district.areas.length > 0 &&
+                    this.state.showDistricts[index] &&
+                    district.areas.map((area) => (
+                      <Text style={styles.areaName} key={area}>
+                        {translate(area)}
+                      </Text>
+                    ))}
+                </TouchableOpacity>
+              ))}
           </View>
         </ScrollView>
 
