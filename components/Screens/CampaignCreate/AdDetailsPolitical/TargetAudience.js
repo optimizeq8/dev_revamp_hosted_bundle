@@ -27,6 +27,7 @@ import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { ActivityIndicator } from "react-native-paper";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
@@ -122,84 +123,33 @@ export class TargetAudience extends Component {
                 <PurplePlusIcon width={30} height={30} />
               ))}
           </TouchableOpacity>
-          <View
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: 20,
-              padding: 10,
-            }}
-          >
+          <View style={styles.districtOuterView}>
             <View style={[globalStyles.row, styles.flex]}>
-              {/* <LocationIcon
-                width={30}
-                height={30}
-                style={styles.icon}
-                fill={globalColors.purple}
-              /> */}
-
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: globalColors.rum,
-                  fontFamily: "montserrat-bold",
-                  marginHorizontal: 5,
-                  textTransform: "uppercase",
-                }}
-              >
-                Choose District
+              <Text style={styles.chooseDistrictText}>
+                {translate("Choose District")}
               </Text>
             </View>
+            {districtListLoading && <ActivityIndicator size={"small"} />}
             {districtList.map((district, index) => (
               <TouchableOpacity
                 key={district.value}
-                style={{ marginVertical: 5 }}
+                style={styles.districtInnerView}
                 onPress={() => {
                   handleDistricts(district.value);
                 }}
                 disabled={!startEditing}
               >
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
+                <View style={styles.districtHeaderView}>
                   <TouchableOpacity
                     disabled={!startEditing}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
+                    style={styles.districtHeaderInnerView}
                     onPress={() => {
                       handleDistricts(district.value);
                     }}
                   >
-                    <View
-                      style={{
-                        display: "flex",
-                        width: 25,
-                        height: 25,
-                        backgroundColor: globalColors.white,
-                        borderRadius: 25,
-                        justifyContent: "center",
-                        borderWidth: 1,
-                        borderColor: globalColors.rum,
-                      }}
-                    >
+                    <View style={styles.radioButton}>
                       {districts.includes(district.value) && (
-                        <View
-                          style={{
-                            display: "flex",
-                            alignSelf: "center",
-                            width: 18,
-                            height: 18,
-                            backgroundColor: globalColors.purple,
-                            borderRadius: 18,
-                          }}
-                        />
+                        <View style={styles.radioButtonSelected} />
                       )}
                     </View>
                     <Text
@@ -234,11 +184,7 @@ export class TargetAudience extends Component {
                         type="MaterialIcons"
                         width={25}
                         height={25}
-                        style={{
-                          color: globalColors.purple,
-                          // right: 2,
-                          alignSelf: "flex-end",
-                        }}
+                        style={styles.arrow}
                       />
                     </TouchableOpacity>
                   )}
@@ -247,16 +193,8 @@ export class TargetAudience extends Component {
                   district.areas.length > 0 &&
                   this.state.showDistricts[index] &&
                   district.areas.map((area) => (
-                    <Text
-                      style={{
-                        fontFamily: "montserrat-regular",
-                        marginHorizontal: 30,
-                        color: globalColors.rum,
-                        marginVertical: 2,
-                        fontSize: 12,
-                      }}
-                    >
-                      {area}
+                    <Text style={styles.areaName} key={area}>
+                      {translate(area)}
                     </Text>
                   ))}
               </TouchableOpacity>

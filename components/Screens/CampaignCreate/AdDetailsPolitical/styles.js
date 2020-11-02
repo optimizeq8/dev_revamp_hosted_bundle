@@ -251,6 +251,59 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   bottomReachView: { flexDirection: "column", flex: 1 },
+  districtOuterView: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+  },
+  chooseDistrictText: {
+    fontSize: 14,
+    color: globalColors.rum,
+    fontFamily: "montserrat-bold",
+    marginHorizontal: 5,
+    textTransform: "uppercase",
+  },
+  districtInnerView: { marginVertical: 5 },
+  districtHeaderView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  districtHeaderInnerView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  radioButton: {
+    display: "flex",
+    width: 25,
+    height: 25,
+    backgroundColor: globalColors.white,
+    borderRadius: 25,
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: globalColors.rum,
+  },
+  radioButtonSelected: {
+    display: "flex",
+    alignSelf: "center",
+    width: 18,
+    height: 18,
+    backgroundColor: globalColors.purple,
+    borderRadius: 18,
+  },
+  arrow: {
+    color: globalColors.purple,
+    alignSelf: "flex-end",
+  },
+  areaName: {
+    fontFamily: "montserrat-regular",
+    marginHorizontal: 30,
+    color: globalColors.rum,
+    marginVertical: 2,
+    fontSize: 12,
+  },
 });
 
 export default styles;
