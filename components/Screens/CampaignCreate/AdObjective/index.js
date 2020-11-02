@@ -278,6 +278,7 @@ class AdObjective extends Component {
       savedObjective: choice.value,
       reset: true,
     });
+    // this.handleDuration(false, true);
   };
   handleBackButton = () => {
     if (!this.props.navigation.isFocused()) {
@@ -573,10 +574,13 @@ class AdObjective extends Component {
   };
 
   handleDuration = (subtract = false, onePress = false) => {
+    let is_political =
+      this.props.data && this.props.data.savedObjective === "POLITICAL_TRAFFIC";
+    let minimumDuration = !is_political ? 3 : 1;
     let duration = subtract
-      ? this.state.duration - 1 > 3
+      ? this.state.duration - 1 > minimumDuration
         ? this.state.duration - 1
-        : 3
+        : minimumDuration
       : this.state.duration + 1;
 
     let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
@@ -601,7 +605,9 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-
+    let is_political =
+      this.props.data && this.props.data.savedObjective === "POLITICAL_TRAFFIC";
+    let minimumDuration = !is_political ? 3 : 1;
     const list = this.state.objectivesList[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
@@ -714,11 +720,17 @@ class AdObjective extends Component {
                   handleDuration={this.handleDuration}
                   duration={this.state.duration}
                   screenProps={this.props.screenProps}
-                  disabled={this.state.duration === 3}
+                  disabled={this.state.duration === minimumDuration}
                 />
-                {this.state.duration === 3 && (
+                {this.state.duration === minimumDuration && (
                   <Text style={styles.minDurationText}>
-                    {translate("Minimum Duration is {{n}} days", { n: 3 })}
+                    {minimumDuration === 1
+                      ? translate("Minimum Duration is 1 day", {
+                          n: 1,
+                        })
+                      : translate("Minimum Duration is {{n}} days", {
+                          n: minimumDuration,
+                        })}
                   </Text>
                 )}
                 <Animatable.View
