@@ -54,6 +54,8 @@ target 'OptimizeApp' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'react-native-intercom', :path => '../node_modules/react-native-intercom'
+
 
 end
 

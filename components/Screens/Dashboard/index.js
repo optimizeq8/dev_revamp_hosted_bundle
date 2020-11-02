@@ -12,6 +12,7 @@ import {
   Text,
   NativeModules,
 } from "react-native";
+import Intercom from "react-native-intercom";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -184,8 +185,8 @@ class Dashboard extends Component {
           adButtons,
         });
       }
-      this.props.userInfo &&
-        this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.userInfo &&
+      //   this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -357,7 +358,7 @@ class Dashboard extends Component {
       source_action: "a_refresh_list",
       refresh_type: "campaigns",
     });
-    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
@@ -436,6 +437,8 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
+    Intercom.registerIdentifiedUser({ userId: this.props.userInfo.userid });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     const source = this.props.navigation.getParam(
       "source",
@@ -614,10 +617,14 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.navigation.push("Messenger", {
-                        source: "dashboard",
-                        source_action: "a_help",
-                      });
+                      Intercom.displayMessageComposerWithInitialMessage(
+                        "Initial Message"
+                      );
+
+                      // this.props.navigation.push("Messenger", {
+                      //   source: "dashboard",
+                      //   source_action: "a_help",
+                      // });
                     }}
                     style={[styles.headerIcons]}
                   >

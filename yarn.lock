@@ -13726,6 +13726,11 @@ react-native-input-scroll-view@^1.9.5:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-intercom@^18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-intercom/-/react-native-intercom-18.0.0.tgz#31f53c69fc8c776a3d491d8b4957a059651cd397"
+  integrity sha512-w49E65gmV85CJKkdXVKMUmn9vBlJNEVXjtTPUccAmCZVfkpiKMmUqq6ich2qc1si+yzRDt07VJmRupv3EPxbeA==
+
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.0.tgz#84fd13e6b89cc3aa4daa80ec514bf15cb724d86d"

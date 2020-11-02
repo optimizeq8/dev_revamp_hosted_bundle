@@ -18,6 +18,7 @@
 #import "RNBootSplash.h"
 #import "Mixpanel/Mixpanel.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import <Intercom/intercom.h>
 @interface AppDelegate ()
 
 @property (nonatomic, strong) NSDictionary *launchOptions;
@@ -56,6 +57,7 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 [config use:[SEGAdjustIntegrationFactory instance]];
 
 [SEGAnalytics setupWithConfiguration:config];
+[Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else
