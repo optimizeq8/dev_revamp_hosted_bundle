@@ -117,6 +117,7 @@ class AdDetails extends Component {
       startEditing: true,
       locationsInfo: [],
       duration: 3,
+      districts: [],
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -205,6 +206,7 @@ class AdDetails extends Component {
     }
   };
   async componentDidMount() {
+    this.props.getDistrictList();
     this.props.get_languages();
     this.props.getAudienceList();
     if (this.editCampaign) {
@@ -240,6 +242,10 @@ class AdDetails extends Component {
         editedMapLocation = cloneDeep(JSON.parse(editedCampaign.coordinates));
         markers = cloneDeep(editedCampaign.targeting.locations[0].circles);
       }
+      let districts = [];
+      if (editedCampaign.districts) {
+        districts = cloneDeep(JSON.parse(editedCampaign.districts));
+      }
       let stateRegionNames = [];
       this.setState(
         {
@@ -250,6 +256,7 @@ class AdDetails extends Component {
           filteredRegions: editedRegionNames,
           locationsInfo: editedMapLocation,
           markers,
+          districts,
         },
         () => {
           editedCampaign.targeting.geos.forEach((geo, i) =>
@@ -1002,7 +1009,9 @@ class AdDetails extends Component {
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
         campaign_id: this.state.campaignInfo.campaign_id,
+        districts: this.state.districts,
       };
+      // console.log("obj", JSON.stringify(obj, null, 2));
 
       let totalReach = {
         // demographics: [
@@ -1019,8 +1028,9 @@ class AdDetails extends Component {
       const obj2 = {
         targeting: JSON.stringify(totalReach),
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        districts: this.state.districts,
       };
-
+      // console.log("obj2", JSON.stringify(obj2, null, 2));
       await this.props.snap_ad_audience_size(obj, obj2);
     }
   };
@@ -1171,7 +1181,8 @@ class AdDetails extends Component {
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation,
-          segmentInfo
+          segmentInfo,
+          this.state.districts
         );
       } else {
         // this.props.setCampaignInfoForTransaction({
@@ -1199,7 +1210,8 @@ class AdDetails extends Component {
           },
           this.props.navigation,
           segmentInfo,
-          this.state.locationsInfo
+          this.state.locationsInfo,
+          this.state.districts
         );
       }
     }
@@ -1364,6 +1376,28 @@ class AdDetails extends Component {
     // Adjust.trackEvent(adjustAdDetailsTracker);
   };
 
+  handleDistricts = async (district) => {
+    let districts = [...this.state.districts];
+
+    if (districts.includes(district)) {
+      districts.splice(districts.indexOf(district), 1);
+    } else {
+      districts = [district]; // For one district at a time
+      // districts.push(district); // For multiple districts
+    }
+    this.setState(
+      {
+        districts,
+      },
+      () => {
+        this._calcReach();
+      }
+    );
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        districts: districts,
+      });
+  };
   handleAdDetailsBlur = () => {
     BackHandler.removeEventListener(
       "hardwareBackPressAdDetails",
@@ -1782,6 +1816,10 @@ class AdDetails extends Component {
                   translate={translate}
                   editCampaign={this.editCampaign}
                   startEditing={startEditing}
+                  districtList={this.props.districtList}
+                  districtListLoading={this.props.districtListLoading}
+                  districts={this.state.districts}
+                  handleDistricts={this.handleDistricts}
                 />
 
                 <AudienceReach
@@ -1818,22 +1856,38 @@ const mapStateToProps = (state) => ({
   campaignDateChanged: state.campaignC.campaignDateChanged,
   audienceList: state.audience.audienceList,
   audienceListLoading: state.audience.audienceListLoading,
+  districtListLoading: state.campaignC.districtListLoading,
+  districtList: state.campaignC.districtList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ad_details: (info, names, navigation, segmentInfo, locationsInfo) =>
+  ad_details: (
+    info,
+    names,
+    navigation,
+    segmentInfo,
+    locationsInfo,
+    districts
+  ) =>
     dispatch(
       actionCreators.ad_details(
         info,
         names,
         navigation,
         segmentInfo,
-        locationsInfo
+        locationsInfo,
+        districts
       )
     ),
-  updateCampaign: (info, businessid, navigation, segmentInfo) =>
+  updateCampaign: (info, businessid, navigation, segmentInfo, districts) =>
     dispatch(
-      actionCreators.updateCampaign(info, businessid, navigation, segmentInfo)
+      actionCreators.updateCampaign(
+        info,
+        businessid,
+        navigation,
+        segmentInfo,
+        districts
+      )
     ),
   save_campaign_info: (info) =>
     dispatch(actionCreators.save_campaign_info(info)),
@@ -1848,5 +1902,6 @@ const mapDispatchToProps = (dispatch) => ({
   getAudienceList: () => dispatch(actionCreators.getAudienceList()),
   createAudience: (audience, navigate, locationsInfo) =>
     dispatch(actionCreators.createAudience(audience, navigate, locationsInfo)),
+  getDistrictList: () => dispatch(actionCreators.getDistrictList()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

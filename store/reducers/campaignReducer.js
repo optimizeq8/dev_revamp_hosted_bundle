@@ -232,6 +232,8 @@ const initialState = {
   verifyingNumber: false,
   otpSend: false,
   movingAmountToWallet: false,
+  districtListLoading: false,
+  districtList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -1175,6 +1177,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         movingAmountToWallet: action.payload,
+      };
+    }
+    case actionTypes.DISTRICT_LIST_LOADING: {
+      return {
+        ...state,
+        districtListLoading: action.payload,
+      };
+    }
+    case actionTypes.SET_DISTRICT_LIST: {
+      return {
+        ...state,
+        districtList: action.payload,
       };
     }
     default:

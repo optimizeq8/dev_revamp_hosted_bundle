@@ -28,7 +28,11 @@ import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export class TargetAudience extends Component {
-  state = { scrollY: 1, advance: true };
+  state = {
+    scrollY: 1,
+    advance: true,
+    showDistricts: [false, false, false, false, false],
+  };
   handleFading = (event) => {
     let y = event.nativeEvent.contentOffset.y;
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
@@ -60,6 +64,10 @@ export class TargetAudience extends Component {
       mainState,
       editCampaign,
       startEditing,
+      districtListLoading,
+      districtList,
+      districts,
+      handleDistricts,
     } = this.props;
     const { translate } = this.props.screenProps;
 
@@ -69,16 +77,6 @@ export class TargetAudience extends Component {
           height: heightPercentageToDP(67),
         }}
       >
-        {/* <MaskedView
-          maskElement={
-            <LinearGradient
-              colors={["black", "black", "transparent"]}
-              start={[0, 0]}
-              end={[0, this.state.scrollY]}
-              style={{ height: "100%" }}
-            />
-          }
-        > */}
         <ScrollView
           scrollEventThrottle={100}
           onScroll={this.handleFading}
@@ -86,14 +84,7 @@ export class TargetAudience extends Component {
           indicatorStyle="white"
           scrollEnabled={true}
           contentContainerStyle={{ paddingBottom: heightPercentageToDP(20) }}
-          style={[
-            styles.targetList,
-            {
-              // marginBottom: editCampaign
-              //   ? heightPercentageToDP(10)
-              //   : heightPercentageToDP(30),
-            },
-          ]}
+          style={[styles.targetList]}
         >
           <TouchableOpacity
             disabled={loading || true}
@@ -131,347 +122,148 @@ export class TargetAudience extends Component {
                 <PurplePlusIcon width={30} height={30} />
               ))}
           </TouchableOpacity>
-
-          {/* {mainState.showRegions ? ( */}
-          <TouchableOpacity
-            onPress={() => this.callFunction("regions")}
-            style={styles.targetTouchable}
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 20,
+              padding: 10,
+            }}
           >
             <View style={[globalStyles.row, styles.flex]}>
-              <LocationIcon
+              {/* <LocationIcon
                 width={30}
                 height={30}
                 style={styles.icon}
                 fill={globalColors.purple}
-              />
-              <View style={[globalStyles.column, styles.flex]}>
-                <Text
-                  style={[
-                    styles.menutext,
-                    {
-                      paddingLeft:
-                        Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
-                      paddingRight:
-                        Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-                    },
-                  ]}
-                >
-                  {translate("Regions")}
-                </Text>
-                <Text
-                  style={styles.menudetails}
-                  numberOfLines={startEditing ? 1 : 10}
-                >
-                  {regions_names}
-                </Text>
-              </View>
+              /> */}
+
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: globalColors.rum,
+                  fontFamily: "montserrat-bold",
+                  marginHorizontal: 5,
+                  textTransform: "uppercase",
+                }}
+              >
+                Choose District
+              </Text>
             </View>
-
-            {startEditing &&
-              (targeting.geos.some(
-                (geo) => geo.region_id && geo.region_id.length !== 0
-              ) ? (
-                <PurpleCheckmarkIcon width={30} height={30} />
-              ) : (
-                <PurplePlusIcon width={30} height={30} />
-              ))}
-          </TouchableOpacity>
-          {/* ) : null} */}
-          {mainState.showRegions && (
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("map")}
-              style={styles.targetTouchable}
-            >
-              <View style={globalStyles.row}>
-                <LocationIcon
-                  width={30}
-                  height={30}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                />
-
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Map")}</Text>
-                  <Text style={styles.menudetails}>
-                    {mainState.locationsInfo &&
-                    mainState.locationsInfo.length > 0
-                      ? mainState.locationsInfo
-                          .map((loc) => translate(loc.countryName))
-                          .join(", ")
-                      : ""}
-                  </Text>
-                </View>
-              </View>
-              {startEditing &&
-                (targeting.locations[0].circles.length > 0 ? (
-                  <PurpleCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PurplePlusIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
-          )}
-          {/* <TouchableOpacity
-            disabled={loading}
-            onPress={() => this.callFunction("gender")}
-            style={styles.targetTouchable}
-          >
-            <View style={globalStyles.row}>
-              <GenderIcon
-                width={30}
-                height={30}
-                style={styles.icon}
-                fill={globalColors.purple}
-              />
-              <View style={globalStyles.column}>
-                <Text style={styles.menutext}>{translate("Gender")}</Text>
-                <Text style={styles.menudetails}>
-                  {(targeting.demographics[0].gender ||
-                    targeting.demographics[0].gender === "") &&
-                    translate(
-                      gender.find((r) => {
-                        if (r.value === targeting.demographics[0].gender)
-                          return r;
-                      }).label
-                    )}
-                </Text>
-              </View>
-            </View>
-            <View style={globalStyles.column}>
-              {startEditing &&
-                (targeting.demographics[0].gender === "" ||
-                targeting.demographics[0].gender ? (
-                  <PurpleCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PurplePlusIcon width={30} height={30} />
-                ))}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            disabled={loading}
-            onPress={() => this.callFunction("age")}
-            style={styles.targetTouchable}
-          >
-            <View style={globalStyles.row}>
-              <AgeIcon
-                width={25}
-                height={25}
-                style={styles.icon}
-                fill={globalColors.purple}
-              />
-              <View style={globalStyles.column}>
-                <Text style={styles.menutext}>{translate("Age")}</Text>
-                <Text style={styles.menudetails}>
-                  {targeting.demographics[0].min_age} -{" "}
-                  {targeting.demographics[0].max_age +
-                    (targeting.demographics[0].max_age === 50 ? "+" : "")}
-                </Text>
-              </View>
-            </View>
-
-            {startEditing &&
-              (targeting.demographics[0].max_age ? (
-                <PurpleCheckmarkIcon width={30} height={30} />
-              ) : (
-                <PurplePlusIcon width={30} height={30} />
-              ))}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            disabled={loading}
-            onPress={() => this.callFunction("languages")}
-            style={styles.targetTouchable}
-          >
-            <View style={[globalStyles.row, styles.flex]}>
-              <LanguageIcon
-                width={30}
-                height={30}
-                style={styles.icon}
-                fill={globalColors.purple}
-              />
-              <View style={[globalStyles.column, styles.flex]}>
-                <Text style={styles.menutext}>{translate("Language")}</Text>
-                <Text
-                  numberOfLines={startEditing ? 1 : 10}
-                  style={styles.menudetails}
-                >
-                  {languages_names}
-                </Text>
-              </View>
-            </View>
-            {startEditing &&
-              (targeting.demographics[0].languages.length !== 0 ? (
-                <PurpleCheckmarkIcon width={30} height={30} />
-              ) : (
-                <PurplePlusIcon width={30} height={30} />
-              ))}
-          </TouchableOpacity> */}
-
-          {/* {((!startEditing && editCampaign && interests_names) ||
-            !editCampaign ||
-            startEditing) && (
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("selectors", "interests")}
-              style={styles.targetTouchable}
-            >
-              <View style={[globalStyles.row, styles.flex]}>
-                <InterestsIcon
-                  width={30}
-                  height={30}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                />
-                <View style={[globalStyles.column, styles.flex]}>
-                  <Text style={styles.menutext}>{translate("Interests")}</Text>
-                  <Text
-                    numberOfLines={startEditing ? 1 : 10}
-                    style={styles.menudetails}
-                  >
-                    {interests_names}
-                  </Text>
-                </View>
-              </View>
-              <View style={globalStyles.column}>
-                {startEditing &&
-                  (targeting.interests[0].category_id.length !== 0 ? (
-                    <PurpleCheckmarkIcon width={30} height={30} />
-                  ) : (
-                    <PurplePlusIcon width={30} height={30} />
-                  ))}
-              </View>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            disabled={loading}
-            onPress={() => this.callFunction("OS")}
-            style={styles.targetTouchable}
-          >
-            <View style={[globalStyles.row, styles.flex]}>
-              <OperatingSystemIcon
-                width={25}
-                height={25}
-                fill={globalColors.purple}
-                style={styles.icon}
-              />
-              <View style={[globalStyles.column, styles.flex]}>
-                <Text style={styles.menutext}>
-                  {translate("Operating System")}
-                </Text>
-                <Text style={styles.menudetails}>
-                  {targeting.devices[0] &&
-                    translate(
-                      OSType.find((r) => {
-                        if (r.value === targeting.devices[0].os_type) return r;
-                      }).label
-                    )}
-                </Text>
-              </View>
-            </View>
-
-            {startEditing &&
-              targeting.devices[0] &&
-              (targeting.devices[0].os_type === "" ||
-              targeting.devices[0].os_type ? (
-                <PurpleCheckmarkIcon width={30} height={30} />
-              ) : (
-                <PurplePlusIcon width={30} height={30} />
-              ))}
-          </TouchableOpacity>
-
-          {((!startEditing &&
-            editCampaign &&
-            targeting.devices[0] &&
-            targeting.devices[0].os_version_min) ||
-            ((!editCampaign || startEditing) &&
-              targeting.devices[0] &&
-              targeting.devices[0].os_type !== "")) && (
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("selectors", "deviceVersions")}
-              style={styles.targetTouchable}
-            >
-              <View style={[globalStyles.row, styles.flex]}>
-                <Icon
-                  name="versions"
-                  type="Octicons"
-                  width={25}
-                  height={25}
+            {districtList.map((district, index) => (
+              <TouchableOpacity
+                key={district.value}
+                style={{ marginVertical: 5 }}
+                onPress={() => {
+                  handleDistricts(district.value);
+                }}
+                disabled={!startEditing}
+              >
+                <View
                   style={{
-                    color: globalColors.purple,
-                    right: 2,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
-                />
-                <View style={[globalStyles.column, styles.flex]}>
-                  <Text style={styles.menutext}>
-                    {translate("OS Versions")}
-                  </Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.devices[0] &&
-                      targeting.devices[0].os_version_min +
-                        ", " +
-                        targeting.devices[0] &&
-                      targeting.devices[0].os_version_max}
-                  </Text>
-                </View>
-              </View>
-
-              {startEditing &&
-                (targeting.devices[0] &&
-                targeting.devices[0].os_version_min !== "" ? (
-                  <PurpleCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PurplePlusIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
-          )}
-
-          {((!startEditing &&
-            editCampaign &&
-            targeting.devices[0] &&
-            targeting.devices[0].marketing_name &&
-            targeting.devices[0].marketing_name.length > 0) ||
-            !editCampaign ||
-            startEditing) && (
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => this.callFunction("selectors", "deviceBrands")}
-              style={styles.targetTouchable}
-            >
-              <View style={[globalStyles.row, styles.flex]}>
-                <DeviceMakeIcon
-                  width={25}
-                  height={25}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                />
-
-                <View style={[globalStyles.column, styles.flex]}>
-                  <Text style={styles.menutext}>
-                    {translate("Device Make")}
-                  </Text>
-                  <Text
-                    numberOfLines={startEditing ? 1 : 10}
-                    style={styles.menudetails}
+                >
+                  <TouchableOpacity
+                    disabled={!startEditing}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                    onPress={() => {
+                      handleDistricts(district.value);
+                    }}
                   >
-                    {targeting.devices[0] &&
-                      targeting.devices[0].marketing_name}
-                  </Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        width: 25,
+                        height: 25,
+                        backgroundColor: globalColors.white,
+                        borderRadius: 25,
+                        justifyContent: "center",
+                        borderWidth: 1,
+                        borderColor: globalColors.rum,
+                      }}
+                    >
+                      {districts.includes(district.value) && (
+                        <View
+                          style={{
+                            display: "flex",
+                            alignSelf: "center",
+                            width: 18,
+                            height: 18,
+                            backgroundColor: globalColors.purple,
+                            borderRadius: 18,
+                          }}
+                        />
+                      )}
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: globalColors.rum,
+                        fontFamily: "montserrat-bold",
+                        marginHorizontal: 5,
+                      }}
+                    >
+                      {district.name}
+                    </Text>
+                  </TouchableOpacity>
+                  {district.areas && district.areas.length > 0 && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        let showDistrics = [...this.state.showDistricts];
+                        showDistrics = showDistrics.map(
+                          (val, i) => i === index
+                        );
+                        this.setState({
+                          showDistricts: showDistrics,
+                        });
+                      }}
+                    >
+                      <Icon
+                        name={
+                          this.state.showDistricts[index]
+                            ? "keyboard-arrow-up"
+                            : "keyboard-arrow-down"
+                        }
+                        type="MaterialIcons"
+                        width={25}
+                        height={25}
+                        style={{
+                          color: globalColors.purple,
+                          // right: 2,
+                          alignSelf: "flex-end",
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
-              </View>
-
-              {startEditing &&
-                (targeting.devices[0] &&
-                targeting.devices[0].marketing_name &&
-                targeting.devices[0].marketing_name.length !== 0 ? (
-                  <PurpleCheckmarkIcon width={30} height={30} />
-                ) : (
-                  <PurplePlusIcon width={30} height={30} />
-                ))}
-            </TouchableOpacity>
-          )} */}
+                {district.areas &&
+                  district.areas.length > 0 &&
+                  this.state.showDistricts[index] &&
+                  district.areas.map((area) => (
+                    <Text
+                      style={{
+                        fontFamily: "montserrat-regular",
+                        marginHorizontal: 30,
+                        color: globalColors.rum,
+                        marginVertical: 2,
+                        fontSize: 12,
+                      }}
+                    >
+                      {area}
+                    </Text>
+                  ))}
+              </TouchableOpacity>
+            ))}
+          </View>
         </ScrollView>
-        {/* </MaskedView> */}
+
         {this.state.scrollY < heightPercentageToDP(0.8) &&
           !editCampaign &&
           heightPercentageToDP(100) < 700 && (
