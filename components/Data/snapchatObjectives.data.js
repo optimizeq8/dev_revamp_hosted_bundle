@@ -65,7 +65,7 @@ export default {
     {
       label: "Majlis 2020",
       value: "POLITICAL_TRAFFIC",
-      info: "INFORM PEOPLE ABOUT MY BRAND",
+      info: "Reach people your district",
       icon: ObjIcons.Awareness,
       color: "#332BEF",
     },
