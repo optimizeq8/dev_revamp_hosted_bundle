@@ -814,6 +814,7 @@ class AdDesign extends Component {
           campaign_media: this.state.media,
           campaign_media_type: this.state.type,
           campaign_appChoice: this.state.appChoice,
+          campaign_savedObjective: this.selectedCampaign.savedObjective,
         };
 
         if (!this.props.loading) {
@@ -828,10 +829,16 @@ class AdDesign extends Component {
           );
         }
       } else {
-        this.props.navigation.navigate("AdDetails", {
-          source: "ad_design",
-          source_action: "a_submit_ad_design",
-        });
+        this.props.navigation.navigate(
+          this.props.data &&
+            this.props.data.savedObjective === "POLITICAL_TRAFFIC"
+            ? "AdDetailsPolitical"
+            : "AdDetails",
+          {
+            source: "ad_design",
+            source_action: "a_submit_ad_design",
+          }
+        );
       }
     }
   };

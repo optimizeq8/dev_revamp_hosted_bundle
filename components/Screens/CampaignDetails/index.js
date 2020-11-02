@@ -380,9 +380,11 @@ class CampaignDetails extends Component {
 
         // gender
         const gender =
-          targeting &&
-          (targeting.demographics[0].gender === "" ||
-            !targeting.demographics[0].hasOwnProperty("gender"))
+          (targeting &&
+            (!targeting.demographics[0] ||
+              !targeting.demographics[0].gender ||
+              !targeting.demographics[0].hasOwnProperty("gender"))) ||
+          targeting.demographics[0].gender === ""
             ? translate("All")
             : targeting &&
               translate(startCase(toLower(targeting.demographics[0].gender)));
@@ -693,7 +695,12 @@ class CampaignDetails extends Component {
                       editCampaign={true}
                       // targeting={targeting}
                       loading={loading}
-                      navigatingRoutePath={"AdDetails"}
+                      navigatingRoutePath={
+                        selectedCampaign &&
+                        selectedCampaign.is_political === "1"
+                          ? "AdDetailsPolitical"
+                          : "AdDetails"
+                      }
                       selectedCampaign={selectedCampaign}
                     />
                   </View>

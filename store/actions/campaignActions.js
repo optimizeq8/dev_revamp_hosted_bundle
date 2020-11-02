@@ -227,10 +227,15 @@ export const ad_design = (
       })
       .then(() => {
         if (!rejected)
-          navigation.navigate("AdDetails", {
-            source: "ad_design",
-            source_action: "a_submit_ad_design",
-          });
+          navigation.navigate(
+            segmentInfo.campaign_savedObjective === "POLITICAL_TRAFFIC"
+              ? "AdDetailsPolitical"
+              : "AdDetails",
+            {
+              source: "ad_design",
+              source_action: "a_submit_ad_design",
+            }
+          );
         else {
           persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
