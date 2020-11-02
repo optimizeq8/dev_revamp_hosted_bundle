@@ -75,7 +75,7 @@ class AdDetails extends Component {
               gender: "",
               languages: ["ar", "en"],
               min_age: 21,
-              max_age: 50,
+              max_age: "50+",
             },
           ],
           interests: [{ category_id: [] }],
@@ -1830,6 +1830,7 @@ class AdDetails extends Component {
                   campaignInfo={campaignInfo}
                   editCampaign={this.editCampaign}
                   screenProps={this.props.screenProps}
+                  data={this.props.data}
                 />
               </Content>
             </View>

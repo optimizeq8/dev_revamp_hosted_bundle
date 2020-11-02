@@ -20,8 +20,7 @@ class ReachBar extends Component {
   state = { showMetrics: false };
   render() {
     const { translate } = this.props.screenProps;
-    let { startEditing, editCampaign, campaignInfo } = this.props;
-
+    let { startEditing, editCampaign, campaignInfo, data } = this.props;
     return (
       <View
         style={[
@@ -37,7 +36,7 @@ class ReachBar extends Component {
             {translate("Expected Results")}
           </Text>
           <View style={styles.chartItems}>
-            <View style={styles.reachPeopleView}>
+            {/* <View style={styles.reachPeopleView}>
               <SwipeUpsIcon fill="#9300FF" width={27} height={30} />
               <View style={styles.reachInnerView}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -48,14 +47,6 @@ class ReachBar extends Component {
                   >
                     {translate("Swipe Ups")}{" "}
                   </Text>
-                  {/* <Small
-                    style={[
-                      styles.reachSubHeading,
-                      { textTransform: "lowercase", fontSize: 8 },
-                    ]}
-                  >
-                    ({translate("avg")})
-                  </Small> */}
                 </View>
 
                 {this.props.estimatedMetricsLoading ? (
@@ -64,13 +55,20 @@ class ReachBar extends Component {
                   <Text uppercase style={styles.reachTextNum}>
                     {this.props.estimated_metrics &&
                       formatNumber(this.props.estimated_metrics.swipes, true)}
-                    {/* {"  " + translate("people")} */}
                   </Text>
                 )}
               </View>
-            </View>
+            </View> */}
 
-            <View style={styles.reachPeopleView}>
+            <View
+              style={[
+                styles.reachPeopleView,
+                {
+                  justifyContent: "flex-start",
+                  marginHorizontal: 20,
+                },
+              ]}
+            >
               <ImpressionsIcon fill="#9300FF" width={30} height={30} />
               <View style={styles.reachInnerView}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
