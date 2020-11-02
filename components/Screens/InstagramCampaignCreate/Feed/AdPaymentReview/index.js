@@ -24,6 +24,9 @@ import { connect } from "react-redux";
 import formatNumber from "../../../../formatNumber";
 import dateFormat from "dateformat";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
+import globalStyles from "../../../../../GlobalStyles";
 
 class InstagramAdPaymentReview extends Component {
   static navigationOptions = {
@@ -352,6 +355,11 @@ class InstagramAdPaymentReview extends Component {
 
       return (
         <View style={[styles.safeAreaView]}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
           <NavigationEvents onDidFocus={this.onDidFocus} />
           <Container style={[styles.container]}>

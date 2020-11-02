@@ -711,7 +711,7 @@ class CampaignDetails extends Component {
                           !this.props.campaignEnded &&
                           new Date(selectedCampaign.end_time) > new Date() ? (
                             selectedCampaign.review_status === "APPROVED" &&
-                            new Date(selectedCampaign.start_time) >
+                            new Date(selectedCampaign.start_date) >
                               new Date() ? (
                               <View style={[styles.campaignStatus]}>
                                 <Text style={styles.reviewtext}>

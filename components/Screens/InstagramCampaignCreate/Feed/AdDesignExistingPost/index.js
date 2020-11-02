@@ -49,11 +49,13 @@ import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
 import ArrowUp from "../../../../../assets/SVGs/ArrowUp";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
 
-import { globalColors } from "../../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import AnimatedCircularProgress from "../../../../MiniComponents/AnimatedCircleProgress/AnimatedCircularProgress";
 import ClickDestination from "../AdDesign/ClickDestination";
 import { Video } from "expo";
 import VideoPlayer from "../../../../MiniComponents/VideoPlayer";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
 class InstagramAdDesignExistingPost extends Component {
   static navigationOptions = {
     header: null,
@@ -483,6 +485,11 @@ class InstagramAdDesignExistingPost extends Component {
 
     return (
       <View style={styles.safeAreaView}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

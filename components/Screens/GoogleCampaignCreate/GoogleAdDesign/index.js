@@ -38,6 +38,9 @@ import { showMessage } from "react-native-flash-message";
 import isEqual from "react-fast-compare";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 class GoogleAdDesign extends Component {
   static navigationOptions = {
     header: null,
@@ -444,6 +447,11 @@ class GoogleAdDesign extends Component {
 
     return (
       <View style={styles.safeAreaView}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView style={{ backgroundColor: "#FFF" }} />
         <NavigationEvents
           onWillBlur={() => {

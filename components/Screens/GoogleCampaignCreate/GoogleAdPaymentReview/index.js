@@ -22,6 +22,9 @@ import isUndefined from "lodash/isUndefined";
 import CountriesList from "../../../Data/countries.googleSE.data";
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -243,6 +246,11 @@ class AdPaymentReview extends Component {
 
     return (
       <View style={[styles.safeAreaView]}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}

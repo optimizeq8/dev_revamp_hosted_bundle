@@ -56,6 +56,8 @@ import isNull from "lodash/isNull";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
 import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../GradiantColors/colors";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -550,6 +552,11 @@ class GoogleAdTargetting extends Component {
         isOpen={this.state.sidemenustate}
       >
         <View style={[styles.safeArea]}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <SafeAreaView style={{ backgroundColor: "#fff" }} />
 
           <TopStepsHeader

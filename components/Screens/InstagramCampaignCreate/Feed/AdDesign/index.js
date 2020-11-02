@@ -62,7 +62,7 @@ import {
   heightPercentageToDP,
 } from "react-native-responsive-screen";
 import GradientButton from "../../../../MiniComponents/GradientButton";
-import { globalColors } from "../../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 
 import { _pickImage } from "./Functions/PickImages";
@@ -77,6 +77,8 @@ import ClickDestination from "./ClickDestination";
 import VideoProcessingLoader from "../../../../MiniComponents/VideoProcessingLoader";
 import { RNFFmpeg } from "react-native-ffmpeg";
 import { persistor } from "../../../../../store";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
 // import {
 //   handleSubmission,
 //   formatMedia,
@@ -543,6 +545,11 @@ class AdDesign extends Component {
     }
     return (
       <View style={styles.safeAreaView}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <SafeAreaView
           style={{ backgroundColor: "#fff" }}
           forceInset={{ bottom: "never", top: "always" }}
@@ -568,7 +575,7 @@ class AdDesign extends Component {
           contentContainerStyle={{
             paddingTop: 10,
             paddingBottom: "10%",
-            height: "100%",
+            height: "105%",
           }}
         >
           <NavigationEvents onDidFocus={this.onDidFocus} />

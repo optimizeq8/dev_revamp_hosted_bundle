@@ -620,15 +620,15 @@ class InstagramCampaignDetails extends Component {
                   <View>
                     {!this.state.expand && (
                       <View>
-                        {selectedCampaign.review_status === "APPROVED" &&
+                        {selectedCampaign.review_status !== "APPROVED" &&
                           (selectedCampaign.campaign_end === "0" &&
                           !this.props.campaignEnded &&
                           new Date(selectedCampaign.end_time) > new Date() ? (
-                            selectedCampaign.campaign_start_date ? (
+                            new Date(selectedCampaign.start_date) >
+                            new Date() ? (
                               <View style={[styles.campaignStatus]}>
                                 <Text style={styles.reviewtext}>
-                                  {translate("Scheduled for")}{" "}
-                                  {selectedCampaign.campaign_start_date}
+                                  {translate("Scheduled for")} {start_time}
                                 </Text>
                               </View>
                             ) : (

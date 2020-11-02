@@ -333,7 +333,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 50,
     marginTop: 12,
-    // height: "100%",
     flex: 1,
   },
   profileBsnNameView: {

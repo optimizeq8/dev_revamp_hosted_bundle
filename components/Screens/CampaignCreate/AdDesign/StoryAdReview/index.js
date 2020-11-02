@@ -22,6 +22,9 @@ import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar";
 // Style
 import styles from "./styles";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
+import globalStyles from "../../../../../GlobalStyles";
 
 //Functions
 
@@ -76,6 +79,11 @@ class StoryAdDesignReview extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <Container style={styles.container}>
           <CustomHeader
             screenProps={this.props.screenProps}

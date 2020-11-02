@@ -24,7 +24,7 @@ const initialState = {
   loading: false,
   errorTransactionList: false,
   walletTransactionList: [],
-  walletTransactionListLoading: false
+  walletTransactionListLoading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -35,48 +35,48 @@ const reducer = (state = initialState, action) => {
         transactionList: action.payload.data,
         filteredTransactions: action.payload.data,
         loading: false,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case actionTypes.ERROR_SET_TRANSACTION_LIST:
       return {
         ...state,
         loading: false,
-        errorTransactionList: true
+        errorTransactionList: true,
       };
     case actionTypes.SET_WALLET_AMOUNT:
       return {
         ...state,
         wallet: action.payload.walletamount,
         loading: false,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case actionTypes.ERROR_SET_WALLET_AMOUNT:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case actionTypes.ADD_WALLET_AMOUNT:
       return {
         ...state,
         payment_data: action.payload,
-        loading: !action.payload.success
+        loading: !action.payload.success,
       };
     case actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD:
       return {
         ...state,
 
-        loading: false
+        loading: false,
       };
     case actionTypes.GET_WALLET_AMOUNT_IN_KWD:
       return {
         ...state,
         walletAmountInKwd: action.payload.kdamount,
-        loading: false
+        loading: false,
       };
     case actionTypes.ERROR_ADD_WALLET_AMOUNT:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case actionTypes.USE_WALLET_AMOUNT:
       return {
@@ -86,66 +86,68 @@ const reducer = (state = initialState, action) => {
         campaign_balance_amount: action.payload.campaign_balance_amount,
         campaign_balance_amount_kwd: action.payload.campaign_balance_amount_kwd,
         walletUsed: action.payload.success,
-        loading: false
+        loading: false,
       };
     case actionTypes.ERROR_USE_WALLET_AMOUNT:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case actionTypes.REMOVE_WALLET_AMOUNT:
       return {
         ...state,
         message: action.payload.message,
         walletUsed: !action.payload.success,
-        loading: !action.payload.success
+        loading: !action.payload.success,
       };
     case actionTypes.ERROR_REMOVE_WALLET_AMOUNT:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case actionTypes.CHECKOUT_WITH_WALLET:
       return {
         ...state,
         walletUsed: false,
-        loading: false
+        loading: false,
       };
     case actionTypes.ERROR_CHECKOUT_WITH_WALLET:
       return {
         ...state,
-        loading: !false
+        loading: !false,
       };
     case actionTypes.SET_TRAN_LOADING:
       return {
         ...state,
         loading: action.payload,
-        errorTransactionList: false
+        errorTransactionList: false,
       };
     case actionTypes.FILTER_TRANSACTION:
-      let filtered = state.transactionList.filter(
-        transaction =>
-          (transaction.campaign_name &&
-            transaction.campaign_name
-              .toLowerCase()
-              .includes(action.payload.value.toLowerCase())) ||
-          transaction.reference_id
-            .toLowerCase()
-            .includes(action.payload.value.toLowerCase()) ||
-          transaction.payment_type
-            .toLowerCase()
-            .includes(action.payload.value.toLowerCase()) ||
-          transaction.total_amount
-            .toLowerCase()
-            .includes(action.payload.value.toLowerCase())
-      );
+      let filtered = state.transactionList
+        ? state.transactionList.filter(
+            (transaction) =>
+              (transaction.campaign_name &&
+                transaction.campaign_name
+                  .toLowerCase()
+                  .includes(action.payload.value.toLowerCase())) ||
+              transaction.reference_id
+                .toLowerCase()
+                .includes(action.payload.value.toLowerCase()) ||
+              transaction.payment_type
+                .toLowerCase()
+                .includes(action.payload.value.toLowerCase()) ||
+              transaction.total_amount
+                .toLowerCase()
+                .includes(action.payload.value.toLowerCase())
+          )
+        : [];
       let startSearch = "";
       let endSearch = "";
       if (action.payload.dateRange && action.payload.dateRange[0] !== "") {
         startSearch = Date.parse(action.payload.dateRange[0]);
         endSearch = Date.parse(action.payload.dateRange[1]);
 
-        filtered = filtered.filter(transaction => {
+        filtered = filtered.filter((transaction) => {
           if (
             startSearch <= Date.parse(transaction.payment_date.split(" ")[0]) &&
             endSearch >= Date.parse(transaction.payment_date.split(" ")[0])
@@ -160,25 +162,25 @@ const reducer = (state = initialState, action) => {
         filter_type: "transaction",
         keywords: action.payload.value,
         start_date: startSearch,
-        end_date: endSearch
+        end_date: endSearch,
       });
       return {
         ...state,
         transactionValue: action.payload.value,
         filteredTransactions: filtered,
         tranStartSearch: action.payload.dateRange[0],
-        tranEndSearch: action.payload.dateRange[1]
+        tranEndSearch: action.payload.dateRange[1],
       };
     case actionTypes.ERROR_FILTER_TRANSACTION:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION:
       // console.log("SET_CAMPAIGN_INFO_FOR_TRANSACTION", action.payload);
 
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
         // campaign_id: action.payload.campaign_id,
         // campaign_budget: action.payload.campaign_budget,
         // campaign_budget_kdamount: action.payload.campaign_budget_kdamount,
@@ -188,41 +190,41 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaign_payment_data: action.payload,
-        loading_transaction: !action.payload.success
+        loading_transaction: !action.payload.success,
       };
     case actionTypes.ERROR_PAYMENT_REQUEST_URL:
       return {
         ...state,
         campaign_payment_data: null,
-        loading_transaction: false
+        loading_transaction: false,
       };
     case actionTypes.SET_AD_LOADING:
       return {
         ...state,
-        loading_transaction: action.payload
+        loading_transaction: action.payload,
       };
     case actionTypes.RESET_TRANSACTION_DATA:
       return {
-        initialState
+        initialState,
       };
     case actionTypes.SET_WALLET_TRANSACTION_LIST:
       return {
         ...state,
         walletTransactionList: action.payload.data,
         walletTransactionListLoading: false,
-        message: action.payload.message
+        message: action.payload.message,
       };
     case actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST:
       return {
         ...state,
         walletTransactionListLoading: false,
-        errorTransactionList: true
+        errorTransactionList: true,
       };
     case actionTypes.SET_TRAN_WALLET_LOADING:
       return {
         ...state,
         walletTransactionListLoading: action.payload,
-        errorTransactionList: false
+        errorTransactionList: false,
       };
     default:
       return state;

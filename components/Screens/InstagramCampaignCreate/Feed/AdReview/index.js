@@ -21,7 +21,9 @@ import SendArrowOutline from "../../../../../assets/SVGs/SendArrowOutline";
 import HeartOutline from "../../../../../assets/SVGs/HeartOutline";
 import HeartFilled from "../../../../../assets/SVGs/HeartFilled";
 import ArrowBlueForward from "../../../../../assets/SVGs/ArrowBlueForward";
-import { globalColors } from "../../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../../../GradiantColors/colors";
 
 class AdFeedDesignReview extends React.Component {
   state = {
@@ -150,7 +152,11 @@ class AdFeedDesignReview extends React.Component {
               source_action: "a_go_back",
             }}
           />
-
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={globalStyles.gradient}
+          />
           <View style={styles.container}>
             <View style={styles.profilePicView}>
               <Image
