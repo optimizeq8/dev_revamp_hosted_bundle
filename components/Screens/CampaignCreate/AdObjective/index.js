@@ -83,6 +83,7 @@ class AdObjective extends Component {
       duration: 7,
       savedObjective: "WEBSITE_TRAFFIC",
       isReady: false,
+      objectivesList: snapchatObjectivesData,
     };
   }
   componentWillUnmount() {
@@ -93,7 +94,18 @@ class AdObjective extends Component {
   }
   async componentDidMount() {
     await this.setCampaignInfo();
-
+    const businessCountryIsKuwait =
+      this.props.mainBusiness.country === "Kuwait";
+    // Remove the objective label for non kuwait countries and if adtype is SnapAd
+    if (!businessCountryIsKuwait && this.props.adType === "SnapAd") {
+      let updatedList = snapchatObjectivesData;
+      updatedList["SnapAd"] = snapchatObjectivesData.SnapAd.filter(
+        (obj) => obj.value !== "POLITICAL_TRAFFIC"
+      );
+      this.setState({
+        objectivesList: updatedList,
+      });
+    }
     InteractionManager.runAfterInteractions(() => {
       this.setState({
         isReady: true,
@@ -443,19 +455,26 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
       });
       let objective = this.state.campaignInfo.objective;
+
       if (objective !== "APP_INSTALLS") {
         objective = this.state.campaignInfo.objective.replace(
-          /WEBSITE_|APP_/g,
+          /WEBSITE_|APP_|POLITICAL_/g,
           ""
         );
       }
+
       let info = {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo,
         objective,
         duration: this.state.duration,
         savedObjective: this.state.savedObjective,
+        is_political: 1,
       };
+      if (this.state.savedObjective !== "POLITICAL_TRAFFIC") {
+        delete info.is_political;
+      }
+
       this.getMinimumCash();
       this.props.ad_objective(
         {
@@ -582,7 +601,8 @@ class AdObjective extends Component {
   };
   render() {
     let adType = this.props.adType;
-    const list = snapchatObjectivesData[this.props.adType].map((o) => (
+
+    const list = this.state.objectivesList[this.props.adType].map((o) => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}

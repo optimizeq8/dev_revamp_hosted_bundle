@@ -187,6 +187,9 @@ export const formatMedia = (
     body.append("source", campaignInfo.source);
     body.append("googlemaplink", campaignInfo.googlemaplink);
   }
+  if (data.is_political) {
+    body.append("is_political", 1);
+  }
   body.append("ad_account_id", mainBusiness.snap_ad_account_id);
   body.append("businessid", mainBusiness.businessid);
   body.append("campaign_id", campaignInfo.campaign_id);

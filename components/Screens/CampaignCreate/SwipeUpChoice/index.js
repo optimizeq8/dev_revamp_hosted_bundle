@@ -137,7 +137,8 @@ class SwipeUpChoice extends Component {
     } else {
       if (
         objective === "LEAD_GENERATION" ||
-        savedObjective === "WEBSITE_TRAFFIC"
+        savedObjective === "WEBSITE_TRAFFIC" ||
+        savedObjective === "POLITICAL_TRAFFIC"
       )
         menu = (
           <Website

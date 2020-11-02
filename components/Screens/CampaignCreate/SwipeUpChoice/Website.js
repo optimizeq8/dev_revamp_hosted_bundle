@@ -34,12 +34,19 @@ class Website extends Component {
     this.state = {
       campaignInfo: {
         attachment: "",
-        callaction: list.SnapAd[0].call_to_action_list[0],
+        callaction:
+          this.props.data &&
+          this.props.data.savedObjective == "POLITICAL_TRAFFIC"
+            ? list.SnapAd[6].call_to_action_list[0]
+            : list.SnapAd[0].call_to_action_list[0],
       },
       callActionLabel: "",
       // networkString: netLoc[0].label,
       netLoc: netLoc,
-      callactions: list.SnapAd[0].call_to_action_list,
+      callactions:
+        this.props.data && this.props.data.savedObjective == "POLITICAL_TRAFFIC"
+          ? list.SnapAd[6].call_to_action_list
+          : list.SnapAd[0].call_to_action_list,
       urlError: "",
       inputCallToAction: false,
     };
@@ -52,7 +59,11 @@ class Website extends Component {
         this.setState({
           campaignInfo: {
             attachment: websitelink,
-            callaction: list.SnapAd[0].call_to_action_list[0],
+            callaction:
+              this.props.data &&
+              this.props.data.savedObjective == "POLITICAL_TRAFFIC"
+                ? list.SnapAd[6].call_to_action_list[0]
+                : list.SnapAd[0].call_to_action_list[0],
           },
         });
       } else if (weburl && weburl !== "") {
@@ -61,7 +72,11 @@ class Website extends Component {
             attachment: weburl.includes("https")
               ? weburl
               : `https://${weburl}.optimizeapp.com`,
-            callaction: list.SnapAd[0].call_to_action_list[0],
+            callaction:
+              this.props.data &&
+              this.props.data.savedObjective == "POLITICAL_TRAFFIC"
+                ? list.SnapAd[6].call_to_action_list[0]
+                : list.SnapAd[0].call_to_action_list[0],
           },
         });
       }

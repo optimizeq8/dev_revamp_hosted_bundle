@@ -21,6 +21,7 @@ import AdDesign from "../Screens/CampaignCreate/AdDesign";
 import AdCover from "../Screens/CampaignCreate/AdCover";
 import StoryAdDesignReview from "../Screens/CampaignCreate/AdDesign/StoryAdReview";
 import AdDetails from "../Screens/CampaignCreate/AdDetails";
+import AdDetailsPolitical from "../Screens/CampaignCreate/AdDetailsPolitical";
 import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
 import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
 import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
@@ -103,6 +104,7 @@ export default createNativeStackNavigator(
     AdCover: AdCover,
     StoryAdDesignReview: StoryAdDesignReview,
     AdDetails: AdDetails,
+    AdDetailsPolitical: AdDetailsPolitical,
     AdDesignReview: AdDesignReview,
     SwipeUpDestination: SwipeUpDestination,
     SwipeUpChoice: SwipeUpChoice,
