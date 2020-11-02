@@ -709,7 +709,7 @@ class InstagramFeedAdTargetting extends Component {
     const obj = {
       targeting: JSON.stringify(r),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
-      campaign_id: this.props.data.campaign_id,
+      campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
 
@@ -728,7 +728,7 @@ class InstagramFeedAdTargetting extends Component {
     const obj2 = {
       targeting: JSON.stringify(totalReach),
       ad_account_id: this.props.mainBusiness.fb_ad_account_id,
-      campaign_id: this.props.data.campaign_id,
+      campaign_id: this.state.campaignInfo.campaign_id,
       daily_budget_micro: this.state.campaignInfo.lifetime_budget_micro,
     };
     // console.log("obj2", obj2);
@@ -763,7 +763,7 @@ class InstagramFeedAdTargetting extends Component {
       analytics.track(`a_error_form`, {
         error_page: "ad_targeting",
         source_action: "a_submit_ad_targeting",
-        campaign_id: this.props.data.campaign_id,
+        campaign_id: this.state.campaignInfo.campaign_id,
         campaign_channel: "instagram",
         campaign_ad_type: "InstagramFeedAd",
         error_description:
@@ -1058,7 +1058,7 @@ class InstagramFeedAdTargetting extends Component {
             iosName={"iOS"}
             androidName={"Android"}
             data={OSType}
-            objective={this.props.data.objective}
+            objective={this.state.campaignInfo.objective}
             screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
