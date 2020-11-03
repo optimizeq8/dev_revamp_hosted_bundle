@@ -205,7 +205,7 @@ class App extends React.Component {
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
     RNAdvertisingId.getAdvertisingId();
 
-    analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
+    analytics.setup("ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB", {
       using: [
         // Mixpanel,
         AdjustIntegration,

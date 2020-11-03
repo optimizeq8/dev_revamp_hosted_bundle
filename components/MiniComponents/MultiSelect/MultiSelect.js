@@ -110,8 +110,7 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
-    let disabled =
-      this.props.editCampaign && this.props.country_code.length > 1;
+    let disabled = this.props.editCampaign;
     const { translate } = this.props.screenProps;
     let countrylist = this.state.filteredCountreis.map((c) => {
       let country_code = this.props.country_code.find(
