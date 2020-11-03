@@ -20,9 +20,11 @@ import styles, { codeFieldStyle } from "./styles";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import Card from "./Card";
-import { globalColors } from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class VerifyAccount extends Component {
   inputRef = createRef();
@@ -424,7 +426,15 @@ class VerifyAccount extends Component {
       );
     }
     return (
-      <SafeAreaView forceInset={{ top: "always", bottom: "never" }}>
+      <SafeAreaView
+        style={{ height: "100%" }}
+        forceInset={{ top: "always", bottom: "never" }}
+      >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <Header
           screenProps={this.props.screenProps}
           title={"Verify Account"}

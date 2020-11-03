@@ -21,7 +21,9 @@ import { connect } from "react-redux";
 
 // Style
 import styles, { htmlStyles } from "./styles";
-import { globalColors } from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 
 class GoogleCreateAdAcc extends Component {
   static navigationOptions = {
@@ -80,6 +82,11 @@ class GoogleCreateAdAcc extends Component {
         }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}
