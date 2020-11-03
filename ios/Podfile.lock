@@ -113,9 +113,9 @@ PODS:
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
   - imglyKit (10.21.3)
-  - lottie-ios (2.5.3)
-  - lottie-react-native (2.6.1):
-    - lottie-ios (~> 2.5.0)
+  - lottie-ios (3.1.8)
+  - lottie-react-native (3.5.0):
+    - lottie-ios (~> 3.1.8)
     - React
   - Mixpanel (3.6.3)
   - mobile-ffmpeg-https-gpl (4.3.1.LTS)
@@ -763,8 +763,8 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   imglyKit: f3091be82eedddd14ff23a684cba3d16b909a567
-  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+  lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
   mobile-ffmpeg-https-gpl: 40f773ba24431c12a0753a25676406a5f9406659
   PhotoEditorSDK: 31e041df15833c5de2d4d35a7571a6d3e9cc8e08
@@ -833,4 +833,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: fa14b3437b430c3db159a503a9eb8bbfc8e5b613
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4
