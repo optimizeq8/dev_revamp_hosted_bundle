@@ -1605,7 +1605,10 @@ class AdDetails extends Component {
           style={{ backgroundColor: "#F8F8F8" }}
           forceInset={{ bottom: "never", top: "always" }}
         />
-        <StatusBar barStyle={this.editCampaign ? "dark-content" : "default"} />
+        <StatusBar
+          barStyle={this.editCampaign ? "dark-content" : "default"}
+          backgroundColor={"#F8F8F8"}
+        />
         {!this.editCampaign ? (
           <TopStepsHeader
             screenProps={this.props.screenProps}
