@@ -3,7 +3,7 @@ import { View } from "react-native";
 import LottieView from "lottie-react-native";
 import {
   widthPercentageToDP,
-  heightPercentageToDP
+  heightPercentageToDP,
 } from "react-native-responsive-screen";
 
 class Loading extends React.Component {
@@ -29,11 +29,11 @@ class Loading extends React.Component {
           alignSelf: "center",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
         <LottieView
-          ref={animation => {
+          ref={(animation) => {
             this.animation = animation;
           }}
           style={{
@@ -43,7 +43,8 @@ class Loading extends React.Component {
             height: widthPercentageToDP(150),
             position: "absolute",
             alignContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor: this.props.withBackground ? "#0004" : "#0000",
           }}
           resizeMode="cover"
           source={require("../../assets/animation/loading.json")}
@@ -60,6 +61,6 @@ const styles = {
     position: "absolute",
     alignSelf: "center",
     height: heightPercentageToDP(100),
-    width: widthPercentageToDP(100)
-  }
+    width: widthPercentageToDP(100),
+  },
 };
