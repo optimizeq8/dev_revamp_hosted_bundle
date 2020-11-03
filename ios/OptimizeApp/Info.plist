@@ -57,11 +57,11 @@
 		<key>NSContactsUsageDescription</key>
 		<string>Allow OptimizeApp experiences to access your contacts</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Allow OptimizeApp to use your location</string>
+		<string>Allow OptimizeApp to use your location to help with campaign creation</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Allow OptimizeApp to use your location</string>
+		<string>Allow OptimizeApp to use your location to help with campaign creation</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Allow OptimizeApp to use your location</string>
+		<string>Allow OptimizeApp to use your location to help with campaign creation</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Allow OptimizeApp to access your microphone</string>
 		<key>NSMotionUsageDescription</key>

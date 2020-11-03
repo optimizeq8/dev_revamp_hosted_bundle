@@ -7,9 +7,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
-import expo.modules.splashscreen.SplashScreen;
-import expo.modules.splashscreen.SplashScreenImageResizeMode;
-import com.zoontek.rnbootsplash.RNBootSplash; 
+import com.zoontek.rnbootsplash.RNBootSplash;
 public class MainActivity extends ReactActivity {
  @Override
   protected void onCreate(Bundle savedInstanceState) {

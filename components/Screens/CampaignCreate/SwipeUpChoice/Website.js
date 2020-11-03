@@ -8,6 +8,7 @@ import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import * as actionCreators from "../../../../store/actions";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 //icons
 
@@ -370,6 +371,9 @@ class Website extends Component {
             />
           </View>
         </InputScrollView>
+        {this.props.loadingDestinationURLValid && (
+          <LoadingScreen top={30} withBackground />
+        )}
       </View>
     );
   }

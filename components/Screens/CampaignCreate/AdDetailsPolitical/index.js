@@ -6,6 +6,8 @@ import {
   I18nManager,
   Text,
   ActivityIndicator,
+  StatusBar,
+  Platform,
 } from "react-native";
 import { Content, Row } from "native-base";
 import analytics from "@segment/analytics-react-native";
@@ -1601,8 +1603,16 @@ class AdDetails extends Component {
     return (
       <View style={{ height: "100%", backgroundColor: "#F8F8F8" }}>
         <SafeAreaView
-          style={{ backgroundColor: "#fff" }}
+          style={{ backgroundColor: "#F8F8F8" }}
           forceInset={{ bottom: "never", top: "always" }}
+        />
+        <StatusBar
+          barStyle={
+            this.editCampaign || Platform.OS === "android"
+              ? "dark-content"
+              : "default"
+          }
+          backgroundColor={"#F8F8F8"}
         />
         {!this.editCampaign ? (
           <TopStepsHeader

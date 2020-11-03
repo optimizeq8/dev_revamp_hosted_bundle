@@ -12,7 +12,9 @@ import GradientButton from "../../MiniComponents/GradientButton";
 import styles from "./MainForm/styles";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import { connect } from "react-redux";
-
+import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 class RegistartionSuccess extends React.Component {
   static navigationOptions = {
     header: null,
@@ -61,11 +63,17 @@ class RegistartionSuccess extends React.Component {
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
+        style={{ height: "100%" }}
         forceInset={{
           top: "always",
           bottom: "never",
         }}
       >
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
+          style={globalStyles.gradient}
+        />
         <View style={styles.mainView}>
           <GreenCheckmark
             width={widthPercentageToDP(20)}

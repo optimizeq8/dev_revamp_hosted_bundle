@@ -40,8 +40,9 @@ ContinueInfo = (props) => {
     storyAdsArray,
     collectionAdMedia,
     oldTempData,
+    screenProps,
   } = props;
-
+  let translate = screenProps.translate;
   return (
     <View
       style={{
@@ -66,17 +67,17 @@ ContinueInfo = (props) => {
               uppercase
               style={[styles.text, { textTransform: "uppercase" }]}
             >
-              Duration
+              {translate("Duration")}
             </Text>
             <Text style={globalStyles.numbers}>
               {dateFormat(new Date(oldTempData.start_time), "mmm dS, yyyy")}{" "}
-              <Small>to</Small>{" "}
+              <Small>{translate("to")}</Small>{" "}
               {dateFormat(new Date(oldTempData.end_time), "mmm dS, yyyy")}
             </Text>
             {new Date(oldTempData.start_time) < new Date() ||
               (new Date(oldTempData.end_time) < new Date() && (
                 <Text style={styles.text}>
-                  The date is no longer applicable
+                  {translate("The date is no longer applicable")}
                 </Text>
               ))}
           </View>
@@ -84,7 +85,7 @@ ContinueInfo = (props) => {
         {data && data.media && (
           <View style={[styles.sections, { top: "2%", height: "60%" }]}>
             <Text style={[styles.text, { textTransform: "uppercase" }]}>
-              Media
+              {translate("Media")}
             </Text>
             <View style={styles.mediaContainer}>
               {data && oldTempAdType === "SnapAd" ? (

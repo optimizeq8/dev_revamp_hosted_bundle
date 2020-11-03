@@ -471,7 +471,7 @@ class GoogleAdInfo extends Component {
 
     return (
       <View style={styles.safeAreaView}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
