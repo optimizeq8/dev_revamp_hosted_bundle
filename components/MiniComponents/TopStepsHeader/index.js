@@ -133,7 +133,11 @@ export default class TopStepsHeader extends Component {
                 styles.english,
             ]}
           >
-            {title && typeof title === "string" ? title : title.join(" ")}
+            {title && typeof title === "string"
+              ? title
+              : title
+              ? title.join(" ")
+              : ""}
           </Text>
         </View>
         <View style={styles.content}>{this.handleProcessSteps()}</View>
