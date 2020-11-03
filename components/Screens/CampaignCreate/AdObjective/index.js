@@ -256,14 +256,20 @@ class AdObjective extends Component {
     }
   };
   setObjective = (choice) => {
+    // When changing objective change the duration to 7 always
+    let duration = 7;
+    let end_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
+    end_time.setDate(end_time.getDate() + duration - 1);
     this.setState({
       ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
         objective: choice.value,
+        end_time: end_time.toISOString().split("T")[0],
       },
       savedObjective: choice.value,
       objectiveLabel: choice.label,
+      duration,
     });
     analytics.track(`a_select_ad_objective`, {
       source: "ad_objective_modal",
@@ -277,6 +283,9 @@ class AdObjective extends Component {
       objectiveLabel: choice.label,
       savedObjective: choice.value,
       reset: true,
+      end_time: end_time.toISOString(),
+      duration,
+      campaignDateChanged: true,
     });
     // this.handleDuration(false, true);
   };
