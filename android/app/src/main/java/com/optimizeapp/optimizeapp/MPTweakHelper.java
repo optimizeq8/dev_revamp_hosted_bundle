@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class MPTweakHelper extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext;
-    private static Tweak<Boolean> showAds = MixpanelAPI.booleanTweak("show button",true);
+    private static Tweak<Boolean> showAds = MixpanelAPI.booleanTweak("show button",false);
 
     MPTweakHelper(ReactApplicationContext context) {
     super(context);

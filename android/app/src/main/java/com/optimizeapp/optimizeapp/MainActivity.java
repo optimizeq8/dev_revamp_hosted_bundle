@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
     MixpanelAPI mixpanel =
-    // MixpanelAPI.getInstance(this, "c9ade508d045eb648f95add033dfb017");
+    MixpanelAPI.getInstance(this, "c9ade508d045eb648f95add033dfb017");
     RNBootSplash.init(R.drawable.splashscreen, MainActivity.this); // <- display the generated bootsplash.xml drawable over our MainActivity
   }
 
