@@ -78,6 +78,7 @@ import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 // // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
+import { NativeModules } from "react-native";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -85,17 +86,17 @@ if (!__DEV__) {
     dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
   });
 }
-// import { MixpanelInstance } from "react-native-mixpanel";
+import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
-// const MixpanelSDK = new MixpanelInstance(
-//   "c9ade508d045eb648f95add033dfb017",
-//   false,
-//   false
-// );
-// MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
+const MixpanelSDK = new MixpanelInstance(
+  "c9ade508d045eb648f95add033dfb017",
+  false,
+  false
+);
+MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
 
 // Sentry.captureException(new Error("Oops!"));
 // crash;
