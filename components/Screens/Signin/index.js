@@ -73,7 +73,7 @@ class Signin extends Component {
   async componentDidMount() {
     const MPTweakHelper = NativeModules.MPTweakHelper;
     MPTweakHelper.getCustomTweak(
-      analytics.getAnonymousId(),
+      await analytics.getAnonymousId(),
       (err, tweakVal) => {
         console.log(tweakVal);
         this.setState({ tweakVal });

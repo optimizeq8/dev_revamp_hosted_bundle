@@ -105,7 +105,7 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     const MPTweakHelper = NativeModules.MPTweakHelper;
-    MPTweakHelper.getNumberOfLivesTweak(
+    MPTweakHelper.getCustomTweak(
       this.props.userInfo.userid,
       (eer, showButton) => {
         console.log("showButton", showButton);
