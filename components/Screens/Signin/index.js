@@ -72,10 +72,13 @@ class Signin extends Component {
 
   async componentDidMount() {
     const MPTweakHelper = NativeModules.MPTweakHelper;
-    MPTweakHelper.getCustomTweak((err, tweakVal) => {
-      console.log(tweakVal);
-      this.setState({ tweakVal });
-    });
+    MPTweakHelper.getCustomTweak(
+      analytics.getAnonymousId(),
+      (err, tweakVal) => {
+        console.log(tweakVal);
+        this.setState({ tweakVal });
+      }
+    );
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
