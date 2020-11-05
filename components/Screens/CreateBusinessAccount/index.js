@@ -917,7 +917,7 @@ class CreateBusinessAccount extends Component {
           )}
 
           {/** App Choice for business */}
-          {this.state.editBusinessInfo && (
+          {/* {this.state.editBusinessInfo && (
             <AppChoiceBusiness
               appstorelink={this.state.businessAccount.appstorelink}
               playstorelink={this.state.businessAccount.playstorelink}
@@ -931,7 +931,7 @@ class CreateBusinessAccount extends Component {
               }
               appSelections={{ iosAppSelected, androidAppSelected }}
             />
-          )}
+          )} */}
           {/* Added handle submision button for updating business info */}
           {this.state.editBusinessInfo &&
           this.props.loadingUpdateBusinessInfo ? (
