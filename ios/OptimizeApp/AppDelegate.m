@@ -52,7 +52,6 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   NSString *const SEGMENT_WRITE_KEY = @"fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh";
 SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
-  // [Mixpanel sharedInstanceWithToken:@"c9ade508d045eb648f95add033dfb017"];
 
 [config use:[SEGAdjustIntegrationFactory instance]];
 
