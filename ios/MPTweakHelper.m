@@ -21,10 +21,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(getCustomTweak:(NSString *)name callback:(RCTResponseSenderBlock)callback)
 {
-  BOOL x = MPTweakValue(@"show alternate view", NO);
-  printf("Pretending to create an eventat %d %s", x, "<---");
-
-   
+  BOOL x = MPTweakValue(@"show alternate view", YES);
   callback(@[[NSNull null],@(x)]);
 }
 

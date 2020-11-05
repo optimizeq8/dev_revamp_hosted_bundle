@@ -90,7 +90,7 @@ class Dashboard extends Component {
       componentMounting: true,
       items: businessCategoriesList(translate),
       adButtons: [...snapAds, ...googleAds],
-      showButton: false,
+      showButton: true,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
