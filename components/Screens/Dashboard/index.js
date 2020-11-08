@@ -617,9 +617,7 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
-                      Intercom.displayMessageComposerWithInitialMessage(
-                        "Initial Message"
-                      );
+                      Intercom.displayMessageComposer();
 
                       // this.props.navigation.push("Messenger", {
                       //   source: "dashboard",
