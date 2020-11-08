@@ -437,7 +437,12 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
-    Intercom.registerIdentifiedUser({ userId: this.props.userInfo.userid });
+    Intercom.registerIdentifiedUser({
+      userId: this.props.userInfo.userid,
+    });
+    Intercom.updateUser({
+      language_override: this.props.appLanguage,
+    });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     const source = this.props.navigation.getParam(
