@@ -104,6 +104,12 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 {
   appController.bridge = [self initializeReactNativeApp];
 }
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+    // Intercom
+    [Intercom setDeviceToken:deviceToken];
+
+}
 
 
 @end
