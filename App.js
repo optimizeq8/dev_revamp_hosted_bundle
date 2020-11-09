@@ -21,7 +21,7 @@ import {
   UIManager,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-// import Mixpanel from "@segment/analytics-react-native-mixpanel";
+import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -97,7 +97,7 @@ const MixpanelSDK = new MixpanelInstance(
   false
 );
 MixpanelSDK.initialize().then(() => MixpanelSDK.showInAppMessageIfAvailable());
-
+analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 import { enableScreens } from "react-native-screens";
@@ -207,10 +207,7 @@ class App extends React.Component {
     RNAdvertisingId.getAdvertisingId();
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
-      using: [
-        // Mixpanel,
-        AdjustIntegration,
-      ],
+      using: [Mixpanel, AdjustIntegration],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
