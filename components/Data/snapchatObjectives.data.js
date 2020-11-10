@@ -111,6 +111,13 @@ export default {
       icon: ObjIcons.Group,
       color: "#AA22DD",
     },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
+    },
     // {
     //   label: "SME Growth",
     //   value: "WEB_CONVERSION",
