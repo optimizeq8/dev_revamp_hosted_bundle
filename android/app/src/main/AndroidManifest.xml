@@ -50,10 +50,18 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService" android:enabled="true" android:exported="false">
+    <!-- <service android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService" android:enabled="true" android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
+    </service> -->
+     <service
+      android:name=".MainMessagingService"
+      android:enabled="true"
+      android:exported="true">
+        <intent-filter>
+          <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
     </service>
     <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity" android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
     <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP" android:value="true"/>

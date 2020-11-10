@@ -114,6 +114,7 @@ class Dashboard extends Component {
         this.setState({ showButton });
       }
     );
+    Intercom.handlePushMessage();
     Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
       this.props.mainBusiness &&

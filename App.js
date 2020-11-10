@@ -487,16 +487,16 @@ class App extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-    Intercom.removeEventListener(
-      Intercom.Notifications.UNREAD_COUNT,
-      this._onUnreadChange
-    );
+    // Intercom.removeEventListener(
+    //   Intercom.Notifications.UNREAD_COUNT,
+    //   this._onUnreadChange
+    // );
     AppState.removeEventListener("change", this._handleAppStateChange);
     // Adjust.componentWillUnmount();
   }
-  _onUnreadChange = async ({ count }) => {
+  _onUnreadChange = ({ count }) => {
     console.log("count app", count);
-    await store.dispatch(actionCreators.setCounterForUnreadMessage(count));
+    store.dispatch(actionCreators.setCounterForUnreadMessage(count));
   };
   getCurrentRouteName = (navigationState) => {
     if (!navigationState) {
