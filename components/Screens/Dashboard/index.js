@@ -455,7 +455,19 @@ class Dashboard extends Component {
       userId: this.props.userInfo.userid,
     });
     Intercom.updateUser({
+      email: this.props.userInfo.email,
+      name: this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
       language_override: this.props.appLanguage,
+      phone: this.props.userInfo.mobile,
+      companies:
+        this.props.businessAccounts && this.props.businessAccounts.length > 0
+          ? this.props.businessAccounts.map((bsn) => {
+              return {
+                company_id: bsn.businessid,
+                name: bsn.businessname,
+              };
+            })
+          : [],
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
