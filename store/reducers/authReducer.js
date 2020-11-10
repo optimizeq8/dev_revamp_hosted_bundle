@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { getUniqueId } from "react-native-device-info";
 import analytics from "@segment/analytics-react-native";
 import * as Notifications from "expo-notifications";
+import { MixpanelInstance } from "react-native-mixpanel";
 
 const initialState = {
   userid: null,
@@ -14,6 +15,12 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
+      const MixpanelSDK = new MixpanelInstance(
+        "c9ade508d045eb648f95add033dfb017",
+        false,
+        false
+      );
+      MixpanelSDK.initialize().then();
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
@@ -37,6 +44,8 @@ const reducer = (state = initialState, action) => {
         })
         .catch((error) => {
           analytics.alias(action.payload.user.userid);
+          MixpanelSDK.createAlias(action.payload.user.userid);
+          MixpanelSDK.identify(action.payload.user.userid);
           analytics.identify(action.payload.user.userid, {
             ...action.payload.user,
             $name:

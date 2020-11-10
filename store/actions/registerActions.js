@@ -20,7 +20,13 @@ import createBaseUrl from "./createBaseUrl";
 
 // import { Adjust, AdjustEvent } from "react-native-adjust";
 import analytics from "@segment/analytics-react-native";
-
+import { MixpanelInstance } from "react-native-mixpanel";
+const MixpanelSDK = new MixpanelInstance(
+  "c9ade508d045eb648f95add033dfb017",
+  false,
+  false
+);
+MixpanelSDK.initialize().then();
 export const verifyBusinessName = (
   businessname,
   _handleBusinessName,
@@ -149,6 +155,8 @@ export const registerUser = (userInfo, navigation, businessInvite = "1") => {
       .then(() => {
         if (getState().auth.userInfo) {
           analytics.alias(getState().auth.userInfo.userid);
+          MixpanelSDK.createAlias(getState().auth.userInfo.userid);
+          MixpanelSDK.identify(getState().auth.userInfo.userid);
           analytics.identify(getState().auth.userInfo.userid, {
             logged_out: false,
           });
@@ -633,6 +641,8 @@ export const registerGuestUser = (
             dispatch(chanege_base_url(true));
           }
           analytics.alias(decodedUser.user.userid);
+          MixpanelSDK.identify(decodedUser.user.userid);
+
           dispatch(setCurrentUser(decodedUser));
         }
       })
