@@ -202,3 +202,12 @@ export const tutorialLinks = (screenName, appLanguage) => {
       });
   };
 };
+
+export const setCounterForUnreadMessage = (count) => {
+  return (dispatch) => {
+    return dispatch({
+      type: actionTypes.SET_UNREAD_INTERCOM_MESSAGE_COUNT,
+      payload: count,
+    });
+  };
+};

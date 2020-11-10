@@ -106,11 +106,6 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
-    Intercom.addEventListener(
-      Intercom.Notifications.UNREAD_COUNT,
-      this._onUnreadChange
-    );
-
     const MPTweakHelper = NativeModules.MPTweakHelper;
     MPTweakHelper.getCustomTweak(
       this.props.userInfo.userid,
@@ -165,19 +160,10 @@ class Dashboard extends Component {
     return true;
   };
   componentWillUnmount() {
-    Intercom.removeEventListener(
-      Intercom.Notifications.UNREAD_COUNT,
-      this._onUnreadChange
-    );
     this.signal.cancel("Api is being canceled");
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     Linking.removeEventListener("url");
   }
-  _onUnreadChange = ({ count }) => {
-    this.setState({
-      count,
-    });
-  };
   componentDidUpdate(prevProps) {
     if (
       this.props.mainBusiness &&
@@ -659,13 +645,13 @@ class Dashboard extends Component {
                   >
                     {
                       // !this.props.unread_converstaion || this.props.unread_converstaion === 0
-                      !this.state.count || this.state.count === 0 ? (
+                      !this.props.count || this.props.count === 0 ? (
                         <IntercomIcon width={24} height={24} />
                       ) : (
                         <>
                           <View style={styles.unreadTextView}>
                             <Text style={styles.unreadText}>
-                              {this.state.count}
+                              {this.props.count}
                               {/* {this.props.unread_converstaion} */}
                             </Text>
                           </View>
@@ -1008,6 +994,7 @@ const mapStateToProps = (state) => ({
   clearTokenLoading: state.login.clearTokenLoading,
   instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  count: state.generic.count,
 });
 
 const mapDispatchToProps = (dispatch) => ({
