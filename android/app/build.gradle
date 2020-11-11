@@ -224,7 +224,7 @@ dependencies {
     // implementation project(':react-native-mixpanel')
 // implementation project(':@segment_analytics-react-native-mixpanel')
     // implementation 'io.intercom.android:intercom-sdk-base:6.+'
-    implementation 'io.intercom.android:intercom-sdk:8.+'
+    implementation 'io.intercom.android:intercom-sdk:6.+'
     implementation 'com.google.firebase:firebase-messaging:20.2+'
     compile project(':react-native-intercom')
     implementation project(':react-native-device-info')

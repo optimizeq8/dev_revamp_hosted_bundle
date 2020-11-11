@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
-import { getUniqueId } from "react-native-device-info";
 import analytics from "@segment/analytics-react-native";
 import * as Notifications from "expo-notifications";
 
