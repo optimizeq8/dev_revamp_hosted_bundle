@@ -15,7 +15,7 @@ export default StyleSheet.create({
     borderColor: globalColors.orange,
     borderWidth: 2.5,
     height: 50,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
     width: 105,
   },
   budgetTextStyle: {
