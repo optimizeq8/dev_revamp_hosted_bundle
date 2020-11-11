@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   nameStyle: {
     fontFamily: "montserrat-bold",
     fontSize: 21,
+    paddingHorizontal: "5%",
   },
   buttontext: {
     fontFamily: "montserrat-regular",
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
   },
   dashboardHeader: {
     // paddingLeft: "5%",
-    paddingHorizontal: "5%",
+    // paddingHorizontal: "5%",
     marginBottom: 15,
   },
   searchbarContainer: {
