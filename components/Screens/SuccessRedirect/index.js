@@ -15,6 +15,7 @@ import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success";
+import VerifyEngagmentNumber from "./VerifyEngagmentNumber";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 
 class SuccessRedirect extends Component {
@@ -28,6 +29,8 @@ class SuccessRedirect extends Component {
     this.state = {
       media: require("../../../assets/images/logo01.png"),
       successLogo: require("../../../assets/animation/success.json"),
+      showVerifyEngagment: false,
+      engagmentPhoneNumberVerified: false,
     };
   }
 
@@ -119,24 +122,56 @@ class SuccessRedirect extends Component {
       // );
       // Adjust.trackEvent(adjustPaymentTracker);
     }
-    this.setState(this.props.navigation.state.params, () => {
-      if (
-        this.props.channel === "" ||
-        (this.props.channel && this.props.channel.toLowerCase() === "snapchat")
-      ) {
-        this.props.resetCampaignInfo(false);
+    this.setState(
+      {
+        ...this.props.navigation.state.params,
+        objective: this.props.data.objective,
+        engagmentPhoneNumber: this.props.data.attachment.phone_number_id,
+        // engagmentPhoneNumberVerified: ["+96597221104"].includes(
+        //   this.props.data.attachment.phone_number_id
+        // ),
+      },
+      () => {
+        if (
+          this.props.channel === "" ||
+          (this.props.channel &&
+            this.props.channel.toLowerCase() === "snapchat")
+        ) {
+          this.props.resetCampaignInfo(false);
+        }
+        if (this.props.channel === "google") {
+          this.props.rest_google_campaign_data();
+        }
+        if (this.props.channel === "instagram") {
+          this.props.resetCampaignInfoInstagram();
+        }
+        this.props.reset_transaction_reducer();
       }
-      if (this.props.channel === "google") {
-        this.props.rest_google_campaign_data();
-      }
-      if (this.props.channel === "instagram") {
-        this.props.resetCampaignInfoInstagram();
-      }
-      this.props.reset_transaction_reducer();
-    });
+    );
   }
   onLottieEnd = () => {
     // this.animation.play();
+  };
+  handleButton = (show = false) => {
+    if (
+      this.state.objective === "ENGAGEMENT" &&
+      !this.state.engagmentPhoneNumberVerified
+    ) {
+      this.setState({ showVerifyEngagment: show });
+    } else {
+      this.props.navigation.reset(
+        [
+          NavigationActions.navigate({
+            routeName: "Dashboard",
+            params: {
+              source: "payment_end",
+              source_action: "a_go_to_home",
+            },
+          }),
+        ],
+        0
+      );
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -151,62 +186,82 @@ class SuccessRedirect extends Component {
           style={styles.gradient}
         />
 
-        <Image
-          style={styles.media}
-          source={this.state.media}
-          resizeMode="contain"
-        />
-        <View style={styles.view}>
-          <SuccessIcon width={80} height={80} />
-          <Text uppercase style={styles.title}>
-            {translate("Success!")}
-          </Text>
-          <Text style={styles.errortext}>
-            {this.state.isWallet !== "1"
-              ? translate("Your Ad is now being processed")
-              : translate("Your wallet has been topped up!")}
-          </Text>
-          <View style={styles.details}>
-            <Text style={styles.text}>
-              {translate("Payment ID:")} {this.state.paymentId}
+        {!this.state.showVerifyEngagment && (
+          <Image
+            style={styles.media}
+            source={this.state.media}
+            resizeMode="contain"
+          />
+        )}
+        {this.state.showVerifyEngagment ? (
+          <VerifyEngagmentNumber
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            engagmentPhoneNumber={this.state.engagmentPhoneNumber}
+            handleButton={this.handleButton}
+          />
+        ) : (
+          <View style={styles.view}>
+            <SuccessIcon width={80} height={80} />
+            <Text uppercase style={styles.title}>
+              {translate("Success!")}
             </Text>
-            <Text style={styles.text}>
-              {translate("Track ID:")} {this.state.trackID}
+            <Text style={styles.errortext}>
+              {this.state.isWallet !== "1"
+                ? translate("Your Ad is now being processed")
+                : translate("Your wallet has been topped up!")}
             </Text>
-            <Text style={styles.text}>
-              {translate("Amount:")} {this.state.kdamount} KWD
-            </Text>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <Text style={[styles.text]}>{translate("Date:")} </Text>
-              <Text style={[{ writingDirection: "ltr" }, styles.text]}>
-                {this.state.date}
+
+            <View style={styles.details}>
+              <Text style={styles.text}>
+                {translate("Payment ID:")} {this.state.paymentId}
+              </Text>
+              <Text style={styles.text}>
+                {translate("Track ID:")} {this.state.trackID}
+              </Text>
+              <Text style={styles.text}>
+                {translate("Amount:")} {this.state.kdamount} KWD
+              </Text>
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <Text style={[styles.text]}>{translate("Date:")} </Text>
+                <Text style={[{ writingDirection: "ltr" }, styles.text]}>
+                  {this.state.date}
+                </Text>
+              </View>
+              <Text style={styles.text}>
+                {translate("Status:")} {this.state.status}
               </Text>
             </View>
-            <Text style={styles.text}>
-              {translate("Status:")} {this.state.status}
-            </Text>
+            {this.state.objective === "ENGAGEMENT" &&
+              this.state.engagmentPhoneNumberVerified && (
+                <View style={{ width: "60%" }}>
+                  <Text
+                    style={[
+                      styles.errortext,
+                      { fontFamily: "montserrat-bold-english" },
+                    ]}
+                  >
+                    {translate(
+                      "But first, you need to verify the mobile number used in the call campaign with Snapchat"
+                    )}
+                  </Text>
+                </View>
+              )}
+
+            <GradientButton
+              style={styles.button}
+              onPressAction={() => this.handleButton(true)}
+              textStyle={styles.buttontext}
+              text={
+                this.state.objective === "ENGAGEMENT" &&
+                this.state.engagmentPhoneNumberVerified
+                  ? translate("Verify")
+                  : translate("Home")
+              }
+              uppercase={true}
+            />
           </View>
-          <GradientButton
-            style={styles.button}
-            onPressAction={() => {
-              this.props.navigation.reset(
-                [
-                  NavigationActions.navigate({
-                    routeName: "Dashboard",
-                    params: {
-                      source: "payment_end",
-                      source_action: "a_go_to_home",
-                    },
-                  }),
-                ],
-                0
-              );
-            }}
-            textStyle={styles.buttontext}
-            text={translate("Home")}
-            uppercase={true}
-          />
-        </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -220,6 +275,7 @@ const mapStateToProps = (state) => ({
   channel: state.transA.channel,
   adType: state.campaignC.adType,
   adTypeInstagram: state.instagramAds.adType,
+  data: state.campaignC.data,
 });
 const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
