@@ -255,6 +255,7 @@ class App extends React.Component {
       Intercom.Notifications.UNREAD_COUNT,
       this._onUnreadChange
     );
+    Intercom.setInAppMessageVisibility("GONE");
 
     this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
@@ -486,17 +487,17 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
+    Intercom.removeEventListener(
+      Intercom.Notifications.UNREAD_COUNT,
+      this._onUnreadChange
+    );
     clearInterval(this.interval);
-    // Intercom.removeEventListener(
-    //   Intercom.Notifications.UNREAD_COUNT,
-    //   this._onUnreadChange
-    // );
     AppState.removeEventListener("change", this._handleAppStateChange);
     // Adjust.componentWillUnmount();
   }
-  _onUnreadChange = ({ count }) => {
-    console.log("count app", count);
-    store.dispatch(actionCreators.setCounterForUnreadMessage(count));
+  _onUnreadChange = (data) => {
+    console.log("count app", data);
+    store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
   };
   getCurrentRouteName = (navigationState) => {
     if (!navigationState) {

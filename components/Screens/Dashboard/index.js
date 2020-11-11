@@ -527,6 +527,10 @@ class Dashboard extends Component {
     }
   };
   render() {
+    Intercom.getUnreadConversationCount().then((res) => {
+      console.log("getUnreadConversationCount", res);
+    });
+
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
