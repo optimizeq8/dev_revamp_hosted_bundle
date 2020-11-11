@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   dashboardHeader: {
+    // paddingLeft: "5%",
     paddingHorizontal: "5%",
     marginBottom: 15,
   },
