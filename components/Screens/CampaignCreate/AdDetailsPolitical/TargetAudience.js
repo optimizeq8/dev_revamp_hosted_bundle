@@ -153,14 +153,7 @@ export class TargetAudience extends Component {
                           <View style={styles.radioButtonSelected} />
                         )}
                       </View>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: globalColors.rum,
-                          fontFamily: "montserrat-bold",
-                          marginHorizontal: 5,
-                        }}
-                      >
+                      <Text style={styles.districtNameText}>
                         {translate(district.name)}
                       </Text>
                     </TouchableOpacity>

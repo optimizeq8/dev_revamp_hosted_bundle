@@ -304,6 +304,12 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     fontSize: 12,
   },
+  districtNameText: {
+    fontSize: 12,
+    color: globalColors.rum,
+    fontFamily: "montserrat-bold",
+    marginHorizontal: 5,
+  },
 });
 
 export default styles;
