@@ -110,6 +110,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "rmc-input-number": "^1.0.5",
+    "rn-placeholder": "^3.0.3",
     "rn-sliding-up-panel": "^2.3.3",
     "sentry-expo": "~2.0.0",
     "socket.io-client": "^2.3.0",

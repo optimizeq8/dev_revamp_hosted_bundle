@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   backgroundViewWrapper: {
     justifyContent: "center",
     overflow: "hidden",
-    backgroundColor: "#0004",
     width: "100%",
     height: "100%",
     borderRadius: 40,
