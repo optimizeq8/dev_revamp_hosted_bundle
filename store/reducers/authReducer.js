@@ -8,6 +8,8 @@ const initialState = {
   userInfo: null,
   loading: false,
   loadingUpdateInfo: false,
+  iosHashIntercom: null,
+  andoidHashIntercom: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -69,6 +71,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingUpdateInfo: action.payload,
+      };
+    case actionTypes.SET_HASH_INTERCOM_KEYS:
+      return {
+        ...state,
+        iosHashIntercom: action.payload.ios,
+        andoidHashIntercom: action.payload.android,
       };
     default:
       return state;

@@ -68,6 +68,7 @@ import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
+import { Platform } from "react-native";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -106,6 +107,7 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
+    this.props.checkHashForUser();
     const MPTweakHelper = NativeModules.MPTweakHelper;
     MPTweakHelper.getCustomTweak(
       this.props.userInfo.userid,
@@ -212,6 +214,37 @@ class Dashboard extends Component {
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true,
+      });
+    }
+
+    if (prevProps.iosHashIntercom !== this.props.iosHashIntercom) {
+      Intercom.registerIdentifiedUser({
+        userId: this.props.userInfo.userid,
+      }).then((res) => {
+        console.log("this.props.iosHashIntercom", this.props.iosHashIntercom);
+        Intercom.setUserHash(
+          Platform.OS === "ios"
+            ? this.props.iosHashIntercom
+            : this.props.andoidHashIntercom
+        );
+        Intercom.updateUser({
+          email: this.props.userInfo.email,
+          name:
+            this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+          language_override: this.props.appLanguage,
+          phone: this.props.userInfo.mobile,
+          companies:
+            this.props.businessAccounts &&
+            this.props.businessAccounts.length > 0
+              ? this.props.businessAccounts.map((bsn) => {
+                  return {
+                    company_id: bsn.businessid,
+                    name: bsn.businessname,
+                  };
+                })
+              : [],
+        });
+        console.log("setuser hash 1");
       });
     }
   }
@@ -444,23 +477,34 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
+    console.log("this.props.userInfo.userid", this.props.userInfo.userid);
     Intercom.registerIdentifiedUser({
       userId: this.props.userInfo.userid,
-    });
-    Intercom.updateUser({
-      email: this.props.userInfo.email,
-      name: this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
-      language_override: this.props.appLanguage,
-      phone: this.props.userInfo.mobile,
-      companies:
-        this.props.businessAccounts && this.props.businessAccounts.length > 0
-          ? this.props.businessAccounts.map((bsn) => {
-              return {
-                company_id: bsn.businessid,
-                name: bsn.businessname,
-              };
-            })
-          : [],
+    }).then((res) => {
+      console.log("this.props.iosHashIntercom", this.props.iosHashIntercom);
+      console.log("Platform.OS === ios", Platform.OS === "ios");
+      Intercom.setUserHash(
+        Platform.OS === "ios"
+          ? this.props.iosHashIntercom
+          : this.props.andoidHashIntercom
+      );
+      Intercom.updateUser({
+        email: this.props.userInfo.email,
+        name:
+          this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+        language_override: this.props.appLanguage,
+        phone: this.props.userInfo.mobile,
+        companies:
+          this.props.businessAccounts && this.props.businessAccounts.length > 0
+            ? this.props.businessAccounts.map((bsn) => {
+                return {
+                  company_id: bsn.businessid,
+                  name: bsn.businessname,
+                };
+              })
+            : [],
+      });
+      console.log("setuser hash");
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -1002,6 +1046,8 @@ const mapStateToProps = (state) => ({
   instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
   count: state.generic.count,
+  iosHashIntercom: state.auth.iosHashIntercom,
+  andoidHashIntercom: state.auth.andoidHashIntercom,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1050,6 +1096,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
   setCounterForUnreadMessage: (count) =>
     dispatch(actionCreators.setCounterForUnreadMessage(count)),
+  checkHashForUser: () => dispatch(actionCreators.checkHashForUser()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

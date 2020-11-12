@@ -121,6 +121,7 @@ export {
   setCurrentUser,
   send_push_notification,
   changePassword,
+  checkHashForUser,
 } from "./loginActions";
 
 export {
