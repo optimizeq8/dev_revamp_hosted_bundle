@@ -114,6 +114,12 @@ class Dashboard extends Component {
         this.setState({ showButton });
       }
     );
+
+    Intercom.getUnreadConversationCount().then((res) => {
+      if (res !== this.props.count) {
+        this.props.setCounterForUnreadMessage(res);
+      }
+    });
     Intercom.handlePushMessage();
     Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
@@ -527,10 +533,6 @@ class Dashboard extends Component {
     }
   };
   render() {
-    Intercom.getUnreadConversationCount().then((res) => {
-      console.log("getUnreadConversationCount", res);
-    });
-
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -1046,6 +1048,8 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getInstagramCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
+  setCounterForUnreadMessage: (count) =>
+    dispatch(actionCreators.setCounterForUnreadMessage(count)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

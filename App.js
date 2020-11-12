@@ -496,7 +496,6 @@ class App extends React.Component {
     // Adjust.componentWillUnmount();
   }
   _onUnreadChange = (data) => {
-    console.log("count app", data);
     store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
   };
   getCurrentRouteName = (navigationState) => {
