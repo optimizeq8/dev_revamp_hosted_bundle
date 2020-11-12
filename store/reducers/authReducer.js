@@ -40,12 +40,11 @@ const reducer = (state = initialState, action) => {
               userTraits["$ios_devices"] = [token.data];
             }
             analytics.identify(action.payload.user.userid, userTraits);
+            MixpanelSDK.identify(action.payload.user.userid);
           });
         })
         .catch((error) => {
           analytics.alias(action.payload.user.userid);
-          MixpanelSDK.createAlias(action.payload.user.userid);
-          MixpanelSDK.identify(action.payload.user.userid);
           analytics.identify(action.payload.user.userid, {
             ...action.payload.user,
             $name:
