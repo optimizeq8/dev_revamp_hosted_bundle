@@ -234,16 +234,14 @@ class Dashboard extends Component {
             this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
           language_override: this.props.appLanguage,
           phone: this.props.userInfo.mobile,
-          companies:
-            this.props.businessAccounts &&
-            this.props.businessAccounts.length > 0
-              ? this.props.businessAccounts.map((bsn) => {
-                  return {
-                    company_id: bsn.businessid,
-                    name: bsn.businessname,
-                  };
-                })
-              : [],
+          companies: this.props.mainBusiness
+            ? [
+                {
+                  company_id: this.props.mainBusiness.businessid,
+                  name: this.props.mainBusiness.businessname,
+                },
+              ]
+            : [],
         });
         console.log("setuser hash 1");
       });
@@ -493,15 +491,14 @@ class Dashboard extends Component {
           this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
         language_override: this.props.appLanguage,
         phone: this.props.userInfo.mobile,
-        companies:
-          this.props.businessAccounts && this.props.businessAccounts.length > 0
-            ? this.props.businessAccounts.map((bsn) => {
-                return {
-                  company_id: bsn.businessid,
-                  name: bsn.businessname,
-                };
-              })
-            : [],
+        companies: this.props.mainBusiness
+          ? [
+              {
+                company_id: this.props.mainBusiness.businessid,
+                name: this.props.mainBusiness.businessname,
+              },
+            ]
+          : [],
       });
       Intercom.getUnreadConversationCount().then((res) => {
         Notifications.setBadgeCountAsync(res).then((res) => {
