@@ -41,6 +41,8 @@ const initialState = {
   teamInviteLoading: false,
   pendingTeamInvites: [],
   crashApp: false,
+  businessSearchLoading: false,
+  searchedBusinessesList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -60,9 +62,13 @@ const reducer = (state = initialState, action) => {
         loading: action.payload.loading,
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
-      let main = {};
+      let main = state.mainBusiness;
       let setNewBusinessAccounts = action.payload.data.business_accounts || [];
-      if (setNewBusinessAccounts && setNewBusinessAccounts.length > 0) {
+      if (
+        !action.payload.businessSeleced &&
+        setNewBusinessAccounts &&
+        setNewBusinessAccounts.length > 0
+      ) {
         main = setNewBusinessAccounts[action.payload.index]
           ? setNewBusinessAccounts[action.payload.index]
           : setNewBusinessAccounts[0];
@@ -74,7 +80,7 @@ const reducer = (state = initialState, action) => {
           wallet_amount: main.wallet_amount,
         });
       }
-
+      AsyncStorage.setItem("selectedBusinessId", main.businessid);
       return {
         ...state,
         mainBusiness: main,
@@ -94,6 +100,11 @@ const reducer = (state = initialState, action) => {
         "indexOfMainBusiness",
         `${newSetMainBusiness.index}`
       );
+      AsyncStorage.setItem(
+        "selectedBusinessId",
+        `${newSetMainBusiness.businessid}`
+      );
+
       return {
         ...state,
         mainBusiness: newSetMainBusiness,
@@ -336,6 +347,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         crashApp: action.payload,
+      };
+    case actionTypes.BUSINESS_SEARCH_LOADING:
+      return {
+        ...state,
+        businessSearchLoading: action.payload,
+      };
+    case actionTypes.BUSINESS_SEARCH_FOUND:
+      return {
+        ...state,
+        searchedBusinessesList: action.payload,
+        businessSearchLoading: false,
       };
     default:
       return state;

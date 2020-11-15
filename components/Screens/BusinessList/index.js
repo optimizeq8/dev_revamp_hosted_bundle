@@ -1,6 +1,12 @@
 //Components
 import React, { Component, Fragment } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -45,7 +51,7 @@ class BusinessList extends Component {
       this.filterBusinesses(this.state.value);
     }
   }
-  filterBusinesses = (value) => {
+  filterBusinesses = async (value) => {
     let filteredBusinesses = this.props.businessAccounts.filter(
       (bus) =>
         bus.businessname
@@ -54,8 +60,14 @@ class BusinessList extends Component {
           .includes(value.trim().toLowerCase()) ||
         bus.brandname.trim().toLowerCase().includes(value.trim().toLowerCase())
     );
+    if (filteredBusinesses.length === 0) {
+      await this.props.searchForBusinessInBackend(value);
+    }
     this.setState({
-      filteredBusinesses: [{ businessid: "-1" }].concat(filteredBusinesses),
+      filteredBusinesses: [{ businessid: "-1" }].concat(
+        ...filteredBusinesses,
+        ...this.props.searchedBusinessesList
+      ),
       value,
     });
   };
@@ -179,16 +191,20 @@ class BusinessList extends Component {
             />
           )}
           <View style={styles.flatlistWrapper}>
-            <FlatList
-              contentContainerStyle={styles.contentContainer}
-              keyExtractor={(item) => item.businessid}
-              data={this.state.filteredBusinesses}
-              initialNumToRender={10}
-              renderItem={this.renderBusinessCards}
-              onRefresh={this.props.getBusinessAccounts}
-              refreshing={this.props.businessesLoading}
-              showsVerticalScrollIndicator={false}
-            />
+            {this.props.businessSearchLoading ? (
+              <ActivityIndicator />
+            ) : (
+              <FlatList
+                contentContainerStyle={styles.contentContainer}
+                keyExtractor={(item) => item.businessid}
+                data={this.state.filteredBusinesses}
+                initialNumToRender={10}
+                renderItem={this.renderBusinessCards}
+                onRefresh={this.props.getBusinessAccounts}
+                refreshing={this.props.businessesLoading}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
           </View>
           {this.state.activeTab === "INVITATION" &&
             (!this.props.businessInvites ||
@@ -250,6 +266,8 @@ const mapStateToProps = (state) => ({
   tempInviteId: state.account.tempInviteId,
   invitedEmail: state.account.invitedEmail,
   businessInvites: state.account.businessInvites,
+  businessSearchLoading: state.account.businessSearchLoading,
+  searchedBusinessesList: state.account.searchedBusinessesList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -257,5 +275,7 @@ const mapDispatchToProps = (dispatch) => ({
   updateCampaignList: (id) => dispatch(actionCreators.updateCampaignList(id)),
   handleTeamInvite: (status, segmentInfo) =>
     dispatch(actionCreators.handleTeamInvite(status, segmentInfo)),
+  searchForBusinessInBackend: (businessNa, e) =>
+    dispatch(actionCreators.searchForBusinessInBackend(businessNa, e)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(BusinessList);
