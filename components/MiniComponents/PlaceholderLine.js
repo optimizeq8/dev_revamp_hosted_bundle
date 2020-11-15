@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { InteractionManager, Text, View } from "react-native";
 import * as Animatable from "react-native-animatable";
-import {
-  Placeholder,
-  PlaceholderMedia,
-  PlaceholderLine,
-  Shine,
-} from "rn-placeholder";
 import ShimmerPlaceHolder from "react-native-shimmer-placeholder";
 import { LinearGradient } from "expo-linear-gradient";
 import {
