@@ -20,6 +20,7 @@ export {
   changeBusinessLogo,
   updateBusinessConnectedToFacebook,
   crashAppForSpamUser,
+  searchForBusinessInBackend,
 } from "./accountManagementActions";
 
 export {
