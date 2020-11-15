@@ -496,6 +496,7 @@ class App extends React.Component {
     // Adjust.componentWillUnmount();
   }
   _onUnreadChange = (data) => {
+    Notifications.setBadgeCountAsync(data.count);
     store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
   };
   getCurrentRouteName = (navigationState) => {

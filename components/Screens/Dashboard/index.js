@@ -12,6 +12,7 @@ import {
   Text,
   NativeModules,
 } from "react-native";
+import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -119,6 +120,7 @@ class Dashboard extends Component {
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
+        Notifications.setBadgeCountAsync(res);
         this.props.setCounterForUnreadMessage(res);
       }
     });
@@ -221,7 +223,6 @@ class Dashboard extends Component {
       Intercom.registerIdentifiedUser({
         userId: this.props.userInfo.userid,
       }).then((res) => {
-        console.log("this.props.iosHashIntercom", this.props.iosHashIntercom);
         Intercom.setUserHash(
           Platform.OS === "ios"
             ? this.props.iosHashIntercom
@@ -481,8 +482,6 @@ class Dashboard extends Component {
     Intercom.registerIdentifiedUser({
       userId: this.props.userInfo.userid,
     }).then((res) => {
-      console.log("this.props.iosHashIntercom", this.props.iosHashIntercom);
-      console.log("Platform.OS === ios", Platform.OS === "ios");
       Intercom.setUserHash(
         Platform.OS === "ios"
           ? this.props.iosHashIntercom
@@ -503,6 +502,12 @@ class Dashboard extends Component {
                 };
               })
             : [],
+      });
+      Intercom.getUnreadConversationCount().then((res) => {
+        Notifications.setBadgeCountAsync(res).then((res) => {
+          console.log("setBadgeCountAsync", res);
+        });
+        this.props.setCounterForUnreadMessage(res);
       });
       console.log("setuser hash");
     });
