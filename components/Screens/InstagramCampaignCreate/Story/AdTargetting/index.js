@@ -70,7 +70,7 @@ class InstagramStoryAdTargetting extends Component {
           os_version_max: "",
           geo_locations: { countries: [], regions: [] },
           age_max: 65,
-          age_min: 13,
+          age_min: 18,
         },
       },
       selectedCountriesAndRegions: [],
@@ -251,7 +251,7 @@ class InstagramStoryAdTargetting extends Component {
                   targeting: {
                     ...rep.targeting,
                     age_max: rep.targeting.age_max ? rep.targeting.age_max : 65,
-                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 13,
+                    age_min: rep.targeting.age_min ? rep.targeting.age_min : 18,
                   },
                 },
                 value: this.formatNumber(
@@ -1003,7 +1003,7 @@ class InstagramStoryAdTargetting extends Component {
             _handleAge={this._handleAge}
             _handleSideMenuState={this._handleSideMenuState}
             ageValuesRange={[13, 65]}
-            minAge={this.state.campaignInfo.targeting.age_min || 13}
+            minAge={this.state.campaignInfo.targeting.age_min || 18}
             maxAge={this.state.campaignInfo.targeting.age_max || 65}
           />
         );
