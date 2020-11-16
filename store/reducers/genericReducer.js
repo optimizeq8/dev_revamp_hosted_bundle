@@ -18,6 +18,7 @@ const initialState = {
   ad_tutorial_media_type: "",
   FBAccessTokenForAppSearch: "",
   FBAdAccountIDForAppSearch: "",
+  count: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -62,6 +63,11 @@ const reducer = (state = initialState, action) => {
         ad_tutorial_type: action.payload.ad_type,
         ad_tutorial_link: action.payload.link,
         ad_tutorial_media_type: action.payload.media_type,
+      };
+    case actionTypes.SET_UNREAD_INTERCOM_MESSAGE_COUNT:
+      return {
+        ...state,
+        count: action.payload,
       };
     default:
       return state;

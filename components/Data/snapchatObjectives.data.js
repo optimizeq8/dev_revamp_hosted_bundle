@@ -76,13 +76,6 @@ export default {
       color: "#EF6C57",
       icon: ObjIcons.Phone,
     },
-    // {
-    //   label: "Awareness",
-    //   value: "BRAND_AWARENESS",
-    //   info: "INFORM PEOPLE ABOUT MY BRAND",
-    //   icon: ObjIcons.Awareness,
-    //   color: "#EF6C57",
-    // },
     {
       label: "App Installs",
       value: "APP_INSTALLS",
@@ -110,6 +103,13 @@ export default {
       info: "I WANT TO KNOW MY CUSTOMERS",
       icon: ObjIcons.Group,
       color: "#AA22DD",
+    },
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "INFORM PEOPLE ABOUT MY BRAND",
+      icon: ObjIcons.Awareness,
+      color: "#EF6C57",
     },
     // {
     //   label: "SME Growth",

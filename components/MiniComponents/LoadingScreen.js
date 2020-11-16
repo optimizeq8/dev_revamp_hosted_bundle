@@ -40,7 +40,7 @@ class Loading extends React.Component {
             // zIndex: 10,
             alignSelf: "center",
             width: widthPercentageToDP(100),
-            height: widthPercentageToDP(150),
+            height: widthPercentageToDP(160),
             position: "absolute",
             alignContent: "center",
             alignItems: "center",

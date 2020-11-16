@@ -13,6 +13,8 @@ import {
   NativeModules,
   RefreshControl,
 } from "react-native";
+import * as Notifications from "expo-notifications";
+import Intercom from "react-native-intercom";
 
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
@@ -68,6 +70,7 @@ import PlaceHolderLine from "../../MiniComponents/PlaceholderLine";
 
 // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import isNull from "lodash/isNull";
+import { Platform } from "react-native";
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
 
@@ -92,6 +95,7 @@ class Dashboard extends Component {
       items: businessCategoriesList(translate),
       adButtons: [...snapAds, ...googleAds],
       showButton: true,
+      count: 0,
     };
 
     //Logs/gives warnign if a component has any functions that take a while to render
@@ -105,14 +109,23 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
+    this.props.checkHashForUser();
     const MPTweakHelper = NativeModules.MPTweakHelper;
     MPTweakHelper.getCustomTweak(
       this.props.userInfo.userid,
       (eer, showButton) => {
-        console.log("showButton", showButton);
+        // console.log("showButton", showButton);
         this.setState({ showButton });
       }
     );
+
+    Intercom.getUnreadConversationCount().then((res) => {
+      if (res !== this.props.count) {
+        Notifications.setBadgeCountAsync(res);
+        this.props.setCounterForUnreadMessage(res);
+      }
+    });
+    Intercom.handlePushMessage();
     Linking.addEventListener("url", this.handleDeepLinkListener);
     if (
       this.props.mainBusiness &&
@@ -163,7 +176,6 @@ class Dashboard extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     Linking.removeEventListener("url");
   }
-
   componentDidUpdate(prevProps) {
     if (
       this.props.mainBusiness &&
@@ -185,8 +197,8 @@ class Dashboard extends Component {
           adButtons,
         });
       }
-      this.props.userInfo &&
-        this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.userInfo &&
+      //   this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -205,6 +217,33 @@ class Dashboard extends Component {
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true,
+      });
+    }
+
+    if (prevProps.iosHashIntercom !== this.props.iosHashIntercom) {
+      Intercom.registerIdentifiedUser({
+        userId: this.props.userInfo.userid,
+      }).then((res) => {
+        Intercom.setUserHash(
+          Platform.OS === "ios"
+            ? this.props.iosHashIntercom
+            : this.props.andoidHashIntercom
+        );
+        Intercom.updateUser({
+          email: this.props.userInfo.email,
+          name:
+            this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+          language_override: this.props.appLanguage,
+          phone: this.props.userInfo.mobile,
+          companies: this.props.mainBusiness
+            ? [
+                {
+                  company_id: this.props.mainBusiness.businessid,
+                  name: this.props.mainBusiness.businessname,
+                },
+              ]
+            : [],
+        });
       });
     }
   }
@@ -358,7 +397,7 @@ class Dashboard extends Component {
       source_action: "a_refresh_list",
       refresh_type: "campaigns",
     });
-    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
@@ -437,6 +476,36 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
+    // Platform.OS === "android" && BadgeAndroid.setBadge(5);
+    Intercom.registerIdentifiedUser({
+      userId: this.props.userInfo.userid,
+    }).then((res) => {
+      Intercom.setUserHash(
+        Platform.OS === "ios"
+          ? this.props.iosHashIntercom
+          : this.props.andoidHashIntercom
+      );
+      Intercom.updateUser({
+        email: this.props.userInfo.email,
+        name:
+          this.props.userInfo.firstname + " " + this.props.userInfo.lastname,
+        language_override: this.props.appLanguage,
+        phone: this.props.userInfo.mobile,
+        companies: this.props.mainBusiness
+          ? [
+              {
+                company_id: this.props.mainBusiness.businessid,
+                name: this.props.mainBusiness.businessname,
+              },
+            ]
+          : [],
+      });
+      Intercom.getUnreadConversationCount().then((res) => {
+        Notifications.setBadgeCountAsync(res);
+        this.props.setCounterForUnreadMessage(res);
+      });
+    });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     const source = this.props.navigation.getParam(
       "source",
@@ -615,27 +684,32 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.navigation.push("Messenger", {
-                        source: "dashboard",
-                        source_action: "a_help",
-                      });
+                      Intercom.displayMessageComposer();
+
+                      // this.props.navigation.push("Messenger", {
+                      //   source: "dashboard",
+                      //   source_action: "a_help",
+                      // });
                     }}
                     style={[styles.headerIcons]}
                   >
-                    {!this.props.unread_converstaion ||
-                    this.props.unread_converstaion === 0 ? (
-                      <IntercomIcon width={24} height={24} />
-                    ) : (
-                      <>
-                        <View style={styles.unreadTextView}>
-                          <Text style={styles.unreadText}>
-                            {this.props.unread_converstaion}
-                          </Text>
-                        </View>
-
+                    {
+                      // !this.props.unread_converstaion || this.props.unread_converstaion === 0
+                      !this.props.count || this.props.count === 0 ? (
                         <IntercomIcon width={24} height={24} />
-                      </>
-                    )}
+                      ) : (
+                        <>
+                          <View style={styles.unreadTextView}>
+                            <Text style={styles.unreadText}>
+                              {this.props.count}
+                              {/* {this.props.unread_converstaion} */}
+                            </Text>
+                          </View>
+
+                          <IntercomIcon width={24} height={24} />
+                        </>
+                      )
+                    }
                   </TouchableOpacity>
                 </>
               ) : (
@@ -979,6 +1053,9 @@ const mapStateToProps = (state) => ({
   clearTokenLoading: state.login.clearTokenLoading,
   instagramIncompleteCampaign: state.instagramAds.incompleteCampaign,
   instagramCampaignProgressStarted: state.instagramAds.campaignProgressStarted,
+  count: state.generic.count,
+  iosHashIntercom: state.auth.iosHashIntercom,
+  andoidHashIntercom: state.auth.andoidHashIntercom,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1025,6 +1102,9 @@ const mapDispatchToProps = (dispatch) => ({
     ),
   getInstagramCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getInstagramCampaignDetails(id, naviagtion)),
+  setCounterForUnreadMessage: (count) =>
+    dispatch(actionCreators.setCounterForUnreadMessage(count)),
+  checkHashForUser: () => dispatch(actionCreators.checkHashForUser()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 

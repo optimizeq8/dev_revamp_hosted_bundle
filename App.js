@@ -20,8 +20,8 @@ import {
   Linking,
   UIManager,
 } from "react-native";
+import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -211,7 +211,7 @@ class App extends React.Component {
     RNAdvertisingId.getAdvertisingId();
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
-      using: [Mixpanel, AdjustIntegration],
+      using: [AdjustIntegration],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
@@ -244,6 +244,17 @@ class App extends React.Component {
       this._handleNotification
     );
     AppState.addEventListener("change", this._handleAppStateChange);
+    Platform.OS === "ios" && Intercom.registerForPush();
+
+    Notifications.getDevicePushTokenAsync().then((token) => {
+      Intercom.sendTokenToIntercom(token.data);
+    });
+    Intercom.addEventListener(
+      Intercom.Notifications.UNREAD_COUNT,
+      this._onUnreadChange
+    );
+    Intercom.setInAppMessageVisibility("GONE");
+
     this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
     }, 300000);
@@ -254,6 +265,9 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
+  windowShow = (show) => {
+    console.log("show", show);
+  };
   componentDidUpdate(prevProps, prevState) {
     // to navigate from a deep link from a notification if the app is killed on iOS
     if (store.getState().auth.userInfo && Platform.OS === "ios") {
@@ -471,11 +485,18 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
+    Intercom.removeEventListener(
+      Intercom.Notifications.UNREAD_COUNT,
+      this._onUnreadChange
+    );
     clearInterval(this.interval);
     AppState.removeEventListener("change", this._handleAppStateChange);
     // Adjust.componentWillUnmount();
   }
-
+  _onUnreadChange = (data) => {
+    Notifications.setBadgeCountAsync(data.count);
+    store.dispatch(actionCreators.setCounterForUnreadMessage(data.count));
+  };
   getCurrentRouteName = (navigationState) => {
     if (!navigationState) {
       return null;

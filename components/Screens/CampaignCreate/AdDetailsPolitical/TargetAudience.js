@@ -161,7 +161,7 @@ export class TargetAudience extends Component {
                           marginHorizontal: 5,
                         }}
                       >
-                        {district.name}
+                        {translate(district.name)}
                       </Text>
                     </TouchableOpacity>
                     {district.areas && district.areas.length > 0 && (

@@ -1,5 +1,5 @@
 app_identifier("com.optimizeapp.optimizeapp") # The bundle identifier of your app
-apple_id("samy@optimizekw.com") # Your Apple email address
+apple_id("saadiya@optimizeapp.com") # Your Apple email address
 
 itc_team_id("120006217") # App Store Connect Team ID
 team_id("928C7U9LTT") # Developer Portal Team ID
