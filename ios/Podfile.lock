@@ -113,6 +113,7 @@ PODS:
   - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
   - imglyKit (10.21.3)
+  - Intercom (8.0.0)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.5.0):
     - lottie-ios (~> 3.1.8)
@@ -297,6 +298,9 @@ PODS:
   - react-native-google-maps (0.27.1):
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 3.5.0)
+    - React
+  - react-native-intercom (18.0.0):
+    - Intercom (~> 8.0.0)
     - React
   - react-native-maps (0.27.1):
     - React
@@ -489,6 +493,7 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-ffmpeg/https-gpl-lts (from `../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -543,6 +548,7 @@ SPEC REPOS:
     - Google-Maps-iOS-Utils
     - GoogleMaps
     - imglyKit
+    - Intercom
     - lottie-ios
     - Mixpanel
     - mobile-ffmpeg-https-gpl
@@ -639,6 +645,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native-ffmpeg/react-native-ffmpeg.podspec"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-intercom:
+    :path: "../node_modules/react-native-intercom"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
@@ -763,6 +771,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   imglyKit: f3091be82eedddd14ff23a684cba3d16b909a567
+  Intercom: 5d8058e3476ab6b0350dea165338164364eb1acb
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   Mixpanel: 0e9d50ecc6398e1082e690ddedf6968e57e81935
@@ -782,6 +791,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-ffmpeg: f9a60452aaa5d478aac205b248224994f3bde416
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
+  react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
@@ -831,6 +841,6 @@ SPEC CHECKSUMS:
   VideoEditorSDK: 67c47723c31a0d827608163726cbe24e29479386
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
-PODFILE CHECKSUM: fa14b3437b430c3db159a503a9eb8bbfc8e5b613
+PODFILE CHECKSUM: 58f989adae71d51139f23b90860ae21b5cea8ccb
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

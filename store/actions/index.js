@@ -42,6 +42,7 @@ export {
   getBusinessInvites,
   checkNotification,
   tutorialLinks,
+  setCounterForUnreadMessage,
 } from "./genericActions";
 
 export {
@@ -121,6 +122,7 @@ export {
   setCurrentUser,
   send_push_notification,
   changePassword,
+  checkHashForUser,
 } from "./loginActions";
 
 export {

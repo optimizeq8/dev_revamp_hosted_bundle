@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { Animated, AppState } from "react-native";
+import Intercom from "react-native-intercom";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import analytics from "@segment/analytics-react-native";
@@ -292,7 +293,11 @@ export const logout = (navigation) => {
           });
       })
       //Switched the navigation with this line so that the ErrorComponent doesn't mount when logging out
-      .then(() => dispatch(setCurrentUser(null)));
+      .then(() => dispatch(setCurrentUser(null)))
+      .then(() => {
+        Intercom.logout();
+      })
+      .then(() => dispatch(checkHashForUser()));
   };
 };
 
@@ -493,6 +498,34 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           type: actionTypes.ERROR_CHANGE_PASSWORD,
           payload: {
             success: false,
+          },
+        });
+      });
+  };
+};
+
+export const checkHashForUser = () => {
+  return (dispatch) => {
+    createBaseUrl()
+      .get(`intercomhash`)
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.SET_HASH_INTERCOM_KEYS,
+            payload: data.data,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("error hashForUser", error.error || error.message);
+        return dispatch({
+          type: actionTypes.SET_HASH_INTERCOM_KEYS,
+          payload: {
+            ios: null,
+            android: null,
           },
         });
       });

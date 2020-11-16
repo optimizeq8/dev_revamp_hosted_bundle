@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
-    top: -3,
+    top: 0,
     left: 18,
     zIndex: 1,
   },

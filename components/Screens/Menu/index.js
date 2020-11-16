@@ -409,7 +409,9 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.nativeAppVersion}/286/
+                {Constants.nativeAppVersion}/287/
+
+                  
                 {Constants.nativeBuildVersion}/React Native 0.63.3
               </Text>
             </ScrollView>

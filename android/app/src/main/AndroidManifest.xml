@@ -24,7 +24,7 @@
   <application android:usesCleartextTraffic="true" android:name=".MainApplication" android:requestLegacyExternalStorage="true" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@samyoptimize/optimize_app" />
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="39.0.0" />
-    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="development" />
+    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="rn-intercom" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_stat_group_11" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/splashscreen_background" />
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDxOd8PlgO-DjzmoVDaFmpGj2XcqhclrwM"/>
@@ -50,10 +50,18 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService" android:enabled="true" android:exported="false">
+    <!-- <service android:name="com.mixpanel.android.mpmetrics.MixpanelFCMMessagingService" android:enabled="true" android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
+    </service> -->
+     <service
+      android:name=".MainMessagingService"
+      android:enabled="true"
+      android:exported="true">
+        <intent-filter>
+          <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
     </service>
     <activity android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity" android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
     <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP" android:value="true"/>
