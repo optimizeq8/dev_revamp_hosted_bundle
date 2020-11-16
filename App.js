@@ -101,6 +101,8 @@ analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 import { enableScreens } from "react-native-screens";
+import MaskedView from "@react-native-community/masked-view";
+import Logo from "./assets/Logo.svg";
 enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
@@ -155,6 +157,8 @@ class App extends React.Component {
       bootSplashLogoIsLoaded: false,
       notificationData: null,
       mounted: false,
+      loadingProgress: new Animated.Value(0),
+      animDone: false,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     this.interval = null;
@@ -200,7 +204,7 @@ class App extends React.Component {
   t = (scope, options) => {
     return i18n.t(scope, { locale: this.state.locale, ...options });
   };
-  componentDidMount() {
+  async componentDidMount() {
     // FOR TEST ORG & PROJ ==> hNRRGVYYOxFiMXboexCvtPK7PSy2NgHp
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
@@ -224,9 +228,8 @@ class App extends React.Component {
       },
       debug: true,
     });
-    setTimeout(() => {
-      RNBootSplash.hide();
-    }, 1000);
+    await RNBootSplash.hide();
+
     analytics.getAnonymousId().then((anonId) => {
       this.setState({
         anonymous_userId: anonId,
@@ -512,47 +515,107 @@ class App extends React.Component {
     });
   };
   render() {
-    if (!this.state.isLoadingComplete) {
-      return (
-        <>
-          <LinearGradient
-            colors={["#9300FF", "#5600CB"]}
-            locations={[0, 1]}
-            style={styles.gradient}
-          />
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("./assets/splash.png")}
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              resizeMode="cover"
-            />
-            {/* <Animated.Image
-              source={require("./assets/logo.png")}
-              style={[
-                styles.logo,
-                // {
-                //   transform: [
-                //     {
-                //       translateY: this.state.translateY,
-                //     },
-                //   ],
-                // },
-              ]}
-              fadeDuration={0}
-            /> */}
-          </View>
-        </>
-      );
-    }
-    {
-      const prefix = "optimize://";
+    let colorLayer = this.state.animDone ? null : (
+      <LinearGradient
+        colors={["#9300FF", "#5600CB"]}
+        locations={[0, 1]}
+        style={styles.gradient}
+      />
+    );
+    let opacityNeg = {
+      opacity: this.state.loadingProgress.interpolate({
+        inputRange: [0, 25, 50],
+        outputRange: [1, 0, 0],
+        extrapolate: "clamp",
+      }),
+    };
+    let whiteLayer = this.state.animDone ? null : (
+      <Animated.View
+        style={[styles.gradient, { backgroundColor: "#fff" }, opacityNeg]}
+      />
+    );
+    // if (!this.state.isLoadingComplete) {
+    //   return (
+    //     <>
+    //       <LinearGradient
+    //         colors={["#9300FF", "#5600CB"]}
+    //         locations={[0, 1]}
+    //         style={styles.gradient}
+    //       />
+    //       <View style={styles.logoContainer}>
+    //         <Image
+    //           source={require("./assets/splash.png")}
+    //           style={{
+    //             width: "100%",
+    //             height: "100%",
+    //           }}
+    //           resizeMode="cover"
+    //         />
+    //         {/* <Animated.Image
+    //           source={require("./assets/logo.png")}
+    //           style={[
+    //             styles.logo,
+    //             // {
+    //             //   transform: [
+    //             //     {
+    //             //       translateY: this.state.translateY,
+    //             //     },
+    //             //   ],
+    //             // },
+    //           ]}
+    //           fadeDuration={0}
+    //         /> */}
+    //       </View>
+    //     </>
+    //   );
+    // }
 
-      return (
-        <Provider store={store}>
-          <PersistGate persistor={persistor} loading={this.renderLoading()}>
+    const prefix = "optimize://";
+    let imageScale = {
+      transform: [
+        {
+          scale: this.state.loadingProgress.interpolate({
+            inputRange: [0, 15, 100],
+            outputRange: [0.39, 0.8, 100],
+          }),
+        },
+        {
+          translateY: this.state.loadingProgress.interpolate({
+            inputRange: [0, 15, 100],
+            outputRange: [0, -25, -35],
+          }),
+        },
+      ],
+    };
+    let opacity = {
+      opacity: this.state.loadingProgress.interpolate({
+        inputRange: [0, 25, 50],
+        outputRange: [0, 0, 1],
+        extrapolate: "clamp",
+      }),
+    };
+
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={this.renderLoading()}>
+          {colorLayer}
+          <MaskedView
+            style={{ flex: 1 }}
+            maskElement={
+              <Animated.View
+                style={[
+                  {
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  },
+                  imageScale,
+                ]}
+              >
+                <Logo width={1000} />
+              </Animated.View>
+            }
+          >
             <StatusBar
               barStyle="light-content"
               translucent={true}
@@ -574,46 +637,49 @@ class App extends React.Component {
                 paddingTop: 0,
               }}
             />
-            <View
+            {whiteLayer}
+            <Animated.View
               onLayout={() => this.setState({ mounted: true })}
-              style={styles.container}
+              style={[styles.container, opacity]}
             >
-              <Root>
-                <AppNavigator
-                  onNavigationStateChange={(prevState, currentState) => {
-                    const currentScreen = this.getCurrentRouteName(
-                      currentState
-                    );
-                    this.setState({ currentScreen });
-                    // console.log("screeen name", currentScreen);
-                  }}
-                  uriPrefix={prefix}
-                  ref={(navigatorRef) => {
-                    this.navigatorRef = navigatorRef;
-                    NavigationService.setTopLevelNavigator(navigatorRef);
-                  }}
-                  screenProps={{
-                    translate: this.t,
-                    locale: this.state.locale,
-                    setLocale: this.setLocale,
-                    device_id: getUniqueId(),
-                    anonymous_userId: this.state.anonymous_userId,
-                    prevAppState: this.state.prevAppState,
-                  }}
-                />
-                <FlashMessage
-                  icon="auto"
-                  duration={4000}
-                  position={"top"}
-                  floating={true}
-                />
-              </Root>
-            </View>
-          </PersistGate>
-          {/* {this._maybeRenderLoadingImage()} */}
-        </Provider>
-      );
-    }
+              {this.state.isLoadingComplete && (
+                <Root>
+                  <AppNavigator
+                    onNavigationStateChange={(prevState, currentState) => {
+                      const currentScreen = this.getCurrentRouteName(
+                        currentState
+                      );
+                      this.setState({ currentScreen });
+                      // console.log("screeen name", currentScreen);
+                    }}
+                    uriPrefix={prefix}
+                    ref={(navigatorRef) => {
+                      this.navigatorRef = navigatorRef;
+                      NavigationService.setTopLevelNavigator(navigatorRef);
+                    }}
+                    screenProps={{
+                      translate: this.t,
+                      locale: this.state.locale,
+                      setLocale: this.setLocale,
+                      device_id: getUniqueId(),
+                      anonymous_userId: this.state.anonymous_userId,
+                      prevAppState: this.state.prevAppState,
+                    }}
+                  />
+                  <FlashMessage
+                    icon="auto"
+                    duration={4000}
+                    position={"top"}
+                    floating={true}
+                  />
+                </Root>
+              )}
+            </Animated.View>
+          </MaskedView>
+        </PersistGate>
+        {/* {this._maybeRenderLoadingImage()} */}
+      </Provider>
+    );
   }
   _maybeRenderLoadingImage = () => {
     if (this.state.splashAnimationComplete) {
@@ -806,6 +872,14 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
+    Animated.timing(this.state.loadingProgress, {
+      toValue: 100,
+      duration: 1000,
+      useNativeDriver: true,
+      delay: 400,
+    }).start(() => {
+      this.setState({ animDone: true });
+    });
   };
 }
 
