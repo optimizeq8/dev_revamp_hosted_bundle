@@ -22,7 +22,6 @@ import {
 } from "react-native";
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
-import Mixpanel from "@segment/analytics-react-native-mixpanel";
 import AdjustIntegration from "@segment/analytics-react-native-adjust";
 import { getUniqueId } from "react-native-device-info";
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -208,7 +207,7 @@ class App extends React.Component {
     RNAdvertisingId.getAdvertisingId();
 
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
-      using: [Mixpanel, AdjustIntegration],
+      using: [AdjustIntegration],
       // Record screen views automatically!
       recordScreenViews: true,
       // Record certain application events automatically!
