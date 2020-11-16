@@ -74,7 +74,7 @@ class AdDetails extends Component {
             {
               gender: "",
               languages: ["ar", "en"],
-              min_age: 13,
+              min_age: 18,
               max_age: 50,
             },
           ],
@@ -1007,7 +1007,7 @@ class AdDetails extends Component {
         demographics: [
           {
             languages: this.props.languages.map((lang) => lang.id),
-            min_age: 13,
+            min_age: 18,
             max_age: "50+",
           },
         ],
