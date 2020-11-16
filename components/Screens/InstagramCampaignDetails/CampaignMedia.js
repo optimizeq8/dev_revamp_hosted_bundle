@@ -5,6 +5,7 @@ import { ActivityIndicator, View, TouchableOpacity, Text } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
+import PlaceholderLineComp from "../../MiniComponents/PlaceholderLine";
 
 const preview = {
   uri:
@@ -74,11 +75,7 @@ export default (props) => {
       }}
     >
       <>
-        {loading ? (
-          <View style={styles.placeholderView}>
-            <PlaceholderLine />
-          </View>
-        ) : (
+        {loading ? null : (
           <Text uppercase style={styles.titleMedia}>
             {translate("Media")}
           </Text>
@@ -86,7 +83,7 @@ export default (props) => {
       </>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>
-          <ActivityIndicator color="#fff" />
+          <PlaceholderLineComp {...styles.backgroundViewWrapper} />
         </View>
       ) : (
         <>

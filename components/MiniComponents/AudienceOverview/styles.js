@@ -71,6 +71,13 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.orange,
     borderRadius: 30,
   },
+  backgroundViewWrapper: {
+    justifyContent: "center",
+    overflow: "hidden",
+    width: "100%",
+    height: "100%",
+    borderRadius: 40,
+  },
 });
 
 export default styles;

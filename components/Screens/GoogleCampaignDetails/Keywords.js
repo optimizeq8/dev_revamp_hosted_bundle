@@ -25,11 +25,7 @@ export default function (props) {
 
   return (
     <View style={styles.keywordContainer}>
-      {loading ? (
-        <View style={styles.placeholderView}>
-          <PlaceholderLine />
-        </View>
-      ) : (
+      {loading ? null : (
         <Text
           style={[
             styles.subHeading,
@@ -39,39 +35,57 @@ export default function (props) {
           {translate("Keywords")}
         </Text>
       )}
-      <TouchableOpacity
-        style={styles.targetingContainer}
-        onPress={() => {
-          !loading &&
-            props.navigation.push("GoogleKeywordsStats", {
-              source: "campaign_detail",
-              source_action: "a_open_keywords_performance",
-            });
-        }}
-      >
-        {listKeyWords && listKeyWords.length > 0 && (
-          <Text style={styles.subHeading}>{translate("Best Performing")}</Text>
-        )}
-        {loading ? (
-          <View style={styles.placeholderView}>
-            <PlaceholderLine />
-          </View>
-        ) : listKeyWords && listKeyWords.length > 0 ? (
-          listKeyWords.map((key) => (
-            <View key={key.keyword} style={styles.keywordView}>
-              <Text numberOfLines={1} style={styles.keyword}>
-                {key.keyword}
+
+      {loading ? (
+        <View
+          style={[
+            styles.targetingContainer,
+            {
+              paddingBottom: 0,
+              paddingHorizontal: 0,
+              backgroundColor: "#0000",
+            },
+          ]}
+        >
+          <PlaceholderLine
+            width={"100%"}
+            height={"100%"}
+            marginVertical={"0%"}
+          />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.targetingContainer}
+          onPress={() => {
+            !loading &&
+              props.navigation.push("GoogleKeywordsStats", {
+                source: "campaign_detail",
+                source_action: "a_open_keywords_performance",
+              });
+          }}
+        >
+          {listKeyWords && listKeyWords.length > 0 && (
+            <Text style={styles.subHeading}>
+              {translate("Best Performing")}
+            </Text>
+          )}
+          {listKeyWords && listKeyWords.length > 0 ? (
+            listKeyWords.map((key) => (
+              <View key={key.keyword} style={styles.keywordView}>
+                <Text numberOfLines={1} style={styles.keyword}>
+                  {key.keyword}
+                </Text>
+              </View>
+            ))
+          ) : (
+            <View style={styles.noKeywordsView}>
+              <Text uppercase style={styles.subHeading}>
+                {translate("No available keywords")}
               </Text>
             </View>
-          ))
-        ) : (
-          <View style={styles.noKeywordsView}>
-            <Text uppercase style={styles.subHeading}>
-              {translate("No available keywords")}
-            </Text>
-          </View>
-        )}
-      </TouchableOpacity>
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

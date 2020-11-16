@@ -18,6 +18,7 @@ import CampDetailsInfo from "./CampDetailsInfo";
 import LowerButton from "../LowerButton";
 import globalStyles from "../../../GlobalStyles";
 import { Small } from "../../MiniComponents/StyledComponents/index";
+import PlaceholderLineComp from "../PlaceholderLine";
 class CampaignCircleChart extends Component {
   componentDidUpdate(prevProps) {
     if (
@@ -45,13 +46,13 @@ class CampaignCircleChart extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let {
-      campaign,
       detail,
       loading,
       handleChartToggle,
       channel,
       chartExpanded,
     } = this.props;
+    let campaign = this.props.campaign || { review_status: "" };
 
     return (
       <View style={detail ? styles.campaignInfoStyle : styles.campaignInfoCard}>
@@ -63,13 +64,15 @@ class CampaignCircleChart extends Component {
                 <Text style={globalStyles.title}>
                   {translate("Ad Performance")}
                 </Text>
-                <LowerButton
-                  screenProps={this.props.screenProps}
-                  function={() => handleChartToggle()}
-                  width={15}
-                  height={15}
-                  style={styles.adPerformanceLowerBUtton}
-                />
+                {!loading && (
+                  <LowerButton
+                    screenProps={this.props.screenProps}
+                    function={() => handleChartToggle()}
+                    width={15}
+                    height={15}
+                    style={styles.adPerformanceLowerBUtton}
+                  />
+                )}
               </>
             )}
           </View>
@@ -89,166 +92,188 @@ class CampaignCircleChart extends Component {
             maxHeight: "100%",
           }}
         >
-          {!loading && (
+          {
             <Chart
               budget={
-                channel === "snapchat" || channel === "instagram"
-                  ? campaign.lifetime_budget_micro
-                  : campaign.budget
+                campaign
+                  ? channel === "snapchat" || channel === "instagram"
+                    ? campaign.lifetime_budget_micro
+                    : campaign.budget
+                  : 0
               }
               spends={campaign.spends}
               screenProps={this.props.screenProps}
               detail={detail}
+              loading={loading}
             />
-          )}
+          }
 
-          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
-            <View style={detail ? styles.campaignIcons : styles.campaignCard}>
-              {!detail ||
-              (campaign && campaign.objective === "BRAND_AWARENESS") ? (
-                <ImpressionsIcons
-                  fill="#fff"
-                  height={heightPercentageToDP(3)}
-                  width={heightPercentageToDP(3)}
-                />
-              ) : (
-                <SwipeUpsIcon
-                  fill="#fff"
-                  height={heightPercentageToDP(3)}
-                  width={heightPercentageToDP(3)}
-                />
-              )}
-              <View
-                style={[
-                  styles.campaignInfo,
-                  { flexDirection: detail ? "column-reverse" : "column" },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.campaignNumbers,
-                    detail && styles.campaignNumbersDetail,
-                  ]}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                >
-                  {formatNumber(
-                    campaign
-                      ? !detail || campaign.objective === "BRAND_AWARENESS"
-                        ? campaign.impressions
-                        : channel === "instagram"
-                        ? campaign.clicks
-                        : campaign.swipes
-                      : 0,
-                    true
-                  )}
-                </Text>
-                <Text style={[styles.subtext, detail && styles.subtextDetail]}>
-                  {!detail ||
-                  (campaign && campaign.objective === "BRAND_AWARENESS")
-                    ? translate("Impressions")
-                    : channel === "instagram"
-                    ? translate("Clicks")
-                    : translate("Swipe Ups")}
-                </Text>
-              </View>
+          {loading ? (
+            <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
+              <PlaceholderLineComp {...styles.campaignIcons} />
+              <PlaceholderLineComp {...styles.campaignIcons} />
+              <PlaceholderLineComp {...styles.campaignIcons} />
             </View>
-            {detail ? (
+          ) : (
+            <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
               <View style={detail ? styles.campaignIcons : styles.campaignCard}>
-                <ReachIcon
-                  fill="#fff"
-                  height={heightPercentageToDP(3)}
-                  width={heightPercentageToDP(3)}
-                />
-                <View style={styles.campaignInfo}>
+                {!detail ||
+                (campaign && campaign.objective === "BRAND_AWARENESS") ? (
+                  <ImpressionsIcons
+                    fill="#fff"
+                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(3)}
+                  />
+                ) : (
+                  <SwipeUpsIcon
+                    fill="#fff"
+                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(3)}
+                  />
+                )}
+                <View
+                  style={[
+                    styles.campaignInfo,
+                    { flexDirection: detail ? "column-reverse" : "column" },
+                  ]}
+                >
                   <Text
-                    style={[styles.subtext, , detail && styles.subtextDetail]}
-                  >
-                    {translate("Reach")}
-                    <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
-                  </Text>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={[
                       styles.campaignNumbers,
                       detail && styles.campaignNumbersDetail,
                     ]}
-                  >
-                    {campaign ? formatNumber(campaign.reach, true) : 0}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <View style={detail ? styles.campaignIcons : styles.campaignCard}>
-                <SwipeUpsIcon
-                  fill="#fff"
-                  height={heightPercentageToDP(3)}
-                  width={heightPercentageToDP(3)}
-                />
-                <View style={styles.campaignInfo}>
-                  <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={[
-                      styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail,
-                    ]}
                   >
                     {formatNumber(
                       campaign
-                        ? campaign.objective === "BRAND_AWARENESS"
-                          ? campaign.cpm
+                        ? !detail || campaign.objective === "BRAND_AWARENESS"
+                          ? campaign.impressions
+                          : channel === "instagram"
+                          ? campaign.clicks
                           : campaign.swipes
                         : 0,
-                      campaign.objective !== "BRAND_AWARENESS",
-                      campaign.objective === "BRAND_AWARENESS"
+                      true
                     )}
                   </Text>
                   <Text
-                    style={[styles.subtext, , detail && styles.subtextDetail]}
+                    style={[styles.subtext, detail && styles.subtextDetail]}
                   >
-                    {campaign && campaign.objective === "BRAND_AWARENESS"
-                      ? translate("cpm")
+                    {!detail ||
+                    (campaign && campaign.objective === "BRAND_AWARENESS")
+                      ? translate("Impressions")
+                      : channel === "instagram"
+                      ? translate("Clicks")
                       : translate("Swipe Ups")}
                   </Text>
                 </View>
               </View>
-            )}
-            {detail && (
-              <View style={detail ? styles.campaignIcons : styles.campaignCard}>
-                <FrequencyIcon
-                  fill="#fff"
-                  height={heightPercentageToDP(3)}
-                  width={heightPercentageToDP(3)}
-                />
-                <View style={styles.campaignInfo}>
-                  <Text
-                    style={[styles.subtext, detail && styles.subtextDetail]}
-                  >
-                    {translate("Frequency")}
-                    {channel !== "instagram" && (
+
+              {detail ? (
+                <View
+                  style={detail ? styles.campaignIcons : styles.campaignCard}
+                >
+                  <ReachIcon
+                    fill="#fff"
+                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(3)}
+                  />
+                  <View style={styles.campaignInfo}>
+                    <Text
+                      style={[styles.subtext, , detail && styles.subtextDetail]}
+                    >
+                      {translate("Reach")}
                       <Small style={{ fontSize: 8 }}>
                         {translate("Total")}
                       </Small>
-                    )}
-                  </Text>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={[
-                      styles.campaignNumbers,
-                      detail && styles.campaignNumbersDetail,
-                    ]}
-                  >
-                    {campaign
-                      ? parseFloat(campaign.paid_frequency).toFixed(2)
-                      : parseFloat(0).toFixed(2)}
-                  </Text>
+                    </Text>
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={[
+                        styles.campaignNumbers,
+                        detail && styles.campaignNumbersDetail,
+                      ]}
+                    >
+                      {campaign ? formatNumber(campaign.reach, true) : 0}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )}
-          </View>
+              ) : (
+                <View
+                  style={detail ? styles.campaignIcons : styles.campaignCard}
+                >
+                  <SwipeUpsIcon
+                    fill="#fff"
+                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(3)}
+                  />
+                  <View style={styles.campaignInfo}>
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={[
+                        styles.campaignNumbers,
+                        detail && styles.campaignNumbersDetail,
+                      ]}
+                    >
+                      {formatNumber(
+                        campaign
+                          ? campaign.objective === "BRAND_AWARENESS"
+                            ? campaign.cpm
+                            : campaign.swipes
+                          : 0,
+                        campaign.objective !== "BRAND_AWARENESS",
+                        campaign.objective === "BRAND_AWARENESS"
+                      )}
+                    </Text>
+                    <Text
+                      style={[styles.subtext, , detail && styles.subtextDetail]}
+                    >
+                      {campaign && campaign.objective === "BRAND_AWARENESS"
+                        ? translate("cpm")
+                        : translate("Swipe Ups")}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              {detail && (
+                <View
+                  style={detail ? styles.campaignIcons : styles.campaignCard}
+                >
+                  <FrequencyIcon
+                    fill="#fff"
+                    height={heightPercentageToDP(3)}
+                    width={heightPercentageToDP(3)}
+                  />
+                  <View style={styles.campaignInfo}>
+                    <Text
+                      style={[styles.subtext, detail && styles.subtextDetail]}
+                    >
+                      {translate("Frequency")}
+                      {channel !== "instagram" && (
+                        <Small style={{ fontSize: 8 }}>
+                          {translate("Total")}
+                        </Small>
+                      )}
+                    </Text>
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={[
+                        styles.campaignNumbers,
+                        detail && styles.campaignNumbersDetail,
+                      ]}
+                    >
+                      {campaign
+                        ? parseFloat(campaign.paid_frequency).toFixed(2)
+                        : parseFloat(0).toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
           {detail &&
             chartExpanded &&
             (channel === "instagram" ? (
@@ -265,7 +290,8 @@ class CampaignCircleChart extends Component {
         </ScrollView>
         {detail &&
           !(
-            this.campaignEndedOrNot(campaign) || campaign.campaign_end === "1"
+            campaign &&
+            (this.campaignEndedOrNot(campaign) || campaign.campaign_end === "1")
           ) && <CampDetailsInfo {...this.props} />}
       </View>
     );

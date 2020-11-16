@@ -769,7 +769,10 @@ export const get_languages = () => {
       .then((data) => {
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST,
-          payload: { data, loading: false },
+          payload: {
+            data: typeof data === "string" ? [] : data,
+            loading: false,
+          },
         });
       })
       .catch((err) => {

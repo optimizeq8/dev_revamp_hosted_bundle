@@ -15,50 +15,45 @@ import globalStyles from "../../../GlobalStyles";
  * @param {string} navigatingRoutePath To redirect to next screen
  *
  */
-export default AundienceOverView = props => {
+export default AundienceOverView = (props) => {
   let {
     data,
     loading,
     navigatingRoutePath,
     selectedCampaign,
-    editCampaign
+    editCampaign,
   } = props;
   const { translate } = props.screenProps;
   return (
     <View style={styles.audienceOverview}>
-      {loading ? (
-        <View style={styles.placeholderView}>
-          <PlaceholderLine />
-        </View>
-      ) : (
+      {loading ? null : (
         <View style={styles.audienceHeadingView}>
           <Text style={[globalStyles.title, styles.title]}>
             {translate("Audience")}
           </Text>
         </View>
       )}
-
-      <TouchableOpacity
-        style={styles.targetingContainer}
-        onPress={() => {
-          !loading &&
-            NavigationService.navigate(navigatingRoutePath, {
-              editCampaign,
-              campaign: selectedCampaign,
-              source: "campaign_details",
-              source_action: "a_open_ad_targeting"
-            });
-        }}
-      >
-        {data &&
-          data.map(info => (
-            <View key={info.heading} style={styles.categoryView}>
-              {info.icon}
-              {loading ? (
-                <View style={styles.placeholderView}>
-                  <PlaceholderLine />
-                </View>
-              ) : (
+      {loading ? (
+        <View style={styles.backgroundViewWrapper}>
+          <PlaceholderLine {...styles.backgroundViewWrapper} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.targetingContainer}
+          onPress={() => {
+            !loading &&
+              NavigationService.navigate(navigatingRoutePath, {
+                editCampaign,
+                campaign: selectedCampaign,
+                source: "campaign_details",
+                source_action: "a_open_ad_targeting",
+              });
+          }}
+        >
+          {data &&
+            data.map((info) => (
+              <View key={info.heading} style={styles.categoryView}>
+                {info.icon}
                 <View>
                   <Text style={styles.categories}>
                     {translate(info.heading)}
@@ -71,10 +66,10 @@ export default AundienceOverView = props => {
                     {info.content}
                   </Text>
                 </View>
-              )}
-            </View>
-          ))}
-      </TouchableOpacity>
+              </View>
+            ))}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -84,5 +79,5 @@ AundienceOverView.propTypes = {
   data: PropTypes.array,
   loading: PropTypes.bool,
   navigatingRoutePath: PropTypes.string,
-  selectedCampaign: PropTypes.object
+  selectedCampaign: PropTypes.object,
 };

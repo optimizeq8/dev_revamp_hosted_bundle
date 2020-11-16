@@ -83,11 +83,7 @@ export default (props) => {
       }}
     >
       <>
-        {loading ? (
-          <View style={styles.placeholderView}>
-            <PlaceholderLine />
-          </View>
-        ) : (
+        {loading ? null : (
           <Text uppercase style={styles.titleMedia}>
             {translate("Media")}
           </Text>
@@ -95,7 +91,7 @@ export default (props) => {
       </>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>
-          <ActivityIndicator color="#fff" />
+          <PlaceholderLine {...styles.backgroundViewWrapper} />
         </View>
       ) : (
         <>
@@ -111,8 +107,7 @@ export default (props) => {
               style={[styles.storyOrCollectionStyle]}
             />
           )}
-          {!loading &&
-          selectedCampaign &&
+          {selectedCampaign &&
           !selectedCampaign.media.includes(".jpg") &&
           !selectedCampaign.media.includes(".png") ? (
             <TouchableOpacity
