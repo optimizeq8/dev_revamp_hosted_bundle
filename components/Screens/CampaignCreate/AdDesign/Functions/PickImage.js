@@ -466,6 +466,8 @@ export const _pickImage = async (
                   type: "warning",
                 });
                 onToggleModal(false);
+                videoIsExporting(false);
+
                 setTheState({
                   sourceChanging: false,
                 });
@@ -488,6 +490,7 @@ export const _pickImage = async (
                     media: "//",
                     type: "",
                   });
+                videoIsExporting(false);
 
                 showMessage({
                   message: translate("Minimum video duration is 3 seconds"),
@@ -527,6 +530,7 @@ export const _pickImage = async (
                     type: "",
                   });
                 onToggleModal(false);
+                videoIsExporting(false);
 
                 showMessage({
                   message: translate(
@@ -568,6 +572,7 @@ export const _pickImage = async (
                   type: "warning",
                 });
                 onToggleModal(false);
+                videoIsExporting(false);
                 return false;
               } else {
                 result.uri = newResult.hasOwnProperty("newUri")
@@ -586,6 +591,8 @@ export const _pickImage = async (
                 error_page: "ad_design",
                 error_description: "Editing canceled",
               });
+              videoIsExporting(false);
+
               return Promise.reject("Editing canceled");
             }
           })
