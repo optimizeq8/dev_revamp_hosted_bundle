@@ -248,7 +248,6 @@ class App extends React.Component {
     Platform.OS === "ios" && Intercom.registerForPush();
 
     Notifications.getDevicePushTokenAsync().then((token) => {
-      console.log("Device Token: ", token.data);
       Intercom.sendTokenToIntercom(token.data);
     });
     Intercom.addEventListener(

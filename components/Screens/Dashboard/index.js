@@ -243,7 +243,6 @@ class Dashboard extends Component {
               ]
             : [],
         });
-        console.log("setuser hash 1");
       });
     }
   }
@@ -476,7 +475,7 @@ class Dashboard extends Component {
   };
 
   onDidFocus = () => {
-    console.log("this.props.userInfo.userid", this.props.userInfo.userid);
+    // Platform.OS === "android" && BadgeAndroid.setBadge(5);
     Intercom.registerIdentifiedUser({
       userId: this.props.userInfo.userid,
     }).then((res) => {
@@ -501,12 +500,9 @@ class Dashboard extends Component {
           : [],
       });
       Intercom.getUnreadConversationCount().then((res) => {
-        Notifications.setBadgeCountAsync(res).then((res) => {
-          console.log("setBadgeCountAsync", res);
-        });
+        Notifications.setBadgeCountAsync(res);
         this.props.setCounterForUnreadMessage(res);
       });
-      console.log("setuser hash");
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
