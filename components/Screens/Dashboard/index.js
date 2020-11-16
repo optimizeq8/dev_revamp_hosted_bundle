@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Text,
   NativeModules,
+  RefreshControl,
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import Intercom from "react-native-intercom";
@@ -597,7 +598,7 @@ class Dashboard extends Component {
       <PlaceHolderLine
         key={x}
         style={styles.placeHolderCardsStyle}
-        width={"90%"}
+        width={wp(90)}
         height={150}
         color={"rgba(0,0,0,0.1)"}
       />
@@ -956,7 +957,16 @@ class Dashboard extends Component {
 
                       {this.props.loadingCampaigns ||
                       !this.props.campaignList ? (
-                        placeHolderCards
+                        <ScrollView
+                          refreshControl={
+                            <RefreshControl
+                              refreshing={this.state.fetching_from_server}
+                              onRefresh={this.reloadData}
+                            />
+                          }
+                        >
+                          {placeHolderCards}
+                        </ScrollView>
                       ) : (
                         <Animatable.View duration={1000} animation="fadeIn">
                           <FlatList

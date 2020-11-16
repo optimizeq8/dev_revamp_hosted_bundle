@@ -5,10 +5,10 @@ import styles from "./styles";
 import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
-
+import PlaceholderLineComp from "../PlaceholderLine";
 export default Chart = (props) => {
   const { translate } = props.screenProps;
-  let { detail, budget, spends } = props;
+  let { detail, budget, spends, loading } = props;
   let x = (spends / budget) * 100;
   return (
     <View
@@ -25,7 +25,7 @@ export default Chart = (props) => {
         rotation={0}
         lineCap="round"
         style={styles.chart}
-        backgroundColor="#0004"
+        backgroundColor="#0002"
         tintColorSecondary={globalColors.orange}
         tintColorThirdy={globalColors.green}
         tintColor={globalColors.yellow}
@@ -45,14 +45,18 @@ export default Chart = (props) => {
                     {translate("Spend")}
                   </Text>
                 )}
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={styles.chartText}
-                  adjustsFontSizeToFit={true}
-                >
-                  ${formatNumber(parseFloat(spends).toFixed(2), true)}
-                </Text>
+                {loading ? (
+                  <PlaceholderLineComp width={50} height={10} />
+                ) : (
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={styles.chartText}
+                    adjustsFontSizeToFit={true}
+                  >
+                    ${formatNumber(parseFloat(spends).toFixed(2), true)}
+                  </Text>
+                )}
                 {!detail && (
                   <Text uppercase style={[styles.chartSubtext]}>
                     {"Spent"}
@@ -60,14 +64,18 @@ export default Chart = (props) => {
                 )}
                 {detail && (
                   <View>
-                    <Text
-                      adjustsFontSizeToFit={true}
-                      style={[styles.chartBudgetSubtext]}
-                    >
-                      {`${translate("out of")} ${
-                        budget.length > 6 ? "\n" : ""
-                      }$${budget}`}
-                    </Text>
+                    {loading ? (
+                      <PlaceholderLineComp width={50} height={10} />
+                    ) : (
+                      <Text
+                        adjustsFontSizeToFit={true}
+                        style={[styles.chartBudgetSubtext]}
+                      >
+                        {`${translate("out of")} ${
+                          budget && budget.length > 6 ? "\n" : ""
+                        }$${budget}`}
+                      </Text>
+                    )}
                   </View>
                 )}
               </View>

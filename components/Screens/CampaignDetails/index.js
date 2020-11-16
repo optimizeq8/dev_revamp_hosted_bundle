@@ -595,44 +595,40 @@ class CampaignDetails extends Component {
                   </Text>
                 </View>
               )}
-            {loading ? (
-              <View style={{ margin: 5 }}>
-                <PlaceholderLine />
-              </View>
-            ) : (
-              !this.state.expand && (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: selectedCampaign.ad_status_color_code,
-                      },
-                    ]}
-                    name={
-                      selectedCampaign.review_status.includes("REJECTED")
-                        ? "circle-slash"
-                        : "circle"
-                    }
-                    type={
-                      selectedCampaign.review_status.includes("REJECTED")
-                        ? "Octicons"
-                        : "FontAwesome"
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: selectedCampaign.ad_status_color_code,
-                      },
-                    ]}
-                  >
-                    {translate(`${selectedCampaign.ad_status}`)}
-                  </Text>
-                </View>
-              )
-            )}
+            {loading
+              ? null
+              : !this.state.expand && (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: selectedCampaign.ad_status_color_code,
+                        },
+                      ]}
+                      name={
+                        selectedCampaign.review_status.includes("REJECTED")
+                          ? "circle-slash"
+                          : "circle"
+                      }
+                      type={
+                        selectedCampaign.review_status.includes("REJECTED")
+                          ? "Octicons"
+                          : "FontAwesome"
+                      }
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        {
+                          color: selectedCampaign.ad_status_color_code,
+                        },
+                      ]}
+                    >
+                      {translate(`${selectedCampaign.ad_status}`)}
+                    </Text>
+                  </View>
+                )}
             <ScrollView
               contentContainerStyle={{ height: hp(115) }}
               scrollEnabled={!this.state.expand}
@@ -640,45 +636,42 @@ class CampaignDetails extends Component {
               style={{ maxHeight: "100%" }}
             >
               <View style={[styles.mainCard]}>
-                {!loading &&
-                  (selectedCampaign &&
-                  selectedCampaign.review_status === "REJECTED" ? (
-                    <RejectedSnapchatInfo
-                      loading={loading}
+                {selectedCampaign &&
+                selectedCampaign.review_status === "REJECTED" ? (
+                  <RejectedSnapchatInfo
+                    loading={loading}
+                    screenProps={this.props.screenProps}
+                    review_status_reason={
+                      selectedCampaign.review_status_reason || []
+                    }
+                    navigation={this.props.navigation}
+                    selectedCampaign={selectedCampaign}
+                  />
+                ) : (
+                  <TouchableOpacity
+                    onLayout={this.onLayout}
+                    disabled={this.state.expand}
+                    onPress={this.handleChartToggle}
+                  >
+                    {this.state.expand && (
+                      <ChartDateChoices
+                        selectedCampaign={selectedCampaign}
+                        dateField={this.dateField}
+                        durationChange={this.durationChange}
+                        screenProps={this.props.screenProps}
+                      />
+                    )}
+                    <CampaignCircleChart
+                      channel={"snapchat"}
+                      campaign={selectedCampaign}
+                      detail={true}
                       screenProps={this.props.screenProps}
-                      review_status_reason={
-                        selectedCampaign.review_status_reason || []
-                      }
-                      navigation={this.props.navigation}
-                      selectedCampaign={selectedCampaign}
+                      loading={loading}
+                      handleChartToggle={this.handleChartToggle}
+                      chartExpanded={this.state.expand}
                     />
-                  ) : (
-                    selectedCampaign && (
-                      <TouchableOpacity
-                        onLayout={this.onLayout}
-                        disabled={this.state.expand}
-                        onPress={this.handleChartToggle}
-                      >
-                        {this.state.expand && (
-                          <ChartDateChoices
-                            selectedCampaign={selectedCampaign}
-                            dateField={this.dateField}
-                            durationChange={this.durationChange}
-                            screenProps={this.props.screenProps}
-                          />
-                        )}
-                        <CampaignCircleChart
-                          channel={"snapchat"}
-                          campaign={selectedCampaign}
-                          detail={true}
-                          screenProps={this.props.screenProps}
-                          loading={loading}
-                          handleChartToggle={this.handleChartToggle}
-                          chartExpanded={this.state.expand}
-                        />
-                      </TouchableOpacity>
-                    )
-                  ))}
+                  </TouchableOpacity>
+                )}
 
                 {!this.state.expand && (
                   <View style={styles.campaignMediaAndInfo}>
