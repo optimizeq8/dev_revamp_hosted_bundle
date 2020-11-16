@@ -372,7 +372,7 @@ class Website extends Component {
           </View>
         </InputScrollView>
         {this.props.loadingDestinationURLValid && (
-          <LoadingScreen top={30} withBackground />
+          <LoadingScreen withBackground top={31} />
         )}
       </View>
     );
