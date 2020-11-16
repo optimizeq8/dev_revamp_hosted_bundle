@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as actionTypes from "../actions/actionTypes";
 import analytics from "@segment/analytics-react-native";
 import * as Notifications from "expo-notifications";
+import { MixpanelInstance } from "react-native-mixpanel";
 
 const initialState = {
   userid: null,
@@ -15,6 +16,12 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENT_USER:
+      const MixpanelSDK = new MixpanelInstance(
+        "c9ade508d045eb648f95add033dfb017",
+        false,
+        false
+      );
+      MixpanelSDK.initialize().then();
       AsyncStorage.getItem("appLanguage")
         .then((language) => {
           let userTraits = {
@@ -34,6 +41,7 @@ const reducer = (state = initialState, action) => {
               userTraits["$ios_devices"] = [token.data];
             }
             analytics.identify(action.payload.user.userid, userTraits);
+            MixpanelSDK.identify(action.payload.user.userid);
           });
         })
         .catch((error) => {
