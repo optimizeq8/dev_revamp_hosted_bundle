@@ -601,6 +601,7 @@ class Dashboard extends Component {
         width={wp(90)}
         height={150}
         color={"rgba(0,0,0,0.1)"}
+        stopAutoRun={true}
       />
     ));
     let menu =
