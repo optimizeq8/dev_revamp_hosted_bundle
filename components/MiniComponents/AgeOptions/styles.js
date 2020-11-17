@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#0000",
     marginLeft: 0,
+    paddingTop: 10,
   },
   dataContainer: {
     paddingTop: 30,

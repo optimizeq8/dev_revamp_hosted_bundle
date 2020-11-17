@@ -9,9 +9,7 @@ const styles = StyleSheet.create({
   },
   cardView: {
     display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: "column",
     paddingHorizontal: 20,
     paddingVertical: 15,
     backgroundColor: "#fff",
@@ -74,6 +72,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 20,
     marginVertical: 5,
+  },
+  countryNames: {
+    fontSize: 10,
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple3,
   },
 });
 

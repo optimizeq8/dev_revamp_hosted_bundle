@@ -271,6 +271,43 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginVertical: 4,
   },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    fontFamily: "montserrat-bold-english",
+  },
+  selectAudienceText: {
+    paddingHorizontal: 0,
+    width: "60%",
+    fontSize: 14,
+  },
+  createView: { flexDirection: "row", alignItems: "center" },
+  createText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: "#9325FF",
+  },
+  iconRight: {
+    fontSize: 20,
+    color: globalColors.purple,
+  },
+  iconLoading: {
+    right: "100%",
+  },
+  iconAdd: { marginHorizontal: 5 },
 });
 
 export default styles;

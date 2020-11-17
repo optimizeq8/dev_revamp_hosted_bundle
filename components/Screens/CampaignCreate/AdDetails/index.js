@@ -1726,23 +1726,11 @@ class AdDetails extends Component {
                       >
                         {translate("Set your daily budget")}
                       </Text>
-                      <View
-                        style={{
-                          backgroundColor: "#FFF",
-                          paddingHorizontal: 20,
-                          paddingVertical: 5,
-                          borderRadius: 30,
-                          alignItems: "center",
-                        }}
-                      >
+                      <View style={styles.lifetimeBudgetView}>
                         <Text
                           style={[
                             styles.subHeadings,
-                            {
-                              fontSize: 10,
-                              paddingHorizontal: 0,
-                              color: globalColors.orange,
-                            },
+                            styles.lifetimeBudgetText,
                           ]}
                         >
                           {translate("Lifetime budget")}
@@ -1750,11 +1738,7 @@ class AdDetails extends Component {
                         <Text
                           style={[
                             styles.subHeadings,
-                            {
-                              fontSize: 14,
-                              paddingHorizontal: 0,
-                              paddingVertical: 0,
-                            },
+                            styles.lifetimeBudgetNumber,
                           ]}
                         >
                           $
@@ -1805,59 +1789,37 @@ class AdDetails extends Component {
                       <AudienceIcon />
                     )}
                     <Text
-                      style={[
-                        styles.subHeadings,
-                        {
-                          paddingHorizontal: 0,
-                          width: "60%",
-                          fontSize: 14,
-                        },
-                      ]}
+                      style={[styles.subHeadings, styles.selectAudienceText]}
                     >
                       {"Select Audience"}
                     </Text>
                     {showAudienceList && !this.props.audienceListLoading && (
                       <TouchableOpacity
-                        style={{ flexDirection: "row", alignItems: "center" }}
+                        style={styles.createView}
                         onPress={this.createNewAudience}
                       >
                         <PurplePlusIcon
                           width={15}
                           height={15}
-                          style={{ marginHorizontal: 5 }}
+                          style={styles.iconAdd}
                         />
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-regular",
-                            fontSize: 12,
-                            color: "#9325FF",
-                          }}
-                        >
+                        <Text style={styles.createText}>
                           {translate("Create")}
                         </Text>
                       </TouchableOpacity>
                     )}
                     {!showAudienceList && this.props.audienceList.length > 0 ? (
                       <TouchableOpacity
-                        style={{ flexDirection: "row", alignItems: "center" }}
+                        style={styles.createView}
                         onPress={this.chooseExistingAudience}
                       >
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-regular",
-                            fontSize: 12,
-                            color: "#9325FF",
-                          }}
-                        >
+                        <Text style={styles.createText}>
                           {translate("Choose Preset")}
                         </Text>
                         <Icon
                           name="keyboard-arrow-right"
                           type="MaterialIcons"
-                          style={{
-                            fontSize: 20,
-                            color: globalColors.purple,
-                          }}
+                          style={styles.iconRight}
                         />
                       </TouchableOpacity>
                     ) : (
@@ -1865,22 +1827,13 @@ class AdDetails extends Component {
                         <ActivityIndicator
                           color={globalColors.purple}
                           size="small"
-                          style={{
-                            right: "100%",
-                          }}
+                          style={styles.iconLoading}
                         />
                       )
                     )}
                   </View>
                 )}
-                {showAudienceList && (
-                  <SnapchatAudienceList
-                    screenProps={this.props.screenProps}
-                    navigation={this.props.navigation}
-                    chooseExistingAudience={this.chooseExistingAudience}
-                    setSelectedAudience={this.setSelectedAudience}
-                  />
-                )}
+
                 {!showAudienceList && (
                   <TargetAudience
                     screenProps={this.props.screenProps}
@@ -1896,6 +1849,14 @@ class AdDetails extends Component {
                     translate={translate}
                     editCampaign={this.editCampaign}
                     startEditing={startEditing}
+                  />
+                )}
+                {showAudienceList && (
+                  <SnapchatAudienceList
+                    screenProps={this.props.screenProps}
+                    navigation={this.props.navigation}
+                    chooseExistingAudience={this.chooseExistingAudience}
+                    setSelectedAudience={this.setSelectedAudience}
                   />
                 )}
                 <AudienceReach

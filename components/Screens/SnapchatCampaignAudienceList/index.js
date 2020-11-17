@@ -91,20 +91,7 @@ class SnapchatCampaignAudience extends React.Component {
       audience_channel: "snapchat",
     });
   };
-  onDidFocus = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track("audience_list", {
-      source,
-      source_action,
-    });
-  };
+
   retrieveAudinece = () => {
     this.props.getAudienceList();
   };
