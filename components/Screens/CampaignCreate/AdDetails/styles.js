@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
     // marginVertical: 8,
     backgroundColor: "#fff",
     borderRadius: 50,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   icon: {
     alignSelf: "center",
@@ -198,7 +199,8 @@ const styles = StyleSheet.create({
     color: globalColors.gray,
 
     fontFamily: "montserrat-regular",
-    fontSize: 11,
+    fontSize: 13,
+    paddingVertical: 2,
     textAlign: "left",
   },
   flex: {

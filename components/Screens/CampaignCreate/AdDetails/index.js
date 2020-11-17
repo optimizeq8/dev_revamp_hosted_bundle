@@ -6,8 +6,9 @@ import {
   I18nManager,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-import { Content, Row } from "native-base";
+import { Content, Row, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -54,7 +55,9 @@ import find from "lodash/find";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import SnapchatLocation from "../../../MiniComponents/SnapchatLocation";
 import { globalColors } from "../../../../GlobalStyles";
-import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../../assets/SVGs/WalletOutline";
+import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
+
 import GradientButton from "../../../MiniComponents/GradientButton";
 import AudienceReach from "./AudienceReach";
 
@@ -1801,31 +1804,44 @@ class AdDetails extends Component {
                 )}
                 {startEditing && (
                   <View style={styles.reachView}>
+                    <AudienceIcon />
                     <Text
                       style={[
                         styles.subHeadings,
                         {
                           paddingHorizontal: 0,
                           width:
-                            this.props.audienceList.length > 0 ? "30%" : "60%",
+                            this.props.audienceList.length > 0 ? "60%" : "60%",
                           fontSize:
                             this.props.audienceList.length > 0 ? 13 : 16,
                         },
                       ]}
                     >
-                      {translate("Who would you like to reach?")}
+                      {"Select Audience"}
                     </Text>
                     {this.props.audienceList.length > 0 ? (
-                      <GradientButton
-                        uppercase={true}
-                        text={translate("Choose Existing Audience")}
-                        onPressAction={this.chooseExistingAudience}
-                        transparent={true}
-                        textStyle={styles.existingButtonText}
-                        height={50}
-                        style={styles.existingButton}
-                        radius={50}
-                      />
+                      <TouchableOpacity
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                        onPress={this.chooseExistingAudience}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: "montserrat-regular",
+                            fontSize: 12,
+                            color: "#9325FF",
+                          }}
+                        >
+                          Choose Preset
+                        </Text>
+                        <Icon
+                          name="keyboard-arrow-right"
+                          type="MaterialIcons"
+                          style={{
+                            fontSize: 20,
+                            color: globalColors.purple,
+                          }}
+                        />
+                      </TouchableOpacity>
                     ) : (
                       this.props.audienceListLoading && (
                         <ActivityIndicator
