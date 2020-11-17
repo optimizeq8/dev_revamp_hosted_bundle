@@ -256,6 +256,21 @@ const styles = StyleSheet.create({
   subAudienceHeading: {
     paddingLeft: 20,
   },
+  audienceHeading: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: globalColors.purple3,
+    flex: 1,
+    marginHorizontal: 5,
+    textTransform: "uppercase",
+  },
+  audienceCard: {
+    backgroundColor: "#FFF",
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginVertical: 4,
+  },
 });
 
 export default styles;

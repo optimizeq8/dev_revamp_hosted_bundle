@@ -1,6 +1,9 @@
-<svg id="Component_287_30" data-name="Component 287 – 30" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-    viewBox="0 0 35 35">
-    <rect id="Rectangle_2322" data-name="Rectangle 2322" width="30" height="30" rx="15" fill="#76DE8A40" stroke="#76DE8A" stroke-width="2" />
+<svg id="Component_287_30" data-name="Component 287 – 30" xmlns="http://www.w3.org/2000/svg"
+    width="35"
+    height="35"
+    viewBox="0 0 35 35"
+    >
+    <rect id="Rectangle_2322" data-name="Rectangle 2322" width="30" height="30" rx="15" fill="#76DE8A40" stroke="#76DE8A" stroke-width="1" />
     <path id="np_check_1231596_FFFFFF"
         d="M22.319,22a1.36,1.36,0,0,1,.992,2.341L16.889,30.7a1.042,1.042,0,0,1-1.448,0l-3.258-3.246a1.363,1.363,0,1,1,1.936-1.919l1.81,1.794a.365.365,0,0,0,.488,0l4.958-4.915A1.356,1.356,0,0,1,22.319,22Z"
         transform="translate(-2.732 -10.997)" fill="#76DE8A" />

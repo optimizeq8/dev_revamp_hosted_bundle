@@ -90,16 +90,6 @@ export class TargetAudience extends Component {
           height: heightPercentageToDP(67),
         }}
       >
-        {/* <MaskedView
-          maskElement={
-            <LinearGradient
-              colors={["black", "black", "transparent"]}
-              start={[0, 0]}
-              end={[0, this.state.scrollY]}
-              style={{ height: "100%" }}
-            />
-          }
-        > */}
         <ScrollView
           scrollEventThrottle={100}
           onScroll={this.handleFading}
@@ -107,24 +97,9 @@ export class TargetAudience extends Component {
           indicatorStyle="white"
           scrollEnabled={true}
           contentContainerStyle={{ paddingBottom: heightPercentageToDP(20) }}
-          style={[
-            styles.targetList,
-            {
-              // marginBottom: editCampaign
-              //   ? heightPercentageToDP(10)
-              //   : heightPercentageToDP(30),
-            },
-          ]}
+          style={[styles.targetList]}
         >
-          <View
-            style={{
-              backgroundColor: "#FFF",
-              borderRadius: 30,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              marginVertical: 8,
-            }}
-          >
+          <View style={styles.audienceCard}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandLocation}
@@ -137,27 +112,9 @@ export class TargetAudience extends Component {
                 fill={globalColors.purple3}
               />
 
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 14,
-                  color: globalColors.purple3,
-                  flex: 1,
-                  marginHorizontal: 5,
-                }}
-              >
-                LOCATIONS
+              <Text style={styles.audienceHeading}>
+                {translate("Location")}
               </Text>
-              {/* <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  fontSize: 14,
-                  color: globalColors.purple,
-                  textAlign: "right",
-                }}
-              >
-                Save
-              </Text> */}
               <Icon
                 name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
                 type="MaterialUIIcons"
@@ -282,14 +239,7 @@ export class TargetAudience extends Component {
               </TouchableOpacity>
             )}
           </View>
-          <View
-            style={{
-              backgroundColor: "#FFF",
-              borderRadius: 30,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-            }}
-          >
+          <View style={styles.audienceCard}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandDemographics}
@@ -301,16 +251,8 @@ export class TargetAudience extends Component {
                 fill={globalColors.purple3}
                 style={styles.icon}
               />
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 14,
-                  color: globalColors.purple3,
-                  flex: 1,
-                  marginHorizontal: 5,
-                }}
-              >
-                DEMOGRAPHIC
+              <Text style={styles.audienceHeading}>
+                {translate("Demographic")}
               </Text>
               <Icon
                 name={`ios-arrow-drop${expandDemographics ? "up" : "down"}`}
@@ -359,23 +301,13 @@ export class TargetAudience extends Component {
                 onPress={() => this.callFunction("age")}
                 style={styles.targetTouchable}
               >
-                <View style={globalStyles.row}>
-                  {/* <AgeIcon
-                  width={25}
-                  height={25}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                /> */}
-                  <View
-                    style={[globalStyles.column, styles.subAudienceHeading]}
-                  >
-                    <Text style={styles.menutext}>{translate("Age")}</Text>
-                    <Text style={styles.menudetails}>
-                      {targeting.demographics[0].min_age} -{" "}
-                      {targeting.demographics[0].max_age +
-                        (targeting.demographics[0].max_age === 50 ? "+" : "")}
-                    </Text>
-                  </View>
+                <View style={[globalStyles.column, styles.subAudienceHeading]}>
+                  <Text style={styles.menutext}>{translate("Age")}</Text>
+                  <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} -{" "}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                  </Text>
                 </View>
 
                 {startEditing &&
@@ -392,29 +324,22 @@ export class TargetAudience extends Component {
                 onPress={() => this.callFunction("languages")}
                 style={styles.targetTouchable}
               >
-                <View style={[globalStyles.row, styles.flex]}>
-                  {/* <LanguageIcon
-                  width={22}
-                  height={30}
-                  style={styles.icon}
-                  fill={globalColors.purple}
-                /> */}
-                  <View
-                    style={[
-                      globalStyles.column,
-                      styles.flex,
-                      styles.subAudienceHeading,
-                    ]}
+                <View
+                  style={[
+                    globalStyles.column,
+                    styles.flex,
+                    styles.subAudienceHeading,
+                  ]}
+                >
+                  <Text style={styles.menutext}>{translate("Language")}</Text>
+                  <Text
+                    numberOfLines={startEditing ? 1 : 10}
+                    style={styles.menudetails}
                   >
-                    <Text style={styles.menutext}>{translate("Language")}</Text>
-                    <Text
-                      numberOfLines={startEditing ? 1 : 10}
-                      style={styles.menudetails}
-                    >
-                      {languages_names}
-                    </Text>
-                  </View>
+                    {languages_names}
+                  </Text>
                 </View>
+
                 {startEditing &&
                   (targeting.demographics[0].languages.length !== 0 ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
@@ -458,7 +383,6 @@ export class TargetAudience extends Component {
                         fontSize: 14,
                         color: globalColors.purple3,
                         flex: 1,
-                        // marginHorizontal: 5,
                         textTransform: "uppercase",
                       },
                     ]}
@@ -483,14 +407,7 @@ export class TargetAudience extends Component {
               </View>
             </TouchableOpacity>
           )}
-          <View
-            style={{
-              backgroundColor: "#FFF",
-              borderRadius: 30,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-            }}
-          >
+          <View style={styles.audienceCard}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandDevices}
@@ -502,17 +419,7 @@ export class TargetAudience extends Component {
                 fill={globalColors.purple3}
                 style={styles.icon}
               />
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 14,
-                  color: globalColors.purple3,
-                  flex: 1,
-                  marginHorizontal: 8,
-                }}
-              >
-                DEVICES
-              </Text>
+              <Text style={styles.audienceHeading}>{translate("Devices")}</Text>
               <Icon
                 name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
                 type="MaterialUIIcons"
@@ -577,35 +484,23 @@ export class TargetAudience extends Component {
                   }
                   style={styles.targetTouchable}
                 >
-                  <View style={[globalStyles.row, styles.flex]}>
-                    {/* <Icon
-                    name="versions"
-                    type="Octicons"
-                    width={25}
-                    height={25}
-                    style={{
-                      color: globalColors.purple,
-                      right: 2,
-                    }}
-                  /> */}
-                    <View
-                      style={[
-                        globalStyles.column,
-                        styles.flex,
-                        styles.subAudienceHeading,
-                      ]}
-                    >
-                      <Text style={styles.menutext}>
-                        {translate("OS Versions")}
-                      </Text>
-                      <Text style={styles.menudetails}>
-                        {targeting.devices[0] &&
-                          targeting.devices[0].os_version_min +
-                            ", " +
-                            targeting.devices[0] &&
-                          targeting.devices[0].os_version_max}
-                      </Text>
-                    </View>
+                  <View
+                    style={[
+                      globalStyles.column,
+                      styles.flex,
+                      styles.subAudienceHeading,
+                    ]}
+                  >
+                    <Text style={styles.menutext}>
+                      {translate("OS Versions")}
+                    </Text>
+                    <Text style={styles.menudetails}>
+                      {targeting.devices[0] &&
+                        targeting.devices[0].os_version_min +
+                          ", " +
+                          targeting.devices[0] &&
+                        targeting.devices[0].os_version_max}
+                    </Text>
                   </View>
 
                   {startEditing &&
@@ -631,32 +526,23 @@ export class TargetAudience extends Component {
                   onPress={() => this.callFunction("selectors", "deviceBrands")}
                   style={styles.targetTouchable}
                 >
-                  <View style={[globalStyles.row, styles.flex]}>
-                    {/* <DeviceMakeIcon
-                    width={25}
-                    height={25}
-                    style={styles.icon}
-                    fill={globalColors.purple}
-                  /> */}
-
-                    <View
-                      style={[
-                        globalStyles.column,
-                        styles.flex,
-                        styles.subAudienceHeading,
-                      ]}
+                  <View
+                    style={[
+                      globalStyles.column,
+                      styles.flex,
+                      styles.subAudienceHeading,
+                    ]}
+                  >
+                    <Text style={styles.menutext}>
+                      {translate("Device Make")}
+                    </Text>
+                    <Text
+                      numberOfLines={startEditing ? 1 : 10}
+                      style={styles.menudetails}
                     >
-                      <Text style={styles.menutext}>
-                        {translate("Device Make")}
-                      </Text>
-                      <Text
-                        numberOfLines={startEditing ? 1 : 10}
-                        style={styles.menudetails}
-                      >
-                        {targeting.devices[0] &&
-                          targeting.devices[0].marketing_name}
-                      </Text>
-                    </View>
+                      {targeting.devices[0] &&
+                        targeting.devices[0].marketing_name}
+                    </Text>
                   </View>
 
                   {startEditing &&
@@ -671,7 +557,7 @@ export class TargetAudience extends Component {
               )}
           </View>
         </ScrollView>
-        {/* </MaskedView> */}
+
         {this.state.scrollY < heightPercentageToDP(0.8) &&
           !editCampaign &&
           heightPercentageToDP(100) < 700 && (

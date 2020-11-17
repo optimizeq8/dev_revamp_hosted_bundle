@@ -22,13 +22,14 @@ export default AudienceCard = (props) => {
         ]}
         onPress={() => {
           props.setAudienceId(item.id);
-          props.navigation.navigate("AdDetails", {
-            audienceSelected: true,
-            campaignTargeting: item.targeting,
-            coordinates: item.coordinates,
-            source: "audience_list",
-            source_action: "a_select_audience",
-          });
+          props.setSelectedAudience(item.targeting, item.coordinates);
+          //   props.navigation.navigate("AdDetails", {
+          //     audienceSelected: true,
+          //     campaignTargeting: item.targeting,
+          //     coordinates: item.coordinates,
+          //     source: "audience_list",
+          //     source_action: "a_select_audience",
+          //   });
         }}
       >
         <Text style={styles.audienceName}>{item.name}</Text>
