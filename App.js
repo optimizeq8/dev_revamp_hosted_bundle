@@ -614,6 +614,14 @@ class App extends React.Component {
         outputRange: [0, 0, 1],
         extrapolate: "clamp",
       }),
+      transform: [
+        {
+          scale: this.state.loadingProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange: [1.1, 1],
+          }),
+        },
+      ],
     };
 
     return (
