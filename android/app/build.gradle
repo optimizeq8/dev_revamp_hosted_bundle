@@ -98,7 +98,7 @@ imglyConfig {
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: false
+    enableHermes: true
 ]
 
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'

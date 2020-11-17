@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="359.221" height="364.523"
+    viewBox="0 0 359.221 364.523">
+    <defs>
+        <clipPath id="clip-path">
+            <rect id="Rectangle_1837" data-name="Rectangle 1837" width="359.221" height="364.523"
+                transform="translate(18)" fill="none" />
+        </clipPath>
+    </defs>
+    <g id="Group_555" data-name="Group 555" transform="translate(-18)" clip-path="url(#clip-path)">
+        <g id="Logo_Purple" data-name="Logo Purple" transform="translate(17.999 0)">
+            <g id="Group_11" data-name="Group 11">
+                <g id="Ellipse_13" data-name="Ellipse 13">
+                    <path id="Path_647" data-name="Path 647"
+                        d="M2098.477,2244.658a178.3,178.3,0,1,1,69.615-14.057A177.741,177.741,0,0,1,2098.477,2244.658Zm0-340.326a161.485,161.485,0,1,0,114.188,47.3A160.427,160.427,0,0,0,2098.477,1904.332Z"
+                        transform="translate(-1919.636 -1886.978)" fill="#fff" />
+                </g>
+                <g id="Path_7" data-name="Path 7" transform="translate(61.662 120.799)">
+                    <path id="Path_648" data-name="Path 648"
+                        d="M2015.518,2194.918l75.041-83.721,45.834,44.564,42.26-48.916-19.124-21.116,66.163-10.912-10.711,70.209-19.96-21.046-57.614,66.808-49.836-47.317Z"
+                        transform="translate(-2015.518 -2074.817)" fill="#fff" />
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
