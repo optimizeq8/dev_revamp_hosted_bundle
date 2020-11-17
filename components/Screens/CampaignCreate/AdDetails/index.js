@@ -1702,6 +1702,45 @@ class AdDetails extends Component {
                       >
                         {translate("Set your daily budget")}
                       </Text>
+                      <View
+                        style={{
+                          backgroundColor: "#FFF",
+                          paddingHorizontal: 30,
+                          paddingVertical: 5,
+                          borderRadius: 30,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            {
+                              fontSize: 10,
+                              paddingHorizontal: 0,
+                              color: globalColors.orange,
+                            },
+                          ]}
+                        >
+                          Lifetime budget
+                        </Text>
+                        <Text
+                          style={[
+                            styles.subHeadings,
+                            {
+                              fontSize: 14,
+                              paddingHorizontal: 0,
+                              paddingVertical: 0,
+                            },
+                          ]}
+                        >
+                          $
+                          {formatNumber(
+                            this.state.duration *
+                              this.state.campaignInfo.lifetime_budget_micro,
+                            true
+                          )}
+                        </Text>
+                      </View>
                     </Row>
                     <BudgetCards
                       value={this.state.value}
