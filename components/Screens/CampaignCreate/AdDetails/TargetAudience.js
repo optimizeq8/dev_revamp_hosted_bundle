@@ -508,7 +508,7 @@ export class TargetAudience extends Component {
                   fontSize: 14,
                   color: globalColors.purple3,
                   flex: 1,
-                  marginHorizontal: 5,
+                  marginHorizontal: 8,
                 }}
               >
                 DEVICES
