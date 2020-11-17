@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     // marginVertical: 8,
     backgroundColor: "#fff",
     borderRadius: 50,
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
     paddingVertical: 5,
   },
   icon: {
@@ -253,6 +253,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   bottomReachView: { flexDirection: "column", flex: 1 },
+  subAudienceHeading: {
+    paddingLeft: 20,
+  },
 });
 
 export default styles;
