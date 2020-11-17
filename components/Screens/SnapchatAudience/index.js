@@ -1039,7 +1039,7 @@ export class SnapchatAudience extends Component {
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
             iconColor={globalColors.purple}
-            title={`${this.editAudience ? "Edit" : "Create"} Audience`}
+            title={`${this.editAudience ? "Edit" : "New"} Preset`}
             titleStyle={{ color: globalColors.purple }}
             showTopRightButton={true}
             topRightButtonText={translate("Save")}
@@ -1071,7 +1071,7 @@ export class SnapchatAudience extends Component {
               screenProps={this.props.screenProps}
               actionButton={this.goBack}
               iconColor={globalColors.purple}
-              title={`${this.editAudience ? "Edit" : "Create"} Audience`}
+              title={`${this.editAudience ? "Edit" : "New"} Preset`}
               titleStyle={{ color: globalColors.purple }}
               showTopRightButton={true}
               topRightButtonText={translate("Save")}
@@ -1082,7 +1082,7 @@ export class SnapchatAudience extends Component {
             <View style={styles.innerView}>
               <InputField
                 translate={this.props.screenProps.translate}
-                label={"Audience Name"}
+                label={"Preset Name"}
                 stateName1={"audienceName"}
                 placeholder1={"Enter a name for your audience"}
                 setValue={this.setAudienceName}

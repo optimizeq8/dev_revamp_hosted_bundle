@@ -11,7 +11,7 @@ export default StyleSheet.create({
   locationContainer: {
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 10,
+    paddingTop: 50,
   },
   addLocationStyle: {
     backgroundColor: globalColors.purpleTran,

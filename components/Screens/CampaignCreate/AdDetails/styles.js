@@ -124,10 +124,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 8,
+    // marginVertical: 8,
     backgroundColor: "#fff",
     borderRadius: 50,
-    padding: 10,
+    paddingHorizontal: 0,
+    paddingVertical: 5,
   },
   icon: {
     alignSelf: "center",
@@ -186,9 +187,9 @@ const styles = StyleSheet.create({
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    fontSize: 13,
-    fontFamily: "montserrat-bold",
-    color: globalColors.gray,
+    fontSize: 12,
+    fontFamily: "montserrat-semibold",
+    color: globalColors.purple3,
     textAlign: "left",
     textTransform: "uppercase",
   },
@@ -198,7 +199,8 @@ const styles = StyleSheet.create({
     color: globalColors.gray,
 
     fontFamily: "montserrat-regular",
-    fontSize: 11,
+    fontSize: 13,
+    paddingVertical: 2,
     textAlign: "left",
   },
   flex: {
@@ -251,6 +253,61 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   bottomReachView: { flexDirection: "column", flex: 1 },
+  subAudienceHeading: {
+    paddingLeft: 20,
+  },
+  audienceHeading: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: globalColors.purple3,
+    flex: 1,
+    marginHorizontal: 5,
+    textTransform: "uppercase",
+  },
+  audienceCard: {
+    backgroundColor: "#FFF",
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginVertical: 4,
+  },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    fontFamily: "montserrat-bold-english",
+  },
+  selectAudienceText: {
+    paddingHorizontal: 0,
+    width: "60%",
+    fontSize: 14,
+  },
+  createView: { flexDirection: "row", alignItems: "center" },
+  createText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: "#9325FF",
+  },
+  iconRight: {
+    fontSize: 20,
+    color: globalColors.purple,
+  },
+  iconLoading: {
+    right: "100%",
+  },
+  iconAdd: { marginHorizontal: 5 },
 });
 
 export default styles;

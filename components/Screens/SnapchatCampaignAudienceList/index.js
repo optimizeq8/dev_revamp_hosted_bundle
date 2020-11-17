@@ -79,6 +79,7 @@ class SnapchatCampaignAudience extends React.Component {
         selected_audience_id={this.state.selected_audience_id}
         setAudienceId={this.setAudienceId}
         getAudienceDetail={this.props.getAudienceDetail}
+        setSelectedAudience={this.props.setSelectedAudience}
       />
     );
   };
@@ -90,20 +91,7 @@ class SnapchatCampaignAudience extends React.Component {
       audience_channel: "snapchat",
     });
   };
-  onDidFocus = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
-    const source_action = this.props.navigation.getParam(
-      "source_action",
-      this.props.screenProps.prevAppState
-    );
-    analytics.track("audience_list", {
-      source,
-      source_action,
-    });
-  };
+
   retrieveAudinece = () => {
     this.props.getAudienceList();
   };
@@ -111,19 +99,19 @@ class SnapchatCampaignAudience extends React.Component {
     const { translate } = this.props.screenProps;
     return (
       <View style={styles.campaignAudienceListOuterView}>
-        <NavigationEvents onDidFocus={this.onDidFocus} />
+        {/* <NavigationEvents onDidFocus={this.onDidFocus} />
         <SafeAreaView forceInset={{ top: "always", bottom: "never" }} />
         <Header
-          title={"Audience"}
+          title={"Select Audience"}
           screenProps={this.props.screenProps}
-          titleStyle={{ color: globalColors.purple }}
+          titleStyle={{ color: globalColors.rum }}
           navigation={this.props.navigation}
-          iconColor={globalColors.purple}
+          iconColor={globalColors.rum}
           showTopRightButton={true}
           topRightButtonText={translate("Create")}
           topRightButtonFunction={this.createNewAudience}
           rightViewStyle={styles.rightViewStyle}
-        />
+        /> */}
         {this.props.audienceListLoading ? (
           <ActivityIndicator
             style={{ top: "20%" }}
