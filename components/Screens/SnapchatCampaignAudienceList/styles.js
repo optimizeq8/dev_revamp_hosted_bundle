@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     // textTransform: "uppercase",
     fontFamily: "montserrat-medium",
     color: globalColors.purple,
+    textAlign: "left",
   },
   flexAddEdit: {
     display: "flex",
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: "montserrat-regular",
     color: globalColors.purple3,
+    textAlign: "left",
   },
 });
 

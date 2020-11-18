@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
     textTransform: "uppercase",
+    textAlign: "left",
   },
   audienceCard: {
     backgroundColor: "#FFF",

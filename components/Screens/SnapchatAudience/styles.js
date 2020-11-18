@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
     textTransform: "uppercase",
+    textAlign: "left",
   },
   audienceSubHeading: {
     paddingHorizontal: 30,
