@@ -24,7 +24,7 @@ import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import { Icon, Item, Input } from "native-base";
+import { Icon, Input } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { gender as genders } from "./data";
@@ -34,7 +34,7 @@ export class TargetAudience extends Component {
     scrollY: 1,
     advance: true,
     expandLocation: false,
-    expandDemographics: true,
+    expandDemographics: false,
     expandDevices: false,
   };
   handleFading = (event) => {
@@ -131,11 +131,7 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandLocation}
               />
             </TouchableOpacity>
@@ -190,23 +186,7 @@ export class TargetAudience extends Component {
                     styles.subAudienceHeading,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.menutext,
-                      {
-                        paddingLeft:
-                          Platform.OS === "android" && I18nManager.isRTL
-                            ? 0
-                            : 15,
-                        paddingRight:
-                          Platform.OS === "android" && I18nManager.isRTL
-                            ? 15
-                            : 0,
-                      },
-                    ]}
-                  >
-                    {translate("Regions")}
-                  </Text>
+                  <Text style={[styles.menutext]}>{translate("Regions")}</Text>
                   <Text
                     style={styles.menudetails}
                     numberOfLines={startEditing ? 1 : 10}
@@ -270,11 +250,7 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandDemographics ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandDemographics}
               />
             </TouchableOpacity>
@@ -546,11 +522,7 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandDevices}
               />
             </TouchableOpacity>

@@ -1131,7 +1131,11 @@ export class SnapchatAudience extends Component {
                   style={[styles.targetList]}
                 >
                   <View style={styles.targetTouchableOuter}>
-                    <View style={[styles.header]}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandLocation}
+                      style={[styles.header]}
+                    >
                       <LocationIcon
                         width={22}
                         height={25}
@@ -1144,14 +1148,10 @@ export class SnapchatAudience extends Component {
                       <Icon
                         name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandLocation}
                       />
-                    </View>
+                    </TouchableOpacity>
                     {expandLocation && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
@@ -1247,7 +1247,11 @@ export class SnapchatAudience extends Component {
                     )}
                   </View>
                   <View style={styles.targetTouchableOuter}>
-                    <View style={[styles.header]}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandDemographics}
+                      style={[styles.header]}
+                    >
                       <GenderIcon
                         width={22}
                         height={30}
@@ -1262,14 +1266,10 @@ export class SnapchatAudience extends Component {
                           expandDemographics ? "up" : "down"
                         }`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandDemographics}
                       />
-                    </View>
+                    </TouchableOpacity>
                     {expandDemographics && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
@@ -1474,11 +1474,7 @@ export class SnapchatAudience extends Component {
                       <Icon
                         name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandDevices}
                       />
                     </View>

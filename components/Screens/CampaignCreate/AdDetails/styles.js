@@ -352,6 +352,11 @@ const styles = StyleSheet.create({
     color: globalColors.purple3,
     fontSize: 13,
   },
+  iconDown: {
+    color: globalColors.purple,
+    right: 2,
+    fontSize: 22,
+  },
 });
 
 export default styles;

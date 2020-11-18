@@ -161,6 +161,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 5,
   },
+  iconDown: {
+    color: globalColors.purple,
+    right: 2,
+    fontSize: 22,
+  },
 });
 
 export default styles;
