@@ -299,95 +299,25 @@ export class TargetAudience extends Component {
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
-                  <View
-                    style={[
-                      {
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingLeft: 10,
-                        paddingVertical: 5,
-                      },
-                    ]}
-                  >
+                  <View style={styles.ageOuterView}>
                     <TouchableOpacity
-                      style={{
-                        borderWidth: 1,
-                        borderColor: globalColors.purple3,
-                        borderRadius: 20,
-                        paddingHorizontal: 20,
-                        paddingVertical: 6,
-                        // width: 50,
-                        // height: 30,
-                        justifyContent: "center",
-                      }}
+                      style={styles.ageView}
                       onPress={() => this.callFunction("age")}
                     >
-                      <Text
-                        style={{
-                          color: globalColors.purple,
-                          fontSize: 12,
-                          fontFamily: "montserrat-regular",
-                          textAlign: "center",
-                        }}
-                      >
+                      <Text style={styles.ageText}>
                         {targeting.demographics[0].min_age}
                       </Text>
-                      {/* <Input
-                        placeholderTextColor={globalColors.purple}
-                        value={targeting.demographics[0].min_age.toString()}
-                        style={{
-                          color: globalColors.purple,
-                          fontSize: 12,
-                          fontFamily: "montserrat-regular",
-                          textAlign: "center",
-                        }}
-                        keyboardType={"numeric"}
-                        disabled={false}
-                        onFocus={() => {
-                          Keyboard.dismiss();
-                          this.callFunction("age");
-                        }}
-                      /> */}
                     </TouchableOpacity>
 
-                    <Text
-                      style={{
-                        marginHorizontal: 15,
-                        color: globalColors.purple3,
-                        fontSize: 13,
-                        fontFamily: "montserrat-regular",
-                      }}
-                    >
-                      {translate("To")}
-                    </Text>
+                    <Text style={styles.toText}>{translate("To")}</Text>
                     <TouchableOpacity
-                      style={{
-                        borderWidth: 1,
-                        borderColor: globalColors.purple3,
-                        borderRadius: 20,
-                        width: 50,
-                        height: 30,
-                      }}
+                      style={styles.ageView}
                       onPress={() => this.callFunction("age")}
                     >
-                      <Input
-                        placeholderTextColor={globalColors.purple}
-                        value={targeting.demographics[0].max_age.toString()}
-                        style={{
-                          color: globalColors.purple,
-                          fontSize: 12,
-                          fontFamily: "montserrat-regular",
-                          textAlign: "center",
-                        }}
-                        keyboardType={"numeric"}
-                        disabled={false}
-                        onFocus={() => {
-                          Keyboard.dismiss();
-                          this.callFunction("age");
-                        }}
-                      />
+                      <Text style={styles.ageText}>
+                        {targeting.demographics[0].max_age +
+                          (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                      </Text>
                     </TouchableOpacity>
 
                     {/* <Text style={styles.menudetails}>
