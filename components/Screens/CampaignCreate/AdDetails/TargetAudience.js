@@ -8,7 +8,6 @@ import {
   I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
-import MaskedView from "@react-native-community/masked-view";
 
 //icons
 import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
@@ -27,6 +26,7 @@ import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { gender as genders } from "./data";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
@@ -273,7 +273,7 @@ export class TargetAudience extends Component {
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
-                  <Text style={styles.menudetails}>
+                  {/* <Text style={styles.menudetails}>
                     {(targeting.demographics[0].gender ||
                       targeting.demographics[0].gender === "") &&
                       translate(
@@ -283,8 +283,34 @@ export class TargetAudience extends Component {
                         }).label
                       )}
                   </Text>
+               */}
+                  <View style={styles.genderOuterView}>
+                    {genders.map((g) => (
+                      <TouchableOpacity
+                        style={[
+                          styles.genderInnerView,
+                          targeting.demographics[0].gender === g.value &&
+                            styles.genderInnerActiveView,
+                        ]}
+                        activeOpacity={0.6}
+                        onPress={() => {
+                          this.props.onSelectedGenderChange(g.value);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.genderRadioText,
+                            targeting.demographics[0].gender === g.value &&
+                              styles.genderRadioTextActive,
+                          ]}
+                        >
+                          {translate(g.label)}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 </View>
-                <View style={globalStyles.column}>
+                {/* <View style={globalStyles.column}>
                   {startEditing &&
                     (targeting.demographics[0].gender === "" ||
                     targeting.demographics[0].gender ? (
@@ -292,7 +318,7 @@ export class TargetAudience extends Component {
                     ) : (
                       <PurplePlusIcon width={22} height={30} />
                     ))}
-                </View>
+                </View> */}
               </TouchableOpacity>
             )}
             {expandDemographics && (
@@ -324,28 +350,39 @@ export class TargetAudience extends Component {
                 onPress={() => this.callFunction("languages")}
                 style={styles.targetTouchable}
               >
-                <View
-                  style={[
-                    globalStyles.column,
-                    styles.flex,
-                    styles.subAudienceHeading,
-                  ]}
-                >
+                <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Language")}</Text>
-                  <Text
-                    numberOfLines={startEditing ? 1 : 10}
-                    style={styles.menudetails}
-                  >
-                    {languages_names}
-                  </Text>
+                  {targeting.demographics[0].languages.length !== 0 ? (
+                    <Text
+                      numberOfLines={startEditing ? 1 : 10}
+                      style={styles.menudetails}
+                    >
+                      {languages_names}
+                    </Text>
+                  ) : (
+                    <View style={styles.selectLanguageButton}>
+                      <Text style={styles.selectLanguageText}>
+                        {translate("Select Languages")}
+                      </Text>
+                      <Icon
+                        name={`keyboard-arrow-${
+                          I18nManager.isRTL ? "left" : "right"
+                        }`}
+                        type="MaterialIcons"
+                        style={{
+                          color: globalColors.purple3,
+                        }}
+                      />
+                    </View>
+                  )}
                 </View>
 
-                {startEditing &&
+                {/* {startEditing &&
                   (targeting.demographics[0].languages.length !== 0 ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
                   ) : (
                     <PurplePlusIcon width={22} height={30} />
-                  ))}
+                  ))} */}
               </TouchableOpacity>
             )}
           </View>
