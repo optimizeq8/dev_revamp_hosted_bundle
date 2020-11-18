@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   lifetimeBudgetView: {
     backgroundColor: "#FFF",
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 2,
     borderRadius: 30,
     alignItems: "center",
   },

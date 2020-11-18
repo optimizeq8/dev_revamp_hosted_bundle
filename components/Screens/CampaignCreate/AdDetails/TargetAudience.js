@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   I18nManager,
+  Keyboard,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -23,16 +24,17 @@ import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import { Icon } from "native-base";
+import { Icon, Item, Input } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { gender as genders } from "./data";
+import InputField from "../../../MiniComponents/InputFieldNew";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
     advance: true,
     expandLocation: false,
-    expandDemographics: false,
+    expandDemographics: true,
     expandDevices: false,
   };
   handleFading = (event) => {
@@ -57,18 +59,29 @@ export class TargetAudience extends Component {
   expandLocation = () => {
     this.setState({
       expandLocation: !this.state.expandLocation,
+      expandDevices: false,
+      expandDemographics: false,
     });
   };
   expandDemographics = () => {
     this.setState({
       expandDemographics: !this.state.expandDemographics,
+      expandDevices: false,
+      expandLocation: false,
     });
   };
   expandDevices = () => {
     this.setState({
       expandDevices: !this.state.expandDevices,
+      expandDemographics: false,
+      expandLocation: false,
     });
   };
+  setValue = (stateName, value) => {
+    console.log("stateName", stateName);
+    console.log("value", value);
+  };
+  getValidInfo = () => {};
   render() {
     let {
       loading,
@@ -268,22 +281,11 @@ export class TargetAudience extends Component {
             {expandDemographics && (
               <TouchableOpacity
                 disabled={loading}
-                onPress={() => this.callFunction("gender")}
+                // onPress={() => this.callFunction("gender")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
-                  {/* <Text style={styles.menudetails}>
-                    {(targeting.demographics[0].gender ||
-                      targeting.demographics[0].gender === "") &&
-                      translate(
-                        gender.find((r) => {
-                          if (r.value === targeting.demographics[0].gender)
-                            return r;
-                        }).label
-                      )}
-                  </Text>
-               */}
                   <View style={styles.genderOuterView}>
                     {genders.map((g) => (
                       <TouchableOpacity
@@ -310,38 +312,122 @@ export class TargetAudience extends Component {
                     ))}
                   </View>
                 </View>
-                {/* <View style={globalStyles.column}>
-                  {startEditing &&
-                    (targeting.demographics[0].gender === "" ||
-                    targeting.demographics[0].gender ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={22} height={30} />
-                    ))}
-                </View> */}
               </TouchableOpacity>
             )}
             {expandDemographics && (
               <TouchableOpacity
                 disabled={loading}
+                activeOpacity={1}
                 onPress={() => this.callFunction("age")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.demographics[0].min_age} -{" "}
+                  <View
+                    style={[
+                      {
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingLeft: 10,
+                        paddingVertical: 5,
+                      },
+                    ]}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        borderWidth: 1,
+                        borderColor: globalColors.purple3,
+                        borderRadius: 20,
+                        paddingHorizontal: 20,
+                        paddingVertical: 6,
+                        // width: 50,
+                        // height: 30,
+                        justifyContent: "center",
+                      }}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Text
+                        style={{
+                          color: globalColors.purple,
+                          fontSize: 12,
+                          fontFamily: "montserrat-regular",
+                          textAlign: "center",
+                        }}
+                      >
+                        {targeting.demographics[0].min_age}
+                      </Text>
+                      {/* <Input
+                        placeholderTextColor={globalColors.purple}
+                        value={targeting.demographics[0].min_age.toString()}
+                        style={{
+                          color: globalColors.purple,
+                          fontSize: 12,
+                          fontFamily: "montserrat-regular",
+                          textAlign: "center",
+                        }}
+                        keyboardType={"numeric"}
+                        disabled={false}
+                        onFocus={() => {
+                          Keyboard.dismiss();
+                          this.callFunction("age");
+                        }}
+                      /> */}
+                    </TouchableOpacity>
+
+                    <Text
+                      style={{
+                        marginHorizontal: 15,
+                        color: globalColors.purple3,
+                        fontSize: 13,
+                        fontFamily: "montserrat-regular",
+                      }}
+                    >
+                      {translate("To")}
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        borderWidth: 1,
+                        borderColor: globalColors.purple3,
+                        borderRadius: 20,
+                        width: 50,
+                        height: 30,
+                      }}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Input
+                        placeholderTextColor={globalColors.purple}
+                        value={targeting.demographics[0].max_age.toString()}
+                        style={{
+                          color: globalColors.purple,
+                          fontSize: 12,
+                          fontFamily: "montserrat-regular",
+                          textAlign: "center",
+                        }}
+                        keyboardType={"numeric"}
+                        disabled={false}
+                        onFocus={() => {
+                          Keyboard.dismiss();
+                          this.callFunction("age");
+                        }}
+                      />
+                    </TouchableOpacity>
+
+                    {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
                     {targeting.demographics[0].max_age +
                       (targeting.demographics[0].max_age === 50 ? "+" : "")}
-                  </Text>
+                  </Text> */}
+                  </View>
                 </View>
 
-                {startEditing &&
+                {/* {startEditing &&
                   (targeting.demographics[0].max_age ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
                   ) : (
                     <PurplePlusIcon width={22} height={30} />
-                  ))}
+                  ))} */}
               </TouchableOpacity>
             )}
             {expandDemographics && (

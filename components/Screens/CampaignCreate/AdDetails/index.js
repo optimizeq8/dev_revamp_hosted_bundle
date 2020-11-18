@@ -1710,6 +1710,7 @@ class AdDetails extends Component {
                       style={{
                         alignItems: "center",
                         paddingHorizontal: 20,
+                        marginBottom: 4,
                       }}
                     >
                       <WalletIcon
@@ -1854,6 +1855,7 @@ class AdDetails extends Component {
                     editCampaign={this.editCampaign}
                     startEditing={startEditing}
                     onSelectedGenderChange={this.onSelectedGenderChange}
+                    _handleAge={this._handleAge}
                   />
                 )}
                 {showAudienceList && (

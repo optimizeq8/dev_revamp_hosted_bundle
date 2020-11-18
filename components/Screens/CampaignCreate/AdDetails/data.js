@@ -1,6 +1,6 @@
 export const gender = [
-  { label: "Female", value: "FEMALE" },
   { label: "Male", value: "MALE" },
+  { label: "Female", value: "FEMALE" },
   { label: "All", value: "" },
 ];
 export const OSType = [
