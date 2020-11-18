@@ -1131,7 +1131,11 @@ export class SnapchatAudience extends Component {
                   style={[styles.targetList]}
                 >
                   <View style={styles.targetTouchableOuter}>
-                    <View style={[styles.header]}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandLocation}
+                      style={[styles.header]}
+                    >
                       <LocationIcon
                         width={22}
                         height={25}
@@ -1144,14 +1148,10 @@ export class SnapchatAudience extends Component {
                       <Icon
                         name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandLocation}
                       />
-                    </View>
+                    </TouchableOpacity>
                     {expandLocation && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
@@ -1247,7 +1247,11 @@ export class SnapchatAudience extends Component {
                     )}
                   </View>
                   <View style={styles.targetTouchableOuter}>
-                    <View style={[styles.header]}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandDemographics}
+                      style={[styles.header]}
+                    >
                       <GenderIcon
                         width={22}
                         height={30}
@@ -1262,14 +1266,10 @@ export class SnapchatAudience extends Component {
                           expandDemographics ? "up" : "down"
                         }`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandDemographics}
                       />
-                    </View>
+                    </TouchableOpacity>
                     {expandDemographics && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
@@ -1328,7 +1328,37 @@ export class SnapchatAudience extends Component {
                           <Text style={styles.menutext}>
                             {translate("Age")}
                           </Text>
-                          <Text style={styles.menudetails}>
+                          <View style={styles.ageOuterView}>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].min_age}
+                              </Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.toText}>{translate("To")}</Text>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].max_age +
+                                  (targeting.demographics[0].max_age === 50
+                                    ? "+"
+                                    : "")}
+                              </Text>
+                            </TouchableOpacity>
+
+                            {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                  </Text> */}
+                          </View>
+
+                          {/* <Text style={styles.menudetails}>
                             {targeting.demographics &&
                               targeting.demographics[0].min_age}{" "}
                             -{" "}
@@ -1337,15 +1367,15 @@ export class SnapchatAudience extends Component {
                                 (targeting.demographics[0].max_age === 50
                                   ? "+"
                                   : "")}
-                          </Text>
+                          </Text> */}
                         </View>
 
-                        {targeting.demographics &&
+                        {/* {targeting.demographics &&
                         targeting.demographics[0].max_age ? (
                           <PurpleCheckmarkIcon width={22} height={30} />
                         ) : (
                           <PurplePlusIcon width={22} height={30} />
-                        )}
+                        )} */}
                       </TouchableOpacity>
                     )}
                     {expandDemographics && (
@@ -1444,11 +1474,7 @@ export class SnapchatAudience extends Component {
                       <Icon
                         name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
                         type="MaterialUIIcons"
-                        style={{
-                          color: globalColors.purple,
-                          right: 2,
-                          fontSize: 22,
-                        }}
+                        style={styles.iconDown}
                         onPress={this.expandDevices}
                       />
                     </View>

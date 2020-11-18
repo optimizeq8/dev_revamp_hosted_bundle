@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   I18nManager,
+  Keyboard,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -23,10 +24,11 @@ import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import { Icon } from "native-base";
+import { Icon, Input } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { gender as genders } from "./data";
+import InputField from "../../../MiniComponents/InputFieldNew";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
@@ -57,18 +59,29 @@ export class TargetAudience extends Component {
   expandLocation = () => {
     this.setState({
       expandLocation: !this.state.expandLocation,
+      expandDevices: false,
+      expandDemographics: false,
     });
   };
   expandDemographics = () => {
     this.setState({
       expandDemographics: !this.state.expandDemographics,
+      expandDevices: false,
+      expandLocation: false,
     });
   };
   expandDevices = () => {
     this.setState({
       expandDevices: !this.state.expandDevices,
+      expandDemographics: false,
+      expandLocation: false,
     });
   };
+  setValue = (stateName, value) => {
+    console.log("stateName", stateName);
+    console.log("value", value);
+  };
+  getValidInfo = () => {};
   render() {
     let {
       loading,
@@ -118,11 +131,7 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandLocation ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandLocation}
               />
             </TouchableOpacity>
@@ -177,23 +186,7 @@ export class TargetAudience extends Component {
                     styles.subAudienceHeading,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.menutext,
-                      {
-                        paddingLeft:
-                          Platform.OS === "android" && I18nManager.isRTL
-                            ? 0
-                            : 15,
-                        paddingRight:
-                          Platform.OS === "android" && I18nManager.isRTL
-                            ? 15
-                            : 0,
-                      },
-                    ]}
-                  >
-                    {translate("Regions")}
-                  </Text>
+                  <Text style={[styles.menutext]}>{translate("Regions")}</Text>
                   <Text
                     style={styles.menudetails}
                     numberOfLines={startEditing ? 1 : 10}
@@ -257,33 +250,18 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandDemographics ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandDemographics}
               />
             </TouchableOpacity>
             {expandDemographics && (
               <TouchableOpacity
                 disabled={loading}
-                onPress={() => this.callFunction("gender")}
+                // onPress={() => this.callFunction("gender")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
-                  {/* <Text style={styles.menudetails}>
-                    {(targeting.demographics[0].gender ||
-                      targeting.demographics[0].gender === "") &&
-                      translate(
-                        gender.find((r) => {
-                          if (r.value === targeting.demographics[0].gender)
-                            return r;
-                        }).label
-                      )}
-                  </Text>
-               */}
                   <View style={styles.genderOuterView}>
                     {genders.map((g) => (
                       <TouchableOpacity
@@ -310,38 +288,52 @@ export class TargetAudience extends Component {
                     ))}
                   </View>
                 </View>
-                {/* <View style={globalStyles.column}>
-                  {startEditing &&
-                    (targeting.demographics[0].gender === "" ||
-                    targeting.demographics[0].gender ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={22} height={30} />
-                    ))}
-                </View> */}
               </TouchableOpacity>
             )}
             {expandDemographics && (
               <TouchableOpacity
                 disabled={loading}
+                activeOpacity={1}
                 onPress={() => this.callFunction("age")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.column, styles.subAudienceHeading]}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.demographics[0].min_age} -{" "}
+                  <View style={styles.ageOuterView}>
+                    <TouchableOpacity
+                      style={styles.ageView}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Text style={styles.ageText}>
+                        {targeting.demographics[0].min_age}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.toText}>{translate("To")}</Text>
+                    <TouchableOpacity
+                      style={styles.ageView}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Text style={styles.ageText}>
+                        {targeting.demographics[0].max_age +
+                          (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                      </Text>
+                    </TouchableOpacity>
+
+                    {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
                     {targeting.demographics[0].max_age +
                       (targeting.demographics[0].max_age === 50 ? "+" : "")}
-                  </Text>
+                  </Text> */}
+                  </View>
                 </View>
 
-                {startEditing &&
+                {/* {startEditing &&
                   (targeting.demographics[0].max_age ? (
                     <PurpleCheckmarkIcon width={22} height={30} />
                   ) : (
                     <PurplePlusIcon width={22} height={30} />
-                  ))}
+                  ))} */}
               </TouchableOpacity>
             )}
             {expandDemographics && (
@@ -460,11 +452,7 @@ export class TargetAudience extends Component {
               <Icon
                 name={`ios-arrow-drop${expandDevices ? "up" : "down"}`}
                 type="MaterialUIIcons"
-                style={{
-                  color: globalColors.purple,
-                  right: 2,
-                  fontSize: 22,
-                }}
+                style={styles.iconDown}
                 onPress={this.expandDevices}
               />
             </TouchableOpacity>

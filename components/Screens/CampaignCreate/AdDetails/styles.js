@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   lifetimeBudgetView: {
     backgroundColor: "#FFF",
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 2,
     borderRadius: 30,
     alignItems: "center",
   },
@@ -351,6 +351,41 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     color: globalColors.purple3,
     fontSize: 13,
+  },
+  ageText: {
+    color: globalColors.purple,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+    textAlign: "center",
+  },
+
+  toText: {
+    marginHorizontal: 15,
+    color: globalColors.purple3,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+  },
+
+  ageView: {
+    borderWidth: 1,
+    borderColor: globalColors.purple3,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 6,
+    justifyContent: "center",
+  },
+  ageOuterView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 5,
+    paddingLeft: 10,
+  },
+  iconDown: {
+    color: globalColors.purple,
+    right: 2,
+    fontSize: 22,
   },
 });
 
