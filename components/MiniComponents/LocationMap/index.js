@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Circle, Marker } from "react-native-maps";
 import { Icon } from "native-base";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import GradientButton from "../GradientButton";
 import MapMarker from "../../../assets/SVGs/MapMarker";
 import { widthPercentageToDP } from "react-native-responsive-screen";

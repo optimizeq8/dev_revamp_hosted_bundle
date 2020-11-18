@@ -19,7 +19,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
-import { upperFirst } from "lodash";
+import upperFirst from "lodash/upperFirst";
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {

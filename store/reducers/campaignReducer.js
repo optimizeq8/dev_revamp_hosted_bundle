@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 const initialState = {
   message: "",
