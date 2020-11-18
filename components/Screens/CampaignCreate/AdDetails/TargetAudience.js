@@ -8,7 +8,6 @@ import {
   I18nManager,
 } from "react-native";
 import { connect } from "react-redux";
-import MaskedView from "@react-native-community/masked-view";
 
 //icons
 import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
@@ -33,7 +32,7 @@ export class TargetAudience extends Component {
     scrollY: 1,
     advance: true,
     expandLocation: false,
-    expandDemographics: true,
+    expandDemographics: false,
     expandDevices: false,
   };
   handleFading = (event) => {

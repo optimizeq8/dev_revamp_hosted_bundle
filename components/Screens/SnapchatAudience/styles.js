@@ -89,6 +89,49 @@ const styles = StyleSheet.create({
   audienceSubHeading: {
     paddingHorizontal: 30,
   },
+  genderOuterView: {
+    display: "flex",
+    flexDirection: "row",
+    paddingVertical: 8,
+  },
+  genderInnerView: {
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    // paddingVertical: 5,
+    marginHorizontal: 5,
+    borderColor: globalColors.purple3,
+  },
+  genderRadioText: {
+    color: globalColors.purple3,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+    lineHeight: 29,
+  },
+  genderInnerActiveView: {
+    borderColor: globalColors.purple,
+    backgroundColor: globalColors.purpleTran,
+  },
+  genderRadioTextActive: {
+    color: globalColors.purple,
+  },
+  selectLanguageButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderColor: globalColors.purple3,
+    borderRadius: 20,
+    // marginHorizontal: 10,
+    marginVertical: 5,
+  },
+  selectLanguageText: {
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple3,
+    fontSize: 13,
+  },
 });
 
 export default styles;

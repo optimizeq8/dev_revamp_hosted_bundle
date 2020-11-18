@@ -1273,7 +1273,7 @@ export class SnapchatAudience extends Component {
                     {expandDemographics && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
-                        onPress={() => this.callFunction("gender")}
+                        // onPress={() => this.callFunction("gender")}
                         style={styles.targetTouchable}
                       >
                         <View
@@ -1285,27 +1285,31 @@ export class SnapchatAudience extends Component {
                           <Text style={styles.menutext}>
                             {translate("Gender")}
                           </Text>
-                          <Text style={styles.menudetails}>
-                            {targeting.demographics &&
-                              targeting.demographics[0].gender &&
-                              translate(
-                                gender.find((r) => {
-                                  if (
-                                    r.value === targeting.demographics[0].gender
-                                  )
-                                    return r;
-                                }).label
-                              )}
-                          </Text>
-                        </View>
-                        <View style={globalStyles.column}>
-                          {targeting.demographics &&
-                            (targeting.demographics[0].gender === "" ||
-                            targeting.demographics[0].gender ? (
-                              <PurpleCheckmarkIcon width={22} height={30} />
-                            ) : (
-                              <PurplePlusIcon width={22} height={30} />
+                          <View style={styles.genderOuterView}>
+                            {gender.map((g) => (
+                              <TouchableOpacity
+                                style={[
+                                  styles.genderInnerView,
+                                  targeting.demographics[0].gender ===
+                                    g.value && styles.genderInnerActiveView,
+                                ]}
+                                activeOpacity={0.6}
+                                onPress={() => {
+                                  this.onSelectedGenderChange(g.value);
+                                }}
+                              >
+                                <Text
+                                  style={[
+                                    styles.genderRadioText,
+                                    targeting.demographics[0].gender ===
+                                      g.value && styles.genderRadioTextActive,
+                                  ]}
+                                >
+                                  {translate(g.label)}
+                                </Text>
+                              </TouchableOpacity>
                             ))}
+                          </View>
                         </View>
                       </TouchableOpacity>
                     )}
@@ -1353,23 +1357,40 @@ export class SnapchatAudience extends Component {
                         <View
                           style={[
                             globalStyles.column,
-                            styles.flex,
+
                             styles.audienceSubHeading,
                           ]}
                         >
                           <Text style={styles.menutext}>
                             {translate("Language")}
                           </Text>
-                          <Text numberOfLines={1} style={styles.menudetails}>
-                            {languages_names}
-                          </Text>
+                          {targeting.demographics[0].languages.length !== 0 ? (
+                            <Text style={styles.menudetails}>
+                              {languages_names}
+                            </Text>
+                          ) : (
+                            <View style={styles.selectLanguageButton}>
+                              <Text style={styles.selectLanguageText}>
+                                {translate("Select Languages")}
+                              </Text>
+                              <Icon
+                                name={`keyboard-arrow-${
+                                  I18nManager.isRTL ? "left" : "right"
+                                }`}
+                                type="MaterialIcons"
+                                style={{
+                                  color: globalColors.purple3,
+                                }}
+                              />
+                            </View>
+                          )}
                         </View>
 
-                        {targeting.demographics[0].languages.length !== 0 ? (
+                        {/* {targeting.demographics[0].languages.length !== 0 ? (
                           <PurpleCheckmarkIcon width={22} height={30} />
                         ) : (
                           <PurplePlusIcon width={22} height={30} />
-                        )}
+                        )} */}
                       </TouchableOpacity>
                     )}
                   </View>
