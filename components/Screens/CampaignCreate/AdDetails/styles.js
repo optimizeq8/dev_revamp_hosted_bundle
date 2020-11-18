@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   bottomReachView: { flexDirection: "column", flex: 1 },
   subAudienceHeading: {
-    paddingLeft: 20,
+    paddingLeft: 10,
   },
   audienceHeading: {
     fontFamily: "montserrat-bold",
@@ -386,6 +386,20 @@ const styles = StyleSheet.create({
     color: globalColors.purple,
     right: 2,
     fontSize: 22,
+  },
+  interestText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    color: globalColors.purple3,
+    flex: 1,
+    textTransform: "uppercase",
+    textAlign: "left",
+    paddingHorizontal: 10,
+  },
+  interestView: {
+    alignSelf: "center",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
 });
 
