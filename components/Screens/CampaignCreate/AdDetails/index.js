@@ -1721,7 +1721,7 @@ class AdDetails extends Component {
                         uppercase
                         style={[
                           styles.subHeadings,
-                          { paddingHorizontal: 10, fontSize: 14 },
+                          { paddingHorizontal: 10, fontSize: 14, flex: 1 },
                         ]}
                       >
                         {translate("Set your daily budget")}
@@ -1777,7 +1777,9 @@ class AdDetails extends Component {
                   <View style={styles.reachView}>
                     {showAudienceList ? (
                       <Icon
-                        name="keyboard-arrow-left"
+                        name={`keyboard-arrow-${
+                          I18nManager.isRTL ? "right" : "left"
+                        }`}
                         type="MaterialIcons"
                         style={{
                           fontSize: 25,
@@ -1791,7 +1793,7 @@ class AdDetails extends Component {
                     <Text
                       style={[styles.subHeadings, styles.selectAudienceText]}
                     >
-                      {"Select Audience"}
+                      {translate("Select Audience")}
                     </Text>
                     {showAudienceList && !this.props.audienceListLoading && (
                       <TouchableOpacity
@@ -1817,7 +1819,9 @@ class AdDetails extends Component {
                           {translate("Choose Preset")}
                         </Text>
                         <Icon
-                          name="keyboard-arrow-right"
+                          name={`keyboard-arrow-${
+                            I18nManager.isRTL ? "left" : "right"
+                          }`}
                           type="MaterialIcons"
                           style={styles.iconRight}
                         />
