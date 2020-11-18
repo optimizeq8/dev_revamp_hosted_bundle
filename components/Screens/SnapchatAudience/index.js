@@ -80,7 +80,7 @@ export class SnapchatAudience extends Component {
       locationsInfo: [],
       filteredLanguages: this.props.languages,
       expandLocation: false,
-      expandDemographics: false,
+      expandDemographics: true,
       expandDevices: false,
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
@@ -1328,7 +1328,37 @@ export class SnapchatAudience extends Component {
                           <Text style={styles.menutext}>
                             {translate("Age")}
                           </Text>
-                          <Text style={styles.menudetails}>
+                          <View style={styles.ageOuterView}>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].min_age}
+                              </Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.toText}>{translate("To")}</Text>
+                            <TouchableOpacity
+                              style={styles.ageView}
+                              onPress={() => this.callFunction("age")}
+                            >
+                              <Text style={styles.ageText}>
+                                {targeting.demographics[0].max_age +
+                                  (targeting.demographics[0].max_age === 50
+                                    ? "+"
+                                    : "")}
+                              </Text>
+                            </TouchableOpacity>
+
+                            {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                  </Text> */}
+                          </View>
+
+                          {/* <Text style={styles.menudetails}>
                             {targeting.demographics &&
                               targeting.demographics[0].min_age}{" "}
                             -{" "}
@@ -1337,15 +1367,15 @@ export class SnapchatAudience extends Component {
                                 (targeting.demographics[0].max_age === 50
                                   ? "+"
                                   : "")}
-                          </Text>
+                          </Text> */}
                         </View>
 
-                        {targeting.demographics &&
+                        {/* {targeting.demographics &&
                         targeting.demographics[0].max_age ? (
                           <PurpleCheckmarkIcon width={22} height={30} />
                         ) : (
                           <PurplePlusIcon width={22} height={30} />
-                        )}
+                        )} */}
                       </TouchableOpacity>
                     )}
                     {expandDemographics && (
