@@ -119,8 +119,8 @@ export class TargetAudience extends Component {
               style={[globalStyles.row, { alignItems: "center" }]}
             >
               <LocationIcon
-                width={25}
-                height={25}
+                width={15}
+                height={16}
                 style={styles.icon}
                 fill={globalColors.purple3}
               />
@@ -239,8 +239,8 @@ export class TargetAudience extends Component {
               style={[globalStyles.row, { alignItems: "center" }]}
             >
               <GenderIcon
-                width={25}
-                height={25}
+                width={15}
+                height={16}
                 fill={globalColors.purple3}
                 style={styles.icon}
               />
@@ -392,8 +392,8 @@ export class TargetAudience extends Component {
             >
               <View style={[globalStyles.row, styles.flex]}>
                 <InterestsIcon
-                  width={22}
-                  height={30}
+                  width={15}
+                  height={16}
                   style={styles.icon}
                   fill={globalColors.purple3}
                 />
@@ -401,23 +401,13 @@ export class TargetAudience extends Component {
                   style={[
                     globalStyles.column,
                     styles.flex,
-                    { alignSelf: "center" },
+                    styles.interestView,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.menutext,
-                      {
-                        fontFamily: "montserrat-bold",
-                        fontSize: 14,
-                        color: globalColors.purple3,
-                        flex: 1,
-                        textTransform: "uppercase",
-                      },
-                    ]}
-                  >
+                  <Text style={[styles.interestText]}>
                     {translate("Interests")}
                   </Text>
+
                   <Text
                     numberOfLines={startEditing ? 1 : 10}
                     style={styles.menudetails}
@@ -443,8 +433,8 @@ export class TargetAudience extends Component {
               style={[globalStyles.row, { alignItems: "center" }]}
             >
               <OperatingSystemIcon
-                width={25}
-                height={25}
+                width={15}
+                height={16}
                 fill={globalColors.purple3}
                 style={styles.icon}
               />

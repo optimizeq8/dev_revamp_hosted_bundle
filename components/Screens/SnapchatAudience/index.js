@@ -1461,7 +1461,11 @@ export class SnapchatAudience extends Component {
                     </View>
                   </TouchableOpacity>
                   <View style={styles.targetTouchableOuter}>
-                    <View style={[styles.header]}>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={this.expandDevices}
+                      style={[styles.header]}
+                    >
                       <OperatingSystemIcon
                         width={22}
                         height={25}
@@ -1477,7 +1481,7 @@ export class SnapchatAudience extends Component {
                         style={styles.iconDown}
                         onPress={this.expandDevices}
                       />
-                    </View>
+                    </TouchableOpacity>
                     {expandDevices && (
                       <TouchableOpacity
                         disabled={saveAudienceLoading}
