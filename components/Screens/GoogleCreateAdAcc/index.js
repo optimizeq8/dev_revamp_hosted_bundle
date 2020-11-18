@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { Card, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import HTMLView from "react-native-htmlview";
 import { terms, secondTerms } from "../../Data/terms.google.data";
 import CustomHeader from "../../MiniComponents/Header";

@@ -20,9 +20,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
 import isEqual from "react-fast-compare";
-
+import SafeAreaView from "react-native-safe-area-view";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";

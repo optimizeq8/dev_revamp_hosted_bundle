@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { Container } from "native-base";
 import LottieView from "lottie-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Animatable from "react-native-animatable";
 
 //icons

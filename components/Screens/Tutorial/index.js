@@ -4,7 +4,8 @@ import { View, Text, Platform, I18nManager } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { LinearGradient } from "expo-linear-gradient";
 import GradientButton from "../../MiniComponents/GradientButton";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";

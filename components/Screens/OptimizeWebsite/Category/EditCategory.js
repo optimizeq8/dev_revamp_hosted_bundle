@@ -11,20 +11,18 @@ import {
 } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
-import { Modal } from "react-native-paper";
+import SafeAreaView from "react-native-safe-area-view";
+
 import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";
 import isEmpty from "lodash/isEmpty";
 
-import CheckBox from "@react-native-community/checkbox";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusIcon from "../../../../assets/SVGs/Plus";
-import CrossIcon from "../../../../assets/SVGs/Close";
 import CameraCircleOutlineIcon from "../../../../assets/SVGs/CameraCircleOutlinePurple";
 
 // Style
@@ -36,7 +34,6 @@ import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 
 // Data
-import country from "../../../Data/countries.billingAddress";
 import { _pickImageMedia } from "../PickImage";
 import GradientButton from "../../../MiniComponents/GradientButton";
 import styles from "../../../MiniComponents/InputFieldNew/styles";

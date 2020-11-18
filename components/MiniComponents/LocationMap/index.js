@@ -1,26 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Text, View, Dimensions, TouchableOpacity } from "react-native";
-import MapView, {
-  PROVIDER_GOOGLE,
-  Circle,
-  Marker,
-  Callout,
-} from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Circle, Marker } from "react-native-maps";
 import { Icon } from "native-base";
-import LowerButton from "../LowerButton";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import { cloneDeep } from "lodash";
-import MapSearchBar from "./MapSearchBar";
-import { SafeAreaView } from "react-navigation";
-import Axios from "axios";
-import countries from "../../Data/countries.billingAddress";
 import GradientButton from "../GradientButton";
 import MapMarker from "../../../assets/SVGs/MapMarker";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 export default class LocaionMap extends Component {
   state = {

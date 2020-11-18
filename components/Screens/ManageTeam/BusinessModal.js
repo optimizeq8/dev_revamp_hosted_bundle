@@ -4,7 +4,8 @@ import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import Header from "../../MiniComponents/Header";
 import { Content } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import LowerButton from "../../MiniComponents/LowerButton";
 import InputField from "../../MiniComponents/InputFieldNew";
 import styles from "./Styles";

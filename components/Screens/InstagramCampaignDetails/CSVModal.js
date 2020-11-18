@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { BlurView } from "expo-blur";
 import Header from "../../MiniComponents/Header";
 import styles from "./styles";

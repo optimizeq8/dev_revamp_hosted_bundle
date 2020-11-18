@@ -9,7 +9,8 @@ import {
   FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Axios from "axios";
 
 //Redux

@@ -1,15 +1,8 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  BackHandler,
-  Text,
-  Clipboard,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Image, BackHandler, Text, TouchableOpacity } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Axios from "axios";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 

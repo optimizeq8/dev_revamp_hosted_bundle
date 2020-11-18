@@ -1,8 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import {
@@ -11,14 +10,10 @@ import {
   StyleSheet,
   View,
   Animated,
-  Image,
   Text as TextReactNative,
   I18nManager,
   AppState,
   ActivityIndicator,
-  Dimensions,
-  Linking,
-  UIManager,
 } from "react-native";
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
@@ -48,7 +43,6 @@ import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
-import * as Icon from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
@@ -59,26 +53,21 @@ import * as actionCreators from "./store/actions";
 
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
-import { Icon as BIcon, Root } from "native-base";
+import { Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
-import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 // // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
-import { NativeModules } from "react-native";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -103,6 +92,7 @@ analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 import { enableScreens } from "react-native-screens";
 import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
@@ -671,38 +661,40 @@ class App extends React.Component {
               onLayout={() => this.setState({ mounted: true })}
               style={[styles.container, opacity]}
             >
-              {this.state.isLoadingComplete && (
-                <Root>
-                  <AppNavigator
-                    onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen = this.getCurrentRouteName(
-                        currentState
-                      );
-                      this.setState({ currentScreen });
-                      // console.log("screeen name", currentScreen);
-                    }}
-                    uriPrefix={prefix}
-                    ref={(navigatorRef) => {
-                      this.navigatorRef = navigatorRef;
-                      NavigationService.setTopLevelNavigator(navigatorRef);
-                    }}
-                    screenProps={{
-                      translate: this.t,
-                      locale: this.state.locale,
-                      setLocale: this.setLocale,
-                      device_id: getUniqueId(),
-                      anonymous_userId: this.state.anonymous_userId,
-                      prevAppState: this.state.prevAppState,
-                    }}
-                  />
-                  <FlashMessage
-                    icon="auto"
-                    duration={4000}
-                    position={"top"}
-                    floating={true}
-                  />
-                </Root>
-              )}
+              <SafeAreaProvider>
+                {this.state.isLoadingComplete && (
+                  <Root>
+                    <AppNavigator
+                      onNavigationStateChange={(prevState, currentState) => {
+                        const currentScreen = this.getCurrentRouteName(
+                          currentState
+                        );
+                        this.setState({ currentScreen });
+                        // console.log("screeen name", currentScreen);
+                      }}
+                      uriPrefix={prefix}
+                      ref={(navigatorRef) => {
+                        this.navigatorRef = navigatorRef;
+                        NavigationService.setTopLevelNavigator(navigatorRef);
+                      }}
+                      screenProps={{
+                        translate: this.t,
+                        locale: this.state.locale,
+                        setLocale: this.setLocale,
+                        device_id: getUniqueId(),
+                        anonymous_userId: this.state.anonymous_userId,
+                        prevAppState: this.state.prevAppState,
+                      }}
+                    />
+                    <FlashMessage
+                      icon="auto"
+                      duration={4000}
+                      position={"top"}
+                      floating={true}
+                    />
+                  </Root>
+                )}
+              </SafeAreaProvider>
             </Animated.View>
           </MaskedView>
         </PersistGate>

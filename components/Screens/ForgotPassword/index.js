@@ -4,7 +4,8 @@ import { View, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
 import { Item, Input } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
 import KeyboardShift from "../../MiniComponents/KeyboardShift";

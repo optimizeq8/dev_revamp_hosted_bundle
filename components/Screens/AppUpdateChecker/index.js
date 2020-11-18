@@ -12,7 +12,8 @@ import Modal from "react-native-modal";
 import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
 import CustomHeader from "../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Sentry from "@sentry/react-native";
 import * as Updates from "expo-updates";
 class AppUpdateChecker extends PureComponent {

@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Input, Item, Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 

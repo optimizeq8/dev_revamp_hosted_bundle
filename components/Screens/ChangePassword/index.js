@@ -4,7 +4,8 @@ import { BackHandler, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import InputScrollView from "react-native-input-scroll-view";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import InputField from "../../MiniComponents/InputFieldNew";
