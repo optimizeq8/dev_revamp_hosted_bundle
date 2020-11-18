@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   menudetails: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
-    color: globalColors.gray,
+    color: globalColors.purple3,
 
     fontFamily: "montserrat-regular",
     fontSize: 13,
@@ -309,6 +309,49 @@ const styles = StyleSheet.create({
     right: "100%",
   },
   iconAdd: { marginHorizontal: 5 },
+  genderOuterView: {
+    display: "flex",
+    flexDirection: "row",
+    padding: 5,
+  },
+  genderInnerView: {
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    // paddingVertical: 5,
+    marginHorizontal: 5,
+    borderColor: globalColors.purple3,
+  },
+  genderRadioText: {
+    color: globalColors.purple3,
+    fontSize: 13,
+    fontFamily: "montserrat-regular",
+    lineHeight: 29,
+  },
+  genderInnerActiveView: {
+    borderColor: globalColors.purple,
+    backgroundColor: globalColors.purpleTran,
+  },
+  genderRadioTextActive: {
+    color: globalColors.purple,
+  },
+  selectLanguageButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderColor: globalColors.purple3,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    marginVertical: 3,
+  },
+  selectLanguageText: {
+    fontFamily: "montserrat-regular",
+    color: globalColors.purple3,
+    fontSize: 13,
+  },
 });
 
 export default styles;
