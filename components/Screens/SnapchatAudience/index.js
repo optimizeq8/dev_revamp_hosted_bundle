@@ -80,7 +80,7 @@ export class SnapchatAudience extends Component {
       locationsInfo: [],
       filteredLanguages: this.props.languages,
       expandLocation: false,
-      expandDemographics: true,
+      expandDemographics: false,
       expandDevices: false,
     };
     this.editAudience = this.props.navigation.getParam("editAudience", false);
