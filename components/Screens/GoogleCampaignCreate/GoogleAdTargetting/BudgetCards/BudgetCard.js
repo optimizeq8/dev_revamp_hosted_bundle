@@ -3,9 +3,10 @@ import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../formatNumber";
 import { Icon } from "native-base";
+import { globalColors } from "../../../../../GlobalStyles";
 export default class BudgetCard extends Component {
   render() {
-    let { bud, _handleBudget, budgetOption, uploading } = this.props;
+    let { bud, _handleBudget, budgetOption, uploading, translate } = this.props;
 
     return (
       <>
@@ -30,11 +31,20 @@ export default class BudgetCard extends Component {
         </TouchableOpacity>
         {bud.id === 1 && (
           <View style={styles.recIcon}>
-            <Icon
+            <Text
+              style={{
+                fontSize: 9,
+                color: globalColors.white,
+                fontFamily: "montserrat-bold",
+              }}
+            >
+              {translate("Recommended")}
+            </Text>
+            {/* <Icon
               name="thumbs-up"
               type="Feather"
               style={{ fontSize: 12, color: "#fff" }}
-            />
+            /> */}
           </View>
         )}
       </>
