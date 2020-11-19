@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 14 / PixelRatio.getFontScale(),
     paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 5,
     textAlign: "left",
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
   },
   moneyInputContainer: {
     flexDirection: "column",
@@ -194,6 +194,34 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+  },
+  reachView: {
+    // flex: ,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "space-between",
+    // width: "100%",
+    marginHorizontal: 30,
+  },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+    paddingVertical: 3,
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    fontFamily: "montserrat-bold-english",
   },
 });
 

@@ -71,14 +71,14 @@ export class BudgetCards extends Component {
     ));
 
     return (
-      <View style={{ height: "10%" }}>
+      <View>
         <MaskedView
           maskElement={
             <LinearGradient
               colors={["black", "transparent"]}
               start={[0.85, 0]}
               end={[this.state.scrollX, 0]}
-              style={{ height: "100%", width: "95%" }}
+              style={{ height: "100%", width: "100%" }}
             />
           }
         >
