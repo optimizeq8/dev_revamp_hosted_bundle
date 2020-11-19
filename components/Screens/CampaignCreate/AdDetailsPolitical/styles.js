@@ -304,6 +304,24 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     fontSize: 12,
   },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    fontFamily: "montserrat-bold-english",
+  },
 });
 
 export default styles;
