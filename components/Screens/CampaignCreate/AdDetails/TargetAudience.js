@@ -77,11 +77,14 @@ export class TargetAudience extends Component {
       expandLocation: false,
     });
   };
-  setValue = (stateName, value) => {
-    console.log("stateName", stateName);
-    console.log("value", value);
+
+  closeAll = () => {
+    this.setState({
+      expandDevices: false,
+      expandDemographics: false,
+      expandLocation: false,
+    });
   };
-  getValidInfo = () => {};
   render() {
     let {
       loading,
@@ -116,7 +119,13 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandLocation}
-              style={[globalStyles.row, { alignItems: "center" }]}
+              style={[
+                globalStyles.row,
+                {
+                  alignItems: "center",
+                  marginBottom: expandLocation ? 10 : 0,
+                },
+              ]}
             >
               <LocationIcon
                 width={15}
@@ -236,7 +245,13 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandDemographics}
-              style={[globalStyles.row, { alignItems: "center" }]}
+              style={[
+                globalStyles.row,
+                {
+                  alignItems: "center",
+                  marginBottom: expandDemographics ? 10 : 0,
+                },
+              ]}
             >
               <GenderIcon
                 width={15}
@@ -384,7 +399,10 @@ export class TargetAudience extends Component {
             startEditing) && (
             <TouchableOpacity
               disabled={loading}
-              onPress={() => this.callFunction("selectors", "interests")}
+              onPress={() => {
+                this.closeAll();
+                this.callFunction("selectors", "interests");
+              }}
               style={[
                 styles.targetTouchable,
                 { marginVertical: 8, paddingHorizontal: 10 },
@@ -430,7 +448,10 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               activeOpacity={1}
               onPress={this.expandDevices}
-              style={[globalStyles.row, { alignItems: "center" }]}
+              style={[
+                globalStyles.row,
+                { alignItems: "center", marginBottom: expandDevices ? 10 : 0 },
+              ]}
             >
               <OperatingSystemIcon
                 width={15}
