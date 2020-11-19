@@ -44,7 +44,8 @@ import { TargetAudience } from "./TargetAudience";
 import TopStepsHeader from "../../../../MiniComponents/TopStepsHeader";
 import { globalColors } from "../../../../../GlobalStyles";
 
-import WalletIcon from "../../../../../assets/SVGs/MenuIcons/Wallet";
+import AudienceIcon from "../../../../../assets/SVGs/AudienceOutline";
+import WalletIcon from "../../../../../assets/SVGs/WalletOutline";
 
 class InstagramStoryAdTargetting extends Component {
   static navigationOptions = {
@@ -1267,6 +1268,7 @@ class InstagramStoryAdTargetting extends Component {
                           style={{
                             alignItems: "center",
                             paddingHorizontal: 20,
+                            marginVertical: 4,
                           }}
                         >
                           <WalletIcon
@@ -1275,7 +1277,6 @@ class InstagramStoryAdTargetting extends Component {
                             fill={globalColors.rum}
                           />
                           <Text
-                            uppercase
                             style={[
                               styles.subHeadings,
                               { paddingHorizontal: 10 },
@@ -1283,6 +1284,28 @@ class InstagramStoryAdTargetting extends Component {
                           >
                             {translate("Set your daily budget")}
                           </Text>
+                          <View style={styles.lifetimeBudgetView}>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetText,
+                              ]}
+                            >
+                              {translate("Lifetime budget")}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.lifetimeBudgetNumber,
+                              ]}
+                            >
+                              {this.formatNumber(
+                                this.state.duration *
+                                  this.state.campaignInfo.lifetime_budget_micro,
+                                true
+                              )}
+                            </Text>
+                          </View>
                         </Row>
                         <BudgetCards
                           value={this.state.value}
@@ -1342,9 +1365,12 @@ class InstagramStoryAdTargetting extends Component {
                       )
                     )}
                     {startEditing && (
-                      <Text style={[styles.subHeadings, { width: "60%" }]}>
-                        {translate("Who would you like to reach?")}
-                      </Text>
+                      <View style={styles.reachView}>
+                        <AudienceIcon />
+                        <Text style={[styles.subHeadings]}>
+                          {translate("Select Audience")}
+                        </Text>
+                      </View>
                     )}
                     <TargetAudience
                       screenProps={this.props.screenProps}
