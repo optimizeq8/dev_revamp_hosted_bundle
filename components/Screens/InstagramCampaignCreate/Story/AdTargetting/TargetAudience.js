@@ -57,6 +57,13 @@ export class TargetAudience extends Component {
       expandLocation: false,
     });
   };
+  closeAll = () => {
+    this.setState({
+      expandDevices: false,
+      expandDemographics: false,
+      expandLocation: false,
+    });
+  };
   render() {
     let {
       loading,
@@ -322,7 +329,10 @@ export class TargetAudience extends Component {
             startEditing) && (
             <TouchableOpacity
               disabled={loading}
-              onPress={() => this.callFunction("selectors", "interests")}
+              onPress={() => {
+                this.closeAll();
+                this.callFunction("selectors", "interests");
+              }}
               style={[
                 styles.targetTouchable,
                 { marginVertical: 8, paddingHorizontal: 10 },

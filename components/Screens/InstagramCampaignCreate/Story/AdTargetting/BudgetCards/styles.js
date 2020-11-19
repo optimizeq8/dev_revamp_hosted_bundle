@@ -43,7 +43,7 @@ export default StyleSheet.create({
     left: "59%",
     top: 4,
     // bottom: 0,
-    backgroundColor: globalColors.orange,
+    backgroundColor: globalColors.green,
     borderRadius: 50,
     // width: 80,
     paddingHorizontal: 5,
