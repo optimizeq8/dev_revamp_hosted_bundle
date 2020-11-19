@@ -143,7 +143,7 @@ export class TargetAudience extends Component {
                 onPress={() => this.callFunction("regions")}
                 style={styles.targetTouchable}
               >
-                <View style={globalStyles.column}>
+                <View style={[globalStyles.column, styles.flex]}>
                   <Text style={styles.menutext}>{translate("Regions")}</Text>
                   <Text style={styles.menudetails}>{regions_names}</Text>
                 </View>
