@@ -255,9 +255,6 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
-  windowShow = (show) => {
-    console.log("show", show);
-  };
   componentDidUpdate(prevProps, prevState) {
     // to navigate from a deep link from a notification if the app is killed on iOS
     if (store.getState().auth.userInfo && Platform.OS === "ios") {
@@ -509,22 +506,6 @@ class App extends React.Component {
     </View>
   );
 
-  anim = () => {
-    // Animated.stagger(250, [
-    //   Animated.spring(this.state.translateY, {
-    //     useNativeDriver,
-    //     toValue: -50,
-    //   }),
-    //  ,
-    // ]).start();
-    Animated.timing(this.state.translateY, {
-      toValue: heightPercentageToDP(100),
-      useNativeDriver: true,
-      // duration: 1000,
-    }).start(() => {
-      this.setState({ isLoadingComplete: true });
-    });
-  };
   render() {
     let colorLayer = this.state.animDone ? null : (
       <LinearGradient
@@ -545,41 +526,6 @@ class App extends React.Component {
         style={[styles.gradient, { backgroundColor: "#fff" }, opacityNeg]}
       />
     );
-    // if (!this.state.isLoadingComplete) {
-    //   return (
-    //     <>
-    //       <LinearGradient
-    //         colors={["#9300FF", "#5600CB"]}
-    //         locations={[0, 1]}
-    //         style={styles.gradient}
-    //       />
-    //       <View style={styles.logoContainer}>
-    //         <Image
-    //           source={require("./assets/splash.png")}
-    //           style={{
-    //             width: "100%",
-    //             height: "100%",
-    //           }}
-    //           resizeMode="cover"
-    //         />
-    //         {/* <Animated.Image
-    //           source={require("./assets/logo.png")}
-    //           style={[
-    //             styles.logo,
-    //             // {
-    //             //   transform: [
-    //             //     {
-    //             //       translateY: this.state.translateY,
-    //             //     },
-    //             //   ],
-    //             // },
-    //           ]}
-    //           fadeDuration={0}
-    //         /> */}
-    //       </View>
-    //     </>
-    //   );
-    // }
 
     const prefix = "optimize://";
     let imageScale = {
@@ -698,98 +644,10 @@ class App extends React.Component {
             </Animated.View>
           </MaskedView>
         </PersistGate>
-        {/* {this._maybeRenderLoadingImage()} */}
       </Provider>
     );
   }
-  _maybeRenderLoadingImage = () => {
-    if (this.state.splashAnimationComplete) {
-      return null;
-    }
 
-    return (
-      <Animated.View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: this.state.splashFadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
-        }}
-      >
-        <Animated.Image
-          source={require("./assets/images/MainSplashempty.png")}
-          style={{
-            width: undefined,
-            height: undefined,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            resizeMode: "cover",
-            // opacity: this.state.splashAnimation.interpolate({
-            //   inputRange: [0, 1],
-            //   outputRange: [0, 1]
-            // })
-          }}
-          onLoadEnd={this._animateOut}
-        />
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: "61%",
-            right: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: this.state.splashAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 1],
-            }),
-            transform: [
-              {
-                translateY: this.state.splashAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [100, 0],
-                }),
-              },
-            ],
-          }}
-        >
-          <PurpleLogo
-            width={heightPercentageToDP(20)}
-            height={heightPercentageToDP(20)}
-          />
-        </Animated.View>
-      </Animated.View>
-    );
-  };
-
-  _animateOut = () => {
-    // SplashScreen.hide();
-    Animated.sequence([
-      Animated.timing(this.state.splashAnimation, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(this.state.splashFadeAnimation, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      this.setState({ splashAnimationComplete: true });
-    });
-  };
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
@@ -841,14 +699,9 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
       Asset.loadAsync([require("./assets/images/GooglePhoneBG.png")]),
       Asset.loadAsync([require("./assets/images/GoogleSearchBar.png")]),
-      Asset.loadAsync([require("./assets/images/MainSplash.png")]),
 
       Asset.loadAsync([require("./assets/images/knet.png")]),
       Asset.loadAsync([require("./assets/images/mastercard.png")]),
-      Asset.loadAsync([require("./assets/splash.png")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/SnapAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/StoryAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
 
       Font.loadAsync({
         "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),
