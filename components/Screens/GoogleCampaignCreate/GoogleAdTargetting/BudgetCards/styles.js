@@ -35,13 +35,14 @@ export default StyleSheet.create({
   },
   recIcon: {
     position: "absolute",
-    left: "61%",
-    top: 4,
+    left: "70%",
+    top: -1,
     backgroundColor: globalColors.green,
     borderRadius: 50,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
+    width: 30,
+    height: 30,
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 1,
   },
 });
