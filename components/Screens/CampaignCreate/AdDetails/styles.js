@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     // width: "100%",
     marginHorizontal: 30,
   },
@@ -291,9 +291,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold-english",
   },
   selectAudienceText: {
-    paddingHorizontal: 0,
+    paddingHorizontal: 10,
     width: "60%",
     fontSize: 14,
+    textAlign: "left",
+    flex: 1,
   },
   createView: { flexDirection: "row", alignItems: "center" },
   createText: {
