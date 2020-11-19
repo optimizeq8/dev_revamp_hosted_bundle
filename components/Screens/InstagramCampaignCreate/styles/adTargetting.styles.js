@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderRadius: 30,
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
     marginVertical: 4,
   },
   iconDown: {
