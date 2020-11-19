@@ -4,6 +4,7 @@ import BackIcon from "../../assets/SVGs/BackButton";
 import globalStyles from "../../GlobalStyles";
 export default class CloseButton extends Component {
   render() {
+    const { stroke = "#FFF" } = this.props;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -15,7 +16,7 @@ export default class CloseButton extends Component {
           height={24}
           width={24}
           style={{ zIndex: 2 }}
-          stroke={"#FFF"}
+          stroke={stroke}
         />
       </TouchableOpacity>
     );

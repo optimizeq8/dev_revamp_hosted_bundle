@@ -92,7 +92,7 @@ export default class Picker extends Component {
             ]}
           >
             <BackButton
-              stroke={"#FFF"}
+              stroke={globalColors.rum}
               style={{ top: 0, left: 0 }}
               screenname={this.props.screenName}
               //   businessname={this.props.mainBusiness.businessname}

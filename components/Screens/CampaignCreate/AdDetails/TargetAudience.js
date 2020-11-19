@@ -271,6 +271,7 @@ export class TargetAudience extends Component {
             </TouchableOpacity>
             {expandDemographics && (
               <TouchableOpacity
+                activeOpacity={1}
                 disabled={loading}
                 // onPress={() => this.callFunction("gender")}
                 style={styles.targetTouchable}
