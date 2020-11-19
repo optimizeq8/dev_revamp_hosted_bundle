@@ -19,12 +19,13 @@ import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { gender as genders } from "./data";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
     advance: true,
     expandLocation: false,
-    expandDemographics: false,
+    expandDemographics: true,
     expandDevices: false,
   };
   handleFading = (event) => {
@@ -198,32 +199,37 @@ export class TargetAudience extends Component {
             {expandDemographics && (
               <TouchableOpacity
                 disabled={loading}
-                onPress={() => this.callFunction("genders")}
+                activeOpacity={1}
+                // onPress={() => this.callFunction("genders")}
                 style={styles.targetTouchable}
               >
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
-                  <Text style={styles.menudetails}>
-                    {
-                      translate(gender === "" ? "All" : gender)
-                      // translate(
-                      //   gender.find((r) => {
-                      //     if (r.value === gender) return r;
-                      //   }).label
-                      // )
-                    }
-                  </Text>
-                </View>
 
-                {startEditing && (
-                  <View style={globalStyles.column}>
-                    {gender === "" || targeting.genders ? (
-                      <PurpleCheckmarkIcon width={22} height={30} />
-                    ) : (
-                      <PurplePlusIcon width={22} height={30} />
-                    )}
+                  <View style={styles.genderOuterView}>
+                    {genders.map((g) => (
+                      <TouchableOpacity
+                        style={[
+                          styles.genderInnerView,
+                          gender === g.value && styles.genderInnerActiveView,
+                        ]}
+                        activeOpacity={0.6}
+                        onPress={() => {
+                          this.props.onSelectedGenderChange(g.value);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.genderRadioText,
+                            gender === g.value && styles.genderRadioTextActive,
+                          ]}
+                        >
+                          {translate(g.label)}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
                   </View>
-                )}
+                </View>
               </TouchableOpacity>
             )}
 
@@ -235,17 +241,30 @@ export class TargetAudience extends Component {
               >
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Age")}</Text>
-                  <Text style={styles.menudetails}>
-                    {targeting.age_min} - {targeting.age_max}
-                  </Text>
-                </View>
 
-                {startEditing &&
-                  (targeting.age_max ? (
-                    <PurpleCheckmarkIcon width={22} height={30} />
-                  ) : (
-                    <PurplePlusIcon width={22} height={30} />
-                  ))}
+                  <View style={styles.ageOuterView}>
+                    <TouchableOpacity
+                      style={styles.ageView}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Text style={styles.ageText}>{targeting.age_min}</Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.toText}>{translate("To")}</Text>
+                    <TouchableOpacity
+                      style={styles.ageView}
+                      onPress={() => this.callFunction("age")}
+                    >
+                      <Text style={styles.ageText}>{targeting.age_max}</Text>
+                    </TouchableOpacity>
+
+                    {/* <Text style={styles.menudetails}>
+                    {targeting.demographics[0].min_age} {translate("To")}{" "}
+                    {targeting.demographics[0].max_age +
+                      (targeting.demographics[0].max_age === 50 ? "+" : "")}
+                  </Text> */}
+                  </View>
+                </View>
               </TouchableOpacity>
             )}
           </View>

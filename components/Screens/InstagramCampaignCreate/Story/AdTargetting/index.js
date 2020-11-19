@@ -1387,6 +1387,7 @@ class InstagramStoryAdTargetting extends Component {
                       translate={translate}
                       editCampaign={this.editCampaign}
                       startEditing={startEditing}
+                      onSelectedGenderChange={this.onSelectedGenderChange}
                     />
 
                     <ReachBar
