@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 //icons
 import PurpleCheckmarkIcon from "../../../../assets/SVGs/PurpleCheckmark";
+import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
+
 import LocationIcon from "../../../../assets/SVGs/Location";
 
 import styles from "./styles";
