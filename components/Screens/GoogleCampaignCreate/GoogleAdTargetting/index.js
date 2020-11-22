@@ -59,6 +59,7 @@ import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -642,17 +643,19 @@ class GoogleAdTargetting extends Component {
                 />
               </View>
             ) : (
-              <>
-                <TouchableOpacity
-                  style={styles.keywordsAddButton}
-                  onPress={() => this._renderSideMenu("keywords")}
-                >
-                  <PlusCircle width={35} height={35} />
-                </TouchableOpacity>
-                <Text style={[styles.subHeadings, styles.smallSubHeading]}>
-                  {translate("Add Products and Services")}
-                </Text>
-              </>
+              <GradientButton
+                style={styles.gradientAddProductsServices}
+                screenProps={this.props.screenProps}
+                onPressAction={() => this._renderSideMenu("keywords")}
+              >
+                <View style={styles.gradientAddProductsServices}>
+                  <PlusCircle width={50} height={50} />
+
+                  <Text style={[styles.addProductsText]}>
+                    {translate("Add Products and Services")}
+                  </Text>
+                </View>
+              </GradientButton>
             )}
 
             <Text style={[styles.subHeadings, { width: "60%" }]}>

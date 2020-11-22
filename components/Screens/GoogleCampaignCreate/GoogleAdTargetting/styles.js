@@ -1,6 +1,9 @@
 import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -236,6 +239,22 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     color: globalColors.rum,
     fontFamily: "montserrat-bold-english",
+  },
+  gradientAddProductsServices: {
+    flexDirection: "row",
+    display: "flex",
+    width: widthPercentageToDP(70),
+    alignSelf: "center",
+    alignItems: "center",
+    height: 50,
+    marginHorizontal: 0,
+    justifyContent: "center",
+  },
+  addProductsText: {
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    fontSize: 11,
   },
 });
 
