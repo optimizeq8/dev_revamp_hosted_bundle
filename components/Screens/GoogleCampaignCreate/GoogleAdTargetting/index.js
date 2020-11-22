@@ -56,7 +56,7 @@ import isNull from "lodash/isNull";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
 
-import WalletIcon from "../../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 
@@ -583,7 +583,7 @@ class GoogleAdTargetting extends Component {
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.budgetHeader}>
-              <WalletIcon fill={"#FFF"} />
+              <WalletIcon width={30} height={30} fill={"#FFF"} />
               <Text style={[styles.subHeadings, { paddingHorizontal: 10 }]}>
                 {translate("Set your daily budget")}
               </Text>
