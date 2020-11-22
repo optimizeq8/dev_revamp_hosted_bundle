@@ -97,6 +97,7 @@ class InstagramStoryAdTargetting extends Component {
       budgetOption: 1,
       startEditing: true,
       customInterests: [],
+      selectedAllRegions: false,
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -491,13 +492,21 @@ class InstagramStoryAdTargetting extends Component {
   onSelectedRegionChange = (selectedItem) => {
     let replace = cloneDeep(this.state.campaignInfo);
     let regionsArray = cloneDeep(replace.targeting.geo_locations.regions);
+    let selectedAllRegions = selectedItem === "all";
     if (selectedItem === "all") {
-      regionsArray = replace.targeting.geo_locations.countries.map((country) =>
-        allRegions.filter((cR) => {
-          if (cR.country === country) return cR;
-        })
-      );
-      regionsArray = regionsArray.flat(1);
+      if (this.state.selectedAllRegions) {
+        regionsArray = [];
+        selectedAllRegions = false;
+      } else {
+        regionsArray = replace.targeting.geo_locations.countries.map(
+          (country) =>
+            allRegions.filter((cR) => {
+              if (cR.country === country) return cR;
+            })
+        );
+        regionsArray = regionsArray.flat(1);
+        selectedAllRegions = true;
+      }
     } else {
       let checkIfInRegionsArray = regionsArray.findIndex(
         (reg) => reg.key === selectedItem.key
@@ -506,7 +515,7 @@ class InstagramStoryAdTargetting extends Component {
       if (checkIfInRegionsArray === -1) {
         regionsArray = [...regionsArray, { ...selectedItem }];
       } else {
-        regionsArray = regionsArray.splice(checkIfInRegionsArray, 1);
+        regionsArray.splice(checkIfInRegionsArray, 1);
       }
     }
 
@@ -515,6 +524,7 @@ class InstagramStoryAdTargetting extends Component {
     this.setState({
       campaignInfo: replace,
       regions: regionsArray,
+      selectedAllRegions: selectedAllRegions,
     });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({
@@ -604,21 +614,22 @@ class InstagramStoryAdTargetting extends Component {
   };
 
   onSelectedGenderChange = (gender) => {
-    let replace = this.state.campaignInfo;
-    let x = "";
-    switch (gender) {
-      case "MALE":
-        x = "1";
-        break;
-      case "FEMALE":
-        x = "2";
-        break;
-      default:
-        x = "";
-        break;
-    }
-    replace.targeting.genders = [x];
-
+    let replace = cloneDeep(this.state.campaignInfo);
+    // let x = "";
+    // switch (gender) {
+    //   case "MALE":
+    //     x = "1";
+    //     break;
+    //   case "FEMALE":
+    //     x = "2";
+    //     break;
+    //   default:
+    //     x = "";
+    //     break;
+    // }
+    //gender is coming in as 1,2
+    replace.targeting.genders = [gender];
+    console.log("replace.targeting.genders", replace.targeting.genders, gender);
     analytics.track(`a_ad_gender`, {
       source: "ad_targeting",
       source_action: "a_ad_gender",
@@ -627,6 +638,7 @@ class InstagramStoryAdTargetting extends Component {
     this.setState({ campaignInfo: { ...replace }, selectedGender: gender });
     !this.editCampaign &&
       this.props.save_campaign_info_instagram({ campaignInfo: { ...replace } });
+    this._calcReach();
   };
 
   // filterLanguages = value => {
@@ -665,7 +677,6 @@ class InstagramStoryAdTargetting extends Component {
     let totalReach = {
       geo_locations: {
         countries: r.geo_locations.countries,
-        regions: r.geo_locations.regions,
       },
     };
     if (r.geo_locations.countries.length === 0) {
@@ -714,9 +725,9 @@ class InstagramStoryAdTargetting extends Component {
     if (totalReach.geo_locations.countries.length === 0) {
       delete totalReach.geo_locations.countries;
     }
-    if (totalReach.geo_locations.regions.length === 0) {
-      delete totalReach.geo_locations.regions;
-    }
+    // if (totalReach.geo_locations.regions.length === 0) {
+    //   delete totalReach.geo_locations.regions;
+    // }
     if (
       !totalReach.geo_locations.hasOwnProperty("regions") &&
       !totalReach.geo_locations.hasOwnProperty("countries")
