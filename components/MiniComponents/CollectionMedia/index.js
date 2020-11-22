@@ -15,7 +15,8 @@ import {
   Text,
 } from "react-native";
 import { Item, Input, Container, Icon } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import analytics from "@segment/analytics-react-native";

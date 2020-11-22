@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
-import { Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import isNull from "lodash/isNull";
 //Icons
-import BackButton from "../../MiniComponents/BackButton";
 import InterestsIcon from "../../../assets/SVGs/Interests";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 
 //Styles
 import styles from "./styles";
-import SectionStyle, { colors } from "./SectionStyle";
 
 //Redux
 import { connect } from "react-redux";

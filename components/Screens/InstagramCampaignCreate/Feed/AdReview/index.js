@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Transition } from "react-navigation-fluid-transitions";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { widthPercentageToDP } from "react-native-responsive-screen";

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, Image, Text } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import isNull from "lodash/isNull";

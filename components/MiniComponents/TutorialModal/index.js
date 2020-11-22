@@ -3,10 +3,10 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { Modal } from "react-native-paper";
 import { Video } from "expo-av";
 
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { BlurView } from "expo-blur";
 import CustomHeader from "../Header";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 import RNImageOrCacheImage from "../RNImageOrCacheImage";
 
 export default class LoadingModal extends Component {

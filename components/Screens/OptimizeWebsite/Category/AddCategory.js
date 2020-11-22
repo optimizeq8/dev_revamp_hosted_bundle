@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Modal } from "react-native-paper";
 import InputScrollView from "react-native-input-scroll-view";
 import Axios from "axios";

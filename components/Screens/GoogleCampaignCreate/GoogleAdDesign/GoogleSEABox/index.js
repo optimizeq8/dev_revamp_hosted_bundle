@@ -429,7 +429,7 @@ export default GoogleSEABox = (props) => {
   );
 };
 
-GoogleSEAPreview.propTypes = {
+GoogleSEABox.propTypes = {
   screenProps: PropTypes.object.isRequired,
   headline1: PropTypes.string.isRequired,
   headline2: PropTypes.string.isRequired,

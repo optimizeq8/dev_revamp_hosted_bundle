@@ -23,7 +23,8 @@ import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
 // import { AdjustEvent, Adjust } from "react-native-adjust";
 import TopStepsHeader from "../../../MiniComponents/TopStepsHeader";
-import { isUndefined } from "lodash";
+import isUndefined from "lodash/isUndefined";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";

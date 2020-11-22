@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 //Icons
 import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";

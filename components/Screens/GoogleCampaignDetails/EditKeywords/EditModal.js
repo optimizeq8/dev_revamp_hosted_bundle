@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { BlurView } from "expo-blur";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Modal } from "react-native-paper";
 //Icons
 import PauseIcon from "../../../../assets/SVGs/ExclamationMark";

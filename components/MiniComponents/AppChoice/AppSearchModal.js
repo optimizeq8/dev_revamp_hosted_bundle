@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import { BlurView } from "expo-blur";
 import LowerButton from "../LowerButton";
 import { Input, Item, Icon } from "native-base";

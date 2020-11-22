@@ -3,7 +3,8 @@ import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
 import styles from "../../styles/mediaModal.styles";

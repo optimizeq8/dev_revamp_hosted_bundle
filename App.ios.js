@@ -1,8 +1,7 @@
 if (__DEV__) {
   import("./ReactotronConfig");
 }
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import {
@@ -11,14 +10,10 @@ import {
   StyleSheet,
   View,
   Animated,
-  Image,
   Text as TextReactNative,
   I18nManager,
   AppState,
   ActivityIndicator,
-  Dimensions,
-  Linking,
-  UIManager,
 } from "react-native";
 import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
@@ -48,7 +43,6 @@ import * as Updates from "expo-updates";
 import * as Notifications from "expo-notifications";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
-import * as Icon from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
@@ -59,26 +53,21 @@ import * as actionCreators from "./store/actions";
 
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
-import { Icon as BIcon, Root } from "native-base";
+import { Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
-import { colors } from "./components/GradiantColors/colors";
 import { REHYDRATE } from "redux-persist";
 import { PESDK } from "react-native-photoeditorsdk";
 import { VESDK } from "react-native-videoeditorsdk";
 // // import { Adjust, AdjustEvent, AdjustConfig } from "react-native-adjust";
 import RNBootSplash from "react-native-bootsplash";
-import { NativeModules } from "react-native";
 
 import * as Sentry from "@sentry/react-native";
 if (!__DEV__) {
@@ -103,6 +92,7 @@ analytics.getAnonymousId().then((id) => MixpanelSDK.identify(id));
 import { enableScreens } from "react-native-screens";
 import MaskedView from "@react-native-community/masked-view";
 import Logo from "./assets/Logo.svg";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 enableScreens();
 
 const defaultErrorHandler = ErrorUtils.getGlobalHandler();
@@ -265,9 +255,6 @@ class App extends React.Component {
     // ${error.stack}`)
     //       );
   }
-  windowShow = (show) => {
-    console.log("show", show);
-  };
   componentDidUpdate(prevProps, prevState) {
     // to navigate from a deep link from a notification if the app is killed on iOS
     if (store.getState().auth.userInfo && Platform.OS === "ios") {
@@ -519,22 +506,6 @@ class App extends React.Component {
     </View>
   );
 
-  anim = () => {
-    // Animated.stagger(250, [
-    //   Animated.spring(this.state.translateY, {
-    //     useNativeDriver,
-    //     toValue: -50,
-    //   }),
-    //  ,
-    // ]).start();
-    Animated.timing(this.state.translateY, {
-      toValue: heightPercentageToDP(100),
-      useNativeDriver: true,
-      // duration: 1000,
-    }).start(() => {
-      this.setState({ isLoadingComplete: true });
-    });
-  };
   render() {
     let colorLayer = this.state.animDone ? null : (
       <LinearGradient
@@ -555,41 +526,6 @@ class App extends React.Component {
         style={[styles.gradient, { backgroundColor: "#fff" }, opacityNeg]}
       />
     );
-    // if (!this.state.isLoadingComplete) {
-    //   return (
-    //     <>
-    //       <LinearGradient
-    //         colors={["#9300FF", "#5600CB"]}
-    //         locations={[0, 1]}
-    //         style={styles.gradient}
-    //       />
-    //       <View style={styles.logoContainer}>
-    //         <Image
-    //           source={require("./assets/splash.png")}
-    //           style={{
-    //             width: "100%",
-    //             height: "100%",
-    //           }}
-    //           resizeMode="cover"
-    //         />
-    //         {/* <Animated.Image
-    //           source={require("./assets/logo.png")}
-    //           style={[
-    //             styles.logo,
-    //             // {
-    //             //   transform: [
-    //             //     {
-    //             //       translateY: this.state.translateY,
-    //             //     },
-    //             //   ],
-    //             // },
-    //           ]}
-    //           fadeDuration={0}
-    //         /> */}
-    //       </View>
-    //     </>
-    //   );
-    // }
 
     const prefix = "optimize://";
     let imageScale = {
@@ -671,133 +607,47 @@ class App extends React.Component {
               onLayout={() => this.setState({ mounted: true })}
               style={[styles.container, opacity]}
             >
-              {this.state.isLoadingComplete && (
-                <Root>
-                  <AppNavigator
-                    onNavigationStateChange={(prevState, currentState) => {
-                      const currentScreen = this.getCurrentRouteName(
-                        currentState
-                      );
-                      this.setState({ currentScreen });
-                      // console.log("screeen name", currentScreen);
-                    }}
-                    uriPrefix={prefix}
-                    ref={(navigatorRef) => {
-                      this.navigatorRef = navigatorRef;
-                      NavigationService.setTopLevelNavigator(navigatorRef);
-                    }}
-                    screenProps={{
-                      translate: this.t,
-                      locale: this.state.locale,
-                      setLocale: this.setLocale,
-                      device_id: getUniqueId(),
-                      anonymous_userId: this.state.anonymous_userId,
-                      prevAppState: this.state.prevAppState,
-                    }}
-                  />
-                  <FlashMessage
-                    icon="auto"
-                    duration={4000}
-                    position={"top"}
-                    floating={true}
-                  />
-                </Root>
-              )}
+              <SafeAreaProvider>
+                {this.state.isLoadingComplete && (
+                  <Root>
+                    <AppNavigator
+                      onNavigationStateChange={(prevState, currentState) => {
+                        const currentScreen = this.getCurrentRouteName(
+                          currentState
+                        );
+                        this.setState({ currentScreen });
+                        // console.log("screeen name", currentScreen);
+                      }}
+                      uriPrefix={prefix}
+                      ref={(navigatorRef) => {
+                        this.navigatorRef = navigatorRef;
+                        NavigationService.setTopLevelNavigator(navigatorRef);
+                      }}
+                      screenProps={{
+                        translate: this.t,
+                        locale: this.state.locale,
+                        setLocale: this.setLocale,
+                        device_id: getUniqueId(),
+                        anonymous_userId: this.state.anonymous_userId,
+                        prevAppState: this.state.prevAppState,
+                      }}
+                    />
+                    <FlashMessage
+                      icon="auto"
+                      duration={4000}
+                      position={"top"}
+                      floating={true}
+                    />
+                  </Root>
+                )}
+              </SafeAreaProvider>
             </Animated.View>
           </MaskedView>
         </PersistGate>
-        {/* {this._maybeRenderLoadingImage()} */}
       </Provider>
     );
   }
-  _maybeRenderLoadingImage = () => {
-    if (this.state.splashAnimationComplete) {
-      return null;
-    }
 
-    return (
-      <Animated.View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: this.state.splashFadeAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0],
-          }),
-        }}
-      >
-        <Animated.Image
-          source={require("./assets/images/MainSplashempty.png")}
-          style={{
-            width: undefined,
-            height: undefined,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            resizeMode: "cover",
-            // opacity: this.state.splashAnimation.interpolate({
-            //   inputRange: [0, 1],
-            //   outputRange: [0, 1]
-            // })
-          }}
-          onLoadEnd={this._animateOut}
-        />
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: "61%",
-            right: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: this.state.splashAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 1],
-            }),
-            transform: [
-              {
-                translateY: this.state.splashAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [100, 0],
-                }),
-              },
-            ],
-          }}
-        >
-          <PurpleLogo
-            width={heightPercentageToDP(20)}
-            height={heightPercentageToDP(20)}
-          />
-        </Animated.View>
-      </Animated.View>
-    );
-  };
-
-  _animateOut = () => {
-    // SplashScreen.hide();
-    Animated.sequence([
-      Animated.timing(this.state.splashAnimation, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(this.state.splashFadeAnimation, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      this.setState({ splashAnimationComplete: true });
-    });
-  };
   _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
     const appLanguage = await AsyncStorage.getItem("appLanguage");
@@ -849,14 +699,9 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
       Asset.loadAsync([require("./assets/images/GooglePhoneBG.png")]),
       Asset.loadAsync([require("./assets/images/GoogleSearchBar.png")]),
-      Asset.loadAsync([require("./assets/images/MainSplash.png")]),
 
       Asset.loadAsync([require("./assets/images/knet.png")]),
       Asset.loadAsync([require("./assets/images/mastercard.png")]),
-      Asset.loadAsync([require("./assets/splash.png")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/SnapAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/StoryAd.gif")]),
-      Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
 
       Font.loadAsync({
         "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),

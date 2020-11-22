@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import { View, Text, ScrollView, BackHandler, Keyboard } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import CustomHeader from "../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import InputScrollView from "react-native-input-scroll-view";
 
 import isEmpty from "lodash/isEmpty";

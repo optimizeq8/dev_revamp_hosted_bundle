@@ -7,14 +7,13 @@ import {
   I18nManager,
 } from "react-native";
 import { Item, Input } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 //Styles
 import styles from "./styles";

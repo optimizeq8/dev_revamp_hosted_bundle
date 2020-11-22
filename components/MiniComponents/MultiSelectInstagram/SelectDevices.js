@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
@@ -20,7 +19,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 import LowerButton from "../LowerButton";
 import GradientButton from "../GradientButton";
-import { upperFirst } from "lodash";
+import upperFirst from "lodash/upperFirst";
 import { globalColors } from "../../../GlobalStyles";
 
 class SelectDevices extends Component {

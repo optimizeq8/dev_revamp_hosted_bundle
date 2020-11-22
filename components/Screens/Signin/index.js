@@ -10,7 +10,8 @@ import {
   NativeModules,
 } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import analytics from "@segment/analytics-react-native";
 import InputScrollView from "react-native-input-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";

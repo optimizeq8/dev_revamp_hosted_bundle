@@ -8,7 +8,8 @@ import {
   Modal,
   Text,
 } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import isEmpty from "lodash/isEmpty";
@@ -23,8 +24,6 @@ import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 import InstagramIcon from "../../../../assets/SVGs/InstagramIcon";
 import SuccessIcon from "../../../../assets/SVGs/Success";
 import ErrorIcon from "../../../../assets/SVGs/Error";
-import WalletIcon from "../../../../assets/SVGs/Wallet";
-import CloseCircleIcon from "../../../../assets/SVGs/CloseCircle";
 
 // Style
 import styles from "./styles";

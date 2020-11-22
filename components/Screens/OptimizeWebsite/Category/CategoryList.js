@@ -4,13 +4,12 @@ import {
   Image,
   BackHandler,
   Text,
-  Clipboard,
   TouchableOpacity,
   FlatList,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView } from "react-navigation";
-import { LinearGradient } from "expo-linear-gradient";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Axios from "axios";
 
 //Redux
@@ -20,15 +19,12 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 // import OnlineStoreHome from "../../../../assets/SVGs/OnlineStoreHome";
 import Pen from "../../../../assets/SVGs/Pen";
-import CopyIcon from "../../../../assets/SVGs/CopyIcon";
-import PlusIcon from "../../../../assets/SVGs/Plus";
 
 // Style
 import styles from "./styles";
 import myWebsiteStyles from "../myWebsiteEcommerceStyle";
 
 import Header from "../../../MiniComponents/Header";
-import Website from "../../../MiniComponents/InputFieldNew/Website";
 import { globalColors } from "../../../../GlobalStyles";
 import LoadingModal from "../../CampaignCreate/AdDesign/LoadingModal";
 

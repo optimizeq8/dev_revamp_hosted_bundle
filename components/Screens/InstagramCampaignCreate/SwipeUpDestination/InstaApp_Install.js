@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { connect } from "react-redux";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import AppChoice from "../../../MiniComponents/InstaAppChoice";
 
 //Icons

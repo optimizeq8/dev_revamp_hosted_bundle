@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import { View, BackHandler, Image } from "react-native";
 import { Container } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../../MiniComponents/Header";
 import GoogleSEAPreview from "../../MiniComponents/GoogleSEAPreview";
 // Style

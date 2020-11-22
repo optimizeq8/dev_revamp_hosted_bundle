@@ -3,7 +3,7 @@ import { View, Platform, Text } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
 import { BlurView } from "@react-native-community/blur";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 
 //Redux
 import { connect } from "react-redux";

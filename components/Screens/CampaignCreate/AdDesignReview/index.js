@@ -26,7 +26,7 @@ import { Image } from "react-native-expo-image-cache";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";

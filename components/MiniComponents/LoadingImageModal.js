@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Modal } from "react-native-paper";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 import { BlurView } from "expo-blur";
 import CustomHeader from "./Header";
 import CameraLoading from "./CameraLoading";

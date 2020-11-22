@@ -1,6 +1,7 @@
 import React from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { BlurView } from "expo-blur";
 import Modal from "react-native-modal";
 

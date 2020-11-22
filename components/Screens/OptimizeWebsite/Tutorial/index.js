@@ -7,7 +7,8 @@ import {
   I18nManager,
   Image,
 } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { connect } from "react-redux";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import analytics from "@segment/analytics-react-native";

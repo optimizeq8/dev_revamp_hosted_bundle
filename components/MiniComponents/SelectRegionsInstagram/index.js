@@ -1,15 +1,7 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  PixelRatio,
-  Alert,
-} from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { Input, Item, Icon } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
