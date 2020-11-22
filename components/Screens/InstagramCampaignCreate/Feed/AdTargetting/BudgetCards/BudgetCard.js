@@ -37,15 +37,7 @@ export default class BudgetCard extends Component {
               { left: I18nManager.isRTL ? "61%" : "61%" },
             ]}
           >
-            <Text
-              style={{
-                fontSize: 9,
-                color: globalColors.white,
-                fontFamily: "montserrat-bold",
-              }}
-            >
-              {translate("Recommended")}
-            </Text>
+            <Text style={styles.recommendText}>{translate("Recommended")}</Text>
             {/* <RecomenededIcon fill={"#fff"} style={{ right: 1 }} /> */}
           </View>
         )}
