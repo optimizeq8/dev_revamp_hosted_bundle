@@ -61,7 +61,6 @@ import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
 import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
 
-import GradientButton from "../../../MiniComponents/GradientButton";
 import AudienceReach from "./AudienceReach";
 
 class AdDetails extends Component {
