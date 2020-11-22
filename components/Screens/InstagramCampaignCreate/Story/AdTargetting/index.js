@@ -1265,27 +1265,22 @@ class InstagramStoryAdTargetting extends Component {
                   >
                     {!this.editCampaign ? (
                       <>
-                        <Row
-                          size={-1}
-                          style={{
-                            alignItems: "center",
-                            paddingHorizontal: 20,
-                            marginVertical: 4,
-                          }}
-                        >
-                          <WalletIcon
-                            width={30}
-                            height={30}
-                            fill={globalColors.rum}
-                          />
-                          <Text
-                            style={[
-                              styles.subHeadings,
-                              { paddingHorizontal: 10 },
-                            ]}
-                          >
-                            {translate("Set your daily budget")}
-                          </Text>
+                        <Row size={-1} style={styles.row}>
+                          <View style={styles.walletTextView}>
+                            <WalletIcon
+                              width={30}
+                              height={30}
+                              fill={globalColors.rum}
+                            />
+                            <Text
+                              style={[
+                                styles.subHeadings,
+                                styles.dailyBudgetText,
+                              ]}
+                            >
+                              {translate("Set your daily budget")}
+                            </Text>
+                          </View>
                           <View style={styles.lifetimeBudgetView}>
                             <Text
                               style={[
