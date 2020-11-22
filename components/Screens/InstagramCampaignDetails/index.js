@@ -11,10 +11,10 @@ import { Container, Icon } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
-import { SafeAreaView, NavigationEvents, ScrollView } from "react-navigation";
+import { NavigationEvents, ScrollView } from "react-navigation";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
-
+import SafeAreaView from "react-native-safe-area-view";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
 import Toggle from "../../MiniComponents/Toggle";
