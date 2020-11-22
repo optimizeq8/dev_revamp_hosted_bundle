@@ -73,13 +73,22 @@ class RegisterForm extends Component {
     const countryCode =
       callnumber && callnumber !== "" && callnumber.substring(0, 3);
     this.setState({
-      callnumber: callnumber && callnumber.length > 0 ? "+" + callnumber : "",
+      callnumber:
+        callnumber && callnumber.length > 0
+          ? callnumber.includes("+")
+            ? callnumber
+            : "+" + callnumber
+          : "",
       valid: true,
       countryCode: countryCode,
       googlemaplink,
       insta_handle,
       whatsappnumber:
-        whatsappnumber && whatsappnumber.length > 0 ? "+" + whatsappnumber : "",
+        whatsappnumber && whatsappnumber.length > 0
+          ? whatsappnumber.includes("+")
+            ? whatsappnumber
+            : "+" + whatsappnumber
+          : "",
       snapchat_handle: snapchat_handle ? snapchat_handle : null,
     });
 
