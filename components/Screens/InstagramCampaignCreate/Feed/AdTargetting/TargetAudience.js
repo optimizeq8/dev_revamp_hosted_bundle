@@ -217,6 +217,7 @@ export class TargetAudience extends Component {
                         onPress={() => {
                           this.props.onSelectedGenderChange(g.value);
                         }}
+                        disabled={loading || !startEditing}
                       >
                         <Text
                           style={[
