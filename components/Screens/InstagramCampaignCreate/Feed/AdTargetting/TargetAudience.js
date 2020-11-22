@@ -25,7 +25,7 @@ export class TargetAudience extends Component {
     scrollY: 1,
     advance: true,
     expandLocation: false,
-    expandDemographics: true,
+    expandDemographics: false,
     expandDevices: false,
   };
   handleFading = (event) => {
@@ -217,6 +217,7 @@ export class TargetAudience extends Component {
                         onPress={() => {
                           this.props.onSelectedGenderChange(g.value);
                         }}
+                        disabled={loading || !startEditing}
                       >
                         <Text
                           style={[

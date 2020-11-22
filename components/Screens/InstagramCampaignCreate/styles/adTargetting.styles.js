@@ -313,6 +313,20 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingLeft: 10,
   },
+  row: {
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginVertical: 4,
+    justifyContent: "space-between",
+  },
+  walletTextView: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dailyBudgetText: {
+    paddingHorizontal: 10,
+    textTransform: "capitalize",
+  },
 });
 
 export default styles;
