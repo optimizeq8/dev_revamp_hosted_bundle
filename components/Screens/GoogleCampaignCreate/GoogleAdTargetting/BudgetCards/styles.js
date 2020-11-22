@@ -44,4 +44,9 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  recommendText: {
+    fontSize: 9,
+    color: globalColors.white,
+    fontFamily: "montserrat-bold",
+  },
 });

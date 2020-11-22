@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../formatNumber";
-import { Icon } from "native-base";
+// import { Icon } from "native-base";
 import { globalColors } from "../../../../../GlobalStyles";
 export default class BudgetCard extends Component {
   render() {
@@ -31,15 +31,7 @@ export default class BudgetCard extends Component {
         </TouchableOpacity>
         {bud.id === 1 && (
           <View style={styles.recIcon}>
-            <Text
-              style={{
-                fontSize: 9,
-                color: globalColors.white,
-                fontFamily: "montserrat-bold",
-              }}
-            >
-              {translate("Recommended")}
-            </Text>
+            <Text style={styles.recommendText}>{translate("Recommended")}</Text>
             {/* <Icon
               name="thumbs-up"
               type="Feather"
