@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Header from "../../MiniComponents/Header";
 import { connect } from "react-redux";
 import AddTeamIcon from "../../../assets/SVGs/AddTeam";

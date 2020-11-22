@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { View, Image, BackHandler, ScrollView, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView, NavigationActions } from "react-navigation";
+import { NavigationActions } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";

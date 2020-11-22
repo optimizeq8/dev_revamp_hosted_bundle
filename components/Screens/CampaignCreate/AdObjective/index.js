@@ -14,7 +14,9 @@ import {
 } from "react-native";
 import { Content, Container } from "native-base";
 // import { Modal } from "react-native-paper";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import analytics from "@segment/analytics-react-native";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";

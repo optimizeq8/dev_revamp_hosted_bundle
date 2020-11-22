@@ -6,7 +6,8 @@ import {
   AppState,
   StyleSheet,
 } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { CodeField, Cursor } from "react-native-confirmation-code-field";
 import analytics from "@segment/analytics-react-native";
 //components

@@ -5,11 +5,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
-import {
-  SafeAreaView,
-  NavigationActions,
-  StackActions,
-} from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";

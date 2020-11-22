@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
 
 //Redux
 import { connect } from "react-redux";

@@ -11,8 +11,9 @@ import {
 import analytics from "@segment/analytics-react-native";
 import { Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import CustomHeader from "../../../MiniComponents/Header";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { showMessage } from "react-native-flash-message";
 import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
 import RadioButtons from "../../../MiniComponents/RadioButtons";

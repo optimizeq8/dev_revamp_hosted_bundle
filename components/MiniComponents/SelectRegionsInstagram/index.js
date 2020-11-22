@@ -40,8 +40,8 @@ class SelectRegions extends Component {
     const { translate } = this.props.screenProps;
     // console.log("filteredRegions", this.state.filteredRegions);
     let regionlist = this.state.filteredRegions.map((fReg) => {
-      countryName = fReg.name;
-      coReg = fReg.regions;
+      let countryName = fReg.name;
+      let coReg = fReg.regions;
 
       return (
         <View key={countryName}>

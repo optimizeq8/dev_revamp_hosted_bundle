@@ -6,7 +6,9 @@ import {
   Keyboard,
 } from "react-native";
 import { Container } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
