@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import analytics from "@segment/analytics-react-native";
 import {
-  SafeAreaView,
   NavigationActions,
   StackActions,
   NavigationEvents,
 } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 //Icons
 import Suspended from "../../../assets/SVGs/Suspended";
 import GradientButton from "../../MiniComponents/GradientButton";

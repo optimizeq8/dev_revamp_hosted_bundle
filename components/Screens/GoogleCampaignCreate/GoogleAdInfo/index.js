@@ -14,7 +14,9 @@ import { Content, Container } from "native-base";
 import analytics from "@segment/analytics-react-native";
 import { BlurView } from "@react-native-community/blur";
 import { Modal } from "react-native-paper";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
 

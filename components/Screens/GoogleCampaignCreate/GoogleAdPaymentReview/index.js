@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { View, BackHandler, Text } from "react-native";
 import { Content } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import analytics from "@segment/analytics-react-native";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import GradientButton from "../../../MiniComponents/GradientButton";

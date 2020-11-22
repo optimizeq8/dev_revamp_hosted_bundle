@@ -1,6 +1,8 @@
 // Components
 import React, { Component } from "react";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import {
   View,
   BackHandler,

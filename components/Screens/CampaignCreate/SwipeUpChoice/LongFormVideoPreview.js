@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { BackHandler, View, StatusBar } from "react-native";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { Video } from "expo-av";

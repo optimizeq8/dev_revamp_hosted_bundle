@@ -17,7 +17,9 @@ import {
   Text,
 } from "react-native";
 import { Container, Icon } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import { SaveFormat } from "expo-image-manipulator";

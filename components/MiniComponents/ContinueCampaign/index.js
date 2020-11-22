@@ -5,11 +5,9 @@ import analytics from "@segment/analytics-react-native";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as actionCreators from "../../../store/actions";
-import {
-  SafeAreaView,
-  NavigationActions,
-  StackActions,
-} from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import CustomHeader from "../Header";
 import { persistor } from "../../../store/";
 import styles from "./styles";

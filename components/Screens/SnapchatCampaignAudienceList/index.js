@@ -1,10 +1,9 @@
 import React from "react";
 import { View, FlatList, Alert, ActivityIndicator } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+
 import analytics from "@segment/analytics-react-native";
 
 // Components
-import Header from "../../MiniComponents/Header";
 
 import { globalColors } from "../../../GlobalStyles";
 

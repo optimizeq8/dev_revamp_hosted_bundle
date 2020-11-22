@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import analytics from "@segment/analytics-react-native";
-import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
+import { NavigationEvents, FlatList } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import Sidemenu from "../../MiniComponents/SideMenu";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";

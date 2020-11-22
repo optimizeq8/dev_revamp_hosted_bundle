@@ -10,7 +10,9 @@ import {
   Alert,
 } from "react-native";
 
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
+import SafeAreaView from "react-native-safe-area-view";
+
 import MaskedView from "@react-native-community/masked-view";
 import cloneDeep from "lodash/cloneDeep";
 import analytics from "@segment/analytics-react-native";
