@@ -84,7 +84,6 @@ class GoogleAdTargetting extends Component {
       modalVisible: false,
       selectionOption: "",
       budgetOption: 1,
-      duration: 1,
     };
   }
 
@@ -441,16 +440,7 @@ class GoogleAdTargetting extends Component {
       campaign_description2: this.props.campaign.description2,
       campaign_finalurl: this.props.campaign.finalurl,
     };
-    this.setState({
-      duration:
-        this.props.campaign && this.props.campaign.end_time
-          ? Math.ceil(
-              (new Date(this.props.campaign.end_time) -
-                new Date(this.props.campaign.start_time)) /
-                (1000 * 60 * 60 * 24)
-            ) + 1
-          : 0,
-    });
+
     analytics.track("ad_targeting", {
       timestamp: new Date().getTime(),
       source,
@@ -471,6 +461,15 @@ class GoogleAdTargetting extends Component {
     // );
 
     // Adjust.trackEvent(adjustGoogleAdDetailsTracker);
+  };
+  duration = () => {
+    return this.props.campaign && this.props.campaign.end_time
+      ? Math.ceil(
+          (new Date(this.props.campaign.end_time) -
+            new Date(this.props.campaign.start_time)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1
+      : 1;
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -608,10 +607,7 @@ class GoogleAdTargetting extends Component {
                   {translate("Lifetime budget")}
                 </Text>
                 <Text style={[styles.subHeadings, styles.lifetimeBudgetNumber]}>
-                  {this.formatNumber(
-                    this.state.duration * this.state.budget,
-                    true
-                  )}
+                  {this.formatNumber(this.duration() * this.state.budget, true)}
                 </Text>
               </View>
             </View>

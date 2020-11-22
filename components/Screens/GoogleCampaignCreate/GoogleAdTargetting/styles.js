@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     color: globalColors.orange,
     paddingVertical: 3,
+    textTransform: "capitalize",
   },
   lifetimeBudgetNumber: {
     fontSize: 14,
