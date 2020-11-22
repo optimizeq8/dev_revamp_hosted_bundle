@@ -214,6 +214,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 25,
+    marginVertical: 4,
+  },
+  lifetimeBudgetView: {
+    backgroundColor: "#FFF",
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  lifetimeBudgetText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+    color: globalColors.orange,
+    paddingVertical: 3,
+  },
+  lifetimeBudgetNumber: {
+    fontSize: 14,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    color: globalColors.rum,
+    fontFamily: "montserrat-bold-english",
   },
 });
 
