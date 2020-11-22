@@ -3,7 +3,7 @@ import { View, Image, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import analytics from "@segment/analytics-react-native";
 import { NavigationActions } from "react-navigation";
-SafeAreaView;
+import SafeAreaView from "react-native-safe-area-view";
 import GradientButton from "../../MiniComponents/GradientButton";
 //Redux
 import { connect } from "react-redux";
