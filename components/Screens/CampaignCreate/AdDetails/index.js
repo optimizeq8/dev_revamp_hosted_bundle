@@ -13,7 +13,7 @@ import analytics from "@segment/analytics-react-native";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import ReachBar from "./ReachBar";
+// import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
@@ -60,7 +60,6 @@ import WalletIcon from "../../../../assets/SVGs/WalletOutline";
 import AudienceIcon from "../../../../assets/SVGs/AudienceOutline";
 import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
 
-import GradientButton from "../../../MiniComponents/GradientButton";
 import AudienceReach from "./AudienceReach";
 
 class AdDetails extends Component {
