@@ -90,7 +90,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-videoeditorsdk": "^2.4.2",
     "react-native-webview": "10.7.0",
-    "react-navigation": "^4.4.2",
+    "react-navigation": "^4.4.3",
     "react-navigation-fluid-transitions": "^0.3.2",
     "react-navigation-stack": "^1.9.4",
     "react-redux": "^7.1.1",

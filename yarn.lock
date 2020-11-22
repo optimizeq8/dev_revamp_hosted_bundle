@@ -8596,11 +8596,6 @@ react-native-snap-carousel@^3.8.2:
     prop-types "^15.6.1"
     react-addons-shallow-compare "15.6.2"
 
-react-native-startup-time@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-startup-time/-/react-native-startup-time-1.3.0.tgz#4c1f248845187a57658aff2fe98e6286341e461e"
-  integrity sha512-N7SuPf13e0tVfjdU4yw6z7nr7xCJN8Y5iGP4J0KojGQ75di23bArai7v32WeMRp1fZrPatzge4lhKbG87pW8eg==
-
 react-native-svg-transformer@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/react-native-svg-transformer/-/react-native-svg-transformer-0.13.0.tgz#ec0913f76d58c4df7092f52c98e8db368e5f894f"
@@ -8742,7 +8737,7 @@ react-navigation-stack@^1.9.4:
   dependencies:
     prop-types "^15.7.2"
 
-react-navigation@^4.4.2:
+react-navigation@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-4.4.3.tgz#41a83583e7ee07c9c9e0fb8ee0508261f239086c"
   integrity sha512-tNBQQzbw0PVo9FLypQUUCISMcXW0wCW8oQeHtY0spWf35KC3IZHq/WcBm4E956wFsaqrDMGCUnyaVrxZNSuUGg==
