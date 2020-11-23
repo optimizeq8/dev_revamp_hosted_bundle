@@ -110,14 +110,16 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     this.props.checkHashForUser();
-    const MPTweakHelper = NativeModules.MPTweakHelper;
-    MPTweakHelper.getCustomTweak(
-      this.props.userInfo.userid,
-      (eer, showButton) => {
-        // console.log("showButton", showButton);
-        this.setState({ showButton });
-      }
-    );
+    if (this.props.userInfo) {
+      const MPTweakHelper = NativeModules.MPTweakHelper;
+      MPTweakHelper.getCustomTweak(
+        this.props.userInfo.userid,
+        (eer, showButton) => {
+          // console.log("showButton", showButton);
+          this.setState({ showButton });
+        }
+      );
+    }
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
