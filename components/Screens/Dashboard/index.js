@@ -109,7 +109,6 @@ class Dashboard extends Component {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
-    console.log("dashboard", new Date().getSeconds());
     this.props.checkHashForUser();
     const MPTweakHelper = NativeModules.MPTweakHelper;
     MPTweakHelper.getCustomTweak(

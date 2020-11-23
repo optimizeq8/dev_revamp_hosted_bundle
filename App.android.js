@@ -231,7 +231,7 @@ class App extends React.Component {
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
-    store.dispatch(actionCreators.checkForExpiredToken());
+    store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
     this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
@@ -246,6 +246,7 @@ class App extends React.Component {
       this._onUnreadChange
     );
     Intercom.setInAppMessageVisibility("GONE");
+    this._loadAppLanguage();
 
     this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
@@ -741,7 +742,6 @@ class App extends React.Component {
     // };
   };
   _loadResourcesAsync = async () => {
-    await this._loadAppLanguage();
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
@@ -810,14 +810,13 @@ class App extends React.Component {
       duration: 1000,
       useNativeDriver: true,
       delay: 500,
-    }).start(() => console.log("weeeee"));
+    }).start();
     Animated.timing(this.state.loadingProgress, {
       toValue: 100,
       duration: 1000,
       useNativeDriver: true,
       delay: 300,
     }).start(() => {
-      console.log("LP");
       this.setState({ animDone: true });
     });
   };
