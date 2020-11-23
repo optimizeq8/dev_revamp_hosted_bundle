@@ -15,6 +15,7 @@ import { update_app_status_chat_notification } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import NavigationService from "../../NavigationService";
 import { errorMessageHandler } from "./ErrorActions";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const chanege_base_url = (admin) => {
   return (dispatch) => {
@@ -296,6 +297,7 @@ export const logout = (navigation) => {
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
         Intercom.logout();
+        AsyncStorage.setItem("selectedBusinessId", "");
       })
       .then(() => dispatch(checkHashForUser()));
   };
