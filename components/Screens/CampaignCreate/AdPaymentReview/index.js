@@ -140,9 +140,7 @@ class AdPaymentReview extends Component {
       : {};
     let interestNames = [];
     if (this.props.interestNames.length > 0) {
-      interestNames = this.props.interestNames.map((interest) =>
-        translate(interest.name)
-      );
+      interestNames = this.props.interestNames.map((interest) => interest.name);
     }
     let end_time = new Date(this.props.data.end_time || "01-01-1970");
     let start_time = new Date(this.props.data.start_time || "01-01-1970");
