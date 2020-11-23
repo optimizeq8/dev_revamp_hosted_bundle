@@ -98,6 +98,8 @@ class ContinueCampaign extends Component {
    * Handles if users chooses to continue a campaign
    */
   handleContinue = () => {
+    const { translate } = this.props.screenProps;
+
     //checks if the old campaign dates are still applicable or not so
     //it doesn't create a campaign with old dates
     if (
@@ -105,8 +107,8 @@ class ContinueCampaign extends Component {
       new Date(this.props.data.end_time) < new Date()
     ) {
       showMessage({
-        message: "The dates are no longer applicable",
-        description: "Please choose new dates",
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign

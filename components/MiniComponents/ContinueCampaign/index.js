@@ -122,14 +122,15 @@ class ContinueCampaign extends Component {
       };
     }
     this.props.setCampaignInfoForTransaction(updated_transaction_data);
+    const { translate } = this.props.screenProps;
 
     if (
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
     ) {
       showMessage({
-        message: "The dates are no longer applicable",
-        description: "Please choose new dates",
+        message: translate("The dates are no longer applicable"),
+        description: translate("Please choose new dates"),
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
