@@ -106,8 +106,8 @@ export default class Picker extends Component {
                 <SearchIcon stroke={globalColors.orange} />
                 <Input
                   style={styles.customSearchInput}
-                  placeholder={"Search Interesets.."}
-                  placeholderTextColor="white"
+                  placeholder={translate("Search Interests")}
+                  placeholderTextColor={globalColors.rum}
                   autoCapitalize="none"
                   onChangeText={this.props.customSearch}
                 />
