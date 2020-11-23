@@ -17,6 +17,16 @@ export const getLanguageListPOEdit = (language) => {
         type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
         payload: true,
       });
+      i18n.translations = {
+        [language]: language === "ar" ? arabicStrings : englishStrings,
+      };
+      dispatch({
+        type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
+        payload: {
+          terms: language === "ar" ? arabicStrings : englishStrings,
+          language,
+        },
+      });
       const response = await axios.post(
         "https://api.poeditor.com/v2/terms/list",
         qs.stringify({

@@ -199,7 +199,6 @@ class App extends React.Component {
     // FOR DEV ENVIRONMENT ==> fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh
     // FOR PROD EENV ==> ExPvBTX3CaGhY27ll1Cbk5zis5FVOJHB
     RNAdvertisingId.getAdvertisingId();
-
     analytics.setup("fcKWh6YqnzDNtVwMGIpPOC3bowVHXSYh", {
       using: [AdjustIntegration],
       // Record screen views automatically!
@@ -229,7 +228,7 @@ class App extends React.Component {
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
-    store.dispatch(actionCreators.checkForExpiredToken());
+    store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
     this._notificationSubscription = Notifications.addNotificationResponseReceivedListener(
       this._handleNotification
     );
@@ -244,6 +243,7 @@ class App extends React.Component {
       this._onUnreadChange
     );
     Intercom.setInAppMessageVisibility("GONE");
+    this._loadAppLanguage();
 
     this.interval = setInterval(() => {
       store.dispatch(actionCreators.crashAppForSpamUser());
@@ -682,7 +682,7 @@ class App extends React.Component {
     // };
   };
   _loadResourcesAsync = async () => {
-    await this._loadAppLanguage();
+    console.log("started", new Date().getSeconds());
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
@@ -735,6 +735,7 @@ class App extends React.Component {
     ]).then(() => {
       //was used to animate the logo
       //  this.anim()
+      console.log("Finished", new Date().getSeconds());
     });
   };
 
