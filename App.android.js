@@ -242,7 +242,7 @@ class App extends React.Component {
       .then((token) => {
         Intercom.sendTokenToIntercom(token.data);
       })
-      .catch((err) => console.log("Intercomd er", err));
+      .catch((err) => {});
     Intercom.addEventListener(
       Intercom.Notifications.UNREAD_COUNT,
       this._onUnreadChange

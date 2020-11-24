@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
               }
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
             });
           analytics.identify(action.payload.user.userid, userTraits);
           MixpanelSDK.identify(action.payload.user.userid);
