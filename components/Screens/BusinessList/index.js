@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import globalStyles from "../../../GlobalStyles";
 import GradientButton from "../../MiniComponents/GradientButton";
+import { unionBy } from "lodash";
 const tabs = [
   {
     name: "Businesses",
@@ -50,6 +51,21 @@ class BusinessList extends Component {
     if (prevProps.businessAccounts !== this.props.businessAccounts) {
       this.filterBusinesses(this.state.value);
     }
+    if (
+      prevProps.businessSearchLoading !== this.props.businessSearchLoading &&
+      this.props.searchedBusinessesList !== prevProps.searchedBusinessesList
+    ) {
+      let filteredBusinesses = unionBy(
+        this.state.filteredBusinesses,
+        this.props.searchedBusinessesList,
+        "businessid"
+      );
+      this.setState({
+        filteredBusinesses: [{ businessid: "-1" }].concat(
+          ...filteredBusinesses
+        ),
+      });
+    }
   }
   filterBusinesses = async (value) => {
     let filteredBusinesses = this.props.businessAccounts.filter(
@@ -60,14 +76,12 @@ class BusinessList extends Component {
           .includes(value.trim().toLowerCase()) ||
         bus.brandname.trim().toLowerCase().includes(value.trim().toLowerCase())
     );
-    if (filteredBusinesses.length === 0) {
+
+    if (value.length >= 3) {
       await this.props.searchForBusinessInBackend(value);
     }
     this.setState({
-      filteredBusinesses: [{ businessid: "-1" }].concat(
-        ...filteredBusinesses,
-        ...this.props.searchedBusinessesList
-      ),
+      filteredBusinesses: [{ businessid: "-1" }].concat(...filteredBusinesses),
       value,
     });
   };
