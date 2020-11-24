@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.2,
     alignSelf: "center",
-    height: "95%",
   },
   headersCol: {
     alignSelf: "flex-start",
