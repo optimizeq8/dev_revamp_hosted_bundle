@@ -238,9 +238,11 @@ class App extends React.Component {
     AppState.addEventListener("change", this._handleAppStateChange);
     Platform.OS === "ios" && Intercom.registerForPush();
 
-    Notifications.getDevicePushTokenAsync().then((token) => {
-      Intercom.sendTokenToIntercom(token.data);
-    });
+    Notifications.getDevicePushTokenAsync()
+      .then((token) => {
+        Intercom.sendTokenToIntercom(token.data);
+      })
+      .catch((err) => console.log("Intercomd er", err));
     Intercom.addEventListener(
       Intercom.Notifications.UNREAD_COUNT,
       this._onUnreadChange

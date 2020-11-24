@@ -29,12 +29,7 @@ public class MPTweakHelper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getCustomTweak(String userId,Callback successCallback) {
-        if(showAds.get()){
-            Toast.makeText(getReactApplicationContext(), "true",Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getReactApplicationContext(), "false",Toast.LENGTH_LONG).show();
-        }      
+    public void getCustomTweak(String userId,Callback successCallback) {    
         successCallback.invoke(null,showAds.get());
     }
 }

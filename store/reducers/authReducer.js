@@ -34,15 +34,19 @@ const reducer = (state = initialState, action) => {
             $phone: "+" + action.payload.user.mobile,
             logged_out: false,
           };
-          Notifications.getDevicePushTokenAsync().then((token) => {
-            if (Platform.OS === "android") {
-              userTraits["$android_devices"] = [token.data];
-            } else {
-              userTraits["$ios_devices"] = [token.data];
-            }
-            analytics.identify(action.payload.user.userid, userTraits);
-            MixpanelSDK.identify(action.payload.user.userid);
-          });
+          Notifications.getDevicePushTokenAsync()
+            .then((token) => {
+              if (Platform.OS === "android") {
+                userTraits["$android_devices"] = [token.data];
+              } else {
+                userTraits["$ios_devices"] = [token.data];
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          analytics.identify(action.payload.user.userid, userTraits);
+          MixpanelSDK.identify(action.payload.user.userid);
         })
         .catch((error) => {
           analytics.alias(action.payload.user.userid);
