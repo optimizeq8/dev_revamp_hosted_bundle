@@ -1,5 +1,6 @@
 import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { globalColors } from "../../../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   previewBlock: {
@@ -14,22 +15,23 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "black",
     shadowOpacity: 0.2,
-    alignSelf: "center"
+    alignSelf: "center",
+    height: "95%",
   },
   headersCol: {
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   headerContent: {
-    paddingRight: 0
+    paddingRight: 0,
   },
   headline: {
     fontFamily: "montserrat-bold",
-    fontSize: 10 / PixelRatio.getFontScale(),
+    fontSize: 12 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
     alignSelf: "flex-start",
     paddingBottom: 2,
-    paddingLeft: 6
+    textTransform: "uppercase",
   },
   headlineText: {
     fontFamily: "montserrat-bold",
@@ -39,79 +41,82 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "flex-start",
     paddingBottom: 5,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   headlineBlueLine: {
     borderLeftColor: "#1B10AB",
     borderLeftWidth: 1,
     marginBottom: 5,
-    marginLeft: 13
+    marginLeft: 13,
   },
   adIcon: {
     marginRight: 5,
     alignSelf: "center",
     marginBottom: 5,
-    marginLeft: 20
+    marginLeft: 20,
   },
   linkText: {
     fontFamily: "montserrat-regular",
     color: "#197132",
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   descriptionGrayLine: {
     borderTopColor: "#EDEDED",
     borderTopWidth: 1,
     marginBottom: 5,
-    width: "100%"
+    width: "100%",
   },
   descriptionText: {
     color: "#1B10AB",
-    textAlign: "left"
+    textAlign: "left",
   },
   input: {
     fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#1B10AB",
+    color: globalColors.rum,
     textAlign: I18nManager.isRTL ? "right" : "left",
     alignSelf: "flex-start",
     paddingBottom: 5,
     paddingHorizontal: 5,
     width: "100%",
-    height: "auto"
+    height: "auto",
   },
   row: {
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingLeft: 10,
+    paddingVertical: 10,
   },
   column: {
     flexDirection: "column",
     flex: 1,
     justifyContent: "flex-start",
     alignContent: "flex-start",
-    alignItems: "flex-start"
+    paddingLeft: 10,
     // height: 35
     // width: "100%"
   },
   textArea: {
     textAlign: I18nManager.isRTL ? "right" : "left",
-    marginHorizontal: 10,
+
     paddingRight: 20,
     height: "auto",
-    width: "100%"
+    width: "100%",
   },
   smallFont: { fontSize: 8 },
   titlePadding: {
-    paddingLeft: 20
+    paddingLeft: 20,
+    textTransform: "uppercase",
   },
   networkLabel: {
     fontFamily: "montserrat-bold",
     fontSize: 9,
     textAlign: "center",
     color: "#fff",
-    textTransform: "uppercase"
-  }
+    textTransform: "uppercase",
+  },
 });
 
 export default styles;

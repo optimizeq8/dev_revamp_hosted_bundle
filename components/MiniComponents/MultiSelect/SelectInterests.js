@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import isNull from "lodash/isNull";
 //Icons
@@ -88,26 +88,28 @@ class SelectInterests extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </GradientButton>
-              <Picker
-                showIcon={true}
-                screenProps={this.props.screenProps}
-                searchPlaceholderText={translate("Search Interests")}
-                data={this.state.interests}
-                uniqueKey={"id"}
-                displayKey={"name"}
-                open={this.state.open}
-                onSelectedItemsChange={this.props.onSelectedItemsChange}
-                onSelectedItemObjectsChange={
-                  this.props.onSelectedItemObjectsChange
-                }
-                selectedItems={this.props.selectedItems}
-                single={false}
-                screenName={"Select Interests"}
-                closeCategoryModal={() => this.setState({ open: false })}
-                customColors={{
-                  chipColor: globalColors.rum,
-                }}
-              />
+              <ScrollView>
+                <Picker
+                  showIcon={true}
+                  screenProps={this.props.screenProps}
+                  searchPlaceholderText={translate("Search Interests")}
+                  data={this.state.interests}
+                  uniqueKey={"id"}
+                  displayKey={"name"}
+                  open={this.state.open}
+                  onSelectedItemsChange={this.props.onSelectedItemsChange}
+                  onSelectedItemObjectsChange={
+                    this.props.onSelectedItemObjectsChange
+                  }
+                  selectedItems={this.props.selectedItems}
+                  single={false}
+                  screenName={"Select Interests"}
+                  closeCategoryModal={() => this.setState({ open: false })}
+                  customColors={{
+                    chipColor: globalColors.rum,
+                  }}
+                />
+              </ScrollView>
               {isNull(this.state.interests) && (
                 <ActivityIndicator color={globalColors.rum} size="large" />
               )}
