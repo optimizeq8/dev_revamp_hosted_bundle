@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   sliderPlaceHolder: {
     height: 75,
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   targetList: {
     flexDirection: "column",
