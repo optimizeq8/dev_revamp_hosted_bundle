@@ -5,7 +5,7 @@ import GlobalStyles from "../../../GlobalStyles";
 import styles, { dynamicStyle } from "./styles";
 import ADIcon from "../../../assets/SVGs/ADIcon";
 
-export default GoogleSEAPreview = props => {
+export default GoogleSEAPreview = (props) => {
   let {
     screenProps,
     headline1,
@@ -22,15 +22,15 @@ export default GoogleSEAPreview = props => {
     inputURL,
     details = true,
     language,
-    showEmpty
+    showEmpty,
   } = props;
   const { translate } = screenProps;
   let headlineArray = [headline1, headline2, headline3];
   let headlineNums = ["1", "2", "3"];
-  if (language === "1019") {
-    headlineArray = headlineArray.reverse();
-    headlineNums = headlineNums.reverse();
-  }
+  // if (language === "1019") {
+  //   // headlineArray = headlineArray.reverse();
+  //   // headlineNums = headlineNums.reverse();
+  // }
   if (path1) finalurl = finalurl + "/" + path1;
   if (path2) finalurl += "/" + path2;
 
@@ -44,7 +44,7 @@ export default GoogleSEAPreview = props => {
                 styles.headline,
                 inputURL
                   ? GlobalStyles.orangeTextColor
-                  : GlobalStyles.darkGrayTextColor
+                  : GlobalStyles.darkGrayTextColor,
               ]}
             >
               {translate("Website")} {translate("url")}
@@ -58,8 +58,8 @@ export default GoogleSEAPreview = props => {
                 styles.headlineText,
                 styles.linkText,
                 {
-                  paddingRight: language === "1019" ? 20 : 0
-                }
+                  paddingRight: language === "1019" ? 20 : 0,
+                },
               ]}
             >
               <Text style={[styles.adIcon, dynamicStyle(language).arabic]}>
@@ -80,7 +80,7 @@ export default GoogleSEAPreview = props => {
               dynamicStyle(language).arabic,
               inputH1
                 ? GlobalStyles.orangeTextColor
-                : GlobalStyles.darkGrayTextColor
+                : GlobalStyles.darkGrayTextColor,
             ]}
           >
             {translate("Headline")}
@@ -119,7 +119,7 @@ export default GoogleSEAPreview = props => {
         style={[
           styles.headersCol,
           !details && { marginTop: 10 },
-          dynamicStyle(language).arabic
+          dynamicStyle(language).arabic,
         ]}
       >
         {details && (
@@ -128,7 +128,7 @@ export default GoogleSEAPreview = props => {
               styles.headline,
               inputD || inputD2
                 ? GlobalStyles.orangeTextColor
-                : GlobalStyles.darkGrayTextColor
+                : GlobalStyles.darkGrayTextColor,
             ]}
           >
             {translate("Description")}
@@ -139,7 +139,7 @@ export default GoogleSEAPreview = props => {
             styles.headlineText,
             styles.descriptionText,
             dynamicStyle(language).arabic,
-            !details && { color: "#909090" }
+            !details && { color: "#909090" },
           ]}
         >
           {description ||
@@ -173,5 +173,5 @@ GoogleSEAPreview.propTypes = {
   description: PropTypes.string.isRequired,
   description2: PropTypes.string.isRequired,
   path1: PropTypes.string,
-  path2: PropTypes.string
+  path2: PropTypes.string,
 };
