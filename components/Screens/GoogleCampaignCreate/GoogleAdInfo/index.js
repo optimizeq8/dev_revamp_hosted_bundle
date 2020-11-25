@@ -176,12 +176,13 @@ class GoogleAdInfo extends Component {
       source_action: "a_ad_end_date",
       campaign_end_date: date,
     });
+    end_time = end_time.toISOString().split("T")[0];
     this.setState({
-      end_time: end_time.toISOString(),
+      end_time,
     });
 
     this.props.save_google_campaign_data({
-      end_time: end_time.toISOString(),
+      end_time,
       campaignDateChanged: true,
     });
     this._handleSubmission();

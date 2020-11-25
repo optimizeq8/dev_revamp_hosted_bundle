@@ -136,8 +136,11 @@ class ContinueCampaign extends Component {
         type: "warning",
       });
       //Shows the dateField's modal to set new dates and resumes campaign
-      this.props.dateField.showModal(true);
       this.handleSubmition(false, false);
+      setTimeout(() => {
+        //to fix issue with date field not opening when the resume modal is open
+        this.props.dateField.showModal(true);
+      }, 500);
     } else {
       this.setState({ resumeLoading: true });
       this.props.set_google_campaign_resumed(true);
