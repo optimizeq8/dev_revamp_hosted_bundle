@@ -41,7 +41,7 @@ class ReachBar extends Component {
             <View style={styles.reachPeopleView}>
               <SwipeUpsIcon fill="#9300FF" width={27} height={30} />
               <View style={styles.reachInnerView}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.swipesView}>
                   <Text
                     adjustsFontSizeToFit
                     numberOfLines={1}
@@ -74,7 +74,7 @@ class ReachBar extends Component {
             <View style={styles.reachPeopleView}>
               <ImpressionsIcon fill="#9300FF" width={30} height={30} />
               <View style={styles.reachInnerView}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.impressionsView}>
                   <Text
                     adjustsFontSizeToFit
                     numberOfLines={1}

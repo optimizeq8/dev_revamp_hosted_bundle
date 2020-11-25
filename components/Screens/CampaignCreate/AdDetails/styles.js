@@ -403,6 +403,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
+  swipesView: { flexDirection: "row", alignItems: "center" },
+  impressionsView: { flexDirection: "row", alignItems: "center" },
 });
 
 export default styles;

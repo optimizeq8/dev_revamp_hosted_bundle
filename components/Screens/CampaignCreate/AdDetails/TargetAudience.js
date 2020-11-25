@@ -4,9 +4,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Platform,
   I18nManager,
-  Keyboard,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -16,19 +14,14 @@ import LocationIcon from "../../../../assets/SVGs/Location";
 import InterestsIcon from "../../../../assets/SVGs/Interests";
 import GenderIcon from "../../../../assets/SVGs/Gender";
 import PurplePlusIcon from "../../../../assets/SVGs/PurplePlusIcon";
-import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
-import LanguageIcon from "../../../../assets/SVGs/Language";
-import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import { Icon, Input } from "native-base";
-import { LinearGradient } from "expo-linear-gradient";
+import { Icon } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { gender as genders } from "./data";
-import InputField from "../../../MiniComponents/InputFieldNew";
 export class TargetAudience extends Component {
   state = {
     scrollY: 1,
