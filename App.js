@@ -77,6 +77,7 @@ if (!__DEV__) {
 }
 import { MixpanelInstance } from "react-native-mixpanel";
 import AsyncStorage from "@react-native-community/async-storage";
+import LottieView from "lottie-react-native";
 
 //DEV TOKEN FOR MIXPANEL ====> c9ade508d045eb648f95add033dfb017
 //LIVE TOKEN FOR MIXPANEL ====> ef78d7f5f4160b74fda35568224f6cfa
@@ -510,13 +511,6 @@ class App extends React.Component {
   );
 
   render() {
-    let colorLayer = this.state.animDone ? null : (
-      <LinearGradient
-        colors={["#9300FF", "#5600CB"]}
-        locations={[0, 1]}
-        style={styles.gradient}
-      />
-    );
     let opacityNeg = {
       opacity: this.state.loadingProgress.interpolate({
         inputRange: [0, 25, 50],
@@ -524,19 +518,13 @@ class App extends React.Component {
         extrapolate: "clamp",
       }),
     };
-    let whiteLayer = this.state.animDone ? null : (
-      <Animated.View
-        style={[styles.gradient, { backgroundColor: "#fff" }, opacityNeg]}
-      />
-    );
-
     const prefix = "optimize://";
     let imageScale = {
       transform: [
         {
           scale: this.state.loadingProgress.interpolate({
             inputRange: [0, 15, 100],
-            outputRange: [0.39, 0.8, 100],
+            outputRange: [1, 2, 100],
           }),
         },
         {
@@ -566,86 +554,114 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={this.renderLoading()}>
-          {colorLayer}
-          <MaskedView
-            style={{ flex: 1 }}
-            maskElement={
+          <StatusBar
+            barStyle="light-content"
+            translucent={true}
+            style={{
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0,
+            }}
+          />
+          <LinearGradient
+            colors={["#9300FF", "#5600CB"]}
+            locations={[0, 1]}
+            style={styles.gradient}
+          />
+          <View
+            style={{
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0,
+            }}
+          />
+          {!this.state.animDone && (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+                position: "absolute",
+                alignSelf: "center",
+                width: "100%",
+              }}
+            >
               <Animated.View
                 style={[
                   {
-                    flex: 1,
                     alignItems: "center",
                     justifyContent: "center",
+                    width: "100%",
+                    height: "100%",
+                    alignSelf: "center",
                   },
                   imageScale,
+                  opacityNeg,
                 ]}
               >
-                <Logo width={1000} />
+                <LottieView
+                  ref={(animation) => {
+                    this.animation = animation;
+                  }}
+                  resizeMode="contain"
+                  source={require("./assets/animation/LogoAnimation.json")}
+                  onAnimationFinish={() =>
+                    Animated.timing(this.state.loadingProgress, {
+                      toValue: 100,
+                      duration: 1000,
+                      useNativeDriver: true,
+                      delay: 400,
+                    }).start(() => {
+                      this.setState({ animDone: true });
+                    })
+                  }
+                  autoPlay={false}
+                  loop={false}
+                />
+                {/* <Logo width={1000} /> */}
               </Animated.View>
-            }
+            </View>
+          )}
+          <Animated.View
+            onLayout={() => this.setState({ mounted: true })}
+            style={[styles.container, opacity]}
           >
-            <StatusBar
-              barStyle="light-content"
-              translucent={true}
-              style={{
-                backgroundColor: "transparent",
-                marginTop: 0,
-                paddingTop: 0,
-              }}
-            />
-            <LinearGradient
-              colors={["#9300FF", "#5600CB"]}
-              locations={[0, 1]}
-              style={styles.gradient}
-            />
-            <View
-              style={{
-                backgroundColor: "transparent",
-                marginTop: 0,
-                paddingTop: 0,
-              }}
-            />
-            {whiteLayer}
-            <Animated.View
-              onLayout={() => this.setState({ mounted: true })}
-              style={[styles.container, opacity]}
-            >
-              <SafeAreaProvider>
-                {this.state.isLoadingComplete && (
-                  <Root>
-                    <AppNavigator
-                      onNavigationStateChange={(prevState, currentState) => {
-                        const currentScreen = this.getCurrentRouteName(
-                          currentState
-                        );
-                        this.setState({ currentScreen });
-                        // console.log("screeen name", currentScreen);
-                      }}
-                      uriPrefix={prefix}
-                      ref={(navigatorRef) => {
-                        this.navigatorRef = navigatorRef;
-                        NavigationService.setTopLevelNavigator(navigatorRef);
-                      }}
-                      screenProps={{
-                        translate: this.t,
-                        locale: this.state.locale,
-                        setLocale: this.setLocale,
-                        device_id: getUniqueId(),
-                        anonymous_userId: this.state.anonymous_userId,
-                        prevAppState: this.state.prevAppState,
-                      }}
-                    />
-                    <FlashMessage
-                      icon="auto"
-                      duration={4000}
-                      position={"top"}
-                      floating={true}
-                    />
-                  </Root>
-                )}
-              </SafeAreaProvider>
-            </Animated.View>
-          </MaskedView>
+            <SafeAreaProvider>
+              {this.state.isLoadingComplete && (
+                <Root>
+                  <AppNavigator
+                    onNavigationStateChange={(prevState, currentState) => {
+                      const currentScreen = this.getCurrentRouteName(
+                        currentState
+                      );
+                      this.setState({ currentScreen });
+                      // console.log("screeen name", currentScreen);
+                    }}
+                    uriPrefix={prefix}
+                    ref={(navigatorRef) => {
+                      this.navigatorRef = navigatorRef;
+                      NavigationService.setTopLevelNavigator(navigatorRef);
+                    }}
+                    screenProps={{
+                      translate: this.t,
+                      locale: this.state.locale,
+                      setLocale: this.setLocale,
+                      device_id: getUniqueId(),
+                      anonymous_userId: this.state.anonymous_userId,
+                      prevAppState: this.state.prevAppState,
+                    }}
+                  />
+                  <FlashMessage
+                    icon="auto"
+                    duration={4000}
+                    position={"top"}
+                    floating={true}
+                  />
+                </Root>
+              )}
+            </SafeAreaProvider>
+          </Animated.View>
+          {/* </MaskedView> */}
         </PersistGate>
       </Provider>
     );
@@ -750,14 +766,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-    Animated.timing(this.state.loadingProgress, {
-      toValue: 100,
-      duration: 1000,
-      useNativeDriver: true,
-      delay: 400,
-    }).start(() => {
-      this.setState({ animDone: true });
-    });
+    this.animation.play(90, 200);
   };
 }
 

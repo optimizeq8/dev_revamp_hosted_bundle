@@ -411,7 +411,7 @@ class Menu extends Component {
               <Text style={styles.version}>
                 {translate("Version:")}
                 {Constants.nativeAppVersion}/307/
-                {Constants.nativeBuildVersion}
+                {Constants.nativeBuildVersion}/SPlash screen
               </Text>
             </ScrollView>
           </View>
