@@ -519,22 +519,6 @@ class App extends React.Component {
       }),
     };
     const prefix = "optimize://";
-    let imageScale = {
-      transform: [
-        {
-          scale: this.state.loadingProgress.interpolate({
-            inputRange: [0, 15, 100],
-            outputRange: [1, 2, 100],
-          }),
-        },
-        {
-          translateY: this.state.loadingProgress.interpolate({
-            inputRange: [0, 15, 100],
-            outputRange: [0, -25, -35],
-          }),
-        },
-      ],
-    };
     let opacity = {
       opacity: this.state.loadingProgress.interpolate({
         inputRange: [0, 25, 50],
@@ -595,7 +579,6 @@ class App extends React.Component {
                     height: "100%",
                     alignSelf: "center",
                   },
-                  imageScale,
                   opacityNeg,
                 ]}
               >
@@ -766,7 +749,7 @@ class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
-    this.animation.play(90, 200);
+    this.animation.play(70, 200);
   };
 }
 
