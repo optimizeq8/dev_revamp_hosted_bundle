@@ -36,7 +36,7 @@ export default class MapSearchBar extends Component {
         // this.props.handleRegionChange(coordinates, bBox);
       })
       .catch((err) => {
-        //  console.log("err", err)}
+        // console.log("err", err);
       });
   };
   handleAutoComplete = (location) => {
@@ -68,15 +68,24 @@ export default class MapSearchBar extends Component {
     let countryName =
       details.address_components[details.address_components.length - 1]
         .long_name;
+    let country_code = details.address_components[
+      details.address_components.length - 1
+    ].short_name.toLowerCase();
+    if (!isNaN(parseInt(countryName))) {
+      countryName =
+        details.address_components[details.address_components.length - 2]
+          .long_name;
+      country_code = details.address_components[
+        details.address_components.length - 2
+      ].short_name.toLowerCase();
+    }
     if (countryName === "Saudi Arabia") {
       countryName = "KSA";
     } else if (countryName === "United Arab Emirates") {
       countryName = "UAE";
     }
     let locationInfo = {
-      country_code: details.address_components[
-        details.address_components.length - 1
-      ].short_name.toLowerCase(),
+      country_code,
       countryName,
       description: data.description,
       coordinates: {
