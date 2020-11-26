@@ -21,10 +21,6 @@ class VerifyEngagmentNumber extends Component {
     }
   }
   verifyOTP = () => {
-    const source = this.props.navigation.getParam(
-      "source",
-      this.props.screenProps.prevAppState
-    );
     this.props.verifySnapchatOtp(
       this.props.campaign_id,
       this.props.engagementNumberID,

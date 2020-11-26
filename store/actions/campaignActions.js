@@ -1755,6 +1755,16 @@ export const verifySnapchatOtp = (
       })
       .then((res) => res.data)
       .then((data) => {
+        analytics.track(`a_verify_otp`, {
+          source: "otp_verify",
+          source_action: `a_verify_otp`,
+          verification_channel: "Mobile",
+          action_status: data.success ? "success" : "failure",
+          action_message: data.message,
+          campaign_id,
+          campaign_phone_number_id: phone_number_id,
+          campaign_verification_code: verification_code,
+        });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
