@@ -100,18 +100,22 @@ class Call extends Component {
   }
   validateMobileNo = () => {
     const { translate } = this.props.screenProps;
-    const mobileError = validateWrapper(
+    let mobileError = null;
+    mobileError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.attachment.phone_number_id
     );
 
+    if (this.state.campaignInfo.attachment.phone_number_id.includes("++")) {
+      mobileError = "Please enter a valid number";
+    }
     this.setState({
       mobileError,
     });
 
     if (mobileError) {
       showMessage({
-        message: translate(`${"Please enter a valid number"}`),
+        message: translate("Please enter a valid number!"),
         type: "warning",
         position: "top",
         duration: 7000,
@@ -123,15 +127,18 @@ class Call extends Component {
   };
 
   _handleSubmission = () => {
-    if (!this.state.valid && this.state.mobileError) {
+    const { translate } = this.props.screenProps;
+
+    if (!this.state.valid || !this.validateMobileNo()) {
       showMessage({
-        message: translate(`${"Please enter a valid number"}`),
+        message: translate("Please enter a valid number!"),
         type: "warning",
         position: "top",
         duration: 7000,
       });
     }
-    if (this.state.valid && !this.state.mobileError) {
+
+    if (this.state.valid && this.validateMobileNo()) {
       this.props._changeDestination(
         "AD_TO_CALL",
         this.state.campaignInfo.callaction,
