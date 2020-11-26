@@ -138,7 +138,7 @@ class SuccessRedirect extends Component {
           (this.props.channel &&
             this.props.channel.toLowerCase() === "snapchat")
         ) {
-          // this.props.resetCampaignInfo(false);
+          this.props.resetCampaignInfo(false);
         }
         if (this.props.channel === "google") {
           this.props.rest_google_campaign_data();
@@ -160,12 +160,23 @@ class SuccessRedirect extends Component {
       show &&
       !navigateToDashboard
     ) {
+      analytics.track(`a_verify_phone_number_engagement`, {
+        source: "payment_end",
+        source_action: "a_verify_phone_number_engagement",
+        campaign_id: this.state.campaign_id,
+        campaign_engagement_phone_number: this.state.engagmentPhoneNumber,
+      });
       this.props.getEngagmentNumberVerification(this.state.campaign_id, () =>
         this.setState({ showVerifyEngagment: show })
       );
     } else if (!show && !navigateToDashboard) {
       this.setState({ showVerifyEngagment: show });
-    } else
+    } else {
+      analytics.track(`a_go_to_dashboard`, {
+        source: "payment_end",
+        source_action: "a_go_to_dashboard",
+        campaign_id: this.state.campaign_id,
+      });
       this.props.navigation.reset(
         [
           NavigationActions.navigate({
@@ -178,6 +189,7 @@ class SuccessRedirect extends Component {
         ],
         0
       );
+    }
   };
   render() {
     const { translate } = this.props.screenProps;

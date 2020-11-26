@@ -1722,10 +1722,6 @@ export const getEngagmentNumberVerification = (campaign_id, showCodeInput) => {
 
 export const verifySnapchatNumber = (ad_account_id, mobile) => {
   return (dispatch) => {
-    dispatch({
-      type: actionTypes.VERIFY_ENGAGMENT_NUMBER_LOADING,
-      payload: true,
-    });
     createBaseUrl()
       .post(`verifySnapchatNumber`, { ad_account_id, mobile })
       .then((res) => res.data)
@@ -1735,6 +1731,7 @@ export const verifySnapchatNumber = (ad_account_id, mobile) => {
         );
       })
       .catch((err) => {
+        dispatch(save_campaign_info({ verifiedEngagementNumber: false }));
         // console.log("moveAmountToWallet", err.response || err.message);
       });
   };
