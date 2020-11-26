@@ -517,6 +517,14 @@ class App extends React.Component {
         outputRange: [1, 0, 0],
         extrapolate: "clamp",
       }),
+      transform: [
+        {
+          scale: this.state.loadingProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange: [1.1, 1],
+          }),
+        },
+      ],
     };
     const prefix = "optimize://";
     let opacity = {
