@@ -577,6 +577,22 @@ class Dashboard extends Component {
       }
     }
   };
+  handleSwitchLanguage = () => {
+    analytics.track(`a_change_language`, {
+      source: "dashboard",
+      source_action: "a_change_language",
+      prev_langauage: this.props.appLanguage,
+      selected_language: this.props.appLanguage === "en" ? "ar" : "en",
+    });
+    this.props.navigation.navigate("SwitchLanguageLoading", {
+      source: "dashboard",
+      source_action: "a_change_language",
+    });
+    // this.props.getLanguageListPOEdit(
+    //   this.props.appLanguage === "en" ? "ar" : "en"
+    // );
+    // this.props.screenProps.setLocale(this.props.appLanguage);
+  };
   render() {
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
@@ -717,25 +733,7 @@ class Dashboard extends Component {
                 </>
               ) : (
                 <TouchableOpacity
-                  onPress={() => {
-                    analytics.track(`a_change_language`, {
-                      source: "dashboard",
-                      source_action: "a_change_language",
-                      prev_langauage: this.props.appLanguage,
-                      selected_language:
-                        this.props.appLanguage === "en" ? "ar" : "en",
-                    });
-                    this.props.getLanguageListPOEdit(
-                      this.props.appLanguage === "en" ? "ar" : "en"
-                    );
-                    this.props.screenProps.setLocale(this.props.appLanguage);
-                    this.props.navigation.navigate("SwitchLanguageLoading", {
-                      source: "dashboard",
-                      source_action: "a_change_language",
-                    });
-                    // RNRestart.Restart();
-                    // Updates.reload();
-                  }}
+                  onPress={this.handleSwitchLanguage}
                   style={[styles.languageTouchView]}
                 >
                   <Text style={[styles.languageText]}>

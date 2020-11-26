@@ -7,15 +7,22 @@ import SafeAreaView from "react-native-safe-area-view";
 import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 // Style
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
 class SwitchLanguageLoading extends Component {
+  async componentDidMount() {
+    await this.props.getLanguageListPOEdit(
+      this.props.appLanguage === "en" ? "ar" : "en"
+    );
+    this.props.screenProps.setLocale(this.props.appLanguage);
+  }
   componentDidUpdate(prevProps) {
-    if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
-      Updates.reloadAsync();
+    if (prevProps.terms !== this.props.terms) {
+      Updates.reloadAsync().catch((err) => console.log(err));
     }
   }
   onDidFocus = () => {
@@ -51,6 +58,16 @@ class SwitchLanguageLoading extends Component {
 
 const mapStateToProps = (state) => ({
   languageChangeLoading: state.language.languageChangeLoading,
+  appLanguage: state.language.phoneLanguage,
+  terms: state.language.terms,
 });
 
-export default connect(mapStateToProps, null)(SwitchLanguageLoading);
+const mapDispatchToProps = (dispatch) => ({
+  getLanguageListPOEdit: (language) =>
+    dispatch(actionCreators.getLanguageListPOEdit(language)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SwitchLanguageLoading);
