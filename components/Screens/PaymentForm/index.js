@@ -461,6 +461,7 @@ class PaymentForm extends Component {
             _changeToKnet={this._changeToKnet}
             wallet={this.props.wallet}
             screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
           />
         )}
         {this.state.choice === 2 && (

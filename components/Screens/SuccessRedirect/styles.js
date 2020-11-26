@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   gradient: {
@@ -67,6 +71,48 @@ const styles = StyleSheet.create({
     fontSize: 41,
     fontFamily: "montserrat-bold",
     textTransform: "uppercase",
+  },
+  codeSentText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: "#909090",
+    textAlign: "center",
+  },
+  mobileDetailCard: {
+    backgroundColor: globalColors.white,
+    paddingLeft: 20,
+    paddingRight: 10,
+    paddingVertical: 20,
+    marginHorizontal: 20,
+    borderRadius: 35,
+  },
+  verifyButton: {
+    width: widthPercentageToDP(30),
+    height: 40,
+    alignSelf: "center",
+  },
+  bottomText: {
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    textDecorationLine: "underline",
+    color: globalColors.orange,
+    paddingTop: 20,
+  },
+  headingText: {
+    textAlign: "center",
+    color: globalColors.white,
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    width: "80%",
+    alignSelf: "center",
+    marginBottom: 24,
+  },
+  detail: {
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: globalColors.orange,
+    textAlign: "center",
   },
 });
 
