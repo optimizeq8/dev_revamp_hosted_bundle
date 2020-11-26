@@ -35,7 +35,6 @@ class ReachBar extends Component {
         <View style={styles.bottomReachView}>
           <Text style={styles.expectedResultText}>
             {translate("Expected Results")}
-            <Text style={{ fontSize: 8 }}>{translate("(Overall)")}</Text>
           </Text>
           <View style={styles.chartItems}>
             <View style={styles.reachPeopleView}>
