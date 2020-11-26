@@ -38,7 +38,8 @@ class SwitchLanguage extends Component {
   };
   async componentDidMount() {
     const appLanguage = await AsyncStorage.getItem("appLanguage");
-    if (appLanguage !== this.state.language) {
+
+    if (appLanguage && appLanguage !== this.state.language) {
       // in case the app language is ARABIC to set the button properly
       this.setState({
         language: appLanguage,
