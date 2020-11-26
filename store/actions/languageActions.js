@@ -40,7 +40,6 @@ export const getLanguageListPOEdit = (language) => {
         .then((data) => {
           if (data.response.status === "success") {
             AsyncStorage.setItem("appLanguage", language).then((res) => {
-              console.log("appLangugae set", res);
               const terms = data.result.terms;
               if (terms.length > 0) {
                 var modifierJson = {};
@@ -65,83 +64,67 @@ export const getLanguageListPOEdit = (language) => {
                 });
               }
             });
+          } else {
+            return data.response.status;
+          }
+        })
+        .then((status) => {
+          if (status && status !== "success") {
+            createBaseUrl()
+              .get(`translation/${language}`)
+              .then((res) => res.data)
+              .then((data) => {
+                AsyncStorage.setItem("appLanguage", language).then((res) => {
+                  I18nManager.allowRTL(language === "ar");
+                  I18nManager.forceRTL(language === "ar");
+                  if (data) {
+                    i18n.translations = {
+                      [language]: data,
+                    };
+
+                    return dispatch({
+                      type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
+                      payload: {
+                        terms: data,
+                        language,
+                      },
+                    });
+                  } else {
+                    i18n.translations = {
+                      [language]:
+                        language === "ar" ? arabicStrings : englishStrings,
+                    };
+
+                    return dispatch({
+                      type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
+                      payload: {
+                        terms:
+                          language === "ar" ? arabicStrings : englishStrings,
+                        language,
+                      },
+                    });
+                  }
+                });
+              });
           }
         });
-
-      //   if (response.data.response.status === "success") {
-      //     await AsyncStorage.setItem("appLanguage", language);
-      //     const terms = response.data.result.terms;
-      //     if (terms.length > 0) {
-      //       var modifierJson = {};
-      //       terms.map((term) => {
-      //         modifierJson[term.term] = term.translation.content;
-      //       });
-
-      //       I18nManager.allowRTL(language === "ar");
-      //       I18nManager.forceRTL(language === "ar");
-      //       // console.log("language getLanguageListPOEdit", language);
-      //       // console.log("modiferJson", modifierJson);
-      //       i18n.translations = {
-      //         [language]: modifierJson,
-      //       };
-
-      //       return dispatch({
-      //         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
-      //         payload: {
-      //           terms: modifierJson,
-      //           language,
-      //         },
-      //       });
-      //     }
-      //   } else {
-      //     const response = await createBaseUrl().get(`translation/${language}`);
-      //     const data = response.data;
-      //     // if this also fails then local copy
-      //     await AsyncStorage.setItem("appLanguage", language);
-      //     I18nManager.allowRTL(language === "ar");
-      //     I18nManager.forceRTL(language === "ar");
-      //     if (data) {
-      //       i18n.translations = {
-      //         [language]: data,
-      //       };
-
-      //       return dispatch({
-      //         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
-      //         payload: {
-      //           terms: data,
-      //           language,
-      //         },
-      //       });
-      //     } else {
-      //       i18n.translations = {
-      //         [language]: language === "ar" ? arabicStrings : englishStrings,
-      //       };
-
-      //       return dispatch({
-      //         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
-      //         payload: {
-      //           terms: language === "ar" ? arabicStrings : englishStrings,
-      //           language,
-      //         },
-      //       });
-      //     }
-      //   }
     } catch (error) {
       // console.log("translation error", error.response || error.message);
 
-      await AsyncStorage.setItem("appLanguage", language);
-      I18nManager.allowRTL(language === "ar");
-      I18nManager.forceRTL(language === "ar");
-      i18n.translations = {
-        [language]: language === "ar" ? arabicStrings : englishStrings,
-      };
+      AsyncStorage.setItem("appLanguage", language).then((res) => {
+        I18nManager.allowRTL(language === "ar");
+        I18nManager.forceRTL(language === "ar");
+        i18n.translations = {
+          [language]: language === "ar" ? arabicStrings : englishStrings,
+        };
 
-      return dispatch({
-        type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
-        payload: {
-          terms: language === "ar" ? arabicStrings : englishStrings,
-          language,
-        },
+        return dispatch({
+          type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
+          payload: {
+            terms: language === "ar" ? arabicStrings : englishStrings,
+            language,
+          },
+        });
       });
     }
   };
