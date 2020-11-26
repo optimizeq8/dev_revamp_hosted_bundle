@@ -7,6 +7,7 @@ import { codeFieldStyle } from "../VerifyAccount/styles";
 import styles from "./styles";
 import analytics from "@segment/analytics-react-native";
 import Header from "../../MiniComponents/Header";
+import * as actionCreators from "../../../store/actions";
 
 class VerifyEngagmentNumber extends Component {
   state = { code: "", country_code: "", phoneNum: "" };
@@ -24,14 +25,11 @@ class VerifyEngagmentNumber extends Component {
       "source",
       this.props.screenProps.prevAppState
     );
-    this.props.verifyMobileCode(
-      {
-        mobile: this.state.phoneNum.substring(4),
-        country_code: this.state.country_code,
-        verificationCode: this.state.code,
-        userid: this.props.userInfo.userid,
-      },
-      "Mobile"
+    this.props.verifySnapchatOtp(
+      this.props.campaign_id,
+      this.props.engagementNumberID,
+      this.state.code,
+      this.props.handleButton
     );
   };
   resendOTP = () => {
@@ -62,8 +60,6 @@ class VerifyEngagmentNumber extends Component {
     });
   };
   render() {
-    console.log(JSON.stringify(this.state, null, 2));
-
     let { screenProps } = this.props;
     let { translate } = screenProps;
     return (
@@ -80,7 +76,7 @@ class VerifyEngagmentNumber extends Component {
             source: "otp_verify",
             source_action: "a_go_back",
           }}
-          actionButton={() => this.props.handleButton(false)}
+          actionButton={() => this.props.handleButton(false, false)}
           navigation={undefined}
           // showGoBackButton={false}
         />
@@ -96,11 +92,11 @@ class VerifyEngagmentNumber extends Component {
           <View style={{ marginVertical: 10 }}>
             <CodeField
               autoFocus
-              cellCount={5}
+              cellCount={6}
               onChangeText={(code) => {
                 this.setState({ code });
-                if (code.length === 5) {
-                  this._handleSentCode(code);
+                if (code.length === 6) {
+                  this.verifyOTP(code);
                 }
               }}
               textContentType="oneTimeCode"
@@ -129,7 +125,9 @@ class VerifyEngagmentNumber extends Component {
             disabled={this.state.code === ""}
             onPressAction={this.verifyOTP}
           />
-          <TouchableOpacity onPress={this.resendOTP}>
+          <TouchableOpacity
+            onPress={() => this.props.handleButton(true, false)}
+          >
             <Text style={styles.bottomText}>{translate("Resend Code")}</Text>
           </TouchableOpacity>
         </View>
@@ -146,6 +144,7 @@ const mapStateToProps = (state) => ({
   verificationCode: state.register.verificationCode,
   successNo: state.register.successNo,
   emailLinkCodeExpired: state.register.emailLinkCodeExpired,
+  engagementNumberID: state.campaignC.engagementNumberID,
 });
 const mapDispatchToProps = (dispatch) => ({
   sendMobileNo: (mobileNo) => dispatch(actionCreators.sendMobileNo(mobileNo)),
@@ -162,9 +161,19 @@ const mapDispatchToProps = (dispatch) => ({
   resendVerifyMobileCodeByEmail: (mobileAuth) =>
     dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
   resetVerificationCode: () => dispatch(actionCreators.resetVerificationCode()),
-  verifyEmailCodeLink: (verificationCode, country_code, mobile) =>
+  verifySnapchatOtp: (
+    campaign_id,
+    phone_number_id,
+    verification_code,
+    handleButton
+  ) =>
     dispatch(
-      actionCreators.verifyEmailCodeLink(verificationCode, country_code, mobile)
+      actionCreators.verifySnapchatOtp(
+        campaign_id,
+        phone_number_id,
+        verification_code,
+        handleButton
+      )
     ),
 });
 export default connect(

@@ -8,6 +8,7 @@ import { errorMessageHandler } from "./ErrorActions";
 import { setCampaignInfoForTransaction } from "./transactionActions";
 import { getUniqueId } from "react-native-device-info";
 import NavigationService from "../../NavigationService";
+import { translate } from "i18n-js";
 
 export const resetCampaignInfo = (resetAdType = false) => {
   return (dispatch) => {
@@ -1683,6 +1684,90 @@ export const getDistrictList = () => {
             type: actionTypes.SET_DISTRICT_LIST,
             payload: data.data,
           });
+        }
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};
+
+export const getEngagmentNumberVerification = (campaign_id, showCodeInput) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.ENGAGMENT_NUMBER_OTP_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`sendSnapchatOtp`, { campaign_id })
+      .then((res) => res.data)
+      .then((data) => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.ENGAGMENT_NUMBER_OTP,
+            payload: data.phone_number_id,
+          });
+          showCodeInput(true);
+        }
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};
+
+export const verifySnapchatNumber = (ad_account_id, mobile) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_ENGAGMENT_NUMBER_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`verifySnapchatNumber`, { ad_account_id, mobile })
+      .then((res) => res.data)
+      .then((data) => {
+        dispatch(
+          save_campaign_info({ verifiedEngagementNumber: data.success })
+        );
+      })
+      .catch((err) => {
+        // console.log("moveAmountToWallet", err.response || err.message);
+      });
+  };
+};
+export const verifySnapchatOtp = (
+  campaign_id,
+  phone_number_id,
+  verification_code,
+  handleButton
+) => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP_LOADING,
+      payload: true,
+    });
+    createBaseUrl()
+      .post(`verifySnapchatOtp`, {
+        campaign_id,
+        phone_number_id,
+        verification_code,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP,
+            payload: data.success,
+          });
+          handleButton(false, true);
         }
       })
       .catch((err) => {

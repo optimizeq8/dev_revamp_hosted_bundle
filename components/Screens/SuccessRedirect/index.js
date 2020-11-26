@@ -5,6 +5,7 @@ import analytics from "@segment/analytics-react-native";
 import { NavigationActions } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
 import GradientButton from "../../MiniComponents/GradientButton";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -30,7 +31,8 @@ class SuccessRedirect extends Component {
       media: require("../../../assets/images/logo01.png"),
       successLogo: require("../../../assets/animation/success.json"),
       showVerifyEngagment: false,
-      engagmentPhoneNumberVerified: false,
+      engagmentNumberVerified: false,
+      objective: "",
     };
   }
 
@@ -126,10 +128,9 @@ class SuccessRedirect extends Component {
       {
         ...this.props.navigation.state.params,
         objective: this.props.data.objective,
+        campaign_id: this.props.data.campaign_id,
         engagmentPhoneNumber: this.props.data.attachment.phone_number_id,
-        // engagmentPhoneNumberVerified: ["+96597221104"].includes(
-        //   this.props.data.attachment.phone_number_id
-        // ),
+        engagmentNumberVerified: this.props.data.verifiedEngagementNumber,
       },
       () => {
         if (
@@ -137,7 +138,7 @@ class SuccessRedirect extends Component {
           (this.props.channel &&
             this.props.channel.toLowerCase() === "snapchat")
         ) {
-          this.props.resetCampaignInfo(false);
+          // this.props.resetCampaignInfo(false);
         }
         if (this.props.channel === "google") {
           this.props.rest_google_campaign_data();
@@ -152,13 +153,19 @@ class SuccessRedirect extends Component {
   onLottieEnd = () => {
     // this.animation.play();
   };
-  handleButton = (show = false) => {
+  handleButton = (show = false, navigateToDashboard = false) => {
     if (
       this.state.objective === "ENGAGEMENT" &&
-      !this.state.engagmentPhoneNumberVerified
+      !this.state.engagmentNumberVerified &&
+      show &&
+      !navigateToDashboard
     ) {
+      this.props.getEngagmentNumberVerification(this.state.campaign_id, () =>
+        this.setState({ showVerifyEngagment: show })
+      );
+    } else if (!show && !navigateToDashboard) {
       this.setState({ showVerifyEngagment: show });
-    } else {
+    } else
       this.props.navigation.reset(
         [
           NavigationActions.navigate({
@@ -171,7 +178,6 @@ class SuccessRedirect extends Component {
         ],
         0
       );
-    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -199,6 +205,7 @@ class SuccessRedirect extends Component {
             navigation={this.props.navigation}
             engagmentPhoneNumber={this.state.engagmentPhoneNumber}
             handleButton={this.handleButton}
+            campaign_id={this.state.campaign_id}
           />
         ) : (
           <View style={styles.view}>
@@ -233,7 +240,7 @@ class SuccessRedirect extends Component {
               </Text>
             </View>
             {this.state.objective === "ENGAGEMENT" &&
-              this.state.engagmentPhoneNumberVerified && (
+              !this.state.engagmentNumberVerified && (
                 <View style={{ width: "60%" }}>
                   <Text
                     style={[
@@ -250,16 +257,19 @@ class SuccessRedirect extends Component {
 
             <GradientButton
               style={styles.button}
-              onPressAction={() => this.handleButton(true)}
+              onPressAction={() => this.handleButton(true, false)}
               textStyle={styles.buttontext}
               text={
                 this.state.objective === "ENGAGEMENT" &&
-                this.state.engagmentPhoneNumberVerified
+                !this.state.engagmentNumberVerified
                   ? translate("Verify")
                   : translate("Home")
               }
               uppercase={true}
             />
+            {this.props.engagementNumberOTPLoading && (
+              <LoadingScreen dash={false} />
+            )}
           </View>
         )}
       </SafeAreaView>
@@ -276,6 +286,8 @@ const mapStateToProps = (state) => ({
   adType: state.campaignC.adType,
   adTypeInstagram: state.instagramAds.adType,
   data: state.campaignC.data,
+  engagementNumberOTPLoading: state.campaignC.engagementNumberOTPLoading,
+  verifiedEngagementNumber: state.campaignC.verifiedEngagementNumber,
 });
 const mapDispatchToProps = (dispatch) => ({
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
@@ -285,5 +297,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.rest_google_campaign_data()),
   resetCampaignInfoInstagram: () =>
     dispatch(actionCreators.resetCampaignInfoInstagram()),
+  getEngagmentNumberVerification: (campaign_id, showCodeInput) =>
+    dispatch(
+      actionCreators.getEngagmentNumberVerification(campaign_id, showCodeInput)
+    ),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessRedirect);

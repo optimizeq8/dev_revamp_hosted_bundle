@@ -234,6 +234,10 @@ const initialState = {
   movingAmountToWallet: false,
   districtListLoading: false,
   districtList: [],
+  engagementNumberID: "",
+  engagementNumberOTPLoading: false,
+  verifiedEngagementNumberOTP: false,
+  verifyEngagementNumberLoadingOTP: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -1189,6 +1193,32 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         districtList: action.payload,
+      };
+    }
+    case actionTypes.ENGAGMENT_NUMBER_OTP: {
+      return {
+        ...state,
+        engagementNumberID: action.payload,
+        engagementNumberOTPLoading: false,
+      };
+    }
+    case actionTypes.ENGAGMENT_NUMBER_OTP_LOADING: {
+      return {
+        ...state,
+        engagementNumberOTPLoading: action.payload,
+      };
+    }
+    case actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP: {
+      return {
+        ...state,
+        verifiedEngagementNumberOTP: action.payload,
+        verifyEngagementNumberLoadingOTP: false,
+      };
+    }
+    case actionTypes.VERIFY_ENGAGMENT_NUMBER_OTP_LOADING: {
+      return {
+        ...state,
+        verifyEngagementNumberLoadingOTP: action.payload,
       };
     }
     default:

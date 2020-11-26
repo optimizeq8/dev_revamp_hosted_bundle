@@ -211,9 +211,9 @@ class Call extends Component {
       valid: valid,
       country_code,
     });
-    // if (valid) {
-    //   this.props.isNumberSnapchatVerified(number);
-    // }
+    if (valid) {
+      this.props.verifySnapchatNumber(this.props.data.ad_account_id, number);
+    }
   };
   sendOTP = () => {
     this.props.sendOTPSnapchat(this.state.campaignInfo.attachment.mobile);
@@ -403,5 +403,6 @@ const mapDispatchToProps = (dispatch) => ({
   resetVerifiedNumberSnapchat: () =>
     dispatch(actions.resetVerifiedNumberSnapchat()),
   verifyOTPCode: (code) => dispatch(actions.verifyOTPCode(code)),
+  verifySnapchatNumber: () => dispatch(actions.verifySnapchatNumber()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Call);
