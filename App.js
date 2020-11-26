@@ -684,7 +684,6 @@ class App extends React.Component {
     // };
   };
   _loadResourcesAsync = async () => {
-    console.log("started", new Date().getSeconds());
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
@@ -737,7 +736,6 @@ class App extends React.Component {
     ]).then(() => {
       //was used to animate the logo
       //  this.anim()
-      console.log("Finished", new Date().getSeconds());
     });
   };
 
