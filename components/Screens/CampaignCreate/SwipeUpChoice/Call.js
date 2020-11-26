@@ -403,6 +403,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetVerifiedNumberSnapchat: () =>
     dispatch(actions.resetVerifiedNumberSnapchat()),
   verifyOTPCode: (code) => dispatch(actions.verifyOTPCode(code)),
-  verifySnapchatNumber: () => dispatch(actions.verifySnapchatNumber()),
+  verifySnapchatNumber: (ad_account_id, mobile) =>
+    dispatch(actions.verifySnapchatNumber(ad_account_id, mobile)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Call);
