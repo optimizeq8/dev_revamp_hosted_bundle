@@ -72,14 +72,14 @@ class Signin extends Component {
   };
 
   async componentDidMount() {
-    const MPTweakHelper = NativeModules.MPTweakHelper;
-    MPTweakHelper.getCustomTweak(
-      await analytics.getAnonymousId(),
-      (err, tweakVal) => {
-        console.log(tweakVal);
-        this.setState({ tweakVal });
-      }
-    );
+    // const MPTweakHelper = NativeModules.MPTweakHelper;
+    // MPTweakHelper.getCustomTweak(
+    //   await analytics.getAnonymousId(),
+    //   (err, tweakVal) => {
+    //     console.log(tweakVal);
+    //     this.setState({ tweakVal });
+    //   }
+    // );
     const source = this.props.navigation.getParam(
       "source",
       this.props.screenProps.prevAppState
@@ -360,9 +360,9 @@ class Signin extends Component {
                 <GradientButton
                   text={
                     this.state.activeTab === 0
-                      ? this.state.tweakVal
-                        ? "Get started now!"
-                        : translate("Create Account")
+                      ? //   ? this.state.tweakVal
+                        //     ? ("Get started now!")
+                        translate("Create Account")
                       : translate("Sign in")
                   }
                   uppercase

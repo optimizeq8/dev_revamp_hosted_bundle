@@ -110,16 +110,16 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     this.props.checkHashForUser();
-    if (this.props.userInfo) {
-      const MPTweakHelper = NativeModules.MPTweakHelper;
-      MPTweakHelper.getCustomTweak(
-        this.props.userInfo.userid,
-        (eer, showButton) => {
-          // console.log("showButton", showButton);
-          this.setState({ showButton });
-        }
-      );
-    }
+    // if (this.props.userInfo) {
+    //   const MPTweakHelper = NativeModules.MPTweakHelper;
+    //   MPTweakHelper.getCustomTweak(
+    //     this.props.userInfo.userid,
+    //     (eer, showButton) => {
+    //       // console.log("showButton", showButton);
+    //       this.setState({ showButton });
+    //     }
+    //   );
+    // }
 
     Intercom.getUnreadConversationCount().then((res) => {
       if (res !== this.props.count) {
@@ -845,19 +845,17 @@ class Dashboard extends Component {
                                   flexDirection: "column",
                                 }}
                               >
-                                {this.state.showButton && (
-                                  <GradientButton
-                                    style={styles.button}
-                                    radius={30}
-                                    onPressAction={this.handleNewCampaign}
-                                  >
-                                    <Icon
-                                      name="plus"
-                                      type="MaterialCommunityIcons"
-                                      style={{ color: "#fff" }}
-                                    />
-                                  </GradientButton>
-                                )}
+                                <GradientButton
+                                  style={styles.button}
+                                  radius={30}
+                                  onPressAction={this.handleNewCampaign}
+                                >
+                                  <Icon
+                                    name="plus"
+                                    type="MaterialCommunityIcons"
+                                    style={{ color: "#fff" }}
+                                  />
+                                </GradientButton>
                               </View>
                               <ScrollView
                                 style={{
