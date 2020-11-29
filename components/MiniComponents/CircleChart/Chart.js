@@ -21,7 +21,7 @@ export default Chart = (props) => {
       <AnimatedCircularProgress
         size={detail ? 160 : 80}
         width={detail ? 12 : 5}
-        fill={x}
+        fill={isNaN(x) ? 0 : x}
         rotation={0}
         lineCap="round"
         style={styles.chart}
