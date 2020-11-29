@@ -4,11 +4,9 @@ import Intercom from "react-native-intercom";
 import analytics from "@segment/analytics-react-native";
 
 import Rejected from "../../../assets/SVGs/Rejected.svg";
-import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
 
 import styles from "./styles";
-import { globalColors } from "../../../GlobalStyles";
 import GradientButton from "../../MiniComponents/GradientButton";
 
 export default RejectedInfo = (props) => {
@@ -45,7 +43,6 @@ export default RejectedInfo = (props) => {
       >
         {e.description}
       </Text>
-      {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
     </View>
   ));
   return (
