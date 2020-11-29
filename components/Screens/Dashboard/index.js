@@ -839,34 +839,27 @@ class Dashboard extends Component {
                       <View style={styles.sideMenuCard}>
                         {this.props.mainBusiness &&
                           this.props.mainBusiness.user_role !== "3" && (
-                            <>
-                              <View
-                                style={{
-                                  flexDirection: "column",
-                                }}
+                            <ScrollView
+                              contentContainerStyle={{
+                                marginTop: 5,
+                                paddingHorizontal: 20,
+                              }}
+                              horizontal
+                              showsHorizontalScrollIndicator={false}
+                            >
+                              <GradientButton
+                                style={styles.button}
+                                radius={30}
+                                onPressAction={this.handleNewCampaign}
                               >
-                                <GradientButton
-                                  style={styles.button}
-                                  radius={30}
-                                  onPressAction={this.handleNewCampaign}
-                                >
-                                  <Icon
-                                    name="plus"
-                                    type="MaterialCommunityIcons"
-                                    style={{ color: "#fff" }}
-                                  />
-                                </GradientButton>
-                              </View>
-                              <ScrollView
-                                style={{
-                                  top: I18nManager.isRTL ? 5 : 0,
-                                }}
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                              >
-                                {adButtons}
-                              </ScrollView>
-                            </>
+                                <Icon
+                                  name="plus"
+                                  type="MaterialCommunityIcons"
+                                  style={{ color: "#fff" }}
+                                />
+                              </GradientButton>
+                              {adButtons}
+                            </ScrollView>
                           )}
                       </View>
                     </View>
