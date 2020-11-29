@@ -51,12 +51,17 @@ export default styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0)",
     color: "#000",
   },
-  itemText: { color: globalColors.rum, fontFamily: "montserrat-semibold" },
+  itemText: {
+    color: globalColors.rum,
+    fontFamily: "montserrat-semibold",
+    textAlign: "left",
+  },
   selectedItemText: { color: globalColors.rum },
   subItemText: {
     color: globalColors.rum,
     fontSize: 14,
     fontFamily: "montserrat-regular",
+    textAlign: "left",
   },
   scrollView: {
     width: wp(80),
@@ -70,4 +75,7 @@ export default styles = StyleSheet.create({
     alignSelf: "center",
   },
   confirmText: { color: "#fff" },
+  chipText: {
+    fontFamily: "montserrat-regular",
+  },
 });
