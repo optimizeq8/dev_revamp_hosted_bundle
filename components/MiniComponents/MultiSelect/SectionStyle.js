@@ -75,4 +75,7 @@ export default styles = StyleSheet.create({
     alignSelf: "center",
   },
   confirmText: { color: "#fff" },
+  chipText: {
+    fontFamily: "montserrat-regular",
+  },
 });
