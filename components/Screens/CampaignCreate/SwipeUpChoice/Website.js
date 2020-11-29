@@ -285,7 +285,7 @@ class Website extends Component {
           <Picker
             showIcon={true}
             screenProps={this.props.screenProps}
-            searchPlaceholderText={"Search Call To Action"}
+            searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
             uniqueKey={"value"}
             displayKey={"label"}
