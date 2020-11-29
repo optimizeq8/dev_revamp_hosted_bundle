@@ -19,12 +19,10 @@ import { globalColors } from "../../../GlobalStyles";
 class SelectRegions extends Component {
   state = { selectedAll: false };
 
-  // selectAll = () => {
-  //   this.setState({ selectedAll: !this.state.selectedAll });
-  //   this.props.regions.forEach(region =>
-  //     this.props.onSelectedRegionChange(region.id, region.name)
-  //   );
-  // };
+  componentDidMount() {
+    //to reset the filtered regions to the full list
+    this.handleFilteringRegions("");
+  }
   checkForLocations = (c, fReg, selectAll = false) => {
     let { translate } = this.props.screenProps;
     if (this.props.locationsSelected) {
@@ -58,6 +56,18 @@ class SelectRegions extends Component {
       fReg.country_code
     );
   };
+  handleFilteringRegions = (value) => {
+    const { translate } = this.props.screenProps;
+    let filteredR = this.props.regions.map((c) => {
+      return {
+        ...c,
+        regions: c.regions.filter((reg) =>
+          translate(reg.name).toLowerCase().includes(value.toLowerCase())
+        ),
+      };
+    });
+    this.props.filterRegions(filteredR);
+  };
   render() {
     const { translate } = this.props.screenProps;
     let regionlist = this.props.filteredRegions.map((fReg) => {
@@ -66,7 +76,11 @@ class SelectRegions extends Component {
         (coR) => coR.country_code === fReg.country_code
       );
       let coReg = fReg.regions;
-      if (this.props.addressForm || coReg.length > 3)
+      if (
+        this.props.addressForm ||
+        ((fReg.country_code === "ae" || fReg.country_code === "sa") &&
+          coReg.length > 0)
+      )
         return (
           <View key={countryName}>
             <Text style={[styles.optionsTextContainer, { paddingLeft: 0 }]}>
@@ -104,7 +118,6 @@ class SelectRegions extends Component {
           </View>
         );
     });
-
     return (
       <View style={styles.container}>
         <View style={[styles.dataContainer]}>
@@ -133,14 +146,7 @@ class SelectRegions extends Component {
                   },
                 ]}
                 placeholderTextColor={globalColors.rum}
-                onChangeText={(value) => {
-                  let filteredR = this.props.regions.filter((c) =>
-                    translate(c.name)
-                      .toLowerCase()
-                      .includes(value.toLowerCase())
-                  );
-                  this.props.filterRegions(filteredR);
-                }}
+                onChangeText={this.handleFilteringRegions}
               />
             </Item>
 
