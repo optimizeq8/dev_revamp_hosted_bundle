@@ -703,6 +703,11 @@ class Dashboard extends Component {
                 <>
                   <TouchableOpacity
                     onPress={() => {
+                      analytics.track(`a_help`, {
+                        source: "dashboard",
+                        source_action: "a_help",
+                        support_type: "intercom",
+                      });
                       Intercom.displayMessageComposer();
 
                       // this.props.navigation.push("Messenger", {

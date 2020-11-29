@@ -1,5 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
+import Intercom from "react-native-intercom";
+import analytics from "@segment/analytics-react-native";
+
 import Rejected from "../../../assets/SVGs/Rejected.svg";
 import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
@@ -70,10 +73,16 @@ export default RejectedInfo = (props) => {
           style={styles.contactUsBtn}
           text={translate("Contact Us")}
           onPressAction={() => {
-            props.navigation.navigate("Messenger", {
+            analytics.track(`a_help`, {
               source: "campaign_details",
               source_action: "a_help",
+              support_type: "intercom",
             });
+            Intercom.displayMessageComposer();
+            // props.navigation.navigate("Messenger", {
+            //   source: "campaign_details",
+            //   source_action: "a_help",
+            // });
           }}
         />
 
