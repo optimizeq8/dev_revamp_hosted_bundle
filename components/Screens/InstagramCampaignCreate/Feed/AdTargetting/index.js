@@ -1275,7 +1275,9 @@ class InstagramFeedAdTargetting extends Component {
                     this.props.saveCampaignSteps([
                       "Dashboard",
                       "InstagramFeedAdObjective",
-                      "InstagramFeedAdDesign",
+                      this.props.data.existingPost === 0
+                        ? "InstagramAdDesignExistingPost"
+                        : "InstagramFeedAdDesign",
                       "InstagramFeedAdTargetting",
                     ]);
                   }
