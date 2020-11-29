@@ -125,7 +125,8 @@ class SnapchatCampaignAudience extends React.Component {
             keyExtractor={(item) => item.id}
             contentContainerStyle={{
               minHeight: heightPercentageToDP(50),
-              flex: 0,
+              //   flex: 1,
+              paddingBottom: heightPercentageToDP(50),
             }}
             onRefresh={this.retrieveAudinece}
             refreshing={this.props.audienceListLoading}
