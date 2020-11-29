@@ -58,6 +58,11 @@ export default class SuspendedWarning extends Component {
             <GradientButton
               style={styles.button}
               onPressAction={() => {
+                analytics.track(`a_help`, {
+                  source: "suspended_warning",
+                  source_action: "a_help",
+                  support_type: "intercom",
+                });
                 Intercom.displayMessageComposer();
                 // let continueRoutes = [
                 //   // "Dashboard",
