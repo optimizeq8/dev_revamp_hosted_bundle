@@ -102,7 +102,11 @@ public class MainApplication extends androidx.multidex.MultiDexApplication imple
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    Intercom.initialize(this, "android_sdk-a0d25d6a43b2ab0c505588621d140240a57cef60", "qf7uj8rc");
+    /** OptimizeApp LIVE */
+    Intercom.initialize(this, "android_sdk-9b7ba07ad91cc3cc69e3e422f855fb51c9685f53", "k5yqpre9");
+    
+    /** OptimizeApp DEV */
+    // Intercom.initialize(this, "android_sdk-a0d25d6a43b2ab0c505588621d140240a57cef60", "qf7uj8rc");
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     if (!BuildConfig.DEBUG) {
       UpdatesController.initialize(this);

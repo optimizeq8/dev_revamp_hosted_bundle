@@ -708,12 +708,12 @@ class Dashboard extends Component {
                         source_action: "a_help",
                         support_type: "intercom",
                       });
-                      Intercom.displayMessageComposer();
+                      Intercom.displayConversationsList();
 
-                      // this.props.navigation.push("Messenger", {
-                      //   source: "dashboard",
-                      //   source_action: "a_help",
-                      // });
+                      //   this.props.navigation.push("Messenger", {
+                      //     source: "dashboard",
+                      //     source_action: "a_help",
+                      //   });
                     }}
                     style={[styles.headerIcons]}
                   >

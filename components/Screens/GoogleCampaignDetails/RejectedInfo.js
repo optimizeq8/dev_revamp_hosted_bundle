@@ -75,7 +75,9 @@ export default RejectedInfo = (props) => {
               source_action: "a_help",
               support_type: "intercom",
             });
-            Intercom.displayMessageComposer();
+            // Intercom.displayMessageComposer();
+            Intercom.displayConversationsList();
+
             // props.navigation.navigate("Messenger", {
             //   source: "campaign_details",
             //   source_action: "a_help",

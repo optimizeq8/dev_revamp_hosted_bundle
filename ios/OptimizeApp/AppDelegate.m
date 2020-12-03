@@ -57,7 +57,11 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 [config use:[SEGAdjustIntegrationFactory instance]];
 
 [SEGAnalytics setupWithConfiguration:config];
-[Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
+/** LIVE */
+[Intercom setApiKey:@"ios_sdk-345d9b5af6cf6662f16b5d47798d2473c0e0b617" forAppId:@"k5yqpre9"];
+
+/** DEV */
+// [Intercom setApiKey:@"ios_sdk-e2493179152d82a4976b580fd1ec442cf2a1e018" forAppId:@"qf7uj8rc"];
 #ifdef DEBUG
   [self initializeReactNativeApp];
 #else

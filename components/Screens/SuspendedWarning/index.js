@@ -63,7 +63,9 @@ export default class SuspendedWarning extends Component {
                   source_action: "a_help",
                   support_type: "intercom",
                 });
-                Intercom.displayMessageComposer();
+                // Intercom.displayMessageComposer();
+                Intercom.displayConversationsList();
+
                 // let continueRoutes = [
                 //   // "Dashboard",
                 //   "Messenger",
