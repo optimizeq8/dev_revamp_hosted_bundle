@@ -124,7 +124,7 @@ class AppUpdateChecker extends PureComponent {
         style={{ margin: 0 }}
         isVisible={this.state.updateIsAvalible || this.state.OTAAvalibe}
       >
-        <SafeAreaView forceInset={{ top: "always" }}>
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }}>
           <BlurView intensity={70} tint="dark" style={styles.blurStyle}>
             <View style={{ height: "100%" }}>
               {this.state.updateIsAvalible && (

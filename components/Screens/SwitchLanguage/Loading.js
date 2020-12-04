@@ -12,15 +12,21 @@ import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
+import isStringArabic from "../../isStringArabic";
 
 class SwitchLanguageLoading extends Component {
   async componentDidMount() {
     await this.props.getLanguageListPOEdit(
       this.props.appLanguage === "en" ? "ar" : "en"
     );
-    this.props.screenProps.setLocale(this.props.appLanguage);
+    await this.props.screenProps.setLocale(this.props.appLanguage);
   }
   componentDidUpdate(prevProps) {
+    console.log(
+      "prevProps.languageChangeLoading , this.props.languageChangeLoading",
+      prevProps.languageChangeLoading,
+      this.props.languageChangeLoading
+    );
     if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
       Updates.reloadAsync().catch((err) => console.log(err));
     }
@@ -47,7 +53,18 @@ class SwitchLanguageLoading extends Component {
         <NavigationEvents onDidFocus={this.onDidFocus} />
         <View style={styles.loadingView}>
           <ActivityIndicator color={globalColors.orange} size="large" />
-          <Text style={styles.loadingText}>
+          <Text
+            style={[
+              styles.loadingText,
+              {
+                fontFamily: isStringArabic(
+                  translate("Switching Language Please wait")
+                )
+                  ? "montserrat-regular-arabic"
+                  : "montserrat-regular",
+              },
+            ]}
+          >
             {translate("Switching Language Please wait")} ...
           </Text>
         </View>

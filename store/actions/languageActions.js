@@ -109,7 +109,7 @@ export const getLanguageListPOEdit = (language) => {
           }
         });
     } catch (error) {
-      // console.log("translation error", error.response || error.message);
+      console.log("translation error", error.response || error.message);
 
       AsyncStorage.setItem("appLanguage", language).then((res) => {
         I18nManager.allowRTL(language === "ar");
