@@ -21,7 +21,7 @@ class SwitchLanguageLoading extends Component {
     this.props.screenProps.setLocale(this.props.appLanguage);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.terms !== this.props.terms) {
+    if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
       Updates.reloadAsync().catch((err) => console.log(err));
     }
   }
