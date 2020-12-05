@@ -129,7 +129,6 @@ class SwitchLanguage extends Component {
     await AsyncStorage.setItem("languageOpened", "true");
     if (appLanguage !== this.state.language) {
       // if app language not same as the state language then set it as the app language and reloading the app
-      this.props.getLanguageListPOEdit(this.state.language);
       this.props.navigation.navigate("SwitchLanguageLoading", {
         source: "app_language",
         source_action: "a_app_language_select",
