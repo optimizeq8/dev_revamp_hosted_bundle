@@ -19,16 +19,19 @@ class SwitchLanguageLoading extends Component {
     await this.props.getLanguageListPOEdit(
       this.props.appLanguage === "en" ? "ar" : "en"
     );
-    await this.props.screenProps.setLocale(this.props.appLanguage);
+    this.props.screenProps.setLocale(this.props.appLanguage);
   }
   componentDidUpdate(prevProps) {
-    console.log(
-      "prevProps.languageChangeLoading , this.props.languageChangeLoading",
-      prevProps.languageChangeLoading,
-      this.props.languageChangeLoading
-    );
-    if (prevProps.languageChangeLoading && !this.props.languageChangeLoading) {
-      Updates.reloadAsync().catch((err) => console.log(err));
+    // console.log(
+    //   "prevProps.terms !== this.props.terms",
+    //   prevProps.terms !== this.props.terms
+    // );
+    if (prevProps.terms !== this.props.terms) {
+      Updates.reloadAsync().catch((err) => {
+        analytics.track("issue_with_reloading", {
+          error_message: err.message,
+        });
+      });
     }
   }
   onDidFocus = () => {
@@ -61,7 +64,7 @@ class SwitchLanguageLoading extends Component {
                   translate("Switching Language Please wait")
                 )
                   ? "montserrat-regular-arabic"
-                  : "montserrat-regular",
+                  : "montserrat-regular-english",
               },
             ]}
           >
