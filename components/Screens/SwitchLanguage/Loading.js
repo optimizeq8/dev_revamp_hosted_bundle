@@ -3,7 +3,7 @@ import { View, ActivityIndicator, Text } from "react-native";
 import * as Updates from "expo-updates";
 import { NavigationEvents } from "react-navigation";
 import SafeAreaView from "react-native-safe-area-view";
-
+import RNRestart from "react-native-restart";
 import analytics from "@segment/analytics-react-native";
 //Redux
 import { connect } from "react-redux";
@@ -15,26 +15,12 @@ import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 
 class SwitchLanguageLoading extends Component {
-  async componentDidMount() {
-    await this.props.getLanguageListPOEdit(
-      this.props.appLanguage === "en" ? "ar" : "en"
-    );
-    this.props.screenProps.setLocale(this.props.appLanguage);
-  }
   componentDidUpdate(prevProps) {
-    // console.log(
-    //   "prevProps.terms !== this.props.terms",
-    //   prevProps.terms !== this.props.terms
-    // );
     if (prevProps.terms !== this.props.terms) {
-      Updates.reloadAsync().catch((err) => {
-        analytics.track("issue_with_reloading", {
-          error_message: err.message,
-        });
-      });
+      setTimeout(() => RNRestart.Restart(), 3000);
     }
   }
-  onDidFocus = () => {
+  onDidFocus = async () => {
     analytics.track(`switch_language_loading`, {
       source: this.props.navigation.getParam(
         "source",
@@ -45,6 +31,10 @@ class SwitchLanguageLoading extends Component {
         this.props.screenProps.prevAppState
       ),
     });
+    await this.props.getLanguageListPOEdit(
+      this.props.appLanguage === "en" ? "ar" : "en"
+    );
+    this.props.screenProps.setLocale(this.props.appLanguage);
   };
   render() {
     const { translate } = this.props.screenProps;

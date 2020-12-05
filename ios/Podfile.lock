@@ -302,6 +302,8 @@ PODS:
   - react-native-mixpanel (1.2.0):
     - Mixpanel (~> 3.6.1)
     - React
+  - react-native-restart (0.0.17):
+    - React
   - react-native-safe-area-context (3.1.9):
     - React-Core
   - react-native-webview (10.7.0):
@@ -488,6 +490,7 @@ DEPENDENCIES:
   - react-native-intercom (from `../node_modules/react-native-intercom`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
+  - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -640,6 +643,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-mixpanel:
     :path: "../node_modules/react-native-mixpanel"
+  react-native-restart:
+    :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -780,6 +785,7 @@ SPEC CHECKSUMS:
   react-native-intercom: c48e0e15877bf96ff4d461f7aa9b833d11188139
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-mixpanel: a9709c486fa9def958d482174bb8fe4f349bd21e
+  react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
@@ -828,4 +834,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 58f989adae71d51139f23b90860ae21b5cea8ccb
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4
